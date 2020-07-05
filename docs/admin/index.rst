@@ -14,6 +14,7 @@ Administrator documentation
    installation-docker
    update-searx
    engines/index
+   external_bang
    api
    architecture
    filtron
