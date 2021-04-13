@@ -4,7 +4,6 @@ import typing
 import types
 import functools
 import itertools
-import threading
 from time import time
 from urllib.parse import urlparse
 
@@ -385,7 +384,7 @@ class Checker:
         engineref_category = search_query.engineref_list[0].category
         params = self.processor.get_params(search_query, engineref_category)
         if params is not None:
-            with threading.RLock():
+            with self.processor.lock:
                 self.processor.engine.stats['sent_search_count'] += 1
             self.processor.search(search_query.query, params, result_container, time(), 5)
         return result_container

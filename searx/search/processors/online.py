@@ -1,23 +1,21 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 from time import time
-import threading
 import asyncio
 
 import httpx
 
 import searx.network
-from searx.engines import settings
 from searx import logger
 from searx.utils import gen_useragent
 from searx.exceptions import (SearxEngineAccessDeniedException, SearxEngineCaptchaException,
                               SearxEngineTooManyRequestsException,)
-from searx.metrology.error_recorder import record_exception, record_error
+from searx.metrology.error_recorder import record_error
 
 from searx.search.processors.abstract import EngineProcessor
 
 
-logger = logger.getChild('search.processor.online')
+logger = logger.getChild('searx.search.processor.online')
 
 
 def default_request_params():
@@ -39,11 +37,6 @@ class OnlineProcessor(EngineProcessor):
     def get_params(self, search_query, engine_category):
         params = super().get_params(search_query, engine_category)
         if params is None:
-            return None
-
-        # skip suspended engines
-        if self.engine.suspend_end_time >= time():
-            logger.debug('Engine currently suspended: %s', self.engine_name)
             return None
 
         # add default params
@@ -130,89 +123,38 @@ class OnlineProcessor(EngineProcessor):
         # set the network
         searx.network.set_context_network_name(self.engine_name)
 
-        # suppose everything will be alright
-        http_exception = False
-        suspended_time = None
-
         try:
             # send requests and parse the results
             search_results = self._search_basic(query, params)
-
-            # check if the engine accepted the request
-            if search_results is not None:
-                # yes, so add results
-                result_container.extend(self.engine_name, search_results)
-
-                # update engine time when there is no exception
-                engine_time = time() - start_time
-                page_load_time = searx.network.get_time_for_thread()
-                result_container.add_timing(self.engine_name, engine_time, page_load_time)
-                with threading.RLock():
-                    self.engine.stats['engine_time'] += engine_time
-                    self.engine.stats['engine_time_count'] += 1
-                    # update stats with the total HTTP time
-                    self.engine.stats['page_load_time'] += page_load_time
-                    self.engine.stats['page_load_count'] += 1
-        except Exception as e:
-            record_exception(self.engine_name, e)
-
-            # Timing
-            engine_time = time() - start_time
-            page_load_time = searx.network.get_time_for_thread()
-            result_container.add_timing(self.engine_name, engine_time, page_load_time)
-
-            # Record the errors
-            with threading.RLock():
-                self.engine.stats['errors'] += 1
-
-            if (issubclass(e.__class__, (httpx.TimeoutException, asyncio.TimeoutError))):
-                result_container.add_unresponsive_engine(self.engine_name, 'HTTP timeout')
-                # requests timeout (connect or read)
-                logger.error("engine {0} : HTTP requests timeout"
+            self.extend_container(result_container, start_time, search_results)
+        except (httpx.TimeoutException, asyncio.TimeoutError) as e:
+            # requests timeout (connect or read)
+            self.handle_exception(result_container, 'HTTP timeout', e, suspend=True)
+            logger.error("engine {0} : HTTP requests timeout"
+                         "(search duration : {1} s, timeout: {2} s) : {3}"
+                         .format(self.engine_name, time() - start_time,
+                                 timeout_limit,
+                                 e.__class__.__name__))
+        except (httpx.HTTPError, httpx.StreamError) as e:
+            # other requests exception
+            self.handle_exception(result_container, 'HTTP error', e, suspend=True)
+            logger.exception("engine {0} : requests exception"
                              "(search duration : {1} s, timeout: {2} s) : {3}"
-                             .format(self.engine_name, engine_time, timeout_limit, e.__class__.__name__))
-                http_exception = True
-            elif (issubclass(e.__class__, (httpx.HTTPError, httpx.StreamError))):
-                result_container.add_unresponsive_engine(self.engine_name, 'HTTP error')
-                # other requests exception
-                logger.exception("engine {0} : requests exception"
-                                 "(search duration : {1} s, timeout: {2} s) : {3}"
-                                 .format(self.engine_name, engine_time, timeout_limit, e))
-                http_exception = True
-            elif (issubclass(e.__class__, SearxEngineCaptchaException)):
-                result_container.add_unresponsive_engine(self.engine_name, 'CAPTCHA required')
-                logger.exception('engine {0} : CAPTCHA'.format(self.engine_name))
-                suspended_time = e.suspended_time  # pylint: disable=no-member
-            elif (issubclass(e.__class__, SearxEngineTooManyRequestsException)):
-                result_container.add_unresponsive_engine(self.engine_name, 'too many requests')
-                logger.exception('engine {0} : Too many requests'.format(self.engine_name))
-                suspended_time = e.suspended_time  # pylint: disable=no-member
-            elif (issubclass(e.__class__, SearxEngineAccessDeniedException)):
-                result_container.add_unresponsive_engine(self.engine_name, 'blocked')
-                logger.exception('engine {0} : Searx is blocked'.format(self.engine_name))
-                suspended_time = e.suspended_time  # pylint: disable=no-member
-            else:
-                result_container.add_unresponsive_engine(self.engine_name, 'unexpected crash')
-                # others errors
-                logger.exception('engine {0} : exception : {1}'.format(self.engine_name, e))
-        else:
-            if getattr(threading.current_thread(), '_timeout', False):
-                record_error(self.engine_name, 'Timeout')
-
-        # suspend the engine if there is an HTTP error
-        # or suspended_time is defined
-        with threading.RLock():
-            if http_exception or suspended_time:
-                # update continuous_errors / suspend_end_time
-                self.engine.continuous_errors += 1
-                if suspended_time is None:
-                    suspended_time = min(settings['search']['max_ban_time_on_fail'],
-                                         self.engine.continuous_errors * settings['search']['ban_time_on_fail'])
-                self.engine.suspend_end_time = time() + suspended_time
-            else:
-                # reset the suspend variables
-                self.engine.continuous_errors = 0
-                self.engine.suspend_end_time = 0
+                             .format(self.engine_name, time() - start_time,
+                                     timeout_limit,
+                                     e))
+        except SearxEngineCaptchaException as e:
+            self.handle_exception(result_container, 'CAPTCHA required', e, suspend=True)
+            logger.exception('engine {0} : CAPTCHA'.format(self.engine_name))
+        except SearxEngineTooManyRequestsException as e:
+            self.handle_exception(result_container, 'too many requests', e, suspend=True)
+            logger.exception('engine {0} : Too many requests'.format(self.engine_name))
+        except SearxEngineAccessDeniedException as e:
+            self.handle_exception(result_container, 'blocked', e, suspend=True)
+            logger.exception('engine {0} : Searx is blocked'.format(self.engine_name))
+        except Exception as e:
+            self.handle_exception(result_container, 'unexpected crash', e)
+            logger.exception('engine {0} : exception : {1}'.format(self.engine_name, e))
 
     def get_default_tests(self):
         tests = {}

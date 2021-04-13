@@ -111,7 +111,7 @@ class Search:
             if request_params is None:
                 continue
 
-            with threading.RLock():
+            with processor.lock:
                 processor.engine.stats['sent_search_count'] += 1
 
             # append request to list
