@@ -444,6 +444,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['image_proxify'] = image_proxify
 
     kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
+    kwargs['proxify_button'] = settings.get('result_proxy', {}).get('button', True)
 
     kwargs['opensearch_url'] = url_for('opensearch') + '?' \
         + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})

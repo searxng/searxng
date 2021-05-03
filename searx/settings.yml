@@ -65,6 +65,7 @@ ui:
 #result_proxy:
 #    url : http://127.0.0.1:3000/
 #    key : !!binary "your_morty_proxy_key"
+#    button : True  # [True|False] enable the "proxy" button next to each result
 
 outgoing: # communication with search engines
     request_timeout : 3.0 # default timeout in seconds, can be override by engine
