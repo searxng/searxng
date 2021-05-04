@@ -41,7 +41,7 @@
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result, proxify) -%}
 <div class="engines">{% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}</div>{{- '' -}}
-<p class="url"><span class="url">{{ result.pretty_url }}</span>{{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_button %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}</p>{{- '' -}}
+<p class="url"><span class="url">{{ result.pretty_url }}</span>{{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}</p>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}
 

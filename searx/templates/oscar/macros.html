@@ -39,7 +39,7 @@
             <small>{{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "text-info", id) }}</small>
             {%- endif -%}
         {%- endif -%}
-        {%- if proxify and proxify_button -%}
+        {%- if proxify and proxify_results -%}
         <small>{{ result_link(proxify(result.url), icon('sort') + _('proxied'), "text-info", id) }}</small>
         {%- endif -%}
     </div>
@@ -55,7 +55,7 @@
     {%- for engine in result.engines -%}
         <span class="label label-default">{{ engine }}</span>
     {%- endfor -%}
-    {%- if proxify and proxify_button -%}
+    {%- if proxify and proxify_results -%}
     <small>{{ result_link(proxify(result.url), icon('sort') + _('proxied'), "text-info") }}</small>
     {%- endif -%}
 </div>{{- "" -}}
@@ -75,7 +75,7 @@
         <small>{{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "text-info", id) }}</small>
         {%- endif -%}
     {%- endif -%}
-    {%- if proxify and proxify_button -%}
+    {%- if proxify and proxify_results -%}
     <small>{{ result_link(proxify(result.url), icon('sort') + _('proxied'), "text-info", id) }}</small>
     {%- endif -%}
     {%- if result.pretty_url -%}
@@ -89,7 +89,7 @@
     {%- for engine in result.engines -%}
         <span class="label label-default">{{ engine }}</span>
     {%- endfor -%}
-    {%- if proxify and proxify_button -%}
+    {%- if proxify and proxify_results -%}
     <small>{{ result_link(proxify(result.url), icon('sort') + _('proxied'), "text-info") }}</small>
     {%- endif -%}
     <div class="external-link">{{ result.pretty_url }}</div>
