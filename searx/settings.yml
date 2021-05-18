@@ -1003,6 +1003,26 @@ engines:
     timeout : 3.0
     disabled : True
 
+  # For this demo of the sqlite engine download:
+  #   https://liste.mediathekview.de/filmliste-v2.db.bz2
+  # and unpack into searx/data/filmliste-v2.db
+  # Query to test: "!demo concert"
+  #
+  # - name : demo
+  #   engine : sqlite
+  #   shortcut: demo
+  #   categories: general
+  #   result_template: default.html
+  #   database : searx/data/filmliste-v2.db
+  #   query_str :  >-
+  #     SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
+  #            COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
+  #            description AS content
+  #       FROM film
+  #      WHERE title LIKE :wildcard OR description LIKE :wildcard
+  #      ORDER BY duration DESC
+  #   disabled : False
+
   - name : torrentz
     engine : torrentz
     shortcut : tor
