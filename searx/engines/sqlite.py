@@ -6,9 +6,8 @@
 
 """
 
-import sqlite3
-
 from searx import logger
+from searx.utils import SQLiteCursor
 
 logger = logger.getChild('SQLite engine')
 
@@ -18,32 +17,6 @@ query_str = ""
 limit = 10
 paging = True
 result_template = 'key-value.html'
-
-class SQLiteDB:
-    """
-    Implements a `Context Manager`_ for a SQLite.
-
-    usage::
-
-        with SQLiteDB('test.db') as cur:
-            print(cur.execute('select sqlite_version();').fetchall()[0][0])
-
-    .. _Context Manager: https://docs.python.org/3/library/stdtypes.html#context-manager-types
-    """
-
-    def __init__(self, db):
-        self.database = db
-        self.connect = None
-
-    def __enter__(self):
-        self.connect = sqlite3.connect(self.database)
-        self.connect.row_factory = sqlite3.Row
-        return self.connect.cursor()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None:
-            self.connect.commit()
-        self.connect.close()
 
 def init(engine_settings):
     if 'query_str' not in engine_settings:
@@ -64,7 +37,7 @@ def search(query, params):
     }
     query_to_run = query_str + ' LIMIT :limit OFFSET :offset'
 
-    with SQLiteDB(database) as cur:
+    with SQLiteCursor(database) as cur:
 
         cur.execute(query_to_run, query_params)
         col_names = [cn[0] for cn in cur.description]

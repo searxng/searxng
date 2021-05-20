@@ -9,6 +9,7 @@
 import sys
 import re
 import importlib
+import sqlite3
 
 from numbers import Number
 from os.path import splitext, join
@@ -612,3 +613,36 @@ def eval_xpath_getindex(elements, xpath_spec, index, default=NOTSET):
         # to record xpath_spec
         raise SearxEngineXPathException(xpath_spec, 'index ' + str(index) + ' not found')
     return default
+
+class SQLiteCursor:
+    """Implements a `Context Manager`_ for a SQLite *cursor*
+
+    Returns :py:obj:`sqlite3.Cursor` on entering the runtime context of a `with
+    statement`_.
+
+    usage::
+
+        with SQLiteCursor('test.db') as cur:
+            print(cur.execute('select sqlite_version();').fetchall()[0][0])
+
+    .. _Context Manager: https://docs.python.org/3/library/stdtypes.html#context-manager-types
+    .. _with statement: https://docs.python.org/3/reference/compound_stmts.html#with
+
+    """
+
+    def __init__(self, db):
+        self.database = db
+        self.connect = None
+        self.cursor = None
+
+    def __enter__(self):
+        self.connect = sqlite3.connect(self.database)
+        self.connect.row_factory = sqlite3.Row
+        self.cursor = self.connect.cursor()
+        return self.cursor
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.connect.commit()
+        self.cursor.close()
+        self.connect.close()
