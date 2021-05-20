@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+# pylint: disable=missing-class-docstring, missing-function-docstring
+"""Common utilities
+
+"""
+
 import sys
 import re
 import importlib
@@ -33,13 +40,7 @@ ecma_unescape2_re = re.compile(r'%([0-9a-fA-F]{2})', re.UNICODE)
 xpath_cache = dict()
 lang_to_lc_cache = dict()
 
-
-class NotSetClass:
-    pass
-
-
-NOTSET = NotSetClass()
-
+NOTSET = object()
 
 def searx_useragent():
     """Return the searx User Agent"""
@@ -48,7 +49,7 @@ def searx_useragent():
            suffix=settings['outgoing'].get('useragent_suffix', '')).strip()
 
 
-def gen_useragent(os=None):
+def gen_useragent(os=None):  # pylint: disable=invalid-name
     """Return a random browser User Agent
 
     See searx/data/useragents.json
@@ -147,21 +148,25 @@ def extract_text(xpath_results, allow_none=False):
         for e in xpath_results:
             result = result + extract_text(e)
         return result.strip()
-    elif isinstance(xpath_results, ElementBase):
+
+    if isinstance(xpath_results, ElementBase):
         # it's a element
         text = html.tostring(
             xpath_results, encoding='unicode', method='text', with_tail=False
         )
         text = text.strip().replace('\n', ' ')
         return ' '.join(text.split())
-    elif isinstance(xpath_results, (_ElementStringResult, _ElementUnicodeResult, str, Number, bool)):
+
+    if isinstance(xpath_results, (_ElementStringResult, _ElementUnicodeResult, str, Number, bool)):
         return str(xpath_results)
-    elif xpath_results is None and allow_none:
+
+    if xpath_results is None and allow_none:
         return None
-    elif xpath_results is None and not allow_none:
+
+    if xpath_results is None and not allow_none:
         raise ValueError('extract_text(None, allow_none=False)')
-    else:
-        raise ValueError('unsupported type')
+
+    raise ValueError('unsupported type')
 
 
 def normalize_url(url, base_url):
@@ -253,7 +258,7 @@ def extract_url(xpath_results, base_url):
     return normalize_url(url, base_url)
 
 
-def dict_subset(d, properties):
+def dict_subset(d, properties):  # pylint: disable=invalid-name
     """Extract a subset of a dict
 
     Examples:
@@ -314,8 +319,8 @@ def convert_str_to_int(number_str):
     """Convert number_str to int or 0 if number_str is not a number."""
     if number_str.isdigit():
         return int(number_str)
-    else:
-        return 0
+
+    return 0
 
 
 def int_or_zero(num):
@@ -356,11 +361,11 @@ def is_valid_lang(lang):
             if l[0][:2] == lang:
                 return (True, l[0][:2], l[3].lower())
         return False
-    else:
-        for l in language_codes:
-            if l[1].lower() == lang or l[3].lower() == lang:
-                return (True, l[0][:2], l[3].lower())
-        return False
+
+    for l in language_codes:
+        if l[1].lower() == lang or l[3].lower() == lang:
+            return (True, l[0][:2], l[3].lower())
+    return False
 
 
 def _get_lang_to_lc_dict(lang_list):
@@ -368,7 +373,7 @@ def _get_lang_to_lc_dict(lang_list):
     value = lang_to_lc_cache.get(key, None)
     if value is None:
         value = dict()
-        for lc in lang_list:
+        for lc in lang_list:  # pylint: disable=invalid-name
             value.setdefault(lc.split('-')[0], lc)
         lang_to_lc_cache[key] = value
     return value
@@ -452,9 +457,9 @@ def to_string(obj):
         return obj.__str__()
     if hasattr(obj, '__repr__'):
         return obj.__repr__()
+    return None
 
-
-def ecma_unescape(s):
+def ecma_unescape(s):  # pylint: disable=invalid-name
     """Python implementation of the unescape javascript function
 
     https://www.ecma-international.org/ecma-262/6.0/#sec-unescape-string
@@ -479,10 +484,10 @@ def get_string_replaces_function(replaces):
     rep = {re.escape(k): v for k, v in replaces.items()}
     pattern = re.compile("|".join(rep.keys()))
 
-    def f(text):
+    def func(text):
         return pattern.sub(lambda m: rep[re.escape(m.group(0))], text)
 
-    return f
+    return func
 
 
 def get_engine_from_settings(name):
@@ -600,7 +605,7 @@ def eval_xpath_getindex(elements, xpath_spec, index, default=NOTSET):
         * result (bool, float, list, str): Results.
     """
     result = eval_xpath_list(elements, xpath_spec)
-    if index >= -len(result) and index < len(result):
+    if index >= -len(result) and index < len(result):  # pylint: disable=chained-comparison
         return result[index]
     if default == NOTSET:
         # raise an SearxEngineXPathException instead of IndexError
