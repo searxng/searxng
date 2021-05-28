@@ -1,111 +1,111 @@
 general:
-    debug : False
-    instance_name : "searx"
+  debug: false
+  instance_name: "searx"
 
 search:
-    safe_search : 0
-    autocomplete : ""
-    default_lang : ""
-    ban_time_on_fail : 5
-    max_ban_time_on_fail : 120
+  safe_search: 0
+  autocomplete: ""
+  default_lang: ""
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
 
 server:
-    port : 9000
-    bind_address : "0.0.0.0"
-    secret_key : "user_settings_secret"
-    base_url : False
-    image_proxy : False
-    http_protocol_version : "1.0"
-    method: "POST"
-    default_http_headers:
-        X-Content-Type-Options : nosniff
-        X-XSS-Protection : 1; mode=block
-        X-Download-Options : noopen
-        X-Robots-Tag : noindex, nofollow
-        Referrer-Policy : no-referrer
+  port: 9000
+  bind_address: "0.0.0.0"
+  secret_key: "user_settings_secret"
+  base_url: false
+  image_proxy: false
+  http_protocol_version: "1.0"
+  method: "POST"
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: 1; mode=block
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
 
 ui:
-    static_path : ""
-    templates_path : ""
-    default_theme : oscar
-    default_locale : ""
-    theme_args :
-        oscar_style : logicodev
+  static_path: ""
+  templates_path: ""
+  default_theme: oscar
+  default_locale: ""
+  theme_args:
+    oscar_style: logicodev
 
 engines:
-  - name : wikidata
-    engine : wikidata
-    shortcut : wd
-    timeout : 3.0
-    weight : 2
+  - name: wikidata
+    engine: wikidata
+    shortcut: wd
+    timeout: 3.0
+    weight: 2
 
-  - name : wikibooks
-    engine : mediawiki
-    shortcut : wb
-    categories : general
-    base_url : "https://{language}.wikibooks.org/"
-    number_of_results : 5
-    search_type : text
+  - name: wikibooks
+    engine: mediawiki
+    shortcut: wb
+    categories: general
+    base_url: "https://{language}.wikibooks.org/"
+    number_of_results: 5
+    search_type: text
 
-  - name : wikinews
-    engine : mediawiki
-    shortcut : wn
-    categories : news
-    base_url : "https://{language}.wikinews.org/"
-    number_of_results : 5
-    search_type : text
+  - name: wikinews
+    engine: mediawiki
+    shortcut: wn
+    categories: news
+    base_url: "https://{language}.wikinews.org/"
+    number_of_results: 5
+    search_type: text
 
-  - name : wikiquote
-    engine : mediawiki
-    shortcut : wq
-    categories : general
-    base_url : "https://{language}.wikiquote.org/"
-    number_of_results : 5
-    search_type : text
+  - name: wikiquote
+    engine: mediawiki
+    shortcut: wq
+    categories: general
+    base_url: "https://{language}.wikiquote.org/"
+    number_of_results: 5
+    search_type: text
 
 locales:
-    en : English
-    ar : العَرَبِيَّة (Arabic)
-    bg : Български (Bulgarian)
-    bo : བོད་སྐད་ (Tibetian)
-    ca : Català (Catalan)
-    cs : Čeština (Czech)
-    cy : Cymraeg (Welsh)
-    da : Dansk (Danish)
-    de : Deutsch (German)
-    el_GR : Ελληνικά (Greek_Greece)
-    eo : Esperanto (Esperanto)
-    es : Español (Spanish)
-    et : Eesti (Estonian)
-    eu : Euskara (Basque)
-    fa_IR : (fārsī) فارسى (Persian)
-    fi : Suomi (Finnish)
-    fil : Wikang Filipino (Filipino)
-    fr : Français (French)
-    gl : Galego (Galician)
-    he : עברית (Hebrew)
-    hr : Hrvatski (Croatian)
-    hu : Magyar (Hungarian)
-    ia : Interlingua (Interlingua)
-    it : Italiano (Italian)
-    ja : 日本語 (Japanese)
-    lt : Lietuvių (Lithuanian)
-    nl : Nederlands (Dutch)
-    nl_BE : Vlaams (Dutch_Belgium)
-    oc : Lenga D'òc (Occitan)
-    pl : Polski (Polish)
-    pt : Português (Portuguese)
-    pt_BR : Português (Portuguese_Brazil)
-    ro : Română (Romanian)
-    ru : Русский (Russian)
-    sk : Slovenčina (Slovak)
-    sl : Slovenski (Slovene)
-    sr : српски (Serbian)
-    sv : Svenska (Swedish)
-    te : తెలుగు (telugu)
-    ta : தமிழ் (Tamil)
-    tr : Türkçe (Turkish)
-    uk : українська мова (Ukrainian)
-    vi : tiếng việt (Vietnamese)
-    zh : 中文 (Chinese)
-    zh_TW : 國語 (Taiwanese Mandarin)
+  en: English
+  ar: العَرَبِيَّة (Arabic)
+  bg: Български (Bulgarian)
+  bo: བོད་སྐད་ (Tibetian)
+  ca: Català (Catalan)
+  cs: Čeština (Czech)
+  cy: Cymraeg (Welsh)
+  da: Dansk (Danish)
+  de: Deutsch (German)
+  el_GR: Ελληνικά (Greek_Greece)
+  eo: Esperanto (Esperanto)
+  es: Español (Spanish)
+  et: Eesti (Estonian)
+  eu: Euskara (Basque)
+  fa_IR: (fārsī) فارسى (Persian)
+  fi: Suomi (Finnish)
+  fil: Wikang Filipino (Filipino)
+  fr: Français (French)
+  gl: Galego (Galician)
+  he: עברית (Hebrew)
+  hr: Hrvatski (Croatian)
+  hu: Magyar (Hungarian)
+  ia: Interlingua (Interlingua)
+  it: Italiano (Italian)
+  ja: 日本語 (Japanese)
+  lt: Lietuvių (Lithuanian)
+  nl: Nederlands (Dutch)
+  nl_BE: Vlaams (Dutch_Belgium)
+  oc: Lenga D'òc (Occitan)
+  pl: Polski (Polish)
+  pt: Português (Portuguese)
+  pt_BR: Português (Portuguese_Brazil)
+  ro: Română (Romanian)
+  ru: Русский (Russian)
+  sk: Slovenčina (Slovak)
+  sl: Slovenski (Slovene)
+  sr: српски (Serbian)
+  sv: Svenska (Swedish)
+  te: తెలుగు (telugu)
+  ta: தமிழ் (Tamil)
+  tr: Türkçe (Turkish)
+  uk: українська мова (Ukrainian)
+  vi: tiếng việt (Vietnamese)
+  zh: 中文 (Chinese)
+  zh_TW: 國語 (Taiwanese Mandarin)
