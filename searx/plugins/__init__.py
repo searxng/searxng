@@ -21,7 +21,7 @@ from os import listdir, makedirs, remove, stat, utime
 from os.path import abspath, basename, dirname, exists, join
 from shutil import copyfile
 
-from searx import logger, settings, static_path
+from searx import logger, settings
 
 
 logger = logger.getChild('plugins')
@@ -123,7 +123,7 @@ def sync_resource(base_path, resource_path, name, target_dir, plugin_dir):
 
 def prepare_package_resources(pkg, name):
     plugin_dir = 'plugin_' + name
-    target_dir = join(static_path, 'plugins/external_plugins', plugin_dir)
+    target_dir = join(settings['ui']['static_path'], 'plugins/external_plugins', plugin_dir)
     try:
         makedirs(target_dir, exist_ok=True)
     except:
@@ -170,10 +170,10 @@ plugins.register(search_on_category_select)
 plugins.register(tracker_url_remover)
 plugins.register(vim_hotkeys)
 # load external plugins
-if 'plugins' in settings:
+if settings['plugins']:
     plugins.register(*settings['plugins'], external=True)
 
-if 'enabled_plugins' in settings:
+if settings['enabled_plugins']:
     for plugin in plugins:
         if plugin.name in settings['enabled_plugins']:
             plugin.default_on = True
@@ -181,5 +181,5 @@ if 'enabled_plugins' in settings:
             plugin.default_on = False
 
 # load tor specific plugins
-if settings['outgoing'].get('using_tor_proxy'):
+if settings['outgoing']['using_tor_proxy']:
     plugins.register(ahmia_filter)

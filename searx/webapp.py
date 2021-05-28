@@ -56,12 +56,12 @@ from flask_babel import (
 )
 
 from searx import logger
-from searx import brand, static_path
+from searx import brand
 from searx import (
     settings,
-    searx_dir,
     searx_debug,
 )
+from searx.settings_defaults import OUTPUT_FORMATS
 from searx.exceptions import SearxParameterException
 from searx.engines import (
     categories,
@@ -71,7 +71,6 @@ from searx.engines import (
 from searx.webutils import (
     UnicodeWriter,
     highlight_content,
-    get_resources_directory,
     get_static_files,
     get_result_templates,
     get_themes,
@@ -88,7 +87,6 @@ from searx.utils import (
     gen_useragent,
     dict_subset,
     match_language,
-    get_value,
 )
 from searx.version import VERSION_STRING
 from searx.query import RawTextQuery
@@ -139,7 +137,7 @@ if sys.version_info[0] < 3:
 logger = logger.getChild('webapp')
 
 # serve pages with HTTP/1.1
-WSGIRequestHandler.protocol_version = "HTTP/{}".format(settings['server'].get('http_protocol_version', '1.0'))
+WSGIRequestHandler.protocol_version = "HTTP/{}".format(settings['server']['http_protocol_version'])
 
 # check secret_key
 if not searx_debug and settings['server']['secret_key'] == 'ultrasecretkey':
@@ -147,24 +145,21 @@ if not searx_debug and settings['server']['secret_key'] == 'ultrasecretkey':
     sys.exit(1)
 
 # about static
-static_path = get_resources_directory(searx_dir, 'static', settings['ui']['static_path'])
-logger.debug('static directory is %s', static_path)
-static_files = get_static_files(static_path)
+logger.debug('static directory is %s', settings['ui']['static_path'])
+static_files = get_static_files(settings['ui']['static_path'])
 
 # about templates
+logger.debug('templates directory is %s', settings['ui']['templates_path'])
 default_theme = settings['ui']['default_theme']
-templates_path = get_resources_directory(searx_dir, 'templates', settings['ui']['templates_path'])
-logger.debug('templates directory is %s', templates_path)
+templates_path = settings['ui']['templates_path']
 themes = get_themes(templates_path)
 result_templates = get_result_templates(templates_path)
 global_favicons = []
 for indice, theme in enumerate(themes):
     global_favicons.append([])
-    theme_img_path = os.path.join(static_path, 'themes', theme, 'img', 'icons')
+    theme_img_path = os.path.join(settings['ui']['static_path'], 'themes', theme, 'img', 'icons')
     for (dirpath, dirnames, filenames) in os.walk(theme_img_path):
         global_favicons[indice].extend(filenames)
-
-OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
 
 STATS_SORT_PARAMETERS = {
     'name': (False, 'name', ''),
@@ -177,7 +172,7 @@ STATS_SORT_PARAMETERS = {
 # Flask app
 app = Flask(
     __name__,
-    static_folder=static_path,
+    static_folder=settings['ui']['static_path'],
     template_folder=templates_path
 )
 
@@ -517,8 +512,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['preferences'] = request.preferences
 
     kwargs['search_formats'] = [
-        x for x in get_value(
-            settings, 'search', 'formats', default=OUTPUT_FORMATS)
+        x for x in settings['search']['formats']
         if x != 'html']
 
     kwargs['brand'] = brand
@@ -545,12 +539,7 @@ def render(template_name, override_theme=None, **kwargs):
 
 
 def _get_ordered_categories():
-    ordered_categories = []
-    if 'categories_order' not in settings['ui']:
-        ordered_categories = ['general']
-        ordered_categories.extend(x for x in sorted(categories.keys()) if x != 'general')
-        return ordered_categories
-    ordered_categories = settings['ui']['categories_order']
+    ordered_categories = list(settings['ui']['categories_order'])
     ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
     return ordered_categories
 
@@ -610,7 +599,7 @@ def pre_request():
 @app.after_request
 def add_default_headers(response):
     # set default http headers
-    for header, value in settings['server'].get('default_http_headers', {}).items():
+    for header, value in settings['server']['default_http_headers'].items():
         if header in response.headers:
             continue
         response.headers[header] = value
@@ -696,7 +685,7 @@ def search():
     if output_format not in OUTPUT_FORMATS:
         output_format = 'html'
 
-    if output_format not in get_value(settings, 'search', 'formats', default=OUTPUT_FORMATS):
+    if output_format not in settings['search']['formats']:
         flask.abort(403)
 
     # check if there is query (not None and not an empty string)
@@ -1070,11 +1059,6 @@ def preferences():
         }
 
     #
-    locked_preferences = list()
-    if 'preferences' in settings and 'lock' in settings['preferences']:
-        locked_preferences = settings['preferences']['lock']
-
-    #
     return render('preferences.html',
                   selected_categories=get_selected_categories(request.preferences, request.form),
                   all_categories=_get_ordered_categories(),
@@ -1098,7 +1082,7 @@ def preferences():
                   theme=get_current_theme_name(),
                   preferences_url_params=request.preferences.get_as_url_params(),
                   base_url=get_base_url(),
-                  locked_preferences=locked_preferences,
+                  locked_preferences=settings['preferences']['lock'],
                   preferences=True)
 
 
@@ -1271,7 +1255,7 @@ def favicon():
     return send_from_directory(
         os.path.join(
             app.root_path,
-            static_path,
+            settings['ui']['static_path'],
             'themes',
             get_current_theme_name(),
             'img'),

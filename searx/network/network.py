@@ -224,28 +224,22 @@ def initialize(settings_engines=None, settings_outgoing=None):
 
     global NETWORKS
 
-    settings_engines = settings_engines or settings.get('engines')
-    settings_outgoing = settings_outgoing or settings.get('outgoing')
+    settings_engines = settings_engines or settings['engines']
+    settings_outgoing = settings_outgoing or settings['outgoing']
 
     # default parameters for AsyncHTTPTransport
     # see https://github.com/encode/httpx/blob/e05a5372eb6172287458b37447c30f650047e1b8/httpx/_transports/default.py#L108-L121  # pylint: disable=line-too-long
     default_params = {
         'enable_http': False,
         'verify': True,
-        'enable_http2': settings_outgoing.get('enable_http2', True),
-        # Magic number kept from previous code
-        'max_connections': settings_outgoing.get('pool_connections', 100),
-        # Picked from constructor
-        'max_keepalive_connections': settings_outgoing.get('pool_maxsize', 10),
-        #
-        'keepalive_expiry': settings_outgoing.get('keepalive_expiry', 5.0),
-        'local_addresses': settings_outgoing.get('source_ips'),
-        'proxies': settings_outgoing.get('proxies'),
-        # default maximum redirect
-        # from https://github.com/psf/requests/blob/8c211a96cdbe9fe320d63d9e1ae15c5c07e179f8/requests/models.py#L55
-        'max_redirects': settings_outgoing.get('max_redirects', 30),
-        #
-        'retries': settings_outgoing.get('retries', 0),
+        'enable_http2': settings_outgoing['enable_http2'],
+        'max_connections': settings_outgoing['pool_connections'],
+        'max_keepalive_connections': settings_outgoing['pool_maxsize'],
+        'keepalive_expiry': settings_outgoing['keepalive_expiry'],
+        'local_addresses': settings_outgoing['source_ips'],
+        'proxies': settings_outgoing['proxies'],
+        'max_redirects': settings_outgoing['max_redirects'],
+        'retries': settings_outgoing['retries'],
         'retry_on_http_error': None,
     }
 
@@ -274,7 +268,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
     NETWORKS['ipv6'] = new_network({'local_addresses': '::'})
 
     # define networks from outgoing.networks
-    for network_name, network in settings_outgoing.get('networks', {}).items():
+    for network_name, network in settings_outgoing['networks'].items():
         NETWORKS[network_name] = new_network(network)
 
     # define networks from engines.[i].network (except references)
