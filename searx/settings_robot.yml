@@ -1,53 +1,53 @@
 general:
-    debug : False
-    instance_name : "searx_test"
+  debug: false
+  instance_name: "searx_test"
 
 search:
-    language: "all"
+  language: "all"
 
 server:
-    port : 11111
-    bind_address : 127.0.0.1
-    secret_key : "changedultrasecretkey"
-    base_url : False
-    http_protocol_version : "1.0"
+  port: 11111
+  bind_address: 127.0.0.1
+  secret_key: "changedultrasecretkey"
+  base_url: false
+  http_protocol_version: "1.0"
 
 ui:
-    static_path : ""
-    templates_path : ""
-    default_theme : oscar
+  static_path: ""
+  templates_path: ""
+  default_theme: oscar
 
 preferences:
-    lock: []
+  lock: []
 
 outgoing:
-    request_timeout : 1.0 # seconds
-    useragent_suffix : ""
+  request_timeout: 1.0  # seconds
+  useragent_suffix: ""
 
 engines:
-  - name : general dummy
-    engine : dummy
-    categories : general
-    shortcut : gd
+  - name: general dummy
+    engine: dummy
+    categories: general
+    shortcut: gd
 
-  - name : dummy dummy
-    engine : dummy
-    categories : dummy
-    shortcut : dd
+  - name: dummy dummy
+    engine: dummy
+    categories: dummy
+    shortcut: dd
 
 locales:
-    en : English
-    hu : Magyar
+  en: English
+  hu: Magyar
 
-doi_resolvers :
-  oadoi.org : 'https://oadoi.org/'
-  doi.org : 'https://doi.org/'
-  doai.io  : 'https://dissem.in/'
-  sci-hub.se : 'https://sci-hub.se/'
-  sci-hub.do : 'https://sci-hub.do/'
-  scihubtw.tw : 'https://scihubtw.tw/'
-  sci-hub.st : 'https://sci-hub.st/'
-  sci-hub.bar : 'https://sci-hub.bar/'
-  sci-hub.it.nf : 'https://sci-hub.it.nf/'
+doi_resolvers:
+  oadoi.org: 'https://oadoi.org/'
+  doi.org: 'https://doi.org/'
+  doai.io: 'https://dissem.in/'
+  sci-hub.se: 'https://sci-hub.se/'
+  sci-hub.do: 'https://sci-hub.do/'
+  scihubtw.tw: 'https://scihubtw.tw/'
+  sci-hub.st: 'https://sci-hub.st/'
+  sci-hub.bar: 'https://sci-hub.bar/'
+  sci-hub.it.nf: 'https://sci-hub.it.nf/'
 
-default_doi_resolver : 'oadoi.org'
+default_doi_resolver: 'oadoi.org'
