@@ -7,10 +7,6 @@
     <small> &bull; <a class="text-info btn-collapse collapsed searx_init_map cursor-pointer disabled_if_nojs" data-toggle="collapse" data-target="#result-map-{{ index }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %} data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}">{{ icon('globe') }} {{ _('show map') }}</a></small>
 {%- endif -%}
 
-{%- if result.osm and (result.osm.type and result.osm.id) -%}
-    <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer searx_overpass_request disabled_if_nojs" data-toggle="collapse" data-target="#result-overpass-{{ index }}" data-osm-type="{{ result.osm.type }}" data-osm-id="{{ result.osm.id }}" data-result-table="result-overpass-table-{{ index }}" data-result-table-loadicon="result-overpass-table-loading-{{ index }}" data-btn-text-collapsed="{{ _('show details') }}" data-btn-text-not-collapsed="{{ _('hide details') }}">{{ icon('map-marker') }} {{ _('show details') }}</a></small>
-{%- endif -%}
-
 {# {% if (result.latitude and result.longitude) %}
     <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer disabled_if_nojs" data-toggle="collapse" data-target="#result-geodata-{{ index }}" data-btn-text-collapsed="{{ _('show geodata') }}" data-btn-text-not-collapsed="{{ _('hide geodata') }}">{{ icon('map-marker') }} {{ _('show geodata') }}</a></small>
 {% endif %} #}
@@ -38,15 +34,6 @@
     {%- endif -%}
 </p>
 {%- endif %}
-
-{%- if result.osm and (result.osm.type and result.osm.id) -%}
-    <div class="row result-content collapse col-xs-12 col-sm-7 col-md-8" id="result-overpass-{{ index }}"{% if rtl %} dir="ltr"{% endif %}>
-        <div class="text-center" id="result-overpass-table-loading-{{ index }}"><img src="{{ url_for('static', filename='img/loader.gif') }}" alt="Loading ..."/></div>
-        <table class="table table-striped table-condensed hidden" id="result-overpass-table-{{ index }}">
-            <tr><th>key</th><th>value</th></tr>
-        </table>
-    </div>
-{%- endif -%}
 
 {# {% if (result.latitude and result.longitude) %}
     <div class="row collapse col-xs-12 col-sm-5 col-md-4" id="result-geodata-{{ index }}">

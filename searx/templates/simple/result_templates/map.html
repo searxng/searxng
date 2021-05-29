@@ -7,9 +7,6 @@
     <small> &bull; <a class="btn-collapse collapsed searx_init_map hide_if_nojs" data-target="#result-map-{{ index }}" data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %}>{{ icon( 'globe') }} {{ _('show map') }}</a></small>
 {%- endif -%}
 
-{%- if result.osm and (result.osm.type and result.osm.id) -%}
-    <small> &bull; <a class="btn-collapse collapsed hide_if_nojs searx_overpass_request" data-target="#result-overpass-{{ index }}" data-btn-text-collapsed="{{ _('show details') }}" data-btn-text-not-collapsed="{{ _('hide details') }}" data-osm-type="{{ result.osm.type }}" data-osm-id="{{ result.osm.id }}" data-result-table="result-overpass-table-{{ index }}" data-result-table-loadicon="result-overpass-table-loading-{{ index }}">{{ icon('location') }} {{ _('show details') }}</a></small>
-{%- endif -%}
 {#-
 {% if (result.latitude and result.longitude) %}
     <small> &bull; <a class="btn-collapse disabled_if_nojs" data-target="#result-geodata-{{ index }}" data-btn-text-collapsed="{{ _('show geodata') }}" data-btn-text-not-collapsed="{{ _('hide geodata') }}">{{ icon('location') }} {{ _('show geodata') }}</a></small>
@@ -41,16 +38,6 @@
 {%- if result.content %}<p class="content">{{ result.content|safe }}</p>{% endif -%}
 
 {{- result_sub_footer(result, proxify) -}}
-
-{% if result.osm and (result.osm.type and result.osm.id) -%}
-    <div class="result-content invisible" id="result-overpass-{{ index }}"{% if rtl %} dir="ltr"{% endif %}>
-        <div id="result-overpass-table-loading-{{ index }}"><div class="loader">{{ _('Loading...') }}</div></div>
-        <table id="result-overpass-table-{{ index }}">
-          <tbody>
-          </tbody>
-        </table>
-    </div>
-{%- endif %}
 
 {#-
 {% if (result.latitude and result.longitude) -%}
