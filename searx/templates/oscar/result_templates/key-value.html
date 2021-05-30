@@ -1,8 +1,8 @@
 {% from 'oscar/macros.html' import result_footer, result_footer_rtl with context %}
-<div class="panel panel-default">
+<div class="result result-default">
 <table class="table table-responsive table-bordered table-condensed">
     {% for key, value in result.items() %}
-    {% if key in ['engine', 'engines', 'template', 'score', 'category', 'positions'] %}
+    {% if key in ['engine', 'engines', 'template', 'score', 'category', 'positions', 'pretty_url', 'parsed_url'] %}
         {% continue %}
     {% endif %}
     <tr>
