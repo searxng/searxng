@@ -11,7 +11,8 @@ from babel import Locale, UnknownLocaleError
 from babel.languages import get_global
 
 from searx import settings, searx_dir
-from searx.engines import initialize_engines, engines
+from searx.engines import load_engines, engines
+from searx.network import set_timeout_for_thread
 
 # Output files.
 engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
@@ -20,6 +21,7 @@ languages_file = Path(searx_dir) / 'languages.py'
 
 # Fetchs supported languages for each engine and writes json file with those.
 def fetch_supported_languages():
+    set_timeout_for_thread(10.0)
 
     engines_languages = dict()
     names = list(engines)
@@ -129,9 +131,6 @@ def filter_language_list(all_languages):
             new_dict['country_name'] = country_name
         return new_dict
 
-    def _country_count(i):
-        return len(countries[sorted_countries[i]]['counter'])
-
     # for each language get country codes supported by most engines or at least one country code
     filtered_languages_with_countries = dict()
     for lang, lang_data in filtered_languages.items():
@@ -198,7 +197,7 @@ def write_languages_file(languages):
 
 
 if __name__ == "__main__":
-    initialize_engines(settings['engines'])
+    load_engines(settings['engines'])
     engines_languages = fetch_supported_languages()
     all_languages = join_language_lists(engines_languages)
     filtered_languages = filter_language_list(all_languages)
