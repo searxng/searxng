@@ -1,25 +1,12 @@
-'''
-searx is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+# pylint: disable=missing-function-docstring, missing-module-docstring
 
-searx is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
-
-(C) 2013- by Adam Tauber, <asciimoo@gmail.com>
-'''
-
+from os.path import dirname, abspath
 import logging
+
 import searx.settings_loader
 from searx.settings_defaults import settings_set_defaults
-from os.path import dirname, abspath
-
 
 searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
@@ -45,7 +32,7 @@ else:
     logger.info('max_request_timeout=%i second(s)', max_request_timeout)
 
 
-class _brand_namespace:
+class _brand_namespace:  # pylint: disable=invalid-name
 
     @classmethod
     def get_val(cls, group, name, default=''):

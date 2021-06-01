@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=missing-function-docstring, missing-module-docstring
+# pylint: disable=missing-function-docstring
+"""Implementation of the default settings.
+
+"""
 
 import typing
 import numbers
@@ -48,16 +51,20 @@ class SettingsValue:
                  type_definition: typing.Union[None, typing.Any, typing.Tuple[typing.Any]]=None,
                  default: typing.Any=None,
                  environ_name: str=None):
-        self.type_definition = type_definition \
-                               if type_definition is None or isinstance(type_definition, tuple) \
-                               else (type_definition,)
+        self.type_definition = (
+            type_definition
+            if type_definition is None or isinstance(type_definition, tuple)
+            else (type_definition,)
+        )
         self.default = default
         self.environ_name = environ_name
 
     @property
     def type_definition_repr(self):
-        types_str = [t.__name__ if isinstance(t, type) else repr(t)
-                         for t in self.type_definition]
+        types_str = [
+            t.__name__ if isinstance(t, type) else repr(t)
+            for t in self.type_definition
+        ]
         return ', '.join(types_str)
 
     def check_type_definition(self, value: typing.Any) -> None:
@@ -65,8 +72,9 @@ class SettingsValue:
             return
         type_list = tuple(t for t in self.type_definition if isinstance(t, type))
         if not isinstance(value, type_list):
-            raise ValueError('The value has to be one of these types/values: {}'\
-                             .format(self.type_definition_repr))
+            raise ValueError(
+                'The value has to be one of these types/values: {}'.format(
+                    self.type_definition_repr))
 
     def __call__(self, value: typing.Any) -> typing.Any:
         if value == _UNDEFINED:
@@ -76,7 +84,7 @@ class SettingsValue:
             value = os.environ[self.environ_name]
             if self.type_definition == (bool,):
                 value = STR_TO_BOOL[value.lower()]
-        #
+
         self.check_type_definition(value)
         return value
 
