@@ -13,7 +13,14 @@ project = u'searx'
 copyright = u'2015-2020, Adam Tauber, Noémi Ványi'
 author = u'Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
-highlight_language = 'none'
+
+# hint: sphinx.ext.viewcode won't highlight when 'highlight_language' [1] is set
+#       to string 'none' [2]
+#
+# [1] https://www.sphinx-doc.org/en/master/usage/extensions/viewcode.html
+# [2] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-highlight_language
+
+highlight_language = 'default'
 
 # General --------------------------------------------------------------
 
