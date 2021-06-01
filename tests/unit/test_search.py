@@ -2,6 +2,7 @@
 
 from searx.testing import SearxTestCase
 from searx.search import SearchQuery, EngineRef
+from searx import settings
 import searx.search
 
 
@@ -41,7 +42,7 @@ class SearchTestCase(SearxTestCase):
         searx.search.initialize(TEST_ENGINES)
 
     def test_timeout_simple(self):
-        searx.search.max_request_timeout = None
+        settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, None)
         search = searx.search.Search(search_query)
@@ -49,7 +50,7 @@ class SearchTestCase(SearxTestCase):
         self.assertEqual(search.actual_timeout, 3.0)
 
     def test_timeout_query_above_default_nomax(self):
-        searx.search.max_request_timeout = None
+        settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 5.0)
         search = searx.search.Search(search_query)
@@ -57,7 +58,7 @@ class SearchTestCase(SearxTestCase):
         self.assertEqual(search.actual_timeout, 3.0)
 
     def test_timeout_query_below_default_nomax(self):
-        searx.search.max_request_timeout = None
+        settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 1.0)
         search = searx.search.Search(search_query)
@@ -65,7 +66,7 @@ class SearchTestCase(SearxTestCase):
         self.assertEqual(search.actual_timeout, 1.0)
 
     def test_timeout_query_below_max(self):
-        searx.search.max_request_timeout = 10.0
+        settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 5.0)
         search = searx.search.Search(search_query)
@@ -73,7 +74,7 @@ class SearchTestCase(SearxTestCase):
         self.assertEqual(search.actual_timeout, 5.0)
 
     def test_timeout_query_above_max(self):
-        searx.search.max_request_timeout = 10.0
+        settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 15.0)
         search = searx.search.Search(search_query)
