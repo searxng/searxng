@@ -23,6 +23,9 @@ import re
 name = "Hash plugin"
 description = gettext("Converts strings to different hash digests.")
 default_on = True
+preference_section = 'query'
+query_keywords = ['md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512']
+query_examples = 'sha512 The quick brown fox jumps over the lazy dog'
 
 parser_re = re.compile('(md5|sha1|sha224|sha256|sha384|sha512) (.*)', re.I)
 

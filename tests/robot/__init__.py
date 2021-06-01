@@ -57,6 +57,7 @@ def test_preferences_locale(browser):
     browser.visit(url)
     browser.click_link_by_text('preferences')
 
+    browser.find_by_xpath('//a[@href="#tab_ui"]').first.click()
     browser.select('locale', 'hu')
     browser.find_by_xpath('//input[@value="save"]').first.click()
 

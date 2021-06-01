@@ -70,6 +70,8 @@ class PluginStore():
                 if not hasattr(plugin, plugin_attr) or not isinstance(getattr(plugin, plugin_attr), plugin_attr_type):
                     setattr(plugin, plugin_attr, plugin_attr_type())
             plugin.id = plugin.name.replace(' ', '_')
+            if not hasattr(plugin, 'preference_section'):
+                plugin.preference_section = 'general'
             self.plugins.append(plugin)
 
     def call(self, ordered_plugin_list, plugin_type, request, *args, **kwargs):
