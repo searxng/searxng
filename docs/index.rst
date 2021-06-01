@@ -35,5 +35,6 @@ anyone, you can set up your own, see :ref:`installation`.
    searx_extra/index
    utils/index
    blog/index
+   src/index
 
 .. _Searx-instances: https://searx.space

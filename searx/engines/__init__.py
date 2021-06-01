@@ -1,130 +1,153 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+# pylint: disable=missing-function-docstring
+"""This module implements the engine loader.
 
-'''
-searx is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Load and initialize the ``engines``, see :py:func:`load_engines` and register
+:py:obj:`engine_shortcuts`.
 
-searx is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+usage::
 
-You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
+    load_engines( settings['engines'] )
 
-(C) 2013- by Adam Tauber, <asciimoo@gmail.com>
-'''
+"""
 
 import sys
-import threading
+import copy
+
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
-from urllib.parse import urlparse
-from operator import itemgetter
-from searx import settings
-from searx import logger
+from searx import logger, settings
 from searx.data import ENGINES_LANGUAGES
-from searx.exceptions import SearxEngineResponseException
-from searx.network import get, initialize as initialize_network, set_context_network_name
-from searx.utils import load_module, match_language, get_engine_from_settings, gen_useragent
+from searx.network import get
+from searx.utils import load_module, match_language, gen_useragent
 
 
 logger = logger.getChild('engines')
-
-engine_dir = dirname(realpath(__file__))
-
-engines = {}
+ENGINE_DIR = dirname(realpath(__file__))
+BABEL_LANGS = [
+    lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
+    for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())
+]
+ENGINE_DEFAULT_ARGS = {
+    "engine_type": "online",
+    "inactive": False,
+    "disabled": False,
+    "timeout": settings["outgoing"]["request_timeout"],
+    "shortcut": "-",
+    "categories": ["general"],
+    "supported_languages": [],
+    "language_aliases": {},
+    "paging": False,
+    "safesearch": False,
+    "time_range_support": False,
+    "enable_http": False,
+    "display_error_messages": True,
+    "tokens": [],
+}
+"""Defaults for the namespace of an engine module, see :py:func:`load_engine`"""
 
 categories = {'general': []}
-
-babel_langs = [lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
-               for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())]
-
+engines = {}
 engine_shortcuts = {}
-engine_default_args = {'paging': False,
-                       'categories': ['general'],
-                       'supported_languages': [],
-                       'safesearch': False,
-                       'timeout': settings['outgoing']['request_timeout'],
-                       'shortcut': '-',
-                       'disabled': False,
-                       'enable_http': False,
-                       'time_range_support': False,
-                       'engine_type': 'online',
-                       'display_error_messages': True,
-                       'tokens': []}
+"""Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
+::
+
+    engine_shortcuts[engine.shortcut] = engine.name
+
+"""
 
 def load_engine(engine_data):
+    """Load engine from ``engine_data``.
+
+    :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``
+    :return: initialized namespace of the ``<engine>``.
+
+    1. create a namespace and load module of the ``<engine>``
+    2. update namespace with the defaults from :py:obj:`ENGINE_DEFAULT_ARGS`
+    3. update namespace with values from ``engine_data``
+
+    If engine *is active*, return namespace of the engine, otherwise return
+    ``None``.
+
+    This function also returns ``None`` if initialization of the namespace fails
+    for one of the following reasons:
+
+    - engine name contains underscore
+    - engine name is not lowercase
+    - required attribute is not set :py:func:`is_missing_required_attributes`
+
+    """
+
     engine_name = engine_data['name']
     if '_' in engine_name:
         logger.error('Engine name contains underscore: "{}"'.format(engine_name))
-        sys.exit(1)
+        return None
 
     if engine_name.lower() != engine_name:
         logger.warn('Engine name is not lowercase: "{}", converting to lowercase'.format(engine_name))
         engine_name = engine_name.lower()
         engine_data['name'] = engine_name
 
+    # load_module
     engine_module = engine_data['engine']
-
     try:
-        engine = load_module(engine_module + '.py', engine_dir)
+        engine = load_module(engine_module + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
         logger.exception('Fatal exception in engine "{}"'.format(engine_module))
         sys.exit(1)
-    except:
+    except BaseException:
         logger.exception('Cannot load engine "{}"'.format(engine_module))
         return None
 
+    update_engine_attributes(engine, engine_data)
+    set_language_attributes(engine)
+    update_attributes_for_tor(engine)
+
+    if not is_engine_active(engine):
+        return None
+
+    if is_missing_required_attributes(engine):
+        return None
+
+    return engine
+
+
+def update_engine_attributes(engine, engine_data):
+    # set engine attributes from engine_data
     for param_name, param_value in engine_data.items():
-        if param_name == 'engine':
-            pass
-        elif param_name == 'categories':
-            if param_value == 'none':
-                engine.categories = []
-            else:
-                engine.categories = list(map(str.strip, param_value.split(',')))
-        else:
+        if param_name == 'categories':
+            if isinstance(param_value, str):
+                param_value = list(map(str.strip, param_value.split(',')))
+            engine.categories = param_value
+        elif param_name != 'engine':
             setattr(engine, param_name, param_value)
 
-    for arg_name, arg_value in engine_default_args.items():
+    # set default attributes
+    for arg_name, arg_value in ENGINE_DEFAULT_ARGS.items():
         if not hasattr(engine, arg_name):
-            setattr(engine, arg_name, arg_value)
+            setattr(engine, arg_name, copy.deepcopy(arg_value))
 
-    # checking required variables
-    for engine_attr in dir(engine):
-        if engine_attr.startswith('_'):
-            continue
-        if engine_attr == 'inactive' and getattr(engine, engine_attr) is True:
-            return None
-        if getattr(engine, engine_attr) is None:
-            logger.error('Missing engine config attribute: "{0}.{1}"'
-                         .format(engine.name, engine_attr))
-            sys.exit(1)
 
+def set_language_attributes(engine):
+    # pylint: disable=protected-access
     # assign supported languages from json file
-    if engine_data['name'] in ENGINES_LANGUAGES:
-        setattr(engine, 'supported_languages', ENGINES_LANGUAGES[engine_data['name']])
+    if engine.name in ENGINES_LANGUAGES:
+        engine.supported_languages = ENGINES_LANGUAGES[engine.name]
 
     # find custom aliases for non standard language codes
-    if hasattr(engine, 'supported_languages'):
-        if hasattr(engine, 'language_aliases'):
-            language_aliases = getattr(engine, 'language_aliases')
-        else:
-            language_aliases = {}
-
-        for engine_lang in getattr(engine, 'supported_languages'):
-            iso_lang = match_language(engine_lang, babel_langs, fallback=None)
-            if iso_lang and iso_lang != engine_lang and not engine_lang.startswith(iso_lang) and \
-               iso_lang not in getattr(engine, 'supported_languages'):
-                language_aliases[iso_lang] = engine_lang
-
-        setattr(engine, 'language_aliases', language_aliases)
+    for engine_lang in engine.supported_languages:
+        iso_lang = match_language(engine_lang, BABEL_LANGS, fallback=None)
+        if (iso_lang
+            and iso_lang != engine_lang
+            and not engine_lang.startswith(iso_lang)
+            and iso_lang not in engine.supported_languages
+        ):
+            engine.language_aliases[iso_lang] = engine_lang
 
     # language_support
-    setattr(engine, 'language_support', len(getattr(engine, 'supported_languages', [])) > 0)
+    engine.language_support = len(engine.supported_languages) > 0
 
     # assign language fetching method if auxiliary method exists
     if hasattr(engine, '_fetch_supported_languages'):
@@ -132,38 +155,71 @@ def load_engine(engine_data):
             'User-Agent': gen_useragent(),
             'Accept-Language': 'ja-JP,ja;q=0.8,en-US;q=0.5,en;q=0.3',  # bing needs a non-English language
         }
-        setattr(engine, 'fetch_supported_languages',
-                lambda: engine._fetch_supported_languages(get(engine.supported_languages_url, headers=headers)))
+        engine.fetch_supported_languages = (
+            lambda: engine._fetch_supported_languages(
+                get(engine.supported_languages_url, headers=headers))
+        )
 
-    # tor related settings
-    if settings['outgoing'].get('using_tor_proxy'):
-        # use onion url if using tor.
-        if hasattr(engine, 'onion_url'):
-            engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
-    elif 'onions' in engine.categories:
-        # exclude onion engines if not using tor.
-        return None
 
-    engine.timeout += settings['outgoing']['extra_proxy_timeout']
+def update_attributes_for_tor(engine):
+    if (settings['outgoing'].get('using_tor_proxy')
+        and hasattr(engine, 'onion_url') ):
+        engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
+        engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
 
-    for category_name in engine.categories:
-        categories.setdefault(category_name, []).append(engine)
+
+def is_missing_required_attributes(engine):
+    """An attribute is required when its name doesn't start with ``_`` (underline).
+    Required attributes must not be ``None``.
+
+    """
+    missing = False
+    for engine_attr in dir(engine):
+        if not engine_attr.startswith('_') and getattr(engine, engine_attr) is None:
+            logger.error(
+                'Missing engine config attribute: "{0}.{1}"'
+                .format(engine.name, engine_attr))
+            missing = True
+    return missing
+
+
+def is_engine_active(engine):
+    # check if engine is inactive
+    if engine.inactive is True:
+        return False
+
+    # exclude onion engines if not using tor
+    if ('onions' in engine.categories
+        and not settings['outgoing'].get('using_tor_proxy') ):
+        return False
+
+    return True
+
+
+def register_engine(engine):
+    if engine.name in engines:
+        logger.error('Engine config error: ambigious name: {0}'.format(engine.name))
+        sys.exit(1)
+    engines[engine.name] = engine
 
     if engine.shortcut in engine_shortcuts:
         logger.error('Engine config error: ambigious shortcut: {0}'.format(engine.shortcut))
         sys.exit(1)
-
     engine_shortcuts[engine.shortcut] = engine.name
 
-    return engine
+    for category_name in engine.categories:
+        categories.setdefault(category_name, []).append(engine)
 
 
 def load_engines(engine_list):
-    global engines, engine_shortcuts
+    """usage: ``engine_list = settings['engines']``
+    """
     engines.clear()
     engine_shortcuts.clear()
+    categories.clear()
+    categories['general'] = []
     for engine_data in engine_list:
         engine = load_engine(engine_data)
-        if engine is not None:
-            engines[engine.name] = engine
+        if engine:
+            register_engine(engine)
     return engines
