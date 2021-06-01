@@ -47,14 +47,6 @@ class UnicodeWriter:
             self.writerow(row)
 
 
-def get_resources_directory(searx_directory, subdirectory, resources_directory):
-    if not resources_directory:
-        resources_directory = os.path.join(searx_directory, subdirectory)
-    if not os.path.isdir(resources_directory):
-        raise Exception(resources_directory + " is not a directory")
-    return resources_directory
-
-
 def get_themes(templates_path):
     """Returns available themes list."""
     themes = os.listdir(templates_path)

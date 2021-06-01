@@ -144,7 +144,7 @@ def load_engine(engine_data):
         # exclude onion engines if not using tor.
         return None
 
-    engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
+    engine.timeout += settings['outgoing']['extra_proxy_timeout']
 
     for category_name in engine.categories:
         categories.setdefault(category_name, []).append(engine)

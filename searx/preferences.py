@@ -333,25 +333,25 @@ class Preferences:
                 choices=categories + ['none']
             ),
             'language': SearchLanguageSetting(
-                settings['search'].get('default_lang', ''),
+                settings['search']['default_lang'],
                 is_locked('language'),
                 choices=list(LANGUAGE_CODES) + ['']
             ),
             'locale': EnumStringSetting(
-                settings['ui'].get('default_locale', ''),
+                settings['ui']['default_locale'],
                 is_locked('locale'),
                 choices=list(settings['locales'].keys()) + ['']
             ),
             'autocomplete': EnumStringSetting(
-                settings['search'].get('autocomplete', ''),
+                settings['search']['autocomplete'],
                 is_locked('autocomplete'),
                 choices=list(autocomplete.backends.keys()) + ['']
             ),
             'image_proxy': MapSetting(
-                settings['server'].get('image_proxy', False),
+                settings['server']['image_proxy'],
                 is_locked('image_proxy'),
                 map={
-                    '': settings['server'].get('image_proxy', 0),
+                    '': settings['server']['image_proxy'],
                     '0': False,
                     '1': True,
                     'True': True,
@@ -359,12 +359,12 @@ class Preferences:
                 }
             ),
             'method': EnumStringSetting(
-                settings['server'].get('method', 'POST'),
+                settings['server']['method'],
                 is_locked('method'),
                 choices=('GET', 'POST')
             ),
             'safesearch': MapSetting(
-                settings['search'].get('safe_search', 0),
+                settings['search']['safe_search'],
                 is_locked('safesearch'),
                 map={
                     '0': 0,
@@ -373,12 +373,12 @@ class Preferences:
                 }
             ),
             'theme': EnumStringSetting(
-                settings['ui'].get('default_theme', 'oscar'),
+                settings['ui']['default_theme'],
                 is_locked('theme'),
                 choices=themes
             ),
             'results_on_new_tab': MapSetting(
-                settings['ui'].get('results_on_new_tab', False),
+                settings['ui']['results_on_new_tab'],
                 is_locked('results_on_new_tab'),
                 map={
                     '0': False,
@@ -393,11 +393,11 @@ class Preferences:
                 choices=DOI_RESOLVERS
             ),
             'oscar-style': EnumStringSetting(
-                settings['ui'].get('theme_args', {}).get('oscar_style', 'logicodev'),
+                settings['ui']['theme_args']['oscar_style'],
                 is_locked('oscar-style'),
                 choices=['', 'logicodev', 'logicodev-dark', 'pointhi']),
             'advanced_search': MapSetting(
-                settings['ui'].get('advanced_search', False),
+                settings['ui']['advanced_search'],
                 is_locked('advanced_search'),
                 map={
                     '0': False,
