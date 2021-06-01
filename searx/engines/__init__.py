@@ -197,11 +197,16 @@ def is_engine_active(engine):
 
 
 def register_engine(engine):
+    if engine.name in engines:
+        logger.error('Engine config error: ambigious name: {0}'.format(engine.name))
+        sys.exit(1)
     engines[engine.name] = engine
+
     if engine.shortcut in engine_shortcuts:
         logger.error('Engine config error: ambigious shortcut: {0}'.format(engine.shortcut))
         sys.exit(1)
     engine_shortcuts[engine.shortcut] = engine.name
+
     for category_name in engine.categories:
         categories.setdefault(category_name, []).append(engine)
 
