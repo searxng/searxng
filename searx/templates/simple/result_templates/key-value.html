@@ -1,6 +1,6 @@
 <table>
     {% for key, value in result.items() %}
-    {% if key in ['engine', 'engines', 'template', 'score', 'category', 'positions'] %}
+    {% if key in ['engine', 'engines', 'template', 'score', 'category', 'positions', 'pretty_url', 'parsed_url'] %}
         {% continue %}
     {% endif %}
     <tr>
