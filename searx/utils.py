@@ -45,7 +45,7 @@ def searx_useragent():
     """Return the searx User Agent"""
     return 'searx/{searx_version} {suffix}'.format(
            searx_version=VERSION_STRING,
-           suffix=settings['outgoing']['useragent_suffix'].strip())
+           suffix=settings['outgoing']['useragent_suffix']).strip()
 
 
 def gen_useragent(os=None):
