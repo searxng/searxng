@@ -16,6 +16,7 @@ Special Engine Settings
    engines/recoll
    engines/sql-engines
    engines/command-line-engines
+   engines/searx.engines.xpath
 
 
 .. _engines generic:
