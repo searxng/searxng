@@ -13,6 +13,7 @@ Engines & Settings
    :maxdepth: 1
 
    engine_settings
+   private-engines
    recoll
    sql-engines
    command-line-engines
