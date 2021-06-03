@@ -1,11 +1,14 @@
-========================================
-Running shell commands to fetch results
-========================================
+.. _engine command:
+
+==============================
+Fetch results from commandline
+==============================
 
 Previously, with searx you could search over the Internet on other people's
 computers. Now it is possible to fetch results from your local machine without
 connecting to any networks from the same graphical user interface.
 
+.. _command line engines:
 
 Command line engines
 ====================
@@ -59,7 +62,3 @@ This development was sponsored by `Search and Discovery Fund`_ of `NLnet Foundat
 
 .. _Search and Discovery Fund: https://nlnet.nl/discovery
 .. _NLnet Foundation: https://nlnet.nl/
-
-
-| Happy hacking.
-| kvch // 2020.09.28 21:26

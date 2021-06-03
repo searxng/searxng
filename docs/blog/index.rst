@@ -10,6 +10,5 @@ Blog
    python3
    intro-offline
    private-engines
-   command-line-engines
    search-indexer-engines
    sql-engines

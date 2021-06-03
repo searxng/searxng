@@ -13,7 +13,8 @@ Special Engine Settings
 .. toctree::
    :maxdepth: 1
 
-   engines/recoll.rst
+   engines/recoll
+   engines/command-line-engines
 
 
 .. _engines generic:
