@@ -7,7 +7,6 @@ Blog
    :caption: Contents
 
    lxcdev-202006
-   python3
    intro-offline
    private-engines
    search-indexer-engines
