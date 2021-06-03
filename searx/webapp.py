@@ -114,6 +114,7 @@ from searx.languages import language_codes as languages
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream
 from searx.search.checker import get_result as checker_get_result
+from searx.settings_loader import get_default_settings_path
 
 # set Unix thread name
 try:
@@ -1331,7 +1332,10 @@ def run():
         use_debugger=searx_debug,
         port=settings['server']['port'],
         host=settings['server']['bind_address'],
-        threaded=True
+        threaded=True,
+        extra_files=[
+            get_default_settings_path()
+        ],
     )
 
 
