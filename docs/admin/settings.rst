@@ -22,13 +22,14 @@ file.
 settings.yml location
 =====================
 
-First, searx will try to load settings.yml from these locations:
+The initial ``settings.yml`` we be load from these locations:
 
 1. the full path specified in the ``SEARX_SETTINGS_PATH`` environment variable.
 2. ``/etc/searx/settings.yml``
 
 If these files don't exist (or are empty or can't be read), searx uses the
-:origin:`searx/settings.yml` file.
+:origin:`searx/settings.yml` file.  Read :ref:`settings use_default_settings` to
+see how you can simplify your *user defined* ``settings.yml``.
 
 
 .. _settings global:
@@ -42,17 +43,19 @@ Global Settings
 .. code:: yaml
 
    general:
-       debug : False # Debug mode, only for development
-       instance_name : "searxng" # displayed name
-       contact_url: False # mailto:contact@example.com
+     debug: false               # Debug mode, only for development
+     instance_name:  "searxng"  # displayed name
+     contact_url: false         # mailto:contact@example.com
+
+.. code:: yaml
 
    brand:
-       git_url: https://github.com/searxng/searxng
-       git_branch: master
-       issue_url: https://github.com/searxng/searxng/issues
-       docs_url: https://searxng/searxng.github.io/searxng
-       public_instances: https://searx.space
-       wiki_url: https://github.com/searxng/searxng/wiki
+     git_url: https://github.com/searxng/searxng
+     git_branch: master
+     issue_url: https://github.com/searxng/searxng/issues
+     docs_url: https://searxng/searxng.github.io/searxng
+     public_instances: https://searx.space
+     wiki_url: https://github.com/searxng/searxng/wiki
 
 ``debug`` :
   Allow a more detailed log if you run searx directly. Display *detailed* error
@@ -68,10 +71,10 @@ Global Settings
   If you host your own documentation, change this URL.
 
 ``wiki_url``:
-  Link to your wiki (or ``False``)
+  Link to your wiki (or ``false``)
 
 ``twitter_url``:
-  Link to your tweets (or ``False``)
+  Link to your tweets (or ``false``)
 
 
 ``server:``
@@ -80,19 +83,19 @@ Global Settings
 .. code:: yaml
 
    server:
-       port : 8888
-       bind_address : "127.0.0.1"      # address to listen on
-       secret_key : "ultrasecretkey"   # change this!
-       base_url : False                # set custom base_url (or False)
-       image_proxy : False             # proxying image results through searx
-       default_locale : ""             # default interface locale
-       default_theme : oscar           # ui theme
+       port: 8888
+       bind_address: "127.0.0.1"      # address to listen on
+       secret_key: "ultrasecretkey"   # change this!
+       base_url: false                # set custom base_url (or false)
+       image_proxy: false             # proxying image results through searx
+       default_locale: ""             # default interface locale
+       default_theme: oscar           # ui theme
        default_http_headers:
-           X-Content-Type-Options : nosniff
-           X-XSS-Protection : 1; mode=block
-           X-Download-Options : noopen
-           X-Robots-Tag : noindex, nofollow
-           Referrer-Policy : no-referrer
+         X-Content-Type-Options : nosniff
+         X-XSS-Protection : 1; mode=block
+         X-Download-Options : noopen
+         X-Robots-Tag : noindex, nofollow
+         Referrer-Policy : no-referrer
 
 ``port`` & ``bind_address``:
   Port number and *bind address* of the searx web application if you run it
@@ -125,26 +128,30 @@ Global Settings
 ``outgoing:``
 -------------
 
+Communication with search engines.
+
 .. code:: yaml
 
-   outgoing: # communication with search engines
-       request_timeout : 2.0        # default timeout in seconds, can be override by engine
-       # max_request_timeout: 10.0  # the maximum timeout in seconds
-       useragent_suffix : ""        # informations like an email address to the administrator
-       pool_connections : 100       # Maximum number of allowable connections, or None for no limits. The default is 100.
-       pool_maxsize : 10            # Number of allowable keep-alive connections, or None to always allow. The default is 10.
-       enable_http2: True           # See https://www.python-httpx.org/http2/
-   # uncomment below section if you want to use a proxy
-   #    proxies:
-   #        all://:
-   #            - http://proxy1:8080
-   #            - http://proxy2:8080
-   # uncomment below section only if you have more than one network interface
-   # which can be the source of outgoing search requests
-   #    source_ips:
-   #        - 1.1.1.1
-   #        - 1.1.1.2
-   #        - fe80::/126
+   outgoing:
+     request_timeout: 2.0       # default timeout in seconds, can be override by engine
+     max_request_timeout: 10.0  # the maximum timeout in seconds
+     useragent_suffix: ""       # informations like an email address to the administrator
+     pool_connections: 100      # Maximum number of allowable connections, or null
+                                # for no limits. The default is 100.
+     pool_maxsize: 10           # Number of allowable keep-alive connections, or null
+                                # to always allow. The default is 10.
+     enable_http2: true         # See https://www.python-httpx.org/http2/
+     # uncomment below section if you want to use a proxy
+     # proxies:
+     #   all://:
+     #     - http://proxy1:8080
+     #     - http://proxy2:8080
+     # uncomment below section only if you have more than one network interface
+     # which can be the source of outgoing search requests
+     # source_ips:
+     #   - 1.1.1.1
+     #   - 1.1.1.2
+     #   - fe80::/126
 
 
 ``request_timeout`` :
@@ -180,8 +187,8 @@ Global Settings
   * ``[ 192.168.0.1, fe80::/126 ]``
 
 ``retries`` :
-  Number of retry in case of an HTTP error.
-  On each retry, searx uses an different proxy and source ip.
+  Number of retry in case of an HTTP error.  On each retry, searx uses an
+  different proxy and source ip.
 
 ``retry_on_http_error`` :
   Retry request on some HTTP status code.
@@ -193,7 +200,7 @@ Global Settings
   * ``[403, 429]``: on HTTP status code 403 and 429.
 
 ``enable_http2`` :
-  Enable by default. Set to ``False`` to disable HTTP/2.
+  Enable by default. Set to ``false`` to disable HTTP/2.
 
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
@@ -205,18 +212,18 @@ Global Settings
 .. code:: yaml
 
    locales:
-       en : English
-       de : Deutsch
-       he : Hebrew
-       hu : Magyar
-       fr : Français
-       es : Español
-       it : Italiano
-       nl : Nederlands
-       ja : 日本語 (Japanese)
-       tr : Türkçe
-       ru : Russian
-       ro : Romanian
+     en: English
+     de: Deutsch
+     he: Hebrew
+     hu: Magyar
+     fr: Français
+     es: Español
+     it: Italiano
+     nl: Nederlands
+     ja: 日本語 (Japanese)
+     tr: Türkçe
+     ru: Russian
+     ro: Romanian
 
 ``locales`` :
   Locales codes and their names.  Available translations of searx interface.
@@ -232,33 +239,46 @@ Engine settings
    - :ref:`general engine settings`
    - :ref:`engines-dev`
 
+In the code example below a *full fledged* example of a YAML setup from a dummy
+engine is shown.  Most of the options have a default value or even are optional.
+
 .. code:: yaml
 
-   - name : bing
-     engine : bing
-     shortcut : bi
-     base_url : 'https://{language}.wikipedia.org/'
-     categories : general
-     timeout : 3.0
-     api_key : 'apikey'
-     disabled : True
-     language : en_US
-     #enable_http: False
-     #enable_http2: False
-     #retries: 1
-     #retry_on_http_error: True # or 403 or [404, 429]
-     #max_connections: 100
-     #max_keepalive_connections: 10
-     #keepalive_expiry: 5.0
-     #proxies:
-     #    http:
-     #        - http://proxy1:8080
-     #        - http://proxy2:8080
-     #    https:
-     #        - http://proxy1:8080
-     #        - http://proxy2:8080
-     #        - socks5://user:password@proxy3:1080
-     #        - socks5h://user:password@proxy4:1080
+   - name: example engine
+     engine: example
+     shortcut: demo
+     base_url: 'https://{language}.example.com/'
+     categories: general
+     timeout: 3.0
+     api_key: 'apikey'
+     disabled: false
+     language: en_US
+     tokens: [ 'my-secret-token' ]
+     weigth: 1
+     display_error_messages: true
+     about:
+        website: https://example.com
+        wikidata_id: Q306656
+        official_api_documentation: https://example.com/api-doc
+        use_official_api: true
+        require_api_key: true
+        results: HTML
+     enable_http: false
+     enable_http2: false
+     retries: 1
+     retry_on_http_error: true # or 403 or [404, 429]
+     max_connections: 100
+     max_keepalive_connections: 10
+     keepalive_expiry: 5.0
+     proxies:
+       http:
+         - http://proxy1:8080
+         - http://proxy2:8080
+       https:
+         - http://proxy1:8080
+         - http://proxy2:8080
+         - socks5://user:password@proxy3:1080
+         - socks5h://user:password@proxy4:1080
 
 ``name`` :
   Name that will be used across searx to define this engine.  In settings, on
@@ -298,10 +318,14 @@ Engine settings
   by using the full ISO code of language and country, like ``fr_FR``, ``en_US``,
   ``de_DE``.
 
+``tokens`` : optional
+  A list of secret tokens to make this engine *private*, more details see
+  :ref:`private engines`.
+
 ``weigth`` : default ``1``
   Weighting of the results of this engine.
 
-``display_error_messages`` : default ``True``
+``display_error_messages`` : default ``true``
   When an engine returns an error, the message is displayed on the user interface.
 
 ``network``: optional
@@ -321,7 +345,7 @@ Engine settings
 use_default_settings
 ====================
 
-.. sidebar:: ``use_default_settings: True``
+.. sidebar:: ``use_default_settings: true``
 
    - :ref:`settings location`
    - :ref:`use_default_settings.yml`
@@ -330,7 +354,7 @@ use_default_settings
 The user defined ``settings.yml`` is loaded from the :ref:`settings location`
 and can relied on the default configuration :origin:`searx/settings.yml` using:
 
- ``use_default_settings: True``
+ ``use_default_settings: true``
 
 ``server:``
   In the following example, the actual settings are the default settings defined
@@ -339,22 +363,22 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 
   .. code-block:: yaml
 
-    use_default_settings: True
+    use_default_settings: true
     server:
-        secret_key: "uvys6bRhKHUdFF5CqbJonSDSRN8H0sCBziNSrDGNVdpz7IeZhveVart3yvghoKHA"
+        secret_key: "ultrasecretkey"   # change this!
         bind_address: "0.0.0.0"
 
 ``engines:``
-  With ``use_default_settings: True``, each settings can be override in a
+  With ``use_default_settings: true``, each settings can be override in a
   similar way, the ``engines`` section is merged according to the engine
   ``name``.  In this example, searx will load all the engine and the arch linux
-  wiki engine has a :ref:`token<private engines>`:
+  wiki engine has a :ref:`token <private engines>`:
 
   .. code-block:: yaml
 
-    use_default_settings: True
+    use_default_settings: true
     server:
-        secret_key: "uvys6bRhKHUdFF5CqbJonSDSRN8H0sCBziNSrDGNVdpz7IeZhveVart3yvghoKHA"
+      secret_key: "ultrasecretkey"   # change this!
     engines:
       - name: arch linux wiki
         tokens: ['$ecretValue']
@@ -367,11 +391,11 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
   .. code-block:: yaml
 
     use_default_settings:
-        engines:
-           remove:
-             - google
+      engines:
+        remove:
+          - google
     server:
-        secret_key: "uvys6bRhKHUdFF5CqbJonSDSRN8H0sCBziNSrDGNVdpz7IeZhveVart3yvghoKHA"
+      secret_key: "ultrasecretkey"   # change this!
     engines:
       - name: arch linux wiki
         tokens: ['$ecretValue']
@@ -383,12 +407,12 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
   .. code-block:: yaml
 
     use_default_settings:
-        engines:
-           keep_only:
-             - google
-             - duckduckgo
+      engines:
+        keep_only:
+          - google
+          - duckduckgo
     server:
-        secret_key: "uvys6bRhKHUdFF5CqbJonSDSRN8H0sCBziNSrDGNVdpz7IeZhveVart3yvghoKHA"
+      secret_key: "ultrasecretkey"   # change this!
     engines:
       - name: google
         tokens: ['$ecretValue']
