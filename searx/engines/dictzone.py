@@ -17,7 +17,7 @@ about = {
     "results": 'HTML',
 }
 
-engine_type = 'online_dictionnary'
+engine_type = 'online_dictionary'
 categories = ['general']
 url = 'https://dictzone.com/{from_lang}-{to_lang}-dictionary/{query}'
 weight = 100
