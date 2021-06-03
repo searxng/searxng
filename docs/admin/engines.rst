@@ -14,6 +14,7 @@ Special Engine Settings
    :maxdepth: 1
 
    engines/recoll
+   engines/sql-engines
    engines/command-line-engines
 
 

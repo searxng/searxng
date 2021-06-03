@@ -11,4 +11,3 @@ Blog
    intro-offline
    private-engines
    search-indexer-engines
-   sql-engines
