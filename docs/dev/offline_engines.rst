@@ -1,77 +1,78 @@
-===============================
-Preparation for offline engines
-===============================
+.. _offline engines:
 
-Offline engines
+===============
+Offline Engines
 ===============
 
-To extend the functionality of searx, offline engines are going to be
+.. sidebar:: offline engines
+
+   - :ref:`demo offline engine`
+   - :ref:`sql engines`
+   - :ref:`command line engines`
+   - :origin:`Redis <searx/engines/redis_server.py>`
+
+To extend the functionality of SearxNG, offline engines are going to be
 introduced.  An offline engine is an engine which does not need Internet
 connection to perform a search and does not use HTTP to communicate.
 
-Offline engines can be configured as online engines, by adding those to the
-`engines` list of :origin:`settings.yml <searx/settings.yml>`.  Thus, searx
-finds the engine file and imports it.
-
-Example skeleton for the new engines:
-
-.. code:: python
-
-   from subprocess import PIPE, Popen
-
-   categories = ['general']
-   offline = True
-
-   def init(settings):
-       pass
-
-   def search(query, params):
-       process = Popen(['ls', query], stdout=PIPE)
-       return_code = process.wait()
-       if return_code != 0:
-           raise RuntimeError('non-zero return code', return_code)
-
-       results = []
-       line = process.stdout.readline()
-       while line:
-           result = parse_line(line)
-           results.append(results)
-
-           line = process.stdout.readline()
-
-       return results
+Offline engines can be configured, by adding those to the `engines` list of
+:origin:`settings.yml <searx/settings.yml>`.  An example skeleton for offline
+engines can be found in :ref:`demo offline engine` (:origin:`demo_offline.py
+<searx/engines/demo_offline.py>`).
 
 
-Development progress
-====================
+Programming Interface
+=====================
 
-First, a proposal has been created as a Github issue.  Then it was moved to the
-wiki as a design document.  You can read it here: :wiki:`Offline-engines`.
+:py:func:`init(engine_settings=None) <searx.engines.demo_offline.init>`
+  All offline engines can have their own init function to setup the engine before
+  accepting requests. The function gets the settings from settings.yml as a
+  parameter. This function can be omitted, if there is no need to setup anything
+  in advance.
 
-In this development step, searx core was prepared to accept and perform offline
-searches.  Offline search requests are scheduled together with regular offline
-requests.
+:py:func:`search(query, params) <searx.engines.demo_offline.searc>`
 
-As offline searches can return arbitrary results depending on the engine, the
-current result templates were insufficient to present such results.  Thus, a new
-template is introduced which is caplable of presenting arbitrary key value pairs
-as a table. You can check out the pull request for more details see
-:pull-searx:`1700`.
+  Each offline engine has a function named ``search``.  This function is
+  responsible to perform a search and return the results in a presentable
+  format. (Where *presentable* means presentable by the selected result
+  template.)
 
-Next steps
-==========
+  The return value is a list of results retrieved by the engine.
 
-Today, it is possible to create/run an offline engine. However, it is going to be publicly available for everyone who knows the searx instance. So the next step is to introduce token based access for engines. This way administrators are able to limit the access to private engines.
+Engine representation in ``/config``
+  If an engine is offline, the attribute ``offline`` is set to ``True``.
+
+.. _offline requirements:
+
+Extra Dependencies
+==================
+
+If an offline engine depends on an external tool, SearxNG does not install it by
+default.  When an administrator configures such engine and starts the instance,
+the process returns an error with the list of missing dependencies.  Also,
+required dependencies will be added to the comment/description of the engine, so
+admins can install packages in advance.
+
+If there is a need to install additional packages in *Python's Virtual
+Environment* of your SearxNG instance you need to switch into the environment
+(:ref:`searx-src`) first, for this you can use :ref:`searx.sh`::
+
+  $ sudo utils/searx.sh shell
+  (searx-pyenv)$ pip install ...
+
+
+Private engines (Security)
+==========================
+
+To limit the access to offline engines, if an instance is available publicly,
+administrators can set token(s) for each of the :ref:`private engines`.  If a
+query contains a valid token, then SearxNG performs the requested private
+search.  If not, requests from an offline engines return errors.
+
 
 Acknowledgement
 ===============
 
-This development was sponsored by `Search and Discovery Fund`_ of `NLnet Foundation`_ .
-
-.. _Search and Discovery Fund: https://nlnet.nl/discovery
-.. _NLnet Foundation: https://nlnet.nl/
-
-
-| Happy hacking.
-| kvch // 2019.10.21 17:03
+This development was sponsored by `Search and Discovery Fund
+<https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_ .
 
