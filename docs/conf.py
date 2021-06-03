@@ -58,11 +58,11 @@ extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '')
 #extlinks['role'] = (
 #    'https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-%s', '')
 extlinks['duref'] = (
-    'https://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#%s', '')
 extlinks['durole'] = (
-    'https://docutils.sourceforge.net/docs/ref/rst/roles.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/roles.html#%s', '')
 extlinks['dudir'] =  (
-    'https://docutils.sourceforge.net/docs/ref/rst/directives.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/directives.html#%s', '')
 extlinks['ctan'] =  (
     'https://ctan.org/pkg/%s', 'CTAN: ')
 
