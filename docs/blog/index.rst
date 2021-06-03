@@ -7,6 +7,5 @@ Blog
    :caption: Contents
 
    lxcdev-202006
-   intro-offline
    private-engines
    search-indexer-engines
