@@ -14,10 +14,10 @@ Administrator documentation
    installation-docker
    update-searx
    settings
+   engines/index
    api
    architecture
    filtron
    morty
-   engines
    plugins
    buildhosts

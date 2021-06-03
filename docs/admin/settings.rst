@@ -229,6 +229,7 @@ Engine settings
 
 .. sidebar:: Further reading ..
 
+   - :ref:`general engine settings`
    - :ref:`engines-dev`
 
 .. code:: yaml

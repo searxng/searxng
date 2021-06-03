@@ -1,28 +1,13 @@
-=======
-Engines
-=======
+.. _general engine settings:
 
-Special Engine Settings
+=======================
+General Engine Settings
 =======================
 
 .. sidebar:: Further reading ..
 
+   - :ref:`engines-dev`
    - :ref:`settings engine`
-   - :ref:`engine settings` & :ref:`engine file`
-
-.. toctree::
-   :maxdepth: 1
-
-   engines/recoll
-   engines/sql-engines
-   engines/command-line-engines
-   engines/searx.engines.xpath
-
-
-.. _engines generic:
-
-General Engine Settings
-=======================
 
 Explanation of the :ref:`general engine configuration` shown in the table
 :ref:`configured engines`.
