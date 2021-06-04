@@ -13,5 +13,6 @@ Developer documentation
    search_api
    plugins
    translation
+   lxcdev
    makefile
    reST
