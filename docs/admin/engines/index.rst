@@ -17,7 +17,6 @@ Engines & Settings
    private-engines
    recoll
    sql-engines
+   search-indexer-engines
    command-line-engines
    searx.engines.xpath
-
-
