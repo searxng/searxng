@@ -1,9 +1,19 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 import json
 from pathlib import Path
 
 
-__init__ = ['ENGINES_LANGUGAGES', 'CURRENCIES', 'USER_AGENTS', 'EXTERNAL_URLS', 'WIKIDATA_UNITS', 'EXTERNAL_BANGS',
-            'OSM_KEYS_TAGS', 'bangs_loader', 'ahmia_blacklist_loader']
+__all__ = [
+    'ENGINES_LANGUAGES',
+    'CURRENCIES',
+    'USER_AGENTS',
+    'EXTERNAL_URLS',
+    'WIKIDATA_UNITS',
+    'EXTERNAL_BANGS',
+    'OSM_KEYS_TAGS',
+    'ahmia_blacklist_loader',
+]
 data_dir = Path(__file__).parent
 
 
