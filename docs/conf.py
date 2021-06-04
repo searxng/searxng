@@ -30,10 +30,9 @@ numfig = True
 
 exclude_patterns = ['build-templates/*.rst']
 
-import searx.search
 import searx.engines
 import searx.plugins
-searx.search.initialize()
+searx.engines.load_engines(searx.settings['engines'])
 jinja_contexts = {
     'searx': {
         'engines': searx.engines.engines,
