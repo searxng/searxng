@@ -8,7 +8,7 @@ Offline Engines
 
    - :ref:`demo offline engine`
    - :ref:`sql engines`
-   - :ref:`command line engines`
+   - :ref:`engine command`
    - :origin:`Redis <searx/engines/redis_server.py>`
 
 To extend the functionality of SearxNG, offline engines are going to be
