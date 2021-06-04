@@ -20,7 +20,7 @@ Parameters
 
    - :ref:`engines-dev`
    - :ref:`settings.yml`
-   - :ref:`general engine settings`
+   - :ref:`configured engines`
 
 ``q`` : required
   The search query.  This string is passed to external search services.  Thus,

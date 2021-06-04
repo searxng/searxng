@@ -236,7 +236,7 @@ Engine settings
 
 .. sidebar:: Further reading ..
 
-   - :ref:`general engine settings`
+   - :ref:`configured engines`
    - :ref:`engines-dev`
 
 In the code example below a *full fledged* example of a YAML setup from a dummy

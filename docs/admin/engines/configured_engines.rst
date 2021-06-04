@@ -1,8 +1,8 @@
-.. _general engine settings:
+.. _configured engines:
 
-=======================
-General Engine Settings
-=======================
+==================
+Configured Engines
+==================
 
 .. sidebar:: Further reading ..
 
@@ -12,27 +12,28 @@ General Engine Settings
 Explanation of the :ref:`general engine configuration` shown in the table
 :ref:`configured engines`.
 
-============= =========== ==================== ============
-:ref:`engine settings`    :ref:`engine file`
-------------------------- ---------------------------------
-Name (cfg)                Categories
-------------------------- ---------------------------------
-Engine        ..          Paging support       **P**
-------------------------- -------------------- ------------
-Shortcut      **S**       Language support     **L**
-Timeout       **TO**      Time range support   **TR**
-Disabled      **D**       Engine type          **ET**
-------------- ----------- -------------------- ------------
-Safe search   **SS**
-------------- ----------- ---------------------------------
-Weigth        **W**
-------------- ----------- ---------------------------------
-Disabled      **D**
-------------- ----------- ---------------------------------
-Show errors   **DE**
-============= =========== =================================
+.. table:: The legend for the following table
+   :width: 100%
 
-.. _configured engines:
+   ============= =========== ==================== ============
+   :ref:`engine settings`    :ref:`engine file`
+   ------------------------- ---------------------------------
+   Name (cfg)    ..          Categories
+   ------------- ----------- -------------------- ------------
+   Engine        ..          Paging support       **P**
+   ------------- ----------- -------------------- ------------
+   Shortcut      **S**       Language support     **L**
+   Timeout       **TO**      Time range support   **TR**
+   Disabled      **D**       Engine type          **ET**
+   ------------- ----------- -------------------- ------------
+   Safe search   **SS**
+   ------------- ----------- ---------------------------------
+   Weigth        **W**
+   ------------- ----------- ---------------------------------
+   Disabled      **D**
+   ------------- ----------- ---------------------------------
+   Show errors   **DE**
+   ============= =========== =================================
 
 .. jinja:: searx
 

@@ -8,7 +8,7 @@ Engine Overview
 
 .. sidebar:: Further reading ..
 
-   - :ref:`general engine settings`
+   - :ref:`configured engines`
    - :ref:`settings engine`
 
 .. contents::

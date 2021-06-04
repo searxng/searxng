@@ -12,7 +12,7 @@ Engines & Settings
 .. toctree::
    :maxdepth: 1
 
-   engine_settings
+   configured_engines
    private-engines
    recoll
    sql-engines
