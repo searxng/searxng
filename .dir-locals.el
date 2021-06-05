@@ -50,37 +50,41 @@
 ((nil
   . ((fill-column . 80)
      (indent-tabs-mode . nil)
-     ))
- (makefile-gmake-mode
-  . ((indent-tabs-mode . t)
-     ))
- (python-mode
-  . ((indent-tabs-mode . nil)
-
      ;; project root folder is where the `.dir-locals.el' is located
      (eval . (setq-local
 	      prj-root (locate-dominating-file  default-directory ".dir-locals.el")))
-
      (eval . (setq-local
 	      python-environment-directory (expand-file-name "./local" prj-root)))
-
      ;; use 'py3' enviroment as default
      (eval . (setq-local
 	      python-environment-default-root-name "py3"))
-
      (eval . (setq-local
 	      python-shell-virtualenv-root
-	      (concat python-environment-directory
-		      "/"
-		      python-environment-default-root-name)))
-
-     ;; python-shell-virtualenv-path is obsolete, use python-shell-virtualenv-root!
-     ;; (eval . (setq-local
-     ;; 	 python-shell-virtualenv-path python-shell-virtualenv-root))
-
+              (expand-file-name python-environment-default-root-name python-environment-directory)
+              ))
      (eval . (setq-local
 	      python-shell-interpreter
 	      (expand-file-name "bin/python" python-shell-virtualenv-root)))
+     ))
+
+ (makefile-gmake-mode
+  . ((indent-tabs-mode . t)
+     ))
+
+ (yaml-mode
+  . (
+     ;; flycheck should use the local py3 environment
+     (eval . (setq-local
+	      flycheck-yaml-yamllint-executable
+	      (expand-file-name "bin/yamllint" python-shell-virtualenv-root)))
+     (eval . (setq-local
+              flycheck-yamllintrc
+              (expand-file-name  ".yamllint.yml" prj-root)))
+     (flycheck-checker . yaml-yamllint)
+     ))
+
+ (python-mode
+  . ((indent-tabs-mode . nil)
 
      (eval . (setq-local
 	      python-environment-virtualenv

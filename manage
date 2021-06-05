@@ -29,6 +29,11 @@ pylint.FILES() {
     grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searx_extra tests
 }
 
+YAMLLINT_FILES=()
+while IFS= read -r line; do
+   YAMLLINT_FILES+=("$line")
+done <<< "$(git ls-files './tests/*.yml' './searx/*.yml')"
+
 PYLINT_SEARX_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
@@ -389,6 +394,11 @@ pypi.upload.test() {
     py.clean
     py.build
     pyenv.cmd twine upload -r testpypi "${PYDIST}"/*
+}
+
+test.yamllint() {
+    build_msg TEST "[pylint] \$PYLINT_FILES"
+    pyenv.cmd yamllint --format parsable "${YAMLLINT_FILES[@]}"
 }
 
 test.pylint() {

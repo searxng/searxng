@@ -51,8 +51,8 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searx-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.pep8 test.pylint test.unit test.robot
-test:    test.pep8 test.pylint test.unit test.robot test.shell
+ci.test: test.yamllint test.pep8 test.pylint test.unit test.robot
+test:    test.yamllint test.pep8 test.pylint test.unit test.robot test.shell
 test.shell:
 	$(Q)shellcheck -x -s dash \
 		dockerfiles/docker-entrypoint.sh
@@ -81,7 +81,7 @@ MANAGE += node.env node.clean
 MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
 MANAGE += pypi.upload pypi.upload.test
-MANAGE += test.pylint test.pep8 test.unit test.coverage test.robot test.clean
+MANAGE += test.yamllint test.pylint test.pep8 test.unit test.coverage test.robot test.clean
 MANAGE += themes.all themes.oscar themes.simple themes.bootstrap
 
 PHONY += $(MANAGE)

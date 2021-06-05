@@ -1,14 +1,14 @@
 use_default_settings:
-    engines:
-        keep_only:
-            - wikibooks
-            - wikinews
+  engines:
+    keep_only:
+      - wikibooks
+      - wikinews
 server:
-    secret_key: "user_secret_key"
-    bind_address: "0.0.0.0"
-    default_http_headers:
-        Custom-Header: Custom-Value
+  secret_key: "user_secret_key"
+  bind_address: "0.0.0.0"
+  default_http_headers:
+    Custom-Header: Custom-Value
 engines:
-    - name: wikipedia
-    - name: newengine
-      engine: dummy
+  - name: wikipedia
+  - name: newengine
+    engine: dummy
