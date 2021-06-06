@@ -115,6 +115,7 @@ babel.compile() {
 data.all() {
     data.languages
     data.useragents
+    data.osm_keys_tags
     build_msg DATA "update searx/data/ahmia_blacklist.txt"
     pyenv.cmd python searx_extra/update/update_ahmia_blacklist.py
     build_msg DATA "update searx/data/wikidata_units.json"
@@ -137,6 +138,12 @@ data.languages() {
 data.useragents() {
     build_msg DATA "update searx/data/useragents.json"
     pyenv.cmd python searx_extra/update/update_firefox_version.py
+    dump_return $?
+}
+
+data.osm_keys_tags() {
+    build_msg DATA "update searx/data/osm_keys_tags.json"
+    pyenv.cmd python searx_extra/update/update_osm_keys_tags.py
     dump_return $?
 }
 
