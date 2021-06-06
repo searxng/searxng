@@ -133,11 +133,12 @@ suggestion_xpath = '//div[contains(@class, "card-section")]//a'
 spelling_suggestion_xpath = '//div[@class="med"]/p/a'
 
 
-def get_lang_info(params, lang_list, custom_aliases):
+def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     ret_val = {}
 
     _lang = params['language']
-    if _lang.lower() == 'all':
+    _any_language = _lang.lower() == 'all'
+    if _any_language:
         _lang = 'en-US'
 
     language = match_language(_lang, lang_list, custom_aliases)
@@ -159,31 +160,36 @@ def get_lang_info(params, lang_list, custom_aliases):
     # the combination (en-US, en-EN, de-DE, de-AU, fr-FR, fr-FR)
     lang_country = '%s-%s' % (language, country)
 
-    # Accept-Language: fr-CH, fr;q=0.8, en;q=0.6, *;q=0.5
-    ret_val['Accept-Language'] = ','.join([
-        lang_country,
-        language + ';q=0.8,',
-        'en;q=0.6',
-        '*;q=0.5',
-    ])
-
     # subdomain
     ret_val['subdomain']  = 'www.' + google_domains.get(country.upper(), 'google.com')
+
+    ret_val['params'] = {}
+    ret_val['headers'] = {}
+
+    if _any_language and supported_any_language:
+        # based on whoogle
+        ret_val['params']['source'] = 'lnt'
+    else:
+        # Accept-Language: fr-CH, fr;q=0.8, en;q=0.6, *;q=0.5
+        ret_val['headers']['Accept-Language'] = ','.join([
+            lang_country,
+            language + ';q=0.8,',
+            'en;q=0.6',
+            '*;q=0.5',
+        ])
+
+        # lr parameter:
+        #   https://developers.google.com/custom-search/docs/xml_results#lrsp
+        # Language Collection Values:
+        #   https://developers.google.com/custom-search/docs/xml_results_appendices#languageCollections
+        ret_val['params']['lr'] = "lang_" + lang_list.get(lang_country, language)
+
+    ret_val['params']['hl'] = lang_list.get(lang_country, language)
 
     # hl parameter:
     #   https://developers.google.com/custom-search/docs/xml_results#hlsp The
     # Interface Language:
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#interfaceLanguages
-
-    ret_val['hl'] = lang_list.get(lang_country, language)
-
-    # lr parameter:
-    #   https://developers.google.com/custom-search/docs/xml_results#lrsp
-    # Language Collection Values:
-    #   https://developers.google.com/custom-search/docs/xml_results_appendices#languageCollections
-
-    ret_val['lr'] = "lang_" + lang_list.get(lang_country, language)
-
     return ret_val
 
 def detect_google_sorry(resp):
@@ -198,14 +204,13 @@ def request(query, params):
 
     lang_info = get_lang_info(
         # pylint: disable=undefined-variable
-        params, supported_languages, language_aliases
+        params, supported_languages, language_aliases, True
     )
 
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
     query_url = 'https://' + lang_info['subdomain'] + '/search' + "?" + urlencode({
         'q': query,
-        'hl': lang_info['hl'],
-        'lr': lang_info['lr'],
+        **lang_info['params'],
         'ie': "utf8",
         'oe': "utf8",
         'start': offset,
@@ -219,8 +224,8 @@ def request(query, params):
     logger.debug("query_url --> %s", query_url)
     params['url'] = query_url
 
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['Accept-Language'])
-    params['headers']['Accept-Language'] = lang_info['Accept-Language']
+    logger.debug("HTTP header Accept-Language --> %s", lang_info.get('Accept-Language'))
+    params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = (
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     )
