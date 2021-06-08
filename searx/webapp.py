@@ -451,8 +451,7 @@ def render(template_name, override_theme=None, **kwargs):
                                 _get_ordered_categories()
                                 if x in enabled_categories]
 
-    if 'autocomplete' not in kwargs:
-        kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
 
     locale = request.preferences.get_value('locale')
 
@@ -484,8 +483,6 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['get_result_template'] = get_result_template
 
     kwargs['theme'] = get_current_theme_name(override=override_theme)
-
-    kwargs['template_name'] = template_name
 
     kwargs['cookies'] = request.cookies
 
