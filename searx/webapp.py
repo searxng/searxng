@@ -359,10 +359,6 @@ def extract_domain(url):
     return urlparse(url)[1]
 
 
-def get_base_url():
-    return url_for('index', _external=True)
-
-
 def get_current_theme_name(override=None):
     """Returns theme name.
 
@@ -632,7 +628,6 @@ def index_error(output_format, error_message):
             results=[],
             q=request.form['q'] if 'q' in request.form else '',
             number_of_results=0,
-            base_url=get_base_url(),
             error_message=error_message,
             override_theme='__common__',
         )
@@ -810,7 +805,6 @@ def search():
             suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=number_of_results,
-            base_url=get_base_url(),
             override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
@@ -848,7 +842,6 @@ def search():
         current_language=match_language(search_query.lang,
                                         LANGUAGE_CODES,
                                         fallback=request.preferences.get_value("language")),
-        base_url=get_base_url(),
         theme=get_current_theme_name(),
         favicons=global_favicons[themes.index(get_current_theme_name())],
         timeout_limit=request.form.get('timeout_limit', None)
@@ -1075,7 +1068,6 @@ def preferences():
                   allowed_plugins=allowed_plugins,
                   theme=get_current_theme_name(),
                   preferences_url_params=request.preferences.get_as_url_params(),
-                  base_url=get_base_url(),
                   locked_preferences=settings['preferences']['lock'],
                   preferences=True)
 
