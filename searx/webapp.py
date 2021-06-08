@@ -129,10 +129,6 @@ else:
         setproctitle.setthreadtitle(self._name)
     threading.Thread.__init__ = new_thread_init
 
-if sys.version_info[0] < 3:
-    print('\033[1;31m Python2 is no longer supported\033[0m')
-    sys.exit(1)
-
 logger = logger.getChild('webapp')
 
 # check secret_key
