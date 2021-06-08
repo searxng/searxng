@@ -5,6 +5,7 @@
 from os.path import dirname, abspath
 import logging
 
+import searx.unixthreadname
 import searx.settings_loader
 from searx.settings_defaults import settings_set_defaults
 
