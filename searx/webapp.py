@@ -415,6 +415,22 @@ def get_translations():
     }
 
 
+def _get_ordered_categories():
+    ordered_categories = list(settings['ui']['categories_order'])
+    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
+    return ordered_categories
+
+
+def _get_enable_categories(all_categories):
+    disabled_engines = request.preferences.engines.get_disabled()
+    enabled_categories = set(category for engine_name in engines
+                            for category in engines[engine_name].categories
+                            if (engine_name, category) not in disabled_engines)
+    return [x for x in
+            all_categories
+            if x in enabled_categories]
+
+
 def render(template_name, override_theme=None, **kwargs):
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
@@ -426,17 +442,11 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['method'] = request.preferences.get_value('method')
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
+    kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
     kwargs['theme'] = get_current_theme_name(override=override_theme)
-
-    if 'categories' not in kwargs:
-        disabled_engines = request.preferences.engines.get_disabled()
-        enabled_categories = set(category for engine_name in engines
-                                for category in engines[engine_name].categories
-                                if (engine_name, category) not in disabled_engines)
-        kwargs['categories'] = [x for x in
-                                _get_ordered_categories()
-                                if x in enabled_categories]
+    kwargs['all_categories'] = _get_ordered_categories()
+    kwargs['categories'] = _get_enable_categories(kwargs['all_categories'])
 
     # i18n
     kwargs['language_codes'] = languages  # from searx.languages
@@ -486,12 +496,6 @@ def render(template_name, override_theme=None, **kwargs):
     request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result
-
-
-def _get_ordered_categories():
-    ordered_categories = list(settings['ui']['categories_order'])
-    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
-    return ordered_categories
 
 
 @app.before_request
@@ -605,9 +609,6 @@ def index_error(output_format, error_message):
 def index():
     """Render index page."""
 
-    # UI
-    advanced_search = request.preferences.get_value('advanced_search')
-
     # redirect to search if there's a query in the request
     if request.form.get('q'):
         query = ('?' + request.query_string.decode()) if request.query_string else ''
@@ -616,7 +617,6 @@ def index():
     return render(
         'index.html',
         selected_categories=get_selected_categories(request.preferences, request.form),
-        advanced_search=advanced_search,
     )
 
 
@@ -642,7 +642,6 @@ def search():
         if output_format == 'html':
             return render(
                 'index.html',
-                advanced_search=request.preferences.get_value('advanced_search'),
                 selected_categories=get_selected_categories(request.preferences, request.form),
             )
         return index_error(output_format, 'No query'), 400
@@ -1008,7 +1007,6 @@ def preferences():
     #
     return render('preferences.html',
                   selected_categories=get_selected_categories(request.preferences, request.form),
-                  all_categories=_get_ordered_categories(),
                   locales=settings['locales'],
                   current_locale=request.preferences.get_value("locale"),
                   image_proxy=image_proxy,
