@@ -1,48 +1,48 @@
-.. _blog-lxcdev-202006:
+.. _lxcdev:
 
-=======================================
-Developing in Linux containers [202006]
-=======================================
+==============================
+Developing in Linux Containers
+==============================
 
 .. _LXC: https://linuxcontainers.org/lxc/introduction/
 
+In this article we will show, how you can make use of Linux Containers (LXC_) in
+*distributed and heterogeneous development cycles* (TL;DR; jump to the
+:ref:`lxcdev summary`).
+
 .. sidebar:: Audience
 
-   This blog post is written for experienced admins and developers / readers
-   should have a serious meaning about: *distributed*, *merge* and *linux
-   container*.
+   This blog post is written for experienced admins and developers.  Readers
+   should have a serious meaning about the terms: *distributed*, *merge* and
+   *linux container*.
 
 .. contents:: Contents
    :depth: 2
    :local:
    :backlinks: entry
 
-In PR :PR:`1803` we added a lot of scripts to Searx's boilerplate.  In this blog
-post I will show you, how you can make use of them in *distributed and
-heterogeneous development cycles* (TL;DR; jump to the :ref:`blog-lxcdev-202006
-abstract`).
 
 Motivation
 ==========
 
-Normally in our development cycle, we edit the sources and run some test and/or
-builds by using ``make`` before we commit.  This cycle is simple and perfect but
-might fail in some aspects we should not overlook.
+Usually in our development cycle, we edit the sources and run some test and/or
+builds by using ``make`` :ref:`[ref] <makefile>` before we commit.  This cycle
+is simple and perfect but might fail in some aspects we should not overlook.
 
-    The environment in which we run all our development processes matters!
+  **The environment in which we run all our development processes matters!**
 
-The :ref:`makefile` and the :ref:`make install` encapsulate a lot for us, but they
-do not have access to all prerequisites.  For example, there may have
+The :ref:`makefile` and the :ref:`make install` encapsulate a lot for us, but
+they do not have access to all prerequisites.  For example, there may have
 dependencies on packages that are installed on the developer's desktop, but
-usually are not preinstalled on a server or client system.  Another examples
-are; settings have been made to the software on the developer's host that would
-never be set on a *production* system.
+usually are not preinstalled on a server or client system.  Another example is;
+settings have been made to the software on developer's desktop that would never
+be set on a *production* system.
 
-*Linux Containers* (LXC_) are isolate environments and not to mix up on
-developer's all the prerequisites of all the projects he contribute to, is
-always a good choice.
+  **Linux Containers are isolate environments and not to mix up all the
+  prerequisites from various projects on developer's desktop is always a good
+  choice.**
 
-The scripts from PR :PR:`1803` can divide in those to install and maintain
+The scripts from :ref:`searx_utils` can divide in those to install and maintain
 software:
 
 - :ref:`searx.sh`
@@ -50,8 +50,10 @@ software:
 - :ref:`morty.sh`
 
 and the script :ref:`lxc.sh`, with we can scale our installation, maintenance or
-even development tasks over a stack of containers, what we call: *Searx's lxc
-suite*.
+even development tasks over a stack of isolated containers / what we call the:
+
+  **searxNG LXC suite**
+
 
 Gentlemen, start your engines!
 ==============================
@@ -141,18 +143,18 @@ and once for the content sanitizer (content proxy morty):
         ...
         INFO:  got 200 from http://10.174.184.156/morty/
 
-.. sidebar:: Fully functional searx suite
+.. sidebar:: Fully functional searXNG suite
 
-   From here on you have a fully functional searx suite running with bot blocker
-   (filtron) and Web content sanitizer (content proxy morty) needed for a
-   *privacy protecting* search engine.
+   From here on you have a fully functional searXNG suite running with bot
+   blocker (filtron) and WEB content sanitizer (content proxy morty), both are
+   needed for a *privacy protecting* search engine.
 
 On your system, the IP of your ``searx-archlinux`` container differs from
 http://10.174.184.156/searx, just open the URL reported in your installation
 protocol in your WEB browser from the desktop to test the instance from outside
 of the container.
 
-In such a searx suite admins can maintain and access the debug log of the
+In such a searXNG suite admins can maintain and access the debug log of the
 different services quite easy.
 
 .. _working in containers:
@@ -176,7 +178,7 @@ searx-archlinux``:
         /share/searx
 
 The prompt ``[root@searx-archlinux ...]`` signals, that you are the root user in
-the searx-container.  To debug the running searx instance use:
+the searx-container.  To debug the running searXNG instance use:
 
 .. tabs::
 
@@ -192,8 +194,8 @@ the searx-container.  To debug the running searx instance use:
 Back in the browser on your desktop open the service http://10.174.184.156/searx
 and run your application tests while the debug log is shown in the terminal from
 above.  You can stop monitoring using ``CTRL-C``, this also disables the *"debug
-option"* in searx's settings file and restarts the searx uwsgi application.  To
-debug services from filtron and morty analogous use:
+option"* in searXNG's settings file and restarts the searXNG uwsgi application.
+To debug services from filtron and morty analogous use:
 
 .. tabs::
 
@@ -250,18 +252,18 @@ user ``searx`` in the ``searx-archlinux`` container and the python *virtualenv*
 Wrap production into developer suite
 ====================================
 
-In this section we will see how to change the *"Fully functional searx suite"*
+In this section we will see how to change the *"Fully functional searXNG suite"*
 from a LXC container (which is quite ready for production) into a developer
 suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 
-- searx setup in: ``/etc/searx/settings.yml``
-- searx user's home: ``/usr/local/searx``
+- searXNG setup in: ``/etc/searx/settings.yml``
+- searXNG user's home: ``/usr/local/searx``
 - virtualenv in: ``/usr/local/searx/searx-pyenv``
-- searx software in: ``/usr/local/searx/searx-src``
+- searXNG software in: ``/usr/local/searx/searx-src``
 
-The searx software is a clone of the ``git_url`` (see :ref:`settings global`) and
-the working tree is checked out from the ``git_branch``.  With the use of the
-:ref:`searx.sh` the searx service was installed as :ref:`uWSGI application
+The searXNG software is a clone of the ``git_url`` (see :ref:`settings global`)
+and the working tree is checked out from the ``git_branch``.  With the use of
+the :ref:`searx.sh` the searx service was installed as :ref:`uWSGI application
 <searx uwsgi>`.  To maintain this service, we can use ``systemctl`` (compare
 :ref:`service architectures on distributions <uwsgi configuration>`).
 
@@ -292,7 +294,7 @@ least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 If you have read the :ref:`"Good to know section" <lxc.sh>` you remember, that
 each container shares the root folder of the repository and the command
 ``utils/lxc.sh cmd`` handles relative path names **transparent**.  To wrap the
-searx installation into a developer one, we simple have to create a smylink to
+searXNG installation into a developer one, we simple have to create a smylink to
 the **transparent** reposetory from the desktop.  Now lets replace the
 repository at ``searx-src`` in the container with the working tree from outside
 of the container:
@@ -330,7 +332,7 @@ daily usage:
 
   .. group-tab:: desktop
 
-     To *inspect* the searx instance (already described above):
+     To *inspect* the searXNG instance (already described above):
 
      .. code:: sh
 
@@ -358,12 +360,12 @@ daily usage:
         $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
           make docs.html
 
-.. _blog-lxcdev-202006 abstract:
+.. _lxcdev summary:
 
-Abstract
-========
+Summary
+=======
 
-We build up a fully functional searx suite in a archlinux container:
+We build up a fully functional searXNG suite in a archlinux container:
 
 .. code:: sh
 
@@ -395,7 +397,8 @@ the container :
 	$ ln -s /share/searx/ /usr/local/searx/searx-src
 	$ systemctl restart uwsgi@searx
 
-To get remarks from the suite of the archlinux container we can use:
+To get information about the searxNG suite in the archlinux container we can
+use:
 
 .. tabs::
 

@@ -29,8 +29,8 @@ Calling the ``help`` target gives a first overview (``make help``):
 
 .. _make install:
 
-Python environment
-==================
+Python Environment (``make install``)
+=====================================
 
 .. sidebar:: activate environment
 

@@ -1,5 +1,7 @@
+.. _sql engines:
+
 ===========
-SQL engines
+SQL Engines
 ===========
 
 .. sidebar:: further read
@@ -36,9 +38,10 @@ place the templates at::
 
   searx/templates/{theme_name}/result_templates/{template_name}
 
-As mentioned in previous blog posts, if you do not wish to expose these engines
-on a public instance, you can still add them and limit the access by setting
-``tokens`` as described in section :ref:`private engines`.
+If you do not wish to expose these engines on a public instance, you can still
+add them and limit the access by setting ``tokens`` as described in section
+:ref:`private engines`.
+
 
 Configure the engines
 =====================
@@ -57,6 +60,10 @@ returned results use the option ``limit``.
 
 SQLite
 ------
+
+.. sidebar:: info
+
+   - :origin:`sqlite.py <searx/engines/sqlite.py>`
 
 .. _MediathekView: https://mediathekview.de/
 
@@ -106,9 +113,10 @@ PostgreSQL
 
 .. _psycopg2: https://www.psycopg.org/install
 
-.. sidebar:: requirements
+.. sidebar:: info
 
-   ``pip install`` psycopg2_
+   - :origin:`postgresql.py <searx/engines/postgresql.py>`
+   - ``pip install`` psycopg2_
 
 PostgreSQL is a powerful and robust open source database.  Before configuring
 the PostgreSQL engine, you must install the dependency ``psychopg2``.  You can
@@ -130,9 +138,10 @@ MySQL
 
 .. _mysql-connector-python: https://pypi.org/project/mysql-connector-python
 
-.. sidebar:: requirements
+.. sidebar:: info
 
-   ``pip install`` mysql-connector-python_
+   - :origin:`mysql_server.py <searx/engines/mysql_server.py>`
+   - ``pip install`` mysql-connector-python_
 
 MySQL is said to be the most popular open source database. Before enabling MySQL
 engine, you must install the package ``mysql-connector-python``.
@@ -152,9 +161,9 @@ example configuration for quering a MySQL server:
      query_str: 'SELECT * from my_table WHERE my_column=%(query)s'
 
 
-Acknowledgement
-===============
+Acknowledgment
+==============
 
 This development was sponsored by `Search and Discovery Fund
-<https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_ .
+<https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_.
 

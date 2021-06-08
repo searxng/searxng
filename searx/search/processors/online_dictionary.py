@@ -12,9 +12,9 @@ from .online import OnlineProcessor
 parser_re = re.compile('.*?([a-z]+)-([a-z]+) ([^ ]+)$', re.I)
 
 class OnlineDictionaryProcessor(OnlineProcessor):
-    """Processor class used by ``online_dictionnary`` engines."""
+    """Processor class used by ``online_dictionary`` engines."""
 
-    engine_type = 'online_dictionnary'
+    engine_type = 'online_dictionary'
 
     def get_params(self, search_query, engine_category):
         params = super().get_params(search_query, engine_category)
