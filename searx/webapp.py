@@ -440,74 +440,65 @@ def get_translations():
 
 
 def render(template_name, override_theme=None, **kwargs):
-    disabled_engines = request.preferences.engines.get_disabled()
+    # values from the HTTP requests
+    kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
+    kwargs['cookies'] = request.cookies
+    kwargs['errors'] = request.errors
 
-    enabled_categories = set(category for engine_name in engines
-                             for category in engines[engine_name].categories
-                             if (engine_name, category) not in disabled_engines)
+    # values from the preferences
+    kwargs['preferences'] = request.preferences
+    kwargs['method'] = request.preferences.get_value('method')
+    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
+    kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
+    kwargs['theme'] = get_current_theme_name(override=override_theme)
 
     if 'categories' not in kwargs:
+        disabled_engines = request.preferences.engines.get_disabled()
+        enabled_categories = set(category for engine_name in engines
+                                for category in engines[engine_name].categories
+                                if (engine_name, category) not in disabled_engines)
         kwargs['categories'] = [x for x in
                                 _get_ordered_categories()
                                 if x in enabled_categories]
 
-    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    # i18n
+    kwargs['language_codes'] = languages  # from searx.languages
+    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
-
     if locale in rtl_locales and 'rtl' not in kwargs:
         kwargs['rtl'] = True
-
-    kwargs['searx_version'] = VERSION_STRING
-
-    kwargs['method'] = request.preferences.get_value('method')
-
-    kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-
-    kwargs['language_codes'] = languages
     if 'current_language' not in kwargs:
         kwargs['current_language'] = match_language(request.preferences.get_value('language'),
                                                     LANGUAGE_CODES)
 
-    # override url_for function in templates
-    kwargs['url_for'] = url_for_theme
-
-    kwargs['image_proxify'] = image_proxify
-
-    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
-    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
-
-    kwargs['opensearch_url'] = url_for('opensearch') + '?' \
-        + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
-
-    kwargs['get_result_template'] = get_result_template
-
-    kwargs['theme'] = get_current_theme_name(override=override_theme)
-
-    kwargs['cookies'] = request.cookies
-
-    kwargs['errors'] = request.errors
-
-    kwargs['instance_name'] = settings['general']['instance_name']
-
-    kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
-
-    kwargs['preferences'] = request.preferences
-
+    # values from settings
     kwargs['search_formats'] = [
         x for x in settings['search']['formats']
         if x != 'html']
 
+    # brand
+    kwargs['instance_name'] = settings['general']['instance_name']
+    kwargs['searx_version'] = VERSION_STRING
     kwargs['brand'] = brand
 
-    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
+    # helpers to create links to other pages
+    kwargs['url_for'] = url_for_theme  # override url_for function in templates
+    kwargs['image_proxify'] = image_proxify
+    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
+    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
+    kwargs['get_result_template'] = get_result_template
+    kwargs['opensearch_url'] = url_for('opensearch') + '?' \
+        + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
 
+    # scripts from plugins
     kwargs['scripts'] = set()
-    kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     for plugin in request.user_plugins:
         for script in plugin.js_dependencies:
             kwargs['scripts'].add(script)
 
+    # styles from plugins
     kwargs['styles'] = set()
     for plugin in request.user_plugins:
         for css in plugin.css_dependencies:
