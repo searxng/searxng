@@ -17,10 +17,7 @@ from html import escape
 from io import StringIO
 
 import urllib
-from urllib.parse import (
-    urlencode,
-    urlparse,
-)
+from urllib.parse import urlencode
 
 import httpx
 
@@ -347,12 +344,6 @@ def code_highlighter(codelines, language=None):
     html_code = html_code + highlight(tmp_code, lexer, formatter)
 
     return html_code
-
-
-# Extract domain from url
-@app.template_filter('extract_domain')
-def extract_domain(url):
-    return urlparse(url)[1]
 
 
 def get_current_theme_name(override=None):
