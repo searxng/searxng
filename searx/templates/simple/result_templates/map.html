@@ -11,7 +11,7 @@
         <th scope="row">{{ result.address_label or _('address') }}</th>
         <td itemscope itemtype="http://schema.org/PostalAddress">
             {%- if result.address.name -%}
-                <strong itemprop="name" style="display: none">{{ result.address.name }}</strong>
+                <strong itemprop="name" class="hidden">{{ result.address.name }}</strong>
             {%- endif -%}
             {% if result.address.road -%}
                 <span itemprop="streetAddress">
