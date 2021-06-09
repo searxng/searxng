@@ -85,15 +85,11 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
 Overrides
 ---------
 
-.. sidebar:: engine's global names
-
-   Global names with a leading underline are *private to the engine* and will
-   not be overwritten.
-
 A few of the options have default values in the namespace of engine's python
 modul, but are often overwritten by the settings.  If ``None`` is assigned to an
 option in the engine file, it has to be redefined in the settings, otherwise
-searx will not start with that engine.
+searx will not start with that engine (global names with a leading underline can
+be ``None``).
 
 Here is an very simple example of the global names in the namespace of engine's
 module:
