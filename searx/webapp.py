@@ -17,19 +17,13 @@ from html import escape
 from io import StringIO
 
 import urllib
-from urllib.parse import (
-    urlencode,
-    urlparse,
-)
+from urllib.parse import urlencode
 
 import httpx
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
-
-from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.serving import WSGIRequestHandler
 
 import flask
 
@@ -106,6 +100,7 @@ from searx.metrics import (
     histogram,
     counter,
 )
+from searx.flaskfix import patch_application
 
 # renaming names from searx imports ...
 
@@ -116,29 +111,7 @@ from searx.network import stream as http_stream
 from searx.search.checker import get_result as checker_get_result
 from searx.settings_loader import get_default_settings_path
 
-# set Unix thread name
-try:
-    import setproctitle
-except ImportError:
-    pass
-else:
-    import threading
-    old_thread_init = threading.Thread.__init__
-
-    def new_thread_init(self, *args, **kwargs):
-        # pylint: disable=protected-access, disable=c-extension-no-member
-        old_thread_init(self, *args, **kwargs)
-        setproctitle.setthreadtitle(self._name)
-    threading.Thread.__init__ = new_thread_init
-
-if sys.version_info[0] < 3:
-    print('\033[1;31m Python2 is no longer supported\033[0m')
-    sys.exit(1)
-
 logger = logger.getChild('webapp')
-
-# serve pages with HTTP/1.1
-WSGIRequestHandler.protocol_version = "HTTP/{}".format(settings['server']['http_protocol_version'])
 
 # check secret_key
 if not searx_debug and settings['server']['secret_key'] == 'ultrasecretkey':
@@ -358,16 +331,6 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-# Extract domain from url
-@app.template_filter('extract_domain')
-def extract_domain(url):
-    return urlparse(url)[1]
-
-
-def get_base_url():
-    return url_for('index', _external=True)
-
-
 def get_current_theme_name(override=None):
     """Returns theme name.
 
@@ -452,78 +415,76 @@ def get_translations():
     }
 
 
-def render(template_name, override_theme=None, **kwargs):
+def _get_ordered_categories():
+    ordered_categories = list(settings['ui']['categories_order'])
+    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
+    return ordered_categories
+
+
+def _get_enable_categories(all_categories):
     disabled_engines = request.preferences.engines.get_disabled()
-
     enabled_categories = set(category for engine_name in engines
-                             for category in engines[engine_name].categories
-                             if (engine_name, category) not in disabled_engines)
+                            for category in engines[engine_name].categories
+                            if (engine_name, category) not in disabled_engines)
+    return [x for x in
+            all_categories
+            if x in enabled_categories]
 
-    if 'categories' not in kwargs:
-        kwargs['categories'] = [x for x in
-                                _get_ordered_categories()
-                                if x in enabled_categories]
 
-    if 'autocomplete' not in kwargs:
-        kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+def render(template_name, override_theme=None, **kwargs):
+    # values from the HTTP requests
+    kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
+    kwargs['cookies'] = request.cookies
+    kwargs['errors'] = request.errors
+
+    # values from the preferences
+    kwargs['preferences'] = request.preferences
+    kwargs['method'] = request.preferences.get_value('method')
+    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
+    kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
+    kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
+    kwargs['theme'] = get_current_theme_name(override=override_theme)
+    kwargs['all_categories'] = _get_ordered_categories()
+    kwargs['categories'] = _get_enable_categories(kwargs['all_categories'])
+
+    # i18n
+    kwargs['language_codes'] = languages  # from searx.languages
+    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
-
     if locale in rtl_locales and 'rtl' not in kwargs:
         kwargs['rtl'] = True
-
-    kwargs['searx_version'] = VERSION_STRING
-
-    kwargs['method'] = request.preferences.get_value('method')
-
-    kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-
-    kwargs['language_codes'] = languages
     if 'current_language' not in kwargs:
         kwargs['current_language'] = match_language(request.preferences.get_value('language'),
                                                     LANGUAGE_CODES)
 
-    # override url_for function in templates
-    kwargs['url_for'] = url_for_theme
-
-    kwargs['image_proxify'] = image_proxify
-
-    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
-    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
-
-    kwargs['opensearch_url'] = url_for('opensearch') + '?' \
-        + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
-
-    kwargs['get_result_template'] = get_result_template
-
-    kwargs['theme'] = get_current_theme_name(override=override_theme)
-
-    kwargs['template_name'] = template_name
-
-    kwargs['cookies'] = request.cookies
-
-    kwargs['errors'] = request.errors
-
-    kwargs['instance_name'] = settings['general']['instance_name']
-
-    kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
-
-    kwargs['preferences'] = request.preferences
-
+    # values from settings
     kwargs['search_formats'] = [
         x for x in settings['search']['formats']
         if x != 'html']
 
+    # brand
+    kwargs['instance_name'] = settings['general']['instance_name']
+    kwargs['searx_version'] = VERSION_STRING
     kwargs['brand'] = brand
 
-    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
+    # helpers to create links to other pages
+    kwargs['url_for'] = url_for_theme  # override url_for function in templates
+    kwargs['image_proxify'] = image_proxify
+    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
+    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
+    kwargs['get_result_template'] = get_result_template
+    kwargs['opensearch_url'] = url_for('opensearch') + '?' \
+        + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
 
+    # scripts from plugins
     kwargs['scripts'] = set()
-    kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     for plugin in request.user_plugins:
         for script in plugin.js_dependencies:
             kwargs['scripts'].add(script)
 
+    # styles from plugins
     kwargs['styles'] = set()
     for plugin in request.user_plugins:
         for css in plugin.css_dependencies:
@@ -535,12 +496,6 @@ def render(template_name, override_theme=None, **kwargs):
     request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result
-
-
-def _get_ordered_categories():
-    ordered_categories = list(settings['ui']['categories_order'])
-    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
-    return ordered_categories
 
 
 @app.before_request
@@ -637,7 +592,6 @@ def index_error(output_format, error_message):
             results=[],
             q=request.form['q'] if 'q' in request.form else '',
             number_of_results=0,
-            base_url=get_base_url(),
             error_message=error_message,
             override_theme='__common__',
         )
@@ -655,9 +609,6 @@ def index_error(output_format, error_message):
 def index():
     """Render index page."""
 
-    # UI
-    advanced_search = request.preferences.get_value('advanced_search')
-
     # redirect to search if there's a query in the request
     if request.form.get('q'):
         query = ('?' + request.query_string.decode()) if request.query_string else ''
@@ -666,7 +617,6 @@ def index():
     return render(
         'index.html',
         selected_categories=get_selected_categories(request.preferences, request.form),
-        advanced_search=advanced_search,
     )
 
 
@@ -692,7 +642,6 @@ def search():
         if output_format == 'html':
             return render(
                 'index.html',
-                advanced_search=request.preferences.get_value('advanced_search'),
                 selected_categories=get_selected_categories(request.preferences, request.form),
             )
         return index_error(output_format, 'No query'), 400
@@ -815,7 +764,6 @@ def search():
             suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=number_of_results,
-            base_url=get_base_url(),
             override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
@@ -853,7 +801,6 @@ def search():
         current_language=match_language(search_query.lang,
                                         LANGUAGE_CODES,
                                         fallback=request.preferences.get_value("language")),
-        base_url=get_base_url(),
         theme=get_current_theme_name(),
         favicons=global_favicons[themes.index(get_current_theme_name())],
         timeout_limit=request.form.get('timeout_limit', None)
@@ -1060,7 +1007,6 @@ def preferences():
     #
     return render('preferences.html',
                   selected_categories=get_selected_categories(request.preferences, request.form),
-                  all_categories=_get_ordered_categories(),
                   locales=settings['locales'],
                   current_locale=request.preferences.get_value("locale"),
                   image_proxy=image_proxy,
@@ -1080,7 +1026,6 @@ def preferences():
                   allowed_plugins=allowed_plugins,
                   theme=get_current_theme_name(),
                   preferences_url_params=request.preferences.get_as_url_params(),
-                  base_url=get_base_url(),
                   locked_preferences=settings['preferences']['lock'],
                   preferences=True)
 
@@ -1338,70 +1283,8 @@ def run():
         ],
     )
 
-
-class ReverseProxyPathFix:
-    '''Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind
-    this to a URL other than / and to an HTTP scheme that is
-    different than what is used locally.
-
-    http://flask.pocoo.org/snippets/35/
-
-    In nginx:
-    location /myprefix {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-        proxy_set_header X-Script-Name /myprefix;
-        }
-
-    :param wsgi_app: the WSGI application
-    '''
-    # pylint: disable=too-few-public-methods
-
-    def __init__(self, wsgi_app):
-
-        self.wsgi_app = wsgi_app
-        self.script_name = None
-        self.scheme = None
-        self.server = None
-
-        if settings['server']['base_url']:
-
-            # If base_url is specified, then these values from are given
-            # preference over any Flask's generics.
-
-            base_url = urlparse(settings['server']['base_url'])
-            self.script_name = base_url.path
-            if self.script_name.endswith('/'):
-                # remove trailing slash to avoid infinite redirect on the index
-                # see https://github.com/searx/searx/issues/2729
-                self.script_name = self.script_name[:-1]
-            self.scheme = base_url.scheme
-            self.server = base_url.netloc
-
-    def __call__(self, environ, start_response):
-        script_name = self.script_name or environ.get('HTTP_X_SCRIPT_NAME', '')
-        if script_name:
-            environ['SCRIPT_NAME'] = script_name
-            path_info = environ['PATH_INFO']
-            if path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
-
-        scheme = self.scheme or environ.get('HTTP_X_SCHEME', '')
-        if scheme:
-            environ['wsgi.url_scheme'] = scheme
-
-        server = self.server or environ.get('HTTP_X_FORWARDED_HOST', '')
-        if server:
-            environ['HTTP_HOST'] = server
-        return self.wsgi_app(environ, start_response)
-
-
 application = app
-# patch app to handle non root url-s behind proxy & wsgi
-app.wsgi_app = ReverseProxyPathFix(ProxyFix(application.wsgi_app))
+patch_application(app)
 
 if __name__ == "__main__":
     run()
