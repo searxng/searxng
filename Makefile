@@ -73,7 +73,7 @@ test.shell:
 
 MANAGE += buildenv
 MANAGE += babel.compile
-MANAGE += data.all data.languages data.useragents
+MANAGE += data.all data.languages data.useragents data.osm_keys_tags
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
 MANAGE += docker.build docker.push docker.buildx
 MANAGE += gecko.driver

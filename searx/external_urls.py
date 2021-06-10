@@ -10,11 +10,20 @@ IMDB_PREFIX_TO_URL_ID = {
     'co': 'imdb_company',
     'ev': 'imdb_event'
 }
+HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
 
 def get_imdb_url_id(imdb_item_id):
     id_prefix = imdb_item_id[:2]
     return IMDB_PREFIX_TO_URL_ID.get(id_prefix)
+
+
+def get_wikimedia_image_id(url):
+    if url.startswith(HTTP_WIKIMEDIA_IMAGE):
+        return url[len(HTTP_WIKIMEDIA_IMAGE):]
+    if url.startswith('File:'):
+        return url[len('File:'):]
+    return url
 
 
 def get_external_url(url_id, item_id, alternative="default"):
@@ -25,8 +34,11 @@ def get_external_url(url_id, item_id, alternative="default"):
 
     If item_id is None, the raw URL with the $1 is returned.
     """
-    if url_id == 'imdb_id' and item_id is not None:
-        url_id = get_imdb_url_id(item_id)
+    if item_id is not None:
+        if url_id == 'imdb_id':
+            url_id = get_imdb_url_id(item_id)
+        elif url_id == 'wikimedia_image':
+            item_id = get_wikimedia_image_id(item_id)
 
     url_description = EXTERNAL_URLS.get(url_id)
     if url_description:

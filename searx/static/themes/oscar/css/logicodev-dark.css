@@ -623,6 +623,30 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
 .result-map {
   clear: both;
 }
+.result-map .img-thumbnail {
+  float: right;
+  width: auto;
+  height: 120px;
+  border: 0;
+  background: inherit;
+}
+.result-map .img-type {
+  width: 20px;
+  max-height: 20px;
+}
+.result-map .result-map-details {
+  font-size: 13px;
+  border-collapse: separate;
+  border-spacing: 0 0.35rem;
+}
+.result-map .result-map-details th {
+  font-weight: inherit;
+  width: 20rem;
+  vertical-align: top;
+}
+.result-map .result-map-details td {
+  vertical-align: top;
+}
 .result-code {
   clear: both;
 }
