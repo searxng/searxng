@@ -77,31 +77,26 @@ def request(query, params):
     offset = (params['pageno'] - 1) * 10
     lang_info = get_lang_info(
         # pylint: disable=undefined-variable
-
-
-        # params, {}, language_aliases
-
-        params, supported_languages, language_aliases
+        params, supported_languages, language_aliases, False
     )
+    logger.debug(
+        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
+
     # subdomain is: scholar.google.xy
     lang_info['subdomain'] = lang_info['subdomain'].replace("www.", "scholar.")
 
     query_url = 'https://'+ lang_info['subdomain'] + '/scholar' + "?" + urlencode({
         'q':  query,
-        'hl': lang_info['hl'],
-        'lr': lang_info['lr'],
+        **lang_info['params'],
         'ie': "utf8",
         'oe':  "utf8",
         'start' : offset,
     })
 
     query_url += time_range_url(params)
-
-    logger.debug("query_url --> %s", query_url)
     params['url'] = query_url
 
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['Accept-Language'])
-    params['headers']['Accept-Language'] = lang_info['Accept-Language']
+    params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = (
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     )

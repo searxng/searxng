@@ -101,14 +101,15 @@ def request(query, params):
 
     lang_info = get_lang_info(
         # pylint: disable=undefined-variable
-        params, supported_languages, language_aliases
+        params, supported_languages, language_aliases, False
     )
+    logger.debug(
+        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     query_url = 'https://' + lang_info['subdomain'] + '/search' + "?" + urlencode({
         'q': query,
         'tbm': "isch",
-        'hl': lang_info['hl'],
-        'lr': lang_info['lr'],
+        **lang_info['params'],
         'ie': "utf8",
         'oe': "utf8",
         'num': 30,
@@ -118,12 +119,9 @@ def request(query, params):
         query_url += '&' + urlencode({'tbs': 'qdr:' + time_range_dict[params['time_range']]})
     if params['safesearch']:
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
-
-    logger.debug("query_url --> %s", query_url)
     params['url'] = query_url
 
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['Accept-Language'])
-    params['headers']['Accept-Language'] = lang_info['Accept-Language']
+    params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = (
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     )
