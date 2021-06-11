@@ -85,6 +85,8 @@ def request(query, params):
         # pylint: disable=undefined-variable
         params, supported_languages, language_aliases, False
     )
+    logger.debug(
+        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     # google news has only one domain
     lang_info['subdomain'] = 'news.google.com'
@@ -107,11 +109,8 @@ def request(query, params):
         'oe': "utf8",
         'gl': lang_info['country'],
     }) + ('&ceid=%s' % ceid)  # ceid includes a ':' character which must not be urlencoded
-
-    logger.debug("query_url --> %s", query_url)
     params['url'] = query_url
 
-    logger.debug("HTTP header Accept-Language --> %s", lang_info.get('Accept-Language'))
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = (
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
