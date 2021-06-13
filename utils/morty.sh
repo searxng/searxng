@@ -18,7 +18,7 @@ in_container && lxc_set_suite_env
 MORTY_LISTEN="${MORTY_LISTEN:-127.0.0.1:3000}"
 PUBLIC_URL_PATH_MORTY="${PUBLIC_URL_PATH_MORTY:-/morty/}"
 
-PUBLIC_URL_MORTY="${PUBLIC_URL_MORTY:-$(echo "$SEARX_URL" |  sed -e's,^\(.*://[^/]*\).*,\1,g')${PUBLIC_URL_PATH_MORTY}}"
+PUBLIC_URL_MORTY="${PUBLIC_URL_MORTY:-$(echo "$PUBLIC_URL" |  sed -e's,^\(.*://[^/]*\).*,\1,g')${PUBLIC_URL_PATH_MORTY}}"
 
 # shellcheck disable=SC2034
 MORTY_TIMEOUT=5
