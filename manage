@@ -32,7 +32,7 @@ pylint.FILES() {
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml')"
+done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searx/*.yml')"
 
 PYLINT_SEARX_DISABLE_OPTION="\
 I,C,R,\

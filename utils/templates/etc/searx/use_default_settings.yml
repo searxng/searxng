@@ -1,23 +1,34 @@
-use_default_settings: True
+use_default_settings: true
 
 general:
-    debug : False # Debug mode, only for development
-    instance_name : "searx" # displayed name
+  debug: false              # Debug mode, only for development
+  instance_name: "searxng"  # displayed name
+  contact_url: false        # mailto:contact@example.com
 
 search:
-    safe_search : 0 # Filter results. 0: None, 1: Moderate, 2: Strict
-    autocomplete : "" # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off by default
-    default_lang : "" # Default search language - leave blank to detect from browser information or use codes from 'languages.py'
-    formats: [html, csv, json, rss]
+  # Filter results. 0: None, 1: Moderate, 2: Strict
+  safe_search: 0
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google",
+  # "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
+  # by default.
+  autocomplete: ""
+  # Default search language - leave blank to detect from browser information or
+  # use codes from 'languages.py'
+  default_lang: ""
+  # remove format to deny access, use lower case.
+  formats: [html, csv, json, rss]
 
 server:
-    port : 8888
-    bind_address : "127.0.0.1" # address to listen on
-    secret_key : "ultrasecretkey" # change this!
-    base_url : False # Set custom base_url. Possible values: False or "https://your.custom.host/location/"
-    image_proxy : False # Proxying image results through searx
+  port: 8888
+  # address to listen on
+  bind_address: "127.0.0.1"
+  secret_key: "ultrasecretkey"  # change this!
+  # Set custom base_url. Possible values:
+  #   false or "https://your.custom.host/location/"
+  base_url: https://darmarit.org/searx
+  # Proxying image results through searx
+  image_proxy: false
 
-# uncomment below section if you have running morty proxy
-#result_proxy:
-#    url : http://127.0.0.1:3000/
-#    key : !!binary "your_morty_proxy_key"
+# result_proxy:
+#   url: http://127.0.0.1:3000/
+#   key: !!binary "your_morty_proxy_key"
