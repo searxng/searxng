@@ -404,7 +404,7 @@ pypi.upload.test() {
 }
 
 test.yamllint() {
-    build_msg TEST "[pylint] \$PYLINT_FILES"
+    build_msg TEST "[yamllint] \$YAMLLINT_FILES"
     pyenv.cmd yamllint --format parsable "${YAMLLINT_FILES[@]}"
 }
 
