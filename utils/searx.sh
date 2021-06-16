@@ -51,7 +51,8 @@ shellcheck"
 BUILD_PACKAGES_debian="\
 firefox graphviz imagemagick texlive-xetex librsvg2-bin
 texlive-latex-recommended texlive-extra-utils fonts-dejavu
-latexmk fontforge ttfautohint"
+latexmk fontforge ttfautohint
+npm"
 
 # pacman packages
 SEARX_PACKAGES_arch="\
@@ -62,7 +63,8 @@ shellcheck"
 
 BUILD_PACKAGES_arch="\
 firefox graphviz imagemagick texlive-bin extra/librsvg
-texlive-core texlive-latexextra ttf-dejavu fontforge ttfautohint"
+texlive-core texlive-latexextra ttf-dejavu fontforge ttfautohint
+npm"
 
 # dnf packages
 SEARX_PACKAGES_fedora="\
@@ -75,9 +77,16 @@ BUILD_PACKAGES_fedora="\
 firefox graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts fontforge ttfautohint"
+dejavu-sans-mono-fonts fontforge ttfautohint
+npm"
 
 # yum packages
+#
+# hint: We do no longer support yum packages, it is to complex to maintain
+#       automate installation of packages like npm.  In the firts step we ignore
+#       CentOS-7 as developer & build platform (the inital patch which brought
+#       CentOS-7 supports was not intended to be a developer platform).
+
 SEARX_PACKAGES_centos="\
 python36 python36-pip python36-lxml python-babel
 uwsgi uwsgi-plugin-python3
@@ -88,7 +97,7 @@ BUILD_PACKAGES_centos="\
 firefox graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts fontforge ttfautohint"
+dejavu-sans-mono-fonts"
 
 case $DIST_ID-$DIST_VERS in
     ubuntu-16.04|ubuntu-18.04)

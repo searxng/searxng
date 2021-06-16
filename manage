@@ -295,15 +295,18 @@ gecko.driver() {
 }
 
 node.env() {
-    # shellcheck disable=SC2230
-    which npm &> /dev/null || die 1 'node.env - npm is not found!'
+    if ! required_commands npm fontforge ttfautohint; then
+        info_msg "to install build tools use::"
+        info_msg "   sudo -H ./utils/searx.sh install buildhost"
+        die 1 "install needed build tools first"
+    fi
 
     (   set -e
 
-        build_msg INSTALL "theme: oscar"
+        build_msg INSTALL "searx/static/themes/oscar/package.json"
         npm --prefix searx/static/themes/oscar install
 
-        build_msg INSTALL "theme: simple"
+        build_msg INSTALL "searx/static/themes/simple/package.json"
         npm --prefix searx/static/themes/simple install
     )
     dump_return $?
