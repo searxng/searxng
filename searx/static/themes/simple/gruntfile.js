@@ -107,7 +107,7 @@ module.exports = function(grunt) {
           'node_modules/ionicons-npm/src/music-note.svg',
           'node_modules/ionicons-npm/src/ion-close-round.svg',
           'node_modules/ionicons-npm/src/android-more-vertical.svg',
-          'magnet.svg',
+          'src/fonts/magnet.svg',
           'node_modules/ionicons-npm/src/android-close.svg',	  
         ],
         dest: 'fonts',
