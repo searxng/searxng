@@ -33,7 +33,7 @@
         infinite_scroll: script.getAttribute('data-infinite-scroll') === 'true',
         static_path: script.getAttribute('data-static-path'),
         translations: JSON.parse(script.getAttribute('data-translations')),
-    }
+    };
 
     // update the css
     d.getElementsByTagName("html")[0].className = (w.searx.touch)?"js touch":"js";
