@@ -23,6 +23,41 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      js: {
+        expand: true,
+        cwd: './node_modules',
+        dest: './js/',
+        flatten: true,
+        filter: 'isFile',
+        timestamp: true,
+        src: [
+          './leaflet/dist/leaflet.js',
+        ]
+      },
+      css: {
+        expand: true,
+        cwd: './node_modules',
+        dest: './css/',
+        flatten: true,
+        filter: 'isFile',
+        timestamp: true,
+        src: [
+          './leaflet/dist/leaflet.css',
+        ]
+      },
+      leaflet_images: {
+        expand: true,
+        cwd: './node_modules',
+        dest: './css/images/',
+        flatten: true,
+        filter: 'isFile',
+        timestamp: true,
+        src: [
+          './leaflet/dist/images/*.png',
+        ]
+      },
+    },
     concat: {
       head_and_body: {
         options: {
@@ -149,6 +184,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -158,5 +194,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['jshint']);
 
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'less:development', 'less:production']);
+  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']);
 };
