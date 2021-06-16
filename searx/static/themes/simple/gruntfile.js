@@ -65,7 +65,7 @@ module.exports = function(grunt) {
         },
         files: {
           'js/searx.head.js': ['src/js/head/*.js'],
-          'js/searx.js': ['src/js/main/*.js', '../__common__/js/*.js', 'js/autocomplete.js']
+          'js/searx.js': ['src/js/main/*.js', '../__common__/js/*.js', './node_modules/autocomplete-js/dist/autocomplete.js']
         }
       }
     },
