@@ -6,12 +6,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['<%= jshint.files %>', 'less/*.less'],
+        files: ['src/**'],
         tasks: ['jshint', 'concat', 'uglify', 'webfont', 'less:development', 'less:production']
       }
     },
     jshint: {
-      files: ['js/searx_src/*.js', 'js/searx_header/*.js', '../__common__/js/*.js'],
+      files: ['src/js/main/*.js', 'src/js/head/*.js', '../__common__/js/*.js'],
       options: {
         reporterOutput: "",
         proto: true,
@@ -29,8 +29,8 @@ module.exports = function(grunt) {
           separator: ';'
         },
         files: {
-          'js/searx.head.js': ['js/searx_head/*.js'],
-          'js/searx.js': ['js/searx_src/*.js', '../__common__/js/*.js']
+          'js/searx.head.js': ['src/js/head/*.js'],
+          'js/searx.js': ['src/js/main/*.js', '../__common__/js/*.js', 'js/autocomplete.js']
         }
       }
     },
@@ -60,8 +60,8 @@ module.exports = function(grunt) {
           banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
         },
         files: {
-          "css/searx.css": "less/style.less",
-          "css/searx-rtl.css": "less/style-rtl.less"
+          "css/searx.css": "src/less/style.less",
+          "css/searx-rtl.css": "src/less/style-rtl.less"
         }
       },
       production: {
@@ -77,8 +77,8 @@ module.exports = function(grunt) {
           banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
         },
         files: {
-          "css/searx.min.css": "less/style.less",
-          "css/searx-rtl.min.css": "less/style-rtl.less"
+          "css/searx.min.css": "src/less/style.less",
+          "css/searx-rtl.min.css": "src/less/style-rtl.less"
         }
       },
     },
