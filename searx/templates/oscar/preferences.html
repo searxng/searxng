@@ -187,102 +187,6 @@
                 </div>
                 </fieldset>
             </div>
-            <div class="tab-pane active_if_nojs" id="tab_engine">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-justified hide_if_nojs" role="tablist">
-                    {% for categ in all_categories %}
-                    <li{% if loop.first %} class="active"{% endif %}><a href="#tab_engine_{{ categ|replace(' ', '_') }}" role="tab" data-toggle="tab">{{ _(categ) }}</a></li>
-                    {% endfor %}
-                </ul>
-
-                <noscript>
-                    <h3>{{ _('Engines') }}</h3>
-                </noscript>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-
-                    <div class="hide_if_nojs">
-                        <p class="text-{% if rtl %}left{% else %}right{% endif %}">
-                            <button type="button" class="btn btn-default btn-success" id="allow-all-engines">{{ _("Allow all") }}</button>
-                            <button type="button" class="btn btn-default btn-danger" id="disable-all-engines">{{ _("Disable all") }}</button>
-                        </p>
-                    </div>
-
-                    {% for categ in all_categories %}
-                    <noscript><label>{{ _(categ) }}</label>
-                    </noscript>
-                    <div class="tab-pane{% if loop.first %} active{% endif %} active_if_nojs" id="tab_engine_{{ categ|replace(' ', '_') }}">
-                        <div class="container-fluid">
-                        <fieldset>
-                          <div class="table-responsive">
-                          <table class="table table-hover table-condensed table-striped">
-                                <tr>
-                                    {% if not rtl %}
-                                    <th scope="col">{{ _("Allow") }}</th>
-                                    <th scope="col">{{ _("Engine name") }}</th>
-                                    <th scope="col">{{ _("Shortcut") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("Selected language") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("SafeSearch") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("Time range") }}</th>
-                                    <th scope="col">{{ _("Response time") }}</th>
-                                    <th scope="col" class="text-right"  style="width: 7rem">{{ _("Max time") }}</th>
-                                    <th scope="col" class="text-right" style="width: 7rem">{{ _("Reliablity") }}</th>
-                                    {% else %}
-                                    <th scope="col">{{ _("Reliablity") }}</th>
-                                    <th scope="col">{{ _("Max time") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Response time") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Time range") }}</th>
-                                    <th scope="col" class="text-right">{{ _("SafeSearch") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Selected language") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Shortcut") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Engine name") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Allow") }}</th>
-                                    {% endif %}
-                                </tr>
-                        {% for search_engine in engines_by_category[categ] %}
-                            {% if not search_engine.private %}
-                                <tr>
-                                    {% if not rtl %}
-                                        <td class="onoff-checkbox">
-                                        {{- checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) -}}
-                                        </td>
-                                        <th scope="row"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
-                                            {%- if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif -%}
-                                            {{- search_engine.name -}}</span>
-                                            {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
-                                        </th>
-                                        <td class="name">{{ shortcuts[search_engine.name] }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
-                                        {{ engine_time(search_engine.name, 'text-right') }}
-                                        <td class="text-right {{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{% if stats[search_engine.name]['warn_timeout'] %}{{ icon('exclamation-sign') }} {% endif %}{{ search_engine.timeout }}</td>
-                                        {{ engine_reliability(search_engine.name, 'text-right ') }}
-                                    {% else %}
-                                        {{ engine_reliability(search_engine.name, 'text-left') }}
-                                        <td class="text-left {{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}{% if stats[search_engine.name]['warn_time'] %} {{ icon('exclamation-sign')}}{% endif %}</td>
-                                        {{ engine_time(search_engine.name, 'text-left') }}
-                                        <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
-                                        <td>{{ shortcuts[search_engine.name] }}</td>
-                                        <th scope="row"><span>{% if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif %}{{ search_engine.name }}</span>{{ engine_about(search_engine) }}</th>
-                                        <td class="onoff-checkbox">
-                                        {{ checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) }}
-                                        </td>
-                                    {% endif %}
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                          </table>
-                          </div>
-                        </fieldset>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
             <div class="tab-pane active_if_nojs" id="tab_ui">
                 <noscript>
                     <h3>{{ _('User Interface') }}</h3>
@@ -378,6 +282,102 @@
                         {{ plugin_of_category('privacy' )}}
                     </div>
                 </fieldset>
+            </div>
+            <div class="tab-pane active_if_nojs" id="tab_engine">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-justified hide_if_nojs" role="tablist">
+                    {% for categ in all_categories %}
+                    <li{% if loop.first %} class="active"{% endif %}><a href="#tab_engine_{{ categ|replace(' ', '_') }}" role="tab" data-toggle="tab">{{ _(categ) }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <noscript>
+                    <h3>{{ _('Engines') }}</h3>
+                </noscript>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+
+                    <div class="hide_if_nojs">
+                        <p class="text-{% if rtl %}left{% else %}right{% endif %}">
+                            <button type="button" class="btn btn-default btn-success" id="allow-all-engines">{{ _("Allow all") }}</button>
+                            <button type="button" class="btn btn-default btn-danger" id="disable-all-engines">{{ _("Disable all") }}</button>
+                        </p>
+                    </div>
+
+                    {% for categ in all_categories %}
+                    <noscript><label>{{ _(categ) }}</label>
+                    </noscript>
+                    <div class="tab-pane{% if loop.first %} active{% endif %} active_if_nojs" id="tab_engine_{{ categ|replace(' ', '_') }}">
+                        <div class="container-fluid">
+                        <fieldset>
+                          <div class="table-responsive">
+                          <table class="table table-hover table-condensed table-striped">
+                                <tr>
+                                    {% if not rtl %}
+                                    <th scope="col">{{ _("Allow") }}</th>
+                                    <th scope="col">{{ _("Engine name") }}</th>
+                                    <th scope="col">{{ _("Shortcut") }}</th>
+                                    <th scope="col" style="width: 10rem">{{ _("Selected language") }}</th>
+                                    <th scope="col" style="width: 10rem">{{ _("SafeSearch") }}</th>
+                                    <th scope="col" style="width: 10rem">{{ _("Time range") }}</th>
+                                    <th scope="col">{{ _("Response time") }}</th>
+                                    <th scope="col" class="text-right"  style="width: 7rem">{{ _("Max time") }}</th>
+                                    <th scope="col" class="text-right" style="width: 7rem">{{ _("Reliablity") }}</th>
+                                    {% else %}
+                                    <th scope="col">{{ _("Reliablity") }}</th>
+                                    <th scope="col">{{ _("Max time") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Response time") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Time range") }}</th>
+                                    <th scope="col" class="text-right">{{ _("SafeSearch") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Selected language") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Shortcut") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Engine name") }}</th>
+                                    <th scope="col" class="text-right">{{ _("Allow") }}</th>
+                                    {% endif %}
+                                </tr>
+                        {% for search_engine in engines_by_category[categ] %}
+                            {% if not search_engine.private %}
+                                <tr>
+                                    {% if not rtl %}
+                                        <td class="onoff-checkbox">
+                                        {{- checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) -}}
+                                        </td>
+                                        <th scope="row"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
+                                            {%- if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif -%}
+                                            {{- search_engine.name -}}</span>
+                                            {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
+                                        </th>
+                                        <td class="name">{{ shortcuts[search_engine.name] }}</td>
+                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
+                                        <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
+                                        <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
+                                        {{ engine_time(search_engine.name, 'text-right') }}
+                                        <td class="text-right {{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{% if stats[search_engine.name]['warn_timeout'] %}{{ icon('exclamation-sign') }} {% endif %}{{ search_engine.timeout }}</td>
+                                        {{ engine_reliability(search_engine.name, 'text-right ') }}
+                                    {% else %}
+                                        {{ engine_reliability(search_engine.name, 'text-left') }}
+                                        <td class="text-left {{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}{% if stats[search_engine.name]['warn_time'] %} {{ icon('exclamation-sign')}}{% endif %}</td>
+                                        {{ engine_time(search_engine.name, 'text-left') }}
+                                        <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
+                                        <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
+                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
+                                        <td>{{ shortcuts[search_engine.name] }}</td>
+                                        <th scope="row"><span>{% if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif %}{{ search_engine.name }}</span>{{ engine_about(search_engine) }}</th>
+                                        <td class="onoff-checkbox">
+                                        {{ checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) }}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                          </table>
+                          </div>
+                        </fieldset>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="tab-pane active_if_nojs" id="tab_query">
                 <noscript>
