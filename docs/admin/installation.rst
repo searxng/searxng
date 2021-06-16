@@ -73,8 +73,30 @@ This installs searx as described in :ref:`installation basic`.
 
 If all services are running fine, you can add it to your HTTP server:
 
+**Install** HTTP
+
 - :ref:`installation apache`
 - :ref:`installation nginx`
+
+**Install** :ref:`external plugins <dev plugin>`
+
+Use searx's ``shell`` to install external plugins.  In the example below we
+install the searx plugins from **The Green Web Foundation** `[ref]
+<https://www.thegreenwebfoundation.org/news/searching-the-green-web-with-searx/>`__:
+
+.. code:: bash
+
+   $ sudo -H ./utils/searx.sh shell
+   // exit with [CTRL-D]
+   (searx-pyenv) searx@ryzen:~$ pip install git+https://github.com/return42/tgwf-searx-plugins
+
+In the :ref:`settings.yml` activate the ``plugins:`` section and add module
+``only_show_green_results`` from tgwf-searx-plugins.
+
+.. code:: yaml
+
+   plugins:
+     - only_show_green_results
 
 .. _git stash: https://git-scm.com/docs/git-stash
 
@@ -82,5 +104,5 @@ If all services are running fine, you can add it to your HTTP server:
 
    About script's installation options have a look at chapter :ref:`toolboxing
    setup`.  How to brand your instance see chapter :ref:`settings global`.  To
-   *stash* your instance's setup, `git stash`_ your clone's :origin:`Makefile`
-   and :origin:`.config.sh` file .
+   *stash* your instance's setup, `git stash`_ your clone's :origin:`.config.sh`
+   file .
