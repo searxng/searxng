@@ -55,7 +55,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install Ubuntu packages
-      run: sudo ./utils/searx.sh install packages
+      run: sudo ./utils/searx.sh install buildhost
     - name: Install node dependencies
       run: make V=1 node.env
     - name: Build themes

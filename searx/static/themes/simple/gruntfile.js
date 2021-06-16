@@ -88,35 +88,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    less: {
-      development: {
-        options: {
-          paths: ["less"],
-          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
-        },
-        files: {
-          "css/searx.css": "src/less/style.less",
-          "css/searx-rtl.css": "src/less/style-rtl.less"
-        }
-      },
-      production: {
-        options: {
-          paths: ["less"],
-          plugins: [
-            new (require('less-plugin-clean-css'))()
-          ],
-          sourceMap: true,
-          sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map';},
-          outputSourceFiles: false,
-          sourceMapRootpath: '../',
-          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
-        },
-        files: {
-          "css/searx.min.css": "src/less/style.less",
-          "css/searx-rtl.min.css": "src/less/style-rtl.less"
-        }
-      },
-    },
     webfont: {
       icons: {
         // src: 'node_modules/ionicons-npm/src/*.svg',
@@ -146,7 +117,7 @@ module.exports = function(grunt) {
           'node_modules/ionicons-npm/src/android-close.svg',	  
         ],
         dest: 'fonts',
-        destLess: 'less',
+        destLess: '.',
         options: {
           font: 'ion',
           hashes : true,
@@ -180,7 +151,36 @@ module.exports = function(grunt) {
           }
         }
       }
-    }
+    },
+    less: {
+      development: {
+        options: {
+          paths: ["less"],
+          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
+        },
+        files: {
+          "css/searx.css": "src/less/style.less",
+          "css/searx-rtl.css": "src/less/style-rtl.less"
+        }
+      },
+      production: {
+        options: {
+          paths: ["less"],
+          plugins: [
+            new (require('less-plugin-clean-css'))()
+          ],
+          sourceMap: true,
+          sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map';},
+          outputSourceFiles: false,
+          sourceMapRootpath: '../',
+          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
+        },
+        files: {
+          "css/searx.min.css": "src/less/style.less",
+          "css/searx-rtl.min.css": "src/less/style-rtl.less"
+        }
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -194,5 +194,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['jshint']);
 
-  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']);
+  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'webfont', 'less:development', 'less:production']);
 };
