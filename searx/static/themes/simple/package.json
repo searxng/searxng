@@ -22,6 +22,7 @@
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "clean": "rm -Rf node_modules package-lock.json ion.less"
   }
 }

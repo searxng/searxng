@@ -310,14 +310,11 @@ node.env() {
 }
 
 node.clean() {
-
     build_msg CLEAN "locally installed npm dependencies"
-    rm -rf \
-       ./searx/static/themes/oscar/package-lock.json \
-       ./searx/static/themes/oscar/node_modules \
-       ./searx/static/themes/simple/package-lock.json \
-       ./searx/static/themes/simple/node_modules
-       ./searx/static/themes/simple/ion.less \
+    (   set -e
+        npm --prefix searx/static/themes/oscar run clean
+        npm --prefix searx/static/themes/simple run clean
+    )
     dump_return $?
 }
 
