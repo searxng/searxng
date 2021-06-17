@@ -19,7 +19,9 @@ import re
 name = gettext('Self Informations')
 description = gettext('Displays your IP if the query is "ip" and your user agent if the query contains "user agent".')
 default_on = True
-
+preference_section = 'query'
+query_keywords = ['user-agent']
+query_examples = ''
 
 # Self User Agent regex
 p = re.compile('.*user[ -]agent.*', re.IGNORECASE)

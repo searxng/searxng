@@ -76,6 +76,16 @@
 {%- endif -%}
 {%- endmacro -%}
 
+{%- macro plugin_of_category(plugin_category) -%}
+{%- for plugin in plugins -%}
+    {%- if plugin.preference_section == plugin_category -%}
+        {{- preferences_item_header(_(plugin.description), _(plugin.name), rtl, 'plugin_' + plugin.id) -}}
+            {{- checkbox_toggle('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+        {{- preferences_item_footer(_(plugin.description), _(plugin.name), rtl) -}}
+    {%- endif -%}
+{%- endfor -%}
+{% endmacro %}
+
 {%- block title %}{{ _('preferences') }} - {% endblock -%}
 
 {% block content %}
@@ -88,9 +98,10 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-justified hide_if_nojs" role="tablist">
           <li class="active"><a href="#tab_general" role="tab" data-toggle="tab">{{ _('General') }}</a></li>
+          <li><a href="#tab_ui" role="tab" data-toggle="tab">{{ _('User Interface') }}</a></li>
+          <li><a href="#tab_privacy" role="tab" data-toggle="tab">{{ _('Privacy') }}</a></li>
           <li><a href="#tab_engine" role="tab" data-toggle="tab">{{ _('Engines') }}</a></li>
-          <li><a href="#tab_plugins" role="tab" data-toggle="tab">{{ _('Plugins') }}</a></li>
-          {% if answerers %}<li><a href="#tab_answerers" role="tab" data-toggle="tab">{{ _('Answerers') }}</a></li>{% endif %}
+          <li><a href="#tab_query" role="tab" data-toggle="tab">{{ _('Special Queries') }}</a></li>
           <li><a href="#tab_cookies" role="tab" data-toggle="tab">{{ _('Cookies') }}</a></li>
         </ul>
 
@@ -125,16 +136,16 @@
                     {{ preferences_item_footer(language_info, language_label, rtl) }}
                     {% endif %}
 
-                    {% if 'locale' not in locked_preferences %}
-                    {% set locale_label = _('Interface language') %}
-                    {% set locale_info = _('Change the language of the layout') %}
-                    {{ preferences_item_header(locale_info, locale_label, rtl, 'locale') }}
-                        <select class="form-control {{ custom_select_class(rtl)}}" name="locale" id="locale">
-                            {% for locale_id,locale_name in locales.items() | sort %}
-                            <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
-                            {% endfor %}
+                    {% if 'safesearch' not in locked_preferences %}
+                    {% set safesearch_label = _('SafeSearch') %}
+                    {% set safesearch_info = _('Filter content') %}
+                    {{ preferences_item_header(safesearch_info, safesearch_label, rtl, 'safesearch') }}
+                        <select class="form-control {{ custom_select_class(rtl) }}" name="safesearch" id="safesearch">
+                            <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
+                            <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
+                            <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
                         </select>
-                    {{ preferences_item_footer(locale_info, locale_label, rtl) }}
+                    {{ preferences_item_footer(safesearch_info, safesearch_label, rtl) }}
                     {% endif %}
 
                     {% if 'autocomplete' not in locked_preferences %}
@@ -150,81 +161,7 @@
                     {{ preferences_item_footer(autocomplete_info, autocomplete_label, rtl) }}
                     {% endif %}
 
-                    {% if 'image_proxy' not in locked_preferences %}
-                    {% set image_proxy_label = _('Image proxy') %}
-                    {% set image_proxy_info = _('Proxying image results through searx') %}
-                    {{ preferences_item_header(image_proxy_info, image_proxy_label, rtl, 'image_proxy') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="image_proxy" id="image_proxy">
-                            <option value="1" {% if image_proxy  %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
-                            <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled')}}</option>
-                        </select>
-                    {{ preferences_item_footer(image_proxy_info, image_proxy_label, rtl) }}
-                    {% endif %}
-
-                    {% if 'method' not in locked_preferences %}
-                    {% set method_label = _('Method') %}
-                    {% set method_info = _('Change how forms are submited, <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods" rel="external">learn more about request methods</a>') %}
-                    {{ preferences_item_header(method_info, method_label, rtl, 'method') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="method" id="method">
-                            <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
-                            <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
-                        </select>
-                    {{ preferences_item_footer(method_info, method_label, rtl) }}
-                    {% endif %}
-
-                    {% if 'safesearch' not in locked_preferences %}
-                    {% set safesearch_label = _('SafeSearch') %}
-                    {% set safesearch_info = _('Filter content') %}
-                    {{ preferences_item_header(safesearch_info, safesearch_label, rtl, 'safesearch') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="safesearch" id="safesearch">
-                            <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
-                            <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
-                            <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
-                        </select>
-                    {{ preferences_item_footer(safesearch_info, safesearch_label, rtl) }}
-                    {% endif %}
-
-                    {% if 'theme' not in locked_preferences %}
-                    {% set theme_label = _('Themes') %}
-                    {% set theme_info = _('Change searx layout') %}
-                    {{ preferences_item_header(theme_info, theme_label, rtl, 'theme') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="theme" id="theme">
-                            {% for name in themes %}
-                            <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
-                            {% endfor %}
-                        </select>
-                    {{ preferences_item_footer(theme_info, theme_label, rtl) }}
-                    {% endif %}
-
-                    {% if 'oscar-style' not in locked_preferences %}
-                    {{ preferences_item_header(_('Choose style for this theme'), _('Style'), rtl, 'oscar_style') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="oscar-style" id="oscar_style">
-                            <option value="logicodev" >Logicodev</option>
-                            <option value="pointhi" {% if preferences.get_value('oscar-style') == 'pointhi' %}selected="selected"{% endif %}>Pointhi</option>
-                            <option value="logicodev-dark" {% if preferences.get_value('oscar-style') == 'logicodev-dark' %}selected="selected"{% endif %}>Logicodev dark</option>
-                        </select>
-                    {{ preferences_item_footer(_('Choose style for this theme'), _('Style'), rtl) }}
-                    {% endif %}
-
-                    {% if 'results_on_new_tab' not in locked_preferences %}
-                    {% set label = _('Results on new tabs') %}
-                    {% set info = _('Open result links on new browser tabs') %}
-                    {{ preferences_item_header(info, label, rtl, 'results_on_new_tab') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="results_on_new_tab" id="results_on_new_tab">
-                            <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
-                            <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
-                        </select>
-                    {{ preferences_item_footer(info, label, rtl) }}
-                    {% endif %}
-
-                    {% set label = _('Show advanced settings') %}
-                    {% set info = _('Show advanced settings panel in the home page by default') %}
-                    {{ preferences_item_header(info, label, rtl, 'advanced_search') }}
-                        <select class="form-control {{ custom_select_class(rtl) }}" name="advanced_search" id="advanced_search">
-                            <option value="1" {% if preferences.get_value('advanced_search')%}selected="selected"{% endif %}>{{ _('On') }}</option>
-                            <option value="0" {% if not preferences.get_value('advanced_search')%}selected="selected"{% endif %}>{{ _('Off')}}</option>
-                        </select>
-                    {{ preferences_item_footer(info, label, rtl) }}
+                    {{ plugin_of_category('general' )}}
 
                     {% if 'doi_resolver' not in locked_preferences %}
                     {% set label = _('Open Access DOI resolver') %}
@@ -240,12 +177,110 @@
                     {{ preferences_item_footer(info, label, rtl) }}
                     {% endif %}
 
+                    {{ plugin_of_category('onion' )}}
+
                     {% set label = _('Engine tokens') %}
                     {% set info = _('Access tokens for private engines') %}
                     {{ preferences_item_header(info, label, rtl, 'tokens') }}
                         <input class="form-control" id="tokens" name="tokens" value='{{ preferences.tokens.get_value() }}'/>
                     {{ preferences_item_footer(info, label, rtl) }}
                 </div>
+                </fieldset>
+            </div>
+            <div class="tab-pane active_if_nojs" id="tab_ui">
+                <noscript>
+                    <h3>{{ _('User Interface') }}</h3>
+                </noscript>
+                <fieldset>
+                    <div class="container-fluid">
+                        {% if 'locale' not in locked_preferences %}
+                        {% set locale_label = _('Interface language') %}
+                        {% set locale_info = _('Change the language of the layout') %}
+                        {{ preferences_item_header(locale_info, locale_label, rtl, 'locale') }}
+                            <select class="form-control {{ custom_select_class(rtl)}}" name="locale" id="locale">
+                                {% for locale_id,locale_name in locales.items() | sort %}
+                                <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
+                                {% endfor %}
+                            </select>
+                        {{ preferences_item_footer(locale_info, locale_label, rtl) }}
+                        {% endif %}
+
+                        {% if 'theme' not in locked_preferences %}
+                        {% set theme_label = _('Themes') %}
+                        {% set theme_info = _('Change searx layout') %}
+                        {{ preferences_item_header(theme_info, theme_label, rtl, 'theme') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="theme" id="theme">
+                                {% for name in themes %}
+                                <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        {{ preferences_item_footer(theme_info, theme_label, rtl) }}
+                        {% endif %}
+
+                        {% if 'oscar-style' not in locked_preferences %}
+                        {{ preferences_item_header(_('Choose style for this theme'), _('Style'), rtl, 'oscar_style') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="oscar-style" id="oscar_style">
+                                <option value="logicodev" >Logicodev</option>
+                                <option value="pointhi" {% if preferences.get_value('oscar-style') == 'pointhi' %}selected="selected"{% endif %}>Pointhi</option>
+                                <option value="logicodev-dark" {% if preferences.get_value('oscar-style') == 'logicodev-dark' %}selected="selected"{% endif %}>Logicodev dark</option>
+                            </select>
+                        {{ preferences_item_footer(_('Choose style for this theme'), _('Style'), rtl) }}
+                        {% endif %}
+
+                        {% set label = _('Show advanced settings') %}
+                        {% set info = _('Show advanced settings panel in the home page by default') %}
+                        {{ preferences_item_header(info, label, rtl, 'advanced_search') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="advanced_search" id="advanced_search">
+                                <option value="1" {% if preferences.get_value('advanced_search')%}selected="selected"{% endif %}>{{ _('On') }}</option>
+                                <option value="0" {% if not preferences.get_value('advanced_search')%}selected="selected"{% endif %}>{{ _('Off')}}</option>
+                            </select>
+                        {{ preferences_item_footer(info, label, rtl) }}
+
+                        {% if 'results_on_new_tab' not in locked_preferences %}
+                        {% set label = _('Results on new tabs') %}
+                        {% set info = _('Open result links on new browser tabs') %}
+                        {{ preferences_item_header(info, label, rtl, 'results_on_new_tab') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="results_on_new_tab" id="results_on_new_tab">
+                                <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
+                                <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+                            </select>
+                        {{ preferences_item_footer(info, label, rtl) }}
+                        {% endif %}
+
+                        {{ plugin_of_category('ui' )}}
+                    </div>
+                </fieldset>
+            </div>
+            <div class="tab-pane active_if_nojs" id="tab_privacy">
+                <noscript>
+                    <h3>{{ _('Privacy') }}</h3>
+                </noscript>
+                <fieldset>
+                    <div class="container-fluid">
+                        {% if 'method' not in locked_preferences %}
+                        {% set method_label = _('Method') %}
+                        {% set method_info = _('Change how forms are submited, <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods" rel="external">learn more about request methods</a>') %}
+                        {{ preferences_item_header(method_info, method_label, rtl, 'method') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="method" id="method">
+                                <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
+                                <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
+                            </select>
+                        {{ preferences_item_footer(method_info, method_label, rtl) }}
+                        {% endif %}
+
+                        {% if 'image_proxy' not in locked_preferences %}
+                        {% set image_proxy_label = _('Image proxy') %}
+                        {% set image_proxy_info = _('Proxying image results through searx') %}
+                        {{ preferences_item_header(image_proxy_info, image_proxy_label, rtl, 'image_proxy') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="image_proxy" id="image_proxy">
+                                <option value="1" {% if image_proxy  %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
+                                <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled')}}</option>
+                            </select>
+                        {{ preferences_item_footer(image_proxy_info, image_proxy_label, rtl) }}
+                        {% endif %}
+
+                        {{ plugin_of_category('privacy' )}}
+                    </div>
                 </fieldset>
             </div>
             <div class="tab-pane active_if_nojs" id="tab_engine">
@@ -344,61 +379,52 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="tab-pane active_if_nojs" id="tab_plugins">
+            <div class="tab-pane active_if_nojs" id="tab_query">
                 <noscript>
-                    <h3>{{ _('Plugins') }}</h3>
+                    <h3>{{ _('Query') }}</h3>
                 </noscript>
-                <fieldset>
-                    <div class="container-fluid">
-                        {% for plugin in plugins %}
-                        {% if plugin.preference_section != 'onions' %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">{{ _(plugin.name) }}</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-xs-6 col-sm-4 col-md-6"><label for="{{'plugin_' + plugin.id}}">{{ _(plugin.description) }}</label></div>
-                                <div class="col-xs-6 col-sm-4 col-md-6">
-                                    <div class="onoff-checkbox">
-                                    {{ checkbox_toggle('plugin_' + plugin.id, plugin.id not in allowed_plugins) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                </fieldset>
-            </div>
-
-            {% if answerers %}
-            <div class="tab-pane active_if_nojs" id="tab_answerers">
-                <noscript>
-                    <h3>{{ _('Answerers') }}</h3>
-                </noscript>
-                <p class="text-muted">
-                    {{ _('This is the list of searx\'s instant answering modules.') }}
-                </p>
+                {% if answerers %}
                 <table class="table table-striped">
-                    <tr>
-                        <th{% if rtl %} class="text-right"{% endif %}>{{ _('Name') }}</th>
-                        <th{% if rtl %} class="text-right"{% endif %}>{{ _('Keywords') }}</th>
-                        <th{% if rtl %} class="text-right"{% endif %}>{{ _('Description') }}</th>
-                        <th{% if rtl %} class="text-right"{% endif %}>{{ _('Examples') }}</th>
-                    </tr>
-
-                    {% for answerer in answerers %}
-                    <tr>
-                        <td>{{ answerer.info.name }}</td>
-                        <td>{{ answerer.keywords|join(', ') }}</td>
-                        <td>{{ answerer.info.description }}</td>
-                        <td>{{ answerer.info.examples|join(', ') }}</td>
-                    </tr>
-                    {% endfor %}
+                    <thead>
+                        <tr>
+                            <th{% if rtl %} class="text-right"{% endif %}>{{ _('Allow') }}</th>
+                            <th{% if rtl %} class="text-right"{% endif %}>{{ _('Keywords') }}</th>
+                            <th{% if rtl %} class="text-right"{% endif %}>{{ _('Name') }}</th>
+                            <th{% if rtl %} class="text-right"{% endif %}>{{ _('Description') }}</th>
+                            <th{% if rtl %} class="text-right"{% endif %}>{{ _('Examples') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td></td>
+                        <th scope="colgroup" colspan="4">{{ _('This is the list of searx\'s instant answering modules.') }}</th>
+                        {% for answerer in answerers %}
+                        <tr>
+                            <td></td>
+                            <td>{{ answerer.keywords|join(', ') }}</td>
+                            <td>{{ answerer.info.name }}</td>
+                            <td>{{ answerer.info.description }}</td>
+                            <td>{{ answerer.info.examples|join(', ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tbody>
+                        <td></td>
+                        <th scope="colgroup" colspan="4">{{ _('This is the list of plugins.') }}</th>
+                        {%- for plugin in plugins -%}
+                        {%- if plugin.preference_section == 'query' -%}
+                        <tr>
+                            <td>{{- checkbox_toggle('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>
+                            <td>{{ plugin.query_keywords|join(', ') }}</td>
+                            <td>{{ _(plugin.name) }}</td>
+                            <td>{{ _(plugin.description) }}</td>
+                            <td>{{ plugin.query_examples }}</td>
+                        </tr>
+                        {%- endif -%}
+                        {%- endfor -%}
+                    </tbody>
                 </table>
+                {% endif %}
             </div>
-            {% endif %}
-
             <div class="tab-pane active_if_nojs" id="tab_cookies">
                 <noscript>
                     <h3>{{ _('Cookies') }}</h3>

@@ -70,6 +70,13 @@ class PluginStore():
                 if not hasattr(plugin, plugin_attr) or not isinstance(getattr(plugin, plugin_attr), plugin_attr_type):
                     setattr(plugin, plugin_attr, plugin_attr_type())
             plugin.id = plugin.name.replace(' ', '_')
+            if not hasattr(plugin, 'preference_section'):
+                plugin.preference_section = 'general'
+            if plugin.preference_section == 'query':
+                for plugin_attr in ('query_keywords', 'query_examples'):
+                    if not hasattr(plugin, plugin_attr):
+                        logger.critical('missing attribute "{0}", cannot load plugin: {1}'.format(plugin_attr, plugin))
+                        exit(3)
             self.plugins.append(plugin)
 
     def call(self, ordered_plugin_list, plugin_type, request, *args, **kwargs):
