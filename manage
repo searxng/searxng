@@ -13,7 +13,6 @@ source_dot_config
 
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
-NPM_PACKAGES="less@2.7 less-plugin-clean-css grunt-cli"
 GECKODRIVER_VERSION="v0.28.0"
 # SPHINXOPTS=
 
@@ -296,43 +295,29 @@ gecko.driver() {
 }
 
 node.env() {
-    local err=0
-    pushd "${REPO_ROOT}" &> /dev/null
-    # shellcheck disable=SC2230
-    which npm &> /dev/null || die 1 'node.env - npm is not found!'
+    if ! required_commands npm fontforge ttfautohint; then
+        info_msg "to install build tools use::"
+        info_msg "   sudo -H ./utils/searx.sh install buildhost"
+        die 1 "install needed build tools first"
+    fi
 
     (   set -e
-        # shellcheck disable=SC2030
-        PATH="$(npm bin):$PATH"
-        export PATH
 
-        build_msg INSTALL "npm install $NPM_PACKAGES"
-        # shellcheck disable=SC2086
-        npm install $NPM_PACKAGES
+        build_msg INSTALL "searx/static/themes/oscar/package.json"
+        npm --prefix searx/static/themes/oscar install
 
-        cd "${REPO_ROOT}/searx/static/themes/oscar"
-        build_msg INSTALL "($(pwd)) npm install"
-        npm install
-
-        build_msg INSTALL "($(pwd)) npm install"
-        cd "${REPO_ROOT}/searx/static/themes/simple"
-        npm install
+        build_msg INSTALL "searx/static/themes/simple/package.json"
+        npm --prefix searx/static/themes/simple install
     )
-    err=$?
-    popd &> /dev/null
-    dump_return "$err"
+    dump_return $?
 }
 
 node.clean() {
-
     build_msg CLEAN "locally installed npm dependencies"
-    rm -rf \
-       ./node_modules  \
-       ./package-lock.json \
-       ./searx/static/themes/oscar/package-lock.json \
-       ./searx/static/themes/oscar/node_modules \
-       ./searx/static/themes/simple/package-lock.json \
-       ./searx/static/themes/simple/node_modules
+    (   set -e
+        npm --prefix searx/static/themes/oscar run clean
+        npm --prefix searx/static/themes/simple run clean
+    )
     dump_return $?
 }
 
@@ -481,16 +466,14 @@ themes.all() {
 }
 
 themes.oscar() {
-    local gruntfile=searx/static/themes/oscar/gruntfile.js
-    build_msg GRUNT "${gruntfile}"
-    PATH="$(npm bin):$PATH" grunt --gruntfile "${gruntfile}"
+    build_msg GRUNT "theme: oscar"
+    npm --prefix searx/static/themes/oscar run build
     dump_return $?
 }
 
 themes.simple() {
-    local gruntfile=searx/static/themes/simple/gruntfile.js
-    build_msg GRUNT "${gruntfile}"
-    PATH="$(npm bin):$PATH" grunt --gruntfile "${gruntfile}"
+    build_msg GRUNT "theme: simple"
+    npm --prefix searx/static/themes/simple run build
     dump_return $?
 }
 
