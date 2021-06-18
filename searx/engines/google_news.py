@@ -19,6 +19,7 @@ Definitions`_.  Not all parameters can be appied:
 # pylint: disable=invalid-name, missing-function-docstring
 
 import binascii
+from datetime import datetime
 import re
 from urllib.parse import urlencode
 from base64 import b64decode
@@ -115,6 +116,7 @@ def request(query, params):
     params['headers']['Accept'] = (
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
         )
+    params['headers']['Cookie'] = "CONSENT=YES+cb.%s-14-p0.en+F+941;" % datetime.now().strftime("%Y%m%d")
 
     return params
 
