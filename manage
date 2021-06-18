@@ -325,6 +325,16 @@ node.clean() {
     dump_return $?
 }
 
+pygments.less() {
+    [ "$_pyenv_OK" == "OK" ] && return 0
+    build_msg PYGMENTS "searx_extra/update/update_pygments.py"
+    if ! pyenv.cmd python searx_extra/update/update_pygments.py; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
+}
+
 py.build() {
     build_msg BUILD "[pylint] python package ${PYDIST}"
     pyenv.cmd python setup.py \
@@ -462,6 +472,7 @@ test.clean() {
 
 themes.all() {
     (   set -e
+        pygments.less
         node.env
         themes.oscar
         themes.simple
