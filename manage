@@ -326,7 +326,7 @@ node.clean() {
 }
 
 py.build() {
-    build_msg BUILD "[pylint] python package ${PYDIST}"
+    build_msg BUILD "python package ${PYDIST}"
     pyenv.cmd python setup.py \
               sdist -d "${PYDIST}" \
               bdist_wheel --bdist-dir "${PYBUILD}" -d "${PYDIST}"
