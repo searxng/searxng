@@ -94,8 +94,8 @@ def request(query, params):
     ceid = "%s:%s" % (lang_info['country'], lang_info['language'])
 
     # google news redirects en to en-US
-    if lang_info['hl'] == 'en':
-        lang_info['hl'] = 'en-US'
+    if lang_info['params']['hl'] == 'en':
+        lang_info['params']['hl'] = 'en-US'
 
     # Very special to google-news compared to other google engines, the time
     # range is included in the search term.
