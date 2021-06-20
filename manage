@@ -313,6 +313,10 @@ node.env() {
 }
 
 node.clean() {
+    if ! required_commands npm 2>/dev/null; then
+        build_msg CLEAN "npm is not installed / ignore npm dependencies"
+        return 0
+    fi
     build_msg CLEAN "locally installed npm dependencies"
     (   set -e
         npm --prefix searx/static/themes/oscar run clean
