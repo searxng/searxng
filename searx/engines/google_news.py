@@ -1,15 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Google (News)
-
-For detailed description of the *REST-full* API see: `Query Parameter
-Definitions`_.  Not all parameters can be appied:
+"""This is the implementation of the google news engine.  The google news API
+ignores some parameters from the common :ref:`google API`:
 
 - num_ : the number of search results is ignored
 - save_ : is ignored / Google-News results are always *SafeSearch*
-
-.. _Query Parameter Definitions:
-   https://developers.google.com/custom-search/docs/xml_results#WebSearch_Query_Parameter_Definitions
 
 .. _num: https://developers.google.com/custom-search/docs/xml_results#numsp
 .. _save: https://developers.google.com/custom-search/docs/xml_results#safesp

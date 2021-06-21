@@ -1,12 +1,28 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Google (Web)
+"""This is the implementation of the google WEB engine.  Some of this
+implementations are shared by other engines:
 
-For detailed description of the *REST-full* API see: `Query Parameter
-Definitions`_.
+- :ref:`google images engine`
+- :ref:`google news engine`
+- :ref:`google videos engine`
 
-.. _Query Parameter Definitions:
-   https://developers.google.com/custom-search/docs/xml_results#WebSearch_Query_Parameter_Definitions
+The google WEB engine itself has a special setup option:
+
+.. code:: yaml
+
+  - name: google
+    ...
+    use_mobile_ui: true
+
+``use_mobile_ui``: (default: ``true``)
+  Enables to use *mobile endpoint* to bypass the google blocking (see
+  :issue:`159`).  On the mobile UI of Google Search, the button :guilabel:`More
+  results` is not affected by Google rate limiting and we can still do requests
+  while actively blocked by the original Google search.  By activate
+  ``use_mobile_ui`` this behavior is simulated by adding the parameter
+  ``async=use_ac:true,_fmt:pc`` to the :py:func:`request`.
+
 """
 
 # pylint: disable=invalid-name, missing-function-docstring
@@ -137,8 +153,9 @@ spelling_suggestion_xpath = '//div[@class="med"]/p/a'
 def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     """Composing various language properties for the google engines.
 
-    This function is called by the various google engines (google itself,
-    google-images, -news, -scholar, -videos).
+    This function is called by the various google engines (:ref:`google web
+    engine`, :ref:`google images engine`, :ref:`google news engine` and
+    :ref:`google videos engine`).
 
     :param dict param: request parameters of the engine
 
@@ -146,7 +163,7 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
         :py:obj:`ENGINES_LANGUAGES[engine-name] <searx.data.ENGINES_LANGUAGES>`
 
     :param dict lang_list: custom aliases for non standard language codes
-        (used when calling :py:func:`searx.utils.match_language)
+        (used when calling :py:func:`searx.utils.match_language`)
 
     :param bool supported_any_language: When a language is not specified, the
         language interpretation is left up to Google to decide how the search
@@ -159,7 +176,7 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
         Py-Dictionary with the key/value pairs:
 
         language:
-            Return value from :py:func:`searx.utils.match_language
+            Return value from :py:func:`searx.utils.match_language`
 
         country:
             The country code (e.g. US, AT, CA, FR, DE ..)
