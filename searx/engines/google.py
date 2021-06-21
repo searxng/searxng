@@ -311,9 +311,10 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     # results --> answer
-    answer = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]//text()')
-    if answer:
-        results.append({'answer': ' '.join(answer)})
+    answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
+    if answer_list:
+        answer_list = [_.xpath("normalize-space()") for _ in answer_list]
+        results.append({'answer': ' '.join(answer_list)})
     else:
         logger.debug("did not find 'answer'")
 
