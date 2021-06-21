@@ -270,8 +270,7 @@ def request(query, params):
     additional_parameters = {}
     if use_mobile_ui:
         additional_parameters = {
-            'asearch': "arc",
-            'async': 'arc_id:srp_510,ffilt:all,ve_name:MoreResultsContainer,next_id:srp_5,use_ac:true,_id:arc-srp_510,_pms:qs,_fmt:pc'  # pylint: disable=line-too-long
+            'async': 'use_ac:true,_fmt:pc',
         }
 
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
