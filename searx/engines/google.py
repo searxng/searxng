@@ -34,6 +34,7 @@ categories = ['general']
 paging = True
 time_range_support = True
 safesearch = True
+use_mobile_ui = False
 supported_languages_url = 'https://www.google.com/preferences?#languages'
 
 # based on https://en.wikipedia.org/wiki/List_of_Google_domains and tests
@@ -266,6 +267,13 @@ def request(query, params):
         params, supported_languages, language_aliases, True
     )
 
+    additional_parameters = {}
+    if use_mobile_ui:
+        additional_parameters = {
+            'asearch': "arc",
+            'async': 'arc_id:srp_510,ffilt:all,ve_name:MoreResultsContainer,next_id:srp_5,use_ac:true,_id:arc-srp_510,_pms:qs,_fmt:pc'  # pylint: disable=line-too-long
+        }
+
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
     query_url = 'https://' + lang_info['subdomain'] + '/search' + "?" + urlencode({
         'q': query,
@@ -273,6 +281,7 @@ def request(query, params):
         'ie': "utf8",
         'oe': "utf8",
         'start': offset,
+        **additional_parameters,
     })
 
     if params['time_range'] in time_range_dict:
@@ -282,9 +291,12 @@ def request(query, params):
     params['url'] = query_url
 
     params['headers'].update(lang_info['headers'])
-    params['headers']['Accept'] = (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    )
+    if use_mobile_ui:
+        params['headers']['Accept'] = '*/*'
+    else:
+        params['headers']['Accept'] = (
+            'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+        )
 
     return params
 
@@ -307,14 +319,15 @@ def response(resp):
         logger.debug("did not find 'answer'")
 
     # results --> number_of_results
-        try:
-            _txt = eval_xpath_getindex(dom, '//div[@id="result-stats"]//text()', 0)
-            _digit = ''.join([n for n in _txt if n.isdigit()])
-            number_of_results = int(_digit)
-            results.append({'number_of_results': number_of_results})
-        except Exception as e:  # pylint: disable=broad-except
-            logger.debug("did not 'number_of_results'")
-            logger.error(e, exc_info=True)
+        if not use_mobile_ui:
+            try:
+                _txt = eval_xpath_getindex(dom, '//div[@id="result-stats"]//text()', 0)
+                _digit = ''.join([n for n in _txt if n.isdigit()])
+                number_of_results = int(_digit)
+                results.append({'number_of_results': number_of_results})
+            except Exception as e:  # pylint: disable=broad-except
+                logger.debug("did not 'number_of_results'")
+                logger.error(e, exc_info=True)
 
     # parse results
     for result in eval_xpath_list(dom, results_xpath):
