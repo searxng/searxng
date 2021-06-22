@@ -83,6 +83,11 @@
 
                (flycheck-checker . yaml-yamllint)))))
 
+ (json-mode
+  . ((eval . (progn
+               (setq-local js-indent-level 2)
+               (flycheck-checker . json-python-json)))))
+
  (python-mode
   . ((eval . (progn
 
