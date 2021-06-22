@@ -17,12 +17,14 @@
   },
   "dependencies": {
     "autocomplete-js": "2.7.1",
-    "leaflet": "^1.7.1"
+    "leaflet": "^1.7.1",
+    "normalize.css": "^8.0.1"
   },
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
     "watch": "grunt watch",
+    "webfont": "grunt webfont",
     "clean": "rm -Rf node_modules package-lock.json ion.less"
   }
 }

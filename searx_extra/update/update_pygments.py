@@ -125,17 +125,17 @@ def get_css(cssclass, style):
 
 def main():
 
-    fname = 'static/themes/oscar/src/less/logicodev/pygments.less'
+    fname = 'static/themes/oscar/src/generated/pygments-logicodev.less'
     print("update: %s" % fname)
     with open(get_output_filename(fname), 'w') as f:
         f.write(get_css(CSSCLASS, LogicodevStyle))
 
-    fname = 'static/themes/oscar/src/less/pointhi/pygments.less'
+    fname = 'static/themes/oscar/src/generated/pygments-pointhi.less'
     print("update: %s" % fname)
     with open(get_output_filename(fname), 'w') as f:
         f.write(get_css(CSSCLASS, 'default'))
 
-    fname = 'static/themes/simple/less/pygments.less'
+    fname = 'static/themes/simple/src/generated/pygments.less'
     print("update: %s" % fname)
     with open(get_output_filename(fname), 'w') as f:
         f.write(get_css(CSSCLASS, 'default'))

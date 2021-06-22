@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**'],
-        tasks: ['jshint', 'concat', 'uglify', 'webfont', 'less:development', 'less:production']
+        tasks: ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
       }
     },
     jshint: {
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
           'node_modules/ionicons-npm/src/android-close.svg',	  
         ],
         dest: 'fonts',
-        destLess: '.',
+        destLess: 'src/generated',
         options: {
           font: 'ion',
           hashes : true,
@@ -194,5 +194,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['jshint']);
 
-  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'webfont', 'less:development', 'less:production']);
+  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']);
 };

@@ -86,6 +86,8 @@ themes.* :
   all       : build all themes
   oscar     : build oscar theme
   simple    : build simple theme
+pygments.* :
+  less      : build LESS files for pygments
 EOF
 }
 
@@ -295,7 +297,7 @@ gecko.driver() {
 }
 
 node.env() {
-    if ! required_commands npm fontforge ttfautohint; then
+    if ! required_commands npm; then
         info_msg "to install build tools use::"
         info_msg "   sudo -H ./utils/searx.sh install buildhost"
         die 1 "install needed build tools first"
@@ -323,6 +325,15 @@ node.clean() {
         npm --prefix searx/static/themes/simple run clean
     )
     dump_return $?
+}
+
+pygments.less() {
+    build_msg PYGMENTS "searx_extra/update/update_pygments.py"
+    if ! pyenv.cmd python searx_extra/update/update_pygments.py; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
 }
 
 py.build() {
@@ -462,6 +473,7 @@ test.clean() {
 
 themes.all() {
     (   set -e
+        pygments.less
         node.env
         themes.oscar
         themes.simple
