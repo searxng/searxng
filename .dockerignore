@@ -4,9 +4,6 @@
 */*/*/*~
 */*/*/*/*~
 
-#
-local/
-
 # Git
 .git
 .gitignore
@@ -26,19 +23,6 @@ __pycache__/
 */*/*.py[cod]
 */*/*/*.py[cod]
 
-# to sync with .gitignore
-.coverage
-coverage/
-.installed.cfg
-engines.cfg
-env
-searx-ve
-robot_log.html
-robot_output.xml
-robot_report.html
-test_basic/
-setup.cfg
-
 # node_modules
 node_modules/
 */node_modules/
@@ -48,9 +32,13 @@ node_modules/
 
 .tx/
 
-#
+# to sync with .gitignore
+geckodriver.log
+.coverage
+coverage/
+cache/
 build/
 dist/
 local/
 gh-pages/
-searx.egg-info/
+*.egg-info/

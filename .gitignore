@@ -1,28 +1,17 @@
 # to sync with .dockerignore
-.coverage
-coverage/
-cache/
-.installed.cfg
-engines.cfg
-env
-searx-ve
-robot_log.html
-robot_output.xml
-robot_report.html
-test_basic/
-setup.cfg
 
 *.pyc
 */*.pyc
 *~
 *.swp
+geckodriver.log
 
-/node_modules
+.coverage
+coverage/
 
-.tx/
-
+cache/
 build/
 dist/
 local/
 gh-pages/
-searx.egg-info/
+*.egg-info/
