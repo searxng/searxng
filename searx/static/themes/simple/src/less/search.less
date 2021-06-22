@@ -54,11 +54,6 @@
   }
 }
 
-#q::-ms-clear,
-#q::-webkit-search-cancel-button {
-  display: none;
-}
-
 #q,
 #send_search {
   display: block !important;
@@ -82,6 +77,11 @@
   padding-right: 0 !important;
   border-right: none;
   width: @search-width;
+}
+
+#q::-ms-clear,
+#q::-webkit-search-cancel-button {
+  display: none;
 }
 
 #send_search {
@@ -110,8 +110,8 @@
     clear: both;
 
     .checkbox_container {
-      margin-top: 2px;
       margin: auto;
+      margin-top: 2px;
     }
   }
 
@@ -246,7 +246,7 @@
     opacity: 0;
     transition: opacity 1s ease;
     font-size: 0.8em;
-    text-position: center;
+    text-align: center;
     background: white;
   }
 
