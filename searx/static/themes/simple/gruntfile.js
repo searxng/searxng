@@ -23,6 +23,14 @@ module.exports = function(grunt) {
         }
       }
     },
+    stylelint: {
+      options: {
+        formatter: 'unix',
+      },
+      src: [
+        'src/less/**/*.less',
+      ]
+    },
     copy: {
       js: {
         expand: true,
@@ -191,8 +199,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-webfont');
+  grunt.loadNpmTasks('grunt-stylelint');
 
   grunt.registerTask('test', ['jshint']);
 
-  grunt.registerTask('default', ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']);
+  grunt.registerTask('default', [
+    'jshint',
+    'stylelint',
+    'copy',
+    'concat',
+    'uglify',
+    'less:development',
+    'less:production'
+  ]);
 };
