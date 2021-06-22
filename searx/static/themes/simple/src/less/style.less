@@ -8,24 +8,18 @@
 
 @import "../../__common__/less/new_issue.less";
 @import "../../__common__/less/stats.less";
-
 @import (inline) "../../node_modules/normalize.css/normalize.css";
-
 @import "../generated/ion.less";
-
 @import "definitions.less";
-
 @import "mixins.less";
-
 @import "code.less";
-
 @import "toolkit.less";
-
 @import "autocomplete.less";
 
 // ion-icon
 .ion-icon-big {
   .ion-icon;
+
   font-size: 149%;
 }
 
@@ -43,12 +37,14 @@ html {
   font-family: arial, sans-serif;
   font-size: 0.9em;
   .text-size-adjust;
+
   color: @color-font;
   padding: 0;
   margin: 0;
 }
 
-body, main {
+body,
+main {
   padding: 0;
   margin: 0;
 }
@@ -60,12 +56,14 @@ main {
 
 footer {
   // position:absolute;
-	bottom:0;
-	width:100%;
-	height:50px;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
 }
 
-#main_preferences, #main_about, #main_stats {
+#main_preferences,
+#main_about,
+#main_stats {
   margin: 3em;
   width: auto;
 }
@@ -84,24 +82,27 @@ footer {
   }
 }
 
-#main_preferences h1, #main_stats h1 {
+#main_preferences h1,
+#main_stats h1 {
   background: url('../img/searx.png') no-repeat;
   background-size: auto 75%;
   min-height: 40px;
   margin: 0 auto;
 
   span {
-      visibility: hidden;
+    visibility: hidden;
   }
 }
 
-input[type="submit"], #results button[type="submit"] {
+input[type="submit"],
+#results button[type="submit"] {
   padding: 0.5rem;
   margin: 2px 4px;
   display: inline-block;
   background: @color-download-button-background;
   color: @color-download-button-font;
   .rounded-corners;
+
   border: 0;
   cursor: pointer;
 }
@@ -147,7 +148,7 @@ article.result-images[data-vim-selected]::before {
 
   h3 {
     font-size: 1.1em;
-    word-wrap:break-word;
+    word-wrap: break-word;
     margin: 5px 0 1px 0;
     padding: 0;
     margin-bottom: 0;
@@ -161,26 +162,30 @@ article.result-images[data-vim-selected]::before {
         color: @color-result-link-visited-font;
       }
 
-      &:focus, &:hover {
+      &:focus,
+      &:hover {
         text-decoration: underline;
         border: none;
         -webkit-box-shadow: none;
         box-shadow: none;
-        outline:none;
+        outline: none;
       }
     }
   }
 
-  .cache_link, .proxyfied_link {
+  .cache_link,
+  .proxyfied_link {
     font-size: 0.9em !important;
   }
 
-  .content, .stat, .altlink {
+  .content,
+  .stat,
+  .altlink {
     font-size: 0.9em;
     margin: 0;
     padding: 0;
     max-width: 54em;
-    word-wrap:break-word;
+    word-wrap: break-word;
     line-height: 1.24;
 
     .highlight {
@@ -203,7 +208,7 @@ article.result-images[data-vim-selected]::before {
     margin: 0 0 3px 0;
     padding: 0;
     max-width: 54em;
-    word-wrap:break-word;
+    word-wrap: break-word;
     color: @color-result-url-font;
   }
 
@@ -213,7 +218,6 @@ article.result-images[data-vim-selected]::before {
   }
 
   img {
-
     &.thumbnail {
       float: left;
       padding: 0 5px 10px 0;
@@ -231,13 +235,11 @@ article.result-images[data-vim-selected]::before {
       object-fit: scale-down;
       object-position: right top;
     }
-
   }
 
   .break {
-      clear: both;
+    clear: both;
   }
-
 }
 
 .category-social .image {
@@ -305,7 +307,6 @@ article.result-images[data-vim-selected]::before {
 }
 
 .result-map {
-
   img.image {
     float: right !important;
     height: 100px !important;
@@ -313,7 +314,7 @@ article.result-images[data-vim-selected]::before {
   }
 
   table {
-    font-size: .9em;
+    font-size: 0.9em;
     width: auto;
     border-collapse: separate;
     border-spacing: 0 0.35rem;
@@ -365,7 +366,6 @@ article.result-images[data-vim-selected]::before {
 }
 
 #suggestions {
-
   .wrapper {
     display: flex;
     flex-flow: row wrap;
@@ -378,12 +378,16 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-#suggestions, #answers, #corrections {
+#suggestions,
+#answers,
+#corrections {
   max-width: @results-width;
 }
 
-#suggestions, #answers, #infoboxes, #corrections {
-
+#suggestions,
+#answers,
+#infoboxes,
+#corrections {
   input {
     padding: 0;
     margin: 3px;
@@ -394,7 +398,8 @@ article.result-images[data-vim-selected]::before {
     cursor: pointer;
   }
 
-  input[type="submit"], .infobox .url a {
+  input[type="submit"],
+  .infobox .url a {
     color: @color-result-link-font;
     text-decoration: none;
     font-size: 0.9rem;
@@ -403,7 +408,6 @@ article.result-images[data-vim-selected]::before {
       text-decoration: underline;
     }
   }
-
 }
 
 #corrections {
@@ -411,18 +415,20 @@ article.result-images[data-vim-selected]::before {
   flex-flow: row wrap;
   margin: 1em 0;
 
-  h4, input[type="submit"] {
+  h4,
+  input[type="submit"] {
     display: inline-block;
     margin: 0 0.5em 0 0;
   }
 
   input[type="submit"]::after {
-    content: ", "
+    content: ", ";
   }
-
 }
 
-#suggestions .title, #search_url .title, #apis .title {
+#suggestions .title,
+#search_url .title,
+#apis .title {
   margin: 2em 0 0.5em 0;
   color: @color-font;
 }
@@ -431,7 +437,7 @@ article.result-images[data-vim-selected]::before {
   margin: 10px 8px 10px 8px;
   border: 1px solid #ddd;
   padding: 0.9em;
-  box-shadow: 0px 0px 5px #CCC;
+  box-shadow: 0 0 5px #ccc;
 
   h4 {
     display: none;
@@ -444,7 +450,8 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-#answers, #infoboxes {
+#answers,
+#infoboxes {
   form {
     min-width: 210px;
   }
@@ -454,9 +461,8 @@ article.result-images[data-vim-selected]::before {
   position: absolute;
   top: 100px;
   left: 57em;
-
-  margin: 0px 2px 5px 5px;
-  padding: 0px 2px 2px;
+  margin: 0 2px 5px 5px;
+  padding: 0 2px 2px;
   max-width: 25em;
   word-wrap: break-word;
 
@@ -465,10 +471,10 @@ article.result-images[data-vim-selected]::before {
     border: 1px solid #ddd;
     padding: 0.9em;
     font-size: 0.9em;
-    box-shadow: 0px 0px 5px #CCC;
+    box-shadow: 0 0 5px #ccc;
 
     h2 {
-      margin: 0 0 .5em 0;
+      margin: 0 0 0.5em 0;
     }
 
     img {
@@ -504,10 +510,10 @@ article.result-images[data-vim-selected]::before {
       clear: both;
     }
 
-    .attributes, .urls {
+    .attributes,
+    .urls {
       clear: both;
     }
-
   }
 }
 
@@ -528,11 +534,13 @@ article.result-images[data-vim-selected]::before {
   padding: 0;
   border: 0;
   display: block;
-
   font-size: 1.2em;
   color: @color-search-font;
 
-  a:link *, a:hover *, a:visited *, a:active * {
+  a:link *,
+  a:hover *,
+  a:visited *,
+  a:active * {
     color: @color-search-font;
   }
 }
@@ -555,7 +563,7 @@ article.result-images[data-vim-selected]::before {
   margin: 0 0 0 2em;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0px 0px 5px #CCC;
+  box-shadow: 0 0 5px #ccc;
   background: white;
   position: fixed;
   bottom: 85px;
@@ -571,13 +579,15 @@ article.result-images[data-vim-selected]::before {
 }
 
 @media screen and (max-width: 75em) {
-
-  #main_preferences, #main_about, #main_stats {
+  #main_preferences,
+  #main_about,
+  #main_stats {
     margin: 0.5em;
     width: auto;
   }
 
-  #suggestions, #answers {
+  #suggestions,
+  #answers {
     margin-top: 1em;
   }
 
@@ -586,7 +596,7 @@ article.result-images[data-vim-selected]::before {
     max-width: inherit;
 
     .infobox {
-      clear:both;
+      clear: both;
 
       img {
         float: left;
@@ -594,7 +604,6 @@ article.result-images[data-vim-selected]::before {
         margin: 0.5em 0.5em 0.5em 0;
       }
     }
-
   }
 
   #sidebar {
@@ -634,7 +643,6 @@ article.result-images[data-vim-selected]::before {
     }
 
     .url {
-
       span.url {
         display: block;
         white-space: nowrap;
@@ -647,7 +655,6 @@ article.result-images[data-vim-selected]::before {
         float: right;
         padding: 0 0.5em;
       }
-
     }
 
     .engines {
@@ -662,43 +669,41 @@ article.result-images[data-vim-selected]::before {
 
   .image_result {
     max-width: 98%;
+
     img {
       max-width: 98%;
     }
   }
 }
 
-
 #main_results div#results.only_template_images {
-    flex-direction: column;
-    width: auto;
-    display: flex;
+  flex-direction: column;
+  width: auto;
+  display: flex;
 
-    #sidebar {
-	position: relative;
-	top: auto;
-	order: 2;
-    }
+  #sidebar {
+    position: relative;
+    top: auto;
+    order: 2;
+  }
 
-    #urls {
-	position: relative;
-	order: 1;
-    }
+  #urls {
+    position: relative;
+    order: 1;
+  }
 
-    #backToTop {
-	right: 0.5em;
-	left: auto;
-    }
+  #backToTop {
+    right: 0.5em;
+    left: auto;
+  }
 
-    #pagination {
-	position: relative;
-	order: 3;
-    }
+  #pagination {
+    position: relative;
+    order: 3;
+  }
 }
 
-
 @media screen and (max-width: @results-width) {
-
   article[data-vim-selected]::before {
     display: none;
     content: "";
@@ -708,7 +713,7 @@ article.result-images[data-vim-selected]::before {
     display: none;
     postion: fixed !important;
     top: 100px;
-    right: 0px;
+    right: 0;
   }
 
   #sidebar {
@@ -739,24 +744,20 @@ article.result-images[data-vim-selected]::before {
     padding: 0;
     border: none;
   }
-
 }
 
 @media screen and (max-width: 35em) {
-
   .result-videos {
-
     img.thumbnail {
       float: none !important;
     }
+
     .content {
       overflow: inherit;
     }
-
   }
-
 }
 
 pre code {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }

@@ -3,59 +3,63 @@
 @background_color:  white;
 
 .autocomplete {
-    position: absolute;
-    max-height: 0;
-    overflow-y: hidden;
-    text-align: left;
+  position: absolute;
+  max-height: 0;
+  overflow-y: hidden;
+  text-align: left;
 
-    &:active, &:focus, &:hover {
-      background-color: @background_color;
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: @background_color;
+  }
+
+  &:empty {
+    display: none;
+  }
+
+  > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      cursor: pointer;
+      padding: 5px 0 5px 10px;
+
+      &.active,
+      &:active,
+      &:focus {
+        background-color: @color-base;
+
+        a:active,
+        a:focus,
+        a:hover {
+          text-decoration: none;
+        }
+      }
+
+      &.locked {
+        cursor: inherit;
+      }
     }
+  }
+
+  &.open {
+    display: block;
+    background-color: @background_color;
+    border: 1px solid @color-base;
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 100;
 
     &:empty {
-        display: none;
+      display: none;
     }
-
-    > ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-
-        > li {
-            cursor: pointer;
-            padding: 5px 0 5px 10px;
-
-            &.active, &:active, &:focus {
-                background-color: @color-base;
-
-                a:active, a:focus, a:hover {
-                    text-decoration: none;
-                }
-            }
-
-            &.locked {
-                cursor: inherit;
-            }
-        }
-    }
-
-    &.open {
-        display: block;
-        background-color: @background_color;
-        border: 1px solid @color-base;
-        max-height: 500px;
-        overflow-y: auto;
-        z-index:100;
-
-        &:empty {
-            display: none;
-        }
-    }
+  }
 }
 
-
 @media screen and (max-width: @results-width) {
-
   .autocomplete {
     bottom: 0;
   }
@@ -65,5 +69,4 @@
     border-bottom: 1px solid @color-result-top-border;
     text-align: left;
   }
-
 }

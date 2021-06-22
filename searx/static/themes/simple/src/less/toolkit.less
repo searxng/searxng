@@ -12,7 +12,7 @@ html.js .show_if_nojs {
 }
 
 .right {
-  float: right ;
+  float: right;
 }
 
 .left {
@@ -67,7 +67,6 @@ kbd {
 
 // table
 table {
-
   width: 100%;
 
   &.striped {
@@ -97,7 +96,7 @@ tr {
   font-size: 0.8em;
   word-break: break-all;
   margin: 0.1em;
-  .select-all-on-focus();  
+  .select-all-on-focus();
 }
 
 div.selectable_url {
@@ -122,28 +121,30 @@ div.selectable_url {
   position: relative;
   width: 70%;
   padding: 1em 1em 1em 2.7em;
-  margin: 0em 8% 1em 8%;
+  margin: 0 8% 1em 8%;
   border: 1px solid black;
   border-radius: 4px;
   text-align: left;
 
-  &:before {
+  &::before {
     position: absolute;
     top: 0.5em;
     left: 0.5em;
-    font-family:"ion";
+    font-family: "ion";
     font-size: 1.5em;
   }
 
   .close {
-    float:right;
+    float: right;
     position: relative;
     top: -3px;
     color: inherit;
     font-size: 1.5em;
   }
 
-  ul, ol, p {
+  ul,
+  ol,
+  p {
     margin: 1px 0 0 0;
   }
 
@@ -153,7 +154,7 @@ div.selectable_url {
 
   tr {
     vertical-align: text-top;
-    
+
     &:hover {
       background: transparent;
     }
@@ -163,16 +164,15 @@ div.selectable_url {
     padding: 0 1em 0 0;
   }
 
-
   h4 {
     margin-top: 0.3em;
     margin-bottom: 0.3em;
   }
-
 }
 
 .dialog-error {
   .dialog();
+
   color: @color-error;
   background: @color-error-background;
   border-color: @color-error;
@@ -181,6 +181,7 @@ div.selectable_url {
 
 .dialog-warning {
   .dialog();
+
   color: @color-warning;
   background: @color-warning-background;
   border-color: @color-warning;
@@ -189,10 +190,12 @@ div.selectable_url {
 
 .dialog-modal {
   .dialog();
+
   background: white;
-  position: fixed;  
+  position: fixed;
   top: 50%;
   left: 50%;
+
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
   z-index: 100000;
@@ -215,13 +218,14 @@ div.selectable_url {
   border: none;
 }
 
-/* -- tabs --*/
+/* -- tabs -- */
 .tabs .tabs > label {
   font-size: 90%;
 }
 
 .tabs {
   .flexbox();
+
   flex-wrap: wrap;
   width: 100%;
   min-width: 100%;
@@ -238,13 +242,13 @@ div.selectable_url {
     order: 1;
     padding: 0.7em;
     margin: 0 0.7em;
-    letter-spacing:0.5px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-
     border: solid white;
-    border-width: 0px 0px 2px 0;
+    border-width: 0 0 2px 0;
 
     .disable-user-select();
+
     cursor: pointer;
   }
 
@@ -266,19 +270,19 @@ div.selectable_url {
     background: @color-categories-item-selected;
     color: @color-categories-item-selected-font;
     font-weight: bold;
-    letter-spacing:-0.1px;
+    letter-spacing: -0.1px;
   }
 
   & > section:last-of-type {
     display: block;
   }
-
 }
 
 html body .tabs > input:checked {
   ~ section {
     display: none;
   }
+
   ~ label {
     position: inherited;
     background: inherit;
@@ -290,13 +294,15 @@ html body .tabs > input:checked {
       border-bottom: 2px solid @color-categories-item-border-selected;
     }
   }
+
   + label {
     border-bottom: 2px solid @color-categories-item-border-selected;
     background: @color-categories-item-selected;
     color: @color-categories-item-selected-font;
     font-weight: bold;
-    letter-spacing:-0.1px;
+    letter-spacing: -0.1px;
   }
+
   + label + section {
     display: block;
   }
@@ -311,13 +317,13 @@ select {
   font-size: 12px;
   z-index: 2;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }
 
 @supports ((background-position-x: 100%) and ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none))) {
-
   select {
     appearance: none;
     -webkit-appearance: none;
@@ -330,12 +336,11 @@ select {
     background-origin: content-box;
     outline: medium none;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-bottom: 1px solid @color-search-border;
     }
-
   }
-
 }
 
 /* -- checkbox-onoff -- */
@@ -348,6 +353,7 @@ select {
     margin: 8px auto;
     position: relative;
     border-radius: 50px;
+
     label {
       display: block;
       width: 20px;
@@ -356,14 +362,15 @@ select {
       top: -5px;
       cursor: pointer;
       border-radius: 50px;
-      box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
       transition: all 0.4s ease;
-
       left: 27px;
-      background-color: #3498DB;
+      background-color: #3498db;
     }
+
     input[type=checkbox] {
       visibility: hidden;
+
       &:checked + label {
         left: -5px;
         background: #dcdcdc;
@@ -372,12 +379,13 @@ select {
   }
 }
 
-/* -- checkbox --*/
+/* -- checkbox -- */
 @supports (transform: rotate(-45deg)) {
   .checkbox {
     width: 20px;
     position: relative;
     margin: 20px auto;
+
     label {
       width: 20px;
       height: 20px;
@@ -387,8 +395,9 @@ select {
       left: 0;
       background: white;
       border-radius: 4px;
-      box-shadow: inset 0px 1px 1px white, 0px 1px 4px rgba(0,0,0,0.5);
-      &:after {
+      box-shadow: inset 0 1px 1px white, 0 1px 4px rgba(0, 0, 0, 0.5);
+
+      &::after {
         content: '';
         width: 9px;
         height: 5px;
@@ -406,17 +415,18 @@ select {
 
     input[type=checkbox] {
       visibility: hidden;
-      &:checked + label:after {
-        border-color: #3498DB;
+
+      &:checked + label::after {
+        border-color: #3498db;
         opacity: 1;
       }
     }
 
     // disabled : can''t be focused, show only the check mark
-    input[disabled] + label  {
+    input[disabled] + label {
       background-color: transparent !important;
       box-shadow: none !important;
-      cursor: inherit;;
+      cursor: inherit;
     }
 
     // if not checked and possible to checked then display a "light" check mark on hover
@@ -434,45 +444,50 @@ select {
 
 /* -- loader -- */
 .loader,
-.loader:after {	
-    border-radius: 50%;
-    width: 2em;
-    height: 2em;
+.loader::after {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
 }
+
 .loader {
-    margin: 1em auto;
-    font-size: 10px;
-    position: relative;
-    text-indent: -9999em;
-    border-top: 0.5em solid rgba(0, 0, 0, 0.2);
-    border-right: 0.5em solid rgba(0, 0, 0, 0.2);
-    border-bottom: 0.5em solid rgba(0, 0, 0, 0.2);
-    border-left: 0.5em solid rgba(255, 255, 255, 0);
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-animation: load8 1.2s infinite linear;
-    animation: load8 1.2s infinite linear;
+  margin: 1em auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 0.5em solid rgba(0, 0, 0, 0.2);
+  border-right: 0.5em solid rgba(0, 0, 0, 0.2);
+  border-bottom: 0.5em solid rgba(0, 0, 0, 0.2);
+  border-left: 0.5em solid rgba(255, 255, 255, 0);
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.2s infinite linear;
+  animation: load8 1.2s infinite linear;
 }
+
 @-webkit-keyframes load8 {
-    0% {
-	-webkit-transform: rotate(0deg);
-	transform: rotate(0deg);
-    }
-    100% {
-	-webkit-transform: rotate(360deg);
-	transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
+
 @keyframes load8 {
-    0% {
-	-webkit-transform: rotate(0deg);
-	transform: rotate(0deg);
-    }
-    100% {
-	-webkit-transform: rotate(360deg);
-	transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 /* -- engine-tooltip -- */
@@ -480,17 +495,19 @@ select {
   display: none;
   position: absolute;
   padding: 0.5rem 1rem;
-  margin: 0rem 0 0 2rem;
+  margin: 0 0 0 2rem;
   border: 1px solid #ddd;
-  box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: white;
   font-size: 14px;
   font-weight: normal;
-  z-index: 1000000; 
+  z-index: 1000000;
   text-align: left;
 }
 
-th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
+th:hover .engine-tooltip,
+td:hover .engine-tooltip,
+.engine-tooltip:hover {
   display: inline-block;
 }
 
@@ -517,7 +534,7 @@ th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
 }
 
 .stacked-bar-chart-base {
-  display:flex;
+  display: flex;
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: unset;
@@ -525,6 +542,7 @@ th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
 
 .stacked-bar-chart-median {
   .stacked-bar-chart-base();
+
   background: @stacked-bar-chart;
   border: 1px solid fade(@stacked-bar-chart, 90%);
   padding: 0.3rem 0;
@@ -532,6 +550,7 @@ th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
 
 .stacked-bar-chart-rate80 {
   .stacked-bar-chart-base();
+
   background: transparent;
   border: 1px solid fade(@stacked-bar-chart, 30%);
   padding: 0.3rem 0;
@@ -539,6 +558,7 @@ th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
 
 .stacked-bar-chart-rate95 {
   .stacked-bar-chart-base();
+
   background: transparent;
   border-bottom: 1px dotted fade(@stacked-bar-chart, 50%);
   padding: 0;
@@ -546,6 +566,7 @@ th:hover .engine-tooltip, td:hover .engine-tooltip, .engine-tooltip:hover {
 
 .stacked-bar-chart-rate100 {
   .stacked-bar-chart-base();
+
   background: transparent;
   border-left: 1px solid fade(@stacked-bar-chart, 90%);
   padding: 0.4rem 0;
