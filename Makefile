@@ -82,7 +82,7 @@ MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
 MANAGE += pypi.upload pypi.upload.test
 MANAGE += test.yamllint test.pylint test.pep8 test.unit test.coverage test.robot test.clean
-MANAGE += themes.all themes.oscar themes.simple themes.bootstrap
+MANAGE += themes.all themes.oscar themes.simple themes.bootstrap pygments.less
 
 PHONY += $(MANAGE)
 

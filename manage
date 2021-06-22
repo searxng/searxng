@@ -86,6 +86,8 @@ themes.* :
   all       : build all themes
   oscar     : build oscar theme
   simple    : build simple theme
+pygments.* :
+  less      : build LESS files for pygments
 EOF
 }
 
@@ -326,7 +328,6 @@ node.clean() {
 }
 
 pygments.less() {
-    [ "$_pyenv_OK" == "OK" ] && return 0
     build_msg PYGMENTS "searx_extra/update/update_pygments.py"
     if ! pyenv.cmd python searx_extra/update/update_pygments.py; then
         build_msg PYGMENTS "building LESS files for pygments failed"
