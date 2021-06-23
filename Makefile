@@ -3,6 +3,7 @@
 
 .DEFAULT_GOAL=help
 export MTOOLS=./manage
+export MSTATIC=./utils/manage_static.sh
 
 include utils/makefile.include
 
@@ -88,6 +89,12 @@ PHONY += $(MANAGE)
 
 $(MANAGE):
 	$(Q)$(MTOOLS) $@
+
+
+MANAGE_STATIC += static.build.commit.drop static.build.commit static.git.restore.staged static.git.restore
+
+$(MANAGE_STATIC):
+	$(Q)$(MSTATIC) $@
 
 # deprecated
 
