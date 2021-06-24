@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 module.exports = function(grunt) {
 
   const path = require('path');
@@ -12,16 +14,6 @@ module.exports = function(grunt) {
     },
     jshint: {
       files: ['src/js/main/*.js', 'src/js/head/*.js', '../__common__/js/*.js'],
-      options: {
-        reporterOutput: "",
-        proto: true,
-        // options here to override JSHint defaults
-        globals: {
-          browser: true,
-          jQuery: false,
-          devel: true
-        }
-      }
     },
     stylelint: {
       options: {
@@ -122,7 +114,7 @@ module.exports = function(grunt) {
           'node_modules/ionicons-npm/src/ion-close-round.svg',
           'node_modules/ionicons-npm/src/android-more-vertical.svg',
           'src/fonts/magnet.svg',
-          'node_modules/ionicons-npm/src/android-close.svg',	  
+          'node_modules/ionicons-npm/src/android-close.svg',
         ],
         dest: 'fonts',
         destLess: 'src/generated',
