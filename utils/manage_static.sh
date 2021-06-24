@@ -105,31 +105,6 @@ static.build.commit() {
     )
 }
 
-static.git.restore.staged() {
-    local STAGED_FILES
-    STAGED_FILES=$(git diff --name-only --cached)
-
-    for i in ${BUILT_PATHS[*]}; do
-        STAGED_FILES_FOR_I=$(echo "${STAGED_FILES}" | grep "^${i}")
-        if [ -n "${STAGED_FILES_FOR_I}" ]; then
-            # shellcheck disable=SC2086
-            git restore --staged ${STAGED_FILES_FOR_I}
-        fi
-    done
-}
-
-static.git.restore() {
-    static.git.restore.staged
-
-    NOT_COMMITED_FILES="$(git diff --name-only)"
-    for i in ${BUILT_PATHS[*]}; do
-        NOT_COMMITED_FILES_FOR_I=$(echo "${NOT_COMMITED_FILES}" | grep "^${i}")
-        if [ -n "${NOT_COMMITED_FILES_FOR_I}" ]; then
-            # shellcheck disable=SC2086
-            git restore ${NOT_COMMITED_FILES_FOR_I}
-        fi
-    done
-}
 
 main() {
     case $1 in
@@ -147,11 +122,11 @@ main() {
             # after "git add ."
             # remove the built files
             # so only the source are commited
-            static.git.restore.staged
+            git restore --staged "${BUILT_PATHS[@]}"
             ;;
         static.git.restore)
             # "git restore" of the built files.
-            static.git.restore
+            git restore --worktree --staged "${BUILT_PATHS[@]}"
             ;;
     esac
 }
