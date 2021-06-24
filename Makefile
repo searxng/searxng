@@ -59,7 +59,8 @@ test.shell:
 		dockerfiles/docker-entrypoint.sh
 	$(Q)shellcheck -x -s bash \
 		utils/brand.env \
-		./manage \
+		$(MTOOLS) \
+		$(MSTATIC) \
 		utils/lib.sh \
 	        utils/filtron.sh \
 	        utils/searx.sh \
@@ -67,7 +68,7 @@ test.shell:
 	        utils/lxc.sh \
 	        utils/lxc-searx.env \
 	        .config.sh
-	$(Q)./manage build_msg TEST "$@ OK"
+	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 
 # wrap ./manage script

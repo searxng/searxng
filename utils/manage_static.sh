@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-BUILD_COMMIT_MESSAGE="Static build"
+BUILD_COMMIT_MESSAGE="[build] /static"
 
 BUILT_PATHS=(
     searx/static/themes/oscar/css
@@ -14,70 +13,76 @@ BUILT_PATHS=(
     searx/static/themes/simple/src/generated/pygments.less
 )
 
-CURRENT_BRANCH="$(git branch --show-current)"
-STAGED_FILES=$(git diff --name-only --cached)
-
 git_log_current_branch() {
-    git log "heads/${CURRENT_BRANCH}" --not --exclude="${CURRENT_BRANCH}" --branches --remotes --pretty=format:"%h"
+    local branch
+    branch="$(git branch --show-current)"
+    git log "${branch}" --pretty=format:'%h' \
+        --not --exclude="${branch}" --branches --remotes
 }
 
 is.build.commit() {
-    COMMIT_SHA=$1
+    local commit_sha="$1"
+    local commit_message
+    local commit_files
+
     # check commit message
-    COMMIT_MESSAGE=$(git show -s --format=%s ${COMMIT_SHA})
-    if [ "${COMMIT_MESSAGE}" != "${BUILD_COMMIT_MESSAGE}" ]; then
-        echo "Commit message of ${COMMIT_SHA} is '${COMMIT_MESSAGE}'"
+    commit_message=$(git show -s --format=%s "${commit_sha}")
+    if [ "${commit_message}" != "${BUILD_COMMIT_MESSAGE}" ]; then
+        echo "Commit message of ${commit_sha} is '${commit_message}'"
         return 1
     fi
 
     # check all files of the commit belongs to $BUILT_PATHS
-    COMMIT_FILES=$(git diff-tree --no-commit-id --name-only -r "${COMMIT_SHA}")
+    commit_files=$(git diff-tree --no-commit-id --name-only -r "${commit_sha}")
     for i in ${BUILT_PATHS[*]}; do
         # remove files of ${BUILT_PATHS}
-        COMMIT_FILES=$(echo "${COMMIT_FILES}" | grep -v "^${i}")
+        commit_files=$(echo "${commit_files}" | grep -v "^${i}")
     done
-    if [ -n "${COMMIT_FILES}" ]; then
-        echo "Commit $1 contains files that were not build: ${COMMIT_FILES}"
+
+    if [ -n "${commit_files}" ]; then
+        echo "Commit $1 contains files that were not build: ${commit_files}"
         return 2
     fi
     return 0
 }
 
 static.build.commit.drop() {
-    LAST_COMMIT_ID=$(git_log_current_branch | head -1)
+    local last_commit_id
+    last_commit_id=$(git_log_current_branch | head -1)
 
-    if [ -z "${LAST_COMMIT_ID}" ]; then
+    if [ -z "${last_commit_id}" ]; then
         echo "Empty branch"
         return 1
     fi
 
-    is.build.commit "${LAST_COMMIT_ID}"
-    if [ $? -ne 0 ]; then
+    if ! is.build.commit "${last_commit_id}"; then
         return $?
     fi
-    echo "Drop last commit ${LAST_COMMIT_ID}"
+    echo "Drop last commit ${last_commit_id}"
     git reset --hard HEAD~1
 }
 
 static.build.commit() {
+    local staged_files
+
     # check for not commited files
-    NOT_COMMITED_FILES="$(git diff --name-only)"
-    if [ -n "${NOT_COMMITED_FILES}" ]; then
+    if [ -n "$(git diff --name-only)" ]; then
         echo "Some files are not commited:"
         echo "${NOT_COMMITED_FILES}"
         return 1
     fi
 
+    staged_files=$(git diff --name-only --cached)
+
     # check for staged files
-    if [ -n "${STAGED_FILES}" ]; then
+    if [ -n "${staged_files}" ]; then
         echo "Some files are staged:"
-        echo "${STAGED_FILES}"
+        echo "${staged_files}"
         return 1
     fi
 
     # drop existing commit
-    static.commit.drop
-    if [ $? -ne 0 ]; then
+    if static.commit.drop; then
         return $?
     fi
 
@@ -87,7 +92,7 @@ static.build.commit() {
         make themes.all
 
         # add build files
-        for built_path in ${BUILT_PATHS[@]}; do
+        for built_path in "${BUILT_PATHS[@]}"; do
             git add -v "${built_path}"
         done
 
@@ -96,16 +101,18 @@ static.build.commit() {
             echo "make themes.all has created files that are not in BUILT_PATHS"
             return 2
         fi
-
-        #
-        git commit -m "Static build"
+        git commit -m "${BUILD_COMMIT_MESSAGE}"
     )
 }
 
 static.git.restore.staged() {
+    local STAGED_FILES
+    STAGED_FILES=$(git diff --name-only --cached)
+
     for i in ${BUILT_PATHS[*]}; do
         STAGED_FILES_FOR_I=$(echo "${STAGED_FILES}" | grep "^${i}")
         if [ -n "${STAGED_FILES_FOR_I}" ]; then
+            # shellcheck disable=SC2086
             git restore --staged ${STAGED_FILES_FOR_I}
         fi
     done
@@ -118,6 +125,7 @@ static.git.restore() {
     for i in ${BUILT_PATHS[*]}; do
         NOT_COMMITED_FILES_FOR_I=$(echo "${NOT_COMMITED_FILES}" | grep "^${i}")
         if [ -n "${NOT_COMMITED_FILES_FOR_I}" ]; then
+            # shellcheck disable=SC2086
             git restore ${NOT_COMMITED_FILES_FOR_I}
         fi
     done
