@@ -1,13 +1,5 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
-.. figure:: https://raw.githubusercontent.com/searxng/searxng/master/searx/static/themes/oscar/img/logo_searx_a.png
-   :target: https://searxng.github.io/searxng/
-   :alt: searXNG
-   :width: 100%
-   :align: center
-
--------
-
 |searx install|
 |searx homepage|
 |searx wiki|
