@@ -13,13 +13,6 @@ BUILT_PATHS=(
     searx/static/themes/simple/src/generated/pygments.less
 )
 
-git_log_current_branch() {
-    local branch
-    branch="$(git branch --show-current)"
-    git log "${branch}" --pretty=format:'%h' \
-        --not --exclude="${branch}" --branches --remotes
-}
-
 is.build.commit() {
     local commit_sha="$1"
     local commit_message
@@ -46,9 +39,15 @@ is.build.commit() {
     return 0
 }
 
+
 static.build.commit.drop() {
     local last_commit_id
-    last_commit_id=$(git_log_current_branch | head -1)
+    local branch
+
+    # get only last (option -n1) local commit not in remotes
+    branch="$(git branch --show-current)"
+    last_commit_id="$(git log -n1 "${branch}" --pretty=format:'%h'\
+     --not --exclude="${branch}" --branches --remotes)"
 
     if [ -z "${last_commit_id}" ]; then
         echo "Empty branch"
