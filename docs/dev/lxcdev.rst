@@ -52,7 +52,12 @@ software:
 and the script :ref:`lxc.sh`, with we can scale our installation, maintenance or
 even development tasks over a stack of isolated containers / what we call the:
 
-  **searxNG LXC suite**
+  **SearxNG LXC suite**
+
+.. hint::
+
+   If you see any problems with the internet connectivity of your
+   containers read section :ref:`internet connectivity docker`.
 
 
 Gentlemen, start your engines!

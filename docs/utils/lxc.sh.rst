@@ -40,8 +40,14 @@ take some time**::
 
 A cup of coffee later, your LXC suite is build up and you can run whatever task
 you want / in a selected or even in all :ref:`LXC suite containers <lxc.sh
-help>`.  If you do not want to build all containers, **you can build just
-one**::
+help>`.
+
+.. hint::
+
+   If you see any problems with the internet connectivity of your
+   containers read section :ref:`internet connectivity docker`.
+
+If you do not want to build all containers, **you can build just one**::
 
   $ sudo -H ./utils/lxc.sh build searx-ubu1804
 
@@ -65,6 +71,49 @@ If there comes the time you want to **get rid off all** the containers and
 
   $ sudo -H ./utils/lxc.sh remove
   $ sudo -H ./utils/lxc.sh remove images
+
+.. _internet connectivity docker:
+
+Internet Connectivity & Docker
+==============================
+
+.. sidebar::  further read
+
+   - `Docker blocking network of existing LXC containers <https://github.com/docker/for-linux/issues/103>`__
+   - `Docker and IPtables (fralef.me) <https://fralef.me/docker-and-iptables.html>`__
+   - `Docker and iptables (docker.com) <https://docs.docker.com/network/iptables/#docker-on-a-router/>`__
+
+There is a conflict in the ``iptables`` setup of Docker & LXC.  If you have
+docker installed, you may find that the internet connectivity of your LXD
+containers no longer work.
+
+Whenever docker is started (reboot) it sets the iptables policy for the
+``FORWARD`` chain to ``DROP`` `[ref]
+<https://docs.docker.com/network/iptables/#docker-on-a-router>`__::
+
+  $ sudo -H iptables-save | grep FORWARD
+  :FORWARD ACCEPT [7048:7851230]
+  :FORWARD DROP [7048:7851230]
+
+A handy solution of this problem might be to reset the policy for the
+``FORWARD`` chain after the network has been initialized.  For this create a
+file in the ``if-up`` section of the network (``/etc/network/if-up.d/iptable``)
+and insert the following lines::
+
+  #!/bin/sh
+  iptables -F FORWARD
+  iptables -P FORWARD ACCEPT
+
+Don't forget to set the execution bit::
+
+  sudo chmod ugo+x /etc/network/if-up.d/iptable
+
+Reboot your system and check the iptables rules::
+
+  $ sudo -H iptables-save | grep FORWARD
+  :FORWARD ACCEPT [7048:7851230]
+  :FORWARD ACCEPT [7048:7851230]
+
 
 .. _lxc.sh install suite:
 

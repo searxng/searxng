@@ -5,6 +5,8 @@
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 source_dot_config
+# shellcheck source=utils/brand.env
+source "${REPO_ROOT}/utils/brand.env"
 
 # load environment of the LXC suite
 LXC_ENV="${LXC_ENV:-${REPO_ROOT}/utils/lxc-searx.env}"
@@ -535,6 +537,9 @@ lxc_install_boilerplate() {
     if lxc start -q "${container_name}" &>/dev/null; then
         sleep 5 # guest needs some time to come up and get an IP
     fi
+    if ! check_connectivity "${container_name}"; then
+        die 42 "Container ${container_name} has no internet connectivity!"
+    fi
     lxc_init_container_env "${container_name}"
     info_msg "[${_BBlue}${container_name}${_creset}] install /.lxcenv.mk .."
     cat <<EOF | lxc exec "${container_name}" -- bash | prefix_stdout "[${_BBlue}${container_name}${_creset}] "
@@ -554,6 +559,20 @@ EOF
     fi
 }
 
+check_connectivity() {
+    local ret_val=0
+    info_msg "check internet connectivity ..."
+    if ! lxc exec "${1}" -- ping -c 1 8.8.8.8 &>/dev/null; then
+        ret_val=1
+        err_msg "no internet connectivity!"
+        info_msg "Most often the connectivity is blocked by a docker installation:"
+        info_msg "Whenever docker is started (reboot) it sets the iptables policy "
+        info_msg "for the FORWARD chain to DROP, see:"
+        info_msg "    ${DOCS_URL}/utils/lxc.sh.html#internet-connectivity-docker"
+        iptables-save | grep ":FORWARD"
+    fi
+    return $ret_val
+}
 
 # ----------------------------------------------------------------------------
 main "$@"
