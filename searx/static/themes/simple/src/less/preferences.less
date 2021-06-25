@@ -1,10 +1,10 @@
 #main_preferences {
   form {
-      width: 100%;
+    width: 100%;
   }
 
   fieldset {
-  	margin: 8px;
+    margin: 8px;
     border: none;
   }
 
@@ -12,21 +12,21 @@
     margin: 0;
     padding: 5px 0 0 0;
     display: block;
-    float:left;
+    float: left;
     width: 300px;
   }
 
   .value {
     margin: 0;
     padding: 0;
-    float:left;
+    float: left;
     width: 15em;
   }
 
   .description {
     margin: 0;
     padding: 5px 0 0 0;
-    float:left;
+    float: left;
     width: 50%;
     color: darken(#dcdcdc, 30%);
     font-size: 90%;
@@ -48,22 +48,25 @@
   table.cookies {
     width: auto;
 
-    th, td {
+    th,
+    td {
       text-align: left;
       padding: 0.25em;
     }
 
-    th:first-child, td:first-child {
+    th:first-child,
+    td:first-child {
       padding-right: 4em;
     }
 
-    &>tbody>tr:nth-child(even)>th,
-    &>tbody>tr:nth-child(even)>td {
+    & > tbody > tr:nth-child(even) > th,
+    & > tbody > tr:nth-child(even) > td {
       background-color: @color-settings-tr-hover;
     }
   }
 
-  .name, .shortcut {
+  .name,
+  .shortcut {
     text-align: left;
   }
 
@@ -72,6 +75,7 @@
     color: white;
     border: 0 none;
     .rounded-corners;
+
     cursor: pointer;
     display: inline-block;
     margin: 2px 4px;
@@ -87,17 +91,15 @@
     }
   }
 
-
   div.selectable_url {
     pre {
       width: 100%;
     }
   }
-  
 }
 
 @media screen and (max-width: 75em) {
   .preferences_back {
-	   clear: both;
-   }
+    clear: both;
+  }
 }

@@ -2,7 +2,7 @@
 * searx, A privacy-respecting, hackable metasearch engine
 */
 
-#search  {
+#search {
   padding: 0 2em;
   margin: 0;
   background: #f7f7f7;
@@ -17,8 +17,8 @@
   margin: 0 12px 0 0;
   display: inline-flex;
   flex-direction: row;
-
   white-space: nowrap;
+
   /*
   &:has(q:focus) {
   box-shadow: 0px 0px 5px #CCC;
@@ -31,7 +31,6 @@
   border-collapse: separate;
   box-sizing: border-box;
   width: 1.8em;
-
   margin: 0;
   padding: 2px;
   height: 2.2em;
@@ -40,7 +39,7 @@
   border-bottom: 1px solid @color-search-border;
   border-right: none;
   border-left: none;
-  border-radius: 0px;
+  border-radius: 0;
   outline: none;
   color: @color-search-font;
   font-size: 16px;
@@ -55,21 +54,17 @@
   }
 }
 
-#q::-ms-clear, #q::-webkit-search-cancel-button {
-  display: none;
-}
-
-#q, #send_search {
+#q,
+#send_search {
   display: block !important;
   border-collapse: separate;
   box-sizing: border-box;
-
   margin: 0;
   padding: 2px;
   height: 2.2em;
   background: none repeat scroll 0 0 @color-search-background;
   border: 1px solid @color-search-border;
-  border-radius: 0px;
+  border-radius: 0;
   outline: none;
   color: @color-search-font;
   font-size: 16px;
@@ -79,9 +74,14 @@
 #q {
   outline: medium none;
   padding-left: 8px;
-  padding-right: 0px !important;
+  padding-right: 0 !important;
   border-right: none;
   width: @search-width;
+}
+
+#q::-ms-clear,
+#q::-webkit-search-cancel-button {
+  display: none;
 }
 
 #send_search {
@@ -105,20 +105,19 @@
 }
 
 @media screen and (max-width: 75em) {
-
   #categories {
     font-size: 90%;
     clear: both;
 
     .checkbox_container {
-      margin-top: 2px;
       margin: auto;
+      margin-top: 2px;
     }
   }
 
   html.touch {
-    #main_index, #main_results {
-
+    #main_index,
+    #main_results {
       #categories_container {
         width: 1000px;
         width: -moz-max-content;
@@ -141,11 +140,9 @@
       }
     }
   }
-
 }
 
 @media screen and (max-width: @results-width) {
-
   #search {
     width: 100%;
     margin: 0;
@@ -177,7 +174,8 @@
     margin: 0.5em;
   }
 
-  .language, .time_range {
+  .language,
+  .time_range {
     width: 45%;
   }
 
@@ -189,7 +187,6 @@
       border-bottom: 0;
     }
   }
-
 }
 
 #categories {
@@ -206,7 +203,7 @@
   display: inline-block;
   position: relative;
   margin: 0 3px;
-  padding: 0px;
+  padding: 0;
 
   input {
     display: none;
@@ -224,12 +221,12 @@
   }
 
   input[type="checkbox"]:focus + label {
-    box-shadow: 0px 0px 8px #3498DB;
+    box-shadow: 0 0 8px #3498db;
   }
 
-  /*label:hover {
+  /* label:hover {
   border-bottom: 2px solid @color-categories-item-border-unselected-hover;
-  }*/
+  } */
 
   input[type="checkbox"]:checked + label {
     background: @color-categories-item-selected;
@@ -239,7 +236,6 @@
 }
 
 #categories_container {
-
   position: relative;
 
   .help {
@@ -247,12 +243,10 @@
     width: 100%;
     bottom: -20px;
     overflow: hidden;
-
     opacity: 0;
     transition: opacity 1s ease;
-
     font-size: 0.8em;
-    text-position: center;
+    text-align: center;
     background: white;
   }
 
@@ -260,5 +254,4 @@
     opacity: 0.8;
     transition: opacity 1s ease;
   }
-
 }

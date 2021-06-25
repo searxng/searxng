@@ -88,6 +88,15 @@
                (setq-local js-indent-level 2)
                (flycheck-checker . json-python-json)))))
 
+ (js-mode
+  . ((eval . (progn
+               (setq-local js-indent-level 2)
+               ;; flycheck should use the jshint checker from simple theme
+               (setq-local flycheck-javascript-jshint-executable
+                           (expand-file-name "searx/static/themes/simple/node_modules/.bin/jshint" prj-root))
+               (flycheck-mode)
+               ))))
+
  (python-mode
   . ((eval . (progn
 

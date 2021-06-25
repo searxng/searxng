@@ -4,34 +4,34 @@
 
 // Mixins
 .text-size-adjust (@property: 100%) {
-	-webkit-text-size-adjust: @property;
-	-ms-text-size-adjust: @property;
-	-moz-text-size-adjust: @property;
-	text-size-adjust: @property;
+  -webkit-text-size-adjust: @property;
+  -ms-text-size-adjust: @property;
+  -moz-text-size-adjust: @property;
+  text-size-adjust: @property;
 }
 
 .rounded-corners (@radius: 4px) {
-	-webkit-border-radius: @radius;
-	-moz-border-radius: @radius;
-	border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
 }
 
 // disable user selection
 .disable-user-select () {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 // select all on focus
 .select-all-on-focus() {
-	-webkit-user-select: all;
-	-moz-user-select: all;
-	-ms-user-select: element;
-	user-select: all;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: element;
+  user-select: all;
 }
 
 // see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Advanced_layouts_with_flexbox
@@ -44,19 +44,19 @@
 }
 
 .inline-flex() {
-	display: -webkit-inline-box;
-	display: -moz-inline-box;
-	display: -webkit-inline-flex;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .flex-direction-row() {
-	-webkit-box-direction: normal;
-	-webkit-box-orient: horizontal;
-	-moz-box-direction: normal;
-	-moz-box-orient: horizontal;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
-	flex-direction: row;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -moz-box-direction: normal;
+  -moz-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
