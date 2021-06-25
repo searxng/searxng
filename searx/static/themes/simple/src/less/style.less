@@ -52,9 +52,17 @@ main {
   margin: 0;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
 main {
   width: 100%;
-  // position: absolute;
+  margin-bottom: 2rem;
+  flex: 1;
 }
 
 #main_preferences,
@@ -65,13 +73,14 @@ main {
 }
 
 footer {
-  bottom: 0;
-  height: 3em;
-  margin: 1em 0;
-  padding: 1em 0;
   clear: both;
+  min-height: 4rem;
+  padding: 1em 0;
   width: 100%;
   text-align: center;
+  background-color: #f2f2f2;
+  border-top: 1px solid #e4e4e4;
+  overflow: hidden;
 
   p {
     font-size: 0.9em;
@@ -356,12 +365,33 @@ article.result-images[data-vim-selected]::before {
 }
 
 #results {
-  margin: 2em 2em 20px 2em;
+  margin: 2rem 2rem 0 2rem;
+  display: grid;
+  grid-template-columns: (@results-width + @results-offset) 1fr;
+  grid-template-rows: min-content 1fr min-content;
+  gap: 0 3rem;
+  grid-template-areas:
+    "answers sidebar"
+    "suggestions sidebar"
+    "urls sidebar"
+    "pagination sidebar";
+}
+
+#results #answers *:first-child,
+#results #sidebar *:first-child,
+#results #urls *:first-child {
+  margin-top: 0;
+}
+
+#urls {
+  margin: 0.5em 2em 20px 0;
   padding: 0;
-  width: @results-width;
+  grid-area: urls;
 }
 
 #suggestions {
+  grid-area: suggestions;
+
   .wrapper {
     display: flex;
     flex-flow: row wrap;
@@ -430,6 +460,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #answers {
+  grid-area: answers;
   margin: 10px 8px 10px 8px;
   border: 1px solid #ddd;
   padding: 0.9em;
@@ -454,9 +485,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #sidebar {
-  position: absolute;
-  top: 100px;
-  left: 57em;
+  grid-area: sidebar;
   margin: 0 2px 5px 5px;
   padding: 0 2px 2px;
   max-width: 25em;
@@ -542,7 +571,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #pagination {
-  clear: both;
+  grid-area: pagination;
 
   br {
     clear: both;
@@ -574,7 +603,7 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-@media screen and (max-width: 75em) {
+@media screen and (max-width: 1250px) {
   #main_preferences,
   #main_about,
   #main_stats {
@@ -603,7 +632,6 @@ article.result-images[data-vim-selected]::before {
   }
 
   #sidebar {
-    position: static;
     max-width: @results-width;
     margin: 0 0 2px 0;
     padding: 0;
@@ -673,31 +701,46 @@ article.result-images[data-vim-selected]::before {
 }
 
 #main_results div#results.only_template_images {
-  flex-direction: column;
-  width: auto;
-  display: flex;
-
-  #sidebar {
-    position: relative;
-    top: auto;
-    order: 2;
-  }
+  margin: 2rem 2rem 0 2rem;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content min-content 1fr min-content min-content;
+  gap: 0 3rem;
+  grid-template-areas:
+    "answers"
+    "suggestions"
+    "urls"
+    "sidebar"
+    "pagination";
 
   #urls {
-    position: relative;
-    order: 1;
+    width: inherit;
+    margin: 0 0 20px 0;
   }
 
   #backToTop {
     right: 0.5em;
     left: auto;
   }
-
-  #pagination {
-    position: relative;
-    order: 3;
-  }
 }
+
+/*
+@media screen and (max-width: 1250px) {
+  #main_results div#results {
+    margin: 2rem 2rem 0 2rem;
+    display: grid;
+    grid-template-columns: (@results-width + @results-offset) 1fr;
+    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
+    gap: 0 3rem;
+    grid-template-areas:
+      "answers empty"
+      "suggestions empty"
+      "sidebar empty"
+      "urls empty"
+      "pagination empty";
+    }
+}
+*/
 
 @media screen and (max-width: @results-width) {
   article[data-vim-selected]::before {
@@ -723,7 +766,6 @@ article.result-images[data-vim-selected]::before {
   #results {
     margin: 0;
     padding: 0;
-    width: initial;
   }
 
   #backToTop {
