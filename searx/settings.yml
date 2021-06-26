@@ -1503,6 +1503,16 @@ engines:
       require_api_key: false
       results: html
 
+  - name: brave
+    shortcut: brave
+    engine: xpath
+    paging: false
+    search_url: https://search.brave.com/search?q={query}
+    url_xpath: //div[@class="snippet fdb"]/a/@href
+    title_xpath: //span[@class="snippet-title"]
+    content_xpath: //div[@class="snippet-content"]
+    categories: general
+
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
 #  - name: ubuntuwiki
