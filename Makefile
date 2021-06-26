@@ -3,7 +3,6 @@
 
 .DEFAULT_GOAL=help
 export MTOOLS=./manage
-export MSTATIC=./utils/manage_static.sh
 
 include utils/makefile.include
 
@@ -60,8 +59,8 @@ test.shell:
 	$(Q)shellcheck -x -s bash \
 		utils/brand.env \
 		$(MTOOLS) \
-		$(MSTATIC) \
 		utils/lib.sh \
+		utils/lib_static.sh \
 	        utils/filtron.sh \
 	        utils/searx.sh \
 	        utils/morty.sh \
@@ -85,17 +84,13 @@ MANAGE += pyenv pyenv.install pyenv.uninstall
 MANAGE += pypi.upload pypi.upload.test
 MANAGE += test.yamllint test.pylint test.pep8 test.unit test.coverage test.robot test.clean
 MANAGE += themes.all themes.oscar themes.simple pygments.less
+MANAGE += static.build.commit static.build.drop static.build.restore
 
 PHONY += $(MANAGE)
 
 $(MANAGE):
 	$(Q)$(MTOOLS) $@
 
-
-MANAGE_STATIC += static.build.commit.drop static.build.commit static.git.restore.staged static.git.restore
-
-$(MANAGE_STATIC):
-	$(Q)$(MSTATIC) $@
 
 # deprecated
 
