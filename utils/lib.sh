@@ -270,6 +270,8 @@ prefix_stdout () {
     (while IFS= read line; do
         echo -e "${prefix}$line"
     done)
+    # some piped commands hide the cursor, show cursory when the stream ends
+    echo -en "\e[?25h"
 }
 
 append_line() {
