@@ -176,7 +176,7 @@ ${fedora_build}
        # disable debug
        $ sudo -H sed -i -e \"s/debug : True/debug : False/g\" \"$SEARX_SETTINGS_PATH\"
 
-Open WEB browser and visit http://$SEARX_INTERNAL_URL .  If you are inside a
+Open WEB browser and visit http://$SEARX_INTERNAL_HTTP .  If you are inside a
 container or in a script, test with curl:
 
 .. tabs::
@@ -185,13 +185,13 @@ container or in a script, test with curl:
 
     .. code-block:: sh
 
-       $ xdg-open http://$SEARX_INTERNAL_URL
+       $ xdg-open http://$SEARX_INTERNAL_HTTP
 
   .. group-tab:: curl
 
     .. code-block:: none
 
-       $ curl --location --verbose --head --insecure $SEARX_INTERNAL_URL
+       $ curl --location --verbose --head --insecure $SEARX_INTERNAL_HTTP
 
        *   Trying 127.0.0.1:8888...
        * TCP_NODELAY set

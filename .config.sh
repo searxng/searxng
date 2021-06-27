@@ -25,7 +25,7 @@ fi
 # searx.sh
 # ---------
 
-# SEARX_INTERNAL_URL="127.0.0.1:8888"
+# SEARX_INTERNAL_HTTP="127.0.0.1:8888"
 # SEARX_SETTINGS_TEMPLATE="${REPO_ROOT}/utils/templates/etc/searx/use_default_settings.yml"
 
 # Only change, if you maintain a searx brand in your searx fork (GIT_URL) which
