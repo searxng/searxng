@@ -9,6 +9,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib.sh"
 source "${REPO_ROOT}/utils/brand.env"
 source_dot_config
 
+# shellcheck source=utils/lib_static.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
+
 # config
 
 PYOBJECTS="searx"
@@ -42,53 +45,54 @@ PYLINT_OPTIONS="-m pylint -j 0 --rcfile .pylintrc"
 
 help() {
     cat <<EOF
-buildenv
+buildenv:
   rebuild ./utils/brand.env
-babel.compile
+babel.compile:
   pybabel compile ./searx/translations
-data.*
+data.:
   all       : update searx/languages.py and ./data/*
   languages : update searx/data/engines_languages.json & searx/languages.py
   useragents: update searx/data/useragents.json with the most recent versions of Firefox.
-docs.*
+docs.:
   html      : build HTML documentation
   live      : autobuild HTML documentation while editing
   gh-pages  : deploy on gh-pages branch
   prebuild  : build reST include files (./${DOCS_BUILD}/includes)
   clean     : clean documentation build
-docker
+docker.:
   build     : build docker image
   push      : build and push docker image
-gecko.driver
+gecko.driver:
   download & install geckodriver if not already installed (required for
   robot_tests)
-node.*
+node.:
   env       : download & install npm dependencies locally
   clean     : drop npm installations
-py.*
+py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
-pyenv.* :
+pyenv.:
   install   : developer install of searx into virtualenv
   uninstall : uninstall developer installation
   cmd ...   : run command ... in virtualenv
   OK        : test if virtualenv is OK
 pypi.upload:
   Upload python packages to PyPi (to test use pypi.upload.test)
-test.* :
+test.:
   pylint    : lint PYLINT_FILES, searx/engines, searx & tests
   pep8      : pycodestyle (pep8) for all files except PYLINT_FILES
   unit      : run unit tests
   coverage  : run unit tests with coverage
   robot     : run robot test
   clean     : clean intermediate test stuff
-themes.* :
+themes.:
   all       : build all themes
   oscar     : build oscar theme
   simple    : build simple theme
-pygments.* :
+pygments.:
   less      : build LESS files for pygments
 EOF
+    static_help
 }
 
 

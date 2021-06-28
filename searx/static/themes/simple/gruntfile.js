@@ -71,7 +71,6 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! simple/searx.min.js | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n',
         output: {
 	        comments: 'some'
         },
@@ -156,7 +155,6 @@ module.exports = function(grunt) {
       development: {
         options: {
           paths: ["less"],
-          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
         },
         files: {
           "css/searx.css": "src/less/style.less",
@@ -173,7 +171,6 @@ module.exports = function(grunt) {
           sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map';},
           outputSourceFiles: false,
           sourceMapRootpath: '../',
-          banner: '/*! searx | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %> */\n'
         },
         files: {
           "css/searx.min.css": "src/less/style.less",

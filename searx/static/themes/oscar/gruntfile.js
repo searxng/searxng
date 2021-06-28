@@ -67,7 +67,6 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         sourceMap: true,
-        banner: '/*! oscar/searx.min.js | <%= grunt.template.today("dd-mm-yyyy") %> | <%= process.env.GIT_URL %>  */\n'
       },
       dist: {
         files: {

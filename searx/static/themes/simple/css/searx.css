@@ -1,4 +1,3 @@
-/*! searx | 22-06-2021 | https://github.com/searxng/searxng */
 /*
 * searx, A privacy-respecting, hackable metasearch engine
 *
@@ -1181,7 +1180,7 @@ html.js .show_if_nojs {
   text-align: center;
 }
 .right {
-  float: right ;
+  float: right;
 }
 .left {
   float: left;
@@ -1239,11 +1238,11 @@ tr:hover {
   background: #ececec;
 }
 div.selectable_url {
+  display: block;
   border: 1px solid #888;
   padding: 4px;
   color: #444;
   width: 100%;
-  display: block;
   margin: 0.1em;
   overflow: hidden;
   height: 1.2em;
@@ -1263,7 +1262,7 @@ div.selectable_url pre {
   position: relative;
   width: 70%;
   padding: 1em 1em 1em 2.7em;
-  margin: 0em 8% 1em 8%;
+  margin: 0 8% 1em 8%;
   border: 1px solid black;
   border-radius: 4px;
   text-align: left;
@@ -1271,7 +1270,7 @@ div.selectable_url pre {
   background: #fae1e1;
   border-color: #db3434;
 }
-.dialog-error:before {
+.dialog-error::before {
   position: absolute;
   top: 0.5em;
   left: 0.5em;
@@ -1313,7 +1312,7 @@ div.selectable_url pre {
   position: relative;
   width: 70%;
   padding: 1em 1em 1em 2.7em;
-  margin: 0em 8% 1em 8%;
+  margin: 0 8% 1em 8%;
   border: 1px solid black;
   border-radius: 4px;
   text-align: left;
@@ -1321,7 +1320,7 @@ div.selectable_url pre {
   background: #faf5e1;
   border-color: #dbba34;
 }
-.dialog-warning:before {
+.dialog-warning::before {
   position: absolute;
   top: 0.5em;
   left: 0.5em;
@@ -1363,7 +1362,7 @@ div.selectable_url pre {
   position: relative;
   width: 70%;
   padding: 1em 1em 1em 2.7em;
-  margin: 0em 8% 1em 8%;
+  margin: 0 8% 1em 8%;
   border: 1px solid black;
   border-radius: 4px;
   text-align: left;
@@ -1377,7 +1376,7 @@ div.selectable_url pre {
   margin: 0 50% 0 0;
   box-shadow: 0 0 1em;
 }
-.dialog-modal:before {
+.dialog-modal::before {
   position: absolute;
   top: 0.5em;
   left: 0.5em;
@@ -1423,7 +1422,7 @@ div.selectable_url pre {
   margin: 0;
   border: none;
 }
-/* -- tabs --*/
+/* -- tabs -- */
 .tabs .tabs > label {
   font-size: 90%;
 }
@@ -1450,7 +1449,7 @@ div.selectable_url pre {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   border: solid white;
-  border-width: 0px 0px 2px 0;
+  border-width: 0 0 2px 0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -1552,10 +1551,10 @@ select:focus {
     top: -5px;
     cursor: pointer;
     border-radius: 50px;
-    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
     transition: all 0.4s ease;
     left: 27px;
-    background-color: #3498DB;
+    background-color: #3498db;
   }
   .checkbox-onoff input[type=checkbox] {
     visibility: hidden;
@@ -1565,7 +1564,7 @@ select:focus {
     background: #dcdcdc;
   }
 }
-/* -- checkbox --*/
+/* -- checkbox -- */
 @supports (transform: rotate(-45deg)) {
   .checkbox {
     width: 20px;
@@ -1581,9 +1580,9 @@ select:focus {
     left: 0;
     background: white;
     border-radius: 4px;
-    box-shadow: inset 0px 1px 1px white, 0px 1px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 1px 1px white, 0 1px 4px rgba(0, 0, 0, 0.5);
   }
-  .checkbox label:after {
+  .checkbox label::after {
     content: '';
     width: 9px;
     height: 5px;
@@ -1600,8 +1599,8 @@ select:focus {
   .checkbox input[type=checkbox] {
     visibility: hidden;
   }
-  .checkbox input[type=checkbox]:checked + label:after {
-    border-color: #3498DB;
+  .checkbox input[type=checkbox]:checked + label::after {
+    border-color: #3498db;
     opacity: 1;
   }
   .checkbox input[disabled] + label {
@@ -1620,7 +1619,7 @@ select:focus {
 }
 /* -- loader -- */
 .loader,
-.loader:after {
+.loader::after {
   border-radius: 50%;
   width: 2em;
   height: 2em;
@@ -1665,9 +1664,9 @@ select:focus {
   display: none;
   position: absolute;
   padding: 0.5rem 1rem;
-  margin: 0rem 0 0 2rem;
+  margin: 0 0 0 2rem;
   border: 1px solid #ddd;
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: white;
   font-size: 14px;
   font-weight: normal;
@@ -1805,22 +1804,6 @@ td:hover .engine-tooltip,
     border-bottom: 1px solid #E8E7E6;
     text-align: left;
   }
-}
-.ion-icon-big {
-  display: inline-block;
-  line-height: 1;
-  font-weight: normal;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 149%;
-}
-.ion-icon-big:before {
-  font-family: "ion";
 }
 .index {
   text-align: center;
@@ -1974,7 +1957,7 @@ td:hover .engine-tooltip,
   border-bottom: 1px solid #3498DB;
   border-right: none;
   border-left: none;
-  border-radius: 0px;
+  border-radius: 0;
   outline: none;
   color: #222;
   font-size: 16px;
@@ -1984,10 +1967,6 @@ td:hover .engine-tooltip,
   color: #3498DB;
 }
 #clear_search.empty * {
-  display: none;
-}
-#q::-ms-clear,
-#q::-webkit-search-cancel-button {
   display: none;
 }
 #q,
@@ -2000,7 +1979,7 @@ td:hover .engine-tooltip,
   height: 2.2em;
   background: none repeat scroll 0 0 #FFF;
   border: 1px solid #3498DB;
-  border-radius: 0px;
+  border-radius: 0;
   outline: none;
   color: #222;
   font-size: 16px;
@@ -2009,9 +1988,13 @@ td:hover .engine-tooltip,
 #q {
   outline: medium none;
   padding-left: 8px;
-  padding-right: 0px !important;
+  padding-right: 0 !important;
   border-right: none;
   width: 40em;
+}
+#q::-ms-clear,
+#q::-webkit-search-cancel-button {
+  display: none;
 }
 #send_search {
   border-left: none;
@@ -2035,8 +2018,8 @@ td:hover .engine-tooltip,
     clear: both;
   }
   #categories .checkbox_container {
-    margin-top: 2px;
     margin: auto;
+    margin-top: 2px;
   }
   html.touch #main_index #categories_container,
   html.touch #main_results #categories_container {
@@ -2115,10 +2098,10 @@ td:hover .engine-tooltip,
   display: inline-block;
   position: relative;
   margin: 0 3px;
-  padding: 0px;
-  /*label:hover {
+  padding: 0;
+  /* label:hover {
   border-bottom: 2px solid @color-categories-item-border-unselected-hover;
-  }*/
+  } */
 }
 .category input {
   display: none;
@@ -2139,7 +2122,7 @@ td:hover .engine-tooltip,
   user-select: none;
 }
 .category input[type="checkbox"]:focus + label {
-  box-shadow: 0px 0px 8px #3498DB;
+  box-shadow: 0 0 8px #3498db;
 }
 .category input[type="checkbox"]:checked + label {
   background: #3498DB;
@@ -2157,12 +2140,28 @@ td:hover .engine-tooltip,
   opacity: 0;
   transition: opacity 1s ease;
   font-size: 0.8em;
-  text-position: center;
+  text-align: center;
   background: white;
 }
 #categories_container:hover .help {
   opacity: 0.8;
   transition: opacity 1s ease;
+}
+.ion-icon-big {
+  display: inline-block;
+  line-height: 1;
+  font-weight: normal;
+  font-style: normal;
+  speak: none;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 149%;
+}
+.ion-icon-big:before {
+  font-family: "ion";
 }
 html {
   font-family: arial, sans-serif;
@@ -2182,11 +2181,6 @@ main {
 }
 main {
   width: 100%;
-}
-footer {
-  bottom: 0;
-  width: 100%;
-  height: 50px;
 }
 #main_preferences,
 #main_about,
@@ -2512,7 +2506,7 @@ article.result-images[data-vim-selected]::before {
   margin: 10px 8px 10px 8px;
   border: 1px solid #ddd;
   padding: 0.9em;
-  box-shadow: 0px 0px 5px #CCC;
+  box-shadow: 0 0 5px #ccc;
 }
 #answers h4 {
   display: none;
@@ -2530,8 +2524,8 @@ article.result-images[data-vim-selected]::before {
   position: absolute;
   top: 100px;
   left: 57em;
-  margin: 0px 2px 5px 5px;
-  padding: 0px 2px 2px;
+  margin: 0 2px 5px 5px;
+  padding: 0 2px 2px;
   max-width: 25em;
   word-wrap: break-word;
 }
@@ -2540,7 +2534,7 @@ article.result-images[data-vim-selected]::before {
   border: 1px solid #ddd;
   padding: 0.9em;
   font-size: 0.9em;
-  box-shadow: 0px 0px 5px #CCC;
+  box-shadow: 0 0 5px #ccc;
 }
 #sidebar .infobox h2 {
   margin: 0 0 0.5em 0;
@@ -2613,7 +2607,7 @@ article.result-images[data-vim-selected]::before {
   margin: 0 0 0 2em;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0px 0px 5px #CCC;
+  box-shadow: 0 0 5px #ccc;
   background: white;
   position: fixed;
   bottom: 85px;
@@ -2733,9 +2727,9 @@ article.result-images[data-vim-selected]::before {
   }
   #linkto_preferences {
     display: none;
-    postion: fixed !important;
+    position: fixed !important;
     top: 100px;
-    right: 0px;
+    right: 0;
   }
   #sidebar {
     margin: 0 5px 2px 5px;
