@@ -141,7 +141,7 @@ usage() {
     cat <<EOF
 usage::
   $(basename "$0") shell
-  $(basename "$0") install    [all|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
+  $(basename "$0") install    [all|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
   $(basename "$0") update     [searx]
   $(basename "$0") remove     [all|user|pyenv|searx-src]
   $(basename "$0") activate   [service]
@@ -155,10 +155,12 @@ shell
 install / remove
   :all:        complete (de-) installation of searx service
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
+  :dot-config: copy ./config.sh to ${SEARX_SRC}
   :searx-src:  clone $GIT_URL
+  :init-src:   copy files (SEARX_SRC_INIT_FILES) to ${SEARX_SRC}
   :pyenv:      create/remove virtualenv (python) in $SEARX_PYENV
   :uwsgi:      install searx uWSGI application
-  :settings:   reinstall settings from ${SEARX_SETTINGS_TEMPLATE}
+  :settings:   reinstall settings from ${SEARX_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
 update searx
@@ -210,11 +212,31 @@ main() {
             sudo_or_exit
             case $2 in
                 all) install_all ;;
-                user) assert_user ;;
-                pyenv) create_pyenv ;;
-                searx-src) clone_searx ;;
-                settings) install_settings ;;
+                user)
+                    verify_continue_install
+                    assert_user
+                    ;;
+                pyenv)
+                    verify_continue_install
+                    create_pyenv
+                    ;;
+                searx-src)
+                    verify_continue_install
+                    clone_searx
+                    install_DOT_CONFIG
+                    init_SEARX_SRC
+                    ;;
+                init-src)
+                    init_SEARX_SRC
+                    ;;
+                dot-config)
+                    install_DOT_CONFIG
+                    ;;
+                settings)
+                    install_settings
+                    ;;
                 uwsgi)
+                    verify_continue_install
                     install_searx_uwsgi
                     if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
                         err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check searx & uwsgi setup!"
@@ -290,6 +312,10 @@ install_all() {
     assert_user
     wait_key
     clone_searx
+    wait_key
+    install_DOT_CONFIG
+    wait_key
+    init_SEARX_SRC
     wait_key
     create_pyenv
     wait_key
@@ -398,50 +424,121 @@ EOF
     popd > /dev/null
 }
 
+prompt_installation_status(){
+    local _state
+    _state="$(install_searx_get_state)"
+    case $_state in
+        missing-searx-clone)
+            info_msg "${_BBlue}(status: $(install_searx_get_state))${_creset}"
+            return 0
+            ;;
+        *)
+            warn_msg "SearXNG instance already installed at: $SEARX_SRC"
+            warn_msg "status:  ${_BBlue}$(install_searx_get_state)${_creset} "
+            return 42
+            ;;
+    esac
+}
+
+verify_continue_install(){
+    if ! prompt_installation_status; then
+        MSG="[${_BCyan}KEY${_creset}] to continue installation / [${_BCyan}CTRL-C${_creset}] to exit" \
+           wait_key
+    fi
+}
+
+init_SEARX_SRC(){
+    rst_title "Update instance: ${SEARX_SRC}/" section
+
+    if ! clone_is_available; then
+        err_msg "you have to install searx first"
+        return 1
+    fi
+
+    init_SEARX_SRC_INIT_FILES
+
+    if [ ${#SEARX_SRC_INIT_FILES[*]} -eq 0 ]; then
+        info_msg "no files registered in SEARX_SRC_INIT_FILES"
+        return 2
+    fi
+
+    echo
+    echo "Manipulating files like settings.yml can break existing installation!"
+    echo "Update instance with file(s) from: ${REPO_ROOT}"
+    echo
+    for i in "${SEARX_SRC_INIT_FILES[@]}"; do
+        echo "- $i"
+    done
+    if ! ask_yn "Do you really want to update these files in the instance?" Yn; then
+        return 42
+    fi
+    for fname in "${SEARX_SRC_INIT_FILES[@]}"; do
+        while true; do
+            choose_one _reply "choose next step with file ${fname}" \
+                   "leave file unchanged" \
+                   "replace file" \
+                   "diff files" \
+                   "interactive shell"
+
+            case $_reply in
+                "leave file unchanged")
+                    break
+                    ;;
+                "replace file")
+                    info_msg "copy: ${REPO_ROOT}/${fname} --> ${SEARX_SRC}/${fname}"
+                    cp "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"
+                    break
+                    ;;
+                "diff files")
+                    $DIFF_CMD "${SEARX_SRC}/${fname}" "${REPO_ROOT}/${fname}"
+                    ;;
+                "interactive shell")
+                    backup_file "${SEARX_SRC}/${fname}"
+                    echo -e "// edit ${_Red}${dst}${_creset} to your needs"
+                    echo -e "// exit with [${_BCyan}CTRL-D${_creset}]"
+                    sudo -H -u "${SERVICE_USER}" -i
+                    $DIFF_CMD "${SEARX_SRC}/${fname}"  "${REPO_ROOT}/${fname}"
+                    echo
+                    echo -e "// ${_BBlack}did you edit file ...${_creset}"
+                    echo -en "//  ${_Red}${dst}${_creset}"
+                    if ask_yn "//${_BBlack}... to your needs?${_creset}"; then
+                        break
+                    fi
+                    ;;
+            esac
+        done
+    done
+}
+
+install_DOT_CONFIG(){
+    rst_title "Update instance: ${SEARX_SRC}/.config.sh" section
+
+    if cmp --silent "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"; then
+        info_msg "${SEARX_SRC}/.config.sh is up to date"
+        return 0
+    fi
+
+    diff "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"
+    if ! ask_yn "Do you want to copy file .config.sh into instance?" Yn; then
+        return 42
+    fi
+    backup_file "${SEARX_SRC}/.config.sh"
+    cp "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"
+}
+
 install_settings() {
     rst_title "${SEARX_SETTINGS_PATH}" section
+
     if ! clone_is_available; then
         err_msg "you have to install searx first"
         exit 42
     fi
+
     mkdir -p "$(dirname "${SEARX_SETTINGS_PATH}")"
-
-    if [[ ! -f "${SEARX_SETTINGS_PATH}" ]]; then
-        info_msg "install settings ${SEARX_SETTINGS_TEMPLATE}"
-        info_msg "  --> ${SEARX_SETTINGS_PATH}"
-        cp "${SEARX_SETTINGS_TEMPLATE}" "${SEARX_SETTINGS_PATH}"
-        configure_searx
-        return
-    fi
-
-    rst_para "Diff between origin's setting file (+) and current (-):"
-    echo "${SEARX_SETTINGS_PATH}" "${SEARX_SETTINGS_TEMPLATE}"
-    $DIFF_CMD "${SEARX_SETTINGS_PATH}" "${SEARX_SETTINGS_TEMPLATE}"
-
-    local action
-    choose_one action "What should happen to the settings file? " \
-           "keep configuration unchanged" \
-           "use origin settings" \
-           "start interactive shell"
-    case $action in
-        "keep configuration unchanged")
-            info_msg "leave settings file unchanged"
-            ;;
-        "use origin settings")
-            backup_file "${SEARX_SETTINGS_PATH}"
-            info_msg "install origin settings"
-            cp "${SEARX_SETTINGS_TEMPLATE}" "${SEARX_SETTINGS_PATH}"
-            ;;
-        "start interactive shell")
-            backup_file "${SEARX_SETTINGS_PATH}"
-            echo -e "// exit with [${_BCyan}CTRL-D${_creset}]"
-            sudo -H -i
-            rst_para 'Diff between new setting file (-) and current (+):'
-            echo
-            $DIFF_CMD "${SEARX_SETTINGS_TEMPLATE}" "${SEARX_SETTINGS_PATH}"
-            wait_key
-            ;;
-    esac
+    install_template \
+        "${SEARX_SETTINGS_PATH}" \
+        "${SERVICE_USER}" "${SERVICE_GROUP}"
+    configure_searx
 }
 
 remove_settings() {
