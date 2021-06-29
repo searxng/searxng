@@ -1,29 +1,23 @@
 #!/usr/bin/env bash
-# -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # shellcheck disable=SC2001
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
-source_dot_config
-source "${REPO_ROOT}/utils/lxc-searx.env"
-in_container && lxc_set_suite_env
+
+# shellcheck source=utils/lib_install.sh
+source "${REPO_ROOT}/utils/lib_install.sh"
 
 # ----------------------------------------------------------------------------
 # config
 # ----------------------------------------------------------------------------
 
 PUBLIC_URL="${PUBLIC_URL:-http://$(uname -n)/searx}"
-
-SEARX_INTERNAL_HTTP="${SEARX_INTERNAL_HTTP:-127.0.0.1:8888}"
+SEARX_INTERNAL_HTTP="${SEARX_BIND_ADDRESS}:${SEARX_PORT}"
 
 SEARX_URL_PATH="${SEARX_URL_PATH:-$(echo "${PUBLIC_URL}" \
 | sed -e 's,^.*://[^/]*\(/.*\),\1,g')}"
 [[ "${SEARX_URL_PATH}" == "${PUBLIC_URL}" ]] && SEARX_URL_PATH=/
-SEARX_INSTANCE_NAME="${SEARX_INSTANCE_NAME:-searx@$(echo "$PUBLIC_URL" \
-| sed -e 's,^.*://\([^\:/]*\).*,\1,g') }"
 
 SERVICE_NAME="searx"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"
@@ -182,29 +176,12 @@ option
 apache
   :install: apache site with the searx uwsgi app
   :remove:  apache site ${APACHE_FILTRON_SITE}
-
-searx settings: ${SEARX_SETTINGS_PATH}
-
-If needed, set PUBLIC_URL of your WEB service in the '${DOT_CONFIG#"$REPO_ROOT/"}' file::
-  PUBLIC_URL          : ${PUBLIC_URL}
-  SEARX_INSTANCE_NAME : ${SEARX_INSTANCE_NAME}
+---- sourced ${DOT_CONFIG}
   SERVICE_USER        : ${SERVICE_USER}
-  SEARX_INTERNAL_HTTP : http://${SEARX_INTERNAL_HTTP}
+  SERVICE_HOME        : ${SERVICE_HOME}
 EOF
-    if in_container; then
-        # searx is listening on 127.0.0.1 and not available from outside container
-        # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
-        echo -e "${_BBlack}HINT:${_creset} searx only listen on loopback device" \
-             "${_BBlack}inside${_creset} the container."
-        for ip in $(global_IPs) ; do
-            if [[ $ip =~ .*:.* ]]; then
-                echo "  container (IPv6): [${ip#*|}]"
-            else
-                # IPv4:
-                echo "  container (IPv4): ${ip#*|}"
-            fi
-        done
-    fi
+
+    install_log_searx_instance
     [[ -n ${1} ]] &&  err_msg "$1"
 }
 
@@ -231,7 +208,7 @@ main() {
                 *) usage "$_usage"; exit 42;;
             esac ;;
         install)
-            rst_title "$SEARX_INSTANCE_NAME" part
+            rst_title "SearXNG (install)" part
             sudo_or_exit
             case $2 in
                 all) install_all ;;
@@ -261,6 +238,7 @@ main() {
                 *) usage "$_usage"; exit 42;;
             esac ;;
         remove)
+            rst_title "SearXNG (remove)" part
             sudo_or_exit
             case $2 in
                 all) remove_all;;
@@ -307,7 +285,8 @@ main() {
 _service_prefix="  ${_Yellow}|$SERVICE_USER|${_creset} "
 
 install_all() {
-    rst_title "Install $SEARX_INSTANCE_NAME (service)"
+    rst_title "Install SearXNG (service)"
+    verify_continue_install
     pkg_install "$SEARX_PACKAGES"
     wait_key
     assert_user
@@ -348,13 +327,13 @@ EOF
 }
 
 remove_all() {
-    rst_title "De-Install $SEARX_INSTANCE_NAME (service)"
+    rst_title "De-Install SearXNG (service)"
 
     rst_para "\
 It goes without saying that this script can only be used to remove
 installations that were installed with this script."
 
-    if ! ask_yn "Do you really want to deinstall $SEARX_INSTANCE_NAME?"; then
+    if ! ask_yn "Do you really want to deinstall SearXNG?"; then
         return
     fi
     remove_searx_uwsgi
@@ -537,7 +516,6 @@ configure_searx() {
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
 sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "$SEARX_SETTINGS_PATH"
-sed -i -e "s/{instance_name}/${SEARX_INSTANCE_NAME}/g" "$SEARX_SETTINGS_PATH"
 EOF
 }
 
@@ -577,14 +555,14 @@ remove_searx_uwsgi() {
 }
 
 activate_service() {
-    rst_title "Activate $SEARX_INSTANCE_NAME (service)" section
+    rst_title "Activate SearXNG (service)" section
     echo
     uWSGI_enable_app "$SEARX_UWSGI_APP"
     uWSGI_restart "$SEARX_UWSGI_APP"
 }
 
 deactivate_service() {
-    rst_title "De-Activate $SEARX_INSTANCE_NAME (service)" section
+    rst_title "De-Activate SearXNG (service)" section
     echo
     uWSGI_disable_app "$SEARX_UWSGI_APP"
     uWSGI_restart "$SEARX_UWSGI_APP"
@@ -609,7 +587,7 @@ EOF
 }
 
 enable_debug() {
-    warn_msg "Do not enable debug in production enviroments!!"
+    warn_msg "Do not enable debug in production environments!!"
     info_msg "try to enable debug mode ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
@@ -680,14 +658,11 @@ inspect_service() {
     rst_title "service status & log"
     cat <<EOF
 
-sourced ${DOT_CONFIG#"$REPO_ROOT/"} :
-
-  PUBLIC_URL          : ${PUBLIC_URL}
-  SEARX_URL_PATH      : ${SEARX_URL_PATH}
-  SEARX_INSTANCE_NAME : ${SEARX_INSTANCE_NAME}
-  SEARX_INTERNAL_HTTP  : ${SEARX_INTERNAL_HTTP}
-
+sourced ${DOT_CONFIG} :
+  SERVICE_USER        : ${SERVICE_USER}
+  SERVICE_HOME        : ${SERVICE_HOME}
 EOF
+    install_log_searx_instance
 
     if service_account_is_available "$SERVICE_USER"; then
         info_msg "Service account $SERVICE_USER exists."

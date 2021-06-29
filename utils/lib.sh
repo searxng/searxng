@@ -462,11 +462,11 @@ install_template() {
     fi
 
     if [[ -f "${dst}" ]] && cmp --silent "${template_file}" "${dst}" ; then
-        info_msg "file ${dst} allready installed"
+        info_msg "file ${dst} already installed"
         return 0
     fi
 
-    info_msg "diffrent file ${dst} allready exists on this host"
+    info_msg "different file ${dst} already exists on this host"
 
     while true; do
         choose_one _reply "choose next step with file $dst" \
@@ -1642,7 +1642,7 @@ git_clone() {
     #    git_clone <url> <path> [<branch> [<user>]]
     #
     #  First form uses $CACHE/<name> as destination folder, second form clones
-    #  into <path>.  If repository is allready cloned, pull from <branch> and
+    #  into <path>.  If repository is already cloned, pull from <branch> and
     #  update working tree (if needed, the caller has to stash local changes).
     #
     #    git clone https://github.com/searxng/searxng searx-src origin/master searxlogin

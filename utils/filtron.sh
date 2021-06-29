@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
-# -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# shellcheck disable=SC2119,SC2001
+# shellcheck disable=SC2001
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
-source_dot_config
-source "${REPO_ROOT}/utils/lxc-searx.env"
-in_container && lxc_set_suite_env
+# shellcheck source=utils/lib_install.sh
+source "${REPO_ROOT}/utils/lib_install.sh"
 
 # ----------------------------------------------------------------------------
 # config
@@ -94,28 +90,17 @@ apache (${PUBLIC_URL})
 nginx (${PUBLIC_URL})
   :install: nginx site with a reverse proxy (ProxyPass)
   :remove:  nginx site ${NGINX_FILTRON_SITE}
-
 filtron rules: ${FILTRON_RULES_TEMPLATE}
-
-If needed, set PUBLIC_URL of your WEB service in the '${DOT_CONFIG#"$REPO_ROOT/"}' file::
-  PUBLIC_URL     : ${PUBLIC_URL}
-  PUBLIC_HOST    : ${PUBLIC_HOST}
-  SERVICE_USER   : ${SERVICE_USER}
-  FILTRON_TARGET : ${FILTRON_TARGET}
-  FILTRON_API    : ${FILTRON_API}
-  FILTRON_LISTEN : ${FILTRON_LISTEN}
+---- sourced ${DOT_CONFIG} :
+  SERVICE_USER        : ${SERVICE_USER}
+  SERVICE_HOME        : ${SERVICE_HOME}
+  FILTRON_TARGET      : ${FILTRON_TARGET}
+  FILTRON_API         : ${FILTRON_API}
+  FILTRON_LISTEN      : ${FILTRON_LISTEN}
+  FILTRON_URL_PATH    : ${FILTRON_URL_PATH}
 EOF
-    if in_container; then
-        # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
-        for ip in $(global_IPs) ; do
-            if [[ $ip =~ .*:.* ]]; then
-                echo "  container URL (IPv6): http://[${ip#*|}]:4005/"
-            else
-                # IPv4:
-                echo "  container URL (IPv4): http://${ip#*|}:4005/"
-            fi
-        done
-    fi
+
+    install_log_searx_instance
     [[ -n ${1} ]] &&  err_msg "$1"
 }
 
@@ -349,16 +334,15 @@ inspect_service() {
 
     cat <<EOF
 
-sourced ${DOT_CONFIG#"$REPO_ROOT/"} :
-
-  PUBLIC_URL          : ${PUBLIC_URL}
-  PUBLIC_HOST         : ${PUBLIC_HOST}
-  FILTRON_URL_PATH    : ${FILTRON_URL_PATH}
+sourced ${DOT_CONFIG} :
+  SERVICE_USER        : ${SERVICE_USER}
+  SERVICE_HOME        : ${SERVICE_HOME}
+  FILTRON_TARGET      : ${FILTRON_TARGET}
   FILTRON_API         : ${FILTRON_API}
   FILTRON_LISTEN      : ${FILTRON_LISTEN}
-  FILTRON_TARGET      : ${FILTRON_TARGET}
-
+  FILTRON_URL_PATH    : ${FILTRON_URL_PATH}
 EOF
+    install_log_searx_instance
 
     if service_account_is_available "$SERVICE_USER"; then
         info_msg "service account $SERVICE_USER available."
