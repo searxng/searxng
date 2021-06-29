@@ -11,7 +11,6 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 # config
 # ----------------------------------------------------------------------------
 
-PUBLIC_URL="${PUBLIC_URL:-http://$(uname -n)/searx}"
 PUBLIC_HOST="${PUBLIC_HOST:-$(echo "$PUBLIC_URL" | sed -e 's/[^/]*\/\/\([^@]*@\)\?\([^:/]*\).*/\2/')}"
 
 FILTRON_URL_PATH="${FILTRON_URL_PATH:-$(echo "${PUBLIC_URL}" \

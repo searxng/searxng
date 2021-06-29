@@ -110,8 +110,9 @@ EOF
 info_searx() {
     # shellcheck disable=SC1117
     cat <<EOF
-To activate result and image proxy in searx, edit settings.yml (read:
-${DOCS_URL}/admin/morty.html)::
+To activate result and image proxy in SearXNG read:
+  ${DOCS_URL}/admin/morty.html
+Check settings in file ${SEARX_SETTINGS_PATH} ...
   result_proxy:
       url : ${PUBLIC_URL_MORTY}
   server:

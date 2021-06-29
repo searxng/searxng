@@ -12,7 +12,6 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 # config
 # ----------------------------------------------------------------------------
 
-PUBLIC_URL="${PUBLIC_URL:-http://$(uname -n)/searx}"
 SEARX_INTERNAL_HTTP="${SEARX_BIND_ADDRESS}:${SEARX_PORT}"
 
 SEARX_URL_PATH="${SEARX_URL_PATH:-$(echo "${PUBLIC_URL}" \
@@ -29,8 +28,7 @@ SERVICE_GROUP="${SERVICE_USER}"
 GIT_BRANCH="${GIT_BRANCH:-master}"
 SEARX_PYENV="${SERVICE_HOME}/searx-pyenv"
 SEARX_SRC="${SERVICE_HOME}/searx-src"
-SEARX_SETTINGS_PATH="${SEARX_SETTINGS_PATH:-/etc/searx/settings.yml}"
-SEARX_SETTINGS_TEMPLATE="${SEARX_SETTINGS_TEMPLATE:-${REPO_ROOT}/utils/templates/etc/searx/use_default_settings.yml}"
+SEARX_SETTINGS_PATH="/etc/searx/settings.yml"
 SEARX_UWSGI_APP="searx.ini"
 # shellcheck disable=SC2034
 SEARX_UWSGI_SOCKET="/run/uwsgi/app/searx/socket"

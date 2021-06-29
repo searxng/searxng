@@ -52,6 +52,8 @@ source_dot_config() {
     if [ -z "$eval_SEARX_SRC" ]; then
         export eval_SEARX_SRC='true'
         SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
+        SEARX_PYENV=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_PYENV)
+        SEARX_SETTINGS_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SETTINGS_PATH)
         if [ ! -r "${SEARX_SRC}" ]; then
             build_msg INSTANCE "not yet cloned: ${SEARX_SRC}"
             orig_source_dot_config
@@ -114,6 +116,7 @@ install_log_searx_instance() {
 
     echo -e "---- SearXNG instance setup ${_BBlue}(status: $(install_searx_get_state))${_creset}"
     echo -e "  SEARX_SETTINGS_PATH : ${_BBlue}${SEARX_SETTINGS_PATH}${_creset}"
+    echo -e "  SSEARX_PYENV        : ${_BBlue}${SEARX_PYENV}${_creset}"
     echo -e "  SEARX_SRC           : ${_BBlue}${SEARX_SRC:-none}${_creset}"
     echo -e "  SEARX_URL           : ${_BBlue}${SEARX_URL:-none}${_creset}"
 
@@ -176,6 +179,18 @@ install_searx_get_state(){
 
 # shellcheck source=utils/brand.env
 source "${REPO_ROOT}/utils/brand.env"
+
+# SEARX_URL aka PUBLIC_URL: the public URL of the instance (e.g.
+# "https://example.org/searx").  The value is taken from environment $SEARX_URL
+# in ./utils/brand.env.  This variable is a empty string if server.base_url in
+# the settings.yml is set to 'false'.
+
+SEARX_URL="${SEARX_URL:-http://$(uname -n)}"
+if in_container; then
+    # hint: Linux containers do not have DNS entries, lets use IPs
+    SEARX_URL="http://$(primary_ip)"
+fi
+PUBLIC_URL="${SEARX_URL}"
 
 source_dot_config
 

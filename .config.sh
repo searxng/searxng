@@ -2,48 +2,41 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # shellcheck shell=bash disable=SC2034
 #
-# This environment is used by ./utils scripts like filtron.sh or searx.sh.  The
-# default values are *most flexible* and *best maintained*, you normally not
-# need to change the defaults (except PUBLIC_URL).
+# This file should be edited only ones just before the installation of any
+# service is done.  After the installation of the searx service a copy of this
+# file is placed into the $SEARX_SRC of the instance, e.g.::
 #
-# Before you change any value here you have to uninstall any previous
-# installation.  Further is it recommended to backup your changes simply by
-# adding them to you local brand (git branch)::
+#     /usr/local/searx/searx-src/.config.sh
 #
-#     git add .config
+# .. hint::
+#
+#    Before you change a value here, You have to fully uninstall any previous
+#    installation of searx, morty and filtron services!
 
-# The public URL of the searx instance: PUBLIC_URL="https://mydomain.xy/searx"
-# The default is taken from ./utils/brand.env.
+# utils/searx.sh
+# --------------
 
-PUBLIC_URL="${SEARX_URL}"
+# The setup of the SearXNG instance is done in the settings.yml
+# (SEARX_SETTINGS_PATH).  Read the remarks in [1] carefully and don't forget to
+# rebuild instance's environment (make buildenv) if needed.  The settings.yml
+# file of an already installed instance is shown by::
+#
+#     $ ./utils/searx.sh --help
+#     ---- SearXNG instance setup (already installed)
+#       SEARX_SETTINGS_PATH : /etc/searx/settings.yml
+#       SEARX_SRC           : /usr/local/searx/searx-src
+#
+# [1] https://searxng.github.io/searxng/admin/engines/settings.html
 
-if [[ ${PUBLIC_URL} == "https://searx.me" ]]; then
-    # hint: Linux containers do not have DNS entries, lets use IPs
-    PUBLIC_URL="http://$(primary_ip)/searx"
-fi
-
-# searx.sh
-# ---------
-
-# SEARX_INTERNAL_HTTP="127.0.0.1:8888"
-# SEARX_SETTINGS_TEMPLATE="${REPO_ROOT}/utils/templates/etc/searx/use_default_settings.yml"
-
-# Only change, if you maintain a searx brand in your searx fork (GIT_URL) which
-# is not hold by branch 'master'.  The branch has to be a local branch, in the
-# repository from which you install (which is most often the case).  If you want
-# to install branch 'foo', don't forget to run 'git branch foo origin/foo' once.
-# GIT_BRANCH="${GIT_BRANCH:-master}"
-
-# filtron.sh
-# ----------
+# utils/filtron.sh
+# ----------------
 
 # FILTRON_API="127.0.0.1:4005"
 # FILTRON_LISTEN="127.0.0.1:4004"
 # FILTRON_TARGET="127.0.0.1:8888"
-# FILTRON_RULES_TEMPLATE="${REPO_ROOT}/utils/templates/etc/searx/use_default_settings.yml"
 
-# morty.sh
-# --------
+# utils/morty.sh
+# --------------
 
 # morty listen address
 # MORTY_LISTEN="127.0.0.1:3000"

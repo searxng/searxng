@@ -1,9 +1,14 @@
+# SearXNG settings, before editing this file read:
+#
+#     ${DOCS_URL}/admin/engines/settings.html
+
 use_default_settings: true
 
 general:
-  debug: false              # Debug mode, only for development
-  instance_name: "searxng"  # displayed name
-  contact_url: false        # mailto:contact@example.com
+  # Debug mode, only for development
+  debug: false
+  # change displayed name
+  # instance_name: "SearXNG"
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -11,24 +16,37 @@ search:
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google",
   # "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
-  autocomplete: ""
+  autocomplete: ''
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
-  default_lang: ""
+  default_lang: ''
   # remove format to deny access, use lower case.
   formats: [html, csv, json, rss]
 
 server:
-  port: 8888
-  # address to listen on
-  bind_address: "127.0.0.1"
   secret_key: "ultrasecretkey"  # change this!
-  # Set custom base_url. Possible values:
-  #   false or "https://your.custom.host/location/"
-  # base_url: https://example.org/searx
   # Proxying image results through searx
   image_proxy: false
 
 # result_proxy:
 #   url: http://127.0.0.1:3000/
 #   key: !!binary "your_morty_proxy_key"
+
+# plugins:
+#   - only_show_green_results
+
+# engines:
+#
+#   - name: duckduckgo
+#     disabled: false
+#
+#   - name: fdroid
+#     disabled: false
+#
+#   - name: apk mirror
+#     disabled: false
+#
+#   - name: mediathekviewweb
+#     engine: mediathekviewweb
+#     shortcut: mvw
+#     categories: general
