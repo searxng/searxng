@@ -134,7 +134,7 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H mkdir -p \"$(dirname ${SEARX_SETTINGS_PATH})\"
-       $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searx/use_default_settings.yml\" \\
+       $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searx/settings.yml\" \\
                     \"${SEARX_SETTINGS_PATH}\"
 
   .. group-tab:: searx/settings.yml
@@ -152,7 +152,6 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \"$SEARX_SETTINGS_PATH\"
-       $ sudo -H sed -i -e \"s/{instance_name}/searx@\$(uname -n)/g\" \"$SEARX_SETTINGS_PATH\"
 
 .. END searx config
 

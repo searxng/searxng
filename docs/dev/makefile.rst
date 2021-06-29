@@ -81,6 +81,30 @@ the check fails if you edit the requirements listed in
 If you think, something goes wrong with your ./local environment or you change
 the :origin:`setup.py` file, you have to call :ref:`make clean`.
 
+.. _make buildenv:
+
+``make buildenv``
+=================
+
+Rebuild instance's environment with the modified settings from the
+:ref:`settings global brand` and :ref:`settings global server` section of your
+:ref:`settings.yml <settings location>`.
+
+We have all SearXNG setups are centralized in the :ref:`settings.yml` file.
+This setup is available as long we are in a *installed instance*.  E.g. the
+*installed instance* on the server or the *installed developer instance* at
+``./local`` (the later one is created by a :ref:`make install <make
+install>` or :ref:`make run <make run>`).
+
+Tasks running outside of an *installed instance*, especially those tasks and
+scripts running at (pre-) installation time do not have access to the SearXNG
+setup (from a *installed instance*).  Those tasks need a *build environment*.
+
+The ``make buildenv`` target will update the *build environment* in:
+
+- :origin:`utils/brand.env`
+
+
 .. _make run:
 
 ``make run``

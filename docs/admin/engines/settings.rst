@@ -37,15 +37,13 @@ see how you can simplify your *user defined* ``settings.yml``.
 Global Settings
 ===============
 
-``general:``
+.. _settings global brand:
+
+``brand:``
 ------------
 
-.. code:: yaml
-
-   general:
-     debug: false               # Debug mode, only for development
-     instance_name:  "searxng"  # displayed name
-     contact_url: false         # mailto:contact@example.com
+If you change a value in this section, don't forget to rebuild instance's
+environment (:ref:`utils/brand.env <make buildenv>`)
 
 .. code:: yaml
 
@@ -57,22 +55,42 @@ Global Settings
      public_instances: https://searx.space
      wiki_url: https://github.com/searxng/searxng/wiki
 
-``debug`` :
+``git_url`` & ``git_branch`` : :ref:`buildenv GIT_URL & GIT_BRANCH<make buildenv>`
+  Changes this, to point to your searx fork (branch).
+
+``issue_url`` : :ref:`buildenv ISSUE_URL<make buildenv>`
+  If you host your own issue tracker change this URL.
+
+``docs_url`` : :ref:`buildenv DOCS_URL<make buildenv>`
+  If you host your own documentation change this URL.
+
+``public_instances`` : :ref:`buildenv PUBLIC_INSTANCES<make buildenv>`
+  If you host your own https://searx.space change this URL.
+
+``wiki_url`` : :ref:`buildenv WIKI_URL<make buildenv>`
+  Link to your wiki (or ``false``)
+
+.. _settings global general:
+
+``general:``
+------------
+
+.. code:: yaml
+
+   general:
+     debug: false               # Debug mode, only for development
+     instance_name:  "searxng"  # displayed name
+     contact_url: false         # mailto:contact@example.com
+
+``debug`` : ``$SEARX_DEBUG``
   Allow a more detailed log if you run searx directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
 
 ``contact_url``:
   Contact ``mailto:`` address or WEB form.
 
-``git_url`` and ``git_branch``:
-  Changes this, to point to your searx fork (branch).
 
-``docs_url``
-  If you host your own documentation, change this URL.
-
-``wiki_url``:
-  Link to your wiki (or ``false``)
-
+.. _settings global server:
 
 ``server:``
 -----------
@@ -94,16 +112,18 @@ Global Settings
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
 
-``port`` & ``bind_address``:
+``port`` & ``bind_address``: ``$SEARX_PORT`` & ``$SEARX_BIND_ADDRESS``
   Port number and *bind address* of the searx web application if you run it
   directly using ``python searx/webapp.py``.  Doesn't apply to searx running on
   Apache or Nginx.
 
-``secret_key`` :
+``secret_key`` : ``$SEARX_SECRET``
   Used for cryptography purpose.
 
-``base_url`` :
+``base_url`` : :ref:`buildenv SEARX_URL <make buildenv>`
   The base URL where searx is deployed.  Used to create correct inbound links.
+  If you change the value, don't forget to rebuild instance's environment
+  (:ref:`utils/brand.env <make buildenv>`)
 
 ``image_proxy`` :
   Allow your instance of searx of being able to proxy images.  Uses memory space.

@@ -4,6 +4,8 @@ general:
   contact_url: false        # mailto:contact@example.com
 
 brand:
+  # If you change a value in this section don't forget to rebuild instance's
+  # enviroment (make buildenv)
   git_url: https://github.com/searxng/searxng
   git_branch: master
   issue_url: https://github.com/searxng/searxng/issues
@@ -31,12 +33,14 @@ search:
 
 server:
   port: 8888
-  # address to listen on
   bind_address: "127.0.0.1"
-  secret_key: "ultrasecretkey"  # change this!
-  # Set custom base_url. Possible values:
-  #   false or "https://your.custom.host/location/"
+
+  # Set custom base_url. Possible values: false or "https://example.org/location"
+  # If you change base_url don't forget to rebuild instance's enviroment (make
+  # buildenv) port & address to listen on
   base_url: false
+
+  secret_key: "ultrasecretkey"  # change this!
   # Proxying image results through searx
   image_proxy: false
   # 1.0 and 1.1 are supported
