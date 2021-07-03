@@ -45,8 +45,8 @@ ubu2010_boilerplate="$ubu1904_boilerplate"
 
 # shellcheck disable=SC2034
 archlinux_boilerplate="
-pacman -Syu --noconfirm
-pacman -S --noconfirm inetutils git curl wget sudo
+pacman --noprogressbar -Syu --noconfirm
+pacman --noprogressbar -S --noconfirm inetutils git curl wget sudo
 echo 'Set disable_coredump false' >> /etc/sudo.conf
 "
 

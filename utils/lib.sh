@@ -78,8 +78,17 @@ required_commands() {
 
 # shellcheck disable=SC2034
 set_terminal_colors() {
-    _colors=8
+    # https://en.wikipedia.org/wiki/ANSI_escape_code
+
+    # CSI (Control Sequence Introducer) sequences
+    _show_cursor='\e[?25h'
+    _hide_cursor='\e[?25l'
+
+    # SGR (Select Graphic Rendition) parameters
     _creset='\e[0m'  # reset all attributes
+
+    # original specification only had 8 colors
+    _colors=8
 
     _Black='\e[0;30m'
     _White='\e[1;37m'
@@ -271,7 +280,7 @@ prefix_stdout () {
         echo -e "${prefix}$line"
     done)
     # some piped commands hide the cursor, show cursory when the stream ends
-    echo -en "\e[?25h"
+    echo -en "$_show_cursor"
 }
 
 append_line() {
@@ -1548,7 +1557,7 @@ pkg_install() {
             ;;
         arch)
             # shellcheck disable=SC2068
-            pacman -Sy --noconfirm $@
+            pacman --noprogressbar -Sy --noconfirm $@
             ;;
         fedora)
             # shellcheck disable=SC2068
@@ -1580,7 +1589,7 @@ pkg_remove() {
             ;;
         arch)
             # shellcheck disable=SC2068
-            pacman -R --noconfirm $@
+            pacman --noprogressbar -R --noconfirm $@
             ;;
         fedora)
             # shellcheck disable=SC2068
