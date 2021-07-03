@@ -1477,6 +1477,23 @@ engines:
     timeout: 5.0
     disabled: true
 
+  - name: woxikon.de synonyme
+    engine: xpath
+    shortcut: woxi
+    categories: general
+    timeout: 5.0
+    disabled: true
+    search_url: https://synonyme.woxikon.de/synonyme/{query}.php
+    url_xpath: //div[@class="upper-synonyms"]/a/@href
+    content_xpath: //div[@class="synonyms-list-group"]
+    title_xpath: //div[@class="upper-synonyms"]/a
+    about:
+      website: https://www.woxikon.de/
+      wikidata_id: # No Wikidata ID
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: słownik języka polskiego
     engine: sjp
     shortcut: sjp
