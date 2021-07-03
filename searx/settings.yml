@@ -1379,6 +1379,27 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: whaleslide
+    shortcut: whale
+    engine: json_engine
+    paging: true
+    # This API Token is needed to work
+    search_url: https://search.whaleslide.com/api/v1/search_v2/web/{pageno}?q={query}&api_token=f8OhUDEYKUICHDnIxEgI7Cb4uYyTBqT4nO8iueNbfTO3devS24yElGqM7nCm
+    url_query: url
+    title_query: title
+    title_html_to_text: true
+    content_query: abstract
+    content_html_to_text: true
+    categories: general
+    disabled: true
+    about:
+      website: https://whaleslide.com/
+      wikidata_id: # No Wikidata page
+      official_api_documentation: false
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
   - name: naver
     shortcut: nvr
     engine: xpath
