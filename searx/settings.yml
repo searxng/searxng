@@ -1510,8 +1510,14 @@ engines:
     search_url: https://search.brave.com/search?q={query}
     url_xpath: //div[@class="snippet fdb"]/a/@href
     title_xpath: //span[@class="snippet-title"]
-    content_xpath: //div[@class="snippet-content"]
+    content_xpath: //p[1][@class="snippet-description"]
     categories: general
+    about:
+      website: https://brave.com/search/
+      wikidata_id: Q22906900
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
