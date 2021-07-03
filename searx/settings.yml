@@ -654,6 +654,26 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: gpodder
+    engine: json_engine
+    shortcut: gpod
+    timeout: 4.0
+    paging: false
+    search_url: https://gpodder.net/search.json?q={query}
+    url_query: url
+    title_query: title
+    content_query: description
+    page_size: 19
+    categories: social media, files, general
+    disabled: true
+    about:
+      website: https://gpodder.net
+      wikidata_id: Q3093354
+      official_api_documentation: https://gpoddernet.readthedocs.io/en/latest/api/
+      use_official_api: false
+      requires_api_key: false
+      results: JSON
+
   - name: geektimes
     engine: xpath
     paging: true
