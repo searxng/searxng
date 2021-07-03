@@ -12,7 +12,6 @@ Requirements
 ============
 
 * Transifex account
-* Installed CLI tool of Transifex
 
 Init Transifex project
 ======================
@@ -22,7 +21,7 @@ initialize the project.
 
 .. code:: sh
 
-   tx init # Transifex instance: https://www.transifex.com/asciimoo/searx/
+   ./manage pyenv.cmd tx init # Transifex instance: https://www.transifex.com/asciimoo/searx/
 
 
 After ``$HOME/.transifexrc`` is created, get a Transifex API key and insert it
@@ -45,8 +44,9 @@ Then run ``tx set``:
 
 .. code:: shell
 
-    tx set --auto-local -r searx.messagespo 'searx/translations/<lang>/LC_MESSAGES/messages.po' \
-    --source-lang en --type PO --source-file messages.pot --execute
+    ./manage pyenv.cmd tx set --auto-local \
+        -r searx.messagespo 'searx/translations/<lang>/LC_MESSAGES/messages.po' \
+        --source-lang en --type PO --source-file messages.pot --execute
 
 
 Update translations
@@ -56,7 +56,8 @@ To retrieve the latest translations, pull it from Transifex.
 
 .. code:: sh
 
-   tx pull -a
+   ./manage pyenv.cmd tx pull -a
+   [?] Enter your api token: ....
 
 Then check the new languages.  If strings translated are not enough, delete those
 folders, because those should not be compiled.  Call the command below to compile
@@ -64,7 +65,7 @@ the ``.po`` files.
 
 .. code:: shell
 
-   pybabel compile -d searx/translations
+   ./manage pyenv.cmd pybabel compile -d searx/translations
 
 
 After the compilation is finished commit the ``.po`` and ``.mo`` files and
