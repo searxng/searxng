@@ -34,8 +34,16 @@ else:
     BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = "", "", "", "", "", "", "", ""
 
 # equivalent of 'python -u' (unbuffered stdout, stderr)
-stdout = io.TextIOWrapper(open(sys.stdout.fileno(), 'wb', 0), write_through=True)
-stderr = io.TextIOWrapper(open(sys.stderr.fileno(), 'wb', 0), write_through=True)
+stdout = io.TextIOWrapper(
+    # pylint: disable=consider-using-with
+    open(sys.stdout.fileno(), 'wb', 0),
+    write_through=True
+)
+stderr = io.TextIOWrapper(
+    # pylint: disable=consider-using-with
+    open(sys.stderr.fileno(), 'wb', 0)
+    , write_through=True
+)
 
 
 # iterator of processors

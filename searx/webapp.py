@@ -433,6 +433,7 @@ def _get_ordered_categories():
 def _get_enable_categories(all_categories):
     disabled_engines = request.preferences.engines.get_disabled()
     enabled_categories = set(
+        # pylint: disable=consider-using-dict-items
         category for engine_name in engines
         for category in engines[engine_name].categories
         if (engine_name, category) not in disabled_engines
@@ -947,7 +948,8 @@ def preferences():
     )
 
     engines_by_category = {}
-    for c in categories:
+
+    for c in categories: # pylint: disable=consider-using-dict-items
         engines_by_category[c] = [e for e in categories[c] if e.name in filtered_engines]
         # sort the engines alphabetically since the order in settings.yml is meaningless.
         list.sort(engines_by_category[c], key=lambda e: e.name)
