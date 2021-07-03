@@ -17,7 +17,7 @@ __all__ = [
 import threading
 
 from searx import logger
-import searx.engines as engines
+from searx import engines
 
 from .online import OnlineProcessor
 from .offline import OfflineProcessor
