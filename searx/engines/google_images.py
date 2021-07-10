@@ -84,7 +84,7 @@ def scrap_img_by_id(script, data_id):
     img_url = ''
     _script = script.split('\n')
     for i, line in enumerate(_script):
-        if 'gstatic.com/images' in line and data_id in line:
+        if 'gstatic.com/images' in line and data_id in line and i + 1 < len(_script):
             url_line = _script[i + 1]
             img_url = url_line.split('"')[1]
             img_url = unquote(img_url.replace(r'\u00', r'%'))
