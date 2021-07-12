@@ -55,18 +55,18 @@ source_dot_config() {
         SEARX_PYENV=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_PYENV)
         SEARX_SETTINGS_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SETTINGS_PATH)
         if [ ! -r "${SEARX_SRC}" ]; then
-            build_msg INSTANCE "not yet cloned: ${SEARX_SRC}"
+            info_msg "not yet cloned: ${SEARX_SRC}"
             orig_source_dot_config
             return 0
         fi
-        build_msg INSTANCE "using instance at: ${SEARX_SRC}"
+        info_msg "using instance at: ${SEARX_SRC}"
 
         # set and log DOT_CONFIG
         if [ -r "${SEARX_SRC}/.config.sh" ]; then
-            build_msg INSTANCE "switching to ${SEARX_SRC}/.config.sh"
+            info_msg "switching to ${SEARX_SRC}/.config.sh"
             DOT_CONFIG="${SEARX_SRC}/.config.sh"
         else
-            build_msg INSTANCE "using local config: ${DOT_CONFIG}"
+            info_msg "using local config: ${DOT_CONFIG}"
         fi
         init_SEARX_SRC_INIT_FILES
     fi
@@ -104,12 +104,12 @@ init_SEARX_SRC_INIT_FILES(){
             # diff  "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"
             if ! cmp --silent "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"; then
                 SEARX_SRC_INIT_FILES+=("${fname}")
-                build_msg INSTANCE "local clone (workingtree), modified file: ./$fname"
+                info_msg "local clone (workingtree), modified file: ./$fname"
                 msg="to update use:  sudo -H ./utils/searx.sh install init-src"
             fi
         fi
     done <<< "$(git diff --name-only)"
-    [ -n "$msg" ] &&  build_msg INSTANCE "$msg"
+    [ -n "$msg" ] &&  info_msg "$msg"
 }
 
 install_log_searx_instance() {
