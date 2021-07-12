@@ -164,7 +164,7 @@ install / remove
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
 update searx
-  Update searx installation ($SERVICE_HOME)
+  Update SearXNG installation ($SERVICE_HOME)
 activate service
   activate and start service daemon (systemd unit)
 deactivate service
@@ -174,7 +174,7 @@ inspect service
 option
   set one of the available options
 apache
-  :install: apache site with the searx uwsgi app
+  :install: apache site with the SearXNG uwsgi app
   :remove:  apache site ${APACHE_FILTRON_SITE}
 ---- sourced ${DOT_CONFIG}
   SERVICE_USER        : ${SERVICE_USER}
@@ -239,7 +239,7 @@ main() {
                     verify_continue_install
                     install_searx_uwsgi
                     if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
-                        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check searx & uwsgi setup!"
+                        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
                     fi
                     ;;
                 packages)
@@ -325,7 +325,7 @@ install_all() {
     wait_key
     install_searx_uwsgi
     if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
-        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check searx & uwsgi setup!"
+        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
     fi
     if ask_yn "Do you want to inspect the installation?" Ny; then
         inspect_service
@@ -333,7 +333,7 @@ install_all() {
 }
 
 update_searx() {
-    rst_title "Update searx instance"
+    rst_title "Update SearXNG instance"
 
     echo
     tee_stderr 0.3 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
@@ -391,14 +391,14 @@ clone_is_available() {
 
 # shellcheck disable=SC2164
 clone_searx() {
-    rst_title "Clone searx sources" section
+    rst_title "Clone SearXNG sources" section
     echo
     if ! sudo -i -u "$SERVICE_USER" ls -d "$REPO_ROOT" > /dev/null; then
         die 42 "user '$SERVICE_USER' missed read permission: $REPO_ROOT"
     fi
     SERVICE_HOME="$(sudo -i -u "$SERVICE_USER" echo \$HOME 2>/dev/null)"
     if [[ ! "${SERVICE_HOME}" ]]; then
-        err_msg "to clone searx sources, user $SERVICE_USER hast to be created first"
+        err_msg "to clone SearXNG sources, user $SERVICE_USER hast to be created first"
         return 42
     fi
     if [[ ! $(git show-ref "refs/heads/${GIT_BRANCH}") ]]; then
@@ -451,7 +451,7 @@ init_SEARX_SRC(){
     rst_title "Update instance: ${SEARX_SRC}/" section
 
     if ! clone_is_available; then
-        err_msg "you have to install searx first"
+        err_msg "you have to install SearXNG first"
         return 1
     fi
 
@@ -530,7 +530,7 @@ install_settings() {
     rst_title "${SEARX_SETTINGS_PATH}" section
 
     if ! clone_is_available; then
-        err_msg "you have to install searx first"
+        err_msg "you have to install SearXNG first"
         exit 42
     fi
 
@@ -542,7 +542,7 @@ install_settings() {
 }
 
 remove_settings() {
-    rst_title "remove searx settings" section
+    rst_title "remove SearXNG settings" section
     echo
     info_msg "delete ${SEARX_SETTINGS_PATH}"
     rm -f "${SEARX_SETTINGS_PATH}"
@@ -550,10 +550,10 @@ remove_settings() {
 
 remove_searx() {
     rst_title "Drop searx sources" section
-    if ask_yn "Do you really want to drop searx sources ($SEARX_SRC)?"; then
+    if ask_yn "Do you really want to drop SearXNG sources ($SEARX_SRC)?"; then
         rm -rf "$SEARX_SRC"
     else
-        rst_para "Leave searx sources unchanged."
+        rst_para "Leave SearXNG sources unchanged."
     fi
 }
 
@@ -565,7 +565,7 @@ create_pyenv() {
     rst_title "Create virtualenv (python)" section
     echo
     if [[ ! -f "${SEARX_SRC}/manage" ]]; then
-        err_msg "to create pyenv for searx, searx has to be cloned first"
+        err_msg "to create pyenv for SearXNG, SearXNG has to be cloned first"
         return 42
     fi
     info_msg "create pyenv in ${SEARX_PYENV}"
@@ -605,8 +605,8 @@ EOF
 }
 
 configure_searx() {
-    rst_title "Configure searx" section
-    rst_para "Setup searx config located at $SEARX_SETTINGS_PATH"
+    rst_title "Configure SearXNG" section
+    rst_para "Setup SearXNG config located at $SEARX_SETTINGS_PATH"
     echo
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
@@ -615,7 +615,7 @@ EOF
 }
 
 test_local_searx() {
-    rst_title "Testing searx instance localy" section
+    rst_title "Testing SearXNG instance localy" section
     echo
 
     if service_is_available "http://${SEARX_INTERNAL_HTTP}" &>/dev/null; then
@@ -637,14 +637,14 @@ EOF
 }
 
 install_searx_uwsgi() {
-    rst_title "Install searx's uWSGI app (searx.ini)" section
+    rst_title "Install SearXNG's uWSGI app (searx.ini)" section
     echo
     install_uwsgi
     uWSGI_install_app "$SEARX_UWSGI_APP"
 }
 
 remove_searx_uwsgi() {
-    rst_title "Remove searx's uWSGI app (searx.ini)" section
+    rst_title "Remove SearXNG's uWSGI app (searx.ini)" section
     echo
     uWSGI_remove_app "$SEARX_UWSGI_APP"
 }
@@ -772,9 +772,9 @@ EOF
     fi
 
     if clone_is_available; then
-        info_msg "~$SERVICE_USER: Searx software is installed."
+        info_msg "~$SERVICE_USER: SearXNG software is installed."
     else
-        err_msg "~$SERVICE_USER: Missing searx software!"
+        err_msg "~$SERVICE_USER: Missing SearXNG software!"
     fi
 
     if uWSGI_app_enabled "$SEARX_UWSGI_APP"; then
@@ -807,7 +807,7 @@ EOF
     fi
 
     local _debug_on
-    if ask_yn "Enable searx debug mode?"; then
+    if ask_yn "Enable SearXNG debug mode?"; then
         enable_debug
         _debug_on=1
     fi
@@ -849,7 +849,7 @@ install_apache_site() {
     rst_title "Install Apache site $APACHE_SEARX_SITE"
 
     rst_para "\
-This installs the searx uwsgi app as apache site.  If your server is public to
+This installs the SearXNG uwsgi app as apache site.  If your server is public to
 the internet, you should instead use a reverse proxy (filtron) to block
 excessively bot queries."
 
@@ -863,7 +863,7 @@ excessively bot queries."
 
     apache_install_site --variant=uwsgi "${APACHE_SEARX_SITE}"
 
-    rst_title "Install searx's uWSGI app (searx.ini)" section
+    rst_title "Install SearXNG's uWSGI app (searx.ini)" section
     echo
     uWSGI_install_app --variant=socket "$SEARX_UWSGI_APP"
 
@@ -887,7 +887,7 @@ This removes apache site ${APACHE_SEARX_SITE}."
 
     apache_remove_site "${APACHE_SEARX_SITE}"
 
-    rst_title "Remove searx's uWSGI app (searx.ini)" section
+    rst_title "Remove SearXNG's uWSGI app (searx.ini)" section
     echo
     uWSGI_remove_app "$SEARX_UWSGI_APP"
 }
