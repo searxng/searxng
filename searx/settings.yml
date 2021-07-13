@@ -1536,26 +1536,6 @@ engines:
       require_api_key: false
       results: HTML
 
-  - name: dogpile
-    shortcut: dp
-    engine: xpath
-    paging: true
-    page_size: 9
-    # Doesn't work without the 'sc' parameter
-    search_url: https://www.dogpile.com/serp?q={query}&page={pageno}&sc=Gp0GqqlRVflv20
-    url_xpath: //span[@class="web-bing__url"]
-    title_xpath: //a[@class="web-bing__title"]
-    content_xpath: //span[@class="web-bing__description"]
-    categories: general
-    timeout: 3.0
-    disabled: true
-    about:
-      website: https://www.dogpile.com
-      wikidata_id: Q3595363
-      use_official_api: false
-      require_api_key: false
-      results: html
-
   - name: brave
     shortcut: brave
     engine: xpath
