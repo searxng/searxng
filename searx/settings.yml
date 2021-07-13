@@ -819,6 +819,7 @@ engines:
   #   exact_match_only: false
   #   host: '127.0.0.1'
   #   port: 27017
+  #   enable_http: true
   #   results_per_page: 20
   #   database: 'business'
   #   collection: 'reviews'  # name of the db collection
@@ -1047,13 +1048,15 @@ engines:
     disabled: true
 
   # Required dependency: redis
-  #  - name: myredis
-  #    engine: redis_server
-  #    exact_match_only: False
-  #    host: '127.0.0.1'
-  #    port: 6379
-  #    password: ''
-  #    db: 0
+  # - name: myredis
+  #   shortcut : rds
+  #   engine: redis_server
+  #   exact_match_only: false
+  #   host: '127.0.0.1'
+  #   port: 6379
+  #   enable_http: true
+  #   password: ''
+  #   db: 0
 
   # tmp suspended: bad certificate
   #  - name: scanr structures
