@@ -986,7 +986,7 @@ engines:
     engine: qwant
     shortcut: qw
     categories: general
-    disabled: true
+    disabled: false
     additional_tests:
       rosebud: *test_rosebud
 
@@ -994,21 +994,21 @@ engines:
     engine: qwant
     shortcut: qwn
     categories: news
-    disabled: true
+    disabled: false
     network: qwant
 
   - name: qwant images
     engine: qwant
     shortcut: qwi
     categories: images
-    disabled: true
+    disabled: false
     network: qwant
 
   - name: qwant videos
     engine: qwant
     shortcut: qwv
     categories: videos
-    disabled: true
+    disabled: false
     network: qwant
 
   # - name: library
