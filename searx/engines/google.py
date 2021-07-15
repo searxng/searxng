@@ -287,6 +287,7 @@ def request(query, params):
     additional_parameters = {}
     if use_mobile_ui:
         additional_parameters = {
+            'asearch': 'arc',
             'async': 'use_ac:true,_fmt:pc',
         }
 
