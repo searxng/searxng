@@ -986,20 +986,29 @@ engines:
     engine: qwant
     shortcut: qw
     categories: general
-    disabled: true
+    disabled: false
     additional_tests:
       rosebud: *test_rosebud
-
-  - name: qwant images
-    engine: qwant
-    shortcut: qwi
-    categories: images
-    network: qwant
 
   - name: qwant news
     engine: qwant
     shortcut: qwn
     categories: news
+    disabled: false
+    network: qwant
+
+  - name: qwant images
+    engine: qwant
+    shortcut: qwi
+    categories: images
+    disabled: false
+    network: qwant
+
+  - name: qwant videos
+    engine: qwant
+    shortcut: qwv
+    categories: videos
+    disabled: false
     network: qwant
 
   # - name: library

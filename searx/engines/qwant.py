@@ -1,14 +1,41 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Qwant (Web, Images, News, Social)
+# lint: pylint
+"""Qwant (Web, News, Images, Videos)
+
+This engine uses the Qwant API (https://api.qwant.com/v3). The API is
+undocumented but can be reverse engineered by reading the network log of
+https://www.qwant.com/ queries.
+
+This implementation is used by different qwant engines in the settings.yml::
+
+  - name: qwant
+    categories: general
+    ...
+  - name: qwant news
+    categories: news
+    ...
+  - name: qwant images
+    categories: images
+    ...
+  - name: qwant videos
+    categories: videos
+    ...
+
 """
 
-from datetime import datetime
+from datetime import (
+    datetime,
+    timedelta,
+)
 from json import loads
 from urllib.parse import urlencode
-from searx.utils import html_to_text, match_language
-from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
+
+# from searx import logger
+from searx.utils import match_language
+from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
+
+#logger = logger.getChild('qwant')
 
 # about
 about = {
@@ -25,98 +52,148 @@ categories = []
 paging = True
 supported_languages_url = about['website']
 
-category_to_keyword = {'general': 'web',
-                       'images': 'images',
-                       'news': 'news'}
+category_to_keyword = {
+    'general': 'web',
+    'news': 'news',
+    'images': 'images',
+    'videos': 'videos',
+}
 
 # search-url
-url = 'https://api.qwant.com/api/search/{keyword}?count=10&offset={offset}&f=&{query}&t={keyword}&uiv=4'
+url = 'https://api.qwant.com/v3/search/{keyword}?q={query}&count={count}&offset={offset}'
 
-
-# do search-request
 def request(query, params):
-    offset = (params['pageno'] - 1) * 10
+    """Qwant search request"""
+    keyword = category_to_keyword[categories[0]]
+    count = 10  # web: count must be equal to 10
 
-    if categories[0] and categories[0] in category_to_keyword:
-
-        params['url'] = url.format(keyword=category_to_keyword[categories[0]],
-                                   query=urlencode({'q': query}),
-                                   offset=offset)
+    if keyword == 'images':
+        count = 50
+        offset = (params['pageno'] - 1) * count
+        # count + offset must be lower than 250
+        offset = min(offset, 199)
     else:
-        params['url'] = url.format(keyword='web',
-                                   query=urlencode({'q': query}),
-                                   offset=offset)
+        offset = (params['pageno'] - 1) * count
+        # count + offset must be lower than 50
+        offset = min(offset, 40)
+
+    params['url'] = url.format(
+        keyword = keyword,
+        query = urlencode({'q': query}),
+        offset = offset,
+        count = count,
+    )
 
     # add language tag
     if params['language'] != 'all':
-        language = match_language(params['language'], supported_languages, language_aliases)
-        params['url'] += '&locale=' + language.replace('-', '_').lower()
+        language = match_language(
+            params['language'],
+            # pylint: disable=undefined-variable
+            supported_languages,
+            language_aliases,
+        )
+        params['url'] += '&locale=' + language.replace('-', '_')
 
-    params['headers']['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0'
     params['raise_for_httperror'] = False
     return params
 
 
-# get response from search-request
 def response(resp):
+    """Get response from Qwant's search request"""
+
+    keyword = category_to_keyword[categories[0]]
     results = []
 
-    # According to https://www.qwant.com/js/app.js
-    if resp.status_code == 429:
-        raise SearxEngineCaptchaException()
+    # load JSON result
+    search_results = loads(resp.text)
+    data = search_results.get('data', {})
+
+    # check for an API error
+    if search_results.get('status') != 'success':
+        msg = ",".join(data.get('message', ['unknown', ]))
+        raise SearxEngineAPIException('API error::' + msg)
 
     # raise for other errors
     raise_for_httperror(resp)
 
-    # load JSON result
-    search_results = loads(resp.text)
-
-    # check for an API error
-    if search_results.get('status') != 'success':
-        raise SearxEngineAPIException('API error ' + str(search_results.get('error', '')))
+    if keyword == 'web':
+        # The WEB query contains a list named 'mainline'.  This list can contain
+        # different result types (e.g. mainline[0]['type'] returns type of the
+        # result items in mainline[0]['items']
+        mainline = data.get('result', {}).get('items', {}).get('mainline', {})
+    else:
+        # Queries on News, Images and Videos do not have a list named 'mainline'
+        # in the response.  The result items are directly in the list
+        # result['items'].
+        mainline = data.get('result', {}).get('items', [])
+        mainline = [
+            {'type' : keyword, 'items' : mainline },
+        ]
 
     # return empty array if there are no results
-    if 'data' not in search_results:
+    if not mainline:
         return []
 
-    data = search_results.get('data', {})
+    for row in mainline:
 
-    res = data.get('result', {})
+        mainline_type = row.get('type', 'web')
+        if mainline_type == 'ads':
+            # ignore adds
+            continue
 
-    # parse results
-    for result in res.get('items', {}):
+        mainline_items = row.get('items', [])
+        for item in mainline_items:
 
-        title = html_to_text(result['title'])
-        res_url = result['url']
-        content = html_to_text(result['desc'])
+            title = item['title']
+            res_url = item['url']
 
-        if category_to_keyword.get(categories[0], '') == 'web':
-            results.append({'title': title,
-                            'content': content,
-                            'url': res_url})
+            if mainline_type == 'web':
+                content = item['desc']
+                results.append({
+                    'title': title,
+                    'url': res_url,
+                    'content': content,
+                })
 
-        elif category_to_keyword.get(categories[0], '') == 'images':
-            thumbnail_src = result['thumbnail']
-            img_src = result['media']
-            results.append({'template': 'images.html',
-                            'url': res_url,
-                            'title': title,
-                            'content': '',
-                            'thumbnail_src': thumbnail_src,
-                            'img_src': img_src})
-
-        elif category_to_keyword.get(categories[0], '') == 'news':
-            published_date = datetime.fromtimestamp(result['date'], None)
-            media = result.get('media', [])
-            if len(media) > 0:
-                img_src = media[0].get('pict', {}).get('url', None)
-            else:
+            elif mainline_type == 'news':
+                pub_date = datetime.fromtimestamp(item['date'], None)
+                news_media = item.get('media', [])
                 img_src = None
-            results.append({'url': res_url,
-                            'title': title,
-                            'publishedDate': published_date,
-                            'content': content,
-                            'img_src': img_src})
+                if news_media:
+                    img_src = news_media[0].get('pict', {}).get('url', None)
+                results.append({
+                    'title': title,
+                    'url': res_url,
+                    'publishedDate': pub_date,
+                    'img_src': img_src,
+                })
+
+            elif mainline_type == 'images':
+                thumbnail = item['thumbnail']
+                img_src = item['media']
+                results.append({
+                    'title': title,
+                    'url': res_url,
+                    'template': 'images.html',
+                    'thumbnail_src': thumbnail,
+                    'img_src': img_src,
+                })
+
+            elif mainline_type == 'videos':
+                content = item['desc']
+                length = timedelta(seconds=item['duration'])
+                pub_date = datetime.fromtimestamp(item['date'])
+                thumbnail = item['thumbnail']
+
+                results.append({
+                    'title': title,
+                    'url': res_url,
+                    'content': content,
+                    'publishedDate': pub_date,
+                    'thumbnail': thumbnail,
+                    'template': 'videos.html',
+                    'length':  length,
+            })
 
     return results
 
