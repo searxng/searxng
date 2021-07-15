@@ -29,6 +29,7 @@ from datetime import (
 )
 from json import loads
 from urllib.parse import urlencode
+from flask_babel import gettext
 
 # from searx import logger
 from searx.utils import match_language
@@ -100,6 +101,7 @@ def request(query, params):
 
 def response(resp):
     """Get response from Qwant's search request"""
+    # pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
     keyword = category_to_keyword[categories[0]]
     results = []
@@ -180,11 +182,28 @@ def response(resp):
                 })
 
             elif mainline_type == 'videos':
-                content = item['desc']
+                # some videos do not have a description: while quant-video
+                # returns an empty string, such video from a quant-web query
+                # miss the 'desc' key.
+                content = item.get('desc', '')
+                s, c = item.get('source',''), item.get('channel','')
+                if content and (s or c):
+                    content += " // "
+                if s:
+                    content += "%s: %s " % (gettext("Source"), s)
+                    if c:
+                        content += "//"
+                if c:
+                    content += " %s: %s " % (gettext("Channel"), c)
                 length = timedelta(seconds=item['duration'])
                 pub_date = datetime.fromtimestamp(item['date'])
                 thumbnail = item['thumbnail']
-
+                # from some locations (DE and others?) the s2 link do
+                # response a 'Please wait ..' but does not deliver the thumbnail
+                thumbnail = thumbnail.replace(
+                    'https://s2.qwant.com',
+                    'https://s1.qwant.com', 1
+                )
                 results.append({
                     'title': title,
                     'url': res_url,
