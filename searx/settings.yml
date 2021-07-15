@@ -811,6 +811,19 @@ engines:
     engine: mixcloud
     shortcut: mc
 
+  # MongoDB engine
+  # Required dependency: pymongo
+  # - name: mymongo
+  #   engine: mongodb
+  #   shortcut: md
+  #   exact_match_only: false
+  #   host: '127.0.0.1'
+  #   port: 27017
+  #   results_per_page: 20
+  #   database: 'business'
+  #   collection: 'reviews'  # name of the db collection
+  #   key: 'name'  # key in the collection to search for
+
   - name: npm
     engine: json_engine
     paging: true
