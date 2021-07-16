@@ -9,7 +9,7 @@ from searx.engines.xpath import extract_url, extract_text, eval_xpath_list, eval
 
 # about
 about = {
-    "website": 'http://msydqstlz2kzerdg.onion',
+    "website": 'http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion',
     "wikidata_id": 'Q18693938',
     "official_api_documentation": None,
     "use_official_api": False,
@@ -23,7 +23,7 @@ paging = True
 page_size = 10
 
 # search url
-search_url = 'http://msydqstlz2kzerdg.onion/search/?{query}'
+search_url = 'http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?{query}'
 time_range_support = True
 time_range_dict = {'day': 1,
                    'week': 7,
