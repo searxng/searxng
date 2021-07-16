@@ -31,12 +31,10 @@ from json import loads
 from urllib.parse import urlencode
 from flask_babel import gettext
 
-# from searx import logger
 from searx.utils import match_language
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
 
-#logger = logger.getChild('qwant')
 
 # about
 about = {
@@ -182,19 +180,18 @@ def response(resp):
                 })
 
             elif mainline_type == 'videos':
-                # some videos do not have a description: while quant-video
-                # returns an empty string, such video from a quant-web query
+                # some videos do not have a description: while qwant-video
+                # returns an empty string, such video from a qwant-web query
                 # miss the 'desc' key.
-                content = item.get('desc', '')
-                s, c = item.get('source',''), item.get('channel','')
-                if content and (s or c):
-                    content += " // "
+                d, s, c = item.get('desc'), item.get('source'), item.get('channel')
+                content_parts = []
+                if d:
+                    content_parts.append(d)
                 if s:
-                    content += "%s: %s " % (gettext("Source"), s)
-                    if c:
-                        content += "//"
+                    content_parts.append("%s: %s " % (gettext("Source"), s))
                 if c:
-                    content += " %s: %s " % (gettext("Channel"), c)
+                    content_parts.append("%s: %s " % (gettext("Channel"), c))
+                content = ' // '.join(content_parts)
                 length = timedelta(seconds=item['duration'])
                 pub_date = datetime.fromtimestamp(item['date'])
                 thumbnail = item['thumbnail']
