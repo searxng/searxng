@@ -29,13 +29,12 @@ from datetime import (
 )
 from json import loads
 from urllib.parse import urlencode
+from flask_babel import gettext
 
-# from searx import logger
 from searx.utils import match_language
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
 
-#logger = logger.getChild('qwant')
 
 # about
 about = {
@@ -100,6 +99,7 @@ def request(query, params):
 
 def response(resp):
     """Get response from Qwant's search request"""
+    # pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
     keyword = category_to_keyword[categories[0]]
     results = []
@@ -180,11 +180,27 @@ def response(resp):
                 })
 
             elif mainline_type == 'videos':
-                content = item['desc']
+                # some videos do not have a description: while qwant-video
+                # returns an empty string, such video from a qwant-web query
+                # miss the 'desc' key.
+                d, s, c = item.get('desc'), item.get('source'), item.get('channel')
+                content_parts = []
+                if d:
+                    content_parts.append(d)
+                if s:
+                    content_parts.append("%s: %s " % (gettext("Source"), s))
+                if c:
+                    content_parts.append("%s: %s " % (gettext("Channel"), c))
+                content = ' // '.join(content_parts)
                 length = timedelta(seconds=item['duration'])
                 pub_date = datetime.fromtimestamp(item['date'])
                 thumbnail = item['thumbnail']
-
+                # from some locations (DE and others?) the s2 link do
+                # response a 'Please wait ..' but does not deliver the thumbnail
+                thumbnail = thumbnail.replace(
+                    'https://s2.qwant.com',
+                    'https://s1.qwant.com', 1
+                )
                 results.append({
                     'title': title,
                     'url': res_url,
