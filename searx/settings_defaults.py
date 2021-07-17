@@ -130,6 +130,14 @@ SCHEMA = {
         'contact_url': SettingsValue((None, False, str), None),
     },
     'brand': {
+        'git_url': SettingsValue(str),
+        'git_branch': SettingsValue(str),
+        'issue_url': SettingsValue(str, None),
+        'new_issue_url': SettingsValue(str, None),
+        'docs_url': SettingsValue(str, None),
+        'public_instances': SettingsValue(str, None),
+        'wiki_url': SettingsValue(str, None),
+        'twitter_url': SettingsValue(str, None),
     },
     'search': {
         'safe_search': SettingsValue((0,1,2), 0),
