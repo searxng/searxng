@@ -525,7 +525,7 @@ main() {
         *)
             _type="$(type -t "$cmd")"
             if [ "$_type" != 'function' ]; then
-                err_msg "unknown command $1 / use --help"
+                err_msg "unknown command: $cmd / use --help"
                 return 42
             else
                 "$cmd" "$@"
