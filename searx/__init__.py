@@ -96,9 +96,4 @@ class _brand_namespace:  # pylint: disable=invalid-name
     def WIKI_URL(self):
         return self.get_val('brand', 'wiki_url')
 
-    @property
-    def TWITTER_URL(self):
-        return self.get_val('brand', 'twitter_url')
-
-
 brand = _brand_namespace()

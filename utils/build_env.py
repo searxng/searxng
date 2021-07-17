@@ -35,7 +35,6 @@ name_val = [
     ('PUBLIC_INSTANCES'       , _env('brand.public_instances', '')),
     ('CONTACT_URL'            , _env('general.contact_url', '')),
     ('WIKI_URL'               , _env('brand.wiki_url', '')),
-    ('TWITTER_URL'            , _env('brand.twitter_url', '')),
 ]
 
 brand_env = 'utils' + sep + 'brand.env'
