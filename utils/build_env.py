@@ -16,18 +16,26 @@ os.environ['SEARX_SETTINGS_PATH'] = abspath(dirname(__file__) + '/settings.yml')
 # from /etc/searx/settings.yml.
 os.environ['SEARX_SETTINGS_PATH'] = abspath(dirname(__file__) + sep + 'settings.yml')
 
-from searx import brand
+from searx import get_setting
+
+def _env(*arg, **kwargs):
+    val = get_setting(*arg, **kwargs)
+    if val is True:
+        val = '1'
+    elif val is False:
+        val = ''
+    return val
 
 name_val = [
-    ('SEARX_URL'              , brand.SEARX_URL),
-    ('GIT_URL'                , brand.GIT_URL),
-    ('GIT_BRANCH'             , brand.GIT_BRANCH),
-    ('ISSUE_URL'              , brand.ISSUE_URL),
-    ('DOCS_URL'               , brand.DOCS_URL),
-    ('PUBLIC_INSTANCES'       , brand.PUBLIC_INSTANCES),
-    ('CONTACT_URL'            , brand.CONTACT_URL),
-    ('WIKI_URL'               , brand.WIKI_URL),
-    ('TWITTER_URL'            , brand.TWITTER_URL),
+    ('SEARX_URL'              , _env('server.base_url','')),
+    ('GIT_URL'                , _env('brand.git_url', '')),
+    ('GIT_BRANCH'             , _env('brand.git_branch', '')),
+    ('ISSUE_URL'              , _env('brand.issue_url', '')),
+    ('DOCS_URL'               , _env('brand.docs_url', '')),
+    ('PUBLIC_INSTANCES'       , _env('brand.public_instances', '')),
+    ('CONTACT_URL'            , _env('general.contact_url', '')),
+    ('WIKI_URL'               , _env('brand.wiki_url', '')),
+    ('TWITTER_URL'            , _env('brand.twitter_url', '')),
 ]
 
 brand_env = 'utils' + sep + 'brand.env'

@@ -32,6 +32,27 @@ if max_request_timeout is None:
 else:
     logger.info('max_request_timeout=%i second(s)', max_request_timeout)
 
+_unset = object()
+
+def get_setting(name, default=_unset):
+    """Returns the value to which ``name`` point.  If there is no such name in the
+    settings and the ``default`` is unset, a :py:obj:`KeyError` is raised.
+
+    """
+    value = settings
+    for a in name.split('.'):
+        if isinstance(value, dict):
+            value = value.get(a, _unset)
+        else:
+            value = _unset
+
+        if value is _unset:
+            if default is _unset:
+                raise KeyError(name)
+            value = default
+            break
+
+    return value
 
 class _brand_namespace:  # pylint: disable=invalid-name
 
