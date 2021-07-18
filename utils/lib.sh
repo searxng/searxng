@@ -606,9 +606,13 @@ pyenv.OK() {
         return 1
     fi
 
-    pyenv.check \
-        | "${PY_ENV_BIN}/python" 2>&1 \
-        | prefix_stdout "${_Blue}PYENV     ${_creset}[check] "
+    if [ "$VERBOSE" = "1" ]; then
+        pyenv.check \
+            | "${PY_ENV_BIN}/python" 2>&1 \
+            | prefix_stdout "${_Blue}PYENV     ${_creset}[check] "
+    else
+        pyenv.check | "${PY_ENV_BIN}/python" 1>/dev/null
+    fi
 
     local err=${PIPESTATUS[1]}
     if [ "$err" -ne "0" ]; then
@@ -616,7 +620,7 @@ pyenv.OK() {
         return "$err"
     fi
 
-    build_msg PYENV "OK"
+    [ "$VERBOSE" = "1" ] && build_msg PYENV "OK"
     _pyenv_OK="OK"
     return 0
 }
