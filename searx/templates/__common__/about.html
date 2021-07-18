@@ -11,7 +11,7 @@
   <p>More about SearXNG ...</p>
 
   <ul>
-    <li><a href="{{ brand.GIT_URL }}">github</a></li>
+    <li><a href="{{ get_setting('brand.git_url') }}">SearXNG sources</a></li>
     <li><a href="https://www.transifex.com/projects/p/searx/">transifex</a></li>
   </ul>
 
@@ -30,7 +30,8 @@
     </li>
     <li>
       SearXNG is free software, the code is 100% open and you can help to make
-      it better.  See more on <a href="{{ brand.GIT_URL }}">github</a>.
+      it better.  See more on <a href="{{ get_setting('brand.git_url')
+      }}">SearXNG sources</a>.
     </li>
   </ul>
 
@@ -80,10 +81,11 @@
 
   <p>
     SearXNG appreciates your concern regarding logs, so take the code from
-    the <a href="{{ brand.GIT_URL }}">SearXNG project</a> and run it yourself!
+    the <a href="{{ get_setting('brand.git_url') }}">SearXNG project</a> and
+    run it yourself!
   </p>
   <p>
-    Add your instance to this <a href="{{ brand.PUBLIC_INSTANCES }}"> list of
+    Add your instance to this <a href="{{ get_setting('brand.public_instances') }}"> list of
     public instances</a> to help other people reclaim their privacy and make the
     Internet freer!  The more decentralized the Internet is, the more freedom we
     have!
@@ -92,8 +94,8 @@
   <h2>Where are the docs & code of this instance?</h2>
 
   <p>
-    See the <a href="{{ brand.DOCS_URL }}">{{ brand.DOCS_URL }}</a>
-    and <a href="{{ brand.GIT_URL }}">{{ brand.GIT_URL }}</a>
+    See the <a href="{{ get_setting('brand.docs_url') }}">SearXNG docs</a>
+    and <a href="{{ get_setting('brand.git_url') }}">SearXNG sources</a>
   </p>
 
 </div>
