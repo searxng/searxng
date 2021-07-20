@@ -12,7 +12,6 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 
 MORTY_LISTEN="${MORTY_LISTEN:-127.0.0.1:3000}"
 PUBLIC_URL_PATH_MORTY="${PUBLIC_URL_PATH_MORTY:-/morty/}"
-
 PUBLIC_URL_MORTY="${PUBLIC_URL_MORTY:-$(echo "$PUBLIC_URL" |  sed -e's,^\(.*://[^/]*\).*,\1,g')${PUBLIC_URL_PATH_MORTY}}"
 
 # shellcheck disable=SC2034
@@ -111,7 +110,7 @@ info_searx() {
     # shellcheck disable=SC1117
     cat <<EOF
 To activate result and image proxy in SearXNG read:
-  ${DOCS_URL}/admin/morty.html
+  https://searxng.github.io/searxng/admin/morty.html
 Check settings in file ${SEARX_SETTINGS_PATH} ...
   result_proxy:
       url : ${PUBLIC_URL_MORTY}

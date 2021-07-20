@@ -23,14 +23,19 @@ def _env(*arg, **kwargs):
         val = ''
     return val
 
+# If you add or remove variables here, do not forgett to update:
+# - docs/admin/engines/settings.rst
+# - /docs/dev/makefile.rst (section make buildenv)
+
 name_val = [
-    ('SEARX_URL'              , 'server.base_url'),
+
     ('GIT_URL'                , 'brand.git_url'),
     ('GIT_BRANCH'             , 'brand.git_branch'),
-    ('ISSUE_URL'              , 'brand.issue_url'),
-    ('DOCS_URL'               , 'brand.docs_url'),
-    ('PUBLIC_INSTANCES'       , 'brand.public_instances'),
-    ('WIKI_URL'               , 'brand.wiki_url'),
+
+    ('SEARX_URL'              , 'server.base_url'),
+    ('SEARX_PORT'             , 'server.port'),
+    ('SEARX_BIND_ADDRESS'     , 'server.bind_address'),
+
 ]
 
 brand_env = 'utils' + sep + 'brand.env'
