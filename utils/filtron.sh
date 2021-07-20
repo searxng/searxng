@@ -23,7 +23,12 @@ FILTRON_RULES_TEMPLATE="${FILTRON_RULES_TEMPLATE:-${REPO_ROOT}/utils/templates/e
 
 FILTRON_API="${FILTRON_API:-127.0.0.1:4005}"
 FILTRON_LISTEN="${FILTRON_LISTEN:-127.0.0.1:4004}"
-FILTRON_TARGET="${FILTRON_TARGET:-127.0.0.1:8888}"
+
+# The filtron target is the SearXNG installation, listenning on server.port at
+# server.bind_address.  The default of FILTRON_TARGET is taken from the YAML
+# configuration, do not change this value without reinstalling the entire
+# SearXNG suite including filtron & morty.
+FILTRON_TARGET="${SEARX_BIND_ADDRESS}:${SEARX_PORT}"
 
 SERVICE_NAME="filtron"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"
