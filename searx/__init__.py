@@ -32,52 +32,24 @@ if max_request_timeout is None:
 else:
     logger.info('max_request_timeout=%i second(s)', max_request_timeout)
 
+_unset = object()
 
-class _brand_namespace:  # pylint: disable=invalid-name
+def get_setting(name, default=_unset):
+    """Returns the value to which ``name`` point.  If there is no such name in the
+    settings and the ``default`` is unset, a :py:obj:`KeyError` is raised.
 
-    @classmethod
-    def get_val(cls, group, name, default=''):
-        return settings.get(group, {}).get(name) or default
+    """
+    value = settings
+    for a in name.split('.'):
+        if isinstance(value, dict):
+            value = value.get(a, _unset)
+        else:
+            value = _unset
 
-    @property
-    def SEARX_URL(self):
-        return self.get_val('server', 'base_url')
+        if value is _unset:
+            if default is _unset:
+                raise KeyError(name)
+            value = default
+            break
 
-    @property
-    def CONTACT_URL(self):
-        return self.get_val('general', 'contact_url')
-
-    @property
-    def GIT_URL(self):
-        return self.get_val('brand', 'git_url')
-
-    @property
-    def GIT_BRANCH(self):
-        return self.get_val('brand', 'git_branch')
-
-    @property
-    def ISSUE_URL(self):
-        return self.get_val('brand', 'issue_url')
-
-    @property
-    def NEW_ISSUE_URL(self):
-        return self.get_val('brand', 'new_issue_url')
-
-    @property
-    def DOCS_URL(self):
-        return self.get_val('brand', 'docs_url')
-
-    @property
-    def PUBLIC_INSTANCES(self):
-        return self.get_val('brand', 'public_instances')
-
-    @property
-    def WIKI_URL(self):
-        return self.get_val('brand', 'wiki_url')
-
-    @property
-    def TWITTER_URL(self):
-        return self.get_val('brand', 'twitter_url')
-
-
-brand = _brand_namespace()
+    return value

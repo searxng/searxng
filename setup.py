@@ -8,7 +8,7 @@ import os
 import sys
 
 from searx.version import VERSION_STRING
-from searx import brand
+from searx import get_setting
 
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
@@ -24,10 +24,10 @@ setup(
     version=VERSION_STRING,
     description="A privacy-respecting, hackable metasearch engine",
     long_description=long_description,
-    url=brand.DOCS_URL,
+    url=get_setting('brand.docs_url'),
     project_urls={
-        "Code": brand.GIT_URL,
-        "Issue tracker": brand.ISSUE_URL
+        "Code": get_setting('brand.git_url'),
+        "Issue tracker": get_setting('brand.issue_url')
     },
     classifiers=[
         "Development Status :: 4 - Beta",

@@ -1,5 +1,5 @@
 {% extends 'oscar/base.html' %}
-{% from '__common__/new_issue.html' import new_issue %}
+{% from '__common__/new_issue.html' import new_issue with context %}
 
 {% block title %}{{ _('stats') }} - {% if selected_engine_name %} {{ selected_engine_name }} - {% endif %}{% endblock %}
 
@@ -148,7 +148,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-            {{ new_issue(brand.NEW_ISSUE_URL, selected_engine_name, engine_reliabilities[selected_engine_name]) }}
+            {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
         {% endif %}
         </div>
     </div>

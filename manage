@@ -177,6 +177,13 @@ docker.buildx() {
 docker.build() {
     pyenv.install
 
+    local SEARX_GIT_VERSION
+    local VERSION_GITCOMMIT
+    local SEARX_PYTHON_VERSION
+    local GITHUB_USER
+    local SEARX_IMAGE_NAME
+    local BUILD
+
     build_msg DOCKER build
     # run installation in a subprocess and activate pyenv
 

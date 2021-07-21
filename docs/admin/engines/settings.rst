@@ -73,9 +73,6 @@ Global Settings
 ``wiki_url``:
   Link to your wiki (or ``false``)
 
-``twitter_url``:
-  Link to your tweets (or ``false``)
-
 
 ``server:``
 -----------

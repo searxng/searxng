@@ -50,7 +50,7 @@ from flask_babel import (
 )
 
 from searx import logger
-from searx import brand
+from searx import get_setting
 from searx import (
     settings,
     searx_debug,
@@ -473,11 +473,9 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['search_formats'] = [
         x for x in settings['search']['formats'] if x != 'html'
     ]
-
-    # brand
-    kwargs['instance_name'] = settings['general']['instance_name']
+    kwargs['instance_name'] = get_setting('general.instance_name')
     kwargs['searx_version'] = VERSION_STRING
-    kwargs['brand'] = brand
+    kwargs['get_setting'] = get_setting
 
     # helpers to create links to other pages
     kwargs['url_for'] = url_for_theme  # override url_for function in templates
@@ -1323,9 +1321,9 @@ def config():
         'default_theme': settings['ui']['default_theme'],
         'version': VERSION_STRING,
         'brand': {
-            'CONTACT_URL': brand.CONTACT_URL,
-            'GIT_URL': brand.GIT_URL,
-            'DOCS_URL': brand.DOCS_URL
+            'CONTACT_URL': get_setting('general.contact_url'),
+            'GIT_URL': get_setting('brand.git_url'),
+            'DOCS_URL': get_setting('brand.docs_url'),
         },
         'doi_resolvers': list(settings['doi_resolvers'].keys()),
         'default_doi_resolver': settings['default_doi_resolver'],

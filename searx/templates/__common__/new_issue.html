@@ -1,5 +1,5 @@
-{% macro new_issue(new_issue_url, engine_name, engine_reliability) %}
-<form action="{{ new_issue_url }}" method="GET">
+{% macro new_issue(engine_name, engine_reliability) %}
+<form action="{{ get_setting('brand.new_issue_url') }}" method="GET">
     <input name="title" type="hidden" value="Bug: {{ engine_name }} engine">
     <input name="labels" type="hidden" value="bug">
     <input name="template" type="hidden" value="bug-report.md">
@@ -52,6 +52,6 @@ or manually by executing the searx/webapp.py file? -->
 {{-'\n  '}}* {{ test_name }}: {% for result in results%}`{{ result }}`,{% endfor -%}
 {%- endfor -%}
     </textarea>
-    <button type="submit" class="github-issue-button" title="{{ new_issue_url }}">{{ _('Submit a new issue on Github including the above information') }}</button>
+    <button type="submit" class="github-issue-button" title="{{ get_setting('brand.new_issue_url') }}">{{ _('Submit a new issue on Github including the above information') }}</button>
 </form>
 {% endmacro %}

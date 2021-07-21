@@ -4,7 +4,7 @@
 import  sys, os
 from pallets_sphinx_themes import ProjectLink
 
-from searx import brand
+from searx import get_setting
 from searx.version import VERSION_STRING
 
 # Project --------------------------------------------------------------
@@ -13,6 +13,15 @@ project = u'searx'
 copyright = u'2015-2020, Adam Tauber, Noémi Ványi'
 author = u'Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
+
+SEARX_URL = get_setting('server.base_url') or 'https://example.org/searx'
+GIT_URL = get_setting('brand.git_url')
+GIT_BRANCH = get_setting('brand.git_branch')
+ISSUE_URL = get_setting('brand.issue_url')
+DOCS_URL = get_setting('brand.docs_url')
+PUBLIC_INSTANCES = get_setting('brand.public_instances')
+CONTACT_URL = get_setting('general.contact_url')
+WIKI_URL = get_setting('brand.wiki_url')
 
 # hint: sphinx.ext.viewcode won't highlight when 'highlight_language' [1] is set
 #       to string 'none' [2]
@@ -49,10 +58,10 @@ extlinks['pull'] = ('https://github.com/searxng/searxng/pull/%s', 'PR ')
 extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR ')
 
 # links to custom brand
-extlinks['origin'] = (brand.GIT_URL + '/blob/' + brand.GIT_BRANCH + '/%s', 'git://')
-extlinks['patch'] = (brand.GIT_URL + '/commit/%s', '#')
-extlinks['search'] = (brand.SEARX_URL + '/%s', '#')
-extlinks['docs'] = (brand.DOCS_URL + '/%s', 'docs: ')
+extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://')
+extlinks['patch'] = (GIT_URL + '/commit/%s', '#')
+extlinks['search'] = (SEARX_URL + '/%s', '#')
+extlinks['docs'] = (DOCS_URL + '/%s', 'docs: ')
 extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: ')
 extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '')
 #extlinks['role'] = (
@@ -108,18 +117,16 @@ imgmath_font_size = 14
 
 html_theme_options = {"index_sidebar_logo": True}
 html_context = {"project_links": [] }
-if brand.GIT_URL:
-    html_context["project_links"].append(ProjectLink("Source", brand.GIT_URL))
-if brand.WIKI_URL:
-    html_context["project_links"].append(ProjectLink("Wiki", brand.WIKI_URL))
-if brand.PUBLIC_INSTANCES:
-    html_context["project_links"].append(ProjectLink("Public instances", brand.PUBLIC_INSTANCES))
-if brand.TWITTER_URL:
-    html_context["project_links"].append(ProjectLink("Twitter", brand.TWITTER_URL))
-if brand.ISSUE_URL:
-    html_context["project_links"].append(ProjectLink("Issue Tracker", brand.ISSUE_URL))
-if brand.CONTACT_URL:
-    html_context["project_links"].append(ProjectLink("Contact", brand.CONTACT_URL))
+html_context["project_links"].append(ProjectLink("Source", GIT_URL + '/tree/' + GIT_BRANCH))
+
+if WIKI_URL:
+    html_context["project_links"].append(ProjectLink("Wiki", WIKI_URL))
+if PUBLIC_INSTANCES:
+    html_context["project_links"].append(ProjectLink("Public instances", PUBLIC_INSTANCES))
+if ISSUE_URL:
+    html_context["project_links"].append(ProjectLink("Issue Tracker", ISSUE_URL))
+if CONTACT_URL:
+    html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
 html_sidebars = {
     "**": ["project.html", "relations.html", "searchbox.html"],
