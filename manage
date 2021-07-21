@@ -120,6 +120,17 @@ buildenv() {
     return "${PIPESTATUS[0]}"
 }
 
+buildenv.unset_env(){
+    # Some defaults in the settings.yml are taken from the environment,
+    # e.g. SEARX_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  In
+    # some tasks (e.g. test.robot) we do not want these envorionment applied.
+    unset GIT_URL
+    unset GIT_BRANCH
+    unset SEARX_URL
+    unset SEARX_PORT
+    unset SEARX_BIND_ADDRESS
+}
+
 babel.compile() {
     build_msg BABEL compile
     pyenv.cmd pybabel compile -d "${REPO_ROOT}/searx/translations"
@@ -481,6 +492,7 @@ test.coverage() {
 
 test.robot() {
     build_msg TEST 'robot'
+    buildenv.unset_env
     gecko.driver
     PYTHONPATH=. pyenv.cmd python searx/testing.py robot
     dump_return $?

@@ -24,8 +24,9 @@ def _env(*arg, **kwargs):
     return val
 
 # If you add or remove variables here, do not forgett to update:
-# - docs/admin/engines/settings.rst
-# - /docs/dev/makefile.rst (section make buildenv)
+# - ./docs/admin/engines/settings.rst
+# - ./docs/dev/makefile.rst (section make buildenv)
+# - ./manage function buildenv.unset_env()
 
 name_val = [
 
