@@ -30,7 +30,7 @@ CATEGORY_ORDER = [
     'it',
     'science',
     'files',
-    'social medias',
+    'social media',
 ]
 STR_TO_BOOL = {
     '0': False,
