@@ -84,14 +84,16 @@ def request(query, params):
     )
 
     # add language tag
-    if params['language'] != 'all':
+    if params['language'] == 'all':
+        params['url'] += '&locale=en_us'
+    else:
         language = match_language(
             params['language'],
             # pylint: disable=undefined-variable
             supported_languages,
             language_aliases,
         )
-        params['url'] += '&locale=' + language.replace('-', '_')
+        params['url'] += '&locale=' + language.replace('-', '_').lower()
 
     params['raise_for_httperror'] = False
     return params
@@ -144,8 +146,8 @@ def response(resp):
         mainline_items = row.get('items', [])
         for item in mainline_items:
 
-            title = item['title']
-            res_url = item['url']
+            title = item.get('title', None)
+            res_url = item.get('url', None)
 
             if mainline_type == 'web':
                 content = item['desc']
