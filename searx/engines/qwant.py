@@ -156,7 +156,10 @@ def response(resp):
                 })
 
             elif mainline_type == 'news':
-                pub_date = datetime.fromtimestamp(item['date'], None)
+
+                pub_date = item['date']
+                if pub_date is not None:
+                    pub_date = datetime.fromtimestamp(pub_date)
                 news_media = item.get('media', [])
                 img_src = None
                 if news_media:
@@ -192,8 +195,12 @@ def response(resp):
                 if c:
                     content_parts.append("%s: %s " % (gettext("Channel"), c))
                 content = ' // '.join(content_parts)
-                length = timedelta(seconds=item['duration'])
-                pub_date = datetime.fromtimestamp(item['date'])
+                length = item['duration']
+                if length is not None:
+                    length = timedelta(milliseconds=length)
+                pub_date = item['date']
+                if pub_date is not None:
+                    pub_date = datetime.fromtimestamp(pub_date)
                 thumbnail = item['thumbnail']
                 # from some locations (DE and others?) the s2 link do
                 # response a 'Please wait ..' but does not deliver the thumbnail
