@@ -84,14 +84,16 @@ def request(query, params):
     )
 
     # add language tag
-    if params['language'] != 'all':
+    if params['language'] == 'all':
+        params['url'] += '&locale=en_us'
+    else:
         language = match_language(
             params['language'],
             # pylint: disable=undefined-variable
             supported_languages,
             language_aliases,
         )
-        params['url'] += '&locale=' + language.replace('-', '_')
+        params['url'] += '&locale=' + language.replace('-', '_').lower()
 
     params['raise_for_httperror'] = False
     return params
@@ -144,8 +146,8 @@ def response(resp):
         mainline_items = row.get('items', [])
         for item in mainline_items:
 
-            title = item['title']
-            res_url = item['url']
+            title = item.get('title', None)
+            res_url = item.get('url', None)
 
             if mainline_type == 'web':
                 content = item['desc']
@@ -156,7 +158,10 @@ def response(resp):
                 })
 
             elif mainline_type == 'news':
-                pub_date = datetime.fromtimestamp(item['date'], None)
+
+                pub_date = item['date']
+                if pub_date is not None:
+                    pub_date = datetime.fromtimestamp(pub_date)
                 news_media = item.get('media', [])
                 img_src = None
                 if news_media:
@@ -192,8 +197,12 @@ def response(resp):
                 if c:
                     content_parts.append("%s: %s " % (gettext("Channel"), c))
                 content = ' // '.join(content_parts)
-                length = timedelta(seconds=item['duration'])
-                pub_date = datetime.fromtimestamp(item['date'])
+                length = item['duration']
+                if length is not None:
+                    length = timedelta(milliseconds=length)
+                pub_date = item['date']
+                if pub_date is not None:
+                    pub_date = datetime.fromtimestamp(pub_date)
                 thumbnail = item['thumbnail']
                 # from some locations (DE and others?) the s2 link do
                 # response a 'Please wait ..' but does not deliver the thumbnail
