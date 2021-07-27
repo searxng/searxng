@@ -107,8 +107,8 @@ The ``make buildenv`` target will update the *build environment* in:
 Tasks running outside of an *installed instance*, need the following settings
 from the YAML configuration:
 
-- ``GIT_URL`` from :ref:`brand.git_url <settings global brand>`
-- ``GIT_BRANCH`` from :ref:`brand.git_branch <settings global brand>`
+- ``GIT_URL`` from git configuration
+- ``GIT_BRANCH`` from git configuration
 
 - ``SEARX_URL`` from :ref:`server.base_url <settings global server>` (aka
   ``PUBLIC_URL``)

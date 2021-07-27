@@ -429,13 +429,11 @@ EOF
     popd > /dev/null
 }
 
+# shellcheck disable=SC2034
 prompt_installation_status(){
 
-    local state branch remote remote_url instance_setting
+    local state branch remote remote_url GIT_URL GIT_BRANCH VERSION_STRING VERSION_TAG
     state="$(install_searx_get_state)"
-    branch="$(git name-rev --name-only HEAD)"
-    remote="$(git config branch."${branch}".remote)"
-    remote_url="$(git config remote."${remote}".url)"
 
     case $state in
         missing-searx-clone)
@@ -445,14 +443,16 @@ prompt_installation_status(){
         *)
             warn_msg "SearXNG instance already installed at: $SEARX_SRC"
             warn_msg "status:  ${_BBlue}$(install_searx_get_state)${_creset} "
-            instance_setting="$(prompt_installation_setting brand.git_url)"
-            if ! [ "$instance_setting" = "$remote_url" ]; then
-                warn_msg "instance's brand.git_url: '${instance_setting}'" \
+            branch="$(git name-rev --name-only HEAD)"
+            remote="$(git config branch."${branch}".remote)"
+            remote_url="$(git config remote."${remote}".url)"
+            eval "$(get_installed_version_variables)"
+            if ! [ "$GIT_URL" = "$remote_url" ]; then
+                warn_msg "instance's git URL: '${GIT_URL}'" \
                          "differs from local clone's remote URL: ${remote_url}"
             fi
-            instance_setting="$(prompt_installation_setting brand.git_branch)"
-            if ! [ "$instance_setting" = "$branch" ]; then
-                warn_msg "instance brand.git_branch: ${instance_setting}" \
+            if ! [ "$GIT_BRANCH" = "$branch" ]; then
+                warn_msg "instance git branch: ${GIT_BRANCH}" \
                          "differs from local clone's branch: ${branch}"
             fi
             return 42
@@ -469,7 +469,7 @@ verify_continue_install(){
 
 prompt_installation_setting(){
 
-    # usage:  prompt_installation_setting brand.git_url
+    # usage:  prompt_installation_setting brand.docs_url
     #
     # Prompts the value of the (YAML) setting in the SearXNG instance.
 
@@ -490,6 +490,23 @@ print(value)
 sys.exit(0)
 EOF
             ;;
+        *)
+            return 42
+            ;;
+    esac
+}
+
+get_installed_version_variables() {
+
+    # usage:  eval "$(get_installed_version_variables)"
+    #
+    # Set variables VERSION_STRING, VERSION_TAG, GIT_URL, GIT_BRANCH
+
+    local _state
+    _state="$(install_searx_get_state)"
+    case $_state in
+        python-installed|installer-modified)
+            sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python -m searx.version";;
         *)
             return 42
             ;;

@@ -7,6 +7,8 @@ import sys
 import os
 from os.path import realpath, dirname, join, sep, abspath
 
+from searx.version import GIT_URL, GIT_BRANCH
+
 repo_root = realpath(dirname(realpath(__file__)) + sep + '..')
 sys.path.insert(0, repo_root)
 
@@ -29,9 +31,6 @@ def _env(*arg, **kwargs):
 # - ./manage function buildenv.unset_env()
 
 name_val = [
-
-    ('GIT_URL'                , 'brand.git_url'),
-    ('GIT_BRANCH'             , 'brand.git_branch'),
 
     ('SEARX_URL'              , 'server.base_url'),
     ('SEARX_PORT'             , 'server.port'),
@@ -57,8 +56,9 @@ from searx import get_setting
 
 print('build %s (settings from: %s)' % (brand_env, os.environ['SEARX_SETTINGS_PATH']))
 sys.path.insert(0, repo_root)
-from searx import settings
 
 with open(repo_root + sep + brand_env, 'w', encoding='utf-8') as f:
     for name, option in name_val:
         print("export %s='%s'" % (name, _env(option)), file=f)
+    print(f"export GIT_URL='{GIT_URL}'", file=f)
+    print(f"export GIT_BRANCH='{GIT_BRANCH}'", file=f)

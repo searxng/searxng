@@ -16,7 +16,7 @@ from babel.core import get_global
 
 from searx import settings
 from searx.data import USER_AGENTS
-from searx.version import VERSION_STRING
+from searx.version import VERSION_TAG
 from searx.languages import language_codes
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import logger
@@ -44,7 +44,7 @@ NOTSET = NotSetClass()
 def searx_useragent():
     """Return the searx User Agent"""
     return 'searx/{searx_version} {suffix}'.format(
-           searx_version=VERSION_STRING,
+           searx_version=VERSION_TAG,
            suffix=settings['outgoing']['useragent_suffix']).strip()
 
 
