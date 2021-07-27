@@ -105,9 +105,30 @@ fi
 export DOCS_BUILD
 
 buildenv() {
+
+    # settings file from repository's working tree are used by default
+    SEARX_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
+
+    if [ -r '/etc/searx/settings.yml' ]; then
+        if ask_yn "should settings read from: /etc/searx/settings.yml"; then
+            SEARX_SETTINGS_PATH='/etc/searx/settings.yml'
+        fi
+    fi
+    export SEARX_SETTINGS_PATH
     SEARX_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
         | prefix_stdout "${_Blue}BUILDENV${_creset}  "
     return "${PIPESTATUS[0]}"
+}
+
+buildenv.unset_env(){
+    # Some defaults in the settings.yml are taken from the environment,
+    # e.g. SEARX_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  In
+    # some tasks (e.g. test.robot) we do not want these envorionment applied.
+    unset GIT_URL
+    unset GIT_BRANCH
+    unset SEARX_URL
+    unset SEARX_PORT
+    unset SEARX_BIND_ADDRESS
 }
 
 babel.compile() {
@@ -471,6 +492,7 @@ test.coverage() {
 
 test.robot() {
     build_msg TEST 'robot'
+    buildenv.unset_env
     gecko.driver
     PYTHONPATH=. pyenv.cmd python searx/testing.py robot
     dump_return $?

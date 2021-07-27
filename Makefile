@@ -63,6 +63,7 @@ test.shell:
 		utils/brand.env \
 		$(MTOOLS) \
 		utils/lib.sh \
+		utils/lib_install.sh \
 		utils/lib_static.sh \
 	        utils/filtron.sh \
 	        utils/searx.sh \

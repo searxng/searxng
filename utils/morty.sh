@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
-# -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
-source_dot_config
-SEARX_URL="${PUBLIC_URL:-http://$(uname -n)/searx}"
-source "${REPO_ROOT}/utils/lxc-searx.env"
-in_container && lxc_set_suite_env
+# shellcheck source=utils/lib_install.sh
+source "${REPO_ROOT}/utils/lib_install.sh"
 
 # ----------------------------------------------------------------------------
 # config
@@ -17,7 +12,6 @@ in_container && lxc_set_suite_env
 
 MORTY_LISTEN="${MORTY_LISTEN:-127.0.0.1:3000}"
 PUBLIC_URL_PATH_MORTY="${PUBLIC_URL_PATH_MORTY:-/morty/}"
-
 PUBLIC_URL_MORTY="${PUBLIC_URL_MORTY:-$(echo "$PUBLIC_URL" |  sed -e's,^\(.*://[^/]*\).*,\1,g')${PUBLIC_URL_PATH_MORTY}}"
 
 # shellcheck disable=SC2034
@@ -86,12 +80,15 @@ apache : ${PUBLIC_URL_MORTY}
 nginx (${PUBLIC_URL_MORTY})
   :install: nginx site with a reverse proxy (ProxyPass)
   :remove:  nginx site ${NGINX_MORTY_SITE}
-
-If needed, set the environment variables in the '${DOT_CONFIG#"$REPO_ROOT/"}' file::
-  PUBLIC_URL_MORTY:     ${PUBLIC_URL_MORTY}
-  MORTY_LISTEN:         ${MORTY_LISTEN}
-  SERVICE_USER:         ${SERVICE_USER}
+----
+sourced ${DOT_CONFIG} :
+  SERVICE_USER        : ${SERVICE_USER}
+  SERVICE_HOME        : ${SERVICE_HOME}
+  PUBLIC_URL_MORTY:   : ${PUBLIC_URL_MORTY}
+  MORTY_LISTEN:       : ${MORTY_LISTEN}
 EOF
+
+    install_log_searx_instance
     if in_container; then
         # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
         for ip in $(global_IPs) ; do
@@ -112,8 +109,9 @@ EOF
 info_searx() {
     # shellcheck disable=SC1117
     cat <<EOF
-To activate result and image proxy in searx, edit settings.yml (read:
-${DOCS_URL}/admin/morty.html)::
+To activate result and image proxy in SearXNG read:
+  https://searxng.github.io/searxng/admin/morty.html
+Check settings in file ${SEARX_SETTINGS_PATH} ...
   result_proxy:
       url : ${PUBLIC_URL_MORTY}
   server:
@@ -237,7 +235,7 @@ install_all() {
         fi
     fi
     info_searx
-    if ask_yn "Add image and result proxy to searx settings.yml?" Yn; then
+    if ask_yn "Add image and result proxy to SearXNG settings.yml?" Yn; then
         "${REPO_ROOT}/utils/searx.sh" option result-proxy "${PUBLIC_URL_MORTY}" "${MORTY_KEY}"
         "${REPO_ROOT}/utils/searx.sh" option image-proxy-on
     fi
@@ -335,11 +333,14 @@ inspect_service() {
 
     cat <<EOF
 
-sourced ${DOT_CONFIG#"$REPO_ROOT/"} :
-
-  MORTY_LISTEN :   ${MORTY_LISTEN}
+sourced ${DOT_CONFIG} :
+  SERVICE_USER        : ${SERVICE_USER}
+  SERVICE_HOME        : ${SERVICE_HOME}
+  PUBLIC_URL_MORTY:   : ${PUBLIC_URL_MORTY}
+  MORTY_LISTEN:       : ${MORTY_LISTEN}
 
 EOF
+    install_log_searx_instance
 
     if service_account_is_available "$SERVICE_USER"; then
         info_msg "service account $SERVICE_USER available."
@@ -402,7 +403,7 @@ EOF
 }
 
 enable_debug() {
-    warn_msg "Do not enable debug in production enviroments!!"
+    warn_msg "Do not enable debug in production environments!!"
     info_msg "Enabling debug option needs to reinstall systemd service!"
     set_service_env_debug true
 }

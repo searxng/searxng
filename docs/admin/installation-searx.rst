@@ -94,7 +94,7 @@ For a *minimal setup*, configure like shown below – replace ``searx@$(uname
 
   .. group-tab:: Use default settings
 
-    .. literalinclude:: ../../utils/templates/etc/searx/use_default_settings.yml
+    .. literalinclude:: ../../utils/templates/etc/searx/settings.yml
        :language: yaml
 
   .. group-tab:: searx/settings.yml

@@ -147,7 +147,7 @@ SCHEMA = {
         'formats': SettingsValue(list, OUTPUT_FORMATS),
     },
     'server': {
-        'port': SettingsValue(int, 8888),
+        'port': SettingsValue((int,str), 8888, 'SEARX_PORT'),
         'bind_address': SettingsValue(str, '127.0.0.1', 'SEARX_BIND_ADDRESS'),
         'secret_key': SettingsValue(str, environ_name='SEARX_SECRET'),
         'base_url': SettingsValue((False, str), False),
