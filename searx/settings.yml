@@ -30,7 +30,9 @@ search:
   # max ban time in seconds after engine errors
   max_ban_time_on_fail: 120
   # remove format to deny access, use lower case.
-  formats: [html, csv, json, rss]
+  # formats: [html, csv, json, rss]
+  formats:
+    - html
 
 server:
   # If you change port, bind_address or base_url don't forget to rebuild
