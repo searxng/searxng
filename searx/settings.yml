@@ -12,8 +12,8 @@ brand:
 
   # If you change a value below don't forget to rebuild instance's enviroment
   # (make buildenv)
-  git_url: https://github.com/return42/searxng
-  git_branch: fix-searx.sh
+  git_url: https://github.com/searxng/searxng
+  git_branch: master
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -35,8 +35,8 @@ search:
 server:
   # If you change port, bind_address or base_url don't forget to rebuild
   # instance's enviroment (make buildenv)
-  port: 7777
-  bind_address: "127.0.0.12"
+  port: 8888
+  bind_address: "127.0.0.1"
   base_url: false  # Possible values: false or "https://example.org/location".
 
   # If your instance owns a /etc/searx/settings.yml file, then set the following
