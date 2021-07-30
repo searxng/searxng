@@ -429,10 +429,11 @@ EOF
     popd > /dev/null
 }
 
-# shellcheck disable=SC2034
 prompt_installation_status(){
 
-    local state branch remote remote_url GIT_URL GIT_BRANCH VERSION_STRING VERSION_TAG
+    # shellcheck disable=SC2034
+    local GIT_URL GIT_BRANCH VERSION_STRING VERSION_TAG
+    local ret_val state branch remote remote_url
     state="$(install_searx_get_state)"
 
     case $state in
@@ -506,7 +507,7 @@ get_installed_version_variables() {
     _state="$(install_searx_get_state)"
     case $_state in
         python-installed|installer-modified)
-            sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python -m searx.version";;
+            sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" -m searx.version;;
         *)
             return 42
             ;;
