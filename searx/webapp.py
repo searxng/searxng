@@ -82,7 +82,7 @@ from searx.utils import (
     dict_subset,
     match_language,
 )
-from searx.version import VERSION_STRING
+from searx.version import VERSION_STRING, GIT_URL
 from searx.query import RawTextQuery
 from searx.plugins import plugins
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
@@ -475,6 +475,7 @@ def render(template_name, override_theme=None, **kwargs):
     ]
     kwargs['instance_name'] = get_setting('general.instance_name')
     kwargs['searx_version'] = VERSION_STRING
+    kwargs['searx_git_url'] = GIT_URL
     kwargs['get_setting'] = get_setting
 
     # helpers to create links to other pages
@@ -1322,7 +1323,7 @@ def config():
         'version': VERSION_STRING,
         'brand': {
             'CONTACT_URL': get_setting('general.contact_url'),
-            'GIT_URL': get_setting('brand.git_url'),
+            'GIT_URL': GIT_URL,
             'DOCS_URL': get_setting('brand.docs_url'),
         },
         'doi_resolvers': list(settings['doi_resolvers'].keys()),

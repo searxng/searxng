@@ -115,8 +115,11 @@ buildenv() {
         fi
     fi
     export SEARX_SETTINGS_PATH
-    SEARX_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
-        | prefix_stdout "${_Blue}BUILDENV${_creset}  "
+    (
+        set -e
+        SEARX_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
+            | prefix_stdout "${_Blue}BUILDENV${_creset}  "
+    )
     return "${PIPESTATUS[0]}"
 }
 
@@ -200,7 +203,6 @@ docker.build() {
 
     local SEARX_GIT_VERSION
     local VERSION_GITCOMMIT
-    local SEARX_PYTHON_VERSION
     local GITHUB_USER
     local SEARX_IMAGE_NAME
     local BUILD
@@ -227,33 +229,13 @@ docker.build() {
         fi
 
         # This is a git repository
-
-        # "git describe" to get the Docker version (for example : v0.15.0-89-g0585788e)
-        # awk to remove the "v" and the "g"
-        SEARX_GIT_VERSION=$(git describe --match "v[0-9]*\.[0-9]*\.[0-9]*" HEAD 2>/dev/null | awk -F'-' '{OFS="-"; $1=substr($1, 2); if ($3) { $3=substr($3, 2); }  print}')
-
-        # add the suffix "-dirty" if the repository has uncommited change
-        # /!\ HACK for searx/searx: ignore utils/brand.env
         git update-index -q --refresh
-        if [ ! -z "$(git diff-index --name-only HEAD -- | grep -v 'utils/brand.env')" ]; then
-	    SEARX_GIT_VERSION="${SEARX_GIT_VERSION}-dirty"
-        fi
+        pyenv.cmd python -m searx.version freeze
+        eval "$(pyenv.cmd python -m searx.version)"
 
-        # Get the last git commit id, will be added to the Searx version (see Dockerfile)
-        VERSION_GITCOMMIT=$(echo "$SEARX_GIT_VERSION" | cut -d- -f2-4)
+        # Get the last git commit id
+        VERSION_GITCOMMIT=$(echo "$VERSION_STRING" | cut -d- -f3)
         build_msg DOCKER "Last commit : $VERSION_GITCOMMIT"
-
-        # Check consistency between the git tag and the searx/version.py file
-        # /! HACK : parse Python file with bash /!
-        # otherwise it is not possible build the docker image without all Python
-        # dependencies ( version.py loads __init__.py )
-        # SEARX_PYTHON_VERSION=$(python3 -c "import six; import searx.version; six.print_(searx.version.VERSION_STRING)")
-        SEARX_PYTHON_VERSION=$(cat searx/version.py | grep "\(VERSION_MAJOR\|VERSION_MINOR\|VERSION_BUILD\) =" | cut -d\= -f2 | sed -e 's/^[[:space:]]*//' | paste -sd "." -)
-        if [ "$(echo "$SEARX_GIT_VERSION" | cut -d- -f1)" != "$SEARX_PYTHON_VERSION" ]; then
-	    err_msg "git tag:          $SEARX_GIT_VERSION"
-	    err_msg "searx/version.py: $SEARX_PYTHON_VERSION"
-	    die 1 "Inconsistency between the last git tag and the searx/version.py file"
-        fi
 
         # define the docker image name
         GITHUB_USER=$(echo "${GIT_URL}" | sed 's/.*github\.com\/\([^\/]*\).*/\1/')
@@ -274,14 +256,14 @@ docker.build() {
         docker $BUILD \
          --build-arg BASE_IMAGE="${DEPENDENCIES_IMAGE_NAME}" \
          --build-arg GIT_URL="${GIT_URL}" \
-         --build-arg SEARX_GIT_VERSION="${SEARX_GIT_VERSION}" \
+         --build-arg SEARX_GIT_VERSION="${VERSION_STRING}" \
          --build-arg VERSION_GITCOMMIT="${VERSION_GITCOMMIT}" \
          --build-arg LABEL_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
          --build-arg LABEL_VCS_REF="$(git rev-parse HEAD)" \
          --build-arg LABEL_VCS_URL="${GIT_URL}" \
          --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searx/settings.yml)" \
          --build-arg TIMESTAMP_UWSGI="$(git log -1 --format="%cd" --date=unix -- dockerfiles/uwsgi.ini)" \
-         -t "${SEARX_IMAGE_NAME}:latest" -t "${SEARX_IMAGE_NAME}:${SEARX_GIT_VERSION}" .
+         -t "${SEARX_IMAGE_NAME}:latest" -t "${SEARX_IMAGE_NAME}:${VERSION_STRING}" .
 
         if [ "$1" = "push" ]; then
 	        docker push "${SEARX_IMAGE_NAME}:latest"

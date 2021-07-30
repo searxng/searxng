@@ -5,7 +5,7 @@ import  sys, os
 from pallets_sphinx_themes import ProjectLink
 
 from searx import get_setting
-from searx.version import VERSION_STRING
+from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 
 # Project --------------------------------------------------------------
 
@@ -15,8 +15,6 @@ author = u'Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
 
 SEARX_URL = get_setting('server.base_url') or 'https://example.org/searx'
-GIT_URL = get_setting('brand.git_url')
-GIT_BRANCH = get_setting('brand.git_branch')
 ISSUE_URL = get_setting('brand.issue_url')
 DOCS_URL = get_setting('brand.docs_url')
 PUBLIC_INSTANCES = get_setting('brand.public_instances')

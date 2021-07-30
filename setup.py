@@ -4,10 +4,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-import os
-import sys
-
-from searx.version import VERSION_STRING
+from searx.version import VERSION_TAG, GIT_URL
 from searx import get_setting
 
 with open('README.rst', encoding='utf-8') as f:
@@ -21,12 +18,12 @@ with open('requirements-dev.txt') as f:
 
 setup(
     name='searx',
-    version=VERSION_STRING,
+    version=VERSION_TAG,
     description="A privacy-respecting, hackable metasearch engine",
     long_description=long_description,
     url=get_setting('brand.docs_url'),
     project_urls={
-        "Code": get_setting('brand.git_url'),
+        "Code": GIT_URL,
         "Issue tracker": get_setting('brand.issue_url')
     },
     classifiers=[
