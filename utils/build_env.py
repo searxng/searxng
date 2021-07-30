@@ -7,15 +7,12 @@ import sys
 import os
 from os.path import realpath, dirname, join, sep, abspath
 
-from searx.version import GIT_URL, GIT_BRANCH
-
 repo_root = realpath(dirname(realpath(__file__)) + sep + '..')
 sys.path.insert(0, repo_root)
 
-# Under the assumption that a brand is always a fork assure that the settings
-# file from reposetorie's working tree is used to generate the build_env, not
-# from /etc/searx/settings.yml.
-os.environ['SEARX_SETTINGS_PATH'] = abspath(dirname(__file__) + sep + 'settings.yml')
+# Assure that the settings file from reposetorie's working tree is used to
+# generate the build_env, not from /etc/searx/settings.yml.
+os.environ['SEARX_SETTINGS_PATH'] = join(repo_root, 'etc', 'settings.yml')
 
 def _env(*arg, **kwargs):
     val = get_setting(*arg, **kwargs)
@@ -49,9 +46,10 @@ for name, option in name_val:
     if not os.environ.get(name, _unset) is _unset:
         del os.environ[name]
 
-# After the variables are unset in the environ, we can import settings
-# (get_setting) from searx module.
+# After the variables are unset in the environ, we can import from the searx
+# package (what will read the values from the settings.yml).
 
+from searx.version import GIT_URL, GIT_BRANCH
 from searx import get_setting
 
 print('build %s (settings from: %s)' % (brand_env, os.environ['SEARX_SETTINGS_PATH']))
