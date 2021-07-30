@@ -213,20 +213,26 @@ main() {
                 *) usage "$_usage"; exit 42;;
             esac ;;
         install)
-            rst_title "SearXNG (install)" part
             sudo_or_exit
             case $2 in
-                all) install_all ;;
+                all)
+                    rst_title "SearXNG (install)" part
+                    install_all
+                    ;;
                 user)
+                    rst_title "SearXNG (install user)"
                     verify_continue_install
                     assert_user
                     ;;
                 pyenv)
+                    rst_title "SearXNG (install pyenv)"
                     verify_continue_install
                     create_pyenv
                     ;;
                 searx-src)
+                    rst_title "SearXNG (install searx-src)"
                     verify_continue_install
+                    assert_user
                     clone_searx
                     install_DOT_CONFIG
                     init_SEARX_SRC
@@ -241,6 +247,7 @@ main() {
                     install_settings
                     ;;
                 uwsgi)
+                    rst_title "SearXNG (install uwsgi)"
                     verify_continue_install
                     install_searx_uwsgi
                     if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
@@ -248,9 +255,11 @@ main() {
                     fi
                     ;;
                 packages)
+                    rst_title "SearXNG (install packages)"
                     pkg_install "$SEARX_PACKAGES"
                     ;;
                 buildhost)
+                    rst_title "SearXNG (install buildhost)"
                     pkg_install "$SEARX_PACKAGES"
                     pkg_install "$BUILD_PACKAGES"
                     ;;
@@ -377,6 +386,11 @@ installations that were installed with this script."
 assert_user() {
     rst_title "user $SERVICE_USER" section
     echo
+    if getent passwd "$SERVICE_USER"  > /dev/null; then
+       echo "user exists"
+       return 0
+    fi
+
     tee_stderr 1 <<EOF | bash | prefix_stdout
 useradd --shell /bin/bash --system \
  --home-dir "$SERVICE_HOME" \
@@ -437,26 +451,30 @@ prompt_installation_status(){
     state="$(install_searx_get_state)"
 
     case $state in
-        missing-searx-clone)
+        missing-searx-clone|missing-searx-pyenv)
             info_msg "${_BBlue}(status: $(install_searx_get_state))${_creset}"
             return 0
             ;;
         *)
-            warn_msg "SearXNG instance already installed at: $SEARX_SRC"
-            warn_msg "status:  ${_BBlue}$(install_searx_get_state)${_creset} "
+            info_msg "SearXNG instance already installed at: $SEARX_SRC"
+            info_msg "status:  ${_BBlue}$(install_searx_get_state)${_creset} "
             branch="$(git name-rev --name-only HEAD)"
             remote="$(git config branch."${branch}".remote)"
             remote_url="$(git config remote."${remote}".url)"
             eval "$(get_installed_version_variables)"
+
+            ret_val=0
             if ! [ "$GIT_URL" = "$remote_url" ]; then
                 warn_msg "instance's git URL: '${GIT_URL}'" \
                          "differs from local clone's remote URL: ${remote_url}"
+                ret_val=42
             fi
             if ! [ "$GIT_BRANCH" = "$branch" ]; then
                 warn_msg "instance git branch: ${GIT_BRANCH}" \
                          "differs from local clone's branch: ${branch}"
+                ret_val=42
             fi
-            return 42
+            return $ret_val
             ;;
     esac
 }
@@ -530,20 +548,21 @@ init_SEARX_SRC(){
     fi
 
     echo
-    echo "Manipulating files like settings.yml can break existing installation!"
     echo "Update instance with file(s) from: ${REPO_ROOT}"
     echo
     for i in "${SEARX_SRC_INIT_FILES[@]}"; do
         echo "- $i"
     done
+    echo
+    echo "Be careful when modifying an existing installation."
     if ! ask_yn "Do you really want to update these files in the instance?" Yn; then
         return 42
     fi
     for fname in "${SEARX_SRC_INIT_FILES[@]}"; do
         while true; do
             choose_one _reply "choose next step with file ${fname}" \
-                   "leave file unchanged" \
                    "replace file" \
+                   "leave file unchanged" \
                    "diff files" \
                    "interactive shell"
 
