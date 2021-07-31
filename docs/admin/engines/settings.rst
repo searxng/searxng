@@ -45,20 +45,10 @@ Global Settings
 .. code:: yaml
 
    brand:
-     git_url: https://github.com/searxng/searxng
-     git_branch: master
      issue_url: https://github.com/searxng/searxng/issues
      docs_url: https://searxng/searxng.github.io/searxng
      public_instances: https://searx.space
      wiki_url: https://github.com/searxng/searxng/wiki
-
-.. sidebar::  buildenv
-
-   Changing a value tagged by :ref:`buildenv <make buildenv>`, needs to
-   rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
-
-``git_url`` & ``git_branch`` : :ref:`buildenv GIT_URL & GIT_BRANCH <make buildenv>`
-  Changes this, to point to your searx fork (branch).
 
 ``issue_url`` :
   If you host your own issue tracker change this URL.
