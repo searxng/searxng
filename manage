@@ -5,9 +5,6 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
-source_dot_config
 
 # shellcheck source=utils/lib_static.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
@@ -121,17 +118,6 @@ buildenv() {
             | prefix_stdout "${_Blue}BUILDENV${_creset}  "
     )
     return "${PIPESTATUS[0]}"
-}
-
-buildenv.unset_env(){
-    # Some defaults in the settings.yml are taken from the environment,
-    # e.g. SEARX_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  In
-    # some tasks (e.g. test.robot) we do not want these envorionment applied.
-    unset GIT_URL
-    unset GIT_BRANCH
-    unset SEARX_URL
-    unset SEARX_PORT
-    unset SEARX_BIND_ADDRESS
 }
 
 babel.compile() {
@@ -474,7 +460,6 @@ test.coverage() {
 
 test.robot() {
     build_msg TEST 'robot'
-    buildenv.unset_env
     gecko.driver
     PYTHONPATH=. pyenv.cmd python searx/testing.py robot
     dump_return $?
