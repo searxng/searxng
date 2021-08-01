@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "eslint": "^7.32.0",
     "grunt-cli": "^1.4.3",
     "grunt": "~1.4.1",
     "grunt-contrib-copy": "^1.0.0",
@@ -10,6 +11,7 @@
     "grunt-contrib-uglify": "~5.0.1",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-stylelint": "^0.16.0",
+    "grunt-eslint": "^23.0.0",
     "grunt-webfont": "^1.7.2",
     "ionicons-npm": "^2.0.1",
     "jslint": "^0.12.1",
@@ -26,6 +28,7 @@
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
+    "eslint": "grunt eslint",
     "watch": "grunt watch",
     "webfont": "grunt webfont",
     "clean": "rm -Rf node_modules package-lock.json ion.less",

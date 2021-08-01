@@ -15,6 +15,16 @@ module.exports = function(grunt) {
     jshint: {
       files: ['src/js/main/*.js', 'src/js/head/*.js', '../__common__/js/*.js'],
     },
+    eslint: {
+      options: {
+        configFile: '.eslintrc.json'
+      },
+      target: [
+        'src/js/main/*.js',
+        'src/js/head/*.js',
+        '../__common__/js/*.js'
+      ],
+    },
     stylelint: {
       options: {
         formatter: 'unix',
@@ -189,10 +199,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-webfont');
   grunt.loadNpmTasks('grunt-stylelint');
+  grunt.loadNpmTasks('grunt-eslint');
 
   grunt.registerTask('test', ['jshint']);
 
   grunt.registerTask('default', [
+    // 'eslint',
     'jshint',
     'stylelint',
     'copy',
