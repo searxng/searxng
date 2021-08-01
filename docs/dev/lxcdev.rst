@@ -148,9 +148,9 @@ and once for the content sanitizer (content proxy morty):
         ...
         INFO:  got 200 from http://10.174.184.156/morty/
 
-.. sidebar:: Fully functional searXNG suite
+.. sidebar:: Fully functional SearXNG suite
 
-   From here on you have a fully functional searXNG suite running with bot
+   From here on you have a fully functional SearXNG suite running with bot
    blocker (filtron) and WEB content sanitizer (content proxy morty), both are
    needed for a *privacy protecting* search engine.
 
@@ -159,7 +159,7 @@ http://10.174.184.156/searx, just open the URL reported in your installation
 protocol in your WEB browser from the desktop to test the instance from outside
 of the container.
 
-In such a searXNG suite admins can maintain and access the debug log of the
+In such a earXNG suite admins can maintain and access the debug log of the
 different services quite easy.
 
 .. _working in containers:
@@ -183,7 +183,7 @@ searx-archlinux``:
         /share/searx
 
 The prompt ``[root@searx-archlinux ...]`` signals, that you are the root user in
-the searx-container.  To debug the running searXNG instance use:
+the searx-container.  To debug the running SearXNG instance use:
 
 .. tabs::
 
@@ -199,7 +199,7 @@ the searx-container.  To debug the running searXNG instance use:
 Back in the browser on your desktop open the service http://10.174.184.156/searx
 and run your application tests while the debug log is shown in the terminal from
 above.  You can stop monitoring using ``CTRL-C``, this also disables the *"debug
-option"* in searXNG's settings file and restarts the searXNG uwsgi application.
+option"* in SearXNG's settings file and restarts the SearXNG uwsgi application.
 To debug services from filtron and morty analogous use:
 
 .. tabs::
@@ -257,20 +257,19 @@ user ``searx`` in the ``searx-archlinux`` container and the python *virtualenv*
 Wrap production into developer suite
 ====================================
 
-In this section we will see how to change the *"Fully functional searXNG suite"*
+In this section we will see how to change the *"Fully functional SearXNG suite"*
 from a LXC container (which is quite ready for production) into a developer
 suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 
-- searXNG setup in: ``/etc/searx/settings.yml``
-- searXNG user's home: ``/usr/local/searx``
+- SearXNG setup in: ``/etc/searx/settings.yml``
+- SearXNG user's home: ``/usr/local/searx``
 - virtualenv in: ``/usr/local/searx/searx-pyenv``
-- searXNG software in: ``/usr/local/searx/searx-src``
+- SearXNG software in: ``/usr/local/searx/searx-src``
 
-The searXNG software is a clone of the ``git_url`` (see :ref:`settings global`)
-and the working tree is checked out from the ``git_branch``.  With the use of
-the :ref:`searx.sh` the searx service was installed as :ref:`uWSGI application
-<searx uwsgi>`.  To maintain this service, we can use ``systemctl`` (compare
-:ref:`service architectures on distributions <uwsgi configuration>`).
+With the use of the :ref:`searx.sh` the searx service was installed as
+:ref:`uWSGI application <searx uwsgi>`.  To maintain this service, we can use
+``systemctl`` (compare :ref:`service architectures on distributions <uwsgi
+configuration>`).
 
 .. tabs::
 
@@ -299,7 +298,7 @@ least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 If you have read the :ref:`"Good to know section" <lxc.sh>` you remember, that
 each container shares the root folder of the repository and the command
 ``utils/lxc.sh cmd`` handles relative path names **transparent**.  To wrap the
-searXNG installation into a developer one, we simple have to create a smylink to
+SearXNG installation into a developer one, we simple have to create a smylink to
 the **transparent** reposetory from the desktop.  Now lets replace the
 repository at ``searx-src`` in the container with the working tree from outside
 of the container:
@@ -337,7 +336,7 @@ daily usage:
 
   .. group-tab:: desktop
 
-     To *inspect* the searXNG instance (already described above):
+     To *inspect* the SearXNG instance (already described above):
 
      .. code:: sh
 
@@ -370,7 +369,7 @@ daily usage:
 Summary
 =======
 
-We build up a fully functional searXNG suite in a archlinux container:
+We build up a fully functional SearXNG suite in a archlinux container:
 
 .. code:: sh
 
