@@ -111,9 +111,7 @@ jobs:
     - name: Update transations
       id: update
       continue-on-error: true
-      run: |
-        pip install babel jinja2
-        searx_extra/update/update_translations.sh
+      run: make V=1 ci.babel.update
     - name: Open pull request
       if: steps.update.outcome == 'success'
       uses: peter-evans/create-pull-request@v3
