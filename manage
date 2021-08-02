@@ -44,8 +44,10 @@ help() {
     cat <<EOF
 buildenv:
   rebuild ./utils/brand.env
-babel.compile:
-  pybabel compile ./searx/translations
+babel.:
+  extract   : extract messages from source files and generate POT file
+  update    : update existing message catalogs from POT file
+  compile   : compile translation catalogs into binary MO files
 data.:
   all       : update searx/languages.py and ./data/*
   languages : update searx/data/engines_languages.json & searx/languages.py
@@ -120,12 +122,47 @@ buildenv() {
     return "${PIPESTATUS[0]}"
 }
 
-babel.compile() {
-    build_msg BABEL compile
-    pyenv.cmd pybabel compile -d "${REPO_ROOT}/searx/translations"
+babel.sha256sum() {
+    grep "msgid" "searx/translations/messages.pot" | sort | sha256sum | cut -f1 -d ' '
+}
+
+ci.babel.update() {
+    local sha_before
+    (   set -e
+        sha_before="$(babel.sha256sum)"
+        babel.extract
+        if [ "$(babel.sha256sum)" = "${sha_before}" ]; then
+            build_msg BABEL 'no changes detected, exiting'
+            return 1
+        fi
+        babel.update
+        build_msg BABEL 'update done, edit .po files if required and run babel.compile'
+    )
     dump_return $?
 }
 
+babel.extract() {
+    build_msg BABEL 'extract messages from source files and generate POT file'
+    pyenv.cmd pybabel extract -F babel.cfg \
+            -o "searx/translations/messages.pot" \
+            "searx/"
+    dump_return $?
+}
+
+babel.update() {
+    build_msg BABEL 'update existing message catalogs from POT file'
+    pyenv.cmd pybabel update -N \
+              -i "searx/translations/messages.pot" \
+              -d "searx/translations"
+    dump_return $?
+}
+
+babel.compile() {
+    build_msg BABEL 'compile translation catalogs into binary MO files'
+    pyenv.cmd pybabel compile --statistics \
+              -d "searx/translations"
+    dump_return $?
+}
 
 data.all() {
     data.languages

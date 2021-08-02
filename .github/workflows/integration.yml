@@ -90,6 +90,45 @@ jobs:
         SINGLE_COMMIT: True
         COMMIT_MESSAGE: build from commit ${{ github.sha }}
 
+  babel:
+    name: Babel
+    runs-on: ubuntu-20.04
+    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
+    needs:
+      - python
+      - themes
+      - documentation
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+    - name: Update transations
+      id: update
+      continue-on-error: true
+      run: make V=1 ci.babel.update
+    - name: Open pull request
+      if: steps.update.outcome == 'success'
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: Update translations (pot, po)
+        committer: searx-bot <noreply@github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        signoff: false
+        branch: update_translations_pot
+        delete-branch: true
+        draft: false
+        title: 'Update translations (pot, po)'
+        body: |
+          Update messages.pot and messages.po files
+        labels: |
+          translation
+
   dockers:
     name: Docker
     if: github.ref == 'refs/heads/master'
