@@ -334,7 +334,7 @@ gecko.driver() {
 }
 
 node.env() {
-    if ! required_commands npm; then
+    if ! required_commands npm fontforge ttfautohint; then
         info_msg "to install build tools use::"
         info_msg "   sudo -H ./utils/searx.sh install buildhost"
         die 1 "install needed build tools first"

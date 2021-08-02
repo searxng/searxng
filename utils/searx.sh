@@ -43,7 +43,7 @@ shellcheck"
 BUILD_PACKAGES_debian="\
 firefox graphviz imagemagick texlive-xetex librsvg2-bin
 texlive-latex-recommended texlive-extra-utils fonts-dejavu
-latexmk
+latexmk fontforge ttfautohint
 npm"
 
 # pacman packages
@@ -55,7 +55,7 @@ shellcheck"
 
 BUILD_PACKAGES_arch="\
 firefox graphviz imagemagick texlive-bin extra/librsvg
-texlive-core texlive-latexextra ttf-dejavu
+texlive-core texlive-latexextra ttf-dejavu fontforge ttfautohint
 npm"
 
 # dnf packages
@@ -69,7 +69,7 @@ BUILD_PACKAGES_fedora="\
 firefox graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts
+dejavu-sans-mono-fonts fontforge ttfautohint
 npm"
 
 # yum packages
@@ -89,7 +89,7 @@ BUILD_PACKAGES_centos="\
 firefox graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts"
+dejavu-sans-mono-fonts fontforge ttfautohint"
 
 case $DIST_ID-$DIST_VERS in
     ubuntu-16.04|ubuntu-18.04)

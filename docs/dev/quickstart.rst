@@ -5,6 +5,8 @@ Development Quickstart
 ======================
 
 .. _npm: https://www.npmjs.com/
+.. _fontforge: https://github.com/fontforge/fontforge
+.. _ttfautohint: https://www.freetype.org/ttfautohint/doc/ttfautohint.html
 
 Searx loves developers, just clone and start hacking.  All the rest is done for
 you simply by using :ref:`make <makefile>`.
@@ -31,7 +33,12 @@ If you implement themes, you will need to compile styles and JavaScript before
 
    make themes.all
 
-Don't forget to install npm_ first.
+Don't forget to install npm_, ttfautohint_ and fontforge_ first.  To install
+all system requirements of a :ref:`buildhosts` use::
+
+  sudo -H ./utils/searx.sh install buildhost
+
+Otherwise, install only what you need at least:
 
 .. tabs::
 
@@ -39,19 +46,19 @@ Don't forget to install npm_ first.
 
       .. code:: sh
 
-         sudo -H apt-get install npm
+         sudo -H apt-get install npm ttfautohint fontforge
 
    .. group-tab:: Arch Linux
 
       .. code-block:: sh
 
-         sudo -H pacman -S npm
+         sudo -H pacman -S npm ttfautohint fontforge
 
    .. group-tab::  Fedora / RHEL
 
       .. code-block:: sh
 
-	 sudo -H dnf install npm
+	 sudo -H dnf install npm ttfautohint fontforge
 
 If you finished your *tests* you can start to commit your changes.  To separate
 the changed code from the build products first run:
