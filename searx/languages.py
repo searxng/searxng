@@ -38,7 +38,6 @@ language_codes = \
     ('he-IL', 'עברית', '', 'Hebrew'),
     ('hr-HR', 'Hrvatski', '', 'Croatian'),
     ('hu-HU', 'Magyar', '', 'Hungarian'),
-    ('hy-AM', 'Հայերեն', '', 'Armenian'),
     ('id-ID', 'Indonesia', '', 'Indonesian'),
     ('is-IS', 'Íslenska', '', 'Icelandic'),
     ('it-IT', 'Italiano', '', 'Italian'),
