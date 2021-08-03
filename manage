@@ -126,6 +126,27 @@ babel.sha256sum() {
     grep "msgid" "searx/translations/messages.pot" | sort | sha256sum | cut -f1 -d ' '
 }
 
+weblate.merge.push.updates() {
+    (   set -e
+        pyenv.cmd wlc lock
+        if ! git remote get-url weblate; then
+            git remote add weblate https://weblate.bubu1.eu/git/searxng/searxng/
+        fi
+        git remote update weblate
+        git merge weblate/master
+        babel.compile
+        git add searx/translations
+        git commit -m "[translations] update messages.mo files"
+        git push
+    )
+    exitcode=$?
+    (   # make sure to always unlock weblate
+        set -e
+        pyenv.cmd wlc unlock
+    )
+    dump_return $exitcode
+}
+
 ci.babel.update() {
     local sha_before
     (   set -e
@@ -133,12 +154,27 @@ ci.babel.update() {
         babel.extract
         if [ "$(babel.sha256sum)" = "${sha_before}" ]; then
             build_msg BABEL 'no changes detected, exiting'
-            return 1
+            return 0
         fi
+
+        # call weblate.merge.push.updates right away
+        git stash push "searx/translations/messages.pot"
+        weblate.merge.push.updates babel.update
+
+        # then update messages.pot while weblate is locked
+        pyenv.cmd wlc lock
+        git stash pop
         babel.update
-        build_msg BABEL 'update done, edit .po files if required and run babel.compile'
+        git add searx/translations
+        git commit -m "[translations] update messages.pot and messages.po files"
+        git push
     )
-    dump_return $?
+    exitcode=$?
+    (   # make sure to always unlock weblate
+        set -e
+        pyenv.cmd wlc unlock
+    )
+    dump_return $exitcode
 }
 
 babel.extract() {

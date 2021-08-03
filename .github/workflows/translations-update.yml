@@ -1,0 +1,34 @@
+name: "Update translations (weblate)"
+on:
+  schedule:
+    - cron: "05 07 * * 5"
+  workflow_dispatch:
+
+jobs:
+  babel:
+    name: Weblate
+    runs-on: ubuntu-20.04
+    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+    - name: weblate & git setup
+      env:
+        WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+      run: |
+        mkdir -p ~/.config
+        echo "${WEBLATE_CONFIG}" > ~/.config/weblate
+        git config --global user.email "alex.searxng@al-f.net"
+        git config --global user.name "searxng-bot"
+    - name: Merge and push transation updates
+      id: update
+      run: make V=1 weblate.merge.push.updates
+  
