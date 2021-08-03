@@ -343,10 +343,10 @@ node.env() {
     (   set -e
 
         build_msg INSTALL "searx/static/themes/oscar/package.json"
-        npm --prefix searx/static/themes/oscar install
+        pyenv.cmd npm --prefix searx/static/themes/oscar install
 
         build_msg INSTALL "searx/static/themes/simple/package.json"
-        npm --prefix searx/static/themes/simple install
+        pyenv.cmd npm --prefix searx/static/themes/simple install
     )
     dump_return $?
 }
