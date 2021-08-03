@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`UI_LOCALE_CODES` and
+:py:obj:`RTL_LOCALES`."""
+
 from typing import List, Set
 import os
 import pathlib
@@ -10,8 +16,15 @@ LOCALE_NAMES = {
     "oc": "Lenga D'òc (Occitan)",
     "nl_BE": "Vlaams (Dutch, Belgium)",
 }
+"""Mapping of locales and their description.  Locales e.g. 'fr' or 'pt_BR'
+(delimiter is *underline* '_')"""
+
 UI_LOCALE_CODES: List[str] = []
+"""List of locales e.g. 'fr' or 'pt-BR' (delimiter is '-')"""
+
 RTL_LOCALES: Set[str] = set()
+"""List of *Right-To-Left* locales e.g. 'he' or 'fa_IR' (delimiter is
+*underline* '_')"""
 
 
 def _get_name(locale, language_code):
@@ -23,6 +36,11 @@ def _get_name(locale, language_code):
 
 
 def _get_locale_name(locale, locale_name):
+    """Get locale name e.g. 'Français - fr' or 'Português (Brasil) - pt-BR'
+
+    :param locale: instance of :py:class:`Locale`
+    :param locale_name: name e.g. 'fr'  or 'pt_BR'
+    """
     native_language, native_territory = _get_name(locale, locale_name)
     english_language, english_territory = _get_name(locale, 'en')
     if native_territory == english_territory:
@@ -38,11 +56,13 @@ def _get_locale_name(locale, locale_name):
 
 
 def initialize_locales(directory):
-    global LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
+    """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`UI_LOCALE_CODES` and
+    :py:obj:`RTL_LOCALES`.
+    """
+    global LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES  # pylint: disable=global-statement
     for dirname in sorted(os.listdir(directory)):
         # Based on https://flask-babel.tkte.ch/_modules/flask_babel.html#Babel.list_translations
-        locale_dir = os.path.join(directory, dirname, 'LC_MESSAGES')
-        if not os.path.isdir(locale_dir):
+        if not os.path.isdir( os.path.join(directory, dirname, 'LC_MESSAGES') ):
             continue
         info = LOCALE_NAMES.get(dirname)
         if not info:
@@ -50,7 +70,7 @@ def initialize_locales(directory):
             LOCALE_NAMES[dirname] = _get_locale_name(locale, dirname)
             if locale.text_direction == 'rtl':
                 RTL_LOCALES.add(dirname)
-    #
+
     UI_LOCALE_CODES = [l.replace('_', '-') for l in LOCALE_NAMES]
 
 
