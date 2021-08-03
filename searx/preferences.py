@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlencode
 
 from searx import settings, autocomplete
 from searx.languages import language_codes as languages
+from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
 
 
@@ -340,7 +341,7 @@ class Preferences:
             'locale': EnumStringSetting(
                 settings['ui']['default_locale'],
                 is_locked('locale'),
-                choices=list(settings['locales'].keys()) + ['']
+                choices=list(LOCALE_NAMES.keys()) + ['']
             ),
             'autocomplete': EnumStringSetting(
                 settings['search']['autocomplete'],

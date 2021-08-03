@@ -41,7 +41,6 @@ class TestDefaultSettings(SearxTestCase):
         self.assertTrue(isinstance(settings['server']['port'], int))
         self.assertTrue(isinstance(settings['server']['bind_address'], str))
         self.assertTrue(isinstance(settings['engines'], list))
-        self.assertTrue(isinstance(settings['locales'], dict))
         self.assertTrue(isinstance(settings['doi_resolvers'], dict))
         self.assertTrue(isinstance(settings['default_doi_resolver'], str))
 

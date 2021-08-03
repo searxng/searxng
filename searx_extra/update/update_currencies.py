@@ -8,7 +8,8 @@ import json
 from sys import path
 from os.path import realpath, dirname, join
 
-from searx import searx_dir, settings
+from searx import searx_dir
+from searx.locales import LOCALE_NAMES
 from searx.engines.wikidata import send_wikidata_query
 
 
@@ -44,7 +45,7 @@ ORDER BY ?iso4217 ?article_name
 """
 
 
-LANGUAGES = settings['locales'].keys()
+LANGUAGES = LOCALE_NAMES.keys()
 LANGUAGES_SPARQL = ', '.join(set(map(lambda l: repr(l.split('_')[0]), LANGUAGES)))
 
 
