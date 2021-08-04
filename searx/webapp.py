@@ -106,6 +106,7 @@ from searx.flaskfix import patch_application
 
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx.languages import language_codes as languages
+from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream
 from searx.search.checker import get_result as checker_get_result
@@ -175,12 +176,6 @@ if (not werkzeug_reloader
     search_initialize(enable_checker=True)
 
 babel = Babel(app)
-
-rtl_locales = [
-    'ar', 'arc', 'bcc', 'bqi', 'ckb', 'dv', 'fa', 'fa_IR', 'glk', 'he',
-    'ku', 'mzn', 'pnb', 'ps', 'sd', 'ug', 'ur', 'yi'
-]
-ui_locale_codes = [l.replace('_', '-') for l in settings['locales'].keys()]
 
 # used when translating category names
 _category_names = (
@@ -258,7 +253,7 @@ def _get_browser_or_settings_language(req, lang_list):
 @babel.localeselector
 def get_locale():
     if 'locale' in request.form\
-       and request.form['locale'] in settings['locales']:
+       and request.form['locale'] in LOCALE_NAMES:
         # use locale from the form
         locale = request.form['locale']
         locale_source = 'form'
@@ -268,7 +263,7 @@ def get_locale():
         locale_source = 'preferences'
     else:
         # use local from the browser
-        locale = _get_browser_or_settings_language(request, ui_locale_codes)
+        locale = _get_browser_or_settings_language(request, UI_LOCALE_CODES)
         locale = locale.replace('-', '_')
         locale_source = 'browser'
 
@@ -463,7 +458,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
-    if locale in rtl_locales and 'rtl' not in kwargs:
+    if locale in RTL_LOCALES and 'rtl' not in kwargs:
         kwargs['rtl'] = True
     if 'current_language' not in kwargs:
         kwargs['current_language'] = match_language(
@@ -1042,7 +1037,7 @@ def preferences():
     return render(
         'preferences.html',
         selected_categories = get_selected_categories(request.preferences, request.form),
-        locales = settings['locales'],
+        locales = LOCALE_NAMES,
         current_locale = request.preferences.get_value("locale"),
         image_proxy = image_proxy,
         engines_by_category = engines_by_category,
@@ -1315,7 +1310,7 @@ def config():
         'engines': _engines,
         'plugins': _plugins,
         'instance_name': settings['general']['instance_name'],
-        'locales': settings['locales'],
+        'locales': LOCALE_NAMES,
         'default_locale': settings['ui']['default_locale'],
         'autocomplete': settings['search']['autocomplete'],
         'safe_search': settings['search']['safe_search'],

@@ -8,6 +8,7 @@ from lxml.html import fromstring
 
 from searx.engines.wikidata import send_wikidata_query
 from searx.utils import extract_text
+from searx.locales import LOCALE_NAMES
 import searx
 import searx.search
 import searx.network
@@ -35,7 +36,7 @@ WHERE {
 ORDER BY ?itemLang
 """
 
-LANGUAGES = searx.settings['locales'].keys()
+LANGUAGES = LOCALE_NAMES.keys()
 LANGUAGES_SPARQL = ', '.join(set(map(lambda l: repr(l.split('_')[0]), LANGUAGES)))
 IDS = None
 
