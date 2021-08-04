@@ -219,30 +219,6 @@ Communication with search engines.
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
 
-
-``locales:``
-------------
-
-.. code:: yaml
-
-   locales:
-     en: English
-     de: Deutsch
-     he: Hebrew
-     hu: Magyar
-     fr: Français
-     es: Español
-     it: Italiano
-     nl: Nederlands
-     ja: 日本語 (Japanese)
-     tr: Türkçe
-     ru: Russian
-     ro: Romanian
-
-``locales`` :
-  Locales codes and their names.  Available translations of searx interface.
-
-
 .. _settings engine:
 
 Engine settings
