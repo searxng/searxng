@@ -11,9 +11,7 @@ import pathlib
 from babel import Locale
 
 LOCALE_NAMES = {
-    "ar": "العَرَبِيَّة (Arabic)",
-    "fil": "Wikang Filipino (Filipino)",
-    "oc": "Lenga D'òc (Occitan)",
+    "oc": "Occitan",
     "nl_BE": "Vlaams (Dutch, Belgium)",
 }
 """Mapping of locales and their description.  Locales e.g. 'fr' or 'pt_BR'
