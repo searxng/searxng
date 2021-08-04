@@ -93,7 +93,7 @@ jobs:
   babel:
     name: Babel
     runs-on: ubuntu-20.04
-    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
+    if: ${{ github.repository_owner == 'dalf' && github.ref == 'refs/heads/master' }}
     needs:
       - python
       - themes
@@ -115,11 +115,11 @@ jobs:
       run: |
         mkdir -p ~/.config
         echo "${WEBLATE_CONFIG}" > ~/.config/weblate
-        git config --global user.email "alex.searxng@al-f.net"
+        git config --global user.email "searxng-bot@users.noreply.github.com"
         git config --global user.name "searxng-bot"
     - name: Update transations
       id: update
-      run: make V=1 ci.babel.update
+      run: make V=1 babel.master.to.translations
 
   dockers:
     name: Docker

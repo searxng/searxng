@@ -122,21 +122,16 @@ buildenv() {
     return "${PIPESTATUS[0]}"
 }
 
-babel.sha256sum() {
-    grep "msgid" "searx/translations/messages.pot" | sort | sha256sum | cut -f1 -d ' '
-}
-
-weblate.merge.push.updates() {
+babel.weblate.to.translations() {
+    local exitcode
     (   set -e
         pyenv.cmd wlc lock
+        git checkout translations
         if ! git remote get-url weblate; then
             git remote add weblate https://weblate.bubu1.eu/git/searxng/searxng/
         fi
         git remote update weblate
-        git merge weblate/master
-        babel.compile
-        git add searx/translations
-        git commit -m "[translations] update messages.mo files"
+        git merge weblate/translations
         git push
     )
     exitcode=$?
@@ -147,22 +142,49 @@ weblate.merge.push.updates() {
     dump_return $exitcode
 }
 
-ci.babel.update() {
-    local sha_before
+babel.translations.to.master() {
     (   set -e
-        sha_before="$(babel.sha256sum)"
+        # pull weblate commits
+        babel.weblate.to.translations
+
+        # copy the changes to the master branch
+        git checkout translations
+        tar cf "/tmp/translations.tar.gz" searx/translations
+        git checkout master
+        tar xf "/tmp/translations.tar.gz"
+
+        # compile translations
+        babel.compile
+    )
+    dump_return $?
+}
+
+babel.sha256sum() {
+    grep "msgid" "searx/translations/messages.pot" | sort | sha256sum | cut -f1 -d ' '
+}
+
+babel.master.to.translations() {
+    local new_sha translations_sha exitcode
+    (   set -e
         babel.extract
-        if [ "$(babel.sha256sum)" = "${sha_before}" ]; then
+        new_sha=$(babel.sha256sum)
+        git stash push "searx/translations/messages.pot"
+
+        git checkout translations
+        translations_sha="$(babel.sha256sum)"
+
+        if [ "${new_sha}" = "${translations_sha}" ]; then
             build_msg BABEL 'no changes detected, exiting'
+            git stash drop
             return 0
         fi
 
-        # call weblate.merge.push.updates right away
-        git stash push "searx/translations/messages.pot"
-        weblate.merge.push.updates babel.update
+        # update the translations branch with weblate commits
+        babel.weblate.to.translations
 
-        # then update messages.pot while weblate is locked
+        # update/commit/push messages.po while weblate is locked
         pyenv.cmd wlc lock
+        git checkout translations
         git stash pop
         babel.update
         git add searx/translations

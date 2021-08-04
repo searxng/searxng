@@ -8,7 +8,7 @@ jobs:
   babel:
     name: Weblate
     runs-on: ubuntu-20.04
-    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
+    if: ${{ github.repository_owner == 'dalf' && github.ref == 'refs/heads/master' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -26,9 +26,24 @@ jobs:
       run: |
         mkdir -p ~/.config
         echo "${WEBLATE_CONFIG}" > ~/.config/weblate
-        git config --global user.email "alex.searxng@al-f.net"
+        git config --global user.email "searxng-bot@users.noreply.github.com"
         git config --global user.name "searxng-bot"
     - name: Merge and push transation updates
-      id: update
-      run: make V=1 weblate.merge.push.updates
-  
+      run: make V=1 ci.babel.translations.to.master
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+        commit-message: Update translations
+        committer: searxng-bot <searxng-bot@users.noreply.github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        signoff: false
+        branch: translations_update
+        delete-branch: true
+        draft: false
+        title: 'Update translations'
+        body: |
+          Update translations
+        labels: |
+          translation
