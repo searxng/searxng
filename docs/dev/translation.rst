@@ -4,69 +4,46 @@
 Translation
 ===========
 
-.. _searx@transifex: https://www.transifex.com/asciimoo/searx/
+.. _weblate.bubu1.eu: https://weblate.bubu1.eu/projects/searxng/
 
-Translation currently takes place on `searx@transifex`_
+Translation takes place on `weblate.bubu1.eu`_ ( `documentation <https://docs.weblate.org/en/latest/index.html>`_ ).
 
-Requirements
-============
+New messages on the master branch are extracted and pushed to Weblate automatically.
 
-* Transifex account
+Every Friday, a GitHub workflow creates a pull request with the updated translations (messages.mo, messages.po, messages.mo files).
 
-Init Transifex project
-======================
+.. image:: https://weblate.bubu1.eu/widgets/searxng/-/searxng/svg-badge.svg
+   :target: https://weblate.bubu1.eu/projects/searxng/
 
-After installing ``transifex`` using pip, run the following command to
-initialize the project.
-
-.. code:: sh
-
-   ./manage pyenv.cmd tx init # Transifex instance: https://www.transifex.com/asciimoo/searx/
-
-
-After ``$HOME/.transifexrc`` is created, get a Transifex API key and insert it
-into the configuration file.
-
-Create a configuration file for ``tx`` named ``$HOME/.tx/config``.
-
-.. code:: ini
-
-    [main]
-    host = https://www.transifex.com
-    [searx.messagespo]
-    file_filter = searx/translations/<lang>/LC_MESSAGES/messages.po
-    source_file = messages.pot
-    source_lang = en
-    type = PO
-
-
-Then run ``tx set``:
-
-.. code:: shell
-
-    ./manage pyenv.cmd tx set --auto-local \
-        -r searx.messagespo 'searx/translations/<lang>/LC_MESSAGES/messages.po' \
-        --source-lang en --type PO --source-file messages.pot --execute
-
-
-Update translations
+Weblate integration
 ===================
 
-To retrieve the latest translations, pull it from Transifex.
+Weblate monitors the `translations branch <https://github.com/searxng/searxng/tree/translations>`_, not the master branch.
 
-.. code:: sh
+This branch contains only the .pot and pot files, nothing else.
 
-   ./manage pyenv.cmd tx pull -a
-   [?] Enter your api token: ....
+Documentation
+-------------
 
-Then check the new languages.  If strings translated are not enough, delete those
-folders, because those should not be compiled.  Call the command below to compile
-the ``.po`` files.
+* `wlc <https://docs.weblate.org/en/latest/wlc.html>`_
+* `pybabel <http://babel.pocoo.org/en/latest/cmdline.html>`_
+* `weblate workflow <https://docs.weblate.org/en/latest/workflows.html>`_
 
-.. code:: shell
+Worfklow
+--------
 
-   ./manage pyenv.cmd pybabel compile -d searx/translations
+.. image:: translation.svg
 
 
-After the compilation is finished commit the ``.po`` and ``.mo`` files and
-create a PR.
+wlc
+---
+
+All weblate integration is done by GitHub workflows, but if you want to use wlc, copy this content into `~/.config/weblate <https://docs.weblate.org/en/latest/wlc.html#wlc-config>`_ :
+
+.. code-block:: ini
+
+  [keys]
+  https://weblate.bubu1.eu/api/ = APIKEY
+
+
+Replace `APIKEY` by `your API key <https://weblate.bubu1.eu/accounts/profile/#api>`_.
