@@ -20,7 +20,7 @@ from lxml import etree
 from json import loads
 from urllib.parse import urlencode
 
-from httpx import HTTPError
+from aiohttp import ClientError
 
 
 from searx import settings
@@ -137,5 +137,5 @@ def search_autocomplete(backend_name, query, lang):
 
     try:
         return backend(query, lang)
-    except (HTTPError, SearxEngineResponseException):
+    except (ClientError, SearxEngineResponseException):
         return []

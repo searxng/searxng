@@ -8,11 +8,11 @@ import concurrent.futures
 from types import MethodType
 from timeit import default_timer
 
-import httpx
-import h2.exceptions
+import aiohttp
 
 from .network import get_network, initialize
 from .client import get_loop
+from .response import Response
 from .raise_for_httperror import raise_for_httperror
 
 # queue.SimpleQueue: Support Python 3.6
@@ -73,12 +73,12 @@ def get_context_network():
     return THREADLOCAL.__dict__.get('network') or get_network()
 
 
-def request(method, url, **kwargs):
+def request(method, url, **kwargs) -> Response:
     """same as requests/requests/api.py request(...)"""
     global THREADLOCAL
     time_before_request = default_timer()
 
-    # timeout (httpx)
+    # timeout (aiohttp)
     if 'timeout' in kwargs:
         timeout = kwargs['timeout']
     else:
@@ -108,16 +108,15 @@ def request(method, url, **kwargs):
     # network
     network = get_context_network()
 
+    #
+    # kwargs['compress'] = True
+
     # do request
     future = asyncio.run_coroutine_threadsafe(network.request(method, url, **kwargs), get_loop())
     try:
         response = future.result(timeout)
     except concurrent.futures.TimeoutError as e:
-        raise httpx.TimeoutException('Timeout', request=None) from e
-
-    # requests compatibility
-    # see also https://www.python-httpx.org/compatibility/#checking-for-4xx5xx-responses
-    response.ok = not response.is_error
+        raise asyncio.TimeoutError() from e
 
     # update total_time.
     # See get_time_for_thread() and reset_time_for_thread()
@@ -132,64 +131,53 @@ def request(method, url, **kwargs):
     return response
 
 
-def get(url, **kwargs):
+def get(url, **kwargs) -> Response:
     kwargs.setdefault('allow_redirects', True)
     return request('get', url, **kwargs)
 
 
-def options(url, **kwargs):
+def options(url, **kwargs) -> Response:
     kwargs.setdefault('allow_redirects', True)
     return request('options', url, **kwargs)
 
 
-def head(url, **kwargs):
+def head(url, **kwargs) -> Response:
     kwargs.setdefault('allow_redirects', False)
     return request('head', url, **kwargs)
 
 
-def post(url, data=None, **kwargs):
+def post(url, data=None, **kwargs) -> Response:
     return request('post', url, data=data, **kwargs)
 
 
-def put(url, data=None, **kwargs):
+def put(url, data=None, **kwargs) -> Response:
     return request('put', url, data=data, **kwargs)
 
 
-def patch(url, data=None, **kwargs):
+def patch(url, data=None, **kwargs) -> Response:
     return request('patch', url, data=data, **kwargs)
 
 
-def delete(url, **kwargs):
+def delete(url, **kwargs) -> Response:
     return request('delete', url, **kwargs)
 
 
 async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
     try:
-        async with network.stream(method, url, **kwargs) as response:
+        async with await network.request(method, url, stream=True, **kwargs) as response:
             queue.put(response)
-            # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
-            # https://www.python-httpx.org/quickstart/#streaming-responses
-            async for chunk in response.aiter_raw(65536):
-                if len(chunk) > 0:
-                    queue.put(chunk)
-    except httpx.ResponseClosed:
-        # the response was closed
-        pass
-    except (httpx.HTTPError, OSError, h2.exceptions.ProtocolError) as e:
+            chunk = await response.iter_content(65536)
+            while chunk:
+                queue.put(chunk)
+                chunk = await response.iter_content(65536)
+    except aiohttp.client.ClientError as e:
         queue.put(e)
     finally:
         queue.put(None)
 
 
-def _close_response_method(self):
-    asyncio.run_coroutine_threadsafe(
-        self.aclose(),
-        get_loop()
-    )
-
-
 def stream(method, url, **kwargs):
-    """Replace httpx.stream.
+    """Stream Response in sync world
 
     Usage:
     stream = poolrequests.stream(...)
@@ -197,8 +185,6 @@ def stream(method, url, **kwargs):
     for chunk in stream:
         ...
 
-    httpx.Client.stream requires to write the httpx.HTTPTransport version of the
-    the httpx.AsyncHTTPTransport declared above.
     """
     queue = SimpleQueue()
     future = asyncio.run_coroutine_threadsafe(
@@ -210,7 +196,6 @@ def stream(method, url, **kwargs):
     response = queue.get()
     if isinstance(response, Exception):
         raise response
-    response.close = MethodType(_close_response_method, response)
     yield response
 
     # yield chunks

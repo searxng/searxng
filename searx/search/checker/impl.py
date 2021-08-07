@@ -4,6 +4,7 @@ import typing
 import types
 import functools
 import itertools
+import asyncio
 from time import time
 from timeit import default_timer
 from urllib.parse import urlparse
@@ -11,7 +12,7 @@ from urllib.parse import urlparse
 import re
 from langdetect import detect_langs
 from langdetect.lang_detect_exception import LangDetectException
-import httpx
+import aiohttp
 
 from searx import network, logger
 from searx.results import ResultContainer
@@ -91,10 +92,10 @@ def _is_url_image(image_url):
             if r.headers["content-type"].startswith('image/'):
                 return True
             return False
-        except httpx.TimeoutException:
+        except asyncio.TimeoutError:
             logger.error('Timeout for %s: %i', image_url, int(time() - a))
             retry -= 1
-        except httpx.HTTPError:
+        except aiohttp.ClientError:
             logger.exception('Exception for %s', image_url)
             return False
 

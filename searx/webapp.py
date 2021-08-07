@@ -19,7 +19,7 @@ from io import StringIO
 import urllib
 from urllib.parse import urlencode
 
-import httpx
+import aiohttp
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -205,14 +205,14 @@ exception_classname_to_text = {
     'httpx.ConnectTimeout': timeout_text,
     'httpx.ReadTimeout': timeout_text,
     'httpx.WriteTimeout': timeout_text,
-    'httpx.HTTPStatusError': gettext('HTTP error'),
+    'aiohttp.client_exceptions.ClientResponseError': gettext('HTTP error'),
     'httpx.ConnectError': gettext("HTTP connection error"),
     'httpx.RemoteProtocolError': http_protocol_error_text,
     'httpx.LocalProtocolError': http_protocol_error_text,
     'httpx.ProtocolError': http_protocol_error_text,
     'httpx.ReadError': network_error_text,
     'httpx.WriteError': network_error_text,
-    'httpx.ProxyError': gettext("proxy error"),
+    'python_socks._errors.ProxyConnectionError': gettext("proxy error"),
     'searx.exceptions.SearxEngineCaptchaException': gettext("CAPTCHA"),
     'searx.exceptions.SearxEngineTooManyRequestsException': gettext("too many requests"),
     'searx.exceptions.SearxEngineAccessDeniedException': gettext("access denied"),
@@ -1110,7 +1110,7 @@ def image_proxy():
             return '', 400
 
         forward_resp = True
-    except httpx.HTTPError:
+    except aiohttp.ClientError:
         logger.exception('HTTP error')
         return '', 400
     finally:
@@ -1119,7 +1119,7 @@ def image_proxy():
             # we make sure to close the response between searxng and the HTTP server
             try:
                 resp.close()
-            except httpx.HTTPError:
+            except aiohttp.ClientError:
                 logger.exception('HTTP error on closing')
 
     try:
@@ -1137,7 +1137,7 @@ def image_proxy():
                 yield chunk
 
         return Response(forward_chunk(), mimetype=resp.headers['Content-Type'], headers=headers)
-    except httpx.HTTPError:
+    except aiohttp.ClientError:
         return '', 400
 
 

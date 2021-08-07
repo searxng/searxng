@@ -7,7 +7,8 @@
 
 from timeit import default_timer
 import asyncio
-import httpx
+import aiohttp
+import python_socks
 
 import searx.network
 from searx import logger
@@ -143,7 +144,7 @@ class OnlineProcessor(EngineProcessor):
             # send requests and parse the results
             search_results = self._search_basic(query, params)
             self.extend_container(result_container, start_time, search_results)
-        except (httpx.TimeoutException, asyncio.TimeoutError) as e:
+        except (asyncio.TimeoutError, python_socks.ProxyTimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             logger.error("engine {0} : HTTP requests timeout"
@@ -151,7 +152,7 @@ class OnlineProcessor(EngineProcessor):
                          .format(self.engine_name, default_timer() - start_time,
                                  timeout_limit,
                                  e.__class__.__name__))
-        except (httpx.HTTPError, httpx.StreamError) as e:
+        except (aiohttp.ClientError, python_socks.ProxyError, python_socks.ProxyConnectionError) as e:
             # other requests exception
             self.handle_exception(result_container, e, suspend=True)
             logger.exception("engine {0} : requests exception"

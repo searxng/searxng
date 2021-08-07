@@ -1,18 +1,24 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 # pylint: disable=global-statement
-# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
+# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring, fixme
 
+import typing
 import atexit
 import asyncio
 import ipaddress
 from itertools import cycle
+from logging import getLogger
 
-import httpx
+import aiohttp
+from yarl import URL
 
 from .client import new_client, get_loop
+from .response import Response
+from .utils import URLPattern
 
 
+logger = getLogger(__name__)
 DEFAULT_NAME = '__DEFAULT__'
 NETWORKS = {}
 # requests compatibility when reading proxy settings from settings.yml
@@ -72,7 +78,7 @@ class Network:
         self.max_redirects = max_redirects
         self._local_addresses_cycle = self.get_ipaddress_cycle()
         self._proxies_cycle = self.get_proxy_cycles()
-        self._clients = {}
+        self._clients: typing.Dict[aiohttp.ClientSession] = {}
         self.check_parameters()
 
     def check_parameters(self):
@@ -123,39 +129,44 @@ class Network:
                 yield pattern, proxy_url
 
     def get_proxy_cycles(self):
+        # TODO : store proxy_settings, and match URLPattern
         proxy_settings = {}
         for pattern, proxy_urls in self.iter_proxies():
-            proxy_settings[pattern] = cycle(proxy_urls)
+            proxy_settings[URLPattern(pattern)] = cycle(proxy_urls)
         while True:
             # pylint: disable=stop-iteration-return
-            yield tuple((pattern, next(proxy_url_cycle)) for pattern, proxy_url_cycle in proxy_settings.items())
+            yield tuple((urlpattern, next(proxy_url_cycle)) for urlpattern, proxy_url_cycle in proxy_settings.items())
 
-    def get_client(self, verify=None, max_redirects=None):
+    def get_proxy(self, url: URL):
+        proxies = next(self._proxies_cycle)
+        for urlpattern, proxy in proxies:
+            if urlpattern.matches(url):
+                return proxy
+        return None
+
+    def get_client(self, url: URL, verify=None) -> aiohttp.ClientSession:
         verify = self.verify if verify is None else verify
-        max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
-        proxies = next(self._proxies_cycle)  # is a tuple so it can be part of the key
-        key = (verify, max_redirects, local_address, proxies)
-        if key not in self._clients or self._clients[key].is_closed:
+        proxy = self.get_proxy(url)  # is a tuple so it can be part of the key
+        key = (verify, local_address, proxy)
+        if key not in self._clients or self._clients[key].closed:
+            # TODO add parameter self.enable_http
             self._clients[key] = new_client(
                 self.enable_http,
                 verify,
-                self.enable_http2,
                 self.max_connections,
                 self.max_keepalive_connections,
                 self.keepalive_expiry,
-                dict(proxies),
+                proxy,
                 local_address,
-                0,
-                max_redirects
             )
         return self._clients[key]
 
     async def aclose(self):
-        async def close_client(client):
+        async def close_client(client: aiohttp.ClientSession):
             try:
-                await client.aclose()
-            except httpx.HTTPError:
+                await client.close()
+            except aiohttp.ClientError:
                 pass
         await asyncio.gather(*[close_client(client) for client in self._clients.values()], return_exceptions=False)
 
@@ -164,11 +175,9 @@ class Network:
         kwargs_clients = {}
         if 'verify' in kwargs:
             kwargs_clients['verify'] = kwargs.pop('verify')
-        if 'max_redirects' in kwargs:
-            kwargs_clients['max_redirects'] = kwargs.pop('max_redirects')
         return kwargs_clients
 
-    def is_valid_respones(self, response):
+    def is_valid_response(self, response):
         # pylint: disable=too-many-boolean-expressions
         if ((self.retry_on_http_error is True and 400 <= response.status_code <= 599)
             or (isinstance(self.retry_on_http_error, list) and response.status_code in self.retry_on_http_error)
@@ -177,33 +186,24 @@ class Network:
             return False
         return True
 
-    async def request(self, method, url, **kwargs):
+    async def request(self, method, url, stream=False, **kwargs) -> Response:
         retries = self.retries
+        yarl_url = URL(url)
         while retries >= 0:  # pragma: no cover
             kwargs_clients = Network.get_kwargs_clients(kwargs)
-            client = self.get_client(**kwargs_clients)
+            client = self.get_client(yarl_url, **kwargs_clients)
+            kwargs.setdefault('max_redirects', self.max_redirects)
             try:
-                response = await client.request(method, url, **kwargs)
-                if self.is_valid_respones(response) or retries <= 0:
-                    return response
-            except (httpx.RequestError, httpx.HTTPStatusError) as e:
+                aiohttp_response: aiohttp.ClientResponse = await client.request(method, yarl_url, **kwargs)
+                logger.debug('HTTP request "%s %s" %r', method.upper(), url, aiohttp_response.status)
+                response = await Response.new_response(aiohttp_response, stream=stream)
+                if self.is_valid_response(response) or retries <= 0:
+                    break
+            except aiohttp.ClientError as e:
                 if retries <= 0:
                     raise e
             retries -= 1
-
-    def stream(self, method, url, **kwargs):
-        retries = self.retries
-        while retries >= 0:  # pragma: no cover
-            kwargs_clients = Network.get_kwargs_clients(kwargs)
-            client = self.get_client(**kwargs_clients)
-            try:
-                response = client.stream(method, url, **kwargs)
-                if self.is_valid_respones(response) or retries <= 0:
-                    return response
-            except (httpx.RequestError, httpx.HTTPStatusError) as e:
-                if retries <= 0:
-                    raise e
-            retries -= 1
+        return response
 
     @classmethod
     async def aclose_all(cls):
