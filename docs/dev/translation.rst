@@ -5,45 +5,76 @@ Translation
 ===========
 
 .. _weblate.bubu1.eu: https://weblate.bubu1.eu/projects/searxng/
+.. _Weblate: https://docs.weblate.org
+.. _translations branch: https://github.com/searxng/searxng/tree/translations
+.. _orphan branch: https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---orphanltnewbranchgt
+.. _Weblate repository: https://weblate.bubu1.eu/projects/searxng/searxng/#repository
+.. _wlc: https://docs.weblate.org/en/latest/wlc.html
 
-Translation takes place on `weblate.bubu1.eu`_ ( `documentation <https://docs.weblate.org/en/latest/index.html>`_ ).
-
-New messages on the master branch are extracted and pushed to Weblate automatically.
-
-Every Friday, a GitHub workflow creates a pull request with the updated translations (messages.mo, messages.po, messages.mo files).
-
-.. image:: https://weblate.bubu1.eu/widgets/searxng/-/searxng/svg-badge.svg
+.. |translated| image:: https://weblate.bubu1.eu/widgets/searxng/-/searxng/svg-badge.svg
    :target: https://weblate.bubu1.eu/projects/searxng/
 
-Weblate integration
-===================
+.. sidebar:: |translated|
 
-Weblate monitors the `translations branch <https://github.com/searxng/searxng/tree/translations>`_, not the master branch.
+   - Weblate_
+   - SearXNG `translations branch`_
+   - SearXNG `Weblate repository`_
+   - Weblate Client: wlc_
+   - Babel Command-Line: `pybabel <http://babel.pocoo.org/en/latest/cmdline.html>`_
+   - `weblate workflow <https://docs.weblate.org/en/latest/workflows.html>`_
 
-This branch contains only the .pot and pot files, nothing else.
+Translation takes place on weblate.bubu1.eu_.
 
-Documentation
--------------
+Translations which has been added by translators on the weblate.bubu1.eu_ UI are
+committed to Weblate's counterpart of the SearXNG *origin* repository which is
+located at ``https://weblate.bubu1.eu/git/searxng/searxng``.
 
-* `wlc <https://docs.weblate.org/en/latest/wlc.html>`_
-* `pybabel <http://babel.pocoo.org/en/latest/cmdline.html>`_
-* `weblate workflow <https://docs.weblate.org/en/latest/workflows.html>`_
+There is no need to clone this repository, :ref:`SearXNG Weblate workflow` take
+care of the synchronization with the *origin*.  To avoid merging commits from
+the counterpart directly on the ``master`` branch of *SearXNG origin*, a *pull
+request* (PR) is created by this workflow.
 
-Worfklow
---------
+Weblate monitors the `translations branch`_, not the ``master`` branch.  This
+branch is an `orphan branch`_, decoupled from the master branch (we already know
+orphan branches from the ``gh-pages``).  The `translations branch`_ contains
+only the
 
-.. image:: translation.svg
+- ``translation/messages.pot`` and the
+- ``translation/*/messages.po`` files, nothing else.
 
+
+.. _SearXNG Weblate workflow:
+
+.. figure:: translation.svg
+
+   SearXNG's PR workflow to be in sync with Weblate
+
+Sync from *origin* to *weblate*: ``make babel.master.to.translations``
+  For each commit on the ``master`` branch of SearXNG *origin* the GitHub job
+  :origin:`babel / Update translations branch
+  <.github/workflows/integration.yml>` checks for updated translations.
+
+Sync from *weblate* to *origin*: ``make babel.translations.to.master``
+  Every Friday, the GitHub workflow :origin:`babel / translations: update master
+  branch <.github/workflows/translations-update.yml>` creates a PR with the
+  updated translation files:
+
+  - ``translation/messages.pot``,
+  - ``translation/*/messages.po`` and
+  - ``translation/*/messages.mo``
 
 wlc
----
+===
 
-All weblate integration is done by GitHub workflows, but if you want to use wlc, copy this content into `~/.config/weblate <https://docs.weblate.org/en/latest/wlc.html#wlc-config>`_ :
+.. _wlc configuration: https://docs.weblate.org/en/latest/wlc.html#wlc-config
+.. _API key: https://weblate.bubu1.eu/accounts/profile/#api
+
+All weblate integration is done by GitHub workflows, but if you want to use wlc_,
+copy this content into `wlc configuration`_ in your HOME ``~/.config/weblate``
 
 .. code-block:: ini
 
   [keys]
   https://weblate.bubu1.eu/api/ = APIKEY
 
-
-Replace `APIKEY` by `your API key <https://weblate.bubu1.eu/accounts/profile/#api>`_.
+Replace ``APIKEY`` by your `API key`_.
