@@ -55,8 +55,8 @@ Sync from *origin* to *weblate*: ``make babel.master.to.translations``
   <.github/workflows/integration.yml>` checks for updated translations.
 
 Sync from *weblate* to *origin*: ``make babel.translations.to.master``
-  Every Friday, the GitHub workflow :origin:`babel / translations: update master
-  branch <.github/workflows/translations-update.yml>` creates a PR with the
+  Every Friday, the GitHub workflow :origin:`babel / create PR for additons from
+  weblate <.github/workflows/translations-update.yml>` creates a PR with the
   updated translation files:
 
   - ``translation/messages.pot``,

@@ -6,7 +6,7 @@ on:
 
 jobs:
   babel:
-    name: "translations: update master branch"
+    name: "create PR for additons from weblate"
     runs-on: ubuntu-20.04
     if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
     steps:
