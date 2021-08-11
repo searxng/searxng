@@ -11,6 +11,7 @@ from itertools import cycle
 import httpx
 
 from .client import new_client, get_loop
+from searx import logger
 
 
 DEFAULT_NAME = '__DEFAULT__'
@@ -307,6 +308,8 @@ def done():
             future = asyncio.run_coroutine_threadsafe(Network.aclose_all(), loop)
             # wait 3 seconds to close the HTTP clients
             future.result(3)
+    except:
+        logger.exception('Exception while closing clients')
     finally:
         NETWORKS.clear()
 

@@ -17,11 +17,13 @@ if settings is not None:
     settings = settings_set_defaults(settings)
 
 searx_debug = settings['general']['debug']
+logging.basicConfig()
 if searx_debug:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.root.setLevel(logging.DEBUG)
+    for logger_name in ('hpack.hpack', 'hpack.table', 'multipart.multipart'):
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
 else:
-    logging.basicConfig(level=logging.WARNING)
-
+    logging.root.setLevel(logging.WARNING)
 logger = logging.getLogger('searx')
 logger.info(settings_load_message)
 

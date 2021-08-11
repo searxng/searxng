@@ -226,18 +226,16 @@ def new_client(
 
 def get_loop():
     global LOOP
-    return LOOP
+    if LOOP:
+        return LOOP
 
+    loop_ready = threading.Lock()
+    loop_ready.acquire()
 
-def init():
-    # log
-    for logger_name in ('hpack.hpack', 'hpack.table'):
-        logging.getLogger(logger_name).setLevel(logging.WARNING)
-
-    # loop
     def loop_thread():
         global LOOP
         LOOP = asyncio.new_event_loop()
+        loop_ready.release()
         LOOP.run_forever()
 
     thread = threading.Thread(
@@ -246,6 +244,5 @@ def init():
         daemon=True,
     )
     thread.start()
-
-
-init()
+    loop_ready.acquire()
+    return LOOP
