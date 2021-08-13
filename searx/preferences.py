@@ -437,7 +437,7 @@ class Preferences:
         return urlsafe_b64encode(compress(urlencode(settings_kv).encode())).decode()
 
     def parse_encoded_data(self, input_data):
-        """parse (base64) preferences from request (``flask.request.form['preferences']``)"""
+        """parse (base64) preferences from request (``context.form['preferences']``)"""
         bin_data = decompress(urlsafe_b64decode(input_data))
         dict_data = {}
         for x, y in parse_qs(bin_data.decode('ascii')).items():
@@ -445,7 +445,7 @@ class Preferences:
         self.parse_dict(dict_data)
 
     def parse_dict(self, input_data):
-        """parse preferences from request (``flask.request.form``)"""
+        """parse preferences from request (``context.form``)"""
         for user_setting_name, user_setting in input_data.items():
             if user_setting_name in self.key_value_settings:
                 if self.key_value_settings[user_setting_name].locked:
@@ -468,7 +468,7 @@ class Preferences:
                 self.unknown_params[user_setting_name] = user_setting
 
     def parse_form(self, input_data):
-        """Parse formular (``<input>``) data from a ``flask.request.form``"""
+        """Parse formular (``<input>``) data from a ``context.form``"""
         disabled_engines = []
         enabled_categories = []
         disabled_plugins = []

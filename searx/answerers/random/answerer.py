@@ -2,7 +2,7 @@ import hashlib
 import random
 import string
 import uuid
-from flask_babel import gettext
+from searx.i18n import gettext
 
 # required answerer attribute
 # specifies which search query keywords triggers this answerer

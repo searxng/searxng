@@ -10,7 +10,7 @@ from json import loads
 from urllib.parse import urlencode
 from functools import partial
 
-from flask_babel import gettext
+from searx.i18n import gettext
 
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
 from searx.utils import searx_useragent

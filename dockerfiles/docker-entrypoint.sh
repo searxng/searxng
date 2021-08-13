@@ -146,4 +146,5 @@ unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec su-exec searx:searx uwsgi --master --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+export SEARX_BIND_ADDRESS="${BIND_ADDRESS}"
+exec su-exec searx:searx python3 -m searx.webapp

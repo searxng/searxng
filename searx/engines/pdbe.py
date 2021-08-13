@@ -4,7 +4,7 @@
 """
 
 from json import loads
-from flask_babel import gettext
+from searx.i18n import gettext
 
 # about
 about = {

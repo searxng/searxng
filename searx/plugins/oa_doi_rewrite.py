@@ -1,8 +1,8 @@
 from urllib.parse import urlparse, parse_qsl
-from flask_babel import gettext
 import re
-from searx import settings
 
+from searx import settings
+from searx.i18n import gettext
 
 regex = re.compile(r'10\.\d{4,9}/[^\s]+')
 

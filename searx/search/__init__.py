@@ -3,9 +3,9 @@
 # pylint: disable=missing-module-docstring, missing-function-docstring
 
 import typing
-import threading
-from timeit import default_timer
+import asyncio
 from uuid import uuid4
+from timeit import default_timer
 
 from searx import settings
 from searx.answerers import ask
@@ -19,6 +19,7 @@ from searx.network import initialize as initialize_network
 from searx.metrics import initialize as initialize_metrics, counter_inc, histogram_observe_time
 from searx.search.processors import PROCESSORS, initialize as initialize_processors
 from searx.search.checker import initialize as initialize_checker
+from searx.search.threadnopoolexecutor import ThreadNoPoolExecutor
 
 
 logger = logger.getChild('search')
@@ -126,30 +127,33 @@ class Search:
 
         return requests, actual_timeout
 
-    def search_multiple_requests(self, requests):
+    async def search_multiple_requests(self, requests):
         # pylint: disable=protected-access
-        search_id = uuid4().__str__()
+        futures = []
+        loop = asyncio.get_running_loop()
+        executor = ThreadNoPoolExecutor(thread_name_prefix=str(uuid4()))
 
         for engine_name, query, request_params in requests:
-            th = threading.Thread(  # pylint: disable=invalid-name
-                target=PROCESSORS[engine_name].search,
-                args=(query, request_params, self.result_container, self.start_time, self.actual_timeout),
-                name=search_id,
+            future = loop.run_in_executor(
+                executor,
+                PROCESSORS[engine_name].search,
+                query,
+                request_params,
+                self.result_container,
+                self.start_time,
+                self.actual_timeout,
             )
-            th._timeout = False
-            th._engine_name = engine_name
-            th.start()
+            future._engine_name = engine_name
+            futures.append(future)
 
-        for th in threading.enumerate():  # pylint: disable=invalid-name
-            if th.name == search_id:
-                remaining_time = max(0.0, self.actual_timeout - (default_timer() - self.start_time))
-                th.join(remaining_time)
-                if th.is_alive():
-                    th._timeout = True
-                    self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')
-                    logger.warning('engine timeout: {0}'.format(th._engine_name))
+        remaining_time = max(0.0, self.actual_timeout - (default_timer() - self.start_time))
+        _, pending = await asyncio.wait(futures, return_when=asyncio.ALL_COMPLETED, timeout=remaining_time)
+        for future in pending:
+            # th._timeout = True
+            self.result_container.add_unresponsive_engine(future._engine_name, 'timeout')
+            logger.warning('engine timeout: {0}'.format(future._engine_name))
 
-    def search_standard(self):
+    async def search_standard(self):
         """
         Update self.result_container, self.actual_timeout
         """
@@ -157,17 +161,17 @@ class Search:
 
         # send all search-request
         if requests:
-            self.search_multiple_requests(requests)
+            await self.search_multiple_requests(requests)
 
         # return results, suggestions, answers and infoboxes
         return True
 
     # do search-request
-    def search(self):
+    async def search(self):
         self.start_time = default_timer()
         if not self.search_external_bang():
             if not self.search_answerers():
-                self.search_standard()
+                await self.search_standard()
         return self.result_container
 
 
@@ -181,9 +185,9 @@ class SearchWithPlugins(Search):
         self.ordered_plugin_list = ordered_plugin_list
         self.request = request
 
-    def search(self):
+    async def search(self):
         if plugins.call(self.ordered_plugin_list, 'pre_search', self.request, self):
-            super().search()
+            await super().search()
 
         plugins.call(self.ordered_plugin_list, 'post_search', self.request, self)
 

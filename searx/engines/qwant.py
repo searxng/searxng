@@ -29,8 +29,8 @@ from datetime import (
 )
 from json import loads
 from urllib.parse import urlencode
-from flask_babel import gettext
 
+from searx.i18n import gettext
 from searx.utils import match_language
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror

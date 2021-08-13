@@ -16,7 +16,7 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 (C) 2018, 2020 by Vaclav Zouzalik
 '''
 
-from flask_babel import gettext
+from searx.i18n import gettext
 import hashlib
 import re
 

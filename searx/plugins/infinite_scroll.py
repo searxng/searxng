@@ -1,4 +1,4 @@
-from flask_babel import gettext
+from searx.i18n import gettext
 
 name = gettext('Infinite scroll')
 description = gettext('Automatically load next page when scrolling to bottom of current page')

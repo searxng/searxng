@@ -3,10 +3,10 @@
  PubMed (Scholar publications)
 """
 
-from flask_babel import gettext
 from lxml import etree
 from datetime import datetime
 from urllib.parse import urlencode
+from searx.i18n import gettext
 from searx.network import get
 
 # about

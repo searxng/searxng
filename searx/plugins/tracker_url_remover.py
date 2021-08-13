@@ -14,10 +14,10 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 
 (C) 2015 by Adam Tauber, <asciimoo@gmail.com>
 '''
-
-from flask_babel import gettext
 import re
 from urllib.parse import urlunparse, parse_qsl, urlencode
+
+from searx.i18n import gettext
 
 regexes = {re.compile(r'utm_[^&]+'),
            re.compile(r'(wkey|wemail)[^&]*'),
