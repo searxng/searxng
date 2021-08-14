@@ -108,7 +108,7 @@ from searx.autocomplete import search_autocomplete, backends as autocomplete_bac
 from searx.languages import language_codes as languages
 from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
 from searx.search import SearchWithPlugins, initialize as search_initialize
-from searx.network import stream as http_stream
+from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
 from searx.settings_loader import get_default_settings_path
 
@@ -1086,13 +1086,11 @@ def image_proxy():
             'Sec-GPC': '1',
             'DNT': '1',
         }
+        set_context_network_name('image_proxy')
         stream = http_stream(
             method = 'GET',
             url = url,
-            headers = request_headers,
-            timeout = settings['outgoing']['request_timeout'],
-            allow_redirects = True,
-            max_redirects = 20
+            headers = request_headers
         )
         resp = next(stream)
         content_length = resp.headers.get('Content-Length')
