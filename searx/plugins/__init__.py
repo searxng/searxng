@@ -40,7 +40,8 @@ required_attrs = (('name', str),
                   ('default_on', bool))
 
 optional_attrs = (('js_dependencies', tuple),
-                  ('css_dependencies', tuple))
+                  ('css_dependencies', tuple),
+                  ('preference_section', str))
 
 
 class Plugin():
@@ -63,8 +64,16 @@ class PluginStore():
             plugins = load_external_plugins(plugins)
         for plugin in plugins:
             for plugin_attr, plugin_attr_type in required_attrs:
-                if not hasattr(plugin, plugin_attr) or not isinstance(getattr(plugin, plugin_attr), plugin_attr_type):
+                if not hasattr(plugin, plugin_attr):
                     logger.critical('missing attribute "{0}", cannot load plugin: {1}'.format(plugin_attr, plugin))
+                    exit(3)
+                attr = getattr(plugin, plugin_attr)
+                if not isinstance(attr, plugin_attr_type):
+                    type_attr = str(type(attr))
+                    logger.critical(
+                        'attribute "{0}" is of type {2}, must be of type {3}, cannot load plugin: {1}'
+                        .format(plugin_attr, plugin, type_attr, plugin_attr_type)
+                    )
                     exit(3)
             for plugin_attr, plugin_attr_type in optional_attrs:
                 if not hasattr(plugin, plugin_attr) or not isinstance(getattr(plugin, plugin_attr), plugin_attr_type):
