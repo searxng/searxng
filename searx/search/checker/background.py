@@ -36,10 +36,11 @@ def _get_every():
     return _get_interval(every, 'checker.scheduling.every is not a int or list')
 
 
-def get_result():  # pylint: disable=inconsistent-return-statements
+def get_result():
     serialized_result = storage.get_str(CHECKER_RESULT)
     if serialized_result is not None:
         return json.loads(serialized_result)
+    return {'status': 'unknown'}
 
 
 def _set_result(result, include_timestamp=True):
