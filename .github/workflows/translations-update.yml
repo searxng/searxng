@@ -36,7 +36,7 @@ jobs:
         git config --global user.name "searxng-bot"
     - name: Merge and push transation updates
       run: |
-        make V=1 babel.translations.to.master
+        make V=1 weblate.translations.commit
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@v3

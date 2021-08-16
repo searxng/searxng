@@ -123,7 +123,8 @@ buildenv() {
 
 TRANSLATIONS_WORKTREE="$CACHE/translations"
 
-babel.setup.translations.worktree() {
+weblate.translations.worktree() {
+
     # Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
     # 'translations' from Weblate's counterpart (weblate) of the SearXNG
     # (origin).
@@ -147,7 +148,8 @@ babel.setup.translations.worktree() {
     )
 }
 
-babel.weblate.to.translations() {
+weblate.to.translations() {
+
     # Update 'translations' branch of SearXNG (origin) with last additions from
     # Weblate.
 
@@ -168,7 +170,8 @@ babel.weblate.to.translations() {
         pyenv.cmd wlc commit
 
         # get the translations in a worktree
-        babel.setup.translations.worktree
+        weblate.translations.worktree
+
         pushd "${TRANSLATIONS_WORKTREE}"
         git remote update weblate
         git merge weblate/translations
@@ -178,7 +181,8 @@ babel.weblate.to.translations() {
     dump_return $?
 }
 
-babel.translations.to.master() {
+weblate.translations.commit() {
+
     # Update 'translations' branch of SearXNG (origin) with last additions from
     # Weblate.  Copy the changes to the master branch, compile translations and
     # create a commit in the local branch (master)
@@ -187,12 +191,17 @@ babel.translations.to.master() {
     (   set -e
         # lock change on weblate
         pyenv.cmd wlc lock
-        babel.setup.translations.worktree
+
+        # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
+        weblate.translations.worktree
         existing_commit_hash=$(cd "${TRANSLATIONS_WORKTREE}"; git log -n1  --pretty=format:'%h')
+
         # pull weblate commits
-        babel.weblate.to.translations
+        weblate.to.translations
+
         # copy the changes to the master branch
         cp -rv --preserve=mode,timestamps "${TRANSLATIONS_WORKTREE}/searx/translations" "searx"
+
         # compile translations
         build_msg BABEL 'compile translation catalogs into binary MO files'
         pyenv.cmd pybabel compile --statistics \
@@ -211,7 +220,7 @@ babel.translations.to.master() {
     dump_return $exitcode
 }
 
-babel.master.to.translations() {
+weblate.push.translations() {
 
     # Push *translation changes* from SearXNG (origin) to Weblate's counterpart
     # (weblate).
@@ -235,7 +244,7 @@ babel.master.to.translations() {
         pyenv.cmd wlc lock
 
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
-        babel.setup.translations.worktree
+        weblate.translations.worktree
 
         # update messages.pot in the master branch
         build_msg BABEL 'extract messages from source files and generate POT file'
@@ -258,7 +267,7 @@ babel.master.to.translations() {
         popd
 
         # merge weblate commits into the translations branch
-        babel.weblate.to.translations
+        weblate.to.translations
 
         # restore messages.pot in the translations branch
         pushd "${TRANSLATIONS_WORKTREE}"

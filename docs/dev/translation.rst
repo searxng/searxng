@@ -49,12 +49,12 @@ only the
 
    SearXNG's PR workflow to be in sync with Weblate
 
-Sync from *origin* to *weblate*: ``make babel.master.to.translations``
+Sync from *origin* to *weblate*: using ``make weblate.push.translations``
   For each commit on the ``master`` branch of SearXNG *origin* the GitHub job
   :origin:`babel / Update translations branch
   <.github/workflows/integration.yml>` checks for updated translations.
 
-Sync from *weblate* to *origin*: ``make babel.translations.to.master``
+Sync from *weblate* to *origin*: using ``make weblate.translations.commit``
   Every Friday, the GitHub workflow :origin:`babel / create PR for additons from
   weblate <.github/workflows/translations-update.yml>` creates a PR with the
   updated translation files:

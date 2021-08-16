@@ -127,7 +127,7 @@ jobs:
       id: update
       run: |
         git restore utils/brand.env
-        make V=1 babel.master.to.translations
+        make V=1 weblate.push.translations
 
   dockers:
     name: Docker
