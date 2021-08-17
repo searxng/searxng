@@ -220,6 +220,24 @@ class ViewsTestCase(SearxTestCase):
             'Search language ignored browser preference.'
         )
 
+    def test_brower_empty_locale(self):
+        result = self.app.get('/preferences', headers={'Accept-Language': ''})
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(
+            b'<option value="en" selected="selected">',
+            result.data,
+            'Interface locale ignored browser preference.'
+        )
+
+    def test_locale_occitan(self):
+        result = self.app.get('/preferences?locale=oc')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(
+            b'<option value="oc" selected="selected">',
+            result.data,
+            'Interface locale ignored browser preference.'
+        )
+
     def test_stats(self):
         result = self.app.get('/stats')
         self.assertEqual(result.status_code, 200)

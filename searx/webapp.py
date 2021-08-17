@@ -223,21 +223,28 @@ exception_classname_to_text = {
     'lxml.etree.ParserError': parsing_error_text,
 }
 
-_flask_babel_get_translations = flask_babel.get_translations
-
 
 # monkey patch for flask_babel.get_translations
+_flask_babel_get_translations = flask_babel.get_translations
 def _get_translations():
     if has_request_context() and request.form.get('use-translation') == 'oc':
         babel_ext = flask_babel.current_app.extensions['babel']
         return Translations.load(next(babel_ext.translation_directories), 'oc')
     return _flask_babel_get_translations()
-
-
 flask_babel.get_translations = _get_translations
 
 
-def _get_browser_or_settings_language(req, lang_list):
+@babel.localeselector
+def get_locale():
+    locale = request.preferences.get_value('locale') if has_request_context() else 'en'
+    if locale == 'oc':
+        request.form['use-translation'] = 'oc'
+        locale = 'fr_FR'
+    logger.debug("%s uses locale `%s`", urllib.parse.quote(request.url), locale)
+    return locale
+
+
+def _get_browser_language(req, lang_list):
     for lang in req.headers.get("Accept-Language", "en").split(","):
         if ';' in lang:
             lang = lang.split(';')[0]
@@ -247,37 +254,7 @@ def _get_browser_or_settings_language(req, lang_list):
         locale = match_language(lang, lang_list, fallback=None)
         if locale is not None:
             return locale
-    return settings['search']['default_lang'] or 'en'
-
-
-@babel.localeselector
-def get_locale():
-    if 'locale' in request.form\
-       and request.form['locale'] in LOCALE_NAMES:
-        # use locale from the form
-        locale = request.form['locale']
-        locale_source = 'form'
-    elif request.preferences.get_value('locale') != '':
-        # use locale from the preferences
-        locale = request.preferences.get_value('locale')
-        locale_source = 'preferences'
-    else:
-        # use local from the browser
-        locale = _get_browser_or_settings_language(request, UI_LOCALE_CODES)
-        locale = locale.replace('-', '_')
-        locale_source = 'browser'
-
-    # see _get_translations function
-    # and https://github.com/searx/searx/pull/1863
-    if locale == 'oc':
-        request.form['use-translation'] = 'oc'
-        locale = 'fr_FR'
-
-    logger.debug(
-        "%s uses locale `%s` from %s", urllib.parse.quote(request.url), locale, locale_source
-    )
-
-    return locale
+    return 'en'
 
 
 # code-highlighter
@@ -541,11 +518,18 @@ def pre_request():
             logger.exception(e, exc_info=True)
             request.errors.append(gettext('Invalid settings'))
 
-    # init search language and locale
+    # language is defined neither in settings nor in preferences
+    # use browser headers
     if not preferences.get_value("language"):
-        preferences.parse_dict({"language": _get_browser_or_settings_language(request, LANGUAGE_CODES)})
+        language =  _get_browser_language(request, LANGUAGE_CODES)
+        preferences.parse_dict({"language": language})
+
+    # locale is defined neither in settings nor in preferences
+    # use browser headers
     if not preferences.get_value("locale"):
-        preferences.parse_dict({"locale": get_locale()})
+        locale = _get_browser_language(request, UI_LOCALE_CODES)
+        locale = locale.replace('-', '_')
+        preferences.parse_dict({"locale": locale})
 
     # request.user_plugins
     request.user_plugins = []  # pylint: disable=assigning-non-slot
