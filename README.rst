@@ -6,6 +6,7 @@
 |AGPL License|
 |Issues|
 |commits|
+|weblate|
 
 Privacy-respecting, hackable `metasearch engine`_
 
