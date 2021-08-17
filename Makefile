@@ -77,7 +77,7 @@ test.shell:
 # wrap ./manage script
 
 MANAGE += buildenv
-MANAGE += ci.babel.update babel.extract babel.update babel.compile
+MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.languages data.useragents data.osm_keys_tags
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
 MANAGE += docker.build docker.push docker.buildx

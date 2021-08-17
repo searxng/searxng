@@ -45,9 +45,8 @@ help() {
 buildenv:
   rebuild ./utils/brand.env
 babel.:
-  extract   : extract messages from source files and generate POT file
-  update    : update existing message catalogs from POT file
-  compile   : compile translation catalogs into binary MO files
+  master.to.translations: update the translations branch from the messages of the master branch.
+  translations.to.master: copy change from the translations branch to the master branch.
 data.:
   all       : update searx/languages.py and ./data/*
   languages : update searx/data/engines_languages.json & searx/languages.py
@@ -122,46 +121,185 @@ buildenv() {
     return "${PIPESTATUS[0]}"
 }
 
-babel.sha256sum() {
-    grep "msgid" "searx/translations/messages.pot" | sort | sha256sum | cut -f1 -d ' '
+TRANSLATIONS_WORKTREE="$CACHE/translations"
+
+weblate.translations.worktree() {
+
+    # Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
+    # 'translations' from Weblate's counterpart (weblate) of the SearXNG
+    # (origin).
+    #
+    #     remote weblate https://weblate.bubu1.eu/git/searxng/searxng/
+
+    (   set -e
+        if ! git remote get-url weblate 2> /dev/null; then
+            git remote add weblate https://weblate.bubu1.eu/git/searxng/searxng/
+        fi
+        if [ -d "${TRANSLATIONS_WORKTREE}" ]; then
+            pushd .
+            cd "${TRANSLATIONS_WORKTREE}"
+            git reset --hard HEAD
+            git pull origin translations
+            popd
+        else
+            mkdir -p "${TRANSLATIONS_WORKTREE}"
+            git worktree add "${TRANSLATIONS_WORKTREE}" translations
+        fi
+    )
 }
 
-ci.babel.update() {
-    local sha_before
+weblate.to.translations() {
+
+    # Update 'translations' branch of SearXNG (origin) with last additions from
+    # Weblate.
+
+    # 1. Check if Weblate is locked, if not die with error message
+    # 2. On Weblate's counterpart (weblate), pull master and translations branch
+    #    from SearXNG (origin).
+    # 3. Commit changes made in a Weblate object on Weblate's counterpart
+    #    (weblate).
+    # 4. In translations worktree, merge changes of branch 'translations' from
+    #    remote 'weblate' and push it on branch 'translations' of 'origin'
+
     (   set -e
-        sha_before="$(babel.sha256sum)"
-        babel.extract
-        if [ "$(babel.sha256sum)" = "${sha_before}" ]; then
-            build_msg BABEL 'no changes detected, exiting'
-            return 1
+        if [ "$(pyenv.cmd wlc lock-status)" != "locked: True" ]; then
+            die 1 "weblate must be locked, currently: $(pyenv.cmd wlc lock-status)"
         fi
-        babel.update
-        build_msg BABEL 'update done, edit .po files if required and run babel.compile'
+        # weblate: commit pending changes
+        pyenv.cmd wlc pull
+        pyenv.cmd wlc commit
+
+        # get the translations in a worktree
+        weblate.translations.worktree
+
+        pushd "${TRANSLATIONS_WORKTREE}"
+        git remote update weblate
+        git merge weblate/translations
+        git push
+        popd
     )
     dump_return $?
 }
 
-babel.extract() {
-    build_msg BABEL 'extract messages from source files and generate POT file'
-    pyenv.cmd pybabel extract -F babel.cfg \
-            -o "searx/translations/messages.pot" \
-            "searx/"
-    dump_return $?
+weblate.translations.commit() {
+
+    # Update 'translations' branch of SearXNG (origin) with last additions from
+    # Weblate.  Copy the changes to the master branch, compile translations and
+    # create a commit in the local branch (master)
+
+    local existing_commit_hash commit_body commit_message exitcode
+    (   set -e
+        # lock change on weblate
+        pyenv.cmd wlc lock
+
+        # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
+        weblate.translations.worktree
+        existing_commit_hash=$(cd "${TRANSLATIONS_WORKTREE}"; git log -n1  --pretty=format:'%h')
+
+        # pull weblate commits
+        weblate.to.translations
+
+        # copy the changes to the master branch
+        cp -rv --preserve=mode,timestamps "${TRANSLATIONS_WORKTREE}/searx/translations" "searx"
+
+        # compile translations
+        build_msg BABEL 'compile translation catalogs into binary MO files'
+        pyenv.cmd pybabel compile --statistics \
+                -d "searx/translations"
+        # git add/commit (no push)
+        commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
+        commit_message=$(echo -e "[translations] update\n${commit_body}")
+        git add searx/translations
+        git commit -m "${commit_message}"
+    )
+    exitcode=$?
+    (   # make sure to always unlock weblate
+        set -e
+        pyenv.cmd wlc unlock
+    )
+    dump_return $exitcode
 }
 
-babel.update() {
-    build_msg BABEL 'update existing message catalogs from POT file'
-    pyenv.cmd pybabel update -N \
-              -i "searx/translations/messages.pot" \
-              -d "searx/translations"
-    dump_return $?
-}
+weblate.push.translations() {
 
-babel.compile() {
-    build_msg BABEL 'compile translation catalogs into binary MO files'
-    pyenv.cmd pybabel compile --statistics \
-              -d "searx/translations"
-    dump_return $?
+    # Push *translation changes* from SearXNG (origin) to Weblate's counterpart
+    # (weblate).
+
+    # In branch master of SearXNG (origin) check for meaningful changes in
+    # folder 'searx/translations', commit changes on branch 'translations' and
+    # at least, pull updated branches on Weblate's counterpart (weblate).
+
+    # 1. Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
+    #    'translations' from remote 'weblate'.
+    # 2. Stop if there is no meaningful change in the 'master' branch (origin),
+    #    compared to the 'translations' branch (weblate), otherwise ...
+    # 3. Update 'translations' branch of SearXNG (origin) with last additions
+    #    from Weblate.
+    # 5. Notify Weblate to pull updated 'master' & 'translations' branch.
+
+    local messages_pot diff_messages_pot last_commit_hash last_commit_detail \
+          last_commit_message exitcode
+    (   set -e
+        # lock change on weblate
+        pyenv.cmd wlc lock
+
+        # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
+        weblate.translations.worktree
+
+        # update messages.pot in the master branch
+        build_msg BABEL 'extract messages from source files and generate POT file'
+        messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
+        pyenv.cmd pybabel extract -F babel.cfg \
+                -o "${messages_pot}" \
+                "searx/"
+
+        # stop if there is no meaningful change in the master branch
+        diff_messages_pot=$(cd "${TRANSLATIONS_WORKTREE}";\
+                            git diff -- "searx/translations/messages.pot")
+        if ! echo "$diff_messages_pot" | grep -qE "[\+\-](msgid|msgstr)"; then
+            build_msg BABEL 'no changes detected, exiting'
+            return 0
+        fi
+
+        # save messages.pot in the translations branch for later
+        pushd "${TRANSLATIONS_WORKTREE}"
+        git stash push
+        popd
+
+        # merge weblate commits into the translations branch
+        weblate.to.translations
+
+        # restore messages.pot in the translations branch
+        pushd "${TRANSLATIONS_WORKTREE}"
+        git stash pop
+        popd
+
+        # update messages.po files in the master branch
+        build_msg BABEL 'update existing message catalogs from POT file'
+        pyenv.cmd pybabel update -N \
+            -i "${messages_pot}" \
+            -d "${TRANSLATIONS_WORKTREE}/searx/translations"
+
+        # git add/commit/push
+        last_commit_hash=$(git log -n1  --pretty=format:'%h')
+        last_commit_detail=$(git log -n1 --pretty=format:'%h - %as - %aN <%ae>' "${last_commit_hash}")
+        last_commit_message="[translations] update messages.pot and messages.po files\nFrom ${last_commit_detail}"
+
+        pushd "${TRANSLATIONS_WORKTREE}"
+        git add searx/translations
+        git commit -m "${last_commit_message}"
+        git push
+        popd
+
+        # notify weblate to pull updated master & translations branch
+        pyenv.cmd wlc pull
+    )
+    exitcode=$?
+    (   # make sure to always unlock weblate
+        set -e
+        pyenv.cmd wlc unlock
+    )
+    dump_return $exitcode
 }
 
 data.all() {

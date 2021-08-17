@@ -91,7 +91,7 @@ jobs:
         COMMIT_MESSAGE: build from commit ${{ github.sha }}
 
   babel:
-    name: Babel
+    name: Update translations branch
     runs-on: ubuntu-20.04
     if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
     needs:
@@ -102,32 +102,32 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        persist-credentials: false
+        fetch-depth: '0'
+        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
         architecture: 'x64'
+    - name: Cache Python dependencies
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+        path: ./local
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+    - name: weblate & git setup
+      env:
+        WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+      run: |
+        mkdir -p ~/.config
+        echo "${WEBLATE_CONFIG}" > ~/.config/weblate
+        git config --global user.email "searxng-bot@users.noreply.github.com"
+        git config --global user.name "searxng-bot"
     - name: Update transations
       id: update
-      continue-on-error: true
-      run: make V=1 ci.babel.update
-    - name: Open pull request
-      if: steps.update.outcome == 'success'
-      uses: peter-evans/create-pull-request@v3
-      with:
-        commit-message: Update translations (pot, po)
-        committer: searx-bot <noreply@github.com>
-        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-        signoff: false
-        branch: update_translations_pot
-        delete-branch: true
-        draft: false
-        title: 'Update translations (pot, po)'
-        body: |
-          Update messages.pot and messages.po files
-        labels: |
-          translation
+      run: |
+        git restore utils/brand.env
+        make V=1 weblate.push.translations
 
   dockers:
     name: Docker

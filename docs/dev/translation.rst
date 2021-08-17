@@ -4,69 +4,77 @@
 Translation
 ===========
 
-.. _searx@transifex: https://www.transifex.com/asciimoo/searx/
+.. _weblate.bubu1.eu: https://weblate.bubu1.eu/projects/searxng/
+.. _Weblate: https://docs.weblate.org
+.. _translations branch: https://github.com/searxng/searxng/tree/translations
+.. _orphan branch: https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---orphanltnewbranchgt
+.. _Weblate repository: https://weblate.bubu1.eu/projects/searxng/searxng/#repository
+.. _wlc: https://docs.weblate.org/en/latest/wlc.html
 
-Translation currently takes place on `searx@transifex`_
+.. |translated| image:: https://weblate.bubu1.eu/widgets/searxng/-/searxng/svg-badge.svg
+   :target: https://weblate.bubu1.eu/projects/searxng/
 
-Requirements
-============
+.. sidebar:: |translated|
 
-* Transifex account
+   - Weblate_
+   - SearXNG `translations branch`_
+   - SearXNG `Weblate repository`_
+   - Weblate Client: wlc_
+   - Babel Command-Line: `pybabel <http://babel.pocoo.org/en/latest/cmdline.html>`_
+   - `weblate workflow <https://docs.weblate.org/en/latest/workflows.html>`_
 
-Init Transifex project
-======================
+Translation takes place on weblate.bubu1.eu_.
 
-After installing ``transifex`` using pip, run the following command to
-initialize the project.
+Translations which has been added by translators on the weblate.bubu1.eu_ UI are
+committed to Weblate's counterpart of the SearXNG *origin* repository which is
+located at ``https://weblate.bubu1.eu/git/searxng/searxng``.
 
-.. code:: sh
+There is no need to clone this repository, :ref:`SearXNG Weblate workflow` take
+care of the synchronization with the *origin*.  To avoid merging commits from
+the counterpart directly on the ``master`` branch of *SearXNG origin*, a *pull
+request* (PR) is created by this workflow.
 
-   ./manage pyenv.cmd tx init # Transifex instance: https://www.transifex.com/asciimoo/searx/
+Weblate monitors the `translations branch`_, not the ``master`` branch.  This
+branch is an `orphan branch`_, decoupled from the master branch (we already know
+orphan branches from the ``gh-pages``).  The `translations branch`_ contains
+only the
 
-
-After ``$HOME/.transifexrc`` is created, get a Transifex API key and insert it
-into the configuration file.
-
-Create a configuration file for ``tx`` named ``$HOME/.tx/config``.
-
-.. code:: ini
-
-    [main]
-    host = https://www.transifex.com
-    [searx.messagespo]
-    file_filter = searx/translations/<lang>/LC_MESSAGES/messages.po
-    source_file = messages.pot
-    source_lang = en
-    type = PO
-
-
-Then run ``tx set``:
-
-.. code:: shell
-
-    ./manage pyenv.cmd tx set --auto-local \
-        -r searx.messagespo 'searx/translations/<lang>/LC_MESSAGES/messages.po' \
-        --source-lang en --type PO --source-file messages.pot --execute
+- ``translation/messages.pot`` and the
+- ``translation/*/messages.po`` files, nothing else.
 
 
-Update translations
-===================
+.. _SearXNG Weblate workflow:
 
-To retrieve the latest translations, pull it from Transifex.
+.. figure:: translation.svg
 
-.. code:: sh
+   SearXNG's PR workflow to be in sync with Weblate
 
-   ./manage pyenv.cmd tx pull -a
-   [?] Enter your api token: ....
+Sync from *origin* to *weblate*: using ``make weblate.push.translations``
+  For each commit on the ``master`` branch of SearXNG *origin* the GitHub job
+  :origin:`babel / Update translations branch
+  <.github/workflows/integration.yml>` checks for updated translations.
 
-Then check the new languages.  If strings translated are not enough, delete those
-folders, because those should not be compiled.  Call the command below to compile
-the ``.po`` files.
+Sync from *weblate* to *origin*: using ``make weblate.translations.commit``
+  Every Friday, the GitHub workflow :origin:`babel / create PR for additons from
+  weblate <.github/workflows/translations-update.yml>` creates a PR with the
+  updated translation files:
 
-.. code:: shell
+  - ``translation/messages.pot``,
+  - ``translation/*/messages.po`` and
+  - ``translation/*/messages.mo``
 
-   ./manage pyenv.cmd pybabel compile -d searx/translations
+wlc
+===
 
+.. _wlc configuration: https://docs.weblate.org/en/latest/wlc.html#wlc-config
+.. _API key: https://weblate.bubu1.eu/accounts/profile/#api
 
-After the compilation is finished commit the ``.po`` and ``.mo`` files and
-create a PR.
+All weblate integration is done by GitHub workflows, but if you want to use wlc_,
+copy this content into `wlc configuration`_ in your HOME ``~/.config/weblate``
+
+.. code-block:: ini
+
+  [keys]
+  https://weblate.bubu1.eu/api/ = APIKEY
+
+Replace ``APIKEY`` by your `API key`_.

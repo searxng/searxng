@@ -1,0 +1,56 @@
+name: "Update translations"
+on:
+  schedule:
+    - cron: "05 07 * * 5"
+  workflow_dispatch:
+
+jobs:
+  babel:
+    name: "create PR for additons from weblate"
+    runs-on: ubuntu-20.04
+    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+    - name: Cache Python dependencies
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+        path: ./local
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+    - name: weblate & git setup
+      env:
+        WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+      run: |
+        mkdir -p ~/.config
+        echo "${WEBLATE_CONFIG}" > ~/.config/weblate
+        git config --global user.email "searxng-bot@users.noreply.github.com"
+        git config --global user.name "searxng-bot"
+    - name: Merge and push transation updates
+      run: |
+        make V=1 weblate.translations.commit
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+        commit-message: Update translations
+        committer: searxng-bot <searxng-bot@users.noreply.github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        signoff: false
+        branch: translations_update
+        delete-branch: true
+        draft: false
+        title: 'Update translations'
+        body: |
+          Update translations
+        labels: |
+          translation
