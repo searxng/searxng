@@ -82,7 +82,7 @@ from searx.utils import (
     dict_subset,
     match_language,
 )
-from searx.version import VERSION_STRING, GIT_URL
+from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import plugins
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
@@ -1319,6 +1319,7 @@ def config():
         'brand': {
             'CONTACT_URL': get_setting('general.contact_url'),
             'GIT_URL': GIT_URL,
+            'GIT_BRANCH': GIT_BRANCH,
             'DOCS_URL': get_setting('brand.docs_url'),
         },
         'doi_resolvers': list(settings['doi_resolvers'].keys()),
