@@ -183,15 +183,6 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
     )
 
 
-def iter_proxies(proxies):
-    # https://www.python-httpx.org/compatibility/#proxy-keys
-    if isinstance(proxies, str):
-        yield 'all://', proxies
-    elif isinstance(proxies, dict):
-        for pattern, proxy_url in proxies.items():
-            yield pattern, proxy_url
-
-
 def new_client(
         # pylint: disable=too-many-arguments
         enable_http, verify, enable_http2,
@@ -204,11 +195,11 @@ def new_client(
     )
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
-    for pattern, proxy_url in iter_proxies(proxies):
-        if not enable_http and (pattern == 'http' or pattern.startswith('http://')):
+    for pattern, proxy_url in proxies.items():
+        if not enable_http and pattern.startswith('http://'):
             continue
         if (proxy_url.startswith('socks4://')
-            or proxy_url.startswith('socks5://')
+           or proxy_url.startswith('socks5://')
             or proxy_url.startswith('socks5h://')
         ):
             mounts[pattern] = get_transport_for_socks_proxy(
