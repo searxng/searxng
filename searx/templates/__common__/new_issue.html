@@ -6,6 +6,13 @@
     <textarea name="body" class="issue-hide">{{- '' -}}
 
 **Version of SearXNG, commit number if you are using on master branch and stipulate if you forked SearXNG**
+{% if searx_git_url and searx_git_url != 'unknow' %}
+Repository: {{ searx_git_url }}
+Branch: {{ searx_git_branch }}
+Version: {{ searx_version }}
+<!-- Check if these values are correct -->
+
+{% else %}
 <!-- If you are running on master branch using git execute this command
 in order to fetch the latest commit ID:
 ```
@@ -17,6 +24,7 @@ and check for the version after "Powered by SearXNG"
 Please also stipulate if you are using a forked version of SearxNG and
 include a link to the fork source code.
 -->
+{% endif %}
 **How did you install SearXNG?**
 <!-- Did you install SearXNG using the official wiki or using searx-docker
 or manually by executing the searx/webapp.py file? -->
