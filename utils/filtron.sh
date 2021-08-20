@@ -302,6 +302,12 @@ install_rules() {
         return
     fi
 
+    if cmp --silent "${FILTRON_RULES}" "${FILTRON_RULES_TEMPLATE}"; then
+        info_msg "${FILTRON_RULES} is up to date with"
+        info_msg "${FILTRON_RULES_TEMPLATE}"
+        return
+    fi
+
     rst_para "Diff between origin's rules file (+) and current (-):"
     echo "${FILTRON_RULES}" "${FILTRON_RULES_TEMPLATE}"
     $DIFF_CMD "${FILTRON_RULES}" "${FILTRON_RULES_TEMPLATE}"

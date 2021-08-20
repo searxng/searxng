@@ -621,7 +621,7 @@ install_settings() {
     fi
 
     mkdir -p "$(dirname "${SEARX_SETTINGS_PATH}")"
-    install_template \
+    install_template --no-eval \
         "${SEARX_SETTINGS_PATH}" \
         "${SERVICE_USER}" "${SERVICE_GROUP}"
     configure_searx
