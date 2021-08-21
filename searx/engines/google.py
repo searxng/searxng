@@ -298,6 +298,7 @@ def request(query, params):
         'ie': "utf8",
         'oe': "utf8",
         'start': offset,
+        'filter': '0',
         **additional_parameters,
     })
 
