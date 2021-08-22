@@ -437,7 +437,8 @@ install_template() {
 
     if [[ "$do_eval" == "1" ]]; then
         template_file="${CACHE}${dst}${variant}"
-        info_msg "BUILD template ${template_file}"
+	info_msg "BUILD ${template_file}"
+	info_msg "BUILD using template ${template_origin}"
         if [[ -n ${SUDO_USER} ]]; then
             sudo -u "${SUDO_USER}" mkdir -p "$(dirname "${template_file}")"
         else
