@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-07-31 19:11+0200\n"
-"PO-Revision-Date: 2021-08-20 07:16+0000\n"
+"PO-Revision-Date: 2021-08-23 19:04+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://weblate.bubu1.eu/projects/searxng/"
 "searxng/nb_NO/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 4.8\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:187
@@ -209,7 +209,7 @@ msgstr ""
 
 #: searx/plugins/search_on_category_select.py:18
 msgid "Search on category select"
-msgstr ""
+msgstr "Søk ved kategorivalg"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid ""
@@ -286,7 +286,7 @@ msgstr "Drevet av"
 
 #: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:53
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr ""
+msgstr "en personvernsrespekterende, hackbar metasøkemotor"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:54
 msgid "Source code"
@@ -305,7 +305,7 @@ msgstr "Offentlige instanser"
 
 #: searx/templates/oscar/base.html:89 searx/templates/simple/base.html:57
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Kontakt tilbyderen av instansen"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
@@ -467,8 +467,9 @@ msgstr "Søkespråk"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:124
+#, fuzzy
 msgid "What language do you prefer for search?"
-msgstr ""
+msgstr "Hvilket språk foretrekker du for søk?"
 
 #: searx/templates/oscar/preferences.html:140
 #: searx/templates/oscar/preferences.html:322
@@ -519,6 +520,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
+"Videresend til åpen tilgang-versjoner av publikasjoner når de finnes ("
+"programtillegg kreves)"
 
 #: searx/templates/oscar/preferences.html:182
 msgid "Engine tokens"
@@ -526,7 +529,7 @@ msgstr "Søkemotorsymboler"
 
 #: searx/templates/oscar/preferences.html:183
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Tilgangssymboler for private motorer"
 
 #: searx/templates/oscar/preferences.html:197
 #: searx/templates/simple/preferences.html:219
@@ -536,7 +539,7 @@ msgstr "Grensesnitts-språk"
 #: searx/templates/oscar/preferences.html:198
 #: searx/templates/simple/preferences.html:227
 msgid "Change the language of the layout"
-msgstr ""
+msgstr "Endre språket for oppsettet"
 
 #: searx/templates/oscar/preferences.html:209
 #: searx/templates/simple/preferences.html:232
@@ -546,7 +549,7 @@ msgstr "Drakter"
 #: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:240
 msgid "Change searx layout"
-msgstr ""
+msgstr "Endre searx-oppsett"
 
 #: searx/templates/oscar/preferences.html:221
 #: searx/templates/oscar/preferences.html:227
@@ -564,7 +567,7 @@ msgstr "Vis avanserte innstillinger"
 
 #: searx/templates/oscar/preferences.html:231
 msgid "Show advanced settings panel in the home page by default"
-msgstr ""
+msgstr "Vis panel for avanserte innstillinger på hjemmesiden som forvalg"
 
 #: searx/templates/oscar/preferences.html:234
 #: searx/templates/oscar/preferences.html:244
@@ -600,6 +603,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Endre hvordan skjemaer innsendes, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">lær mer om "
+"forespørselsmetoder</a>"
 
 #: searx/templates/oscar/preferences.html:272
 #: searx/templates/simple/preferences.html:305
@@ -609,7 +615,7 @@ msgstr "Bildemellomtjener"
 #: searx/templates/oscar/preferences.html:273
 #: searx/templates/simple/preferences.html:312
 msgid "Proxying image results through searx"
-msgstr ""
+msgstr "Mellomtjener bilderesultater gjennom searx"
 
 #: searx/templates/oscar/preferences.html:276
 #: searx/templates/simple/preferences.html:308
@@ -850,27 +856,29 @@ msgstr "Poengsummer"
 
 #: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:30
 msgid "Result count"
-msgstr ""
+msgstr "Antall resultater"
 
 #: searx/templates/oscar/stats.html:33 searx/templates/simple/stats.html:32
 msgid "Reliability"
 msgstr "Pålitelighet"
 
 #: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:41
+#, fuzzy
 msgid "Scores per result"
-msgstr ""
+msgstr "Vektninger per resultat"
 
 #: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:65
 msgid "Total"
-msgstr ""
+msgstr "Totalt"
 
 #: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:66
 msgid "HTTP"
 msgstr "HTTP"
 
 #: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:67
+#, fuzzy
 msgid "Processing"
-msgstr ""
+msgstr "Behandler …"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:105
 msgid "Warnings"
@@ -878,7 +886,7 @@ msgstr "Advarsler"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:105
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Feil og unntag"
 
 #: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:111
 msgid "Exception"
@@ -890,7 +898,7 @@ msgstr "Melding"
 
 #: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:115
 msgid "Percentage"
-msgstr ""
+msgstr "Prosentsats"
 
 #: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:117
 msgid "Parameter"
@@ -915,7 +923,7 @@ msgstr ""
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:137
 msgid "Failed test"
-msgstr ""
+msgstr "Mislykket test"
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:138
 msgid "Comment(s)"
@@ -954,7 +962,7 @@ msgstr ""
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using searx first time."
-msgstr ""
+msgstr "Det ser ut til at du bruker searx for første gang."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -971,13 +979,14 @@ msgstr ""
 
 #: searx/templates/oscar/messages/no_results.html:4
 #: searx/templates/simple/messages/no_results.html:4
+#, fuzzy
 msgid "Engines cannot retrieve results."
-msgstr ""
+msgstr "Søkemotorene kan ikke hente inn resultater."
 
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:14
 msgid "Please, try again later or find another searx instance."
-msgstr ""
+msgstr "Prøv senere eller finn en annen searx-instans."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:18
@@ -1122,8 +1131,9 @@ msgid "Length"
 msgstr "Lengde"
 
 #: searx/templates/simple/categories.html:6
+#, fuzzy
 msgid "Click on the magnifier to perform search"
-msgstr ""
+msgstr "Klikk på forstørrelsesglasset for å søke"
 
 #: searx/templates/simple/preferences.html:83
 msgid "Errors:"
@@ -1131,7 +1141,7 @@ msgstr "Feil:"
 
 #: searx/templates/simple/preferences.html:173
 msgid "Currently used search engines"
-msgstr ""
+msgstr "Brukte søkemotorer"
 
 #: searx/templates/simple/preferences.html:185
 msgid "Supports selected language"
