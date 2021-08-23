@@ -9,13 +9,17 @@ Searx allows you to modify the default categories, engines and search language
 via the search query.
 
 Prefix ``!``
-  to set Category/engine
+  to set category or :ref:`engine <configured engines>`
+
+Prefix: ``!!``
+  to take you to search results on other sites (also know as :ref:`bang <external bang>`)
 
 Prefix: ``:``
   to set language
 
 Prefix: ``?``
-  to add engines and categories to the currently selected categories
+  to add :ref:`engines <configured engines>` and categories to the
+  currently selected categories
 
 Abbrevations of the engines and languages are also accepted.  Engine/category
 modifiers are chainable and inclusive (e.g. with :search:`!it !ddg !wp qwer
@@ -27,6 +31,10 @@ categories and languages.
 
 Examples
 ========
+
+*Bang* take you to search results on Wikipedia:
+
+- :search:`!!w gallileo <?q=%21%21w%20gallileo>`
 
 Search in wikipedia for ``qwer``:
 
