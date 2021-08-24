@@ -9,15 +9,13 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**'],
-        tasks: ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
+        tasks: ['eslint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
       }
-    },
-    jshint: {
-      files: ['src/js/main/*.js', 'src/js/head/*.js', '../__common__/js/*.js'],
     },
     eslint: {
       options: {
-        configFile: '.eslintrc.json'
+        configFile: '.eslintrc.json',
+        failOnError: false
       },
       target: [
         'src/js/main/*.js',
@@ -204,8 +202,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint']);
 
   grunt.registerTask('default', [
-    // 'eslint',
-    'jshint',
+    'eslint',
     'stylelint',
     'copy',
     'concat',

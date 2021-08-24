@@ -665,8 +665,6 @@ themes.oscar() {
 themes.simple() {
     build_msg GRUNT "theme: simple"
     npm --prefix searx/static/themes/simple run build
-    # just report eslint issues but do not break the build (--force)
-    npm --prefix searx/static/themes/simple run eslint --force
     dump_return $?
 }
 
