@@ -14,6 +14,7 @@
 *
 * (C) 2017 by Alexandre Flament, <alex@al-f.net>
 */
+/* global AutoComplete */
 (function(w, d, searx) {
   'use strict';
 
@@ -56,7 +57,7 @@
   searx.ready(function() {
     qinput = d.getElementById(qinput_id);
 
-    function placeCursorAtEndOnce(e) {
+    function placeCursorAtEndOnce() {
       if (firstFocus) {
         placeCursorAtEnd(qinput);
         firstFocus = false;
@@ -98,7 +99,7 @@
     if (qinput !== null && searx.search_on_category_select) {
       d.querySelector('.help').className='invisible';
 
-      searx.on('#categories input', 'change', function(e) {
+      searx.on('#categories input', 'change', function() {
         var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
         for(i=0; i<categories.length; i++) {
           if (categories[i] !== this && categories[i].checked) {

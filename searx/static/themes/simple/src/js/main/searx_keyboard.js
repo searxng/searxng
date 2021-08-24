@@ -1,3 +1,5 @@
+/*global searx*/
+
 searx.ready(function() {
 
   searx.on('.result', 'click', function() {
@@ -80,13 +82,13 @@ searx.ready(function() {
     },
     80: {
       key: 'p',
-      fun: pageButtonClick(0),
+      fun: GoToPreviousPage(),
       des: 'go to previous page',
       cat: 'Results'
     },
     78: {
       key: 'n',
-      fun: pageButtonClick(1),
+      fun: GoToNextPage(),
       des: 'go to next page',
       cat: 'Results'
     },
@@ -118,7 +120,7 @@ searx.ready(function() {
 
   searx.on(document, "keydown", function(e) {
     // check for modifiers so we don't break browser's hotkeys
-    if (vimKeys.hasOwnProperty(e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+    if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();
       if (e.keyCode === 27) {
         if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
@@ -216,19 +218,21 @@ searx.ready(function() {
     }
   }
 
-  function pageButtonClick(num) {
+  function pageButtonClick(css_selector) {
     return function() {
-      var buttons = $('div#pagination button[type="submit"]');
-      if (buttons.length !== 2) {
-        console.log('page navigation with this theme is not supported');
-        return;
-      }
-      if (num >= 0 && num < buttons.length) {
-        buttons[num].click();
-      } else {
-        console.log('pageButtonClick(): invalid argument');
+      var button = document.querySelector(css_selector);
+      if (button) {
+        button.click();
       }
     };
+  }
+
+  function GoToNextPage() {
+    return pageButtonClick('nav#pagination .next_page button[type="submit"]');
+  }
+
+  function GoToPreviousPage() {
+    return pageButtonClick('nav#pagination .previous_page button[type="submit"]');
   }
 
   function scrollPageToSelected() {
@@ -308,9 +312,9 @@ searx.ready(function() {
       return;
     }
 
-  	var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
-    html += '<h3>How to navigate searx with Vim-like hotkeys</h3>';			
-		html += '<table>';
+    var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
+    html += '<h3>How to navigate searx with Vim-like hotkeys</h3>';
+    html += '<table>';
 
     for (var i = 0; i < sorted.length; i++) {
       var cat = categories[sorted[i]];
@@ -338,29 +342,29 @@ searx.ready(function() {
       }
     }
 
-		html += '</table>';
+    html += '</table>';
 
- 	  divElement.innerHTML = html;
-	}
+     divElement.innerHTML = html;
+  }
 
   function toggleHelp() {
-			var helpPanel = document.querySelector('#vim-hotkeys-help');
-			console.log(helpPanel);
-		if (helpPanel === undefined || helpPanel === null) {
- 		  // first call
-			helpPanel = document.createElement('div');
-   			helpPanel.id = 'vim-hotkeys-help';
-				helpPanel.className='dialog-modal';
-				helpPanel.style='width: 40%';
+      var helpPanel = document.querySelector('#vim-hotkeys-help');
+      console.log(helpPanel);
+    if (helpPanel === undefined || helpPanel === null) {
+       // first call
+      helpPanel = document.createElement('div');
+         helpPanel.id = 'vim-hotkeys-help';
+        helpPanel.className='dialog-modal';
+        helpPanel.style='width: 40%';
+      initHelpContent(helpPanel);
 			initHelpContent(helpPanel);					
-			var body = document.getElementsByTagName('body')[0];
-			body.appendChild(helpPanel);
-		} else {
- 		  // togggle hidden
-			helpPanel.classList.toggle('invisible');
-			return;
-		}
-
+      initHelpContent(helpPanel);
+      var body = document.getElementsByTagName('body')[0];
+      body.appendChild(helpPanel);
+    } else {
+       // togggle hidden
+      helpPanel.classList.toggle('invisible');
+      return;
+    }
   }
-	
 });

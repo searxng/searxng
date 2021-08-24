@@ -146,7 +146,7 @@
     {% if paging %}
     <nav id="pagination">
         {% if pageno > 1 %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
                 <div class="{% if rtl %}right{% else %}left{% endif %}">
                   <input type="hidden" name="q" value="{{ q|e }}" >
                   {{- engine_data_form(engine_data) -}}
@@ -163,7 +163,7 @@
                 </div>
             </form>
         {% endif %}
-        <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+        <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
             <div class="{% if rtl %}left{% else %}right{% endif %}">
               <input type="hidden" name="q" value="{{ q|e }}" >
               {{- engine_data_form(engine_data) -}}
