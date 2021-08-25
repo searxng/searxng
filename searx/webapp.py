@@ -108,7 +108,7 @@ from searx.autocomplete import search_autocomplete, backends as autocomplete_bac
 from searx.languages import language_codes as languages
 from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
 from searx.search import SearchWithPlugins, initialize as search_initialize
-from searx.network import stream as http_stream
+from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
 from searx.settings_loader import get_default_settings_path
 
@@ -1065,7 +1065,7 @@ def _is_selected_language_supported(engine, preferences):  # pylint: disable=red
 
 @app.route('/image_proxy', methods=['GET'])
 def image_proxy():
-    # pylint: disable=too-many-return-statements
+    # pylint: disable=too-many-return-statements, too-many-branches
 
     url = request.args.get('url')
     if not url:
@@ -1076,17 +1076,21 @@ def image_proxy():
         return '', 400
 
     maximum_size = 5 * 1024 * 1024
-
+    forward_resp = False
+    resp = None
     try:
-        headers = dict_subset(request.headers, {'If-Modified-Since', 'If-None-Match'})
-        headers['User-Agent'] = gen_useragent()
+        request_headers = {
+            'User-Agent': gen_useragent(),
+            'Accept': 'image/webp,*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Sec-GPC': '1',
+            'DNT': '1',
+        }
+        set_context_network_name('image_proxy')
         stream = http_stream(
             method = 'GET',
             url = url,
-            headers = headers,
-            timeout = settings['outgoing']['request_timeout'],
-            allow_redirects = True,
-            max_redirects = 20
+            headers = request_headers
         )
         resp = next(stream)
         content_length = resp.headers.get('Content-Length')
@@ -1095,32 +1099,37 @@ def image_proxy():
             and int(content_length) > maximum_size ):
             return 'Max size', 400
 
-        if resp.status_code == 304:
-            return '', resp.status_code
-
         if resp.status_code != 200:
-            logger.debug(
-                'image-proxy: wrong response code: {0}'.format(
-                    resp.status_code))
+            logger.debug('image-proxy: wrong response code: %i', resp.status_code)
             if resp.status_code >= 400:
                 return '', resp.status_code
             return '', 400
 
-        if not resp.headers.get('content-type', '').startswith('image/'):
-            logger.debug(
-                'image-proxy: wrong content-type: {0}'.format(
-                    resp.headers.get('content-type')))
+        if not resp.headers.get('Content-Type', '').startswith('image/'):
+            logger.debug('image-proxy: wrong content-type: %s', resp.headers.get('Content-Type', ''))
             return '', 400
 
+        forward_resp = True
+    except httpx.HTTPError:
+        logger.exception('HTTP error')
+        return '', 400
+    finally:
+        if resp and not forward_resp:
+            # the code is about to return an HTTP 400 error to the browser
+            # we make sure to close the response between searxng and the HTTP server
+            try:
+                resp.close()
+            except httpx.HTTPError:
+                logger.exception('HTTP error on closing')
+
+    try:
         headers = dict_subset(
             resp.headers,
-            {'Content-Length', 'Length', 'Date', 'Last-Modified', 'Expires', 'Etag'}
+            {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'}
         )
 
-        total_length = 0
-
         def forward_chunk():
-            nonlocal total_length
+            total_length = 0
             for chunk in stream:
                 total_length += len(chunk)
                 if total_length > maximum_size:

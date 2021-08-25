@@ -5,6 +5,7 @@
 import asyncio
 import threading
 import concurrent.futures
+from types import MethodType
 from timeit import default_timer
 
 import httpx
@@ -161,17 +162,30 @@ def patch(url, data=None, **kwargs):
 def delete(url, **kwargs):
     return request('delete', url, **kwargs)
 
+
 async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
     try:
         async with network.stream(method, url, **kwargs) as response:
             queue.put(response)
-            async for chunk in response.aiter_bytes(65536):
+            # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
+            # https://www.python-httpx.org/quickstart/#streaming-responses
+            async for chunk in response.aiter_raw(65536):
                 if len(chunk) > 0:
                     queue.put(chunk)
+    except httpx.ResponseClosed as e:
+        # the response was closed
+        pass
     except (httpx.HTTPError, OSError, h2.exceptions.ProtocolError) as e:
         queue.put(e)
     finally:
         queue.put(None)
+
+
+def _close_response_method(self):
+    asyncio.run_coroutine_threadsafe(
+        self.aclose(),
+        get_loop()
+    )
 
 
 def stream(method, url, **kwargs):
@@ -191,10 +205,19 @@ def stream(method, url, **kwargs):
         stream_chunk_to_queue(get_network(), queue, method, url, **kwargs),
         get_loop()
     )
+
+    # yield response
+    response = queue.get()
+    if isinstance(response, Exception):
+        raise response
+    response.close = MethodType(_close_response_method, response)
+    yield response
+
+    # yield chunks
     chunk_or_exception = queue.get()
     while chunk_or_exception is not None:
         if isinstance(chunk_or_exception, Exception):
             raise chunk_or_exception
         yield chunk_or_exception
         chunk_or_exception = queue.get()
-    return future.result()
+    future.result()

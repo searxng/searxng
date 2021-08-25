@@ -262,11 +262,7 @@ def dict_subset(d, properties):
         >>> >> dict_subset({'A': 'a', 'B': 'b', 'C': 'c'}, ['A', 'D'])
         {'A': 'a'}
     """
-    result = {}
-    for k in properties:
-        if k in d:
-            result[k] = d[k]
-    return result
+    return {k: d[k] for k in properties if k in d}
 
 
 def get_torrent_size(filesize, filesize_multiplier):
