@@ -9,11 +9,19 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**'],
-        tasks: ['jshint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
+        tasks: ['eslint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
       }
     },
-    jshint: {
-      files: ['src/js/main/*.js', 'src/js/head/*.js', '../__common__/js/*.js'],
+    eslint: {
+      options: {
+        configFile: '.eslintrc.json',
+        failOnError: false
+      },
+      target: [
+        'src/js/main/*.js',
+        'src/js/head/*.js',
+        '../__common__/js/*.js'
+      ],
     },
     stylelint: {
       options: {
@@ -189,11 +197,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-webfont');
   grunt.loadNpmTasks('grunt-stylelint');
+  grunt.loadNpmTasks('grunt-eslint');
 
   grunt.registerTask('test', ['jshint']);
 
   grunt.registerTask('default', [
-    'jshint',
+    'eslint',
     'stylelint',
     'copy',
     'concat',
