@@ -1191,6 +1191,7 @@ def stats():
         engine_stats = engine_stats,
         engine_reliabilities = engine_reliabilities,
         selected_engine_name = selected_engine_name,
+        searx_git_branch = GIT_BRANCH,
     )
 
 
