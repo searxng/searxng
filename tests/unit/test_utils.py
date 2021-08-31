@@ -114,9 +114,9 @@ class TestUtils(SearxTestCase):
     def test_ecma_unscape(self):
         self.assertEqual(utils.ecma_unescape('text%20with%20space'), 'text with space')
         self.assertEqual(utils.ecma_unescape('text using %xx: %F3'),
-                         u'text using %xx: ó')
+                         'text using %xx: ó')
         self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'),
-                         u'text using %u: 吉, 世界')
+                         'text using %u: 吉, 世界')
 
 
 class TestHTMLTextExtractor(SearxTestCase):

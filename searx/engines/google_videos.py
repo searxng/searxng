@@ -80,7 +80,7 @@ def _re(regexpr):
 def scrap_out_thumbs(dom):
     """Scrap out thumbnail data from <script> tags.
     """
-    ret_val = dict()
+    ret_val = {}
     thumb_name = 'vidthumb'
 
     for script in eval_xpath_list(dom, '//script[contains(., "_setImagesSrc")]'):

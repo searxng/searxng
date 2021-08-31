@@ -172,7 +172,7 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
             async for chunk in response.aiter_raw(65536):
                 if len(chunk) > 0:
                     queue.put(chunk)
-    except httpx.ResponseClosed as e:
+    except httpx.ResponseClosed:
         # the response was closed
         pass
     except (httpx.HTTPError, OSError, h2.exceptions.ProtocolError) as e:
