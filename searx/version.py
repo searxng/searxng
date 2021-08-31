@@ -126,8 +126,8 @@ GIT_URL = "{GIT_URL}"
 GIT_BRANCH = "{GIT_BRANCH}"
 """
         with open(
-            os.path.join(os.path.dirname(__file__), "version_frozen.py"), "w"
-        ) as f:
+                os.path.join(os.path.dirname(__file__), "version_frozen.py"),
+                "w", encoding="utf8") as f:
             f.write(python_code)
             print(f"{f.name} created")
     else:

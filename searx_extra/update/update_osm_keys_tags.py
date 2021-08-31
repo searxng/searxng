@@ -205,5 +205,5 @@ if __name__ == '__main__':
         'keys': optimize_keys(get_keys()),
         'tags': optimize_tags(get_tags()),
     }
-    with open(get_osm_tags_filename(), 'w') as f:
+    with open(get_osm_tags_filename(), 'w', encoding="utf8") as f:
         json.dump(result, f, indent=4, ensure_ascii=False)
