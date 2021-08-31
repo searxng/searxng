@@ -12,7 +12,7 @@ from json import loads, dumps
 base_url = 'http://localhost:7700'
 index = ''
 auth_key = ''
-facet_filters = list()
+facet_filters = []
 _search_url = ''
 result_template = 'key-value.html'
 categories = ['general']
