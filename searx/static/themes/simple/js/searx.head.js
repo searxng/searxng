@@ -15,6 +15,7 @@
 * (C) 2019 by Alexandre Flament
 *
 */
+/* global DocumentTouch:readonly */
 (function(w, d) {
     'use strict';
 
