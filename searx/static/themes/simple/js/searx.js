@@ -70,7 +70,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.http = function(method, url, callback) {
+  searx.http = function(method, url) {
     var req = new XMLHttpRequest(),
     resolve = function() {},
     reject = function() {},
@@ -148,21 +148,22 @@ window.searx = (function(w, d) {
   };
 
   searx.insertBefore = function (newNode, referenceNode) {
-    element.parentNode.insertBefore(newNode, referenceNode);
+    referenceNode.parentNode.insertBefore(newNode, referenceNode);
   };
 
   searx.insertAfter = function(newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    referenceNode.parentNode.insertAfter(newNode, referenceNode.nextSibling);
   };  
 
-  searx.on('.close', 'click', function(e) {
-    var el = e.target || e.srcElement;
+  searx.on('.close', 'click', function() {
     this.parentNode.classList.add('invisible');
   });
   
   return searx;
 })(window, document);
-;searx.ready(function() {
+;/*global searx*/
+
+searx.ready(function() {
 
   searx.on('.result', 'click', function() {
     highlightResult(this)(true);
@@ -244,13 +245,13 @@ window.searx = (function(w, d) {
     },
     80: {
       key: 'p',
-      fun: pageButtonClick(0),
+      fun: GoToPreviousPage(),
       des: 'go to previous page',
       cat: 'Results'
     },
     78: {
       key: 'n',
-      fun: pageButtonClick(1),
+      fun: GoToNextPage(),
       des: 'go to next page',
       cat: 'Results'
     },
@@ -282,7 +283,7 @@ window.searx = (function(w, d) {
 
   searx.on(document, "keydown", function(e) {
     // check for modifiers so we don't break browser's hotkeys
-    if (vimKeys.hasOwnProperty(e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+    if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();
       if (e.keyCode === 27) {
         if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
@@ -380,19 +381,21 @@ window.searx = (function(w, d) {
     }
   }
 
-  function pageButtonClick(num) {
+  function pageButtonClick(css_selector) {
     return function() {
-      var buttons = $('div#pagination button[type="submit"]');
-      if (buttons.length !== 2) {
-        console.log('page navigation with this theme is not supported');
-        return;
-      }
-      if (num >= 0 && num < buttons.length) {
-        buttons[num].click();
-      } else {
-        console.log('pageButtonClick(): invalid argument');
+      var button = document.querySelector(css_selector);
+      if (button) {
+        button.click();
       }
     };
+  }
+
+  function GoToNextPage() {
+    return pageButtonClick('nav#pagination .next_page button[type="submit"]');
+  }
+
+  function GoToPreviousPage() {
+    return pageButtonClick('nav#pagination .previous_page button[type="submit"]');
   }
 
   function scrollPageToSelected() {
@@ -472,9 +475,9 @@ window.searx = (function(w, d) {
       return;
     }
 
-  	var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
-    html += '<h3>How to navigate searx with Vim-like hotkeys</h3>';			
-		html += '<table>';
+    var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
+    html += '<h3>How to navigate searx with Vim-like hotkeys</h3>';
+    html += '<table>';
 
     for (var i = 0; i < sorted.length; i++) {
       var cat = categories[sorted[i]];
@@ -502,31 +505,31 @@ window.searx = (function(w, d) {
       }
     }
 
-		html += '</table>';
+    html += '</table>';
 
- 	  divElement.innerHTML = html;
-	}
+     divElement.innerHTML = html;
+  }
 
   function toggleHelp() {
-			var helpPanel = document.querySelector('#vim-hotkeys-help');
-			console.log(helpPanel);
-		if (helpPanel === undefined || helpPanel === null) {
- 		  // first call
-			helpPanel = document.createElement('div');
-   			helpPanel.id = 'vim-hotkeys-help';
-				helpPanel.className='dialog-modal';
-				helpPanel.style='width: 40%';
+      var helpPanel = document.querySelector('#vim-hotkeys-help');
+      console.log(helpPanel);
+    if (helpPanel === undefined || helpPanel === null) {
+       // first call
+      helpPanel = document.createElement('div');
+         helpPanel.id = 'vim-hotkeys-help';
+        helpPanel.className='dialog-modal';
+        helpPanel.style='width: 40%';
+      initHelpContent(helpPanel);
 			initHelpContent(helpPanel);					
-			var body = document.getElementsByTagName('body')[0];
-			body.appendChild(helpPanel);
-		} else {
- 		  // togggle hidden
-			helpPanel.classList.toggle('invisible');
-			return;
-		}
-
+      initHelpContent(helpPanel);
+      var body = document.getElementsByTagName('body')[0];
+      body.appendChild(helpPanel);
+    } else {
+       // togggle hidden
+      helpPanel.classList.toggle('invisible');
+      return;
+    }
   }
-	
 });
 ;/**
 * searx is free software: you can redistribute it and/or modify
@@ -545,6 +548,7 @@ window.searx = (function(w, d) {
 * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
 * (C) 2017 by Alexandre Flament, <alex@al-f.net>
 */
+/* global L */
 (function (w, d, searx) {
   'use strict';
 
@@ -577,7 +581,7 @@ window.searx = (function(w, d) {
         var osmMapnikAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
         var osmMapnik = new L.TileLayer(osmMapnikUrl, {minZoom: 1, maxZoom: 19, attribution: osmMapnikAttrib});
         var osmWikimediaUrl='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
-        var osmWikimediaAttrib = 'Wikimedia maps beta | Maps data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+        var osmWikimediaAttrib = 'Wikimedia maps | Maps data © <a href="https://openstreetmap.org">OpenStreetMap contributors</a>';
         var osmWikimedia = new L.TileLayer(osmWikimediaUrl, {minZoom: 1, maxZoom: 19, attribution: osmWikimediaAttrib});
         // init map view
         if(map_bounds) {
@@ -599,8 +603,8 @@ window.searx = (function(w, d) {
         map.addLayer(osmMapnik);
 
         var baseLayers = {
-          "OSM Mapnik": osmMapnik/*,
-          "OSM Wikimedia": osmWikimedia*/
+          "OSM Mapnik": osmMapnik,
+          "OSM Wikimedia": osmWikimedia,
         };
 
         L.control.layers(baseLayers).addTo(map);
@@ -640,7 +644,7 @@ window.searx = (function(w, d) {
     searx.image_thumbnail_layout = new searx.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 10, 200);
     searx.image_thumbnail_layout.watch();
 
-    searx.on('.btn-collapse', 'click', function(event) {
+    searx.on('.btn-collapse', 'click', function() {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
       var target = this.getAttribute('data-target');
@@ -656,7 +660,7 @@ window.searx = (function(w, d) {
       targetElement.classList.toggle('invisible');
     });
 
-    searx.on('.media-loader', 'click', function(event) {
+    searx.on('.media-loader', 'click', function() {
       var target = this.getAttribute('data-target');
       var iframe_load = d.querySelector(target + ' > iframe');
       var srctest = iframe_load.getAttribute('src');
@@ -696,6 +700,7 @@ window.searx = (function(w, d) {
 *
 * (C) 2017 by Alexandre Flament, <alex@al-f.net>
 */
+/* global AutoComplete */
 (function(w, d, searx) {
   'use strict';
 
@@ -738,7 +743,7 @@ window.searx = (function(w, d) {
   searx.ready(function() {
     qinput = d.getElementById(qinput_id);
 
-    function placeCursorAtEndOnce(e) {
+    function placeCursorAtEndOnce() {
       if (firstFocus) {
         placeCursorAtEnd(qinput);
         firstFocus = false;
@@ -780,7 +785,7 @@ window.searx = (function(w, d) {
     if (qinput !== null && searx.search_on_category_select) {
       d.querySelector('.help').className='invisible';
 
-      searx.on('#categories input', 'change', function(e) {
+      searx.on('#categories input', 'change', function() {
         var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
         for(i=0; i<categories.length; i++) {
           if (categories[i] !== this && categories[i].checked) {

@@ -70,7 +70,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.http = function(method, url, callback) {
+  searx.http = function(method, url) {
     var req = new XMLHttpRequest(),
     resolve = function() {},
     reject = function() {},
@@ -148,15 +148,14 @@ window.searx = (function(w, d) {
   };
 
   searx.insertBefore = function (newNode, referenceNode) {
-    element.parentNode.insertBefore(newNode, referenceNode);
+    referenceNode.parentNode.insertBefore(newNode, referenceNode);
   };
 
   searx.insertAfter = function(newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    referenceNode.parentNode.insertAfter(newNode, referenceNode.nextSibling);
   };  
 
-  searx.on('.close', 'click', function(e) {
-    var el = e.target || e.srcElement;
+  searx.on('.close', 'click', function() {
     this.parentNode.classList.add('invisible');
   });
   

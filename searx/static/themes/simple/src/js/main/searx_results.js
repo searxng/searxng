@@ -21,7 +21,7 @@
     searx.image_thumbnail_layout = new searx.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 10, 200);
     searx.image_thumbnail_layout.watch();
 
-    searx.on('.btn-collapse', 'click', function(event) {
+    searx.on('.btn-collapse', 'click', function() {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
       var target = this.getAttribute('data-target');
@@ -37,7 +37,7 @@
       targetElement.classList.toggle('invisible');
     });
 
-    searx.on('.media-loader', 'click', function(event) {
+    searx.on('.media-loader', 'click', function() {
       var target = this.getAttribute('data-target');
       var iframe_load = d.querySelector(target + ' > iframe');
       var srctest = iframe_load.getAttribute('src');

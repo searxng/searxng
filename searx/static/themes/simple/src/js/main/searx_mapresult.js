@@ -15,6 +15,7 @@
 * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
 * (C) 2017 by Alexandre Flament, <alex@al-f.net>
 */
+/* global L */
 (function (w, d, searx) {
   'use strict';
 
@@ -47,7 +48,7 @@
         var osmMapnikAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
         var osmMapnik = new L.TileLayer(osmMapnikUrl, {minZoom: 1, maxZoom: 19, attribution: osmMapnikAttrib});
         var osmWikimediaUrl='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
-        var osmWikimediaAttrib = 'Wikimedia maps beta | Maps data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+        var osmWikimediaAttrib = 'Wikimedia maps | Maps data © <a href="https://openstreetmap.org">OpenStreetMap contributors</a>';
         var osmWikimedia = new L.TileLayer(osmWikimediaUrl, {minZoom: 1, maxZoom: 19, attribution: osmWikimediaAttrib});
         // init map view
         if(map_bounds) {
@@ -69,8 +70,8 @@
         map.addLayer(osmMapnik);
 
         var baseLayers = {
-          "OSM Mapnik": osmMapnik/*,
-          "OSM Wikimedia": osmWikimedia*/
+          "OSM Mapnik": osmMapnik,
+          "OSM Wikimedia": osmWikimedia,
         };
 
         L.control.layers(baseLayers).addTo(map);
