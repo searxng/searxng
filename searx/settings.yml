@@ -938,6 +938,26 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: packagist
+    engine: json_engine
+    paging: true
+    search_url: https://packagist.org/search.json?q={query}&page={pageno}
+    results_query: results
+    url_query: url
+    title_query: name
+    content_query: description
+    categories: it
+    disabled: true
+    timeout: 5.0
+    shortcut: pack
+    about:
+      website: https://packagist.org
+      wikidata_id: Q108311377
+      official_api_documentation: https://packagist.org/apidoc
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
   - name: pdbe
     engine: pdbe
     shortcut: pdb
