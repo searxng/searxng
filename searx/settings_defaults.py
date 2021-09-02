@@ -197,7 +197,6 @@ SCHEMA = {
         'off_when_debug': SettingsValue(bool, True),
     },
     'engines': SettingsValue(list, []),
-    'locales': SettingsValue(dict, {'en': 'English'}),
     'doi_resolvers': {
     },
 }
