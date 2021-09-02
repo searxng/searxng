@@ -49,13 +49,14 @@ from flask_babel import (
     format_decimal,
 )
 
-from searx import logger
-from searx import get_setting
 from searx import (
+    logger,
+    get_setting,
     settings,
     searx_debug,
 )
 from searx.settings_defaults import OUTPUT_FORMATS
+from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
     categories,
@@ -91,8 +92,10 @@ from searx.preferences import (
     ValidationException,
     LANGUAGE_CODES,
 )
-from searx.answerers import answerers
-from searx.answerers import ask
+from searx.answerers import (
+    answerers,
+    ask,
+)
 from searx.metrics import (
     get_engines_stats,
     get_engine_errors,
@@ -110,7 +113,6 @@ from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
-from searx.settings_loader import get_default_settings_path
 
 logger = logger.getChild('webapp')
 
