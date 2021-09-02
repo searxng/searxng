@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from searx.testing import SearxTestCase
 from searx import plugins
 from mock import Mock
+from tests import SearxTestCase
 
 
 def get_search_mock(query, **kwargs):

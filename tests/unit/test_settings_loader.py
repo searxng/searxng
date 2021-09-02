@@ -3,9 +3,9 @@
 from os.path import dirname, join, abspath
 from unittest.mock import patch
 
-from searx.testing import SearxTestCase
 from searx.exceptions import SearxSettingsException
 from searx import settings_loader
+from tests import SearxTestCase
 
 
 test_dir = abspath(dirname(__file__))

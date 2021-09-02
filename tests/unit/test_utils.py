@@ -2,9 +2,10 @@
 import lxml.etree
 from lxml import html
 
-from searx.testing import SearxTestCase
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import utils
+
+from tests import SearxTestCase
 
 
 class TestUtils(SearxTestCase):

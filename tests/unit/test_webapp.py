@@ -3,9 +3,10 @@
 import json
 from urllib.parse import ParseResult
 from mock import Mock
-from searx.testing import SearxTestCase
-from searx.search import Search
+
 import searx.search.processors
+from searx.search import Search
+from tests import SearxTestCase
 
 
 class ViewsTestCase(SearxTestCase):

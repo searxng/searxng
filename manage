@@ -636,7 +636,7 @@ test.coverage() {
 test.robot() {
     build_msg TEST 'robot'
     gecko.driver
-    PYTHONPATH=. pyenv.cmd python searx/testing.py robot
+    PYTHONPATH=. pyenv.cmd python -m tests.robot
     dump_return $?
 }
 

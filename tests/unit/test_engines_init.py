@@ -1,5 +1,5 @@
-from searx.testing import SearxTestCase
 from searx import settings, engines
+from tests import SearxTestCase
 
 
 class TestEnginesInit(SearxTestCase):
