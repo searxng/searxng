@@ -221,7 +221,7 @@ install_all() {
     systemd_install_service "${SERVICE_NAME}" "${SERVICE_SYSTEMD_UNIT}"
     wait_key
     if ! service_is_available "http://${MORTY_LISTEN}" ; then
-        err_msg "Morty does not listening on: http://${MORTY_LISTEN}"
+        err_msg "Morty is not listening on: http://${MORTY_LISTEN}"
     fi
     if apache_is_installed; then
         info_msg "Apache is installed on this host."
@@ -359,7 +359,7 @@ EOF
     fi
 
     if ! service_is_available "http://${MORTY_LISTEN}" ; then
-        err_msg "Morty does not listening on: http://${MORTY_LISTEN}"
+        err_msg "Morty is not listening on: http://${MORTY_LISTEN}"
         echo -e "${_Green}stop with [${_BCyan}CTRL-C${_Green}] or .."
         wait_key
     fi
