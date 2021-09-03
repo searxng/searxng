@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-07-31 19:11+0200\n"
-"PO-Revision-Date: 2021-08-23 19:04+0000\n"
+"PO-Revision-Date: 2021-08-30 23:06+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://weblate.bubu1.eu/projects/searxng/"
 "searxng/nb_NO/>\n"
@@ -138,8 +138,9 @@ msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "for {hours} time(r), {minutes} minutt(er) siden"
 
 #: searx/webapp.py:853
+#, fuzzy
 msgid "Suspended"
-msgstr ""
+msgstr "I hvilemodus"
 
 #: searx/answerers/random/answerer.py:65
 msgid "Random value generator"
@@ -198,14 +199,17 @@ msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "Last inn neste side automatisk ved rulling til bunnen av nåværende side"
 
 #: searx/plugins/oa_doi_rewrite.py:9
+#, fuzzy
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Open Access DOI-omskriving"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"Tillat betalingsmurer ved å videresende til åpen-tilgang -versjoner av "
+"publikasjoner når de forefinnes"
 
 #: searx/plugins/search_on_category_select.py:18
 msgid "Search on category select"
@@ -216,34 +220,45 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
+"Utfør søk umiddelbart når en kategori velges. Skru av for å velge flere "
+"kategorier. (JavaScript kreves)"
 
 #: searx/plugins/self_info.py:19
+#, fuzzy
 msgid "Self Informations"
-msgstr ""
+msgstr "Selv-informasjon"
 
 #: searx/plugins/self_info.py:20
+#, fuzzy
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"Viser din IP hvis spørringen er «ip» og din brukeragent hvis spørringen "
+"inneholder «user agent»."
 
 #: searx/plugins/tracker_url_remover.py:27
+#, fuzzy
 msgid "Tracker URL remover"
-msgstr ""
+msgstr "Sporings-nettadressefjerner"
 
 #: searx/plugins/tracker_url_remover.py:28
+#, fuzzy
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
+msgstr "Fjern sporer-argumenter fra returnert nettadresse"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
 msgstr "Vim-lignende hurtigtaster"
 
 #: searx/plugins/vim_hotkeys.py:4
+#, fuzzy
 msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
+"Naviger søkeresultater med Vim-lignende hurtigtaster (JavaScript kreves). "
+"Trykk «h»-tasten på hoved- eller resultatsiden for å få hjelp."
 
 #: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -412,8 +427,9 @@ msgstr "P95"
 
 #: searx/templates/oscar/preferences.html:67
 #: searx/templates/simple/preferences.html:81
+#, fuzzy
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Mislykket/ede sjekkingstest(er): "
 
 #: searx/templates/oscar/preferences.html:95
 #: searx/templates/simple/preferences.html:99
@@ -511,8 +527,9 @@ msgstr "Finn ting mens du skriver"
 
 #: searx/templates/oscar/preferences.html:167
 #: searx/templates/simple/preferences.html:157
+#, fuzzy
 msgid "Open Access DOI resolver"
-msgstr ""
+msgstr "Open Access DOI-utleder"
 
 #: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:167
@@ -739,6 +756,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
+"Disse innstillingene lagres i informasjonskapslene dine, noe som tillater "
+"oss å ikke lagre denne dataen om deg."
 
 #: searx/templates/oscar/preferences.html:458
 #: searx/templates/simple/preferences.html:323
@@ -746,6 +765,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
+"Disse informasjonskapslene er kun til din nytte, de brukes ikke til å spore "
+"deg."
 
 #: searx/templates/oscar/preferences.html:462
 #: searx/templates/simple/preferences.html:282
@@ -754,10 +775,13 @@ msgstr "Søkenettadresse med nåværende lagrede innstillinger"
 
 #: searx/templates/oscar/preferences.html:463
 #: searx/templates/simple/preferences.html:286
+#, fuzzy
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
+"Merk: Å angi egendefinerte innstillinger i søkenettadressen kan redusere "
+"personvernet ved å lekke data til sidene det klikkes på i resultatet."
 
 #: searx/templates/oscar/preferences.html:468
 #: searx/templates/simple/preferences.html:326
@@ -776,7 +800,7 @@ msgstr "Tilbakestill forvalg"
 
 #: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:45
 msgid "Engines cannot retrieve results"
-msgstr ""
+msgstr "Søkemotorer kan ikke motta resultater"
 
 #: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:66
 msgid "Suggestions"
@@ -919,7 +943,7 @@ msgstr "Kode"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:134
 msgid "Checker"
-msgstr ""
+msgstr "Sjekker"
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:137
 msgid "Failed test"
@@ -958,7 +982,7 @@ msgstr "Siste år"
 #: searx/templates/oscar/messages/first_time.html:6
 #: searx/templates/oscar/messages/no_data_available.html:3
 msgid "Heads up!"
-msgstr ""
+msgstr "Obs!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using searx first time."
@@ -970,12 +994,12 @@ msgstr "Info."
 
 #: searx/templates/oscar/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr ""
+msgstr "det er ingen informasjonskapsler definert per nå."
 
 #: searx/templates/oscar/messages/no_data_available.html:4
 #: searx/templates/simple/stats.html:24
 msgid "There is currently no data available. "
-msgstr ""
+msgstr "Ingen data tilgjengelig for øyeblikket. "
 
 #: searx/templates/oscar/messages/no_results.html:4
 #: searx/templates/simple/messages/no_results.html:4
@@ -998,11 +1022,11 @@ msgstr "Beklager."
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
-msgstr ""
+msgstr "fant ingen resultater. Søk etter noe annet, eller i flere kategorier."
 
 #: searx/templates/oscar/messages/save_settings_successfull.html:7
 msgid "Well done!"
-msgstr ""
+msgstr "Bra gjort."
 
 #: searx/templates/oscar/messages/save_settings_successfull.html:8
 msgid "Settings saved successfully."
