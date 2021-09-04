@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Wikipedia (Web
+ Rumble (Videos)
 """
 from urllib.parse import urlencode
 from lxml import html

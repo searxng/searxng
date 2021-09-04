@@ -207,7 +207,7 @@ install_all() {
     wait_key
     echo
     if ! service_is_available "http://${FILTRON_LISTEN}" ; then
-        err_msg "Filtron does not listening on: http://${FILTRON_LISTEN}"
+        err_msg "Filtron is not listening on: http://${FILTRON_LISTEN}"
     fi
     if apache_is_installed; then
         info_msg "Apache is installed on this host."
@@ -375,7 +375,7 @@ EOF
     fi
 
     if ! service_is_available "http://${FILTRON_LISTEN}" ; then
-        err_msg "Filtron does not listening on: http://${FILTRON_LISTEN}"
+        err_msg "Filtron is not listening on: http://${FILTRON_LISTEN}"
     fi
 
     if service_is_available "http://${FILTRON_TARGET}" ; then

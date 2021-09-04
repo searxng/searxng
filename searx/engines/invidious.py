@@ -10,9 +10,9 @@ import random
 
 # about
 about = {
-    "website": 'https://instances.invidio.us/',
+    "website": 'https://api.invidious.io/',
     "wikidata_id": 'Q79343316',
-    "official_api_documentation": 'https://github.com/omarroth/invidious/wiki/API',
+    "official_api_documentation": 'https://github.com/iv-org/documentation/blob/master/API.md',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
