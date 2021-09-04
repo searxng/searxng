@@ -798,6 +798,25 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: azlyrics
+    shortcut: lyrics
+    engine: xpath
+    timeout: 4.0
+    disabled: true
+    categories: general
+    paging: true
+    search_url: https://search.azlyrics.com/search.php?q={query}&w=lyrics&p={pageno}
+    url_xpath: //td[@class="text-left visitedlyr"]/a/@href
+    title_xpath: //span/b/text()
+    content_xpath: //td[@class="text-left visitedlyr"]/a/small
+    about:
+      website: https://azlyrics.com
+      wikidata_id: Q66372542
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   # - name: meilisearch
   #   engine: meilisearch
   #   shortcut: mes
