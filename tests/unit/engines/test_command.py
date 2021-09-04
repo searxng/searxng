@@ -16,7 +16,7 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 
 
 from searx.engines import command as command_engine
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 class TestCommandEngine(SearxTestCase):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import mock
-from searx.testing import SearxTestCase
 from searx import webutils
+from tests import SearxTestCase
 
 
 class TestWebUtils(SearxTestCase):

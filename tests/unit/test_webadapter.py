@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from searx.testing import SearxTestCase
 from searx.preferences import Preferences
 from searx.engines import engines
 
 import searx.search
 from searx.search import EngineRef
 from searx.webadapter import validate_engineref_list
+from tests import SearxTestCase
 
 
 PRIVATE_ENGINE_NAME = 'general private offline'

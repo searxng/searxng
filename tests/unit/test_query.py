@@ -1,7 +1,7 @@
 from searx import settings
 from searx.engines import load_engines
 from searx.query import RawTextQuery
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 TEST_ENGINES = [

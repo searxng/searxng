@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from searx.results import ResultContainer
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 def fake_result(url='https://aa.bb/cc?dd=ee#ff',

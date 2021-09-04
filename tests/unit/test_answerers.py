@@ -3,7 +3,7 @@
 from mock import Mock
 
 from searx.answerers import answerers
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 class AnswererTest(SearxTestCase):

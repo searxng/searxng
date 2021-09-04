@@ -2,7 +2,7 @@
 from collections import defaultdict
 import mock
 from searx.engines import xpath
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 class TestXpathEngine(SearxTestCase):

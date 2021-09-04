@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from searx.testing import SearxTestCase
+import searx.search
 from searx.search import SearchQuery, EngineRef
 from searx import settings
-import searx.search
+from tests import SearxTestCase
 
 
 SAFESEARCH = 0

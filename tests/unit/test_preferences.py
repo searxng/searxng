@@ -1,6 +1,6 @@
 from searx.preferences import (EnumStringSetting, MapSetting, MissingArgumentException, SearchLanguageSetting,
                                MultipleChoiceSetting, PluginsSetting, ValidationException)
-from searx.testing import SearxTestCase
+from tests import SearxTestCase
 
 
 class PluginStub:
