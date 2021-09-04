@@ -50,7 +50,7 @@ def parse_pageno(form: Dict[str, str]) -> int:
 
 def parse_lang(preferences: Preferences, form: Dict[str, str], raw_text_query: RawTextQuery) -> str:
     if is_locked('language'):
-        return preferences.get_value('langueage')
+        return preferences.get_value('language')
     # get language
     # set specific language if set on request, query or preferences
     # TODO support search with multible languages
