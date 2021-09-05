@@ -27,9 +27,9 @@
     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- "" -}}
     <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
         {%- if max_rate95 is not none and max_rate95 > 0 -%}
-        <span style="width: calc(max(2px, 100%*{{ (stats[engine_name].time / max_rate95)|round(3) }}))" class="stacked-bar-chart-median"></span>{{- "" -}}
-        <span style="width: calc(100%*{{ ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95)|round(3) }})" class="stacked-bar-chart-rate80"></span>{{- "" -}}
-        <span style="width: calc(100%*{{ ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95)|round(3) }})" class="stacked-bar-chart-rate95"></span>{{- "" -}}
+        <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- "" -}}
+        <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- "" -}}
+        <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- "" -}}
         <span class="stacked-bar-chart-rate100"></span>
         {%- endif -%}
     </span>{{- "" -}}
