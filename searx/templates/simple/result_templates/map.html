@@ -45,7 +45,7 @@
 {{- result_sub_footer(result, proxify) -}}
 
 {% if (result.latitude and result.longitude) or result.boundingbox -%}
-    <div id="result-map-{{ index }}" class="invisible"><div id="osm-map-{{ index }}" style="height:300px; width:100%; margin: 10px 0;" ></div></div>
+    <div id="result-map-{{ index }}" class="invisible"><div id="osm-map-{{ index }}" class="osm-map-box"></div></div>
 {%- endif %}
 
 {{- result_footer(result) }}
