@@ -22,7 +22,7 @@
 {%- endmacro %}
 
 {%- macro engine_time(engine_name, css_align_class) -%}
-<td class="{{ label }}" style="padding: 2px">{{- "" -}}
+<td class="{{ label }}">{{- "" -}}
     {%- if stats[engine_name].time != None -%}
     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- "" -}}
     <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
