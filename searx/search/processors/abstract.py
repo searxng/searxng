@@ -9,8 +9,8 @@ import threading
 from abc import abstractmethod, ABC
 from timeit import default_timer
 
-from searx import logger
-from searx.engines import settings
+from searx import settings, logger
+from searx.engines import engines
 from searx.network import get_time_for_thread, get_network
 from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
@@ -43,7 +43,7 @@ class SuspendedStatus:
                                      self.continuous_errors * settings['search']['ban_time_on_fail'])
             self.suspend_end_time = default_timer() + suspended_time
             self.suspend_reason = suspend_reason
-        logger.debug('Suspend engine for %i seconds', suspended_time)
+            logger.debug('Suspend for %i seconds', suspended_time)
 
     def resume(self):
         with self.lock:
@@ -56,11 +56,12 @@ class SuspendedStatus:
 class EngineProcessor(ABC):
     """Base classes used for all types of reqest processores."""
 
-    __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status'
+    __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger'
 
     def __init__(self, engine, engine_name):
         self.engine = engine
         self.engine_name = engine_name
+        self.logger = engines[engine_name].logger
         key = get_network(self.engine_name)
         key = id(key) if key else self.engine_name
         self.suspended_status = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())
@@ -69,11 +70,11 @@ class EngineProcessor(ABC):
         try:
             self.engine.init(get_engine_from_settings(self.engine_name))
         except SearxEngineResponseException as exc:
-            logger.warn('%s engine: Fail to initialize // %s', self.engine_name, exc)
+            self.logger.warn('Fail to initialize // %s', exc)
         except Exception:  # pylint: disable=broad-except
-            logger.exception('%s engine: Fail to initialize', self.engine_name)
+            self.logger.exception('Fail to initialize')
         else:
-            logger.debug('%s engine: Initialized', self.engine_name)
+            self.logger.debug('Initialized')
 
     @property
     def has_initialize_function(self):

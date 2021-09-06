@@ -147,7 +147,7 @@ class Search:
                 if th.is_alive():
                     th._timeout = True
                     self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')
-                    logger.warning('engine timeout: {0}'.format(th._engine_name))
+                    PROCESSORS[th._engine_name].logger.error('engine timeout')
 
     def search_standard(self):
         """

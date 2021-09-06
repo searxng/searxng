@@ -5,7 +5,8 @@ from urllib.parse import urlparse
 from httpx import HTTPError, HTTPStatusError
 from searx.exceptions import (SearxXPathSyntaxException, SearxEngineXPathException, SearxEngineAPIException,
                               SearxEngineAccessDeniedException)
-from searx import logger, searx_parent_dir
+from searx import searx_parent_dir
+from searx.engines import engines
 
 
 errors_per_engines = {}
@@ -47,7 +48,7 @@ class ErrorContext:
 def add_error_context(engine_name: str, error_context: ErrorContext) -> None:
     errors_for_engine = errors_per_engines.setdefault(engine_name, {})
     errors_for_engine[error_context] = errors_for_engine.get(error_context, 0) + 1
-    logger.debug('%s: %s', engine_name, str(error_context))
+    engines[engine_name].logger.warning('%s', str(error_context))
 
 
 def get_trace(traces):
