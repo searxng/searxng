@@ -111,6 +111,7 @@ def load_engine(engine_data):
     if is_missing_required_attributes(engine):
         return None
 
+    engine.logger = logger.getChild(engine_name)
     return engine
 
 
