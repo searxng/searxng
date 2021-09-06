@@ -8,9 +8,6 @@
 from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 from json import loads
 
-from searx import logger
-
-logger = logger.getChild('unsplash engine')
 # about
 about = {
     "website": 'https://unsplash.com',

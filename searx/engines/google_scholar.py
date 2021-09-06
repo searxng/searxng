@@ -14,7 +14,6 @@ Definitions`_.
 from urllib.parse import urlencode
 from datetime import datetime
 from lxml import html
-from searx import logger
 
 from searx.utils import (
     eval_xpath,
@@ -52,8 +51,6 @@ language_support = True
 use_locale_domain = True
 time_range_support = True
 safesearch = False
-
-logger = logger.getChild('google scholar')
 
 def time_range_url(params):
     """Returns a URL query component for a google-Scholar time range based on

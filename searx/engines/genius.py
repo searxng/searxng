@@ -9,9 +9,6 @@ from json import loads
 from urllib.parse import urlencode
 from datetime import datetime
 
-from searx import logger
-logger = logger.getChild('genius engine')
-
 # about
 about = {
     "website": 'https://genius.com/',

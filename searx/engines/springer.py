@@ -10,10 +10,7 @@ from datetime import datetime
 from json import loads
 from urllib.parse import urlencode
 
-from searx import logger
 from searx.exceptions import SearxEngineAPIException
-
-logger = logger.getChild('Springer Nature engine')
 
 about = {
     "website": 'https://www.springernature.com/',

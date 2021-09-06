@@ -23,9 +23,6 @@ from urllib.parse import urlencode
 
 from lxml import html
 from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
-from searx import logger
-
-logger = logger.getChild('XPath engine')
 
 search_url = None
 """

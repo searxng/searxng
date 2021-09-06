@@ -8,7 +8,6 @@
 import re
 from json import loads
 from urllib.parse import urlencode
-# from searx import logger
 from searx.network import get
 
 # about

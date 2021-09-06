@@ -13,9 +13,6 @@ Explore thousands of artworks from The Art Institute of Chicago.
 from json import loads
 from urllib.parse import urlencode
 
-from searx import logger
-logger = logger.getChild('APKMirror engine')
-
 about = {
     "website": 'https://www.artic.edu',
     "wikidata_id": 'Q239303',

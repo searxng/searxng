@@ -14,7 +14,6 @@ from datetime import datetime, timedelta
 from dateutil import parser
 from lxml import html
 
-from searx import logger
 from searx.utils import (
     eval_xpath_list,
     eval_xpath_getindex,
@@ -22,8 +21,6 @@ from searx.utils import (
 )
 
 from searx.engines.yahoo import parse_url
-
-logger = logger.getChild('yahoo_news engine')
 
 # about
 about = {

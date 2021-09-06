@@ -20,7 +20,6 @@ from urllib.parse import urlencode
 from base64 import b64decode
 from lxml import html
 
-from searx import logger
 from searx.utils import (
     eval_xpath,
     eval_xpath_list,
@@ -49,8 +48,6 @@ about = {
     "require_api_key": False,
     "results": 'HTML',
 }
-
-logger = logger.getChild('google news')
 
 # compared to other google engines google-news has a different time range
 # support.  The time range is included in the search term.
