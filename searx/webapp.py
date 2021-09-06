@@ -1040,9 +1040,7 @@ def preferences():
         themes = themes,
         plugins = plugins,
         doi_resolvers = settings['doi_resolvers'],
-        current_doi_resolver = get_doi_resolver(
-            request.args, request.preferences.get_value('doi_resolver')
-        ),
+        current_doi_resolver = get_doi_resolver(request.preferences),
         allowed_plugins = allowed_plugins,
         theme = get_current_theme_name(),
         preferences_url_params = request.preferences.get_as_url_params(),
