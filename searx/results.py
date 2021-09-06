@@ -145,7 +145,7 @@ class ResultContainer:
     """docstring for ResultContainer"""
 
     __slots__ = '_merged_results', 'infoboxes', 'suggestions', 'answers', 'corrections', '_number_of_results',\
-                '_ordered', 'paging', 'unresponsive_engines', 'timings', 'redirect_url', 'engine_data'
+                '_closed', 'paging', 'unresponsive_engines', 'timings', 'redirect_url', 'engine_data', 'on_result'
 
     def __init__(self):
         super().__init__()
@@ -156,43 +156,48 @@ class ResultContainer:
         self.corrections = set()
         self._number_of_results = []
         self.engine_data = defaultdict(dict)
-        self._ordered = False
+        self._closed = False
         self.paging = False
         self.unresponsive_engines = set()
         self.timings = []
         self.redirect_url = None
+        self.on_result = lambda _: True
 
     def extend(self, engine_name, results):
+        if self._closed:
+            return
+
         standard_result_count = 0
         error_msgs = set()
         for result in list(results):
             result['engine'] = engine_name
-            if 'suggestion' in result:
+            if 'suggestion' in result and self.on_result(result):
                 self.suggestions.add(result['suggestion'])
-            elif 'answer' in result:
+            elif 'answer' in result and self.on_result(result):
                 self.answers[result['answer']] = result
-            elif 'correction' in result:
+            elif 'correction' in result and self.on_result(result):
                 self.corrections.add(result['correction'])
-            elif 'infobox' in result:
+            elif 'infobox' in result and self.on_result(result):
                 self._merge_infobox(result)
-            elif 'number_of_results' in result:
+            elif 'number_of_results' in result and self.on_result(result):
                 self._number_of_results.append(result['number_of_results'])
-            elif 'engine_data' in result:
+            elif 'engine_data' in result and self.on_result(result):
                 self.engine_data[engine_name][result['key']] = result['engine_data']
-            else:
+            elif 'url' in result:
                 # standard result (url, title, content)
-                if 'url' in result and not isinstance(result['url'], str):
-                    logger.debug('result: invalid URL: %s', str(result))
-                    error_msgs.add('invalid URL')
-                elif 'title' in result and not isinstance(result['title'], str):
-                    logger.debug('result: invalid title: %s', str(result))
-                    error_msgs.add('invalid title')
-                elif 'content' in result and not isinstance(result['content'], str):
-                    logger.debug('result: invalid content: %s', str(result))
-                    error_msgs.add('invalid content')
-                else:
-                    self._merge_result(result, standard_result_count + 1)
-                    standard_result_count += 1
+                if not self._is_valid_url_result(result, error_msgs):
+                    continue
+                # normalize the result
+                self._normalize_url_result(result)
+                # call on_result call searx.search.SearchWithPlugins._on_result
+                # which calls the plugins
+                if not self.on_result(result):
+                    continue
+                self.__merge_url_result(result, standard_result_count + 1)
+                standard_result_count += 1
+            elif self.on_result(result):
+                self.__merge_result_no_url(result, standard_result_count + 1)
+                standard_result_count += 1
 
         if len(error_msgs) > 0:
             for msg in error_msgs:
@@ -219,14 +224,29 @@ class ResultContainer:
         if add_infobox:
             self.infoboxes.append(infobox)
 
-    def _merge_result(self, result, position):
+    def _is_valid_url_result(self, result, error_msgs):
         if 'url' in result:
-            self.__merge_url_result(result, position)
-            return
+            if not isinstance(result['url'], str):
+                logger.debug('result: invalid URL: %s', str(result))
+                error_msgs.add('invalid URL')
+                return False
 
-        self.__merge_result_no_url(result, position)
+        if 'title' in result and not isinstance(result['title'], str):
+            logger.debug('result: invalid title: %s', str(result))
+            error_msgs.add('invalid title')
+            return False
 
-    def __merge_url_result(self, result, position):
+        if 'content' in result:
+            if not isinstance(result['content'], str):
+                logger.debug('result: invalid content: %s', str(result))
+                error_msgs.add('invalid content')
+                return False
+
+        return True
+
+    def _normalize_url_result(self, result):
+        """Return True if the result is valid
+        """
         result['parsed_url'] = urlparse(result['url'])
 
         # if the result has no scheme, use http as default
@@ -234,12 +254,13 @@ class ResultContainer:
             result['parsed_url'] = result['parsed_url']._replace(scheme="http")
             result['url'] = result['parsed_url'].geturl()
 
-        result['engines'] = set([result['engine']])
-
         # strip multiple spaces and cariage returns from content
-        if result.get('content'):
-            result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
+        result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
 
+        return True
+
+    def __merge_url_result(self, result, position):
+        result['engines'] = set([result['engine']])
         duplicated = self.__find_duplicated_http_result(result)
         if duplicated:
             self.__merge_duplicated_http_result(duplicated, result, position)
@@ -295,7 +316,9 @@ class ResultContainer:
         with RLock():
             self._merged_results.append(result)
 
-    def order_results(self):
+    def close(self):
+        self._closed = True
+
         for result in self._merged_results:
             score = result_score(result)
             result['score'] = score
@@ -349,12 +372,11 @@ class ResultContainer:
                 categoryPositions[category] = {'index': len(gresults), 'count': 8}
 
         # update _merged_results
-        self._ordered = True
         self._merged_results = gresults
 
     def get_ordered_results(self):
-        if not self._ordered:
-            self.order_results()
+        if not self._closed:
+            self.close()
         return self._merged_results
 
     def results_length(self):

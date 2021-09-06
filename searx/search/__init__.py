@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring, too-few-public-methods
 
 import typing
 import threading
@@ -179,7 +179,18 @@ class SearchWithPlugins(Search):
     def __init__(self, search_query, ordered_plugin_list, request):
         super().__init__(search_query)
         self.ordered_plugin_list = ordered_plugin_list
-        self.request = request
+        self.result_container.on_result = self._on_result
+        # pylint: disable=line-too-long
+        # get the "real" request to use it outside the Flask context.
+        # see
+        # * https://github.com/pallets/flask/blob/d01d26e5210e3ee4cbbdef12f05c886e08e92852/src/flask/globals.py#L55
+        # * https://github.com/pallets/werkzeug/blob/3c5d3c9bd0d9ce64590f0af8997a38f3823b368d/src/werkzeug/local.py#L548-L559
+        # * https://werkzeug.palletsprojects.com/en/2.0.x/local/#werkzeug.local.LocalProxy._get_current_object
+        # pylint: enable=line-too-long
+        self.request = request._get_current_object()
+
+    def _on_result(self, result):
+        return plugins.call(self.ordered_plugin_list, 'on_result', self.request, self, result)
 
     def search(self):
         if plugins.call(self.ordered_plugin_list, 'pre_search', self.request, self):
@@ -187,9 +198,6 @@ class SearchWithPlugins(Search):
 
         plugins.call(self.ordered_plugin_list, 'post_search', self.request, self)
 
-        results = self.result_container.get_ordered_results()
-
-        for result in results:
-            plugins.call(self.ordered_plugin_list, 'on_result', self.request, self, result)
+        self.result_container.close()
 
         return self.result_container
