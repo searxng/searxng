@@ -239,16 +239,14 @@ weblate.push.translations() {
 
     local messages_pot diff_messages_pot last_commit_hash last_commit_detail \
           last_commit_message exitcode
+    messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
     (   set -e
-        # lock change on weblate
-        pyenv.cmd wlc lock
 
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
 
         # update messages.pot in the master branch
         build_msg BABEL 'extract messages from source files and generate POT file'
-        messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
         pyenv.cmd pybabel extract -F babel.cfg \
                 -o "${messages_pot}" \
                 "searx/"
@@ -258,8 +256,25 @@ weblate.push.translations() {
                             git diff -- "searx/translations/messages.pot")
         if ! echo "$diff_messages_pot" | grep -qE "[\+\-](msgid|msgstr)"; then
             build_msg BABEL 'no changes detected, exiting'
-            return 0
+            return 42
         fi
+        return 0
+    )
+    exitcode=$?
+    if [ "$exitcode" -eq 42 ]; then
+        return 0
+    fi
+    if [ "$exitcode" ]; then
+       return $exitcode
+    fi
+    (
+        set -e
+
+        # lock change on weblate
+        # weblate may add commit(s) since the call to "weblate.translations.worktree".
+        # this is not a problem because after this line, "weblate.to.translations"
+        # calls again "weblate.translations.worktree" which calls "git pull"
+        pyenv.cmd wlc lock
 
         # save messages.pot in the translations branch for later
         pushd "${TRANSLATIONS_WORKTREE}"
