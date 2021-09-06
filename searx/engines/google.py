@@ -29,11 +29,8 @@ The google WEB engine itself has a special setup option:
 
 from urllib.parse import urlencode
 from lxml import html
-from searx import logger
 from searx.utils import match_language, extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 from searx.exceptions import SearxEngineCaptchaException
-
-logger = logger.getChild('google engine')
 
 # about
 about = {

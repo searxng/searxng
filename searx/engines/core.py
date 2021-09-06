@@ -9,10 +9,7 @@ from json import loads
 from datetime import datetime
 from urllib.parse import urlencode
 
-from searx import logger
 from searx.exceptions import SearxEngineAPIException
-
-logger = logger.getChild('CORE engine')
 
 about = {
     "website": 'https://core.ac.uk',
@@ -28,8 +25,6 @@ paging = True
 nb_per_page = 10
 
 api_key = 'unset'
-
-logger = logger.getChild('CORE engine')
 
 base_url = 'https://core.ac.uk:443/api-v2/search/'
 search_string = '{query}?page={page}&pageSize={nb_per_page}&apiKey={apikey}'

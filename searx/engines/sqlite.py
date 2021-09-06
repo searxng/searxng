@@ -9,11 +9,6 @@
 import sqlite3
 import contextlib
 
-from searx import logger
-
-
-logger = logger.getChild('SQLite engine')
-
 engine_type = 'offline'
 database = ""
 query_str = ""

@@ -10,14 +10,11 @@ from json import loads
 from dateutil.parser import isoparse
 from babel.dates import format_datetime, format_date, format_time, get_datetime_format
 
-from searx import logger
 from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
 from searx.utils import match_language, searx_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 from searx.engines.wikipedia import _fetch_supported_languages, supported_languages_url  # NOQA # pylint: disable=unused-import
-
-logger = logger.getChild('wikidata')
 
 # about
 about = {

@@ -6,10 +6,7 @@
 import re
 from urllib.parse import urlencode
 from lxml import html
-from searx import logger
 from searx.utils import eval_xpath, extract_text, match_language
-
-logger = logger.getChild('bing engine')
 
 # about
 about = {
