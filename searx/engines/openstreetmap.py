@@ -439,3 +439,8 @@ def get_key_label(key_name, lang):
         if labels is None:
             return None
     return get_label(labels, lang)
+
+
+def init(_):
+    import searx.engines.wikidata  # pylint: disable=import-outside-toplevel
+    searx.engines.wikidata.logger = logger
