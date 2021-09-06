@@ -10,9 +10,11 @@ from itertools import cycle
 
 import httpx
 
+from searx import logger, searx_debug
 from .client import new_client, get_loop
 
 
+logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
 NETWORKS = {}
 # requests compatibility when reading proxy settings from settings.yml
@@ -41,7 +43,7 @@ class Network:
         'enable_http', 'verify', 'enable_http2',
         'max_connections', 'max_keepalive_connections', 'keepalive_expiry',
         'local_addresses', 'proxies', 'max_redirects', 'retries', 'retry_on_http_error',
-        '_local_addresses_cycle', '_proxies_cycle', '_clients'
+        '_local_addresses_cycle', '_proxies_cycle', '_clients', '_logger'
     )
 
     def __init__(
@@ -57,7 +59,8 @@ class Network:
             local_addresses=None,
             retries=0,
             retry_on_http_error=None,
-            max_redirects=30 ):
+            max_redirects=30,
+            logger_name=None):
 
         self.enable_http = enable_http
         self.verify = verify
@@ -73,6 +76,7 @@ class Network:
         self._local_addresses_cycle = self.get_ipaddress_cycle()
         self._proxies_cycle = self.get_proxy_cycles()
         self._clients = {}
+        self._logger = logger.getChild(logger_name) if logger_name else logger
         self.check_parameters()
 
     def check_parameters(self):
@@ -130,12 +134,25 @@ class Network:
             # pylint: disable=stop-iteration-return
             yield tuple((pattern, next(proxy_url_cycle)) for pattern, proxy_url_cycle in proxy_settings.items())
 
+    async def log_response(self, response: httpx.Response):
+        request = response.request
+        status = f"{response.status_code} {response.reason_phrase}"
+        response_line = f"{response.http_version} {status}"
+        if hasattr(response, "_elapsed"):
+            elapsed_time = f"{response.elapsed.total_seconds()} sec"
+        else:
+            elapsed_time = "stream"
+        self._logger.debug(
+            f'HTTP Request: {request.method} {request.url} "{response_line}" ({elapsed_time})'
+        )
+
     def get_client(self, verify=None, max_redirects=None):
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
         proxies = next(self._proxies_cycle)  # is a tuple so it can be part of the key
         key = (verify, max_redirects, local_address, proxies)
+        hook_log_response = self.log_response if searx_debug else None
         if key not in self._clients or self._clients[key].is_closed:
             self._clients[key] = new_client(
                 self.enable_http,
@@ -147,7 +164,8 @@ class Network:
                 dict(proxies),
                 local_address,
                 0,
-                max_redirects
+                max_redirects,
+                hook_log_response
             )
         return self._clients[key]
 
@@ -243,11 +261,13 @@ def initialize(settings_engines=None, settings_outgoing=None):
         'retry_on_http_error': None,
     }
 
-    def new_network(params):
+    def new_network(params, logger_name=None):
         nonlocal default_params
         result = {}
         result.update(default_params)
         result.update(params)
+        if logger_name:
+            result['logger_name'] = logger_name
         return Network(**result)
 
     def iter_networks():
@@ -263,13 +283,13 @@ def initialize(settings_engines=None, settings_outgoing=None):
     if NETWORKS:
         done()
     NETWORKS.clear()
-    NETWORKS[DEFAULT_NAME] = new_network({})
-    NETWORKS['ipv4'] = new_network({'local_addresses': '0.0.0.0'})
-    NETWORKS['ipv6'] = new_network({'local_addresses': '::'})
+    NETWORKS[DEFAULT_NAME] = new_network({}, logger_name='default')
+    NETWORKS['ipv4'] = new_network({'local_addresses': '0.0.0.0'}, logger_name='ipv4')
+    NETWORKS['ipv6'] = new_network({'local_addresses': '::'}, logger_name='ipv6')
 
     # define networks from outgoing.networks
     for network_name, network in settings_outgoing['networks'].items():
-        NETWORKS[network_name] = new_network(network)
+        NETWORKS[network_name] = new_network(network, logger_name=network_name)
 
     # define networks from engines.[i].network (except references)
     for engine_name, engine, network in iter_networks():
@@ -280,9 +300,9 @@ def initialize(settings_engines=None, settings_outgoing=None):
                     network[attribute_name] = getattr(engine, attribute_name)
                 else:
                     network[attribute_name] = attribute_value
-            NETWORKS[engine_name] = new_network(network)
+            NETWORKS[engine_name] = new_network(network, logger_name=engine_name)
         elif isinstance(network, dict):
-            NETWORKS[engine_name] = new_network(network)
+            NETWORKS[engine_name] = new_network(network, logger_name=engine_name)
 
     # define networks from engines.[i].network (references)
     for engine_name, engine, network in iter_networks():
@@ -295,7 +315,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
     if 'image_proxy' not in NETWORKS:
         image_proxy_params = default_params.copy()
         image_proxy_params['enable_http2'] = False
-        NETWORKS['image_proxy'] = new_network(image_proxy_params)
+        NETWORKS['image_proxy'] = new_network(image_proxy_params, logger_name='image_proxy')
 
 
 @atexit.register

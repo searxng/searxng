@@ -194,7 +194,7 @@ def new_client(
         # pylint: disable=too-many-arguments
         enable_http, verify, enable_http2,
         max_connections, max_keepalive_connections, keepalive_expiry,
-        proxies, local_address, retries, max_redirects  ):
+        proxies, local_address, retries, max_redirects, hook_log_response  ):
     limit = httpx.Limits(
         max_connections=max_connections,
         max_keepalive_connections=max_keepalive_connections,
@@ -221,7 +221,17 @@ def new_client(
         mounts['http://'] = AsyncHTTPTransportNoHttp()
 
     transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
-    return httpx.AsyncClient(transport=transport, mounts=mounts, max_redirects=max_redirects)
+
+    event_hooks = None
+    if hook_log_response:
+        event_hooks = {'response': [ hook_log_response ]}
+
+    return httpx.AsyncClient(
+        transport=transport,
+        mounts=mounts,
+        max_redirects=max_redirects,
+        event_hooks=event_hooks,
+    )
 
 
 def get_loop():
@@ -231,7 +241,7 @@ def get_loop():
 
 def init():
     # log
-    for logger_name in ('hpack.hpack', 'hpack.table'):
+    for logger_name in ('hpack.hpack', 'hpack.table', 'httpx._client'):
         logging.getLogger(logger_name).setLevel(logging.WARNING)
 
     # loop
