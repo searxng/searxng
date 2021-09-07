@@ -184,7 +184,7 @@ def response(resp):
     '''
     results = []
     dom = html.fromstring(resp.text)
-    is_onion = 'onions' in categories  # pylint: disable=undefined-variable
+    is_onion = 'onions' in categories
 
     if results_xpath:
         for result in eval_xpath_list(dom, results_xpath):

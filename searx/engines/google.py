@@ -277,7 +277,6 @@ def request(query, params):
     offset = (params['pageno'] - 1) * 10
 
     lang_info = get_lang_info(
-        # pylint: disable=undefined-variable
         params, supported_languages, language_aliases, True
     )
 

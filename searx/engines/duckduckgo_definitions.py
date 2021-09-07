@@ -64,7 +64,7 @@ def request(query, params):
     params['url'] = URL.format(query=urlencode({'q': query}))
     language = match_language(
         params['language'],
-        supported_languages,   # pylint: disable=undefined-variable
+        supported_languages,
         language_aliases
     )
     language = language.split('-')[0]

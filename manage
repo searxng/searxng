@@ -37,7 +37,7 @@ PYLINT_SEARX_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
 E1136"
-PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES="supported_languages,language_aliases,logger"
+PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES="supported_languages,language_aliases,logger,categories"
 PYLINT_OPTIONS="-m pylint -j 0 --rcfile .pylintrc"
 
 help() {
