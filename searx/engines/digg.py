@@ -3,7 +3,6 @@
 """
  Digg (News, Social media)
 """
-# pylint: disable=missing-function-docstring
 
 from json import loads
 from urllib.parse import urlencode

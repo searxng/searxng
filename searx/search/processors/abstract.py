@@ -19,8 +19,6 @@ from searx.utils import get_engine_from_settings
 logger = logger.getChild('searx.search.processor')
 SUSPENDED_STATUS = {}
 
-# pylint: disable=missing-function-docstring
-
 class SuspendedStatus:
     """Class to handle suspend state."""
 

@@ -11,7 +11,7 @@ ignores some parameters from the common :ref:`google API`:
 
 """
 
-# pylint: disable=invalid-name, missing-function-docstring
+# pylint: disable=invalid-name
 
 import binascii
 from datetime import datetime

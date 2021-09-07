@@ -3,7 +3,6 @@
 """OpenStreetMap (Map)
 
 """
-# pylint: disable=missing-function-docstring
 
 import re
 from json import loads

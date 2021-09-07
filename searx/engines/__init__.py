@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=missing-function-docstring
 """This module implements the engine loader.
 
 Load and initialize the ``engines``, see :py:func:`load_engines` and register

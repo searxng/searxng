@@ -4,7 +4,7 @@
  Meilisearch
 """
 
-# pylint: disable=global-statement, missing-function-docstring
+# pylint: disable=global-statement
 
 from json import loads, dumps
 

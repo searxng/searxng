@@ -3,7 +3,7 @@
 """APKMirror
 """
 
-# pylint: disable=invalid-name, missing-function-docstring
+# pylint: disable=invalid-name
 
 from urllib.parse import urlencode
 from lxml import html

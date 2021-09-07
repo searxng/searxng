@@ -3,7 +3,6 @@
 """
  Deviantart (Images)
 """
-# pylint: disable=missing-function-docstring
 
 from urllib.parse import urlencode
 from lxml import html

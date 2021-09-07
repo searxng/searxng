@@ -117,7 +117,7 @@ class MultipleChoiceSetting(EnumStringSetting):
         self._validate_selections(elements)
         self.value = elements
 
-    def parse_form(self, data):  # pylint: disable=missing-function-docstring
+    def parse_form(self, data):
         if self.locked:
             return
 
@@ -154,7 +154,7 @@ class SetSetting(Setting):
         for element in elements:
             self.values.add(element)
 
-    def parse_form(self, data):  # pylint: disable=missing-function-docstring
+    def parse_form(self, data):
         if self.locked:
             return
 
@@ -226,22 +226,22 @@ class SwitchableSetting(Setting):
         if not hasattr(self, 'choices'):
             raise MissingArgumentException('missing argument: choices')
 
-    def transform_form_items(self, items):  # pylint: disable=missing-function-docstring
+    def transform_form_items(self, items):
         # pylint: disable=no-self-use
         return items
 
-    def transform_values(self, values):   # pylint: disable=missing-function-docstring
+    def transform_values(self, values):
         # pylint: disable=no-self-use
         return values
 
-    def parse_cookie(self, data):   # pylint: disable=missing-function-docstring
+    def parse_cookie(self, data):
         # pylint: disable=attribute-defined-outside-init
         if data[DISABLED] != '':
             self.disabled = set(data[DISABLED].split(','))
         if data[ENABLED] != '':
             self.enabled = set(data[ENABLED].split(','))
 
-    def parse_form(self, items):   # pylint: disable=missing-function-docstring
+    def parse_form(self, items):
         if self.locked:
             return
 
@@ -262,14 +262,14 @@ class SwitchableSetting(Setting):
         resp.set_cookie('disabled_{0}'.format(self.value), ','.join(self.disabled), max_age=COOKIE_MAX_AGE)
         resp.set_cookie('enabled_{0}'.format(self.value), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
 
-    def get_disabled(self):   # pylint: disable=missing-function-docstring
+    def get_disabled(self):
         disabled = self.disabled
         for choice in self.choices:  # pylint: disable=no-member
             if not choice['default_on'] and choice['id'] not in self.enabled:
                 disabled.add(choice['id'])
         return self.transform_values(disabled)
 
-    def get_enabled(self):   # pylint: disable=missing-function-docstring
+    def get_enabled(self):
         enabled = self.enabled
         for choice in self.choices:  # pylint: disable=no-member
             if choice['default_on'] and choice['id'] not in self.disabled:
@@ -515,7 +515,7 @@ class Preferences:
             resp.set_cookie(k, v, max_age=COOKIE_MAX_AGE)
         return resp
 
-    def validate_token(self, engine):  # pylint: disable=missing-function-docstring
+    def validate_token(self, engine):
         valid = True
         if hasattr(engine, 'tokens') and engine.tokens:
             valid = False

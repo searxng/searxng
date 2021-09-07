@@ -6,7 +6,7 @@ Yahoo News is "English only" and do not offer localized nor language queries.
 
 """
 
-# pylint: disable=invalid-name, missing-function-docstring
+# pylint: disable=invalid-name
 
 import re
 from urllib.parse import urlencode

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=missing-function-docstring
 """The XPath engine is a *generic* engine with which it is possible to configure
 engines in the settings.
 
