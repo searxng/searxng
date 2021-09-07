@@ -70,7 +70,7 @@
     {% set r = '' %}
 {% endif %}
 {% if checker_result or errors %}
-<td class="{{ label }}">{{- "" -}}
+<td class="{{ label }} column-reliability">{{- "" -}}
     <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- "" -}}
       <span aria-labelledby="{{engine_name}}_reliability">
           {{ icon('warning', 'The engine is not reliabled') }} {{ r -}}
