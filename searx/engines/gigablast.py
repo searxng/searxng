@@ -3,7 +3,7 @@
 """
  Gigablast (Web)
 """
-# pylint: disable=missing-function-docstring, invalid-name
+# pylint: disable=invalid-name
 
 import re
 from json import loads

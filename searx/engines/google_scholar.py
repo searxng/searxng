@@ -9,7 +9,7 @@ Definitions`_.
    https://developers.google.com/custom-search/docs/xml_results#WebSearch_Query_Parameter_Definitions
 """
 
-# pylint: disable=invalid-name, missing-function-docstring
+# pylint: disable=invalid-name
 
 from urllib.parse import urlencode
 from datetime import datetime

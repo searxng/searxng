@@ -25,8 +25,6 @@ The google WEB engine itself has a special setup option:
 
 """
 
-# pylint: disable=invalid-name, missing-function-docstring
-
 from urllib.parse import urlencode
 from lxml import html
 from searx.utils import match_language, extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex

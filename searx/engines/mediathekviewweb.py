@@ -4,8 +4,6 @@
 
 """
 
-# pylint: disable=missing-function-docstring
-
 import datetime
 from json import loads, dumps
 

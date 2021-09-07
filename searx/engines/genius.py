@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=invalid-name, missing-function-docstring
+# pylint: disable=invalid-name
 """Genius
 
 """

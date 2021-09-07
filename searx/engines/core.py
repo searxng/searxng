@@ -3,7 +3,6 @@
 """CORE (science)
 
 """
-# pylint: disable=missing-function-docstring
 
 from json import loads
 from datetime import datetime
