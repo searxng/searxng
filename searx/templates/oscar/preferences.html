@@ -22,7 +22,7 @@
 {%- endmacro %}
 
 {%- macro engine_time(engine_name, css_align_class) -%}
-<td class="{{ label }}" style="padding: 2px">{{- "" -}}
+<td class="{{ label }}">{{- "" -}}
     {%- if stats[engine_name].time != None -%}
     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- "" -}}
     <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
@@ -318,15 +318,15 @@
                                     <th scope="col">{{ _("Allow") }}</th>
                                     <th scope="col">{{ _("Engine name") }}</th>
                                     <th scope="col">{{ _("Shortcut") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("Selected language") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("SafeSearch") }}</th>
-                                    <th scope="col" style="width: 10rem">{{ _("Time range") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("Selected language") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("SafeSearch") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("Time range") }}</th>
                                     <th scope="col">{{ _("Response time") }}</th>
-                                    <th scope="col" class="text-right"  style="width: 7rem">{{ _("Max time") }}</th>
-                                    <th scope="col" class="text-right" style="width: 7rem">{{ _("Reliablity") }}</th>
+                                    <th scope="col" class="col-stat text-right">{{ _("Max time") }}</th>
+                                    <th scope="col" class="col-stat text-right">{{ _("Reliablity") }}</th>
                                     {% else %}
-                                    <th scope="col">{{ _("Reliablity") }}</th>
-                                    <th scope="col">{{ _("Max time") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("Reliablity") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("Max time") }}</th>
                                     <th scope="col" class="text-right">{{ _("Response time") }}</th>
                                     <th scope="col" class="text-right">{{ _("Time range") }}</th>
                                     <th scope="col" class="text-right">{{ _("SafeSearch") }}</th>

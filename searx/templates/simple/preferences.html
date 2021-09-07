@@ -36,7 +36,7 @@
 {%- endmacro %}
 
 {%- macro engine_time(engine_name) -%}
-<td class="{{ label }}" style="padding: 2px; width: 13rem;">{{- "" -}}
+<td class="{{ label }}">{{- "" -}}
     {%- if stats[engine_name].time != None -%}
     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- "" -}}
     <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
@@ -70,13 +70,13 @@
     {% set r = '' %}
 {% endif %}
 {% if checker_result or errors %}
-<td class="{{ label }}">{{- "" -}}
+<td class="{{ label }} column-reliability">{{- "" -}}
     <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- "" -}}
       <span aria-labelledby="{{engine_name}}_reliability">
           {{ icon('warning', 'The engine is not reliabled') }} {{ r -}}
       </span>{{- "" -}}
     </a>{{- "" -}}
-    <div class="engine-tooltip" style="right: 12rem;" role="tooltip" id="{{engine_name}}_reliability">
+    <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
         {%- if checker_result -%}
         <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
         {%- endif -%}
@@ -257,7 +257,7 @@
 
   {{ tab_header('maintab', 'cookies', _('Cookies')) }}
 
-     <p class="text-muted" style="margin:20px 0;">
+     <p class="text-muted">
         {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
         {{ _('With that list, you can assess searx transparency.') }}<br />
      </p>
