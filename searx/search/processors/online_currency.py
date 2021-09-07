@@ -12,8 +12,6 @@ from .online import OnlineProcessor
 
 parser_re = re.compile('.*?(\\d+(?:\\.\\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)', re.I)
 
-# pylint: disable=missing-function-docstring
-
 def normalize_name(name):
     name = name.lower().replace('-', ' ').rstrip('s')
     name = re.sub(' +', ' ', name)

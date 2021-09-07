@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=missing-module-docstring, missing-function-docstring, global-statement
+# pylint: disable=missing-module-docstring, global-statement
 
 import asyncio
 import threading
