@@ -89,7 +89,6 @@ def request(query, params):
     else:
         language = match_language(
             params['language'],
-            # pylint: disable=undefined-variable
             supported_languages,
             language_aliases,
         )

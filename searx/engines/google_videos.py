@@ -110,7 +110,6 @@ def request(query, params):
     """Google-Video search request"""
 
     lang_info = get_lang_info(
-        # pylint: disable=undefined-variable
         params, supported_languages, language_aliases, False
     )
     logger.debug(

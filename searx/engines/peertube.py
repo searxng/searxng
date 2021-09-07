@@ -34,7 +34,6 @@ def request(query, params):
     search_url = sanitized_url + "/api/v1/search/videos/?pageno={pageno}&{query}"
     query_dict = {"search": query}
     language = params["language"].split("-")[0]
-    # pylint: disable=undefined-variable
     if "all" != language and language in supported_languages:
         query_dict["languageOneOf"] = language
     params["url"] = search_url.format(
