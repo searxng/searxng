@@ -16,7 +16,7 @@
 {%- if result.img_src or result.thumbnail -%}
 <div class="container-fluid">{{- "" -}}
     <div class="row">{{- "" -}}
-        <img src="{{ image_proxify(result.img_src or result.thumbnail) }}" title="{{ result.title|striptags }}" class="default-image-style" class="col-xs-2 col-sm-4 col-md-4 result-content">
+        <img src="{{ image_proxify(result.img_src or result.thumbnail) }}" title="{{ result.title|striptags }}" class="default-image-style col-xs-2 col-sm-4 col-md-4 result-content">
         {%- if result.content %}<p class="result-content col-xs-8 col-sm-8 col-md-8">{{ result.content|safe }}</p>{% endif -%}
     </div>{{- "" -}}
 </div>
