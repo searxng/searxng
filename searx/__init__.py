@@ -18,6 +18,7 @@ LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
 
 # Production
 LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
+LOG_LEVEL_PROD = logging.WARNING
 
 searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
@@ -95,7 +96,9 @@ searx_debug = settings['general']['debug']
 if searx_debug:
     logging_config_debug()
 else:
-    logging.basicConfig(level=logging.WARNING, format=LOG_FORMAT_PROD)
+    logging.basicConfig(level=LOG_LEVEL_PROD, format=LOG_FORMAT_PROD)
+    logging.root.setLevel(level=LOG_LEVEL_PROD)
+    logging.getLogger('werkzeug').setLevel(level=LOG_LEVEL_PROD)
 logger = logging.getLogger('searx')
 logger.info(settings_load_message)
 
