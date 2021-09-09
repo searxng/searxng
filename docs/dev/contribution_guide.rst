@@ -105,11 +105,7 @@ For more help on getting started with searx development, see :ref:`devquickstart
 Translation
 ===========
 
-Translation currently takes place on :ref:`transifex <translation>`.
-
-.. caution::
-
-   Please, do not update translation files in the repo.
+Translation currently takes place on :ref:`weblate <translation>`.
 
 
 .. _contrib docs:
