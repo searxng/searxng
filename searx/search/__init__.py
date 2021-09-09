@@ -39,7 +39,7 @@ class Search:
 
     __slots__ = "search_query", "result_container", "start_time", "actual_timeout"
 
-    def __init__(self, search_query):
+    def __init__(self, search_query: SearchQuery):
         # init vars
         super().__init__()
         self.search_query = search_query
@@ -163,7 +163,7 @@ class Search:
         return True
 
     # do search-request
-    def search(self):
+    def search(self) -> ResultContainer:
         self.start_time = default_timer()
         if not self.search_external_bang():
             if not self.search_answerers():
@@ -172,11 +172,11 @@ class Search:
 
 
 class SearchWithPlugins(Search):
-    """Similar to the Search class but call the plugins."""
+    """Inherit from the Search class, add calls to the plugins."""
 
     __slots__ = 'ordered_plugin_list', 'request'
 
-    def __init__(self, search_query, ordered_plugin_list, request):
+    def __init__(self, search_query: SearchQuery, ordered_plugin_list, request: "flask.Request"):
         super().__init__(search_query)
         self.ordered_plugin_list = ordered_plugin_list
         self.result_container.on_result = self._on_result
@@ -192,7 +192,7 @@ class SearchWithPlugins(Search):
     def _on_result(self, result):
         return plugins.call(self.ordered_plugin_list, 'on_result', self.request, self, result)
 
-    def search(self):
+    def search(self) -> ResultContainer:
         if plugins.call(self.ordered_plugin_list, 'pre_search', self.request, self):
             super().search()
 
