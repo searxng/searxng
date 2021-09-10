@@ -4,6 +4,7 @@ import typing
 
 
 class EngineRef:
+    """Reference by names to an engine and category"""
 
     __slots__ = 'name', 'category'
 

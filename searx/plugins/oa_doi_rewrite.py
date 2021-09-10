@@ -11,8 +11,6 @@ description = gettext('Avoid paywalls by redirecting to open-access versions of 
 default_on = False
 preference_section = 'general'
 
-doi_resolvers = settings['doi_resolvers']
-
 
 def extract_doi(url):
     match = regex.search(url.path)
@@ -25,13 +23,12 @@ def extract_doi(url):
     return None
 
 
-def get_doi_resolver(args, preference_doi_resolver):
+def get_doi_resolver(preferences):
     doi_resolvers = settings['doi_resolvers']
-    doi_resolver = args.get('doi_resolver', preference_doi_resolver)[0]
-    if doi_resolver not in doi_resolvers:
-        doi_resolver = settings['default_doi_resolver']
-    doi_resolver_url = doi_resolvers[doi_resolver]
-    return doi_resolver_url
+    selected_resolver = preferences.get_value('doi_resolver')[0]
+    if selected_resolver not in doi_resolvers:
+        selected_resolver = settings['default_doi_resolver']
+    return doi_resolvers[selected_resolver]
 
 
 def on_result(request, search, result):
@@ -43,6 +40,6 @@ def on_result(request, search, result):
         for suffix in ('/', '.pdf', '.xml', '/full', '/meta', '/abstract'):
             if doi.endswith(suffix):
                 doi = doi[:-len(suffix)]
-        result['url'] = get_doi_resolver(request.args, request.preferences.get_value('doi_resolver')) + doi
+        result['url'] = get_doi_resolver(request.preferences) + doi
         result['parsed_url'] = urlparse(result['url'])
     return True
