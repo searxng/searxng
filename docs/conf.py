@@ -9,9 +9,9 @@ from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 
 # Project --------------------------------------------------------------
 
-project = u'searx'
-copyright = u'2015-2020, Adam Tauber, Noémi Ványi'
-author = u'Adam Tauber'
+project = 'SearXNG'
+copyright = '2021 SearXNG team, 2015-2021 Adam Tauber, Noémi Ványi'
+author = '2021 SearXNG team, 2015-2021 Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
 
 SEARX_URL = get_setting('server.base_url') or 'https://example.org/searx'
@@ -132,7 +132,7 @@ html_sidebars = {
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_static_path = ["static"]
 html_logo = "static/img/searx_logo_small.png"
-html_title = "Searx Documentation ({})".format("Searx-{}.tex".format(VERSION_STRING))
+html_title = "Searx Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = False
 
 # LaTeX ----------------------------------------------------------------
