@@ -255,7 +255,8 @@ class ResultContainer:
             result['url'] = result['parsed_url'].geturl()
 
         # strip multiple spaces and cariage returns from content
-        result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
+        if result.get('content'):
+            result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
 
         return True
 
