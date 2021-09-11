@@ -173,9 +173,17 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
                 if len(chunk) > 0:
                     queue.put(chunk)
     except httpx.ResponseClosed:
-        # the response was closed
+        # the response was queued before the exception.
+        # the exception was raised on aiter_raw.
+        # we do nothing here: in the finally block, None will be queued
+        # so stream(method, url, **kwargs) generator can stop
         pass
-    except (httpx.HTTPError, OSError, h2.exceptions.ProtocolError) as e:
+    except Exception as e:  # pylint: disable=broad-except
+        # broad except to avoid this scenario:
+        # exception in network.stream(method, url, **kwargs)
+        # -> the exception is not catch here
+        # -> queue None (in finally)
+        # -> the function below steam(method, url, **kwargs) has nothing to return
         queue.put(e)
     finally:
         queue.put(None)
@@ -201,8 +209,9 @@ def stream(method, url, **kwargs):
     the httpx.AsyncHTTPTransport declared above.
     """
     queue = SimpleQueue()
+    network = get_context_network()
     future = asyncio.run_coroutine_threadsafe(
-        stream_chunk_to_queue(get_network(), queue, method, url, **kwargs),
+        stream_chunk_to_queue(network, queue, method, url, **kwargs),
         get_loop()
     )
 
