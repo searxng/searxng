@@ -44,9 +44,9 @@ help() {
     cat <<EOF
 buildenv:
   rebuild ./utils/brand.env
-babel.:
-  master.to.translations: update the translations branch from the messages of the master branch.
-  translations.to.master: copy change from the translations branch to the master branch.
+weblate.:
+  push.translations: push translation changes from SearXNG to Weblate's counterpart
+  to.translations: Update 'translations' branch with last additions from Weblate.
 data.:
   all       : update searx/languages.py and ./data/*
   languages : update searx/data/engines_languages.json & searx/languages.py
