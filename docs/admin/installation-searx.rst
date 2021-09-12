@@ -36,8 +36,8 @@ Create user
 
 .. _searx-src:
 
-install searx & dependencies
-============================
+Install SearXNG & dependencies
+==============================
 
 Start a interactive shell from new created user and clone searx:
 
@@ -51,7 +51,7 @@ In the same shell create *virtualenv*:
    :start-after: START create virtualenv
    :end-before: END create virtualenv
 
-To install searx's dependencies, exit the searx *bash* session you opened above
+To install searx's dependencies, exit the SearXNG *bash* session you opened above
 and restart a new.  Before install, first check if your *virtualenv* was sourced
 from the login (*~/.profile*):
 
@@ -106,8 +106,8 @@ For a *minimal setup*, configure like shown below – replace ``searx@$(uname
 Check
 =====
 
-To check your searx setup, optional enable debugging and start the *webapp*.
-Searx looks at the exported environment ``$SEARX_SETTINGS_PATH`` for a
+To check your SearXNG setup, optional enable debugging and start the *webapp*.
+SearXNG looks at the exported environment ``$SEARX_SETTINGS_PATH`` for a
 configuration file.
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst
@@ -115,6 +115,6 @@ configuration file.
    :end-before: END check searx installation
 
 If everything works fine, hit ``[CTRL-C]`` to stop the *webapp* and disable the
-debug option in ``settings.yml``. You can now exit searx user bash (enter exit
-command twice).  At this point searx is not demonized; uwsgi allows this.
+debug option in ``settings.yml``. You can now exit SearXNG user bash (enter exit
+command twice).  At this point SearXNG is not demonized; uwsgi allows this.
 

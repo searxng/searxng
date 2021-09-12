@@ -5,7 +5,7 @@
 Search syntax
 =============
 
-Searx allows you to modify the default categories, engines and search language
+SearXNG allows you to modify the default categories, engines and search language
 via the search query.
 
 Prefix ``!``
@@ -44,11 +44,11 @@ Custom language in wikipedia:
 Multilingual Search
 ===================
 
-Searx does not support true multilingual search.
+SearXNG does not support true multilingual search.
 You have to use the language prefix in your search query when searching in a different language.
 
 But there is a workaround:
-By adding a new search engine with a different language, Searx will search in your default and other language.
+By adding a new search engine with a different language, SearXNG will search in your default and other language.
 
 Example configuration in settings.yml for a German and English speaker:
  .. code-block:: yaml

@@ -118,7 +118,7 @@ ${fedora_build}
        pip install -U wheel
        pip install -U pyyaml
 
-       # jump to searx's working tree and install searx into virtualenv
+       # jump to searx's working tree and install SearXNG into virtualenv
        (${SERVICE_USER})$ cd \"$SEARX_SRC\"
        (${SERVICE_USER})$ pip install -e .
 

@@ -11,7 +11,7 @@ Installation
 - :ref:`installation basic`
 
 The :ref:`installation basic` is good enough for intranet usage and it is a
-excellent illustration of *how a searx instance is build up*.  If you place your
+excellent illustration of *how a SearXNG instance is build up*.  If you place your
 instance public to the internet you should really consider to install a
 :ref:`filtron reverse proxy <filtron.sh>` and for privacy a :ref:`result proxy
 <morty.sh>` is mandatory.
@@ -51,9 +51,9 @@ the case if you clone into a folder below ``/root``.
    - :ref:`update searx`
    - :ref:`inspect searx`
 
-**Install** :ref:`searx service <searx.sh>`
+**Install** :ref:`SearXNG service <searx.sh>`
 
-This installs searx as described in :ref:`installation basic`.
+This installs SearXNG as described in :ref:`installation basic`.
 
 .. code:: bash
 
@@ -80,8 +80,8 @@ If all services are running fine, you can add it to your HTTP server:
 
 **Install** :ref:`external plugins <dev plugin>`
 
-Use searx's ``shell`` to install external plugins.  In the example below we
-install the searx plugins from **The Green Web Foundation** `[ref]
+Use SearXNG's ``shell`` to install external plugins.  In the example below we
+install the SearXNG plugins from **The Green Web Foundation** `[ref]
 <https://www.thegreenwebfoundation.org/news/searching-the-green-web-with-searx/>`__:
 
 .. code:: bash

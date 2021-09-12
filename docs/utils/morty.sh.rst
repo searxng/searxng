@@ -37,7 +37,7 @@ into this user account:
 
 .. hint::
 
-   To add morty to your searx instance read chapter :ref:`searx morty`.
+   To add morty to your SearXNG instance read chapter :ref:`searx morty`.
 
 Create user
 ===========

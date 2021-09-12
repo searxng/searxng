@@ -27,7 +27,7 @@ The initial ``settings.yml`` we be load from these locations:
 1. the full path specified in the ``SEARX_SETTINGS_PATH`` environment variable.
 2. ``/etc/searx/settings.yml``
 
-If these files don't exist (or are empty or can't be read), searx uses the
+If these files don't exist (or are empty or can't be read), SearXNG uses the
 :origin:`searx/settings.yml` file.  Read :ref:`settings use_default_settings` to
 see how you can simplify your *user defined* ``settings.yml``.
 
@@ -71,11 +71,11 @@ Global Settings
 
    general:
      debug: false               # Debug mode, only for development
-     instance_name:  "searxng"  # displayed name
+     instance_name:  "SearXNG"  # displayed name
      contact_url: false         # mailto:contact@example.com
 
 ``debug`` : ``$SEARX_DEBUG``
-  Allow a more detailed log if you run searx directly. Display *detailed* error
+  Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
 
 ``contact_url``:
@@ -110,29 +110,29 @@ Global Settings
    rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
 
 ``base_url`` : :ref:`buildenv SEARX_URL <make buildenv>`
-  The base URL where searx is deployed.  Used to create correct inbound links.
+  The base URL where SearXNG is deployed.  Used to create correct inbound links.
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
 ``port`` & ``bind_address``: :ref:`buildenv SEARX_PORT & SEARX_BIND_ADDRESS <make buildenv>`
-  Port number and *bind address* of the searx web application if you run it
-  directly using ``python searx/webapp.py``.  Doesn't apply to searx running on
+  Port number and *bind address* of the SearXNG web application if you run it
+  directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
   Apache or Nginx.
 
 ``secret_key`` : ``$SEARX_SECRET``
   Used for cryptography purpose.
 
 ``image_proxy`` :
-  Allow your instance of searx of being able to proxy images.  Uses memory space.
+  Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
 
 ``default_locale`` :
-  Searx interface language.  If blank, the locale is detected by using the
+  SearXNG interface language.  If blank, the locale is detected by using the
   browser language.  If it doesn't work, or you are deploying a language
   specific instance of searx, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
 ``default_theme`` :
-  Name of the theme you want to use by default on your searx instance.
+  Name of the theme you want to use by default on your SearXNG instance.
 
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
@@ -171,11 +171,11 @@ Communication with search engines.
 ``request_timeout`` :
   Global timeout of the requests made to others engines in seconds.  A bigger
   timeout will allow to wait for answers from slow engines, but in consequence
-  will slow searx reactivity (the result page may take the time specified in the
+  will slow SearXNG reactivity (the result page may take the time specified in the
   timeout to load). Can be override by :ref:`settings engine`
 
 ``useragent_suffix`` :
-  Suffix to the user-agent searx uses to send requests to others engines.  If an
+  Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
   engine wish to block you, a contact info here may be useful to avoid that.
 
 ``keepalive_expiry``:
@@ -201,7 +201,7 @@ Communication with search engines.
   * ``[ 192.168.0.1, fe80::/126 ]``
 
 ``retries`` :
-  Number of retry in case of an HTTP error.  On each retry, searx uses an
+  Number of retry in case of an HTTP error.  On each retry, SearXNG uses an
   different proxy and source ip.
 
 ``retry_on_http_error`` :
@@ -271,7 +271,7 @@ engine is shown.  Most of the options have a default value or even are optional.
          - socks5h://user:password@proxy4:1080
 
 ``name`` :
-  Name that will be used across searx to define this engine.  In settings, on
+  Name that will be used across SearXNG to define this engine.  In settings, on
   the result page...
 
 ``engine`` :
@@ -361,7 +361,7 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 ``engines:``
   With ``use_default_settings: true``, each settings can be override in a
   similar way, the ``engines`` section is merged according to the engine
-  ``name``.  In this example, searx will load all the engine and the arch linux
+  ``name``.  In this example, SearXNG will load all the engine and the arch linux
   wiki engine has a :ref:`token <private engines>`:
 
   .. code-block:: yaml
@@ -375,7 +375,7 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 
 ``engines:`` / ``remove:``
   It is possible to remove some engines from the default settings. The following
-  example is similar to the above one, but searx doesn't load the the google
+  example is similar to the above one, but SearXNG doesn't load the the google
   engine:
 
   .. code-block:: yaml
@@ -392,7 +392,7 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 
 ``engines:`` / ``keep_only:``
   As an alternative, it is possible to specify the engines to keep. In the
-  following example, searx has only two engines:
+  following example, SearXNG has only two engines:
 
   .. code-block:: yaml
 

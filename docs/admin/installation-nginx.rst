@@ -128,17 +128,17 @@ depends on the linux distribution:
 
 .. _nginx searx site:
 
-A nginx searx site
-==================
+A nginx SearXNG site
+====================
 
 .. sidebar:: public to the internet?
 
-   If your searx instance is public, stop here and first install :ref:`filtron
+   If your SearXNG instance is public, stop here and first install :ref:`filtron
    reverse proxy <filtron.sh>` and :ref:`result proxy morty <morty.sh>`, see
-   :ref:`installation scripts`.  If already done, follow setup: *searx via
+   :ref:`installation scripts`.  If already done, follow setup: *SearXNG via
    filtron plus morty*.
 
-Now you have to create a configuration for the searx site.  If nginx_ is new to
+Now you have to create a configuration for the SearXNG site.  If nginx_ is new to
 you, the `nginx beginners guide`_ is a good starting point and the `Getting
 Started wiki`_ is always a good resource *to keep in the pocket*.
 
@@ -167,7 +167,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
 .. tabs::
 
-   .. group-tab:: searx via filtron plus morty
+   .. group-tab:: SearXNG via filtron plus morty
 
       Use this setup, if your instance is public to the internet, compare
       figure: :ref:`architecture <arch public>` and :ref:`installation scripts`.
@@ -292,7 +292,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
       Be warned, with these setups, your instance isn't :ref:`protected <searx
       filtron>`.  The examples are just here to demonstrate how to export the
-      searx application from a subdirectory URL ``https://example.org/searx/``.
+      SearXNG application from a subdirectory URL ``https://example.org/searx/``.
 
       .. code:: nginx
 
@@ -313,7 +313,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
              alias /usr/local/searx/searx-src/searx/static/;
          }
 
-      The ``X-Script-Name /searx`` is needed by the searx implementation to
+      The ``X-Script-Name /searx`` is needed by the SearXNG implementation to
       calculate relative URLs correct.  The next example shows a uWSGI
       configuration.  Since there are no HTTP headers in a (u)WSGI protocol, the
       value is shipped via the SCRIPT_NAME_ in the WSGI environment.
@@ -332,7 +332,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
              alias /usr/local/searx/searx-src/searx/;
          }
 
-      For searx to work correctly the ``base_url`` must be set in the
+      For SearXNG to work correctly the ``base_url`` must be set in the
       :origin:`searx/settings.yml`.
 
       .. code:: yaml

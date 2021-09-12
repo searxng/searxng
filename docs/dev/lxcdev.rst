@@ -52,7 +52,7 @@ software:
 and the script :ref:`lxc.sh`, with we can scale our installation, maintenance or
 even development tasks over a stack of isolated containers / what we call the:
 
-  **SearxNG LXC suite**
+  **SearXNG LXC suite**
 
 .. hint::
 
@@ -211,7 +211,7 @@ To debug services from filtron and morty analogous use:
         $ ./utils/filtron.sh inspect service
         $ ./utils/morty.sh inspect service
 
-Another point we have to notice is that each service (:ref:`searx <searx.sh>`,
+Another point we have to notice is that each service (:ref:`SearXNG <searx.sh>`,
 :ref:`filtron <filtron.sh>` and :ref:`morty <morty.sh>`) runs under dedicated
 system user account with the same name (compare :ref:`create searx user`).  To
 get a shell from theses accounts, simply call one of the scripts:
@@ -266,7 +266,7 @@ suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 - virtualenv in: ``/usr/local/searx/searx-pyenv``
 - SearXNG software in: ``/usr/local/searx/searx-src``
 
-With the use of the :ref:`searx.sh` the searx service was installed as
+With the use of the :ref:`searx.sh` the SearXNG service was installed as
 :ref:`uWSGI application <searx uwsgi>`.  To maintain this service, we can use
 ``systemctl`` (compare :ref:`service architectures on distributions <uwsgi
 configuration>`).
@@ -280,7 +280,7 @@ configuration>`).
         $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
           systemctl stop uwsgi@searx
 
-With the command above, we stopped the searx uWSGI-App in the archlinux
+With the command above, we stopped the SearXNG uWSGI-App in the archlinux
 container.
 
 The uWSGI-App for the archlinux dsitros is configured in
@@ -316,7 +316,7 @@ of the container:
           ln -s /share/searx/ /usr/local/searx/searx-src
 
 Now we can develop as usual in the working tree of our desktop system.  Every
-time the software was changed, you have to restart the searx service (in the
+time the software was changed, you have to restart the SearXNG service (in the
 conatiner):
 
 .. tabs::

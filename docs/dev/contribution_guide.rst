@@ -12,21 +12,21 @@ How to contribute
 Prime directives: Privacy, Hackability
 ======================================
 
-Searx has two prime directives, **privacy-by-design and hackability** .  The
+SearXNG has two prime directives, **privacy-by-design and hackability** .  The
 hackability comes in three levels:
 
 - support of search engines
 - plugins to alter search behaviour
-- hacking searx itself
+- hacking SearXNG itself
 
-Note the lack of "world domination" among the directives.  Searx has no
+Note the lack of "world domination" among the directives.  SearXNG has no
 intention of wide mass-adoption, rounded corners, etc.  The prime directive
 "privacy" deserves a separate chapter, as it's quite uncommon unfortunately.
 
 Privacy-by-design
 -----------------
 
-Searx was born out of the need for a **privacy-respecting** search tool which
+SearXNG was born out of the need for a **privacy-respecting** search tool which
 can be extended easily to maximize both, its search and its privacy protecting
 capabilities.
 
@@ -46,7 +46,7 @@ Submitting a bugreport to the vendor of the tool that misbehaves might be a good
 feedback to reconsider the disrespect to its customers (e.g. ``GET`` vs ``POST``
 requests in various browsers).
 
-Remember the other prime directive of searx is to be hackable, so if the above
+Remember the other prime directive of SearXNG is to be hackable, so if the above
 privacy concerns do not fancy you, simply fork it.
 
   *Happy hacking.*
@@ -99,7 +99,7 @@ In order to submit a patch, please follow the steps below:
 
 - Create a pull request.
 
-For more help on getting started with searx development, see :ref:`devquickstart`.
+For more help on getting started with SearXNG development, see :ref:`devquickstart`.
 
 
 Translation

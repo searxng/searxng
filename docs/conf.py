@@ -14,7 +14,7 @@ copyright = '2021 SearXNG team, 2015-2021 Adam Tauber, Noémi Ványi'
 author = '2021 SearXNG team, 2015-2021 Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
 
-SEARX_URL = get_setting('server.base_url') or 'https://example.org/searx'
+SEARX_URL = get_setting('server.base_url') or 'https://example.org/searxng'
 ISSUE_URL = get_setting('brand.issue_url')
 DOCS_URL = get_setting('brand.docs_url')
 PUBLIC_INSTANCES = get_setting('brand.public_instances')
@@ -132,7 +132,7 @@ html_sidebars = {
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_static_path = ["static"]
 html_logo = "static/img/searx_logo_small.png"
-html_title = "Searx Documentation ({})".format(VERSION_STRING)
+html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = False
 
 # LaTeX ----------------------------------------------------------------

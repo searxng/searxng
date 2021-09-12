@@ -6,7 +6,7 @@ Development Quickstart
 
 .. _npm: https://www.npmjs.com/
 
-Searx loves developers, just clone and start hacking.  All the rest is done for
+SearXNG loves developers, just clone and start hacking.  All the rest is done for
 you simply by using :ref:`make <makefile>`.
 
 .. code:: sh
