@@ -100,17 +100,17 @@ Parameters
   :default: ``HTTPS_rewrite``, ``Self_Informations``,
     ``Search_on_category_select``, ``Tracker_URL_remover``
 
-  :values: [ ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
+  :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
     ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select`` ]
+    ``Search_on_category_select``, ``Hostname_replace``
 
 ``disabled_plugins``: optional
   List of disabled plugins.
 
-  :default: ``DOAI_rewrite``, ``Infinite_scroll``, ``Vim-like_hotkeys``
+  :default: ``DOAI_rewrite``, ``Infinite_scroll``, ``Vim-like_hotkeys``, ``Hostname_replace``
   :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
     ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select``
+    ``Search_on_category_select``, ``Hostname_replace``
 
 ``enabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
   List of enabled engines.

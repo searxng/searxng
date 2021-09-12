@@ -150,7 +150,17 @@ outgoing:
 #
 # enabled_plugins:
 #   - "HTTPS rewrite"
-#   - ...
+#   - "Hostname replace"  # see configuration below
+
+# "Hostname replace" plugin configuration example:
+# hostname_replace:
+#   '(.*\.)?youtube\.com$':           'invidious.example.com'
+#   '(.*\.)?youtu\.be$':              'invidious.example.com'
+#   '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
+#   '(.*\.)?reddit\.com$':            'teddit.example.com'
+#   '(.*\.)?redd\.it$':               'teddit.example.com'
+#   '(www\.)?twitter\.com$':          'nitter.example.com'
+#   'spam\.example\.com':             false  # remove results from spam.example.com
 
 checker:
   # disable checker when in debug mode
