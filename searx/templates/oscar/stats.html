@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1>{{ _('Engine stats') }}{% if selected_engine_name %} - {{ selected_engine_name }}{% endif %}</h1>
+    <h1>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h1>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="table-responsive">

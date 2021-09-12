@@ -18,7 +18,7 @@
 
 <a href="{{ url_for('index') }}"><h1><span>searx</span></h1></a>
 
-<h2>{{ _('Engine stats') }}{% if selected_engine_name %} - {{ selected_engine_name }}{% endif %}</h2>
+<h2>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h2>
 
 {% if not engine_stats.get('time') %}
 {{ _('There is currently no data available. ') }}
