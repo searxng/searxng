@@ -220,6 +220,7 @@ def fetch_wikidata(nominatim_json, user_langage):
                 wd_to_results.setdefault(wd_id, []).append(result)
 
     if wikidata_ids:
+        user_langage = 'en' if user_langage == 'all' else user_langage
         wikidata_ids_str = " ".join(wikidata_ids)
         query = wikidata_image_sparql.replace('%WIKIDATA_IDS%', sparql_string_escape(wikidata_ids_str)).replace(
             '%LANGUAGE%', sparql_string_escape(user_langage)
