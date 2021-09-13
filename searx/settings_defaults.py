@@ -200,8 +200,8 @@ SCHEMA = {
         'networks': {
         },
     },
-    'plugins': SettingsValue((None, list), None),
-    'enabled_plugins': SettingsValue(list, []),
+    'plugins': SettingsValue(list, []),
+    'enabled_plugins': SettingsValue((None, list), None),
     'checker': {
         'off_when_debug': SettingsValue(bool, True),
     },
