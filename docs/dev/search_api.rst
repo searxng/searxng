@@ -24,7 +24,7 @@ Parameters
 
 ``q`` : required
   The search query.  This string is passed to external search services.  Thus,
-  searx supports syntax of each search service.  For example, ``site:github.com
+  SearXNG supports syntax of each search service.  For example, ``site:github.com
   searx`` is a valid query for Google.  However, if simply the query above is
   passed to any search engine which does not filter its results based on this
   syntax, you might not get the results you wanted.

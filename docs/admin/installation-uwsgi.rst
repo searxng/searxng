@@ -40,7 +40,7 @@ recommend two methods
     unit template    -->  /usr/lib/systemd/system/uwsgi@.service
     uwsgi ini files  -->  /etc/uwsgi/searx.ini
 
-  The searx app can be maintained as know from common systemd units::
+  The SearXNG app can be maintained as know from common systemd units::
 
     systemctl enable  uwsgi@searx
     systemctl start   uwsgi@searx
@@ -57,7 +57,7 @@ The `uWSGI Emperor`_ mode which fits for maintaining a large range of uwsgi apps
   instance is started, reload or stopped.  Take Fedora and a searx.ini as
   example::
 
-    to start a new searx instance create   --> /etc/uwsgi.d/searx.ini
+    to start a new SearXNG instance create --> /etc/uwsgi.d/searx.ini
     to reload the instance edit timestamp  --> touch /etc/uwsgi.d/searx.ini
     to stop instance remove ini            --> rm /etc/uwsgi.d/searx.ini
 

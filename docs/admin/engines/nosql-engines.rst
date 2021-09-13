@@ -42,7 +42,7 @@ Extra Dependencies
 ------------------
 
 For using :ref:`engine redis_server` or :ref:`engine mongodb` you need to
-install additional packages in Python's Virtual Environment of your SearxNG
+install additional packages in Python's Virtual Environment of your SearXNG
 instance.  To switch into the environment (:ref:`searx-src`) you can use
 :ref:`searx.sh`::
 

@@ -22,7 +22,7 @@
    - `LXD@github`_
 
 With the use of *Linux Containers* (LXC_) we can scale our tasks over a stack of
-containers, what we call the: *lxc suite*.  The *searx suite*
+containers, what we call the: *lxc suite*.  The *SearXNG suite*
 (:origin:`lxc-searx.env <utils/lxc-searx.env>`) is loaded by default, every time
 you start the ``lxc.sh`` script (*you do not need to care about*).
 
@@ -32,7 +32,7 @@ once::
   $ snap install lxd
   $ lxd init --auto
 
-To make use of the containers from the *searx suite*, you have to build the
+To make use of the containers from the *SearXNG suite*, you have to build the
 :ref:`LXC suite containers <lxc.sh help>` initial.  But be warned, **this might
 take some time**::
 
@@ -120,12 +120,12 @@ Reboot your system and check the iptables rules::
 Install suite
 =============
 
-To install the complete :ref:`searx suite (includes searx, morty & filtron)
+To install the complete :ref:`SearXNG suite (includes searx, morty & filtron)
 <lxc-searx.env>` into all LXC_ use::
 
   $ sudo -H ./utils/lxc.sh install suite
 
-The command above installs a searx suite (see :ref:`installation scripts`).  To
+The command above installs a SearXNG suite (see :ref:`installation scripts`).  To
 get the IP (URL) of the filtron service in the containers use ``show suite``
 command.  To test instances from containers just open the URLs in your
 WEB-Browser::
@@ -156,10 +156,10 @@ Makefile target ``test`` in the archlinux_ container::
   sudo -H ./utils/lxc.sh cmd searx-archlinux make test
 
 
-Setup searx buildhost
-=====================
+Setup SearXNG buildhost
+=======================
 
-You can **install the searx buildhost environment** into one or all containers.
+You can **install the SearXNG buildhost environment** into one or all containers.
 The installation procedure to set up a :ref:`build host<buildhosts>` takes its
 time.  Installation in all containers will take more time (time for another cup
 of coffee).::
@@ -191,8 +191,8 @@ The ``--help`` output of the script is largely self-explanatory:
 
 .. _lxc-searx.env:
 
-searx suite
-===========
+SearXNG suite
+=============
 
 .. literalinclude:: ../../utils/lxc-searx.env
    :language: bash

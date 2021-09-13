@@ -15,11 +15,11 @@ Engine Overview
    :depth: 3
    :backlinks: entry
 
-searx is a metasearch-engine_, so it uses different search engines to provide
+SearXNG is a metasearch-engine_, so it uses different search engines to provide
 better results.
 
 Because there is no general search API which could be used for every search
-engine, an adapter has to be built between searx and the external search
+engine, an adapter has to be built between SearXNG and the external search
 engines.  Adapters are stored under the folder :origin:`searx/engines`.
 
 .. _general engine configuration:
@@ -27,7 +27,7 @@ engines.  Adapters are stored under the folder :origin:`searx/engines`.
 General Engine Configuration
 ============================
 
-It is required to tell searx the type of results the engine provides. The
+It is required to tell SearXNG the type of results the engine provides. The
 arguments can be set in the engine file or in the settings file (normally
 ``settings.yml``). The arguments in the settings file override the ones in the
 engine file.
@@ -88,7 +88,7 @@ Overrides
 A few of the options have default values in the namespace of engine's python
 modul, but are often overwritten by the settings.  If ``None`` is assigned to an
 option in the engine file, it has to be redefined in the settings, otherwise
-searx will not start with that engine (global names with a leading underline can
+SearXNG will not start with that engine (global names with a leading underline can
 be ``None``).
 
 Here is an very simple example of the global names in the namespace of engine's

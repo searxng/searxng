@@ -38,7 +38,7 @@ Python Environment (``make install``)
 
 We do no longer need to build up the virtualenv manually.  Jump into your git
 working tree and release a ``make install`` to get a virtualenv with a
-*developer install* of searx (:origin:`setup.py`). ::
+*developer install* of SearXNG (:origin:`setup.py`). ::
 
    $ cd ~/searx-clone
    $ make install
@@ -193,7 +193,7 @@ commit.
 .. _Pylint: https://www.pylint.org/
 
 Pylint_ is known as one of the best source-code, bug and quality checker for the
-Python programming language.  The pylint profile we use at searx project is
+Python programming language.  The pylint profile used in the SearXNG project is
 found in project's root folder :origin:`.pylintrc`.
 
 .. _make search.checker:

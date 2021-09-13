@@ -10,7 +10,7 @@ SQL Engines
    - `PostgreSQL <https://www.postgresql.org>`_
    - `MySQL <https://www.mysql.com>`_
 
-With the *SQL engines* you can bind SQL databases into SearxNG.  The following
+With the *SQL engines* you can bind SQL databases into SearXNG.  The following
 Relational Database Management System (RDBMS) are supported:
 
 - :ref:`engine sqlite`
@@ -98,7 +98,7 @@ Extra Dependencies
 ------------------
 
 For using :ref:`engine postgresql` or :ref:`engine mysql_server` you need to
-install additional packages in Python's Virtual Environment of your SearxNG
+install additional packages in Python's Virtual Environment of your SearXNG
 instance.  To switch into the environment (:ref:`searx-src`) you can use
 :ref:`searx.sh`::
 

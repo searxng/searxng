@@ -83,7 +83,7 @@ Embed search bar
 ================
 
 The search bar can be embedded into websites.  Just paste the example into the
-HTML of the site.  URL of the searx instance and values are customizable.
+HTML of the site.  URL of the SearXNG instance and values are customizable.
 
 .. code:: html
 

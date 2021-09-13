@@ -12,7 +12,7 @@ How to setup result proxy
 .. _morty: https://github.com/asciimoo/morty
 .. _morty's README: https://github.com/asciimoo/morty
 
-By default searx can only act as an image proxy for result images, but it is
+By default SearXNG can only act as an image proxy for result images, but it is
 possible to proxify all the result URLs with an external service, morty_.
 
 To use this feature, morty has to be installed and activated in searx's
@@ -29,7 +29,7 @@ Note that the example above (``http://127.0.0.1:3000``) is only for single-user
 instances without a HTTP proxy.  If your morty service is public, the url is the
 address of the reverse proxy (e.g ``https://example.org/morty``).
 
-For more information about *result proxy* have a look at *"searx via filtron
+For more information about *result proxy* have a look at *"SearXNG via filtron
 plus morty"* in the :ref:`nginx <nginx searx via filtron plus morty>` and
 :ref:`apache <apache searx via filtron plus morty>` sections.
 

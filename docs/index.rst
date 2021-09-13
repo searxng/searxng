@@ -1,5 +1,5 @@
 ==================
-Welcome to searxng
+Welcome to SearXNG
 ==================
 
     *Search without being tracked.*
@@ -8,12 +8,12 @@ Welcome to searxng
 
    This is not searx, but searxng.
 
-Searxng is a free internet metasearch engine which aggregates results from more
+SearXNG is a free internet metasearch engine which aggregates results from more
 than 70 search services.  Users are neither tracked nor profiled.  Additionally,
-searxng can be used over Tor for online anonymity.
+SearXNG can be used over Tor for online anonymity.
 
-Get started with searxng by using one of the Searx-instances_.  If you don't trust
-anyone, you can set up your own, see :ref:`installation`.
+Get started with SearXNG by using one of the instances listed at searx.space_.
+If you don't trust anyone, you can set up your own, see :ref:`installation`.
 
 .. sidebar::  Features
 
@@ -36,4 +36,4 @@ anyone, you can set up your own, see :ref:`installation`.
    utils/index
    src/index
 
-.. _Searx-instances: https://searx.space
+.. _searx.space: https://searx.space

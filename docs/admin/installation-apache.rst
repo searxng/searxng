@@ -170,13 +170,13 @@ Apache Reverse Proxy
 
 .. sidebar:: public to the internet?
 
-   If your searx instance is public, stop here and first install :ref:`filtron
+   If your SearXNG instance is public, stop here and first install :ref:`filtron
    reverse proxy <filtron.sh>` and :ref:`result proxy morty <morty.sh>`, see
-   :ref:`installation scripts`.  If already done, follow setup: *searx via
+   :ref:`installation scripts`.  If already done, follow setup: *SearXNG via
    filtron plus morty*.
 
 To setup a Apache revers proxy you have to enable the *headers* and *proxy*
-modules and create a `Location`_ configuration for the searx site.  In most
+modules and create a `Location`_ configuration for the SearXNG site.  In most
 distributions you have to un-comment the lines in the main configuration file,
 except in :ref:`The Debian Layout`.
 
@@ -234,7 +234,7 @@ proxied host.
 
 .. tabs::
 
-   .. group-tab:: searx via filtron plus morty
+   .. group-tab:: SearXNG via filtron plus morty
 
       Use this setup, if your instance is public to the internet, compare
       figure: :ref:`architecture <arch public>` and :ref:`installation scripts`.

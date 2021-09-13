@@ -7,7 +7,7 @@ How to update
 How to update depends on the :ref:`installation` method.  If you have used the
 :ref:`installation scripts`, use ``update`` command from the scripts.
 
-**Update** :ref:`searx service <searx.sh>`
+**Update** :ref:`SearXNG service <searx.sh>`
 
 .. code:: sh
 
@@ -39,7 +39,7 @@ How to inspect & debug
 How to debug depends on the :ref:`installation` method.  If you have used the
 :ref:`installation scripts`, use ``inspect`` command from the scripts.
 
-**Inspect** :ref:`searx service <searx.sh>`
+**Inspect** :ref:`SearXNG service <searx.sh>`
 
 .. code:: sh
 
