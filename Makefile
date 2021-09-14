@@ -29,7 +29,7 @@ run:  install
 	sleep 2 ; \
 	xdg-open http://127.0.0.1:8888/ ; \
 	) &
-	SEARX_DEBUG=1 ./manage pyenv.cmd python ./searx/webapp.py
+	SEARX_DEBUG=1 ./manage pyenv.cmd python -m searx.webapp
 
 PHONY += install uninstall
 install uninstall:

@@ -173,7 +173,6 @@ def request(query, params):
 
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
-    logger.debug("query_url --> %s", params['url'])
 
     return params
 
