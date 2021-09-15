@@ -8,6 +8,7 @@ from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
 from searx.search import EngineRef
 from searx.webutils import VALID_LANGUAGE_CODE
+from searx.surrogates import get_actual_object
 
 
 class QueryPartParser(ABC):
@@ -232,7 +233,7 @@ class BangParser(QueryPartParser):
                 self._add_autocomplete(first_char + engine_shortcut)
 
 
-class RawTextQuery:
+class DefaultRawTextQuery:
     """parse raw text query (the value from the html input)"""
 
     PARSER_CLASSES = [
@@ -328,3 +329,6 @@ class RawTextQuery:
                + f"autocomplete_list={self.autocomplete_list!r}\n  " \
                + f"query_parts={self.query_parts!r}\n  " \
                + f"user_query_parts={self.user_query_parts!r} >"
+
+
+RawTextQuery = get_actual_object('searx.query.RawTextQuery', DefaultRawTextQuery)

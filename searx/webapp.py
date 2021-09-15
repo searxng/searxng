@@ -109,7 +109,7 @@ from searx.flaskfix import patch_application
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx.languages import language_codes as languages
 from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
-from searx.search import SearchWithPlugins, initialize as search_initialize
+from searx.search import Search, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
 
@@ -652,8 +652,7 @@ def search():
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(
             request.preferences, request.form
         )
-        # search = Search(search_query) #  without plugins
-        search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
+        search = Search(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
 
         result_container = search.search()
 

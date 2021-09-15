@@ -19,6 +19,7 @@ from searx.network import initialize as initialize_network
 from searx.metrics import initialize as initialize_metrics, counter_inc, histogram_observe_time
 from searx.search.processors import PROCESSORS, initialize as initialize_processors
 from searx.search.checker import initialize as initialize_checker
+from searx.surrogates import get_actual_object
 
 
 logger = logger.getChild('search')
@@ -34,7 +35,7 @@ def initialize(settings_engines=None, enable_checker=False):
         initialize_checker()
 
 
-class Search:
+class BasicSearch:
     """Search information container"""
 
     __slots__ = "search_query", "result_container", "start_time", "actual_timeout"
@@ -171,7 +172,7 @@ class Search:
         return self.result_container
 
 
-class SearchWithPlugins(Search):
+class SearchWithPlugins(BasicSearch):
     """Inherit from the Search class, add calls to the plugins."""
 
     __slots__ = 'ordered_plugin_list', 'request'
@@ -201,3 +202,6 @@ class SearchWithPlugins(Search):
         self.result_container.close()
 
         return self.result_container
+
+
+Search = get_actual_object('searx.search.Search', SearchWithPlugins)

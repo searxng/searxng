@@ -140,7 +140,7 @@ def json_serial(obj: Any) -> Any:
 
 def to_dict(search_query: searx.search.SearchQuery) -> Dict[str, Any]:
     """Get result from parsed arguments."""
-    result_container = searx.search.Search(search_query).search()
+    result_container = searx.search.BasicSearch(search_query).search()
     result_container_json = {
         "search": {
             "q": search_query.query,

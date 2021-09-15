@@ -5,7 +5,7 @@ from urllib.parse import ParseResult
 from mock import Mock
 
 import searx.search.processors
-from searx.search import Search
+from searx.search import BasicSearch
 from tests import SearxTestCase
 
 
@@ -68,7 +68,7 @@ class ViewsTestCase(SearxTestCase):
                                                 redirect_url=None,
                                                 engine_data={})
 
-        self.setattr4test(Search, 'search', search_mock)
+        self.setattr4test(BasicSearch, 'search', search_mock)
 
         def get_current_theme_name_mock(override=None):
             if override:

@@ -29,6 +29,10 @@ search:
   formats:
     - html
 
+# surrogates:
+#   searx.search.Search: bidule.search.SearchWithPlugins
+#   searx.query.RawTextQuery: searx.query.DefaultRawTextQuery
+
 server:
   # If you change port, bind_address or base_url don't forget to rebuild
   # instance's enviroment (make buildenv)

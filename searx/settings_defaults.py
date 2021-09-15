@@ -135,6 +135,10 @@ SCHEMA = {
         'public_instances': SettingsValue(str, None),
         'wiki_url': SettingsValue(str, None),
     },
+    'surrogates': SettingsValue(dict, {
+        'searx.search.Search': 'searx.search.SearchWithPlugins',
+        'searx.query.RawTextQuery': 'searx.query.DefaultRawTextQuery',
+    }),
     'search': {
         'safe_search': SettingsValue((0,1,2), 0),
         'autocomplete': SettingsValue(str, ''),

@@ -59,7 +59,7 @@ class StandaloneSearx(SearxTestCase):
 
     def test_to_dict_with_mock(self):
         """test to dict."""
-        with patch.object(sas.searx.search, 'Search') as mock_s:
+        with patch.object(sas.searx.search, 'BasicSearch') as mock_s:
             m_search = mock_s().search()
             m_sq = Mock()
             self.assertEqual(
