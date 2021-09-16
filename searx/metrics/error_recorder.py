@@ -74,9 +74,11 @@ def get_request_exception_messages(exc: HTTPError)\
     status_code = None
     reason = None
     hostname = None
-    if hasattr(exc, 'request') and exc.request is not None:
+    if hasattr(exc, '_request') and exc._request is not None:
+        # exc.request is property that raise an RuntimeException
+        # if exc._request is not defined.
         url = exc.request.url
-    if url is None and hasattr(exc, 'response') and exc.respones is not None:
+    if url is None and hasattr(exc, 'response') and exc.response is not None:
         url = exc.response.url
     if url is not None:
         hostname = url.host
