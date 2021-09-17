@@ -35,7 +35,7 @@ def init(engine_settings):
     if 'command' not in engine_settings:
         raise ValueError('engine command : missing configuration key: command')
 
-    global command, working_dir, result_template, delimiter, parse_regex, timeout, environment_variables
+    global command, working_dir, delimiter, parse_regex, environment_variables
 
     command = engine_settings['command']
 

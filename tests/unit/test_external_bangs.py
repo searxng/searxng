@@ -72,31 +72,26 @@ class TestResolveBangDefinition(SearxTestCase):
 class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
 
     def test_found(self):
-        global TEST_DB
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('exam', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['exam']['*'])
         self.assertEqual(new_autocomplete, ['example'])
 
     def test_found_optimized(self):
-        global TEST_DB
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('example', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['exam']['ple'])
         self.assertEqual(new_autocomplete, [])
 
     def test_partial(self):
-        global TEST_DB
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('examp', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, None)
         self.assertEqual(new_autocomplete, ['example'])
 
     def test_partial2(self):
-        global TEST_DB
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('sea', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['sea']['*'])
         self.assertEqual(new_autocomplete, ['search', 'searching', 'seascapes', 'season'])
 
     def test_error(self):
-        global TEST_DB
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('error', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, None)
         self.assertEqual(new_autocomplete, [])
@@ -114,7 +109,6 @@ class TestExternalBangJson(SearxTestCase):
         self.assertEqual(result, None)
 
     def test_get_bang_url(self):
-        global TEST_DB
         url = get_bang_url(SearchQuery('test', engineref_list=[], external_bang='example'), external_bangs_db=TEST_DB)
         self.assertEqual(url, 'https://example.com/test')
 

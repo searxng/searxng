@@ -45,7 +45,6 @@ def resolve_bang_definition(bang_definition, query):
 
 
 def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):
-    global EXTERNAL_BANGS
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 
@@ -78,7 +77,6 @@ def get_bang_url(search_query, external_bangs_db=None):
     :param search_query: This is a search_query object which contains preferences and the submitted queries.
     :return: None if the bang was invalid, else a string of the redirect url.
     """
-    global EXTERNAL_BANGS
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 

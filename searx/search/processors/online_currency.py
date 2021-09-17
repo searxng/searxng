@@ -18,7 +18,6 @@ def normalize_name(name):
     return unicodedata.normalize('NFKD', name).lower()
 
 def name_to_iso4217(name):
-    global CURRENCIES  # pylint: disable=global-statement
     name = normalize_name(name)
     currency = CURRENCIES['names'].get(name, [name])
     if isinstance(currency, str):
@@ -26,7 +25,6 @@ def name_to_iso4217(name):
     return currency[0]
 
 def iso4217_to_name(iso4217, language):
-    global CURRENCIES  # pylint: disable=global-statement
     return CURRENCIES['iso4217'].get(iso4217, {}).get(language, iso4217)
 
 class OnlineCurrencyProcessor(OnlineProcessor):

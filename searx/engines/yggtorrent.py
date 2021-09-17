@@ -37,7 +37,6 @@ cookies = dict()
 
 
 def init(engine_settings=None):
-    global cookies
     # initial cookies
     resp = http_get(url, allow_redirects=False)
     if resp.ok:

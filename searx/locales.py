@@ -57,7 +57,7 @@ def initialize_locales(directory):
     """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`UI_LOCALE_CODES` and
     :py:obj:`RTL_LOCALES`.
     """
-    global LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES  # pylint: disable=global-statement
+    global UI_LOCALE_CODES  # pylint: disable=global-statement
     for dirname in sorted(os.listdir(directory)):
         # Based on https://flask-babel.tkte.ch/_modules/flask_babel.html#Babel.list_translations
         if not os.path.isdir( os.path.join(directory, dirname, 'LC_MESSAGES') ):

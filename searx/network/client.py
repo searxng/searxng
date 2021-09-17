@@ -53,7 +53,6 @@ async def close_connections_for_url(
 
 
 def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
-    global SSLCONTEXTS
     key = (proxy_url, cert, verify, trust_env, http2)
     if key not in SSLCONTEXTS:
         SSLCONTEXTS[key] = httpx.create_ssl_context(cert, verify, trust_env, http2)
@@ -137,7 +136,6 @@ class AsyncHTTPTransportFixed(httpx.AsyncHTTPTransport):
 
 
 def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit, retries):
-    global TRANSPORT_KWARGS
     # support socks5h (requests compatibility):
     # https://requests.readthedocs.io/en/master/user/advanced/#socks
     # socks5://   hostname is resolved on client side
@@ -167,7 +165,6 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
 
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    global TRANSPORT_KWARGS
     verify = get_sslcontexts(None, None, True, False, http2) if verify is True else verify
     return AsyncHTTPTransportFixed(
         # pylint: disable=protected-access
@@ -235,7 +232,6 @@ def new_client(
 
 
 def get_loop():
-    global LOOP
     return LOOP
 
 
