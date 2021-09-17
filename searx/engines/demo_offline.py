@@ -56,7 +56,6 @@ def search(query, request_params):
     results.
 
     """
-    global _my_offline_engine  # pylint: disable=global-statement
     ret_val = []
 
     result_list = json.loads(_my_offline_engine)

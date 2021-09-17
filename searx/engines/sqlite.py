@@ -35,7 +35,6 @@ def sqlite_cursor():
     * https://docs.python.org/3/library/sqlite3.html#sqlite3.connect
     * https://www.sqlite.org/uri.html
     """
-    global database  # pylint: disable=global-statement
     uri = 'file:' + database + '?mode=ro'
     with contextlib.closing(sqlite3.connect(uri, uri=True)) as connect:
         connect.row_factory = sqlite3.Row
@@ -44,7 +43,6 @@ def sqlite_cursor():
 
 
 def search(query, params):
-    global query_str, result_template  # pylint: disable=global-statement
     results = []
 
     query_params = {

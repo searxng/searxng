@@ -225,12 +225,10 @@ class Network:
 
     @classmethod
     async def aclose_all(cls):
-        global NETWORKS
         await asyncio.gather(*[network.aclose() for network in NETWORKS.values()], return_exceptions=False)
 
 
 def get_network(name=None):
-    global NETWORKS
     return NETWORKS.get(name or DEFAULT_NAME)
 
 
@@ -239,8 +237,6 @@ def initialize(settings_engines=None, settings_outgoing=None):
     from searx.engines import engines
     from searx import settings
     # pylint: enable=import-outside-toplevel)
-
-    global NETWORKS
 
     settings_engines = settings_engines or settings['engines']
     settings_outgoing = settings_outgoing or settings['outgoing']
@@ -328,7 +324,6 @@ def done():
     Note: since Network.aclose has to be async, it is not possible to call this method on Network.__del__
     So Network.aclose is called here using atexit.register
     """
-    global NETWORKS
     try:
         loop = get_loop()
         if loop:

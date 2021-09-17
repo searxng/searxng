@@ -43,24 +43,20 @@ THREADLOCAL = threading.local()
 """Thread-local data is data for thread specific values."""
 
 def reset_time_for_thread():
-    global THREADLOCAL
     THREADLOCAL.total_time = 0
 
 
 def get_time_for_thread():
     """returns thread's total time or None"""
-    global THREADLOCAL
     return THREADLOCAL.__dict__.get('total_time')
 
 
 def set_timeout_for_thread(timeout, start_time=None):
-    global THREADLOCAL
     THREADLOCAL.timeout = timeout
     THREADLOCAL.start_time = start_time
 
 
 def set_context_network_name(network_name):
-    global THREADLOCAL
     THREADLOCAL.network = get_network(network_name)
 
 
@@ -69,13 +65,11 @@ def get_context_network():
 
     If unset, return value from :py:obj:`get_network`.
     """
-    global THREADLOCAL
     return THREADLOCAL.__dict__.get('network') or get_network()
 
 
 def request(method, url, **kwargs):
     """same as requests/requests/api.py request(...)"""
-    global THREADLOCAL
     time_before_request = default_timer()
 
     # timeout (httpx)

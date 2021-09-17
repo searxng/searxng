@@ -31,8 +31,6 @@ def init(_engine_settings):
     )
 
 def search(query, _params):
-    global _redis_client  # pylint: disable=global-statement
-
     if not exact_match_only:
         return search_keys(query)
 
@@ -55,8 +53,6 @@ def search(query, _params):
     return []
 
 def search_keys(query):
-    global _redis_client  # pylint: disable=global-statement
-
     ret = []
     for key in _redis_client.scan_iter(
             match='*{}*'.format(query)
