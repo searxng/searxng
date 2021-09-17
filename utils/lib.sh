@@ -725,6 +725,14 @@ pyenv.cmd() {
     )
 }
 
+
+pyenv.activate() {
+    pyenv.install
+    # shellcheck source=/dev/null
+    source "${PY_ENV_BIN}/activate"
+}
+
+
 # Sphinx doc
 # ----------
 

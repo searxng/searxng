@@ -162,12 +162,13 @@ weblate.to.translations() {
     #    remote 'weblate' and push it on branch 'translations' of 'origin'
 
     (   set -e
-        if [ "$(pyenv.cmd wlc lock-status)" != "locked: True" ]; then
-            die 1 "weblate must be locked, currently: $(pyenv.cmd wlc lock-status)"
+        pyenv.activate
+        if [ "$(wlc lock-status)" != "locked: True" ]; then
+            die 1 "weblate must be locked, currently: $(wlc lock-status)"
         fi
         # weblate: commit pending changes
-        pyenv.cmd wlc pull
-        pyenv.cmd wlc commit
+        wlc pull
+        wlc commit
 
         # get the translations in a worktree
         weblate.translations.worktree
@@ -189,8 +190,9 @@ weblate.translations.commit() {
 
     local existing_commit_hash commit_body commit_message exitcode
     (   set -e
+        pyenv.activate
         # lock change on weblate
-        pyenv.cmd wlc lock
+        wlc lock
 
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
@@ -204,7 +206,7 @@ weblate.translations.commit() {
 
         # compile translations
         build_msg BABEL 'compile translation catalogs into binary MO files'
-        pyenv.cmd pybabel compile --statistics \
+        pybabel compile --statistics \
                 -d "searx/translations"
         # git add/commit (no push)
         commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
@@ -241,13 +243,13 @@ weblate.push.translations() {
           last_commit_message exitcode
     messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
     (   set -e
-
+        pyenv.activate
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
 
         # update messages.pot in the master branch
         build_msg BABEL 'extract messages from source files and generate POT file'
-        pyenv.cmd pybabel extract -F babel.cfg \
+        pybabel extract -F babel.cfg \
                 -o "${messages_pot}" \
                 "searx/"
 
@@ -269,12 +271,13 @@ weblate.push.translations() {
     fi
     (
         set -e
+        pyenv.activate
 
         # lock change on weblate
         # weblate may add commit(s) since the call to "weblate.translations.worktree".
         # this is not a problem because after this line, "weblate.to.translations"
         # calls again "weblate.translations.worktree" which calls "git pull"
-        pyenv.cmd wlc lock
+        wlc lock
 
         # save messages.pot in the translations branch for later
         pushd "${TRANSLATIONS_WORKTREE}"
@@ -291,7 +294,7 @@ weblate.push.translations() {
 
         # update messages.po files in the master branch
         build_msg BABEL 'update existing message catalogs from POT file'
-        pyenv.cmd pybabel update -N \
+        pybabel update -N \
             -i "${messages_pot}" \
             -d "${TRANSLATIONS_WORKTREE}/searx/translations"
 
@@ -307,33 +310,38 @@ weblate.push.translations() {
         popd
 
         # notify weblate to pull updated master & translations branch
-        pyenv.cmd wlc pull
+        wlc pull
     )
     exitcode=$?
     (   # make sure to always unlock weblate
         set -e
-        pyenv.cmd wlc unlock
+        pyenv.activate
+        wlc unlock
     )
     dump_return $exitcode
 }
 
 data.all() {
-    data.languages
-    data.useragents
-    data.osm_keys_tags
-    build_msg DATA "update searx/data/ahmia_blacklist.txt"
-    pyenv.cmd python searx_extra/update/update_ahmia_blacklist.py
-    build_msg DATA "update searx/data/wikidata_units.json"
-    pyenv.cmd python searx_extra/update/update_wikidata_units.py
-    build_msg DATA "update searx/data/currencies.json"
-    pyenv.cmd python searx_extra/update/update_currencies.py
+    (   set -e
+        pyenv.activate
+        data.languages
+        data.useragents
+        data.osm_keys_tags
+        build_msg DATA "update searx/data/ahmia_blacklist.txt"
+        python searx_extra/update/update_ahmia_blacklist.py
+        build_msg DATA "update searx/data/wikidata_units.json"
+        python searx_extra/update/update_wikidata_units.py
+        build_msg DATA "update searx/data/currencies.json"
+        python searx_extra/update/update_currencies.py
+    )
 }
 
 
 data.languages() {
     (   set -e
+        pyenv.activate
         build_msg ENGINES "fetch languages .."
-        pyenv.cmd python searx_extra/update/update_languages.py
+        python searx_extra/update/update_languages.py
         build_msg ENGINES "update update searx/languages.py"
         build_msg DATA "update searx/data/engines_languages.json"
     )
@@ -389,8 +397,7 @@ docker.build() {
     # See https://www.shellcheck.net/wiki/SC1001 and others ..
     # shellcheck disable=SC2031,SC2230,SC2002,SC2236,SC2143,SC1001
     (   set -e
-        # shellcheck source=/dev/null
-        source "${PY_ENV_BIN}/activate"
+        pyenv.activate
 
         # Check if it is a git repository
         if [ ! -d .git ]; then
@@ -406,8 +413,8 @@ docker.build() {
 
         # This is a git repository
         git update-index -q --refresh
-        pyenv.cmd python -m searx.version freeze
-        eval "$(pyenv.cmd python -m searx.version)"
+        python -m searx.version freeze
+        eval "$(python -m searx.version)"
 
         # Get the last git commit id
         VERSION_GITCOMMIT=$(echo "$VERSION_STRING" | cut -d- -f3)
@@ -456,8 +463,7 @@ gecko.driver() {
     build_msg INSTALL "gecko.driver"
     # run installation in a subprocess and activate pyenv
     (   set -e
-        # shellcheck source=/dev/null
-        source "${PY_ENV_BIN}/activate"
+        pyenv.activate
 
         # TODO : check the current geckodriver version
         geckodriver -V > /dev/null 2>&1 || NOTFOUND=1
@@ -602,18 +608,19 @@ test.pylint() {
     # shellcheck disable=SC2086
     (   set -e
         build_msg TEST "[pylint] \$PYLINT_FILES"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        pyenv.activate
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             "${PYLINT_FILES[@]}"
 
         build_msg TEST "[pylint] searx/engines"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             searx/engines
 
         build_msg TEST "[pylint] searx tests"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
 	    --ignore=searx/engines \
 	    searx tests
@@ -642,9 +649,10 @@ test.unit() {
 test.coverage() {
     build_msg TEST 'unit test coverage'
     (   set -e
-        pyenv.cmd python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
-        pyenv.cmd coverage report
-        pyenv.cmd coverage html
+        pyenv.activate
+        python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
+        coverage report
+        coverage html
     )
     dump_return $?
 }
