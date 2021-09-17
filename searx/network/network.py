@@ -138,12 +138,10 @@ class Network:
         request = response.request
         status = f"{response.status_code} {response.reason_phrase}"
         response_line = f"{response.http_version} {status}"
-        if hasattr(response, "_elapsed"):
-            elapsed_time = f"{response.elapsed.total_seconds()} sec"
-        else:
-            elapsed_time = "stream"
+        content_type = response.headers.get("Content-Type")
+        content_type = f' ({content_type})' if content_type else ''
         self._logger.debug(
-            f'HTTP Request: {request.method} {request.url} "{response_line}" ({elapsed_time})'
+            f'HTTP Request: {request.method} {request.url} "{response_line}"{content_type}'
         )
 
     def get_client(self, verify=None, max_redirects=None):

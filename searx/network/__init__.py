@@ -166,7 +166,7 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
             async for chunk in response.aiter_raw(65536):
                 if len(chunk) > 0:
                     queue.put(chunk)
-    except httpx.ResponseClosed:
+    except httpx.StreamClosed:
         # the response was queued before the exception.
         # the exception was raised on aiter_raw.
         # we do nothing here: in the finally block, None will be queued

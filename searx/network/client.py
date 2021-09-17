@@ -5,6 +5,7 @@
 import asyncio
 import logging
 import threading
+
 import httpcore
 import httpx
 from httpx_socks import AsyncProxyTransport
@@ -26,19 +27,22 @@ else:
     uvloop.install()
 
 
-logger = logger.getChild('searx.http.client')
+logger = logger.getChild('searx.network.client')
 LOOP = None
 SSLCONTEXTS = {}
 TRANSPORT_KWARGS = {
-    'backend': 'asyncio',
+    # use anyio :
+    # * https://github.com/encode/httpcore/issues/344
+    # * https://github.com/encode/httpx/discussions/1511
+    'backend': 'anyio',
     'trust_env': False,
 }
 
 
 # pylint: disable=protected-access
 async def close_connections_for_url(
-        connection_pool: httpcore.AsyncConnectionPool,
-        url: httpcore._utils.URL ):
+    connection_pool: httpcore.AsyncConnectionPool, url: httpcore._utils.URL
+):
 
     origin = httpcore._utils.url_to_origin(url)
     logger.debug('Drop connections for %r', origin)
@@ -47,7 +51,7 @@ async def close_connections_for_url(
         await connection_pool._remove_from_pool(connection)
         try:
             await connection.aclose()
-        except httpcore.NetworkError as e:
+        except httpx.NetworkError as e:
             logger.warning('Error closing an existing connection', exc_info=e)
 # pylint: enable=protected-access
 
@@ -59,80 +63,78 @@ def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http
     return SSLCONTEXTS[key]
 
 
-class AsyncHTTPTransportNoHttp(httpcore.AsyncHTTPTransport):
+class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
     """Block HTTP request"""
 
-    async def arequest(self, method, url, headers=None, stream=None, ext=None):
-        raise httpcore.UnsupportedProtocol("HTTP protocol is disabled")
+    async def handle_async_request(
+        self, method, url, headers=None, stream=None, extensions=None
+    ):
+        raise httpx.UnsupportedProtocol('HTTP protocol is disabled')
 
 
 class AsyncProxyTransportFixed(AsyncProxyTransport):
     """Fix httpx_socks.AsyncProxyTransport
 
-    Map python_socks exceptions to httpcore.ProxyError
+    Map python_socks exceptions to httpx.ProxyError / httpx.ConnectError
 
-    Map socket.gaierror to httpcore.ConnectError
-
-    Note: keepalive_expiry is ignored, AsyncProxyTransport should call:
-    * self._keepalive_sweep()
-    * self._response_closed(self, connection)
+    Map socket.gaierror to httpx.ConnectError
 
     Note: AsyncProxyTransport inherit from AsyncConnectionPool
-
-    Note: the API is going to change on httpx 0.18.0
-    see https://github.com/encode/httpx/pull/1522
     """
 
-    async def arequest(self, method, url, headers=None, stream=None, ext=None):
+    async def handle_async_request(
+        self, method, url, headers=None, stream=None, extensions=None
+    ):
         retry = 2
         while retry > 0:
             retry -= 1
             try:
-                return await super().arequest(method, url, headers, stream, ext)
+                return await super().handle_async_request(
+                    method, url, headers=headers, stream=stream, extensions=extensions
+                )
             except (ProxyConnectionError, ProxyTimeoutError, ProxyError) as e:
-                raise httpcore.ProxyError(e)
+                raise httpx.ProxyError from e
             except OSError as e:
                 # socket.gaierror when DNS resolution fails
-                raise httpcore.NetworkError(e)
-            except httpcore.RemoteProtocolError as e:
-                # in case of httpcore.RemoteProtocolError: Server disconnected
-                await close_connections_for_url(self, url)
-                logger.warning('httpcore.RemoteProtocolError: retry', exc_info=e)
-                # retry
-            except (httpcore.NetworkError, httpcore.ProtocolError) as e:
-                # httpcore.WriteError on HTTP/2 connection leaves a new opened stream
+                raise httpx.ConnectError from e
+            except httpx.NetworkError as e:
+                # httpx.WriteError on HTTP/2 connection leaves a new opened stream
                 # then each new request creates a new stream and raise the same WriteError
                 await close_connections_for_url(self, url)
                 raise e
+            except httpx.RemoteProtocolError as e:
+                # in case of httpx.RemoteProtocolError: Server disconnected
+                await close_connections_for_url(self, url)
+                logger.warning('httpx.RemoteProtocolError: retry', exc_info=e)
+                # retry
 
 
 class AsyncHTTPTransportFixed(httpx.AsyncHTTPTransport):
     """Fix httpx.AsyncHTTPTransport"""
 
-    async def arequest(self, method, url, headers=None, stream=None, ext=None):
+    async def handle_async_request(
+        self, method, url, headers=None, stream=None, extensions=None
+    ):
         retry = 2
         while retry > 0:
             retry -= 1
             try:
-                return await super().arequest(method, url, headers, stream, ext)
+                return await super().handle_async_request(
+                    method, url, headers=headers, stream=stream, extensions=extensions
+                )
             except OSError as e:
                 # socket.gaierror when DNS resolution fails
-                raise httpcore.ConnectError(e)
-            except httpcore.CloseError as e:
-                # httpcore.CloseError: [Errno 104] Connection reset by peer
-                # raised by _keepalive_sweep()
-                #   from https://github.com/encode/httpcore/blob/4b662b5c42378a61e54d673b4c949420102379f5/httpcore/_backends/asyncio.py#L198  # pylint: disable=line-too-long
-                await close_connections_for_url(self._pool, url)
-                logger.warning('httpcore.CloseError: retry', exc_info=e)
-                # retry
-            except httpcore.RemoteProtocolError as e:
-                # in case of httpcore.RemoteProtocolError: Server disconnected
-                await close_connections_for_url(self._pool, url)
-                logger.warning('httpcore.RemoteProtocolError: retry', exc_info=e)
-                # retry
-            except (httpcore.ProtocolError, httpcore.NetworkError) as e:
+                raise httpx.ConnectError from e
+            except httpx.NetworkError as e:
+                # httpx.WriteError on HTTP/2 connection leaves a new opened stream
+                # then each new request creates a new stream and raise the same WriteError
                 await close_connections_for_url(self._pool, url)
                 raise e
+            except httpx.RemoteProtocolError as e:
+                # in case of httpx.RemoteProtocolError: Server disconnected
+                await close_connections_for_url(self._pool, url)
+                logger.warning('httpx.RemoteProtocolError: retry', exc_info=e)
+                # retry
 
 
 def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit, retries):
@@ -178,15 +180,6 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
     )
 
 
-def iter_proxies(proxies):
-    # https://www.python-httpx.org/compatibility/#proxy-keys
-    if isinstance(proxies, str):
-        yield 'all://', proxies
-    elif isinstance(proxies, dict):
-        for pattern, proxy_url in proxies.items():
-            yield pattern, proxy_url
-
-
 def new_client(
         # pylint: disable=too-many-arguments
         enable_http, verify, enable_http2,
@@ -199,8 +192,8 @@ def new_client(
     )
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
-    for pattern, proxy_url in iter_proxies(proxies):
-        if not enable_http and (pattern == 'http' or pattern.startswith('http://')):
+    for pattern, proxy_url in proxies.items():
+        if not enable_http and pattern.startswith('http://'):
             continue
         if (proxy_url.startswith('socks4://')
            or proxy_url.startswith('socks5://')
