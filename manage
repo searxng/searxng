@@ -322,22 +322,26 @@ weblate.push.translations() {
 }
 
 data.all() {
-    data.languages
-    data.useragents
-    data.osm_keys_tags
-    build_msg DATA "update searx/data/ahmia_blacklist.txt"
-    pyenv.cmd python searx_extra/update/update_ahmia_blacklist.py
-    build_msg DATA "update searx/data/wikidata_units.json"
-    pyenv.cmd python searx_extra/update/update_wikidata_units.py
-    build_msg DATA "update searx/data/currencies.json"
-    pyenv.cmd python searx_extra/update/update_currencies.py
+    (   set -e
+        pyenv.activate
+        data.languages
+        data.useragents
+        data.osm_keys_tags
+        build_msg DATA "update searx/data/ahmia_blacklist.txt"
+        python searx_extra/update/update_ahmia_blacklist.py
+        build_msg DATA "update searx/data/wikidata_units.json"
+        python searx_extra/update/update_wikidata_units.py
+        build_msg DATA "update searx/data/currencies.json"
+        python searx_extra/update/update_currencies.py
+    )
 }
 
 
 data.languages() {
     (   set -e
+        pyenv.activate
         build_msg ENGINES "fetch languages .."
-        pyenv.cmd python searx_extra/update/update_languages.py
+        python searx_extra/update/update_languages.py
         build_msg ENGINES "update update searx/languages.py"
         build_msg DATA "update searx/data/engines_languages.json"
     )
@@ -604,18 +608,19 @@ test.pylint() {
     # shellcheck disable=SC2086
     (   set -e
         build_msg TEST "[pylint] \$PYLINT_FILES"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        pyenv.activate
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             "${PYLINT_FILES[@]}"
 
         build_msg TEST "[pylint] searx/engines"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             searx/engines
 
         build_msg TEST "[pylint] searx tests"
-        pyenv.cmd python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
 	    --ignore=searx/engines \
 	    searx tests
@@ -644,9 +649,10 @@ test.unit() {
 test.coverage() {
     build_msg TEST 'unit test coverage'
     (   set -e
-        pyenv.cmd python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
-        pyenv.cmd coverage report
-        pyenv.cmd coverage html
+        pyenv.activate
+        python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
+        coverage report
+        coverage html
     )
     dump_return $?
 }
