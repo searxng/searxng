@@ -46,9 +46,12 @@ from pathlib import Path
 
 from searx import searx_dir
 from searx.network import set_timeout_for_thread
-from searx.engines.wikidata import send_wikidata_query
+from searx.engines import wikidata, set_loggers
 from searx.languages import language_codes
 from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
+
+set_loggers(wikidata, 'wikidata')
+
 
 SPARQL_TAGS_REQUEST = """
 SELECT ?tag ?item ?itemLabel WHERE {
@@ -96,7 +99,7 @@ def get_preset_keys():
 
 def get_keys():
     results = get_preset_keys()
-    response = send_wikidata_query(SPARQL_KEYS_REQUEST)
+    response = wikidata.send_wikidata_query(SPARQL_KEYS_REQUEST)
 
     for key in response['results']['bindings']:
         keys = key['key']['value'].split(':')[1:]
@@ -144,7 +147,7 @@ def get_keys():
 
 def get_tags():
     results = collections.OrderedDict()
-    response = send_wikidata_query(SPARQL_TAGS_REQUEST)
+    response = wikidata.send_wikidata_query(SPARQL_TAGS_REQUEST)
     for tag in response['results']['bindings']:
         tag_names = tag['tag']['value'].split(':')[1].split('=')
         if len(tag_names) == 2:
