@@ -3,8 +3,8 @@
 import sys
 import json
 from urllib.parse import quote, urlparse
+import detect_language
 from lxml.html import fromstring
-import cld3
 
 from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text
