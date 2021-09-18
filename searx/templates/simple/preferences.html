@@ -22,6 +22,7 @@
 {% if search_engine.about is defined %}
 {% set about = search_engine.about %}
 <div class="engine-tooltip" role="tooltip">{{- "" -}}
+    <p class="engine-description"></p>
     <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>
     {%- if about.wikidata_id -%}<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>{%- endif -%}
     {%- if search_engine.enable_http %}<p>{{ icon('exclamation-sign', 'No HTTPS') }}{{ _('No HTTPS')}}</p>{% endif -%}
@@ -262,7 +263,7 @@
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
       <tr>
         <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
-        <th class="name">{% if search_engine.enable_http %}{{ icon('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
+        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
         <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
         <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
         <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>

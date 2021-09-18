@@ -394,7 +394,9 @@ def image_proxify(url):
 def get_translations():
     return {
         # when there is autocompletion
-        'no_item_found': gettext('No item found')
+        'no_item_found': gettext('No item found'),
+        # /preferences: the source of the engine description (wikipedata, wikidata, website)
+        'Source': gettext('Source'),
     }
 
 
