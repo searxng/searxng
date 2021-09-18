@@ -9,9 +9,9 @@ from searx.utils import searx_useragent
 
 # about
 about = {
-    "website": 'https://photon.komoot.de',
+    "website": 'https://photon.komoot.io',
     "wikidata_id": None,
-    "official_api_documentation": 'https://photon.komoot.de/',
+    "official_api_documentation": 'https://photon.komoot.io/',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
