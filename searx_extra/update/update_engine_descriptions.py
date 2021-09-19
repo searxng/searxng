@@ -6,12 +6,14 @@ from urllib.parse import quote, urlparse
 import detect_language
 from lxml.html import fromstring
 
-from searx.engines.wikidata import send_wikidata_query
+from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text
 from searx.locales import LOCALE_NAMES
 import searx
 import searx.search
 import searx.network
+
+set_loggers(wikidata, 'wikidata')
 
 SPARQL_WIKIPEDIA_ARTICLE = """
 SELECT DISTINCT ?item ?name
@@ -128,9 +130,11 @@ def initialize():
 
 def fetch_wikidata_descriptions():
     global IDS
-    result = send_wikidata_query(SPARQL_DESCRIPTION
-                                 .replace('%IDS%', IDS)
-                                 .replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL))
+    result = wikidata.send_wikidata_query(
+        SPARQL_DESCRIPTION
+        .replace('%IDS%', IDS)
+        .replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)
+    )
     if result is not None:
         for binding in result['results']['bindings']:
             wikidata_id = binding['item']['value'].replace('http://www.wikidata.org/entity/', '')
@@ -143,9 +147,11 @@ def fetch_wikidata_descriptions():
 
 def fetch_wikipedia_descriptions():
     global IDS
-    result = send_wikidata_query(SPARQL_WIKIPEDIA_ARTICLE
-                                 .replace('%IDS%', IDS)
-                                 .replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL))
+    result = wikidata.send_wikidata_query(
+        SPARQL_WIKIPEDIA_ARTICLE
+        .replace('%IDS%', IDS)
+        .replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)
+    )
     if result is not None:
         for binding in result['results']['bindings']:
             wikidata_id = binding['item']['value'].replace('http://www.wikidata.org/entity/', '')

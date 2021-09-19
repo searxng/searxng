@@ -7,13 +7,14 @@ import collections
 from os.path import join
 
 from searx import searx_dir
-from searx.engines.wikidata import send_wikidata_query
+from searx.engines import wikidata, set_loggers
 
+set_loggers(wikidata, 'wikidata')
 
 # the response contains duplicate ?item with the different ?symbol
 # "ORDER BY ?item DESC(?rank) ?symbol" provides a deterministic result
 # even if a ?item has different ?symbol of the same rank.
-# A deterministic result 
+# A deterministic result
 # see:
 # * https://www.wikidata.org/wiki/Help:Ranking
 # * https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format ("Statement representation" section)
@@ -36,7 +37,7 @@ ORDER BY ?item DESC(?rank) ?symbol
 
 def get_data():
     results = collections.OrderedDict()
-    response = send_wikidata_query(SARQL_REQUEST)
+    response = wikidata.send_wikidata_query(SARQL_REQUEST)
     for unit in response['results']['bindings']:
         name = unit['item']['value'].replace('http://www.wikidata.org/entity/', '')
         unit = unit['symbol']['value']
