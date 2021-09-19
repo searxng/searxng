@@ -1406,3 +1406,17 @@ th:hover .engine-tooltip,
   padding: 0.4rem 0;
   width: 1px;
 }
+/* Safari 9+ 
+   Conditional/Hack CSS from https://browserstrangeness.github.io/css_hacks.html
+*/
+@supports (-webkit-marquee-repetition:infinite) and (object-fit:fill) {
+    .twitter-typeahead .tt-input:focus {
+        z-index: 2;
+    }
+
+    .input-group-btn:last-child > .btn,
+    .input-group-btn:last-child > .btn-group {
+        margin-left: inherit !important;
+    }
+}
+
