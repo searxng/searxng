@@ -782,7 +782,7 @@ searx.ready(function() {
     }
 
     // vanilla js version of search_on_category_select.js
-    if (qinput !== null && searx.search_on_category_select) {
+    if (qinput !== null && d.querySelector('.help') != null && searx.search_on_category_select) {
       d.querySelector('.help').className='invisible';
 
       searx.on('#categories input', 'change', function() {
