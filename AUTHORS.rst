@@ -162,3 +162,4 @@ features or generally made searx better:
 - @jhigginbotham
 - @xenrox
 - @OliveiraHermogenes
+- Paul Alcock @Guilvareux
