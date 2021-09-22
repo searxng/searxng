@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+import gc
 import typing
 import types
 import functools
@@ -14,6 +15,7 @@ from langdetect.lang_detect_exception import LangDetectException
 import httpx
 
 from searx import network, logger
+from searx.utils import gen_useragent
 from searx.results import ResultContainer
 from searx.search.models import SearchQuery, EngineRef
 from searx.search.processors import EngineProcessor
@@ -58,7 +60,47 @@ def _is_url(url):
 
 
 @functools.lru_cache(maxsize=8192)
-def _is_url_image(image_url):
+def _download_and_check_if_image(image_url: str) -> bool:
+    """Download an URL and check if the Content-Type starts with "image/"
+    This function should not be called directly: use _is_url_image
+    otherwise the cache of functools.lru_cache contains data: URL which might be huge.
+    """
+    retry = 2
+
+    while retry > 0:
+        a = time()
+        try:
+            # use "image_proxy" (avoid HTTP/2)
+            network.set_context_network_name('image_proxy')
+            stream = network.stream('GET', image_url, timeout=10.0, allow_redirects=True, headers={
+                'User-Agent': gen_useragent(),
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US;q=0.5,en;q=0.3',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'DNT': '1',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-GPC': '1',
+                'Cache-Control': 'max-age=0'
+            })
+            r = next(stream)
+            r.close()
+            is_image = r.headers["content-type"].startswith('image/')
+            del r
+            del stream
+            return is_image
+        except httpx.TimeoutException:
+            logger.error('Timeout for %s: %i', image_url, int(time() - a))
+            retry -= 1
+        except httpx.HTTPError:
+            logger.exception('Exception for %s', image_url)
+            return False
+    return False
+
+
+def _is_url_image(image_url) -> bool:
+    """Normalize image_url
+    """
     if not isinstance(image_url, str):
         return False
 
@@ -71,32 +113,7 @@ def _is_url_image(image_url):
     if not _is_url(image_url):
         return False
 
-    retry = 2
-
-    while retry > 0:
-        a = time()
-        try:
-            network.set_timeout_for_thread(10.0, time())
-            r = network.get(image_url, timeout=10.0, allow_redirects=True, headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US;q=0.5,en;q=0.3',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'DNT': '1',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
-                'Sec-GPC': '1',
-                'Cache-Control': 'max-age=0'
-            })
-            if r.headers["content-type"].startswith('image/'):
-                return True
-            return False
-        except httpx.TimeoutException:
-            logger.error('Timeout for %s: %i', image_url, int(time() - a))
-            retry -= 1
-        except httpx.HTTPError:
-            logger.exception('Exception for %s', image_url)
-            return False
+    return _download_and_check_if_image(image_url)
 
 
 def _search_query_to_dict(search_query: SearchQuery) -> typing.Dict[str, typing.Any]:
@@ -414,3 +431,7 @@ class Checker:
     def run(self):
         for test_name in self.tests:
             self.run_test(test_name)
+            # clear cache
+            _download_and_check_if_image.cache_clear()
+            # force a garbage collector
+            gc.collect()
