@@ -1350,7 +1350,7 @@ if (not werkzeug_reloader
     or (werkzeug_reloader
         and os.environ.get("WERKZEUG_RUN_MAIN") == "true") ):
     plugin_initialize(app)
-    search_initialize(enable_checker=True)
+    search_initialize(enable_checker=True, check_network=True)
 
 
 def run():
