@@ -297,7 +297,7 @@
       <tr>
         <td></td>
         <td>{{ answerer.keywords|join(', ') }}</td>
-        <td><div class="checkbox">{{ answerer.info.name }}</div></td>
+        <td>{{ answerer.info.name }}</td>
         <td>{{ answerer.info.description }}</td>
         <td>{{ answerer.info.examples|join(', ') }}</td>
       </tr>
@@ -309,7 +309,7 @@
       <tr>
         <td>{{- checkbox_onoff('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>
           <td>{{ plugin.query_keywords|join(', ') }}</td>
-          <td><div class="checkbox">{{ _(plugin.name) }}</div></td>
+          <td>{{ _(plugin.name) }}</td>
           <td>{{ _(plugin.description) }}</td>
           <td>{{ plugin.query_examples }}</td>
       </tr>
