@@ -169,47 +169,6 @@
     {% endif %}
   {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'engines', _('Engines')) }}
-    <p>{{ _('Currently used search engines') }}</p>
-    {{ tabs_open() }}
-    {% for categ in all_categories %}
-    {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
-    <div class="scrollx">
-    <table class="striped">
-      <tr>
-        <th class="engine_checkbox">{{ _("Allow") }}</th>
-        <th class="name">{{ _("Engine name") }}</th>
-        <th class="shortcut">{{ _("Shortcut") }}</th>
-        <th>{{ _("Supports selected language") }}</th>
-        <th>{{ _("SafeSearch") }}</th>
-        <th>{{ _("Time range") }}</th>
-        <th>{{ _("Response time") }}</th>
-        <th>{{ _("Max time") }}</th>
-        <th>{{ _("Reliablity") }}</th>
-      </tr>
-      {% for search_engine in engines_by_category[categ] %}
-      {% if not search_engine.private %}
-      {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
-      <tr>
-        <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
-        <th class="name">{% if search_engine.enable_http %}{{ icon('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
-        <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
-        <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
-        <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>
-        <td>{{ checkbox(engine_id + '_time_range_support', supports[search_engine.name]['time_range_support'], true, true) }}</td>
-        {{ engine_time(search_engine.name) }}
-        <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>
-        {{ engine_reliability(search_engine.name) }}
-      </tr>
-      {% endif %}
-      {% endfor %}
-    </table>
-    </div>
-    {{ tab_footer() }}
-    {% endfor %}
-    {{ tabs_close() }}
-  {{ tab_footer() }}
-
   {{ tab_header('maintab', 'ui', _('User interface')) }}
     {% if 'locale' not in locked_preferences %}
     <fieldset>
@@ -252,32 +211,73 @@
     {{ plugin_preferences('ui') }}
   {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'cookies', _('Cookies')) }}
-     <p class="text-muted">
-        {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
-        {{ _('With that list, you can assess searx transparency.') }}<br />
-     </p>
-     {% if cookies %}
-     <table class="cookies">
-       <tr>
-          <th>{{ _('Cookie name') }}</th>
-          <th>{{ _('Value') }}</th>
-       </tr>
-       {% for cookie in cookies %}
-       <tr>
-          <td>{{ cookie }}</td>
-          <td>{{ cookies[cookie] }}</td>
-       </tr>
-       {% endfor %}
-     </table>
-     {% else %}
-        {% include 'oscar/messages/no_cookies.html' %}
-     {% endif %}
-     <h4>{{ _('Search URL of the currently saved preferences') }} :</h4>
-     <div class="selectable_url">
-       <pre>{{ url_for('index', _external=True) }}?preferences={{ preferences_url_params|e }}{% raw %}&amp;q=%s{% endraw %}</pre>
-     </div>
-     <p class="small_font">{{ _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') }}</p>
+  {{ tab_header('maintab', 'privacy', _('Privacy')) }}
+    {% if 'method' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Method') }}</legend>
+      <p class="value">
+        <select name='method'>
+          <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
+          <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Search language') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'image_proxy' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Image proxy') }}</legend>
+      <p class="value">
+        <select name='image_proxy'>
+          <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
+          <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Proxying image results through searx') }}</div>
+    </fieldset>
+    {% endif %}
+    {{ plugin_preferences('privacy') }}
+  {{ tab_footer() }}
+
+  {{ tab_header('maintab', 'engines', _('Engines')) }}
+    <p>{{ _('Currently used search engines') }}</p>
+    {{ tabs_open() }}
+    {% for categ in all_categories %}
+    {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
+    <div class="scrollx">
+    <table class="striped">
+      <tr>
+        <th class="engine_checkbox">{{ _("Allow") }}</th>
+        <th class="name">{{ _("Engine name") }}</th>
+        <th class="shortcut">{{ _("Shortcut") }}</th>
+        <th>{{ _("Supports selected language") }}</th>
+        <th>{{ _("SafeSearch") }}</th>
+        <th>{{ _("Time range") }}</th>
+        <th>{{ _("Response time") }}</th>
+        <th>{{ _("Max time") }}</th>
+        <th>{{ _("Reliablity") }}</th>
+      </tr>
+      {% for search_engine in engines_by_category[categ] %}
+      {% if not search_engine.private %}
+      {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
+      <tr>
+        <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
+        <th class="name">{% if search_engine.enable_http %}{{ icon('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
+        <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
+        <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
+        <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>
+        <td>{{ checkbox(engine_id + '_time_range_support', supports[search_engine.name]['time_range_support'], true, true) }}</td>
+        {{ engine_time(search_engine.name) }}
+        <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>
+        {{ engine_reliability(search_engine.name) }}
+      </tr>
+      {% endif %}
+      {% endfor %}
+    </table>
+    </div>
+    {{ tab_footer() }}
+    {% endfor %}
+    {{ tabs_close() }}
   {{ tab_footer() }}
 
   {{ tab_header('maintab', 'query', _('Special Queries')) }}
@@ -320,32 +320,32 @@
     {% endif %}
   {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'privacy', _('Privacy')) }}
-    {% if 'method' not in locked_preferences %}
-    <fieldset>
-      <legend>{{ _('Method') }}</legend>
-      <p class="value">
-        <select name='method'>
-          <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
-          <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Search language') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'image_proxy' not in locked_preferences %}
-    <fieldset>
-      <legend>{{ _('Image proxy') }}</legend>
-      <p class="value">
-        <select name='image_proxy'>
-          <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
-          <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Proxying image results through searx') }}</div>
-    </fieldset>
-    {% endif %}
-    {{ plugin_preferences('privacy') }}
+  {{ tab_header('maintab', 'cookies', _('Cookies')) }}
+     <p class="text-muted">
+        {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
+        {{ _('With that list, you can assess searx transparency.') }}<br />
+     </p>
+     {% if cookies %}
+     <table class="cookies">
+       <tr>
+          <th>{{ _('Cookie name') }}</th>
+          <th>{{ _('Value') }}</th>
+       </tr>
+       {% for cookie in cookies %}
+       <tr>
+          <td>{{ cookie }}</td>
+          <td>{{ cookies[cookie] }}</td>
+       </tr>
+       {% endfor %}
+     </table>
+     {% else %}
+        {% include 'oscar/messages/no_cookies.html' %}
+     {% endif %}
+     <h4>{{ _('Search URL of the currently saved preferences') }} :</h4>
+     <div class="selectable_url">
+       <pre>{{ url_for('index', _external=True) }}?preferences={{ preferences_url_params|e }}{% raw %}&amp;q=%s{% endraw %}</pre>
+     </div>
+     <p class="small_font">{{ _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') }}</p>
   {{ tab_footer() }}
 
 {{ tabs_close() }}
