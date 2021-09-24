@@ -102,79 +102,147 @@
 
 {{ tabs_open() }}
 
-{{ tab_header('maintab', 'general', _('General')) }}
-  {% if 'categories' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Default categories') }}</legend>
-    {% set display_tooltip = false %}
-    {% include 'simple/categories.html' %}
-  </fieldset>
-  {% endif %}
-  {% if 'language' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Search language') }}</legend>
-    <p class="value">{{- '' -}}
-      <select name='language'>{{- '' -}}
-        <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
-        {%- for lang_id,lang_name,country_name,english_name in language_codes | sort(attribute=1) -%}
-        <option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>{{ lang_name }} {% if country_name %}({{ country_name }}) {% endif %}- {{ lang_id }}</option>
+  {{ tab_header('maintab', 'general', _('General')) }}
+    {% if 'categories' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Default categories') }}</legend>
+      {% set display_tooltip = false %}
+      {% include 'simple/categories.html' %}
+    </fieldset>
+    {% endif %}
+    {% if 'language' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Search language') }}</legend>
+      <p class="value">{{- '' -}}
+        <select name='language'>{{- '' -}}
+          <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
+          {%- for lang_id,lang_name,country_name,english_name in language_codes | sort(attribute=1) -%}
+          <option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>{{ lang_name }} {% if country_name %}({{ country_name }}) {% endif %}- {{ lang_id }}</option>
+          {%- endfor -%}
+        </select>{{- '' -}}
+      </p>
+      <div class="description">{{ _('What language do you prefer for search?') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'autocomplete' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Autocomplete') }}</legend>
+      <p class="value">
+        <select name="autocomplete">
+          <option value=""> - </option>
+          {%- for backend in autocomplete_backends -%}
+          <option value="{{ backend }}" {% if backend == autocomplete %}selected="selected"{% endif %}>{{ backend }}</option>
+          {%- endfor -%}
+        </select>
+      </p>
+      <div class="description">{{ _('Find stuff as you type') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'safesearch' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('SafeSearch') }}</legend>
+      <p class="value">
+        <select name='safesearch'>
+          <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
+          <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
+          <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
+        </select>
+      </p>
+      <p class="description">{{ _('Filter content') }}</p>
+    </fieldset>
+    {% endif %}
+    {{ plugin_preferences('general') }}
+    {% if 'doi_resolver' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Open Access DOI resolver') }}</legend>
+      <p class="value">
+        <select id='doi_resolver' name='doi_resolver'>
+        {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
+          <option value="{{ doi_resolver_name }}" {% if doi_resolver_url == current_doi_resolver %}selected="selected"{% endif %}>
+          {{- doi_resolver_name }} - {{ doi_resolver_url -}}
+          </option>
         {%- endfor -%}
-      </select>{{- '' -}}
-    </p>
-    <div class="description">{{ _('What language do you prefer for search?') }}</div>
-  </fieldset>
-  {% endif %}
-  {% if 'autocomplete' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Autocomplete') }}</legend>
-    <p class="value">
-      <select name="autocomplete">
-        <option value=""> - </option>
-        {%- for backend in autocomplete_backends -%}
-        <option value="{{ backend }}" {% if backend == autocomplete %}selected="selected"{% endif %}>{{ backend }}</option>
-        {%- endfor -%}
-      </select>
-    </p>
-    <div class="description">{{ _('Find stuff as you type') }}</div>
-  </fieldset>
-  {% endif %}
-  {% if 'safesearch' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('SafeSearch') }}</legend>
-    <p class="value">
-      <select name='safesearch'>
-        <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
-        <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
-        <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
-      </select>
-    </p>
-    <p class="description">{{ _('Filter content') }}</p>
-  </fieldset>
-  {% endif %}
-  {{ plugin_preferences('general') }}
-  {% if 'doi_resolver' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Open Access DOI resolver') }}</legend>
-    <p class="value">
-      <select id='doi_resolver' name='doi_resolver'>
-      {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
-         <option value="{{ doi_resolver_name }}" {% if doi_resolver_url == current_doi_resolver %}selected="selected"{% endif %}>
-         {{- doi_resolver_name }} - {{ doi_resolver_url -}}
-         </option>
-      {%- endfor -%}
-      </select>
-    </p>
-    <div class="description"><!-- {{ _('Redirect to open-access versions of publications when available (plugin required)') }} --></div>
-  </fieldset>
-  {% endif %}
+        </select>
+      </p>
+      <div class="description"><!-- {{ _('Redirect to open-access versions of publications when available (plugin required)') }} --></div>
+    </fieldset>
+    {% endif %}
+  {{ tab_footer() }}
+
+  {{ tab_header('maintab', 'ui', _('User interface')) }}
+    {% if 'locale' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Interface language') }}</legend>
+      <p class="value">
+        <select name='locale'>
+          {% for locale_id,locale_name in locales.items() | sort %}
+          <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
+          {% endfor %}
+        </select>
+      </p>
+      <div class="description">{{ _('Change the language of the layout') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'theme' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Themes') }}</legend>
+      <p class="value">
+        <select name="theme">
+          {%- for name in themes -%}
+          <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
+          {%- endfor -%}
+        </select>
+      </p>
+      <div class="description">{{ _('Change searx layout') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'results_on_new_tab' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Results on new tabs') }}</legend>
+      <p class="value">
+        <select name='results_on_new_tab'>
+          <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
+          <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+        </select>
+      </p>
+      <div class="description">{{_('Open result links on new browser tabs') }}</div>
+    </fieldset>
+    {% endif %}
+    {{ plugin_preferences('ui') }}
+  {{ tab_footer() }}
+
+  {{ tab_header('maintab', 'privacy', _('Privacy')) }}
+    {% if 'method' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Method') }}</legend>
+      <p class="value">
+        <select name='method'>
+          <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
+          <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Search language') }}</div>
+    </fieldset>
+    {% endif %}
+    {% if 'image_proxy' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Image proxy') }}</legend>
+      <p class="value">
+        <select name='image_proxy'>
+          <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
+          <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Proxying image results through searx') }}</div>
+    </fieldset>
+    {% endif %}
+    {{ plugin_preferences('privacy') }}
   {{ tab_footer() }}
 
   {{ tab_header('maintab', 'engines', _('Engines')) }}
     <p>{{ _('Currently used search engines') }}</p>
-
     {{ tabs_open() }}
     {% for categ in all_categories %}
-
     {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
     <div class="scrollx">
     <table class="striped">
@@ -190,7 +258,6 @@
         <th>{{ _("Reliablity") }}</th>
       </tr>
       {% for search_engine in engines_by_category[categ] %}
-
       {% if not search_engine.private %}
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
       <tr>
@@ -213,55 +280,51 @@
     {{ tabs_close() }}
   {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'ui', _('User interface')) }}
-  {% if 'locale' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Interface language') }}</legend>
-    <p class="value">
-      <select name='locale'>
-        {% for locale_id,locale_name in locales.items() | sort %}
-        <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
-        {% endfor %}
-      </select>
-    </p>
-    <div class="description">{{ _('Change the language of the layout') }}</div>
-  </fieldset>
-  {% endif %}
-  {% if 'theme' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Themes') }}</legend>
-    <p class="value">
-      <select name="theme">
-        {%- for name in themes -%}
-        <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
-        {%- endfor -%}
-      </select>
-    </p>
-    <div class="description">{{ _('Change searx layout') }}</div>
-  </fieldset>
-  {% endif %}
-  {% if 'results_on_new_tab' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Results on new tabs') }}</legend>
-    <p class="value">
-      <select name='results_on_new_tab'>
-        <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
-        <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
-      </select>
-    </p>
-    <div class="description">{{_('Open result links on new browser tabs') }}</div>
-  </fieldset>
-  {% endif %}
-  {{ plugin_preferences('ui') }}
+  {{ tab_header('maintab', 'query', _('Special Queries')) }}
+    {% if answerers %}
+    <div class="scrollx">
+    <table class="striped">
+      <tr>
+        <th>{{ _('Allow') }}</th>
+        <th>{{ _('Keywords') }}</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Description') }}</th>
+        <th>{{ _('Examples') }}</th>
+      </tr>
+      <td></td>
+      <th scope="colgroup" colspan="4">{{ _('This is the list of searx\'s instant answering modules.') }}</th>
+      {% for answerer in answerers %}
+      <tr>
+        <td></td>
+        <td>{{ answerer.keywords|join(', ') }}</td>
+        <td>{{ answerer.info.name }}</td>
+        <td>{{ answerer.info.description }}</td>
+        <td>{{ answerer.info.examples|join(', ') }}</td>
+      </tr>
+      {% endfor %}
+      <td></td>
+      <th scope="colgroup" colspan="4">{{ _('This is the list of plugins.') }}</th>
+      {%- for plugin in plugins -%}
+      {%- if plugin.preference_section == 'query' -%}
+      <tr>
+        <td>{{- checkbox_onoff('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>
+          <td>{{ plugin.query_keywords|join(', ') }}</td>
+          <td>{{ _(plugin.name) }}</td>
+          <td>{{ _(plugin.description) }}</td>
+          <td>{{ plugin.query_examples }}</td>
+      </tr>
+      {%- endif -%}
+      {%- endfor -%}
+    </table>
+    </div>
+    {% endif %}
   {{ tab_footer() }}
 
   {{ tab_header('maintab', 'cookies', _('Cookies')) }}
-
      <p class="text-muted">
         {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
         {{ _('With that list, you can assess searx transparency.') }}<br />
      </p>
-
      {% if cookies %}
      <table class="cookies">
        <tr>
@@ -278,45 +341,14 @@
      {% else %}
         {% include 'oscar/messages/no_cookies.html' %}
      {% endif %}
-
      <h4>{{ _('Search URL of the currently saved preferences') }} :</h4>
      <div class="selectable_url">
        <pre>{{ url_for('index', _external=True) }}?preferences={{ preferences_url_params|e }}{% raw %}&amp;q=%s{% endraw %}</pre>
      </div>
      <p class="small_font">{{ _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') }}</p>
-
   {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'privacy', _('Privacy')) }}
-  {% if 'method' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Method') }}</legend>
-    <p class="value">
-      <select name='method'>
-        <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
-        <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
-      </select>
-    </p>
-    <div class="description">{{ _('Search language') }}</div>
-  </fieldset>
-  {% endif %}
-  {% if 'image_proxy' not in locked_preferences %}
-  <fieldset>
-    <legend>{{ _('Image proxy') }}</legend>
-    <p class="value">
-      <select name='image_proxy'>
-        <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
-        <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
-      </select>
-    </p>
-    <div class="description">{{ _('Proxying image results through searx') }}</div>
-  </fieldset>
-  {% endif %}
-  {{ plugin_preferences('privacy') }}
-
-  {{ tab_footer() }}
-
-  {{ tabs_close() }}
+{{ tabs_close() }}
 
   <p class="small_font">{{ _('These settings are stored in your cookies, this allows us not to store this data about you.') }}
     <br />
