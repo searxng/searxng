@@ -598,7 +598,7 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-@media screen and (max-width: 1250px) {
+@media screen and (max-width: 80em) {
   #main_preferences,
   #main_about,
   #main_stats {
@@ -695,6 +695,20 @@ article.result-images[data-vim-selected]::before {
   #backToTop {
     left: @results-width;
   }
+
+  #main_results div#results {
+    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+    display: grid;
+    grid-template-columns: 50em;
+    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
+    gap: 0;
+    grid-template-areas:
+      "answers"
+      "suggestions"
+      "sidebar"
+      "urls"
+      "pagination";
+  }
 }
 
 #main_results div#results.only_template_images {
@@ -721,29 +735,11 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-@media screen and (max-width: 1250px) {
-  #main_results div#results {
-    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
-    display: grid;
-    grid-template-columns: 50em;
-    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
-    gap: 0;
-    grid-template-areas:
-      "answers"
-      "suggestions"
-      "sidebar"
-      "urls"
-      "pagination";
-  }
-}
-
 @media screen and (max-width: 50em) {
   #main_results div#results {
     grid-template-columns: 100%;
   }
-}
 
-@media screen and (max-width: @results-width) {
   article[data-vim-selected]::before {
     display: none;
     content: "";
