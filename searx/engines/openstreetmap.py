@@ -42,6 +42,7 @@ route_re = re.compile('(?:from )?(.+) to (.+)')
 wikidata_image_sparql = """
 select ?item ?itemLabel ?image ?sign ?symbol ?website ?wikipediaName
 where {
+  hint:Query hint:optimizer "None".
   values ?item { %WIKIDATA_IDS% }
   OPTIONAL { ?item wdt:P18|wdt:P8517|wdt:P4291|wdt:P5252|wdt:P3451|wdt:P4640|wdt:P5775|wdt:P2716|wdt:P1801|wdt:P4896 ?image }
   OPTIONAL { ?item wdt:P1766|wdt:P8505|wdt:P8667 ?sign }
