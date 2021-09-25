@@ -1,3 +1,7 @@
+#main_index {
+  margin-top: 16em;
+}
+
 .index {
   text-align: center;
 
@@ -17,6 +21,7 @@
     margin: 0 auto;
     background: inherit;
     border: inherit;
+    padding: 0;
   }
 
   .search_filters {
@@ -30,10 +35,20 @@
   }
 }
 
-@media screen and (max-width: 75em) {
+@media screen and (max-width: 80em) {
   div.title {
     h1 {
       font-size: 1em;
     }
+  }
+
+  #main_index {
+    margin-top: 6em;
+  }
+}
+
+@media screen and (max-width: 50em) {
+  #main_index {
+    margin-top: 0;
   }
 }
