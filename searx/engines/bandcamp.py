@@ -12,6 +12,16 @@ from dateutil.parser import parse as dateparse
 from lxml import html
 from searx.utils import extract_text
 
+# about
+about = {
+    "website": 'https://bandcamp.com/',
+    "wikidata_id": 'Q545966',
+    "official_api_documentation": 'https://bandcamp.com/developer',
+    "use_official_api": False,
+    "require_api_key": False,
+    "results": 'HTML',
+}
+
 categories = ['music']
 paging = True
 

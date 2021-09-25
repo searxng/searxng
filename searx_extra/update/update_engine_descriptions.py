@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 
-import sys
 import json
-from urllib.parse import quote, urlparse
-import detect_language
+from urllib.parse import urlparse
+from os.path import join
+
 from lxml.html import fromstring
 
+from langdetect import detect_langs
+from langdetect.lang_detect_exception import LangDetectException
+
 from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text
+from searx.utils import extract_text, match_language
 from searx.locales import LOCALE_NAMES
-import searx
+from searx import searx_dir
+from searx.utils import gen_useragent
 import searx.search
 import searx.network
 
@@ -18,6 +22,7 @@ set_loggers(wikidata, 'wikidata')
 SPARQL_WIKIPEDIA_ARTICLE = """
 SELECT DISTINCT ?item ?name
 WHERE {
+  hint:Query hint:optimizer "None".
   VALUES ?item { %IDS% }
   ?article schema:about ?item ;
               schema:inLanguage ?lang ;
@@ -38,8 +43,23 @@ WHERE {
 ORDER BY ?itemLang
 """
 
+NOT_A_DESCRIPTION = [
+    'web site',
+    'site web',
+    'komputa serĉilo',
+    'interreta serĉilo',
+    'bilaketa motor',
+    'web search engine',
+    'wikimedia täpsustuslehekülg',
+]
+
+SKIP_ENGINE_SOURCE = [
+    ('gitlab', 'wikidata')  # descriptions are about wikipedia disambiguation pages
+]
+
 LANGUAGES = LOCALE_NAMES.keys()
-LANGUAGES_SPARQL = ', '.join(set(map(lambda l: repr(l.split('_')[0]), LANGUAGES)))
+WIKIPEDIA_LANGUAGES = {'language': 'wikipedia_language'}
+LANGUAGES_SPARQL = ''
 IDS = None
 
 descriptions = {}
@@ -54,15 +74,30 @@ def normalize_description(description):
 
 
 def update_description(engine_name, lang, description, source, replace=True):
+    if not isinstance(description, str):
+        return
+    description = normalize_description(description)
+    if description.lower() == engine_name.lower():
+        return
+    if description.lower() in NOT_A_DESCRIPTION:
+        return
+    if (engine_name, source) in SKIP_ENGINE_SOURCE:
+        return
+    if ' ' not in description:
+        # skip unique word description (like "website")
+        return
     if replace or lang not in descriptions[engine_name]:
-        descriptions[engine_name][lang] = [normalize_description(description), source]
+        descriptions[engine_name][lang] = [description, source]
 
 
-def get_wikipedia_summary(language, pageid):
-    search_url = 'https://{language}.wikipedia.org/api/rest_v1/page/summary/{title}'
-    url = search_url.format(title=quote(pageid), language=language)
+def get_wikipedia_summary(lang, pageid):
+    params = {
+        'language': lang.replace('_','-'),
+        'headers': {}
+    }
+    searx.engines.engines['wikipedia'].request(pageid, params)
     try:
-        response = searx.network.get(url)
+        response = searx.network.get(params['url'], headers=params['headers'], timeout=10)
         response.raise_for_status()
         api_result = json.loads(response.text)
         return api_result.get('extract')
@@ -71,15 +106,19 @@ def get_wikipedia_summary(language, pageid):
 
 
 def detect_language(text):
-    r = cld3.get_language(str(text))  # pylint: disable=E1101
-    if r is not None and r.probability >= 0.98 and r.is_reliable:
-        return r.language
+    try:
+        r = detect_langs(str(text))  # pylint: disable=E1101
+    except LangDetectException:
+        return None
+
+    if len(r) > 0 and r[0].prob > 0.95:
+        return r[0].lang
     return None
 
 
 def get_website_description(url, lang1, lang2=None):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0',
+        'User-Agent': gen_useragent(),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'DNT': '1',
         'Upgrade-Insecure-Requests': '1',
@@ -117,8 +156,15 @@ def get_website_description(url, lang1, lang2=None):
 
 
 def initialize():
-    global descriptions, wd_to_engine_name, IDS
+    global IDS, WIKIPEDIA_LANGUAGES, LANGUAGES_SPARQL
     searx.search.initialize()
+    wikipedia_engine = searx.engines.engines['wikipedia']
+    WIKIPEDIA_LANGUAGES = {
+        language: wikipedia_engine.url_lang(language.replace('_', '-'))
+        for language in LANGUAGES
+    }
+    WIKIPEDIA_LANGUAGES['nb_NO'] = 'no'
+    LANGUAGES_SPARQL = ', '.join(f"'{l}'" for l in set(WIKIPEDIA_LANGUAGES.values()))
     for engine_name, engine in searx.engines.engines.items():
         descriptions[engine_name] = {}
         wikidata_id = getattr(engine, "about", {}).get('wikidata_id')
@@ -129,7 +175,7 @@ def initialize():
 
 
 def fetch_wikidata_descriptions():
-    global IDS
+    searx.network.set_timeout_for_thread(60)
     result = wikidata.send_wikidata_query(
         SPARQL_DESCRIPTION
         .replace('%IDS%', IDS)
@@ -138,15 +184,15 @@ def fetch_wikidata_descriptions():
     if result is not None:
         for binding in result['results']['bindings']:
             wikidata_id = binding['item']['value'].replace('http://www.wikidata.org/entity/', '')
-            lang = binding['itemDescription']['xml:lang']
+            wikidata_lang = binding['itemDescription']['xml:lang']
             description = binding['itemDescription']['value']
-            if ' ' in description:  # skip unique word description (like "website")
-                for engine_name in wd_to_engine_name[wikidata_id]:
-                    update_description(engine_name, lang, description, 'wikidata')
+            for engine_name in wd_to_engine_name[wikidata_id]:
+                for lang in LANGUAGES:
+                    if WIKIPEDIA_LANGUAGES[lang] == wikidata_lang:
+                        update_description(engine_name, lang, description, 'wikidata')
 
 
 def fetch_wikipedia_descriptions():
-    global IDS
     result = wikidata.send_wikidata_query(
         SPARQL_WIKIPEDIA_ARTICLE
         .replace('%IDS%', IDS)
@@ -155,12 +201,13 @@ def fetch_wikipedia_descriptions():
     if result is not None:
         for binding in result['results']['bindings']:
             wikidata_id = binding['item']['value'].replace('http://www.wikidata.org/entity/', '')
-            lang = binding['name']['xml:lang']
+            wikidata_lang = binding['name']['xml:lang']
             pageid = binding['name']['value']
-            description = get_wikipedia_summary(lang, pageid)
-            if description is not None and ' ' in description:
-                for engine_name in wd_to_engine_name[wikidata_id]:
-                    update_description(engine_name, lang, description, 'wikipedia')
+            for engine_name in wd_to_engine_name[wikidata_id]:
+                for lang in LANGUAGES:
+                    if WIKIPEDIA_LANGUAGES[lang] == wikidata_lang:
+                        description = get_wikipedia_summary(lang, pageid)
+                        update_description(engine_name, lang, description, 'wikipedia')
 
 
 def normalize_url(url):
@@ -173,36 +220,96 @@ def normalize_url(url):
 def fetch_website_description(engine_name, website):
     default_lang, default_description = get_website_description(website, None, None)
     if default_lang is None or default_description is None:
+        # the front page can't be fetched: skip this engine
         return
-    if default_lang not in descriptions[engine_name]:
-        descriptions[engine_name][default_lang] = [normalize_description(default_description), website]
-    for request_lang in ('en-US', 'es-US', 'fr-FR', 'zh', 'ja', 'ru', 'ar', 'ko'):
-        if request_lang.split('-')[0] not in descriptions[engine_name]:
-            lang, desc = get_website_description(website, request_lang, request_lang.split('-')[0])
-            if desc is not None and desc != default_description:
-                update_description(engine_name, lang, desc, website, replace=False)
+
+    wikipedia_languages_r = { V: K for K, V in WIKIPEDIA_LANGUAGES.items() }
+    languages = ['en', 'es', 'pt', 'ru', 'tr', 'fr']
+    languages = languages + [ l for l in LANGUAGES if l not in languages]
+
+    previous_matched_lang = None
+    previous_count = 0
+    for lang in languages:
+        if lang not in descriptions[engine_name]:
+            fetched_lang, desc = get_website_description(website, lang, WIKIPEDIA_LANGUAGES[lang])
+            if fetched_lang is None or desc is None:
+                continue
+            matched_lang = match_language(fetched_lang, LANGUAGES, fallback=None)
+            if matched_lang is None:
+                fetched_wikipedia_lang = match_language(fetched_lang, WIKIPEDIA_LANGUAGES.values(), fallback=None)
+                matched_lang = wikipedia_languages_r.get(fetched_wikipedia_lang)
+            if matched_lang is not None:
+                update_description(engine_name, matched_lang, desc, website, replace=False)
+            # check if desc changed with the different lang values
+            if matched_lang == previous_matched_lang:
+                previous_count += 1
+                if previous_count == 6:
+                    # the website has returned the same description for 6 different languages in Accept-Language header
+                    # stop now
+                    break
             else:
-                break
+                previous_matched_lang = matched_lang
+                previous_count = 0
 
 
 def fetch_website_descriptions():
     for engine_name, engine in searx.engines.engines.items():
         website = getattr(engine, "about", {}).get('website')
-        if website is None:
+        if website is None and hasattr(engine, "search_url"):
             website = normalize_url(getattr(engine, "search_url"))
-        if website is None:
+        if website is None and hasattr(engine, "base_url"):
             website = normalize_url(getattr(engine, "base_url"))
         if website is not None:
             fetch_website_description(engine_name, website)
 
 
+def get_engine_descriptions_filename():
+    return join(join(searx_dir, "data"), "engine_descriptions.json")
+
+
+def get_output():
+    """
+    From descriptions[engine][language] = [description, source]
+    To
+
+    * output[language][engine] = description_and_source
+    * description_and_source can be:
+       * [description, source]
+       * description (if source = "wikipedia")
+       * [f"engine:lang", "ref"] (reference to another existing description)
+    """
+    output = {
+        locale: {} for locale in LOCALE_NAMES
+    }
+
+    seen_descriptions = {}
+
+    for engine_name, lang_descriptions in descriptions.items():
+        for language, description in lang_descriptions.items():
+            if description[0] in seen_descriptions:
+                ref = seen_descriptions[description[0]]
+                description = [f'{ref[0]}:{ref[1]}', 'ref']
+            else:
+                seen_descriptions[description[0]] = (engine_name, language)
+                if description[1] == 'wikipedia':
+                    description = description[0]
+            output.setdefault(language, {}).setdefault(engine_name, description)
+
+    return output
+
+
 def main():
     initialize()
+    print('Fetching wikidata descriptions')
     fetch_wikidata_descriptions()
+    print('Fetching wikipedia descriptions')
     fetch_wikipedia_descriptions()
+    print('Fetching website descriptions')
     fetch_website_descriptions()
 
-    sys.stdout.write(json.dumps(descriptions, indent=1, separators=(',', ':'), ensure_ascii=False))
+    output = get_output()
+    with open(get_engine_descriptions_filename(), 'w', encoding='utf8') as f:
+        f.write(json.dumps(output, indent=1, separators=(',', ':'), ensure_ascii=False))
 
 
 if __name__ == "__main__":

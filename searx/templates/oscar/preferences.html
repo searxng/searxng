@@ -4,6 +4,7 @@
 {% if search_engine.about is defined or stats[search_engine.name]['result_count'] > 0 %}
 {% set about = search_engine.about %}
 <div class="engine-tooltip" role="tooltip" id="{{ id }}">{{- "" -}}
+    <p class="description"></p>
     {% if search_engine.about is defined %}
         <h5><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></h5>
         {%- if about.wikidata_id -%}<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>{%- endif -%}
@@ -343,7 +344,7 @@
                                         <td class="onoff-checkbox">
                                         {{- checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) -}}
                                         </td>
-                                        <th scope="row"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
+                                        <th scope="row" data-engine-name="{{ search_engine.name }}"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
                                             {%- if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif -%}
                                             {{- search_engine.name -}}</span>
                                             {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
@@ -363,7 +364,7 @@
                                         <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
                                         <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
                                         <td>{{ shortcuts[search_engine.name] }}</td>
-                                        <th scope="row"><span>{% if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif %}{{ search_engine.name }}</span>{{ engine_about(search_engine) }}</th>
+                                        <th scope="row" data-engine-name="{{ search_engine.name }}"><span>{% if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif %}{{ search_engine.name }}</span>{{ engine_about(search_engine) }}</th>
                                         <td class="onoff-checkbox">
                                         {{ checkbox_toggle('engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_'), (search_engine.name, categ) in disabled_engines) }}
                                         </td>

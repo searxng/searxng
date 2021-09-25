@@ -54,6 +54,7 @@ from searx import (
     settings,
     searx_debug,
 )
+from searx.data import ENGINE_DESCRIPTIONS
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
@@ -393,7 +394,9 @@ def image_proxify(url):
 def get_translations():
     return {
         # when there is autocompletion
-        'no_item_found': gettext('No item found')
+        'no_item_found': gettext('No item found'),
+        # /preferences: the source of the engine description (wikipedata, wikidata, website)
+        'Source': gettext('Source'),
     }
 
 
@@ -1138,6 +1141,23 @@ def image_proxy():
         return Response(forward_chunk(), mimetype=resp.headers['Content-Type'], headers=headers)
     except httpx.HTTPError:
         return '', 400
+
+
+@app.route('/engine_descriptions.json', methods=['GET'])
+def engine_descriptions():
+    locale = get_locale().split('_')[0]
+    result = ENGINE_DESCRIPTIONS['en'].copy()
+    if locale != 'en':
+        for engine, description in ENGINE_DESCRIPTIONS.get(locale, {}).items():
+            result[engine] = description
+    for engine, description in result.items():
+        if len(description) ==2 and description[1] == 'ref':
+            ref_engine, ref_lang = description[0].split(':')
+            description = ENGINE_DESCRIPTIONS[ref_lang][ref_engine]
+        if isinstance(description, str):
+            description = [ description, 'wikipedia' ]
+        result[engine] = description
+    return jsonify(result)
 
 
 @app.route('/stats', methods=['GET'])

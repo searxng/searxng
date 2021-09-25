@@ -14,6 +14,7 @@ __all__ = [
     'WIKIDATA_UNITS',
     'EXTERNAL_BANGS',
     'OSM_KEYS_TAGS',
+    'ENGINE_DESCRIPTIONS',
     'ahmia_blacklist_loader',
 ]
 
@@ -45,3 +46,4 @@ EXTERNAL_URLS = _load('external_urls.json')
 WIKIDATA_UNITS = _load('wikidata_units.json')
 EXTERNAL_BANGS = _load('external_bangs.json')
 OSM_KEYS_TAGS = _load('osm_keys_tags.json')
+ENGINE_DESCRIPTIONS = _load('engine_descriptions.json')
