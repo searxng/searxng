@@ -42,6 +42,7 @@ route_re = re.compile('(?:from )?(.+) to (.+)')
 wikidata_image_sparql = """
 select ?item ?itemLabel ?image ?sign ?symbol ?website ?wikipediaName
 where {
+  hint:Query hint:optimizer "None".
   values ?item { %WIKIDATA_IDS% }
   OPTIONAL { ?item wdt:P18|wdt:P8517|wdt:P4291|wdt:P5252|wdt:P3451|wdt:P4640|wdt:P5775|wdt:P2716|wdt:P1801|wdt:P4896 ?image }
   OPTIONAL { ?item wdt:P1766|wdt:P8505|wdt:P8667 ?sign }
@@ -220,6 +221,7 @@ def fetch_wikidata(nominatim_json, user_langage):
                 wd_to_results.setdefault(wd_id, []).append(result)
 
     if wikidata_ids:
+        user_langage = 'en' if user_langage == 'all' else user_langage
         wikidata_ids_str = " ".join(wikidata_ids)
         query = wikidata_image_sparql.replace('%WIKIDATA_IDS%', sparql_string_escape(wikidata_ids_str)).replace(
             '%LANGUAGE%', sparql_string_escape(user_langage)
