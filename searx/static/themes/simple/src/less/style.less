@@ -78,8 +78,8 @@ footer {
   padding: 1em 0;
   width: 100%;
   text-align: center;
-  background-color: #f2f2f2;
-  border-top: 1px solid #e4e4e4;
+  background-color: @color-footer-background;
+  border-top: 1px solid @color-footer-border;
   overflow: hidden;
 
   p {
@@ -102,7 +102,6 @@ footer {
 input[type="submit"],
 #results button[type="submit"] {
   padding: 0.5rem;
-  margin: 2px 4px;
   display: inline-block;
   background: @color-download-button-background;
   color: @color-download-button-font;
@@ -365,11 +364,11 @@ article.result-images[data-vim-selected]::before {
 }
 
 #results {
-  margin: 2rem 2rem 0 2rem;
+  margin: 2rem 2rem 0 @results-offset;
   display: grid;
-  grid-template-columns: (@results-width + @results-offset) 1fr;
-  grid-template-rows: min-content 1fr min-content;
-  gap: 0 3rem;
+  grid-template-columns: (@results-width + @results-offset) 25em;
+  grid-template-rows: min-content min-content 1fr min-content;
+  gap: 0 @results-gap;
   grid-template-areas:
     "answers sidebar"
     "suggestions sidebar"
@@ -384,7 +383,6 @@ article.result-images[data-vim-selected]::before {
 }
 
 #urls {
-  margin: 0.5em 2em 20px 0;
   padding: 0;
   grid-area: urls;
 }
@@ -486,9 +484,6 @@ article.result-images[data-vim-selected]::before {
 
 #sidebar {
   grid-area: sidebar;
-  margin: 0 2px 5px 5px;
-  padding: 0 2px 2px;
-  max-width: 25em;
   word-wrap: break-word;
 
   .infobox {
@@ -592,7 +587,7 @@ article.result-images[data-vim-selected]::before {
   background: white;
   position: fixed;
   bottom: 85px;
-  left: @results-width;
+  left: @results-width + @results-offset + @results-gap;
   transition: opacity 0.5s;
   opacity: 0;
 
@@ -632,8 +627,6 @@ article.result-images[data-vim-selected]::before {
   }
 
   #sidebar {
-    max-width: @results-width;
-    margin: 0 0 2px 0;
     padding: 0;
     float: none;
     border: none;
@@ -698,14 +691,18 @@ article.result-images[data-vim-selected]::before {
       max-width: 98%;
     }
   }
+
+  #backToTop {
+    left: @results-width;
+  }
 }
 
 #main_results div#results.only_template_images {
-  margin: 2rem 2rem 0 2rem;
+  margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: min-content min-content 1fr min-content min-content;
-  gap: 0 3rem;
+  gap: 0;
   grid-template-areas:
     "answers"
     "suggestions"
@@ -715,7 +712,7 @@ article.result-images[data-vim-selected]::before {
 
   #urls {
     width: inherit;
-    margin: 0 0 20px 0;
+    margin: 0;
   }
 
   #backToTop {
@@ -724,23 +721,27 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-/*
 @media screen and (max-width: 1250px) {
   #main_results div#results {
-    margin: 2rem 2rem 0 2rem;
+    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
     display: grid;
-    grid-template-columns: (@results-width + @results-offset) 1fr;
+    grid-template-columns: 50em;
     grid-template-rows: min-content min-content min-content 1fr min-content min-content;
-    gap: 0 3rem;
+    gap: 0;
     grid-template-areas:
-      "answers empty"
-      "suggestions empty"
-      "sidebar empty"
-      "urls empty"
-      "pagination empty";
-    }
+      "answers"
+      "suggestions"
+      "sidebar"
+      "urls"
+      "pagination";
+  }
 }
-*/
+
+@media screen and (max-width: 50em) {
+  #main_results div#results {
+    grid-template-columns: 100%;
+  }
+}
 
 @media screen and (max-width: @results-width) {
   article[data-vim-selected]::before {
