@@ -52,26 +52,35 @@ main {
   margin: 0;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
 main {
   width: 100%;
-  // position: absolute;
+  margin-bottom: 2rem;
+  flex: 1;
 }
 
 #main_preferences,
 #main_about,
 #main_stats {
-  margin: 3em;
-  width: auto;
+  margin: 2em auto;
+  width: 85em;
 }
 
 footer {
-  bottom: 0;
-  height: 3em;
-  margin: 1em 0;
-  padding: 1em 0;
   clear: both;
+  min-height: 4rem;
+  padding: 1rem 0;
   width: 100%;
   text-align: center;
+  background-color: @color-footer-background;
+  border-top: 1px solid @color-footer-border;
+  overflow: hidden;
 
   p {
     font-size: 0.9em;
@@ -93,7 +102,6 @@ footer {
 input[type="submit"],
 #results button[type="submit"] {
   padding: 0.5rem;
-  margin: 2px 4px;
   display: inline-block;
   background: @color-download-button-background;
   color: @color-download-button-font;
@@ -122,7 +130,7 @@ article[data-vim-selected] {
 
 article[data-vim-selected]::before {
   position: absolute;
-  left: 1em;
+  left: (@results-offset - 2rem);
   padding: 2px;
   content: ">";
   font-weight: bold;
@@ -356,9 +364,27 @@ article.result-images[data-vim-selected]::before {
 }
 
 #results {
-  margin: 2em 2em 20px 2em;
+  margin: 2rem 2rem 0 @results-offset;
+  display: grid;
+  grid-template-columns: @results-width 25rem;
+  grid-template-rows: min-content min-content 1fr min-content;
+  gap: 0 @results-gap;
+  grid-template-areas:
+    "corrections sidebar"
+    "answers sidebar"
+    "urls sidebar"
+    "pagination sidebar";
+}
+
+#results #answers *:first-child,
+#results #sidebar *:first-child,
+#results #urls *:first-child {
+  margin-top: 0;
+}
+
+#urls {
   padding: 0;
-  width: @results-width;
+  grid-area: urls;
 }
 
 #suggestions {
@@ -372,12 +398,6 @@ article.result-images[data-vim-selected]::before {
       flex: 1 1 50%;
     }
   }
-}
-
-#suggestions,
-#answers,
-#corrections {
-  max-width: @results-width;
 }
 
 #suggestions,
@@ -407,9 +427,10 @@ article.result-images[data-vim-selected]::before {
 }
 
 #corrections {
+  grid-area: corrections;
   display: flex;
   flex-flow: row wrap;
-  margin: 1em 0;
+  margin: 0 0 1em 0;
 
   h4,
   input[type="submit"] {
@@ -430,7 +451,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #answers {
-  margin: 10px 8px 10px 8px;
+  grid-area: answers;
   border: 1px solid #ddd;
   padding: 0.9em;
   box-shadow: 0 0 5px #ccc;
@@ -454,12 +475,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #sidebar {
-  position: absolute;
-  top: 100px;
-  left: 57em;
-  margin: 0 2px 5px 5px;
-  padding: 0 2px 2px;
-  max-width: 25em;
+  grid-area: sidebar;
   word-wrap: break-word;
 
   .infobox {
@@ -542,7 +558,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 #pagination {
-  clear: both;
+  grid-area: pagination;
 
   br {
     clear: both;
@@ -556,14 +572,14 @@ article.result-images[data-vim-selected]::before {
 
 #backToTop {
   border: 1px solid #ddd;
-  margin: 0 0 0 2em;
+  margin: 0;
   padding: 0;
   font-size: 1em;
   box-shadow: 0 0 5px #ccc;
   background: white;
   position: fixed;
-  bottom: 85px;
-  left: @results-width;
+  bottom: 8rem;
+  left: @results-width + @results-offset + (0.5 * @results-gap - 1.2em);
   transition: opacity 0.5s;
   opacity: 0;
 
@@ -574,17 +590,12 @@ article.result-images[data-vim-selected]::before {
   }
 }
 
-@media screen and (max-width: 75em) {
+@media screen and (max-width: 80em) {
   #main_preferences,
   #main_about,
   #main_stats {
-    margin: 0.5em;
+    margin: 2rem 0.5rem;
     width: auto;
-  }
-
-  #suggestions,
-  #answers {
-    margin-top: 1em;
   }
 
   #infoboxes {
@@ -603,9 +614,6 @@ article.result-images[data-vim-selected]::before {
   }
 
   #sidebar {
-    position: static;
-    max-width: @results-width;
-    margin: 0 0 2px 0;
     padding: 0;
     float: none;
     border: none;
@@ -670,36 +678,68 @@ article.result-images[data-vim-selected]::before {
       max-width: 98%;
     }
   }
-}
-
-#main_results div#results.only_template_images {
-  flex-direction: column;
-  width: auto;
-  display: flex;
-
-  #sidebar {
-    position: relative;
-    top: auto;
-    order: 2;
-  }
-
-  #urls {
-    position: relative;
-    order: 1;
-  }
 
   #backToTop {
-    right: 0.5em;
-    left: auto;
+    display: none;
   }
 
   #pagination {
-    position: relative;
-    order: 3;
+    margin: 2rem 0 0 0 !important;
+  }
+
+  #main_results div#results {
+    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+    display: grid;
+    grid-template-columns: @results-width;
+    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
+    gap: 0;
+    grid-template-areas:
+      "corrections"
+      "answers"
+      "sidebar"
+      "urls"
+      "pagination";
+  }
+
+  article[data-vim-selected]::before {
+    left: 0;
   }
 }
 
-@media screen and (max-width: @results-width) {
+#main_results div#results.only_template_images {
+  margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content min-content 1fr min-content min-content;
+  gap: 0;
+  grid-template-areas:
+    "corrections"
+    "urls"
+    "answers"
+    "sidebar"
+    "pagination";
+
+  #urls {
+    width: inherit;
+    margin: 0;
+  }
+
+  #backToTop {
+    left: auto;
+    right: 2rem;
+  }
+
+  #pagination {
+    margin-right: 4rem;
+  }
+}
+
+@media screen and (max-width: 50em) {
+  #main_results div#results {
+    grid-template-columns: 100%;
+    margin: 2rem 0 0 0;
+  }
+
   article[data-vim-selected]::before {
     display: none;
     content: "";
@@ -716,19 +756,18 @@ article.result-images[data-vim-selected]::before {
     margin: 0 5px 2px 5px;
   }
 
-  #corrections {
-    margin: 1em 5px 1em 5px;
+  #corrections,
+  #answers {
+    margin: 0 5px 1em 5px;
   }
 
   #results {
     margin: 0;
     padding: 0;
-    width: initial;
   }
 
-  #backToTop {
-    left: 40em;
-    bottom: 35px;
+  #pagination {
+    margin: 2rem 1rem 0 1rem !important;
   }
 
   .result {

@@ -3,10 +3,10 @@
 */
 
 #search {
-  padding: 0 2em;
+  padding: 0 2em 0 @results-offset;
   margin: 0;
-  background: #f7f7f7;
-  border-bottom: 1px solid #d7d7d7;
+  background: @color-header-background;
+  border-bottom: 1px solid @color-header-border;
 }
 
 #search_wrapper {
@@ -104,7 +104,11 @@
   vertical-align: middle;
 }
 
-@media screen and (max-width: 75em) {
+@media screen and (max-width: 80em) {
+  #search {
+    padding: 0 @results-tablet-offset;
+  }
+
   #categories {
     font-size: 90%;
     clear: both;
@@ -142,7 +146,7 @@
   }
 }
 
-@media screen and (max-width: @results-width) {
+@media screen and (max-width: 50em) {
   #search {
     width: 100%;
     margin: 0;
@@ -181,7 +185,7 @@
 
   .category {
     display: block;
-    width: 90%;
+    width: 100%;
 
     label {
       border-bottom: 0;
