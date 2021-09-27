@@ -1937,7 +1937,7 @@ td:hover .engine-tooltip,
 }
 #main_preferences th.name .engine-tooltip {
   margin-top: 1.8rem;
-  left: 20rem;
+  left: calc((100% - 85em) / 2 + 10em);
   max-width: 40rem;
 }
 #main_preferences th.name .engine-tooltip .engine-description {
@@ -1946,6 +1946,9 @@ td:hover .engine-tooltip,
 @media screen and (max-width: 80em) {
   .preferences_back {
     clear: both;
+  }
+  .engine-tooltip {
+    left: 10em !important;
   }
 }
 /*
