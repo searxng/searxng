@@ -85,7 +85,10 @@ def _download_and_check_if_image(image_url: str) -> bool:
             })
             r = next(stream)
             r.close()
-            is_image = r.headers["content-type"].startswith('image/')
+            if r.status_code == 200:
+                is_image = r.headers.get('content-type', '').startswith('image/')
+            else:
+                is_image = False
             del r
             del stream
             return is_image
