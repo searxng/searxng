@@ -73,7 +73,7 @@
 
     & > tbody > tr:nth-child(even) > th,
     & > tbody > tr:nth-child(even) > td {
-      background-color: @color-settings-tr-hover;
+      background-color: var(--color-settings-tr-hover);
     }
   }
 
@@ -83,7 +83,7 @@
   }
 
   .preferences_back {
-    background: none repeat scroll 0 0 @color-settings-return-background;
+    background: none repeat scroll 0 0 var(--color-settings-return-background);
     color: white;
     border: 0 none;
     .rounded-corners;
@@ -95,7 +95,7 @@
 
     a {
       display: block;
-      color: @color-settings-return-font;
+      color: var(--color-settings-return-font);
     }
 
     a::first-letter {

@@ -41,7 +41,7 @@ html {
   font-size: 0.9em;
   .text-size-adjust;
 
-  color: @color-font;
+  color: var(--color-font);
   padding: 0;
   margin: 0;
 }
@@ -78,8 +78,8 @@ footer {
   padding: 1rem 0;
   width: 100%;
   text-align: center;
-  background-color: @color-footer-background;
-  border-top: 1px solid @color-footer-border;
+  background-color: var(--color-footer-background);
+  border-top: 1px solid var(--color-footer-border);
   overflow: hidden;
 
   p {
@@ -103,8 +103,8 @@ input[type="submit"],
 #results button[type="submit"] {
   padding: 0.5rem;
   display: inline-block;
-  background: @color-download-button-background;
-  color: @color-download-button-font;
+  background: var(--color-download-button-background);
+  color: var(--color-download-button-font);
   .rounded-corners;
 
   border: 0;
@@ -113,13 +113,13 @@ input[type="submit"],
 
 a {
   text-decoration: none;
-  color: @color-url-font;
+  color: var(--color-url-font);
 
   &:visited {
-    color: @color-url-visited-font;
+    color: var(--color-url-visited-font);
 
     .highlight {
-      color: @color-url-visited-font;
+      color: var(--color-url-visited-font);
     }
   }
 }
@@ -134,11 +134,11 @@ article[data-vim-selected]::before {
   padding: 2px;
   content: ">";
   font-weight: bold;
-  color: @color-base;
+  color: var(--color-base);
 }
 
 article.result-images[data-vim-selected] {
-  background: @color-base;
+  background: var(--color-base);
 }
 
 article.result-images[data-vim-selected]::before {
@@ -158,12 +158,12 @@ article.result-images[data-vim-selected]::before {
     margin-bottom: 0;
 
     a {
-      color: @color-result-link-font;
+      color: var(--color-result-link-font);
       font-weight: normal;
       font-size: 1.1em;
 
       &:visited {
-        color: @color-result-link-visited-font;
+        color: var(--color-result-link-visited-font);
       }
 
       &:focus,
@@ -193,7 +193,7 @@ article.result-images[data-vim-selected]::before {
     line-height: 1.24;
 
     .highlight {
-      color: @color-black;
+      color: var(--color-black);
       background: inherit;
       font-weight: bold;
     }
@@ -213,12 +213,12 @@ article.result-images[data-vim-selected]::before {
     padding: 0;
     max-width: 54em;
     word-wrap: break-word;
-    color: @color-result-url-font;
+    color: var(--color-result-url-font);
   }
 
   .published_date {
     font-size: 0.8em;
-    color: @color-result-publishdate-font;
+    color: var(--color-result-publishdate-font);
   }
 
   img {
@@ -228,7 +228,7 @@ article.result-images[data-vim-selected]::before {
       width: 20em;
       min-width: 20em;
       min-height: 8em;
-      // background: @color-base-light;
+      // background: var(--color-base-light);
     }
 
     &.image {
@@ -259,7 +259,7 @@ article.result-images[data-vim-selected]::before {
 
 .engines {
   float: right;
-  color: @color-engines-font;
+  color: var(--color-engines-font);
 
   span {
     font-size: smaller;
@@ -272,7 +272,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 .highlight {
-  color: @color-highlight;
+  color: var(--color-highlight);
   background: inherit;
   font-weight: bold;
 }
@@ -290,12 +290,12 @@ article.result-images[data-vim-selected]::before {
     padding: 0;
     border: none;
     max-height: 200px;
-    background: @color-base-dark;
+    background: var(--color-base-dark);
   }
 
   span a {
     display: none;
-    color: @color-result-image-span-font;
+    color: var(--color-result-image-span-font);
   }
 
   &:hover span a {
@@ -305,7 +305,7 @@ article.result-images[data-vim-selected]::before {
     right: 0;
     padding: 4px;
     margin: 0 0 4px 4px;
-    background-color: @color-result-image-span-background-hover;
+    background-color: var(--color-result-image-span-background-hover);
     font-size: 0.7em;
   }
 }
@@ -342,7 +342,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 .torrent_result {
-  border-left: 10px solid @color-result-torrent-border;
+  border-left: 10px solid var(--color-result-torrent-border);
   padding-left: 3px;
 
   p {
@@ -351,14 +351,14 @@ article.result-images[data-vim-selected]::before {
   }
 
   a {
-    color: @color-result-link-font;
+    color: var(--color-result-link-font);
 
     &:hover {
       text-decoration: underline;
     }
 
     &:visited {
-      color: @color-result-link-visited-font;
+      color: var(--color-result-link-visited-font);
     }
   }
 }
@@ -410,13 +410,13 @@ article.result-images[data-vim-selected]::before {
     font-size: 0.9em;
     display: inline-block;
     background: transparent;
-    color: @color-result-search-url-font;
+    color: var(--color-result-search-url-font);
     cursor: pointer;
   }
 
   input[type="submit"],
   .infobox .url a {
-    color: @color-result-link-font;
+    color: var(--color-result-link-font);
     text-decoration: none;
     font-size: 0.9rem;
 
@@ -447,7 +447,7 @@ article.result-images[data-vim-selected]::before {
 #search_url .title,
 #apis .title {
   margin: 2em 0 0.5em 0;
-  color: @color-font;
+  color: var(--color-font);
 }
 
 #answers {
@@ -547,13 +547,13 @@ article.result-images[data-vim-selected]::before {
   border: 0;
   display: block;
   font-size: 1.2em;
-  color: @color-search-font;
+  color: var(--color-search-font);
 
   a:link *,
   a:hover *,
   a:visited *,
   a:active * {
-    color: @color-search-font;
+    color: var(--color-search-font);
   }
 }
 
@@ -633,7 +633,7 @@ article.result-images[data-vim-selected]::before {
   }
 
   .result {
-    border-bottom: 1px solid @color-result-top-border;
+    border-bottom: 1px solid var(--color-result-top-border);
     margin: 0;
     padding-top: 8px;
     padding-bottom: 6px;

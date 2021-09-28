@@ -5,8 +5,8 @@
 #search {
   padding: 0 2em 0 @results-offset;
   margin: 0;
-  background: @color-header-background;
-  border-bottom: 1px solid @color-header-border;
+  background: var(--color-header-background);
+  border-bottom: 1px solid var(--color-header-border);
 }
 
 #search_wrapper {
@@ -34,19 +34,19 @@
   margin: 0;
   padding: 2px;
   height: 2.2em;
-  background: none repeat scroll 0 0 @color-search-background;
-  border-top: 1px solid @color-search-border;
-  border-bottom: 1px solid @color-search-border;
+  background: none repeat scroll 0 0 var(--color-search-background);
+  border-top: 1px solid var(--color-search-border);
+  border-bottom: 1px solid var(--color-search-border);
   border-right: none;
   border-left: none;
   border-radius: 0;
   outline: none;
-  color: @color-search-font;
+  color: var(--color-search-font);
   font-size: 16px;
   z-index: 10000;
 
   &:hover {
-    color: @color-search-border;
+    color: var(--color-search-border);
   }
 
   &.empty * {
@@ -62,11 +62,11 @@
   margin: 0;
   padding: 2px;
   height: 2.2em;
-  background: none repeat scroll 0 0 @color-search-background;
-  border: 1px solid @color-search-border;
+  background: none repeat scroll 0 0 var(--color-search-background);
+  border: 1px solid var(--color-search-border);
   border-radius: 0;
   outline: none;
-  color: @color-search-font;
+  color: var(--color-search-font);
   font-size: 16px;
   z-index: 2;
 }
@@ -90,8 +90,8 @@
 
   &:hover {
     cursor: pointer;
-    background-color: @color-search-border;
-    color: @color-base-light;
+    background-color: var(--color-search-border);
+    color: var(--color-base-light);
   }
 }
 
@@ -233,9 +233,9 @@
   } */
 
   input[type="checkbox"]:checked + label {
-    background: @color-categories-item-selected;
-    color: @color-categories-item-selected-font;
-    border-bottom: 2px solid @color-categories-item-border-selected;
+    background: var(--color-categories-item-selected);
+    color: var(--color-categories-item-selected-font);
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
 }
 

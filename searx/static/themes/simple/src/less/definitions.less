@@ -4,139 +4,123 @@
  * To change the colors of the site, simple edit this variables
  */
 
-/// Basic Colors
+html {
+  /// Basic Colors
+  --color-base: #3498db;
+  --color-base-dark: #084999;
+  --color-base-light: #ecf0f1;
+  --color-highlight: #094089;
+  --color-black: #000;
 
-@color-base: #3498DB;
-@color-base-dark: #084999;
-@color-base-light: #ECF0F1;
-@color-highlight: #094089;
-@color-black: #000000;
+  /// From autocomplete.less
+  --background_color: white;
 
-///
-@color-error: #db3434;
-@color-error-background: lighten(@color-error, 40%);
+  /// Modal Colors
+  --color-error: #db3434;
+  --color-error-background: lighten(#db3434, 40%);
+  --color-warning: #dbba34;
+  --color-warning-background: lighten(#dbba34, 40%);
+  --color-success: #42db34;
+  --color-success-background: lighten(#42db34, 40%);
 
-@color-warning: #dbba34;
-@color-warning-background: lighten(@color-warning, 40%);
+  /// General Colors
+  --color-font: #444;
+  --color-font-light: #888;
+  --color-red: #25a55b;
+  --color-url-font: #29314d;
+  --color-url-visited-font: #684898;
 
-@color-success: #42db34;
-@color-success-background: lighten(@color-success, 40%);
+  /// Link Colors
+  --color-a-font: var(--color-base);
+  --color-a-font-hover: var(--color-base);
 
-/// General
+  /// Header
+  --color-header-background: #f7f7f7;
+  --color-header-border: #d7d7d7;
 
-@color-font: #444;
-@color-font-light: #888;
+  /// Footer
+  --color-footer-background: #f7f7f7;
+  --color-footer-border: #d7d7d7;
 
-@color-red: #25a55b;
+  /// Search-Input
+  --color-search-border: var(--color-base);
+  --color-search-background: #fff;
+  --color-search-font: #222;
 
-@color-url-font: #29314d;
-@color-url-visited-font: #684898;
+  /// Autocompleter
+  --color-autocompleter-choices-background: #fff;
+  --color-autocompleter-choices-border: var(--color-base);
+  --color-autocompleter-choices-border-left-right: var(--color-base);
+  --color-autocompleter-choices-border-bottom: var(--color-base);
+  --color-autocompleter-choices-font: #444;
+
+  /// Answers
+  --color-answers-border: var(--color-base-dark);
+
+  // Selected
+  --color-autocompleter-selected-background: #444;
+  --color-autocompleter-selected-font: #fff;
+  --color-autocompleter-selected-queried-font: #9fcfff;
+
+  /// Categories
+  --color-categories-item-selected: var(--color-base);
+  --color-categories-item-selected-font: #fff;
+  --color-categories-item-border-selected: var(--color-base-dark);
+  --color-categories-item-border-unselected: #e8e7e6;
+  --color-categories-item-border-unselected-hover: var(--color-base);
+
+  /// Results
+  --color-suggestions-button-background: var(--color-base);
+  --color-suggestions-button-font: #fff;
+  --color-download-button-background: var(--color-base);
+  --color-download-button-font: #fff;
+  --color-result-search-background: var(--color-base-light);
+  --color-result-definition-border: gray;
+  --color-result-torrent-border: lightgray;
+  --color-result-top-border: #e8e7e6;
+
+  // Link to result
+  --color-result-link-font: var(--color-base-dark);
+  --color-result-link-visited-font: var(--color-url-visited-font);
+
+  // Url to result
+  --color-result-url-font: var(--color-red);
+
+  // Publish Date
+  --color-result-publishdate-font: var(--color-font-light);
+
+  // Images
+  --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
+  --color-result-image-span-font: #fff;
+
+  // Search-URL
+  --color-result-search-url-border: #888;
+  --color-result-search-url-font: #444;
+
+  /// Settings
+  --color-settings-fieldset: var(--color-base);
+  --color-settings-table-striped: #dbdbdb;
+  --color-settings-tr-hover: #ececec;
+
+  // Labels
+  --color-settings-label-allowed-background: #e74c3c;
+  --color-settings-label-allowed-font: #fff;
+  --color-settings-label-deny-background: #2eee71;
+  --color-settings-label-deny-font: var(--color-font);
+  --color-settings-return-background: var(--color-base);
+  --color-settings-return-font: #fff;
+
+  /// Other
+  --color-engines-font: var(--color-font-light);
+  --color-percentage-div-background: #444;
+}
+
+/// General Size
 @results-width: 45rem;
 @results-offset: 10rem;
 @results-tablet-offset: 0.5rem;
 @results-gap: 5rem;
 @search-width: 40rem;
-
-//
-@color-a-font: @color-base;
-@color-a-font-hover: @color-base;
-
-/// Start-Screen
-
-/// Header
-
-@color-header-background: #f7f7f7;
-@color-header-border: #d7d7d7;
-
-/// Footer
-
-@color-footer-background: #f7f7f7;
-@color-footer-border: #d7d7d7;
-
-/// Search-Input
-
-@color-search-border: @color-base;
-@color-search-background: #FFF;
-@color-search-font: #222;
-
-/// Autocompleter
-
-@color-autocompleter-choices-background: #FFF;
-@color-autocompleter-choices-border: @color-base;
-@color-autocompleter-choices-border-left-right: @color-base;
-@color-autocompleter-choices-border-bottom: @color-base;
-
-@color-autocompleter-choices-font: #444;
-
-/// Answers
-@color-answers-border: @color-base-dark;
-
-// Selected
-@color-autocompleter-selected-background: #444;
-@color-autocompleter-selected-font: #FFF;
-@color-autocompleter-selected-queried-font: #9FCFFF;
-
-/// Categories
-
-@color-categories-item-selected: @color-base;
-@color-categories-item-selected-font: #FFF;
-
-@color-categories-item-border-selected: @color-base-dark;
-@color-categories-item-border-unselected: #E8E7E6;
-@color-categories-item-border-unselected-hover: @color-base;
-
-/// Results
-
-@color-suggestions-button-background: @color-base;
-@color-suggestions-button-font: #FFF;
-
-@color-download-button-background: @color-base;
-@color-download-button-font: #FFF;
-
-@color-result-search-background: @color-base-light;
-
-@color-result-definition-border: gray;
-@color-result-torrent-border: lightgray;
-@color-result-top-border: #E8E7E6;
-
-// Link to result
-@color-result-link-font: @color-base-dark;
-@color-result-link-visited-font: @color-url-visited-font;
-
-// Url to result
-@color-result-url-font: @color-red;
-
-// Publish Date
-@color-result-publishdate-font: @color-font-light;
-
-// Images
-@color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
-@color-result-image-span-font: #FFF;
-
-// Search-URL
-@color-result-search-url-border: #888;
-@color-result-search-url-font: #444;
-
-/// Settings
-
-@color-settings-fieldset: @color-base;
-@color-settings-table-striped: #dbdbdb;
-@color-settings-tr-hover: #ececec;
-
-// Labels
-@color-settings-label-allowed-background: #E74C3C;
-@color-settings-label-allowed-font: #FFF;
-
-@color-settings-label-deny-background: #2ECC71;
-@color-settings-label-deny-font: @color-font;
-
-@color-settings-return-background: @color-base;
-@color-settings-return-font: #FFF;
-
-/// Other
-
-@color-engines-font: @color-font-light;
-@color-percentage-div-background: #444;
 
 /// Load fonts from this directory.
 @icon-font-path:          "../../../fonts/";

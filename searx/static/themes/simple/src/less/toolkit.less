@@ -36,15 +36,15 @@ html.js .show_if_nojs {
 }
 
 .danger {
-  background-color: @color-error-background;
+  background-color: var(--color-error-background);
 }
 
 .warning {
-  background: @color-warning-background;
+  background: var(--color-warning-background);
 }
 
 .success {
-  background: @color-success-background;
+  background: var(--color-success-background);
 }
 
 .badge {
@@ -74,7 +74,7 @@ table {
 
   &.striped {
     tr {
-      border-bottom: 1px solid @color-settings-tr-hover;
+      border-bottom: 1px solid var(--color-settings-tr-hover);
     }
   }
 }
@@ -89,7 +89,7 @@ td {
 
 tr {
   &:hover {
-    background: @color-settings-tr-hover;
+    background: var(--color-settings-tr-hover);
   }
 }
 
@@ -104,9 +104,9 @@ tr {
 
 div.selectable_url {
   display: block;
-  border: 1px solid @color-result-search-url-border;
+  border: 1px solid var(--color-result-search-url-border);
   padding: 4px;
-  color: @color-result-search-url-font;
+  color: var(--color-result-search-url-font);
   margin: 0.1em;
   overflow: hidden;
   height: 1.2em;
@@ -173,18 +173,18 @@ div.selectable_url {
 .dialog-error {
   .dialog();
 
-  color: @color-error;
-  background: @color-error-background;
-  border-color: @color-error;
+  color: var(--color-error);
+  background: var(--color-error-background);
+  border-color: var(--color-error);
   .ion-error();
 }
 
 .dialog-warning {
   .dialog();
 
-  color: @color-warning;
-  background: @color-warning-background;
-  border-color: @color-warning;
+  color: var(--color-warning);
+  background: var(--color-warning-background);
+  border-color: var(--color-warning);
   .ion-warning();
 }
 
@@ -253,7 +253,7 @@ div.selectable_url {
   }
 
   & > label:hover {
-    border-bottom: 2px solid @color-categories-item-border-selected;
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
 
   & > section {
@@ -266,9 +266,9 @@ div.selectable_url {
 
   // default selection
   & > label:last-of-type {
-    border-bottom: 2px solid @color-categories-item-border-selected;
-    background: @color-categories-item-selected;
-    color: @color-categories-item-selected-font;
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+    background: var(--color-categories-item-selected);
+    color: var(--color-categories-item-selected-font);
     font-weight: bold;
     letter-spacing: -0.1px;
   }
@@ -291,14 +291,14 @@ html body .tabs > input:checked {
     color: inherit;
 
     &:hover {
-      border-bottom: 2px solid @color-categories-item-border-selected;
+      border-bottom: 2px solid var(--color-categories-item-border-selected);
     }
   }
 
   + label {
-    border-bottom: 2px solid @color-categories-item-border-selected;
-    background: @color-categories-item-selected;
-    color: @color-categories-item-selected-font;
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+    background: var(--color-categories-item-selected);
+    color: var(--color-categories-item-selected-font);
   }
 
   + label + section {
@@ -311,7 +311,7 @@ select {
   height: 28px;
   margin: 0 1em 0 0;
   padding: 2px 8px 2px 0 !important;
-  color: @color-search-font;
+  color: var(--color-search-font);
   font-size: 12px;
   z-index: 2;
 
@@ -336,7 +336,7 @@ select {
 
     &:hover,
     &:focus {
-      border-bottom: 1px solid @color-search-border;
+      border-bottom: 1px solid var(--color-search-border);
     }
   }
 }

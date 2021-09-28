@@ -1,7 +1,5 @@
 /*! Autocomplete.js v2.6.3 | license MIT | (c) 2017, Baptiste Donaux | http://autocomplete-js.com */
 
-@background_color:  white;
-
 .autocomplete {
   position: absolute;
   max-height: 0;
@@ -11,7 +9,7 @@
   &:active,
   &:focus,
   &:hover {
-    background-color: @background_color;
+    background-color: var(--background_color);
   }
 
   &:empty {
@@ -30,7 +28,7 @@
       &.active,
       &:active,
       &:focus {
-        background-color: @color-base;
+        background-color: var(--color-base);
 
         a:active,
         a:focus,
@@ -47,8 +45,8 @@
 
   &.open {
     display: block;
-    background-color: @background_color;
-    border: 1px solid @color-base;
+    background-color: var(--background_color);
+    border: 1px solid var(--color-base);
     max-height: 500px;
     overflow-y: auto;
     z-index: 100;
@@ -66,7 +64,7 @@
 
   .autocomplete > ul > li {
     padding: 7px 0 7px 10px;
-    border-bottom: 1px solid @color-result-top-border;
+    border-bottom: 1px solid var(--color-result-top-border);
     text-align: left;
   }
 }
