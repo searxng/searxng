@@ -1089,12 +1089,11 @@ def image_proxy():
             'DNT': '1',
         }
         set_context_network_name('image_proxy')
-        stream = http_stream(
+        resp, stream = http_stream(
             method = 'GET',
             url = url,
             headers = request_headers
         )
-        resp = next(stream)
         content_length = resp.headers.get('Content-Length')
         if (content_length
             and content_length.isdigit()
@@ -1124,22 +1123,29 @@ def image_proxy():
             except httpx.HTTPError:
                 logger.exception('HTTP error on closing')
 
+    def close_stream():
+        nonlocal resp, stream
+        try:
+            resp.close()
+            del resp
+            del stream
+        except httpx.HTTPError as e:
+            logger.debug('Exception while closing response', e)
+
     try:
         headers = dict_subset(
             resp.headers,
             {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'}
         )
-
-        def forward_chunk():
-            total_length = 0
-            for chunk in stream:
-                total_length += len(chunk)
-                if total_length > maximum_size:
-                    break
-                yield chunk
-
-        return Response(forward_chunk(), mimetype=resp.headers['Content-Type'], headers=headers)
+        response = Response(
+            stream,
+            mimetype=resp.headers['Content-Type'],
+            headers=headers,
+            direct_passthrough=True)
+        response.call_on_close(close_stream)
+        return response
     except httpx.HTTPError:
+        close_stream()
         return '', 400
 
 
