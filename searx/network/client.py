@@ -6,6 +6,7 @@ import asyncio
 import logging
 import threading
 
+import anyio
 import httpcore
 import httpx
 from httpx_socks import AsyncProxyTransport
@@ -102,6 +103,9 @@ class AsyncProxyTransportFixed(AsyncProxyTransport):
                 # then each new request creates a new stream and raise the same WriteError
                 await close_connections_for_url(self, url)
                 raise e
+            except anyio.ClosedResourceError as e:
+                await close_connections_for_url(self, url)
+                raise httpx.CloseError from e
             except httpx.RemoteProtocolError as e:
                 # in case of httpx.RemoteProtocolError: Server disconnected
                 await close_connections_for_url(self, url)
@@ -130,6 +134,9 @@ class AsyncHTTPTransportFixed(httpx.AsyncHTTPTransport):
                 # then each new request creates a new stream and raise the same WriteError
                 await close_connections_for_url(self._pool, url)
                 raise e
+            except anyio.ClosedResourceError as e:
+                await close_connections_for_url(self._pool, url)
+                raise httpx.CloseError from e
             except httpx.RemoteProtocolError as e:
                 # in case of httpx.RemoteProtocolError: Server disconnected
                 await close_connections_for_url(self._pool, url)

@@ -9,6 +9,7 @@ from types import MethodType
 from timeit import default_timer
 
 import httpx
+import anyio
 import h2.exceptions
 
 from .network import get_network, initialize
@@ -166,7 +167,7 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
             async for chunk in response.aiter_raw(65536):
                 if len(chunk) > 0:
                     queue.put(chunk)
-    except httpx.StreamClosed:
+    except (httpx.StreamClosed, anyio.ClosedResourceError):
         # the response was queued before the exception.
         # the exception was raised on aiter_raw.
         # we do nothing here: in the finally block, None will be queued
@@ -183,11 +184,35 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
         queue.put(None)
 
 
+def _stream_generator(method, url, **kwargs):
+    queue = SimpleQueue()
+    network = get_context_network()
+    future = asyncio.run_coroutine_threadsafe(
+        stream_chunk_to_queue(network, queue, method, url, **kwargs),
+        get_loop()
+    )
+
+    # yield chunks
+    obj_or_exception = queue.get()
+    while obj_or_exception is not None:
+        if isinstance(obj_or_exception, Exception):
+            raise obj_or_exception
+        yield obj_or_exception
+        obj_or_exception = queue.get()
+    future.result()
+
+
 def _close_response_method(self):
     asyncio.run_coroutine_threadsafe(
         self.aclose(),
         get_loop()
     )
+    # reach the end of _self.generator ( _stream_generator ) to an avoid memory leak.
+    # it makes sure that :
+    # * the httpx response is closed (see the stream_chunk_to_queue function)
+    # * to call future.result() in _stream_generator
+    for _ in self._generator:  # pylint: disable=protected-access
+        continue
 
 
 def stream(method, url, **kwargs):
@@ -202,25 +227,15 @@ def stream(method, url, **kwargs):
     httpx.Client.stream requires to write the httpx.HTTPTransport version of the
     the httpx.AsyncHTTPTransport declared above.
     """
-    queue = SimpleQueue()
-    network = get_context_network()
-    future = asyncio.run_coroutine_threadsafe(
-        stream_chunk_to_queue(network, queue, method, url, **kwargs),
-        get_loop()
-    )
+    generator = _stream_generator(method, url, **kwargs)
 
     # yield response
-    response = queue.get()
+    response = next(generator)  # pylint: disable=stop-iteration-return
     if isinstance(response, Exception):
         raise response
+
+    response._generator = generator  # pylint: disable=protected-access
     response.close = MethodType(_close_response_method, response)
     yield response
 
-    # yield chunks
-    chunk_or_exception = queue.get()
-    while chunk_or_exception is not None:
-        if isinstance(chunk_or_exception, Exception):
-            raise chunk_or_exception
-        yield chunk_or_exception
-        chunk_or_exception = queue.get()
-    future.result()
+    yield from generator
