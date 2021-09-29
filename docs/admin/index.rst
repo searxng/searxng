@@ -7,12 +7,12 @@ Administrator documentation
    :caption: Contents
 
    installation
-   installation-searx
+   installation-searxng
    installation-uwsgi
    installation-nginx
    installation-apache
    installation-docker
-   update-searx
+   update-searxng
    engines/index
    api
    architecture

@@ -1,4 +1,4 @@
-.. _searx_utils:
+.. _searxng_utils:
 .. _toolboxing:
 
 ===================
@@ -11,7 +11,7 @@ In the folder :origin:`utils/` we maintain some tools useful for administrators.
    :maxdepth: 2
    :caption: Contents
 
-   searx.sh
+   searxng.sh
    filtron.sh
    morty.sh
    lxc.sh
@@ -36,7 +36,7 @@ Scripts to maintain services often dispose of common commands and environments.
   Sets timeout for interactive prompts. If you want to run a script in batch
   job, with defaults choices, set ``FORCE_TIMEOUT=0``.  By example; to install a
   reverse proxy for filtron on all containers of the :ref:`SearXNG suite
-  <lxc-searx.env>` use ::
+  <lxc-searxng.env>` use ::
 
     sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/filtron.sh apache install
 

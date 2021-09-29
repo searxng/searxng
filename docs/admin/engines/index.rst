@@ -20,4 +20,4 @@ Engines & Settings
    nosql-engines
    search-indexer-engines
    command-line-engines
-   searx.engines.xpath
+   searxng.engines.xpath

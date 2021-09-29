@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Installer for Searx package."""
+"""Installer for Searxng package."""
 
 from setuptools import setup
 from setuptools import find_packages
 
-from searx.version import VERSION_TAG, GIT_URL
-from searx import get_setting
+from searxng.version import VERSION_TAG, GIT_URL
+from searxng import get_setting
 
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
@@ -17,7 +17,7 @@ with open('requirements-dev.txt') as f:
     dev_requirements = [ l.strip() for l in f.readlines()]
 
 setup(
-    name='searx',
+    name='searxng',
     version=VERSION_TAG,
     description="A privacy-respecting, hackable metasearch engine",
     long_description=long_description,
@@ -38,7 +38,7 @@ setup(
     author='Adam Tauber',
     author_email='asciimoo@gmail.com',
     license='GNU Affero General Public License',
-    packages=find_packages(exclude=["tests*", "searx_extra"]),
+    packages=find_packages(exclude=["tests*", "searxng_extra"]),
     zip_safe=False,
     install_requires=requirements,
     extras_require={
@@ -46,12 +46,12 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'searx-run = searx.webapp:run',
-            'searx-checker = searx.search.checker.__main__:main'
+            'searxng-run = searxng.webapp:run',
+            'searxng-checker = searxng.search.checker.__main__:main'
         ]
     },
     package_data={
-        'searx': [
+        'searxng': [
             'settings.yml',
             '../README.rst',
             '../requirements.txt',

@@ -9,28 +9,28 @@ Offline Engines
    - :ref:`demo offline engine`
    - :ref:`sql engines`
    - :ref:`engine command`
-   - :origin:`Redis <searx/engines/redis_server.py>`
+   - :origin:`Redis <searxng/engines/redis_server.py>`
 
 To extend the functionality of SearXNG, offline engines are going to be
 introduced.  An offline engine is an engine which does not need Internet
 connection to perform a search and does not use HTTP to communicate.
 
 Offline engines can be configured, by adding those to the `engines` list of
-:origin:`settings.yml <searx/settings.yml>`.  An example skeleton for offline
+:origin:`settings.yml <searxng/settings.yml>`.  An example skeleton for offline
 engines can be found in :ref:`demo offline engine` (:origin:`demo_offline.py
-<searx/engines/demo_offline.py>`).
+<searxng/engines/demo_offline.py>`).
 
 
 Programming Interface
 =====================
 
-:py:func:`init(engine_settings=None) <searx.engines.demo_offline.init>`
+:py:func:`init(engine_settings=None) <searxng.engines.demo_offline.init>`
   All offline engines can have their own init function to setup the engine before
   accepting requests. The function gets the settings from settings.yml as a
   parameter. This function can be omitted, if there is no need to setup anything
   in advance.
 
-:py:func:`search(query, params) <searx.engines.demo_offline.searc>`
+:py:func:`search(query, params) <searxng.engines.demo_offline.searc>`
 
   Each offline engine has a function named ``search``.  This function is
   responsible to perform a search and return the results in a presentable
@@ -55,10 +55,10 @@ admins can install packages in advance.
 
 If there is a need to install additional packages in *Python's Virtual
 Environment* of your SearXNG instance you need to switch into the environment
-(:ref:`searx-src`) first, for this you can use :ref:`searx.sh`::
+(:ref:`searxng-src`) first, for this you can use :ref:`searxng.sh`::
 
-  $ sudo utils/searx.sh shell
-  (searx-pyenv)$ pip install ...
+  $ sudo utils/searxng.sh shell
+  (searxng-pyenv)$ pip install ...
 
 
 Private engines (Security)

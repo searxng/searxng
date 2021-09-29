@@ -25,7 +25,7 @@ Parameters
 ``q`` : required
   The search query.  This string is passed to external search services.  Thus,
   SearXNG supports syntax of each search service.  For example, ``site:github.com
-  searx`` is a valid query for Google.  However, if simply the query above is
+  searxng`` is a valid query for Google.  However, if simply the query above is
   passed to any search engine which does not filter its results based on this
   syntax, you might not get the results you wanted.
 
@@ -62,7 +62,7 @@ Parameters
 ``image_proxy`` : default ``False``
   [  ``True``, ``False`` ]
 
-  Proxy image results through searx.
+  Proxy image results through searxng.
 
 ``autocomplete`` : default *empty*
   [ ``google``, ``dbpedia``, ``duckduckgo``, ``startpage``, ``wikipedia`` ]
@@ -112,9 +112,9 @@ Parameters
     ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
     ``Search_on_category_select``, ``Hostname_replace``
 
-``enabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
+``enabled_engines`` : optional : *all* :origin:`engines <searxng/engines>`
   List of enabled engines.
 
-``disabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
+``disabled_engines`` : optional : *all* :origin:`engines <searxng/engines>`
   List of disabled engines.
 

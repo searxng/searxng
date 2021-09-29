@@ -25,8 +25,8 @@ Docker installation
    If you intend to create a public instance using Docker, use our well
    maintained searxng-docker_ image which includes
 
-   - :ref:`protection <searx filtron>` `[filtron]`_,
-   - a :ref:`result proxy <searx morty>` `[morty]`_ and
+   - :ref:`protection <searxng filtron>` `[filtron]`_,
+   - a :ref:`result proxy <searxng morty>` `[morty]`_ and
    - a HTTPS reverse proxy `[caddy]`_.
 
 Make sure you have `installed Docker <https://docs.docker.com/get-docker/>`_ and
@@ -63,7 +63,7 @@ instance using `docker run <https://docs.docker.com/engine/reference/run/>`_:
    $ docker pull searxng/searxng
    $ docker run --rm \
                 -d -p ${PORT}:8080 \
-                -v "${PWD}/searx:/etc/searx" \
+                -v "${PWD}/searxng:/etc/searxng" \
                 -e "BASE_URL=http://localhost:$PORT/" \
                 -e "INSTANCE_NAME=my-instance" \
                 searxng/searxng
@@ -75,7 +75,7 @@ Open your WEB browser and visit the URL:
 
    $ xdg-open "http://localhost:$PORT"
 
-Inside ``${PWD}/searx``, you will find ``settings.yml`` and ``uwsgi.ini``.  You
+Inside ``${PWD}/searxng``, you will find ``settings.yml`` and ``uwsgi.ini``.  You
 can modify these files according to your needs and restart the Docker image.
 
 .. code:: sh
@@ -139,7 +139,7 @@ Build the image
 It's also possible to build SearXNG from the embedded :origin:`Dockerfile`::
 
    $ git clone https://github.com/searxng/searxng.git
-   $ cd searx
+   $ cd searxng
    $ make docker.build
    ...
    Successfully built 49586c016434

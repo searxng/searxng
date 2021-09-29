@@ -3,28 +3,28 @@
 # shellcheck shell=bash disable=SC2034
 #
 # This file should be edited only ones just before the installation of any
-# service is done.  After the installation of the searx service a copy of this
-# file is placed into the $SEARX_SRC of the instance, e.g.::
+# service is done.  After the installation of the searxng service a copy of this
+# file is placed into the $SEARXNG_SRC of the instance, e.g.::
 #
-#     /usr/local/searx/searx-src/.config.sh
+#     /usr/local/searxng/searxng-src/.config.sh
 #
 # .. hint::
 #
 #    Before you change a value here, You have to fully uninstall any previous
-#    installation of searx, morty and filtron services!
+#    installation of searxng, morty and filtron services!
 
-# utils/searx.sh
+# utils/searxng.sh
 # --------------
 
 # The setup of the SearXNG instance is done in the settings.yml
-# (SEARX_SETTINGS_PATH).  Read the remarks in [1] carefully and don't forget to
+# (SEARXNG_SETTINGS_PATH).  Read the remarks in [1] carefully and don't forget to
 # rebuild instance's environment (make buildenv) if needed.  The settings.yml
 # file of an already installed instance is shown by::
 #
-#     $ ./utils/searx.sh --help
+#     $ ./utils/searxng.sh --help
 #     ---- SearXNG instance setup (already installed)
-#       SEARX_SETTINGS_PATH : /etc/searx/settings.yml
-#       SEARX_SRC           : /usr/local/searx/searx-src
+#       SEARXNG_SETTINGS_PATH : /etc/searxng/settings.yml
+#       SEARXNG_SRC           : /usr/local/searxng/searxng-src
 #
 # [1] https://searxng.github.io/searxng/admin/engines/settings.html
 
@@ -49,4 +49,4 @@
 
 # **experimental**: Set SERVICE_USER to run all services by one account, but be
 # aware that removing discrete components might conflict!
-# SERVICE_USER=searx
+# SERVICE_USER=searxng

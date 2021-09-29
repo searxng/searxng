@@ -6,7 +6,7 @@ Welcome to SearXNG
 
 .. hint::
 
-   This is not searx, but searxng.
+   This is not searxng, but searxng.
 
 SearXNG is a free internet metasearch engine which aggregates results from more
 than 70 search services.  Users are neither tracked nor profiled.  Additionally,
@@ -32,7 +32,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    user/index
    admin/index
    dev/index
-   searx_extra/index
+   searxng_extra/index
    utils/index
    src/index
 

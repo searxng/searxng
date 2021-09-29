@@ -1,0 +1,261 @@
+/*
+* searxng, A privacy-respecting, hackable metasearch engine
+*/
+
+#search {
+  padding: 0 2em 0 @results-offset;
+  margin: 0;
+  background: @color-header-background;
+  border-bottom: 1px solid @color-header-border;
+}
+
+#search_wrapper {
+  padding: 10px 0;
+}
+
+.search_box {
+  margin: 0 12px 0 0;
+  display: inline-flex;
+  flex-direction: row;
+  white-space: nowrap;
+
+  /*
+  &:has(q:focus) {
+  box-shadow: 0px 0px 5px #CCC;
+}
+*/
+}
+
+#clear_search {
+  display: block;
+  border-collapse: separate;
+  box-sizing: border-box;
+  width: 1.8em;
+  margin: 0;
+  padding: 2px;
+  height: 2.2em;
+  background: none repeat scroll 0 0 @color-search-background;
+  border-top: 1px solid @color-search-border;
+  border-bottom: 1px solid @color-search-border;
+  border-right: none;
+  border-left: none;
+  border-radius: 0;
+  outline: none;
+  color: @color-search-font;
+  font-size: 16px;
+  z-index: 10000;
+
+  &:hover {
+    color: @color-search-border;
+  }
+
+  &.empty * {
+    display: none;
+  }
+}
+
+#q,
+#send_search {
+  display: block !important;
+  border-collapse: separate;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 2px;
+  height: 2.2em;
+  background: none repeat scroll 0 0 @color-search-background;
+  border: 1px solid @color-search-border;
+  border-radius: 0;
+  outline: none;
+  color: @color-search-font;
+  font-size: 16px;
+  z-index: 2;
+}
+
+#q {
+  outline: medium none;
+  padding-left: 8px;
+  padding-right: 0 !important;
+  border-right: none;
+  width: @search-width;
+}
+
+#q::-ms-clear,
+#q::-webkit-search-cancel-button {
+  display: none;
+}
+
+#send_search {
+  border-left: none;
+  width: 2.2em;
+
+  &:hover {
+    cursor: pointer;
+    background-color: @color-search-border;
+    color: @color-base-light;
+  }
+}
+
+.no-js #send_search {
+  width: auto !important;
+}
+
+.search_filters {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 80em) {
+  #search {
+    padding: 0 @results-tablet-offset;
+  }
+
+  #categories {
+    font-size: 90%;
+    clear: both;
+
+    .checkbox_container {
+      margin: auto;
+      margin-top: 2px;
+    }
+  }
+
+  html.touch {
+    #main_index,
+    #main_results {
+      #categories_container {
+        width: 1000px;
+        width: -moz-max-content;
+        width: -webkit-max-content;
+        width: max-content;
+
+        .category {
+          display: inline-block;
+          width: auto;
+        }
+      }
+
+      #categories {
+        width: 100%;
+        margin: 0;
+        text-align: left;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 50em) {
+  #search {
+    width: 100%;
+    margin: 0;
+    padding: 0.1em 0 0 0;
+  }
+
+  #search_wrapper {
+    width: 100%;
+    margin: 0 0 0.7em 0;
+    padding: 0;
+  }
+
+  .search_box {
+    // hack, should bew 100% ?
+    width: 99%;
+    margin: 0.1em;
+    padding: 0 0.1em 0 0;
+    display: flex;
+    flex-direction: row;
+  }
+
+  #q {
+    width: auto !important;
+    flex: 1;
+  }
+
+  .search_filters {
+    display: block;
+    margin: 0.5em;
+  }
+
+  .language,
+  .time_range {
+    width: 45%;
+  }
+
+  .category {
+    display: block;
+    width: 100%;
+
+    label {
+      border-bottom: 0;
+    }
+  }
+}
+
+#categories {
+  margin: 0 10px 0 0;
+  .disable-user-select;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.category {
+  display: inline-block;
+  position: relative;
+  margin: 0 3px;
+  padding: 0;
+
+  input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+    padding: 4px 10px;
+    margin: 0;
+    display: block;
+    text-transform: capitalize;
+    font-size: 0.9em;
+    border-bottom: 2px solid transparent;
+    .disable-user-select;
+  }
+
+  input[type="checkbox"]:focus + label {
+    box-shadow: 0 0 8px #3498db;
+  }
+
+  /* label:hover {
+  border-bottom: 2px solid @color-categories-item-border-unselected-hover;
+  } */
+
+  input[type="checkbox"]:checked + label {
+    background: @color-categories-item-selected;
+    color: @color-categories-item-selected-font;
+    border-bottom: 2px solid @color-categories-item-border-selected;
+  }
+}
+
+#categories_container {
+  position: relative;
+
+  .help {
+    position: absolute;
+    width: 100%;
+    bottom: -20px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1s ease;
+    font-size: 0.8em;
+    text-align: center;
+    background: white;
+  }
+
+  &:hover .help {
+    opacity: 0.8;
+    transition: opacity 1s ease;
+  }
+}

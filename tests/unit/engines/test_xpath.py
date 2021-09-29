@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
 import mock
-from searx.engines import xpath
+from searxng.engines import xpath
 from tests import SearxTestCase
 
 

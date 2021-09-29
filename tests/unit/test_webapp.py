@@ -4,8 +4,8 @@ import json
 from urllib.parse import ParseResult
 from mock import Mock
 
-import searx.search.processors
-from searx.search import Search
+import searxng.search.processors
+from searxng.search import Search
 from tests import SearxTestCase
 
 
@@ -15,9 +15,9 @@ class ViewsTestCase(SearxTestCase):
         # skip init function (no external HTTP request)
         def dummy(*args, **kwargs):
             pass
-        self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
+        self.setattr4test(searxng.search.processors, 'initialize_processor', dummy)
 
-        from searx import webapp  # pylint disable=import-outside-toplevel
+        from searxng import webapp  # pylint disable=import-outside-toplevel
 
         webapp.app.config['TESTING'] = True  # to get better error messages
         self.app = webapp.app.test_client()
@@ -84,7 +84,7 @@ class ViewsTestCase(SearxTestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<div class="text-hide center-block" id="main-logo">'
                       + b'<img class="center-block img-responsive" src="/static/themes/oscar/img/logo_searx_a.png"'
-                      + b' alt="searx logo" />searx</div>', result.data)
+                      + b' alt="searxng logo" />searxng</div>', result.data)
 
     def test_index_html_post(self):
         result = self.app.post('/', data={'q': 'test'})
@@ -162,7 +162,7 @@ class ViewsTestCase(SearxTestCase):
         result = self.app.post('/search', data={'q': 'test', 'format': 'rss'})
 
         self.assertIn(
-            b'<description>Search results for "test" - searx</description>',
+            b'<description>Search results for "test" - searxng</description>',
             result.data
         )
 

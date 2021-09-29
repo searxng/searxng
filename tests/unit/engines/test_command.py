@@ -1,21 +1,21 @@
 '''
-searx is free software: you can redistribute it and/or modify
+searxng is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-searx is distributed in the hope that it will be useful,
+searxng is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
+along with searxng. If not, see < http://www.gnu.org/licenses/ >.
 
 '''
 
 
-from searx.engines import command as command_engine
+from searxng.engines import command as command_engine
 from tests import SearxTestCase
 
 
@@ -35,57 +35,57 @@ class TestCommandEngine(SearxTestCase):
         self.assertEqual(results, expected_results)
 
     def test_delimiter_parsing_command_engine(self):
-        searx_logs = '''DEBUG:searx.webapp:static directory is /home/n/p/searx/searx/static
-DEBUG:searx.webapp:templates directory is /home/n/p/searx/searx/templates
-DEBUG:searx.engines:soundcloud engine: Starting background initialization
-DEBUG:searx.engines:wolframalpha engine: Starting background initialization
-DEBUG:searx.engines:locate engine: Starting background initialization
-DEBUG:searx.engines:regex search in files engine: Starting background initialization
+        searxng_logs = '''DEBUG:searxng.webapp:static directory is /home/n/p/searxng/searxng/static
+DEBUG:searxng.webapp:templates directory is /home/n/p/searxng/searxng/templates
+DEBUG:searxng.engines:soundcloud engine: Starting background initialization
+DEBUG:searxng.engines:wolframalpha engine: Starting background initialization
+DEBUG:searxng.engines:locate engine: Starting background initialization
+DEBUG:searxng.engines:regex search in files engine: Starting background initialization
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.wolframalpha.com
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): soundcloud.com
-DEBUG:searx.engines:find engine: Starting background initialization
-DEBUG:searx.engines:pattern search in files engine: Starting background initialization
-DEBUG:searx.webapp:starting webserver on 127.0.0.1:8888
+DEBUG:searxng.engines:find engine: Starting background initialization
+DEBUG:searxng.engines:pattern search in files engine: Starting background initialization
+DEBUG:searxng.webapp:starting webserver on 127.0.0.1:8888
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 299-578-362'''
         echo_engine = command_engine
-        echo_engine.command = ['echo', searx_logs]
+        echo_engine.command = ['echo', searxng_logs]
         echo_engine.delimiter = {'chars': ':', 'keys': ['level', 'component', 'message']}
 
         expected_results_by_page = [
             [
                 {
-                    'component': 'searx.webapp',
-                    'message': 'static directory is /home/n/p/searx/searx/static',
+                    'component': 'searxng.webapp',
+                    'message': 'static directory is /home/n/p/searxng/searxng/static',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.webapp',
-                    'message': 'templates directory is /home/n/p/searx/searx/templates',
+                    'component': 'searxng.webapp',
+                    'message': 'templates directory is /home/n/p/searxng/searxng/templates',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'soundcloud engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'wolframalpha engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'locate engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'regex search in files engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
@@ -103,13 +103,13 @@ INFO:werkzeug: * Debugger PIN: 299-578-362'''
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'find engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
                 },
                 {
-                    'component': 'searx.engines',
+                    'component': 'searxng.engines',
                     'message': 'pattern search in files engine: Starting background initialization',
                     'template': 'key-value.html',
                     'level': 'DEBUG',
@@ -118,7 +118,7 @@ INFO:werkzeug: * Debugger PIN: 299-578-362'''
             ],
             [
                 {
-                    'component': 'searx.webapp',
+                    'component': 'searxng.webapp',
                     'message': 'starting webserver on 127.0.0.1:8888',
                     'template': 'key-value.html',
                     'level': 'DEBUG',

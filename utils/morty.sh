@@ -56,7 +56,7 @@ usage::
   $(basename "$0") option     [debug-on|debug-off|new-key]
   $(basename "$0") apache     [install|remove]
   $(basename "$0") nginx      [install|remove]
-  $(basename "$0") info       [searx]
+  $(basename "$0") info       [searxng]
 
 shell
   start interactive shell from user ${SERVICE_USER}
@@ -88,9 +88,9 @@ sourced ${DOT_CONFIG} :
   MORTY_LISTEN:       : ${MORTY_LISTEN}
 EOF
 
-    install_log_searx_instance
+    install_log_searxng_instance
     if in_container; then
-        # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
+        # in containers the service is listening on 0.0.0.0 (see lxc-searxng.env)
         for ip in $(global_IPs) ; do
             if [[ $ip =~ .*:.* ]]; then
                 echo "  container URL (IPv6): http://[${ip#*|}]:3000/"
@@ -111,7 +111,7 @@ info_searx() {
     cat <<EOF
 To activate result and image proxy in SearXNG read:
   https://searxng.github.io/searxng/admin/morty.html
-Check settings in file ${SEARX_SETTINGS_PATH} ...
+Check settings in file ${SEARXNG_SETTINGS_PATH} ...
   result_proxy:
       url : ${PUBLIC_URL_MORTY}
   server:
@@ -191,7 +191,7 @@ main() {
             esac ;;
         info)
             case $2 in
-                searx) info_searx ;;
+                searxng) info_searxng ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
         option)
@@ -236,8 +236,8 @@ install_all() {
     fi
     info_searx
     if ask_yn "Add image and result proxy to SearXNG settings.yml?" Yn; then
-        "${REPO_ROOT}/utils/searx.sh" option result-proxy "${PUBLIC_URL_MORTY}" "${MORTY_KEY}"
-        "${REPO_ROOT}/utils/searx.sh" option image-proxy-on
+        "${REPO_ROOT}/utils/searxng.sh" option result-proxy "${PUBLIC_URL_MORTY}" "${MORTY_KEY}"
+        "${REPO_ROOT}/utils/searxng.sh" option image-proxy-on
     fi
 
     if ask_yn "Do you want to inspect the installation?" Ny; then
@@ -340,7 +340,7 @@ sourced ${DOT_CONFIG} :
   MORTY_LISTEN:       : ${MORTY_LISTEN}
 
 EOF
-    install_log_searx_instance
+    install_log_searxng_instance
 
     if service_account_is_available "$SERVICE_USER"; then
         info_msg "service account $SERVICE_USER available."
@@ -425,8 +425,8 @@ set_new_key() {
     MSG="${_Green}press any [${_BCyan}KEY${_Green}] to continue // stop with [${_BCyan}CTRL-C${_creset}]" wait_key
 
     systemd_install_service "${SERVICE_NAME}" "${SERVICE_SYSTEMD_UNIT}"
-    "${REPO_ROOT}/utils/searx.sh" option result-proxy "${PUBLIC_URL_MORTY}" "${MORTY_KEY}"
-    "${REPO_ROOT}/utils/searx.sh" option image-proxy-on
+    "${REPO_ROOT}/utils/searxng.sh" option result-proxy "${PUBLIC_URL_MORTY}" "${MORTY_KEY}"
+    "${REPO_ROOT}/utils/searxng.sh" option image-proxy-on
 }
 
 
@@ -484,12 +484,12 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_MORTY_SITE})"
         install_nginx
     fi
 
-    "${REPO_ROOT}/utils/searx.sh" install uwsgi
+    "${REPO_ROOT}/utils/searxng.sh" install uwsgi
 
     # shellcheck disable=SC2034
-    SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
+    SEARXNG_SRC=$("${REPO_ROOT}/utils/searxng.sh" --getenv SEARXNG_SRC)
     # shellcheck disable=SC2034
-    SEARX_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_URL_PATH)
+    SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searxng.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app "${NGINX_MORTY_SITE}"
 
     info_msg "testing public url .."

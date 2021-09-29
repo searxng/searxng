@@ -6,7 +6,7 @@ Command Line Engines
 
 .. sidebar:: info
 
-   - :origin:`command.py <searx/engines/command.py>`
+   - :origin:`command.py <searxng/engines/command.py>`
    - :ref:`offline engines`
 
 With *command engines* administrators can run engines to integrate arbitrary

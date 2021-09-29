@@ -8,7 +8,7 @@ Plugins
 
    - :ref:`plugins generic`
 
-Plugins can extend or replace functionality of various components of searx.
+Plugins can extend or replace functionality of various components of searxng.
 
 Example plugin
 ==============
@@ -41,7 +41,7 @@ Register your plugin
 ====================
 
 To enable your plugin register your plugin in
-searx > plugin > __init__.py.
+searxng > plugin > __init__.py.
 And at the bottom of the file add your plugin like.
 ``plugins.register(name_of_python_file)``
 
@@ -65,7 +65,7 @@ plugin. A plugin doesn't need to implement all the hooks.
    * False to stop the search
 
    :param flask.request request:
-   :param searx.search.SearchWithPlugins search:
+   :param searxng.search.SearchWithPlugins search:
    :return: False to stop the search
    :rtype: bool
 
@@ -75,7 +75,7 @@ plugin. A plugin doesn't need to implement all the hooks.
    Runs AFTER the search request.
 
    :param flask.request request: Flask request.
-   :param searx.search.SearchWithPlugins search: Context.
+   :param searxng.search.SearchWithPlugins search: Context.
 
 
 .. py:function:: on_result(request, search, result) -> bool
@@ -95,7 +95,7 @@ plugin. A plugin doesn't need to implement all the hooks.
    * False to remove the result
 
    :param flask.request request:
-   :param searx.search.SearchWithPlugins search:
+   :param searxng.search.SearchWithPlugins search:
    :param typing.Dict result: Result, see - :ref:`engine results`
    :return: True to keep the result
    :rtype: bool

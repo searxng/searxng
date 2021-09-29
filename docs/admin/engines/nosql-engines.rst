@@ -14,17 +14,17 @@ The following `NoSQL databases`_ are supported:
 - :ref:`engine mongodb`
 
 All of the engines above are just commented out in the :origin:`settings.yml
-<searx/settings.yml>`, as you have to set various options and install
+<searxng/settings.yml>`, as you have to set various options and install
 dependencies before using them.
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`oscar <searx/templates/oscar/result_templates/key-value.html>` &
-:origin:`simple <searx/templates/simple/result_templates/key-value.html>`
+see :origin:`oscar <searxng/templates/oscar/result_templates/key-value.html>` &
+:origin:`simple <searxng/templates/simple/result_templates/key-value.html>`
 themes.  If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
-  searx/templates/{theme_name}/result_templates/{template_name}
+  searxng/templates/{theme_name}/result_templates/{template_name}
 
 Futhermore, if you do not wish to expose these engines on a public instance, you
 can still add them and limit the access by setting ``tokens`` as described in
@@ -43,11 +43,11 @@ Extra Dependencies
 
 For using :ref:`engine redis_server` or :ref:`engine mongodb` you need to
 install additional packages in Python's Virtual Environment of your SearXNG
-instance.  To switch into the environment (:ref:`searx-src`) you can use
-:ref:`searx.sh`::
+instance.  To switch into the environment (:ref:`searxng-src`) you can use
+:ref:`searxng.sh`::
 
-  $ sudo utils/searx.sh shell
-  (searx-pyenv)$ pip install ...
+  $ sudo utils/searxng.sh shell
+  (searxng-pyenv)$ pip install ...
 
 
 .. _engine redis_server:
@@ -61,7 +61,7 @@ Redis Server
 
    - ``pip install`` redis_
    - redis.io_
-   - :origin:`redis_server.py <searx/engines/redis_server.py>`
+   - :origin:`redis_server.py <searxng/engines/redis_server.py>`
 
 
 Redis is an open source (BSD licensed), in-memory data structure (key value
@@ -98,7 +98,7 @@ MongoDB
 
    - ``pip install`` pymongo_
    - MongoDB_
-   - :origin:`mongodb.py <searx/engines/mongodb.py>`
+   - :origin:`mongodb.py <searxng/engines/mongodb.py>`
 
 MongoDB_ is a document based database program that handles JSON like data.
 Before configuring the ``mongodb`` engine, you must install the dependency

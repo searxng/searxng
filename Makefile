@@ -14,7 +14,7 @@ help:
 	@./manage --help
 	@echo '----'
 	@echo 'run            - run developer instance'
-	@echo 'install        - developer install of searx into virtualenv'
+	@echo 'install        - developer install of searxng into virtualenv'
 	@echo 'uninstall      - uninstall developer installation'
 	@echo 'clean          - clean up working tree'
 	@echo 'search.checker - check search engines'
@@ -29,7 +29,7 @@ run:  install
 	sleep 2 ; \
 	xdg-open http://127.0.0.1:8888/ ; \
 	) &
-	SEARX_DEBUG=1 ./manage pyenv.cmd python -m searx.webapp
+	SEARXNG_DEBUG=1 ./manage pyenv.cmd python -m searxng.webapp
 
 PHONY += install uninstall
 install uninstall:
@@ -48,10 +48,10 @@ lxc.clean:
 
 PHONY += search.checker search.checker.%
 search.checker: install
-	$(Q)./manage pyenv.cmd searx-checker -v
+	$(Q)./manage pyenv.cmd searxng-checker -v
 
 search.checker.%: install
-	$(Q)./manage pyenv.cmd searx-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
+	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
 ci.test: test.yamllint test.pep8 test.pylint test.unit test.robot
@@ -66,10 +66,10 @@ test.shell:
 		utils/lib_install.sh \
 		utils/lib_static.sh \
 	        utils/filtron.sh \
-	        utils/searx.sh \
+	        utils/searxng.sh \
 	        utils/morty.sh \
 	        utils/lxc.sh \
-	        utils/lxc-searx.env \
+	        utils/lxc-searxng.env \
 	        .config.sh
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 

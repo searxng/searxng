@@ -32,7 +32,7 @@ MeiliSearch
 
 .. sidebar:: info
 
-   - :origin:`meilisearch.py <searx/engines/meilisearch.py>`
+   - :origin:`meilisearch.py <searxng/engines/meilisearch.py>`
    - `MeiliSearch <https://www.meilisearch.com>`_
    - `MeiliSearch Documentation <https://docs.meilisearch.com/>`_
    - `Install MeiliSearch
@@ -65,7 +65,7 @@ Elasticsearch
 
 .. sidebar:: info
 
-   - :origin:`elasticsearch.py <searx/engines/elasticsearch.py>`
+   - :origin:`elasticsearch.py <searxng/engines/elasticsearch.py>`
    - `Elasticsearch <https://www.elastic.co/elasticsearch/>`_
    - `Elasticsearch Guide
      <https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html>`_
@@ -107,7 +107,7 @@ Solr
 
 .. sidebar:: info
 
-   - :origin:`solr.py <searx/engines/solr.py>`
+   - :origin:`solr.py <searxng/engines/solr.py>`
    - `Solr <https://solr.apache.org>`_
    - `Solr Resources <https://solr.apache.org/resources.html>`_
    - `Install Solr <https://solr.apache.org/guide/installing-solr.html>`_

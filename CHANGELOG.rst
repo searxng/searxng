@@ -7,14 +7,14 @@ Core
 - drop support for Python 3.5 ( #2459 )
 - add support for Python 3.9 ( #2397 #2459 )
 - update Python dependencies ( #2428 #2459 #2206 ) ⚠️ pyopenssl is not longer required
-- automatic update of searx.data ( #2555 #2585 #2595 #2592 #2600 )
-- update searx.data ( #2604 #2605 #2606 #2607 #2415 )
+- automatic update of searxng.data ( #2555 #2585 #2595 #2592 #2600 )
+- update searxng.data ( #2604 #2605 #2606 #2607 #2415 )
 - add ability to send engine data to subsequent requests ( #2615 )
 - add checker ( #2419 #2476 #2481 #2682 #2682 #2657 )
 - by default allow only HTTPS, not HTTP ( #2641 #2659 )
 - replace /translations.js with an embedded JSON ( #2660 )
 - activate raise_for_error by default ( #2557 )
-- don't dump traceback of SearxEngineResponseException on init ( #2635 )
+- don't dump traceback of SearxngEngineResponseException on init ( #2635 )
 
 Documentation
 ~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ Themes
 - oscar: Hide links panel in mobile screens ( #2458 )
 - oscar: upgrade dependencies ( #2346 #2673 #2662 )
 - remove legacy, courgette and pix-art themes ( #2344 )
-- add hyperlink to searx instances list in error message ( #2387 )
+- add hyperlink to searxng instances list in error message ( #2387 )
 - preferences: a tooltip is shown when the mouse is over the engine names ( #2661 )
 - Ignore double-quotes when highlighting query parts ( #2553 )
 - update autocomplete ( #2593 )
@@ -106,7 +106,7 @@ Bug fixes
 Code refactoring / reduce the technical debt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- refactor searx.search.SearchQuery and searx.search.EngineRef ( #2398 )
+- refactor searxng.search.SearchQuery and searxng.search.EngineRef ( #2398 )
 - dynamically set language_support variable ( #2499 )
 - engines: add about variable ( #2460 )
 - processors ( #2225 5c6a5407a0b124c3323e73c33b81ec1fbd7d2fce )
@@ -140,7 +140,7 @@ Install scripts
 - replace ubu1910 image by ubu2010 image ( #2435 )
 - LXC switch to Fedora 33 / Fedora 31 reached its EOL #2634 (  #2634 )
 - add package which to CentOS-7 boilerplate ( #2623 )
-- use SEARX_SETTINGS_TEMPLATE from .config environment ( #2417 )
+- use SEARXNG_SETTINGS_TEMPLATE from .config environment ( #2417 )
 - determine path to makefile.lxc in a LXC ( #2399 )
 - remove unused code ( #2401 #2497 )
 - support git versions <v2.22 ( #2620 )
@@ -148,7 +148,7 @@ Install scripts
 Announcement
 ~~~~~~~~~~~~
 
-We, the searx maintainer team, would like to say a huge thank you for everybody who had been involved in the development of searx or supported us in the past 7 years - making our first stable release available. Special thanks to [NLNet](https://nlnet.nl) for sponsoring multiple features of this release.
+We, the searxng maintainer team, would like to say a huge thank you for everybody who had been involved in the development of searxng or supported us in the past 7 years - making our first stable release available. Special thanks to [NLNet](https://nlnet.nl) for sponsoring multiple features of this release.
 
 
 0.18.0 2020.12.14
@@ -158,16 +158,16 @@ Core
 ~~~~
 
 - drop Python 2 support ( #2137 #2244 )
-- separate index and search routes ( #1681 ). ⚠️ add & remove your searx instance(s) from your browser.
+- separate index and search routes ( #1681 ). ⚠️ add & remove your searxng instance(s) from your browser.
 - add external_bang ( #2027 #2043 #2059 )
 - add external plugins supports ( #2074 )
 - add plugin converting strings into hash digests ( #1246 )
 - new category: Onions ( #565 )
-- allow searx query parts anywhere in the query ( commit aa3c18dda9329fff875328f6ba97483c417b149a 2aef38c3b9d1fe93e9d665a49b10151d63d92392 )
+- allow searxng query parts anywhere in the query ( commit aa3c18dda9329fff875328f6ba97483c417b149a 2aef38c3b9d1fe93e9d665a49b10151d63d92392 )
 - preferences: use base_url for prefix of sharing 'currenly saved preferences' (#1249 )
 - upgrade to request 2.24.0, pyopenssl is optional ( #2199 )
 - force admins to set secret_key if debug mode is disabled ( #2256 )
-- standalone searx update ( #1591 )
+- standalone searxng update ( #1591 )
 - architecture clean up ( #2140 #2185 #2195 #2196 #2198 #2189 #2208 #2239 #2241 #2246 #2248 )
 - record detail about engine error ( #2332 #2375 #2350 ). Add a new API endpoint: ``/stats/errors``.
 - display if an engine does not support HTTPS requests ( #2373 )
@@ -271,7 +271,7 @@ Docker image
 Bug fixes
 ~~~~~~~~~
 
-- searx.utils.HTMLTextExtractor: invalid HTML don't raise an Exception ( #2190 )
+- searxng.utils.HTMLTextExtractor: invalid HTML don't raise an Exception ( #2190 )
 - Fix static URL ( commit da8b227044f45127f705f6ea94a72d368eea73bb )
 - Fix autocomplete ( #2127 )
 - Fix opensearch.xml ( #2132 #2247 )
@@ -301,7 +301,7 @@ Special thanks to `NLNet <https://nlnet.nl>`__ for sponsoring multiple features 
  - Added autofocus to all search inputs
  - CSP friendly oscar theme
  - Added option to hide engine errors with `display_error_messages` engine option (true/false values, default is true)
- - Tons of accessibility fixes - see https://github.com/searx/searx/issues/350 for details
+ - Tons of accessibility fixes - see https://github.com/searxng/searxng/issues/350 for details
  - More flexible branding options: configurable vcs/issue tracker links
  - Added "disable all" & "allow all" options to preferences engine select
  - Autocomplete keyboard navigation fixes
@@ -360,7 +360,7 @@ News
 - Docker image updates
 - Bang expression fixes
 - Result merging fixes
-- New environment variable added: SEARX_BIND_ADDRESS
+- New environment variable added: SEARXNG_BIND_ADDRESS
 
 
 News
@@ -425,8 +425,8 @@ News
 
 - Bug fixes
 
-  - https://github.com/searx/searx/issues/1088
-  - https://github.com/searx/searx/issues/1089
+  - https://github.com/searxng/searxng/issues/1088
+  - https://github.com/searxng/searxng/issues/1089
 
 - Dependency updates
 
@@ -484,7 +484,7 @@ Special thanks to `NLNet <https://nlnet.nl>`__ for sponsoring multiple features 
   - Voat.co (general, social media)
   - Online Etimology Dictionary (science)
   - CCC tv (video, it)
-  - Searx (all categories - can rotate multiple other instances)
+  - Searxng (all categories - can rotate multiple other instances)
 - Answerer functionality (see answerer section on /preferences)
 - Local answerers
 
@@ -702,5 +702,5 @@ New dependencies
 News
 ~~~~
 
-Health status of searx instances and engines: http://stats.searx.oe5tpo.com
-(source: https://github.com/pointhi/searx_stats)
+Health status of searxng instances and engines: http://stats.searxng.oe5tpo.com
+(source: https://github.com/pointhi/searxng_stats)

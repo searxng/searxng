@@ -20,7 +20,7 @@ better results.
 
 Because there is no general search API which could be used for every search
 engine, an adapter has to be built between SearXNG and the external search
-engines.  Adapters are stored under the folder :origin:`searx/engines`.
+engines.  Adapters are stored under the folder :origin:`searxng/engines`.
 
 .. _general engine configuration:
 
@@ -70,7 +70,7 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
    argument                type        information
    ======================= =========== ===============================================
    name                    string      name of search-engine
-   engine                  string      name of searx-engine (filename without ``.py``)
+   engine                  string      name of searxng-engine (filename without ``.py``)
    enable_http             bool        enable HTTP (by default only HTTPS is enabled).
    shortcut                string      shortcut of search-engine
    timeout                 string      specific timeout for search-engine
@@ -184,7 +184,7 @@ Specify Request
 ---------------
 
 The function :py:func:`def request(query, params):
-<searx.engines.demo_online.request>` always returns the ``params`` variable, the
+<searxng.engines.demo_online.request>` always returns the ``params`` variable, the
 following parameters can be used to specify a search request:
 
 .. table::

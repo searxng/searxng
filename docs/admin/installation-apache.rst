@@ -47,13 +47,13 @@ Install with apache
 
 ----
 
-**Install** :ref:`apache searx site` using :ref:`filtron.sh <filtron.sh overview>`
+**Install** :ref:`apache searxng site` using :ref:`filtron.sh <filtron.sh overview>`
 
 .. code:: bash
 
    $ sudo -H ./utils/filtron.sh apache install
 
-**Install** :ref:`apache searx site` using :ref:`morty.sh <morty.sh overview>`
+**Install** :ref:`apache searxng site` using :ref:`morty.sh <morty.sh overview>`
 
 .. code:: bash
 
@@ -163,7 +163,7 @@ How this default intro site is configured, depends on the linux distribution
 
         less /etc/httpd/conf.d/welcome.conf
 
-.. _apache searx site:
+.. _apache searxng site:
 
 Apache Reverse Proxy
 ====================
@@ -192,14 +192,14 @@ except in :ref:`The Debian Layout`.
          sudo -H a2enmod proxy
          sudo -H a2enmod proxy_http
 
-      In :ref:`The Debian Layout` you create a ``searx.conf`` with the
-      ``<Location /searx >`` directive and save this file in the *sites
+      In :ref:`The Debian Layout` you create a ``searxng.conf`` with the
+      ``<Location /searxng >`` directive and save this file in the *sites
       available* folder at ``/etc/apache2/sites-available``.  To enable the
-      ``searx.conf`` use :man:`a2ensite`:
+      ``searxng.conf`` use :man:`a2ensite`:
 
       .. code:: sh
 
-         sudo -H a2ensite searx.conf
+         sudo -H a2ensite searxng.conf
 
    .. group-tab:: Arch Linux
 
@@ -230,7 +230,7 @@ except in :ref:`The Debian Layout`.
 With ProxyPreserveHost_ the incoming Host HTTP request header is passed to the
 proxied host.
 
-.. _apache searx via filtron plus morty:
+.. _apache searxng via filtron plus morty:
 
 .. tabs::
 
@@ -244,9 +244,9 @@ proxied host.
 
       .. code:: apache
 
-         <Location /searx >
+         <Location /searxng >
 
-             # SetEnvIf Request_URI "/searx" dontlog
+             # SetEnvIf Request_URI "/searxng" dontlog
              # CustomLog /dev/null combined env=dontlog
 
              Require all granted
@@ -258,11 +258,11 @@ proxied host.
 
              ProxyPreserveHost On
              ProxyPass http://127.0.0.1:4004
-             RequestHeader set X-Script-Name /searx
+             RequestHeader set X-Script-Name /searxng
 
          </Location>
 
-      2. Configure reverse proxy for :ref:`morty <searx morty>`, listening on
+      2. Configure reverse proxy for :ref:`morty <searxng morty>`, listening on
       *localhost 3000*
 
       .. code:: apache
@@ -286,8 +286,8 @@ proxied host.
 
          </Location>
 
-      For a fully result proxification add :ref:`morty's <searx morty>` **public
-      URL** to your :origin:`searx/settings.yml`:
+      For a fully result proxification add :ref:`morty's <searxng morty>` **public
+      URL** to your :origin:`searxng/settings.yml`:
 
       .. code:: yaml
 
@@ -302,10 +302,10 @@ proxied host.
 uWSGI support
 =============
 
-Be warned, with this setup, your instance isn't :ref:`protected <searx
+Be warned, with this setup, your instance isn't :ref:`protected <searxng
 filtron>`, nevertheless it is good enough for intranet usage.  In modern Linux
 distributions, the `mod_proxy_uwsgi`_ is compiled into the *normal* apache
-package and you need to install only the :ref:`uWSGI <searx uwsgi>` package:
+package and you need to install only the :ref:`uWSGI <searxng uwsgi>` package:
 
 .. tabs::
 
@@ -334,15 +334,15 @@ The next example shows a configuration using the `uWSGI Apache support`_ via
 unix sockets and `mod_proxy_uwsgi`_.
 
 For socket communication, you have to activate ``socket =
-/run/uwsgi/app/searx/socket`` and comment out the ``http = 127.0.0.1:8888``
+/run/uwsgi/app/searxng/socket`` and comment out the ``http = 127.0.0.1:8888``
 configuration in your :ref:`uwsgi ini file <uwsgi configuration>`.  If not
 already exists, create a folder for the unix sockets, which can be used by the
-searx account (see :ref:`create searx user`):
+searxng account (see :ref:`create searxng user`):
 
 .. code:: bash
 
-   sudo -H mkdir -p /run/uwsgi/app/searx/
-   sudo -H chown -R searx:searx /run/uwsgi/app/searx/
+   sudo -H mkdir -p /run/uwsgi/app/searxng/
+   sudo -H chown -R searxng:searxng /run/uwsgi/app/searxng/
 
 If the server is public; to limit access to your intranet replace ``Allow from
 all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
@@ -357,10 +357,10 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 	 LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
 	 LoadModule proxy_uwsgi_module /usr/lib/apache2/modules/mod_proxy_uwsgi.so
 
-	 # SetEnvIf Request_URI /searx dontlog
+	 # SetEnvIf Request_URI /searxng dontlog
 	 # CustomLog /dev/null combined env=dontlog
 
-	 <Location /searx>
+	 <Location /searxng>
 
 	     Require all granted
 	     Order deny,allow
@@ -369,7 +369,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 	     Allow from all
 
 	     ProxyPreserveHost On
-	     ProxyPass unix:/run/uwsgi/app/searx/socket|uwsgi://uwsgi-uds-searx/
+	     ProxyPass unix:/run/uwsgi/app/searxng/socket|uwsgi://uwsgi-uds-searxng/
 
 	 </Location>
 
@@ -382,10 +382,10 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
          LoadModule proxy_module modules/mod_proxy.so
          LoadModule proxy_uwsgi_module modules/mod_proxy_uwsgi.so
 
-         # SetEnvIf Request_URI /searx dontlog
+         # SetEnvIf Request_URI /searxng dontlog
          # CustomLog /dev/null combined env=dontlog
 
-         <Location /searx>
+         <Location /searxng>
 
              Require all granted
              Order deny,allow
@@ -394,7 +394,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
              Allow from all
 
              ProxyPreserveHost On
-             ProxyPass unix:/run/uwsgi/app/searx/socket|uwsgi://uwsgi-uds-searx/
+             ProxyPass unix:/run/uwsgi/app/searxng/socket|uwsgi://uwsgi-uds-searxng/
 
 	 </Location>
 
@@ -408,10 +408,10 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
          LoadModule proxy_uwsgi_module modules/mod_proxy_uwsgi.so
          <IfModule proxy_uwsgi_module>
 
-             # SetEnvIf Request_URI /searx dontlog
+             # SetEnvIf Request_URI /searxng dontlog
              # CustomLog /dev/null combined env=dontlog
 
-             <Location /searx>
+             <Location /searxng>
 
                  Require all granted
                  Order deny,allow
@@ -420,7 +420,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
                  Allow from all
 
                  ProxyPreserveHost On
-                 ProxyPass unix:/run/uwsgi/app/searx/socket|uwsgi://uwsgi-uds-searx/
+                 ProxyPass unix:/run/uwsgi/app/searxng/socket|uwsgi://uwsgi-uds-searxng/
 
 	     </Location>
 
@@ -436,16 +436,16 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
          <IfModule mod_uwsgi.c>
 
-             # SetEnvIf Request_URI "/searx" dontlog
+             # SetEnvIf Request_URI "/searxng" dontlog
              # CustomLog /dev/null combined env=dontlog
 
-             <Location /searx >
+             <Location /searxng >
 
                  Require all granted
 
                  Options FollowSymLinks Indexes
                  SetHandler uwsgi-handler
-                 uWSGISocket /run/uwsgi/app/searx/socket
+                 uWSGISocket /run/uwsgi/app/searxng/socket
 
                  Order deny,allow
                  Deny from all
@@ -468,21 +468,21 @@ Restart service
       .. code:: sh
 
          sudo -H systemctl restart apache2
-         sudo -H service uwsgi restart searx
+         sudo -H service uwsgi restart searxng
 
    .. group-tab:: Arch Linux
 
       .. code:: sh
 
          sudo -H systemctl restart httpd
-         sudo -H systemctl restart uwsgi@searx
+         sudo -H systemctl restart uwsgi@searxng
 
    .. group-tab::  Fedora / RHEL
 
       .. code:: sh
 
          sudo -H systemctl restart httpd
-         sudo -H touch /etc/uwsgi.d/searx.ini
+         sudo -H touch /etc/uwsgi.d/searxng.ini
 
 
 disable logs
@@ -492,11 +492,11 @@ For better privacy you can disable Apache logs.  In the examples above activate
 one of the lines and `restart apache`_::
 
 
-  # SetEnvIf Request_URI "/searx" dontlog
+  # SetEnvIf Request_URI "/searxng" dontlog
   # CustomLog /dev/null combined env=dontlog
 
 The ``CustomLog`` directive disable logs for the whole (virtual) server, use it
-when the URL of the service does not have a path component (``/searx``) / is
+when the URL of the service does not have a path component (``/searxng``) / is
 located at root (``/``).
 
 .. _The Debian Layout:

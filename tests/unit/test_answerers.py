@@ -2,7 +2,7 @@
 
 from mock import Mock
 
-from searx.answerers import answerers
+from searxng.answerers import answerers
 from tests import SearxTestCase
 
 

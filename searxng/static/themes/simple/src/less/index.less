@@ -1,0 +1,54 @@
+#main_index {
+  margin-top: 16em;
+}
+
+.index {
+  text-align: center;
+
+  .title {
+    background: url('../img/searxng.png') no-repeat;
+    width: 100%;
+    min-height: 80px;
+    background-position: center;
+  }
+
+  h1 {
+    font-size: 5em;
+    visibility: hidden;
+  }
+
+  #search {
+    margin: 0 auto;
+    background: inherit;
+    border: inherit;
+    padding: 0;
+  }
+
+  .search_filters {
+    display: block;
+    margin: 1em 0;
+  }
+
+  .category label {
+    padding: 6px 10px;
+    border-bottom: initial !important;
+  }
+}
+
+@media screen and (max-width: 80em) {
+  div.title {
+    h1 {
+      font-size: 1em;
+    }
+  }
+
+  #main_index {
+    margin-top: 6em;
+  }
+}
+
+@media screen and (max-width: 50em) {
+  #main_index {
+    margin-top: 0;
+  }
+}

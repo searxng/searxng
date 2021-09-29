@@ -1,5 +1,5 @@
 
-.. _searx filtron:
+.. _searxng filtron:
 
 ==========================
 How to protect an instance
@@ -8,7 +8,7 @@ How to protect an instance
 .. sidebar:: further reading
 
    - :ref:`filtron.sh`
-   - :ref:`nginx searx site`
+   - :ref:`nginx searxng site`
 
 
 .. contents:: Contents
@@ -19,10 +19,10 @@ How to protect an instance
 .. _filtron: https://github.com/asciimoo/filtron
 
 SearXNG depends on external search services.  To avoid the abuse of these services
-it is advised to limit the number of requests processed by searx.
+it is advised to limit the number of requests processed by searxng.
 
 An application firewall, filtron_ solves exactly this problem.  Filtron is just
-a middleware between your web server (nginx, apache, ...) and searx, we describe
+a middleware between your web server (nginx, apache, ...) and searxng, we describe
 such infratructures in chapter: :ref:`architecture`.
 
 
@@ -168,9 +168,9 @@ Use it along with ``nginx`` with the following example configuration.
 
 .. code:: nginx
 
-   # https://example.org/searx
+   # https://example.org/searxng
 
-   location /searx {
+   location /searxng {
        proxy_pass         http://127.0.0.1:4004/;
 
        proxy_set_header   Host             $host;
@@ -178,14 +178,14 @@ Use it along with ``nginx`` with the following example configuration.
        proxy_set_header   X-Real-IP        $remote_addr;
        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
        proxy_set_header   X-Scheme         $scheme;
-       proxy_set_header   X-Script-Name    /searx;
+       proxy_set_header   X-Script-Name    /searxng;
    }
 
-   location /searx/static {
-       /usr/local/searx/searx-src/searx/static;
+   location /searxng/static {
+       /usr/local/searxng/searxng-src/searxng/static;
    }
 
 
 Requests are coming from port 4004 going through filtron and then forwarded to
 port 8888 where a SearXNG is being run. For a complete setup see: :ref:`nginx
-searx site`.
+searxng site`.

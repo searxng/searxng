@@ -28,7 +28,7 @@ FILTRON_LISTEN="${FILTRON_LISTEN:-127.0.0.1:4004}"
 # server.bind_address.  The default of FILTRON_TARGET is taken from the YAML
 # configuration, do not change this value without reinstalling the entire
 # SearXNG suite including filtron & morty.
-FILTRON_TARGET="${SEARX_BIND_ADDRESS}:${SEARX_PORT}"
+FILTRON_TARGET="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
 
 SERVICE_NAME="filtron"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"
@@ -45,8 +45,8 @@ GO_ENV="${SERVICE_HOME}/.go_env"
 GO_PKG_URL="https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
-APACHE_FILTRON_SITE="searx.conf"
-NGINX_FILTRON_SITE="searx.conf"
+APACHE_FILTRON_SITE="searxng.conf"
+NGINX_FILTRON_SITE="searxng.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(
@@ -104,7 +104,7 @@ filtron rules: ${FILTRON_RULES_TEMPLATE}
   FILTRON_URL_PATH    : ${FILTRON_URL_PATH}
 EOF
 
-    install_log_searx_instance
+    install_log_searxng_instance
     [[ -n ${1} ]] &&  err_msg "$1"
 }
 
@@ -352,7 +352,7 @@ sourced ${DOT_CONFIG} :
   FILTRON_LISTEN      : ${FILTRON_LISTEN}
   FILTRON_URL_PATH    : ${FILTRON_URL_PATH}
 EOF
-    install_log_searx_instance
+    install_log_searxng_instance
 
     if service_account_is_available "$SERVICE_USER"; then
         info_msg "service account $SERVICE_USER available."
@@ -490,7 +490,7 @@ This installs a reverse proxy (ProxyPass) into apache site (${APACHE_FILTRON_SIT
         install_apache
     fi
 
-    "${REPO_ROOT}/utils/searx.sh" install uwsgi
+    "${REPO_ROOT}/utils/searxng.sh" install uwsgi
 
     apache_install_site --variant=filtron "${APACHE_FILTRON_SITE}"
 
@@ -532,12 +532,12 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_FILTRON_SITE}
         install_nginx
     fi
 
-    "${REPO_ROOT}/utils/searx.sh" install uwsgi
+    "${REPO_ROOT}/utils/searxng.sh" install uwsgi
 
     # shellcheck disable=SC2034
-    SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
+    SEARXNG_SRC=$("${REPO_ROOT}/utils/searxng.sh" --getenv SEARXNG_SRC)
     # shellcheck disable=SC2034
-    SEARX_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_URL_PATH)
+    SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searxng.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app --variant=filtron "${NGINX_FILTRON_SITE}"
 
     info_msg "testing public url .."

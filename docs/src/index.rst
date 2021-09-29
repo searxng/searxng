@@ -11,4 +11,4 @@ every item from the source code, but we will add documentation when requested.
    :caption: Contents
    :glob:
 
-   searx.*
+   searxng.*

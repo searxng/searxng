@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from searx import plugins
+from searxng import plugins
 from mock import Mock
 from tests import SearxTestCase
 

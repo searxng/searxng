@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import mock
-from searx import webutils
+from searxng import webutils
 from tests import SearxTestCase
 
 

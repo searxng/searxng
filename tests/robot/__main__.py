@@ -12,20 +12,20 @@ import pathlib
 
 from splinter import Browser
 
-import tests as searx_tests
+import tests as searxng_tests
 from tests.robot import test_webapp
 
 
-class SearxRobotLayer():
-    """Searx Robot Test Layer"""
+class SearxngRobotLayer():
+    """Searxng Robot Test Layer"""
 
     def setUp(self):
         os.setpgrp()  # create new process group, become its leader
 
-        tests_path = pathlib.Path(searx_tests.__file__).resolve().parent
+        tests_path = pathlib.Path(searxng_tests.__file__).resolve().parent
 
         # get program paths
-        webapp = str(tests_path.parent / 'searx' / 'webapp.py')
+        webapp = str(tests_path.parent / 'searxng' / 'webapp.py')
         exe = 'python'
 
         # The Flask app is started by Flask.run(...), don't enable Flask's debug
@@ -35,10 +35,10 @@ class SearxRobotLayer():
         # - debug mode: https://flask.palletsprojects.com/quickstart/#debug-mode
         # - Flask.run(..): https://flask.palletsprojects.com/api/#flask.Flask.run
 
-        os.environ['SEARX_DEBUG'] = '0'
+        os.environ['SEARXNG_DEBUG'] = '0'
 
         # set robot settings path
-        os.environ['SEARX_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
+        os.environ['SEARXNG_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
 
         # run the server
         self.server = subprocess.Popen(  # pylint: disable=consider-using-with
@@ -52,7 +52,7 @@ class SearxRobotLayer():
     def tearDown(self):
         os.kill(self.server.pid, 9)
         # remove previously set environment variable
-        del os.environ['SEARX_SETTINGS_PATH']
+        del os.environ['SEARXNG_SETTINGS_PATH']
 
 
 def run_robot_tests(tests):

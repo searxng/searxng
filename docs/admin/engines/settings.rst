@@ -4,7 +4,7 @@
 ``settings.yml``
 ================
 
-This page describe the options possibilities of the :origin:`searx/settings.yml`
+This page describe the options possibilities of the :origin:`searxng/settings.yml`
 file.
 
 .. sidebar:: Further reading ..
@@ -24,11 +24,11 @@ settings.yml location
 
 The initial ``settings.yml`` we be load from these locations:
 
-1. the full path specified in the ``SEARX_SETTINGS_PATH`` environment variable.
-2. ``/etc/searx/settings.yml``
+1. the full path specified in the ``SEARXNG_SETTINGS_PATH`` environment variable.
+2. ``/etc/searxng/settings.yml``
 
 If these files don't exist (or are empty or can't be read), SearXNG uses the
-:origin:`searx/settings.yml` file.  Read :ref:`settings use_default_settings` to
+:origin:`searxng/settings.yml` file.  Read :ref:`settings use_default_settings` to
 see how you can simplify your *user defined* ``settings.yml``.
 
 
@@ -74,7 +74,7 @@ Global Settings
      instance_name:  "SearXNG"  # displayed name
      contact_url: false         # mailto:contact@example.com
 
-``debug`` : ``$SEARX_DEBUG``
+``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
 
@@ -94,7 +94,7 @@ Global Settings
        port: 8888
        bind_address: "127.0.0.1"      # address to listen on
        secret_key: "ultrasecretkey"   # change this!
-       image_proxy: false             # proxying image results through searx
+       image_proxy: false             # proxying image results through searxng
        default_locale: ""             # default interface locale
        default_theme: oscar           # ui theme
        default_http_headers:
@@ -109,17 +109,17 @@ Global Settings
    Changing a value tagged by :ref:`buildenv <make buildenv>`, needs to
    rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
 
-``base_url`` : :ref:`buildenv SEARX_URL <make buildenv>`
+``base_url`` : :ref:`buildenv SEARXNG_URL <make buildenv>`
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
-``port`` & ``bind_address``: :ref:`buildenv SEARX_PORT & SEARX_BIND_ADDRESS <make buildenv>`
+``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARXNG_BIND_ADDRESS <make buildenv>`
   Port number and *bind address* of the SearXNG web application if you run it
-  directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
+  directly using ``python searxng/webapp.py``.  Doesn't apply to SearXNG running on
   Apache or Nginx.
 
-``secret_key`` : ``$SEARX_SECRET``
+``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
 ``image_proxy`` :
@@ -128,7 +128,7 @@ Global Settings
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the
   browser language.  If it doesn't work, or you are deploying a language
-  specific instance of searx, a locale can be defined using an ISO language
+  specific instance of searxng, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
 ``default_theme`` :
@@ -137,7 +137,7 @@ Global Settings
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
 ``default_http_headers``:
-  Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
+  Set additional HTTP headers, see `#755 <https://github.com/searxng/searxng/issues/715>`__
 
 ``outgoing:``
 -------------
@@ -293,7 +293,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 
 ``timeout`` : optional
   Timeout of the search with the current search engine.  **Be careful, it will
-  modify the global timeout of searx.**
+  modify the global timeout of searxng.**
 
 ``api_key`` : optional
   In a few cases, using an API needs the use of a secret key.  How to obtain them
@@ -339,16 +339,16 @@ use_default_settings
 
    - :ref:`settings location`
    - :ref:`use_default_settings.yml`
-   - :origin:`/etc/searx/settings.yml <utils/templates/etc/searx/use_default_settings.yml>`
+   - :origin:`/etc/searxng/settings.yml <utils/templates/etc/searxng/use_default_settings.yml>`
 
 The user defined ``settings.yml`` is loaded from the :ref:`settings location`
-and can relied on the default configuration :origin:`searx/settings.yml` using:
+and can relied on the default configuration :origin:`searxng/settings.yml` using:
 
  ``use_default_settings: true``
 
 ``server:``
   In the following example, the actual settings are the default settings defined
-  in :origin:`searx/settings.yml` with the exception of the ``secret_key`` and
+  in :origin:`searxng/settings.yml` with the exception of the ``secret_key`` and
   the ``bind_address``:
 
   .. code-block:: yaml

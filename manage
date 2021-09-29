@@ -11,7 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
 
 # config
 
-PYOBJECTS="searx"
+PYOBJECTS="searxng"
 PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.28.0"
 # SPHINXOPTS=
@@ -25,15 +25,15 @@ pylint.FILES() {
     # These py files are linted by test.pylint(), all other files are linted by
     # test.pep8()
 
-    grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searx_extra tests
+    grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searxng searxng_extra tests
 }
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searx/*.yml')"
+done <<< "$(git ls-files './tests/*.yml' './searxng/*.yml' './utils/templates/etc/searxng/*.yml')"
 
-PYLINT_SEARX_DISABLE_OPTION="\
+PYLINT_SEARXNG_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
 E1136"
@@ -48,9 +48,9 @@ weblate.:
   push.translations: push translation changes from SearXNG to Weblate's counterpart
   to.translations: Update 'translations' branch with last additions from Weblate.
 data.:
-  all       : update searx/languages.py and ./data/*
-  languages : update searx/data/engines_languages.json & searx/languages.py
-  useragents: update searx/data/useragents.json with the most recent versions of Firefox.
+  all       : update searxng/languages.py and ./data/*
+  languages : update searxng/data/engines_languages.json & searxng/languages.py
+  useragents: update searxng/data/useragents.json with the most recent versions of Firefox.
 docs.:
   html      : build HTML documentation
   live      : autobuild HTML documentation while editing
@@ -70,14 +70,14 @@ py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
 pyenv.:
-  install   : developer install of searx into virtualenv
+  install   : developer install of searxng into virtualenv
   uninstall : uninstall developer installation
   cmd ...   : run command ... in virtualenv
   OK        : test if virtualenv is OK
 pypi.upload:
   Upload python packages to PyPi (to test use pypi.upload.test)
 test.:
-  pylint    : lint PYLINT_FILES, searx/engines, searx & tests
+  pylint    : lint PYLINT_FILES, searxng/engines, searxng & tests
   pep8      : pycodestyle (pep8) for all files except PYLINT_FILES
   unit      : run unit tests
   coverage  : run unit tests with coverage
@@ -105,17 +105,17 @@ export DOCS_BUILD
 buildenv() {
 
     # settings file from repository's working tree are used by default
-    SEARX_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
+    SEARXNG_SETTINGS_PATH="${REPO_ROOT}/searxng/settings.yml"
 
-    if [ -r '/etc/searx/settings.yml' ]; then
-        if ask_yn "should settings read from: /etc/searx/settings.yml"; then
-            SEARX_SETTINGS_PATH='/etc/searx/settings.yml'
+    if [ -r '/etc/searxng/settings.yml' ]; then
+        if ask_yn "should settings read from: /etc/searxng/settings.yml"; then
+            SEARXNG_SETTINGS_PATH='/etc/searxng/settings.yml'
         fi
     fi
-    export SEARX_SETTINGS_PATH
+    export SEARXNG_SETTINGS_PATH
     (
         set -e
-        SEARX_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
+        SEARXNG_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
             | prefix_stdout "${_Blue}BUILDENV${_creset}  "
     )
     return "${PIPESTATUS[0]}"
@@ -202,16 +202,16 @@ weblate.translations.commit() {
         weblate.to.translations
 
         # copy the changes to the master branch
-        cp -rv --preserve=mode,timestamps "${TRANSLATIONS_WORKTREE}/searx/translations" "searx"
+        cp -rv --preserve=mode,timestamps "${TRANSLATIONS_WORKTREE}/searxng/translations" "searxng"
 
         # compile translations
         build_msg BABEL 'compile translation catalogs into binary MO files'
         pybabel compile --statistics \
-                -d "searx/translations"
+                -d "searxng/translations"
         # git add/commit (no push)
         commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
         commit_message=$(echo -e "[translations] update\n${commit_body}")
-        git add searx/translations
+        git add searxng/translations
         git commit -m "${commit_message}"
     )
     exitcode=$?
@@ -228,7 +228,7 @@ weblate.push.translations() {
     # (weblate).
 
     # In branch master of SearXNG (origin) check for meaningful changes in
-    # folder 'searx/translations', commit changes on branch 'translations' and
+    # folder 'searxng/translations', commit changes on branch 'translations' and
     # at least, pull updated branches on Weblate's counterpart (weblate).
 
     # 1. Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
@@ -241,7 +241,7 @@ weblate.push.translations() {
 
     local messages_pot diff_messages_pot last_commit_hash last_commit_detail \
           last_commit_message exitcode
-    messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
+    messages_pot="${TRANSLATIONS_WORKTREE}/searxng/translations/messages.pot"
     (   set -e
         pyenv.activate
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
@@ -251,11 +251,11 @@ weblate.push.translations() {
         build_msg BABEL 'extract messages from source files and generate POT file'
         pybabel extract -F babel.cfg \
                 -o "${messages_pot}" \
-                "searx/"
+                "searxng/"
 
         # stop if there is no meaningful change in the master branch
         diff_messages_pot=$(cd "${TRANSLATIONS_WORKTREE}";\
-                            git diff -- "searx/translations/messages.pot")
+                            git diff -- "searxng/translations/messages.pot")
         if ! echo "$diff_messages_pot" | grep -qE "[\+\-](msgid|msgstr)"; then
             build_msg BABEL 'no changes detected, exiting'
             return 42
@@ -296,7 +296,7 @@ weblate.push.translations() {
         build_msg BABEL 'update existing message catalogs from POT file'
         pybabel update -N \
             -i "${messages_pot}" \
-            -d "${TRANSLATIONS_WORKTREE}/searx/translations"
+            -d "${TRANSLATIONS_WORKTREE}/searxng/translations"
 
         # git add/commit/push
         last_commit_hash=$(git log -n1  --pretty=format:'%h')
@@ -304,7 +304,7 @@ weblate.push.translations() {
         last_commit_message="[translations] update messages.pot and messages.po files\nFrom ${last_commit_detail}"
 
         pushd "${TRANSLATIONS_WORKTREE}"
-        git add searx/translations
+        git add searxng/translations
         git commit -m "${last_commit_message}"
         git push
         popd
@@ -327,12 +327,12 @@ data.all() {
         data.languages
         data.useragents
         data.osm_keys_tags
-        build_msg DATA "update searx/data/ahmia_blacklist.txt"
-        python searx_extra/update/update_ahmia_blacklist.py
-        build_msg DATA "update searx/data/wikidata_units.json"
-        python searx_extra/update/update_wikidata_units.py
-        build_msg DATA "update searx/data/currencies.json"
-        python searx_extra/update/update_currencies.py
+        build_msg DATA "update searxng/data/ahmia_blacklist.txt"
+        python searxng_extra/update/update_ahmia_blacklist.py
+        build_msg DATA "update searxng/data/wikidata_units.json"
+        python searxng_extra/update/update_wikidata_units.py
+        build_msg DATA "update searxng/data/currencies.json"
+        python searxng_extra/update/update_currencies.py
     )
 }
 
@@ -341,22 +341,22 @@ data.languages() {
     (   set -e
         pyenv.activate
         build_msg ENGINES "fetch languages .."
-        python searx_extra/update/update_languages.py
-        build_msg ENGINES "update update searx/languages.py"
-        build_msg DATA "update searx/data/engines_languages.json"
+        python searxng_extra/update/update_languages.py
+        build_msg ENGINES "update update searxng/languages.py"
+        build_msg DATA "update searxng/data/engines_languages.json"
     )
     dump_return $?
 }
 
 data.useragents() {
-    build_msg DATA "update searx/data/useragents.json"
-    pyenv.cmd python searx_extra/update/update_firefox_version.py
+    build_msg DATA "update searxng/data/useragents.json"
+    pyenv.cmd python searxng_extra/update/update_firefox_version.py
     dump_return $?
 }
 
 data.osm_keys_tags() {
-    build_msg DATA "update searx/data/osm_keys_tags.json"
-    pyenv.cmd python searx_extra/update/update_osm_keys_tags.py
+    build_msg DATA "update searxng/data/osm_keys_tags.json"
+    pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
     dump_return $?
 }
 
@@ -366,7 +366,7 @@ docs.prebuild() {
         set -e
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searx.sh doc   | cat > "${DOCS_BUILD}/includes/searx.rst"
+        ./utils/searxng.sh doc   | cat > "${DOCS_BUILD}/includes/searxng.rst"
         ./utils/filtron.sh doc | cat > "${DOCS_BUILD}/includes/filtron.rst"
         ./utils/morty.sh doc   | cat > "${DOCS_BUILD}/includes/morty.rst"
     )
@@ -385,10 +385,10 @@ docker.buildx() {
 docker.build() {
     pyenv.install
 
-    local SEARX_GIT_VERSION
+    local SEARXNG_GIT_VERSION
     local VERSION_GITCOMMIT
     local GITHUB_USER
-    local SEARX_IMAGE_NAME
+    local SEARXNG_IMAGE_NAME
     local BUILD
 
     build_msg DOCKER build
@@ -413,8 +413,8 @@ docker.build() {
 
         # This is a git repository
         git update-index -q --refresh
-        python -m searx.version freeze
-        eval "$(python -m searx.version)"
+        python -m searxng.version freeze
+        eval "$(python -m searxng.version)"
 
         # Get the last git commit id
         VERSION_GITCOMMIT=$(echo "$VERSION_STRING" | cut -d- -f3)
@@ -422,35 +422,35 @@ docker.build() {
 
         # define the docker image name
         GITHUB_USER=$(echo "${GIT_URL}" | sed 's/.*github\.com\/\([^\/]*\).*/\1/')
-        SEARX_IMAGE_NAME="${SEARX_IMAGE_NAME:-${GITHUB_USER:-searxng}/searxng}"
+        SEARXNG_IMAGE_NAME="${SEARXNG_IMAGE_NAME:-${GITHUB_USER:-searxng}/searxng}"
 
         BUILD="build"
         if [ "$1" = "buildx" ]; then
             # buildx includes the push option
-            CACHE_TAG="${SEARX_IMAGE_NAME}:latest-build-cache"
+            CACHE_TAG="${SEARXNG_IMAGE_NAME}:latest-build-cache"
             BUILD="buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --cache-from=type=registry,ref=$CACHE_TAG --cache-to=type=registry,ref=$CACHE_TAG,mode=max"
             shift
         fi
         build_msg DOCKER "Build command: ${BUILD}"
 
         # build Docker image
-        build_msg DOCKER "Building image ${SEARX_IMAGE_NAME}:${SEARX_GIT_VERSION}"
+        build_msg DOCKER "Building image ${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
         # shellcheck disable=SC2086
         docker $BUILD \
          --build-arg BASE_IMAGE="${DEPENDENCIES_IMAGE_NAME}" \
          --build-arg GIT_URL="${GIT_URL}" \
-         --build-arg SEARX_GIT_VERSION="${VERSION_STRING}" \
+         --build-arg SEARXNG_GIT_VERSION="${VERSION_STRING}" \
          --build-arg VERSION_GITCOMMIT="${VERSION_GITCOMMIT}" \
          --build-arg LABEL_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
          --build-arg LABEL_VCS_REF="$(git rev-parse HEAD)" \
          --build-arg LABEL_VCS_URL="${GIT_URL}" \
-         --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searx/settings.yml)" \
+         --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searxng/settings.yml)" \
          --build-arg TIMESTAMP_UWSGI="$(git log -1 --format="%cd" --date=unix -- dockerfiles/uwsgi.ini)" \
-         -t "${SEARX_IMAGE_NAME}:latest" -t "${SEARX_IMAGE_NAME}:${VERSION_STRING}" .
+         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${VERSION_STRING}" .
 
         if [ "$1" = "push" ]; then
-	        docker push "${SEARX_IMAGE_NAME}:latest"
-	        docker push "${SEARX_IMAGE_NAME}:${SEARX_GIT_VERSION}"
+	        docker push "${SEARXNG_IMAGE_NAME}:latest"
+	        docker push "${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
 	    fi
     )
     dump_return $?
@@ -495,17 +495,17 @@ gecko.driver() {
 node.env() {
     if ! required_commands npm; then
         info_msg "to install build tools use::"
-        info_msg "   sudo -H ./utils/searx.sh install buildhost"
+        info_msg "   sudo -H ./utils/searxng.sh install buildhost"
         die 1 "install needed build tools first"
     fi
 
     (   set -e
 
-        build_msg INSTALL "searx/static/themes/oscar/package.json"
-        npm --prefix searx/static/themes/oscar install
+        build_msg INSTALL "searxng/static/themes/oscar/package.json"
+        npm --prefix searxng/static/themes/oscar install
 
-        build_msg INSTALL "searx/static/themes/simple/package.json"
-        npm --prefix searx/static/themes/simple install
+        build_msg INSTALL "searxng/static/themes/simple/package.json"
+        npm --prefix searxng/static/themes/simple install
     )
     dump_return $?
 }
@@ -517,15 +517,15 @@ node.clean() {
     fi
     build_msg CLEAN "locally installed npm dependencies"
     (   set -e
-        npm --prefix searx/static/themes/oscar run clean
-        npm --prefix searx/static/themes/simple run clean
+        npm --prefix searxng/static/themes/oscar run clean
+        npm --prefix searxng/static/themes/simple run clean
     )
     dump_return $?
 }
 
 pygments.less() {
-    build_msg PYGMENTS "searx_extra/update/update_pygments.py"
-    if ! pyenv.cmd python searx_extra/update/update_pygments.py; then
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    if ! pyenv.cmd python searxng_extra/update/update_pygments.py; then
         build_msg PYGMENTS "building LESS files for pygments failed"
         return 1
     fi
@@ -569,7 +569,7 @@ pyenv.install() {
 
     (   set -e
         pyenv
-        build_msg PYENV "[install] pip install -e 'searx${PY_SETUP_EXTRAS}'"
+        build_msg PYENV "[install] pip install -e 'searxng${PY_SETUP_EXTRAS}'"
         "${PY_ENV_BIN}/python" -m pip install -e ".${PY_SETUP_EXTRAS}"
         buildenv
     )
@@ -613,17 +613,17 @@ test.pylint() {
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             "${PYLINT_FILES[@]}"
 
-        build_msg TEST "[pylint] searx/engines"
+        build_msg TEST "[pylint] searxng/engines"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
+            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
-            searx/engines
+            searxng/engines
 
-        build_msg TEST "[pylint] searx tests"
+        build_msg TEST "[pylint] searxng tests"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
-	    --ignore=searx/engines \
-	    searx tests
+            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
+	    --ignore=searxng/engines \
+	    searxng tests
     )
     dump_return $?
 }
@@ -633,10 +633,10 @@ test.pep8() {
     local _exclude=""
     printf -v _exclude '%s, ' "${PYLINT_FILES[@]}"
     pyenv.cmd pycodestyle \
-              --exclude="searx/static, searx/languages.py, $_exclude " \
+              --exclude="searxng/static, searxng/languages.py, $_exclude " \
               --max-line-length=120 \
               --ignore "E117,E252,E402,E722,E741,W503,W504,W605" \
-              searx tests
+              searxng tests
     dump_return $?
 }
 
@@ -650,7 +650,7 @@ test.coverage() {
     build_msg TEST 'unit test coverage'
     (   set -e
         pyenv.activate
-        python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
+        python -m nose2 -C --log-capture --with-coverage --coverage searxng -s tests/unit
         coverage report
         coverage html
     )
@@ -682,13 +682,13 @@ themes.all() {
 
 themes.oscar() {
     build_msg GRUNT "theme: oscar"
-    npm --prefix searx/static/themes/oscar run build
+    npm --prefix searxng/static/themes/oscar run build
     dump_return $?
 }
 
 themes.simple() {
     build_msg GRUNT "theme: simple"
-    npm --prefix searx/static/themes/simple run build
+    npm --prefix searxng/static/themes/simple run build
     dump_return $?
 }
 

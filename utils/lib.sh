@@ -1654,7 +1654,7 @@ git_clone() {
     #  into <path>.  If repository is already cloned, pull from <branch> and
     #  update working tree (if needed, the caller has to stash local changes).
     #
-    #    git clone https://github.com/searxng/searxng searx-src origin/master searxlogin
+    #    git clone https://github.com/searxng/searxng searxng-src origin/master searxlogin
     #
 
     local url="$1"
@@ -1865,7 +1865,7 @@ url_replace_hostname(){
 
     # to replace hostname by primary IP::
     #
-    #   url_replace_hostname http://searx-ubu1604/morty $(primary_ip)
+    #   url_replace_hostname http://searxng-ubu1604/morty $(primary_ip)
     #   http://10.246.86.250/morty
 
     # shellcheck disable=SC2001

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import searx.search
-from searx.search import SearchQuery, EngineRef
-from searx import settings
+import searxng.search
+from searxng.search import SearchQuery, EngineRef
+from searxng import settings
 from tests import SearxTestCase
 
 
@@ -39,13 +39,13 @@ class SearchTestCase(SearxTestCase):
 
     @classmethod
     def setUpClass(cls):
-        searx.search.initialize(TEST_ENGINES)
+        searxng.search.initialize(TEST_ENGINES)
 
     def test_timeout_simple(self):
         settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, None)
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         search.search()
         self.assertEqual(search.actual_timeout, 3.0)
 
@@ -53,7 +53,7 @@ class SearchTestCase(SearxTestCase):
         settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 5.0)
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         search.search()
         self.assertEqual(search.actual_timeout, 3.0)
 
@@ -61,7 +61,7 @@ class SearchTestCase(SearxTestCase):
         settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 1.0)
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         search.search()
         self.assertEqual(search.actual_timeout, 1.0)
 
@@ -69,7 +69,7 @@ class SearchTestCase(SearxTestCase):
         settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 5.0)
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         search.search()
         self.assertEqual(search.actual_timeout, 5.0)
 
@@ -77,7 +77,7 @@ class SearchTestCase(SearxTestCase):
         settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery('test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, 15.0)
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         search.search()
         self.assertEqual(search.actual_timeout, 10.0)
 
@@ -86,7 +86,7 @@ class SearchTestCase(SearxTestCase):
                                    [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, None,
                                    external_bang="yt")
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         results = search.search()
         # For checking if the user redirected with the youtube external bang
         self.assertTrue(results.redirect_url is not None)
@@ -95,7 +95,7 @@ class SearchTestCase(SearxTestCase):
                                    [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
                                    'en-US', SAFESEARCH, PAGENO, None, None)
 
-        search = searx.search.Search(search_query)
+        search = searxng.search.Search(search_query)
         results = search.search()
         # This should not redirect
         self.assertTrue(results.redirect_url is None)

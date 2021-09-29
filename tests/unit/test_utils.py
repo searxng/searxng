@@ -2,8 +2,8 @@
 import lxml.etree
 from lxml import html
 
-from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
-from searx import utils
+from searxng.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
+from searxng import utils
 
 from tests import SearxTestCase
 
@@ -15,10 +15,10 @@ class TestUtils(SearxTestCase):
         self.assertIsNotNone(utils.gen_useragent())
         self.assertTrue(utils.gen_useragent().startswith('Mozilla'))
 
-    def test_searx_useragent(self):
-        self.assertIsInstance(utils.searx_useragent(), str)
-        self.assertIsNotNone(utils.searx_useragent())
-        self.assertTrue(utils.searx_useragent().startswith('searx'))
+    def test_searxng_useragent(self):
+        self.assertIsInstance(utils.searxng_useragent(), str)
+        self.assertIsNotNone(utils.searxng_useragent())
+        self.assertTrue(utils.searxng_useragent().startswith('searxng'))
 
     def test_html_to_text(self):
         html_str = """

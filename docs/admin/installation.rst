@@ -27,7 +27,7 @@ Installation scripts
 
 .. sidebar:: Update OS first!
 
-   To avoid unwanted side effects, update your OS before installing searx.
+   To avoid unwanted side effects, update your OS before installing searxng.
 
 The following will install a setup as shown in :ref:`architecture`.  First you
 need to get a clone.  The clone is only needed for the installation procedure
@@ -35,29 +35,29 @@ and some maintenance tasks (alternatively you can create your own fork).
 
 For the installation procedure, use a *sudoer* login to run the scripts.  If you
 install from ``root``, take into account that the scripts are creating a
-``searx``, a ``filtron`` and a ``morty`` user.  In the installation procedure
-these new created users do need read access to the clone of searx, which is not
+``searxng``, a ``filtron`` and a ``morty`` user.  In the installation procedure
+these new created users do need read access to the clone of searxng, which is not
 the case if you clone into a folder below ``/root``.
 
 .. code:: bash
 
    $ cd ~/Downloads
-   $ git clone https://github.com/searxng/searxng.git searx
-   $ cd searx
+   $ git clone https://github.com/searxng/searxng.git searxng
+   $ cd searxng
 
 .. sidebar:: further read
 
    - :ref:`toolboxing`
-   - :ref:`update searx`
-   - :ref:`inspect searx`
+   - :ref:`update searxng`
+   - :ref:`inspect searxng`
 
-**Install** :ref:`SearXNG service <searx.sh>`
+**Install** :ref:`SearXNG service <searxng.sh>`
 
 This installs SearXNG as described in :ref:`installation basic`.
 
 .. code:: bash
 
-   $ sudo -H ./utils/searx.sh install all
+   $ sudo -H ./utils/searxng.sh install all
 
 **Install** :ref:`filtron reverse proxy <filtron.sh>`
 
@@ -86,12 +86,12 @@ install the SearXNG plugins from **The Green Web Foundation** `[ref]
 
 .. code:: bash
 
-   $ sudo -H ./utils/searx.sh shell
+   $ sudo -H ./utils/searxng.sh shell
    // exit with [CTRL-D]
-   (searx-pyenv) searx@ryzen:~$ pip install git+https://github.com/return42/tgwf-searx-plugins
+   (searxng-pyenv) searxng@ryzen:~$ pip install git+https://github.com/return42/tgwf-searx-plugins
 
 In the :ref:`settings.yml` activate the ``plugins:`` section and add module
-``only_show_green_results`` from tgwf-searx-plugins.
+``only_show_green_results`` from tgwf-searxng-plugins.
 
 .. code:: yaml
 

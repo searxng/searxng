@@ -93,7 +93,7 @@
                (setq-local js-indent-level 2)
                ;; flycheck should use the eslint checker from simple theme
                (setq-local flycheck-javascript-eslint-executable
-                           (expand-file-name "searx/static/themes/simple/node_modules/.bin/eslint" prj-root))
+                           (expand-file-name "searxng/static/themes/simple/node_modules/.bin/eslint" prj-root))
                (flycheck-mode)
                ))))
 

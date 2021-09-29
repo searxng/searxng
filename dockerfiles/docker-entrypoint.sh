@@ -17,7 +17,7 @@ Environment variables:
   BIND_ADDRESS  uwsgi bind to the specified TCP socket using HTTP protocol.
                 Default value: ${DEFAULT_BIND_ADDRESS}
 Volume:
-  /etc/searx    the docker entry point copies settings.yml and uwsgi.ini in
+  /etc/searxng    the docker entry point copies settings.yml and uwsgi.ini in
                 this directory (see the -f command line option)"
 
 EOF
@@ -48,22 +48,22 @@ do
     esac
 done
 
-get_searx_version(){
-    su searx -c \
-       'python3 -c "import six; import searx.version; six.print_(searx.version.VERSION_STRING)"' \
+get_searxng_version(){
+    su searxng -c \
+       'python3 -c "import six; import searxng.version; six.print_(searxng.version.VERSION_STRING)"' \
        2>/dev/null
 }
 
-SEARX_VERSION="$(get_searx_version)"
-export SEARX_VERSION
-echo "searx version ${SEARX_VERSION}"
+SEARXNG_VERSION="$(get_searxng_version)"
+export SEARXNG_VERSION
+echo "searxng version ${SEARXNG_VERSION}"
 
 # helpers to update the configuration files
 patch_uwsgi_settings() {
     CONF="$1"
 }
 
-patch_searx_settings() {
+patch_searxng_settings() {
     CONF="$1"
 
     # Make sure that there is trailing slash at the end of BASE_URL
@@ -114,7 +114,7 @@ update_conf() {
                 $PATCH_REF_CONF "${CONF}"
             else
                 # Keep the current configuration
-                printf '⚠️  Check new version %s to make sure searx is working properly\n' "${NEW_CONF}"
+                printf '⚠️  Check new version %s to make sure searxng is working properly\n' "${NEW_CONF}"
                 cp "${REF_CONF}" "${NEW_CONF}"
                 $PATCH_REF_CONF "${NEW_CONF}"
             fi
@@ -129,10 +129,10 @@ update_conf() {
 }
 
 # make sure there are uwsgi settings
-update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searx/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
+update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searxng/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
 
-# make sure there are searx settings
-update_conf "${FORCE_CONF_UPDATE}" "${SEARX_SETTINGS_PATH}" "/usr/local/searx/searx/settings.yml" "patch_searx_settings"
+# make sure there are searxng settings
+update_conf "${FORCE_CONF_UPDATE}" "${SEARXNG_SETTINGS_PATH}" "/usr/local/searxng/searxng/settings.yml" "patch_searxng_settings"
 
 # dry run (to update configuration files, then inspect them)
 if [ $DRY_RUN -eq 1 ]; then
@@ -141,9 +141,9 @@ if [ $DRY_RUN -eq 1 ]; then
 fi
 
 touch /var/run/uwsgi-logrotate
-chown -R searx:searx /var/log/uwsgi /var/run/uwsgi-logrotate
+chown -R searxng:searxng /var/log/uwsgi /var/run/uwsgi-logrotate
 unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec su-exec searx:searx uwsgi --master --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+exec su-exec searxng:searxng uwsgi --master --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"

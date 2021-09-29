@@ -14,7 +14,7 @@ documentation, with the builders from the Sphinx_ project a HTML output is
 generated and deployed at :docs:`github.io <.>`.  For build prerequisites read
 :ref:`docs build`.
 
-The source files of Searx's documentation are located at :origin:`docs`.  Sphinx
+The source files of Searxng's documentation are located at :origin:`docs`.  Sphinx
 assumes source files to be encoded in UTF-8 by defaul.  Run :ref:`make docs.live
 <make docs.live>` to build HTML while editing.
 
@@ -290,7 +290,7 @@ content becomes smart.
    files & folders origin     :origin:`docs/dev/reST.rst`        ``:origin:`docs/dev/reST.rst```
    pull request               :pull:`4`                          ``:pull:`4```
    patch                      :patch:`af2cae6`                   ``:patch:`af2cae6```
-   PyPi package               :pypi:`searx`                      ``:pypi:`searx```
+   PyPi package               :pypi:`searxng`                      ``:pypi:`searxng```
    manual page man            :man:`bash`                        ``:man:`bash```
    intersphinx_
    --------------------------------------------------------------------------------------------------
@@ -494,7 +494,7 @@ Figures & Images
    is flexible.  To get best results in the generated output format, install
    ImageMagick_ and Graphviz_.
 
-Searx's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scaleable here means;
+Searxng's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scaleable here means;
 scaleable in sense of the build process.  Normally in absence of a converter
 tool, the build process will break.  From the authors POV it’s annoying to care
 about the build process when handling with images, especially since he has no
@@ -1288,20 +1288,20 @@ install` (with SearXNG modules installed).  We use this e.g. to build chapter:
    :language: reST
    :start-after: .. _configured engines:
 
-The context for the template is selected in the line ``.. jinja:: searx``.  In
-sphinx's build configuration (:origin:`docs/conf.py`) the ``searx`` context
+The context for the template is selected in the line ``.. jinja:: searxng``.  In
+sphinx's build configuration (:origin:`docs/conf.py`) the ``searxng`` context
 contains the ``engines`` and ``plugins``.
 
 .. code:: py
 
-   import searx.search
-   import searx.engines
-   import searx.plugins
-   searx.search.initialize()
+   import searxng.search
+   import searxng.engines
+   import searxng.plugins
+   searxng.search.initialize()
    jinja_contexts = {
-      'searx': {
-         'engines': searx.engines.engines,
-         'plugins': searx.plugins.plugins
+      'searxng': {
+         'engines': searxng.engines.engines,
+         'plugins': searxng.plugins.plugins
       },
    }
 

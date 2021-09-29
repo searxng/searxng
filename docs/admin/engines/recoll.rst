@@ -8,7 +8,7 @@ Recoll Engine
 
    - `Recoll <https://www.lesbonscomptes.com/recoll/>`_
    - `recoll-webui <https://framagit.org/medoc92/recollwebui.git>`_
-   - :origin:`searx/engines/recoll.py`
+   - :origin:`searxng/engines/recoll.py`
 
 Recoll_ is a desktop full-text search tool based on Xapian.  By itself Recoll_
 does not offer WEB or API access, this can be achieved using recoll-webui_

@@ -1,4 +1,4 @@
-from searx import settings, engines
+from searxng import settings, engines
 from tests import SearxTestCase
 
 

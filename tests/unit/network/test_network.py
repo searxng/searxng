@@ -4,7 +4,7 @@ from mock import patch
 
 import httpx
 
-from searx.network.network import Network, NETWORKS, initialize
+from searxng.network.network import Network, NETWORKS, initialize
 from tests import SearxTestCase
 
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from searx.preferences import Preferences
-from searx.engines import engines
+from searxng.preferences import Preferences
+from searxng.engines import engines
 
-import searx.search
-from searx.search import EngineRef
-from searx.webadapter import validate_engineref_list
+import searxng.search
+from searxng.search import EngineRef
+from searxng.webadapter import validate_engineref_list
 from tests import SearxTestCase
 
 
@@ -28,7 +28,7 @@ class ValidateQueryCase(SearxTestCase):
 
     @classmethod
     def setUpClass(cls):
-        searx.search.initialize(TEST_ENGINES)
+        searxng.search.initialize(TEST_ENGINES)
 
     def test_query_private_engine_without_token(self):
         preferences = Preferences(['oscar'], ['general'], engines, [])

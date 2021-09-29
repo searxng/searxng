@@ -1,8 +1,8 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
-|searx install|
-|searx homepage|
-|searx wiki|
+|searxng install|
+|searxng homepage|
+|searxng wiki|
 |AGPL License|
 |Issues|
 |commits|
@@ -12,13 +12,13 @@ Privacy-respecting, hackable `metasearch engine`_
 
 .. _metasearch engine: https://en.wikipedia.org/wiki/Metasearch_engine
 
-.. |searx install| image:: https://img.shields.io/badge/-install-blue
+.. |searxng install| image:: https://img.shields.io/badge/-install-blue
    :target: https://searxng.github.io/searxng/admin/installation.html
 
-.. |searx homepage| image:: https://img.shields.io/badge/-homepage-blue
+.. |searxng homepage| image:: https://img.shields.io/badge/-homepage-blue
    :target: https://searxng.github.io/searxng
 
-.. |searx wiki| image:: https://img.shields.io/badge/-wiki-blue
+.. |searxng wiki| image:: https://img.shields.io/badge/-wiki-blue
    :target: https://github.com/searxng/searxng/wiki
 
 .. |AGPL License|  image:: https://img.shields.io/badge/license-AGPL-blue.svg
@@ -46,7 +46,7 @@ SearXNG is a fork of `searx`_:
 * `the differences with searx <https://github.com/searxng/searxng/issues/46>`_
 * `exhaustive changelog <https://github.com/searxng/searxng/wiki/Changes-from-version-1.0.0>`_
 
-.. _searx: https://github.com/searx/searx
+.. _searxng: https://github.com/searxng/searxng
 .. _searx.space: https://searx.space
 .. _user: https://searxng.github.io/searxng/user
 .. _admin: https://searxng.github.io/searxng/admin

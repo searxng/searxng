@@ -1,4 +1,4 @@
-name: "Update searx.data"
+name: "Update searxng.data"
 on:
   schedule:
     - cron: "05 06 1 * *"
@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Ubuntu packages
         run: |
-          sudo ./utils/searx.sh install packages
+          sudo ./utils/searxng.sh install packages
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -39,7 +39,7 @@ jobs:
 
       - name: Fetch data
         env:
-          FETCH_SCRIPT: ./searx_extra/update/${{ matrix.fetch }}
+          FETCH_SCRIPT: ./searxng_extra/update/${{ matrix.fetch }}
         run: |
           V=1 ./manage pyenv.cmd python "$FETCH_SCRIPT"
 
@@ -47,16 +47,16 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: Update searx.data - ${{ matrix.fetch }}
-          committer: searx-bot <noreply@github.com>
+          commit-message: Update searxng.data - ${{ matrix.fetch }}
+          committer: searxng-bot <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: update_data_${{ matrix.fetch }}
           delete-branch: true
           draft: false
-          title: 'Update searx.data - ${{ matrix.fetch }}'
+          title: 'Update searxng.data - ${{ matrix.fetch }}'
           body: |
-            Update searx.data - ${{ matrix.fetch }}
+            Update searxng.data - ${{ matrix.fetch }}
           labels: |
             data
 

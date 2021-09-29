@@ -8,26 +8,26 @@ digraph G {
   filtron [label="Filtron",       href="https://searxng.github.io/searxng/utils/filtron.sh.html"];
   morty   [label="Morty",         href="https://searxng.github.io/searxng/utils/morty.sh.html"];
   static  [label="Static files",  href="url to configure static files"];
-  uwsgi   [label="uwsgi",         href="https://searxng.github.io/searxng/utils/searx.sh.html"]
-  searx1  [label="Searx #1"];
-  searx2  [label="Searx #2"];
-  searx3  [label="Searx #3"];
-  searx4  [label="Searx #4"];
+  uwsgi   [label="uwsgi",         href="https://searxng.github.io/searxng/utils/searxng.sh.html"]
+  searxng1  [label="Searxng #1"];
+  searxng2  [label="Searxng #2"];
+  searxng3  [label="Searxng #3"];
+  searxng4  [label="Searxng #4"];
 
   browser -> rp [label="HTTPS"]
 
-  subgraph cluster_searx {
-      label = "Searx instance" fontname="Sans";
+  subgraph cluster_searxng {
+      label = "Searxng instance" fontname="Sans";
       bgcolor="#fafafa";
       { rank=same; static rp };
       rp -> morty      [label="optional: images and HTML pages proxy"];
       rp -> static     [label="optional: reverse proxy serves directly static files"];
       rp -> filtron    [label="HTTP"];
       filtron -> uwsgi [label="HTTP"];
-      uwsgi -> searx1;
-      uwsgi -> searx2;
-      uwsgi -> searx3;
-      uwsgi -> searx4;
+      uwsgi -> searxng1;
+      uwsgi -> searxng2;
+      uwsgi -> searxng3;
+      uwsgi -> searxng4;
   }
 
 }

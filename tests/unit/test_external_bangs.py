@@ -1,5 +1,5 @@
-from searx.external_bang import get_node, resolve_bang_definition, get_bang_url, get_bang_definition_and_autocomplete
-from searx.search import SearchQuery, EngineRef
+from searxng.external_bang import get_node, resolve_bang_definition, get_bang_url, get_bang_definition_and_autocomplete
+from searxng.search import SearchQuery, EngineRef
 from tests import SearxTestCase
 
 

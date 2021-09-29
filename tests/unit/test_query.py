@@ -1,6 +1,6 @@
-from searx import settings
-from searx.engines import load_engines
-from searx.query import RawTextQuery
+from searxng import settings
+from searxng.engines import load_engines
+from searxng.query import RawTextQuery
 from tests import SearxTestCase
 
 

@@ -33,14 +33,14 @@ capabilities.
 A few widely used features work differently or turned off by default or not
 implemented at all **as a consequence of privacy-by-design**.
 
-If a feature reduces the privacy preserving aspects of searx, it should be
+If a feature reduces the privacy preserving aspects of searxng, it should be
 switched off by default or should not implemented at all.  There are plenty of
 search engines already providing such features.  If a feature reduces the
-protection of searx, users must be informed about the effect of choosing to
+protection of searxng, users must be informed about the effect of choosing to
 enable it.  Features that protect privacy but differ from the expectations of
 the user should also be explained.
 
-Also, if you think that something works weird with searx, it's might be because
+Also, if you think that something works weird with searxng, it's might be because
 of the tool you use is designed in a way to interfere with the privacy respect.
 Submitting a bugreport to the vendor of the tool that misbehaves might be a good
 feedback to reconsider the disrespect to its customers (e.g. ``GET`` vs ``POST``

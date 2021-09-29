@@ -18,7 +18,7 @@ Relational Database Management System (RDBMS) are supported:
 - :ref:`engine mysql_server`
 
 All of the engines above are just commented out in the :origin:`settings.yml
-<searx/settings.yml>`, as you have to set the required attributes for the
+<searxng/settings.yml>`, as you have to set the required attributes for the
 engines, e.g. ``database:`` ...
 
 .. code:: yaml
@@ -30,13 +30,13 @@ engines, e.g. ``database:`` ...
      query_str: ...
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`oscar <searx/templates/oscar/result_templates/key-value.html>` &
-:origin:`simple <searx/templates/simple/result_templates/key-value.html>`
+see :origin:`oscar <searxng/templates/oscar/result_templates/key-value.html>` &
+:origin:`simple <searxng/templates/simple/result_templates/key-value.html>`
 themes.  If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
-  searx/templates/{theme_name}/result_templates/{template_name}
+  searxng/templates/{theme_name}/result_templates/{template_name}
 
 If you do not wish to expose these engines on a public instance, you can still
 add them and limit the access by setting ``tokens`` as described in section
@@ -63,7 +63,7 @@ SQLite
 
 .. sidebar:: info
 
-   - :origin:`sqlite.py <searx/engines/sqlite.py>`
+   - :origin:`sqlite.py <searxng/engines/sqlite.py>`
 
 .. _MediathekView: https://mediathekview.de/
 
@@ -74,7 +74,7 @@ this example of the SQlite engine download the database:
 
 - https://liste.mediathekview.de/filmliste-v2.db.bz2
 
-and unpack into ``searx/data/filmliste-v2.db``.  To search the database use e.g
+and unpack into ``searxng/data/filmliste-v2.db``.  To search the database use e.g
 Query to test: ``!mediathekview concert``
 
 .. code:: yaml
@@ -84,7 +84,7 @@ Query to test: ``!mediathekview concert``
      disabled: False
      categories: general
      result_template: default.html
-     database: searx/data/filmliste-v2.db
+     database: searxng/data/filmliste-v2.db
      query_str:  >-
        SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
               COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
@@ -99,11 +99,11 @@ Extra Dependencies
 
 For using :ref:`engine postgresql` or :ref:`engine mysql_server` you need to
 install additional packages in Python's Virtual Environment of your SearXNG
-instance.  To switch into the environment (:ref:`searx-src`) you can use
-:ref:`searx.sh`::
+instance.  To switch into the environment (:ref:`searxng-src`) you can use
+:ref:`searxng.sh`::
 
-  $ sudo utils/searx.sh shell
-  (searx-pyenv)$ pip install ...
+  $ sudo utils/searxng.sh shell
+  (searxng-pyenv)$ pip install ...
 
 
 .. _engine postgresql:
@@ -115,7 +115,7 @@ PostgreSQL
 
 .. sidebar:: info
 
-   - :origin:`postgresql.py <searx/engines/postgresql.py>`
+   - :origin:`postgresql.py <searxng/engines/postgresql.py>`
    - ``pip install`` psycopg2_
 
 PostgreSQL is a powerful and robust open source database.  Before configuring
@@ -127,7 +127,7 @@ find an example configuration below:
    - name: my_database
      engine: postgresql
      database: my_database
-     username: searx
+     username: searxng
      password: password
      query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
 
@@ -140,7 +140,7 @@ MySQL
 
 .. sidebar:: info
 
-   - :origin:`mysql_server.py <searx/engines/mysql_server.py>`
+   - :origin:`mysql_server.py <searxng/engines/mysql_server.py>`
    - ``pip install`` mysql-connector-python_
 
 MySQL is said to be the most popular open source database. Before enabling MySQL
@@ -155,7 +155,7 @@ example configuration for quering a MySQL server:
    - name: my_database
      engine: mysql_server
      database: my_database
-     username: searx
+     username: searxng
      password: password
      limit: 5
      query_str: 'SELECT * from my_table WHERE my_column=%(query)s'

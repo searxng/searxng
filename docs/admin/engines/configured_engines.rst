@@ -35,7 +35,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
    Show errors   **DE**
    ============= =========== =================================
 
-.. jinja:: searx
+.. jinja:: searxng
 
    .. flat-table:: Engines configured at built time (defaults)
       :header-rows: 1

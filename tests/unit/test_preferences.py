@@ -1,4 +1,4 @@
-from searx.preferences import (EnumStringSetting, MapSetting, MissingArgumentException, SearchLanguageSetting,
+from searxng.preferences import (EnumStringSetting, MapSetting, MissingArgumentException, SearchLanguageSetting,
                                MultipleChoiceSetting, PluginsSetting, ValidationException)
 from tests import SearxTestCase
 
@@ -123,7 +123,7 @@ class TestSettings(SearxTestCase):
 class TestPreferences(SearxTestCase):
 
     def test_encode(self):
-        from searx.preferences import Preferences
+        from searxng.preferences import Preferences
         pref = Preferences(['oscar'], ['general'], {}, [])
         url_params = 'eJx1VMmO2zAM_Zr6YrTocujJh6JF0QEKzKAz7VVgJNohLIseUU7ivy-VcWy5yyGOTVGP73GLKJNPYjiYgGeT4NB8BS9YOSY' \
             'TUdifMDYM-vmGY1d5CN0EHTYOK88W_PXNkcDBozOjnzoK0vyi4bWnHs2RU4-zvHr_-RF9a-5Cy3GARByy7X7EkKMoBeMp9CuPQ-SzYMx' \

@@ -40,16 +40,16 @@ We do no longer need to build up the virtualenv manually.  Jump into your git
 working tree and release a ``make install`` to get a virtualenv with a
 *developer install* of SearXNG (:origin:`setup.py`). ::
 
-   $ cd ~/searx-clone
+   $ cd ~/searxng-clone
    $ make install
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
    PYENV     OK
-   PYENV     [install] pip install -e 'searx[test]'
+   PYENV     [install] pip install -e 'searxng[test]'
    ...
-   Successfully installed argparse-1.4.0 searx
-   BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
-   BUILDENV  INFO:searx:Initialisation done
+   Successfully installed argparse-1.4.0 searxng
+   BUILDENV  INFO:searxng:load the default settings from ./searxng/settings.yml
+   BUILDENV  INFO:searxng:Initialisation done
    BUILDENV  build utils/brand.env
 
 If you release ``make install`` multiple times the installation will only
@@ -66,11 +66,11 @@ the check fails if you edit the requirements listed in
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
    PYENV     OK
-   PYENV     [install] pip install -e 'searx[test]'
+   PYENV     [install] pip install -e 'searxng[test]'
    ...
-   Successfully installed argparse-1.4.0 searx
-   BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
-   BUILDENV  INFO:searx:Initialisation done
+   Successfully installed argparse-1.4.0 searxng
+   BUILDENV  INFO:searxng:load the default settings from ./searxng/settings.yml
+   BUILDENV  INFO:searxng:Initialisation done
    BUILDENV  build utils/brand.env
 
 .. sidebar:: drop environment
@@ -107,10 +107,10 @@ The ``make buildenv`` target will update the *build environment* in:
 Tasks running outside of an *installed instance*, need the following settings
 from the YAML configuration:
 
-- ``SEARX_URL`` from :ref:`server.base_url <settings global server>` (aka
+- ``SEARXNG_URL`` from :ref:`server.base_url <settings global server>` (aka
   ``PUBLIC_URL``)
-- ``SEARX_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
-- ``SEARX_PORT`` from :ref:`server.port <settings global server>`
+- ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
+- ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`
 
 .. _make run:
 
@@ -118,13 +118,13 @@ from the YAML configuration:
 ============
 
 To get up a running a developer instance simply call ``make run``.  This enables
-*debug* option in :origin:`searx/settings.yml`, starts a ``./searx/webapp.py``
+*debug* option in :origin:`searxng/settings.yml`, starts a ``./searxng/webapp.py``
 instance, disables *debug* option again and opens the URL in your favorite WEB
 browser (:man:`xdg-open`)::
 
    $ make run
    PYENV     OK
-   SEARX_DEBUG=1 ./manage.sh pyenv.cmd python ./searx/webapp.py
+   SEARXNG_DEBUG=1 ./manage.sh pyenv.cmd python ./searxng/webapp.py
    ...
    INFO:werkzeug: * Running on http://127.0.0.1:8888/ (Press CTRL+C to quit)
 
@@ -210,15 +210,15 @@ by underline::
 
     make search.checker.google_news
 
-To see HTTP requests and more use SEARX_DEBUG::
+To see HTTP requests and more use SEARXNG_DEBUG::
 
-    make SEARX_DEBUG=1 search.checker.google_news
+    make SEARXNG_DEBUG=1 search.checker.google_news
 
 .. _3xx: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_redirection
 
 To filter out HTTP redirects (3xx_)::
 
-    make SEARX_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
+    make SEARXNG_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
     ...
     Engine google news                   Checking
     https://news.google.com:443 "GET /search?q=life&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0
@@ -246,8 +246,8 @@ Build Python packages in ``./dist/py``::
   running bdist_wheel
 
   $ ls  ./dist
-  searx-0.18.0-py3-none-any.whl  searx-0.18.0.tar.gz
+  searxng-0.18.0-py3-none-any.whl  searxng-0.18.0.tar.gz
 
 To upload packages to PyPi_, there is also a ``pypi.upload`` target (to test use
-``pypi.upload.test``).  Since you are not the owner of :pypi:`searx` you will
+``pypi.upload.test``).  Since you are not the owner of :pypi:`searxng` you will
 never need to upload.

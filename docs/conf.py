@@ -4,8 +4,8 @@
 import  sys, os
 from pallets_sphinx_themes import ProjectLink
 
-from searx import get_setting
-from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
+from searxng import get_setting
+from searxng.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 
 # Project --------------------------------------------------------------
 
@@ -14,7 +14,7 @@ copyright = '2021 SearXNG team, 2015-2021 Adam Tauber, Noémi Ványi'
 author = '2021 SearXNG team, 2015-2021 Adam Tauber'
 release, version = VERSION_STRING, VERSION_STRING
 
-SEARX_URL = get_setting('server.base_url') or 'https://example.org/searxng'
+SEARXNG_URL = get_setting('server.base_url') or 'https://example.org/searxng'
 ISSUE_URL = get_setting('brand.issue_url')
 DOCS_URL = get_setting('brand.docs_url')
 PUBLIC_INSTANCES = get_setting('brand.public_instances')
@@ -37,13 +37,13 @@ numfig = True
 
 exclude_patterns = ['build-templates/*.rst']
 
-import searx.engines
-import searx.plugins
-searx.engines.load_engines(searx.settings['engines'])
+import searxng.engines
+import searxng.plugins
+searxng.engines.load_engines(searxng.settings['engines'])
 jinja_contexts = {
-    'searx': {
-        'engines': searx.engines.engines,
-        'plugins': searx.plugins.plugins
+    'searxng': {
+        'engines': searxng.engines.engines,
+        'plugins': searxng.plugins.plugins
     },
 }
 
@@ -53,12 +53,12 @@ extlinks = {}
 # upstream links
 extlinks['wiki'] = ('https://github.com/searxng/searxng/wiki/%s', ' ')
 extlinks['pull'] = ('https://github.com/searxng/searxng/pull/%s', 'PR ')
-extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR ')
+extlinks['pull-searxng'] = ('https://github.com/searxng/searxng/pull/%s', 'PR ')
 
 # links to custom brand
 extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://')
 extlinks['patch'] = (GIT_URL + '/commit/%s', '#')
-extlinks['search'] = (SEARX_URL + '/%s', '#')
+extlinks['search'] = (SEARXNG_URL + '/%s', '#')
 extlinks['docs'] = (DOCS_URL + '/%s', 'docs: ')
 extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: ')
 extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '')
@@ -105,7 +105,7 @@ issues_github_path = "searxng/searxng"
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../utils/"))
 html_theme_path = ['_themes']
-html_theme = "searx"
+html_theme = "searxng"
 
 # sphinx.ext.imgmath setup
 html_math_renderer = 'imgmath'
@@ -138,5 +138,5 @@ html_show_sourcelink = False
 # LaTeX ----------------------------------------------------------------
 
 latex_documents = [
-    (master_doc, "searx-{}.tex".format(VERSION_STRING), html_title, author, "manual")
+    (master_doc, "searxng-{}.tex".format(VERSION_STRING), html_title, author, "manual")
 ]
