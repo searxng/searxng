@@ -219,8 +219,7 @@ def stream(method, url, **kwargs):
     """Replace httpx.stream.
 
     Usage:
-    stream = poolrequests.stream(...)
-    response = next(stream)
+    response, stream = poolrequests.stream(...)
     for chunk in stream:
         ...
 
@@ -236,6 +235,5 @@ def stream(method, url, **kwargs):
 
     response._generator = generator  # pylint: disable=protected-access
     response.close = MethodType(_close_response_method, response)
-    yield response
 
-    yield from generator
+    return response, generator
