@@ -27,7 +27,7 @@ from searxng import logger, settings
 logger = logger.getChild('plugins')
 
 from searxng.plugins import (
-    oa_doi_rewrite,    
+    oa_doi_rewrite,
     ahmia_filter,
     hash_plugin,
     infinite_scroll,
