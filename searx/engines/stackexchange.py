@@ -6,6 +6,7 @@
 
 """
 
+import html
 from json import loads
 from urllib.parse import urlencode
 
@@ -57,8 +58,8 @@ def response(resp):
 
         results.append({
             'url': "https://%s.com/q/%s" % (api_site, result['question_id']),
-            'title': result['title'],
-            'content': content,
+            'title':  html.unescape(result['title']),
+            'content': html.unescape(content),
         })
 
     return results
