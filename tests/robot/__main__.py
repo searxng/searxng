@@ -63,7 +63,7 @@ def run_robot_tests(tests):
 
 
 def main():
-    test_layer = SearxRobotLayer()
+    test_layer = SearxngRobotLayer()
     try:
         test_layer.setUp()
         run_robot_tests([getattr(test_webapp, x) for x in dir(test_webapp) if x.startswith('test_')])
