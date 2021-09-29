@@ -1,5 +1,12 @@
-from searxng.preferences import (EnumStringSetting, MapSetting, MissingArgumentException, SearchLanguageSetting,
-                               MultipleChoiceSetting, PluginsSetting, ValidationException)
+from searxng.preferences import (
+    EnumStringSetting,
+    MapSetting,
+    MissingArgumentException,
+    SearchLanguageSetting,
+    MultipleChoiceSetting,
+    PluginsSetting,
+    ValidationException
+)
 from tests import SearxTestCase
 
 

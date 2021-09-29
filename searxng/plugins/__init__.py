@@ -26,15 +26,17 @@ from searxng import logger, settings
 
 logger = logger.getChild('plugins')
 
-from searxng.plugins import (oa_doi_rewrite,
-                           ahmia_filter,
-                           hash_plugin,
-                           infinite_scroll,
-                           self_info,
-                           hostname_replace,
-                           search_on_category_select,
-                           tracker_url_remover,
-                           vim_hotkeys)
+from searxng.plugins import (
+    oa_doi_rewrite,    
+    ahmia_filter,
+    hash_plugin,
+    infinite_scroll,
+    self_info,
+    hostname_replace,
+    search_on_category_select,
+    tracker_url_remover,
+    vim_hotkeys
+)
 
 required_attrs = (('name', str),
                   ('description', str),

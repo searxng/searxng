@@ -3,8 +3,12 @@ import inspect
 from json import JSONDecodeError
 from urllib.parse import urlparse
 from httpx import HTTPError, HTTPStatusError
-from searxng.exceptions import (SearxXPathSyntaxException, SearxEngineXPathException, SearxEngineAPIException,
-                              SearxEngineAccessDeniedException)
+from searxng.exceptions import (
+    SearxXPathSyntaxException,
+    SearxEngineXPathException,
+    SearxEngineAPIException,
+    SearxEngineAccessDeniedException
+)
 from searxng import searxng_parent_dir
 from searxng.engines import engines
 
