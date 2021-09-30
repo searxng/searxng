@@ -6,8 +6,6 @@
 
 // stylelint-disable no-descending-specificity
 
-@stacked-bar-chart: rgb(0, 0, 0);
-
 @import "../../__common__/less/new_issue.less";
 @import "../../__common__/less/stats.less";
 @import "../../__common__/less/result_templates.less";
@@ -79,7 +77,7 @@ footer {
   width: 100%;
   text-align: center;
   background-color: var(--color-footer-background);
-  border-top: 1px solid var(--color-footer-border);
+  border-top: 1px solid var(--color-base-border);
   overflow: hidden;
 
   p {
@@ -125,7 +123,7 @@ a {
 }
 
 article[data-vim-selected] {
-  background: #f7f7f7;
+  background: var(--color-result-vim-selected);
 }
 
 article[data-vim-selected]::before {
@@ -452,9 +450,9 @@ article.result-images[data-vim-selected]::before {
 
 #answers {
   grid-area: answers;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-base-border);
   padding: 0.9em;
-  box-shadow: 0 0 5px #ccc;
+  box-shadow: 0 0 5px var(--color-base-shadow);
 
   h4 {
     display: none;
@@ -480,10 +478,10 @@ article.result-images[data-vim-selected]::before {
 
   .infobox {
     margin: 10px 0 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-base-border);
     padding: 0.9em;
     font-size: 0.9em;
-    box-shadow: 0 0 5px #ccc;
+    box-shadow: 0 0 5px var(--color-base-shadow);
 
     h2 {
       margin: 0 0 0.5em 0;
@@ -571,11 +569,11 @@ article.result-images[data-vim-selected]::before {
 }
 
 #backToTop {
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-base-border);
   margin: 0;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0 0 5px #ccc;
+  box-shadow: 0 0 5px var(--color-base-shadow);
   background: white;
   position: fixed;
   bottom: 8rem;

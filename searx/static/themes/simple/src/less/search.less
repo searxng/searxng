@@ -6,7 +6,7 @@
   padding: 0 2em 0 @results-offset;
   margin: 0;
   background: var(--color-header-background);
-  border-bottom: 1px solid var(--color-header-border);
+  border-bottom: 1px solid var(--color-base-border);
 }
 
 #search_wrapper {
@@ -225,12 +225,8 @@
   }
 
   input[type="checkbox"]:focus + label {
-    box-shadow: 0 0 8px #3498db;
+    box-shadow: 0 0 8px var(--color-base);
   }
-
-  /* label:hover {
-  border-bottom: 2px solid @color-categories-item-border-unselected-hover;
-  } */
 
   input[type="checkbox"]:checked + label {
     background: var(--color-categories-item-selected);
@@ -251,7 +247,7 @@
     transition: opacity 1s ease;
     font-size: 0.8em;
     text-align: center;
-    background: white;
+    background: var(--color-search-help);
   }
 
   &:hover .help {

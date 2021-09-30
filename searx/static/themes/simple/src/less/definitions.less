@@ -11,9 +11,8 @@ html {
   --color-base-light: #ecf0f1;
   --color-highlight: #094089;
   --color-black: #000;
-
-  /// From autocomplete.less
-  --background_color: white;
+  --color-base-border: #d7d7d7;
+  --color-base-shadow: #ccc;
 
   /// Modal Colors
   --color-error: #db3434;
@@ -26,65 +25,43 @@ html {
   /// General Colors
   --color-font: #444;
   --color-font-light: #888;
-  --color-red: #25a55b;
   --color-url-font: #29314d;
   --color-url-visited-font: #684898;
 
-  /// Link Colors
-  --color-a-font: var(--color-base);
-  --color-a-font-hover: var(--color-base);
-
   /// Header
   --color-header-background: #f7f7f7;
-  --color-header-border: #d7d7d7;
 
   /// Footer
   --color-footer-background: #f7f7f7;
-  --color-footer-border: #d7d7d7;
 
   /// Search-Input
   --color-search-border: var(--color-base);
   --color-search-background: #fff;
   --color-search-font: #222;
+  --color-search-help: white;
 
   /// Autocompleter
-  --color-autocompleter-choices-background: #fff;
-  --color-autocompleter-choices-border: var(--color-base);
-  --color-autocompleter-choices-border-left-right: var(--color-base);
-  --color-autocompleter-choices-border-bottom: var(--color-base);
-  --color-autocompleter-choices-font: #444;
-
-  /// Answers
-  --color-answers-border: var(--color-base-dark);
-
-  // Selected
-  --color-autocompleter-selected-background: #444;
-  --color-autocompleter-selected-font: #fff;
-  --color-autocompleter-selected-queried-font: #9fcfff;
+  --color-autocompleter-background: white;
 
   /// Categories
   --color-categories-item-selected: var(--color-base);
   --color-categories-item-selected-font: #fff;
   --color-categories-item-border-selected: var(--color-base-dark);
   --color-categories-item-border-unselected: #e8e7e6;
-  --color-categories-item-border-unselected-hover: var(--color-base);
 
   /// Results
-  --color-suggestions-button-background: var(--color-base);
-  --color-suggestions-button-font: #fff;
   --color-download-button-background: var(--color-base);
   --color-download-button-font: #fff;
-  --color-result-search-background: var(--color-base-light);
-  --color-result-definition-border: gray;
   --color-result-torrent-border: lightgray;
   --color-result-top-border: #e8e7e6;
+  --color-result-vim-selected: #f7f7f7;
 
   // Link to result
   --color-result-link-font: var(--color-base-dark);
   --color-result-link-visited-font: var(--color-url-visited-font);
 
   // Url to result
-  --color-result-url-font: var(--color-red);
+  --color-result-url-font: #25a55b;
 
   // Publish Date
   --color-result-publishdate-font: var(--color-font-light);
@@ -98,21 +75,40 @@ html {
   --color-result-search-url-font: #444;
 
   /// Settings
-  --color-settings-fieldset: var(--color-base);
-  --color-settings-table-striped: #dbdbdb;
   --color-settings-tr-hover: #ececec;
+  --color-settings-engine-description-font: darken(#dcdcdc, 30%);
 
   // Labels
-  --color-settings-label-allowed-background: #e74c3c;
-  --color-settings-label-allowed-font: #fff;
-  --color-settings-label-deny-background: #2eee71;
-  --color-settings-label-deny-font: var(--color-font);
   --color-settings-return-background: var(--color-base);
   --color-settings-return-font: #fff;
 
   /// Other
   --color-engines-font: var(--color-font-light);
-  --color-percentage-div-background: #444;
+
+  /// From Toolkit
+  --color-toolkit-badge-font: #fff;
+  --color-toolkit-badge-background: #777;
+  --color-toolkit-kbd-font: #fff;
+  --color-toolkit-kbd-background: #000;
+  --color-toolkit-dialog-border: #000;
+  --color-toolkit-dialog-background: #fff;
+  --color-toolkit-tabs-label-border: #fff;
+  --color-toolkit-tabs-section-border: #000;
+  --color-toolkit-select-border: #d7d7d7;
+  --color-toolkit-checkbox-onoff-background: #dcdcdc;
+  --color-toolkit-checkbox-onoff-label-shadow: rgba(0, 0, 0, 0.3);
+  --color-toolkit-checkbox-onoff-label-background: #3498db;
+  --color-toolkit-checkbox-onoff-checked-background: #dcdcdc;
+  --color-toolkit-checkbox-label-background: #fff;
+  --color-toolkit-checkbox-label-shadow1: #fff;
+  --color-toolkit-checkbox-label-shadow2: rgba(0, 0, 0, 0.5);
+  --color-toolkit-checkbox-label-border: #333;
+  --color-toolkit-checkbox-input-border: #3498db;
+  --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
+  --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
+  --color-toolkit-engine-tooltip-border: #ddd;
+  --color-toolkit-engine-tooltip-shadow: rgba(0, 0, 0, 0.1);
+  --color-toolkit-engine-tooltip-background: #fff;
 }
 
 /// General Size
@@ -121,6 +117,9 @@ html {
 @results-tablet-offset: 0.5rem;
 @results-gap: 5rem;
 @search-width: 40rem;
+
+/// From style.less
+@stacked-bar-chart: rgb(0, 0, 0);
 
 /// Load fonts from this directory.
 @icon-font-path:          "../../../fonts/";
