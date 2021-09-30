@@ -29,7 +29,7 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
-supported_languages_url = 'https://duckduckgo.com/util/u172.js'
+supported_languages_url = 'https://duckduckgo.com/util/u588.js'
 time_range_support = True
 
 language_aliases = {
