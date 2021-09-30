@@ -1,16 +1,24 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- DuckDuckGo (Web)
+# lint: pylint
+"""DuckDuckGo Lite
 """
 
-from lxml.html import fromstring
 from json import loads
-from searx.utils import extract_text, match_language, eval_xpath, dict_subset
+
+from lxml.html import fromstring
+
+from searx.utils import (
+    dict_subset,
+    eval_xpath,
+    eval_xpath_getindex,
+    extract_text,
+    match_language,
+)
 from searx.network import get
 
 # about
 about = {
-    "website": 'https://duckduckgo.com/',
+    "website": 'https://lite.duckduckgo.com/lite',
     "wikidata_id": 'Q12805',
     "official_api_documentation": 'https://duckduckgo.com/api',
     "use_official_api": False,
@@ -20,7 +28,7 @@ about = {
 
 # engine dependent config
 categories = ['general']
-paging = False
+paging = True
 supported_languages_url = 'https://duckduckgo.com/util/u172.js'
 time_range_support = True
 
@@ -34,21 +42,16 @@ language_aliases = {
     'zh-HK': 'tzh-HK'
 }
 
+time_range_dict = {
+    'day': 'd',
+    'week': 'w',
+    'month': 'm',
+    'year': 'y'
+}
+
 # search-url
-url = 'https://html.duckduckgo.com/html'
-url_ping = 'https://duckduckgo.com/t/sl_h'
-time_range_dict = {'day': 'd',
-                   'week': 'w',
-                   'month': 'm',
-                   'year': 'y'}
-
-# specific xpath variables
-result_xpath = '//div[@class="result results_links results_links_deep web-result "]'  # noqa
-url_xpath = './/a[@class="result__a"]/@href'
-title_xpath = './/a[@class="result__a"]'
-content_xpath = './/a[@class="result__snippet"]'
-correction_xpath = '//div[@id="did_you_mean"]//a'
-
+url = 'https://lite.duckduckgo.com/lite'
+url_ping = 'https://duckduckgo.com/t/sl_l'
 
 # match query's language to a region code that duckduckgo will accept
 def get_region_code(lang, lang_list=None):
@@ -63,65 +66,110 @@ def get_region_code(lang, lang_list=None):
 
 
 def request(query, params):
-    if params['time_range'] is not None and params['time_range'] not in time_range_dict:
-        return params
 
     params['url'] = url
     params['method'] = 'POST'
+
     params['data']['q'] = query
-    params['data']['b'] = ''
+
+    # The API is not documented, so we do some reverse engineering and emulate
+    # what https://lite.duckduckgo.com/lite/ does when you press "next Page"
+    # link again and again ..
+
+    params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    # initial page does not have an offset
+    if params['pageno'] == 2:
+        # second page does have an offset of 30
+        offset = (params['pageno'] - 1) * 30
+        params['data']['s'] = offset
+        params['data']['dc'] = offset + 1
+
+    elif params['pageno'] > 2:
+        # third and following pages do have an offset of 30 + n*50
+        offset = 30 + (params['pageno'] - 2) * 50
+        params['data']['s'] = offset
+        params['data']['dc'] = offset + 1
+
+    # initial page does not have additional data in the input form
+    if params['pageno'] > 1:
+        # request the second page (and more pages) needs 'o' and 'api' arguments
+        params['data']['o'] = 'json'
+        params['data']['api'] = 'd.js'
+
+    # initial page does not have additional data in the input form
+    if params['pageno'] > 2:
+        # request the third page (and more pages) some more arguments
+        params['data']['nextParams'] = ''
+        params['data']['v'] = ''
+        params['data']['vqd'] = ''
 
     region_code = get_region_code(params['language'], supported_languages)
     if region_code:
         params['data']['kl'] = region_code
         params['cookies']['kl'] = region_code
 
+    params['data']['df'] = ''
     if params['time_range'] in time_range_dict:
         params['data']['df'] = time_range_dict[params['time_range']]
+        params['cookies']['df'] = time_range_dict[params['time_range']]
 
-    params['allow_redirects'] = False
+    logger.debug("param data: %s", params['data'])
+    logger.debug("param cookies: %s", params['cookies'])
     return params
-
 
 # get response from search-request
 def response(resp):
-    if resp.status_code == 303:
-        return []
 
-    # ping
     headers_ping = dict_subset(resp.request.headers, ['User-Agent', 'Accept-Encoding', 'Accept', 'Cookie'])
     get(url_ping, headers=headers_ping)
 
-    # parse the response
+    if resp.status_code == 303:
+        return []
+
     results = []
     doc = fromstring(resp.text)
-    for i, r in enumerate(eval_xpath(doc, result_xpath)):
-        if i >= 30:
-            break
-        try:
-            res_url = eval_xpath(r, url_xpath)[-1]
-        except:
+
+    result_table = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table')
+    if not len(result_table) >= 3:
+        # no more results
+        return []
+    result_table = result_table[2]
+
+    tr_rows = eval_xpath(result_table, './/tr')
+
+    # In the last <tr> is the form of the 'previous/next page' links
+    tr_rows = tr_rows[:-1]
+
+    len_tr_rows = len(tr_rows)
+    offset = 0
+
+    while len_tr_rows >= offset + 4:
+
+        # assemble table rows we need to scrap
+        tr_title = tr_rows[offset]
+        tr_content = tr_rows[offset + 1]
+        offset += 4
+
+        # ignore sponsored Adds <tr class="result-sponsored">
+        if tr_content.get('class') == 'result-sponsored':
             continue
 
-        if not res_url:
+        a_tag = eval_xpath_getindex(tr_title, './/td//a[@class="result-link"]', 0, None)
+        if a_tag is None:
             continue
 
-        title = extract_text(eval_xpath(r, title_xpath))
-        content = extract_text(eval_xpath(r, content_xpath))
+        td_content = eval_xpath_getindex(tr_content, './/td[@class="result-snippet"]', 0, None)
+        if td_content is None:
+            continue
 
-        # append result
-        results.append({'title': title,
-                        'content': content,
-                        'url': res_url})
+        results.append({
+            'title': a_tag.text_content(),
+            'content': extract_text(td_content),
+            'url': a_tag.get('href'),
+        })
 
-    # parse correction
-    for correction in eval_xpath(doc, correction_xpath):
-        # append correction
-        results.append({'correction': extract_text(correction)})
-
-    # return results
     return results
-
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
