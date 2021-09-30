@@ -56,7 +56,7 @@
 
         <p class="result-content">
             {%- if (result.latitude and result.longitude) or result.boundingbox -%}
-                <span><a class="text-info btn-collapse collapsed searx_init_map cursor-pointer disabled_if_nojs" data-toggle="collapse" data-target="#result-map-{{ index }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %} data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}">{{ icon('globe') }} {{ _('show map') }}</a></span>
+                <span><a class="text-info btn-collapse collapsed searxng_init_map cursor-pointer disabled_if_nojs" data-toggle="collapse" data-target="#result-map-{{ index }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %} data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}">{{ icon('globe') }} {{ _('show map') }}</a></span>
             {%- endif -%}
         </p>
 

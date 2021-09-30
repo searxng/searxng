@@ -208,7 +208,7 @@
 
                         {% if 'theme' not in locked_preferences %}
                         {% set theme_label = _('Themes') %}
-                        {% set theme_info = _('Change searx layout') %}
+                        {% set theme_info = _('Change SearXNG layout') %}
                         {{ preferences_item_header(theme_info, theme_label, rtl, 'theme') }}
                             <select class="form-control {{ custom_select_class(rtl) }}" name="theme" id="theme">
                                 {% for name in themes %}
@@ -271,7 +271,7 @@
 
                         {% if 'image_proxy' not in locked_preferences %}
                         {% set image_proxy_label = _('Image proxy') %}
-                        {% set image_proxy_info = _('Proxying image results through searx') %}
+                        {% set image_proxy_info = _('Proxying image results through SearXNG') %}
                         {{ preferences_item_header(image_proxy_info, image_proxy_label, rtl, 'image_proxy') }}
                             <select class="form-control {{ custom_select_class(rtl) }}" name="image_proxy" id="image_proxy">
                                 <option value="1" {% if image_proxy  %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
@@ -397,7 +397,7 @@
                     </thead>
                     <tbody>
                         <td></td>
-                        <th scope="colgroup" colspan="4">{{ _('This is the list of searx\'s instant answering modules.') }}</th>
+                        <th scope="colgroup" colspan="4">{{ _('This is the list of SearXNG\'s instant answering modules.') }}</th>
                         {% for answerer in answerers %}
                         <tr>
                             <td></td>
@@ -431,8 +431,8 @@
                     <h3>{{ _('Cookies') }}</h3>
                 </noscript>
                 <p class="text-muted">
-                    {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
-                    {{ _('With that list, you can assess searx transparency.') }}<br />
+                    {{ _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />
+                    {{ _('With that list, you can assess SearXNG transparency.') }}<br />
                 </p>
                 {% if cookies %}
                 <table class="table table-striped">

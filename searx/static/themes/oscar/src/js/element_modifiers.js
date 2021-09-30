@@ -1,18 +1,9 @@
 /**
- * searx is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * searx is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with searx. If not, see < http://www.gnu.org/licenses/ >.
- *
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
  * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 $(document).ready(function(){
@@ -112,6 +103,6 @@ $(document).ready(function(){
     /**
      * Layout images according to their sizes
      */
-    searx.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
-    searx.image_thumbnail_layout.watch();
+    searxng.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
+    searxng.image_thumbnail_layout.watch();
 });
