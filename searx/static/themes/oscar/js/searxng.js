@@ -1,20 +1,11 @@
 /**
- * searx is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * searx is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with searx. If not, see < http://www.gnu.org/licenses/ >.
- *
- * (C) 2019 by Alexandre Flament
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-window.searx = (function(d) {
+
+window.searxng = (function(d) {
     'use strict';
 
     //
@@ -32,26 +23,19 @@ window.searx = (function(d) {
         translations: JSON.parse(script.getAttribute('data-translations'))
     };
 })(document);
+
+window.searx = {};
 ;/**
- * searx is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * searx is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with searx. If not, see < http://www.gnu.org/licenses/ >.
- *
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
  * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 $(document).ready(function(){
     var original_search_value = '';
-    if(searx.autocompleter) {
+    if(searxng.autocompleter) {
         var searchResults = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -93,20 +77,11 @@ $(document).ready(function(){
     }
 });
 ;/**
- * searx is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * searx is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with searx. If not, see < http://www.gnu.org/licenses/ >.
- *
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
  * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 $(document).ready(function(){
@@ -206,10 +181,17 @@ $(document).ready(function(){
     /**
      * Layout images according to their sizes
      */
-    searx.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
-    searx.image_thumbnail_layout.watch();
+    searxng.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
+    searxng.image_thumbnail_layout.watch();
 });
-;window.addEventListener('load', function() {
+;/**
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+window.addEventListener('load', function() {
     // Hide infobox toggle if shrunk size already fits all content.
     $('.infobox').each(function() {
         var infobox_body = $(this).find('.infobox_body');
@@ -221,24 +203,15 @@ $(document).ready(function(){
     });
 });
 ;/**
- * searx is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * searx is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with searx. If not, see < http://www.gnu.org/licenses/ >.
- *
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
  * (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 $(document).ready(function(){
-    $(".searx_init_map").on( "click", function( event ) {
+    $(".searxng_init_map").on( "click", function( event ) {
         var leaflet_target = $(this).data('leaflet-target');
         var map_lon = $(this).data('map-lon');
         var map_lat = $(this).data('map-lat');
@@ -299,7 +272,14 @@ $(document).ready(function(){
         $( this ).off( event );
     });
 });
-;$(document).ready(function(){
+;/**
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+$(document).ready(function(){
     let engine_descriptions = null;
     function load_engine_descriptions() {
         if (engine_descriptions == null) {
@@ -308,7 +288,7 @@ $(document).ready(function(){
                 for (const [engine_name, description] of Object.entries(data)) {
                     let elements = $('[data-engine-name="' + engine_name + '"] .description');
                     for(const element of elements) {
-                        let source = ' (<i>' + searx.translations['Source'] + ':&nbsp;' + description[1] + '</i>)';
+                        let source = ' (<i>' + searxng.translations.Source + ':&nbsp;' + description[1] + '</i>)';
                         element.innerHTML = description[0] + source;
                     }
                 }
@@ -322,7 +302,14 @@ $(document).ready(function(){
         });
     }
 });
-;$(document).ready(function(){
+;/**
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+$(document).ready(function(){
     $("#allow-all-engines").click(function() {
         $(".onoffswitch-checkbox").each(function() { this.checked = false;});
     });
