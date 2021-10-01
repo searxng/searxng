@@ -1,3 +1,10 @@
+/**
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 $(document).ready(function(){
     let engine_descriptions = null;
     function load_engine_descriptions() {
@@ -7,7 +14,7 @@ $(document).ready(function(){
                 for (const [engine_name, description] of Object.entries(data)) {
                     let elements = $('[data-engine-name="' + engine_name + '"] .description');
                     for(const element of elements) {
-                        let source = ' (<i>' + searx.translations['Source'] + ':&nbsp;' + description[1] + '</i>)';
+                        let source = ' (<i>' + searxng.translations.Source + ':&nbsp;' + description[1] + '</i>)';
                         element.innerHTML = description[0] + source;
                     }
                 }

@@ -3,9 +3,9 @@
 <html lang="{{ preferences.get_value('locale') }}" xml:lang="{{ preferences.get_value('locale') }}"{% if rtl %} dir="rtl"{% endif %} class="nojs">
 <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="searx - a privacy-respecting, hackable metasearch engine" />
-    <meta name="keywords" content="searx, search, search engine, metasearch, meta search" />
-    <meta name="generator" content="searx/{{ searx_version }}">
+    <meta name="description" content="SearXNG - a privacy-respecting, hackable metasearch engine" />
+    <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search" />
+    <meta name="generator" content="SearXNG/{{ searx_version }}">
     <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=2.0, user-scalable=1" />
     {% block meta %}{% endblock %}
@@ -97,7 +97,7 @@
     {% if load_leaflet %}{{"    "}}<script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>{{ "\n" }}{% endif %}
     {% if autocomplete %}{{"    "}}<script src="{{ url_for('static', filename='js/typeahead.bundle.min.js') }}"></script>{{ "\n" }}{% endif %}
 
-    <script src="{{ url_for('static', filename='js/searx.min.js') }}"
+    <script src="{{ url_for('static', filename='js/searxng.min.js') }}"
             data-method="{{ method or 'POST' }}"
             data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
             data-translations="{{ translations }}"></script>

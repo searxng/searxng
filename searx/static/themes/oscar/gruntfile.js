@@ -61,29 +61,33 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/js/*.js', '../__common__/js/image_layout.js'],
-        dest: 'js/searx.js'
+        dest: 'js/searxng.js'
       }
     },
     uglify: {
       options: {
+        output: {
+	        comments: 'some'
+        },
         sourceMap: true,
       },
       dist: {
         files: {
-          'js/searx.min.js': ['<%= concat.dist.dest %>']
+          'js/searxng.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
     jshint: {
-      files: ['gruntfile.js', 'js/searx_src/*.js', '../__common__/js/image_layout.js'],
+      files: ['gruntfile.js', 'src/js/*.js', '../__common__/js/image_layout.js'],
       options: {
         reporterOutput: "",
+        esversion: 6,
         // options here to override JSHint defaults
         globals: {
           jQuery: true,
           console: true,
           module: true,
-          document: true
+          document: true,
         }
       }
     },
