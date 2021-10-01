@@ -95,7 +95,7 @@
 {% block head %} {% endblock %}
 {% block content %}
 
-<a href="{{ url_for('index') }}"><h1><span>searx</span></h1></a>
+<a href="{{ url_for('index') }}"><h1><span>SearXNG</span></h1></a>
 
 <h2>{{ _('Preferences') }}</h2>
 
@@ -194,7 +194,7 @@
           {%- endfor -%}
         </select>
       </p>
-      <div class="description">{{ _('Change searx layout') }}</div>
+      <div class="description">{{ _('Change SearXNG layout') }}</div>
     </fieldset>
     {% endif %}
     {% if 'results_on_new_tab' not in locked_preferences %}
@@ -234,7 +234,7 @@
           <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
         </select>
       </p>
-      <div class="description">{{ _('Proxying image results through searx') }}</div>
+      <div class="description">{{ _('Proxying image results through SearXNG') }}</div>
     </fieldset>
     {% endif %}
     {{ plugin_preferences('privacy') }}
@@ -293,7 +293,7 @@
         <th>{{ _('Examples') }}</th>
       </tr>
       <td></td>
-      <th scope="colgroup" colspan="4">{{ _('This is the list of searx\'s instant answering modules.') }}</th>
+      <th scope="colgroup" colspan="4">{{ _('This is the list of SearXNG\'s instant answering modules.') }}</th>
       {% for answerer in answerers %}
       <tr>
         <td></td>
@@ -323,8 +323,8 @@
 
   {{ tab_header('maintab', 'cookies', _('Cookies')) }}
      <p class="text-muted">
-        {{ _('This is the list of cookies and their values searx is storing on your computer.') }}<br />
-        {{ _('With that list, you can assess searx transparency.') }}<br />
+        {{ _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />
+        {{ _('With that list, you can assess SearXNG transparency.') }}<br />
      </p>
      {% if cookies %}
      <table class="cookies">

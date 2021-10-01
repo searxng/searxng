@@ -1,21 +1,10 @@
 /**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*
-*/
-window.searx = (function(w, d) {
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+window.searxng = (function(w, d) {
 
   'use strict';
 
@@ -45,9 +34,9 @@ window.searx = (function(w, d) {
     }
   }
 
-  var searx = window.searx || {};
+  var searxng = window.searxng || {};
 
-  searx.on = function(obj, eventType, callback, useCapture) {
+  searxng.on = function(obj, eventType, callback, useCapture) {
     useCapture = useCapture || false;
     if (typeof obj !== 'string') {
       // obj HTMLElement, HTMLDocument
@@ -62,7 +51,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.ready = function(callback) {
+  searxng.ready = function(callback) {
     if (document.readyState != 'loading') {
       callback.call(w);
     } else {
@@ -70,7 +59,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.http = function(method, url) {
+  searxng.http = function(method, url) {
     var req = new XMLHttpRequest(),
     resolve = function() {},
     reject = function() {},
@@ -109,8 +98,8 @@ window.searx = (function(w, d) {
     return promise;
   };
 
-  searx.loadStyle = function(src) {
-    var path = searx.static_path + src,
+  searxng.loadStyle = function(src) {
+    var path = searxng.static_path + src,
     id = "style_" + src.replace('.', '_'),
     s = d.getElementById(id);
     if (s === null) {
@@ -123,8 +112,8 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.loadScript = function(src, callback) {
-    var path = searx.static_path + src,
+  searxng.loadScript = function(src, callback) {
+    var path = searxng.static_path + src,
     id = "script_" + src.replace('.', '_'),
     s = d.getElementById(id);
     if (s === null) {
@@ -147,17 +136,17 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.insertBefore = function (newNode, referenceNode) {
+  searxng.insertBefore = function (newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode);
   };
 
-  searx.insertAfter = function(newNode, referenceNode) {
+  searxng.insertAfter = function(newNode, referenceNode) {
     referenceNode.parentNode.insertAfter(newNode, referenceNode.nextSibling);
   };  
 
-  searx.on('.close', 'click', function() {
+  searxng.on('.close', 'click', function() {
     this.parentNode.classList.add('invisible');
   });
   
-  return searx;
+  return searxng;
 })(window, document);

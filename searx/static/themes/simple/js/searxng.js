@@ -1,21 +1,10 @@
 /**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*
-*/
-window.searx = (function(w, d) {
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+window.searxng = (function(w, d) {
 
   'use strict';
 
@@ -45,9 +34,9 @@ window.searx = (function(w, d) {
     }
   }
 
-  var searx = window.searx || {};
+  var searxng = window.searxng || {};
 
-  searx.on = function(obj, eventType, callback, useCapture) {
+  searxng.on = function(obj, eventType, callback, useCapture) {
     useCapture = useCapture || false;
     if (typeof obj !== 'string') {
       // obj HTMLElement, HTMLDocument
@@ -62,7 +51,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.ready = function(callback) {
+  searxng.ready = function(callback) {
     if (document.readyState != 'loading') {
       callback.call(w);
     } else {
@@ -70,7 +59,7 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.http = function(method, url) {
+  searxng.http = function(method, url) {
     var req = new XMLHttpRequest(),
     resolve = function() {},
     reject = function() {},
@@ -109,8 +98,8 @@ window.searx = (function(w, d) {
     return promise;
   };
 
-  searx.loadStyle = function(src) {
-    var path = searx.static_path + src,
+  searxng.loadStyle = function(src) {
+    var path = searxng.static_path + src,
     id = "style_" + src.replace('.', '_'),
     s = d.getElementById(id);
     if (s === null) {
@@ -123,8 +112,8 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.loadScript = function(src, callback) {
-    var path = searx.static_path + src,
+  searxng.loadScript = function(src, callback) {
+    var path = searxng.static_path + src,
     id = "script_" + src.replace('.', '_'),
     s = d.getElementById(id);
     if (s === null) {
@@ -147,29 +136,30 @@ window.searx = (function(w, d) {
     }
   };
 
-  searx.insertBefore = function (newNode, referenceNode) {
+  searxng.insertBefore = function (newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode);
   };
 
-  searx.insertAfter = function(newNode, referenceNode) {
+  searxng.insertAfter = function(newNode, referenceNode) {
     referenceNode.parentNode.insertAfter(newNode, referenceNode.nextSibling);
   };  
 
-  searx.on('.close', 'click', function() {
+  searxng.on('.close', 'click', function() {
     this.parentNode.classList.add('invisible');
   });
   
-  return searx;
+  return searxng;
 })(window, document);
-;/*global searx*/
+;/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/*global searxng*/
 
-searx.ready(function() {
+searxng.ready(function() {
 
-  searx.on('.result', 'click', function() {
+  searxng.on('.result', 'click', function() {
     highlightResult(this)(true);
   });
 
-  searx.on('.result a', 'focus', function(e) {
+  searxng.on('.result a', 'focus', function(e) {
     var el = e.target;
     while (el !== undefined) {
       if (el.classList.contains('result')) {
@@ -281,7 +271,7 @@ searx.ready(function() {
     }
   };
 
-  searx.on(document, "keydown", function(e) {
+  searxng.on(document, "keydown", function(e) {
     // check for modifiers so we don't break browser's hotkeys
     if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();
@@ -531,31 +521,15 @@ searx.ready(function() {
     }
   }
 });
-;/**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*/
+;/* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global L */
-(function (w, d, searx) {
+(function (w, d, searxng) {
   'use strict';
 
-  searx.ready(function () {
-    searx.on('.searx_init_map', 'click', function(event) {
+  searxng.ready(function () {
+    searxng.on('.searxng_init_map', 'click', function(event) {
       // no more request
-      this.classList.remove("searx_init_map");
+      this.classList.remove("searxng_init_map");
 
       //
       var leaflet_target = this.dataset.leafletTarget;
@@ -565,8 +539,8 @@ searx.ready(function() {
       var map_boundingbox = JSON.parse(this.dataset.mapBoundingbox);
       var map_geojson = JSON.parse(this.dataset.mapGeojson);
 
-      searx.loadStyle('css/leaflet.css');
-      searx.loadScript('js/leaflet.js', function() {
+      searxng.loadStyle('css/leaflet.css');
+      searxng.loadScript('js/leaflet.js', function() {
         var map_bounds = null;
         if(map_boundingbox) {
           var southWest = L.latLng(map_boundingbox[0], map_boundingbox[2]);
@@ -620,20 +594,21 @@ searx.ready(function() {
       event.preventDefault();
     });
   });
-})(window, document, window.searx);
-;(function (w, d, searx) {
+})(window, document, window.searxng);
+;/* SPDX-License-Identifier: AGPL-3.0-or-later */
+(function (w, d, searxng) {
     'use strict';
 
-    searx.ready(function() {
+    searxng.ready(function() {
         let engine_descriptions = null;
         function load_engine_descriptions() {
             if (engine_descriptions == null) {
-                searx.http("GET", "engine_descriptions.json").then(function(content) {
+                searxng.http("GET", "engine_descriptions.json").then(function(content) {
                     engine_descriptions = JSON.parse(content);
                     for (const [engine_name, description] of Object.entries(engine_descriptions)) {
                         let elements = d.querySelectorAll('[data-engine-name="' + engine_name + '"] .engine-description');
                         for(const element of elements) {
-                            let source = ' (<i>' + searx.translations['Source'] + ':&nbsp;' + description[1] + '</i>)';
+                            let source = ' (<i>' + searxng.translations['Source'] + ':&nbsp;' + description[1] + '</i>)';
                             element.innerHTML = description[0] + source;
                         }
                     }
@@ -643,35 +618,20 @@ searx.ready(function() {
 
         if (d.querySelector('body[class="preferences_endpoint"]')) {
             for(const el of d.querySelectorAll('[data-engine-name]')) {
-                searx.on(el, 'mouseenter', load_engine_descriptions);
+                searxng.on(el, 'mouseenter', load_engine_descriptions);
             }
         }
     });
-})(window, document, window.searx);
-;/**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*/
-(function(w, d, searx) {
+})(window, document, window.searxng);
+;/* SPDX-License-Identifier: AGPL-3.0-or-later */
+(function(w, d, searxng) {
   'use strict';
 
-  searx.ready(function() {
-    searx.image_thumbnail_layout = new searx.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 10, 200);
-    searx.image_thumbnail_layout.watch();
+  searxng.ready(function() {
+    searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 10, 200);
+    searxng.image_thumbnail_layout.watch();
 
-    searx.on('.btn-collapse', 'click', function() {
+    searxng.on('.btn-collapse', 'click', function() {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
       var target = this.getAttribute('data-target');
@@ -687,7 +647,7 @@ searx.ready(function() {
       targetElement.classList.toggle('invisible');
     });
 
-    searx.on('.media-loader', 'click', function() {
+    searxng.on('.media-loader', 'click', function() {
       var target = this.getAttribute('data-target');
       var iframe_load = d.querySelector(target + ' > iframe');
       var srctest = iframe_load.getAttribute('src');
@@ -710,25 +670,10 @@ searx.ready(function() {
 
   });
 
-})(window, document, window.searx);
-;/**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*/
+})(window, document, window.searxng);
+;/* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global AutoComplete */
-(function(w, d, searx) {
+(function(w, d, searxng) {
   'use strict';
 
   var firstFocus = true, qinput_id = "q", qinput;
@@ -767,7 +712,7 @@ searx.ready(function() {
     qinput.addEventListener('keyup', updateClearButton, false);
   }
 
-  searx.ready(function() {
+  searxng.ready(function() {
     qinput = d.getElementById(qinput_id);
 
     function placeCursorAtEndOnce() {
@@ -784,11 +729,11 @@ searx.ready(function() {
       createClearButton(qinput);
       
       // autocompleter
-      if (searx.autocompleter) {
-        searx.autocomplete = AutoComplete.call(w, {
+      if (searxng.autocompleter) {
+        searxng.autocomplete = AutoComplete.call(w, {
           Url: "./autocompleter",
-          EmptyMessage: searx.translations.no_item_found,
-          HttpMethod: searx.method,
+          EmptyMessage: searxng.translations.no_item_found,
+          HttpMethod: searxng.method,
           HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded",
             "X-Requested-With": "XMLHttpRequest"
@@ -809,10 +754,10 @@ searx.ready(function() {
     }
 
     // vanilla js version of search_on_category_select.js
-    if (qinput !== null && d.querySelector('.help') != null && searx.search_on_category_select) {
+    if (qinput !== null && d.querySelector('.help') != null && searxng.search_on_category_select) {
       d.querySelector('.help').className='invisible';
 
-      searx.on('#categories input', 'change', function() {
+      searxng.on('#categories input', 'change', function() {
         var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
         for(i=0; i<categories.length; i++) {
           if (categories[i] !== this && categories[i].checked) {
@@ -826,13 +771,13 @@ searx.ready(function() {
         return false;
       });
 
-      searx.on(d.getElementById('time_range'), 'change', submitIfQuery);
-      searx.on(d.getElementById('language'), 'change', submitIfQuery);
+      searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
+      searxng.on(d.getElementById('language'), 'change', submitIfQuery);
     }
 
   });
 
-})(window, document, window.searx);
+})(window, document, window.searxng);
 ;/**
 *
 * Google Image Layout v0.0.1
@@ -993,7 +938,7 @@ searx.ready(function() {
     }
   };
 
-  w.searx.ImageLayout = ImageLayout;
+  w.searxng.ImageLayout = ImageLayout;
 
 }(window, document));
 ;(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){

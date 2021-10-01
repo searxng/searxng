@@ -2,9 +2,9 @@
 <html class="no-js" lang="en" {% if rtl %} dir="rtl"{% endif %}>
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="searx — a privacy-respecting, hackable metasearch engine">
-  <meta name="keywords" content="searx, search, search engine, metasearch, meta search">
-  <meta name="generator" content="searx/{{ searx_version }}">
+  <meta name="description" content="SearXNG — a privacy-respecting, hackable metasearch engine">
+  <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+  <meta name="generator" content="searxng/{{ searx_version }}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noarchive">
   <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=1">
@@ -13,13 +13,13 @@
   <title>{% block title %}{% endblock %}{{ instance_name }}</title>
   {% block meta %}{% endblock %}
   {% if rtl %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searx-rtl.min.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen" />
   {% else %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searx.min.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
   {% block styles %}{% endblock %}
   <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searx.head.min.js') }}"
+  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
           data-method="{{ method or 'POST' }}"
           data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
           data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
@@ -59,7 +59,7 @@
     </p>
   </footer>
   <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searx.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
   <!--<![endif]-->
 </body>
 </html>

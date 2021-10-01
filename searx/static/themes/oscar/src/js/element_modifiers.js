@@ -103,6 +103,6 @@ $(document).ready(function(){
     /**
      * Layout images according to their sizes
      */
-    searxng.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
+    searxng.image_thumbnail_layout = new searxng.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
     searxng.image_thumbnail_layout.watch();
 });

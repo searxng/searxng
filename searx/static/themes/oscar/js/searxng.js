@@ -23,8 +23,6 @@ window.searxng = (function(d) {
         translations: JSON.parse(script.getAttribute('data-translations'))
     };
 })(document);
-
-window.searx = {};
 ;/**
  * @license
  * (C) Copyright Contributors to the SearXNG project.
@@ -181,7 +179,7 @@ $(document).ready(function(){
     /**
      * Layout images according to their sizes
      */
-    searxng.image_thumbnail_layout = new searx.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
+    searxng.image_thumbnail_layout = new searxng.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
     searxng.image_thumbnail_layout.watch();
 });
 ;/**
@@ -479,6 +477,6 @@ $(document).ready(function(){
     }
   };
 
-  w.searx.ImageLayout = ImageLayout;
+  w.searxng.ImageLayout = ImageLayout;
 
 }(window, document));

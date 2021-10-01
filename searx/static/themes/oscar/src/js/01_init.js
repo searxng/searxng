@@ -23,5 +23,3 @@ window.searxng = (function(d) {
         translations: JSON.parse(script.getAttribute('data-translations'))
     };
 })(document);
-
-window.searx = {};

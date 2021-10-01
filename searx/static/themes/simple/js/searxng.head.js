@@ -1,20 +1,9 @@
 /**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2019 by Alexandre Flament
-*
-*/
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
 /* global DocumentTouch:readonly */
 (function(w, d) {
     'use strict';
@@ -26,7 +15,7 @@
     })();
 
     // try to detect touch screen
-    w.searx = {
+    w.searxng = {
         touch: (("ontouchstart" in w) || w.DocumentTouch && document instanceof DocumentTouch) || false,
         method: script.getAttribute('data-method'),
         autocompleter: script.getAttribute('data-autocompleter') === 'true',
@@ -37,5 +26,5 @@
     };
 
     // update the css
-    d.getElementsByTagName("html")[0].className = (w.searx.touch)?"js touch":"js";
+    d.getElementsByTagName("html")[0].className = (w.searxng.touch)?"js touch":"js";
 })(window, document);

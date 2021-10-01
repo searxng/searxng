@@ -158,6 +158,6 @@
     }
   };
 
-  w.searx.ImageLayout = ImageLayout;
+  w.searxng.ImageLayout = ImageLayout;
 
 }(window, document));
