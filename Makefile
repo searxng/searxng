@@ -14,7 +14,7 @@ help:
 	@./manage --help
 	@echo '----'
 	@echo 'run            - run developer instance'
-	@echo 'install        - developer install of searx into virtualenv'
+	@echo 'install        - developer install of SearxNG into virtualenv'
 	@echo 'uninstall      - uninstall developer installation'
 	@echo 'clean          - clean up working tree'
 	@echo 'search.checker - check search engines'
