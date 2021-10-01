@@ -1,12 +1,13 @@
-/*global searx*/
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/*global searxng*/
 
-searx.ready(function() {
+searxng.ready(function() {
 
-  searx.on('.result', 'click', function() {
+  searxng.on('.result', 'click', function() {
     highlightResult(this)(true);
   });
 
-  searx.on('.result a', 'focus', function(e) {
+  searxng.on('.result a', 'focus', function(e) {
     var el = e.target;
     while (el !== undefined) {
       if (el.classList.contains('result')) {
@@ -118,7 +119,7 @@ searx.ready(function() {
     }
   };
 
-  searx.on(document, "keydown", function(e) {
+  searxng.on(document, "keydown", function(e) {
     // check for modifiers so we don't break browser's hotkeys
     if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();

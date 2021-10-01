@@ -72,8 +72,8 @@ module.exports = function(grunt) {
           separator: ';'
         },
         files: {
-          'js/searx.head.js': ['src/js/head/*.js'],
-          'js/searx.js': ['src/js/main/*.js', '../__common__/js/*.js', './node_modules/autocomplete-js/dist/autocomplete.js']
+          'js/searxng.head.js': ['src/js/head/*.js'],
+          'js/searxng.js': ['src/js/main/*.js', '../__common__/js/*.js', './node_modules/autocomplete-js/dist/autocomplete.js']
         }
       }
     },
@@ -90,8 +90,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'js/searx.head.min.js': ['js/searx.head.js'],
-          'js/searx.min.js': ['js/searx.js']
+          'js/searxng.head.min.js': ['js/searxng.head.js'],
+          'js/searxng.min.js': ['js/searxng.js']
         }
       }
     },
@@ -165,8 +165,8 @@ module.exports = function(grunt) {
           paths: ["less"],
         },
         files: {
-          "css/searx.css": "src/less/style.less",
-          "css/searx-rtl.css": "src/less/style-rtl.less"
+          "css/searxng.css": "src/less/style.less",
+          "css/searxng-rtl.css": "src/less/style-rtl.less"
         }
       },
       production: {
@@ -181,8 +181,8 @@ module.exports = function(grunt) {
           sourceMapRootpath: '../',
         },
         files: {
-          "css/searx.min.css": "src/less/style.less",
-          "css/searx-rtl.min.css": "src/less/style-rtl.less"
+          "css/searxng.min.css": "src/less/style.less",
+          "css/searxng-rtl.min.css": "src/less/style-rtl.less"
         }
       },
     },

@@ -1,28 +1,12 @@
-/**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2014 by Thomas Pointhuber, <thomas.pointhuber@gmx.at>
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*/
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global L */
-(function (w, d, searx) {
+(function (w, d, searxng) {
   'use strict';
 
-  searx.ready(function () {
-    searx.on('.searx_init_map', 'click', function(event) {
+  searxng.ready(function () {
+    searxng.on('.searxng_init_map', 'click', function(event) {
       // no more request
-      this.classList.remove("searx_init_map");
+      this.classList.remove("searxng_init_map");
 
       //
       var leaflet_target = this.dataset.leafletTarget;
@@ -32,8 +16,8 @@
       var map_boundingbox = JSON.parse(this.dataset.mapBoundingbox);
       var map_geojson = JSON.parse(this.dataset.mapGeojson);
 
-      searx.loadStyle('css/leaflet.css');
-      searx.loadScript('js/leaflet.js', function() {
+      searxng.loadStyle('css/leaflet.css');
+      searxng.loadScript('js/leaflet.js', function() {
         var map_bounds = null;
         if(map_boundingbox) {
           var southWest = L.latLng(map_boundingbox[0], map_boundingbox[2]);
@@ -87,4 +71,4 @@
       event.preventDefault();
     });
   });
-})(window, document, window.searx);
+})(window, document, window.searxng);

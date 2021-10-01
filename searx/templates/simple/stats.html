@@ -16,7 +16,7 @@
 {% block head %} {% endblock %}
 {% block content %}
 
-<a href="{{ url_for('index') }}"><h1><span>searx</span></h1></a>
+<a href="{{ url_for('index') }}"><h1><span>SearXNG</span></h1></a>
 
 <h2>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h2>
 

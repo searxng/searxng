@@ -1,21 +1,6 @@
-/**
-* searx is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* searx is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with searx. If not, see < http://www.gnu.org/licenses/ >.
-*
-* (C) 2017 by Alexandre Flament, <alex@al-f.net>
-*/
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global AutoComplete */
-(function(w, d, searx) {
+(function(w, d, searxng) {
   'use strict';
 
   var firstFocus = true, qinput_id = "q", qinput;
@@ -54,7 +39,7 @@
     qinput.addEventListener('keyup', updateClearButton, false);
   }
 
-  searx.ready(function() {
+  searxng.ready(function() {
     qinput = d.getElementById(qinput_id);
 
     function placeCursorAtEndOnce() {
@@ -71,11 +56,11 @@
       createClearButton(qinput);
       
       // autocompleter
-      if (searx.autocompleter) {
-        searx.autocomplete = AutoComplete.call(w, {
+      if (searxng.autocompleter) {
+        searxng.autocomplete = AutoComplete.call(w, {
           Url: "./autocompleter",
-          EmptyMessage: searx.translations.no_item_found,
-          HttpMethod: searx.method,
+          EmptyMessage: searxng.translations.no_item_found,
+          HttpMethod: searxng.method,
           HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded",
             "X-Requested-With": "XMLHttpRequest"
@@ -96,10 +81,10 @@
     }
 
     // vanilla js version of search_on_category_select.js
-    if (qinput !== null && d.querySelector('.help') != null && searx.search_on_category_select) {
+    if (qinput !== null && d.querySelector('.help') != null && searxng.search_on_category_select) {
       d.querySelector('.help').className='invisible';
 
-      searx.on('#categories input', 'change', function() {
+      searxng.on('#categories input', 'change', function() {
         var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
         for(i=0; i<categories.length; i++) {
           if (categories[i] !== this && categories[i].checked) {
@@ -113,10 +98,10 @@
         return false;
       });
 
-      searx.on(d.getElementById('time_range'), 'change', submitIfQuery);
-      searx.on(d.getElementById('language'), 'change', submitIfQuery);
+      searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
+      searxng.on(d.getElementById('language'), 'change', submitIfQuery);
     }
 
   });
 
-})(window, document, window.searx);
+})(window, document, window.searxng);
