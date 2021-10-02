@@ -17,7 +17,7 @@ Environment variables:
   BIND_ADDRESS  uwsgi bind to the specified TCP socket using HTTP protocol.
                 Default value: ${DEFAULT_BIND_ADDRESS}
 Volume:
-  /etc/searx    the docker entry point copies settings.yml and uwsgi.ini in
+  /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
                 this directory (see the -f command line option)"
 
 EOF
@@ -48,22 +48,22 @@ do
     esac
 done
 
-get_searx_version(){
-    su searx -c \
+get_searxng_version(){
+    su searxng -c \
        'python3 -c "import six; import searx.version; six.print_(searx.version.VERSION_STRING)"' \
        2>/dev/null
 }
 
-SEARX_VERSION="$(get_searx_version)"
-export SEARX_VERSION
-echo "searx version ${SEARX_VERSION}"
+SEARXNG_VERSION="$(get_searxng_version)"
+export SEARXNG_VERSION
+echo "SearXNG version ${SEARXNG_VERSION}"
 
 # helpers to update the configuration files
 patch_uwsgi_settings() {
     CONF="$1"
 }
 
-patch_searx_settings() {
+patch_searxng_settings() {
     CONF="$1"
 
     # Make sure that there is trailing slash at the end of BASE_URL
@@ -114,7 +114,7 @@ update_conf() {
                 $PATCH_REF_CONF "${CONF}"
             else
                 # Keep the current configuration
-                printf '⚠️  Check new version %s to make sure searx is working properly\n' "${NEW_CONF}"
+                printf '⚠️  Check new version %s to make sure SearXNG is working properly\n' "${NEW_CONF}"
                 cp "${REF_CONF}" "${NEW_CONF}"
                 $PATCH_REF_CONF "${NEW_CONF}"
             fi
@@ -128,11 +128,35 @@ update_conf() {
     fi
 }
 
-# make sure there are uwsgi settings
-update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searx/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
+# searx compatibility: copy /etc/searx/* to /etc/searxng/*
+SEARX_CONF=0
+if [ -f "/etc/searx/settings.yml" ]; then
+    if  [ ! -f "${SEARXNG_SETTINGS_PATH}" ]; then
+        printf '⚠️  /etc/searx/settings.yml is copied to /etc/searxng\n'
+        cp "/etc/searx/settings.yml" "${SEARXNG_SETTINGS_PATH}"
+    fi
+    SEARX_CONF=1
+fi
+if [ -f "/etc/searx/uwsgi.ini" ]; then
+    printf '⚠️  /etc/searx/uwsgi.ini is ignored. Use the volume /etc/searxng\n'
+    SEARX_CONF=1
+fi
+if [ "$SEARX_CONF" -eq "1" ]; then
+    printf '⚠️  The deprecated volume /etc/searx is mounted. Please update your configuration to use /etc/searxng ⚠️\n'
+    cat << EOF > /etc/searx/deprecated_volume_read_me.txt
+This Docker image uses the volume /etc/searxng
+Update your configuration:
+* remove uwsgi.ini (or very carefully update your existing uwsgi.ini using https://github.com/searxng/searxng/blob/master/dockerfiles/uwsgi.ini )
+* mount /etc/searxng instead of /etc/searx
+EOF
+fi
+# end of searx compatibility
 
-# make sure there are searx settings
-update_conf "${FORCE_CONF_UPDATE}" "${SEARXNG_SETTINGS_PATH}" "/usr/local/searx/searx/settings.yml" "patch_searx_settings"
+# make sure there are uwsgi settings
+update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searxng/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
+
+# make sure there are searxng settings
+update_conf "${FORCE_CONF_UPDATE}" "${SEARXNG_SETTINGS_PATH}" "/usr/local/searxng/searx/settings.yml" "patch_searxng_settings"
 
 # dry run (to update configuration files, then inspect them)
 if [ $DRY_RUN -eq 1 ]; then
@@ -141,9 +165,9 @@ if [ $DRY_RUN -eq 1 ]; then
 fi
 
 touch /var/run/uwsgi-logrotate
-chown -R searx:searx /var/log/uwsgi /var/run/uwsgi-logrotate
+chown -R searxng:searxng /var/log/uwsgi /var/run/uwsgi-logrotate
 unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec su-exec searx:searx uwsgi --master --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+exec su-exec searxng:searxng uwsgi --master --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
