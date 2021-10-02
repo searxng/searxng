@@ -110,7 +110,7 @@ from the YAML configuration:
 - ``SEARX_URL`` from :ref:`server.base_url <settings global server>` (aka
   ``PUBLIC_URL``)
 - ``SEARX_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
-- ``SEARX_PORT`` from :ref:`server.port <settings global server>`
+- ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`
 
 .. _make run:
 

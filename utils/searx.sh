@@ -12,7 +12,7 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 # config
 # ----------------------------------------------------------------------------
 
-SEARX_INTERNAL_HTTP="${SEARX_BIND_ADDRESS}:${SEARX_PORT}"
+SEARX_INTERNAL_HTTP="${SEARX_BIND_ADDRESS}:${SEARXNG_PORT}"
 
 SEARX_URL_PATH="${SEARX_URL_PATH:-$(echo "${PUBLIC_URL}" \
 | sed -e 's,^.*://[^/]*\(/.*\),\1,g')}"
