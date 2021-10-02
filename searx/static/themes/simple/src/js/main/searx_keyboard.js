@@ -4,7 +4,7 @@
 searxng.ready(function() {
 
   searxng.on('.result', 'click', function() {
-    highlightResult(this)(true);
+    highlightResult(this)(true);  
   });
 
   searxng.on('.result a', 'focus', function(e) {
@@ -124,9 +124,7 @@ searxng.ready(function() {
     if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();
       if (e.keyCode === 27) {
-        if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
-          vimKeys[e.keyCode].fun();
-        }
+        vimKeys[e.keyCode].fun(e);
       } else {
         if (e.target === document.body || tagName === 'a' || tagName === 'button') {
           e.preventDefault();
@@ -213,9 +211,12 @@ searxng.ready(function() {
     document.location.reload(true);
   }
 
-  function removeFocus() {
-    if (document.activeElement) {
+  function removeFocus(e) {
+    const tagName = e.target.tagName.toLowerCase();
+    if (document.activeElement && (tagName === 'input' || tagName === 'select' || tagName === 'textarea')) {
       document.activeElement.blur();
+    } else {
+      searxng.closeDetail();
     }
   }
 
@@ -285,6 +286,9 @@ searxng.ready(function() {
   function openResult(newTab) {
     return function() {
       var link = document.querySelector('.result[data-vim-selected] h3 a');
+      if (link === null) {
+        link = document.querySelector('.result[data-vim-selected] > a');
+      }
       if (link !== null) {
         var url = link.getAttribute('href');
         if (newTab) {
@@ -368,4 +372,8 @@ searxng.ready(function() {
       return;
     }
   }
+
+  searxng.scrollPageToSelected = scrollPageToSelected;
+  searxng.selectNext = highlightResult('down');
+  searxng.selectPrevious = highlightResult('up');
 });
