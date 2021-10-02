@@ -618,6 +618,11 @@ def index():
     )
 
 
+@app.route('/healthz', methods=['GET'])
+def health():
+    return Response('OK', mimetype='text/plain')
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     """Search query in q and return results.
