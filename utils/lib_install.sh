@@ -53,7 +53,7 @@ source_dot_config() {
         export eval_SEARX_SRC='true'
         SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
         SEARX_PYENV=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_PYENV)
-        SEARX_SETTINGS_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SETTINGS_PATH)
+        SEARXNG_SETTINGS_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_SETTINGS_PATH)
         if [ ! -r "${SEARX_SRC}" ]; then
             info_msg "not yet cloned: ${SEARX_SRC}"
             orig_source_dot_config
@@ -115,7 +115,7 @@ init_SEARX_SRC_INIT_FILES(){
 install_log_searx_instance() {
 
     echo -e "---- SearXNG instance setup ${_BBlue}(status: $(install_searx_get_state))${_creset}"
-    echo -e "  SEARX_SETTINGS_PATH : ${_BBlue}${SEARX_SETTINGS_PATH}${_creset}"
+    echo -e "  SEARXNG_SETTINGS_PATH : ${_BBlue}${SEARXNG_SETTINGS_PATH}${_creset}"
     echo -e "  SSEARX_PYENV        : ${_BBlue}${SEARX_PYENV}${_creset}"
     echo -e "  SEARX_SRC           : ${_BBlue}${SEARX_SRC:-none}${_creset}"
     echo -e "  SEARX_URL           : ${_BBlue}${SEARX_URL:-none}${_creset}"
@@ -163,7 +163,7 @@ install_searx_get_state(){
         echo "missing-searx-pyenv"
         return
     fi
-    if ! [ -r "${SEARX_SETTINGS_PATH}" ]; then
+    if ! [ -r "${SEARXNG_SETTINGS_PATH}" ]; then
         echo "missing-settings"
         return
     fi

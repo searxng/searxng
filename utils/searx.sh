@@ -28,7 +28,7 @@ SERVICE_GROUP="${SERVICE_USER}"
 GIT_BRANCH="${GIT_BRANCH:-master}"
 SEARX_PYENV="${SERVICE_HOME}/searx-pyenv"
 SEARX_SRC="${SERVICE_HOME}/searx-src"
-SEARX_SETTINGS_PATH="/etc/searx/settings.yml"
+SEARXNG_SETTINGS_PATH="/etc/searx/settings.yml"
 SEARX_UWSGI_APP="searx.ini"
 # shellcheck disable=SC2034
 SEARX_UWSGI_SOCKET="/run/uwsgi/app/searx/socket"
@@ -130,7 +130,7 @@ CONFIG_FILES=(
 
 # shellcheck disable=SC2034
 CONFIG_BACKUP_ENCRYPTED=(
-    "${SEARX_SETTINGS_PATH}"
+    "${SEARXNG_SETTINGS_PATH}"
 )
 
 # ----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ install / remove
   :init-src:   copy files (SEARX_SRC_INIT_FILES) to ${SEARX_SRC}
   :pyenv:      create/remove virtualenv (python) in $SEARX_PYENV
   :uwsgi:      install searx uWSGI application
-  :settings:   reinstall settings from ${SEARX_SETTINGS_PATH}
+  :settings:   reinstall settings from ${SEARXNG_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
 update searx
@@ -613,16 +613,16 @@ install_DOT_CONFIG(){
 }
 
 install_settings() {
-    rst_title "${SEARX_SETTINGS_PATH}" section
+    rst_title "${SEARXNG_SETTINGS_PATH}" section
 
     if ! clone_is_available; then
         err_msg "you have to install SearXNG first"
         exit 42
     fi
 
-    mkdir -p "$(dirname "${SEARX_SETTINGS_PATH}")"
+    mkdir -p "$(dirname "${SEARXNG_SETTINGS_PATH}")"
     install_template --no-eval \
-        "${SEARX_SETTINGS_PATH}" \
+        "${SEARXNG_SETTINGS_PATH}" \
         "${SERVICE_USER}" "${SERVICE_GROUP}"
     configure_searx
 }
@@ -630,8 +630,8 @@ install_settings() {
 remove_settings() {
     rst_title "remove SearXNG settings" section
     echo
-    info_msg "delete ${SEARX_SETTINGS_PATH}"
-    rm -f "${SEARX_SETTINGS_PATH}"
+    info_msg "delete ${SEARXNG_SETTINGS_PATH}"
+    rm -f "${SEARXNG_SETTINGS_PATH}"
 }
 
 remove_searx() {
@@ -692,11 +692,11 @@ EOF
 
 configure_searx() {
     rst_title "Configure SearXNG" section
-    rst_para "Setup SearXNG config located at $SEARX_SETTINGS_PATH"
+    rst_para "Setup SearXNG config located at $SEARXNG_SETTINGS_PATH"
     echo
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "$SEARX_SETTINGS_PATH"
+sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "$SEARXNG_SETTINGS_PATH"
 EOF
 }
 
@@ -711,15 +711,15 @@ test_local_searx() {
             return
         fi
     fi
-    sed -i -e "s/debug: false/debug: true/g" "$SEARX_SETTINGS_PATH"
+    sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
-export SEARX_SETTINGS_PATH="${SEARX_SETTINGS_PATH}"
+export SEARXNG_SETTINGS_PATH="${SEARXNG_SETTINGS_PATH}"
 cd ${SEARX_SRC}
 timeout 10 python searx/webapp.py &
 sleep 3
 curl --location --verbose --head --insecure $SEARX_INTERNAL_HTTP
 EOF
-    sed -i -e "s/debug: true/debug: false/g" "$SEARX_SETTINGS_PATH"
+    sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 }
 
 install_searx_uwsgi() {
@@ -753,7 +753,7 @@ enable_image_proxy() {
     info_msg "try to enable image_proxy ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-sed -i -e "s/image_proxy: false/image_proxy: true/g" "$SEARX_SETTINGS_PATH"
+sed -i -e "s/image_proxy: false/image_proxy: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARX_UWSGI_APP"
 }
@@ -762,7 +762,7 @@ disable_image_proxy() {
     info_msg "try to enable image_proxy ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-sed -i -e "s/image_proxy: true/image_proxy: false/g" "$SEARX_SETTINGS_PATH"
+sed -i -e "s/image_proxy: true/image_proxy: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARX_UWSGI_APP"
 }
@@ -772,7 +772,7 @@ enable_debug() {
     info_msg "try to enable debug mode ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-sed -i -e "s/debug: false/debug: true/g" "$SEARX_SETTINGS_PATH"
+sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARX_UWSGI_APP"
 }
@@ -781,7 +781,7 @@ disable_debug() {
     info_msg "try to disable debug mode ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-sed -i -e "s/debug: true/debug: false/g" "$SEARX_SETTINGS_PATH"
+sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARX_UWSGI_APP"
 }
@@ -791,8 +791,8 @@ set_result_proxy() {
     # usage: set_result_proxy <URL> [<key>]
 
     info_msg "try to set result proxy: '$1' ($2)"
-    cp "${SEARX_SETTINGS_PATH}" "${SEARX_SETTINGS_PATH}.bak"
-    _set_result_proxy "$1" "$2" > "${SEARX_SETTINGS_PATH}"
+    cp "${SEARXNG_SETTINGS_PATH}" "${SEARXNG_SETTINGS_PATH}.bak"
+    _set_result_proxy "$1" "$2" > "${SEARXNG_SETTINGS_PATH}"
 }
 
 _set_result_proxy() {
@@ -829,7 +829,7 @@ _set_result_proxy() {
             fi
         fi
         echo "$line"
-    done < "${SEARX_SETTINGS_PATH}.bak"
+    done < "${SEARXNG_SETTINGS_PATH}.bak"
 }
 
 function has_substring() {

@@ -107,7 +107,7 @@ Check
 =====
 
 To check your SearXNG setup, optional enable debugging and start the *webapp*.
-SearXNG looks at the exported environment ``$SEARX_SETTINGS_PATH`` for a
+SearXNG looks at the exported environment ``$SEARXNG_SETTINGS_PATH`` for a
 configuration file.
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst

@@ -17,14 +17,14 @@
 # --------------
 
 # The setup of the SearXNG instance is done in the settings.yml
-# (SEARX_SETTINGS_PATH).  Read the remarks in [1] carefully and don't forget to
+# (SEARXNG_SETTINGS_PATH).  Read the remarks in [1] carefully and don't forget to
 # rebuild instance's environment (make buildenv) if needed.  The settings.yml
 # file of an already installed instance is shown by::
 #
 #     $ ./utils/searx.sh --help
 #     ---- SearXNG instance setup (already installed)
-#       SEARX_SETTINGS_PATH : /etc/searx/settings.yml
-#       SEARX_SRC           : /usr/local/searx/searx-src
+#       SEARXNG_SETTINGS_PATH : /etc/searx/settings.yml
+#       SEARX_SRC             : /usr/local/searx/searx-src
 #
 # [1] https://searxng.github.io/searxng/admin/engines/settings.html
 

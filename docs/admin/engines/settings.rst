@@ -24,7 +24,7 @@ settings.yml location
 
 The initial ``settings.yml`` we be load from these locations:
 
-1. the full path specified in the ``SEARX_SETTINGS_PATH`` environment variable.
+1. the full path specified in the ``SEARXNG_SETTINGS_PATH`` environment variable.
 2. ``/etc/searx/settings.yml``
 
 If these files don't exist (or are empty or can't be read), SearXNG uses the
