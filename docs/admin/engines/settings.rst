@@ -74,7 +74,7 @@ Global Settings
      instance_name:  "SearXNG"  # displayed name
      contact_url: false         # mailto:contact@example.com
 
-``debug`` : ``$SEARX_DEBUG``
+``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
 
@@ -119,7 +119,7 @@ Global Settings
   directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
   Apache or Nginx.
 
-``secret_key`` : ``$SEARX_SECRET``
+``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
 ``image_proxy`` :

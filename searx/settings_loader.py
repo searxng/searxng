@@ -35,12 +35,12 @@ def get_default_settings_path():
 
 def get_user_settings_path():
     # find location of settings.yml
-    if 'SEARX_SETTINGS_PATH' in environ:
+    if 'SEARXNG_SETTINGS_PATH' in environ:
         # if possible set path to settings using the
-        # enviroment variable SEARX_SETTINGS_PATH
-        return check_settings_yml(environ['SEARX_SETTINGS_PATH'])
+        # enviroment variable SEARXNG_SETTINGS_PATH
+        return check_settings_yml(environ['SEARXNG_SETTINGS_PATH'])
 
-    if environ.get('SEARX_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
+    if environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
         return None
 
     # if not, get it from searx code base or last solution from /etc/searx
