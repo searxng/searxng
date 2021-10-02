@@ -114,7 +114,7 @@ Global Settings
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
-``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARX_BIND_ADDRESS <make buildenv>`
+``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARXNG_BIND_ADDRESS <make buildenv>`
   Port number and *bind address* of the SearXNG web application if you run it
   directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
   Apache or Nginx.

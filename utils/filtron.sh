@@ -28,7 +28,7 @@ FILTRON_LISTEN="${FILTRON_LISTEN:-127.0.0.1:4004}"
 # server.bind_address.  The default of FILTRON_TARGET is taken from the YAML
 # configuration, do not change this value without reinstalling the entire
 # SearXNG suite including filtron & morty.
-FILTRON_TARGET="${SEARX_BIND_ADDRESS}:${SEARXNG_PORT}"
+FILTRON_TARGET="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
 
 SERVICE_NAME="filtron"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"

@@ -30,14 +30,14 @@ name_val = [
 
     ('SEARX_URL'              , 'server.base_url'),
     ('SEARXNG_PORT'             , 'server.port'),
-    ('SEARX_BIND_ADDRESS'     , 'server.bind_address'),
+    ('SEARXNG_BIND_ADDRESS'     , 'server.bind_address'),
 
 ]
 
 brand_env = 'utils' + sep + 'brand.env'
 
 # Some defaults in the settings.yml are taken from the environment,
-# e.g. SEARX_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
+# e.g. SEARXNG_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
 # 'brand.env' file is created these enviroment variables should be unset first::
 
 _unset = object()

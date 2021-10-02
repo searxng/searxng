@@ -360,7 +360,7 @@ News
 - Docker image updates
 - Bang expression fixes
 - Result merging fixes
-- New environment variable added: SEARX_BIND_ADDRESS
+- New environment variable added: SEARXNG_BIND_ADDRESS
 
 
 News
