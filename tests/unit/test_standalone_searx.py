@@ -8,7 +8,7 @@ from mock import Mock, patch
 from nose2.tools import params
 
 from searx.search import SearchQuery, EngineRef, initialize
-from searx_extra import standalone_searx as sas
+from searxng_extra import standalone_searx as sas
 from tests import SearxTestCase
 
 

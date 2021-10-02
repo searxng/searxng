@@ -15,7 +15,7 @@ Example to use this script:
 
 .. code::  bash
 
-    $ python3 searx_extra/standalone_searx.py rain
+    $ python3 searxng_extra/standalone_searx.py rain
 
 Example to run it from python:
 
@@ -31,7 +31,7 @@ Example to run it from python:
 ... engine_cs = list(searx.engines.categories.keys())
 ... # load module
 ... spec = importlib.util.spec_from_file_location(
-...     'utils.standalone_searx', 'searx_extra/standalone_searx.py')
+...     'utils.standalone_searx', 'searxng_extra/standalone_searx.py')
 ... sas = importlib.util.module_from_spec(spec)
 ... spec.loader.exec_module(sas)
 ... # use function from module

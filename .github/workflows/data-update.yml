@@ -39,7 +39,7 @@ jobs:
 
       - name: Fetch data
         env:
-          FETCH_SCRIPT: ./searx_extra/update/${{ matrix.fetch }}
+          FETCH_SCRIPT: ./searxng_extra/update/${{ matrix.fetch }}
         run: |
           V=1 ./manage pyenv.cmd python "$FETCH_SCRIPT"
 
