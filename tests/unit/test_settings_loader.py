@@ -58,14 +58,14 @@ class TestUserSettings(SearxTestCase):
 
     def test_user_settings_not_found(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': '/dev/null'}):
+                        {'SEARXNG_SETTINGS_PATH': '/dev/null'}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('load the default settings from'))
             self.assertEqual(settings['server']['secret_key'], "ultrasecretkey")
 
     def test_user_settings(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': join(test_dir, 'settings/user_settings_simple.yml')}):
+                        {'SEARXNG_SETTINGS_PATH': join(test_dir, 'settings/user_settings_simple.yml')}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
@@ -73,7 +73,7 @@ class TestUserSettings(SearxTestCase):
 
     def test_user_settings_remove(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': join(test_dir, 'settings/user_settings_remove.yml')}):
+                        {'SEARXNG_SETTINGS_PATH': join(test_dir, 'settings/user_settings_remove.yml')}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
@@ -85,7 +85,7 @@ class TestUserSettings(SearxTestCase):
 
     def test_user_settings_remove2(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': join(test_dir, 'settings/user_settings_remove2.yml')}):
+                        {'SEARXNG_SETTINGS_PATH': join(test_dir, 'settings/user_settings_remove2.yml')}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
@@ -102,7 +102,7 @@ class TestUserSettings(SearxTestCase):
 
     def test_user_settings_keep_only(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': join(test_dir, 'settings/user_settings_keep_only.yml')}):
+                        {'SEARXNG_SETTINGS_PATH': join(test_dir, 'settings/user_settings_keep_only.yml')}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             engine_names = [engine['name'] for engine in settings['engines']]
@@ -112,7 +112,7 @@ class TestUserSettings(SearxTestCase):
 
     def test_custom_settings(self):
         with patch.dict(settings_loader.environ,
-                        {'SEARX_SETTINGS_PATH': join(test_dir, 'settings/user_settings.yml')}):
+                        {'SEARXNG_SETTINGS_PATH': join(test_dir, 'settings/user_settings.yml')}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('load the user settings from'))
             self.assertEqual(settings['server']['port'], 9000)

@@ -288,7 +288,7 @@ The uWSGI-App for the archlinux dsitros is configured in
 least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 ``http``::
 
-  env = SEARX_SETTINGS_PATH=/etc/searx/settings.yml
+  env = SEARXNG_SETTINGS_PATH=/etc/searx/settings.yml
   http = 127.0.0.1:8888
 
   chdir = /usr/local/searx/searx-src/searx

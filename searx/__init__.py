@@ -62,7 +62,7 @@ def logging_config_debug():
     except ImportError:
         coloredlogs = None
 
-    log_level = os.environ.get('SEARX_DEBUG_LOG_LEVEL', 'DEBUG')
+    log_level = os.environ.get('SEARXNG_DEBUG_LOG_LEVEL', 'DEBUG')
     if coloredlogs and is_color_terminal():
         level_styles = {
             'spam': {'color': 'green', 'faint': True},

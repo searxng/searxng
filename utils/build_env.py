@@ -12,7 +12,7 @@ sys.path.insert(0, repo_root)
 
 # Assure that the settings file from reposetorie's working tree is used to
 # generate the build_env, not from /etc/searx/settings.yml.
-os.environ['SEARX_SETTINGS_PATH'] = join(repo_root, 'etc', 'settings.yml')
+os.environ['SEARXNG_SETTINGS_PATH'] = join(repo_root, 'etc', 'settings.yml')
 
 def _env(*arg, **kwargs):
     val = get_setting(*arg, **kwargs)
@@ -29,15 +29,15 @@ def _env(*arg, **kwargs):
 name_val = [
 
     ('SEARX_URL'              , 'server.base_url'),
-    ('SEARX_PORT'             , 'server.port'),
-    ('SEARX_BIND_ADDRESS'     , 'server.bind_address'),
+    ('SEARXNG_PORT'             , 'server.port'),
+    ('SEARXNG_BIND_ADDRESS'     , 'server.bind_address'),
 
 ]
 
 brand_env = 'utils' + sep + 'brand.env'
 
 # Some defaults in the settings.yml are taken from the environment,
-# e.g. SEARX_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
+# e.g. SEARXNG_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
 # 'brand.env' file is created these enviroment variables should be unset first::
 
 _unset = object()
@@ -51,7 +51,7 @@ for name, option in name_val:
 from searx.version import GIT_URL, GIT_BRANCH
 from searx import get_setting
 
-print('build %s (settings from: %s)' % (brand_env, os.environ['SEARX_SETTINGS_PATH']))
+print('build %s (settings from: %s)' % (brand_env, os.environ['SEARXNG_SETTINGS_PATH']))
 sys.path.insert(0, repo_root)
 
 with open(repo_root + sep + brand_env, 'w', encoding='utf-8') as f:

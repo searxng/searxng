@@ -35,10 +35,10 @@ class SearxRobotLayer():
         # - debug mode: https://flask.palletsprojects.com/quickstart/#debug-mode
         # - Flask.run(..): https://flask.palletsprojects.com/api/#flask.Flask.run
 
-        os.environ['SEARX_DEBUG'] = '0'
+        os.environ['SEARXNG_DEBUG'] = '0'
 
         # set robot settings path
-        os.environ['SEARX_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
+        os.environ['SEARXNG_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
 
         # run the server
         self.server = subprocess.Popen(  # pylint: disable=consider-using-with
@@ -52,7 +52,7 @@ class SearxRobotLayer():
     def tearDown(self):
         os.kill(self.server.pid, 9)
         # remove previously set environment variable
-        del os.environ['SEARX_SETTINGS_PATH']
+        del os.environ['SEARXNG_SETTINGS_PATH']
 
 
 def run_robot_tests(tests):

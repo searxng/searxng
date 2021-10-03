@@ -24,7 +24,7 @@ settings.yml location
 
 The initial ``settings.yml`` we be load from these locations:
 
-1. the full path specified in the ``SEARX_SETTINGS_PATH`` environment variable.
+1. the full path specified in the ``SEARXNG_SETTINGS_PATH`` environment variable.
 2. ``/etc/searx/settings.yml``
 
 If these files don't exist (or are empty or can't be read), SearXNG uses the
@@ -74,7 +74,7 @@ Global Settings
      instance_name:  "SearXNG"  # displayed name
      contact_url: false         # mailto:contact@example.com
 
-``debug`` : ``$SEARX_DEBUG``
+``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
 
@@ -114,12 +114,12 @@ Global Settings
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
-``port`` & ``bind_address``: :ref:`buildenv SEARX_PORT & SEARX_BIND_ADDRESS <make buildenv>`
+``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARXNG_BIND_ADDRESS <make buildenv>`
   Port number and *bind address* of the SearXNG web application if you run it
   directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
   Apache or Nginx.
 
-``secret_key`` : ``$SEARX_SECRET``
+``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
 ``image_proxy`` :

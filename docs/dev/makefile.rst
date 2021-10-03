@@ -109,8 +109,8 @@ from the YAML configuration:
 
 - ``SEARX_URL`` from :ref:`server.base_url <settings global server>` (aka
   ``PUBLIC_URL``)
-- ``SEARX_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
-- ``SEARX_PORT`` from :ref:`server.port <settings global server>`
+- ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
+- ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`
 
 .. _make run:
 
@@ -124,7 +124,7 @@ browser (:man:`xdg-open`)::
 
    $ make run
    PYENV     OK
-   SEARX_DEBUG=1 ./manage.sh pyenv.cmd python ./searx/webapp.py
+   SEARXNG_DEBUG=1 ./manage.sh pyenv.cmd python ./searx/webapp.py
    ...
    INFO:werkzeug: * Running on http://127.0.0.1:8888/ (Press CTRL+C to quit)
 
@@ -210,15 +210,15 @@ by underline::
 
     make search.checker.google_news
 
-To see HTTP requests and more use SEARX_DEBUG::
+To see HTTP requests and more use SEARXNG_DEBUG::
 
-    make SEARX_DEBUG=1 search.checker.google_news
+    make SEARXNG_DEBUG=1 search.checker.google_news
 
 .. _3xx: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_redirection
 
 To filter out HTTP redirects (3xx_)::
 
-    make SEARX_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
+    make SEARXNG_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
     ...
     Engine google news                   Checking
     https://news.google.com:443 "GET /search?q=life&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0

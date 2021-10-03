@@ -133,17 +133,17 @@ ${fedora_build}
 
     .. code-block:: sh
 
-       $ sudo -H mkdir -p \"$(dirname ${SEARX_SETTINGS_PATH})\"
+       $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
        $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searx/settings.yml\" \\
-                    \"${SEARX_SETTINGS_PATH}\"
+                    \"${SEARXNG_SETTINGS_PATH}\"
 
   .. group-tab:: searx/settings.yml
 
     .. code-block:: sh
 
-       $ sudo -H mkdir -p \"$(dirname ${SEARX_SETTINGS_PATH})\"
+       $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
        $ sudo -H cp \"$SEARX_SRC/searx/settings.yml\" \\
-                    \"${SEARX_SETTINGS_PATH}\"
+                    \"${SEARXNG_SETTINGS_PATH}\"
 
 .. tabs::
 
@@ -151,7 +151,7 @@ ${fedora_build}
 
     .. code-block:: sh
 
-       $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \"$SEARX_SETTINGS_PATH\"
+       $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \"$SEARXNG_SETTINGS_PATH\"
 
 .. END searx config
 
@@ -164,16 +164,16 @@ ${fedora_build}
     .. code-block:: sh
 
        # enable debug ..
-       $ sudo -H sed -i -e \"s/debug : False/debug : True/g\" \"$SEARX_SETTINGS_PATH\"
+       $ sudo -H sed -i -e \"s/debug : False/debug : True/g\" \"$SEARXNG_SETTINGS_PATH\"
 
        # start webapp
        $ sudo -H -u ${SERVICE_USER} -i
        (${SERVICE_USER})$ cd ${SEARX_SRC}
-       (${SERVICE_USER})$ export SEARX_SETTINGS_PATH=\"${SEARX_SETTINGS_PATH}\"
+       (${SERVICE_USER})$ export SEARXNG_SETTINGS_PATH=\"${SEARXNG_SETTINGS_PATH}\"
        (${SERVICE_USER})$ python searx/webapp.py
 
        # disable debug
-       $ sudo -H sed -i -e \"s/debug : True/debug : False/g\" \"$SEARX_SETTINGS_PATH\"
+       $ sudo -H sed -i -e \"s/debug : True/debug : False/g\" \"$SEARXNG_SETTINGS_PATH\"
 
 Open WEB browser and visit http://$SEARX_INTERNAL_HTTP .  If you are inside a
 container or in a script, test with curl:

@@ -105,17 +105,17 @@ export DOCS_BUILD
 buildenv() {
 
     # settings file from repository's working tree are used by default
-    SEARX_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
+    SEARXNG_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
 
     if [ -r '/etc/searx/settings.yml' ]; then
         if ask_yn "should settings read from: /etc/searx/settings.yml"; then
-            SEARX_SETTINGS_PATH='/etc/searx/settings.yml'
+            SEARXNG_SETTINGS_PATH='/etc/searx/settings.yml'
         fi
     fi
-    export SEARX_SETTINGS_PATH
+    export SEARXNG_SETTINGS_PATH
     (
         set -e
-        SEARX_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
+        SEARXNG_DEBUG=1 pyenv.cmd python utils/build_env.py 2>&1 \
             | prefix_stdout "${_Blue}BUILDENV${_creset}  "
     )
     return "${PIPESTATUS[0]}"
