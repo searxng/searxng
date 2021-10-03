@@ -25,7 +25,7 @@ pylint.FILES() {
     # These py files are linted by test.pylint(), all other files are linted by
     # test.pep8()
 
-    grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searx_extra tests
+    grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searxng_extra tests
 }
 
 YAMLLINT_FILES=()
@@ -328,11 +328,11 @@ data.all() {
         data.useragents
         data.osm_keys_tags
         build_msg DATA "update searx/data/ahmia_blacklist.txt"
-        python searx_extra/update/update_ahmia_blacklist.py
+        python searxng_extra/update/update_ahmia_blacklist.py
         build_msg DATA "update searx/data/wikidata_units.json"
-        python searx_extra/update/update_wikidata_units.py
+        python searxng_extra/update/update_wikidata_units.py
         build_msg DATA "update searx/data/currencies.json"
-        python searx_extra/update/update_currencies.py
+        python searxng_extra/update/update_currencies.py
     )
 }
 
@@ -341,7 +341,7 @@ data.languages() {
     (   set -e
         pyenv.activate
         build_msg ENGINES "fetch languages .."
-        python searx_extra/update/update_languages.py
+        python searxng_extra/update/update_languages.py
         build_msg ENGINES "update update searx/languages.py"
         build_msg DATA "update searx/data/engines_languages.json"
     )
@@ -350,13 +350,13 @@ data.languages() {
 
 data.useragents() {
     build_msg DATA "update searx/data/useragents.json"
-    pyenv.cmd python searx_extra/update/update_firefox_version.py
+    pyenv.cmd python searxng_extra/update/update_firefox_version.py
     dump_return $?
 }
 
 data.osm_keys_tags() {
     build_msg DATA "update searx/data/osm_keys_tags.json"
-    pyenv.cmd python searx_extra/update/update_osm_keys_tags.py
+    pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
     dump_return $?
 }
 
@@ -524,8 +524,8 @@ node.clean() {
 }
 
 pygments.less() {
-    build_msg PYGMENTS "searx_extra/update/update_pygments.py"
-    if ! pyenv.cmd python searx_extra/update/update_pygments.py; then
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    if ! pyenv.cmd python searxng_extra/update/update_pygments.py; then
         build_msg PYGMENTS "building LESS files for pygments failed"
         return 1
     fi

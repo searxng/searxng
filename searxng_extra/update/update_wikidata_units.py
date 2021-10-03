@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+# pylint: disable=missing-module-docstring
 
 import json
 import collections
@@ -51,5 +54,5 @@ def get_wikidata_units_filename():
     return join(join(searx_dir, "data"), "wikidata_units.json")
 
 
-with open(get_wikidata_units_filename(), 'w') as f:
+with open(get_wikidata_units_filename(), 'w', encoding="utf8") as f:
     json.dump(get_data(), f, indent=4, ensure_ascii=False)

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 # This script generates languages.py from intersecting each engine's supported languages.
 #

@@ -32,7 +32,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    user/index
    admin/index
    dev/index
-   searx_extra/index
+   searxng_extra/index
    utils/index
    src/index
 

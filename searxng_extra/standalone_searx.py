@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-"""Script to run searx from terminal.
+# lint: pylint
+
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# (C) Copyright Contributors to the SearXNG project.
+# (C) Copyright Contributors to the searx project (2014 - 2021)
+
+"""Script to run SearXNG from terminal.
 
 Getting categories without initiate the engine will only return `['general']`
 
@@ -15,7 +21,7 @@ Example to use this script:
 
 .. code::  bash
 
-    $ python3 searx_extra/standalone_searx.py rain
+    $ python3 searxng_extra/standalone_searx.py rain
 
 Example to run it from python:
 
@@ -31,7 +37,7 @@ Example to run it from python:
 ... engine_cs = list(searx.engines.categories.keys())
 ... # load module
 ... spec = importlib.util.spec_from_file_location(
-...     'utils.standalone_searx', 'searx_extra/standalone_searx.py')
+...     'utils.standalone_searx', 'searxng_extra/standalone_searx.py')
 ... sas = importlib.util.module_from_spec(spec)
 ... spec.loader.exec_module(sas)
 ... # use function from module
@@ -56,25 +62,8 @@ Example to run it from python:
     },
     "suggestions": [...]
 }
-"""  # noqa: E501
-# pylint: disable=pointless-string-statement
-'''
-searx is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+""" # pylint: disable=line-too-long
 
-searx is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
-
-(C) 2016- by Alexandre Flament, <alex@al-f.net>
-'''
-# pylint: disable=wrong-import-position
 import argparse
 import sys
 from datetime import datetime

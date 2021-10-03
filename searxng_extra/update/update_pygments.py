@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: AGPL-3.0-or-later
 """
 Update pygments style
 
@@ -111,7 +112,7 @@ def get_output_filename(relative_name):
 
 def get_css(cssclass, style):
     result = f"""/*
-   this file is generated automatically by searx_extra/update/update_pygments.py
+   this file is generated automatically by searxng_extra/update/update_pygments.py
    using pygments version {pygments.__version__}
 */\n\n"""
     css_text = HtmlFormatter(style=style).get_style_defs(cssclass)
