@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # lint: pylint
-# pylint: disable=missing-function-docstring
+# SPDX-License-Identifier: AGPL-3.0-or-later
 """Fetch OSM keys and tags.
 
 To get the i18n names, the scripts uses `Wikidata Query Service`_ instead of for

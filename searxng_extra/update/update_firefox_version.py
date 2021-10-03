@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 import json
 import requests
@@ -16,7 +17,7 @@ NORMAL_REGEX = re.compile('^[0-9]+\.[0-9](\.[0-9])?$')
 # BETA_REGEX = re.compile('.*[0-9]b([0-9\-a-z]+)$')
 # ESR_REGEX = re.compile('^[0-9]+\.[0-9](\.[0-9])?esr$')
 
-# 
+#
 useragents = {
     "versions": (),
     "os": ('Windows NT 10.0; WOW64',

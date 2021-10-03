@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 # This script saves Ahmia's blacklist for onion sites.
 # More info in https://ahmia.fi/blacklist/
