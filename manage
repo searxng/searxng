@@ -266,7 +266,7 @@ weblate.push.translations() {
     if [ "$exitcode" -eq 42 ]; then
         return 0
     fi
-    if [ "$exitcode" ]; then
+    if [ "$exitcode" -gt 0 ]; then
        return $exitcode
     fi
     (
