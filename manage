@@ -240,7 +240,7 @@ weblate.push.translations() {
     # 5. Notify Weblate to pull updated 'master' & 'translations' branch.
 
     local messages_pot diff_messages_pot last_commit_hash last_commit_detail \
-          last_commit_message exitcode
+          exitcode
     messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
     (   set -e
         pyenv.activate
@@ -301,11 +301,12 @@ weblate.push.translations() {
         # git add/commit/push
         last_commit_hash=$(git log -n1  --pretty=format:'%h')
         last_commit_detail=$(git log -n1 --pretty=format:'%h - %as - %aN <%ae>' "${last_commit_hash}")
-        last_commit_message="[translations] update messages.pot and messages.po files\nFrom ${last_commit_detail}"
 
         pushd "${TRANSLATIONS_WORKTREE}"
         git add searx/translations
-        git commit -m "${last_commit_message}"
+        git commit \
+            -m "[translations] update messages.pot and messages.po files" \
+            -m "From ${last_commit_detail}"
         git push
         popd
 
