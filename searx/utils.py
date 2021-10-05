@@ -380,9 +380,12 @@ def _match_language(lang_code, lang_list=[], custom_aliases={}):  # pylint: disa
         return lang_code
 
     # try to get the most likely country for this language
-    subtags = get_global('likely_subtags').get(lang_code)
+    subtags = get_global('likely_subtags').get(lang_code.replace('-', '_'))
     if subtags:
-        subtag_parts = subtags.split('_')
+        subtags = subtags.replace('_', '-')
+        if subtags in lang_list:
+            return subtags
+        subtag_parts = subtags.split('-')
         new_code = subtag_parts[0] + '-' + subtag_parts[-1]
         if new_code in custom_aliases:
             new_code = custom_aliases[new_code]
@@ -403,6 +406,12 @@ def match_language(locale_code, lang_list=[], custom_aliases={}, fallback='en-US
     locale_parts = locale_code.split('-')
     lang_code = locale_parts[0]
 
+    # if locale_code has script, try matching without it
+    if len(locale_parts) > 2:
+        language = _match_language(lang_code + '-' + locale_parts[-1], lang_list, custom_aliases)
+        if language:
+            return language
+
     # try to get language using an equivalent country code
     if len(locale_parts) > 1:
         country_alias = get_global('territory_aliases').get(locale_parts[-1])
@@ -412,8 +421,9 @@ def match_language(locale_code, lang_list=[], custom_aliases={}, fallback='en-US
                 return language
 
     # try to get language using an equivalent language code
-    alias = get_global('language_aliases').get(lang_code)
+    alias = get_global('language_aliases').get(lang_code.replace('-', '_'))
     if alias:
+        alias = alias.replace('_', '-')
         language = _match_language(alias, lang_list, custom_aliases)
         if language:
             return language
