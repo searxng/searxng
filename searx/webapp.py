@@ -398,6 +398,11 @@ def _get_enable_categories(all_categories):
     return [x for x in all_categories if x in enabled_categories]
 
 
+def get_locale_rfc5646(locale):
+    parts = locale.split('_')
+    return parts[0].lower() + '-' + parts[-1].upper()
+
+
 def render(template_name, override_theme=None, **kwargs):
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
@@ -420,6 +425,8 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
+    kwargs['locale_rfc5646'] = get_locale_rfc5646(locale)
+
     if locale in RTL_LOCALES and 'rtl' not in kwargs:
         kwargs['rtl'] = True
     if 'current_language' not in kwargs:
