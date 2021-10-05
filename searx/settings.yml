@@ -744,6 +744,12 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: imdb
+    engine: imdb
+    shortcut: imdb
+    timeout: 6.0
+    disabled: true
+
   - name: ina
     engine: ina
     shortcut: in
