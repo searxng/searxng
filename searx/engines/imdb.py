@@ -81,15 +81,25 @@ def response(resp):
             content += entry['s']
 
         # imageUrl is the image itself, it is not a thumb!
-        # image_url = entry['i']['imageUrl']
-
+        image_url = entry.get('i', {}).get('imageUrl')
+        if image_url:
+            # get thumbnail
+            image_url_name, image_url_prefix = image_url.rsplit('.', 1)
+            # recipe to get the magic value:
+            #  * search on imdb.com, look at the URL of the thumbnail on the right side of the screen
+            #  * search using the imdb engine, compare the imageUrl and thumbnail URL
+            # QL75 : JPEG quality (?)
+            # UX280 : resize to width 320
+            # 280,414 : size of the image (add white border)
+            magic = 'QL75_UX280_CR0,0,280,414_'
+            if not image_url_name.endswith('_V1_'):
+                magic = '_V1_' + magic
+            image_url = image_url_name + magic + '.' + image_url_prefix
         results.append({
             "title":  title,
             "url": href_base.format(category=categ, entry_id=entry_id),
             "content": content,
-            # "thumbnail" : image_url,
-            # "template": "videos.html",
-
+            "img_src" : image_url,
         })
 
     return results
