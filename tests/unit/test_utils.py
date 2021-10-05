@@ -92,6 +92,14 @@ class TestUtils(SearxTestCase):
         self.assertEqual(utils.match_language('es', [], fallback='fallback'), 'fallback')
         self.assertEqual(utils.match_language('ja', ['jp'], {'ja': 'jp'}), 'jp')
 
+        # handle script tags
+        self.assertEqual(utils.match_language('zh-CN', ['zh-Hans-CN', 'zh-Hant-TW']), 'zh-Hans-CN')
+        self.assertEqual(utils.match_language('zh-TW', ['zh-Hans-CN', 'zh-Hant-TW']), 'zh-Hant-TW')
+        self.assertEqual(utils.match_language('zh-Hans-CN', ['zh-CN', 'zh-TW']), 'zh-CN')
+        self.assertEqual(utils.match_language('zh-Hant-TW', ['zh-CN', 'zh-TW']), 'zh-TW')
+        self.assertEqual(utils.match_language('zh-Hans', ['zh-CN', 'zh-TW', 'zh-HK']), 'zh-CN')
+        self.assertEqual(utils.match_language('zh-Hant', ['zh-CN', 'zh-TW', 'zh-HK']), 'zh-TW')
+
         aliases = {'en-GB': 'en-UK', 'he': 'iw'}
 
         # guess country
