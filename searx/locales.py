@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`UI_LOCALE_CODES` and
-:py:obj:`RTL_LOCALES`."""
+"""Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
+"""
 
-from typing import List, Set
+from typing import Set
 import os
 import pathlib
 
@@ -12,17 +12,14 @@ from babel import Locale
 
 LOCALE_NAMES = {
     "oc": "Occitan",
-    "nl_BE": "Vlaams (Dutch, Belgium)",
+    "nl-BE": "Vlaams (Dutch, Belgium)",
 }
-"""Mapping of locales and their description.  Locales e.g. 'fr' or 'pt_BR'
-(delimiter is *underline* '_')"""
-
-UI_LOCALE_CODES: List[str] = []
-"""List of locales e.g. 'fr' or 'pt-BR' (delimiter is '-')"""
+"""Mapping of locales and their description.  Locales e.g. 'fr' or 'pt-BR'
+(delimiter is *underline* '-')"""
 
 RTL_LOCALES: Set[str] = set()
-"""List of *Right-To-Left* locales e.g. 'he' or 'fa_IR' (delimiter is
-*underline* '_')"""
+"""List of *Right-To-Left* locales e.g. 'he' or 'fa-IR' (delimiter is
+*underline* '-')"""
 
 
 def _get_name(locale, language_code):
@@ -37,7 +34,7 @@ def _get_locale_name(locale, locale_name):
     """Get locale name e.g. 'Français - fr' or 'Português (Brasil) - pt-BR'
 
     :param locale: instance of :py:class:`Locale`
-    :param locale_name: name e.g. 'fr'  or 'pt_BR'
+    :param locale_name: name e.g. 'fr'  or 'pt_BR' (delimiter is *underscore*)
     """
     native_language, native_territory = _get_name(locale, locale_name)
     english_language, english_territory = _get_name(locale, 'en')
@@ -54,22 +51,19 @@ def _get_locale_name(locale, locale_name):
 
 
 def initialize_locales(directory):
-    """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`UI_LOCALE_CODES` and
-    :py:obj:`RTL_LOCALES`.
+    """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
     """
-    global UI_LOCALE_CODES  # pylint: disable=global-statement
     for dirname in sorted(os.listdir(directory)):
         # Based on https://flask-babel.tkte.ch/_modules/flask_babel.html#Babel.list_translations
         if not os.path.isdir( os.path.join(directory, dirname, 'LC_MESSAGES') ):
             continue
-        info = LOCALE_NAMES.get(dirname)
+        locale_name = dirname.replace('_', '-')
+        info = LOCALE_NAMES.get(locale_name)
         if not info:
             locale = Locale.parse(dirname)
-            LOCALE_NAMES[dirname] = _get_locale_name(locale, dirname)
+            LOCALE_NAMES[locale_name] = _get_locale_name(locale, dirname)
             if locale.text_direction == 'rtl':
-                RTL_LOCALES.add(dirname)
-
-    UI_LOCALE_CODES = [l.replace('_', '-') for l in LOCALE_NAMES]
+                RTL_LOCALES.add(locale_name)
 
 
 initialize_locales(pathlib.Path(__file__).parent / 'translations')
