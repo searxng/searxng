@@ -39,7 +39,7 @@ html {
   font-size: 0.9em;
   .text-size-adjust;
 
-  color: var(--color-font);
+  color: var(--color-base-font);
   padding: 0;
   margin: 0;
 }
@@ -76,7 +76,7 @@ footer {
   padding: 1rem 0;
   width: 100%;
   text-align: center;
-  background-color: var(--color-footer-background);
+  background-color: var(--color-header-footer-background);
   border-top: 1px solid var(--color-base-border);
   overflow: hidden;
 
@@ -99,10 +99,10 @@ footer {
 
 input[type="submit"],
 #results button[type="submit"] {
-  padding: 0.5rem;
+  padding: 0.7rem;
   display: inline-block;
-  background: var(--color-download-button-background);
-  color: var(--color-download-button-font);
+  background: var(--color-btn-background);
+  color: var(--color-btn-font);
   .rounded-corners;
 
   border: 0;
@@ -145,7 +145,7 @@ article.result-images[data-vim-selected]::before {
 }
 
 .result {
-  margin: 19px 0 18px 0;
+  margin: @results-margin 0;
   padding: 0;
 
   h3 {
@@ -191,7 +191,7 @@ article.result-images[data-vim-selected]::before {
     line-height: 1.24;
 
     .highlight {
-      color: var(--color-black);
+      color: var(--color-result-description-highlight-font);
       background: inherit;
       font-weight: bold;
     }
@@ -226,7 +226,6 @@ article.result-images[data-vim-selected]::before {
       width: 20em;
       min-width: 20em;
       min-height: 8em;
-      // background: var(--color-base-light);
     }
 
     &.image {
@@ -270,9 +269,8 @@ article.result-images[data-vim-selected]::before {
 }
 
 .highlight {
-  color: var(--color-highlight);
+  color: var(--color-result-link-font-highlight);
   background: inherit;
-  font-weight: bold;
 }
 
 .result-images {
@@ -288,7 +286,7 @@ article.result-images[data-vim-selected]::before {
     padding: 0;
     border: none;
     max-height: 200px;
-    background: var(--color-base-dark);
+    background: var(--color-result-image-background);
   }
 
   span a {
@@ -445,14 +443,14 @@ article.result-images[data-vim-selected]::before {
 #search_url .title,
 #apis .title {
   margin: 2em 0 0.5em 0;
-  color: var(--color-font);
+  color: var(--color-base-font);
 }
 
 #answers {
   grid-area: answers;
   border: 1px solid var(--color-base-border);
   padding: 0.9em;
-  box-shadow: 0 0 5px var(--color-base-shadow);
+  .rounded-corners;
 
   h4 {
     display: none;
@@ -481,7 +479,7 @@ article.result-images[data-vim-selected]::before {
     border: 1px solid var(--color-base-border);
     padding: 0.9em;
     font-size: 0.9em;
-    box-shadow: 0 0 5px var(--color-base-shadow);
+    .rounded-corners;
 
     h2 {
       margin: 0 0 0.5em 0;
@@ -574,17 +572,18 @@ article.result-images[data-vim-selected]::before {
   padding: 0;
   font-size: 1em;
   box-shadow: 0 0 5px var(--color-base-shadow);
-  background: white;
+  background: var(--color-base-background);
   position: fixed;
   bottom: 8rem;
   left: @results-width + @results-offset + (0.5 * @results-gap - 1.2em);
   transition: opacity 0.5s;
   opacity: 0;
+  .rounded-corners;
 
   a {
     display: block;
     margin: 0;
-    padding: 0.6em;
+    padding: 0.7em;
   }
 }
 

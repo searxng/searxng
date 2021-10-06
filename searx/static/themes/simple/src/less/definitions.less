@@ -5,14 +5,25 @@
  */
 
 html {
-  /// Basic Colors
-  --color-base: #3498db;
-  --color-base-dark: #084999;
-  --color-base-light: #ecf0f1;
-  --color-highlight: #094089;
-  --color-black: #000;
-  --color-base-border: #d7d7d7;
+  /// Base Colors
+  --color-base: #084999;
+  --color-base-font: #444;
+  --color-base-border: #ddd;
   --color-base-shadow: #ccc;
+  --color-base-background: #fff;
+  --color-url-font: #29314d;
+  --color-url-visited-font: #684898;
+  --color-header-footer-background: #f7f7f7;
+
+  /// Button Colors
+  --color-btn-background: #084999;
+  --color-btn-font: #fff;
+
+  /// Search Input Colors
+  --color-search-border: #ddd;
+  --color-search-background: #fff;
+  --color-search-font: #222;
+  --color-search-background-hover: #084999;
 
   /// Modal Colors
   --color-error: #db3434;
@@ -22,68 +33,46 @@ html {
   --color-success: #42db34;
   --color-success-background: lighten(#42db34, 40%);
 
-  /// General Colors
-  --color-font: #444;
-  --color-font-light: #888;
-  --color-url-font: #29314d;
-  --color-url-visited-font: #684898;
+  /// Categories Colors
+  --color-categories-item-selected-font: #084999;
+  --color-categories-item-border-selected: #084999;
 
-  /// Header
-  --color-header-background: #f7f7f7;
-
-  /// Footer
-  --color-footer-background: #f7f7f7;
-
-  /// Search-Input
-  --color-search-border: var(--color-base);
-  --color-search-background: #fff;
-  --color-search-font: #222;
-  --color-search-help: white;
-
-  /// Autocompleter
-  --color-autocompleter-background: white;
-
-  /// Categories
-  --color-categories-item-selected: var(--color-base);
-  --color-categories-item-selected-font: #fff;
-  --color-categories-item-border-selected: var(--color-base-dark);
-  --color-categories-item-border-unselected: #e8e7e6;
+  /// Autocompleter Colors
+  --color-autocomplete-background: #fff;
+  --color-autocomplete-background-hover: #f7f7f7;
 
   /// Results
-  --color-download-button-background: var(--color-base);
-  --color-download-button-font: #fff;
   --color-result-torrent-border: lightgray;
   --color-result-top-border: #e8e7e6;
   --color-result-vim-selected: #f7f7f7;
+  --color-result-description-highlight-font: #000;
 
   // Link to result
-  --color-result-link-font: var(--color-base-dark);
+  --color-result-link-font: #084999;
+  --color-result-link-font-highlight: #084999;
   --color-result-link-visited-font: var(--color-url-visited-font);
 
   // Url to result
-  --color-result-url-font: #25a55b;
-
-  // Publish Date
-  --color-result-publishdate-font: var(--color-font-light);
-
-  // Images
-  --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
-  --color-result-image-span-font: #fff;
+  --color-result-url-font: #000;
 
   // Search-URL
   --color-result-search-url-border: #888;
   --color-result-search-url-font: #444;
 
+  // Publish Date
+  --color-result-publishdate-font: #777;
+
+  // Images
+  --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
+  --color-result-image-span-font: #fff;
+  --color-result-image-background: #084999;
+
   /// Settings
   --color-settings-tr-hover: #ececec;
   --color-settings-engine-description-font: darken(#dcdcdc, 30%);
 
-  // Labels
-  --color-settings-return-background: var(--color-base);
-  --color-settings-return-font: #fff;
-
   /// Other
-  --color-engines-font: var(--color-font-light);
+  --color-engines-font: #888;
 
   /// From Toolkit
   --color-toolkit-badge-font: #fff;
@@ -94,16 +83,16 @@ html {
   --color-toolkit-dialog-background: #fff;
   --color-toolkit-tabs-label-border: #fff;
   --color-toolkit-tabs-section-border: #000;
-  --color-toolkit-select-border: #d7d7d7;
+  --color-toolkit-select-border: #ddd;
   --color-toolkit-checkbox-onoff-background: #dcdcdc;
   --color-toolkit-checkbox-onoff-label-shadow: rgba(0, 0, 0, 0.3);
-  --color-toolkit-checkbox-onoff-label-background: #3498db;
+  --color-toolkit-checkbox-onoff-label-background: #084999;
   --color-toolkit-checkbox-onoff-checked-background: #dcdcdc;
   --color-toolkit-checkbox-label-background: #fff;
   --color-toolkit-checkbox-label-shadow1: #fff;
   --color-toolkit-checkbox-label-shadow2: rgba(0, 0, 0, 0.5);
   --color-toolkit-checkbox-label-border: #333;
-  --color-toolkit-checkbox-input-border: #3498db;
+  --color-toolkit-checkbox-input-border: #084999;
   --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
   --color-toolkit-engine-tooltip-border: #ddd;
@@ -116,6 +105,7 @@ html {
 @results-offset: 10rem;
 @results-tablet-offset: 0.5rem;
 @results-gap: 5rem;
+@results-margin: 2rem;
 @search-width: 40rem;
 
 /// From style.less

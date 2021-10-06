@@ -5,11 +5,12 @@
   max-height: 0;
   overflow-y: hidden;
   text-align: left;
+  .rounded-corners;
 
   &:active,
   &:focus,
   &:hover {
-    background-color: var(--color-autocompoleter-background);
+    background-color: var(--color-autocomplete-background);
   }
 
   &:empty {
@@ -23,12 +24,13 @@
 
     > li {
       cursor: pointer;
-      padding: 5px 0 5px 10px;
+      padding: 8px 0 8px 8px;
 
       &.active,
       &:active,
-      &:focus {
-        background-color: var(--color-base);
+      &:focus,
+      &:hover {
+        background-color: var(--color-autocomplete-background-hover);
 
         a:active,
         a:focus,
@@ -45,8 +47,8 @@
 
   &.open {
     display: block;
-    background-color: var(--color-autocompleter-background);
-    border: 1px solid var(--color-base);
+    background-color: var(--color-autocomplete-background);
+    border: 1px solid var(--color-base-border);
     max-height: 500px;
     overflow-y: auto;
     z-index: 100;
@@ -63,7 +65,6 @@
   }
 
   .autocomplete > ul > li {
-    padding: 7px 0 7px 10px;
     border-bottom: 1px solid var(--color-result-top-border);
     text-align: left;
   }
