@@ -137,7 +137,7 @@ def update_engine_attributes(engine, engine_data):
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value
-        elif param_name != 'engine':
+        else:
             setattr(engine, param_name, param_value)
 
     # set default attributes
@@ -147,10 +147,34 @@ def update_engine_attributes(engine, engine_data):
 
 
 def set_language_attributes(engine):
-    # pylint: disable=protected-access
     # assign supported languages from json file
     if engine.name in ENGINES_LANGUAGES:
         engine.supported_languages = ENGINES_LANGUAGES[engine.name]
+
+    elif engine.engine in ENGINES_LANGUAGES:
+        # The key of the dictionary ENGINES_LANGUAGES is the *engine name*
+        # configured in settings.xml.  When multiple engines are configured in
+        # settings.yml to use the same origin engine (python module) these
+        # additional engines can use the languages from the origin engine.
+        # For this use the configured ``engine: ...`` from settings.yml
+        engine.supported_languages = ENGINES_LANGUAGES[engine.engine]
+
+    if hasattr(engine, 'language'):
+        # For an engine, when there is `language: ...` in the YAML settings, the
+        # engine supports only one language, in this case
+        # engine.supported_languages should contains this value defined in
+        # settings.yml
+        if engine.language not in engine.supported_languages:
+            raise ValueError(
+                "settings.yml - engine: '%s' / language: '%s' not supported" % (
+                    engine.name, engine.language ))
+
+        if isinstance(engine.supported_languages, dict):
+            engine.supported_languages = {
+                engine.language : engine.supported_languages[engine.language]
+            }
+        else:
+            engine.supported_languages = [engine.language]
 
     # find custom aliases for non standard language codes
     for engine_lang in engine.supported_languages:
@@ -172,6 +196,7 @@ def set_language_attributes(engine):
             'Accept-Language': 'ja-JP,ja;q=0.8,en-US;q=0.5,en;q=0.3',  # bing needs a non-English language
         }
         engine.fetch_supported_languages = (
+            # pylint: disable=protected-access
             lambda: engine._fetch_supported_languages(
                 get(engine.supported_languages_url, headers=headers))
         )
