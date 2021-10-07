@@ -234,9 +234,9 @@ def plugin_module_names():
     yield_plugins = set()
 
     # embedded plugins
-    for module_name in iter_modules(path=[dirname(__file__)]):
-        yield (module_name, False)
-        yield_plugins.add(module_name)
+    for module in iter_modules(path=[dirname(__file__)]):
+        yield (__name__ + "." + module.name, False)
+        yield_plugins.add(module.name)
     # external plugins
     for module_name in settings['plugins']:
         if module_name not in yield_plugins:
@@ -246,6 +246,6 @@ def plugin_module_names():
 
 def initialize(app):
     for module_name, external in plugin_module_names():
-        plugin = load_and_initialize_plugin(__name__ + "." + module_name.name, external, (app, settings))
+        plugin = load_and_initialize_plugin(module_name, external, (app, settings))
         if plugin:
             plugins.register(plugin)
