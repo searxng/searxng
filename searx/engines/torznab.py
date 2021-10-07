@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
 """Torznab WebAPI
 
 A engine that implements the `torznab WebAPI`_.
@@ -7,9 +8,9 @@ A engine that implements the `torznab WebAPI`_.
 
 """
 
+from datetime import datetime
 from urllib.parse import quote
 from lxml import etree
-from datetime import datetime
 
 from searx.exceptions import SearxEngineAPIException
 
@@ -17,7 +18,7 @@ from searx.exceptions import SearxEngineAPIException
 about = {
     "website": None,
     "wikidata_id": None,
-    "official_api_documentation": "https://torznab.github.io/spec-1.3-draft/torznab/Specification-v1.3.html#torznab-api-specification",
+    "official_api_documentation": "https://torznab.github.io/spec-1.3-draft",
     "use_official_api": True,
     "require_api_key": False,
     "results": 'XML',
@@ -105,7 +106,7 @@ def response(resp):
             result["publishedDate"] = datetime.strptime(
                 get_property(item, 'pubDate'), '%a, %d %b %Y %H:%M:%S %z')
         except (ValueError, TypeError) as e:
-            pass
+            logger.debug("ignore exception (publishedDate): %s", e)
 
         result["seed"] = get_torznab_attr(item, 'seeders')
 
