@@ -59,7 +59,6 @@ def sync_resource(base_path, resource_path, name, target_dir, plugin_dir):
 
 
 def prepare_package_resources(plugin, plugin_module_name):
-    # pylint: disable=consider-using-generator
     plugin_base_path = dirname(abspath(plugin.__file__))
 
     plugin_dir = plugin_module_name
@@ -80,24 +79,19 @@ def prepare_package_resources(plugin, plugin_module_name):
 
     if hasattr(plugin, "js_dependencies"):
         resources.extend(map(basename, plugin.js_dependencies))
-        plugin.js_dependencies = tuple(
-            [
-                sync_resource(
-                    plugin_base_path, x, plugin_module_name, target_dir, plugin_dir
-                )
-                for x in plugin.js_dependencies
-            ]
-        )
+        plugin.js_dependencies = ([
+            sync_resource(
+                plugin_base_path, x, plugin_module_name, target_dir, plugin_dir
+            ) for x in plugin.js_dependencies
+            ])
+
     if hasattr(plugin, "css_dependencies"):
         resources.extend(map(basename, plugin.css_dependencies))
-        plugin.css_dependencies = tuple(
-            [
-                sync_resource(
-                    plugin_base_path, x, plugin_module_name, target_dir, plugin_dir
-                )
-                for x in plugin.css_dependencies
-            ]
-        )
+        plugin.css_dependencies = ([
+            sync_resource(
+                plugin_base_path, x, plugin_module_name, target_dir, plugin_dir
+            ) for x in plugin.css_dependencies
+            ])
 
     for f in listdir(target_dir):
         if basename(f) not in resources:
