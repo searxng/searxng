@@ -35,10 +35,11 @@ api_key = ''
 # https://newznab.readthedocs.io/en/latest/misc/api/#predefined-categories
 torznab_categories = []
 
+def init(engine_settings=None): # pylint: disable=unused-argument
+    if len(base_url) < 1:
+        raise ValueError('missing torznab base_url')
 
 def request(query, params):
-    if len(base_url) < 1:
-        raise SearxEngineAPIException('missing torznab base_url')
 
     search_url = base_url + '?t=search&q={search_query}'
     if len(api_key) > 0:
@@ -47,13 +48,12 @@ def request(query, params):
         search_url += '&cat={torznab_categories}'
 
     params['url'] = search_url.format(
-        search_query=quote(query),
-        api_key=api_key,
-        torznab_categories=",".join(torznab_categories)
+        search_query = quote(query),
+        api_key = api_key,
+        torznab_categories = ",".join([str(x) for x in torznab_categories])
     )
 
     return params
-
 
 def response(resp):
     results = []
