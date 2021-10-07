@@ -1654,6 +1654,19 @@ engines:
       require_api_key: false
       results: HTML
 
+# torznab engine lets you query any torznab compatible indexer.
+# Using this engine in combination with Jackett (https://github.com/Jackett/Jackett)
+# opens the possibility to query a lot of public and private indexers directly from searXNG.
+#  - name: torznab
+#    engine: torznab
+#    shortcut: trz
+#    base_url: http://localhost:9117/api/v2.0/indexers/all/results/torznab
+#    enable_http: true # if using localhost
+#    api_key: xxxxxxxxxxxxxxx
+#    torznab_categories: # optional
+#     - 2000
+#     - 5000
+
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
 #  - name: ubuntuwiki
