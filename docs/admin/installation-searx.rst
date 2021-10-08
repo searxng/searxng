@@ -75,16 +75,16 @@ Configuration
    - :ref:`settings global`
    - :ref:`settings location`
    - :ref:`settings use_default_settings`
-   - :origin:`/etc/searx/settings.yml <utils/templates/etc/searx/use_default_settings.yml>`
+   - :origin:`/etc/searxng/settings.yml <utils/templates/etc/searx/use_default_settings.yml>`
 
-To create a initial ``/etc/searx/settings.yml`` you can start with a copy of the
+To create a initial ``/etc/searxng/settings.yml`` you can start with a copy of the
 file :origin:`utils/templates/etc/searx/use_default_settings.yml`.  This setup
 :ref:`use default settings <settings use_default_settings>` from
 :origin:`searx/settings.yml` and is recommended since :pull-searx:`2291` is merged.
 
 For a *minimal setup*, configure like shown below – replace ``searx@$(uname
 -n)`` with a name of your choice, set ``ultrasecretkey`` -- *and/or* edit
-``/etc/searx/settings.yml`` to your needs.
+``/etc/searxng/settings.yml`` to your needs.
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst
    :start-after: START searx config
