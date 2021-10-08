@@ -107,9 +107,9 @@ buildenv() {
     # settings file from repository's working tree are used by default
     SEARXNG_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
 
-    if [ -r '/etc/searx/settings.yml' ]; then
-        if ask_yn "should settings read from: /etc/searx/settings.yml"; then
-            SEARXNG_SETTINGS_PATH='/etc/searx/settings.yml'
+    if [ -r '/etc/searxng/settings.yml' ]; then
+        if ask_yn "should settings read from: /etc/searxng/settings.yml"; then
+            SEARXNG_SETTINGS_PATH='/etc/searxng/settings.yml'
         fi
     fi
     export SEARXNG_SETTINGS_PATH

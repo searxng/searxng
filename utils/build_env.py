@@ -11,7 +11,7 @@ repo_root = realpath(dirname(realpath(__file__)) + sep + '..')
 sys.path.insert(0, repo_root)
 
 # Assure that the settings file from reposetorie's working tree is used to
-# generate the build_env, not from /etc/searx/settings.yml.
+# generate the build_env, not from /etc/searxng/settings.yml.
 os.environ['SEARXNG_SETTINGS_PATH'] = join(repo_root, 'etc', 'settings.yml')
 
 def _env(*arg, **kwargs):
