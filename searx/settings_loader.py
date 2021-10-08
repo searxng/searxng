@@ -43,8 +43,16 @@ def get_user_settings_path():
     if environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
         return None
 
-    # if not, get it from searx code base or last solution from /etc/searx
-    return check_settings_yml('/etc/searx/settings.yml')
+    # if not, get it from searx code base or last solution from /etc/searxng
+    try:
+        return check_settings_yml('/etc/searxng/settings.yml')
+    except SearxSettingsException as e:
+        # fall back to searx settings
+        try:
+            return check_settings_yml('/etc/searx/settings.yml')
+        except SearxSettingsException:
+            # if none are found, raise the exception about SearXNG
+            raise e  # pylint: disable=raise-missing-from
 
 
 def update_dict(default_dict, user_dict):
