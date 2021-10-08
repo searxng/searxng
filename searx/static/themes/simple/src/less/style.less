@@ -40,6 +40,7 @@ html {
   .text-size-adjust;
 
   color: var(--color-base-font);
+  background-color: var(--color-base-background);
   padding: 0;
   margin: 0;
 }
@@ -76,8 +77,8 @@ footer {
   padding: 1rem 0;
   width: 100%;
   text-align: center;
-  background-color: var(--color-header-footer-background);
-  border-top: 1px solid var(--color-base-border);
+  background-color: var(--color-footer-background);
+  border-top: 1px solid var(--color-footer-border);
   overflow: hidden;
 
   p {
@@ -132,11 +133,11 @@ article[data-vim-selected]::before {
   padding: 2px;
   content: ">";
   font-weight: bold;
-  color: var(--color-base);
+  color: var(--color-result-vim-arrow);
 }
 
 article.result-images[data-vim-selected] {
-  background: var(--color-base);
+  background: var(--color-result-vim-arrow);
 }
 
 article.result-images[data-vim-selected]::before {
@@ -256,7 +257,7 @@ article.result-images[data-vim-selected]::before {
 
 .engines {
   float: right;
-  color: var(--color-engines-font);
+  color: var(--color-result-engines-font);
 
   span {
     font-size: smaller;
@@ -335,28 +336,6 @@ article.result-images[data-vim-selected]::before {
 
 .hidden {
   display: none !important;
-}
-
-.torrent_result {
-  border-left: 10px solid var(--color-result-torrent-border);
-  padding-left: 3px;
-
-  p {
-    margin: 3px;
-    font-size: 0.8em;
-  }
-
-  a {
-    color: var(--color-result-link-font);
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &:visited {
-      color: var(--color-result-link-visited-font);
-    }
-  }
 }
 
 #results {
@@ -448,8 +427,10 @@ article.result-images[data-vim-selected]::before {
 
 #answers {
   grid-area: answers;
-  border: 1px solid var(--color-base-border);
+  border: 1px solid var(--color-answer-border);
   padding: 0.9em;
+  margin-bottom: @results-margin;
+  color: var(--color-answer-font);
   .rounded-corners;
 
   h4 {
@@ -473,10 +454,11 @@ article.result-images[data-vim-selected]::before {
 #sidebar {
   grid-area: sidebar;
   word-wrap: break-word;
+  color: var(--color-sidebar-font);
 
   .infobox {
     margin: 10px 0 10px;
-    border: 1px solid var(--color-base-border);
+    border: 1px solid var(--color-sidebar-border);
     padding: 0.9em;
     font-size: 0.9em;
     .rounded-corners;
@@ -567,12 +549,12 @@ article.result-images[data-vim-selected]::before {
 }
 
 #backToTop {
-  border: 1px solid var(--color-base-border);
+  border: 1px solid var(--color-backtotop-border);
   margin: 0;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0 0 5px var(--color-base-shadow);
-  background: var(--color-base-background);
+  box-shadow: 0 0 5px var(--color-backtotop-shadow);
+  background: var(--color-backtotop-background);
   position: fixed;
   bottom: 8rem;
   left: @results-width + @results-offset + (0.5 * @results-gap - 1.2em);
@@ -611,6 +593,7 @@ article.result-images[data-vim-selected]::before {
   }
 
   #sidebar {
+    margin-bottom: @results-margin;
     padding: 0;
     float: none;
     border: none;
@@ -630,11 +613,6 @@ article.result-images[data-vim-selected]::before {
   }
 
   .result {
-    border-bottom: 1px solid var(--color-result-top-border);
-    margin: 0;
-    padding-top: 8px;
-    padding-bottom: 6px;
-
     h3 {
       margin: 0 0 1px 0;
     }
@@ -753,9 +731,14 @@ article.result-images[data-vim-selected]::before {
     margin: 0 5px 2px 5px;
   }
 
+  .infobox {
+    box-shadow: 0 0 5px var(--color-result-shadow);
+  }
+
   #corrections,
   #answers {
     margin: 0 5px 1em 5px;
+    box-shadow: 0 0 5px var(--color-result-shadow);
   }
 
   #results {
@@ -769,12 +752,17 @@ article.result-images[data-vim-selected]::before {
 
   .result {
     padding: 8px 10px 6px 10px;
+    margin: @results-tablet-offset;
+    border: 1px solid var(--color-result-border);
+    box-shadow: 0 0 5px var(--color-result-shadow);
+    .rounded-corners;
   }
 
   .result-images {
     margin: 0;
     padding: 0;
     border: none;
+    box-shadow: none;
   }
 }
 
