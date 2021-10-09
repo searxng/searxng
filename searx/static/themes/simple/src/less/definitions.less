@@ -4,40 +4,34 @@
  * To change the colors of the site, simple edit this variables
  */
 
+/// Light Theme
 html {
   /// Base Colors
   --color-base-font: #444;
   --color-base-background: #fff;
   --color-url-font: #29314d;
   --color-url-visited-font: #80b;
-
   /// Header Colors
   --color-header-background: #f7f7f7;
   --color-header-border: #ddd;
-
   /// Footer Colors
   --color-footer-background: #f7f7f7;
   --color-footer-border: #ddd;
-
   /// Sidebar Colors
   --color-sidebar-border: #ddd;
   --color-sidebar-font: #000;
-
   /// BackToTop Colors
   --color-backtotop-border: #ddd;
   --color-backtotop-background: #fff;
   --color-backtotop-shadow: #ccc;
-
   /// Button Colors
   --color-btn-background: #3050ff;
   --color-btn-font: #fff;
-
   /// Search Input Colors
   --color-search-border: #bbb;
   --color-search-background: #fff;
   --color-search-font: #222;
   --color-search-background-hover: #3050ff;
-
   /// Modal Colors
   --color-error: #db3434;
   --color-error-background: lighten(#db3434, 40%);
@@ -45,21 +39,17 @@ html {
   --color-warning-background: lighten(#dbba34, 40%);
   --color-success: #42db34;
   --color-success-background: lighten(#42db34, 40%);
-
   /// Categories Colors
   --color-categories-item-selected-font: #3050ff;
   --color-categories-item-border-selected: #3050ff;
-
   /// Autocomplete Colors
   --color-autocomplete-font: #000;
   --color-autocomplete-border: #bbb;
   --color-autocomplete-background: #fff;
   --color-autocomplete-background-hover: #f7f7f7;
-
   /// Answer Colors
   --color-answer-border: #ddd;
   --color-answer-font: #000;
-
   /// Results Colors
   --color-result-shadow: #ccc;
   --color-result-border: #ddd;
@@ -74,16 +64,13 @@ html {
   --color-result-engines-font: #777;
   --color-result-search-url-border: #ddd;
   --color-result-search-url-font: #000;
-
   // Images Colors
   --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
   --color-result-image-span-font: #fff;
   --color-result-image-background: #000bbb;
-
   /// Settings Colors
   --color-settings-tr-hover: #f7f7f7;
   --color-settings-engine-description-font: darken(#dcdcdc, 30%);
-
   /// Toolkit Colors
   --color-toolkit-badge-font: #fff;
   --color-toolkit-badge-background: #777;
@@ -106,6 +93,99 @@ html {
   --color-toolkit-engine-tooltip-background: #fff;
   --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
+}
+
+/// Dark Theme (autoswitch based on device pref)
+@media (prefers-color-scheme: dark) {
+  html {
+    /// Base Colors
+    --color-base-font: #bbb;
+    --color-base-background: #222;
+    --color-url-font: #8af;
+    --color-url-visited-font: #96b;
+    /// Header Colors
+    --color-header-background: #181818;
+    --color-header-border: #333;
+    /// Footer Colors
+    --color-footer-background: #181818;
+    --color-footer-border: #333;
+    /// Sidebar Colors
+    --color-sidebar-border: #333;
+    --color-sidebar-font: #fff;
+    /// BackToTop Colors
+    --color-backtotop-border: #333;
+    --color-backtotop-background: #181818;
+    --color-backtotop-shadow: #444;
+    /// Button Colors
+    --color-btn-background: #58f;
+    --color-btn-font: #fff;
+    /// Search Input Colors
+    --color-search-border: #444;
+    --color-search-background: #222;
+    --color-search-font: #fff;
+    --color-search-background-hover: #58f;
+    /// Modal Colors
+    --color-error: #f55b5b;
+    --color-error-background: darken(#db3434, 40%);
+    --color-warning: #f1d561;
+    --color-warning-background: darken(#dbba34, 40%);
+    --color-success: #79f56e;
+    --color-success-background: darken(#42db34, 40%);
+    /// Categories Colors
+    --color-categories-item-selected-font: #58f;
+    --color-categories-item-border-selected: #58f;
+    /// Autocomplete Colors
+    --color-autocomplete-font: #fff;
+    --color-autocomplete-border: #444;
+    --color-autocomplete-background: #222;
+    --color-autocomplete-background-hover: #181818;
+    /// Answer Colors
+    --color-answer-border: #ddd;
+    --color-answer-font: #fff;
+    /// Results Colors
+    --color-result-shadow: #444;
+    --color-result-border: #333;
+    --color-result-url-font: #fff;
+    --color-result-vim-selected: #181818;
+    --color-result-vim-arrow: #8af;
+    --color-result-description-highlight-font: #fff;
+    --color-result-link-font: #8af;
+    --color-result-link-font-highlight: #8af;
+    --color-result-link-visited-font: #96b;
+    --color-result-publishdate-font: #777;
+    --color-result-engines-font: #777;
+    --color-result-search-url-border: #333;
+    --color-result-search-url-font: #fff;
+    // Images Colors
+    --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
+    --color-result-image-span-font: #fff;
+    --color-result-image-background: #8af;
+    /// Settings Colors
+    --color-settings-tr-hover: #333;
+    --color-settings-engine-description-font: darken(#dcdcdc, 30%);
+    /// Toolkit Colors
+    --color-toolkit-badge-font: #fff;
+    --color-toolkit-badge-background: #777;
+    --color-toolkit-kbd-font: #000;
+    --color-toolkit-kbd-background: #fff;
+    --color-toolkit-dialog-border: #333;
+    --color-toolkit-dialog-background: #222;
+    --color-toolkit-tabs-label-border: #222;
+    --color-toolkit-tabs-section-border: #333;
+    --color-toolkit-select-border: #333;
+    --color-toolkit-checkbox-onoff-background: #ddd;
+    --color-toolkit-checkbox-onoff-label-shadow: rgba(0, 0, 0, 0.3);
+    --color-toolkit-checkbox-onoff-label-background: #58f;
+    --color-toolkit-checkbox-onoff-checked-background: #ddd;
+    --color-toolkit-checkbox-label-background: #fff;
+    --color-toolkit-checkbox-label-border: #333;
+    --color-toolkit-checkbox-input-border: #58f;
+    --color-toolkit-engine-tooltip-border: #333;
+    --color-toolkit-engine-tooltip-shadow: #444;
+    --color-toolkit-engine-tooltip-background: #222;
+    --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
+    --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
+  }
 }
 
 /// General Size
