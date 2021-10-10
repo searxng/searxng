@@ -85,7 +85,7 @@ from searx.utils import (
 )
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
-from searx.plugins import plugins
+from searx.plugins import plugins, initialize as plugin_initialize
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -157,25 +157,6 @@ app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
-
-# see https://flask.palletsprojects.com/en/1.1.x/cli/
-# True if "FLASK_APP=searx/webapp.py FLASK_ENV=development flask run"
-flask_run_development = (
-    os.environ.get("FLASK_APP") is not None
-    and os.environ.get("FLASK_ENV") == 'development'
-    and is_flask_run_cmdline()
-)
-
-# True if reload feature is activated of werkzeug, False otherwise (including uwsgi, etc..)
-#  __name__ != "__main__" if searx.webapp is imported (make test, make docs, uwsgi...)
-# see run() at the end of this file : searx_debug activates the reload feature.
-werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__main__")
-
-# initialize the engines except on the first run of the werkzeug server.
-if (not werkzeug_reloader
-    or (werkzeug_reloader
-        and os.environ.get("WERKZEUG_RUN_MAIN") == "true") ):
-    search_initialize(enable_checker=True)
 
 babel = Babel(app)
 
@@ -1349,6 +1330,27 @@ def config():
 @app.errorhandler(404)
 def page_not_found(_e):
     return render('404.html'), 404
+
+
+# see https://flask.palletsprojects.com/en/1.1.x/cli/
+# True if "FLASK_APP=searx/webapp.py FLASK_ENV=development flask run"
+flask_run_development = (
+    os.environ.get("FLASK_APP") is not None
+    and os.environ.get("FLASK_ENV") == 'development'
+    and is_flask_run_cmdline()
+)
+
+# True if reload feature is activated of werkzeug, False otherwise (including uwsgi, etc..)
+#  __name__ != "__main__" if searx.webapp is imported (make test, make docs, uwsgi...)
+# see run() at the end of this file : searx_debug activates the reload feature.
+werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__main__")
+
+# initialize the engines except on the first run of the werkzeug server.
+if (not werkzeug_reloader
+    or (werkzeug_reloader
+        and os.environ.get("WERKZEUG_RUN_MAIN") == "true") ):
+    plugin_initialize(app)
+    search_initialize(enable_checker=True)
 
 
 def run():

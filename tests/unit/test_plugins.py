@@ -10,6 +10,12 @@ def get_search_mock(query, **kwargs):
                 result_container=Mock(answers=dict()))
 
 
+class PluginMock():
+    default_on = False
+    name = 'Default plugin'
+    description = 'Default plugin description'
+
+
 class PluginStoreTest(SearxTestCase):
 
     def test_PluginStore_init(self):
@@ -18,14 +24,14 @@ class PluginStoreTest(SearxTestCase):
 
     def test_PluginStore_register(self):
         store = plugins.PluginStore()
-        testplugin = plugins.Plugin()
+        testplugin = PluginMock()
         store.register(testplugin)
 
         self.assertTrue(len(store.plugins) == 1)
 
     def test_PluginStore_call(self):
         store = plugins.PluginStore()
-        testplugin = plugins.Plugin()
+        testplugin = PluginMock()
         store.register(testplugin)
         setattr(testplugin, 'asdf', Mock())
         request = Mock()
@@ -40,8 +46,9 @@ class PluginStoreTest(SearxTestCase):
 class SelfIPTest(SearxTestCase):
 
     def test_PluginStore_init(self):
+        plugin = plugins.load_and_initialize_plugin('searx.plugins.self_info', False, (None, {}))
         store = plugins.PluginStore()
-        store.register(plugins.self_info)
+        store.register(plugin)
 
         self.assertTrue(len(store.plugins) == 1)
 
@@ -89,7 +96,8 @@ class HashPluginTest(SearxTestCase):
 
     def test_PluginStore_init(self):
         store = plugins.PluginStore()
-        store.register(plugins.hash_plugin)
+        plugin = plugins.load_and_initialize_plugin('searx.plugins.hash_plugin', False, (None, {}))
+        store.register(plugin)
 
         self.assertTrue(len(store.plugins) == 1)
 
