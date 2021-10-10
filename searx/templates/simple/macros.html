@@ -27,6 +27,9 @@
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
 <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
+  <p class="url">
+    <span class="url">{{ result.pretty_url }}</span>
+  </p>{{- '' -}}
   {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" class="image" />{{ result_close_link() }}{% endif -%}
   {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" alt="{{ result.title|striptags }}"/>{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
@@ -40,8 +43,10 @@
 
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result, proxify) -%}
-<div class="engines">{% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}</div>{{- '' -}}
-<p class="url"><span class="url">{{ result.pretty_url }}</span>{{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}</p>{{- '' -}}
+<div class="engines">
+  {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
+  {{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}
+</div>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}
 
