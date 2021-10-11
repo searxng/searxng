@@ -109,7 +109,7 @@ Global Settings
    Changing a value tagged by :ref:`buildenv <make buildenv>`, needs to
    rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
 
-``base_url`` : :ref:`buildenv SEARX_URL <make buildenv>`
+``base_url`` : :ref:`buildenv SEARXNG_URL <make buildenv>`
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)

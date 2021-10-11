@@ -14,9 +14,9 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 
 SEARX_INTERNAL_HTTP="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
 
-SEARX_URL_PATH="${SEARX_URL_PATH:-$(echo "${PUBLIC_URL}" \
+SEARXNG_URL_PATH="${SEARXNG_URL_PATH:-$(echo "${PUBLIC_URL}" \
 | sed -e 's,^.*://[^/]*\(/.*\),\1,g')}"
-[[ "${SEARX_URL_PATH}" == "${PUBLIC_URL}" ]] && SEARX_URL_PATH=/
+[[ "${SEARXNG_URL_PATH}" == "${PUBLIC_URL}" ]] && SEARXNG_URL_PATH=/
 
 SERVICE_NAME="searx"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"

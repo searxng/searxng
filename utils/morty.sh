@@ -513,7 +513,7 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_MORTY_SITE})"
     # shellcheck disable=SC2034
     SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
     # shellcheck disable=SC2034
-    SEARX_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_URL_PATH)
+    SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app "${NGINX_MORTY_SITE}"
 
     info_msg "testing public url .."

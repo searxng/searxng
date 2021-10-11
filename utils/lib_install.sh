@@ -116,9 +116,9 @@ install_log_searx_instance() {
 
     echo -e "---- SearXNG instance setup ${_BBlue}(status: $(install_searx_get_state))${_creset}"
     echo -e "  SEARXNG_SETTINGS_PATH : ${_BBlue}${SEARXNG_SETTINGS_PATH}${_creset}"
-    echo -e "  SSEARX_PYENV        : ${_BBlue}${SEARX_PYENV}${_creset}"
+    echo -e "  SEARX_PYENV         : ${_BBlue}${SEARX_PYENV}${_creset}"
     echo -e "  SEARX_SRC           : ${_BBlue}${SEARX_SRC:-none}${_creset}"
-    echo -e "  SEARX_URL           : ${_BBlue}${SEARX_URL:-none}${_creset}"
+    echo -e "  SEARXNG_URL         : ${_BBlue}${SEARXNG_URL:-none}${_creset}"
 
     if in_container; then
         # searx is listening on 127.0.0.1 and not available from outside container
@@ -184,17 +184,17 @@ install_searx_get_state(){
 # shellcheck source=utils/brand.env
 source "${REPO_ROOT}/utils/brand.env"
 
-# SEARX_URL aka PUBLIC_URL: the public URL of the instance (e.g.
-# "https://example.org/searx").  The value is taken from environment $SEARX_URL
+# SEARXNG_URL aka PUBLIC_URL: the public URL of the instance (e.g.
+# "https://example.org/searx").  The value is taken from environment $SEARXNG_URL
 # in ./utils/brand.env.  This variable is a empty string if server.base_url in
 # the settings.yml is set to 'false'.
 
-SEARX_URL="${SEARX_URL:-http://$(uname -n)}"
+SEARXNG_URL="${SEARXNG_URL:-http://$(uname -n)}"
 if in_container; then
     # hint: Linux containers do not have DNS entries, lets use IPs
-    SEARX_URL="http://$(primary_ip)"
+    SEARXNG_URL="http://$(primary_ip)"
 fi
-PUBLIC_URL="${SEARX_URL}"
+PUBLIC_URL="${SEARXNG_URL}"
 
 source_dot_config
 

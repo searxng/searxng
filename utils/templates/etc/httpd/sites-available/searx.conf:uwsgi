@@ -5,10 +5,10 @@ LoadModule proxy_module         ${APACHE_MODULES}/mod_proxy.so
 LoadModule proxy_uwsgi_module   ${APACHE_MODULES}/mod_proxy_uwsgi.so
 # LoadModule setenvif_module ${APACHE_MODULES}/mod_setenvif.so
 
-# SetEnvIf Request_URI "${SEARX_URL_PATH}" dontlog
+# SetEnvIf Request_URI "${SEARXNG_URL_PATH}" dontlog
 # CustomLog /dev/null combined env=dontlog
 
-<Location ${SEARX_URL_PATH}>
+<Location ${SEARXNG_URL_PATH}>
 
     <IfModule mod_security2.c>
         SecRuleEngine Off
