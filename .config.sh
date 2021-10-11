@@ -23,7 +23,7 @@
 #
 #     $ ./utils/searx.sh --help
 #     ---- SearXNG instance setup (already installed)
-#       SEARXNG_SETTINGS_PATH : /etc/searx/settings.yml
+#       SEARXNG_SETTINGS_PATH : /etc/searxng/settings.yml
 #       SEARX_SRC             : /usr/local/searx/searx-src
 #
 # [1] https://searxng.github.io/searxng/admin/engines/settings.html

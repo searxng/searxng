@@ -31,7 +31,7 @@ pylint.FILES() {
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searx/*.yml')"
+done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
 
 PYLINT_SEARX_DISABLE_OPTION="\
 I,C,R,\
@@ -106,6 +106,10 @@ buildenv() {
 
     # settings file from repository's working tree are used by default
     SEARXNG_SETTINGS_PATH="${REPO_ROOT}/searx/settings.yml"
+
+    if [ -f /etc/searx/settings.yml ]; then
+        err_msg "settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/"
+    fi
 
     if [ -r '/etc/searxng/settings.yml' ]; then
         if ask_yn "should settings read from: /etc/searxng/settings.yml"; then

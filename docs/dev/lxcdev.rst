@@ -261,7 +261,7 @@ In this section we will see how to change the *"Fully functional SearXNG suite"*
 from a LXC container (which is quite ready for production) into a developer
 suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 
-- SearXNG setup in: ``/etc/searx/settings.yml``
+- SearXNG setup in: ``/etc/searxng/settings.yml``
 - SearXNG user's home: ``/usr/local/searx``
 - virtualenv in: ``/usr/local/searx/searx-pyenv``
 - SearXNG software in: ``/usr/local/searx/searx-src``
@@ -288,7 +288,7 @@ The uWSGI-App for the archlinux dsitros is configured in
 least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 ``http``::
 
-  env = SEARXNG_SETTINGS_PATH=/etc/searx/settings.yml
+  env = SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
   http = 127.0.0.1:8888
 
   chdir = /usr/local/searx/searx-src/searx

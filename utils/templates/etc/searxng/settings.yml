@@ -21,11 +21,12 @@ search:
   # use codes from 'languages.py'
   default_lang: ''
   # remove format to deny access, use lower case.
-  formats: [html, csv, json, rss]
+  formats:
+    - html
 
 server:
   secret_key: "ultrasecretkey"  # change this!
-  # Proxying image results through searx
+  # Proxying image results through SearXNG
   image_proxy: false
 
 # result_proxy:
