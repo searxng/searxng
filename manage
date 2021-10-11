@@ -33,7 +33,7 @@ while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
 done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
 
-PYLINT_SEARX_DISABLE_OPTION="\
+PYLINT_SEARXNG_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
 E1136"
@@ -70,7 +70,7 @@ py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
 pyenv.:
-  install   : developer install of searx into virtualenv
+  install   : developer install of SearXNG into virtualenv
   uninstall : uninstall developer installation
   cmd ...   : run command ... in virtualenv
   OK        : test if virtualenv is OK
@@ -620,13 +620,13 @@ test.pylint() {
 
         build_msg TEST "[pylint] searx/engines"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
+            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
             --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
             searx/engines
 
         build_msg TEST "[pylint] searx tests"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARX_DISABLE_OPTION}" \
+            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
 	    --ignore=searx/engines \
 	    searx tests
     )
