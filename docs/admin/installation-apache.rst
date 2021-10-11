@@ -482,7 +482,7 @@ Restart service
       .. code:: sh
 
          sudo -H systemctl restart httpd
-         sudo -H touch /etc/uwsgi.d/searx.ini
+         sudo -H touch /etc/uwsgi.d/searxng.ini
 
 
 disable logs

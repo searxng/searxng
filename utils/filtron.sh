@@ -46,8 +46,8 @@ GO_VERSION="go1.17.2"
 GO_PKG_URL="https://golang.org/dl/${GO_VERSION}.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
-APACHE_FILTRON_SITE="searx.conf"
-NGINX_FILTRON_SITE="searx.conf"
+APACHE_FILTRON_SITE="searxng.conf"
+NGINX_FILTRON_SITE="searxng.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(

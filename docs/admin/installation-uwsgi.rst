@@ -35,10 +35,10 @@ recommend two methods
 `systemd.unit`_ template files as described here `One service per app in systemd`_.
 
   There is one `systemd unit template`_ and one `uwsgi ini file`_ per uWSGI-app
-  placed at dedicated locations.  Take archlinux and a searx.ini as example::
+  placed at dedicated locations.  Take archlinux and a searxng.ini as example::
 
     unit template    -->  /usr/lib/systemd/system/uwsgi@.service
-    uwsgi ini files  -->  /etc/uwsgi/searx.ini
+    uwsgi ini files  -->  /etc/uwsgi/searxng.ini
 
   The SearXNG app can be maintained as know from common systemd units::
 
@@ -54,12 +54,12 @@ The `uWSGI Emperor`_ mode which fits for maintaining a large range of uwsgi apps
   systemd unit.  The Emperor service will scan specific directories for `uwsgi
   ini file`_\s (also know as *vassals*).  If a *vassal* is added, removed or the
   timestamp is modified, a corresponding action takes place: a new uWSGI
-  instance is started, reload or stopped.  Take Fedora and a searx.ini as
+  instance is started, reload or stopped.  Take Fedora and a searxng.ini as
   example::
 
-    to start a new SearXNG instance create --> /etc/uwsgi.d/searx.ini
-    to reload the instance edit timestamp  --> touch /etc/uwsgi.d/searx.ini
-    to stop instance remove ini            --> rm /etc/uwsgi.d/searx.ini
+    to start a new SearXNG instance create --> /etc/uwsgi.d/searxng.ini
+    to reload the instance edit timestamp  --> touch /etc/uwsgi.d/searxng.ini
+    to stop instance remove ini            --> rm /etc/uwsgi.d/searxng.ini
 
 Distributors
 ============
@@ -80,7 +80,7 @@ do similar for the uWSGI infrastructure (with less comfort), the folders are::
 
 The `uwsgi ini file`_ is enabled by a symbolic link::
 
-  ln -s /etc/uwsgi/apps-available/searx.ini /etc/uwsgi/apps-enabled/
+  ln -s /etc/uwsgi/apps-available/searxng.ini /etc/uwsgi/apps-enabled/
 
 From debian's documentation (``/usr/share/doc/uwsgi/README.Debian.gz``): You
 could control specific instance(s) by issuing::
