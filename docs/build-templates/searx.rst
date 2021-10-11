@@ -134,7 +134,7 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
-       $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searx/settings.yml\" \\
+       $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searxng/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
   .. group-tab:: searx/settings.yml

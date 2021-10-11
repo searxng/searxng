@@ -155,6 +155,10 @@ install_searx_get_state(){
     #    - user:  ${SERVICE_USER}
     #    - pyenv: ${SEARX_PYENV}
 
+    if [ -f /etc/searx/settings.yml ]; then
+        err_msg "settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/"
+    fi
+
     if ! [ -r "${SEARX_SRC}" ]; then
         echo "missing-searx-clone"
         return

@@ -339,7 +339,7 @@ use_default_settings
 
    - :ref:`settings location`
    - :ref:`use_default_settings.yml`
-   - :origin:`/etc/searxng/settings.yml <utils/templates/etc/searx/use_default_settings.yml>`
+   - :origin:`/etc/searxng/settings.yml <utils/templates/etc/searxng/settings.yml>`
 
 The user defined ``settings.yml`` is loaded from the :ref:`settings location`
 and can relied on the default configuration :origin:`searx/settings.yml` using:
