@@ -138,6 +138,9 @@ def response(resp):
     for row in mainline:
 
         mainline_type = row.get('type', 'web')
+        if mainline_type != keyword:
+            continue
+
         if mainline_type == 'ads':
             # ignore adds
             continue
