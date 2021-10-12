@@ -109,7 +109,7 @@ from searx.flaskfix import patch_application
 
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx.languages import language_codes as languages
-from searx.locales import LOCALE_NAMES, UI_LOCALE_CODES, RTL_LOCALES
+from searx.locales import LOCALE_NAMES, RTL_LOCALES
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
@@ -223,6 +223,12 @@ def get_locale():
     if locale == 'oc':
         request.form['use-translation'] = 'oc'
         locale = 'fr_FR'
+    if locale == '':
+        # if there is an error loading the preferences
+        # the locale is going to be ''
+        locale = 'en'
+    # babel uses underscore instead of hyphen.
+    locale = locale.replace('-', '_')
     logger.debug("%s uses locale `%s`", urllib.parse.quote(request.url), locale)
     return locale
 
@@ -238,6 +244,16 @@ def _get_browser_language(req, lang_list):
         if locale is not None:
             return locale
     return 'en'
+
+
+def _get_locale_rfc5646(locale):
+    """Get locale name for <html lang="...">
+    Chrom* browsers don't detect the language when there is a subtag (ie a territory).
+    For example "zh-TW" is detected but not "zh-Hant-TW".
+    This function returns a locale without the subtag.
+    """
+    parts = locale.split('-')
+    return parts[0].lower() + '-' + parts[-1].upper()
 
 
 # code-highlighter
@@ -420,6 +436,8 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
+    kwargs['locale_rfc5646'] = _get_locale_rfc5646(locale)
+
     if locale in RTL_LOCALES and 'rtl' not in kwargs:
         kwargs['rtl'] = True
     if 'current_language' not in kwargs:
@@ -512,8 +530,7 @@ def pre_request():
     # locale is defined neither in settings nor in preferences
     # use browser headers
     if not preferences.get_value("locale"):
-        locale = _get_browser_language(request, UI_LOCALE_CODES)
-        locale = locale.replace('-', '_')
+        locale = _get_browser_language(request, LOCALE_NAMES.keys())
         preferences.parse_dict({"locale": locale})
 
     # request.user_plugins

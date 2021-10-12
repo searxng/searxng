@@ -369,6 +369,16 @@ def _get_lang_to_lc_dict(lang_list):
     return value
 
 
+# babel's get_global contains all sorts of miscellaneous locale and territory related data
+# see get_global in: https://github.com/python-babel/babel/blob/master/babel/core.py
+def _get_from_babel(lang_code, key):
+    match = get_global(key).get(lang_code.replace('-', '_'))
+    # for some keys, such as territory_aliases, match may be a list
+    if isinstance(match, str):
+        return match.replace('_', '-')
+    return match
+
+
 def _match_language(lang_code, lang_list=[], custom_aliases={}):  # pylint: disable=W0102
     """auxiliary function to match lang_code in lang_list"""
     # replace language code with a custom alias if necessary
@@ -379,9 +389,11 @@ def _match_language(lang_code, lang_list=[], custom_aliases={}):  # pylint: disa
         return lang_code
 
     # try to get the most likely country for this language
-    subtags = get_global('likely_subtags').get(lang_code)
+    subtags = _get_from_babel(lang_code, 'likely_subtags')
     if subtags:
-        subtag_parts = subtags.split('_')
+        if subtags in lang_list:
+            return subtags
+        subtag_parts = subtags.split('-')
         new_code = subtag_parts[0] + '-' + subtag_parts[-1]
         if new_code in custom_aliases:
             new_code = custom_aliases[new_code]
@@ -402,16 +414,22 @@ def match_language(locale_code, lang_list=[], custom_aliases={}, fallback='en-US
     locale_parts = locale_code.split('-')
     lang_code = locale_parts[0]
 
+    # if locale_code has script, try matching without it
+    if len(locale_parts) > 2:
+        language = _match_language(lang_code + '-' + locale_parts[-1], lang_list, custom_aliases)
+        if language:
+            return language
+
     # try to get language using an equivalent country code
     if len(locale_parts) > 1:
-        country_alias = get_global('territory_aliases').get(locale_parts[-1])
+        country_alias = _get_from_babel(locale_parts[-1], 'territory_aliases')
         if country_alias:
             language = _match_language(lang_code + '-' + country_alias[0], lang_list, custom_aliases)
             if language:
                 return language
 
     # try to get language using an equivalent language code
-    alias = get_global('language_aliases').get(lang_code)
+    alias = _get_from_babel(lang_code, 'language_aliases')
     if alias:
         language = _match_language(alias, lang_list, custom_aliases)
         if language:

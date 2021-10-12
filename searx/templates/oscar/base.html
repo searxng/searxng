@@ -1,6 +1,6 @@
 {% from 'oscar/macros.html' import icon %}
 <!DOCTYPE html>
-<html lang="{{ preferences.get_value('locale') }}" xml:lang="{{ preferences.get_value('locale') }}"{% if rtl %} dir="rtl"{% endif %} class="nojs">
+<html lang="{{ locale_rfc5646 }}" xml:lang="{{ locale_rfc5646 }}"{% if rtl %} dir="rtl"{% endif %} class="nojs">
 <head>
     <meta charset="UTF-8" />
     <meta name="description" content="SearXNG - a privacy-respecting, hackable metasearch engine" />
