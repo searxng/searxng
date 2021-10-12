@@ -11,7 +11,7 @@ from itertools import cycle
 import httpx
 
 from searx import logger, searx_debug
-from .client import new_client, get_loop
+from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 
 
 logger = logger.getChild('network')
@@ -42,9 +42,11 @@ class Network:
     __slots__ = (
         'enable_http', 'verify', 'enable_http2',
         'max_connections', 'max_keepalive_connections', 'keepalive_expiry',
-        'local_addresses', 'proxies', 'max_redirects', 'retries', 'retry_on_http_error',
+        'local_addresses', 'proxies', 'using_tor_proxy', 'max_redirects', 'retries', 'retry_on_http_error',
         '_local_addresses_cycle', '_proxies_cycle', '_clients', '_logger'
     )
+
+    _TOR_CHECK_RESULT = {}
 
     def __init__(
             # pylint: disable=too-many-arguments
@@ -56,6 +58,7 @@ class Network:
             max_keepalive_connections=None,
             keepalive_expiry=None,
             proxies=None,
+            using_tor_proxy=False,
             local_addresses=None,
             retries=0,
             retry_on_http_error=None,
@@ -69,6 +72,7 @@ class Network:
         self.max_keepalive_connections = max_keepalive_connections
         self.keepalive_expiry = keepalive_expiry
         self.proxies = proxies
+        self.using_tor_proxy = using_tor_proxy
         self.local_addresses = local_addresses
         self.retries = retries
         self.retry_on_http_error = retry_on_http_error
@@ -144,7 +148,27 @@ class Network:
             f'HTTP Request: {request.method} {request.url} "{response_line}"{content_type}'
         )
 
-    def get_client(self, verify=None, max_redirects=None):
+    @staticmethod
+    async def check_tor_proxy(client: httpx.AsyncClient, proxies) -> bool:
+        if proxies in Network._TOR_CHECK_RESULT:
+            return Network._TOR_CHECK_RESULT[proxies]
+
+        result = True
+        # ignore client._transport because it is not used with all://
+        for transport in client._mounts.values():  # pylint: disable=protected-access
+            if isinstance(transport, AsyncHTTPTransportNoHttp):
+                continue
+            if not getattr(transport, '_rdns', False):
+                result = False
+                break
+        else:
+            response = await client.get('https://check.torproject.org/api/ip')
+            if not response.json()['IsTor']:
+                result = False
+        Network._TOR_CHECK_RESULT[proxies] = result
+        return result
+
+    async def get_client(self, verify=None, max_redirects=None):
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
@@ -152,7 +176,7 @@ class Network:
         key = (verify, max_redirects, local_address, proxies)
         hook_log_response = self.log_response if searx_debug else None
         if key not in self._clients or self._clients[key].is_closed:
-            self._clients[key] = new_client(
+            client = new_client(
                 self.enable_http,
                 verify,
                 self.enable_http2,
@@ -165,6 +189,10 @@ class Network:
                 max_redirects,
                 hook_log_response
             )
+            if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
+                await client.aclose()
+                raise httpx.ProxyError('Network configuration problem: not using Tor')
+            self._clients[key] = client
         return self._clients[key]
 
     async def aclose(self):
@@ -197,7 +225,7 @@ class Network:
         retries = self.retries
         while retries >= 0:  # pragma: no cover
             kwargs_clients = Network.get_kwargs_clients(kwargs)
-            client = self.get_client(**kwargs_clients)
+            client = await self.get_client(**kwargs_clients)
             try:
                 response = await client.request(method, url, **kwargs)
                 if self.is_valid_respones(response) or retries <= 0:
@@ -207,11 +235,11 @@ class Network:
                     raise e
             retries -= 1
 
-    def stream(self, method, url, **kwargs):
+    async def stream(self, method, url, **kwargs):
         retries = self.retries
         while retries >= 0:  # pragma: no cover
             kwargs_clients = Network.get_kwargs_clients(kwargs)
-            client = self.get_client(**kwargs_clients)
+            client = await self.get_client(**kwargs_clients)
             try:
                 response = client.stream(method, url, **kwargs)
                 if self.is_valid_respones(response) or retries <= 0:
@@ -228,6 +256,23 @@ class Network:
 
 def get_network(name=None):
     return NETWORKS.get(name or DEFAULT_NAME)
+
+
+def check_network_configuration():
+    async def check():
+        exception_count = 0
+        for network in NETWORKS.values():
+            if network.using_tor_proxy:
+                try:
+                    await network.get_client()
+                except Exception:  # pylint: disable=broad-except
+                    network._logger.exception('Error')  # pylint: disable=protected-access
+                    exception_count += 1
+        return exception_count
+    future = asyncio.run_coroutine_threadsafe(check(), get_loop())
+    exception_count = future.result()
+    if exception_count > 0:
+        raise RuntimeError("Invalid network configuration")
 
 
 def initialize(settings_engines=None, settings_outgoing=None):
@@ -249,6 +294,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
         'max_keepalive_connections': settings_outgoing['pool_maxsize'],
         'keepalive_expiry': settings_outgoing['keepalive_expiry'],
         'local_addresses': settings_outgoing['source_ips'],
+        'using_tor_proxy': settings_outgoing['using_tor_proxy'],
         'proxies': settings_outgoing['proxies'],
         'max_redirects': settings_outgoing['max_redirects'],
         'retries': settings_outgoing['retries'],

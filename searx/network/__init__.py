@@ -12,7 +12,7 @@ import httpx
 import anyio
 import h2.exceptions
 
-from .network import get_network, initialize
+from .network import get_network, initialize, check_network_configuration
 from .client import get_loop
 from .raise_for_httperror import raise_for_httperror
 
@@ -160,7 +160,7 @@ def delete(url, **kwargs):
 
 async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
     try:
-        async with network.stream(method, url, **kwargs) as response:
+        async with await network.stream(method, url, **kwargs) as response:
             queue.put(response)
             # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
             # https://www.python-httpx.org/quickstart/#streaming-responses
