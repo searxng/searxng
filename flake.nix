@@ -3,16 +3,20 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    mach-nix-src.url = "github:DavHau/mach-nix";
     flake-utils.url = "github:numtide/flake-utils";
+    pypi-deps-db = {
+      url = "github:DavHau/pypi-deps-db";
+      flake = false;
+    };
+    mach-nix-src.url = "github:DavHau/mach-nix";
+    mach-nix-src.inputs.pypi-deps-db.follows = "pypi-deps-db";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
-  inputs.flake-compat = {
-    url = "github:edolstra/flake-compat";
-    flake = false;
-  };
-
-  outputs = { self, nixpkgs, flake-utils, mach-nix-src, ... }:
+  outputs = { self, nixpkgs, flake-utils, mach-nix-src, pypi-deps-db, ... }:
     let
       # TODO : for some reason `nix flake show` results in error:
       # ```error: a 'aarch64-darwin' with features {} is required to build '/nix/store/s79ixgs3xy250x1b9vyy90g7dzd6bsh4-conda-channels.json.drv',
@@ -25,8 +29,14 @@
         nixpkgs.lib.genAttrs supportedSystems (system: f system);
 
       python = "python38";
-      pypiDataRev = "18250538b9eeb9484c4e3bdf135bc1f3a2ccd949";
-      pypiDataSha256 = "01hdjy5rpcjm92fyp8n6lci773rgbsa81h2n08r49zjhk9michrb";
+
+      # if updating python dependencies results in error
+      #  "The given requirements might contain package versions which are not yet part of the dependency DB"
+      # then
+      # run `nix flake lock --update-input pypi-deps-db` to set lock file to most recent pypi-deps-db
+      pypiDataRev = pypi-deps-db.rev;
+      pypiDataSha256 = pypi-deps-db.narHash;
+      # pypiDataSha256 = "1k66qyivkv6bhhpmddj2sw0i8mcq4fzrsnp6b3rlv7g5a0n1dbdf";
       requirements = builtins.readFile ./requirements.txt;
 
       nixpkgsFor = forAllSystems (
@@ -56,10 +66,10 @@
                 }
               );
               dev-python =
-                  mach-nix.mkPython {
-                    inherit python;
-                    requirements = requirements;
-                  };
+                mach-nix.mkPython {
+                  inherit python;
+                  requirements = requirements;
+                };
             };
         packages = forAllSystems (
           system:
