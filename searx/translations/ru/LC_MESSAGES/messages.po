@@ -12,20 +12,21 @@
 # Дмитрий Михирев, 2016-2017
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-10-04 07:36+0000\n"
-"PO-Revision-Date: 2021-08-27 07:16+0000\n"
+"PO-Revision-Date: 2021-10-15 19:24+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
+">\n"
 "Language: ru\n"
-"Language-Team: Russian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ru/>\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
-"|| (n%100>=11 && n%100<=14)? 2 : 3)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 4.8\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:184
@@ -198,11 +199,11 @@ msgstr "хеш-digest"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Подмена имени хоста"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "Заменить имя хоста или удалить результаты базируясь на имени хоста"
 
 #: searx/plugins/infinite_scroll.py:3
 msgid "Infinite scroll"
@@ -581,7 +582,7 @@ msgstr "Темы"
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:197
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Изменить расположение элементов в SearXNG"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -646,7 +647,7 @@ msgstr "Прокси для изображений"
 #: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:237
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Проксирование изображений в результатах через SearXNG"
 
 #: searx/templates/oscar/preferences.html:277
 #: searx/templates/simple/preferences.html:233
@@ -710,7 +711,7 @@ msgstr "Максимальное время"
 #: searx/templates/oscar/preferences.html:329
 #: searx/templates/simple/preferences.html:259
 msgid "Reliablity"
-msgstr "Надёжность"
+msgstr "Надежность"
 
 #: searx/templates/oscar/preferences.html:385
 msgid "Query"
@@ -739,7 +740,7 @@ msgstr "Примеры"
 #: searx/templates/oscar/preferences.html:400
 #: searx/templates/simple/preferences.html:296
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Список моделей мгновенных ответов в SearXNG."
 
 #: searx/templates/oscar/preferences.html:413
 #: searx/templates/simple/preferences.html:307
@@ -751,12 +752,12 @@ msgstr "Это список плагинов."
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr ""
+msgstr "Список куков и их значений, которые SearXNG хранит на Вашем компьютере."
 
 #: searx/templates/oscar/preferences.html:435
 #: searx/templates/simple/preferences.html:327
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "С этим списком, Вы можете использовать SearXNG прозрачно."
 
 #: searx/templates/oscar/preferences.html:440
 #: searx/templates/simple/preferences.html:332
@@ -998,7 +999,7 @@ msgstr "Эй!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr ""
+msgstr "Похоже на то, что Вы используете SearXNG впервые."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1021,7 +1022,7 @@ msgstr "Поисковая система не может получить ре�
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:14
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
+msgstr "Пожалуйста, попробуйте еще раз позже либо найдите другой SearXNG."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:18
@@ -1296,4 +1297,3 @@ msgstr "Ответы"
 
 #~ msgid "Please, try again later or find another searx instance."
 #~ msgstr "Пожалуйста, попробуйте позже или воспользуйтесь другим сервером searx."
-
