@@ -207,7 +207,7 @@
                         {% endif %}
 
                         {% if 'theme' not in locked_preferences %}
-                        {% set theme_label = _('Themes') %}
+                        {% set theme_label = _('Theme') %}
                         {% set theme_info = _('Change SearXNG layout') %}
                         {{ preferences_item_header(theme_info, theme_label, rtl, 'theme') }}
                             <select class="form-control {{ custom_select_class(rtl) }}" name="theme" id="theme">
@@ -324,9 +324,9 @@
                                     <th scope="col" class="col-stat">{{ _("Time range") }}</th>
                                     <th scope="col">{{ _("Response time") }}</th>
                                     <th scope="col" class="col-stat text-right">{{ _("Max time") }}</th>
-                                    <th scope="col" class="col-stat text-right">{{ _("Reliablity") }}</th>
+                                    <th scope="col" class="col-stat text-right">{{ _("Reliability") }}</th>
                                     {% else %}
-                                    <th scope="col" class="col-stat">{{ _("Reliablity") }}</th>
+                                    <th scope="col" class="col-stat">{{ _("Reliability") }}</th>
                                     <th scope="col" class="col-stat">{{ _("Max time") }}</th>
                                     <th scope="col" class="text-right">{{ _("Response time") }}</th>
                                     <th scope="col" class="text-right">{{ _("Time range") }}</th>
