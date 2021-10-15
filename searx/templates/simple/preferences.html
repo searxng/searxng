@@ -186,7 +186,7 @@
     {% endif %}
     {% if 'theme' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Themes') }}</legend>
+      <legend>{{ _('Theme') }}</legend>
       <p class="value">
         <select name="theme">
           {%- for name in themes -%}
@@ -256,7 +256,7 @@
         <th>{{ _("Time range") }}</th>
         <th>{{ _("Response time") }}</th>
         <th>{{ _("Max time") }}</th>
-        <th>{{ _("Reliablity") }}</th>
+        <th>{{ _("Reliability") }}</th>
       </tr>
       {% for search_engine in engines_by_category[categ] %}
       {% if not search_engine.private %}
