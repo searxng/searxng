@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Yahoo (Web)
+# lint: pylint
+"""Yahoo (Web)
+
 """
 
 from urllib.parse import unquote, urlencode
@@ -36,12 +37,17 @@ title_xpath = './/h3/a'
 content_xpath = './/div[contains(@class, "compText")]'
 suggestion_xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' AlsoTry ')]//a"
 
-time_range_dict = {'day': ['1d', 'd'],
-                   'week': ['1w', 'w'],
-                   'month': ['1m', 'm']}
+time_range_dict = {
+    'day': ['1d', 'd'],
+    'week': ['1w', 'w'],
+    'month': ['1m', 'm']
+}
 
-language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
-
+language_aliases = {
+    'zh-CN': 'zh-CHS',
+    'zh-TW': 'zh-CHT',
+    'zh-HK': 'zh-CHT'
+}
 
 # remove yahoo-specific tracking-url
 def parse_url(url_string):
@@ -56,22 +62,24 @@ def parse_url(url_string):
 
     if start == 0 or len(endpositions) == 0:
         return url_string
-    else:
-        end = min(endpositions)
-        return unquote(url_string[start:end])
 
+    end = min(endpositions)
+    return unquote(url_string[start:end])
 
 def _get_url(query, offset, language, time_range):
     if time_range in time_range_dict:
-        return base_url + search_url_with_time.format(offset=offset,
-                                                      query=urlencode({'p': query}),
-                                                      lang=language,
-                                                      age=time_range_dict[time_range][0],
-                                                      btf=time_range_dict[time_range][1])
-    return base_url + search_url.format(offset=offset,
-                                        query=urlencode({'p': query}),
-                                        lang=language)
-
+        return base_url + search_url_with_time.format(
+            offset = offset,
+            query = urlencode({'p': query}),
+            lang = language,
+            age = time_range_dict[time_range][0],
+            btf = time_range_dict[time_range][1]
+        )
+    return base_url + search_url.format(
+        offset=offset,
+        query=urlencode({'p': query}),
+        lang=language
+    )
 
 def _get_language(params):
     if params['language'] == 'all':
@@ -95,10 +103,6 @@ def request(query, params):
 
     params['url'] = _get_url(query, offset, language, params['time_range'])
 
-    # TODO required?
-    params['cookies']['sB'] = 'fl=1&vl=lang_{lang}&sh=1&rw=new&v=1'\
-        .format(lang=language)
-
     return params
 
 
@@ -109,10 +113,14 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     try:
-        results_num = int(eval_xpath(dom, '//div[@class="compPagination"]/span[last()]/text()')[0]
-                          .split()[0].replace(',', ''))
+        results_num = int(
+            eval_xpath(
+                dom,
+                '//div[@class="compPagination"]/span[last()]/text()'
+            )[0].split()[0].replace(',', '')
+        )
         results.append({'number_of_results': results_num})
-    except:
+    except:  # pylint: disable=bare-except
         pass
 
     # parse results
@@ -120,15 +128,18 @@ def response(resp):
         try:
             url = parse_url(extract_url(eval_xpath(result, url_xpath), search_url))
             title = extract_text(eval_xpath(result, title_xpath)[0])
-        except:
+
+        except:  # pylint: disable=bare-except
             continue
 
         content = extract_text(eval_xpath(result, content_xpath)[0])
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({
+            'url': url,
+            'title': title,
+            'content': content
+        })
 
     # if no suggestion found, return results
     suggestions = eval_xpath(dom, suggestion_xpath)
