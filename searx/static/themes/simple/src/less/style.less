@@ -663,7 +663,8 @@ article.result-images[data-vim-selected]::before {
   }
 
   #main_results div#results {
-    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+    margin: 2rem auto 0 auto;
+    justify-content: center;
     display: grid;
     grid-template-columns: @results-width;
     grid-template-rows: min-content min-content min-content 1fr min-content min-content;
@@ -677,7 +678,7 @@ article.result-images[data-vim-selected]::before {
   }
 
   article[data-vim-selected]::before {
-    left: 0;
+    left: calc(((100% - @results-width) / 2) - 20px);
   }
 }
 
