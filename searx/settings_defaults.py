@@ -151,11 +151,11 @@ SCHEMA = {
         'contact_url': SettingsValue((None, False, str), None),
     },
     'brand': {
-        'issue_url': SettingsValue(str, None),
-        'new_issue_url': SettingsValue(str, None),
-        'docs_url': SettingsValue(str, None),
-        'public_instances': SettingsValue(str, None),
-        'wiki_url': SettingsValue(str, None),
+        'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
+        'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
+        'docs_url': SettingsValue(str, 'https://searxng.github.io/searxng'),
+        'public_instances': SettingsValue(str, 'https://searx.space'),
+        'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
     },
     'search': {
         'safe_search': SettingsValue((0,1,2), 0),
