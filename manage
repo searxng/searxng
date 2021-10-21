@@ -390,10 +390,10 @@ docker.buildx() {
 docker.build() {
     pyenv.install
 
-    local SEARX_GIT_VERSION
+    local SEARXNG_GIT_VERSION
     local VERSION_GITCOMMIT
     local GITHUB_USER
-    local SEARX_IMAGE_NAME
+    local SEARXNG_IMAGE_NAME
     local BUILD
 
     build_msg DOCKER build
@@ -427,35 +427,35 @@ docker.build() {
 
         # define the docker image name
         GITHUB_USER=$(echo "${GIT_URL}" | sed 's/.*github\.com\/\([^\/]*\).*/\1/')
-        SEARX_IMAGE_NAME="${SEARX_IMAGE_NAME:-${GITHUB_USER:-searxng}/searxng}"
+        SEARXNG_IMAGE_NAME="${SEARXNG_IMAGE_NAME:-${GITHUB_USER:-searxng}/searxng}"
 
         BUILD="build"
         if [ "$1" = "buildx" ]; then
             # buildx includes the push option
-            CACHE_TAG="${SEARX_IMAGE_NAME}:latest-build-cache"
+            CACHE_TAG="${SEARXNG_IMAGE_NAME}:latest-build-cache"
             BUILD="buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --cache-from=type=registry,ref=$CACHE_TAG --cache-to=type=registry,ref=$CACHE_TAG,mode=max"
             shift
         fi
         build_msg DOCKER "Build command: ${BUILD}"
 
         # build Docker image
-        build_msg DOCKER "Building image ${SEARX_IMAGE_NAME}:${SEARX_GIT_VERSION}"
+        build_msg DOCKER "Building image ${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
         # shellcheck disable=SC2086
         docker $BUILD \
          --build-arg BASE_IMAGE="${DEPENDENCIES_IMAGE_NAME}" \
          --build-arg GIT_URL="${GIT_URL}" \
-         --build-arg SEARX_GIT_VERSION="${VERSION_STRING}" \
+         --build-arg SEARXNG_GIT_VERSION="${VERSION_STRING}" \
          --build-arg VERSION_GITCOMMIT="${VERSION_GITCOMMIT}" \
          --build-arg LABEL_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
          --build-arg LABEL_VCS_REF="$(git rev-parse HEAD)" \
          --build-arg LABEL_VCS_URL="${GIT_URL}" \
          --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searx/settings.yml)" \
          --build-arg TIMESTAMP_UWSGI="$(git log -1 --format="%cd" --date=unix -- dockerfiles/uwsgi.ini)" \
-         -t "${SEARX_IMAGE_NAME}:latest" -t "${SEARX_IMAGE_NAME}:${VERSION_STRING}" .
+         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${VERSION_STRING}" .
 
         if [ "$1" = "push" ]; then
-	        docker push "${SEARX_IMAGE_NAME}:latest"
-	        docker push "${SEARX_IMAGE_NAME}:${SEARX_GIT_VERSION}"
+	        docker push "${SEARXNG_IMAGE_NAME}:latest"
+	        docker push "${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
 	    fi
     )
     dump_return $?
