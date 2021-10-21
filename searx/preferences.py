@@ -10,14 +10,11 @@ from zlib import compress, decompress
 from urllib.parse import parse_qs, urlencode
 
 from searx import settings, autocomplete
-from searx.languages import language_codes as languages
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
 
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
-LANGUAGE_CODES = [l[0] for l in languages]
-LANGUAGE_CODES.append('all')
 DISABLED = 0
 ENABLED = 1
 DOI_RESOLVERS = list(settings['doi_resolvers'])
@@ -336,7 +333,7 @@ class Preferences:
             'language': SearchLanguageSetting(
                 settings['search']['default_lang'],
                 is_locked('language'),
-                choices=list(LANGUAGE_CODES) + ['']
+                choices=settings['search']['languages'] + ['']
             ),
             'locale': EnumStringSetting(
                 settings['ui']['default_locale'],
