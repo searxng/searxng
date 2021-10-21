@@ -67,13 +67,10 @@
           },
           MinChars: 4,
           Delay: 300,
+          _Position:function() {
+            this.DOMResults.setAttribute("class", "autocomplete");
+          },
         }, "#" + qinput_id);
-
-        // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
-        w.addEventListener('resize', function() {
-          var event = new CustomEvent("position");
-          qinput.dispatchEvent(event);
-        });
       }
 
       qinput.addEventListener('focus', placeCursorAtEndOnce, false);

@@ -2,10 +2,13 @@
 
 .autocomplete {
   position: absolute;
+  width: 44.7rem;
+  margin-top: 2.4rem;
   max-height: 0;
   overflow-y: hidden;
   text-align: left;
-  .rounded-corners;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 
   &:active,
   &:focus,
@@ -24,7 +27,7 @@
 
     > li {
       cursor: pointer;
-      padding: 8px 0 8px 8px;
+      padding: 8px 0 8px 0.75rem;
 
       &.active,
       &:active,
@@ -50,9 +53,15 @@
     background-color: var(--color-autocomplete-background);
     color: var(--color-autocomplete-font);
     border: 1px solid var(--color-autocomplete-border);
+    border-top: none;
     max-height: 500px;
     overflow-y: auto;
-    z-index: 100;
+    z-index: 100000000;
+
+    li:first-child {
+      margin-top: 0.475rem;
+      border-top: 1px solid var(--color-autocomplete-border);
+    }
 
     &:empty {
       display: none;
@@ -62,7 +71,11 @@
 
 @media screen and (max-width: @phone) {
   .autocomplete {
+    position: absolute;
+    width: calc(100% - 0.5rem);
+    top: 2.9rem;
     bottom: 0;
+    margin-top: 0;
   }
 
   .autocomplete > ul > li {
