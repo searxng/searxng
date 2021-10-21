@@ -153,7 +153,7 @@ def response(resp):
             'content': content
         })
 
-    for suggestion in eval_xpath_list(dom, '//div[contains(@class, "AlsoTry")]'):
+    for suggestion in eval_xpath_list(dom, '//div[contains(@class, "AlsoTry")]//table//a'):
         # append suggestion
         results.append({'suggestion': extract_text(suggestion)})
 
