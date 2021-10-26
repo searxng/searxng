@@ -3,6 +3,7 @@
 from abc import abstractmethod, ABC
 import re
 
+from searx import settings
 from searx.languages import language_codes
 from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
@@ -120,11 +121,17 @@ class LanguageParser(QueryPartParser):
     def _autocomplete(self, value):
         if not value:
             # show some example queries
-            for lang in [":en", ":en_us", ":english", ":united_kingdom"]:
-                self.raw_text_query.autocomplete_list.append(lang)
+            if len(settings['search']['languages']) < 10:
+                for lang in settings['search']['languages']:
+                    self.raw_text_query.autocomplete_list.append(':' + lang)
+            else:
+                for lang in [":en", ":en_us", ":english", ":united_kingdom"]:
+                    self.raw_text_query.autocomplete_list.append(lang)
             return
 
         for lc in language_codes:
+            if lc[0] not in settings['search']['languages']:
+                continue
             lang_id, lang_name, country, english_name = map(str.lower, lc)
 
             # check if query starts with language-id

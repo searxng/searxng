@@ -17,7 +17,7 @@ searx_dir = abspath(dirname(__file__))
 
 logger = logging.getLogger('searx')
 OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
-LANGUAGE_CODES = ('', 'all') + tuple(l[0] for l in languages)
+LANGUAGE_CODES = ['all'] + list(l[0] for l in languages)
 OSCAR_STYLE = ('logicodev', 'logicodev-dark', 'pointhi')
 CATEGORY_ORDER = [
     'general',
@@ -98,6 +98,18 @@ class SettingsValue:
         self.check_type_definition(value)
         return value
 
+
+class SettingSublistValue(SettingsValue):
+    """Check the value is a sublist of type definition.
+    """
+
+    def check_type_definition(self, value: typing.Any) -> typing.Any:
+        if not isinstance(value, list):
+            raise ValueError('The value has to a list')
+        for item in value:
+            if not item in self.type_definition[0]:
+                raise ValueError('{} not in {}'.format(item, self.type_definition))
+
 class SettingsDirectoryValue(SettingsValue):
     """Check and update a setting value that is a directory path
     """
@@ -148,7 +160,8 @@ SCHEMA = {
     'search': {
         'safe_search': SettingsValue((0,1,2), 0),
         'autocomplete': SettingsValue(str, ''),
-        'default_lang': SettingsValue(LANGUAGE_CODES, ''),
+        'default_lang': SettingsValue(tuple(LANGUAGE_CODES + ['']), ''),
+        'languages': SettingSublistValue(LANGUAGE_CODES, LANGUAGE_CODES),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),
         'max_ban_time_on_fail': SettingsValue(numbers.Real, 120),
         'formats': SettingsValue(list, OUTPUT_FORMATS),
