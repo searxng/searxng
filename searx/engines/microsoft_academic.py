@@ -47,7 +47,7 @@ def response(resp):
     if not response_data:
         return results
 
-    for result in response_data['pr']:
+    for result in response_data.get('pr', {}):
         if 'dn' not in result['paper']:
             continue
 
