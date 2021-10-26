@@ -1,4 +1,7 @@
 <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+  <a id="search_logo" href="{{ url_for('index') }}">
+    <img class="search_logo_img" src="{{ url_for('static', filename='img/favicon.png') }}">
+  </a>
   <div id="search_wrapper">
     <div class="search_box">
       <input id="q" autofocus name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" spellcheck="false" dir="auto" {% if q %}value="{{ q }}"{% endif %} >
