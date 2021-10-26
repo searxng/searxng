@@ -12,6 +12,10 @@
     <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}" />
 {%- endmacro %}
 
+{% macro result_favicon_url(scheme, path) -%}
+    {{ scheme }}://{{path}}/favicon.ico
+{%- endmacro %}
+
 {% macro result_open_link(url, classes='') -%}
     <a href="{{ url }}" {% if classes %}class="{{ classes }}" {% endif %}{% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>
 {%- endmacro %}
@@ -27,8 +31,10 @@
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
 <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
-  <p class="url">{{ result_link(result.url, result.pretty_url, 'url') }}</p>
-  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" class="image" />{{ result_close_link() }}{% endif -%}
+  <p class="url">
+    {{ result_open_link(result.url, 'url') }}<img class="url_favicon" src="{{ image_proxify(result_favicon_url(result.parsed_url.scheme, result.parsed_url.netloc)) }}" alt="" />{{ result.pretty_url }}{{ result_close_link() }}
+  </p>
+  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" />{{ result_close_link() }}{% endif -%}
   {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" alt="{{ result.title|striptags }}"/>{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
