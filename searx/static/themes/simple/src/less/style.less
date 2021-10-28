@@ -16,6 +16,7 @@
 @import "code.less";
 @import "toolkit.less";
 @import "autocomplete.less";
+@import "detail.less";
 
 // for index.html template
 @import "index.less";
@@ -138,6 +139,10 @@ article[data-vim-selected]::before {
 
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
+
+  .image_thumbnail {
+    filter: opacity(60%);
+  }
 }
 
 article.result-images[data-vim-selected]::before {
@@ -283,25 +288,26 @@ article.result-images[data-vim-selected]::before {
 
   img {
     float: inherit;
-    margin: 0;
+    margin: 0.125rem;
     padding: 0;
     border: none;
     max-height: 200px;
     background: var(--color-result-image-background);
   }
 
-  span a {
+  span.title {
     display: none;
     color: var(--color-result-image-span-font);
   }
 
-  &:hover span a {
+  &:hover span.title {
     display: block;
     position: absolute;
     bottom: 0;
     right: 0;
     padding: 4px;
     margin: 0 0 4px 4px;
+    // color: @color-result-image-span-font;
     background-color: var(--color-result-image-span-background-hover);
     font-size: 0.7em;
   }
@@ -567,6 +573,10 @@ article.result-images[data-vim-selected]::before {
     margin: 0;
     padding: 0.7em;
   }
+}
+
+#results.scrolling #backToTop {
+  opacity: 1;
 }
 
 @media screen and (max-width: @tablet) {
