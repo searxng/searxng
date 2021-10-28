@@ -2001,7 +2001,7 @@ article.result-images .detail {
   position: fixed;
   left: 60rem;
   right: 0;
-  top: 7rem;
+  top: 7.5rem;
   bottom: 0;
   background: var(--color-result-detail-background);
   border: 1px solid var(--color-result-detail-background);
@@ -2193,7 +2193,10 @@ article.result-images .detail {
   }
 }
 #main_index {
-  margin-top: 16em;
+  margin-top: 24vh;
+}
+#main_index #linkto_preferences {
+  right: 1.8rem;
 }
 .index {
   text-align: center;
@@ -2347,7 +2350,7 @@ article.result-images .detail {
   border-bottom: 1px solid var(--color-header-border);
   display: grid;
   column-gap: 1rem;
-  row-gap: 10px;
+  row-gap: 1rem;
   grid-template-columns: 3rem 1fr;
   grid-template-areas: "logo search" "spacer categories";
 }
@@ -2440,7 +2443,7 @@ article.result-images .detail {
 }
 .search_filters {
   display: inline-block;
-  vertical-align: middle;
+  margin: 0.8rem 0 0 0;
 }
 @media screen and (max-width: 80em) {
   #search {
@@ -2491,7 +2494,6 @@ article.result-images .detail {
   }
   #search_wrapper {
     width: 100%;
-    margin: 0;
     padding: 0;
   }
   .search_box {
@@ -2507,7 +2509,7 @@ article.result-images .detail {
   }
   .search_filters {
     display: block;
-    margin: 0.5em;
+    margin: 0.8em 0;
   }
   .language,
   .time_range {
@@ -2545,7 +2547,7 @@ article.result-images .detail {
 }
 .category label {
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 0.3rem 0.75rem 0.5rem 0.75rem;
   margin: 0;
   display: block;
   text-transform: capitalize;
@@ -2692,9 +2694,8 @@ article.result-images[data-vim-selected]::before {
 .result h3 {
   font-size: 1.1em;
   word-wrap: break-word;
-  margin: 8px 0 8px 0 !important;
+  margin: 0.4rem 0 0.4rem 0;
   padding: 0;
-  margin-bottom: 0;
 }
 .result h3 a {
   color: var(--color-result-link-font);
@@ -3004,7 +3005,7 @@ article.result-images[data-vim-selected]::before {
 #linkto_preferences {
   position: absolute;
   right: 10px;
-  top: 0.9em;
+  top: 2rem;
   padding: 0;
   border: 0;
   display: block;
@@ -3142,7 +3143,7 @@ article.result-images[data-vim-selected]::before {
 }
 #main_results div#results.only_template_images #backToTop {
   left: auto;
-  right: 2rem;
+  right: 1rem;
 }
 #main_results div#results.only_template_images #pagination {
   margin-right: 4rem;
