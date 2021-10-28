@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-15 19:24+0000\n"
+"POT-Creation-Date: 2021-10-28 06:54+0000\n"
 "PO-Revision-Date: 2021-08-23 19:04+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -21,127 +21,128 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "files"
 msgstr "ཡིག་ཚགས།"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "general"
 msgstr "དྲ་སྦྲེལ།"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "music"
 msgstr "རོལ་མོ།"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "social media"
 msgstr "སྤྱི་འབྲེལ།"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
 msgid "images"
 msgstr "པར་རིས།"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "videos"
 msgstr "བརྙན་ཟློས།"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:170
 msgid "it"
 msgstr "ཆ་འཕྲིན་ལག་རྩལ།"
 
-#: searx/webapp.py:172
+#: searx/webapp.py:171
 msgid "news"
 msgstr "གསར་འགྱུར།"
 
-#: searx/webapp.py:173
+#: searx/webapp.py:172
 msgid "map"
 msgstr "ས་བཀྲ།"
 
-#: searx/webapp.py:174
+#: searx/webapp.py:173
 msgid "onions"
 msgstr ""
 
-#: searx/webapp.py:175
+#: searx/webapp.py:174
 msgid "science"
 msgstr "ཚན་རིག"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:178
 msgid "timeout"
 msgstr ""
 
-#: searx/webapp.py:180
+#: searx/webapp.py:179
 msgid "parsing error"
 msgstr ""
 
-#: searx/webapp.py:181
+#: searx/webapp.py:180
 msgid "HTTP protocol error"
 msgstr ""
 
-#: searx/webapp.py:182
+#: searx/webapp.py:181
 msgid "network error"
 msgstr ""
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "unexpected crash"
 msgstr ""
 
-#: searx/webapp.py:191
+#: searx/webapp.py:190
 msgid "HTTP error"
 msgstr ""
 
-#: searx/webapp.py:192
+#: searx/webapp.py:191
 msgid "HTTP connection error"
 msgstr ""
 
-#: searx/webapp.py:198
+#: searx/webapp.py:197
 msgid "proxy error"
 msgstr ""
 
-#: searx/webapp.py:199
+#: searx/webapp.py:198
 msgid "CAPTCHA"
 msgstr ""
 
-#: searx/webapp.py:200
+#: searx/webapp.py:199
 msgid "too many requests"
 msgstr ""
 
-#: searx/webapp.py:201
+#: searx/webapp.py:200
 msgid "access denied"
 msgstr ""
 
-#: searx/webapp.py:202
+#: searx/webapp.py:201
 msgid "server API error"
 msgstr ""
 
-#: searx/webapp.py:394
+#: searx/webapp.py:393
 msgid "No item found"
 msgstr "རྣམ་གྲངས་གང་ཡང་རྙེད་རྒྱུ་མ་བྱུང་།"
 
-#: searx/engines/qwant.py:198 searx/webapp.py:396
+#: searx/engines/qwant.py:198
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:395
 msgid "Source"
 msgstr ""
 
-#: searx/webapp.py:506 searx/webapp.py:913
+#: searx/webapp.py:505 searx/webapp.py:912
 msgid "Invalid settings, please edit your preferences"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།ཁྱེད་ཀྱིས་གདམ་ཀ་ལ་བཅོས་སྒྲིག་གཏོང་རོགས།"
 
-#: searx/webapp.py:522
+#: searx/webapp.py:521
 msgid "Invalid settings"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།"
 
-#: searx/webapp.py:600 searx/webapp.py:666
+#: searx/webapp.py:599 searx/webapp.py:665
 msgid "search error"
 msgstr "འཚོལ་བཤེར་ལ་ནོར་འཁྲུལ་བྱུང་།"
 
-#: searx/webapp.py:709
+#: searx/webapp.py:708
 msgid "{minutes} minute(s) ago"
 msgstr "སྐར་མ་ {minutes} སྔོན་ལ།"
 
-#: searx/webapp.py:711
+#: searx/webapp.py:710
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "ཆུ་ཚོད་ {hours} དང་སྐར་མ {minutes} སྔོན་ལ།"
 
-#: searx/webapp.py:834
+#: searx/webapp.py:833
 msgid "Suspended"
 msgstr ""
 
@@ -350,13 +351,13 @@ msgstr "ས་བོན་ཡིག་ཆ།"
 
 #: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
 #: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:48
+#: searx/templates/simple/macros.html:46
 msgid "cached"
 msgstr "འདྲ་བཤུས་རྒྱབ་ཚར།"
 
 #: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
 #: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:48
+#: searx/templates/simple/macros.html:46
 msgid "proxied"
 msgstr "མངག་བཅོལ་བྱེད་ཟིན།"
 
@@ -851,21 +852,21 @@ msgid "previous page"
 msgstr "དྲ་ངོས་སྔོན་མ།"
 
 #: searx/templates/oscar/search.html:6 searx/templates/oscar/search_full.html:9
-#: searx/templates/simple/search.html:4
+#: searx/templates/simple/search.html:7
 #: searx/templates/simple/simple_search.html:4
 msgid "Search for..."
 msgstr "འཚོལ་བཤེར་ནང་དོན།"
 
 #: searx/templates/oscar/search.html:8
 #: searx/templates/oscar/search_full.html:11
-#: searx/templates/simple/search.html:6
+#: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:6
 msgid "Start search"
 msgstr "འཚོལ་བཤེར་མགོ་རྩོམ།"
 
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
-#: searx/templates/simple/search.html:5
+#: searx/templates/simple/search.html:8
 #: searx/templates/simple/simple_search.html:5
 msgid "Clear search"
 msgstr ""
@@ -1053,6 +1054,7 @@ msgstr "སྨྱན་གཟུགས་སྦས་པར་བྱེད།"
 
 #: searx/templates/oscar/result_templates/files.html:33
 #: searx/templates/oscar/result_templates/videos.html:19
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Author"
 msgstr ""
 
@@ -1105,6 +1107,7 @@ msgid "Get image"
 msgstr "པར་རིས་ཕབ་ལེན།"
 
 #: searx/templates/oscar/result_templates/images.html:30
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "ཡོངས་ཁུངས་ལ་ལྟ།"
 
@@ -1175,6 +1178,14 @@ msgstr "རྒྱབ་སྐྱོར་ཐོབ་པའི་སྐད་ར
 #: searx/templates/simple/results.html:24
 msgid "Answers"
 msgstr "ལན།"
+
+#: searx/templates/simple/result_templates/images.html:22
+msgid "Format"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:24
+msgid "Engine"
+msgstr ""
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "འཚོལ་བཤེར་དུས་ཡུན། (སྐར་ཆ།)"
