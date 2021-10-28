@@ -9,7 +9,7 @@
   border-bottom: 1px solid var(--color-header-border);
   display: grid;
   column-gap: 1rem;
-  row-gap: 10px;
+  row-gap: 1rem;
   grid-template-columns: 3rem 1fr;
   grid-template-areas:
     "logo search"
@@ -120,7 +120,7 @@
 
 .search_filters {
   display: inline-block;
-  vertical-align: middle;
+  margin: 0.8rem 0 0 0;
 }
 
 @media screen and (max-width: @tablet) {
@@ -184,7 +184,6 @@
 
   #search_wrapper {
     width: 100%;
-    margin: 0;
     padding: 0;
   }
 
@@ -204,7 +203,7 @@
 
   .search_filters {
     display: block;
-    margin: 0.5em;
+    margin: 0.8em 0;
   }
 
   .language,
@@ -244,7 +243,7 @@
 
   label {
     cursor: pointer;
-    padding: 4px 10px;
+    padding: 0.3rem 0.75rem 0.5rem 0.75rem;
     margin: 0;
     display: block;
     text-transform: capitalize;
