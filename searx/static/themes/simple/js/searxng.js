@@ -156,7 +156,7 @@ window.searxng = (function(w, d) {
 searxng.ready(function() {
 
   searxng.on('.result', 'click', function() {
-    highlightResult(this)(true);
+    highlightResult(this)(true);  
   });
 
   searxng.on('.result a', 'focus', function(e) {
@@ -276,9 +276,7 @@ searxng.ready(function() {
     if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
       var tagName = e.target.tagName.toLowerCase();
       if (e.keyCode === 27) {
-        if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
-          vimKeys[e.keyCode].fun();
-        }
+        vimKeys[e.keyCode].fun(e);
       } else {
         if (e.target === document.body || tagName === 'a' || tagName === 'button') {
           e.preventDefault();
@@ -365,9 +363,12 @@ searxng.ready(function() {
     document.location.reload(true);
   }
 
-  function removeFocus() {
-    if (document.activeElement) {
+  function removeFocus(e) {
+    const tagName = e.target.tagName.toLowerCase();
+    if (document.activeElement && (tagName === 'input' || tagName === 'select' || tagName === 'textarea')) {
       document.activeElement.blur();
+    } else {
+      searxng.closeDetail();
     }
   }
 
@@ -437,6 +438,9 @@ searxng.ready(function() {
   function openResult(newTab) {
     return function() {
       var link = document.querySelector('.result[data-vim-selected] h3 a');
+      if (link === null) {
+        link = document.querySelector('.result[data-vim-selected] > a');
+      }
       if (link !== null) {
         var url = link.getAttribute('href');
         if (newTab) {
@@ -520,6 +524,10 @@ searxng.ready(function() {
       return;
     }
   }
+
+  searxng.scrollPageToSelected = scrollPageToSelected;
+  searxng.selectNext = highlightResult('down');
+  searxng.selectPrevious = highlightResult('up');
 });
 ;/* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global L */
@@ -628,7 +636,7 @@ searxng.ready(function() {
   'use strict';
 
   searxng.ready(function() {
-    searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 10, 200);
+    searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 14, 6, 200);
     searxng.image_thumbnail_layout.watch();
 
     searxng.on('.btn-collapse', 'click', function() {
@@ -656,17 +664,74 @@ searxng.ready(function() {
       }
     });
 
-    w.addEventListener('scroll', function() {
-      var e = d.getElementById('backToTop'),
-      scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (e !== null) {
-        if (scrollTop >= 200) {
-          e.style.opacity = 1;
-        } else {
-          e.style.opacity = 0;
+    function selectImage(e) {
+      /*eslint no-unused-vars: 0*/
+      let t = e.target;
+      while (t && t.nodeName != 'ARTICLE') {
+        t = t.parentNode;
+      }
+      if (t) {
+        // load full size image in background
+        const imgElement = t.querySelector('.result-images-source img');
+        const thumbnailElement = t.querySelector('.image_thumbnail');
+        const detailElement = t.querySelector('.detail');
+        if (imgElement) {
+          const imgSrc = imgElement.getAttribute('data-src');
+          if (imgSrc) {
+            const loader = d.createElement('div');
+            const imgLoader = new Image();
+
+            loader.classList.add('loader');
+            detailElement.appendChild(loader);
+
+            imgLoader.onload = e => {
+              imgElement.src = imgSrc;
+              loader.remove();
+            };
+            imgLoader.onerror = e => {
+              loader.remove();
+            };
+            imgLoader.src = imgSrc;
+            imgElement.src = thumbnailElement.src;
+            imgElement.removeAttribute('data-src');
+          }
         }
       }
+      d.getElementById('results').classList.add('image-detail-open');
+      searxng.image_thumbnail_layout.align();
+      searxng.scrollPageToSelected();
+    }
+
+    searxng.closeDetail = function(e) {
+      d.getElementById('results').classList.remove('image-detail-open');
+      searxng.image_thumbnail_layout.align();
+      searxng.scrollPageToSelected();
+    }
+
+    searxng.on('.result-images', 'click', e => {
+      e.preventDefault();
+      selectImage(e);
     });
+    searxng.on('.result-images a', 'focus', selectImage, true);
+    searxng.on('.result-detail-close', 'click', e => { 
+      e.preventDefault();
+      searxng.closeDetail();
+    });
+    searxng.on('.result-detail-previous', 'click', e => searxng.selectPrevious(false));
+    searxng.on('.result-detail-next', 'click', e => searxng.selectNext(false));
+
+    w.addEventListener('scroll', function() {
+      var e = d.getElementById('backToTop'),
+      scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+      results = d.getElementById('results');
+      if (e !== null) {
+        if (scrollTop >= 100) {
+          results.classList.add('scrolling');
+        } else {
+          results.classList.remove('scrolling');
+        }
+      }
+    }, true);
 
   });
 
@@ -791,11 +856,12 @@ searxng.ready(function() {
 */
 
 (function (w, d) {
-  function ImageLayout(container_selector, results_selector, img_selector, margin, maxHeight) {
+  function ImageLayout(container_selector, results_selector, img_selector, verticalMargin, horizontalMargin, maxHeight) {
     this.container_selector = container_selector;
     this.results_selector = results_selector;
     this.img_selector = img_selector;
-    this.margin = margin;
+    this.verticalMargin = verticalMargin;
+    this.horizontalMargin = horizontalMargin;
     this.maxHeight = maxHeight;
     this.isAlignDone = true;
   }
@@ -825,7 +891,7 @@ searxng.ready(function() {
       }
     }
 
-    return (width - images.length * this.margin) / r; //have to round down because Firefox will automatically roundup value with number of decimals > 3
+    return (width - images.length * this.verticalMargin) / r; //have to round down because Firefox will automatically roundup value with number of decimals > 3
   };
 
   ImageLayout.prototype._setSize = function (images, height) {
@@ -842,10 +908,10 @@ searxng.ready(function() {
       }
       img.style.width = imgWidth + 'px';
       img.style.height = height + 'px';
-      img.style.marginLeft = '3px';
-      img.style.marginTop = '3px';
-      img.style.marginRight = this.margin - 7 + 'px'; // -4 is the negative margin of the inline element
-      img.style.marginBottom = this.margin - 7 + 'px';
+      img.style.marginLeft = this.horizontalMargin + 'px';
+      img.style.marginTop = this.horizontalMargin + 'px';
+      img.style.marginRight = this.verticalMargin - 7 + 'px'; // -4 is the negative margin of the inline element
+      img.style.marginBottom = this.verticalMargin - 7 + 'px';
       resultNode = img.parentNode.parentNode;
       if (!resultNode.classList.contains('js')) {
         resultNode.classList.add('js');

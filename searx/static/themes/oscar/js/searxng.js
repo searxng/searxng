@@ -179,7 +179,7 @@ $(document).ready(function(){
     /**
      * Layout images according to their sizes
      */
-    searxng.image_thumbnail_layout = new searxng.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 200);
+    searxng.image_thumbnail_layout = new searxng.ImageLayout('#main_results', '#main_results .result-images', 'img.img-thumbnail', 15, 3, 200);
     searxng.image_thumbnail_layout.watch();
 });
 ;/**
@@ -330,11 +330,12 @@ $(document).ready(function(){
 */
 
 (function (w, d) {
-  function ImageLayout(container_selector, results_selector, img_selector, margin, maxHeight) {
+  function ImageLayout(container_selector, results_selector, img_selector, verticalMargin, horizontalMargin, maxHeight) {
     this.container_selector = container_selector;
     this.results_selector = results_selector;
     this.img_selector = img_selector;
-    this.margin = margin;
+    this.verticalMargin = verticalMargin;
+    this.horizontalMargin = horizontalMargin;
     this.maxHeight = maxHeight;
     this.isAlignDone = true;
   }
@@ -364,7 +365,7 @@ $(document).ready(function(){
       }
     }
 
-    return (width - images.length * this.margin) / r; //have to round down because Firefox will automatically roundup value with number of decimals > 3
+    return (width - images.length * this.verticalMargin) / r; //have to round down because Firefox will automatically roundup value with number of decimals > 3
   };
 
   ImageLayout.prototype._setSize = function (images, height) {
@@ -381,10 +382,10 @@ $(document).ready(function(){
       }
       img.style.width = imgWidth + 'px';
       img.style.height = height + 'px';
-      img.style.marginLeft = '3px';
-      img.style.marginTop = '3px';
-      img.style.marginRight = this.margin - 7 + 'px'; // -4 is the negative margin of the inline element
-      img.style.marginBottom = this.margin - 7 + 'px';
+      img.style.marginLeft = this.horizontalMargin + 'px';
+      img.style.marginTop = this.horizontalMargin + 'px';
+      img.style.marginRight = this.verticalMargin - 7 + 'px'; // -4 is the negative margin of the inline element
+      img.style.marginBottom = this.verticalMargin - 7 + 'px';
       resultNode = img.parentNode.parentNode;
       if (!resultNode.classList.contains('js')) {
         resultNode.classList.add('js');

@@ -871,6 +871,13 @@ html {
   --color-result-image-background: #000bbb;
   --color-settings-tr-hover: #f7f7f7;
   --color-settings-engine-description-font: #909090;
+  --color-result-detail-font: #fff;
+  --color-result-detail-label-font: lightgray;
+  --color-result-detail-background: #000;
+  --color-result-detail-hr: #333;
+  --color-result-detail-link: #8af;
+  --color-result-detail-loader-border: rgba(255, 255, 255, 0.2);
+  --color-result-detail-loader-borderleft: rgba(0, 0, 0, 0);
   --color-toolkit-badge-font: #fff;
   --color-toolkit-badge-background: #777;
   --color-toolkit-kbd-font: #fff;
@@ -941,6 +948,13 @@ html {
     --color-result-engines-font: #777;
     --color-result-search-url-border: #333;
     --color-result-search-url-font: #fff;
+    --color-result-detail-font: #fff;
+    --color-result-detail-label-font: lightgray;
+    --color-result-detail-background: #000;
+    --color-result-detail-hr: #333;
+    --color-result-detail-link: #8af;
+    --color-result-detail-loader-border: rgba(255, 255, 255, 0.2);
+    --color-result-detail-loader-borderleft: rgba(0, 0, 0, 0);
     --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
     --color-result-image-span-font: #fff;
     --color-result-image-background: #8af;
@@ -965,8 +979,8 @@ html {
     --color-toolkit-engine-tooltip-border: #333;
     --color-toolkit-engine-tooltip-shadow: #444;
     --color-toolkit-engine-tooltip-background: #222;
-    --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
-    --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
+    --color-toolkit-loader-border: rgba(255, 255, 255, 0.2);
+    --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
   }
 }
 /*
@@ -1971,6 +1985,213 @@ td:hover .engine-tooltip,
     text-align: left;
   }
 }
+#main_results #results.image-detail-open.only_template_images {
+  width: 59.25rem !important;
+}
+#main_results #results.only_template_images.image-detail-open #backToTop {
+  left: 56.75rem !important;
+  right: inherit;
+}
+article.result-images .detail {
+  display: none;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 60rem;
+  right: 0;
+  top: 7rem;
+  bottom: 0;
+  background: var(--color-result-detail-background);
+  border: 1px solid var(--color-result-detail-background);
+  z-index: 10000;
+  padding: 4rem 3rem 3rem 3rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source {
+  display: block;
+  flex: 1;
+  text-align: left;
+  width: 100%;
+  border: none;
+  text-decoration: none;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source img {
+  padding: 0;
+  margin: 0;
+  border: none;
+  object-fit: contain;
+  width: inherit;
+  max-width: 100%;
+  min-height: inherit;
+  max-height: calc(100vh - 25rem - 7rem);
+  background: inherit;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels {
+  color: var(--color-result-detail-font);
+  max-height: 16rem;
+  min-height: 16rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels hr {
+  border-top: 1px solid var(--color-result-detail-hr);
+  border-bottom: none;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels h4 {
+  height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p {
+  color: var(--color-result-detail-label-font);
+  font-size: 0.9rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p span {
+  display: inline-block;
+  width: 12rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels h4,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a {
+  text-align: left;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p.result-content {
+  height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p.result-url {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p.result-content:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p.result-url:hover {
+  position: relative;
+  overflow: inherit !important;
+  background: var(--color-result-detail-background);
+  text-overflow: inherit !important;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a:visited,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a:active {
+  color: var(--color-result-detail-link);
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a:hover {
+  text-decoration: underline;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close {
+  top: 1rem;
+  left: 1rem;
+  padding: 0.4rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous {
+  top: 1rem;
+  right: 6rem;
+  padding: 0.4rem 0.5rem 0.4rem 0.3rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next {
+  top: 1rem;
+  right: 2rem;
+  padding: 0.4rem;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous {
+  border-radius: 50%;
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  filter: opacity(40%);
+  z-index: 2000002;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close span,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next span,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous span {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next span::before,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous span::before {
+  vertical-align: sub;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:visited,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:active,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:visited,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:active,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:visited,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:active {
+  color: var(--color-result-detail-font);
+  background: var(--color-result-detail-background);
+  border: 1px solid var(--color-result-detail-font);
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:focus,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:focus,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:focus,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:hover {
+  filter: opacity(80%);
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .loader {
+  position: absolute;
+  top: 1rem;
+  right: 50%;
+  border-top: 0.5em solid var(--color-result-detail-loader-border);
+  border-right: 0.5em solid var(--color-result-detail-loader-border);
+  border-bottom: 0.5em solid var(--color-result-detail-loader-border);
+  border-left: 0.5em solid var(--color-result-detail-loader-borderleft);
+}
+#results.image-detail-open.scrolling article.result-images[data-vim-selected] .detail {
+  top: 0;
+}
+#results.image-detail-open.scrolling article.result-images[data-vim-selected] .detail a.result-images-source img {
+  max-height: calc(100vh - 25rem);
+}
+@media screen and (max-width: 80em) {
+  #results.image-detail-open article.result-images[data-vim-selected] .detail {
+    top: 0;
+    left: 0;
+  }
+  #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source img {
+    width: 100%;
+    max-height: calc(100vh - 24rem);
+  }
+  #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next {
+    right: 1rem;
+  }
+}
+@media screen and (max-width: 50em) {
+  #results.image-detail-open article.result-images[data-vim-selected] .detail {
+    top: 0;
+    left: 0;
+    padding: 1rem;
+  }
+  #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source img {
+    width: 100%;
+    max-height: calc(100vh - 20rem);
+    margin: 0;
+  }
+  #results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p span {
+    width: inherit;
+    margin-right: 1rem;
+  }
+}
 #main_index {
   margin-top: 16em;
 }
@@ -2457,6 +2678,9 @@ article[data-vim-selected]::before {
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
 }
+article.result-images[data-vim-selected] .image_thumbnail {
+  filter: opacity(60%);
+}
 article.result-images[data-vim-selected]::before {
   display: none;
   content: "";
@@ -2577,17 +2801,17 @@ article.result-images[data-vim-selected]::before {
 }
 .result-images img {
   float: inherit;
-  margin: 0;
+  margin: 0.125rem;
   padding: 0;
   border: none;
   max-height: 200px;
   background: var(--color-result-image-background);
 }
-.result-images span a {
+.result-images span.title {
   display: none;
   color: var(--color-result-image-span-font);
 }
-.result-images:hover span a {
+.result-images:hover span.title {
   display: block;
   position: absolute;
   bottom: 0;
@@ -2823,6 +3047,9 @@ article.result-images[data-vim-selected]::before {
   display: block;
   margin: 0;
   padding: 0.7em;
+}
+#results.scrolling #backToTop {
+  opacity: 1;
 }
 @media screen and (max-width: 80em) {
   #main_preferences,
