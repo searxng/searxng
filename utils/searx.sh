@@ -154,6 +154,7 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete (de-) installation of searx service
+  :check:      check the SearXNG installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :dot-config: copy ./config.sh to ${SEARX_SRC}
   :searx-src:  clone $GIT_URL
@@ -215,6 +216,11 @@ main() {
         install)
             sudo_or_exit
             case $2 in
+                check)
+                    rst_title "SearXNG (check installation)" part
+                    verify_continue_install
+                    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
+                    ;;
                 all)
                     rst_title "SearXNG (install)" part
                     install_all
