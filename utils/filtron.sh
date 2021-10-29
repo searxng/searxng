@@ -76,6 +76,7 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete setup of filtron service
+  :check:      check the filtron installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :rules:      reinstall filtron rules $FILTRON_RULES
 update filtron
@@ -135,6 +136,10 @@ main() {
             rst_title "$SERVICE_NAME" part
             sudo_or_exit
             case $2 in
+                check)
+                    rst_title "Check filtron installation" part
+                    install_check
+                    ;;
                 all) install_all ;;
                 user) assert_user ;;
                 rules)
@@ -222,6 +227,45 @@ install_all() {
     fi
     if ask_yn "Do you want to inspect the installation?" Ny; then
         inspect_service
+    fi
+
+}
+
+install_check() {
+
+    if service_account_is_available "$SERVICE_USER"; then
+        info_msg "service account $SERVICE_USER available."
+    else
+        err_msg "service account $SERVICE_USER not available!"
+    fi
+    if go_is_available "$SERVICE_USER"; then
+        info_msg "~$SERVICE_USER: go is installed"
+    else
+        err_msg "~$SERVICE_USER: go is not installed"
+    fi
+    if filtron_is_installed; then
+        info_msg "~$SERVICE_USER: filtron app is installed"
+    else
+        err_msg "~$SERVICE_USER: filtron app is not installed!"
+    fi
+
+    if ! service_is_available "http://${FILTRON_API}"; then
+        err_msg "API not available at: http://${FILTRON_API}"
+    fi
+
+    if ! service_is_available "http://${FILTRON_LISTEN}" ; then
+        err_msg "Filtron is not listening on: http://${FILTRON_LISTEN}"
+    fi
+
+    if service_is_available "http://${FILTRON_TARGET}" ; then
+        info_msg "Filtron's target is available at: http://${FILTRON_TARGET}"
+    fi
+
+    if ! service_is_available "${PUBLIC_URL}"; then
+        warn_msg "Public service at ${PUBLIC_URL} is not available!"
+        if ! in_container; then
+            warn_msg "Check if public name is correct and routed or use the public IP from above."
+        fi
     fi
 
 }
@@ -354,40 +398,7 @@ sourced ${DOT_CONFIG} :
 EOF
     install_log_searx_instance
 
-    if service_account_is_available "$SERVICE_USER"; then
-        info_msg "service account $SERVICE_USER available."
-    else
-        err_msg "service account $SERVICE_USER not available!"
-    fi
-    if go_is_available "$SERVICE_USER"; then
-        info_msg "~$SERVICE_USER: go is installed"
-    else
-        err_msg "~$SERVICE_USER: go is not installed"
-    fi
-    if filtron_is_installed; then
-        info_msg "~$SERVICE_USER: filtron app is installed"
-    else
-        err_msg "~$SERVICE_USER: filtron app is not installed!"
-    fi
-
-    if ! service_is_available "http://${FILTRON_API}"; then
-        err_msg "API not available at: http://${FILTRON_API}"
-    fi
-
-    if ! service_is_available "http://${FILTRON_LISTEN}" ; then
-        err_msg "Filtron is not listening on: http://${FILTRON_LISTEN}"
-    fi
-
-    if service_is_available "http://${FILTRON_TARGET}" ; then
-        info_msg "Filtron's target is available at: http://${FILTRON_TARGET}"
-    fi
-
-    if ! service_is_available "${PUBLIC_URL}"; then
-        warn_msg "Public service at ${PUBLIC_URL} is not available!"
-        if ! in_container; then
-            warn_msg "Check if public name is correct and routed or use the public IP from above."
-        fi
-    fi
+    install_check
 
     if in_container; then
         lxc_suite_info
