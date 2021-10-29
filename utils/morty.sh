@@ -28,7 +28,8 @@ SERVICE_GROUP="${SERVICE_USER}"
 SERVICE_ENV_DEBUG=false
 
 GO_ENV="${SERVICE_HOME}/.go_env"
-GO_PKG_URL="https://golang.org/dl/go1.17.2.linux-amd64.tar.gz"
+GO_VERSION="go1.17.2"
+GO_PKG_URL="https://golang.org/dl/${GO_VERSION}.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
 # shellcheck disable=SC2034
@@ -47,7 +48,7 @@ usage() {
     cat <<EOF
 usage::
   $(basename "$0") shell
-  $(basename "$0") install    [all|user]
+  $(basename "$0") install    [all|check|user]
   $(basename "$0") update     [morty]
   $(basename "$0") remove     [all]
   $(basename "$0") activate   [service]
@@ -61,8 +62,10 @@ usage::
 shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
-  all:        complete setup of morty service
-  user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
+  :all:        complete setup of morty service
+  :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
+install
+  :check:      check the morty installation
 update morty
   Update morty installation ($SERVICE_HOME)
 activate service
@@ -147,6 +150,10 @@ main() {
             sudo_or_exit
             case $2 in
                 all) install_all ;;
+                check)
+                    rst_title "Check morty installation" part
+                    install_check
+                    ;;
                 user) assert_user ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
@@ -246,6 +253,38 @@ install_all() {
 
 }
 
+install_check() {
+
+    if service_account_is_available "$SERVICE_USER"; then
+        info_msg "service account $SERVICE_USER available."
+    else
+        err_msg "service account $SERVICE_USER not available!"
+    fi
+    if go_is_available "$SERVICE_USER"; then
+        info_msg "~$SERVICE_USER: go is installed"
+    else
+        err_msg "~$SERVICE_USER: go is not installed"
+    fi
+    if morty_is_installed; then
+        info_msg "~$SERVICE_USER: morty app is installed"
+    else
+        err_msg "~$SERVICE_USER: morty app is not installed!"
+    fi
+
+    if ! service_is_available "http://${MORTY_LISTEN}" ; then
+        err_msg "Morty is not listening on: http://${MORTY_LISTEN}"
+        echo -e "${_Green}stop with [${_BCyan}CTRL-C${_Green}] or .."
+        wait_key
+    fi
+
+    if ! service_is_available "${PUBLIC_URL_MORTY}"; then
+        warn_msg "Public service at ${PUBLIC_URL_MORTY} is not available!"
+        if ! in_container; then
+            warn_msg "Check if public name is correct and routed or use the public IP from above."
+        fi
+    fi
+}
+
 remove_all() {
     rst_title "De-Install $SERVICE_NAME (service)"
 
@@ -342,34 +381,7 @@ sourced ${DOT_CONFIG} :
 EOF
     install_log_searx_instance
 
-    if service_account_is_available "$SERVICE_USER"; then
-        info_msg "service account $SERVICE_USER available."
-    else
-        err_msg "service account $SERVICE_USER not available!"
-    fi
-    if go_is_available "$SERVICE_USER"; then
-        info_msg "~$SERVICE_USER: go is installed"
-    else
-        err_msg "~$SERVICE_USER: go is not installed"
-    fi
-    if morty_is_installed; then
-        info_msg "~$SERVICE_USER: morty app is installed"
-    else
-        err_msg "~$SERVICE_USER: morty app is not installed!"
-    fi
-
-    if ! service_is_available "http://${MORTY_LISTEN}" ; then
-        err_msg "Morty is not listening on: http://${MORTY_LISTEN}"
-        echo -e "${_Green}stop with [${_BCyan}CTRL-C${_Green}] or .."
-        wait_key
-    fi
-
-    if ! service_is_available "${PUBLIC_URL_MORTY}"; then
-        warn_msg "Public service at ${PUBLIC_URL_MORTY} is not available!"
-        if ! in_container; then
-            warn_msg "Check if public name is correct and routed or use the public IP from above."
-        fi
-    fi
+    install_check
 
     if in_container; then
         lxc_suite_info
