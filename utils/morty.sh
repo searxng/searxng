@@ -283,6 +283,18 @@ install_check() {
             warn_msg "Check if public name is correct and routed or use the public IP from above."
         fi
     fi
+
+    if [[ "${GO_VERSION}" > "$(go_version)" ]]; then
+        warn_msg "golang ($(go_version)) needs to be $GO_VERSION at least"
+    else
+        info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
+    fi
+}
+
+go_version(){
+    sudo -i -u "$SERVICE_USER" <<EOF
+go version | cut -d' ' -f 3
+EOF
 }
 
 remove_all() {
