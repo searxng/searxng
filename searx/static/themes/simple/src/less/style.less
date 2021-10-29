@@ -126,33 +126,24 @@ a {
 
 article[data-vim-selected] {
   background: var(--color-result-vim-selected);
-}
-
-article[data-vim-selected]::before {
-  position: absolute;
-  left: (@results-offset - 2rem);
-  padding: 2px;
-  content: ">";
-  font-weight: bold;
-  color: var(--color-result-vim-arrow);
+  border-left: 0.2rem solid var(--color-result-vim-arrow);
+  .rounded-right-corners;
 }
 
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
+  border: none;
+  .rounded-corners;
 
   .image_thumbnail {
     filter: opacity(60%);
   }
 }
 
-article.result-images[data-vim-selected]::before {
-  display: none;
-  content: "";
-}
-
 .result {
   margin: @results-margin 0;
-  padding: 0;
+  padding: @result-padding;
+  border-left: 0.2rem solid transparent;
 
   h3 {
     font-size: 1.1em;
@@ -284,6 +275,7 @@ article.result-images[data-vim-selected]::before {
   padding: 0;
   position: relative;
   max-height: 200px;
+  border: none;
 
   img {
     float: inherit;
@@ -464,7 +456,7 @@ article.result-images[data-vim-selected]::before {
   .infobox {
     margin: 10px 0 10px;
     border: 1px solid var(--color-sidebar-border);
-    padding: 0.9em;
+    padding: 1rem;
     font-size: 0.9em;
     .rounded-corners;
 
@@ -752,10 +744,14 @@ article.result-images[data-vim-selected]::before {
   }
 
   .result {
-    padding: 8px 10px 6px 10px;
-    margin: @results-tablet-offset;
+    margin: 1rem @results-tablet-offset;
     border: 1px solid var(--color-result-border);
     box-shadow: 0 0 5px var(--color-result-shadow);
+    .rounded-corners;
+  }
+
+  article[data-vim-selected] {
+    border: 1px solid var(--color-result-border);
     .rounded-corners;
   }
 
