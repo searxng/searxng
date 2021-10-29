@@ -274,6 +274,15 @@ install_check() {
     else
         info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
     fi
+
+    if [ -f "${APACHE_SITES_AVAILABLE}/searx.conf" ]; then
+        warn_msg "old searx.conf apache site exists"
+    fi
+
+    if [ -f "${NGINX_APPS_AVAILABLE}/searx.conf" ]; then
+        warn_msg "old searx.conf nginx site exists"
+    fi
+
 }
 
 go_version(){

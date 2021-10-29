@@ -382,6 +382,10 @@ install_check() {
         || err_msg "uWSGI app $SEARXNG_UWSGI_APP not available!"
 
     sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
+
+    if uWSGI_app_available 'searx.ini'; then
+        warn_msg "old searx.ini uWSGI app exists"
+    fi
 }
 
 update_searx() {
