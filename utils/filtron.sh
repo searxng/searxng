@@ -42,7 +42,8 @@ SERVICE_GROUP="${SERVICE_USER}"
 SERVICE_GROUP="${SERVICE_USER}"
 
 GO_ENV="${SERVICE_HOME}/.go_env"
-GO_PKG_URL="https://golang.org/dl/go1.17.2.linux-amd64.tar.gz"
+GO_VERSION="go1.17.2"
+GO_PKG_URL="https://golang.org/dl/${GO_VERSION}.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
 APACHE_FILTRON_SITE="searx.conf"
@@ -268,6 +269,17 @@ install_check() {
         fi
     fi
 
+    if [[ "${GO_VERSION}" > "$(go_version)" ]]; then
+        warn_msg "golang ($(go_version)) needs to be $GO_VERSION at least"
+    else
+        info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
+    fi
+}
+
+go_version(){
+    sudo -i -u "$SERVICE_USER" <<EOF
+go version | cut -d' ' -f 3
+EOF
 }
 
 remove_all() {
