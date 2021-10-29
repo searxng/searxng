@@ -42,7 +42,7 @@ SERVICE_GROUP="${SERVICE_USER}"
 SERVICE_GROUP="${SERVICE_USER}"
 
 GO_ENV="${SERVICE_HOME}/.go_env"
-GO_PKG_URL="https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz"
+GO_PKG_URL="https://golang.org/dl/go1.17.2.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
 APACHE_FILTRON_SITE="searx.conf"
