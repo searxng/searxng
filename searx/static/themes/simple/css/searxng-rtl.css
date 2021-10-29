@@ -2344,12 +2344,12 @@ article.result-images .detail {
 * SearXNG, A privacy-respecting, hackable metasearch engine
 */
 #search {
-  padding: 1.5em 2em 0 6rem;
+  padding: 1.5em 2em 0 7rem;
   margin: 0;
   background: var(--color-header-background);
   border-bottom: 1px solid var(--color-header-border);
   display: grid;
-  column-gap: 1rem;
+  column-gap: 1.2rem;
   row-gap: 1rem;
   grid-template-columns: 3rem 1fr;
   grid-template-areas: "logo search" "spacer categories";
@@ -2668,28 +2668,25 @@ a:visited .highlight {
 }
 article[data-vim-selected] {
   background: var(--color-result-vim-selected);
-}
-article[data-vim-selected]::before {
-  position: absolute;
-  left: 8rem;
-  padding: 2px;
-  content: ">";
-  font-weight: bold;
-  color: var(--color-result-vim-arrow);
+  border-left: 0.2rem solid var(--color-result-vim-arrow);
+  -webkit-border-radius: 0 10px 10px 0;
+  -moz-border-radius: 0 10px 10px 0;
+  border-radius: 0 10px 10px 0;
 }
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
+  border: none;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 article.result-images[data-vim-selected] .image_thumbnail {
   filter: opacity(60%);
 }
-article.result-images[data-vim-selected]::before {
-  display: none;
-  content: "";
-}
 .result {
-  margin: 2rem 0;
-  padding: 0;
+  margin: 0.125rem 0;
+  padding: 1rem;
+  border-left: 0.2rem solid transparent;
 }
 .result h3 {
   font-size: 1.1em;
@@ -2799,6 +2796,7 @@ article.result-images[data-vim-selected]::before {
   padding: 0;
   position: relative;
   max-height: 200px;
+  border: none;
 }
 .result-images img {
   float: inherit;
@@ -2930,7 +2928,7 @@ article.result-images[data-vim-selected]::before {
   grid-area: answers;
   border: 1px solid var(--color-answer-border);
   padding: 0.9em;
-  margin-bottom: 2rem;
+  margin-bottom: 0.125rem;
   color: var(--color-answer-font);
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2956,7 +2954,7 @@ article.result-images[data-vim-selected]::before {
 #sidebar .infobox {
   margin: 10px 0 10px;
   border: 1px solid var(--color-sidebar-border);
-  padding: 0.9em;
+  padding: 1rem;
   font-size: 0.9em;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -3072,7 +3070,7 @@ article.result-images[data-vim-selected]::before {
     margin: 0.5em 0.5em 0.5em 0;
   }
   #sidebar {
-    margin-bottom: 2rem;
+    margin-bottom: 0.125rem;
     padding: 0;
     float: none;
     border: none;
@@ -3182,10 +3180,15 @@ article.result-images[data-vim-selected]::before {
     margin: 2rem 1rem 0 1rem !important;
   }
   .result {
-    padding: 8px 10px 6px 10px;
-    margin: 0.5rem;
+    margin: 1rem 0.5rem;
     border: 1px solid var(--color-result-border);
     box-shadow: 0 0 5px var(--color-result-shadow);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+  }
+  article[data-vim-selected] {
+    border: 1px solid var(--color-result-border);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
