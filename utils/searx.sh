@@ -141,7 +141,7 @@ usage() {
     cat <<EOF
 usage::
   $(basename "$0") shell
-  $(basename "$0") install    [all|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
+  $(basename "$0") install    [all|check|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
   $(basename "$0") update     [searx]
   $(basename "$0") remove     [all|user|pyenv|searx-src]
   $(basename "$0") activate   [service]
@@ -154,7 +154,6 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete (de-) installation of searx service
-  :check:      check the SearXNG installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :dot-config: copy ./config.sh to ${SEARX_SRC}
   :searx-src:  clone $GIT_URL
@@ -164,6 +163,8 @@ install / remove
   :settings:   reinstall settings from ${SEARXNG_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
+install
+  :check:      check the SearXNG installation
 update searx
   Update SearXNG installation ($SERVICE_HOME)
 activate service
@@ -216,14 +217,14 @@ main() {
         install)
             sudo_or_exit
             case $2 in
-                check)
-                    rst_title "SearXNG (check installation)" part
-                    verify_continue_install
-                    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
-                    ;;
                 all)
                     rst_title "SearXNG (install)" part
                     install_all
+                    ;;
+                check)
+                    rst_title "SearXNG (check installation)" part
+                    verify_continue_install
+                    install_check
                     ;;
                 user)
                     rst_title "SearXNG (install user)"
@@ -350,6 +351,37 @@ install_all() {
     if ask_yn "Do you want to inspect the installation?" Ny; then
         inspect_service
     fi
+}
+
+install_check() {
+    if service_account_is_available "$SERVICE_USER"; then
+        info_msg "Service account $SERVICE_USER exists."
+    else
+        err_msg "Service account $SERVICE_USER does not exists!"
+    fi
+
+    if pyenv_is_available; then
+        info_msg "~$SERVICE_USER: python environment is available."
+    else
+        err_msg "~$SERVICE_USER: python environment is not available!"
+    fi
+
+    if clone_is_available; then
+        info_msg "~$SERVICE_USER: SearXNG software is installed."
+    else
+        err_msg "~$SERVICE_USER: Missing SearXNG software!"
+    fi
+
+    if uWSGI_app_enabled "$SEARXNG_UWSGI_APP"; then
+        info_msg "uWSGI app $SEARXNG_UWSGI_APP is enabled."
+    else
+        err_msg "uWSGI app $SEARXNG_UWSGI_APP not enabled!"
+    fi
+
+    uWSGI_app_available "$SEARXNG_UWSGI_APP" \
+        || err_msg "uWSGI app $SEARXNG_UWSGI_APP not available!"
+
+    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
 }
 
 update_searx() {
@@ -851,33 +883,7 @@ sourced ${DOT_CONFIG} :
 EOF
     install_log_searx_instance
 
-    if service_account_is_available "$SERVICE_USER"; then
-        info_msg "Service account $SERVICE_USER exists."
-    else
-        err_msg "Service account $SERVICE_USER does not exists!"
-    fi
-
-    if pyenv_is_available; then
-        info_msg "~$SERVICE_USER: python environment is available."
-    else
-        err_msg "~$SERVICE_USER: python environment is not available!"
-    fi
-
-    if clone_is_available; then
-        info_msg "~$SERVICE_USER: SearXNG software is installed."
-    else
-        err_msg "~$SERVICE_USER: Missing SearXNG software!"
-    fi
-
-    if uWSGI_app_enabled "$SEARXNG_UWSGI_APP"; then
-        info_msg "uWSGI app $SEARXNG_UWSGI_APP is enabled."
-    else
-        err_msg "uWSGI app $SEARXNG_UWSGI_APP not enabled!"
-    fi
-
-    uWSGI_app_available "$SEARXNG_UWSGI_APP" \
-        || err_msg "uWSGI app $SEARXNG_UWSGI_APP not available!"
-
+    install_check
     if in_container; then
         lxc_suite_info
     else
