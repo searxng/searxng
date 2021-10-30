@@ -340,7 +340,7 @@ EOF
 
     cat > "$GO_ENV" <<EOF
 export GOPATH=\$HOME/go-apps
-export PATH=\$PATH:\$HOME/local/go/bin:\$GOPATH/bin
+export PATH=\$HOME/local/go/bin:\$GOPATH/bin:\$PATH
 EOF
     echo "Environment $GO_ENV has been setup."
 
@@ -359,12 +359,7 @@ install_morty() {
     rst_title "Install morty in user's ~/go-apps" section
     echo
     tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go get -v -u github.com/asciimoo/morty
-EOF
-    tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-cd \$GOPATH/src/github.com/asciimoo/morty
-go test
-go test -benchmem -bench .
+go install -v github.com/asciimoo/morty@latest
 EOF
 }
 
@@ -372,12 +367,7 @@ update_morty() {
     rst_title "Update morty" section
     echo
     tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go get -v -u github.com/asciimoo/morty
-EOF
-    tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-cd \$GOPATH/src/github.com/asciimoo/morty
-go test
-go test -benchmem -bench .
+go install -v github.com/asciimoo/morty@latest
 EOF
 }
 
