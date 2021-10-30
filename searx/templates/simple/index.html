@@ -1,12 +1,12 @@
 {% extends "simple/base.html" %}
 {% from 'simple/macros.html' import icon %}
 {% block meta %}
-	<link rel="preload" href="{{ url_for('static', filename='img/searx.png') }}" as="image" />
+	<link rel="preload" href="{{ url_for('static', filename='img/searxng.png') }}" as="image" />
 {% endblock %}
 {% block content %}
 <nav id="linkto_preferences"><a href="{{ url_for('preferences') }}">{{ icon('navicon-round') }}</a></nav>
 <div class="index">
-    <div class="title"><h1>searx</h1></div>
+    <div class="title"><h1>SearXNG</h1></div>
     {% include 'simple/simple_search.html' %}
 </div>
 {% endblock %}
