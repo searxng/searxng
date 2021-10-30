@@ -146,12 +146,12 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
    .. group-tab:: Ubuntu / debian
 
-      Create configuration at ``/etc/nginx/sites-available/searx`` and place a
+      Create configuration at ``/etc/nginx/sites-available/searxng`` and place a
       symlink to sites-enabled:
 
       .. code:: sh
 
-         sudo -H ln -s /etc/nginx/sites-available/searx /etc/nginx/sites-enabled/searx
+         sudo -H ln -s /etc/nginx/sites-available/searxng /etc/nginx/sites-enabled/searxng
 
    .. group-tab:: Arch Linux
 
@@ -160,7 +160,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
    .. group-tab::  Fedora / RHEL
 
-      Create configuration at ``/etc/nginx/conf.d/searx`` and place a
+      Create configuration at ``/etc/nginx/conf.d/searxng`` and place a
       symlink to sites-enabled:
 
 .. _nginx searx via filtron plus morty:
@@ -365,7 +365,7 @@ Restart service:
       .. code:: sh
 
          sudo -H systemctl restart nginx
-         sudo -H touch /etc/uwsgi.d/searx.ini
+         sudo -H touch /etc/uwsgi.d/searxng.ini
 
 
 Disable logs

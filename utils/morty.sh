@@ -49,6 +49,7 @@ usage() {
 usage::
   $(basename "$0") shell
   $(basename "$0") install    [all|check|user]
+  $(basename "$0") reinstall  all
   $(basename "$0") update     [morty]
   $(basename "$0") remove     [all]
   $(basename "$0") activate   [service]
@@ -66,6 +67,8 @@ install / remove
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
 install
   :check:      check the morty installation
+reinstall:
+  :all:        runs 'install/remove all'
 update morty
   Update morty installation ($SERVICE_HOME)
 activate service
@@ -142,6 +145,16 @@ main() {
                 service)
                     sudo_or_exit
                     inspect_service
+                    ;;
+                *) usage "$_usage"; exit 42;;
+            esac ;;
+        reinstall)
+            rst_title "re-install $SERVICE_NAME" part
+            sudo_or_exit
+            case $2 in
+                all)
+                    remove_all
+                    install_all
                     ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
@@ -286,6 +299,7 @@ install_check() {
 
     if [[ "${GO_VERSION}" > "$(go_version)" ]]; then
         warn_msg "golang ($(go_version)) needs to be $GO_VERSION at least"
+        warn_msg "you need to reinstall $SERVICE_USER --> $0 reinstall all"
     else
         info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
     fi
@@ -513,7 +527,7 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_MORTY_SITE})"
     # shellcheck disable=SC2034
     SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
     # shellcheck disable=SC2034
-    SEARX_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_URL_PATH)
+    SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app "${NGINX_MORTY_SITE}"
 
     info_msg "testing public url .."

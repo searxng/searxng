@@ -14,9 +14,9 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 
 SEARX_INTERNAL_HTTP="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
 
-SEARX_URL_PATH="${SEARX_URL_PATH:-$(echo "${PUBLIC_URL}" \
+SEARXNG_URL_PATH="${SEARXNG_URL_PATH:-$(echo "${PUBLIC_URL}" \
 | sed -e 's,^.*://[^/]*\(/.*\),\1,g')}"
-[[ "${SEARX_URL_PATH}" == "${PUBLIC_URL}" ]] && SEARX_URL_PATH=/
+[[ "${SEARXNG_URL_PATH}" == "${PUBLIC_URL}" ]] && SEARXNG_URL_PATH=/
 
 SERVICE_NAME="searx"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"
@@ -29,7 +29,7 @@ GIT_BRANCH="${GIT_BRANCH:-master}"
 SEARX_PYENV="${SERVICE_HOME}/searx-pyenv"
 SEARX_SRC="${SERVICE_HOME}/searx-src"
 SEARXNG_SETTINGS_PATH="/etc/searxng/settings.yml"
-SEARX_UWSGI_APP="searx.ini"
+SEARXNG_UWSGI_APP="searxng.ini"
 # shellcheck disable=SC2034
 SEARX_UWSGI_SOCKET="/run/uwsgi/app/searx/socket"
 
@@ -125,7 +125,7 @@ APACHE_SEARX_SITE="searx.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(
-    "${uWSGI_APPS_AVAILABLE}/${SEARX_UWSGI_APP}"
+    "${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}"
 )
 
 # shellcheck disable=SC2034
@@ -141,7 +141,8 @@ usage() {
     cat <<EOF
 usage::
   $(basename "$0") shell
-  $(basename "$0") install    [all|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
+  $(basename "$0") install    [all|check|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
+  $(basename "$0") reinstall  all
   $(basename "$0") update     [searx]
   $(basename "$0") remove     [all|user|pyenv|searx-src]
   $(basename "$0") activate   [service]
@@ -154,7 +155,6 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete (de-) installation of searx service
-  :check:      check the SearXNG installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :dot-config: copy ./config.sh to ${SEARX_SRC}
   :searx-src:  clone $GIT_URL
@@ -164,6 +164,10 @@ install / remove
   :settings:   reinstall settings from ${SEARXNG_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
+install
+  :check:      check the SearXNG installation
+reinstall:
+  :all:        runs 'install/remove all'
 update searx
   Update SearXNG installation ($SERVICE_HOME)
 activate service
@@ -213,17 +217,27 @@ main() {
                     ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
+        reinstall)
+            rst_title "re-install $SERVICE_NAME" part
+            sudo_or_exit
+            case $2 in
+                all)
+                    remove_all
+                    install_all
+                    ;;
+                *) usage "$_usage"; exit 42;;
+            esac ;;
         install)
             sudo_or_exit
             case $2 in
-                check)
-                    rst_title "SearXNG (check installation)" part
-                    verify_continue_install
-                    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
-                    ;;
                 all)
                     rst_title "SearXNG (install)" part
                     install_all
+                    ;;
+                check)
+                    rst_title "SearXNG (check installation)" part
+                    verify_continue_install
+                    install_check
                     ;;
                 user)
                     rst_title "SearXNG (install user)"
@@ -352,6 +366,42 @@ install_all() {
     fi
 }
 
+install_check() {
+    if service_account_is_available "$SERVICE_USER"; then
+        info_msg "Service account $SERVICE_USER exists."
+    else
+        err_msg "Service account $SERVICE_USER does not exists!"
+    fi
+
+    if pyenv_is_available; then
+        info_msg "~$SERVICE_USER: python environment is available."
+    else
+        err_msg "~$SERVICE_USER: python environment is not available!"
+    fi
+
+    if clone_is_available; then
+        info_msg "~$SERVICE_USER: SearXNG software is installed."
+    else
+        err_msg "~$SERVICE_USER: Missing SearXNG software!"
+    fi
+
+    if uWSGI_app_enabled "$SEARXNG_UWSGI_APP"; then
+        info_msg "uWSGI app $SEARXNG_UWSGI_APP is enabled."
+    else
+        err_msg "uWSGI app $SEARXNG_UWSGI_APP not enabled!"
+    fi
+
+    uWSGI_app_available "$SEARXNG_UWSGI_APP" \
+        || err_msg "uWSGI app $SEARXNG_UWSGI_APP not available!"
+
+    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
+
+    if uWSGI_app_available 'searx.ini'; then
+        warn_msg "old searx.ini uWSGI app exists"
+        warn_msg "you need to reinstall $SERVICE_USER --> $0 reinstall all"
+    fi
+}
+
 update_searx() {
     rst_title "Update SearXNG instance"
 
@@ -367,7 +417,7 @@ pip install -U pyyaml
 pip install -U -e .
 EOF
     install_settings
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 remove_all() {
@@ -729,30 +779,30 @@ EOF
 }
 
 install_searx_uwsgi() {
-    rst_title "Install SearXNG's uWSGI app (searx.ini)" section
+    rst_title "Install SearXNG's uWSGI app (searxng.ini)" section
     echo
     install_uwsgi
-    uWSGI_install_app "$SEARX_UWSGI_APP"
+    uWSGI_install_app "$SEARXNG_UWSGI_APP"
 }
 
 remove_searx_uwsgi() {
-    rst_title "Remove SearXNG's uWSGI app (searx.ini)" section
+    rst_title "Remove SearXNG's uWSGI app (searxng.ini)" section
     echo
-    uWSGI_remove_app "$SEARX_UWSGI_APP"
+    uWSGI_remove_app "$SEARXNG_UWSGI_APP"
 }
 
 activate_service() {
     rst_title "Activate SearXNG (service)" section
     echo
-    uWSGI_enable_app "$SEARX_UWSGI_APP"
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_enable_app "$SEARXNG_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 deactivate_service() {
     rst_title "De-Activate SearXNG (service)" section
     echo
-    uWSGI_disable_app "$SEARX_UWSGI_APP"
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_disable_app "$SEARXNG_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 enable_image_proxy() {
@@ -761,7 +811,7 @@ enable_image_proxy() {
 cd ${SEARX_SRC}
 sed -i -e "s/image_proxy: false/image_proxy: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 disable_image_proxy() {
@@ -770,7 +820,7 @@ disable_image_proxy() {
 cd ${SEARX_SRC}
 sed -i -e "s/image_proxy: true/image_proxy: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 enable_debug() {
@@ -780,7 +830,7 @@ enable_debug() {
 cd ${SEARX_SRC}
 sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 disable_debug() {
@@ -789,7 +839,7 @@ disable_debug() {
 cd ${SEARX_SRC}
 sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
-    uWSGI_restart "$SEARX_UWSGI_APP"
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
 }
 
 set_result_proxy() {
@@ -851,33 +901,7 @@ sourced ${DOT_CONFIG} :
 EOF
     install_log_searx_instance
 
-    if service_account_is_available "$SERVICE_USER"; then
-        info_msg "Service account $SERVICE_USER exists."
-    else
-        err_msg "Service account $SERVICE_USER does not exists!"
-    fi
-
-    if pyenv_is_available; then
-        info_msg "~$SERVICE_USER: python environment is available."
-    else
-        err_msg "~$SERVICE_USER: python environment is not available!"
-    fi
-
-    if clone_is_available; then
-        info_msg "~$SERVICE_USER: SearXNG software is installed."
-    else
-        err_msg "~$SERVICE_USER: Missing SearXNG software!"
-    fi
-
-    if uWSGI_app_enabled "$SEARX_UWSGI_APP"; then
-        info_msg "uWSGI app $SEARX_UWSGI_APP is enabled."
-    else
-        err_msg "uWSGI app $SEARX_UWSGI_APP not enabled!"
-    fi
-
-    uWSGI_app_available "$SEARX_UWSGI_APP" \
-        || err_msg "uWSGI app $SEARX_UWSGI_APP not available!"
-
+    install_check
     if in_container; then
         lxc_suite_info
     else
@@ -955,9 +979,9 @@ excessively bot queries."
 
     apache_install_site --variant=uwsgi "${APACHE_SEARX_SITE}"
 
-    rst_title "Install SearXNG's uWSGI app (searx.ini)" section
+    rst_title "Install SearXNG's uWSGI app (searxng.ini)" section
     echo
-    uWSGI_install_app --variant=socket "$SEARX_UWSGI_APP"
+    uWSGI_install_app --variant=socket "$SEARXNG_UWSGI_APP"
 
     if ! service_is_available "${PUBLIC_URL}"; then
         err_msg "Public service at ${PUBLIC_URL} is not available!"
@@ -979,9 +1003,9 @@ This removes apache site ${APACHE_SEARX_SITE}."
 
     apache_remove_site "${APACHE_SEARX_SITE}"
 
-    rst_title "Remove SearXNG's uWSGI app (searx.ini)" section
+    rst_title "Remove SearXNG's uWSGI app (searxng.ini)" section
     echo
-    uWSGI_remove_app "$SEARX_UWSGI_APP"
+    uWSGI_remove_app "$SEARXNG_UWSGI_APP"
 }
 
 rst-doc() {
@@ -1025,12 +1049,12 @@ rst-doc() {
    # For uWSGI debian uses the LSB init process, this might be changed
    # one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067
 
-   create     ${uWSGI_APPS_AVAILABLE}/${SEARX_UWSGI_APP}
-   enable:    sudo -H ln -s ${uWSGI_APPS_AVAILABLE}/${SEARX_UWSGI_APP} ${uWSGI_APPS_ENABLED}/
-   start:     sudo -H service uwsgi start   ${SEARX_UWSGI_APP%.*}
-   restart:   sudo -H service uwsgi restart ${SEARX_UWSGI_APP%.*}
-   stop:      sudo -H service uwsgi stop    ${SEARX_UWSGI_APP%.*}
-   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARX_UWSGI_APP}
+   create     ${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}
+   enable:    sudo -H ln -s ${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP} ${uWSGI_APPS_ENABLED}/
+   start:     sudo -H service uwsgi start   ${SEARXNG_UWSGI_APP%.*}
+   restart:   sudo -H service uwsgi restart ${SEARXNG_UWSGI_APP%.*}
+   stop:      sudo -H service uwsgi stop    ${SEARXNG_UWSGI_APP%.*}
+   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
 
 EOF
                 ;;
@@ -1043,12 +1067,12 @@ EOF
    # - http://0pointer.de/blog/projects/instances.html
    # - https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd
 
-   create:    ${uWSGI_APPS_ENABLED}/${SEARX_UWSGI_APP}
-   enable:    sudo -H systemctl enable   uwsgi@${SEARX_UWSGI_APP%.*}
-   start:     sudo -H systemctl start    uwsgi@${SEARX_UWSGI_APP%.*}
-   restart:   sudo -H systemctl restart  uwsgi@${SEARX_UWSGI_APP%.*}
-   stop:      sudo -H systemctl stop     uwsgi@${SEARX_UWSGI_APP%.*}
-   disable:   sudo -H systemctl disable  uwsgi@${SEARX_UWSGI_APP%.*}
+   create:    ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   enable:    sudo -H systemctl enable   uwsgi@${SEARXNG_UWSGI_APP%.*}
+   start:     sudo -H systemctl start    uwsgi@${SEARXNG_UWSGI_APP%.*}
+   restart:   sudo -H systemctl restart  uwsgi@${SEARXNG_UWSGI_APP%.*}
+   stop:      sudo -H systemctl stop     uwsgi@${SEARXNG_UWSGI_APP%.*}
+   disable:   sudo -H systemctl disable  uwsgi@${SEARXNG_UWSGI_APP%.*}
 
 EOF
                 ;;
@@ -1060,9 +1084,9 @@ EOF
    # The unit file starts uWSGI in emperor mode (/etc/uwsgi.ini), see
    # - https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html
 
-   create:    ${uWSGI_APPS_ENABLED}/${SEARX_UWSGI_APP}
-   restart:   sudo -H touch ${uWSGI_APPS_ENABLED}/${SEARX_UWSGI_APP}
-   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARX_UWSGI_APP}
+   create:    ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   restart:   sudo -H touch ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
 
 EOF
                 ;;
@@ -1072,7 +1096,7 @@ EOF
             echo -e "\n.. START searx uwsgi-appini $DIST_NAME"
             echo ".. code:: bash"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARX_UWSGI_APP}")\"" | prefix_stdout "  "
+            eval "echo \"$(< "${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}")\"" | prefix_stdout "  "
             echo -e "\n.. END searx uwsgi-appini $DIST_NAME"
 
         )

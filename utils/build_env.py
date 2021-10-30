@@ -28,7 +28,7 @@ def _env(*arg, **kwargs):
 
 name_val = [
 
-    ('SEARX_URL'              , 'server.base_url'),
+    ('SEARXNG_URL'              , 'server.base_url'),
     ('SEARXNG_PORT'             , 'server.port'),
     ('SEARXNG_BIND_ADDRESS'     , 'server.bind_address'),
 

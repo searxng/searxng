@@ -107,7 +107,7 @@ The ``make buildenv`` target will update the *build environment* in:
 Tasks running outside of an *installed instance*, need the following settings
 from the YAML configuration:
 
-- ``SEARX_URL`` from :ref:`server.base_url <settings global server>` (aka
+- ``SEARXNG_URL`` from :ref:`server.base_url <settings global server>` (aka
   ``PUBLIC_URL``)
 - ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
 - ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`

@@ -284,7 +284,7 @@ With the command above, we stopped the SearXNG uWSGI-App in the archlinux
 container.
 
 The uWSGI-App for the archlinux dsitros is configured in
-:origin:`utils/templates/etc/uwsgi/apps-archlinux/searx.ini`, from where at
+:origin:`utils/templates/etc/uwsgi/apps-archlinux/searxng.ini`, from where at
 least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 ``http``::
 

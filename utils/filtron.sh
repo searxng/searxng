@@ -46,8 +46,8 @@ GO_VERSION="go1.17.2"
 GO_PKG_URL="https://golang.org/dl/${GO_VERSION}.linux-amd64.tar.gz"
 GO_TAR=$(basename "$GO_PKG_URL")
 
-APACHE_FILTRON_SITE="searx.conf"
-NGINX_FILTRON_SITE="searx.conf"
+APACHE_FILTRON_SITE="searxng.conf"
+NGINX_FILTRON_SITE="searxng.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(
@@ -64,6 +64,7 @@ usage() {
 usage::
   $(basename "$0") shell
   $(basename "$0") install    [all|user|rules]
+  $(basename "$0") reinstall  all
   $(basename "$0") update     [filtron]
   $(basename "$0") remove     [all]
   $(basename "$0") activate   [service]
@@ -77,9 +78,12 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete setup of filtron service
-  :check:      check the filtron installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :rules:      reinstall filtron rules $FILTRON_RULES
+install
+  :check:      check the filtron installation
+reinstall:
+  :all:        runs 'install/remove all'
 update filtron
   Update filtron installation ($SERVICE_HOME)
 activate service
@@ -130,6 +134,16 @@ main() {
                 service)
                     sudo_or_exit
                     inspect_service
+                    ;;
+                *) usage "$_usage"; exit 42;;
+            esac ;;
+        reinstall)
+            rst_title "re-install $SERVICE_NAME" part
+            sudo_or_exit
+            case $2 in
+                all)
+                    remove_all
+                    install_all
                     ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
@@ -271,9 +285,19 @@ install_check() {
 
     if [[ "${GO_VERSION}" > "$(go_version)" ]]; then
         warn_msg "golang ($(go_version)) needs to be $GO_VERSION at least"
+        warn_msg "you need to reinstall $SERVICE_USER --> $0 reinstall all"
     else
         info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
     fi
+
+    if [ -f "${APACHE_SITES_AVAILABLE}/searx.conf" ]; then
+        warn_msg "old searx.conf apache site exists"
+    fi
+
+    if [ -f "${NGINX_APPS_AVAILABLE}/searx.conf" ]; then
+        warn_msg "old searx.conf nginx site exists"
+    fi
+
 }
 
 go_version(){
@@ -560,7 +584,7 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_FILTRON_SITE}
     # shellcheck disable=SC2034
     SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
     # shellcheck disable=SC2034
-    SEARX_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_URL_PATH)
+    SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app --variant=filtron "${NGINX_FILTRON_SITE}"
 
     info_msg "testing public url .."
