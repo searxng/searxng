@@ -541,8 +541,8 @@ td:hover .engine-tooltip,
 .stacked-bar-chart-median {
   .stacked-bar-chart-base();
 
-  background: @stacked-bar-chart;
-  border: 1px solid fade(@stacked-bar-chart, 90%);
+  background: var(--color-base-font);
+  border: 1px solid rgba(var(--color-base-font-rgb), 0.9);
   padding: 0.3rem 0;
 }
 
@@ -550,7 +550,7 @@ td:hover .engine-tooltip,
   .stacked-bar-chart-base();
 
   background: transparent;
-  border: 1px solid fade(@stacked-bar-chart, 30%);
+  border: 1px solid rgba(var(--color-base-font-rgb), 0.3);
   padding: 0.3rem 0;
 }
 
@@ -558,7 +558,7 @@ td:hover .engine-tooltip,
   .stacked-bar-chart-base();
 
   background: transparent;
-  border-bottom: 1px dotted fade(@stacked-bar-chart, 50%);
+  border-bottom: 1px dotted rgba(var(--color-base-font-rgb), 0.5);
   padding: 0;
 }
 
@@ -566,7 +566,7 @@ td:hover .engine-tooltip,
   .stacked-bar-chart-base();
 
   background: transparent;
-  border-left: 1px solid fade(@stacked-bar-chart, 90%);
+  border-left: 1px solid rgba(var(--color-base-font-rgb), 0.9);
   padding: 0.4rem 0;
   width: 1px;
 }
