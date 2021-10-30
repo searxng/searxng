@@ -819,8 +819,9 @@ template {
  *
  * To change the colors of the site, simple edit this variables
  */
-html {
+:root {
   --color-base-font: #444;
+  --color-base-font-rgb: 68, 68, 68;
   --color-base-background: #fff;
   --color-url-font: #29314d;
   --color-url-visited-font: #80b;
@@ -901,8 +902,9 @@ html {
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
 }
 @media (prefers-color-scheme: dark) {
-  html {
+  :root {
     --color-base-font: #bbb;
+    --color-base-font-rgb: 187, 187, 187;
     --color-base-background: #222;
     --color-url-font: #8af;
     --color-url-visited-font: #96b;
@@ -1690,7 +1692,7 @@ select:focus {
     -moz-appearance: none;
     border: none;
     border-bottom: 1px solid var(--color-toolkit-select-border);
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwb2x5Z29uIHBvaW50cz0iMTI4LDE5MiAyNTYsMzIwIDM4NCwxOTIiLz48L2c+PC9zdmc+Cg==) no-repeat;
+    background: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cg%3E%3Cpolygon%20points%3D%22128%2C192%20256%2C320%20384%2C192%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E") no-repeat;
     background-position-x: 105%;
     background-size: 2em;
     background-origin: content-box;
@@ -1699,6 +1701,11 @@ select:focus {
   select:hover,
   select:focus {
     border-bottom: 1px solid var(--color-search-border);
+  }
+  @media (prefers-color-scheme: dark) {
+    select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cg%3E%3Cpolygon%20fill%3D%22%23ddd%22%20points%3D%22128%2C192%20256%2C320%20384%2C192%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E");
+    }
   }
 }
 /* -- checkbox-onoff -- */
@@ -1882,8 +1889,8 @@ td:hover .engine-tooltip,
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: unset;
-  background: #000000;
-  border: 1px solid rgba(0, 0, 0, 0.9);
+  background: var(--color-base-font);
+  border: 1px solid rgba(var(--color-base-font-rgb), 0.9);
   padding: 0.3rem 0;
 }
 .stacked-bar-chart-rate80 {
@@ -1892,7 +1899,7 @@ td:hover .engine-tooltip,
   flex-grow: 0;
   flex-basis: unset;
   background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(var(--color-base-font-rgb), 0.3);
   padding: 0.3rem 0;
 }
 .stacked-bar-chart-rate95 {
@@ -1901,7 +1908,7 @@ td:hover .engine-tooltip,
   flex-grow: 0;
   flex-basis: unset;
   background: transparent;
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.5);
+  border-bottom: 1px dotted rgba(var(--color-base-font-rgb), 0.5);
   padding: 0;
 }
 .stacked-bar-chart-rate100 {
@@ -1910,7 +1917,7 @@ td:hover .engine-tooltip,
   flex-grow: 0;
   flex-basis: unset;
   background: transparent;
-  border-left: 1px solid rgba(0, 0, 0, 0.9);
+  border-left: 1px solid rgba(var(--color-base-font-rgb), 0.9);
   padding: 0.4rem 0;
   width: 1px;
 }
@@ -2284,16 +2291,23 @@ article.result-images .detail {
   text-align: center;
 }
 #main_preferences table.cookies {
-  width: auto;
+  width: 100%;
 }
 #main_preferences table.cookies th,
 #main_preferences table.cookies td {
   text-align: left;
-  padding: 0.25em;
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 0.5em;
+  vertical-align: top;
 }
-#main_preferences table.cookies th:first-child,
 #main_preferences table.cookies td:first-child {
-  padding-right: 4em;
+  word-break: keep-all;
+  width: 14rem;
+  padding-right: 1rem;
+}
+#main_preferences table.cookies td:last-child {
+  word-break: break-all;
 }
 #main_preferences table.cookies > tbody > tr:nth-child(even) > th,
 #main_preferences table.cookies > tbody > tr:nth-child(even) > td {
@@ -2316,7 +2330,6 @@ article.result-images .detail {
   padding: 0.7em;
 }
 #main_preferences .preferences_back a {
-  display: block;
   color: var(--color-settings-return-font);
 }
 #main_preferences .preferences_back a::first-letter {
@@ -2968,7 +2981,7 @@ article.result-images[data-vim-selected] .image_thumbnail {
   max-width: 100%;
   max-height: 12em;
   display: block;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
 }
 #sidebar .infobox dl {
