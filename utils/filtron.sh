@@ -64,6 +64,7 @@ usage() {
 usage::
   $(basename "$0") shell
   $(basename "$0") install    [all|user|rules]
+  $(basename "$0") reinstall  all
   $(basename "$0") update     [filtron]
   $(basename "$0") remove     [all]
   $(basename "$0") activate   [service]
@@ -77,9 +78,12 @@ shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
   :all:        complete setup of filtron service
-  :check:      check the filtron installation
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :rules:      reinstall filtron rules $FILTRON_RULES
+install
+  :check:      check the filtron installation
+reinstall:
+  :all:        runs 'install/remove all'
 update filtron
   Update filtron installation ($SERVICE_HOME)
 activate service
@@ -130,6 +134,16 @@ main() {
                 service)
                     sudo_or_exit
                     inspect_service
+                    ;;
+                *) usage "$_usage"; exit 42;;
+            esac ;;
+        reinstall)
+            rst_title "re-install $SERVICE_NAME" part
+            sudo_or_exit
+            case $2 in
+                all)
+                    remove_all
+                    install_all
                     ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
@@ -271,6 +285,7 @@ install_check() {
 
     if [[ "${GO_VERSION}" > "$(go_version)" ]]; then
         warn_msg "golang ($(go_version)) needs to be $GO_VERSION at least"
+        warn_msg "you need to reinstall $SERVICE_USER --> $0 reinstall all"
     else
         info_msg "golang $(go_version) is installed (min needed is: $GO_VERSION)"
     fi

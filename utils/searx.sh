@@ -142,6 +142,7 @@ usage() {
 usage::
   $(basename "$0") shell
   $(basename "$0") install    [all|check|init-src|dot-config|user|searx-src|pyenv|uwsgi|packages|settings|buildhost]
+  $(basename "$0") reinstall  all
   $(basename "$0") update     [searx]
   $(basename "$0") remove     [all|user|pyenv|searx-src]
   $(basename "$0") activate   [service]
@@ -165,6 +166,8 @@ install / remove
   :buildhost:  install packages from OS package manager needed by buildhosts
 install
   :check:      check the SearXNG installation
+reinstall:
+  :all:        runs 'install/remove all'
 update searx
   Update SearXNG installation ($SERVICE_HOME)
 activate service
@@ -211,6 +214,16 @@ main() {
                 settings)
                     prompt_installation_setting "$3"
                     dump_return $?
+                    ;;
+                *) usage "$_usage"; exit 42;;
+            esac ;;
+        reinstall)
+            rst_title "re-install $SERVICE_NAME" part
+            sudo_or_exit
+            case $2 in
+                all)
+                    remove_all
+                    install_all
                     ;;
                 *) usage "$_usage"; exit 42;;
             esac ;;
@@ -385,6 +398,7 @@ install_check() {
 
     if uWSGI_app_available 'searx.ini'; then
         warn_msg "old searx.ini uWSGI app exists"
+        warn_msg "you need to reinstall $SERVICE_USER --> $0 reinstall all"
     fi
 }
 
