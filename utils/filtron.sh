@@ -340,7 +340,7 @@ EOF
 
     cat > "$GO_ENV" <<EOF
 export GOPATH=\$HOME/go-apps
-export PATH=\$PATH:\$HOME/local/go/bin:\$GOPATH/bin
+export PATH=\$HOME/local/go/bin:\$GOPATH/bin:\$PATH
 EOF
     echo "Environment $GO_ENV has been setup."
 
@@ -359,7 +359,7 @@ install_filtron() {
     rst_title "Install filtron in user's ~/go-apps" section
     echo
     tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go get -v -u github.com/asciimoo/filtron
+go install -v github.com/asciimoo/filtron@latest
 EOF
 }
 
@@ -367,7 +367,7 @@ update_filtron() {
     rst_title "Update filtron" section
     echo
     tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go get -v -u github.com/asciimoo/filtron
+go install -v github.com/asciimoo/filtron@latest
 EOF
 }
 
