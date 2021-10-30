@@ -52,17 +52,25 @@
   }
 
   table.cookies {
-    width: auto;
+    width: 100%;
 
     th,
     td {
       text-align: left;
-      padding: 0.25em;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.5em;
+      vertical-align: top;
     }
 
-    th:first-child,
     td:first-child {
-      padding-right: 4em;
+      word-break: keep-all;
+      width: 14rem;
+      padding-right: 1rem;
+    }
+
+    td:last-child {
+      word-break: break-all;
     }
 
     & > tbody > tr:nth-child(even) > th,
@@ -88,7 +96,6 @@
     padding: 0.7em;
 
     a {
-      display: block;
       color: var(--color-settings-return-font);
     }
 
