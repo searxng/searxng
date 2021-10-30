@@ -328,7 +328,7 @@ select {
     -moz-appearance: none;
     border: none;
     border-bottom: 1px solid var(--color-toolkit-select-border);
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwb2x5Z29uIHBvaW50cz0iMTI4LDE5MiAyNTYsMzIwIDM4NCwxOTIiLz48L2c+PC9zdmc+Cg==) no-repeat;
+    background: data-uri('image/svg+xml;charset=UTF-8', @select-light-svg-path) no-repeat;
     background-position-x: 105%;
     background-size: 2em;
     background-origin: content-box;
@@ -337,6 +337,12 @@ select {
     &:hover,
     &:focus {
       border-bottom: 1px solid var(--color-search-border);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    select {
+      background-image: data-uri('image/svg+xml;charset=UTF-8', @select-dark-svg-path);
     }
   }
 }
