@@ -5,9 +5,10 @@
  */
 
 /// Light Theme
-html {
+:root {
   /// Base Colors
   --color-base-font: #444;
+  --color-base-font-rgb: 68, 68, 68;
   --color-base-background: #fff;
   --color-url-font: #29314d;
   --color-url-visited-font: #80b;
@@ -105,9 +106,10 @@ html {
 
 /// Dark Theme (autoswitch based on device pref)
 @media (prefers-color-scheme: dark) {
-  html {
+  :root {
     /// Base Colors
     --color-base-font: #bbb;
+    --color-base-font-rgb: 187, 187, 187;
     --color-base-background: #222;
     --color-url-font: #8af;
     --color-url-visited-font: #96b;
@@ -230,3 +232,7 @@ html {
 @icon-font-name:          "glyphicons-halflings-regular";
 //** Element ID within SVG icon file.
 @icon-font-svg-id:        "glyphicons_halflingsregular";
+
+// decoration of the select HTML elements
+@select-light-svg-path:   "../svg/select-light.svg";
+@select-dark-svg-path:    "../svg/select-dark.svg";
