@@ -18,7 +18,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general', 'images', 'news', 'social media']
+categories = ['social media']
 page_size = 25
 
 # search-url
