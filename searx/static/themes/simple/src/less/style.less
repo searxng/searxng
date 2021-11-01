@@ -425,6 +425,7 @@ article.result-images[data-vim-selected] {
 #answers {
   grid-area: answers;
   border: 1px solid var(--color-answer-border);
+  background: var(--color-answer-background);
   padding: 0.9em;
   margin-bottom: @results-margin;
   color: var(--color-answer-font);
@@ -436,8 +437,6 @@ article.result-images[data-vim-selected] {
 
   .answer {
     display: block;
-    font-size: 1.2em;
-    font-weight: bold;
   }
 }
 
@@ -730,7 +729,7 @@ article.result-images[data-vim-selected] {
 
   #corrections,
   #answers {
-    margin: 0 5px 1em 5px;
+    margin: 1rem @results-tablet-offset;
     box-shadow: 0 0 5px var(--color-result-shadow);
   }
 
