@@ -853,7 +853,8 @@ template {
   --color-autocomplete-background: #fff;
   --color-autocomplete-background-hover: #f7f7f7;
   --color-answer-border: #ddd;
-  --color-answer-font: #000;
+  --color-answer-font: #444;
+  --color-answer-background: #f7f7f7;
   --color-result-shadow: #ccc;
   --color-result-border: #ddd;
   --color-result-url-font: #000;
@@ -935,8 +936,9 @@ template {
     --color-autocomplete-border: #444;
     --color-autocomplete-background: #222;
     --color-autocomplete-background-hover: #181818;
-    --color-answer-border: #ddd;
-    --color-answer-font: #fff;
+    --color-answer-border: #333;
+    --color-answer-font: #bbb;
+    --color-answer-background: #181818;
     --color-result-shadow: #444;
     --color-result-border: #333;
     --color-result-url-font: #fff;
@@ -2941,6 +2943,7 @@ article.result-images[data-vim-selected] .image_thumbnail {
 #answers {
   grid-area: answers;
   border: 1px solid var(--color-answer-border);
+  background: var(--color-answer-background);
   padding: 0.9em;
   margin-bottom: 0.125rem;
   color: var(--color-answer-font);
@@ -2953,8 +2956,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
 }
 #answers .answer {
   display: block;
-  font-size: 1.2em;
-  font-weight: bold;
 }
 #answers form,
 #infoboxes form {
@@ -3183,7 +3184,7 @@ article.result-images[data-vim-selected] .image_thumbnail {
   }
   #corrections,
   #answers {
-    margin: 0 5px 1em 5px;
+    margin: 1rem 0.5rem;
     box-shadow: 0 0 5px var(--color-result-shadow);
   }
   #results {
