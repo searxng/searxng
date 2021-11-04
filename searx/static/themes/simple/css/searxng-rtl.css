@@ -834,7 +834,6 @@ template {
   --color-backtotop-font: #444;
   --color-backtotop-border: #ddd;
   --color-backtotop-background: #fff;
-  --color-backtotop-shadow: #ccc;
   --color-btn-background: #3050ff;
   --color-btn-font: #fff;
   --color-search-border: #bbb;
@@ -856,7 +855,6 @@ template {
   --color-answer-border: #ddd;
   --color-answer-font: #444;
   --color-answer-background: #f7f7f7;
-  --color-result-shadow: #ccc;
   --color-result-border: #ddd;
   --color-result-url-font: #000;
   --color-result-vim-selected: #f7f7f7;
@@ -892,14 +890,12 @@ template {
   --color-toolkit-select-border: #ddd;
   --color-toolkit-select-border-hover: #bbb;
   --color-toolkit-checkbox-onoff-background: #ddd;
-  --color-toolkit-checkbox-onoff-label-shadow: rgba(0, 0, 0, 0.3);
   --color-toolkit-checkbox-onoff-label-background: #3050ff;
-  --color-toolkit-checkbox-onoff-checked-background: #ddd;
+  --color-toolkit-checkbox-onoff-checked-background: #aaa;
   --color-toolkit-checkbox-label-background: #fff;
   --color-toolkit-checkbox-label-border: #ddd;
   --color-toolkit-checkbox-input-border: #3050ff;
   --color-toolkit-engine-tooltip-border: #ddd;
-  --color-toolkit-engine-tooltip-shadow: #ccc;
   --color-toolkit-engine-tooltip-background: #fff;
   --color-toolkit-loader-border: rgba(0, 0, 0, 0.2);
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
@@ -920,7 +916,6 @@ template {
     --color-backtotop-font: #bbb;
     --color-backtotop-border: #333;
     --color-backtotop-background: #181818;
-    --color-backtotop-shadow: #333;
     --color-btn-background: #58f;
     --color-btn-font: #222;
     --color-search-border: #555;
@@ -942,7 +937,6 @@ template {
     --color-answer-border: #333;
     --color-answer-font: #bbb;
     --color-answer-background: #181818;
-    --color-result-shadow: #333;
     --color-result-border: #333;
     --color-result-url-font: #fff;
     --color-result-vim-selected: #181818;
@@ -978,14 +972,12 @@ template {
     --color-toolkit-select-border: #555;
     --color-toolkit-select-border-hover: #777;
     --color-toolkit-checkbox-onoff-background: #3c3b31;
-    --color-toolkit-checkbox-onoff-label-shadow: rgba(0, 0, 0, 0.3);
     --color-toolkit-checkbox-onoff-label-background: #58f;
     --color-toolkit-checkbox-onoff-checked-background: #ddd;
     --color-toolkit-checkbox-label-background: #fff;
     --color-toolkit-checkbox-label-border: #333;
     --color-toolkit-checkbox-input-border: #58f;
     --color-toolkit-engine-tooltip-border: #333;
-    --color-toolkit-engine-tooltip-shadow: #333;
     --color-toolkit-engine-tooltip-background: #222;
     --color-toolkit-loader-border: rgba(255, 255, 255, 0.2);
     --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
@@ -1423,6 +1415,9 @@ div.selectable_url {
   overflow: hidden;
   height: 1.2em;
   line-height: 1.2em;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 div.selectable_url pre {
   display: block;
@@ -1553,7 +1548,6 @@ div.selectable_url pre {
   transform: translate(-50%, -50%);
   z-index: 100000;
   margin: 0 50% 0 0;
-  box-shadow: 0 0 1em;
 }
 .dialog-modal::before {
   position: absolute;
@@ -1736,7 +1730,6 @@ select:focus {
     top: -5px;
     cursor: pointer;
     border-radius: 50px;
-    box-shadow: 0 3px 5px 0 var(--color-toolkit-checkbox-onoff-label-shadow);
     transition: all 0.4s ease;
     left: 27px;
     background-color: var(--color-toolkit-checkbox-onoff-label-background);
@@ -1791,7 +1784,6 @@ select:focus {
   }
   .checkbox input[disabled] + label {
     background-color: transparent !important;
-    box-shadow: none !important;
     cursor: inherit;
   }
   .checkbox input:not(:checked):not([readonly]):not([disabled]) + label:hover::after {
@@ -1852,7 +1844,6 @@ select:focus {
   padding: 0.5rem 1rem;
   margin: 0 0 0 2rem;
   border: 1px solid var(--color-toolkit-engine-tooltip-border);
-  box-shadow: 0 0 5px var(--color-toolkit-engine-tooltip-shadow);
   background: var(--color-toolkit-engine-tooltip-background);
   font-size: 14px;
   font-weight: normal;
@@ -2396,11 +2387,6 @@ article.result-images .detail {
   display: inline-flex;
   flex-direction: row;
   white-space: nowrap;
-  /*
-  &:has(q:focus) {
-  box-shadow: 0px 0px 5px #CCC;
-}
-*/
 }
 #clear_search {
   display: block;
@@ -2584,9 +2570,6 @@ article.result-images .detail {
   -ms-user-select: none;
   user-select: none;
 }
-.category input[type="checkbox"]:focus + label {
-  box-shadow: 0 0 8px var(--color-categories-item-border-selected);
-}
 .category input[type="checkbox"]:checked + label {
   color: var(--color-categories-item-selected-font);
   border-bottom: 2px solid var(--color-categories-item-border-selected);
@@ -2707,6 +2690,17 @@ article.result-images[data-vim-selected] {
 article.result-images[data-vim-selected] .image_thumbnail {
   filter: opacity(60%);
 }
+article[data-vim-selected].category-videos,
+article[data-vim-selected].category-news,
+article[data-vim-selected].category-map,
+article[data-vim-selected].category-music,
+article[data-vim-selected].category-files,
+article[data-vim-selected].category-social {
+  border: 1px solid var(--color-result-vim-arrow);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
 .result {
   margin: 0.125rem 0;
   padding: 1rem;
@@ -2730,8 +2724,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
 .result h3 a:hover {
   text-decoration: underline;
   border: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
   outline: none;
 }
 .result .cache_link,
@@ -2790,6 +2782,18 @@ article.result-images[data-vim-selected] .image_thumbnail {
 .result .break {
   clear: both;
 }
+.category-videos,
+.category-news,
+.category-map,
+.category-music,
+.category-files,
+.category-social {
+  border: 1px solid var(--color-result-border);
+  margin: 1rem 0;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
 .category-social .image {
   width: auto !important;
   min-width: 48px;
@@ -2820,7 +2824,7 @@ article.result-images[data-vim-selected] .image_thumbnail {
   padding: 0;
   position: relative;
   max-height: 200px;
-  border: none;
+  border: none !important;
 }
 .result-images img {
   float: inherit;
@@ -2876,7 +2880,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
   gap: 0 5rem;
   grid-template-areas: "corrections sidebar" "answers sidebar" "urls sidebar" "pagination sidebar";
 }
-#results #answers *:first-child,
 #results #sidebar *:first-child,
 #results #urls *:first-child {
   margin-top: 0;
@@ -2895,9 +2898,7 @@ article.result-images[data-vim-selected] .image_thumbnail {
   flex: 1 1 50%;
 }
 #suggestions input,
-#answers input,
-#infoboxes input,
-#corrections input {
+#infoboxes input {
   padding: 0;
   margin: 3px;
   font-size: 0.9em;
@@ -2907,25 +2908,17 @@ article.result-images[data-vim-selected] .image_thumbnail {
   cursor: pointer;
 }
 #suggestions input[type="submit"],
-#answers input[type="submit"],
 #infoboxes input[type="submit"],
-#corrections input[type="submit"],
 #suggestions .infobox .url a,
-#answers .infobox .url a,
-#infoboxes .infobox .url a,
-#corrections .infobox .url a {
+#infoboxes .infobox .url a {
   color: var(--color-result-link-font);
   text-decoration: none;
   font-size: 0.9rem;
 }
 #suggestions input[type="submit"]:hover,
-#answers input[type="submit"]:hover,
 #infoboxes input[type="submit"]:hover,
-#corrections input[type="submit"]:hover,
 #suggestions .infobox .url a:hover,
-#answers .infobox .url a:hover,
-#infoboxes .infobox .url a:hover,
-#corrections .infobox .url a:hover {
+#infoboxes .infobox .url a:hover {
   text-decoration: underline;
 }
 #corrections {
@@ -2937,10 +2930,14 @@ article.result-images[data-vim-selected] .image_thumbnail {
 #corrections h4,
 #corrections input[type="submit"] {
   display: inline-block;
-  margin: 0 0.5em 0 0;
+  padding: 0.5rem;
+  margin: 0.5rem;
 }
-#corrections input[type="submit"]::after {
-  content: ", ";
+#corrections input[type="submit"] {
+  font-size: 0.8rem;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 #suggestions .title,
 #search_url .title,
@@ -2952,8 +2949,9 @@ article.result-images[data-vim-selected] .image_thumbnail {
   grid-area: answers;
   border: 1px solid var(--color-answer-border);
   background: var(--color-answer-background);
-  padding: 0.9em;
-  margin-bottom: 0.125rem;
+  padding: 1rem;
+  margin: 1rem 0.5rem;
+  margin-top: 0;
   color: var(--color-answer-font);
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2962,10 +2960,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
 #answers h4 {
   display: none;
 }
-#answers .answer {
-  display: block;
-}
-#answers form,
 #infoboxes form {
   min-width: 210px;
 }
@@ -3054,7 +3048,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
   margin: 0;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0 0 5px var(--color-backtotop-shadow);
   background: var(--color-backtotop-background);
   position: fixed;
   bottom: 8rem;
@@ -3152,9 +3145,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
     gap: 0;
     grid-template-areas: "corrections" "answers" "sidebar" "urls" "pagination";
   }
-  article[data-vim-selected]::before {
-    left: calc(((100% - 45rem) / 2) - 20px);
-  }
 }
 #main_results div#results.only_template_images {
   margin: 2rem 0.5rem 0 0.5rem;
@@ -3178,28 +3168,13 @@ article.result-images[data-vim-selected] .image_thumbnail {
 @media screen and (max-width: 50em) {
   #main_results div#results {
     grid-template-columns: 100%;
-    margin: 2rem 0 0 0;
-  }
-  article[data-vim-selected]::before {
-    display: none;
-    content: "";
+    margin: 2rem 0.5rem 0 0.5rem;
   }
   #linkto_preferences {
     display: none;
     position: fixed !important;
     top: 100px;
     right: 0;
-  }
-  #sidebar {
-    margin: 0 5px 2px 5px;
-  }
-  .infobox {
-    box-shadow: 0 0 5px var(--color-result-shadow);
-  }
-  #corrections,
-  #answers {
-    margin: 1rem 0.5rem;
-    box-shadow: 0 0 5px var(--color-result-shadow);
   }
   #results {
     margin: 0;
@@ -3208,16 +3183,15 @@ article.result-images[data-vim-selected] .image_thumbnail {
   #pagination {
     margin: 2rem 1rem 0 1rem !important;
   }
-  .result {
-    margin: 1rem 0.5rem;
-    border: 1px solid var(--color-result-border);
-    box-shadow: 0 0 5px var(--color-result-shadow);
+  article[data-vim-selected] {
+    border: 1px solid var(--color-result-vim-arrow);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
   }
-  article[data-vim-selected] {
+  .result {
     border: 1px solid var(--color-result-border);
+    margin: 1rem 0;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -3226,7 +3200,6 @@ article.result-images[data-vim-selected] .image_thumbnail {
     margin: 0;
     padding: 0;
     border: none;
-    box-shadow: none;
   }
 }
 @media screen and (max-width: 35em) {

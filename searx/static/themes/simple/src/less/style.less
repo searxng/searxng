@@ -140,6 +140,16 @@ article.result-images[data-vim-selected] {
   }
 }
 
+article[data-vim-selected].category-videos,
+article[data-vim-selected].category-news,
+article[data-vim-selected].category-map,
+article[data-vim-selected].category-music,
+article[data-vim-selected].category-files,
+article[data-vim-selected].category-social {
+  border: 1px solid var(--color-result-vim-arrow);
+  .rounded-corners;
+}
+
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
@@ -164,8 +174,6 @@ article.result-images[data-vim-selected] {
       &:hover {
         text-decoration: underline;
         border: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
         outline: none;
       }
     }
@@ -239,6 +247,17 @@ article.result-images[data-vim-selected] {
   }
 }
 
+.category-videos,
+.category-news,
+.category-map,
+.category-music,
+.category-files,
+.category-social {
+  border: 1px solid var(--color-result-border);
+  margin: 1rem 0;
+  .rounded-corners;
+}
+
 .category-social .image {
   width: auto !important;
   min-width: 48px;
@@ -275,7 +294,7 @@ article.result-images[data-vim-selected] {
   padding: 0;
   position: relative;
   max-height: 200px;
-  border: none;
+  border: none !important;
 
   img {
     float: inherit;
@@ -348,7 +367,6 @@ article.result-images[data-vim-selected] {
     "pagination sidebar";
 }
 
-#results #answers *:first-child,
 #results #sidebar *:first-child,
 #results #urls *:first-child {
   margin-top: 0;
@@ -373,9 +391,7 @@ article.result-images[data-vim-selected] {
 }
 
 #suggestions,
-#answers,
-#infoboxes,
-#corrections {
+#infoboxes {
   input {
     padding: 0;
     margin: 3px;
@@ -407,11 +423,13 @@ article.result-images[data-vim-selected] {
   h4,
   input[type="submit"] {
     display: inline-block;
-    margin: 0 0.5em 0 0;
+    padding: 0.5rem;
+    margin: 0.5rem;
   }
 
-  input[type="submit"]::after {
-    content: ", ";
+  input[type="submit"] {
+    font-size: 0.8rem;
+    .rounded-corners-tiny;
   }
 }
 
@@ -426,21 +444,17 @@ article.result-images[data-vim-selected] {
   grid-area: answers;
   border: 1px solid var(--color-answer-border);
   background: var(--color-answer-background);
-  padding: 0.9em;
-  margin-bottom: @results-margin;
+  padding: @result-padding;
+  margin: 1rem @results-tablet-offset;
+  margin-top: 0;
   color: var(--color-answer-font);
   .rounded-corners;
 
   h4 {
     display: none;
   }
-
-  .answer {
-    display: block;
-  }
 }
 
-#answers,
 #infoboxes {
   form {
     min-width: 210px;
@@ -549,7 +563,6 @@ article.result-images[data-vim-selected] {
   margin: 0;
   padding: 0;
   font-size: 1em;
-  box-shadow: 0 0 5px var(--color-backtotop-shadow);
   background: var(--color-backtotop-background);
   position: fixed;
   bottom: 8rem;
@@ -674,10 +687,6 @@ article.result-images[data-vim-selected] {
       "urls"
       "pagination";
   }
-
-  article[data-vim-selected]::before {
-    left: calc(((100% - @results-width) / 2) - 20px);
-  }
 }
 
 #main_results div#results.only_template_images {
@@ -711,12 +720,7 @@ article.result-images[data-vim-selected] {
 @media screen and (max-width: @phone) {
   #main_results div#results {
     grid-template-columns: 100%;
-    margin: 2rem 0 0 0;
-  }
-
-  article[data-vim-selected]::before {
-    display: none;
-    content: "";
+    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
   }
 
   #linkto_preferences {
@@ -724,20 +728,6 @@ article.result-images[data-vim-selected] {
     position: fixed !important;
     top: 100px;
     right: 0;
-  }
-
-  #sidebar {
-    margin: 0 5px 2px 5px;
-  }
-
-  .infobox {
-    box-shadow: 0 0 5px var(--color-result-shadow);
-  }
-
-  #corrections,
-  #answers {
-    margin: 1rem @results-tablet-offset;
-    box-shadow: 0 0 5px var(--color-result-shadow);
   }
 
   #results {
@@ -749,15 +739,14 @@ article.result-images[data-vim-selected] {
     margin: 2rem 1rem 0 1rem !important;
   }
 
-  .result {
-    margin: 1rem @results-tablet-offset;
-    border: 1px solid var(--color-result-border);
-    box-shadow: 0 0 5px var(--color-result-shadow);
+  article[data-vim-selected] {
+    border: 1px solid var(--color-result-vim-arrow);
     .rounded-corners;
   }
 
-  article[data-vim-selected] {
+  .result {
     border: 1px solid var(--color-result-border);
+    margin: 1rem 0;
     .rounded-corners;
   }
 
@@ -765,7 +754,6 @@ article.result-images[data-vim-selected] {
     margin: 0;
     padding: 0;
     border: none;
-    box-shadow: none;
   }
 }
 
