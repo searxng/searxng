@@ -1,4 +1,4 @@
-{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_footer_rtl, result_link %}
+{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_footer_rtl, result_link with context %}
 
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
