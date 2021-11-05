@@ -119,20 +119,22 @@ searxng.ready(function() {
     }
   };
 
-  searxng.on(document, "keydown", function(e) {
-    // check for modifiers so we don't break browser's hotkeys
-    if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
-      var tagName = e.target.tagName.toLowerCase();
-      if (e.keyCode === 27) {
-        vimKeys[e.keyCode].fun(e);
-      } else {
-        if (e.target === document.body || tagName === 'a' || tagName === 'button') {
-          e.preventDefault();
-          vimKeys[e.keyCode].fun();
+  if (searxng.hotkeys) {
+    searxng.on(document, "keydown", function(e) {
+      // check for modifiers so we don't break browser's hotkeys
+      if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        var tagName = e.target.tagName.toLowerCase();
+        if (e.keyCode === 27) {
+          vimKeys[e.keyCode].fun(e);
+        } else {
+          if (e.target === document.body || tagName === 'a' || tagName === 'button') {
+            e.preventDefault();
+            vimKeys[e.keyCode].fun();
+          }
         }
       }
-    }
-  });
+    });
+  }
 
   function highlightResult(which) {
     return function(noScroll) {
@@ -353,8 +355,7 @@ searxng.ready(function() {
   }
 
   function toggleHelp() {
-      var helpPanel = document.querySelector('#vim-hotkeys-help');
-      console.log(helpPanel);
+    var helpPanel = document.querySelector('#vim-hotkeys-help');
     if (helpPanel === undefined || helpPanel === null) {
        // first call
       helpPanel = document.createElement('div');
