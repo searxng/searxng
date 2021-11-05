@@ -965,7 +965,7 @@ template {
     --color-toolkit-badge-background: #777;
     --color-toolkit-kbd-font: #000;
     --color-toolkit-kbd-background: #fff;
-    --color-toolkit-dialog-border: #333;
+    --color-toolkit-dialog-border: #555;
     --color-toolkit-dialog-background: #222;
     --color-toolkit-tabs-label-border: #222;
     --color-toolkit-tabs-section-border: #555;
@@ -1544,10 +1544,9 @@ div.selectable_url pre {
   position: fixed;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
+  margin: 0 auto;
   transform: translate(-50%, -50%);
-  z-index: 100000;
-  margin: 0 50% 0 0;
+  z-index: 10000000;
 }
 .dialog-modal::before {
   position: absolute;
