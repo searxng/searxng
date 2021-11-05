@@ -31,17 +31,13 @@
       }
     });
 
-    function selectImage(e) {
+    searxng.selectImage = function(resultElement) {
       /*eslint no-unused-vars: 0*/
-      let t = e.target;
-      while (t && t.nodeName != 'ARTICLE') {
-        t = t.parentNode;
-      }
-      if (t) {
+      if (resultElement) {
         // load full size image in background
-        const imgElement = t.querySelector('.result-images-source img');
-        const thumbnailElement = t.querySelector('.image_thumbnail');
-        const detailElement = t.querySelector('.detail');
+        const imgElement = resultElement.querySelector('.result-images-source img');
+        const thumbnailElement = resultElement.querySelector('.image_thumbnail');
+        const detailElement = resultElement.querySelector('.detail');
         if (imgElement) {
           const imgSrc = imgElement.getAttribute('data-src');
           if (imgSrc) {
@@ -74,12 +70,6 @@
       searxng.image_thumbnail_layout.align();
       searxng.scrollPageToSelected();
     }
-
-    searxng.on('.result-images', 'click', e => {
-      e.preventDefault();
-      selectImage(e);
-    });
-    searxng.on('.result-images a', 'focus', selectImage, true);
     searxng.on('.result-detail-close', 'click', e => { 
       e.preventDefault();
       searxng.closeDetail();
