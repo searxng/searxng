@@ -361,7 +361,6 @@ searxng.ready(function() {
       helpPanel = document.createElement('div');
          helpPanel.id = 'vim-hotkeys-help';
         helpPanel.className='dialog-modal';
-        helpPanel.style='width: 40%';
       initHelpContent(helpPanel);
 			initHelpContent(helpPanel);					
       initHelpContent(helpPanel);
