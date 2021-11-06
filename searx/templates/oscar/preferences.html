@@ -280,6 +280,17 @@
                         {{ preferences_item_footer(image_proxy_info, image_proxy_label, rtl) }}
                         {% endif %}
 
+                        {% if 'query_in_title' not in locked_preferences %}
+                        {% set query_in_title_label = _('Query in the page\'s title') %}
+                        {% set query_in_title_info = _('When enabled, the result page\'s title contains your query. Your browser can record this title') %}
+                        {{ preferences_item_header(query_in_title_info, query_in_title_label, rtl, 'query_in_title') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="query_in_title" id="query_in_title">
+                                <option value="1" {% if query_in_title  %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
+                                <option value="" {% if not query_in_title %}selected="selected"{% endif %}>{{ _('Disabled')}}</option>
+                            </select>
+                        {{ preferences_item_footer(query_in_title_info, query_in_title_label, rtl) }}
+                        {% endif %}
+
                         {{ plugin_of_category('privacy' )}}
                     </div>
                 </fieldset>

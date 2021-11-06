@@ -66,6 +66,9 @@ ui:
   static_path: ""
   # Custom templates path - leave it blank if you didn't change
   templates_path: ""
+  # query_in_title: When true, the result page's titles contains the query
+  # it decreases the privacy, since the browser can records the page titles.
+  query_in_title: false
   # ui theme
   default_theme: oscar
   # Default interface locale - leave blank to detect from browser information or
@@ -91,6 +94,7 @@ ui:
 #     - language
 #     - autocomplete
 #     - method
+#     - query_in_title
 
 # searx supports result proxification using an external service:
 # https://github.com/asciimoo/morty uncomment below section if you have running
