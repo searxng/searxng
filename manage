@@ -692,10 +692,44 @@ themes.oscar() {
 }
 
 themes.simple() {
-    build_msg GRUNT "theme: simple"
-    npm --prefix searx/static/themes/simple run build
+    local src="searx/static/themes/simple/src"
+    local static="searx/static/themes/simple"
+    (   set -e
+        convert_if_newer "$src/svg/searxng-wordmark.svg" "$static/img/favicon.png" \
+                         -transparent white -resize 64x64
+        build_msg GRUNT "theme: simple"
+        npm --prefix searx/static/themes/simple run build
+    )
     dump_return $?
 }
+
+convert_if_newer() {
+
+    # usage: convert_if_newer <origfile> <outfile> [<options>, ...]
+    #
+    #    convert_if_newer "path/to/origin.svg" "path/to/converted.png" -resize 100x100
+    #
+    # Run's ImageMagik' convert comand to generate <outfile> from <origfile>, if
+    # <origfile> is newer than <outfile>.  The command line is to convert is::
+    #
+    #    convert <origfile> [<options>, ...] <outfile>
+
+    local src_file="$1" && shift
+    local dst_file="$1" && shift
+
+    if [[ "${src_file}" -nt "${dst_file}" ]]; then
+        if ! required_commands convert; then
+            info_msg "to install build tools use::"
+            info_msg "   sudo -H ./utils/searx.sh install buildhost"
+            die 1 "install needed build tools first"
+        fi
+        build_msg CONVERT "${src_file}" "$@" "${dst_file}"
+        convert "${src_file}" "$@" "${dst_file}"
+    else
+        build_msg CONVERT "${dst_file} (up-to-date)"
+    fi
+}
+
 
 PYLINT_FILES=()
 while IFS= read -r line; do
