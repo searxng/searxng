@@ -1,6 +1,7 @@
 <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
   <a id="search_logo" href="{{ url_for('index') }}">
-    <img class="search_logo_img" src="{{ url_for('static', filename='img/favicon.png') }}">
+    <span hidden>SearXNG</span>
+    {% include '__common__/searxng-wordmark.min.svg' without context %}
   </a>
   <div id="search_wrapper">
     <div class="search_box">
