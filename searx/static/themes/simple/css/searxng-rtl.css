@@ -2513,7 +2513,7 @@ article.result-images .detail {
     flex-direction: row;
   }
   #q {
-    width: auto !important;
+    width: 100%;
     flex: 1;
   }
   #main_results #q:placeholder-shown ~ #send_search {
@@ -2534,6 +2534,14 @@ article.result-images .detail {
   }
   .category label {
     padding: 10px !important;
+  }
+}
+@media screen and (max-width: 20rem) {
+  #search {
+    grid-template-areas: "search search" "categories categories";
+  }
+  #search_logo {
+    display: none;
   }
 }
 #categories {
