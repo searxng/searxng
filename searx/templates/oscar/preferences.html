@@ -183,7 +183,7 @@
                     {% set label = _('Engine tokens') %}
                     {% set info = _('Access tokens for private engines') %}
                     {{ preferences_item_header(info, label, rtl, 'tokens') }}
-                        <input class="form-control" id="tokens" name="tokens" value='{{ preferences.tokens.get_value() }}'/>
+                        <input class="form-control" id="tokens" name="tokens" value='{{ preferences.tokens.get_value() }}' autocomplete="off" spellcheck="false" autocorrect="off" />
                     {{ preferences_item_footer(info, label, rtl) }}
                 </div>
                 </fieldset>
