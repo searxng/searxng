@@ -191,7 +191,7 @@
   }
 
   #q {
-    width: auto !important;
+    width: 100%;
     flex: 1;
   }
 
@@ -217,6 +217,18 @@
     label {
       padding: 10px !important;
     }
+  }
+}
+
+@media screen and (max-width: @ultra-small-phone) {
+  #search {
+    grid-template-areas:
+      "search search"
+      "categories categories";
+  }
+
+  #search_logo {
+    display: none;
   }
 }
 
