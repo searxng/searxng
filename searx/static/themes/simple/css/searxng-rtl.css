@@ -1468,7 +1468,7 @@ div.selectable_url pre {
   vertical-align: text-top;
 }
 .dialog-error tr:hover {
-  background: transparent;
+  background: transparent !important;
 }
 .dialog-error td {
   padding: 0 1em 0 0;
@@ -1519,7 +1519,7 @@ div.selectable_url pre {
   vertical-align: text-top;
 }
 .dialog-warning tr:hover {
-  background: transparent;
+  background: transparent !important;
 }
 .dialog-warning td {
   padding: 0 1em 0 0;
@@ -1574,7 +1574,7 @@ div.selectable_url pre {
   vertical-align: text-top;
 }
 .dialog-modal tr:hover {
-  background: transparent;
+  background: transparent !important;
 }
 .dialog-modal td {
   padding: 0 1em 0 0;
@@ -1644,7 +1644,6 @@ div.selectable_url pre {
   border-bottom: 2px solid var(--color-categories-item-border-selected);
   background: var(--color-categories-item-selected);
   color: var(--color-categories-item-selected-font);
-  font-weight: bold;
   letter-spacing: -0.1px;
 }
 .tabs > section:last-of-type {
@@ -2961,7 +2960,7 @@ article[data-vim-selected].category-social {
   border: 1px solid var(--color-answer-border);
   background: var(--color-answer-background);
   padding: 1rem;
-  margin: 1rem 0.5rem;
+  margin: 1rem 0;
   margin-top: 0;
   color: var(--color-answer-font);
   -webkit-border-radius: 10px;
