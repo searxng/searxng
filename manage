@@ -77,6 +77,7 @@ pyenv.:
 pypi.upload:
   Upload python packages to PyPi (to test use pypi.upload.test)
 test.:
+  yamllint  : lint YAML files: $YAMLLINT_FILES
   pylint    : lint PYLINT_FILES, searx/engines, searx & tests
   pep8      : pycodestyle (pep8) for all files except PYLINT_FILES
   unit      : run unit tests
