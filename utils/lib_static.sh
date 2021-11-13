@@ -13,6 +13,7 @@ STATIC_BUILT_PATHS=(
     searx/static/themes/simple/src/generated/pygments.less
     searx/static/themes/simple/img/favicon.png
     searx/templates/__common__/searxng-wordmark.min.svg
+    searx/templates/simple/icons.html
 )
 
 static_help(){

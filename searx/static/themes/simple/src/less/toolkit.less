@@ -121,19 +121,12 @@ div.selectable_url {
 // dialog
 .dialog() {
   position: relative;
-  padding: 1em 1em 1em 2.7em;
+  display: flex;
+  padding: 1rem;
   margin: 0 0 1em 0;
   border: 1px solid var(--color-toolkit-dialog-border);
   text-align: left;
   .rounded-corners;
-
-  &::before {
-    position: absolute;
-    top: 0.5em;
-    left: 0.5em;
-    font-family: "ion"; // stylelint-disable font-family-no-missing-generic-family-keyword
-    font-size: 1.5em;
-  }
 
   .close {
     float: right;
@@ -177,7 +170,6 @@ div.selectable_url {
   color: var(--color-error);
   background: var(--color-error-background);
   border-color: var(--color-error);
-  .ion-error();
 }
 
 .dialog-warning {
@@ -186,7 +178,6 @@ div.selectable_url {
   color: var(--color-warning);
   background: var(--color-warning-background);
   border-color: var(--color-warning);
-  .ion-warning();
 }
 
 .dialog-modal {

@@ -5,8 +5,8 @@
         </a>{{- "" -}}
         <div class="detail">{{- "" -}}
                 <a class="result-detail-close" href="#">{{ icon('close') }}</a>{{- "" -}}
-                <a class="result-detail-previous" href="#">{{ icon_small('chevron-left') }}</a>{{- "" -}}
-                <a class="result-detail-next" href="#">{{ icon_small('chevron-right') }}</a>{{- "" -}}
+                <a class="result-detail-previous" href="#">{{ icon('chevron-left') }}</a>{{- "" -}}
+                <a class="result-detail-next" href="#">{{ icon('chevron-right') }}</a>{{- "" -}}
                 <a class="result-images-source" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">
                         {%- if result.thumbnail_src -%}
                                 <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">

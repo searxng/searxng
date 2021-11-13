@@ -8,8 +8,8 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['src/**'],
-        tasks: ['eslint', 'copy', 'concat', 'uglify', 'htmlmin', 'less:development', 'less:production']
+        files: ['gruntfile.js', 'src/**'],
+        tasks: ['eslint', 'copy', 'concat', 'svg2jinja', 'uglify', 'htmlmin', 'less:development', 'less:production']
       }
     },
     eslint: {
@@ -106,70 +106,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    webfont: {
-      icons: {
-        // src: 'node_modules/ionicons-npm/src/*.svg',
-        src: [
-          'node_modules/ionicons-npm/src/navicon-round.svg',
-          'node_modules/ionicons-npm/src/search.svg',
-          'node_modules/ionicons-npm/src/play.svg',
-          'node_modules/ionicons-npm/src/link.svg',
-          'node_modules/ionicons-npm/src/chevron-up.svg',
-          'node_modules/ionicons-npm/src/chevron-left.svg',
-          'node_modules/ionicons-npm/src/chevron-right.svg',
-          'node_modules/ionicons-npm/src/arrow-down-a.svg',
-          'node_modules/ionicons-npm/src/arrow-up-a.svg',
-          'node_modules/ionicons-npm/src/arrow-swap.svg',
-          'node_modules/ionicons-npm/src/telephone.svg',
-          'node_modules/ionicons-npm/src/android-arrow-dropdown.svg',
-          'node_modules/ionicons-npm/src/android-globe.svg',
-          'node_modules/ionicons-npm/src/android-time.svg',
-          'node_modules/ionicons-npm/src/location.svg',
-          'node_modules/ionicons-npm/src/alert-circled.svg',
-          'node_modules/ionicons-npm/src/android-alert.svg',
-          'node_modules/ionicons-npm/src/ios-film-outline.svg',
-          'node_modules/ionicons-npm/src/music-note.svg',
-          'node_modules/ionicons-npm/src/ion-close-round.svg',
-          'node_modules/ionicons-npm/src/android-more-vertical.svg',
-          'src/fonts/magnet.svg',
-          'node_modules/ionicons-npm/src/android-close.svg',
-        ],
-        dest: 'fonts',
-        destLess: 'src/generated',
-        options: {
-          font: 'ion',
-          hashes : true,
-          syntax: 'bem',
-          styles : 'font,icon',
-          types : 'eot,woff2,woff,ttf,svg',
-          order : 'eot,woff2,woff,ttf,svg',
-          stylesheets : ['css', 'less'],
-          relativeFontPath : '../fonts/',
-          autoHint : false,
-          normalize : false,
-          // ligatures : true,
-          optimize : true,
-          // fontHeight : 400,
-          rename : function(name) {
-            basename = path.basename(name);
-            if (basename === 'android-alert.svg') {
-              return 'error.svg';
-            }
-            if (basename === 'alert-circled.svg') {
-              return 'warning.svg';
-            }
-            if (basename === 'ion-close-round.svg') {
-              return 'close.svg';
-            }
-            return basename.replace(/(ios|md|android)-/i, '');
-          },
-          templateOptions: {
-            baseClass: 'ion-icon',
-            classPrefix: 'ion-'
-          }
-        }
-      }
-    },
     less: {
       development: {
         options: {
@@ -197,6 +133,89 @@ module.exports = function(grunt) {
         }
       },
     },
+    svg2jinja: {
+      all: {
+        src: {
+          'warning': 'node_modules/ionicons/dist/svg/alert-outline.svg',
+          'close': 'node_modules/ionicons/dist/svg/close-outline.svg',
+          'chevron-up-outline': 'node_modules/ionicons/dist/svg/chevron-up-outline.svg',
+          'chevron-right': 'node_modules/ionicons/dist/svg/chevron-forward-outline.svg',
+          'chevron-left': 'node_modules/ionicons/dist/svg/chevron-back-outline.svg',
+          'menu-outline': 'node_modules/ionicons/dist/svg/menu-outline.svg',
+          'ellipsis-vertical-outline': 'node_modules/ionicons/dist/svg/ellipsis-vertical-outline.svg',
+          'magnet-outline': 'node_modules/ionicons/dist/svg/magnet-outline.svg',
+          'globe-outline': 'node_modules/ionicons/dist/svg/globe-outline.svg',
+          'search-outline': 'node_modules/ionicons/dist/svg/search-outline.svg',
+          'image-outline': 'node_modules/ionicons/dist/svg/image-outline.svg',
+          'play-outline': 'node_modules/ionicons/dist/svg/play-outline.svg',
+          'newspaper-outline': 'node_modules/ionicons/dist/svg/newspaper-outline.svg',
+          'location-outline': 'node_modules/ionicons/dist/svg/location-outline.svg',
+          'musical-notes-outline': 'node_modules/ionicons/dist/svg/musical-notes-outline.svg',
+          'layers-outline': 'node_modules/ionicons/dist/svg/layers-outline.svg',
+          'school-outline': 'node_modules/ionicons/dist/svg/school-outline.svg',
+          'file-tray-full-outline': 'node_modules/ionicons/dist/svg/file-tray-full-outline.svg',
+          'people-outline': 'node_modules/ionicons/dist/svg/people-outline.svg',
+        },
+        dest: '../../../templates/simple/icons.html',
+      },
+    },
+  });
+
+
+  grunt.registerMultiTask('svg2jinja', 'Create Jinja2 macro', function() {
+    const ejs = require('ejs'), svgo = require('svgo');
+    const icons = {}
+    for(const iconName in this.data.src) {
+        const svgFileName = this.data.src[iconName];
+        try {
+            const svgContent = grunt.file.read(svgFileName, { encoding: 'utf8' })
+            const svgoResult = svgo.optimize(svgContent, {
+              path: svgFileName,
+              multipass: true,
+              plugins: [
+                {
+                  name: "removeTitle",
+                },
+                {
+                  name: "removeXMLNS",
+                },
+                {
+                  name: "addAttributesToSVGElement",
+                  params: {
+                    attributes: [ 
+                      { "aria-hidden": "true" }
+                    ]
+                  }  
+                }
+              ]
+            });
+            icons[iconName] = svgoResult.data.replace("'", "\\'");
+        } catch (err) {
+          grunt.log.error(err);
+        }
+    }
+    const template = `{# this file was generated by searx/static/themes/simple/gruntfile.js #}
+{%- set icons = {
+<% for (const iconName in icons) { %>  '<%- iconName %>':'<%- icons[iconName] %>',
+<% } %>
+} 
+-%}
+      
+{% macro icon(action, alt) -%}
+  {{ icons[action] | replace("ionicon", "ion-icon") | safe }}
+{%- endmacro %}
+      
+{% macro icon_small(action) -%}
+  {{ icons[action] | replace("ionicon", "ion-icon-small") | safe }}
+{%- endmacro %}
+
+{% macro icon_big(action, alt) -%}
+  {{ icons[action] | replace("ionicon", "ion-icon-big") | safe }}
+{%- endmacro %}
+`;
+    const result = ejs.render(template, { icons });
+    grunt.file.write(this.data.dest, result, { encoding: 'utf8' });
+    grunt.log.ok(this.data.dest + " created");
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -207,7 +226,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-webfont');
   grunt.loadNpmTasks('grunt-stylelint');
   grunt.loadNpmTasks('grunt-eslint');
 
@@ -218,6 +236,7 @@ module.exports = function(grunt) {
     'stylelint',
     'copy',
     'concat',
+    'svg2jinja',
     'uglify',
     'htmlmin',
     'less:development',

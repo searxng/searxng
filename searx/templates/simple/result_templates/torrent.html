@@ -3,12 +3,12 @@
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
 
-{% if result.magnetlink %}<p class="altlink"> &bull; {{ result_link(result.magnetlink, icon('magnet') + _('magnet link'), "magnetlink") }}</p>{% endif %}
-{% if result.torrentfile %}<p class="altlink"> &bull; {{ result_link(result.torrentfile, icon('download-alt') + _('torrent file'), "torrentfile") }}</p>{% endif %}
+{% if result.magnetlink %}<p class="altlink"> &bull; {{ result_link(result.magnetlink, icon_big('magnet-outline') + _('magnet link'), "magnetlink") }}</p>{% endif %}
+{% if result.torrentfile %}<p class="altlink"> &bull; {{ result_link(result.torrentfile, icon_big('download-alt') + _('torrent file'), "torrentfile") }}</p>{% endif %}
 
-{% if result.seed is defined %}<p class="stat"> &bull; {{ icon('arrow-swap') }} {{ _('Seeder') }} <span class="badge">{{ result.seed }}</span> &bull; {{ _('Leecher') }} <span class="badge">{{ result.leech }}</span></p>{% endif %}
+{% if result.seed is defined %}<p class="stat"> &bull; {{ icon_big('arrow-swap') }} {{ _('Seeder') }} <span class="badge">{{ result.seed }}</span> &bull; {{ _('Leecher') }} <span class="badge">{{ result.leech }}</span></p>{% endif %}
 
-{%- if result.filesize %}<p class="stat">{{ icon('floppy-disk') }} {{ _('Filesize') }}<span class="badge">
+{%- if result.filesize %}<p class="stat">{{ icon_big('floppy-disk') }} {{ _('Filesize') }}<span class="badge">
     {%- if result.filesize < 1024 %}{{ result.filesize }} {{ _('Bytes') }}
     {%- elif result.filesize < 1024*1024 %}{{ '{0:0.2f}'.format(result.filesize/1024) }} {{ _('kiB') }}
     {%- elif result.filesize < 1024*1024*1024 %}{{ '{0:0.2f}'.format(result.filesize/1024/1024) }} {{ _('MiB') }}
@@ -17,7 +17,7 @@
     </span></p>
 {%- endif -%}
 
-{%- if result.files %}<p class="stat">{{ icon('file') }} {{ _('Number of Files') }} <span class="badge">{{ result.files }}</span></p>{% endif -%}
+{%- if result.files %}<p class="stat">{{ icon_big('file') }} {{ _('Number of Files') }} <span class="badge">{{ result.files }}</span></p>{% endif -%}
 
 {%- if result.content %}<p class="content">{{ result.content|safe }}</p>{% endif -%}
 {{- result_sub_footer(result, proxify) -}}
