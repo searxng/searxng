@@ -18,10 +18,16 @@
 
 #search_logo {
   grid-area: logo;
-}
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.search_logo_img {
-  width: 40px;
+  svg {
+    flex: 1;
+    width: 30px;
+    height: 30px;
+    margin: 0.5rem 0 auto 0;
+  }
 }
 
 .search_categories {

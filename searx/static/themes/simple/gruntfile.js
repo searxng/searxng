@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**'],
-        tasks: ['eslint', 'copy', 'concat', 'uglify', 'less:development', 'less:production']
+        tasks: ['eslint', 'copy', 'concat', 'uglify', 'htmlmin', 'less:development', 'less:production']
       }
     },
     eslint: {
@@ -92,6 +92,17 @@ module.exports = function(grunt) {
         files: {
           'js/searxng.head.min.js': ['js/searxng.head.js'],
           'js/searxng.min.js': ['js/searxng.js']
+        }
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          '../../../templates/__common__/searxng-wordmark.min.svg': 'src/svg/searxng-wordmark.svg'
         }
       }
     },
@@ -191,6 +202,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -207,6 +219,7 @@ module.exports = function(grunt) {
     'copy',
     'concat',
     'uglify',
+    'htmlmin',
     'less:development',
     'less:production'
   ]);
