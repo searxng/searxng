@@ -1,4 +1,4 @@
-{% from 'simple/macros.html' import icon %}
+{% from 'simple/icons.html' import icon_big %}
 {% from '__common__/new_issue.html' import new_issue with context %}
 
 {% extends "simple/base.html" %}
@@ -7,7 +7,7 @@
     {% if selected_engine_name %}
         {{ column_name }}
     {% elif column_order==sort_order %}
-        {{ column_name }} {{ icon('arrow-dropdown') }}
+        {{ column_name }} {{ icon_big('arrow-dropdown') }}
     {% else %}
         <a href="{{ url_for('stats', sort=column_order) }}">{{ column_name }}</a>
     {% endif %}

@@ -1,12 +1,3 @@
-<!-- Draw glyphicon icon from bootstrap-theme -->
-{% macro icon(action, alt) -%}
-    <span title="{{ alt }}" class="ion-icon-big ion-{{ action }}"></span>
-{%- endmacro %}
-
-{% macro icon_small(action) -%}
-    <span class="ion-icon ion-{{ action }}"></span>
-{%- endmacro %}
-
 <!-- Draw favicon -->
 {% macro draw_favicon(favicon) -%}
     <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}" />
@@ -43,7 +34,7 @@
 {%- macro result_sub_footer(result, proxify) -%}
 <div class="engines">
   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
-  {{ result_link("https://web.archive.org/web/" + result.url, icon('link') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}
+  {{ result_link("https://web.archive.org/web/" + result.url, icon_small('ellipsis-vertical-outline') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'), "proxyfied_link") }} {% endif %}
 </div>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}

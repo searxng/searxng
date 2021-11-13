@@ -10,7 +10,6 @@
 @import "../../__common__/less/stats.less";
 @import "../../__common__/less/result_templates.less";
 @import (inline) "../../node_modules/normalize.css/normalize.css";
-@import "../generated/ion.less";
 @import "definitions.less";
 @import "mixins.less";
 @import "code.less";
@@ -28,10 +27,23 @@
 @import "search.less";
 
 // ion-icon
-.ion-icon-big {
-  .ion-icon;
+.ion-icon {
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 1;
+  text-decoration: inherit;
+}
 
-  font-size: 149%;
+.ion-icon-small {
+  width: 1rem;
+  height: 1rem;
+  .ion-icon;
+}
+
+.ion-icon-big {
+  width: 1.5rem;
+  height: 1.5rem;
+  .ion-icon;
 }
 
 // Main LESS-Code
@@ -530,7 +542,7 @@ article[data-vim-selected].category-social {
 #linkto_preferences {
   position: absolute;
   right: 10px;
-  top: 2rem;
+  top: 2.2rem;
   padding: 0;
   border: 0;
   display: block;

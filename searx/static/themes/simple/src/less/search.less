@@ -16,6 +16,40 @@
     "spacer categories";
 }
 
+.category {
+  display: inline-block;
+  position: relative;
+  margin-right: 1rem;
+  padding: 0;
+
+  input {
+    display: none;
+  }
+
+  label {
+    svg {
+      padding-right: 0.2rem;
+    }
+
+    cursor: pointer;
+    padding: 0.2rem 0;
+    display: inline-flex;
+    text-transform: capitalize;
+    font-size: 0.9em;
+    border-bottom: 2px solid transparent;
+    .disable-user-select;
+
+    div.category_name {
+      margin: auto 0;
+    }
+  }
+
+  input[type="checkbox"]:checked + label {
+    color: var(--color-categories-item-selected-font);
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+  }
+}
+
 #search_logo {
   grid-area: logo;
   display: flex;
@@ -79,7 +113,7 @@
   border-collapse: separate;
   box-sizing: border-box;
   margin: 0;
-  padding: 8px;
+  padding: 10px;
   background: none repeat scroll 0 0 var(--color-search-background);
   border: 1px solid var(--color-search-border);
   border-radius: 0;
@@ -156,7 +190,6 @@
 
       #categories {
         width: 100%;
-        margin: 0;
         text-align: left;
         overflow-x: scroll;
         overflow-y: hidden;
@@ -188,7 +221,7 @@
   }
 
   .search_box {
-    // hack, should bew 100% ?
+    // hack, should be 100% ?
     width: 99%;
     margin: 0.1em;
     padding: 0 0.1em 0 0;
@@ -219,9 +252,15 @@
   .category {
     display: block;
     width: 100%;
+    margin: 0;
 
     label {
-      padding: 10px !important;
+      padding: 0.8rem !important;
+      margin: 0 !important;
+
+      svg {
+        display: none;
+      }
     }
   }
 }
@@ -239,39 +278,11 @@
 }
 
 #categories {
-  margin: 0 10px 0 0;
   .disable-user-select;
 
   &::-webkit-scrollbar {
     width: 0;
     height: 0;
-  }
-}
-
-.category {
-  display: inline-block;
-  position: relative;
-  margin: 0 3px;
-  padding: 0;
-
-  input {
-    display: none;
-  }
-
-  label {
-    cursor: pointer;
-    padding: 0.3rem 0.75rem 0.5rem 0.75rem;
-    margin: 0;
-    display: block;
-    text-transform: capitalize;
-    font-size: 0.9em;
-    border-bottom: 2px solid transparent;
-    .disable-user-select;
-  }
-
-  input[type="checkbox"]:checked + label {
-    color: var(--color-categories-item-selected-font);
-    border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
 }
 

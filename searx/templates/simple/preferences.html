@@ -1,4 +1,5 @@
-{% from 'simple/macros.html' import icon, tabs_open, tabs_close, tab_header, tab_footer, checkbox_onoff, checkbox %}
+{% from 'simple/macros.html' import tabs_open, tabs_close, tab_header, tab_footer, checkbox_onoff, checkbox %}
+{% from 'simple/icons.html' import icon_big %}
 
 {% extends "simple/base.html" %}
 
@@ -25,7 +26,7 @@
     <p class="engine-description"></p>
     <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>
     {%- if about.wikidata_id -%}<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>{%- endif -%}
-    {%- if search_engine.enable_http %}<p>{{ icon('exclamation-sign', 'No HTTPS') }}{{ _('No HTTPS')}}</p>{% endif -%}
+    {%- if search_engine.enable_http %}<p>{{ icon_big('exclamation-sign', 'No HTTPS') }}{{ _('No HTTPS')}}</p>{% endif -%}
     {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
     <a href="{{ url_for('stats', engine=search_engine.name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
       {{ _('View error logs and submit a bug report') }}
@@ -74,7 +75,7 @@
 <td class="{{ label }} column-reliability">{{- "" -}}
     <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- "" -}}
       <span aria-labelledby="{{engine_name}}_reliability">
-          {{ icon('warning', 'The engine is not reliabled') }} {{ r -}}
+          {{ icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
       </span>{{- "" -}}
     </a>{{- "" -}}
     <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
@@ -263,7 +264,7 @@
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
       <tr>
         <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
-        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
+        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
         <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
         <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
         <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>
