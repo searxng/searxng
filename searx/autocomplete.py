@@ -24,6 +24,7 @@ from httpx import HTTPError
 
 
 from searx import settings
+from searx.data import ENGINES_LANGUAGES
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 
@@ -77,12 +78,11 @@ def google(query, lang):
 
 def startpage(query, lang):
     # startpage autocompleter
-    url = 'https://startpage.com/do/suggest?{query}'
-
-    resp = get(url.format(query=urlencode({'query': query}))).text.split('\n')
-    if len(resp) > 1:
-        return resp
-    return []
+    lui = ENGINES_LANGUAGES['startpage'].get(lang, 'english')
+    url = 'https://startpage.com/suggestions?{query}'
+    resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
+    data = resp.json()
+    return [e['text'] for e in data.get('suggestions', []) if 'text' in e]
 
 
 def swisscows(query, lang):
