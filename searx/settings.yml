@@ -152,22 +152,32 @@ outgoing:
 #   - plugin2
 #   - ...
 
-# uncomment below section if you want to configure which plugin is enabled by
-# default
+# Comment or un-comment plugin to activate / deactivate by default.
 #
 # enabled_plugins:
-#   - "HTTPS rewrite"
-#   - "Hostname replace"  # see configuration below
+#   # these plugins are enabled if nothing is configured ..
+#   - 'Hash plugin'
+#   - 'Search on category select'
+#   - 'Self Informations'
+#   - 'Tracker URL remover'
+#   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
+#   # these plugins are disabled if nothing is configured ..
+#   - 'Hostname replace'  # see hostname_replace configuration below
+#   - 'Infinite scroll'
+#   - 'Open Access DOI rewrite'
+#   - 'Vim-like hotkeys'
 
-# "Hostname replace" plugin configuration example:
+# Configuration of the "Hostname replace" plugin:
+#
 # hostname_replace:
-#   '(.*\.)?youtube\.com$':           'invidious.example.com'
-#   '(.*\.)?youtu\.be$':              'invidious.example.com'
+#   '(.*\.)?youtube\.com$': 'invidious.example.com'
+#   '(.*\.)?youtu\.be$': 'invidious.example.com'
 #   '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
-#   '(.*\.)?reddit\.com$':            'teddit.example.com'
-#   '(.*\.)?redd\.it$':               'teddit.example.com'
-#   '(www\.)?twitter\.com$':          'nitter.example.com'
-#   'spam\.example\.com':             false  # remove results from spam.example.com
+#   '(.*\.)?reddit\.com$': 'teddit.example.com'
+#   '(.*\.)?redd\.it$': 'teddit.example.com'
+#   '(www\.)?twitter\.com$': 'nitter.example.com'
+#   # to remove matching host names from result list, set value to false
+#   'spam\.example\.com': false
 
 checker:
   # disable checker when in debug mode
