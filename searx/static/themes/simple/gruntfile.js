@@ -182,10 +182,10 @@ module.exports = function(grunt) {
                 {
                   name: "addAttributesToSVGElement",
                   params: {
-                    attributes: [ 
+                    attributes: [
                       { "aria-hidden": "true" }
                     ]
-                  }  
+                  }
                 }
               ]
             });
@@ -198,13 +198,13 @@ module.exports = function(grunt) {
 {%- set icons = {
 <% for (const iconName in icons) { %>  '<%- iconName %>':'<%- icons[iconName] %>',
 <% } %>
-} 
+}
 -%}
-      
+
 {% macro icon(action, alt) -%}
   {{ icons[action] | replace("ionicon", "ion-icon") | safe }}
 {%- endmacro %}
-      
+
 {% macro icon_small(action) -%}
   {{ icons[action] | replace("ionicon", "ion-icon-small") | safe }}
 {%- endmacro %}
