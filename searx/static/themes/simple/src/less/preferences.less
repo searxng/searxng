@@ -27,6 +27,35 @@
     padding: 0;
     float: left;
     width: 15em;
+
+    select,
+    input[type="text"] {
+      font-size: inherit !important;
+      margin: 0 1rem 0 0;
+    }
+
+    select {
+      width: 14rem;
+    }
+
+    input[type="text"] {
+      width: 13.25rem;
+      color: var(--color-toolkit-input-text-font);
+      border: 1px solid var(--color-toolkit-input-text-border);
+      background: none repeat scroll 0 0 var(--color-base-background);
+      padding: 0.4rem;
+      .rounded-corners-tiny;
+
+      &:hover {
+        border: 1px solid var(--color-toolkit-input-text-border-hover);
+      }
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 1px 1px var(--color-btn-background);
+    }
   }
 
   .description {
@@ -36,11 +65,6 @@
     width: 50%;
     color: var(--color-settings-engine-description-font);
     font-size: 90%;
-  }
-
-  select {
-    width: 200px;
-    font-size: inherit !important;
   }
 
   table {

@@ -169,6 +169,13 @@
       <div class="description"><!-- {{ _('Redirect to open-access versions of publications when available (plugin required)') }} --></div>
     </fieldset>
     {% endif %}
+    <fieldset>
+      <legend>{{ _('Engine tokens') }}</legend>
+      <p class="value">
+        <input name="tokens" type="text" autocomplete="off" spellcheck="false" autocorrect="off" value='{{ preferences.tokens.get_value() }}'/>
+      </p>
+      <p class="description">{{ _('Access tokens for private engines') }}</p>
+    </fieldset>
   {{ tab_footer() }}
 
   {{ tab_header('maintab', 'ui', _('User interface')) }}
