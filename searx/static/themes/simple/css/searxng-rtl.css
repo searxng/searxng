@@ -804,6 +804,9 @@ template {
   --color-toolkit-tabs-section-border: #ddd;
   --color-toolkit-select-border: #ddd;
   --color-toolkit-select-border-hover: #bbb;
+  --color-toolkit-input-text-font: #222;
+  --color-toolkit-input-text-border: #ddd;
+  --color-toolkit-input-text-border-hover: #bbb;
   --color-toolkit-checkbox-onoff-background: #ddd;
   --color-toolkit-checkbox-onoff-label-background: #3050ff;
   --color-toolkit-checkbox-onoff-checked-background: #aaa;
@@ -886,6 +889,9 @@ template {
     --color-toolkit-tabs-section-border: #555;
     --color-toolkit-select-border: #555;
     --color-toolkit-select-border-hover: #777;
+    --color-toolkit-input-text-font: #fff;
+    --color-toolkit-input-text-border: #555;
+    --color-toolkit-input-text-border-hover: #777;
     --color-toolkit-checkbox-onoff-background: #3c3b31;
     --color-toolkit-checkbox-onoff-label-background: #58f;
     --color-toolkit-checkbox-onoff-checked-background: #ddd;
@@ -2162,6 +2168,32 @@ article.result-images .detail {
   float: left;
   width: 15em;
 }
+#main_preferences .value select,
+#main_preferences .value input[type="text"] {
+  font-size: inherit !important;
+  margin: 0 1rem 0 0;
+}
+#main_preferences .value select {
+  width: 14rem;
+}
+#main_preferences .value input[type="text"] {
+  width: 13.25rem;
+  color: var(--color-toolkit-input-text-font);
+  border: 1px solid var(--color-toolkit-input-text-border);
+  background: none repeat scroll 0 0 var(--color-base-background);
+  padding: 0.4rem;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+#main_preferences .value input[type="text"]:hover {
+  border: 1px solid var(--color-toolkit-input-text-border-hover);
+}
+#main_preferences .value select:focus,
+#main_preferences .value input:focus {
+  outline: none;
+  box-shadow: 0 0 1px 1px var(--color-btn-background);
+}
 #main_preferences .description {
   margin: 0;
   padding: 5px 0 0 0;
@@ -2169,10 +2201,6 @@ article.result-images .detail {
   width: 50%;
   color: var(--color-settings-engine-description-font);
   font-size: 90%;
-}
-#main_preferences select {
-  width: 200px;
-  font-size: inherit !important;
 }
 #main_preferences table {
   border-collapse: collapse;
