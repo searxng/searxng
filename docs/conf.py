@@ -43,7 +43,10 @@ searx.engines.load_engines(searx.settings['engines'])
 jinja_contexts = {
     'searx': {
         'engines': searx.engines.engines,
-        'plugins': searx.plugins.plugins
+        'plugins': searx.plugins.plugins,
+        'version': {
+            'node': os.getenv('NODE_MINIMUM_VERSION')
+        },
     },
 }
 

@@ -29,7 +29,7 @@ Calling the ``help`` target gives a first overview (``make help``):
 
 .. _make install:
 
-Python Environment (``make install``)
+Python environment (``make install``)
 =====================================
 
 .. sidebar:: activate environment
@@ -112,6 +112,60 @@ from the YAML configuration:
 - ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
 - ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`
 
+.. _make node.env:
+
+Node.js environment (``make node.env``)
+=======================================
+
+.. _Node.js: https://nodejs.org/
+.. _nvm: https://github.com/nvm-sh
+.. _npm: https://www.npmjs.com/
+
+.. jinja:: searx
+
+   Node.js_ version {{version.node}} or higher is required to build the themes.
+   If the requirement is not met, the build chain uses nvm_ (Node Version
+   Manager) to install latest LTS of Node.js_ locally: there is no need to
+   install nvm_ or npm_ on your system.
+
+Use ``make nvm.status`` to get the current status of you Node.js_ and nvm_ setup.
+
+Here is the output you will typically get on a Ubuntu 20.04 system which serves
+only a `no longer active <https://nodejs.org/en/about/releases/>`_ Release
+`Node.js v10.19.0 <https://packages.ubuntu.com/focal/nodejs>`_.
+
+::
+
+  $ make nvm.status
+  INFO:  Node.js is installed at /usr/bin/node
+  INFO:  Node.js is version v10.19.0
+  WARN:  minimal Node.js version is 16.13.0
+  INFO:  npm is installed at /usr/bin/npm
+  INFO:  npm is version 6.14.4
+  WARN:  NVM is not installed
+  INFO:  to install NVM and Node.js (LTS) use: manage nvm install --lts
+
+To install you can also use :ref:`make nvm.nodejs`
+
+.. _make nvm.nodejs:
+
+``make nvm.nodejs``
+===================
+
+Install latest Node.js_ LTS locally (uses nvm_)::
+
+  $ make nvm.nodejs
+  INFO:  install (update) NVM at /share/searxng/.nvm
+  INFO:  clone: https://github.com/nvm-sh/nvm.git
+  ...
+  Downloading and installing node v16.13.0...
+  ...
+  INFO:  Node.js is installed at searxng/.nvm/versions/node/v16.13.0/bin/node
+  INFO:  Node.js is version v16.13.0
+  INFO:  npm is installed at searxng/.nvm/versions/node/v16.13.0/bin/npm
+  INFO:  npm is version 8.1.0
+  INFO:  NVM is installed at searxng/.nvm
+
 .. _make run:
 
 ``make run``
@@ -133,14 +187,16 @@ browser (:man:`xdg-open`)::
 ``make clean``
 ==============
 
-Drop all intermediate files, all builds, but keep sources untouched.  Before
-calling ``make clean`` stop all processes using :ref:`make install`. ::
+Drops all intermediate files, all builds, but keep sources untouched.  Before
+calling ``make clean`` stop all processes using the :ref:`make install` or
+:ref:`make node.env`. ::
 
    $ make clean
    CLEAN     pyenv
-   PYENV     [virtualenv] drop ./local/py3
-   CLEAN     docs -- ./build/docs ./dist/docs
-   CLEAN     locally installed npm dependencies
+   PYENV     [virtualenv] drop local/py3
+   CLEAN     docs -- build/docs dist/docs
+   CLEAN     themes -- locally installed npm dependencies
+   ...
    CLEAN     test stuff
    CLEAN     common files
 

@@ -5,6 +5,7 @@ Development Quickstart
 ======================
 
 .. _npm: https://www.npmjs.com/
+.. _Node.js: https://nodejs.org/
 
 SearXNG loves developers, just clone and start hacking.  All the rest is done for
 you simply by using :ref:`make <makefile>`.
@@ -24,37 +25,27 @@ choose a meaningful commit message and we are happy to receive your pull
 request. To not end in *wild west* we have some directives, please pay attention
 to our ":ref:`how to contribute`" guideline.
 
-If you implement themes, you will need to compile styles and JavaScript before
-*run*.
+If you implement themes, you will need to setup a :ref:`make node.env` once:
+
+.. code:: sh
+
+   make node.env
+
+Before you call *make run* (2.), you need to compile the modified styles and
+JavaScript:
 
 .. code:: sh
 
    make themes.all
 
-Don't forget to install npm_ first.
+Alternatively you can also compile selective the theme you have modified,
+e.g. the *simple* theme.
+.. code:: sh
 
-.. tabs::
-
-   .. group-tab:: Ubuntu / debian
-
-      .. code:: sh
-
-         sudo -H apt-get install npm
-
-   .. group-tab:: Arch Linux
-
-      .. code-block:: sh
-
-         sudo -H pacman -S npm
-
-   .. group-tab::  Fedora / RHEL
-
-      .. code-block:: sh
-
-	 sudo -H dnf install npm
+   make themes.simple
 
 If you finished your *tests* you can start to commit your changes.  To separate
-the changed code from the build products first run:
+the modified source code from the build products first run:
 
 .. code:: sh
 

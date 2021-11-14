@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# shellcheck disable=SC2031
+
+# shellcheck disable=SC2034
+main_cmd="$(basename "$0")"
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib.sh"
+
+# shellcheck source=utils/lib.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_nvm.sh"
 
 # shellcheck source=utils/lib_static.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
@@ -14,6 +19,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.28.0"
+export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
 
 pylint.FILES() {
@@ -41,6 +47,7 @@ PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES="supported_languages,language_aliases,log
 PYLINT_OPTIONS="-m pylint -j 0 --rcfile .pylintrc"
 
 help() {
+    nvm.help
     cat <<EOF
 buildenv:
   rebuild ./utils/brand.env
@@ -63,9 +70,12 @@ docker.:
 gecko.driver:
   download & install geckodriver if not already installed (required for
   robot_tests)
+EOF
+    nvm.help
+    cat <<EOF
 node.:
   env       : download & install npm dependencies locally
-  clean     : drop npm installations
+  clean     : drop locally npm installations
 py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
@@ -499,10 +509,9 @@ gecko.driver() {
 }
 
 node.env() {
-    if ! required_commands npm; then
-        info_msg "to install build tools use::"
-        info_msg "   sudo -H ./utils/searx.sh install buildhost"
-        die 1 "install needed build tools first"
+    if ! nvm.min_node "${NODE_MINIMUM_VERSION}"; then
+        info_msg "install Node.js by NVM"
+        nvm.nodejs
     fi
 
     (   set -e
@@ -521,7 +530,7 @@ node.clean() {
         build_msg CLEAN "npm is not installed / ignore npm dependencies"
         return 0
     fi
-    build_msg CLEAN "locally installed npm dependencies"
+    build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
         npm --prefix searx/static/themes/oscar run clean
         npm --prefix searx/static/themes/simple run clean
