@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['gruntfile.js', 'src/**'],
-        tasks: ['eslint', 'copy', 'concat', 'svg2jinja', 'uglify', 'htmlmin', 'less:development', 'less:production']
+        tasks: ['eslint', 'copy', 'concat', 'svg2jinja', 'uglify', 'image', 'less:development', 'less:production']
       }
     },
     eslint: {
@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         failOnError: false
       },
       target: [
+        'svg4web.svgo.js',
         'src/js/main/*.js',
         'src/js/head/*.js',
         '../__common__/js/*.js'
@@ -95,11 +96,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    htmlmin: {
-      dist: {
+    image: {
+      svg4web: {
         options: {
-          removeComments: true,
-          collapseWhitespace: true
+          svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
           '../../../templates/__common__/searxng-wordmark.min.svg': 'src/svg/searxng-wordmark.svg'
@@ -221,7 +221,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-image');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -238,7 +238,7 @@ module.exports = function(grunt) {
     'concat',
     'svg2jinja',
     'uglify',
-    'htmlmin',
+    'image',
     'less:development',
     'less:production'
   ]);
