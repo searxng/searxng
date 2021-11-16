@@ -65,6 +65,7 @@ test.shell:
 		utils/lib.sh \
 		utils/lib_install.sh \
 		utils/lib_static.sh \
+		utils/lib_go.sh \
 	        utils/filtron.sh \
 	        utils/searx.sh \
 	        utils/morty.sh \
