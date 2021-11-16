@@ -3,6 +3,8 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+# shellcheck source=utils/lib_go.sh
+source "${REPO_ROOT}/utils/lib_go.sh"
 # shellcheck source=utils/lib_install.sh
 source "${REPO_ROOT}/utils/lib_install.sh"
 
@@ -29,8 +31,6 @@ SERVICE_ENV_DEBUG=false
 
 GO_ENV="${SERVICE_HOME}/.go_env"
 GO_VERSION="go1.17.2"
-GO_PKG_URL="https://golang.org/dl/${GO_VERSION}.linux-amd64.tar.gz"
-GO_TAR=$(basename "$GO_PKG_URL")
 
 # shellcheck disable=SC2034
 CONFIG_FILES=()
@@ -234,7 +234,7 @@ install_all() {
     rst_title "Install $SERVICE_NAME (service)"
     assert_user
     wait_key
-    install_go "${GO_PKG_URL}" "${GO_TAR}" "${SERVICE_USER}"
+    go.golang "${GO_VERSION}" "${SERVICE_USER}"
     wait_key
     install_morty
     wait_key
@@ -306,9 +306,7 @@ install_check() {
 }
 
 go_version(){
-    sudo -i -u "$SERVICE_USER" <<EOF
-go version | cut -d' ' -f 3
-EOF
+    go.version "${SERVICE_USER}"
 }
 
 remove_all() {
@@ -338,12 +336,6 @@ EOF
     export SERVICE_HOME
     echo "export SERVICE_HOME=$SERVICE_HOME"
 
-    cat > "$GO_ENV" <<EOF
-export GOPATH=\$HOME/go-apps
-export PATH=\$HOME/local/go/bin:\$GOPATH/bin:\$PATH
-EOF
-    echo "Environment $GO_ENV has been setup."
-
     tee_stderr <<EOF | sudo -i -u "$SERVICE_USER"
 grep -qFs -- 'source $GO_ENV' ~/.profile || echo 'source $GO_ENV' >> ~/.profile
 EOF
@@ -353,22 +345,16 @@ morty_is_installed() {
     [[ -f $SERVICE_HOME/go-apps/bin/morty ]]
 }
 
-_svcpr="  ${_Yellow}|${SERVICE_USER}|${_creset} "
-
 install_morty() {
     rst_title "Install morty in user's ~/go-apps" section
     echo
-    tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go install -v github.com/asciimoo/morty@latest
-EOF
+    go.install github.com/asciimoo/morty@latest "${SERVICE_USER}"
 }
 
 update_morty() {
     rst_title "Update morty" section
     echo
-    tee_stderr <<EOF | sudo -i -u "$SERVICE_USER" 2>&1 | prefix_stdout "$_svcpr"
-go install -v github.com/asciimoo/morty@latest
-EOF
+    go.install github.com/asciimoo/morty@latest "${SERVICE_USER}"
 }
 
 set_service_env_debug() {

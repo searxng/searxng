@@ -504,7 +504,6 @@ install_template() {
     done
 }
 
-
 service_is_available() {
 
     # usage:  service_is_available <URL>
@@ -823,40 +822,6 @@ EOF
 
     set +x
     build_msg GH-PAGES "deployed"
-}
-
-# golang
-# ------
-
-go_is_available() {
-
-    # usage:  go_is_available $SERVICE_USER && echo "go is installed!"
-
-    sudo -i -u "${1}" which go &>/dev/null
-}
-
-install_go() {
-
-    # usage:  install_go "${GO_PKG_URL}" "${GO_TAR}" "${SERVICE_USER}"
-
-    local _svcpr="  ${_Yellow}|${3}|${_creset} "
-
-    rst_title "Install Go in user's HOME" section
-
-    rst_para "download and install go binary .."
-    cache_download "${1}" "${2}"
-
-    tee_stderr 0.1 <<EOF | sudo -i -u "${3}" | prefix_stdout "$_svcpr"
-echo \$PATH
-echo \$GOPATH
-mkdir -p \$HOME/local
-rm -rf \$HOME/local/go
-tar -C \$HOME/local -xzf ${CACHE}/${2}
-EOF
-    sudo -i -u "${3}" <<EOF | prefix_stdout
-! which go >/dev/null &&  echo "ERROR - Go Installation not found in PATH!?!"
-which go >/dev/null &&  go version && echo "congratulations -- Go installation OK :)"
-EOF
 }
 
 # system accounts
