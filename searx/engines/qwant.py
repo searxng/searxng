@@ -59,7 +59,7 @@ category_to_keyword = {
 }
 
 # search-url
-url = 'https://api.qwant.com/v3/search/{keyword}?q={query}&count={count}&offset={offset}'
+url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={offset}'
 
 def request(query, params):
     """Qwant search request"""
