@@ -97,21 +97,10 @@ PHONY += $(MANAGE)
 $(MANAGE):
 	$(Q)$(MTOOLS) $@
 
-# deprecated
+# short hands of selected targets
 
-PHONY += docs docs-clean docs-live docker themes
+PHONY += docs docker themes
 
 docs: docs.html
-	$(Q)./manage build_msg WARN $@ is deprecated use docs.html
-
-docs-clean: docs.clean
-	$(Q)./manage build_msg WARN $@ is deprecated use docs.clean
-
-docs-live: docs.live
-	$(Q)./manage build_msg WARN $@ is deprecated use docs.live
-
 docker:  docker.build
-	$(Q)./manage build_msg WARN $@ is deprecated use docker.build
-
 themes: themes.all
-	$(Q)./manage build_msg WARN $@ is deprecated use themes.all
