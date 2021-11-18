@@ -1,4 +1,4 @@
-.. _searx uwsgi:
+.. _searxng uwsgi:
 
 =====
 uwsgi
@@ -105,24 +105,24 @@ restart the uwsgi application.
    .. group-tab:: Ubuntu / debian
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-description ubuntu-20.04
-         :end-before: END searx uwsgi-description ubuntu-20.04
+         :start-after: START searxng uwsgi-description ubuntu-20.04
+         :end-before: END searxng uwsgi-description ubuntu-20.04
 
    .. hotfix: a bug group-tab need this comment
 
    .. group-tab:: Arch Linux
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-description arch
-         :end-before: END searx uwsgi-description arch
+         :start-after: START searxng uwsgi-description arch
+         :end-before: END searxng uwsgi-description arch
 
    .. hotfix: a bug group-tab need this comment
 
    .. group-tab::  Fedora / RHEL
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-description fedora
-         :end-before: END searx uwsgi-description fedora
+         :start-after: START searxng uwsgi-description fedora
+         :end-before: END searxng uwsgi-description fedora
 
 
 .. tabs::
@@ -130,21 +130,21 @@ restart the uwsgi application.
    .. group-tab:: Ubuntu / debian
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-appini ubuntu-20.04
-         :end-before: END searx uwsgi-appini ubuntu-20.04
+         :start-after: START searxng uwsgi-appini ubuntu-20.04
+         :end-before: END searxng uwsgi-appini ubuntu-20.04
 
    .. hotfix: a bug group-tab need this comment
 
    .. group-tab:: Arch Linux
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-appini arch
-         :end-before: END searx uwsgi-appini arch
+         :start-after: START searxng uwsgi-appini arch
+         :end-before: END searxng uwsgi-appini arch
 
    .. hotfix: a bug group-tab need this comment
 
    .. group-tab::  Fedora / RHEL
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-         :start-after: START searx uwsgi-appini fedora
-         :end-before: END searx uwsgi-appini fedora
+         :start-after: START searxng uwsgi-appini fedora
+         :end-before: END searxng uwsgi-appini fedora

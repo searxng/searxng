@@ -34,13 +34,13 @@ Install with nginx
 
 ----
 
-**Install** :ref:`nginx searx site` using :ref:`filtron.sh <filtron.sh overview>`
+**Install** :ref:`nginx searxng site` using :ref:`filtron.sh <filtron.sh overview>`
 
 .. code:: bash
 
    $ sudo -H ./utils/filtron.sh nginx install
 
-**Install** :ref:`nginx searx site` using :ref:`morty.sh <morty.sh overview>`
+**Install** :ref:`nginx searxng site` using :ref:`morty.sh <morty.sh overview>`
 
 .. code:: bash
 
@@ -126,7 +126,7 @@ depends on the linux distribution:
 
           include /etc/nginx/conf.d/*.conf;
 
-.. _nginx searx site:
+.. _nginx searxng site:
 
 A nginx SearXNG site
 ====================
@@ -163,7 +163,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
       Create configuration at ``/etc/nginx/conf.d/searxng`` and place a
       symlink to sites-enabled:
 
-.. _nginx searx via filtron plus morty:
+.. _nginx searxng via filtron plus morty:
 
 .. tabs::
 
@@ -195,7 +195,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 	 }
 
 
-      2. Configure reverse proxy for :ref:`morty <searx morty>`, listening on
+      2. Configure reverse proxy for :ref:`morty <searxng morty>`, listening on
          *localhost 3000*:
 
       .. code:: nginx
@@ -212,7 +212,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
              proxy_set_header   X-Scheme         $scheme;
          }
 
-      For a fully result proxification add :ref:`morty's <searx morty>` **public
+      For a fully result proxification add :ref:`morty's <searxng morty>` **public
       URL** to your :origin:`searx/settings.yml`:
 
       .. code:: yaml
@@ -228,7 +228,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
    .. group-tab:: proxy or uWSGI
 
-      Be warned, with this setup, your instance isn't :ref:`protected <searx
+      Be warned, with this setup, your instance isn't :ref:`protected <searxng
       filtron>`.  Nevertheless it is good enough for intranet usage and it is a
       excellent example of; *how different services can be set up*.  The next
       example shows a reverse proxy configuration wrapping the :ref:`searx-uWSGI
@@ -281,7 +281,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
          }
 
       If not already exists, create a folder for the unix sockets, which can be
-      used by the searx account:
+      used by the SearXNG account:
 
       .. code:: bash
 
@@ -290,7 +290,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
    .. group-tab:: \.\. at subdir URL
 
-      Be warned, with these setups, your instance isn't :ref:`protected <searx
+      Be warned, with these setups, your instance isn't :ref:`protected <searxng
       filtron>`.  The examples are just here to demonstrate how to export the
       SearXNG application from a subdirectory URL ``https://example.org/searx/``.
 

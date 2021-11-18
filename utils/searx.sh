@@ -151,13 +151,13 @@ usage::
 shell
   start interactive shell from user ${SERVICE_USER}
 install / remove
-  :all:        complete (de-) installation of searx service
+  :all:        complete (de-) installation of SearXNG service
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
   :dot-config: copy ./config.sh to ${SEARX_SRC}
   :searx-src:  clone $GIT_URL
   :init-src:   copy files (SEARX_SRC_INIT_FILES) to ${SEARX_SRC}
   :pyenv:      create/remove virtualenv (python) in $SEARX_PYENV
-  :uwsgi:      install searx uWSGI application
+  :uwsgi:      install SearXNG uWSGI application
   :settings:   reinstall settings from ${SEARXNG_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
   :buildhost:  install packages from OS package manager needed by buildhosts
@@ -688,7 +688,7 @@ remove_settings() {
 }
 
 remove_searx() {
-    rst_title "Drop searx sources" section
+    rst_title "Drop SearXNG sources" section
     if ask_yn "Do you really want to drop SearXNG sources ($SEARX_SRC)?"; then
         rm -rf "$SEARX_SRC"
     else
@@ -1035,7 +1035,7 @@ rst-doc() {
             [[ $DIST_VERS =~ $DIST_ID ]] && DIST_VERS=
             uWSGI_distro_setup
 
-            echo -e "\n.. START searx uwsgi-description $DIST_NAME"
+            echo -e "\n.. START searxng uwsgi-description $DIST_NAME"
 
             case $DIST_ID-$DIST_VERS in
                 ubuntu-*|debian-*)  cat <<EOF
@@ -1088,13 +1088,13 @@ EOF
 EOF
                 ;;
             esac
-            echo -e ".. END searx uwsgi-description $DIST_NAME"
+            echo -e ".. END searxng uwsgi-description $DIST_NAME"
 
-            echo -e "\n.. START searx uwsgi-appini $DIST_NAME"
+            echo -e "\n.. START searxng uwsgi-appini $DIST_NAME"
             echo ".. code:: bash"
             echo
             eval "echo \"$(< "${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}")\"" | prefix_stdout "  "
-            echo -e "\n.. END searx uwsgi-appini $DIST_NAME"
+            echo -e "\n.. END searxng uwsgi-appini $DIST_NAME"
 
         )
     done

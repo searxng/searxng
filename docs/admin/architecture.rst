@@ -6,12 +6,12 @@ Architecture
 
 .. sidebar:: Further reading
 
-   - Reverse Proxy: :ref:`Apache <apache searx site>` & :ref:`nginx <nginx searx
-     site>`
-   - Filtron: :ref:`searx filtron`
-   - Morty: :ref:`searx morty`
-   - uWSGI: :ref:`searx uwsgi`
-   - Searx: :ref:`installation basic`
+   - Reverse Proxy: :ref:`Apache <apache searxng site>` & :ref:`nginx <nginx
+     searxng site>`
+   - Filtron: :ref:`searxng filtron`
+   - Morty: :ref:`searxng morty`
+   - uWSGI: :ref:`searxng uwsgi`
+   - SearXNG: :ref:`installation basic`
 
 Herein you will find some hints and suggestions about typical architectures of
 SearXNG infrastructures.

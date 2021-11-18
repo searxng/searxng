@@ -25,7 +25,7 @@ Parameters
 ``q`` : required
   The search query.  This string is passed to external search services.  Thus,
   SearXNG supports syntax of each search service.  For example, ``site:github.com
-  searx`` is a valid query for Google.  However, if simply the query above is
+  SearXNG`` is a valid query for Google.  However, if simply the query above is
   passed to any search engine which does not filter its results based on this
   syntax, you might not get the results you wanted.
 
@@ -62,7 +62,7 @@ Parameters
 ``image_proxy`` : default ``False``
   [  ``True``, ``False`` ]
 
-  Proxy image results through searx.
+  Proxy image results through SearXNG.
 
 ``autocomplete`` : default *empty*
   [ ``google``, ``dbpedia``, ``duckduckgo``, ``startpage``, ``wikipedia`` ]

@@ -14,7 +14,7 @@
    - :ref:`architecture`
    - :ref:`installation` (:ref:`nginx <installation nginx>` & :ref:`apache
      <installation apache>`)
-   - :ref:`searx morty`
+   - :ref:`searxng morty`
 
 To simplify installation and maintenance of a morty_ instance you can use the
 script :origin:`utils/morty.sh`.  In most cases you will install morty_ simply by
@@ -37,7 +37,7 @@ into this user account:
 
 .. hint::
 
-   To add morty to your SearXNG instance read chapter :ref:`searx morty`.
+   To add morty to your SearXNG instance read chapter :ref:`searxng morty`.
 
 Create user
 ===========

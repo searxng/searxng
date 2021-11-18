@@ -72,7 +72,7 @@ ${fedora_build}
 
 .. END create user
 
-.. START clone searx
+.. START clone searxng
 
 .. tabs::
 
@@ -83,7 +83,7 @@ ${fedora_build}
        $ sudo -H -u ${SERVICE_USER} -i
        (${SERVICE_USER})$ git clone \"$GIT_URL\" \"$SEARX_SRC\"
 
-.. END clone searx
+.. END clone searxng
 
 .. START create virtualenv
 
@@ -118,14 +118,14 @@ ${fedora_build}
        pip install -U wheel
        pip install -U pyyaml
 
-       # jump to searx's working tree and install SearXNG into virtualenv
+       # jump to SearXNG's working tree and install SearXNG into virtualenv
        (${SERVICE_USER})$ cd \"$SEARX_SRC\"
        (${SERVICE_USER})$ pip install -e .
 
 
 .. END manage.sh update_packages
 
-.. START searx config
+.. START searxng config
 
 .. tabs::
 
@@ -153,9 +153,9 @@ ${fedora_build}
 
        $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \"$SEARXNG_SETTINGS_PATH\"
 
-.. END searx config
+.. END searxng config
 
-.. START check searx installation
+.. START check searxng installation
 
 .. tabs::
 
@@ -206,4 +206,4 @@ container or in a script, test with curl:
        HTTP/1.0 200 OK
        ...
 
-.. END check searx installation
+.. END check searxng installation

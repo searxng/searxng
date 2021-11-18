@@ -7,7 +7,7 @@
 
 .. sidebar:: further reading
 
-   - :ref:`searx filtron`
+   - :ref:`searxng filtron`
    - :ref:`architecture`
    - :ref:`installation` (:ref:`nginx <installation nginx>` & :ref:`apache
      <installation apache>`)

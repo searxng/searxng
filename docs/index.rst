@@ -2,11 +2,7 @@
 Welcome to SearXNG
 ==================
 
-    *Search without being tracked.*
-
-.. hint::
-
-   This is not searx, but searxng.
+  *Search without being tracked.*
 
 SearXNG is a free internet metasearch engine which aggregates results from more
 than 70 search services.  Users are neither tracked nor profiled.  Additionally,
@@ -24,6 +20,11 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    - Easy integration with any search engine
    - Cookies are not used by default
    - Secure, encrypted connections (HTTPS/SSL)
+
+.. sidebar:: info
+
+   SearXNG development has been started in the middle of 2021 as a fork of the
+   searx project.
 
 .. toctree::
    :maxdepth: 2

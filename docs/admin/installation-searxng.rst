@@ -23,9 +23,9 @@ Install packages
 
 .. hint::
 
-   This installs also the packages needed by :ref:`searx uwsgi`
+   This installs also the packages needed by :ref:`searxng uwsgi`
 
-.. _create searx user:
+.. _create searxng user:
 
 Create user
 ===========
@@ -42,8 +42,8 @@ Install SearXNG & dependencies
 Start a interactive shell from new created user and clone searx:
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-   :start-after: START clone searx
-   :end-before: END clone searx
+   :start-after: START clone searxng
+   :end-before: END clone searxng
 
 In the same shell create *virtualenv*:
 
@@ -87,8 +87,8 @@ For a *minimal setup*, configure like shown below – replace ``searx@$(uname
 ``/etc/searxng/settings.yml`` to your needs.
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-   :start-after: START searx config
-   :end-before: END searx config
+   :start-after: START searxng config
+   :end-before: END searxng config
 
 .. tabs::
 
@@ -111,8 +111,8 @@ SearXNG looks at the exported environment ``$SEARXNG_SETTINGS_PATH`` for a
 configuration file.
 
 .. kernel-include:: $DOCS_BUILD/includes/searx.rst
-   :start-after: START check searx installation
-   :end-before: END check searx installation
+   :start-after: START check searxng installation
+   :end-before: END check searxng installation
 
 If everything works fine, hit ``[CTRL-C]`` to stop the *webapp* and disable the
 debug option in ``settings.yml``. You can now exit SearXNG user bash (enter exit

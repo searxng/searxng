@@ -27,7 +27,7 @@ Installation scripts
 
 .. sidebar:: Update OS first!
 
-   To avoid unwanted side effects, update your OS before installing searx.
+   To avoid unwanted side effects, update your OS before installing SearXNG.
 
 The following will install a setup as shown in :ref:`architecture`.  First you
 need to get a clone.  The clone is only needed for the installation procedure
@@ -42,14 +42,14 @@ the case if you clone into a folder below ``/root``.
 .. code:: bash
 
    $ cd ~/Downloads
-   $ git clone https://github.com/searxng/searxng.git searx
-   $ cd searx
+   $ git clone https://github.com/searxng/searxng.git searxng
+   $ cd searxng
 
 .. sidebar:: further read
 
    - :ref:`toolboxing`
-   - :ref:`update searx`
-   - :ref:`inspect searx`
+   - :ref:`update searxng`
+   - :ref:`inspect searxng`
 
 **Install** :ref:`SearXNG service <searx.sh>`
 

@@ -12,7 +12,7 @@ you simply by using :ref:`make <makefile>`.
 
 .. code:: sh
 
-    git clone https://github.com/searxng/searxng.git searx
+    git clone https://github.com/searxng/searxng.git searxng
 
 Here is how a minimal workflow looks like:
 
