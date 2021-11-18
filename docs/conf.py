@@ -130,13 +130,13 @@ if CONTACT_URL:
     html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
 html_sidebars = {
-    "**": ["project.html", "relations.html", "searchbox.html"],
+    "**": ["project.html", "relations.html", "searchbox.html", "sourcelink.html"],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_static_path = ["static"]
 html_logo = "static/img/searx_logo_small.png"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
-html_show_sourcelink = False
+html_show_sourcelink = True
 
 # LaTeX ----------------------------------------------------------------
 
