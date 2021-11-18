@@ -133,8 +133,7 @@ html_sidebars = {
     "**": ["project.html", "relations.html", "searchbox.html", "sourcelink.html"],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
-html_static_path = ["static"]
-html_logo = "static/img/searx_logo_small.png"
+html_logo = "../searx/static/themes/simple/src/svg/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = True
 
