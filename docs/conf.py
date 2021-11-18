@@ -108,7 +108,7 @@ issues_github_path = "searxng/searxng"
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../utils/"))
 html_theme_path = ['_themes']
-html_theme = "searx"
+html_theme = "searxng"
 
 # sphinx.ext.imgmath setup
 html_math_renderer = 'imgmath'
