@@ -19,7 +19,8 @@
 
 .. tabs::
 
-  .. group-tab:: bash
+  .. group-tab:: os: linux / arch: amd64
+
 
     .. code-block:: bash
 
@@ -30,9 +31,9 @@
        $ sudo -i -u \"${SERVICE_USER}\"
        (${SERVICE_USER}) $ echo 'source $GO_ENV' >> ~/.profile
        (${SERVICE_USER}) $ mkdir ${SERVICE_HOME}/local
-       (${SERVICE_USER}) $ wget --progress=bar -O \"${GO_TAR}\" \\
-                   \"${GO_PKG_URL}\"
-       (${SERVICE_USER}) $ tar -C ${SERVICE_HOME}/local -xzf \"${GO_TAR}\"
+       (${SERVICE_USER}) $ wget --progress=bar -O \"${GO_VERSION}.linux-amd64.tar.gz\" \\
+                   \"${GO_DL_URL}/${GO_VERSION}.linux-amd64.tar.gz\"
+       (${SERVICE_USER}) $ tar -C ${SERVICE_HOME}/local -xzf \"${GO_VERSION}.linux-amd64.tar.gz\"
        (${SERVICE_USER}) $ which go
        ${SERVICE_HOME}/local/go/bin/go
 

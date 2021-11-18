@@ -14,6 +14,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_nvm.sh"
 # shellcheck source=utils/lib_static.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
 
+# shellcheck source=utils/lib_go.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
+
 # config
 
 PYOBJECTS="searx"
@@ -101,6 +104,7 @@ themes.:
 pygments.:
   less      : build LESS files for pygments
 EOF
+    go.help
     static_help
 }
 
