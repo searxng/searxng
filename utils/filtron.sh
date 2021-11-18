@@ -348,13 +348,13 @@ filtron_is_installed() {
 install_filtron() {
     rst_title "Install filtron in user's ~/go-apps" section
     echo
-    go.install github.com/asciimoo/filtron@latest "${SERVICE_USER}"
+    go.install github.com/searxng/filtron@latest "${SERVICE_USER}"
 }
 
 update_filtron() {
     rst_title "Update filtron" section
     echo
-    go.install github.com/asciimoo/filtron@latest "${SERVICE_USER}"
+    go.install github.com/searxng/filtron@latest "${SERVICE_USER}"
 }
 
 install_rules() {
