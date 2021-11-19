@@ -174,6 +174,12 @@ _category_names = (
     gettext('science')
 )
 
+_simple_style = (
+    gettext('auto'),
+    gettext('light'),
+    gettext('dark')
+)
+
 #
 timeout_text = gettext('timeout')
 parsing_error_text = gettext('parsing error')

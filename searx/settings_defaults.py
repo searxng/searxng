@@ -19,6 +19,7 @@ logger = logging.getLogger('searx')
 OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
 LANGUAGE_CODES = ['all'] + list(l[0] for l in languages)
 OSCAR_STYLE = ('logicodev', 'logicodev-dark', 'pointhi')
+SIMPLE_STYLE = ('auto', 'light', 'dark')
 CATEGORY_ORDER = [
     'general',
     'images',
@@ -183,6 +184,7 @@ SCHEMA = {
         'default_locale': SettingsValue(str, ''),
         'theme_args': {
             'oscar_style': SettingsValue(OSCAR_STYLE, 'logicodev'),
+            'simple_style': SettingsValue(SIMPLE_STYLE, 'auto'),
         },
         'results_on_new_tab': SettingsValue(bool, False),
         'advanced_search': SettingsValue(bool, False),

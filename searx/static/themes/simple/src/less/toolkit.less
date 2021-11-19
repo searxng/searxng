@@ -333,9 +333,14 @@ select {
   }
 
   @media (prefers-color-scheme: dark) {
-    select {
+    html.theme-auto select,
+    html.theme-dark select {
       background-image: data-uri('image/svg+xml;charset=UTF-8', @select-dark-svg-path);
     }
+  }
+
+  html.theme-dark select {
+    background-image: data-uri('image/svg+xml;charset=UTF-8', @select-dark-svg-path);
   }
 }
 
