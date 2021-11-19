@@ -204,6 +204,17 @@
       </p>
       <div class="description">{{ _('Change SearXNG layout') }}</div>
     </fieldset>
+    <fieldset>
+      <legend>{{ _('Theme style') }}</legend>
+      <p class="value">
+        <select name="simple_style">
+          {%- for name in ['auto', 'light', 'dark'] -%}
+          <option value="{{ name }}" {% if name == preferences.get_value('simple_style') %}selected="selected"{% endif %}>{{ _(name) }}</option>
+          {%- endfor -%}
+        </select>
+      </p>
+      <div class="description">{{ _('Choose auto to follow your browser settings') }}</div>
+    </fieldset>
     {% endif %}
     {% if 'results_on_new_tab' not in locked_preferences %}
     <fieldset>

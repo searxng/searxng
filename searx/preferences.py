@@ -393,7 +393,13 @@ class Preferences:
             'oscar-style': EnumStringSetting(
                 settings['ui']['theme_args']['oscar_style'],
                 is_locked('oscar-style'),
-                choices=['', 'logicodev', 'logicodev-dark', 'pointhi']),
+                choices=['', 'logicodev', 'logicodev-dark', 'pointhi']
+            ),
+            'simple_style': EnumStringSetting(
+                settings['ui']['theme_args']['simple_style'],
+                is_locked('simple_style'),
+                choices=['', 'auto', 'light', 'dark']
+            ),
             'advanced_search': MapSetting(
                 settings['ui']['advanced_search'],
                 is_locked('advanced_search'),

@@ -27,5 +27,10 @@
     };
 
     // update the css
-    d.getElementsByTagName("html")[0].className = (w.searxng.touch)?"js touch":"js";
+    var hmtlElement = d.getElementsByTagName("html")[0];
+    hmtlElement.classList.remove('no-js');
+    hmtlElement.classList.add('js');
+    if (w.searxng.touch) {
+        hmtlElement.classList.add('touch');
+    }
 })(window, document);
