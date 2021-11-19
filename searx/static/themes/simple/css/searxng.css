@@ -1888,7 +1888,7 @@ td:hover .engine-tooltip,
   }
 }
 #main_results #results.image-detail-open.only_template_images {
-  width: 59.25rem !important;
+  width: min(98%, 59.25rem) !important;
 }
 #main_results #results.only_template_images.image-detail-open #backToTop {
   left: 56.75rem !important;
@@ -1903,7 +1903,7 @@ article.result-images .detail {
   position: fixed;
   left: 60rem;
   right: 0;
-  top: 7.5rem;
+  top: 7.75rem;
   transition: top 0.064s ease-in 0s;
   bottom: 0;
   background: var(--color-result-detail-background);
