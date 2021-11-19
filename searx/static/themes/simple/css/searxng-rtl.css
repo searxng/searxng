@@ -819,7 +819,7 @@ template {
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root.theme-auto {
     --color-base-font: #bbb;
     --color-base-font-rgb: 187, 187, 187;
     --color-base-background: #222;
@@ -903,6 +903,90 @@ template {
     --color-toolkit-loader-border: rgba(255, 255, 255, 0.2);
     --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
   }
+}
+:root.theme-dark {
+  --color-base-font: #bbb;
+  --color-base-font-rgb: 187, 187, 187;
+  --color-base-background: #222;
+  --color-url-font: #8af;
+  --color-url-visited-font: #96b;
+  --color-header-background: #181818;
+  --color-header-border: #333;
+  --color-footer-background: #181818;
+  --color-footer-border: #333;
+  --color-sidebar-border: #555;
+  --color-sidebar-font: #fff;
+  --color-backtotop-font: #bbb;
+  --color-backtotop-border: #333;
+  --color-backtotop-background: #181818;
+  --color-btn-background: #58f;
+  --color-btn-font: #222;
+  --color-search-border: #555;
+  --color-search-background: #222;
+  --color-search-font: #fff;
+  --color-search-background-hover: #58f;
+  --color-error: #f55b5b;
+  --color-error-background: #390a0a;
+  --color-warning: #f1d561;
+  --color-warning-background: #39300a;
+  --color-success: #79f56e;
+  --color-success-background: #0e390a;
+  --color-categories-item-selected-font: #58f;
+  --color-categories-item-border-selected: #58f;
+  --color-autocomplete-font: #fff;
+  --color-autocomplete-border: #555;
+  --color-autocomplete-background: #222;
+  --color-autocomplete-background-hover: #181818;
+  --color-answer-border: #333;
+  --color-answer-font: #bbb;
+  --color-answer-background: #181818;
+  --color-result-border: #333;
+  --color-result-url-font: #fff;
+  --color-result-vim-selected: #181818;
+  --color-result-vim-arrow: #8af;
+  --color-result-description-highlight-font: #fff;
+  --color-result-link-font: #8af;
+  --color-result-link-font-highlight: #8af;
+  --color-result-link-visited-font: #96b;
+  --color-result-publishdate-font: #777;
+  --color-result-engines-font: #777;
+  --color-result-search-url-border: #555;
+  --color-result-search-url-font: #fff;
+  --color-result-detail-font: #fff;
+  --color-result-detail-label-font: lightgray;
+  --color-result-detail-background: #000;
+  --color-result-detail-hr: #555;
+  --color-result-detail-link: #8af;
+  --color-result-detail-loader-border: rgba(255, 255, 255, 0.2);
+  --color-result-detail-loader-borderleft: rgba(0, 0, 0, 0);
+  --color-result-image-span-background-hover: rgba(0, 0, 0, 0.6);
+  --color-result-image-span-font: #fff;
+  --color-result-image-background: #8af;
+  --color-settings-tr-hover: #2d2d2d;
+  --color-settings-engine-description-font: #909090;
+  --color-toolkit-badge-font: #fff;
+  --color-toolkit-badge-background: #777;
+  --color-toolkit-kbd-font: #000;
+  --color-toolkit-kbd-background: #fff;
+  --color-toolkit-dialog-border: #555;
+  --color-toolkit-dialog-background: #222;
+  --color-toolkit-tabs-label-border: #222;
+  --color-toolkit-tabs-section-border: #555;
+  --color-toolkit-select-border: #555;
+  --color-toolkit-select-border-hover: #777;
+  --color-toolkit-input-text-font: #fff;
+  --color-toolkit-input-text-border: #555;
+  --color-toolkit-input-text-border-hover: #777;
+  --color-toolkit-checkbox-onoff-background: #3c3b31;
+  --color-toolkit-checkbox-onoff-label-background: #58f;
+  --color-toolkit-checkbox-onoff-checked-background: #ddd;
+  --color-toolkit-checkbox-label-background: #fff;
+  --color-toolkit-checkbox-label-border: #333;
+  --color-toolkit-checkbox-input-border: #58f;
+  --color-toolkit-engine-tooltip-border: #333;
+  --color-toolkit-engine-tooltip-background: #222;
+  --color-toolkit-loader-border: rgba(255, 255, 255, 0.2);
+  --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
 }
 /*
 * SearXNG, A privacy-respecting, hackable metasearch engine
@@ -1601,9 +1685,13 @@ select:focus {
     background-color: var(--color-base-background);
   }
   @media (prefers-color-scheme: dark) {
-    select {
+    html.theme-auto select,
+    html.theme-dark select {
       background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cg%3E%3Cpolygon%20fill%3D%22%23ddd%22%20points%3D%22128%2C192%20256%2C320%20384%2C192%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E");
     }
+  }
+  html.theme-dark select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cg%3E%3Cpolygon%20fill%3D%22%23ddd%22%20points%3D%22128%2C192%20256%2C320%20384%2C192%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E");
   }
 }
 /* -- checkbox-onoff -- */
