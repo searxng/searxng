@@ -88,8 +88,8 @@ fork:
      .. code:: sh
 
         $ cd ~/Downloads
-        $ git clone https://github.com/searxng/searxng.git searx
-        $ cd searx
+        $ git clone https://github.com/searxng/searxng.git searxng
+        $ cd searxng
 
 The :ref:`lxc-searx.env` consists of several images, see ``export
 LXC_SUITE=(...`` near by :origin:`utils/lxc-searx.env#L19`.  For this blog post
@@ -180,7 +180,7 @@ searx-archlinux``:
         $ sudo -H ./utils/lxc.sh cmd searx-archlinux bash
         INFO:  [searx-archlinux] bash
         [root@searx-archlinux searx]# pwd
-        /share/searx
+        /share/searxng
 
 The prompt ``[root@searx-archlinux ...]`` signals, that you are the root user in
 the searx-container.  To debug the running SearXNG instance use:
@@ -213,7 +213,7 @@ To debug services from filtron and morty analogous use:
 
 Another point we have to notice is that each service (:ref:`SearXNG <searx.sh>`,
 :ref:`filtron <filtron.sh>` and :ref:`morty <morty.sh>`) runs under dedicated
-system user account with the same name (compare :ref:`create searx user`).  To
+system user account with the same name (compare :ref:`create searxng user`).  To
 get a shell from theses accounts, simply call one of the scripts:
 
 .. tabs::
@@ -267,7 +267,7 @@ suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 - SearXNG software in: ``/usr/local/searx/searx-src``
 
 With the use of the :ref:`searx.sh` the SearXNG service was installed as
-:ref:`uWSGI application <searx uwsgi>`.  To maintain this service, we can use
+:ref:`uWSGI application <searxng uwsgi>`.  To maintain this service, we can use
 ``systemctl`` (compare :ref:`service architectures on distributions <uwsgi
 configuration>`).
 

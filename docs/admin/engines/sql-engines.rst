@@ -127,7 +127,7 @@ find an example configuration below:
    - name: my_database
      engine: postgresql
      database: my_database
-     username: searx
+     username: searxng
      password: password
      query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
 
@@ -155,7 +155,7 @@ example configuration for quering a MySQL server:
    - name: my_database
      engine: mysql_server
      database: my_database
-     username: searx
+     username: searxng
      password: password
      limit: 5
      query_str: 'SELECT * from my_table WHERE my_column=%(query)s'

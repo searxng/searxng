@@ -1,5 +1,5 @@
 
-.. _searx filtron:
+.. _searxng filtron:
 
 ==========================
 How to protect an instance
@@ -8,7 +8,7 @@ How to protect an instance
 .. sidebar:: further reading
 
    - :ref:`filtron.sh`
-   - :ref:`nginx searx site`
+   - :ref:`nginx searxng site`
 
 
 .. contents:: Contents
@@ -19,7 +19,7 @@ How to protect an instance
 .. _filtron: https://github.com/asciimoo/filtron
 
 SearXNG depends on external search services.  To avoid the abuse of these services
-it is advised to limit the number of requests processed by searx.
+it is advised to limit the number of requests processed by SearXNG.
 
 An application firewall, filtron_ solves exactly this problem.  Filtron is just
 a middleware between your web server (nginx, apache, ...) and searx, we describe
@@ -188,4 +188,4 @@ Use it along with ``nginx`` with the following example configuration.
 
 Requests are coming from port 4004 going through filtron and then forwarded to
 port 8888 where a SearXNG is being run. For a complete setup see: :ref:`nginx
-searx site`.
+searxng site`.

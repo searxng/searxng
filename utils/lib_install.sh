@@ -121,10 +121,10 @@ install_log_searx_instance() {
     echo -e "  SEARXNG_URL         : ${_BBlue}${SEARXNG_URL:-none}${_creset}"
 
     if in_container; then
-        # searx is listening on 127.0.0.1 and not available from outside container
+        # SearXNG is listening on 127.0.0.1 and not available from outside container
         # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
         echo -e "---- container setup"
-        echo -e "  ${_BBlack}HINT:${_creset} searx only listen on loopback device" \
+        echo -e "  ${_BBlack}HINT:${_creset} SearXNG only listen on loopback device" \
              "${_BBlack}inside${_creset} the container."
         for ip in $(global_IPs) ; do
             if [[ $ip =~ .*:.* ]]; then

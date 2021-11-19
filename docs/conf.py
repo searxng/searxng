@@ -108,7 +108,7 @@ issues_github_path = "searxng/searxng"
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../utils/"))
 html_theme_path = ['_themes']
-html_theme = "searx"
+html_theme = "searxng"
 
 # sphinx.ext.imgmath setup
 html_math_renderer = 'imgmath'
@@ -130,13 +130,12 @@ if CONTACT_URL:
     html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
 html_sidebars = {
-    "**": ["project.html", "relations.html", "searchbox.html"],
+    "**": ["project.html", "relations.html", "searchbox.html", "sourcelink.html"],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
-html_static_path = ["static"]
-html_logo = "static/img/searx_logo_small.png"
+html_logo = "../searx/static/themes/simple/src/svg/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
-html_show_sourcelink = False
+html_show_sourcelink = True
 
 # LaTeX ----------------------------------------------------------------
 

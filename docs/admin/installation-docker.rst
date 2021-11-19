@@ -25,8 +25,8 @@ Docker installation
    If you intend to create a public instance using Docker, use our well
    maintained searxng-docker_ image which includes
 
-   - :ref:`protection <searx filtron>` `[filtron]`_,
-   - a :ref:`result proxy <searx morty>` `[morty]`_ and
+   - :ref:`protection <searxng filtron>` `[filtron]`_,
+   - a :ref:`result proxy <searxng morty>` `[morty]`_ and
    - a HTTPS reverse proxy `[caddy]`_.
 
 Make sure you have `installed Docker <https://docs.docker.com/get-docker/>`_ and

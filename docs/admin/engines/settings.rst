@@ -94,7 +94,7 @@ Global Settings
        port: 8888
        bind_address: "127.0.0.1"      # address to listen on
        secret_key: "ultrasecretkey"   # change this!
-       image_proxy: false             # proxying image results through searx
+       image_proxy: false             # proxying image results through SearXNG
        default_locale: ""             # default interface locale
        default_theme: oscar           # ui theme
        default_http_headers:
@@ -293,7 +293,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 
 ``timeout`` : optional
   Timeout of the search with the current search engine.  **Be careful, it will
-  modify the global timeout of searx.**
+  modify the global timeout of SearXNG.**
 
 ``api_key`` : optional
   In a few cases, using an API needs the use of a secret key.  How to obtain them

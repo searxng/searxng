@@ -47,13 +47,13 @@ Install with apache
 
 ----
 
-**Install** :ref:`apache searx site` using :ref:`filtron.sh <filtron.sh overview>`
+**Install** :ref:`apache searxng site` using :ref:`filtron.sh <filtron.sh overview>`
 
 .. code:: bash
 
    $ sudo -H ./utils/filtron.sh apache install
 
-**Install** :ref:`apache searx site` using :ref:`morty.sh <morty.sh overview>`
+**Install** :ref:`apache searxng site` using :ref:`morty.sh <morty.sh overview>`
 
 .. code:: bash
 
@@ -163,7 +163,7 @@ How this default intro site is configured, depends on the linux distribution
 
         less /etc/httpd/conf.d/welcome.conf
 
-.. _apache searx site:
+.. _apache searxng site:
 
 Apache Reverse Proxy
 ====================
@@ -192,14 +192,14 @@ except in :ref:`The Debian Layout`.
          sudo -H a2enmod proxy
          sudo -H a2enmod proxy_http
 
-      In :ref:`The Debian Layout` you create a ``searx.conf`` with the
+      In :ref:`The Debian Layout` you create a ``searxng.conf`` with the
       ``<Location /searx >`` directive and save this file in the *sites
       available* folder at ``/etc/apache2/sites-available``.  To enable the
-      ``searx.conf`` use :man:`a2ensite`:
+      ``searxng.conf`` use :man:`a2ensite`:
 
       .. code:: sh
 
-         sudo -H a2ensite searx.conf
+         sudo -H a2ensite searxng.conf
 
    .. group-tab:: Arch Linux
 
@@ -230,7 +230,7 @@ except in :ref:`The Debian Layout`.
 With ProxyPreserveHost_ the incoming Host HTTP request header is passed to the
 proxied host.
 
-.. _apache searx via filtron plus morty:
+.. _apache searxng via filtron plus morty:
 
 .. tabs::
 
@@ -262,7 +262,7 @@ proxied host.
 
          </Location>
 
-      2. Configure reverse proxy for :ref:`morty <searx morty>`, listening on
+      2. Configure reverse proxy for :ref:`morty <searxng morty>`, listening on
       *localhost 3000*
 
       .. code:: apache
@@ -286,7 +286,7 @@ proxied host.
 
          </Location>
 
-      For a fully result proxification add :ref:`morty's <searx morty>` **public
+      For a fully result proxification add :ref:`morty's <searxng morty>` **public
       URL** to your :origin:`searx/settings.yml`:
 
       .. code:: yaml
@@ -302,10 +302,10 @@ proxied host.
 uWSGI support
 =============
 
-Be warned, with this setup, your instance isn't :ref:`protected <searx
+Be warned, with this setup, your instance isn't :ref:`protected <searxng
 filtron>`, nevertheless it is good enough for intranet usage.  In modern Linux
 distributions, the `mod_proxy_uwsgi`_ is compiled into the *normal* apache
-package and you need to install only the :ref:`uWSGI <searx uwsgi>` package:
+package and you need to install only the :ref:`uWSGI <searxng uwsgi>` package:
 
 .. tabs::
 
@@ -337,7 +337,7 @@ For socket communication, you have to activate ``socket =
 /run/uwsgi/app/searx/socket`` and comment out the ``http = 127.0.0.1:8888``
 configuration in your :ref:`uwsgi ini file <uwsgi configuration>`.  If not
 already exists, create a folder for the unix sockets, which can be used by the
-searx account (see :ref:`create searx user`):
+SearXNG account (see :ref:`create searxng user`):
 
 .. code:: bash
 

@@ -1,4 +1,4 @@
-.. _update searx:
+.. _update searxng:
 
 =============
 How to update
@@ -25,7 +25,7 @@ How to update depends on the :ref:`installation` method.  If you have used the
 
    $ sudo -H ./utils/morty.sh update morty
 
-.. _inspect searx:
+.. _inspect searxng:
 
 ======================
 How to inspect & debug
