@@ -120,14 +120,17 @@ nvm.install() {
 
 nvm.clean() {
     if ! nvm.is_installed; then
-        info_msg "NVM is not installed"
-        return 42
+        build_msg CLEAN "[NVM] not installed"
+        return
     fi
     if ! nvm.is_local; then
-        info_msg "can't remove NVM from ${NVM_DIR}"
-        return 42
+        build_msg CLEAN "[NVM] can't remove nvm from ${NVM_DIR}"
+        return
     fi
-    rm -rf "${NVM_DIR}"
+    if [ -n "${NVM_DIR}" ]; then
+        build_msg CLEAN "[NVM] drop $(realpath --relative-to=. "${NVM_DIR}")/"
+        rm -rf "${NVM_DIR}"
+    fi
 }
 
 nvm.status(){
