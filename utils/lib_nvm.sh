@@ -154,12 +154,12 @@ nvm.status() {
         info_msg "NVM is installed at ${NVM_DIR}"
     else
         warn_msg "NVM is not installed"
-        info_msg "to install NVM and Node.js (LTS) use: ${main_cmd} nvm install --lts"
+        info_msg "to install NVM and Node.js (LTS) use: ${main_cmd} nvm.nodejs"
     fi
 }
 
 nvm.nodejs() {
-    nvm install --lts
+    nvm install
     nvm.status
 }
 
