@@ -5,6 +5,10 @@ module.exports = function(grunt) {
   const path = require('path');
 
   grunt.initConfig({
+
+    _brand: '../../../../src/brand',
+    _templates: '../../../templates',
+
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
@@ -102,7 +106,7 @@ module.exports = function(grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '../../../templates/__common__/searxng-wordmark.min.svg': '../../../../src/brand/searxng-wordmark.svg'
+          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
         }
       }
     },
