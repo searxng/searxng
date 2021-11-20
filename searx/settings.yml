@@ -903,6 +903,7 @@ engines:
   - name: npm
     engine: json_engine
     paging: true
+    first_page_num: 0
     search_url: https://api.npms.io/v2/search?q={query}&size=25&from={pageno}
     results_query: results
     url_query: package/links/npm
