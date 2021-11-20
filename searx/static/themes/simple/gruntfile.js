@@ -102,7 +102,7 @@ module.exports = function(grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '../../../templates/__common__/searxng-wordmark.min.svg': 'src/svg/searxng-wordmark.svg'
+          '../../../templates/__common__/searxng-wordmark.min.svg': '../../../../src/brand/searxng-wordmark.svg'
         }
       }
     },

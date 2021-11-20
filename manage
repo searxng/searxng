@@ -706,10 +706,9 @@ themes.oscar() {
 }
 
 themes.simple() {
-    local src="searx/static/themes/simple/src"
     local static="searx/static/themes/simple"
     (   set -e
-        convert_if_newer "$src/svg/searxng-wordmark.svg" "$static/img/favicon.png" \
+        convert_if_newer "src/brand/searxng-wordmark.svg" "$static/img/favicon.png" \
                          -transparent white -resize 64x64
         build_msg GRUNT "theme: simple"
         npm --prefix searx/static/themes/simple run build
