@@ -183,6 +183,7 @@ div.selectable_url {
 .dialog-modal {
   .dialog();
 
+  display: block;
   background: var(--color-toolkit-dialog-background);
   position: fixed;
   top: 50%;
@@ -190,6 +191,23 @@ div.selectable_url {
   margin: 0 auto;
   transform: translate(-50%, -50%);
   z-index: 10000000;
+  animation-name: dialogmodal;
+  animation-duration: 0.13s;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+@keyframes dialogmodal {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 // btn-collapse
