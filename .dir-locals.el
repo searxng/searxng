@@ -19,6 +19,7 @@
 ;; Some buffer locals are referencing the project environment:
 ;;
 ;; - prj-root                                --> <repo>/
+;; - nvm-dir                                 --> <repo>/.nvm
 ;; - python-environment-directory            --> <repo>/local
 ;; - python-environment-default-root-name    --> py3
 ;; - python-shell-virtualenv-root            --> <repo>/local/py3
@@ -57,6 +58,9 @@
                (setq-local python-environment-directory
                            (expand-file-name "./local" prj-root))
 
+               ;; to get in use of NVM enviroment, install https://github.com/rejeep/nvm.el
+               (setq-local nvm-dir (expand-file-name "./.nvm" prj-root))
+
                ;; use 'py3' enviroment as default
                (setq-local python-environment-default-root-name
                            "py3")
@@ -90,6 +94,8 @@
 
  (js-mode
   . ((eval . (progn
+               ;; flycheck should use the (local) NVM environment (see nvm-dir)
+               (nvm-use-for-buffer)
                (setq-local js-indent-level 2)
                ;; flycheck should use the eslint checker from simple theme
                (setq-local flycheck-javascript-eslint-executable
