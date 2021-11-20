@@ -94,12 +94,9 @@
 
  (js-mode
   . ((eval . (progn
-               ;; flycheck should use the (local) NVM environment (see nvm-dir)
+               ;; use nodejs from the (local) NVM environment (see nvm-dir)
                (nvm-use-for-buffer)
                (setq-local js-indent-level 2)
-               ;; flycheck should use the eslint checker from simple theme
-               (setq-local flycheck-javascript-eslint-executable
-                           (expand-file-name "searx/static/themes/simple/node_modules/.bin/eslint" prj-root))
                (flycheck-mode)
                ))))
 
