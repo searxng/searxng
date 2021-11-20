@@ -94,6 +94,7 @@ nvm.: use nvm (without dot) to execute nvm commands directly
   clean     : remove NVM installation
   status    : prompt some status informations about nvm & node
   nodejs    : install Node.js latest LTS
+  cmd ...   : run command ... in NVM environment
   bash      : start bash interpreter with NVM environment sourced
 EOF
 }
@@ -166,6 +167,11 @@ nvm.nodejs() {
 nvm.bash() {
     nvm.ensure
     bash --init-file <(cat "${NVM_DIR}/nvm.sh" "${NVM_DIR}/bash_completion")
+}
+
+nvm.cmd() {
+    nvm.ensure
+    "$@"
 }
 
 nvm.ensure() {
