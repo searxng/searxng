@@ -115,6 +115,7 @@ nvm.install() {
     NVM_VERSION_TAG="$(git describe --abbrev=0 --tags --match "v[0-9]*" "${NVM_VERSION_TAG}")"
     info_msg "checkout ${NVM_VERSION_TAG}"
     git checkout "${NVM_VERSION_TAG}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
+    popd &> /dev/null
     nvm.env
 }
 
@@ -133,7 +134,7 @@ nvm.clean() {
     fi
 }
 
-nvm.status(){
+nvm.status() {
     if command -v node >/dev/null; then
         info_msg "Node.js is installed at $(command -v node)"
         info_msg "Node.js is version $(node --version)"
@@ -157,7 +158,7 @@ nvm.status(){
     fi
 }
 
-nvm.nodejs(){
+nvm.nodejs() {
     nvm install --lts
     nvm.status
 }
