@@ -172,7 +172,10 @@ def response(resp):
                 thumbnail_src = ''
 
         link_node = eval_xpath_getindex(img_node, '../../../a[2]', 0)
-        url = eval_xpath_getindex(link_node, '@href', 0)
+        url = eval_xpath_getindex(link_node, '@href', 0, None)
+        if url is None:
+            logger.error("missing @href in node: %s", html.tostring(link_node))
+            continue
 
         pub_nodes = eval_xpath(link_node, './div/div')
         pub_descr = img_alt
