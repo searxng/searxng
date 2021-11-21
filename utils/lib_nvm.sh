@@ -94,6 +94,7 @@ nvm.: use nvm (without dot) to execute nvm commands directly
   clean     : remove NVM installation
   status    : prompt some status informations about nvm & node
   nodejs    : install Node.js latest LTS
+  cmd ...   : run command ... in NVM environment
   bash      : start bash interpreter with NVM environment sourced
 EOF
 }
@@ -115,6 +116,8 @@ nvm.install() {
     NVM_VERSION_TAG="$(git describe --abbrev=0 --tags --match "v[0-9]*" "${NVM_VERSION_TAG}")"
     info_msg "checkout ${NVM_VERSION_TAG}"
     git checkout "${NVM_VERSION_TAG}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
+    popd &> /dev/null
+    cp "${REPO_ROOT}/.nvm_packages" "${NVM_DIR}/default-packages"
     nvm.env
 }
 
@@ -133,7 +136,7 @@ nvm.clean() {
     fi
 }
 
-nvm.status(){
+nvm.status() {
     if command -v node >/dev/null; then
         info_msg "Node.js is installed at $(command -v node)"
         info_msg "Node.js is version $(node --version)"
@@ -153,18 +156,23 @@ nvm.status(){
         info_msg "NVM is installed at ${NVM_DIR}"
     else
         warn_msg "NVM is not installed"
-        info_msg "to install NVM and Node.js (LTS) use: ${main_cmd} nvm install --lts"
+        info_msg "to install NVM and Node.js (LTS) use: ${main_cmd} nvm.nodejs"
     fi
 }
 
-nvm.nodejs(){
-    nvm install --lts
+nvm.nodejs() {
+    nvm install
     nvm.status
 }
 
 nvm.bash() {
     nvm.ensure
     bash --init-file <(cat "${NVM_DIR}/nvm.sh" "${NVM_DIR}/bash_completion")
+}
+
+nvm.cmd() {
+    nvm.ensure
+    "$@"
 }
 
 nvm.ensure() {
