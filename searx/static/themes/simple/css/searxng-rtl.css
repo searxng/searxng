@@ -802,11 +802,10 @@ template {
   --color-toolkit-dialog-background: #fff;
   --color-toolkit-tabs-label-border: #fff;
   --color-toolkit-tabs-section-border: #ddd;
+  --color-toolkit-select-background: #f7f7f7;
   --color-toolkit-select-border: #ddd;
-  --color-toolkit-select-border-hover: #bbb;
+  --color-toolkit-select-background-hover: #bbb;
   --color-toolkit-input-text-font: #222;
-  --color-toolkit-input-text-border: #ddd;
-  --color-toolkit-input-text-border-hover: #bbb;
   --color-toolkit-checkbox-onoff-background: #ddd;
   --color-toolkit-checkbox-onoff-label-background: #3050ff;
   --color-toolkit-checkbox-onoff-checked-background: #aaa;
@@ -863,8 +862,8 @@ template {
     --color-result-link-font: #8af;
     --color-result-link-font-highlight: #8af;
     --color-result-link-visited-font: #96b;
-    --color-result-publishdate-font: #777;
-    --color-result-engines-font: #777;
+    --color-result-publishdate-font: #888;
+    --color-result-engines-font: #888;
     --color-result-search-url-border: #555;
     --color-result-search-url-font: #fff;
     --color-result-detail-font: #fff;
@@ -887,11 +886,10 @@ template {
     --color-toolkit-dialog-background: #222;
     --color-toolkit-tabs-label-border: #222;
     --color-toolkit-tabs-section-border: #555;
+    --color-toolkit-select-background: #3c3b31;
     --color-toolkit-select-border: #555;
-    --color-toolkit-select-border-hover: #777;
+    --color-toolkit-select-background-hover: #333;
     --color-toolkit-input-text-font: #fff;
-    --color-toolkit-input-text-border: #555;
-    --color-toolkit-input-text-border-hover: #777;
     --color-toolkit-checkbox-onoff-background: #3c3b31;
     --color-toolkit-checkbox-onoff-label-background: #58f;
     --color-toolkit-checkbox-onoff-checked-background: #ddd;
@@ -948,8 +946,8 @@ template {
   --color-result-link-font: #8af;
   --color-result-link-font-highlight: #8af;
   --color-result-link-visited-font: #96b;
-  --color-result-publishdate-font: #777;
-  --color-result-engines-font: #777;
+  --color-result-publishdate-font: #888;
+  --color-result-engines-font: #888;
   --color-result-search-url-border: #555;
   --color-result-search-url-font: #fff;
   --color-result-detail-font: #fff;
@@ -972,11 +970,10 @@ template {
   --color-toolkit-dialog-background: #222;
   --color-toolkit-tabs-label-border: #222;
   --color-toolkit-tabs-section-border: #555;
+  --color-toolkit-select-background: #3c3b31;
   --color-toolkit-select-border: #555;
-  --color-toolkit-select-border-hover: #777;
+  --color-toolkit-select-background-hover: #333;
   --color-toolkit-input-text-font: #fff;
-  --color-toolkit-input-text-border: #555;
-  --color-toolkit-input-text-border-hover: #777;
   --color-toolkit-checkbox-onoff-background: #3c3b31;
   --color-toolkit-checkbox-onoff-label-background: #58f;
   --color-toolkit-checkbox-onoff-checked-background: #ddd;
@@ -1653,11 +1650,11 @@ html body .tabs > input:checked + label + section {
 }
 /* -- select -- */
 select {
-  height: 28px;
-  margin: 0 1em 0 0;
-  padding: 2px 8px 2px 0 !important;
+  height: 2.4rem;
+  margin: 0 1rem 0 0;
+  padding: 0.2rem !important;
   color: var(--color-search-font);
-  font-size: 12px;
+  font-size: 0.9rem;
   z-index: 2;
 }
 select:hover,
@@ -1669,17 +1666,22 @@ select:focus {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    border: none;
-    border-bottom: 1px solid var(--color-toolkit-select-border);
+    border-width: 0 2rem 0 0;
+    border-color: transparent;
     background: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cg%3E%3Cpolygon%20points%3D%22128%2C192%20256%2C320%20384%2C192%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E") no-repeat;
-    background-position-x: 105%;
-    background-size: 2em;
+    background-position-x: calc(100% + 2rem);
+    background-size: 2rem;
     background-origin: content-box;
+    background-color: var(--color-toolkit-select-background);
     outline: medium none;
+    text-overflow: ellipsis;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
   }
   select:hover,
   select:focus {
-    border-bottom: 1px solid var(--color-toolkit-select-border-hover);
+    background-color: var(--color-toolkit-select-background-hover);
   }
   select option {
     background-color: var(--color-base-background);
@@ -2203,7 +2205,8 @@ article.result-images .detail {
   font-size: 4em;
   visibility: hidden;
 }
-.index #search {
+.index #search,
+.index #search_header {
   margin: 0 auto;
   background: inherit;
   border: inherit;
@@ -2267,15 +2270,17 @@ article.result-images .detail {
 #main_preferences .value input[type="text"] {
   width: 13.25rem;
   color: var(--color-toolkit-input-text-font);
-  border: 1px solid var(--color-toolkit-input-text-border);
-  background: none repeat scroll 0 0 var(--color-base-background);
-  padding: 0.4rem;
+  border: none;
+  background: none repeat scroll 0 0 var(--color-toolkit-select-background);
+  padding: 0.2rem 0.4rem;
+  height: 2rem;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-#main_preferences .value input[type="text"]:hover {
-  border: 1px solid var(--color-toolkit-input-text-border-hover);
+#main_preferences .value input[type="text"]:hover,
+#main_preferences .value input[type="text"]:focus {
+  background-color: var(--color-toolkit-select-background-hover);
 }
 #main_preferences .value select:focus,
 #main_preferences .value input:focus {
@@ -2318,6 +2323,19 @@ article.result-images .detail {
 #main_preferences table.cookies > tbody > tr:nth-child(even) > th,
 #main_preferences table.cookies > tbody > tr:nth-child(even) > td {
   background-color: var(--color-settings-tr-hover);
+}
+#main_preferences .category {
+  margin-right: 0.5rem;
+}
+#main_preferences .category label {
+  border: 2px solid transparent;
+  padding: 0.2rem 0.4rem;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+#main_preferences .category input[type="checkbox"]:checked + label {
+  border: 2px solid var(--color-categories-item-border-selected);
 }
 #main_preferences .name,
 #main_preferences .shortcut {
@@ -2364,6 +2382,10 @@ article.result-images .detail {
 * SearXNG, A privacy-respecting, hackable metasearch engine
 */
 #search {
+  padding: 0;
+  margin: 0;
+}
+#search_header {
   padding: 1.5em 2em 0 7rem;
   margin: 0;
   background: var(--color-header-background);
@@ -2422,12 +2444,10 @@ article.result-images .detail {
 .search_categories {
   grid-area: categories;
 }
-#search_wrapper {
+.search_box {
+  margin: 0;
   padding: 0;
   grid-area: search;
-}
-.search_box {
-  margin: 0 12px 0 0;
   display: inline-flex;
   flex-direction: row;
   white-space: nowrap;
@@ -2492,17 +2512,29 @@ article.result-images .detail {
   background-color: var(--color-search-background-hover);
   color: var(--color-search-background);
 }
+.no-js #clear_search,
 .no-js #send_search {
   width: auto !important;
+  border-left: 1px solid var(--color-search-border);
+  padding: 10px;
 }
 .search_filters {
-  display: inline-block;
-  margin: 0.8rem 0 0 0;
+  margin: 0.6rem 0 0 10.6rem;
+}
+.search_filters select {
+  background-color: inherit;
+}
+.search_filters select:hover,
+.search_filters select:focus {
+  color: var(--color-base-font);
 }
 @media screen and (max-width: 80em) {
-  #search {
+  #search_header {
     padding: 1.5em 0.5rem 0 0.5rem;
     column-gap: 0.5rem;
+  }
+  .search_filters {
+    margin: 0.6rem 0 0 3.5rem;
   }
   #categories {
     font-size: 90%;
@@ -2534,10 +2566,10 @@ article.result-images .detail {
   }
 }
 @media screen and (max-width: 50em) {
-  #search {
+  #search_header {
     width: 100%;
     margin: 0;
-    padding: 0.1em 0 0 0;
+    padding: 0.1rem 0 0 0;
     column-gap: 0;
     row-gap: 0;
     grid-template-areas: "logo search" "categories categories";
@@ -2545,14 +2577,8 @@ article.result-images .detail {
   .search_logo {
     padding: 0;
   }
-  #search_wrapper {
-    width: 100%;
-    padding: 0;
-  }
   .search_box {
     width: 99%;
-    margin: 0.1em;
-    padding: 0 0.1em 0 0;
     display: flex;
     flex-direction: row;
   }
@@ -2565,8 +2591,7 @@ article.result-images .detail {
     transition: margin-right 0.1s;
   }
   .search_filters {
-    display: block;
-    margin: 0.8em 0;
+    margin: 0;
   }
   .language,
   .time_range {
@@ -2586,7 +2611,7 @@ article.result-images .detail {
   }
 }
 @media screen and (max-width: 20rem) {
-  #search {
+  #search_header {
     grid-template-areas: "search search" "categories categories";
   }
   #search_logo {
@@ -2744,7 +2769,7 @@ article[data-vim-selected].category-social {
   border-left: 0.2rem solid transparent;
 }
 .result h3 {
-  font-size: 1.1em;
+  font-size: 1.2rem;
   word-wrap: break-word;
   margin: 0.4rem 0 0.4rem 0;
   padding: 0;
@@ -2789,13 +2814,35 @@ article[data-vim-selected].category-social {
   background: inherit;
   font-weight: normal;
 }
-.result .url {
-  font-size: 0.96em;
-  margin: 0 0 3px 0;
-  padding: 0;
-  max-width: 54em;
-  word-wrap: break-word;
+.result .url_wrapper {
+  display: flex;
+  font-size: 1rem;
   color: var(--color-result-url-font);
+  flex-wrap: nowrap;
+  overflow: hidden;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+}
+.result .url_wrapper .url_o1 {
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+.result .url_wrapper .url_o1::after {
+  content: " ";
+  width: 1ch;
+  display: inline-block;
+}
+.result .url_wrapper .url_o2 {
+  overflow: hidden;
+  white-space: nowrap;
+  flex-basis: content;
+  flex-grow: 0;
+  flex-shrink: 1;
+  text-align: right;
+}
+.result .url_wrapper .url_o2 .url_i2 {
+  float: right;
 }
 .result .published_date {
   font-size: 0.8em;
@@ -2803,16 +2850,14 @@ article[data-vim-selected].category-social {
 }
 .result img.thumbnail {
   float: left;
-  padding: 0 5px 10px 0;
-  width: 20em;
-  min-width: 20em;
-  min-height: 8em;
+  padding: 0.6rem 1rem 0 0;
+  width: 20rem;
 }
 .result img.image {
   float: left;
-  padding: 0 5px 10px 0;
-  width: 100px;
-  max-height: 100px;
+  padding: 0.6rem 1rem 0 0;
+  width: 7rem;
+  max-height: 7rem;
   object-fit: scale-down;
   object-position: right top;
 }
@@ -2910,7 +2955,7 @@ article[data-vim-selected].category-social {
   display: none !important;
 }
 #results {
-  margin: 2rem 2rem 0 10rem;
+  margin: 1rem 2rem 0 10rem;
   display: grid;
   grid-template-columns: 45rem 25rem;
   grid-template-rows: min-content min-content 1fr min-content;
@@ -3174,7 +3219,7 @@ article[data-vim-selected].category-social {
     margin: 2rem 0 0 0 !important;
   }
   #main_results div#results {
-    margin: 2rem auto 0 auto;
+    margin: 1rem auto 0 auto;
     justify-content: center;
     display: grid;
     grid-template-columns: 45rem;
@@ -3184,7 +3229,7 @@ article[data-vim-selected].category-social {
   }
 }
 #main_results div#results.only_template_images {
-  margin: 2rem 0.5rem 0 0.5rem;
+  margin: 1rem 0.5rem 0 0.5rem;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: min-content min-content 1fr min-content min-content;
