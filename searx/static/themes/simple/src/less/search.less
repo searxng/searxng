@@ -3,6 +3,11 @@
 */
 
 #search {
+  padding: 0;
+  margin: 0;
+}
+
+#search_header {
   padding: 1.5em 2em 0 @results-offset - 3rem;
   margin: 0;
   background: var(--color-header-background);
@@ -68,13 +73,10 @@
   grid-area: categories;
 }
 
-#search_wrapper {
+.search_box {
+  margin: 0;
   padding: 0;
   grid-area: search;
-}
-
-.search_box {
-  margin: 0 12px 0 0;
   display: inline-flex;
   flex-direction: row;
   white-space: nowrap;
@@ -148,19 +150,34 @@
   }
 }
 
+.no-js #clear_search,
 .no-js #send_search {
   width: auto !important;
+  border-left: 1px solid var(--color-search-border);
+  padding: 10px;
 }
 
 .search_filters {
-  display: inline-block;
-  margin: 0.8rem 0 0 0;
+  margin: 0.6rem 0 0 @results-offset + 0.6rem;
+
+  select {
+    background-color: inherit;
+
+    &:hover,
+    &:focus {
+      color: var(--color-base-font);
+    }
+  }
 }
 
 @media screen and (max-width: @tablet) {
-  #search {
+  #search_header {
     padding: 1.5em @results-tablet-offset 0 @results-tablet-offset;
     column-gap: @results-tablet-offset;
+  }
+
+  .search_filters {
+    margin: 0.6rem 0 0 @results-tablet-offset + 3rem;
   }
 
   #categories {
@@ -200,10 +217,10 @@
 }
 
 @media screen and (max-width: @phone) {
-  #search {
+  #search_header {
     width: 100%;
     margin: 0;
-    padding: 0.1em 0 0 0;
+    padding: 0.1rem 0 0 0;
     column-gap: 0;
     row-gap: 0;
     grid-template-areas:
@@ -215,16 +232,9 @@
     padding: 0;
   }
 
-  #search_wrapper {
-    width: 100%;
-    padding: 0;
-  }
-
   .search_box {
     // hack, should be 100% ?
     width: 99%;
-    margin: 0.1em;
-    padding: 0 0.1em 0 0;
     display: flex;
     flex-direction: row;
   }
@@ -240,8 +250,7 @@
   }
 
   .search_filters {
-    display: block;
-    margin: 0.8em 0;
+    margin: 0;
   }
 
   .language,
@@ -266,7 +275,7 @@
 }
 
 @media screen and (max-width: @ultra-small-phone) {
-  #search {
+  #search_header {
     grid-template-areas:
       "search search"
       "categories categories";

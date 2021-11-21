@@ -98,6 +98,7 @@
         return false;
       });
 
+      searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);
     }

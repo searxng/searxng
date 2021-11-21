@@ -41,13 +41,15 @@
     input[type="text"] {
       width: 13.25rem;
       color: var(--color-toolkit-input-text-font);
-      border: 1px solid var(--color-toolkit-input-text-border);
-      background: none repeat scroll 0 0 var(--color-base-background);
-      padding: 0.4rem;
+      border: none;
+      background: none repeat scroll 0 0 var(--color-toolkit-select-background);
+      padding: 0.2rem 0.4rem;
+      height: 2rem;
       .rounded-corners-tiny;
 
-      &:hover {
-        border: 1px solid var(--color-toolkit-input-text-border-hover);
+      &:hover,
+      &:focus {
+        background-color: var(--color-toolkit-select-background-hover);
       }
     }
 
@@ -101,6 +103,20 @@
     & > tbody > tr:nth-child(even) > td {
       background-color: var(--color-settings-tr-hover);
     }
+  }
+
+  .category {
+    margin-right: 0.5rem;
+
+    label {
+      border: 2px solid transparent;
+      padding: 0.2rem 0.4rem;
+      .rounded-corners-tiny;
+    }
+  }
+
+  .category input[type="checkbox"]:checked + label {
+    border: 2px solid var(--color-categories-item-border-selected);
   }
 
   .name,

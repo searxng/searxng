@@ -1,22 +1,22 @@
 <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-  <a id="search_logo" href="{{ url_for('index') }}">
-    <span hidden>SearXNG</span>
-    {% include '__common__/searxng-wordmark.min.svg' without context %}
-  </a>
-  <div id="search_wrapper">
+  <div id="search_header">
+    <a id="search_logo" href="{{ url_for('index') }}">
+      <span hidden>SearXNG</span>
+      {% include '__common__/searxng-wordmark.min.svg' without context %}
+    </a>
     <div class="search_box">
       <input id="q" autofocus name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" spellcheck="false" dir="auto" {% if q %}value="{{ q }}"{% endif %} >
-      <button id="clear_search" type="button" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('Clear search') }}</span></button>
-      <button id="send_search" type="submit" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('Start search') }}</span></button>
+      <button id="clear_search" type="button" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+      <button id="send_search" type="submit" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
     </div>
-    <div class="search_filters">
-      {% include 'simple/languages.html' %}
-      {% include 'simple/time-range.html' %}
-    </div>
+    {% set display_tooltip = true %}
+    {% include 'simple/categories.html' %}
   </div>
-  {% set display_tooltip = true %}
-  {% include 'simple/categories.html' %}
-  <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+  <div class="search_filters">
+    {% include 'simple/filters/languages.html' %}
+    {% include 'simple/filters/time_range.html' %}
+    {% include 'simple/filters/safesearch.html' %}
+  </div>
   <input type="hidden" name="theme" value="{{ theme }}" >
   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
 </form>

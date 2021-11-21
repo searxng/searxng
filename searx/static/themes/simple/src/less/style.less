@@ -168,7 +168,7 @@ article[data-vim-selected].category-social {
   border-left: 0.2rem solid transparent;
 
   h3 {
-    font-size: 1.1em;
+    font-size: 1.2rem;
     word-wrap: break-word;
     margin: 0.4rem 0 0.4rem 0;
     padding: 0;
@@ -221,13 +221,39 @@ article[data-vim-selected].category-social {
     }
   }
 
-  .url {
-    font-size: 0.96em;
-    margin: 0 0 3px 0;
-    padding: 0;
-    max-width: 54em;
-    word-wrap: break-word;
+  .url_wrapper {
+    display: flex;
+    font-size: 1rem;
     color: var(--color-result-url-font);
+    flex-wrap: nowrap;
+    overflow: hidden;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+
+    .url_o1 {
+      white-space: nowrap;
+      flex-shrink: 1;
+    }
+
+    .url_o1::after {
+      content: " ";
+      width: 1ch;
+      display: inline-block;
+    }
+
+    .url_o2 {
+      overflow: hidden;
+      white-space: nowrap;
+      flex-basis: content;
+      flex-grow: 0;
+      flex-shrink: 1;
+      text-align: right;
+
+      .url_i2 {
+        float: right;
+      }
+    }
   }
 
   .published_date {
@@ -238,17 +264,15 @@ article[data-vim-selected].category-social {
   img {
     &.thumbnail {
       float: left;
-      padding: 0 5px 10px 0;
-      width: 20em;
-      min-width: 20em;
-      min-height: 8em;
+      padding: 0.6rem 1rem 0 0;
+      width: 20rem;
     }
 
     &.image {
       float: left;
-      padding: 0 5px 10px 0;
-      width: 100px;
-      max-height: 100px;
+      padding: 0.6rem 1rem 0 0;
+      width: 7rem;
+      max-height: 7rem;
       object-fit: scale-down;
       object-position: right top;
     }
@@ -367,7 +391,7 @@ article[data-vim-selected].category-social {
 }
 
 #results {
-  margin: 2rem 2rem 0 @results-offset;
+  margin: 1rem 2rem 0 @results-offset;
   display: grid;
   grid-template-columns: @results-width 25rem;
   grid-template-rows: min-content min-content 1fr min-content;
@@ -686,7 +710,7 @@ article[data-vim-selected].category-social {
   }
 
   #main_results div#results {
-    margin: 2rem auto 0 auto;
+    margin: 1rem auto 0 auto;
     justify-content: center;
     display: grid;
     grid-template-columns: @results-width;
@@ -702,7 +726,7 @@ article[data-vim-selected].category-social {
 }
 
 #main_results div#results.only_template_images {
-  margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+  margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: min-content min-content 1fr min-content min-content;

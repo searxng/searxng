@@ -1,0 +1,5 @@
+<select  name="safesearch" id="safesearch" class="safesearch" tabindex="3">
+    <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _("SafeSearch") + ": " + _('Strict') }}</option>
+    <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _("SafeSearch") + ": " + _('Moderate') }}</option>
+    <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _("SafeSearch") + ": " + _('None') }}</option>
+</select>

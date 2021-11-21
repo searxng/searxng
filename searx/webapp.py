@@ -419,6 +419,16 @@ def _get_enable_categories(all_categories):
     return [x for x in all_categories if x in enabled_categories]
 
 
+def get_pretty_url(parsed_url):
+    path = parsed_url.path
+    path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
+    path = path.replace("/", " › ")
+    return [
+        parsed_url.scheme + "://" + parsed_url.netloc,
+        path
+    ]
+
+
 def render(template_name, override_theme=None, **kwargs):
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
@@ -457,6 +467,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['searx_version'] = VERSION_STRING
     kwargs['searx_git_url'] = GIT_URL
     kwargs['get_setting'] = get_setting
+    kwargs['get_pretty_url'] = get_pretty_url
 
     # helpers to create links to other pages
     kwargs['url_for'] = url_for_theme  # override url_for function in templates
