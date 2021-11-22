@@ -48,6 +48,6 @@
     .. code-block:: bash
 
        $ sudo -i -u \"${SERVICE_USER}\"
-       (${SERVICE_USER}) $ go get -v -u github.com/asciimoo/filtron
+       (${SERVICE_USER}) $ go get -v -u github.com/searxng/filtron
 
 .. END install filtron

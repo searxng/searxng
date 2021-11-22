@@ -16,7 +16,7 @@ How to protect an instance
    :local:
    :backlinks: entry
 
-.. _filtron: https://github.com/asciimoo/filtron
+.. _filtron: https://github.com/searxng/filtron
 
 SearXNG depends on external search services.  To avoid the abuse of these services
 it is advised to limit the number of requests processed by SearXNG.
@@ -30,7 +30,7 @@ filtron & go
 ============
 
 .. _Go: https://golang.org/
-.. _filtron README: https://github.com/asciimoo/filtron/blob/master/README.md
+.. _filtron README: https://github.com/searxng/filtron/blob/master/README.md
 
 Filtron needs Go_ installed.  If Go_ is preinstalled, filtron_ is simply
 installed by ``go get`` package management (see `filtron README`_).  If you use
