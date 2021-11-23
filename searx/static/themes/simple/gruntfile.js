@@ -2,6 +2,8 @@
 
 module.exports = function(grunt) {
 
+  const eachAsync = require('each-async');
+
   grunt.initConfig({
 
     _brand: '../../../../src/brand',
@@ -19,6 +21,7 @@ module.exports = function(grunt) {
           'less:development',
           'less:production',
           'image',
+          'svg2png',
           'svg2jinja'
         ]
       }
@@ -148,6 +151,13 @@ module.exports = function(grunt) {
         }
       }
     },
+    svg2png: {
+      favicon: {
+        files: {
+          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg'
+        }
+      }
+    },
     svg2jinja: {
       all: {
         src: {
@@ -232,6 +242,36 @@ module.exports = function(grunt) {
     grunt.log.ok(this.data.dest + " created");
   });
 
+  grunt.registerMultiTask('svg2png', 'Convert SVG to PNG', function () {
+    const sharp = require('sharp'), done = this.async();
+    eachAsync(this.files, async (file, _index, next) => {
+      try {
+        if (file.src.length != 1) {
+          next("this task supports only one source per destination");
+        }
+        const info = await sharp(file.src[0])
+          .png({
+            force: true,
+            compressionLevel: 9,
+            palette: true,
+          })
+          .toFile(file.dest);
+        grunt.log.ok(file.dest + ' created (' + info.size + ' bytes, ' + info.width + 'px * ' + info.height + 'px)');
+        next();
+      } catch (error) {
+        grunt.fatal(error);
+        next(error);
+      }
+    }, error => {
+      if (error) {
+        grunt.fatal(error);
+        done(error);
+      } else {
+        done();
+      }
+    });
+  });
+
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -254,6 +294,7 @@ module.exports = function(grunt) {
     'less:development',
     'less:production',
     'image',
+    'svg2png',
     'svg2jinja',
   ]);
 };
