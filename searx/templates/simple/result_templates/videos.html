@@ -5,8 +5,15 @@
 {% if result.embedded -%}
 <p class="altlink"> &bull; <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
 {%- endif %}
-<p class="content">
-   {%- if result.content %}{{ result.content|safe }}{%- else %}{{ _('This site did not provide any description.')|safe }}{% endif -%}
+{%- if result.content %}
+  <p class="content">
+    {{ result.content|safe }}
+  </p>
+{%- else %}
+  <p class="content italic_font">
+    {{ _('This site did not provide any description.')|safe }}
+  </p>
+{% endif -%}
 </p>
 {{- result_sub_footer(result, proxify) -}}
 {% if result.embedded -%}
