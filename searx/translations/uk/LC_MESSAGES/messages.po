@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-19 16:18+0000\n"
+"POT-Creation-Date: 2021-11-23 10:08+0000\n"
 "PO-Revision-Date: 2020-07-09 13:10+0000\n"
 "Last-Translator: Adam Tauber <asciimoo@gmail.com>\n"
 "Language: uk\n"
@@ -137,27 +137,27 @@ msgstr ""
 msgid "Source"
 msgstr ""
 
-#: searx/webapp.py:511 searx/webapp.py:923
+#: searx/webapp.py:522 searx/webapp.py:934
 msgid "Invalid settings, please edit your preferences"
 msgstr "Невірні налаштування, будь ласка, зробіть зміни в налаштуваннях"
 
-#: searx/webapp.py:527
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr ""
 
-#: searx/webapp.py:605 searx/webapp.py:676
+#: searx/webapp.py:616 searx/webapp.py:687
 msgid "search error"
 msgstr "помилка пошуку"
 
-#: searx/webapp.py:719
+#: searx/webapp.py:730
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} хвилин тому"
 
-#: searx/webapp.py:721
+#: searx/webapp.py:732
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} годин, {minutes} хвилин тому"
 
-#: searx/webapp.py:844
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr ""
 
@@ -352,7 +352,7 @@ msgid "Language"
 msgstr ""
 
 #: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/languages.html:2
+#: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:120
 msgid "Default language"
 msgstr "Стандартна мова"
@@ -369,13 +369,13 @@ msgstr "торрент-файл"
 
 #: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
 #: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "cached"
 msgstr "архівовано"
 
 #: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
 #: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "proxied"
 msgstr "проксовано"
 
@@ -515,6 +515,9 @@ msgstr "Якій мові ви віддаєте перевагу для пошу
 #: searx/templates/oscar/preferences.html:141
 #: searx/templates/oscar/preferences.html:323
 #: searx/templates/oscar/preferences.html:333
+#: searx/templates/simple/filters/safesearch.html:2
+#: searx/templates/simple/filters/safesearch.html:3
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:145
 #: searx/templates/simple/preferences.html:274
 msgid "SafeSearch"
@@ -526,16 +529,19 @@ msgid "Filter content"
 msgstr "Фільтр контенту"
 
 #: searx/templates/oscar/preferences.html:145
+#: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:148
 msgid "Strict"
 msgstr "Жорский"
 
 #: searx/templates/oscar/preferences.html:146
+#: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:149
 msgid "Moderate"
 msgstr "Помірний"
 
 #: searx/templates/oscar/preferences.html:147
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:150
 msgid "None"
 msgstr "Вимкнений"
@@ -877,15 +883,11 @@ msgstr "Шукати..."
 
 #: searx/templates/oscar/search.html:8
 #: searx/templates/oscar/search_full.html:11
-#: searx/templates/simple/search.html:10
-#: searx/templates/simple/simple_search.html:6
 msgid "Start search"
 msgstr "Розпочати пошук"
 
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
-#: searx/templates/simple/search.html:9
-#: searx/templates/simple/simple_search.html:5
 msgid "Clear search"
 msgstr ""
 
@@ -971,27 +973,27 @@ msgid "Comment(s)"
 msgstr ""
 
 #: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/time-range.html:3
+#: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "За весь час"
 
 #: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/time-range.html:6
+#: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
 msgstr "За останній день"
 
 #: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/time-range.html:9
+#: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
 msgstr "За останній тиждень"
 
 #: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/time-range.html:12
+#: searx/templates/simple/filters/time_range.html:12
 msgid "Last month"
 msgstr "За останній місяць"
 
 #: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/time-range.html:15
+#: searx/templates/simple/filters/time_range.html:15
 msgid "Last year"
 msgstr "За останній рік"
 
@@ -1173,7 +1175,7 @@ msgstr "приховати відео"
 msgid "Length"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:16
 msgid "Click on the magnifier to perform search"
 msgstr "Натисніть лупу, щоб виконати пошук"
 
@@ -1204,6 +1206,16 @@ msgstr "Підтримка обраної мови"
 #: searx/templates/simple/results.html:24
 msgid "Answers"
 msgstr "Відповіді"
+
+#: searx/templates/simple/search.html:9
+#: searx/templates/simple/simple_search.html:5
+msgid "clear"
+msgstr ""
+
+#: searx/templates/simple/search.html:10
+#: searx/templates/simple/simple_search.html:6
+msgid "search"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"

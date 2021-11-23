@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-19 16:18+0000\n"
+"POT-Creation-Date: 2021-11-23 10:08+0000\n"
 "PO-Revision-Date: 2021-08-27 07:16+0000\n"
 "Last-Translator: ewm <gnu.ewm@protonmail.com>\n"
 "Language: pl\n"
@@ -135,27 +135,27 @@ msgstr "Nie znaleziono elementu"
 msgid "Source"
 msgstr "Źródło"
 
-#: searx/webapp.py:511 searx/webapp.py:923
+#: searx/webapp.py:522 searx/webapp.py:934
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nieprawidłowe ustawienia, proszę zmienić swoje preferencje"
 
-#: searx/webapp.py:527
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr "Nieprawidłowe ustawienia"
 
-#: searx/webapp.py:605 searx/webapp.py:676
+#: searx/webapp.py:616 searx/webapp.py:687
 msgid "search error"
 msgstr "błąd wyszukiwania"
 
-#: searx/webapp.py:719
+#: searx/webapp.py:730
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) temu"
 
-#: searx/webapp.py:721
+#: searx/webapp.py:732
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) temu"
 
-#: searx/webapp.py:844
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Zawieszone"
 
@@ -350,7 +350,7 @@ msgid "Language"
 msgstr "Język"
 
 #: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/languages.html:2
+#: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:120
 msgid "Default language"
 msgstr "Domyślny język"
@@ -367,13 +367,13 @@ msgstr "plik torrent"
 
 #: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
 #: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "cached"
 msgstr "buforowane"
 
 #: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
 #: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "proxied"
 msgstr "przesłane poprzez proxy"
 
@@ -513,6 +513,9 @@ msgstr "W jakim języku wolisz wyszukiwać?"
 #: searx/templates/oscar/preferences.html:141
 #: searx/templates/oscar/preferences.html:323
 #: searx/templates/oscar/preferences.html:333
+#: searx/templates/simple/filters/safesearch.html:2
+#: searx/templates/simple/filters/safesearch.html:3
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:145
 #: searx/templates/simple/preferences.html:274
 msgid "SafeSearch"
@@ -524,16 +527,19 @@ msgid "Filter content"
 msgstr "Filtruj treści"
 
 #: searx/templates/oscar/preferences.html:145
+#: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:148
 msgid "Strict"
 msgstr "Bezkompromisowe"
 
 #: searx/templates/oscar/preferences.html:146
+#: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:149
 msgid "Moderate"
 msgstr "Umiarkowane"
 
 #: searx/templates/oscar/preferences.html:147
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:150
 msgid "None"
 msgstr "Wyłączone"
@@ -880,15 +886,11 @@ msgstr "Wyszukaj..."
 
 #: searx/templates/oscar/search.html:8
 #: searx/templates/oscar/search_full.html:11
-#: searx/templates/simple/search.html:10
-#: searx/templates/simple/simple_search.html:6
 msgid "Start search"
 msgstr "Rozpocznij wyszukiwanie"
 
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
-#: searx/templates/simple/search.html:9
-#: searx/templates/simple/simple_search.html:5
 msgid "Clear search"
 msgstr ""
 
@@ -974,27 +976,27 @@ msgid "Comment(s)"
 msgstr "Komentarz(e)"
 
 #: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/time-range.html:3
+#: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "W każdej chwili"
 
 #: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/time-range.html:6
+#: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
 msgstr "W ostatnim dniu"
 
 #: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/time-range.html:9
+#: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
 msgstr "W ostatnim tygodniu"
 
 #: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/time-range.html:12
+#: searx/templates/simple/filters/time_range.html:12
 msgid "Last month"
 msgstr "W ostatnim miesiącu"
 
 #: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/time-range.html:15
+#: searx/templates/simple/filters/time_range.html:15
 msgid "Last year"
 msgstr "W ostatnim roku"
 
@@ -1176,7 +1178,7 @@ msgstr "ukryj wideo"
 msgid "Length"
 msgstr "Długość"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:16
 msgid "Click on the magnifier to perform search"
 msgstr "Kliknij na szkło powiększające, aby wykonać wyszukiwanie"
 
@@ -1207,6 +1209,16 @@ msgstr "Obsługuje wybrany język"
 #: searx/templates/simple/results.html:24
 msgid "Answers"
 msgstr "Odpowiedzi"
+
+#: searx/templates/simple/search.html:9
+#: searx/templates/simple/simple_search.html:5
+msgid "clear"
+msgstr ""
+
+#: searx/templates/simple/search.html:10
+#: searx/templates/simple/simple_search.html:6
+msgid "search"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"

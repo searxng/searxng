@@ -13,19 +13,18 @@
 # WhiredPlanck <fungdaat31@outlook.com>, 2020
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-19 16:18+0000\n"
+"POT-Creation-Date: 2021-11-23 10:08+0000\n"
 "PO-Revision-Date: 2021-11-23 10:08+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
-"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified) "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:164
@@ -141,27 +140,27 @@ msgstr "条目未找到"
 msgid "Source"
 msgstr "来源"
 
-#: searx/webapp.py:511 searx/webapp.py:923
+#: searx/webapp.py:522 searx/webapp.py:934
 msgid "Invalid settings, please edit your preferences"
 msgstr "设置无效，请编辑您的首选项"
 
-#: searx/webapp.py:527
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr "设置无效"
 
-#: searx/webapp.py:605 searx/webapp.py:676
+#: searx/webapp.py:616 searx/webapp.py:687
 msgid "search error"
 msgstr "搜索错误"
 
-#: searx/webapp.py:719
+#: searx/webapp.py:730
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分钟前"
 
-#: searx/webapp.py:721
+#: searx/webapp.py:732
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小时 {minutes} 分钟前"
 
-#: searx/webapp.py:844
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "已被封禁"
 
@@ -345,7 +344,7 @@ msgid "Language"
 msgstr "语言"
 
 #: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/languages.html:2
+#: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:120
 msgid "Default language"
 msgstr "默认语言"
@@ -362,13 +361,13 @@ msgstr "种子文件"
 
 #: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
 #: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "cached"
 msgstr "缓存"
 
 #: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
 #: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:41
 msgid "proxied"
 msgstr "代理"
 
@@ -508,6 +507,9 @@ msgstr "您更喜欢使用什么语言进行搜索？"
 #: searx/templates/oscar/preferences.html:141
 #: searx/templates/oscar/preferences.html:323
 #: searx/templates/oscar/preferences.html:333
+#: searx/templates/simple/filters/safesearch.html:2
+#: searx/templates/simple/filters/safesearch.html:3
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:145
 #: searx/templates/simple/preferences.html:274
 msgid "SafeSearch"
@@ -519,16 +521,19 @@ msgid "Filter content"
 msgstr "过滤内容"
 
 #: searx/templates/oscar/preferences.html:145
+#: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:148
 msgid "Strict"
 msgstr "严格"
 
 #: searx/templates/oscar/preferences.html:146
+#: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:149
 msgid "Moderate"
 msgstr "中等"
 
 #: searx/templates/oscar/preferences.html:147
+#: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:150
 msgid "None"
 msgstr "无"
@@ -865,15 +870,11 @@ msgstr "搜索..."
 
 #: searx/templates/oscar/search.html:8
 #: searx/templates/oscar/search_full.html:11
-#: searx/templates/simple/search.html:10
-#: searx/templates/simple/simple_search.html:6
 msgid "Start search"
 msgstr "开始搜索"
 
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
-#: searx/templates/simple/search.html:9
-#: searx/templates/simple/simple_search.html:5
 msgid "Clear search"
 msgstr "清除搜索"
 
@@ -959,27 +960,27 @@ msgid "Comment(s)"
 msgstr ""
 
 #: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/time-range.html:3
+#: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "时间不限"
 
 #: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/time-range.html:6
+#: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
 msgstr "一天内"
 
 #: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/time-range.html:9
+#: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
 msgstr "一周内"
 
 #: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/time-range.html:12
+#: searx/templates/simple/filters/time_range.html:12
 msgid "Last month"
 msgstr "一月内"
 
 #: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/time-range.html:15
+#: searx/templates/simple/filters/time_range.html:15
 msgid "Last year"
 msgstr "一年内"
 
@@ -1159,7 +1160,7 @@ msgstr "隐藏视频"
 msgid "Length"
 msgstr "长度"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:16
 msgid "Click on the magnifier to perform search"
 msgstr "点击放大镜按钮开始搜索"
 
@@ -1190,6 +1191,16 @@ msgstr "支持选定的语言"
 #: searx/templates/simple/results.html:24
 msgid "Answers"
 msgstr "回答"
+
+#: searx/templates/simple/search.html:9
+#: searx/templates/simple/simple_search.html:5
+msgid "clear"
+msgstr ""
+
+#: searx/templates/simple/search.html:10
+#: searx/templates/simple/simple_search.html:6
+msgid "search"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
@@ -1302,3 +1313,4 @@ msgstr ""
 
 #~ msgid "Reliablity"
 #~ msgstr ""
+
