@@ -1525,6 +1525,7 @@ div.selectable_url pre {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  display: block;
   background: var(--color-toolkit-dialog-background);
   position: fixed;
   top: 50%;
@@ -1560,6 +1561,9 @@ div.selectable_url pre {
 .dialog-modal h4 {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
+}
+.dialog-modal h3 {
+  margin-top: 0;
 }
 .btn-collapse {
   cursor: pointer;
@@ -2183,6 +2187,19 @@ article.result-images .detail {
   #results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p span {
     width: inherit;
     margin-right: 1rem;
+  }
+}
+.dialog-modal {
+  animation-name: dialogmodal;
+  animation-duration: 0.13s;
+}
+@keyframes dialogmodal {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.05);
   }
 }
 #main_index {
