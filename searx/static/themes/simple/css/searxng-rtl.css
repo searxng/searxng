@@ -1417,8 +1417,6 @@ div.selectable_url {
   overflow: hidden;
   height: 1.2em;
   line-height: 1.2em;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 div.selectable_url pre {
@@ -1438,8 +1436,6 @@ div.selectable_url pre {
   margin: 0 0 1em 0;
   border: 1px solid var(--color-toolkit-dialog-border);
   text-align: left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   color: var(--color-error);
   background: var(--color-error-background);
@@ -1480,8 +1476,6 @@ div.selectable_url pre {
   margin: 0 0 1em 0;
   border: 1px solid var(--color-toolkit-dialog-border);
   text-align: left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   color: var(--color-warning);
   background: var(--color-warning-background);
@@ -1522,8 +1516,6 @@ div.selectable_url pre {
   margin: 0 0 1em 0;
   border: 1px solid var(--color-toolkit-dialog-border);
   text-align: left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   display: block;
   background: var(--color-toolkit-dialog-background);
@@ -1679,8 +1671,6 @@ select:focus {
     background-color: var(--color-toolkit-select-background);
     outline: medium none;
     text-overflow: ellipsis;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
     border-radius: 5px;
   }
   select:hover,
@@ -1746,8 +1736,6 @@ select:focus {
     top: 0;
     left: 0;
     background: var(--color-toolkit-checkbox-label-background);
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
   }
   .checkbox label::after {
@@ -1838,8 +1826,6 @@ select:focus {
   font-weight: normal;
   z-index: 1000000;
   text-align: left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 th:hover .engine-tooltip,
@@ -1916,8 +1902,6 @@ td:hover .engine-tooltip,
   max-height: 0;
   overflow-y: hidden;
   text-align: left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 .autocomplete:active,
@@ -2291,8 +2275,6 @@ article.result-images .detail {
   background: none repeat scroll 0 0 var(--color-toolkit-select-background);
   padding: 0.2rem 0.4rem;
   height: 2rem;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 #main_preferences .value input[type="text"]:hover,
@@ -2347,8 +2329,6 @@ article.result-images .detail {
 #main_preferences .category label {
   border: 2px solid transparent;
   padding: 0.2rem 0.4rem;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 #main_preferences .category input[type="checkbox"]:checked + label {
@@ -2362,8 +2342,6 @@ article.result-images .detail {
   background: none repeat scroll 0 0 var(--color-btn-background);
   color: var(--color-btn-font);
   border: 0 none;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   cursor: pointer;
   display: inline-block;
@@ -2736,8 +2714,6 @@ input[type="submit"],
   display: inline-block;
   background: var(--color-btn-background);
   color: var(--color-btn-font);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   border: 0;
   cursor: pointer;
@@ -2755,15 +2731,11 @@ a:visited .highlight {
 article[data-vim-selected] {
   background: var(--color-result-vim-selected);
   border-left: 0.2rem solid var(--color-result-vim-arrow);
-  -webkit-border-radius: 0 10px 10px 0;
-  -moz-border-radius: 0 10px 10px 0;
   border-radius: 0 10px 10px 0;
 }
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
   border: none;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 article.result-images[data-vim-selected] .image_thumbnail {
@@ -2776,8 +2748,6 @@ article[data-vim-selected].category-music,
 article[data-vim-selected].category-files,
 article[data-vim-selected].category-social {
   border: 1px solid var(--color-result-vim-arrow);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 .result {
@@ -2889,8 +2859,6 @@ article[data-vim-selected].category-social {
 .category-social {
   border: 1px solid var(--color-result-border);
   margin: 1rem 0;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 .category-social .image {
@@ -3037,8 +3005,6 @@ article[data-vim-selected].category-social {
 }
 #corrections input[type="submit"] {
   font-size: 0.8rem;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 #suggestions .title,
@@ -3055,8 +3021,6 @@ article[data-vim-selected].category-social {
   margin: 1rem 0;
   margin-top: 0;
   color: var(--color-answer-font);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 #answers h4 {
@@ -3075,8 +3039,6 @@ article[data-vim-selected].category-social {
   border: 1px solid var(--color-sidebar-border);
   padding: 1rem;
   font-size: 0.9em;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 #sidebar .infobox h2 {
@@ -3156,8 +3118,6 @@ article[data-vim-selected].category-social {
   left: 56.3rem;
   transition: opacity 0.5s;
   opacity: 0;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 #backToTop a {
@@ -3289,15 +3249,11 @@ article[data-vim-selected].category-social {
   }
   article[data-vim-selected] {
     border: 1px solid var(--color-result-vim-arrow);
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
   }
   .result {
     border: 1px solid var(--color-result-border);
     margin: 1rem 0;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
   }
   .result-images {
