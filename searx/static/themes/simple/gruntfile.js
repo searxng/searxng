@@ -31,6 +31,7 @@ module.exports = function(grunt) {
         fix: grunt.option('fix')
       },
       target: [
+        'gruntfile.js',
         'svg4web.svgo.js',
         'src/js/main/*.js',
         'src/js/head/*.js',
