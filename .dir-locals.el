@@ -91,7 +91,7 @@
 
  (json-mode
   . ((eval . (progn
-               (setq-local js-indent-level 2)
+               (setq-local js-indent-level 4)
                (flycheck-checker . json-python-json)))))
 
  (js-mode
