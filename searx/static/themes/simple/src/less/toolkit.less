@@ -296,11 +296,11 @@ html body .tabs > input:checked {
 
 /* -- select -- */
 select {
-  height: 28px;
-  margin: 0 1em 0 0;
-  padding: 2px 8px 2px 0 !important;
+  height: 2.4rem;
+  margin: 0 1rem 0 0;
+  padding: 0.2rem !important;
   color: var(--color-search-font);
-  font-size: 12px;
+  font-size: 0.9rem;
   z-index: 2;
 
   &:hover,
@@ -314,17 +314,20 @@ select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    border: none;
-    border-bottom: 1px solid var(--color-toolkit-select-border);
+    border-width: 0 2rem 0 0;
+    border-color: transparent;
     background: data-uri('image/svg+xml;charset=UTF-8', @select-light-svg-path) no-repeat;
-    background-position-x: 105%;
-    background-size: 2em;
+    background-position-x: calc(100% + 2rem);
+    background-size: 2rem;
     background-origin: content-box;
+    background-color: var(--color-toolkit-select-background);
     outline: medium none;
+    text-overflow: ellipsis;
+    .rounded-corners-tiny;
 
     &:hover,
     &:focus {
-      border-bottom: 1px solid var(--color-toolkit-select-border-hover);
+      background-color: var(--color-toolkit-select-background-hover);
     }
 
     option {
