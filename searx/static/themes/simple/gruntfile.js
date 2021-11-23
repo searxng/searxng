@@ -27,7 +27,8 @@ module.exports = function(grunt) {
     eslint: {
       options: {
         overrideConfigFile: '.eslintrc.json',
-        failOnError: false
+        failOnError: false,
+        fix: grunt.option('fix')
       },
       target: [
         'svg4web.svgo.js',
