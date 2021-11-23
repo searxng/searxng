@@ -51,6 +51,8 @@
      (indent-tabs-mode . nil)
      (eval . (progn
 
+               (add-to-list 'auto-mode-alist '("\\.html\\'" . jinja2-mode))
+
                ;; project root folder is where the `.dir-locals.el' is located
                (setq-local prj-root
                            (locate-dominating-file  default-directory ".dir-locals.el"))
