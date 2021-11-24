@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-23 17:32+0000\n"
+"POT-Creation-Date: 2021-11-24 12:14+0000\n"
 "PO-Revision-Date: 2020-08-29 08:47+0000\n"
 "Last-Translator: efef6ec5b435a041fce803c7f8af77d2_2341d43\n"
 "Language: sv\n"
@@ -135,27 +135,27 @@ msgstr "Inga artiklar hittade"
 msgid "Source"
 msgstr ""
 
-#: searx/webapp.py:522 searx/webapp.py:934
+#: searx/webapp.py:523 searx/webapp.py:935
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:539
 msgid "Invalid settings"
 msgstr "Ogiltiga inställningar"
 
-#: searx/webapp.py:616 searx/webapp.py:687
+#: searx/webapp.py:617 searx/webapp.py:688
 msgid "search error"
 msgstr "sökfel"
 
-#: searx/webapp.py:730
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
-#: searx/webapp.py:732
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
 
-#: searx/webapp.py:855
+#: searx/webapp.py:856
 msgid "Suspended"
 msgstr ""
 
@@ -375,11 +375,11 @@ msgid "proxied"
 msgstr "proxade"
 
 #: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:319
-#: searx/templates/oscar/preferences.html:337
-#: searx/templates/oscar/preferences.html:391
-#: searx/templates/simple/preferences.html:270
-#: searx/templates/simple/preferences.html:308
+#: searx/templates/oscar/preferences.html:330
+#: searx/templates/oscar/preferences.html:348
+#: searx/templates/oscar/preferences.html:402
+#: searx/templates/simple/preferences.html:282
+#: searx/templates/simple/preferences.html:320
 msgid "Allow"
 msgstr "Tillåt"
 
@@ -474,19 +474,19 @@ msgid "Privacy"
 msgstr "Sekretess"
 
 #: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:296
-#: searx/templates/simple/preferences.html:262
+#: searx/templates/oscar/preferences.html:307
+#: searx/templates/simple/preferences.html:274
 msgid "Engines"
 msgstr "Sökmotorer"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:315
 msgid "Special Queries"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:431
-#: searx/templates/simple/preferences.html:343
+#: searx/templates/oscar/preferences.html:442
+#: searx/templates/simple/preferences.html:355
 msgid "Cookies"
 msgstr "Kakor"
 
@@ -508,13 +508,13 @@ msgid "What language do you prefer for search?"
 msgstr "Vilket språk föredrar du för att söka?"
 
 #: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:323
-#: searx/templates/oscar/preferences.html:333
+#: searx/templates/oscar/preferences.html:334
+#: searx/templates/oscar/preferences.html:344
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:145
-#: searx/templates/simple/preferences.html:274
+#: searx/templates/simple/preferences.html:286
 msgid "SafeSearch"
 msgstr "SafeSearch"
 
@@ -661,129 +661,144 @@ msgid "Proxying image results through SearXNG"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:277
+#: searx/templates/oscar/preferences.html:288
 #: searx/templates/simple/preferences.html:252
+#: searx/templates/simple/preferences.html:264
 msgid "Enabled"
 msgstr "Aktiverad"
 
 #: searx/templates/oscar/preferences.html:278
+#: searx/templates/oscar/preferences.html:289
 #: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:265
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: searx/templates/oscar/preferences.html:304
+#: searx/templates/oscar/preferences.html:284
+#: searx/templates/simple/preferences.html:261
+msgid "Query in the page's title"
+msgstr ""
+
+#: searx/templates/oscar/preferences.html:285
+msgid ""
+"When enabled, the result page's title contains your query. Your browser "
+"can record this title"
+msgstr ""
+
+#: searx/templates/oscar/preferences.html:315
 msgid "Allow all"
 msgstr "Tillåt alla"
 
-#: searx/templates/oscar/preferences.html:305
+#: searx/templates/oscar/preferences.html:316
 msgid "Disable all"
 msgstr "Inaktivera alla"
 
-#: searx/templates/oscar/preferences.html:320
-#: searx/templates/oscar/preferences.html:336
+#: searx/templates/oscar/preferences.html:331
+#: searx/templates/oscar/preferences.html:347
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:271
+#: searx/templates/simple/preferences.html:283
 #: searx/templates/simple/stats.html:28
 msgid "Engine name"
 msgstr "Sökmotorns namn"
 
-#: searx/templates/oscar/preferences.html:321
-#: searx/templates/oscar/preferences.html:335
-#: searx/templates/simple/preferences.html:272
+#: searx/templates/oscar/preferences.html:332
+#: searx/templates/oscar/preferences.html:346
+#: searx/templates/simple/preferences.html:284
 msgid "Shortcut"
 msgstr "Genväg"
 
-#: searx/templates/oscar/preferences.html:322
-#: searx/templates/oscar/preferences.html:334
+#: searx/templates/oscar/preferences.html:333
+#: searx/templates/oscar/preferences.html:345
 msgid "Selected language"
 msgstr "Valt språk"
 
-#: searx/templates/oscar/preferences.html:324
-#: searx/templates/oscar/preferences.html:332
+#: searx/templates/oscar/preferences.html:335
+#: searx/templates/oscar/preferences.html:343
 #: searx/templates/oscar/time-range.html:2
-#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:287
 msgid "Time range"
 msgstr "Tidsintervall"
 
-#: searx/templates/oscar/preferences.html:325
-#: searx/templates/oscar/preferences.html:331
+#: searx/templates/oscar/preferences.html:336
+#: searx/templates/oscar/preferences.html:342
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:288
 #: searx/templates/simple/stats.html:31
 msgid "Response time"
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:326
-#: searx/templates/oscar/preferences.html:330
-#: searx/templates/simple/preferences.html:277
+#: searx/templates/oscar/preferences.html:337
+#: searx/templates/oscar/preferences.html:341
+#: searx/templates/simple/preferences.html:289
 msgid "Max time"
 msgstr "Max tid"
 
-#: searx/templates/oscar/preferences.html:327
-#: searx/templates/oscar/preferences.html:329
+#: searx/templates/oscar/preferences.html:338
+#: searx/templates/oscar/preferences.html:340
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:278
+#: searx/templates/simple/preferences.html:290
 #: searx/templates/simple/stats.html:32
 msgid "Reliability"
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:385
+#: searx/templates/oscar/preferences.html:396
 msgid "Query"
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:392
-#: searx/templates/simple/preferences.html:309
+#: searx/templates/oscar/preferences.html:403
+#: searx/templates/simple/preferences.html:321
 msgid "Keywords"
 msgstr "Nyckelord"
 
-#: searx/templates/oscar/preferences.html:393
-#: searx/templates/simple/preferences.html:310
+#: searx/templates/oscar/preferences.html:404
+#: searx/templates/simple/preferences.html:322
 msgid "Name"
 msgstr "Namn"
 
-#: searx/templates/oscar/preferences.html:394
-#: searx/templates/simple/preferences.html:311
+#: searx/templates/oscar/preferences.html:405
+#: searx/templates/simple/preferences.html:323
 msgid "Description"
 msgstr "Beskrivning"
 
-#: searx/templates/oscar/preferences.html:395
-#: searx/templates/simple/preferences.html:312
+#: searx/templates/oscar/preferences.html:406
+#: searx/templates/simple/preferences.html:324
 msgid "Examples"
 msgstr "Exempel"
 
-#: searx/templates/oscar/preferences.html:400
-#: searx/templates/simple/preferences.html:315
+#: searx/templates/oscar/preferences.html:411
+#: searx/templates/simple/preferences.html:327
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:413
-#: searx/templates/simple/preferences.html:326
+#: searx/templates/oscar/preferences.html:424
+#: searx/templates/simple/preferences.html:338
 msgid "This is the list of plugins."
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:345
+#: searx/templates/oscar/preferences.html:445
+#: searx/templates/simple/preferences.html:357
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:435
-#: searx/templates/simple/preferences.html:346
+#: searx/templates/oscar/preferences.html:446
+#: searx/templates/simple/preferences.html:358
 msgid "With that list, you can assess SearXNG transparency."
 msgstr ""
 
-#: searx/templates/oscar/preferences.html:440
-#: searx/templates/simple/preferences.html:351
+#: searx/templates/oscar/preferences.html:451
+#: searx/templates/simple/preferences.html:363
 msgid "Cookie name"
 msgstr "Kaknamn"
 
-#: searx/templates/oscar/preferences.html:441
-#: searx/templates/simple/preferences.html:352
+#: searx/templates/oscar/preferences.html:452
+#: searx/templates/simple/preferences.html:364
 msgid "Value"
 msgstr "Värde"
 
-#: searx/templates/oscar/preferences.html:458
-#: searx/templates/simple/preferences.html:373
+#: searx/templates/oscar/preferences.html:469
+#: searx/templates/simple/preferences.html:385
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -791,8 +806,8 @@ msgstr ""
 "Dessa inställningar lagras i dina kakor, vilket gör att vi inte lagrar "
 "data om dig."
 
-#: searx/templates/oscar/preferences.html:459
-#: searx/templates/simple/preferences.html:375
+#: searx/templates/oscar/preferences.html:470
+#: searx/templates/simple/preferences.html:387
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -800,13 +815,13 @@ msgstr ""
 "Dessa kakor tjänar din egen bekvämlighet, vi använder inte dessa kakor "
 "för att spåra dig."
 
-#: searx/templates/oscar/preferences.html:463
-#: searx/templates/simple/preferences.html:364
+#: searx/templates/oscar/preferences.html:474
+#: searx/templates/simple/preferences.html:376
 msgid "Search URL of the currently saved preferences"
 msgstr "Sökadressen för de för nuvarande sparade inställningarna"
 
-#: searx/templates/oscar/preferences.html:464
-#: searx/templates/simple/preferences.html:368
+#: searx/templates/oscar/preferences.html:475
+#: searx/templates/simple/preferences.html:380
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -814,18 +829,18 @@ msgstr ""
 "Obs: Att ange anpassade inställningar i sökadressen kan minska sekretess "
 "genom att läcka data till de klickade resultatwebbplatserna."
 
-#: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:378
+#: searx/templates/oscar/preferences.html:480
+#: searx/templates/simple/preferences.html:390
 msgid "save"
 msgstr "spara"
 
-#: searx/templates/oscar/preferences.html:470
-#: searx/templates/simple/preferences.html:380
+#: searx/templates/oscar/preferences.html:481
+#: searx/templates/simple/preferences.html:392
 msgid "back"
 msgstr "tillbaka"
 
-#: searx/templates/oscar/preferences.html:471
-#: searx/templates/simple/preferences.html:379
+#: searx/templates/oscar/preferences.html:482
+#: searx/templates/simple/preferences.html:391
 msgid "Reset defaults"
 msgstr "Återställ standardvärden"
 
@@ -1194,11 +1209,17 @@ msgstr ""
 msgid "Choose auto to follow your browser settings"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:263
+#: searx/templates/simple/preferences.html:268
+msgid ""
+"When enabled, the result page's title contains your query. Your browser "
+"can record this title."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:275
 msgid "Currently used search engines"
 msgstr "För tillfället används sökmotorer"
 
-#: searx/templates/simple/preferences.html:273
+#: searx/templates/simple/preferences.html:285
 msgid "Supports selected language"
 msgstr "Stöder valda språket"
 
