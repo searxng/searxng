@@ -281,8 +281,8 @@
                         {% endif %}
 
                         {% if 'query_in_title' not in locked_preferences %}
-                        {% set query_in_title_label = _('Query in the page\'s title') %}
-                        {% set query_in_title_info = _('When enabled, the result page\'s title contains your query. Your browser can record this title') %}
+                        {% set query_in_title_label = _("Query in the page's title") %}
+                        {% set query_in_title_info = _("When enabled, the result page's title contains your query. Your browser can record this title") %}
                         {{ preferences_item_header(query_in_title_info, query_in_title_label, rtl, 'query_in_title') }}
                             <select class="form-control {{ custom_select_class(rtl) }}" name="query_in_title" id="query_in_title">
                                 <option value="1" {% if query_in_title  %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
@@ -408,7 +408,7 @@
                     </thead>
                     <tbody>
                         <td></td>
-                        <th scope="colgroup" colspan="4">{{ _('This is the list of SearXNG\'s instant answering modules.') }}</th>
+                        <th scope="colgroup" colspan="4">{{ _("This is the list of SearXNG's instant answering modules.") }}</th>
                         {% for answerer in answerers %}
                         <tr>
                             <td></td>
