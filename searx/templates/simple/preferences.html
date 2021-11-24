@@ -258,14 +258,14 @@
     {% endif %}
     {% if 'query_in_title' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Query in the page\'s title') }}</legend>
+      <legend>{{ _("Query in the page's title") }}</legend>
       <p class="value">
         <select name='query_in_title'>
           <option value="1" {% if query_in_title %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
           <option value="" {% if not query_in_title %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
         </select>
       </p>
-      <div class="description">{{ _('When enabled, the result page\'s title contains your query. Your browser can record this title.') }}</div>
+      <div class="description">{{ _("When enabled, the result page's title contains your query. Your browser can record this title") }}</div>
     </fieldset>
     {% endif %}
     {{ plugin_preferences('privacy') }}
@@ -324,7 +324,7 @@
         <th>{{ _('Examples') }}</th>
       </tr>
       <td></td>
-      <th scope="colgroup" colspan="4">{{ _('This is the list of SearXNG\'s instant answering modules.') }}</th>
+      <th scope="colgroup" colspan="4">{{ _("This is the list of SearXNG's instant answering modules.") }}</th>
       {% for answerer in answerers %}
       <tr>
         <td></td>
