@@ -411,6 +411,17 @@ class Preferences:
                     'on': True,
                 }
             ),
+            'query_in_title': MapSetting(
+                settings['ui']['query_in_title'],
+                is_locked('query_in_title'),
+                map={
+                    '': settings['ui']['query_in_title'],
+                    '0': False,
+                    '1': True,
+                    'True': True,
+                    'False': False
+                }
+            ),
         }
 
         self.engines = EnginesSetting('engines', choices=engines)

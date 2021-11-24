@@ -441,6 +441,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
+    kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
     kwargs['theme'] = get_current_theme_name(override=override_theme)
     kwargs['all_categories'] = _get_ordered_categories()
