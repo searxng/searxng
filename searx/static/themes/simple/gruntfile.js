@@ -2,8 +2,6 @@
 
 module.exports = function(grunt) {
 
-  const path = require('path');
-
   grunt.initConfig({
 
     _brand: '../../../../src/brand',
@@ -13,7 +11,16 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['gruntfile.js', 'src/**'],
-        tasks: ['eslint', 'copy', 'concat', 'svg2jinja', 'uglify', 'image', 'less:development', 'less:production']
+        tasks: [
+          'eslint',
+          'copy',
+          'concat',
+          'uglify',
+          'less:development',
+          'less:production',
+          'image',
+          'svg2jinja'
+        ]
       }
     },
     eslint: {
@@ -78,14 +85,18 @@ module.exports = function(grunt) {
         },
         files: {
           'js/searxng.head.js': ['src/js/head/*.js'],
-          'js/searxng.js': ['src/js/main/*.js', '../__common__/js/*.js', './node_modules/autocomplete-js/dist/autocomplete.js']
+          'js/searxng.js': [
+            'src/js/main/*.js',
+            '../__common__/js/*.js',
+            './node_modules/autocomplete-js/dist/autocomplete.js'
+          ]
         }
       }
     },
     uglify: {
       options: {
         output: {
-	        comments: 'some'
+          comments: 'some'
         },
         ie8: false,
         warnings: true,
@@ -97,16 +108,6 @@ module.exports = function(grunt) {
         files: {
           'js/searxng.head.min.js': ['js/searxng.head.js'],
           'js/searxng.min.js': ['js/searxng.js']
-        }
-      }
-    },
-    image: {
-      svg4web: {
-        options: {
-          svgo: ['--config', 'svg4web.svgo.js']
-        },
-        files: {
-          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
         }
       }
     },
@@ -137,6 +138,16 @@ module.exports = function(grunt) {
         }
       },
     },
+    image: {
+      svg4web: {
+        options: {
+          svgo: ['--config', 'svg4web.svgo.js']
+        },
+        files: {
+          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
+        }
+      }
+    },
     svg2jinja: {
       all: {
         src: {
@@ -164,7 +175,6 @@ module.exports = function(grunt) {
       },
     },
   });
-
 
   grunt.registerMultiTask('svg2jinja', 'Create Jinja2 macro', function() {
     const ejs = require('ejs'), svgo = require('svgo');
@@ -240,10 +250,10 @@ module.exports = function(grunt) {
     'stylelint',
     'copy',
     'concat',
-    'svg2jinja',
     'uglify',
-    'image',
     'less:development',
-    'less:production'
+    'less:production',
+    'image',
+    'svg2jinja',
   ]);
 };
