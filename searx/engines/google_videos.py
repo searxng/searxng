@@ -37,7 +37,6 @@ from searx.engines.google import (
     href_xpath,
     content_xpath,
     suggestion_xpath,
-    spelling_suggestion_xpath,
     detect_google_sorry,
 )
 
@@ -185,8 +184,5 @@ def response(resp):
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
         # append suggestion
         results.append({'suggestion': extract_text(suggestion)})
-
-    for correction in eval_xpath_list(dom, spelling_suggestion_xpath):
-        results.append({'correction': extract_text(correction)})
 
     return results
