@@ -1,6 +1,6 @@
 <!-- Draw favicon -->
 {% macro draw_favicon(favicon) -%}
-    <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}" />
+    <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}">
 {%- endmacro %}
 
 {% macro result_open_link(url, classes='') -%}
@@ -23,8 +23,8 @@
   <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
   {%- endfor %}
   {{- result_close_link() -}}
-  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" class="image" />{{ result_close_link() }}{% endif -%}
-  {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" alt="{{ result.title|striptags }}"/>{{ result_close_link() }}{% endif -%}
+  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" title="{{ result.title|striptags }}">{{ result_close_link() }}{% endif -%}
+  {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}">{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
 

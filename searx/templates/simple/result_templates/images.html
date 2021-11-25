@@ -1,6 +1,6 @@
 <article class="result result-images {% if result['category'] %}category-{{ result['category'] }}{% endif %}">{{- "" -}}
         <a {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">{{- "" -}}
-                <img class="image_thumbnail" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} src="{% if result.thumbnail_src %}{{ image_proxify(result.thumbnail_src) }}{% else %}{{ image_proxify(result.img_src) }}{% endif %}" loading="lazy" title="{{ result.title|striptags }}" alt="{{ result.title|striptags }}"/>{{- "" -}}
+                <img class="image_thumbnail" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} src="{% if result.thumbnail_src %}{{ image_proxify(result.thumbnail_src) }}{% else %}{{ image_proxify(result.img_src) }}{% endif %}" loading="lazy" title="{{ result.title|striptags }}" alt="{{ result.title|striptags }}">{{- "" -}}
                 <span class="title">{{ result.title|striptags }}</span>{{- "" -}}
         </a>{{- "" -}}
         <div class="detail">{{- "" -}}
@@ -9,9 +9,9 @@
                 <a class="result-detail-next" href="#">{{ icon('chevron-right') }}</a>{{- "" -}}
                 <a class="result-images-source" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">
                         {%- if result.thumbnail_src -%}
-                                <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">
+                                <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}">
                         {%- else -%}
-                                <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" loading="lazy">
+                                <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" loading="lazy" title="{{ result.title|striptags }}">
                         {%- endif -%}
                 </a>{{- "" -}}
                 <div class="result-images-labels">{{- "" -}}
