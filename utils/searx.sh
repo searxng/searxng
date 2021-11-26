@@ -402,11 +402,11 @@ install_check() {
 update_searx() {
     rst_title "Update SearXNG instance"
 
-    echo
+    rst_para "fetch from $GIT_URL and reset to origin/$GIT_BRANCH"
     tee_stderr 0.3 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
 cd ${SEARX_SRC}
-git checkout -B "$GIT_BRANCH"
-git pull
+git fetch origin "$GIT_BRANCH"
+git reset --hard "origin/$GIT_BRANCH"
 pip install -U pip
 pip install -U setuptools
 pip install -U wheel
