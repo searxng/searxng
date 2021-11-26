@@ -145,7 +145,8 @@ class ResultContainer:
     """docstring for ResultContainer"""
 
     __slots__ = '_merged_results', 'infoboxes', 'suggestions', 'answers', 'corrections', '_number_of_results',\
-                '_closed', 'paging', 'unresponsive_engines', 'timings', 'redirect_url', 'engine_data', 'on_result'
+                '_closed', 'paging', 'unresponsive_engines', 'timings', 'redirect_url', 'engine_data', 'on_result',\
+                '_lock'
 
     def __init__(self):
         super().__init__()
@@ -162,6 +163,7 @@ class ResultContainer:
         self.timings = []
         self.redirect_url = None
         self.on_result = lambda _: True
+        self._lock = RLock()
 
     def extend(self, engine_name, results):
         if self._closed:
@@ -216,10 +218,11 @@ class ResultContainer:
         infobox['engines'] = set([infobox['engine']])
         if infobox_id is not None:
             parsed_url_infobox_id = urlparse(infobox_id)
-            for existingIndex in self.infoboxes:
-                if compare_urls(urlparse(existingIndex.get('id', '')), parsed_url_infobox_id):
-                    merge_two_infoboxes(existingIndex, infobox)
-                    add_infobox = False
+            with self._lock:
+                for existingIndex in self.infoboxes:
+                    if compare_urls(urlparse(existingIndex.get('id', '')), parsed_url_infobox_id):
+                        merge_two_infoboxes(existingIndex, infobox)
+                        add_infobox = False
 
         if add_infobox:
             self.infoboxes.append(infobox)
@@ -262,14 +265,14 @@ class ResultContainer:
 
     def __merge_url_result(self, result, position):
         result['engines'] = set([result['engine']])
-        duplicated = self.__find_duplicated_http_result(result)
-        if duplicated:
-            self.__merge_duplicated_http_result(duplicated, result, position)
-            return
+        with self._lock:
+            duplicated = self.__find_duplicated_http_result(result)
+            if duplicated:
+                self.__merge_duplicated_http_result(duplicated, result, position)
+                return
 
-        # if there is no duplicate found, append result
-        result['positions'] = [position]
-        with RLock():
+            # if there is no duplicate found, append result
+            result['positions'] = [position]
             self._merged_results.append(result)
 
     def __find_duplicated_http_result(self, result):
@@ -314,7 +317,7 @@ class ResultContainer:
     def __merge_result_no_url(self, result, position):
         result['engines'] = set([result['engine']])
         result['positions'] = [position]
-        with RLock():
+        with self._lock:
             self._merged_results.append(result)
 
     def close(self):
