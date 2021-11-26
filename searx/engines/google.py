@@ -138,12 +138,7 @@ content_xpath = './/div[@class="IsZvec"]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
-suggestion_xpath = '//div[contains(@class, "card-section")]//a'
-
-# Since google does *auto-correction* on the first query these are not really
-# *spelling suggestions*, we use them anyway.
-spelling_suggestion_xpath = '//div[@class="med"]/p/a'
-
+suggestion_xpath = '//div[contains(@class, "EIaa9b")]//a'
 
 def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     """Composing various language properties for the google engines.
@@ -322,7 +317,6 @@ def response(resp):
 
     # convert the text to dom
     dom = html.fromstring(resp.text)
-
     # results --> answer
     answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
     if answer_list:
@@ -378,9 +372,6 @@ def response(resp):
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
         # append suggestion
         results.append({'suggestion': extract_text(suggestion)})
-
-    for correction in eval_xpath_list(dom, spelling_suggestion_xpath):
-        results.append({'correction': extract_text(correction)})
 
     # return results
     return results
