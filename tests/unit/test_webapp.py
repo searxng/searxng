@@ -83,7 +83,7 @@ class ViewsTestCase(SearxTestCase):
         result = self.app.post('/')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<div class="text-hide center-block" id="main-logo">'
-                      + b'<img class="center-block img-responsive" src="/static/themes/oscar/img/logo_searx_a.png"'
+                      + b'<img class="center-block img-responsive" src="/static/themes/oscar/img/searxng.svg"'
                       + b' alt="searx logo" />SearXNG</div>', result.data)
 
     def test_index_html_post(self):
