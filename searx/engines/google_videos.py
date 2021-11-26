@@ -154,25 +154,23 @@ def response(resp):
     # parse results
     for result in eval_xpath_list(dom, '//div[contains(@class, "g ")]'):
 
-        # google *sections*
+        # ignore google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
             logger.debug("ingoring <g-section-with-header>")
             continue
 
-        title = extract_text(eval_xpath_getindex(result, title_xpath, 0))
-        url = eval_xpath_getindex(result, './/div[@class="dXiKIc"]//a/@href', 0)
-
-        # <img id="vidthumb1" ...>
+        # ingnore articles without an image id / e.g. news articles
         img_id = eval_xpath_getindex(result, './/g-img/img/@id', 0, default=None)
         if img_id is None:
-            logger.error("no img_id for: %s" % result)
+            logger.error("no img_id found in item %s (news article?)", len(results) + 1)
             continue
 
         img_src = vidthumb_imgdata.get(img_id, None)
         if not img_src:
-            logger.error("no vidthumb imgdata for: %s" % img_id)
             img_src = thumbs_src.get(img_id, "")
 
+        title = extract_text(eval_xpath_getindex(result, title_xpath, 0))
+        url = eval_xpath_getindex(result, './/div[@class="dXiKIc"]//a/@href', 0)
         length = extract_text(eval_xpath(
             result, './/div[contains(@class, "P7xzyf")]/span/span'))
         c_node = eval_xpath_getindex(result, './/div[@class="Uroaid"]', 0)
