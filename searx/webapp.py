@@ -916,6 +916,7 @@ def autocompleter():
         suggestions = json.dumps([sug_prefix, results])
         mimetype = 'application/x-suggestions+json'
 
+    suggestions = escape(suggestions, False)
     return Response(suggestions, mimetype=mimetype)
 
 
