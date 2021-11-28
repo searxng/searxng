@@ -2,7 +2,7 @@
 
 module.exports = function(grunt) {
 
-  const path = require('path');
+  const eachAsync = require('each-async');
 
   grunt.initConfig({
 
@@ -13,7 +13,17 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['gruntfile.js', 'src/**'],
-        tasks: ['eslint', 'copy', 'concat', 'svg2jinja', 'uglify', 'image', 'less:development', 'less:production']
+        tasks: [
+          'eslint',
+          'copy',
+          'concat',
+          'uglify',
+          'less:development',
+          'less:production',
+          'image',
+          'svg2png',
+          'svg2jinja'
+        ]
       }
     },
     eslint: {
@@ -78,14 +88,18 @@ module.exports = function(grunt) {
         },
         files: {
           'js/searxng.head.js': ['src/js/head/*.js'],
-          'js/searxng.js': ['src/js/main/*.js', '../__common__/js/*.js', './node_modules/autocomplete-js/dist/autocomplete.js']
+          'js/searxng.js': [
+            'src/js/main/*.js',
+            '../__common__/js/*.js',
+            './node_modules/autocomplete-js/dist/autocomplete.js'
+          ]
         }
       }
     },
     uglify: {
       options: {
         output: {
-	        comments: 'some'
+          comments: 'some'
         },
         ie8: false,
         warnings: true,
@@ -97,16 +111,6 @@ module.exports = function(grunt) {
         files: {
           'js/searxng.head.min.js': ['js/searxng.head.js'],
           'js/searxng.min.js': ['js/searxng.js']
-        }
-      }
-    },
-    image: {
-      svg4web: {
-        options: {
-          svgo: ['--config', 'svg4web.svgo.js']
-        },
-        files: {
-          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
         }
       }
     },
@@ -137,6 +141,23 @@ module.exports = function(grunt) {
         }
       },
     },
+    image: {
+      svg4web: {
+        options: {
+          svgo: ['--config', 'svg4web.svgo.js']
+        },
+        files: {
+          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
+        }
+      }
+    },
+    svg2png: {
+      favicon: {
+        files: {
+          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg'
+        }
+      }
+    },
     svg2jinja: {
       all: {
         src: {
@@ -164,7 +185,6 @@ module.exports = function(grunt) {
       },
     },
   });
-
 
   grunt.registerMultiTask('svg2jinja', 'Create Jinja2 macro', function() {
     const ejs = require('ejs'), svgo = require('svgo');
@@ -222,6 +242,36 @@ module.exports = function(grunt) {
     grunt.log.ok(this.data.dest + " created");
   });
 
+  grunt.registerMultiTask('svg2png', 'Convert SVG to PNG', function () {
+    const sharp = require('sharp'), done = this.async();
+    eachAsync(this.files, async (file, _index, next) => {
+      try {
+        if (file.src.length != 1) {
+          next("this task supports only one source per destination");
+        }
+        const info = await sharp(file.src[0])
+          .png({
+            force: true,
+            compressionLevel: 9,
+            palette: true,
+          })
+          .toFile(file.dest);
+        grunt.log.ok(file.dest + ' created (' + info.size + ' bytes, ' + info.width + 'px * ' + info.height + 'px)');
+        next();
+      } catch (error) {
+        grunt.fatal(error);
+        next(error);
+      }
+    }, error => {
+      if (error) {
+        grunt.fatal(error);
+        done(error);
+      } else {
+        done();
+      }
+    });
+  });
+
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -240,10 +290,11 @@ module.exports = function(grunt) {
     'stylelint',
     'copy',
     'concat',
-    'svg2jinja',
     'uglify',
-    'image',
     'less:development',
-    'less:production'
+    'less:production',
+    'image',
+    'svg2png',
+    'svg2jinja',
   ]);
 };
