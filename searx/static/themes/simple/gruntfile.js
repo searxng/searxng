@@ -150,7 +150,15 @@ module.exports = function(grunt) {
           '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
           'img/searxng.svg': '<%= _brand %>/searxng.svg'
         }
-      }
+      },
+      favicon: {
+        options: {
+          svgo: ['--config', 'svg4favicon.svgo.js']
+        },
+        files: {
+          'img/favicon.svg': '<%= _brand %>/searxng-wordmark.svg'
+        }
+      },
     },
     svg2png: {
       favicon: {
