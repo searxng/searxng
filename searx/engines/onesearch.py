@@ -37,11 +37,11 @@ about = {
 categories = ['general']
 paging = True
 
-URL = 'https://www.onesearch.com/yhs/search;?p=%s&b=%d'
+URL = 'https://www.onesearch.com/yhs/search;?p=%s&b=%d&intl=%s'
 
 def request(query, params):
     starting_from = (params['pageno'] * 10) - 9
-    params['url'] = URL % (query, starting_from)
+    params['url'] = URL % (query, starting_from, params['language'][:2])
     return params
 
 def response(resp):
