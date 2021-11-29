@@ -147,14 +147,17 @@ module.exports = function(grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg'
+          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
+          'img/searxng.svg': '<%= _brand %>/searxng.svg'
         }
       }
     },
     svg2png: {
       favicon: {
         files: {
-          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg'
+          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
+          'img/searxng.png': '<%= _brand %>/searxng.svg'
+
         }
       }
     },
