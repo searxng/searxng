@@ -8,7 +8,18 @@
 *
 * @license Free to use under the MIT License.
 *
+* @example <caption>Example usage of searxng.ImageLayout class.</caption>
+* searxng.image_thumbnail_layout = new searxng.ImageLayout(
+*     '#urls',                 // container_selector
+*     '#urls .result-images',  // results_selector
+*     'img.image_thumbnail',   // img_selector
+*     14,                      // verticalMargin
+*     6,                       // horizontalMargin
+*     200                      // maxHeight
+* );
+* searxng.image_thumbnail_layout.watch();
 */
+
 
 (function (w, d) {
   function ImageLayout(container_selector, results_selector, img_selector, verticalMargin, horizontalMargin, maxHeight) {
@@ -136,6 +147,11 @@
     var results_nodes = d.querySelectorAll(this.results_selector);
     var results_length = results_nodes.length;
 
+    function img_load_error(event) {
+      // console.log("ERROR can't load: " + event.originalTarget.src);
+      event.originalTarget.src = w.searxng.static_path + w.searxng.theme.img_load_error;
+    }
+
     function throttleAlign() {
       if (obj.isAlignDone) {
         obj.isAlignDone = false;
@@ -146,15 +162,22 @@
       }
     }
 
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event
     w.addEventListener('pageshow', throttleAlign);
+    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/load_event
     w.addEventListener('load', throttleAlign);
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event
     w.addEventListener('resize', throttleAlign);
 
     for (i = 0; i < results_length; i++) {
       img = results_nodes[i].querySelector(this.img_selector);
       if (img !== null && img !== undefined) {
         img.addEventListener('load', throttleAlign);
+        // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
         img.addEventListener('error', throttleAlign);
+        if (w.searxng.theme.img_load_error) {
+          img.addEventListener('error', img_load_error, {once: true});
+        }
       }
     }
   };

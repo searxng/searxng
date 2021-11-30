@@ -164,8 +164,8 @@ module.exports = function(grunt) {
       favicon: {
         files: {
           'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.png': '<%= _brand %>/searxng.svg'
-
+          'img/searxng.png': '<%= _brand %>/searxng.svg',
+          'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
         }
       }
     },

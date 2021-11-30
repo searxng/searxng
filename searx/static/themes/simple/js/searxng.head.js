@@ -24,6 +24,10 @@
         hotkeys: script.getAttribute('data-hotkeys') === 'true',
         static_path: script.getAttribute('data-static-path'),
         translations: JSON.parse(script.getAttribute('data-translations')),
+        theme : {
+            // image that is displayed if load of <img src='...'> failed
+            img_load_error: 'img/img_load_error.svg'
+        }
     };
 
     // update the css
