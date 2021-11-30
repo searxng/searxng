@@ -149,7 +149,7 @@
 
     function img_load_error(event) {
       // console.log("ERROR can't load: " + event.originalTarget.src);
-      event.originalTarget.src = window.searxng.static_path + 'img/img_load_error.svg';
+      event.originalTarget.src = w.searxng.static_path + w.searxng.theme.img_load_error;
     }
 
     function throttleAlign() {
@@ -175,7 +175,9 @@
         img.addEventListener('load', throttleAlign);
         // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
         img.addEventListener('error', throttleAlign);
-        img.addEventListener('error', img_load_error, {once: true});
+        if (w.searxng.theme.img_load_error) {
+          img.addEventListener('error', img_load_error, {once: true});
+        }
       }
     }
   };
