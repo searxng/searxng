@@ -1,6 +1,6 @@
 <article class="result result-images {% if result['category'] %}category-{{ result['category'] }}{% endif %}">{{- "" -}}
         <a {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">{{- "" -}}
-                <img class="image_thumbnail" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} src="{% if result.thumbnail_src %}{{ image_proxify(result.thumbnail_src) }}{% else %}{{ image_proxify(result.img_src) }}{% endif %}" loading="lazy" alt="{{ result.title|striptags }}">{{- "" -}}
+                <img class="image_thumbnail" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} src="{% if result.thumbnail_src %}{{ image_proxify(result.thumbnail_src) }}{% else %}{{ image_proxify(result.img_src) }}{% endif %}" alt="{{ result.title|striptags }}" loading="lazy" width="200" height="200">{{- "" -}}
                 <span class="title">{{ result.title|striptags }}</span>{{- "" -}}
         </a>{{- "" -}}
         <div class="detail">{{- "" -}}
@@ -11,7 +11,7 @@
                         {%- if result.thumbnail_src -%}
                                 <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">
                         {%- else -%}
-                                <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" loading="lazy">
+                                <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" loading="lazy" width="200" height="200">
                         {%- endif -%}
                 </a>{{- "" -}}
                 <div class="result-images-labels">{{- "" -}}
