@@ -92,7 +92,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'js/searxng.head.min.js': ['js/searxng.head.js'],
+          'js/searxng.head.min.js': ['src/js/head/*.js'],
           'js/searxng.min.js': [
             'src/js/main/*.js',
             '../__common__/js/*.js',
