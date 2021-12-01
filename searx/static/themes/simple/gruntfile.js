@@ -88,7 +88,9 @@ module.exports = function(grunt) {
         warnings: true,
         compress: false,
         mangle: true,
-        sourceMap: true
+        sourceMap: {
+          includeSources: true
+        }
       },
       dist: {
         files: {
