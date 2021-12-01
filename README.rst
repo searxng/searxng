@@ -5,8 +5,7 @@
    :alt: SearXNG
    :width: 100%
    :align: center
-
-
+   
 |SearXNG install|
 |SearXNG homepage|
 |SearXNG wiki|
@@ -58,7 +57,6 @@ our homepage_.
 .. |weblate| image:: https://weblate.bubu1.eu/widgets/searxng/-/searxng/svg-badge.svg
    :target: https://weblate.bubu1.eu/projects/searxng/
 
-----
 
 SearXNG is a fork of `searx`_:
 
@@ -66,3 +64,12 @@ SearXNG is a fork of `searx`_:
 * `exhaustive changelog <https://github.com/searxng/searxng/wiki/Changes-from-version-1.0.0>`_
 
 .. _searx: https://github.com/searx/searx
+
+ 
+Translations
+""""""""""""
+
+We need translators, suggestions are welcome at https://weblate.bubu1.eu/projects/searxng/searxng/
+
+.. figure:: https://weblate.bubu1.eu/widgets/searxng/-/multi-auto.svg
+   :target: https://weblate.bubu1.eu/projects/searxng/
