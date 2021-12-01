@@ -16,10 +16,8 @@ module.exports = function(grunt) {
         tasks: [
           'eslint',
           'copy',
-          'concat',
           'uglify',
-          'less:development',
-          'less:production',
+          'less',
           'image',
           'svg2png',
           'svg2jinja'
@@ -81,21 +79,6 @@ module.exports = function(grunt) {
         ]
       },
     },
-    concat: {
-      head_and_body: {
-        options: {
-          separator: ';'
-        },
-        files: {
-          'js/searxng.head.js': ['src/js/head/*.js'],
-          'js/searxng.js': [
-            'src/js/main/*.js',
-            '../__common__/js/*.js',
-            './node_modules/autocomplete-js/dist/autocomplete.js'
-          ]
-        }
-      }
-    },
     uglify: {
       options: {
         output: {
@@ -109,21 +92,16 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'js/searxng.head.min.js': ['js/searxng.head.js'],
-          'js/searxng.min.js': ['js/searxng.js']
+          'js/searxng.head.min.js': ['src/js/head/*.js'],
+          'js/searxng.min.js': [
+            'src/js/main/*.js',
+            '../__common__/js/*.js',
+            './node_modules/autocomplete-js/dist/autocomplete.js'
+          ]
         }
       }
     },
     less: {
-      development: {
-        options: {
-          paths: ["less"],
-        },
-        files: {
-          "css/searxng.css": "src/less/style.less",
-          "css/searxng-rtl.css": "src/less/style-rtl.less"
-        }
-      },
       production: {
         options: {
           paths: ["less"],
@@ -288,7 +266,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-image');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-stylelint');
@@ -300,10 +277,8 @@ module.exports = function(grunt) {
     'eslint',
     'stylelint',
     'copy',
-    'concat',
     'uglify',
-    'less:development',
-    'less:production',
+    'less',
     'image',
     'svg2png',
     'svg2jinja',
