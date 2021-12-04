@@ -12,15 +12,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <title>{% block title %}{% endblock %}{{ instance_name }}</title>
   {% block meta %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"></script>
   {% if rtl %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen" />
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
+  <script src="{{ url_for('static', filename='js/searxng.min.js') }}"
+    data-method="{{ method or 'POST' }}"
+    data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
+    data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
+    data-infinite-scroll="{{ 'true' if 'plugins/js/infinite_scroll.js' in scripts else 'false' }}"
+    data-hotkeys="{{ 'true' if 'plugins/js/vim_hotkeys.js' in scripts else 'false' }}"
+    data-static-path="{{ url_for('static', filename='themes/simple') }}/"
+    data-translations="{{ translations }}"></script>
   {% block styles %}{% endblock %}
-  <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"></script>
-  <!--<![endif]-->
   {% block head %}
   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}"/>
   {% endblock %}
@@ -53,15 +59,5 @@
         <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>{% endif %}
     </p>
   </footer>
-  <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searxng.min.js') }}"
-    data-method="{{ method or 'POST' }}"
-    data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
-    data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
-    data-infinite-scroll="{{ 'true' if 'plugins/js/infinite_scroll.js' in scripts else 'false' }}"
-    data-hotkeys="{{ 'true' if 'plugins/js/vim_hotkeys.js' in scripts else 'false' }}"
-    data-static-path="{{ url_for('static', filename='themes/simple') }}/"
-    data-translations="{{ translations }}"></script>
-  <!--<![endif]-->
 </body>
 </html>
