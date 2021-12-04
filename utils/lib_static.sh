@@ -4,16 +4,16 @@
 
 STATIC_BUILD_COMMIT="[build] /static"
 STATIC_BUILT_PATHS=(
-    searx/static/themes/oscar/css
-    searx/static/themes/oscar/js
-    searx/static/themes/oscar/src/generated/pygments-logicodev.less
-    searx/static/themes/oscar/src/generated/pygments-pointhi.less
-    searx/static/themes/simple/css
-    searx/static/themes/simple/js
-    searx/static/themes/simple/src/generated/pygments.less
-    searx/static/themes/simple/img
-    searx/templates/__common__/searxng-wordmark.min.svg
-    searx/templates/simple/icons.html
+    'searx/static/themes/oscar/css'
+    'searx/static/themes/oscar/js'
+    'searx/static/themes/oscar/src/generated/pygments-logicodev.less'
+    'searx/static/themes/oscar/src/generated/pygments-pointhi.less'
+    'searx/static/themes/simple/css'
+    'searx/static/themes/simple/js'
+    'searx/static/themes/simple/src/generated/pygments.less'
+    'searx/static/themes/simple/img'
+    'searx/templates/__common__/searxng-wordmark.min.svg'
+    'searx/templates/simple/icons.html'
 )
 
 static_help(){
@@ -111,6 +111,12 @@ static.build.commit() {
         for built_path in "${STATIC_BUILT_PATHS[@]}"; do
             git add -v "${built_path}"
         done
+
+        # check if any file has been added (in case of no changes)
+        if [ -z "$(git diff --name-only --cached)" ]; then
+            build_msg STATIC "no changes applied / nothing to commit"
+            return 0
+        fi
 
         # check for modified files that are not staged
         if [ -n "$(git diff --name-only)" ]; then
