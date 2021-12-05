@@ -112,8 +112,7 @@ module.exports = function(grunt) {
           ],
           sourceMap: true,
           sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map';},
-          outputSourceFiles: false,
-          sourceMapRootpath: '../',
+          outputSourceFiles: true,
         },
         files: {
           "css/searxng.min.css": "src/less/style.less",
