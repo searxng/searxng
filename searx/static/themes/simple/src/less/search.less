@@ -63,9 +63,8 @@
 
   svg {
     flex: 1;
-    width: 30px;
-    height: 30px;
-    margin: 0.5rem 0 auto 0;
+    width: 25px;
+    height: 25px;
   }
 }
 
@@ -174,66 +173,36 @@
   #search_header {
     padding: 1.5em @results-tablet-offset 0 @results-tablet-offset;
     column-gap: @results-tablet-offset;
-  }
-
-  .search_filters {
-    margin: 0.6rem 0 0 @results-tablet-offset + 3rem;
-  }
-
-  #categories {
-    font-size: 90%;
-    clear: both;
-
-    .checkbox_container {
-      margin: auto;
-      margin-top: 2px;
-    }
-  }
-
-  html.touch {
-    #main_index,
-    #main_results {
-      #categories_container {
-        width: max-content;
-
-        .category {
-          display: inline-block;
-          width: auto;
-        }
-      }
-
-      #categories {
-        width: 100%;
-        text-align: left;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: @phone) {
-  #search_header {
-    width: 100%;
-    margin: 0;
-    padding: 0.1rem 0 0 0;
-    column-gap: 0;
-    row-gap: 0;
     grid-template-areas:
       "logo search"
       "categories categories";
   }
 
-  .search_logo {
-    padding: 0;
+  .search_filters {
+    margin: 0.6rem 0 0 @results-tablet-offset + 3rem;
   }
+}
 
+@media screen and (max-width: @phone) {
   .search_box {
-    // hack, should be 100% ?
-    width: 99%;
+    padding-right: 3em; // left some space for preference menu
     display: flex;
     flex-direction: row;
+  }
+
+  #main_index .search_box {
+    padding-right: 0;
+  }
+
+  #search_header {
+    column-gap: 0;
+    grid-template-areas:
+      "search search"
+      "categories categories";
+  }
+
+  #search_logo {
+    display: none;
   }
 
   #q {
@@ -254,21 +223,6 @@
   .time_range {
     width: 45%;
   }
-
-  .category {
-    display: block;
-    width: 100%;
-    margin: 0;
-
-    label {
-      padding: 0.8rem !important;
-      margin: 0 !important;
-
-      svg {
-        display: none;
-      }
-    }
-  }
 }
 
 @media screen and (max-width: @ultra-small-phone) {
@@ -276,10 +230,6 @@
     grid-template-areas:
       "search search"
       "categories categories";
-  }
-
-  #search_logo {
-    display: none;
   }
 }
 
