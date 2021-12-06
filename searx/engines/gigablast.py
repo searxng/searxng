@@ -6,6 +6,7 @@
 # pylint: disable=invalid-name
 
 import re
+from time import time
 from json import loads
 from urllib.parse import urlencode
 from searx.network import get
@@ -28,13 +29,18 @@ safesearch = True
 
 # search-url
 base_url = 'https://gigablast.com'
+search_path = '/search?'
 
 # ugly hack: gigablast requires a random extra parameter which can be extracted
 # from the source code of the gigablast HTTP client
 extra_param = ''
-extra_param_path='/search?c=main&qlangcountry=en-us&q=south&s=10'
+# timestamp of the last fetch of extra_param
+extra_param_ts = 0
+# after how many seconds extra_param expire
+extra_param_expiration_delay = 3000
 
-def parse_extra_param(text):
+
+def fetch_extra_param(query_args, headers):
 
     # example:
     #
@@ -43,7 +49,12 @@ def parse_extra_param(text):
     #
     # extra_param --> "rand=1590740241635&nsab=730863287"
 
-    global extra_param  # pylint: disable=global-statement
+    global extra_param, extra_param_ts  # pylint: disable=global-statement
+
+    extra_param_ts = time()
+    extra_param_path = search_path + urlencode(query_args)
+    text = get(base_url + extra_param_path, headers=headers).text
+
     re_var= None
     for line in text.splitlines():
         if re_var is None and extra_param_path in line:
@@ -54,21 +65,12 @@ def parse_extra_param(text):
         if re_var is not None and re_var.search(line):
             extra_param += re_var.search(line).group(1)
             break
-    # logger.debug('gigablast extra_param="%s"', extra_param)
-
-def init(engine_settings=None):  # pylint: disable=unused-argument
-    parse_extra_param(get(base_url + extra_param_path).text)
 
 
 # do search-request
 def request(query, params):  # pylint: disable=unused-argument
-
-    # see API http://www.gigablast.com/api.html#/search
-    # Take into account, that the API has some quirks ..
-
     query_args = dict(
         c = 'main'
-        , format = 'json'
         , q = query
         , dr = 1
         , showgoodimages = 0
@@ -81,8 +83,13 @@ def request(query, params):  # pylint: disable=unused-argument
     if params['safesearch'] >= 1:
         query_args['ff'] = 1
 
-    search_url = '/search?' + urlencode(query_args)
-    params['url'] = base_url + search_url + extra_param
+    # see API http://www.gigablast.com/api.html#/search
+    # Take into account, that the API has some quirks ..
+    if time() > (extra_param_ts + extra_param_expiration_delay):
+        fetch_extra_param(query_args, params['headers'])
+
+    query_args['format'] = 'json'
+    params['url'] = base_url + search_path + urlencode(query_args) + extra_param
 
     return params
 
