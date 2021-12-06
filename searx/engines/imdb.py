@@ -57,7 +57,7 @@ def response(resp):
     suggestions = json.loads(resp.text)
     results = []
 
-    for entry in suggestions['d']:
+    for entry in suggestions.get('d', []):
 
         # https://developer.imdb.com/documentation/key-concepts#imdb-ids
         entry_id = entry['id']
