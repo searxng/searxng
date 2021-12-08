@@ -54,7 +54,7 @@
     if (qinput !== null) {
       // clear button
       createClearButton(qinput);
-      
+
       // autocompleter
       if (searxng.autocompleter) {
         searxng.autocomplete = AutoComplete.call(w, {
@@ -67,6 +67,12 @@
           },
           MinChars: 4,
           Delay: 300,
+          _Position:function() {
+            this.DOMResults.setAttribute("class", "autocomplete");
+            this.DOMResults.style.top = (this.Input.offsetTop + this.Input.offsetHeight) + "px";
+            this.DOMResults.style.left = this.Input.offsetLeft + "px";
+            this.DOMResults.style.width = this.Input.clientWidth + "px";
+          },
         }, "#" + qinput_id);
 
         // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
