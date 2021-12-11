@@ -213,15 +213,18 @@ class Network:
         await asyncio.gather(*[close_client(client) for client in self._clients.values()], return_exceptions=False)
 
     @staticmethod
-    def get_kwargs_clients(kwargs):
+    def extract_kwargs_clients(kwargs):
         kwargs_clients = {}
         if 'verify' in kwargs:
             kwargs_clients['verify'] = kwargs.pop('verify')
         if 'max_redirects' in kwargs:
             kwargs_clients['max_redirects'] = kwargs.pop('max_redirects')
+        if 'allow_redirects' in kwargs:
+            # see https://github.com/encode/httpx/pull/1808
+            kwargs['follow_redirects'] = kwargs.pop('allow_redirects')
         return kwargs_clients
 
-    def is_valid_respones(self, response):
+    def is_valid_response(self, response):
         # pylint: disable=too-many-boolean-expressions
         if (
             (self.retry_on_http_error is True and 400 <= response.status_code <= 599)
@@ -231,33 +234,39 @@ class Network:
             return False
         return True
 
-    async def request(self, method, url, **kwargs):
+    async def call_client(self, stream, method, url, **kwargs):
         retries = self.retries
+        was_disconnected = False
+        kwargs_clients = Network.extract_kwargs_clients(kwargs)
         while retries >= 0:  # pragma: no cover
-            kwargs_clients = Network.get_kwargs_clients(kwargs)
             client = await self.get_client(**kwargs_clients)
             try:
-                response = await client.request(method, url, **kwargs)
-                if self.is_valid_respones(response) or retries <= 0:
+                if stream:
+                    response = client.stream(method, url, **kwargs)
+                else:
+                    response = await client.request(method, url, **kwargs)
+                if self.is_valid_response(response) or retries <= 0:
                     return response
+            except httpx.RemoteProtocolError as e:
+                if not was_disconnected:
+                    # the server has closed the connection:
+                    # try again without decreasing the retries variable & with a new HTTP client
+                    was_disconnected = True
+                    await client.aclose()
+                    self._logger.warning('httpx.RemoteProtocolError: the server has disconnected, retrying')
+                    continue
+                if retries <= 0:
+                    raise e
             except (httpx.RequestError, httpx.HTTPStatusError) as e:
                 if retries <= 0:
                     raise e
             retries -= 1
 
+    async def request(self, method, url, **kwargs):
+        return await self.call_client(False, method, url, **kwargs)
+
     async def stream(self, method, url, **kwargs):
-        retries = self.retries
-        while retries >= 0:  # pragma: no cover
-            kwargs_clients = Network.get_kwargs_clients(kwargs)
-            client = await self.get_client(**kwargs_clients)
-            try:
-                response = client.stream(method, url, **kwargs)
-                if self.is_valid_respones(response) or retries <= 0:
-                    return response
-            except (httpx.RequestError, httpx.HTTPStatusError) as e:
-                if retries <= 0:
-                    raise e
-            retries -= 1
+        return await self.call_client(True, method, url, **kwargs)
 
     @classmethod
     async def aclose_all(cls):

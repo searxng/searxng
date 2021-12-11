@@ -6,8 +6,6 @@ import asyncio
 import logging
 import threading
 
-import anyio
-import httpcore
 import httpx
 from httpx_socks import AsyncProxyTransport
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
@@ -27,29 +25,8 @@ logger = logger.getChild('searx.network.client')
 LOOP = None
 SSLCONTEXTS = {}
 TRANSPORT_KWARGS = {
-    # use anyio :
-    # * https://github.com/encode/httpcore/issues/344
-    # * https://github.com/encode/httpx/discussions/1511
-    'backend': 'anyio',
     'trust_env': False,
 }
-
-
-# pylint: disable=protected-access
-async def close_connections_for_url(connection_pool: httpcore.AsyncConnectionPool, url: httpcore._utils.URL):
-
-    origin = httpcore._utils.url_to_origin(url)
-    logger.debug('Drop connections for %r', origin)
-    connections_to_close = connection_pool._connections_for_origin(origin)
-    for connection in connections_to_close:
-        await connection_pool._remove_from_pool(connection)
-        try:
-            await connection.aclose()
-        except httpx.NetworkError as e:
-            logger.warning('Error closing an existing connection', exc_info=e)
-
-
-# pylint: enable=protected-access
 
 
 def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
@@ -62,75 +39,25 @@ def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http
 class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
     """Block HTTP request"""
 
-    async def handle_async_request(self, method, url, headers=None, stream=None, extensions=None):
+    async def handle_async_request(self, request):
         raise httpx.UnsupportedProtocol('HTTP protocol is disabled')
 
 
 class AsyncProxyTransportFixed(AsyncProxyTransport):
     """Fix httpx_socks.AsyncProxyTransport
 
-    Map python_socks exceptions to httpx.ProxyError / httpx.ConnectError
-
-    Map socket.gaierror to httpx.ConnectError
-
-    Note: AsyncProxyTransport inherit from AsyncConnectionPool
+    Map python_socks exceptions to httpx.ProxyError exceptions
     """
 
-    async def handle_async_request(self, method, url, headers=None, stream=None, extensions=None):
-        retry = 2
-        while retry > 0:
-            retry -= 1
-            try:
-                return await super().handle_async_request(
-                    method, url, headers=headers, stream=stream, extensions=extensions
-                )
-            except (ProxyConnectionError, ProxyTimeoutError, ProxyError) as e:
-                raise httpx.ProxyError from e
-            except OSError as e:
-                # socket.gaierror when DNS resolution fails
-                raise httpx.ConnectError from e
-            except httpx.NetworkError as e:
-                # httpx.WriteError on HTTP/2 connection leaves a new opened stream
-                # then each new request creates a new stream and raise the same WriteError
-                await close_connections_for_url(self, url)
-                raise e
-            except anyio.ClosedResourceError as e:
-                await close_connections_for_url(self, url)
-                raise httpx.CloseError from e
-            except httpx.RemoteProtocolError as e:
-                # in case of httpx.RemoteProtocolError: Server disconnected
-                await close_connections_for_url(self, url)
-                logger.warning('httpx.RemoteProtocolError: retry', exc_info=e)
-                # retry
-
-
-class AsyncHTTPTransportFixed(httpx.AsyncHTTPTransport):
-    """Fix httpx.AsyncHTTPTransport"""
-
-    async def handle_async_request(self, method, url, headers=None, stream=None, extensions=None):
-        retry = 2
-        while retry > 0:
-            retry -= 1
-            try:
-                return await super().handle_async_request(
-                    method, url, headers=headers, stream=stream, extensions=extensions
-                )
-            except OSError as e:
-                # socket.gaierror when DNS resolution fails
-                raise httpx.ConnectError from e
-            except httpx.NetworkError as e:
-                # httpx.WriteError on HTTP/2 connection leaves a new opened stream
-                # then each new request creates a new stream and raise the same WriteError
-                await close_connections_for_url(self._pool, url)
-                raise e
-            except anyio.ClosedResourceError as e:
-                await close_connections_for_url(self._pool, url)
-                raise httpx.CloseError from e
-            except httpx.RemoteProtocolError as e:
-                # in case of httpx.RemoteProtocolError: Server disconnected
-                await close_connections_for_url(self._pool, url)
-                logger.warning('httpx.RemoteProtocolError: retry', exc_info=e)
-                # retry
+    async def handle_async_request(self, request):
+        try:
+            return await super().handle_async_request(request)
+        except ProxyConnectionError as e:
+            raise httpx.ProxyError("ProxyConnectionError: " + e.strerror, request=request) from e
+        except ProxyTimeoutError as e:
+            raise httpx.ProxyError("ProxyTimeoutError: " + e.args[0], request=request) from e
+        except ProxyError as e:
+            raise httpx.ProxyError("ProxyError: " + e.args[0], request=request) from e
 
 
 def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit, retries):
@@ -157,9 +84,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         verify=verify,
         http2=http2,
         local_address=local_address,
-        max_connections=limit.max_connections,
-        max_keepalive_connections=limit.max_keepalive_connections,
-        keepalive_expiry=limit.keepalive_expiry,
+        limits=limit,
         retries=retries,
         **TRANSPORT_KWARGS,
     )
@@ -167,13 +92,13 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
     verify = get_sslcontexts(None, None, True, False, http2) if verify is True else verify
-    return AsyncHTTPTransportFixed(
+    return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
         verify=verify,
         http2=http2,
-        local_address=local_address,
-        proxy=httpx._config.Proxy(proxy_url) if proxy_url else None,
         limits=limit,
+        proxy=httpx._config.Proxy(proxy_url) if proxy_url else None,
+        local_address=local_address,
         retries=retries,
         **TRANSPORT_KWARGS,
     )
