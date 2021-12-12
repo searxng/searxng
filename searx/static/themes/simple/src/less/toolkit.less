@@ -99,7 +99,7 @@ tr {
   font-size: 0.8em;
   word-break: break-all;
   margin: 0.1em;
-  .select-all-on-focus();
+  user-select: all;
 }
 
 div.selectable_url {
@@ -218,8 +218,7 @@ div.selectable_url {
 }
 
 .tabs {
-  .flexbox();
-
+  display: flex;
   flex-wrap: wrap;
   width: 100%;
   min-width: 100%;
