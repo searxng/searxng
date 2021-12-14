@@ -4,7 +4,6 @@
     "grunt": "~1.4.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-jshint": "~3.1.1",
     "grunt-contrib-less": "~3.0.0",
     "grunt-contrib-uglify": "~5.0.1",
     "grunt-xmlmin": "~0.1.8",
@@ -29,6 +28,7 @@
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
+    "test": "grunt test",
     "eslint": "grunt eslint",
     "eslint-fix": "grunt eslint --fix",
     "watch": "grunt watch",

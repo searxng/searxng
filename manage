@@ -714,6 +714,17 @@ themes.simple() {
     dump_return $?
 }
 
+themes.simple.test() {
+    build_msg TEST "theme: simple"
+    if ! nvm.min_node "${NODE_MINIMUM_VERSION}"; then
+        info_msg "install Node.js by NVM"
+        nvm.nodejs
+    fi
+    npm --prefix searx/static/themes/simple install
+    npm --prefix searx/static/themes/simple run test
+    dump_return $?
+}
+
 PYLINT_FILES=()
 while IFS= read -r line; do
    PYLINT_FILES+=("$line")

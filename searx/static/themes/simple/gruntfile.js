@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
 
 module.exports = function (grunt) {
 
@@ -27,7 +27,7 @@ module.exports = function (grunt) {
     eslint: {
       options: {
         overrideConfigFile: '.eslintrc.json',
-        failOnError: false,
+        failOnError: true,
         fix: grunt.option('fix')
       },
       target: [
@@ -268,13 +268,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-image');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-stylelint');
   grunt.loadNpmTasks('grunt-eslint');
 
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('test', ['eslint']);
 
   grunt.registerTask('default', [
     'eslint',
