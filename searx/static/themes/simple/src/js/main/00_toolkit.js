@@ -4,7 +4,7 @@
  * (C) Copyright Contributors to the searx project (2014 - 2021).
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-window.searxng = (function(w, d) {
+window.searxng = (function (w, d) {
 
   'use strict';
 
@@ -13,12 +13,12 @@ window.searxng = (function(w, d) {
 
   // from https://plainjs.com/javascript/events/live-binding-event-handlers-14/
   if (w.Element) {
-    (function(ElementPrototype) {
+    (function (ElementPrototype) {
       ElementPrototype.matches = ElementPrototype.matches ||
       ElementPrototype.matchesSelector ||
       ElementPrototype.webkitMatchesSelector ||
       ElementPrototype.msMatchesSelector ||
-      function(selector) {
+      function (selector) {
         var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
         while (nodes[++i] && nodes[i] != node);
         return !!nodes[i];
@@ -26,7 +26,7 @@ window.searxng = (function(w, d) {
     })(Element.prototype);
   }
 
-  function callbackSafe(callback, el, e) {
+  function callbackSafe (callback, el, e) {
     try {
       callback.call(el, e);
     } catch (exception) {
@@ -36,14 +36,14 @@ window.searxng = (function(w, d) {
 
   var searxng = window.searxng || {};
 
-  searxng.on = function(obj, eventType, callback, useCapture) {
+  searxng.on = function (obj, eventType, callback, useCapture) {
     useCapture = useCapture || false;
     if (typeof obj !== 'string') {
       // obj HTMLElement, HTMLDocument
       obj.addEventListener(eventType, callback, useCapture);
     } else {
       // obj is a selector
-      d.addEventListener(eventType, function(e) {
+      d.addEventListener(eventType, function (e) {
         var el = e.target || e.srcElement, found = false;
         while (el && el.matches && el !== d && !(found = el.matches(obj))) el = el.parentElement;
         if (found) callbackSafe(callback, el, e);
@@ -51,7 +51,7 @@ window.searxng = (function(w, d) {
     }
   };
 
-  searxng.ready = function(callback) {
+  searxng.ready = function (callback) {
     if (document.readyState != 'loading') {
       callback.call(w);
     } else {
@@ -59,20 +59,20 @@ window.searxng = (function(w, d) {
     }
   };
 
-  searxng.http = function(method, url) {
+  searxng.http = function (method, url) {
     var req = new XMLHttpRequest(),
-    resolve = function() {},
-    reject = function() {},
-    promise = {
-      then: function(callback) { resolve = callback; return promise; },
-      catch: function(callback) { reject = callback; return promise; }
-    };
+      resolve = function () {},
+      reject = function () {},
+      promise = {
+        then: function (callback) { resolve = callback; return promise; },
+        catch: function (callback) { reject = callback; return promise; }
+      };
 
     try {
       req.open(method, url, true);
 
       // On load
-      req.onload = function() {
+      req.onload = function () {
         if (req.status == 200) {
           resolve(req.response, req.responseType);
         } else {
@@ -81,11 +81,11 @@ window.searxng = (function(w, d) {
       };
 
       // Handle network errors
-      req.onerror = function() {
+      req.onerror = function () {
         reject(Error("Network Error"));
       };
 
-      req.onabort = function() {
+      req.onabort = function () {
         reject(Error("Transaction is aborted"));
       };
 
@@ -98,10 +98,10 @@ window.searxng = (function(w, d) {
     return promise;
   };
 
-  searxng.loadStyle = function(src) {
+  searxng.loadStyle = function (src) {
     var path = searxng.static_path + src,
-    id = "style_" + src.replace('.', '_'),
-    s = d.getElementById(id);
+      id = "style_" + src.replace('.', '_'),
+      s = d.getElementById(id);
     if (s === null) {
       s = d.createElement('link');
       s.setAttribute('id', id);
@@ -112,16 +112,16 @@ window.searxng = (function(w, d) {
     }
   };
 
-  searxng.loadScript = function(src, callback) {
+  searxng.loadScript = function (src, callback) {
     var path = searxng.static_path + src,
-    id = "script_" + src.replace('.', '_'),
-    s = d.getElementById(id);
+      id = "script_" + src.replace('.', '_'),
+      s = d.getElementById(id);
     if (s === null) {
       s = d.createElement('script');
       s.setAttribute('id', id);
       s.setAttribute('src', path);
       s.onload = callback;
-      s.onerror = function() {
+      s.onerror = function () {
         s.setAttribute('error', '1');
       };
       d.body.appendChild(s);
@@ -140,13 +140,13 @@ window.searxng = (function(w, d) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode);
   };
 
-  searxng.insertAfter = function(newNode, referenceNode) {
+  searxng.insertAfter = function (newNode, referenceNode) {
     referenceNode.parentNode.insertAfter(newNode, referenceNode.nextSibling);
-  };  
+  };
 
-  searxng.on('.close', 'click', function() {
+  searxng.on('.close', 'click', function () {
     this.parentNode.classList.add('invisible');
   });
-  
+
   return searxng;
 })(window, document);

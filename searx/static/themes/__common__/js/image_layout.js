@@ -22,7 +22,7 @@
 
 
 (function (w, d) {
-  function ImageLayout(container_selector, results_selector, img_selector, verticalMargin, horizontalMargin, maxHeight) {
+  function ImageLayout (container_selector, results_selector, img_selector, verticalMargin, horizontalMargin, maxHeight) {
     this.container_selector = container_selector;
     this.results_selector = results_selector;
     this.img_selector = img_selector;
@@ -57,7 +57,7 @@
       }
     }
 
-    return (width - images.length * this.verticalMargin) / r; //have to round down because Firefox will automatically roundup value with number of decimals > 3
+    return (width - images.length * this.verticalMargin) / r; // have to round down because Firefox will automatically roundup value with number of decimals > 3
   };
 
   ImageLayout.prototype._setSize = function (images, height) {
@@ -147,12 +147,12 @@
     var results_nodes = d.querySelectorAll(this.results_selector);
     var results_length = results_nodes.length;
 
-    function img_load_error(event) {
+    function img_load_error (event) {
       // console.log("ERROR can't load: " + event.originalTarget.src);
       event.originalTarget.src = w.searxng.static_path + w.searxng.theme.img_load_error;
     }
 
-    function throttleAlign() {
+    function throttleAlign () {
       if (obj.isAlignDone) {
         obj.isAlignDone = false;
         setTimeout(function () {

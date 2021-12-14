@@ -1,48 +1,48 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global AutoComplete */
-(function(w, d, searxng) {
+(function (w, d, searxng) {
   'use strict';
 
   var firstFocus = true, qinput_id = "q", qinput;
 
-  function placeCursorAtEnd(element) {
+  function placeCursorAtEnd (element) {
     if (element.setSelectionRange) {
       var len = element.value.length;
       element.setSelectionRange(len, len);
     }
   }
 
-  function submitIfQuery() {
+  function submitIfQuery () {
     if (qinput.value.length  > 0) {
       var search = document.getElementById('search');
       setTimeout(search.submit.bind(search), 0);
     }
   }
 
-  function createClearButton(qinput) {
+  function createClearButton (qinput) {
     var cs = document.getElementById('clear_search');
-    var updateClearButton = function() {
+    var updateClearButton = function () {
       if (qinput.value.length === 0) {
-	cs.classList.add("empty");
+        cs.classList.add("empty");
       } else {
-	cs.classList.remove("empty");
+        cs.classList.remove("empty");
       }
     };
 
     // update status, event listener
     updateClearButton();
-    cs.addEventListener('click', function() {
-      qinput.value='';
+    cs.addEventListener('click', function () {
+      qinput.value = '';
       qinput.focus();
       updateClearButton();
     });
     qinput.addEventListener('keyup', updateClearButton, false);
   }
 
-  searxng.ready(function() {
+  searxng.ready(function () {
     qinput = d.getElementById(qinput_id);
 
-    function placeCursorAtEndOnce() {
+    function placeCursorAtEndOnce () {
       if (firstFocus) {
         placeCursorAtEnd(qinput);
         firstFocus = false;
@@ -67,7 +67,7 @@
           },
           MinChars: 4,
           Delay: 300,
-          _Position:function() {
+          _Position: function () {
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.style.top = (this.Input.offsetTop + this.Input.offsetHeight) + "px";
             this.DOMResults.style.left = this.Input.offsetLeft + "px";
@@ -76,7 +76,7 @@
         }, "#" + qinput_id);
 
         // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
-        w.addEventListener('resize', function() {
+        w.addEventListener('resize', function () {
           var event = new CustomEvent("position");
           qinput.dispatchEvent(event);
         });
@@ -88,11 +88,11 @@
 
     // vanilla js version of search_on_category_select.js
     if (qinput !== null && d.querySelector('.help') != null && searxng.search_on_category_select) {
-      d.querySelector('.help').className='invisible';
+      d.querySelector('.help').className = 'invisible';
 
-      searxng.on('#categories input', 'change', function() {
+      searxng.on('#categories input', 'change', function () {
         var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
-        for(i=0; i<categories.length; i++) {
+        for (i = 0; i < categories.length; i++) {
           if (categories[i] !== this && categories[i].checked) {
             categories[i].click();
           }
