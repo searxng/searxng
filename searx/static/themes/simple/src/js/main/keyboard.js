@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
-/*global searxng*/
+/* global searxng */
 
-searxng.ready(function() {
+searxng.ready(function () {
 
-  function isElementInDetail(el) {
+  function isElementInDetail (el) {
     while (el !== undefined) {
       if (el.classList.contains('detail')) {
         return true;
@@ -18,7 +18,7 @@ searxng.ready(function() {
     return false;
   }
 
-  function getResultElement(el) {
+  function getResultElement (el) {
     while (el !== undefined) {
       if (el.classList.contains('result')) {
         return el;
@@ -28,11 +28,11 @@ searxng.ready(function() {
     return undefined;
   }
 
-  function isImageResult(resultElement) {
+  function isImageResult (resultElement) {
     return resultElement && resultElement.classList.contains('result-images');
   }
 
-  searxng.on('.result', 'click', function(e) {
+  searxng.on('.result', 'click', function (e) {
     if (!isElementInDetail(e.target)) {
       highlightResult(this)(true);
       let resultElement = getResultElement(e.target);
@@ -43,7 +43,7 @@ searxng.ready(function() {
     }
   });
 
-  searxng.on('.result a', 'focus', function(e) {
+  searxng.on('.result a', 'focus', function (e) {
     if (!isElementInDetail(e.target)) {
       let resultElement = getResultElement(e.target);
       if (resultElement && resultElement.getAttribute("data-vim-selected") === null) {
@@ -155,7 +155,7 @@ searxng.ready(function() {
   };
 
   if (searxng.hotkeys) {
-    searxng.on(document, "keydown", function(e) {
+    searxng.on(document, "keydown", function (e) {
       // check for modifiers so we don't break browser's hotkeys
       if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         var tagName = e.target.tagName.toLowerCase();
@@ -171,10 +171,10 @@ searxng.ready(function() {
     });
   }
 
-  function highlightResult(which) {
-    return function(noScroll) {
+  function highlightResult (which) {
+    return function (noScroll) {
       var current = document.querySelector('.result[data-vim-selected]'),
-      effectiveWhich = which;
+        effectiveWhich = which;
       if (current === null) {
         // no selection : choose the first one
         current = document.querySelector('.result');
@@ -194,7 +194,7 @@ searxng.ready(function() {
         next = effectiveWhich;
       } else {
         switch (effectiveWhich) {
-          case 'visible':
+        case 'visible':
           var top = document.documentElement.scrollTop || document.body.scrollTop;
           var bot = top + document.documentElement.clientHeight;
 
@@ -208,24 +208,24 @@ searxng.ready(function() {
             }
           }
           break;
-          case 'down':
+        case 'down':
           next = current.nextElementSibling;
           if (next === null) {
             next = results[0];
           }
           break;
-          case 'up':
+        case 'up':
           next = current.previousElementSibling;
           if (next === null) {
             next = results[results.length - 1];
           }
           break;
-          case 'bottom':
+        case 'bottom':
           next = results[results.length - 1];
           break;
-          case 'top':
+        case 'top':
           /* falls through */
-          default:
+        default:
           next = results[0];
         }
       }
@@ -244,11 +244,11 @@ searxng.ready(function() {
     };
   }
 
-  function reloadPage() {
+  function reloadPage () {
     document.location.reload(true);
   }
 
-  function removeFocus(e) {
+  function removeFocus (e) {
     const tagName = e.target.tagName.toLowerCase();
     if (document.activeElement && (tagName === 'input' || tagName === 'select' || tagName === 'textarea')) {
       document.activeElement.blur();
@@ -257,8 +257,8 @@ searxng.ready(function() {
     }
   }
 
-  function pageButtonClick(css_selector) {
-    return function() {
+  function pageButtonClick (css_selector) {
+    return function () {
       var button = document.querySelector(css_selector);
       if (button) {
         button.click();
@@ -266,24 +266,24 @@ searxng.ready(function() {
     };
   }
 
-  function GoToNextPage() {
+  function GoToNextPage () {
     return pageButtonClick('nav#pagination .next_page button[type="submit"]');
   }
 
-  function GoToPreviousPage() {
+  function GoToPreviousPage () {
     return pageButtonClick('nav#pagination .previous_page button[type="submit"]');
   }
 
-  function scrollPageToSelected() {
+  function scrollPageToSelected () {
     var sel = document.querySelector('.result[data-vim-selected]');
     if (sel === null) {
       return;
     }
     var wtop = document.documentElement.scrollTop || document.body.scrollTop,
-    wheight = document.documentElement.clientHeight,
-    etop = sel.offsetTop,
-    ebot = etop + sel.clientHeight,
-    offset = 120;
+      wheight = document.documentElement.clientHeight,
+      etop = sel.offsetTop,
+      ebot = etop + sel.clientHeight,
+      offset = 120;
     // first element ?
     if ((sel.previousElementSibling === null) && (ebot < wheight)) {
       // set to the top of page if the first element
@@ -301,27 +301,27 @@ searxng.ready(function() {
     }
   }
 
-  function scrollPage(amount) {
-    return function() {
+  function scrollPage (amount) {
+    return function () {
       window.scrollBy(0, amount);
       highlightResult('visible')();
     };
   }
 
-  function scrollPageTo(position, nav) {
-    return function() {
+  function scrollPageTo (position, nav) {
+    return function () {
       window.scrollTo(0, position);
       highlightResult(nav)();
     };
   }
 
-  function searchInputFocus() {
+  function searchInputFocus () {
     window.scrollTo(0, 0);
     document.querySelector('#q').focus();
   }
 
-  function openResult(newTab) {
-    return function() {
+  function openResult (newTab) {
+    return function () {
       var link = document.querySelector('.result[data-vim-selected] h3 a');
       if (link === null) {
         link = document.querySelector('.result[data-vim-selected] > a');
@@ -337,7 +337,7 @@ searxng.ready(function() {
     };
   }
 
-  function initHelpContent(divElement) {
+  function initHelpContent (divElement) {
     var categories = {};
 
     for (var k in vimKeys) {
@@ -346,7 +346,7 @@ searxng.ready(function() {
       categories[key.cat].push(key);
     }
 
-    var sorted = Object.keys(categories).sort(function(a, b) {
+    var sorted = Object.keys(categories).sort(function (a, b) {
       return categories[b].length - categories[a].length;
     });
 
@@ -386,23 +386,23 @@ searxng.ready(function() {
 
     html += '</table>';
 
-     divElement.innerHTML = html;
+    divElement.innerHTML = html;
   }
 
-  function toggleHelp() {
+  function toggleHelp () {
     var helpPanel = document.querySelector('#vim-hotkeys-help');
     if (helpPanel === undefined || helpPanel === null) {
-       // first call
+      // first call
       helpPanel = document.createElement('div');
-         helpPanel.id = 'vim-hotkeys-help';
-        helpPanel.className='dialog-modal';
+      helpPanel.id = 'vim-hotkeys-help';
+      helpPanel.className = 'dialog-modal';
       initHelpContent(helpPanel);
-			initHelpContent(helpPanel);					
+      initHelpContent(helpPanel);
       initHelpContent(helpPanel);
       var body = document.getElementsByTagName('body')[0];
       body.appendChild(helpPanel);
     } else {
-       // togggle hidden
+      // togggle hidden
       helpPanel.classList.toggle('invisible');
       return;
     }

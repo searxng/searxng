@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
-(function(w, d, searxng) {
+(function (w, d, searxng) {
   'use strict';
 
-  searxng.ready(function() {
+  searxng.ready(function () {
     searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 14, 6, 200);
     searxng.image_thumbnail_layout.watch();
 
-    searxng.on('.btn-collapse', 'click', function() {
+    searxng.on('.btn-collapse', 'click', function () {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
       var target = this.getAttribute('data-target');
@@ -22,7 +22,7 @@
       targetElement.classList.toggle('invisible');
     });
 
-    searxng.on('.media-loader', 'click', function() {
+    searxng.on('.media-loader', 'click', function () {
       var target = this.getAttribute('data-target');
       var iframe_load = d.querySelector(target + ' > iframe');
       var srctest = iframe_load.getAttribute('src');
@@ -31,8 +31,8 @@
       }
     });
 
-    searxng.selectImage = function(resultElement) {
-      /*eslint no-unused-vars: 0*/
+    searxng.selectImage = function (resultElement) {
+      /* eslint no-unused-vars: 0 */
       if (resultElement) {
         // load full size image in background
         const imgElement = resultElement.querySelector('.result-images-source img');
@@ -65,22 +65,22 @@
       searxng.scrollPageToSelected();
     }
 
-    searxng.closeDetail = function(e) {
+    searxng.closeDetail = function (e) {
       d.getElementById('results').classList.remove('image-detail-open');
       searxng.image_thumbnail_layout.align();
       searxng.scrollPageToSelected();
     }
-    searxng.on('.result-detail-close', 'click', e => { 
+    searxng.on('.result-detail-close', 'click', e => {
       e.preventDefault();
       searxng.closeDetail();
     });
     searxng.on('.result-detail-previous', 'click', e => searxng.selectPrevious(false));
     searxng.on('.result-detail-next', 'click', e => searxng.selectNext(false));
 
-    w.addEventListener('scroll', function() {
+    w.addEventListener('scroll', function () {
       var e = d.getElementById('backToTop'),
-      scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
-      results = d.getElementById('results');
+        scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+        results = d.getElementById('results');
       if (e !== null) {
         if (scrollTop >= 100) {
           results.classList.add('scrolling');
