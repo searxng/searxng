@@ -23,8 +23,8 @@
   <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
   {%- endfor %}
   {{- result_close_link() -}}
-  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" title="{{ result.title|striptags }}">{{ result_close_link() }}{% endif -%}
-  {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}">{{ result_close_link() }}{% endif -%}
+  {%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image" src="{{ image_proxify(result.img_src) }}" title="{{ result.title|striptags }}" loading="lazy" width="200" height="200">{{ result_close_link() }}{% endif -%}
+  {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy" width="200" height="200">{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
 
