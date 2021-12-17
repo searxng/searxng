@@ -10,18 +10,19 @@
 # Noémi Ványi <sitbackandwait@gmail.com>, 2020
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-24 19:24+0000\n"
-"PO-Revision-Date: 2021-11-03 08:06+0000\n"
+"PO-Revision-Date: 2021-12-17 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Persian <https://weblate.bubu1.eu/projects/searxng/searxng/fa/"
+">\n"
 "Language: fa_IR\n"
-"Language-Team: Persian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/fa/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:164
@@ -70,63 +71,63 @@ msgstr "دانش<br>"
 
 #: searx/webapp.py:178
 msgid "auto"
-msgstr ""
+msgstr "خودکار"
 
 #: searx/webapp.py:179
 msgid "light"
-msgstr ""
+msgstr "سبک"
 
 #: searx/webapp.py:180
 msgid "dark"
-msgstr ""
+msgstr "تاریک"
 
 #: searx/webapp.py:184
 msgid "timeout"
-msgstr ""
+msgstr "مهلت"
 
 #: searx/webapp.py:185
 msgid "parsing error"
-msgstr ""
+msgstr "تجزیهٔ خطا"
 
 #: searx/webapp.py:186
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "خطای منشور HTTP"
 
 #: searx/webapp.py:187
 msgid "network error"
-msgstr ""
+msgstr "خطای شبکه"
 
 #: searx/webapp.py:189
 msgid "unexpected crash"
-msgstr ""
+msgstr "از کار افتادن غیرمنتظره"
 
 #: searx/webapp.py:196
 msgid "HTTP error"
-msgstr ""
+msgstr "خطای HTTP"
 
 #: searx/webapp.py:197
 msgid "HTTP connection error"
-msgstr ""
+msgstr "خطای اتصال HTTP"
 
 #: searx/webapp.py:203
 msgid "proxy error"
-msgstr ""
+msgstr "خطای پروکسی"
 
 #: searx/webapp.py:204
 msgid "CAPTCHA"
-msgstr ""
+msgstr "کپچا"
 
 #: searx/webapp.py:205
 msgid "too many requests"
-msgstr ""
+msgstr "درخواست‌های بسیار زیاد"
 
 #: searx/webapp.py:206
 msgid "access denied"
-msgstr ""
+msgstr "دسترسی رد شد"
 
 #: searx/webapp.py:207
 msgid "server API error"
-msgstr ""
+msgstr "خطای API کارساز"
 
 #: searx/webapp.py:399
 msgid "No item found"
@@ -135,7 +136,7 @@ msgstr "چیزی پیدا نشد"
 #: searx/engines/qwant.py:198
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:401
 msgid "Source"
-msgstr ""
+msgstr "منبع"
 
 #: searx/webapp.py:523 searx/webapp.py:935
 msgid "Invalid settings, please edit your preferences"
@@ -159,7 +160,7 @@ msgstr "{hours} ساعت و {minutes} دقیقه پیش"
 
 #: searx/webapp.py:856
 msgid "Suspended"
-msgstr ""
+msgstr "تعلیق‌شده"
 
 #: searx/answerers/random/answerer.py:65
 msgid "Random value generator"
@@ -179,11 +180,11 @@ msgstr "پردازش {functions} نشانوند ها<br>"
 
 #: searx/engines/openstreetmap.py:155
 msgid "Get directions"
-msgstr ""
+msgstr "دستورهای دریافت"
 
 #: searx/engines/pdbe.py:90
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} (OBSOLETE)"
 
 #: searx/engines/pdbe.py:97
 msgid "This entry has been superseded by"
@@ -195,23 +196,23 @@ msgstr "هیچ چکید ای برای این نشریه در دسترس نیست
 
 #: searx/engines/qwant.py:200
 msgid "Channel"
-msgstr ""
+msgstr "کانال"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "رشته‌ها را به چکیده‌های هش تبدیل می‌کند."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "چکیدهٔ هش"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "جایگزینی نام میزبان"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "بازنویسی نام‌های میزبان به‌دست آمده یا حذف نتایج بر اساس نام میزبان"
 
 #: searx/plugins/infinite_scroll.py:3
 msgid "Infinite scroll"
@@ -246,8 +247,9 @@ msgstr ""
 "کنید. (نیازمند جاواسکریپت)<br>"
 
 #: searx/plugins/self_info.py:19
+#, fuzzy
 msgid "Self Informations"
-msgstr ""
+msgstr "اطلاعات خویش"
 
 #: searx/plugins/self_info.py:20
 msgid ""
@@ -322,11 +324,11 @@ msgstr "یک ابر موتور جستجوی حافظ حریم شخصی"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:55
 msgid "Source code"
-msgstr ""
+msgstr "کد منبع"
 
 #: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:56
 msgid "Issue tracker"
-msgstr ""
+msgstr "دنبال‌گر مشکل"
 
 #: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:21
@@ -338,15 +340,15 @@ msgstr "آمار موتور<br>"
 #: searx/templates/simple/base.html:58
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr ""
+msgstr "شاهدهای عمومی"
 
 #: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:59
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "نگهدارندهٔ شاهد تماس"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
-msgstr ""
+msgstr "زبان"
 
 #: searx/templates/oscar/languages.html:4
 #: searx/templates/simple/filters/languages.html:2
@@ -387,7 +389,7 @@ msgstr "اجازه"
 
 #: searx/templates/oscar/macros.html:139
 msgid "broken"
-msgstr ""
+msgstr "نابه‌سامان"
 
 #: searx/templates/oscar/macros.html:141
 msgid "supported"
@@ -1359,4 +1361,3 @@ msgstr ""
 #~ " contains your query. Your browser "
 #~ "can record this title."
 #~ msgstr ""
-
