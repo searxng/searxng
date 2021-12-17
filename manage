@@ -229,7 +229,7 @@ weblate.translations.commit() {
                 -d "searx/translations"
         # git add/commit (no push)
         commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
-        commit_message=$(echo -e "[translations] update\n${commit_body}")
+        commit_message=$(echo -e "[translations] update from Weblate\n\n${commit_body}")
         git add searx/translations
         git commit -m "${commit_message}"
     )
