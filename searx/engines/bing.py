@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Bing (Web)
+# lint: pylint
+"""Bing (Web)
 """
 
 import re
@@ -8,7 +8,6 @@ from urllib.parse import urlencode
 from lxml import html
 from searx.utils import eval_xpath, extract_text, match_language
 
-# about
 about = {
     "website": 'https://www.bing.com',
     "wikidata_id": 'Q182496',
@@ -21,6 +20,8 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
+time_range_support = False
+safesearch = False
 supported_languages_url = 'https://www.bing.com/account/general'
 language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
 
@@ -28,71 +29,80 @@ language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
 base_url = 'https://www.bing.com/'
 search_string = 'search?{query}&first={offset}'
 
-
 def _get_offset_from_pageno(pageno):
     return (pageno - 1) * 10 + 1
 
-
-# do search-request
 def request(query, params):
-    offset = _get_offset_from_pageno(params.get('pageno', 0))
 
+    offset = _get_offset_from_pageno(params.get('pageno', 0))
     if params['language'] == 'all':
         lang = 'EN'
     else:
-        lang = match_language(params['language'], supported_languages, language_aliases)
+        lang = match_language(
+            params['language'], supported_languages, language_aliases
+        )
 
-    query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
+    query = 'language:{} {}'.format(
+        lang.split('-')[0].upper(), query
+    )
 
     search_path = search_string.format(
-        query=urlencode({'q': query}),
-        offset=offset)
-
+        query = urlencode({'q': query}),
+        offset = offset)
     params['url'] = base_url + search_path
 
     return params
 
 
-# get response from search-request
 def response(resp):
+
     results = []
     result_len = 0
 
     dom = html.fromstring(resp.text)
-    # parse results
+
     for result in eval_xpath(dom, '//div[@class="sa_cc"]'):
+
         link = eval_xpath(result, './/h3/a')[0]
         url = link.attrib.get('href')
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({
+            'url': url,
+            'title': title,
+            'content': content
+        })
 
     # parse results again if nothing is found yet
     for result in eval_xpath(dom, '//li[@class="b_algo"]'):
+
         link = eval_xpath(result, './/h2/a')[0]
         url = link.attrib.get('href')
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({
+            'url': url,
+            'title': title,
+            'content': content
+        })
 
     try:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
+
             # Remove the part "from-to" for paginated request ...
             result_len_container = result_len_container[result_len_container.find("-") * 2 + 2:]
 
         result_len_container = re.sub('[^0-9]', '', result_len_container)
+
         if len(result_len_container) > 0:
             result_len = int(result_len_container)
-    except Exception as e:
+
+    except Exception as e:  # pylint: disable=broad-except
         logger.debug('result error :\n%s', e)
 
     if result_len and _get_offset_from_pageno(resp.search_params.get("pageno", 0)) > result_len:
