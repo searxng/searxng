@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 """Bing (Web)
+
+- https://github.com/searx/searx/issues/2019#issuecomment-648227442
 """
 
 import re
@@ -27,14 +29,27 @@ language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
 
 # search-url
 base_url = 'https://www.bing.com/'
-search_string = 'search?{query}&first={offset}'
+
+# initial query:     https://www.bing.com/search?q=foo&search=&form=QBLH
+inital_query = 'search?{query}&search=&form=QBLH'
+
+# following queries: https://www.bing.com/search?q=foo&search=&first=11&FORM=PERE
+page_query = 'search?{query}&search=&first={offset}&FORM=PERE'
 
 def _get_offset_from_pageno(pageno):
     return (pageno - 1) * 10 + 1
 
 def request(query, params):
 
-    offset = _get_offset_from_pageno(params.get('pageno', 0))
+    offset = _get_offset_from_pageno(params.get('pageno', 1))
+
+    # logger.debug("params['pageno'] --> %s", params.get('pageno'))
+    # logger.debug("          offset --> %s", offset)
+
+    search_string = page_query
+    if offset == 1:
+        search_string = inital_query
+
     if params['language'] == 'all':
         lang = 'EN'
     else:
@@ -49,10 +64,18 @@ def request(query, params):
     search_path = search_string.format(
         query = urlencode({'q': query}),
         offset = offset)
+
+    if offset > 1:
+        referer = base_url + inital_query.format(query = urlencode({'q': query}))
+        params['headers']['Referer'] = referer
+        logger.debug("headers.Referer --> %s", referer )
+
     params['url'] = base_url + search_path
-
+    params['headers']['Accept-Language'] = "en-US,en;q=0.5"
+    params['headers']['Accept'] = (
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    )
     return params
-
 
 def response(resp):
 
@@ -62,6 +85,9 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath(dom, '//div[@class="sa_cc"]'):
+
+        # IMO //div[@class="sa_cc"] does no longer match
+        logger.debug('found //div[@class="sa_cc"] --> %s',  result)
 
         link = eval_xpath(result, './/h3/a')[0]
         url = link.attrib.get('href')
