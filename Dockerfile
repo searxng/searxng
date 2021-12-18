@@ -48,7 +48,7 @@ RUN apk upgrade --no-cache \
     uwsgi-python3 \
     brotli \
  && pip3 install --upgrade pip wheel setuptools \
- && pip3 install --no-cache  --no-binary :all: -r requirements.txt \
+ && pip3 install --no-cache -r requirements.txt \
  && apk del build-dependencies \
  && rm -rf /root/.cache
 
