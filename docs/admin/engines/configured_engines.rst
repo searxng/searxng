@@ -33,7 +33,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Language
         - Safe search
         - Time range
-        - Engine type
 
       {% for name, mod in engines.items() %}
 
@@ -44,11 +43,14 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - {{mod.timeout}}
         - {{mod.weight or 1 }}
         - {{", ".join(mod.categories)}}
+        {% if mod.engine_type == 'online' %}
         - {{(mod.paging and "y") or ""}}
         - {{(mod.language_support and "y") or ""}}
         - {{(mod.safesearch and "y") or ""}}
         - {{(mod.time_range_support and "y") or ""}}
-        - {{mod.engine_type or ""}}
+        {% else %}
+        - :cspan:`3` not applicable ({{mod.engine_type}})
+        {% endif %}
 
      {% endfor %}
 
