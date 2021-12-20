@@ -14,12 +14,16 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
 .. jinja:: searx
 
+   {% for category, engines in engines.items() | groupby('1.categories.0') %}
+
+   {{category}} search engines
+   ---------------------------------------
+
    .. flat-table::
       :header-rows: 2
       :stub-columns: 1
 
       * - :cspan:`5` Engines configured by default (in :ref:`settings.yml <engine settings>`)
-        -
         - :cspan:`3` :ref:`Supported features <engine file>`
 
       * - Name
@@ -28,13 +32,12 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Disabled
         - Timeout
         - Weight
-        - Categories
         - Paging
         - Language
         - Safe search
         - Time range
 
-      {% for name, mod in engines.items() %}
+      {% for name, mod in engines %}
 
       * - `{{name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
@@ -42,7 +45,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - {{(mod.disabled and "y") or ""}}
         - {{mod.timeout}}
         - {{mod.weight or 1 }}
-        - {{", ".join(mod.categories)}}
         {% if mod.engine_type == 'online' %}
         - {{(mod.paging and "y") or ""}}
         - {{(mod.language_support and "y") or ""}}
@@ -53,4 +55,4 @@ Explanation of the :ref:`general engine configuration` shown in the table
         {% endif %}
 
      {% endfor %}
-
+     {% endfor %}
