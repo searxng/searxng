@@ -16,7 +16,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
    .. flat-table::
       :header-rows: 2
-      :stub-columns: 2
+      :stub-columns: 1
 
       * - :cspan:`6` Engines configured by default (in :ref:`settings.yml <engine settings>`)
         -
@@ -39,7 +39,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
       {% for name, mod in engines.items() %}
 
       * - `{{name}} <{{mod.about and mod.about.website}}>`_
-        - !{{mod.shortcut}}
+        - ``!{{mod.shortcut}}``
         - {{mod.__name__}}
         - {{(mod.disabled and "y") or ""}}
         - {{mod.timeout}}
