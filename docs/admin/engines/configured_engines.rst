@@ -30,8 +30,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
    ------------- ----------- ---------------------------------
    Weigth        **W**
    ------------- ----------- ---------------------------------
-   Disabled      **D**
-   ------------- ----------- ---------------------------------
    Show errors   **DE**
    ============= =========== =================================
 
@@ -53,7 +51,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - TR
         - ET
         - W
-        - D
         - DE
 
       {% for name, mod in engines.items() %}
@@ -70,7 +67,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - {{(mod.time_range_support and "y") or ""}}
         - {{mod.engine_type or ""}}
         - {{mod.weight or 1 }}
-        - {{(mod.disabled and "y") or ""}}
         - {{(mod.display_error_messages and "y") or ""}}
 
      {% endfor %}
