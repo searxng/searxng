@@ -18,7 +18,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
       :header-rows: 2
       :stub-columns: 1
 
-      * - :cspan:`6` Engines configured by default (in :ref:`settings.yml <engine settings>`)
+      * - :cspan:`5` Engines configured by default (in :ref:`settings.yml <engine settings>`)
         -
         - :cspan:`3` :ref:`Supported features <engine file>`
 
@@ -28,7 +28,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Disabled
         - Timeout
         - Weight
-        - Display errors
         - Categories
         - Paging
         - Language
@@ -44,7 +43,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - {{(mod.disabled and "y") or ""}}
         - {{mod.timeout}}
         - {{mod.weight or 1 }}
-        - {{(mod.display_error_messages and "y") or ""}}
         - {{", ".join(mod.categories)}}
         - {{(mod.paging and "y") or ""}}
         - {{(mod.language_support and "y") or ""}}
