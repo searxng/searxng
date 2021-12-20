@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Bing (Web)
+# lint: pylint
+"""Bing (Web)
+
+- https://github.com/searx/searx/issues/2019#issuecomment-648227442
 """
 
 import re
@@ -8,7 +10,6 @@ from urllib.parse import urlencode
 from lxml import html
 from searx.utils import eval_xpath, extract_text, match_language
 
-# about
 about = {
     "website": 'https://www.bing.com',
     "wikidata_id": 'Q182496',
@@ -21,78 +22,113 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
+time_range_support = False
+safesearch = False
 supported_languages_url = 'https://www.bing.com/account/general'
 language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
 
 # search-url
 base_url = 'https://www.bing.com/'
-search_string = 'search?{query}&first={offset}'
 
+# initial query:     https://www.bing.com/search?q=foo&search=&form=QBLH
+inital_query = 'search?{query}&search=&form=QBLH'
+
+# following queries: https://www.bing.com/search?q=foo&search=&first=11&FORM=PERE
+page_query = 'search?{query}&search=&first={offset}&FORM=PERE'
 
 def _get_offset_from_pageno(pageno):
     return (pageno - 1) * 10 + 1
 
-
-# do search-request
 def request(query, params):
-    offset = _get_offset_from_pageno(params.get('pageno', 0))
+
+    offset = _get_offset_from_pageno(params.get('pageno', 1))
+
+    # logger.debug("params['pageno'] --> %s", params.get('pageno'))
+    # logger.debug("          offset --> %s", offset)
+
+    search_string = page_query
+    if offset == 1:
+        search_string = inital_query
 
     if params['language'] == 'all':
         lang = 'EN'
     else:
-        lang = match_language(params['language'], supported_languages, language_aliases)
+        lang = match_language(
+            params['language'], supported_languages, language_aliases
+        )
 
-    query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
+    query = 'language:{} {}'.format(
+        lang.split('-')[0].upper(), query
+    )
 
     search_path = search_string.format(
-        query=urlencode({'q': query}),
-        offset=offset)
+        query = urlencode({'q': query}),
+        offset = offset)
+
+    if offset > 1:
+        referer = base_url + inital_query.format(query = urlencode({'q': query}))
+        params['headers']['Referer'] = referer
+        logger.debug("headers.Referer --> %s", referer )
 
     params['url'] = base_url + search_path
-
+    params['headers']['Accept-Language'] = "en-US,en;q=0.5"
+    params['headers']['Accept'] = (
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    )
     return params
 
-
-# get response from search-request
 def response(resp):
+
     results = []
     result_len = 0
 
     dom = html.fromstring(resp.text)
-    # parse results
+
     for result in eval_xpath(dom, '//div[@class="sa_cc"]'):
+
+        # IMO //div[@class="sa_cc"] does no longer match
+        logger.debug('found //div[@class="sa_cc"] --> %s',  result)
+
         link = eval_xpath(result, './/h3/a')[0]
         url = link.attrib.get('href')
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({
+            'url': url,
+            'title': title,
+            'content': content
+        })
 
     # parse results again if nothing is found yet
     for result in eval_xpath(dom, '//li[@class="b_algo"]'):
+
         link = eval_xpath(result, './/h2/a')[0]
         url = link.attrib.get('href')
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({
+            'url': url,
+            'title': title,
+            'content': content
+        })
 
     try:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
+
             # Remove the part "from-to" for paginated request ...
             result_len_container = result_len_container[result_len_container.find("-") * 2 + 2:]
 
         result_len_container = re.sub('[^0-9]', '', result_len_container)
+
         if len(result_len_container) > 0:
             result_len = int(result_len_container)
-    except Exception as e:
+
+    except Exception as e:  # pylint: disable=broad-except
         logger.debug('result error :\n%s', e)
 
     if result_len and _get_offset_from_pageno(resp.search_params.get("pageno", 0)) > result_len:
