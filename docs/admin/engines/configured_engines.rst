@@ -15,23 +15,23 @@ Explanation of the :ref:`general engine configuration` shown in the table
 .. table:: The legend for the following table
    :width: 100%
 
-   ============= =========== ==================== ============
+   ========================= =================================
    :ref:`engine settings`    :ref:`engine file`
    ------------------------- ---------------------------------
-   Name (cfg)    ..          Categories
-   ------------- ----------- -------------------- ------------
-   Engine        ..          Paging support       **P**
-   ------------- ----------- -------------------- ------------
-   Shortcut      **S**       Language support     **L**
-   Timeout       **TO**      Time range support   **TR**
-   Disabled      **D**       Engine type          **ET**
-   ------------- ----------- -------------------- ------------
-   Safe search   **SS**
-   ------------- ----------- ---------------------------------
-   Weigth        **W**
-   ------------- ----------- ---------------------------------
-   Show errors   **DE**
-   ============= =========== =================================
+   Name                      Categories
+   ------------------------- ---------------------------------
+   Engine                    Paging support
+   ------------------------- ---------------------------------
+   Shortcut                  Language support
+   Timeout                   Time range support
+   Disabled                  Engine type
+   ------------------------- ---------------------------------
+   Safe search
+   ------------------------- ---------------------------------
+   Weigth
+   ------------------------- ---------------------------------
+   Show errors
+   ========================= =================================
 
 .. jinja:: searx
 
@@ -39,19 +39,19 @@ Explanation of the :ref:`general engine configuration` shown in the table
       :header-rows: 1
       :stub-columns: 2
 
-      * - Name (cfg)
-        - S
+      * - Name
+        - Shortcut
         - Engine
-        - TO
+        - Timeout
         - Categories
-        - P
-        - L
-        - SS
-        - D
-        - TR
-        - ET
-        - W
-        - DE
+        - Paging
+        - Language
+        - Safe search
+        - Disabled
+        - Time range
+        - Engine type
+        - Weight
+        - Display errors
 
       {% for name, mod in engines.items() %}
 
