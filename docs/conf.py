@@ -49,6 +49,9 @@ jinja_contexts = {
         },
     },
 }
+jinja_filters = {
+    'sort_engines': lambda engines: sorted(engines, key=lambda engine: (engine[1].disabled, engine[0]))
+}
 
 # usage::   lorem :patch:`f373169` ipsum
 extlinks = {}

@@ -37,7 +37,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Safe search
         - Time range
 
-      {% for name, mod in engines %}
+      {% for name, mod in engines | sort_engines %}
 
       * - `{{name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
