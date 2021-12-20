@@ -71,6 +71,8 @@ Contact
 
 Matrix: `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
 
+IRC:  #searxng on libera.chat which is bridged to Matrix.
+
  
 Translations
 """"""""""""
