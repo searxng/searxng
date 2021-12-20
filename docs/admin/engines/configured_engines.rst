@@ -58,7 +58,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
       {% for name, mod in engines.items() %}
 
-      * - {{name}}
+      * - `{{name}} <{{mod.about and mod.about.website}}>`_
         - !{{mod.shortcut}}
         - {{mod.__name__}}
         - {{mod.timeout}}
