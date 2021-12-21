@@ -30,7 +30,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
       * - Name
         - Shortcut
-        - Engine
+        - Module
         - Disabled
         - Timeout
         - Weight
@@ -43,7 +43,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
       * - `{{name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
-        - {{mod.__name__}}
+        - :origin:`{{mod.__name__}} <searx/engines/{{mod.__name__}}.py>`
         - {{(mod.disabled and "y") or ""}}
           {%- if mod.about and  mod.about.language %}
           ({{mod.about.language | upper}})
