@@ -352,6 +352,9 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+      # We don't set language: de here because media.ccc.de is not just
+      # for a German audience. It contains many English videos and many
+      # German videos have English subtitles.
 
   - name: ccengine
     engine: ccengine
@@ -1573,6 +1576,7 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+      language: ko
 
   - name: rubygems
     shortcut: rbg
@@ -1649,6 +1653,7 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+      language: de
 
   - name: słownik języka polskiego
     engine: sjp
@@ -1676,6 +1681,7 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+      language: fr
 
   - name: brave
     shortcut: brave

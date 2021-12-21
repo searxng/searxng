@@ -43,6 +43,9 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - ``!{{mod.shortcut}}``
         - {{mod.__name__}}
         - {{(mod.disabled and "y") or ""}}
+          {%- if mod.about and  mod.about.language %}
+          ({{mod.about.language | upper}})
+          {%- endif %}
         - {{mod.timeout}}
         - {{mod.weight or 1 }}
         {% if mod.engine_type == 'online' %}
