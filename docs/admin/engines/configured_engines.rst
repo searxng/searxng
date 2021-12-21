@@ -14,6 +14,8 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
 .. jinja:: searx
 
+   SearXNG supports {{engines | length}} search engines (of which {{enabled_engine_count}} are enabled by default).
+
    {% for category, engines in engines.items() | groupby('1.categories.0') %}
 
    {{category}} search engines

@@ -47,6 +47,7 @@ jinja_contexts = {
         'version': {
             'node': os.getenv('NODE_MINIMUM_VERSION')
         },
+        'enabled_engine_count': sum(not x.disabled for x in searx.engines.engines.values()),
     },
 }
 jinja_filters = {
