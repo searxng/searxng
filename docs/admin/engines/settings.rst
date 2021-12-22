@@ -219,6 +219,26 @@ Communication with search engines.
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
 
+``categories_as_tabs:``
+-----------------------
+
+A list of the categories that are displayed as tabs in the user interface.
+Categories not listed here can still be searched with the :ref:`search-syntax`.
+
+.. code-block:: yaml
+
+  categories_as_tabs:
+    - general
+    - images
+    - videos
+    - news
+    - map
+    - music
+    - it
+    - science
+    - files
+    - social media
+
 .. _settings engine:
 
 Engine settings

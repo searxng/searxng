@@ -16,10 +16,17 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
    SearXNG supports {{engines | length}} search engines (of which {{enabled_engine_count}} are enabled by default).
 
-   {% for category, engines in categories.items() %}
+   {% for category, engines in categories_as_tabs.items() %}
 
    {{category}} search engines
    ---------------------------------------
+
+   {% for group, engines in engines | group_engines_in_tab %}
+
+   {% if loop.length > 1 %}
+   {{group}}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   {% endif %}
 
    .. flat-table::
       :header-rows: 2
@@ -39,7 +46,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Safe search
         - Time range
 
-      {% for mod in engines | sort_engines %}
+      {% for mod in engines %}
 
       * - `{{mod.name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
@@ -63,5 +70,6 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - :cspan:`3` not applicable ({{mod.engine_type}})
         {% endif %}
 
+     {% endfor %}
      {% endfor %}
      {% endfor %}

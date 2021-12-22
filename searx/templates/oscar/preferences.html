@@ -298,7 +298,7 @@
             <div class="tab-pane active_if_nojs" id="tab_engine">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-justified hide_if_nojs" role="tablist">
-                    {% for categ in all_categories %}
+                    {% for categ in categories_as_tabs %}
                     <li{% if loop.first %} class="active"{% endif %}><a href="#tab_engine_{{ categ|replace(' ', '_') }}" role="tab" data-toggle="tab">{{ _(categ) }}</a></li>
                     {% endfor %}
                 </ul>
@@ -317,7 +317,7 @@
                         </p>
                     </div>
 
-                    {% for categ in all_categories %}
+                    {% for categ in categories_as_tabs %}
                     <noscript><label>{{ _(categ) }}</label>
                     </noscript>
                     <div class="tab-pane{% if loop.first %} active{% endif %} active_if_nojs" id="tab_engine_{{ categ|replace(' ', '_') }}">

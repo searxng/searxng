@@ -50,14 +50,11 @@ jinja_contexts = {
         },
         'enabled_engine_count': sum(not x.disabled for x in searx.engines.engines.values()),
         'categories': searx.engines.categories,
+        'categories_as_tabs': {c: searx.engines.categories[c] for c in searx.settings['categories_as_tabs']},
     },
 }
 jinja_filters = {
-    'sort_engines':
-    lambda engines: sorted(
-        engines,
-        key=lambda engine: (engine.about.get('language', ''), engine.name)
-    )
+    'group_engines_in_tab': searx.engines.group_engines_in_tab,
 }
 
 # Let the Jinja template in configured_engines.rst access documented_modules

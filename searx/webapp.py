@@ -390,12 +390,6 @@ def get_translations():
     }
 
 
-def _get_ordered_categories():
-    ordered_categories = list(settings['ui']['categories_order'])
-    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
-    return ordered_categories
-
-
 def _get_enable_categories(all_categories):
     disabled_engines = request.preferences.engines.get_disabled()
     enabled_categories = set(
@@ -430,8 +424,8 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
     kwargs['theme'] = get_current_theme_name(override=override_theme)
-    kwargs['all_categories'] = _get_ordered_categories()
-    kwargs['categories'] = _get_enable_categories(kwargs['all_categories'])
+    kwargs['categories_as_tabs'] = settings['categories_as_tabs']
+    kwargs['categories'] = _get_enable_categories(categories.keys())
 
     # i18n
     kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]

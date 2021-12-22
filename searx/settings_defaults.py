@@ -20,7 +20,7 @@ OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
 LANGUAGE_CODES = ['all'] + list(l[0] for l in languages)
 OSCAR_STYLE = ('logicodev', 'logicodev-dark', 'pointhi')
 SIMPLE_STYLE = ('auto', 'light', 'dark')
-CATEGORY_ORDER = [
+CATEGORIES_AS_TABS = [
     'general',
     'images',
     'videos',
@@ -181,7 +181,6 @@ SCHEMA = {
         'results_on_new_tab': SettingsValue(bool, False),
         'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),
-        'categories_order': SettingsValue(list, CATEGORY_ORDER),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
@@ -212,6 +211,7 @@ SCHEMA = {
     'checker': {
         'off_when_debug': SettingsValue(bool, True),
     },
+    'categories_as_tabs': SettingsValue(list, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},
 }
