@@ -31,7 +31,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']
+categories = ['general', 'web']
 paging = True
 time_range_support = True
 supported_languages_url = 'https://search.yahoo.com/preferences/languages'

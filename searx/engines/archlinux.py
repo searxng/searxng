@@ -20,7 +20,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['it']
+categories = ['it', 'software wikis']
 paging = True
 base_url = 'https://wiki.archlinux.org'
 

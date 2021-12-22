@@ -20,7 +20,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['music']
+categories = ['music', 'lyrics']
 paging = True
 page_size = 5
 

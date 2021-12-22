@@ -21,7 +21,7 @@ about = {
     "language": 'pl',
 }
 
-categories = ['general']
+categories = ['general', 'dictionaries']
 paging = False
 
 URL = 'https://sjp.pwn.pl'

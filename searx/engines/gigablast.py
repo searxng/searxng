@@ -22,7 +22,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']
+categories = ['general', 'web']
 # gigablast's pagination is totally damaged, don't use it
 paging = False
 safesearch = True

@@ -23,7 +23,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']
+categories = ['general', 'web']
 # there is a mechanism to block "bot" search
 # (probably the parameter qid), require
 # storing of qid's between mulitble search-calls

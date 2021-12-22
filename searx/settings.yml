@@ -325,7 +325,7 @@ engines:
     url_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]/@href
     title_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]
     content_xpath: //article[@class="repo-summary"]/p
-    categories: it
+    categories: [it, repos]
     timeout: 4.0
     disabled: true
     shortcut: bb
@@ -424,7 +424,7 @@ engines:
   - name: docker hub
     engine: docker_hub
     shortcut: dh
-    categories: it
+    categories: [it, packages]
 
   - name: erowid
     engine: xpath
@@ -494,6 +494,7 @@ engines:
     content_xpath: //section[contains(@class, "word__defination")]
     first_page_num: 1
     shortcut: et
+    categories: [general, dictionaries]
     disabled: true
     about:
       website: https://www.etymonline.com/
@@ -533,7 +534,7 @@ engines:
   - name: free software directory
     engine: mediawiki
     shortcut: fsd
-    categories: it
+    categories: [it, software wikis]
     base_url: https://directory.fsf.org/
     number_of_results: 5
     # what part of a page matches the query string: title, text, nearmatch
@@ -584,7 +585,7 @@ engines:
     title_query: name_with_namespace
     content_query: description
     page_size: 20
-    categories: it
+    categories: [it, repos]
     shortcut: gl
     timeout: 10.0
     disabled: true
@@ -610,7 +611,7 @@ engines:
     url_query: html_url
     title_query: name
     content_query: description
-    categories: it
+    categories: [it, repos]
     shortcut: cb
     disabled: true
     about:
@@ -676,7 +677,7 @@ engines:
     url_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a/@href'
     content_xpath: './/div[@class="RZEgze"]//a[@class="mnKHRc"]'
     thumbnail_xpath: './/div[@class="uzcko"]/div/span[1]//img/@data-src'
-    categories: files
+    categories: [files, apps]
     shortcut: gpa
     disabled: true
     about:
@@ -754,7 +755,7 @@ engines:
     url_xpath: './/div[@class="ans"]//a/@href'
     content_xpath: './/div[@class="from"]'
     page_size: 20
-    categories: it
+    categories: [it, packages]
     shortcut: ho
     about:
       website: https://hoogle.haskell.org/
@@ -849,7 +850,7 @@ engines:
     engine: xpath
     timeout: 4.0
     disabled: true
-    categories: music
+    categories: [music, lyrics]
     paging: true
     search_url: https://search.azlyrics.com/search.php?q={query}&w=lyrics&p={pageno}
     url_xpath: //td[@class="text-left visitedlyr"]/a/@href
@@ -904,7 +905,7 @@ engines:
     title_query: package/name
     content_query: package/description
     page_size: 25
-    categories: it
+    categories: [it, packages]
     disabled: true
     timeout: 5.0
     shortcut: npm
@@ -1013,7 +1014,7 @@ engines:
     url_query: url
     title_query: name
     content_query: description
-    categories: it
+    categories: [it, packages]
     disabled: true
     timeout: 5.0
     shortcut: pack
@@ -1070,7 +1071,7 @@ engines:
     content_xpath: ./p
     suggestion_xpath: /html/body/main/div/div/div/form/div/div[@class="callout-block"]/p/span/a[@class="link"]
     first_page_num: 1
-    categories: it
+    categories: [it, packages]
     about:
       website: https://pypi.org
       wikidata_id: Q2984686
@@ -1082,7 +1083,7 @@ engines:
   - name: qwant
     engine: qwant
     shortcut: qw
-    categories: general
+    categories: [general, web]
     disabled: false
     additional_tests:
       rosebud: *test_rosebud
@@ -1097,14 +1098,14 @@ engines:
   - name: qwant images
     engine: qwant
     shortcut: qwi
-    categories: images
+    categories: [images, web]
     disabled: false
     network: qwant
 
   - name: qwant videos
     engine: qwant
     shortcut: qwv
-    categories: videos
+    categories: [videos, web]
     disabled: false
     network: qwant
 
@@ -1164,19 +1165,19 @@ engines:
     engine: stackexchange
     shortcut: st
     api_site: 'stackoverflow'
-    categories: it
+    categories: [it, q&a]
 
   - name: askubuntu
     engine: stackexchange
     shortcut: ubuntu
     api_site: 'askubuntu'
-    categories: it
+    categories: [it, q&a]
 
   - name: superuser
     engine: stackexchange
     shortcut: su
     api_site: 'superuser'
-    categories: it
+    categories: [it, q&a]
 
   - name: searchcode code
     engine: searchcode_code
@@ -1359,7 +1360,7 @@ engines:
     url_query: URL
     title_query: Title
     content_query: Snippet
-    categories: general
+    categories: [general, web]
     shortcut: wib
     disabled: true
     about:
@@ -1418,7 +1419,7 @@ engines:
   - name: wiktionary
     engine: mediawiki
     shortcut: wt
-    categories: general
+    categories: [general, dictionaries]
     base_url: "https://{language}.wiktionary.org/"
     number_of_results: 5
     search_type: text
@@ -1506,6 +1507,7 @@ engines:
     shortcut: mjk
     engine: xpath
     paging: true
+    categories: [general, web]
     search_url: https://www.mojeek.com/search?q={query}&s={pageno}
     results_xpath: /html/body//div[@class="results"]/ul[@class="results-standard"]/li
     url_xpath: ./h2/a/@href
@@ -1525,6 +1527,7 @@ engines:
 
   - name: naver
     shortcut: nvr
+    categories: [general, web]
     engine: xpath
     paging: true
     search_url: https://search.naver.com/search.naver?where=webkr&sm=osp_hty&ie=UTF-8&query={query}&start={pageno}
@@ -1554,7 +1557,7 @@ engines:
     content_xpath: ./span/p
     suggestion_xpath: /html/body/main/div/div[@class="search__suggestions"]/p/a
     first_page_num: 1
-    categories: it
+    categories: [it, packages]
     disabled: true
     about:
       website: https://rubygems.org/
@@ -1598,14 +1601,14 @@ engines:
     engine: wordnik
     shortcut: def
     base_url: https://www.wordnik.com/
-    categories: general
+    categories: [general, dictionaries]
     timeout: 5.0
     disabled: true
 
   - name: woxikon.de synonyme
     engine: xpath
     shortcut: woxi
-    categories: general
+    categories: [general, dictionaries]
     timeout: 5.0
     disabled: true
     search_url: https://synonyme.woxikon.de/synonyme/{query}.php
@@ -1624,7 +1627,6 @@ engines:
     engine: sjp
     shortcut: sjp
     base_url: https://sjp.pwn.pl/
-    categories: general
     timeout: 5.0
     disabled: true
 
@@ -1657,7 +1659,7 @@ engines:
     title_xpath: //span[@class="snippet-title"]
     content_xpath: //p[1][@class="snippet-description"]
     suggestion_xpath: //div[@class="text-gray h6"]/a
-    categories: general
+    categories: [general, web]
     about:
       website: https://brave.com/search/
       wikidata_id: Q107355971

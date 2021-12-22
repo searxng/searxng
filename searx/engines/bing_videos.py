@@ -26,7 +26,7 @@ about = {
     "results": 'HTML',
 }
 
-categories = ['videos']
+categories = ['videos', 'web']
 paging = True
 safesearch = True
 time_range_support = True

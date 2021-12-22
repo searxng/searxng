@@ -25,6 +25,7 @@ about = {
     "language": "cz",
 }
 
+categories = ['general', 'web']
 base_url = 'https://search.seznam.cz/'
 
 

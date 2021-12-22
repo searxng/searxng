@@ -41,7 +41,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']
+categories = ['general', 'web']
 paging = True
 time_range_support = True
 safesearch = True

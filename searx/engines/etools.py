@@ -17,7 +17,7 @@ about = {
     "results": 'HTML',
 }
 
-categories = ['general']
+categories = ['general', 'web']
 paging = False
 safesearch = True
 

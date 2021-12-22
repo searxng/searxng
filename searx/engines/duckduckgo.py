@@ -27,7 +27,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']
+categories = ['general', 'web']
 paging = True
 supported_languages_url = 'https://duckduckgo.com/util/u588.js'
 time_range_support = True
