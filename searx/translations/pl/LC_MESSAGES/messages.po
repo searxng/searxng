@@ -6,20 +6,21 @@
 # Artur <artur@komoter.pl>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-24 19:24+0000\n"
-"PO-Revision-Date: 2021-08-27 07:16+0000\n"
-"Last-Translator: ewm <gnu.ewm@protonmail.com>\n"
+"PO-Revision-Date: 2021-12-24 07:17+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Polish <https://weblate.bubu1.eu/projects/searxng/searxng/pl/>"
+"\n"
 "Language: pl\n"
-"Language-Team: Polish "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/pl/>\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"X-Generator: Weblate 4.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:164
@@ -68,15 +69,15 @@ msgstr "nauka"
 
 #: searx/webapp.py:178
 msgid "auto"
-msgstr ""
+msgstr "autonatycznie"
 
 #: searx/webapp.py:179
 msgid "light"
-msgstr ""
+msgstr "jasny"
 
 #: searx/webapp.py:180
 msgid "dark"
-msgstr ""
+msgstr "ciemny"
 
 #: searx/webapp.py:184
 msgid "timeout"
@@ -108,7 +109,7 @@ msgstr "błąd połączenia HTTP"
 
 #: searx/webapp.py:203
 msgid "proxy error"
-msgstr ""
+msgstr "błąd serwera proxy"
 
 #: searx/webapp.py:204
 msgid "CAPTCHA"
@@ -181,7 +182,7 @@ msgstr ""
 
 #: searx/engines/pdbe.py:90
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} (PRZESTARZAŁY)"
 
 #: searx/engines/pdbe.py:97
 msgid "This entry has been superseded by"
@@ -205,7 +206,7 @@ msgstr ""
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Zastąp nazwę hosta"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -426,7 +427,7 @@ msgstr "Śr."
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:50
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Zobacz dziennik błędów i zgłoś je"
 
 #: searx/templates/oscar/preferences.html:38
 #: searx/templates/oscar/stats.html:70
@@ -591,12 +592,12 @@ msgstr "Zmień język układu"
 #: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:197
 msgid "Theme"
-msgstr ""
+msgstr "Motyw"
 
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:205
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Zmień wygląd SearXNG"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -614,7 +615,7 @@ msgstr "Pokaż ustawienia zaawansowane"
 
 #: searx/templates/oscar/preferences.html:232
 msgid "Show advanced settings panel in the home page by default"
-msgstr ""
+msgstr "Zawsze pokazuj panel ustawień zaawansowanych na stronie głównej"
 
 #: searx/templates/oscar/preferences.html:235
 #: searx/templates/oscar/preferences.html:245
@@ -661,7 +662,7 @@ msgstr "Proxy zdjęć"
 #: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:256
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Przepuść zdjęcia przez serwer SearXNG"
 
 #: searx/templates/oscar/preferences.html:277
 #: searx/templates/oscar/preferences.html:288
@@ -688,10 +689,12 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Gdy włączone, tytuł strony z wynikiem będzie zawierał twoje zapytanie. Twoja "
+"przeglądarka może widzieć to."
 
 #: searx/templates/oscar/preferences.html:315
 msgid "Allow all"
-msgstr ""
+msgstr "Zezwól na wszystkie"
 
 #: searx/templates/oscar/preferences.html:316
 msgid "Disable all"
@@ -785,6 +788,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"To jest lista plików cookies i ich zawartości, które SearXNG przechowuje na "
+"twoim komputerze."
 
 #: searx/templates/oscar/preferences.html:446
 #: searx/templates/simple/preferences.html:358
@@ -948,11 +953,11 @@ msgstr "Ostrzeżenia"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:105
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Błędy i wyjątki"
 
 #: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:111
 msgid "Exception"
-msgstr ""
+msgstr "Wyjątek"
 
 #: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:113
 msgid "Message"
@@ -985,7 +990,7 @@ msgstr ""
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:137
 msgid "Failed test"
-msgstr ""
+msgstr "Test zakończony niepowodzeniem"
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:138
 msgid "Comment(s)"
@@ -1023,7 +1028,7 @@ msgstr "Moment!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr ""
+msgstr "Wygląda na to, że używasz SearXNG po raz pierwszy."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1046,7 +1051,7 @@ msgstr "Wyszukiwarki nie mogą pobrać wyników."
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
+msgstr "Proszę spróbować później albo znaleźć inną instancję SearXNG."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1366,4 +1371,3 @@ msgstr ""
 #~ " contains your query. Your browser "
 #~ "can record this title."
 #~ msgstr ""
-
