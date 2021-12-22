@@ -720,25 +720,6 @@ engines:
       requires_api_key: false
       results: JSON
 
-  - name: geektimes
-    engine: xpath
-    paging: true
-    search_url: https://habr.com/en/search/page{pageno}/?q={query}
-    url_xpath: //article[contains(@class, "post")]//a[@class="post__title_link"]/@href
-    title_xpath: //article[contains(@class, "post")]//a[@class="post__title_link"]
-    content_xpath: //article[contains(@class, "post")]//div[contains(@class, "post__text")]
-    categories: it
-    timeout: 4.0
-    disabled: true
-    shortcut: gt
-    about:
-      website: https://geektimes.ru/
-      wikidata_id: Q50572423
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-
   - name: habrahabr
     engine: xpath
     paging: true
@@ -1535,28 +1516,6 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
-
-  - name: whaleslide
-    shortcut: whale
-    engine: json_engine
-    paging: true
-    # This API Token is needed to work
-    search_url:
-      https://search.whaleslide.com/api/v1/search_v2/web/{pageno}?q={query}&api_token=f8OhUDEYKUICHDnIxEgI7Cb4uYyTBqT4nO8iueNbfTO3devS24yElGqM7nCm
-    url_query: url
-    title_query: title
-    title_html_to_text: true
-    content_query: abstract
-    content_html_to_text: true
-    categories: general
-    disabled: true
-    about:
-      website: https://whaleslide.com/
-      wikidata_id:  # No Wikidata page
-      official_api_documentation: false
-      use_official_api: false
-      require_api_key: false
-      results: JSON
 
   - name: naver
     shortcut: nvr
