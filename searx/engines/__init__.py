@@ -138,6 +138,8 @@ def update_engine_attributes(engine, engine_data):
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value
+        elif hasattr(engine, 'about') and param_name == 'about':
+            engine.about = {**engine.about, **engine_data['about']}
         else:
             setattr(engine, param_name, param_value)
 
