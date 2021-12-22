@@ -720,25 +720,6 @@ engines:
       requires_api_key: false
       results: JSON
 
-  - name: geektimes
-    engine: xpath
-    paging: true
-    search_url: https://habr.com/en/search/page{pageno}/?q={query}
-    url_xpath: //article[contains(@class, "post")]//a[@class="post__title_link"]/@href
-    title_xpath: //article[contains(@class, "post")]//a[@class="post__title_link"]
-    content_xpath: //article[contains(@class, "post")]//div[contains(@class, "post__text")]
-    categories: it
-    timeout: 4.0
-    disabled: true
-    shortcut: gt
-    about:
-      website: https://geektimes.ru/
-      wikidata_id: Q50572423
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-
   - name: habrahabr
     engine: xpath
     paging: true
