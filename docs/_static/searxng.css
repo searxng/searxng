@@ -1,0 +1,50 @@
+
+aside.sidebar {
+  border-color: lightsteelblue;
+  border-radius: 3pt;
+}
+
+p.sidebar-title, .sidebar p {
+  margin: 6pt;
+}
+
+.sidebar li,
+.hlist li {
+  list-style-type: disclosure-closed;
+}
+
+.sphinxsidebar .current > a {
+  font-weight: bold;
+}
+
+/* admonitions with (rendered) reST markup examples (:class: rst-example)
+ *
+ * .. admonition:: title of the example
+ *     :class: rst-example
+ *     ....
+*/
+
+div.rst-example {
+  background-color: inherit;
+  margin: 0;
+  border-top: none;
+  border-right: 1px solid #ccc;
+  border-bottom: none;
+  border-left: none;
+  border-radius: none;
+  padding: 0;
+}
+
+div.rst-example > p.admonition-title {
+  font-family: Sans Serif;
+  font-style: italic;
+  font-size: 0.8em;
+  display: block;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em 1em;
+  text-align: right;
+}
+
+div.sphinx-tabs {
+    clear: both;
+}
