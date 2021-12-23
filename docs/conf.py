@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import  sys, os
-from pallets_sphinx_themes import ProjectLink
-
 from searx import get_setting
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 
@@ -109,7 +107,6 @@ extensions = [
     'sphinx.ext.viewcode',
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
-    "pallets_sphinx_themes",
     "sphinx_issues", # https://github.com/sloria/sphinx-issues/blob/master/README.rst
     "sphinxcontrib.jinja",  # https://github.com/tardyp/sphinx-jinja
     "sphinxcontrib.programoutput",  # https://github.com/NextThought/sphinxcontrib-programoutput
@@ -135,7 +132,7 @@ issues_github_path = "searxng/searxng"
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../utils/"))
 html_theme_path = ['_themes']
-html_theme = "searxng"
+html_theme = "furo"
 
 # sphinx.ext.imgmath setup
 html_math_renderer = 'imgmath'
@@ -143,23 +140,6 @@ imgmath_image_format = 'svg'
 imgmath_font_size = 14
 # sphinx.ext.imgmath setup END
 
-html_theme_options = {"index_sidebar_logo": True}
-html_context = {"project_links": [] }
-html_context["project_links"].append(ProjectLink("Source", GIT_URL + '/tree/' + GIT_BRANCH))
-
-if WIKI_URL:
-    html_context["project_links"].append(ProjectLink("Wiki", WIKI_URL))
-if PUBLIC_INSTANCES:
-    html_context["project_links"].append(ProjectLink("Public instances", PUBLIC_INSTANCES))
-if ISSUE_URL:
-    html_context["project_links"].append(ProjectLink("Issue Tracker", ISSUE_URL))
-if CONTACT_URL:
-    html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
-
-html_sidebars = {
-    "**": ["project.html", "relations.html", "searchbox.html", "sourcelink.html"],
-}
-singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_logo = "../src/brand/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = True
