@@ -604,9 +604,9 @@ rst-doc() {
 
     echo -e "\n.. START install systemd unit"
     cat <<EOF
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: systemd
+   .. tab-item:: systemd
 
       .. code:: bash
 

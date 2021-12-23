@@ -69,15 +69,15 @@ If Apache_ is not installed, install it now. If apache_ is new to you, the
 Directives`_ documentation gives first orientation.  There is also a list of
 `Apache directives`_ *to keep in the pocket*.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
          sudo -H apt-get install apache2
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
@@ -85,7 +85,7 @@ Directives`_ documentation gives first orientation.  There is also a list of
          sudo -H systemctl enable httpd
          sudo -H systemctl start http
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: sh
 
@@ -97,9 +97,9 @@ Now at http://localhost you should see any kind of *Welcome* or *Test* page.
 How this default intro site is configured, depends on the linux distribution
 (compare `Apache directives`_).
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
@@ -113,7 +113,7 @@ How this default intro site is configured, depends on the linux distribution
 
       And the *welcome* page is the HTML file at ``/var/www/html/index.html``.
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
@@ -140,7 +140,7 @@ How this default intro site is configured, depends on the linux distribution
          ...
          Include conf/extra/httpd-autoindex.conf
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: sh
 
@@ -180,9 +180,9 @@ modules and create a `Location`_ configuration for the SearXNG site.  In most
 distributions you have to un-comment the lines in the main configuration file,
 except in :ref:`The Debian Layout`.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       In the Apache setup, enable headers and proxy modules:
 
@@ -201,7 +201,7 @@ except in :ref:`The Debian Layout`.
 
          sudo -H a2ensite searxng.conf
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       In the ``/etc/httpd/conf/httpd.conf`` file, activate headers and proxy
       modules (LoadModule_):
@@ -214,7 +214,7 @@ except in :ref:`The Debian Layout`.
          LoadModule proxy_module modules/mod_proxy.so
          LoadModule proxy_http_module modules/mod_proxy_http.so
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       In the ``/etc/httpd/conf/httpd.conf`` file, activate headers and proxy
       modules (LoadModule_):
@@ -232,9 +232,9 @@ proxied host.
 
 .. _apache searxng via filtron plus morty:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: SearXNG via filtron plus morty
+   .. tab-item:: SearXNG via filtron plus morty
 
       Use this setup, if your instance is public to the internet, compare
       figure: :ref:`architecture <arch public>` and :ref:`installation scripts`.
@@ -307,9 +307,9 @@ filtron>`, nevertheless it is good enough for intranet usage.  In modern Linux
 distributions, the `mod_proxy_uwsgi`_ is compiled into the *normal* apache
 package and you need to install only the :ref:`uWSGI <searxng uwsgi>` package:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
@@ -318,13 +318,13 @@ package and you need to install only the :ref:`uWSGI <searxng uwsgi>` package:
          # Ubuntu =< 18.04
          sudo -H apt-get install libapache2-mod-proxy-uwsgi
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
          sudo -H pacman -S uwsgi
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: sh
 
@@ -347,9 +347,9 @@ SearXNG account (see :ref:`create searxng user`):
 If the server is public; to limit access to your intranet replace ``Allow from
 all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: apache
 
@@ -373,7 +373,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
 	 </Location>
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: apache
 
@@ -398,7 +398,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
 	 </Location>
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: apache
 
@@ -426,7 +426,7 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
          </IfModule>
 
-   .. group-tab:: old mod_wsgi
+   .. tab-item:: old mod_wsgi
 
       We show this only for historical reasons, DON'T USE `mod_uwsgi
       <https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-uwsgi>`_.
@@ -461,23 +461,23 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 Restart service
 ===============
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
          sudo -H systemctl restart apache2
          sudo -H service uwsgi restart searx
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
          sudo -H systemctl restart httpd
          sudo -H systemctl restart uwsgi@searx
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: sh
 

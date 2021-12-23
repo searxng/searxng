@@ -113,7 +113,7 @@ extensions = [
     'linuxdoc.kernel_include',  # Implementation of the 'kernel-include' reST-directive.
     'linuxdoc.rstFlatTable',    # Implementation of the 'flat-table' reST-directive.
     'linuxdoc.kfigure',         # Sphinx extension which implements scalable image handling.
-    "sphinx_tabs.tabs", # https://github.com/djungelorm/sphinx-tabs
+    'sphinx_design',            # https://github.com/executablebooks/sphinx-design
 ]
 
 intersphinx_mapping = {

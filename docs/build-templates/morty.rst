@@ -1,8 +1,8 @@
 .. START create user
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -17,9 +17,9 @@
 
 .. START install go
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: os: linux / arch: amd64
+  .. tab-item:: os: linux / arch: amd64
 
 
     .. code-block:: bash
@@ -41,9 +41,9 @@
 
 .. START install morty
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: bash
 

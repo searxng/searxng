@@ -3,23 +3,23 @@
 
 .. START distro-packages
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: Ubuntu / debian
+  .. tab-item:: Ubuntu / debian
 
     .. code-block:: sh
 
       $ sudo -H apt-get install -y \\
 ${debian}
 
-  .. group-tab:: Arch Linux
+  .. tab-item:: Arch Linux
 
     .. code-block:: sh
 
       $ sudo -H pacman -S --noconfirm \\
 ${arch}
 
-  .. group-tab::  Fedora / RHEL
+  .. tab-item::  Fedora / RHEL
 
     .. code-block:: sh
 
@@ -30,23 +30,23 @@ ${fedora}
 
 .. START build-packages
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: Ubuntu / debian
+  .. tab-item:: Ubuntu / debian
 
     .. code-block:: sh
 
       $ sudo -H apt-get install -y \\
 ${debian_build}
 
-  .. group-tab:: Arch Linux
+  .. tab-item:: Arch Linux
 
     .. code-block:: sh
 
       $ sudo -H pacman -S --noconfirm \\
 ${arch_build}
 
-  .. group-tab::  Fedora / RHEL
+  .. tab-item::  Fedora / RHEL
 
     .. code-block:: sh
 
@@ -57,9 +57,9 @@ ${fedora_build}
 
 .. START create user
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -74,9 +74,9 @@ ${fedora_build}
 
 .. START clone searxng
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -87,9 +87,9 @@ ${fedora_build}
 
 .. START create virtualenv
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -100,9 +100,9 @@ ${fedora_build}
 
 .. START manage.sh update_packages
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -127,9 +127,9 @@ ${fedora_build}
 
 .. START searxng config
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: Use default settings
+  .. tab-item:: Use default settings
 
     .. code-block:: sh
 
@@ -137,7 +137,7 @@ ${fedora_build}
        $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searxng/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
-  .. group-tab:: searx/settings.yml
+  .. tab-item:: searx/settings.yml
 
     .. code-block:: sh
 
@@ -145,9 +145,9 @@ ${fedora_build}
        $ sudo -H cp \"$SEARX_SRC/searx/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: minimal setup
+  .. tab-item:: minimal setup
 
     .. code-block:: sh
 
@@ -157,9 +157,9 @@ ${fedora_build}
 
 .. START check searxng installation
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: bash
+  .. tab-item:: bash
 
     .. code-block:: sh
 
@@ -178,15 +178,15 @@ ${fedora_build}
 Open WEB browser and visit http://$SEARX_INTERNAL_HTTP .  If you are inside a
 container or in a script, test with curl:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: WEB browser
+  .. tab-item:: WEB browser
 
     .. code-block:: sh
 
        $ xdg-open http://$SEARX_INTERNAL_HTTP
 
-  .. group-tab:: curl
+  .. tab-item:: curl
 
     .. code-block:: none
 

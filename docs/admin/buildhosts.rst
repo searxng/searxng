@@ -75,21 +75,21 @@ If your docs build (``make docs.html``) shows warnings like this::
 you need to install additional packages on your build host, to get better HTML
 output.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code-block:: sh
 
          $ sudo apt install graphviz imagemagick texlive-xetex librsvg2-bin
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code-block:: sh
 
          $ sudo pacman -S graphviz imagemagick texlive-bin extra/librsvg
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code-block:: sh
 
@@ -98,21 +98,21 @@ output.
 
 For PDF output you also need:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
          $ sudo apt texlive-latex-recommended texlive-extra-utils ttf-dejavu
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
       	 $ sudo pacman -S texlive-core texlive-latexextra ttf-dejavu
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code:: sh
 
@@ -132,21 +132,21 @@ To lint shell scripts, we use ShellCheck_ - A shell script static analysis tool.
 
 .. SNIP sh lint requirements
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code-block:: sh
 
          $ sudo apt install shellcheck
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code-block:: sh
 
          $ sudo pacman -S shellcheck
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code-block:: sh
 

@@ -100,50 +100,42 @@ Alltogether
 Create the configuration ini-file according to your distribution (see below) and
 restart the uwsgi application.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-description ubuntu-20.04
          :end-before: END searxng uwsgi-description ubuntu-20.04
 
-   .. hotfix: a bug group-tab need this comment
-
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-description arch
          :end-before: END searxng uwsgi-description arch
 
-   .. hotfix: a bug group-tab need this comment
-
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-description fedora
          :end-before: END searxng uwsgi-description fedora
 
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-appini ubuntu-20.04
          :end-before: END searxng uwsgi-appini ubuntu-20.04
 
-   .. hotfix: a bug group-tab need this comment
-
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-appini arch
          :end-before: END searxng uwsgi-appini arch
 
-   .. hotfix: a bug group-tab need this comment
-
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. kernel-include:: $DOCS_BUILD/includes/searx.rst
          :start-after: START searxng uwsgi-appini fedora

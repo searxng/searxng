@@ -90,14 +90,14 @@ For a *minimal setup*, configure like shown below – replace ``searx@$(uname
    :start-after: START searxng config
    :end-before: END searxng config
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: Use default settings
+  .. tab-item:: Use default settings
 
     .. literalinclude:: ../../utils/templates/etc/searxng/settings.yml
        :language: yaml
 
-  .. group-tab:: searx/settings.yml
+  .. tab-item:: searx/settings.yml
 
     .. literalinclude:: ../../searx/settings.yml
        :language: yaml

@@ -69,9 +69,9 @@ Gentlemen, start your engines!
 Before you can start with containers, you need to install and initiate LXD_
 once:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -81,9 +81,9 @@ once:
 And you need to clone from origin or if you have your own fork, clone from your
 fork:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -97,9 +97,9 @@ we exercise on a archlinux_ image.  The container of this image is named
 ``searx-archlinux``.  Lets build the container, but be sure that this container
 does not already exists, so first lets remove possible old one:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -113,9 +113,9 @@ does not already exists, so first lets remove possible old one:
 In this container we install all services :ref:`including searx, morty & filtron
 <lxc.sh install suite>` in once:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -124,9 +124,9 @@ In this container we install all services :ref:`including searx, morty & filtron
 To proxy HTTP from filtron and morty in the container to the outside of the
 container, install nginx into the container.  Once for the bot blocker filtron:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -137,9 +137,9 @@ container, install nginx into the container.  Once for the bot blocker filtron:
 
 and once for the content sanitizer (content proxy morty):
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -171,9 +171,9 @@ Usually you open a root-bash using ``sudo -H bash``.  In case of LXC containers
 open the root-bash in the container using ``./utils/lxc.sh cmd
 searx-archlinux``:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -185,9 +185,9 @@ searx-archlinux``:
 The prompt ``[root@searx-archlinux ...]`` signals, that you are the root user in
 the searx-container.  To debug the running SearXNG instance use:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: root@searx-archlinux
+  .. tab-item:: root@searx-archlinux
 
      .. code:: sh
 
@@ -202,9 +202,9 @@ above.  You can stop monitoring using ``CTRL-C``, this also disables the *"debug
 option"* in SearXNG's settings file and restarts the SearXNG uwsgi application.
 To debug services from filtron and morty analogous use:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: root@searx-archlinux
+  .. tab-item:: root@searx-archlinux
 
      .. code:: sh
 
@@ -216,9 +216,9 @@ Another point we have to notice is that each service (:ref:`SearXNG <searx.sh>`,
 system user account with the same name (compare :ref:`create searxng user`).  To
 get a shell from theses accounts, simply call one of the scripts:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: root@searx-archlinux
+  .. tab-item:: root@searx-archlinux
 
      .. code:: sh
 
@@ -228,9 +228,9 @@ get a shell from theses accounts, simply call one of the scripts:
 
 To get in touch, open a shell from the service user (searx@searx-archlinux):
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -243,9 +243,9 @@ The prompt ``[searx@searx-archlinux]`` signals that you are logged in as system
 user ``searx`` in the ``searx-archlinux`` container and the python *virtualenv*
 ``(searx-pyenv)`` environment is activated.
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: searx@searx-archlinux
+  .. tab-item:: searx@searx-archlinux
 
      .. code:: sh
 
@@ -271,9 +271,9 @@ With the use of the :ref:`searx.sh` the SearXNG service was installed as
 ``systemctl`` (compare :ref:`service architectures on distributions <uwsgi
 configuration>`).
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -303,9 +303,9 @@ the **transparent** reposetory from the desktop.  Now lets replace the
 repository at ``searx-src`` in the container with the working tree from outside
 of the container:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: container becomes a developer suite
+  .. tab-item:: container becomes a developer suite
 
      .. code:: sh
 
@@ -319,9 +319,9 @@ Now we can develop as usual in the working tree of our desktop system.  Every
 time the software was changed, you have to restart the SearXNG service (in the
 conatiner):
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 
@@ -332,9 +332,9 @@ conatiner):
 Remember: :ref:`working in containers` .. here are just some examples from my
 daily usage:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      To *inspect* the SearXNG instance (already described above):
 
@@ -378,9 +378,9 @@ We build up a fully functional SearXNG suite in a archlinux container:
 To access HTTP from the desktop we installed nginx for the services inside the
 conatiner:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: [root@searx-archlinux]
+  .. tab-item:: [root@searx-archlinux]
 
      .. code:: sh
 
@@ -391,9 +391,9 @@ To wrap the suite into a developer one, we created a symbolic link to the
 repository which is shared **transparent** from the desktop's file system into
 the container :
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: [root@searx-archlinux]
+  .. tab-item:: [root@searx-archlinux]
 
      .. code:: sh
 
@@ -404,9 +404,9 @@ the container :
 To get information about the searxNG suite in the archlinux container we can
 use:
 
-.. tabs::
+.. tab-set::
 
-  .. group-tab:: desktop
+  .. tab-item:: desktop
 
      .. code:: sh
 

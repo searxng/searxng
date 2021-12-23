@@ -55,15 +55,15 @@ The nginx HTTP server
 If nginx_ is not installed (uwsgi will not work with the package nginx-light),
 install it now.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
          sudo -H apt-get install nginx
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code-block:: sh
 
@@ -71,7 +71,7 @@ install it now.
          sudo -H systemctl enable nginx
          sudo -H systemctl start nginx
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code-block:: sh
 
@@ -84,9 +84,9 @@ see a *Fedora Webserver - Test Page*.  The test page comes from the default
 `nginx server configuration`_.  How this default intro site is configured,
 depends on the linux distribution:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
@@ -98,7 +98,7 @@ depends on the linux distribution:
 
          include /etc/nginx/sites-enabled/*;
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code-block:: sh
 
@@ -114,7 +114,7 @@ depends on the linux distribution:
              # ...
          }
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       .. code-block:: sh
 
@@ -142,9 +142,9 @@ Now you have to create a configuration for the SearXNG site.  If nginx_ is new t
 you, the `nginx beginners guide`_ is a good starting point and the `Getting
 Started wiki`_ is always a good resource *to keep in the pocket*.
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       Create configuration at ``/etc/nginx/sites-available/searxng`` and place a
       symlink to sites-enabled:
@@ -153,21 +153,21 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
          sudo -H ln -s /etc/nginx/sites-available/searxng /etc/nginx/sites-enabled/searxng
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       In the ``/etc/nginx/nginx.conf`` file, replace the configuration section
       named ``server``.
 
-   .. group-tab::  Fedora / RHEL
+   .. tab-item::  Fedora / RHEL
 
       Create configuration at ``/etc/nginx/conf.d/searxng`` and place a
       symlink to sites-enabled:
 
 .. _nginx searxng via filtron plus morty:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: SearXNG via filtron plus morty
+   .. tab-item:: SearXNG via filtron plus morty
 
       Use this setup, if your instance is public to the internet, compare
       figure: :ref:`architecture <arch public>` and :ref:`installation scripts`.
@@ -226,7 +226,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
              image_proxy : True
 
 
-   .. group-tab:: proxy or uWSGI
+   .. tab-item:: proxy or uWSGI
 
       Be warned, with this setup, your instance isn't :ref:`protected <searxng
       filtron>`.  Nevertheless it is good enough for intranet usage and it is a
@@ -288,7 +288,7 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
          mkdir -p /run/uwsgi/app/searx/
          sudo -H chown -R searx:searx /run/uwsgi/app/searx/
 
-   .. group-tab:: \.\. at subdir URL
+   .. tab-item:: \.\. at subdir URL
 
       Be warned, with these setups, your instance isn't :ref:`protected <searxng
       filtron>`.  The examples are just here to demonstrate how to export the
@@ -344,23 +344,23 @@ Started wiki`_ is always a good resource *to keep in the pocket*.
 
 Restart service:
 
-.. tabs::
+.. tab-set::
 
-   .. group-tab:: Ubuntu / debian
+   .. tab-item:: Ubuntu / debian
 
       .. code:: sh
 
          sudo -H systemctl restart nginx
          sudo -H service uwsgi restart searx
 
-   .. group-tab:: Arch Linux
+   .. tab-item:: Arch Linux
 
       .. code:: sh
 
          sudo -H systemctl restart nginx
          sudo -H systemctl restart uwsgi@searx
 
-   .. group-tab:: Fedora
+   .. tab-item:: Fedora
 
       .. code:: sh
 
