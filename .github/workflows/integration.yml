@@ -146,6 +146,11 @@ jobs:
         with:
           # make sure "make docker.push" can get the git history
           fetch-depth: '0'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          architecture: 'x64'
       - name: Set up QEMU
         if: env.DOCKERHUB_USERNAME != null
         uses: docker/setup-qemu-action@v1
