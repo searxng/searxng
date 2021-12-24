@@ -657,7 +657,7 @@ test.pylint() {
 
 test.black() {
     build_msg TEST "[black] \$BLACK_TARGETS"
-    pyenv.cmd black --check "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
     dump_return $?
 }
 
