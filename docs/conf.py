@@ -157,7 +157,13 @@ if CONTACT_URL:
     html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
 html_sidebars = {
-    "**": ["project.html", "relations.html", "searchbox.html", "sourcelink.html"],
+    "**": [
+        "globaltoc.html",
+        "project.html",
+        "relations.html",
+        "searchbox.html",
+        "sourcelink.html"
+    ],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_logo = "../src/brand/searxng-wordmark.svg"
