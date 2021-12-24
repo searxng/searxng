@@ -21,7 +21,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
-GECKODRIVER_VERSION="v0.28.0"
+GECKODRIVER_VERSION="v0.30.0"
 export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
 
@@ -485,10 +485,9 @@ gecko.driver() {
     (   set -e
         pyenv.activate
 
-        # TODO : check the current geckodriver version
-        geckodriver -V > /dev/null 2>&1 || NOTFOUND=1
+        INSTALLED_VERSION=$(geckodriver -V 2> /dev/null | head -1 | awk '{ print "v" $2}') || INSTALLED_VERSION=""
         set +e
-        if [ -z "$NOTFOUND" ]; then
+        if [ "${INSTALLED_VERSION}" = "${GECKODRIVER_VERSION}" ]; then
             build_msg INSTALL "geckodriver already installed"
             return
         fi
