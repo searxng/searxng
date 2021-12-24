@@ -56,6 +56,17 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Ubuntu packages
       run: sudo ./utils/searx.sh install buildhost
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+    - name: Cache Python dependencies
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+        path: ./local
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
     - name: Install node dependencies
       run: make V=1 node.env
     - name: Build themes
@@ -68,6 +79,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
+        fetch-depth: '0'
         persist-credentials: false
     - name: Install Ubuntu packages
       run: sudo ./utils/searx.sh install buildhost
@@ -76,6 +88,12 @@ jobs:
       with:
         python-version: '3.9'
         architecture: 'x64'
+    - name: Cache Python dependencies
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+        path: ./local
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
     - name: Build documentation
       run: |
         make V=1 docs.clean docs.html
@@ -138,7 +156,7 @@ jobs:
       - documentation
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         if: env.DOCKERHUB_USERNAME != null
@@ -151,6 +169,12 @@ jobs:
         with:
           python-version: '3.9'
           architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v2
+        with:
+          path: ./local
+          key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
       - name: Set up QEMU
         if: env.DOCKERHUB_USERNAME != null
         uses: docker/setup-qemu-action@v1
