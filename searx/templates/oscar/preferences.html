@@ -361,7 +361,11 @@
                                         </td>
                                         <th scope="row" data-engine-name="{{ search_engine.name }}"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
                                             {%- if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif -%}
-                                            {{- search_engine.name -}}</span>
+                                            {{- search_engine.name -}}
+                                            {%- if search_engine.about and search_engine.about.language %}
+                                                ({{search_engine.about.language | upper}})
+                                            {%- endif %}
+                                            </span>
                                             {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
                                         </th>
                                         <td class="name">{{ shortcuts[search_engine.name] }}</td>
