@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-24 19:24+0000\n"
-"PO-Revision-Date: 2021-12-24 07:17+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2021-12-31 07:17+0000\n"
+"Last-Translator: Frederik From <frederikfrom@pm.me>\n"
 "Language-Team: Danish <https://weblate.bubu1.eu/projects/searxng/searxng/da/>"
 "\n"
 "Language: da\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:164
@@ -60,7 +60,7 @@ msgstr "kort"
 
 #: searx/webapp.py:173
 msgid "onions"
-msgstr ""
+msgstr "onion-links"
 
 #: searx/webapp.py:174
 msgid "science"
@@ -68,7 +68,7 @@ msgstr "videnskab"
 
 #: searx/webapp.py:178
 msgid "auto"
-msgstr ""
+msgstr "automatisk"
 
 #: searx/webapp.py:179
 msgid "light"
@@ -80,31 +80,31 @@ msgstr "mørk"
 
 #: searx/webapp.py:184
 msgid "timeout"
-msgstr ""
+msgstr "udløbstid"
 
 #: searx/webapp.py:185
 msgid "parsing error"
-msgstr ""
+msgstr "fortolkningsfejl"
 
 #: searx/webapp.py:186
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "HTTP-protokolfejl"
 
 #: searx/webapp.py:187
 msgid "network error"
-msgstr ""
+msgstr "netværksfejl"
 
 #: searx/webapp.py:189
 msgid "unexpected crash"
-msgstr ""
+msgstr "uventet nedbrud"
 
 #: searx/webapp.py:196
 msgid "HTTP error"
-msgstr ""
+msgstr "HTTP-fejl"
 
 #: searx/webapp.py:197
 msgid "HTTP connection error"
-msgstr ""
+msgstr "HTTP-tilkoblingsfejl"
 
 #: searx/webapp.py:203
 msgid "proxy error"
@@ -112,19 +112,19 @@ msgstr ""
 
 #: searx/webapp.py:204
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: searx/webapp.py:205
 msgid "too many requests"
-msgstr ""
+msgstr "for mange forespørgsler"
 
 #: searx/webapp.py:206
 msgid "access denied"
-msgstr ""
+msgstr "adgang nægtet"
 
 #: searx/webapp.py:207
 msgid "server API error"
-msgstr ""
+msgstr "server-API-fejl"
 
 #: searx/webapp.py:399
 msgid "No item found"
@@ -133,7 +133,7 @@ msgstr "Intet fundet"
 #: searx/engines/qwant.py:198
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:401
 msgid "Source"
-msgstr ""
+msgstr "Kilde"
 
 #: searx/webapp.py:523 searx/webapp.py:935
 msgid "Invalid settings, please edit your preferences"
@@ -177,11 +177,11 @@ msgstr "Beregn {functions} af parametrene"
 
 #: searx/engines/openstreetmap.py:155
 msgid "Get directions"
-msgstr ""
+msgstr "Få rutevejledning"
 
 #: searx/engines/pdbe.py:90
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} (FORÆLDET)"
 
 #: searx/engines/pdbe.py:97
 msgid "This entry has been superseded by"
@@ -193,7 +193,7 @@ msgstr "Intet sammendrag er tilgængelig for denne publikation."
 
 #: searx/engines/qwant.py:200
 msgid "Channel"
-msgstr ""
+msgstr "Kanal"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -247,7 +247,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:19
 msgid "Self Informations"
-msgstr ""
+msgstr "Selvinformation"
 
 #: searx/plugins/self_info.py:20
 msgid ""
@@ -322,11 +322,11 @@ msgstr "en privatlivs--respekterende, hackbar meta-søgemaskine"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:55
 msgid "Source code"
-msgstr ""
+msgstr "Kildekode"
 
 #: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:56
 msgid "Issue tracker"
-msgstr ""
+msgstr "Problemsporer"
 
 #: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:21
@@ -338,15 +338,15 @@ msgstr "Søgemaskine-statistik"
 #: searx/templates/simple/base.html:58
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr ""
+msgstr "Offentlige instanser"
 
 #: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:59
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Kontakt tilbyderen af instansen"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
-msgstr ""
+msgstr "Sprog"
 
 #: searx/templates/oscar/languages.html:4
 #: searx/templates/simple/filters/languages.html:2
@@ -405,7 +405,7 @@ msgstr "indstillinger"
 #: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "Ingen HTTPS"
 
 #: searx/templates/oscar/preferences.html:14
 #: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:40
@@ -414,7 +414,7 @@ msgstr "Antal resultater"
 
 #: searx/templates/oscar/preferences.html:14
 msgid "Avg."
-msgstr ""
+msgstr "Gns."
 
 #: searx/templates/oscar/messages/no_results.html:8
 #: searx/templates/oscar/preferences.html:17
@@ -425,28 +425,28 @@ msgstr ""
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:50
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Vis fejllogger og send en fejlrapport ind"
 
 #: searx/templates/oscar/preferences.html:38
 #: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:70
 msgid "Median"
-msgstr ""
+msgstr "Median"
 
 #: searx/templates/oscar/preferences.html:39
 #: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:76
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
 #: searx/templates/oscar/preferences.html:40
 #: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:82
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
 #: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
