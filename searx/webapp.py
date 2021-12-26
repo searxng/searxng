@@ -1333,7 +1333,7 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 # initialize the engines except on the first run of the werkzeug server.
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     plugin_initialize(app)
-    search_initialize(enable_checker=True, check_network=True)
+    search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
 
 
 def run():

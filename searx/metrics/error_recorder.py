@@ -9,7 +9,7 @@ from searx.exceptions import (
     SearxEngineAPIException,
     SearxEngineAccessDeniedException,
 )
-from searx import searx_parent_dir
+from searx import searx_parent_dir, settings
 from searx.engines import engines
 
 
@@ -165,6 +165,8 @@ def get_error_context(framerecords, exception_classname, log_message, log_parame
 
 
 def count_exception(engine_name: str, exc: Exception, secondary: bool = False) -> None:
+    if not settings['general']['enable_metrics']:
+        return
     framerecords = inspect.trace()
     try:
         exception_classname = get_exception_classname(exc)
@@ -178,6 +180,8 @@ def count_exception(engine_name: str, exc: Exception, secondary: bool = False) -
 def count_error(
     engine_name: str, log_message: str, log_parameters: typing.Optional[typing.Tuple] = None, secondary: bool = False
 ) -> None:
+    if not settings['general']['enable_metrics']:
+        return
     framerecords = list(reversed(inspect.stack()[1:]))
     try:
         error_context = get_error_context(framerecords, None, log_message, log_parameters or (), secondary)

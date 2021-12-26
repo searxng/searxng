@@ -142,6 +142,7 @@ SCHEMA = {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
         'instance_name': SettingsValue(str, 'SearXNG'),
         'contact_url': SettingsValue((None, False, str), None),
+        'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
