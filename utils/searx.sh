@@ -43,7 +43,7 @@ shellcheck"
 BUILD_PACKAGES_debian="\
 firefox graphviz imagemagick texlive-xetex librsvg2-bin
 texlive-latex-recommended texlive-extra-utils fonts-dejavu
-latexmk"
+latexmk libvips-dev"
 
 # pacman packages
 SEARX_PACKAGES_arch="\
@@ -54,7 +54,7 @@ shellcheck"
 
 BUILD_PACKAGES_arch="\
 firefox graphviz imagemagick texlive-bin extra/librsvg
-texlive-core texlive-latexextra ttf-dejavu"
+texlive-core texlive-latexextra ttf-dejavu libvips"
 
 # dnf packages
 SEARX_PACKAGES_fedora="\
@@ -67,7 +67,7 @@ BUILD_PACKAGES_fedora="\
 firefox graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts"
+dejavu-sans-mono-fonts libvips-devel"
 
 # yum packages
 #
