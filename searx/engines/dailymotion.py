@@ -25,8 +25,10 @@ paging = True
 # search-url
 # see http://www.dailymotion.com/doc/api/obj-video.html
 search_url = 'https://api.dailymotion.com/videos?fields=created_time,title,description,duration,url,thumbnail_360_url,id&sort=relevance&limit=5&page={pageno}&{query}'  # noqa
-embedded_url = '<iframe frameborder="0" width="540" height="304" ' +\
-    'data-src="https://www.dailymotion.com/embed/video/{videoid}" allowfullscreen></iframe>'
+embedded_url = (
+    '<iframe frameborder="0" width="540" height="304" '
+    + 'data-src="https://www.dailymotion.com/embed/video/{videoid}" allowfullscreen></iframe>'
+)
 
 supported_languages_url = 'https://api.dailymotion.com/languages'
 
@@ -39,8 +41,8 @@ def request(query, params):
         locale = match_language(params['language'], supported_languages)
 
     params['url'] = search_url.format(
-        query=urlencode({'search': query, 'localization': locale}),
-        pageno=params['pageno'])
+        query=urlencode({'search': query, 'localization': locale}), pageno=params['pageno']
+    )
 
     return params
 
@@ -67,13 +69,17 @@ def response(resp):
         # http to https
         thumbnail = thumbnail.replace("http://", "https://")
 
-        results.append({'template': 'videos.html',
-                        'url': url,
-                        'title': title,
-                        'content': content,
-                        'publishedDate': publishedDate,
-                        'embedded': embedded,
-                        'thumbnail': thumbnail})
+        results.append(
+            {
+                'template': 'videos.html',
+                'url': url,
+                'title': title,
+                'content': content,
+                'publishedDate': publishedDate,
+                'embedded': embedded,
+                'thumbnail': thumbnail,
+            }
+        )
 
     # return results
     return results

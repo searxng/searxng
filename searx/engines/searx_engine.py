@@ -37,7 +37,7 @@ def request(query, params):
         'language': params['language'],
         'time_range': params['time_range'],
         'category': params['category'],
-        'format': 'json'
+        'format': 'json',
     }
 
     return params

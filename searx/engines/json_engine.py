@@ -119,22 +119,22 @@ def response(resp):
                 content = query(result, content_query)[0]
             except:
                 content = ""
-            results.append({
-                'url': to_string(url),
-                'title': title_filter(to_string(title)),
-                'content': content_filter(to_string(content)),
-            })
+            results.append(
+                {
+                    'url': to_string(url),
+                    'title': title_filter(to_string(title)),
+                    'content': content_filter(to_string(content)),
+                }
+            )
     else:
-        for url, title, content in zip(
-            query(json, url_query),
-            query(json, title_query),
-            query(json, content_query)
-        ):
-            results.append({
-                'url': to_string(url),
-                'title': title_filter(to_string(title)),
-                'content': content_filter(to_string(content)),
-            })
+        for url, title, content in zip(query(json, url_query), query(json, title_query), query(json, content_query)):
+            results.append(
+                {
+                    'url': to_string(url),
+                    'title': title_filter(to_string(title)),
+                    'content': content_filter(to_string(content)),
+                }
+            )
 
     if not suggestion_query:
         return results

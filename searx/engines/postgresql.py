@@ -20,6 +20,7 @@ paging = True
 result_template = 'key-value.html'
 _connection = None
 
+
 def init(engine_settings):
     global _connection  # pylint: disable=global-statement
 
@@ -30,24 +31,23 @@ def init(engine_settings):
         raise ValueError('only SELECT query is supported')
 
     _connection = psycopg2.connect(
-        database = database,
-        user = username,
-        password = password,
-        host = host,
-        port = port,
+        database=database,
+        user=username,
+        password=password,
+        host=host,
+        port=port,
     )
+
 
 def search(query, params):
     query_params = {'query': query}
-    query_to_run = (
-        query_str
-        + ' LIMIT {0} OFFSET {1}'.format(limit, (params['pageno'] - 1) * limit)
-    )
+    query_to_run = query_str + ' LIMIT {0} OFFSET {1}'.format(limit, (params['pageno'] - 1) * limit)
 
     with _connection:
         with _connection.cursor() as cur:
             cur.execute(query_to_run, query_params)
             return _fetch_results(cur)
+
 
 def _fetch_results(cur):
     results = []

@@ -25,10 +25,7 @@ url = 'https://searchcode.com/'
 search_url = url + 'api/codesearch_I/?{query}&p={pageno}'
 
 # special code-endings which are not recognised by the file ending
-code_endings = {'cs': 'c#',
-                'h': 'c',
-                'hpp': 'cpp',
-                'cxx': 'cpp'}
+code_endings = {'cs': 'c#', 'h': 'c', 'hpp': 'cpp', 'cxx': 'cpp'}
 
 
 # do search-request
@@ -55,17 +52,21 @@ def response(resp):
             lines[int(line)] = code
 
         code_language = code_endings.get(
-            result['filename'].split('.')[-1].lower(),
-            result['filename'].split('.')[-1].lower())
+            result['filename'].split('.')[-1].lower(), result['filename'].split('.')[-1].lower()
+        )
 
         # append result
-        results.append({'url': href,
-                        'title': title,
-                        'content': '',
-                        'repository': repo,
-                        'codelines': sorted(lines.items()),
-                        'code_language': code_language,
-                        'template': 'code.html'})
+        results.append(
+            {
+                'url': href,
+                'title': title,
+                'content': '',
+                'repository': repo,
+                'codelines': sorted(lines.items()),
+                'code_language': code_language,
+                'template': 'code.html',
+            }
+        )
 
     # return results
     return results

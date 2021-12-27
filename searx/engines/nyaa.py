@@ -98,14 +98,18 @@ def response(resp):
         content = 'Category: "{category}". Downloaded {downloads} times.'
         content = content.format(category=category, downloads=downloads)
 
-        results.append({'url': href,
-                        'title': title,
-                        'content': content,
-                        'seed': seed,
-                        'leech': leech,
-                        'filesize': filesize,
-                        'torrentfile': torrent_link,
-                        'magnetlink': magnet_link,
-                        'template': 'torrent.html'})
+        results.append(
+            {
+                'url': href,
+                'title': title,
+                'content': content,
+                'seed': seed,
+                'leech': leech,
+                'filesize': filesize,
+                'torrentfile': torrent_link,
+                'magnetlink': magnet_link,
+                'template': 'torrent.html',
+            }
+        )
 
     return results

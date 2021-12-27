@@ -119,9 +119,7 @@ def response(resp):
         r['template'] = 'key-value.html'
 
         if show_metadata:
-            r['metadata'] = {'index': result['_index'],
-                             'id': result['_id'],
-                             'score': result['_score']}
+            r['metadata'] = {'index': result['_index'], 'id': result['_id'], 'score': result['_score']}
 
         results.append(r)
 
@@ -133,12 +131,10 @@ _available_query_types = {
     # https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html
     'match': _match_query,
     'simple_query_string': _simple_query_string_query,
-
     # Term-level queries
     # https://www.elastic.co/guide/en/elasticsearch/reference/current/term-level-queries.html
     'term': _term_query,
     'terms': _terms_query,
-
     # Query JSON defined by the instance administrator.
     'custom': _custom_query,
 }

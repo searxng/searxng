@@ -29,6 +29,7 @@ logger = logger.getChild('search.processors')
 PROCESSORS = {}
 """Cache request processores, stored by *engine-name* (:py:func:`initialize`)"""
 
+
 def get_processor_class(engine_type):
     """Return processor class according to the ``engine_type``"""
     for c in [OnlineProcessor, OfflineProcessor, OnlineDictionaryProcessor, OnlineCurrencyProcessor]:

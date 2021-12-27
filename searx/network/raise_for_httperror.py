@@ -10,13 +10,14 @@ from searx.exceptions import (
     SearxEngineAccessDeniedException,
 )
 
+
 def is_cloudflare_challenge(resp):
     if resp.status_code in [429, 503]:
-        if (('__cf_chl_jschl_tk__=' in resp.text)
-            or ('/cdn-cgi/challenge-platform/' in resp.text
-                and 'orchestrate/jsch/v1' in resp.text
-                and 'window._cf_chl_enter(' in resp.text
-            )):
+        if ('__cf_chl_jschl_tk__=' in resp.text) or (
+            '/cdn-cgi/challenge-platform/' in resp.text
+            and 'orchestrate/jsch/v1' in resp.text
+            and 'window._cf_chl_enter(' in resp.text
+        ):
             return True
     if resp.status_code == 403 and '__cf_chl_captcha_tk__=' in resp.text:
         return True
@@ -32,21 +33,14 @@ def raise_for_cloudflare_captcha(resp):
         if is_cloudflare_challenge(resp):
             # https://support.cloudflare.com/hc/en-us/articles/200170136-Understanding-Cloudflare-Challenge-Passage-Captcha-
             # suspend for 2 weeks
-            raise SearxEngineCaptchaException(
-                message='Cloudflare CAPTCHA',
-                suspended_time=3600 * 24 * 15
-            )
+            raise SearxEngineCaptchaException(message='Cloudflare CAPTCHA', suspended_time=3600 * 24 * 15)
 
         if is_cloudflare_firewall(resp):
-            raise SearxEngineAccessDeniedException(
-                message='Cloudflare Firewall', suspended_time=3600 * 24
-            )
+            raise SearxEngineAccessDeniedException(message='Cloudflare Firewall', suspended_time=3600 * 24)
 
 
 def raise_for_recaptcha(resp):
-    if (resp.status_code == 503
-        and '"https://www.google.com/recaptcha/' in resp.text
-    ):
+    if resp.status_code == 503 and '"https://www.google.com/recaptcha/' in resp.text:
         raise SearxEngineCaptchaException(message='ReCAPTCHA', suspended_time=3600 * 24 * 7)
 
 
@@ -71,8 +65,7 @@ def raise_for_httperror(resp):
         raise_for_captcha(resp)
         if resp.status_code in (402, 403):
             raise SearxEngineAccessDeniedException(
-                message='HTTP error ' + str(resp.status_code),
-                suspended_time=3600 * 24
+                message='HTTP error ' + str(resp.status_code), suspended_time=3600 * 24
             )
         if resp.status_code == 429:
             raise SearxEngineTooManyRequestsException()

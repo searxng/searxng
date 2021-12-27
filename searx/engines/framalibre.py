@@ -35,9 +35,8 @@ content_xpath = './/div[@class="content"]//p'
 
 # do search-request
 def request(query, params):
-    offset = (params['pageno'] - 1)
-    params['url'] = search_url.format(query=urlencode({'keys': query}),
-                                      offset=offset)
+    offset = params['pageno'] - 1
+    params['url'] = search_url.format(query=urlencode({'keys': query}), offset=offset)
 
     return params
 
@@ -63,10 +62,7 @@ def response(resp):
         content = escape(extract_text(result.xpath(content_xpath)))
 
         # append result
-        results.append({'url': href,
-                        'title': title,
-                        'img_src': thumbnail,
-                        'content': content})
+        results.append({'url': href, 'title': title, 'img_src': thumbnail, 'content': content})
 
     # return results
     return results

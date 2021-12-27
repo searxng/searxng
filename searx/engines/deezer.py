@@ -24,9 +24,11 @@ paging = True
 url = 'https://api.deezer.com/'
 search_url = url + 'search?{query}&index={offset}'
 
-embedded_url = '<iframe scrolling="no" frameborder="0" allowTransparency="true" ' +\
-    'data-src="https://www.deezer.com/plugins/player?type=tracks&id={audioid}" ' +\
-    'width="540" height="80"></iframe>'
+embedded_url = (
+    '<iframe scrolling="no" frameborder="0" allowTransparency="true" '
+    + 'data-src="https://www.deezer.com/plugins/player?type=tracks&id={audioid}" '
+    + 'width="540" height="80"></iframe>'
+)
 
 
 # do search-request
@@ -53,18 +55,12 @@ def response(resp):
             if url.startswith('http://'):
                 url = 'https' + url[4:]
 
-            content = '{} - {} - {}'.format(
-                result['artist']['name'],
-                result['album']['title'],
-                result['title'])
+            content = '{} - {} - {}'.format(result['artist']['name'], result['album']['title'], result['title'])
 
             embedded = embedded_url.format(audioid=result['id'])
 
             # append result
-            results.append({'url': url,
-                            'title': title,
-                            'embedded': embedded,
-                            'content': content})
+            results.append({'url': url, 'title': title, 'embedded': embedded, 'content': content})
 
     # return results
     return results

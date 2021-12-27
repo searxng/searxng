@@ -34,8 +34,7 @@ content_xpath = './/span[@class="font11px lightgrey block"]'
 
 # do search-request
 def request(query, params):
-    params['url'] = search_url.format(search_term=quote(query),
-                                      pageno=params['pageno'])
+    params['url'] = search_url.format(search_term=quote(query), pageno=params['pageno'])
 
     return params
 
@@ -79,16 +78,20 @@ def response(resp):
         torrentfileurl = quote(torrentfile, safe="%/:=&?~#+!$,;'@()*")
 
         # append result
-        results.append({'url': href,
-                        'title': title,
-                        'content': content,
-                        'seed': seed,
-                        'leech': leech,
-                        'filesize': filesize,
-                        'files': files,
-                        'magnetlink': magnetlink,
-                        'torrentfile': torrentfileurl,
-                        'template': 'torrent.html'})
+        results.append(
+            {
+                'url': href,
+                'title': title,
+                'content': content,
+                'seed': seed,
+                'leech': leech,
+                'filesize': filesize,
+                'files': files,
+                'magnetlink': magnetlink,
+                'torrentfile': torrentfileurl,
+                'template': 'torrent.html',
+            }
+        )
 
     # return results sorted by seeder
     return sorted(results, key=itemgetter('seed'), reverse=True)

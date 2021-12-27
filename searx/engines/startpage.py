@@ -101,7 +101,7 @@ def response(resp):
         # check if search result starts with something like: "2 Sep 2014 ... "
         if re.match(r"^([1-9]|[1-2][0-9]|3[0-1]) [A-Z][a-z]{2} [0-9]{4} \.\.\. ", content):
             date_pos = content.find('...') + 4
-            date_string = content[0:date_pos - 5]
+            date_string = content[0 : date_pos - 5]
             # fix content string
             content = content[date_pos:]
 
@@ -113,7 +113,7 @@ def response(resp):
         # check if search result starts with something like: "5 days ago ... "
         elif re.match(r"^[0-9]+ days? ago \.\.\. ", content):
             date_pos = content.find('...') + 4
-            date_string = content[0:date_pos - 5]
+            date_string = content[0 : date_pos - 5]
 
             # calculate datetime
             published_date = datetime.now() - timedelta(days=int(re.match(r'\d+', date_string).group()))
@@ -123,15 +123,10 @@ def response(resp):
 
         if published_date:
             # append result
-            results.append({'url': url,
-                            'title': title,
-                            'content': content,
-                            'publishedDate': published_date})
+            results.append({'url': url, 'title': title, 'content': content, 'publishedDate': published_date})
         else:
             # append result
-            results.append({'url': url,
-                            'title': title,
-                            'content': content})
+            results.append({'url': url, 'title': title, 'content': content})
 
     # return results
     return results
@@ -152,7 +147,7 @@ def _fetch_supported_languages(resp):
         'malayam': 'ml',
         'norsk': 'nb',
         'sinhalese': 'si',
-        'sudanese': 'su'
+        'sudanese': 'su',
     }
 
     # get the English name of every language known by babel

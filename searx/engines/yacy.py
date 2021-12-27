@@ -30,18 +30,16 @@ http_digest_auth_pass = ""
 
 # search-url
 base_url = 'http://localhost:8090'
-search_url = '/yacysearch.json?{query}'\
-             '&startRecord={offset}'\
-             '&maximumRecords={limit}'\
-             '&contentdom={search_type}'\
-             '&resource=global'
+search_url = (
+    '/yacysearch.json?{query}'
+    '&startRecord={offset}'
+    '&maximumRecords={limit}'
+    '&contentdom={search_type}'
+    '&resource=global'
+)
 
 # yacy specific type-definitions
-search_types = {'general': 'text',
-                'images': 'image',
-                'files': 'app',
-                'music': 'audio',
-                'videos': 'video'}
+search_types = {'general': 'text', 'images': 'image', 'files': 'app', 'music': 'audio', 'videos': 'video'}
 
 
 # do search-request
@@ -49,11 +47,9 @@ def request(query, params):
     offset = (params['pageno'] - 1) * number_of_results
     search_type = search_types.get(params.get('category'), '0')
 
-    params['url'] = base_url +\
-        search_url.format(query=urlencode({'query': query}),
-                          offset=offset,
-                          limit=number_of_results,
-                          search_type=search_type)
+    params['url'] = base_url + search_url.format(
+        query=urlencode({'query': query}), offset=offset, limit=number_of_results, search_type=search_type
+    )
 
     if http_digest_auth_user and http_digest_auth_pass:
         params['auth'] = DigestAuth(http_digest_auth_user, http_digest_auth_pass)
@@ -93,21 +89,29 @@ def response(resp):
                 continue
 
             # append result
-            results.append({'url': result_url,
-                            'title': result['title'],
-                            'content': '',
-                            'img_src': result['image'],
-                            'template': 'images.html'})
+            results.append(
+                {
+                    'url': result_url,
+                    'title': result['title'],
+                    'content': '',
+                    'img_src': result['image'],
+                    'template': 'images.html',
+                }
+            )
 
         # parse general results
         else:
             publishedDate = parser.parse(result['pubDate'])
 
             # append result
-            results.append({'url': result['link'],
-                            'title': result['title'],
-                            'content': html_to_text(result['description']),
-                            'publishedDate': publishedDate})
+            results.append(
+                {
+                    'url': result['link'],
+                    'title': result['title'],
+                    'content': html_to_text(result['description']),
+                    'publishedDate': publishedDate,
+                }
+            )
 
         # TODO parse video, audio and file results
 

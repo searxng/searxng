@@ -20,6 +20,7 @@ paging = True
 result_template = 'key-value.html'
 _connection = None
 
+
 def init(engine_settings):
     global _connection  # pylint: disable=global-statement
 
@@ -30,12 +31,13 @@ def init(engine_settings):
         raise ValueError('only SELECT query is supported')
 
     _connection = mysql.connector.connect(
-        database = database,
-        user = username,
-        password = password,
-        host = host,
+        database=database,
+        user=username,
+        password=password,
+        host=host,
         auth_plugin=auth_plugin,
     )
+
 
 def search(query, params):
     query_params = {'query': query}
@@ -45,6 +47,7 @@ def search(query, params):
         cur.execute(query_to_run, query_params)
 
         return _fetch_results(cur)
+
 
 def _fetch_results(cur):
     results = []

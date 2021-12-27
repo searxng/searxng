@@ -43,6 +43,7 @@ about = {
 # if there is a need for globals, use a leading underline
 _my_online_engine = None
 
+
 def init(engine_settings):
     """Initialization of the (online) engine.  If no initialization is needed, drop
     this init function.
@@ -51,19 +52,23 @@ def init(engine_settings):
     global _my_online_engine  # pylint: disable=global-statement
     _my_online_engine = engine_settings.get('name')
 
+
 def request(query, params):
     """Build up the ``params`` for the online request.  In this example we build a
     URL to fetch images from `artic.edu <https://artic.edu>`__
 
     """
-    args = urlencode({
-        'q' : query,
-        'page' : params['pageno'],
-        'fields' : 'id,title,artist_display,medium_display,image_id,date_display,dimensions,artist_titles',
-        'limit' : page_size,
-        })
+    args = urlencode(
+        {
+            'q': query,
+            'page': params['pageno'],
+            'fields': 'id,title,artist_display,medium_display,image_id,date_display,dimensions,artist_titles',
+            'limit': page_size,
+        }
+    )
     params['url'] = search_api + args
     return params
+
 
 def response(resp):
     """Parse out the result items from the response.  In this example we parse the
@@ -79,14 +84,16 @@ def response(resp):
         if not result['image_id']:
             continue
 
-        results.append({
-            'url': 'https://artic.edu/artworks/%(id)s' % result,
-            'title': result['title'] + " (%(date_display)s) //  %(artist_display)s" % result,
-            'content': result['medium_display'],
-            'author': ', '.join(result['artist_titles']),
-            'img_src': image_api + '/%(image_id)s/full/843,/0/default.jpg' % result,
-            'img_format': result['dimensions'],
-            'template': 'images.html'
-        })
+        results.append(
+            {
+                'url': 'https://artic.edu/artworks/%(id)s' % result,
+                'title': result['title'] + " (%(date_display)s) //  %(artist_display)s" % result,
+                'content': result['medium_display'],
+                'author': ', '.join(result['artist_titles']),
+                'img_src': image_api + '/%(image_id)s/full/843,/0/default.jpg' % result,
+                'img_format': result['dimensions'],
+                'template': 'images.html',
+            }
+        )
 
     return results

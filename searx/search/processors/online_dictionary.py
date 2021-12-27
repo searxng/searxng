@@ -11,6 +11,7 @@ from .online import OnlineProcessor
 
 parser_re = re.compile('.*?([a-z]+)-([a-z]+) ([^ ]+)$', re.I)
 
+
 class OnlineDictionaryProcessor(OnlineProcessor):
     """Processor class used by ``online_dictionary`` engines."""
 
@@ -44,10 +45,9 @@ class OnlineDictionaryProcessor(OnlineProcessor):
 
         if getattr(self.engine, 'paging', False):
             tests['translation_paging'] = {
-                'matrix': {'query': 'en-es house',
-                           'pageno': (1, 2, 3)},
+                'matrix': {'query': 'en-es house', 'pageno': (1, 2, 3)},
                 'result_container': ['not_empty', ('one_title_contains', 'house')],
-                'test': ['unique_results']
+                'test': ['unique_results'],
             }
         else:
             tests['translation'] = {

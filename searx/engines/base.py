@@ -21,8 +21,10 @@ about = {
 
 categories = ['science']
 
-base_url = 'https://api.base-search.net/cgi-bin/BaseHttpSearchInterface.fcgi'\
-           + '?func=PerformSearch&{query}&boost=oa&hits={hits}&offset={offset}'
+base_url = (
+    'https://api.base-search.net/cgi-bin/BaseHttpSearchInterface.fcgi'
+    + '?func=PerformSearch&{query}&boost=oa&hits={hits}&offset={offset}'
+)
 
 # engine dependent config
 paging = True
@@ -47,7 +49,7 @@ shorcut_dict = {
     'source:': 'dcsource:',
     'subject:': 'dcsubject:',
     'title:': 'dctitle:',
-    'type:': 'dcdctype:'
+    'type:': 'dcdctype:',
 }
 
 
@@ -59,9 +61,7 @@ def request(query, params):
     # basic search
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=urlencode({'query': query}),
-                       offset=offset,
-                       hits=number_of_results)
+    string_args = dict(query=urlencode({'query': query}), offset=offset, hits=number_of_results)
 
     params['url'] = base_url.format(**string_args)
 
@@ -93,7 +93,7 @@ def response(resp):
                 if len(item.text) > 300:
                     content += "..."
 
-# dates returned by the BASE API are not several formats
+        # dates returned by the BASE API are not several formats
         publishedDate = None
         for date_format in ['%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%d', '%Y-%m', '%Y']:
             try:
@@ -103,14 +103,9 @@ def response(resp):
                 pass
 
         if publishedDate is not None:
-            res_dict = {'url': url,
-                        'title': title,
-                        'publishedDate': publishedDate,
-                        'content': content}
+            res_dict = {'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content}
         else:
-            res_dict = {'url': url,
-                        'title': title,
-                        'content': content}
+            res_dict = {'url': url, 'title': title, 'content': content}
 
         results.append(res_dict)
 

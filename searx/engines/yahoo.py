@@ -50,58 +50,58 @@ language_aliases = {
 }
 
 lang2domain = {
-    'zh_chs' : 'hk.search.yahoo.com',
-    'zh_cht' : 'tw.search.yahoo.com',
-    'en'     : 'search.yahoo.com',
-
-    'bg'     : 'search.yahoo.com',
-    'cs'     : 'search.yahoo.com',
-    'da'     : 'search.yahoo.com',
-    'el'     : 'search.yahoo.com',
-    'et'     : 'search.yahoo.com',
-    'he'     : 'search.yahoo.com',
-    'hr'     : 'search.yahoo.com',
-    'ja'     : 'search.yahoo.com',
-    'ko'     : 'search.yahoo.com',
-    'sk'     : 'search.yahoo.com',
-    'sl'     : 'search.yahoo.com',
-
+    'zh_chs': 'hk.search.yahoo.com',
+    'zh_cht': 'tw.search.yahoo.com',
+    'en': 'search.yahoo.com',
+    'bg': 'search.yahoo.com',
+    'cs': 'search.yahoo.com',
+    'da': 'search.yahoo.com',
+    'el': 'search.yahoo.com',
+    'et': 'search.yahoo.com',
+    'he': 'search.yahoo.com',
+    'hr': 'search.yahoo.com',
+    'ja': 'search.yahoo.com',
+    'ko': 'search.yahoo.com',
+    'sk': 'search.yahoo.com',
+    'sl': 'search.yahoo.com',
 }
 """Map language to domain"""
+
 
 def _get_language(params):
 
     lang = language_aliases.get(params['language'])
     if lang is None:
-        lang = match_language(
-            params['language'], supported_languages, language_aliases
-        )
+        lang = match_language(params['language'], supported_languages, language_aliases)
     lang = lang.split('-')[0]
-    logger.debug("params['language']: %s --> %s" , params['language'], lang)
+    logger.debug("params['language']: %s --> %s", params['language'], lang)
     return lang
+
 
 def request(query, params):
     """build request"""
     offset = (params['pageno'] - 1) * 7 + 1
-    lang  =  _get_language(params)
-    age, btf = time_range_dict.get(
-        params['time_range'], ('', ''))
+    lang = _get_language(params)
+    age, btf = time_range_dict.get(params['time_range'], ('', ''))
 
-    args = urlencode({
-        'p' : query,
-        'ei' : 'UTF-8',
-        'fl' : 1,
-        'vl' : 'lang_' + lang,
-        'btf' : btf,
-        'fr2' : 'time',
-        'age' : age,
-        'b' : offset,
-        'xargs' :0
-    })
+    args = urlencode(
+        {
+            'p': query,
+            'ei': 'UTF-8',
+            'fl': 1,
+            'vl': 'lang_' + lang,
+            'btf': btf,
+            'fr2': 'time',
+            'age': age,
+            'b': offset,
+            'xargs': 0,
+        }
+    )
 
     domain = lang2domain.get(lang, '%s.search.yahoo.com' % lang)
     params['url'] = 'https://%s/search?%s' % (domain, args)
     return params
+
 
 def parse_url(url_string):
     """remove yahoo-specific tracking-url"""
@@ -120,6 +120,7 @@ def parse_url(url_string):
 
     end = min(endpositions)
     return unquote(url_string[start:end])
+
 
 def response(resp):
     """parse response"""
@@ -140,18 +141,12 @@ def response(resp):
         offset = len(extract_text(title.xpath('span')))
         title = extract_text(title)[offset:]
 
-        content = eval_xpath_getindex(
-            result, './/div[contains(@class, "compText")]', 0, default=''
-        )
+        content = eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0, default='')
         if content:
             content = extract_text(content)
 
         # append result
-        results.append({
-            'url': url,
-            'title': title,
-            'content': content
-        })
+        results.append({'url': url, 'title': title, 'content': content})
 
     for suggestion in eval_xpath_list(dom, '//div[contains(@class, "AlsoTry")]//table//a'):
         # append suggestion
@@ -167,6 +162,6 @@ def _fetch_supported_languages(resp):
     offset = len('lang_')
 
     for val in eval_xpath_list(dom, '//div[contains(@class, "lang-item")]/input/@value'):
-        supported_languages.append( val[offset:] )
+        supported_languages.append(val[offset:])
 
     return supported_languages

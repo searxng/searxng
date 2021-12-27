@@ -39,6 +39,7 @@ def locale_to_lang_code(locale):
 # wikis for some languages were moved off from the main site, we need to make
 # requests to correct URLs to be able to get results in those languages
 lang_urls = {
+    # fmt: off
     'all': {
         'base': 'https://wiki.archlinux.org',
         'search': '/index.php?title=Special:Search&offset={offset}&{query}'
@@ -63,6 +64,7 @@ lang_urls = {
         'base': 'http://archtr.org/wiki',
         'search': '/index.php?title=Özel:Ara&offset={offset}&{query}'
     }
+    # fmt: on
 }
 
 
@@ -95,7 +97,7 @@ main_langs = {
     'sl': 'Slovenský',
     'th': 'ไทย',
     'uk': 'Українська',
-    'zh': '简体中文'
+    'zh': '简体中文',
 }
 supported_languages = dict(lang_urls, **main_langs)
 
@@ -139,7 +141,6 @@ def response(resp):
         href = urljoin(base_url, link.attrib.get('href'))
         title = extract_text(link)
 
-        results.append({'url': href,
-                        'title': title})
+        results.append({'url': href, 'title': title})
 
     return results

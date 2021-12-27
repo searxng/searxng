@@ -30,10 +30,12 @@ image_sizes = ('o', 'k', 'h', 'b', 'c', 'z', 'n', 'm', 't', 'q', 's')
 
 paging = True
 time_range_support = True
-time_range_dict = {'day': 60 * 60 * 24,
-                   'week': 60 * 60 * 24 * 7,
-                   'month': 60 * 60 * 24 * 7 * 4,
-                   'year': 60 * 60 * 24 * 7 * 52}
+time_range_dict = {
+    'day': 60 * 60 * 24,
+    'week': 60 * 60 * 24 * 7,
+    'month': 60 * 60 * 24 * 7 * 4,
+    'year': 60 * 60 * 24 * 7 * 52,
+}
 
 
 def build_flickr_url(user_id, photo_id):
@@ -47,8 +49,9 @@ def _get_time_range_url(time_range):
 
 
 def request(query, params):
-    params['url'] = (search_url.format(query=urlencode({'text': query}), page=params['pageno'])
-                     + _get_time_range_url(params['time_range']))
+    params['url'] = search_url.format(query=urlencode({'text': query}), page=params['pageno']) + _get_time_range_url(
+        params['time_range']
+    )
     return params
 
 
@@ -83,10 +86,9 @@ def response(resp):
         for image_size in image_sizes:
             if image_size in photo['sizes']:
                 img_src = photo['sizes'][image_size]['url']
-                img_format = 'jpg ' \
-                    + str(photo['sizes'][image_size]['width']) \
-                    + 'x' \
-                    + str(photo['sizes'][image_size]['height'])
+                img_format = (
+                    'jpg ' + str(photo['sizes'][image_size]['width']) + 'x' + str(photo['sizes'][image_size]['height'])
+                )
                 break
 
         if not img_src:
@@ -113,7 +115,7 @@ def response(resp):
             'thumbnail_src': thumbnail_src,
             'source': source,
             'img_format': img_format,
-            'template': 'images.html'
+            'template': 'images.html',
         }
         result['author'] = author.encode(errors='ignore').decode()
         result['source'] = source.encode(errors='ignore').decode()

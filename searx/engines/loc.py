@@ -34,9 +34,7 @@ IMG_SRC_FIXES = {
 
 def request(query, params):
 
-    search_path = search_string.format(
-        query=urlencode({'q': query}),
-        page=params['pageno'])
+    search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
 
     params['url'] = base_url + search_path
 
@@ -56,13 +54,15 @@ def response(resp):
                 break
         else:
             img_src = result['image']['thumb']
-        results.append({
-            'url': result['links']['item'],
-            'title': result['title'],
-            'img_src': img_src,
-            'thumbnail_src': result['image']['thumb'],
-            'author': result['creator'],
-            'template': 'images.html'
-        })
+        results.append(
+            {
+                'url': result['links']['item'],
+                'title': result['title'],
+                'img_src': img_src,
+                'thumbnail_src': result['image']['thumb'],
+                'author': result['creator'],
+                'template': 'images.html',
+            }
+        )
 
     return results

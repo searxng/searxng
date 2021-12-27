@@ -84,9 +84,8 @@ PRESET_KEYS = {
     ('internet_access', 'ssid'): {'en': 'Wi-Fi'},
 }
 
-INCLUDED_KEYS = {
-    ('addr', )
-}
+INCLUDED_KEYS = {('addr',)}
+
 
 def get_preset_keys():
     results = collections.OrderedDict()
@@ -96,6 +95,7 @@ def get_preset_keys():
             r = r.setdefault(k, {})
         r.setdefault('*', value)
     return results
+
 
 def get_keys():
     results = get_preset_keys()
@@ -110,18 +110,16 @@ def get_keys():
             # label for the key "contact.email" is "Email"
             # whatever the language
             r = results.setdefault('contact', {})
-            r[keys[1]] = {
-                '*': {
-                    'en': keys[1]
-                }
-            }
+            r[keys[1]] = {'*': {'en': keys[1]}}
             continue
         if tuple(keys) in PRESET_KEYS:
             # skip presets (already set above)
             continue
-        if get_key_rank(':'.join(keys)) is None\
-            and ':'.join(keys) not in VALUE_TO_LINK\
-            and tuple(keys) not in INCLUDED_KEYS:
+        if (
+            get_key_rank(':'.join(keys)) is None
+            and ':'.join(keys) not in VALUE_TO_LINK
+            and tuple(keys) not in INCLUDED_KEYS
+        ):
             # keep only keys that will be displayed by openstreetmap.py
             continue
         label = key['itemLabel']['value'].lower()
@@ -160,6 +158,7 @@ def get_tags():
             results.setdefault(tag_category, {}).setdefault(tag_type, {}).setdefault(lang, label)
     return results
 
+
 def optimize_data_lang(translations):
     language_to_delete = []
     # remove "zh-hk" entry if the value is the same as "zh"
@@ -184,11 +183,13 @@ def optimize_data_lang(translations):
     for language in language_to_delete:
         del translations[language]
 
+
 def optimize_tags(data):
     for v in data.values():
         for translations in v.values():
             optimize_data_lang(translations)
     return data
+
 
 def optimize_keys(data):
     for k, v in data.items():
@@ -198,8 +199,10 @@ def optimize_keys(data):
             optimize_keys(v)
     return data
 
+
 def get_osm_tags_filename():
     return Path(searx_dir) / "data" / "osm_keys_tags.json"
+
 
 if __name__ == '__main__':
 

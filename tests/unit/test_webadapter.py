@@ -25,7 +25,6 @@ SEARCHQUERY = [EngineRef(PRIVATE_ENGINE_NAME, 'general')]
 
 
 class ValidateQueryCase(SearxTestCase):
-
     @classmethod
     def setUpClass(cls):
         searx.search.initialize(TEST_ENGINES)

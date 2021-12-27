@@ -41,9 +41,7 @@ content_xpath = './/p[@class="media-body__summary"]'
 
 # do search-request
 def request(query, params):
-    params['url'] = search_url.format(ps=page_size,
-                                      start=params['pageno'] * page_size,
-                                      query=urlencode({'q': query}))
+    params['url'] = search_url.format(ps=page_size, start=params['pageno'] * page_size, query=urlencode({'q': query}))
 
     return params
 
@@ -75,12 +73,16 @@ def response(resp):
         content = extract_text(result.xpath(content_xpath))
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content,
-                        'template': 'videos.html',
-                        'publishedDate': publishedDate,
-                        'thumbnail': thumbnail})
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'template': 'videos.html',
+                'publishedDate': publishedDate,
+                'thumbnail': thumbnail,
+            }
+        )
 
     # return results
     return results

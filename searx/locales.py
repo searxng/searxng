@@ -51,11 +51,10 @@ def _get_locale_name(locale, locale_name):
 
 
 def initialize_locales(directory):
-    """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
-    """
+    """Initialize global names :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`."""
     for dirname in sorted(os.listdir(directory)):
         # Based on https://flask-babel.tkte.ch/_modules/flask_babel.html#Babel.list_translations
-        if not os.path.isdir( os.path.join(directory, dirname, 'LC_MESSAGES') ):
+        if not os.path.isdir(os.path.join(directory, dirname, 'LC_MESSAGES')):
             continue
         locale_name = dirname.replace('_', '-')
         info = LOCALE_NAMES.get(locale_name)

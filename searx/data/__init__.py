@@ -23,9 +23,11 @@ from pathlib import Path
 
 data_dir = Path(__file__).parent
 
+
 def _load(filename):
     with open(data_dir / filename, encoding='utf-8') as f:
         return json.load(f)
+
 
 def ahmia_blacklist_loader():
     """Load data from `ahmia_blacklist.txt` and return a list of MD5 values of onion
@@ -38,6 +40,7 @@ def ahmia_blacklist_loader():
     """
     with open(str(data_dir / 'ahmia_blacklist.txt'), encoding='utf-8') as f:
         return f.read().split()
+
 
 ENGINES_LANGUAGES = _load('engines_languages.json')
 CURRENCIES = _load('currencies.json')

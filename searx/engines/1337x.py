@@ -43,11 +43,15 @@ def response(resp):
         filesize, filesize_multiplier = filesize_info.split()
         filesize = get_torrent_size(filesize, filesize_multiplier)
 
-        results.append({'url': href,
-                        'title': title,
-                        'seed': seed,
-                        'leech': leech,
-                        'filesize': filesize,
-                        'template': 'torrent.html'})
+        results.append(
+            {
+                'url': href,
+                'title': title,
+                'seed': seed,
+                'leech': leech,
+                'filesize': filesize,
+                'template': 'torrent.html',
+            }
+        )
 
     return results

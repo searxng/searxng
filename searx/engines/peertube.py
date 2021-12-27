@@ -36,9 +36,7 @@ def request(query, params):
     language = params["language"].split("-")[0]
     if "all" != language and language in supported_languages:
         query_dict["languageOneOf"] = language
-    params["url"] = search_url.format(
-        query=urlencode(query_dict), pageno=pageno
-    )
+    params["url"] = search_url.format(query=urlencode(query_dict), pageno=pageno)
     return params
 
 

@@ -11,10 +11,7 @@ from searx.utils import extract_text, get_torrent_size
 about = {
     "website": 'https://btdig.com',
     "wikidata_id": 'Q4836698',
-    "official_api_documentation": {
-        'url': 'https://btdig.com/contacts',
-        'comment': 'on demand'
-    },
+    "official_api_documentation": {'url': 'https://btdig.com/contacts', 'comment': 'on demand'},
     "use_official_api": False,
     "require_api_key": False,
     "results": 'HTML',
@@ -31,8 +28,7 @@ search_url = url + '/search?q={search_term}&p={pageno}'
 
 # do search-request
 def request(query, params):
-    params['url'] = search_url.format(search_term=quote(query),
-                                      pageno=params['pageno'] - 1)
+    params['url'] = search_url.format(search_term=quote(query), pageno=params['pageno'] - 1)
 
     return params
 
@@ -77,13 +73,17 @@ def response(resp):
         magnetlink = result.xpath('.//div[@class="torrent_magnet"]//a')[0].attrib['href']
 
         # append result
-        results.append({'url': href,
-                        'title': title,
-                        'content': content,
-                        'filesize': filesize,
-                        'files': files,
-                        'magnetlink': magnetlink,
-                        'template': 'torrent.html'})
+        results.append(
+            {
+                'url': href,
+                'title': title,
+                'content': content,
+                'filesize': filesize,
+                'files': files,
+                'magnetlink': magnetlink,
+                'template': 'torrent.html',
+            }
+        )
 
     # return results sorted by seeder
     return results

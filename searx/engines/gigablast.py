@@ -55,12 +55,12 @@ def fetch_extra_param(query_args, headers):
     extra_param_path = search_path + urlencode(query_args)
     text = get(base_url + extra_param_path, headers=headers).text
 
-    re_var= None
+    re_var = None
     for line in text.splitlines():
         if re_var is None and extra_param_path in line:
             var = line.split("=")[0].split()[1]  # e.g. var --> 'uxrl'
             re_var = re.compile(var + "\\s*=\\s*" + var + "\\s*\\+\\s*'" + "(.*)" + "'(.*)")
-            extra_param = line.split("'")[1][len(extra_param_path):]
+            extra_param = line.split("'")[1][len(extra_param_path) :]
             continue
         if re_var is not None and re_var.search(line):
             extra_param += re_var.search(line).group(1)
@@ -69,12 +69,7 @@ def fetch_extra_param(query_args, headers):
 
 # do search-request
 def request(query, params):  # pylint: disable=unused-argument
-    query_args = dict(
-        c = 'main'
-        , q = query
-        , dr = 1
-        , showgoodimages = 0
-    )
+    query_args = dict(c='main', q=query, dr=1, showgoodimages=0)
 
     if params['language'] and params['language'] != 'all':
         query_args['qlangcountry'] = params['language']
@@ -92,6 +87,7 @@ def request(query, params):  # pylint: disable=unused-argument
     params['url'] = base_url + search_path + urlencode(query_args) + extra_param
 
     return params
+
 
 # get response from search-request
 def response(resp):
@@ -125,10 +121,6 @@ def response(resp):
         if len(subtitle) > 3 and subtitle != title:
             title += " - " + subtitle
 
-        results.append(dict(
-            url = url
-            , title = title
-            , content = content
-        ))
+        results.append(dict(url=url, title=title, content=content))
 
     return results

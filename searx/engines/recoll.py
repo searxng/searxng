@@ -28,18 +28,12 @@ mount_prefix = None
 dl_prefix = None
 
 # embedded
-embedded_url = '<{ttype} controls height="166px" ' +\
-    'src="{url}" type="{mtype}"></{ttype}>'
+embedded_url = '<{ttype} controls height="166px" ' + 'src="{url}" type="{mtype}"></{ttype}>'
 
 
 # helper functions
 def get_time_range(time_range):
-    sw = {
-        'day': 1,
-        'week': 7,
-        'month': 30,
-        'year': 365
-    }
+    sw = {'day': 1, 'week': 7, 'month': 30, 'year': 365}
 
     offset = sw.get(time_range, 0)
     if not offset:
@@ -52,11 +46,9 @@ def get_time_range(time_range):
 def request(query, params):
     search_after = get_time_range(params['time_range'])
     search_url = base_url + 'json?{query}&highlight=0'
-    params['url'] = search_url.format(query=urlencode({
-        'query': query,
-        'page': params['pageno'],
-        'after': search_after,
-        'dir': search_dir}))
+    params['url'] = search_url.format(
+        query=urlencode({'query': query, 'page': params['pageno'], 'after': search_after, 'dir': search_dir})
+    )
 
     return params
 
@@ -76,10 +68,7 @@ def response(resp):
         content = '{}'.format(result['snippet'])
 
         # append result
-        item = {'url': url,
-                'title': title,
-                'content': content,
-                'template': 'files.html'}
+        item = {'url': url, 'title': title, 'content': content, 'template': 'files.html'}
 
         if result['size']:
             item['size'] = int(result['size'])
@@ -96,9 +85,8 @@ def response(resp):
 
             if mtype in ['audio', 'video']:
                 item['embedded'] = embedded_url.format(
-                    ttype=mtype,
-                    url=quote(url.encode('utf8'), '/:'),
-                    mtype=result['mtype'])
+                    ttype=mtype, url=quote(url.encode('utf8'), '/:'), mtype=result['mtype']
+                )
 
             if mtype in ['image'] and subtype in ['bmp', 'gif', 'jpeg', 'png']:
                 item['img_src'] = url

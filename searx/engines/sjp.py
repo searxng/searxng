@@ -28,9 +28,11 @@ URL = 'https://sjp.pwn.pl'
 SEARCH_URL = URL + '/szukaj/{query}.html'
 
 word_xpath = '//div[@class="query"]'
-dict_xpath = ['//div[@class="wyniki sjp-so-wyniki sjp-so-anchor"]',
-              '//div[@class="wyniki sjp-wyniki sjp-anchor"]',
-              '//div[@class="wyniki sjp-doroszewski-wyniki sjp-doroszewski-anchor"]']
+dict_xpath = [
+    '//div[@class="wyniki sjp-so-wyniki sjp-so-anchor"]',
+    '//div[@class="wyniki sjp-wyniki sjp-anchor"]',
+    '//div[@class="wyniki sjp-doroszewski-wyniki sjp-doroszewski-anchor"]',
+]
 
 
 def request(query, params):
@@ -85,9 +87,11 @@ def response(resp):
                 infobox += "</ol>"
         infobox += "</ul></div>"
 
-    results.append({
-        'infobox': word,
-        'content': infobox,
-    })
+    results.append(
+        {
+            'infobox': word,
+            'content': infobox,
+        }
+    )
 
     return results

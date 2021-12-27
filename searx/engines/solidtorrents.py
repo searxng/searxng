@@ -36,14 +36,16 @@ def response(resp):
     search_results = loads(resp.text)
 
     for result in search_results["results"]:
-        results.append({
-            'infohash': result["infohash"],
-            'seed': result["swarm"]["seeders"],
-            'leech': result["swarm"]["leechers"],
-            'title': result["title"],
-            'url': "https://solidtorrents.net/view/" + result["_id"],
-            'filesize': result["size"],
-            'magnetlink': result["magnet"],
-            'template': "torrent.html",
-        })
+        results.append(
+            {
+                'infohash': result["infohash"],
+                'seed': result["swarm"]["seeders"],
+                'leech': result["swarm"]["leechers"],
+                'title': result["title"],
+                'url': "https://solidtorrents.net/view/" + result["_id"],
+                'filesize': result["size"],
+                'magnetlink': result["magnet"],
+                'template': "torrent.html",
+            }
+        )
     return results

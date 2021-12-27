@@ -29,6 +29,7 @@ if settings is not None:
 
 _unset = object()
 
+
 def get_setting(name, default=_unset):
     """Returns the value to which ``name`` point.  If there is no such name in the
     settings and the ``default`` is unset, a :py:obj:`KeyError` is raised.
@@ -80,14 +81,9 @@ def logging_config_debug():
             'levelname': {'color': 8},
             'name': {'color': 8},
             'programname': {'color': 'cyan'},
-            'username': {'color': 'yellow'}
+            'username': {'color': 'yellow'},
         }
-        coloredlogs.install(
-            level=log_level,
-            level_styles=level_styles,
-            field_styles=field_styles,
-            fmt=LOG_FORMAT_DEBUG
-        )
+        coloredlogs.install(level=log_level, level_styles=level_styles, field_styles=field_styles, fmt=LOG_FORMAT_DEBUG)
     else:
         logging.basicConfig(level=logging.getLevelName(log_level), format=LOG_FORMAT_DEBUG)
 

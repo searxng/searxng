@@ -20,15 +20,18 @@ result_template = 'key-value.html'
 exact_match_only = True
 
 _redis_client = None
+
+
 def init(_engine_settings):
     global _redis_client  # pylint: disable=global-statement
     _redis_client = redis.StrictRedis(
-        host = host,
-        port = port,
-        db = db,
-        password = password or None,
-        decode_responses = True,
+        host=host,
+        port=port,
+        db=db,
+        password=password or None,
+        decode_responses=True,
     )
+
 
 def search(query, _params):
     if not exact_match_only:
@@ -42,21 +45,20 @@ def search(query, _params):
     if ' ' in query:
         qset, rest = query.split(' ', 1)
         ret = []
-        for res in _redis_client.hscan_iter(
-                qset, match='*{}*'.format(rest)
-        ):
-            ret.append({
-                res[0]: res[1],
-                'template': result_template,
-            })
+        for res in _redis_client.hscan_iter(qset, match='*{}*'.format(rest)):
+            ret.append(
+                {
+                    res[0]: res[1],
+                    'template': result_template,
+                }
+            )
         return ret
     return []
 
+
 def search_keys(query):
     ret = []
-    for key in _redis_client.scan_iter(
-            match='*{}*'.format(query)
-    ):
+    for key in _redis_client.scan_iter(match='*{}*'.format(query)):
         key_type = _redis_client.type(key)
         res = None
 

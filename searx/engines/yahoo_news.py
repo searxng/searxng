@@ -40,34 +40,34 @@ categories = ['news']
 
 # search-url
 search_url = (
+    # fmt: off
     'https://news.search.yahoo.com/search'
     '?{query}&b={offset}'
-    )
+    # fmt: on
+)
 
 AGO_RE = re.compile(r'([0-9]+)\s*(year|month|week|day|minute|hour)')
 AGO_TIMEDELTA = {
-  'minute': timedelta(minutes=1),
-  'hour': timedelta(hours=1),
-  'day': timedelta(days=1),
-  'week': timedelta(days=7),
-  'month': timedelta(days=30),
-  'year': timedelta(days=365),
+    'minute': timedelta(minutes=1),
+    'hour': timedelta(hours=1),
+    'day': timedelta(days=1),
+    'week': timedelta(days=7),
+    'month': timedelta(days=30),
+    'year': timedelta(days=365),
 }
+
 
 def request(query, params):
     offset = (params['pageno'] - 1) * 10 + 1
 
-    params['url'] = search_url.format(
-        offset = offset,
-        query = urlencode({'p': query})
-    )
+    params['url'] = search_url.format(offset=offset, query=urlencode({'p': query}))
     logger.debug("query_url --> %s", params['url'])
     return params
+
 
 def response(resp):
     results = []
     dom = html.fromstring(resp.text)
-
 
     # parse results
     for result in eval_xpath_list(dom, '//ol[contains(@class,"searchCenterMiddle")]//li'):
@@ -80,12 +80,7 @@ def response(resp):
         content = extract_text(result.xpath('.//p'))
         img_src = eval_xpath_getindex(result, './/img/@data-src', 0, None)
 
-        item = {
-            'url': url,
-            'title': title,
-            'content': content,
-            'img_src' : img_src
-        }
+        item = {'url': url, 'title': title, 'content': content, 'img_src': img_src}
 
         pub_date = extract_text(result.xpath('.//span[contains(@class,"s-time")]'))
         ago = AGO_RE.search(pub_date)

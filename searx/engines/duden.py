@@ -38,7 +38,7 @@ def request(query, params):
       pageno  : 1 # number of the requested page
     '''
 
-    offset = (params['pageno'] - 1)
+    offset = params['pageno'] - 1
     if offset == 0:
         search_url_fmt = base_url + 'suchen/dudenonline/{query}'
         params['url'] = search_url_fmt.format(query=quote(query))
@@ -58,9 +58,9 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    number_of_results_element =\
-        eval_xpath_getindex(dom, '//a[@class="active" and contains(@href,"/suchen/dudenonline")]/span/text()',
-                            0, default=None)
+    number_of_results_element = eval_xpath_getindex(
+        dom, '//a[@class="active" and contains(@href,"/suchen/dudenonline")]/span/text()', 0, default=None
+    )
     if number_of_results_element is not None:
         number_of_results_string = re.sub('[^0-9]', '', number_of_results_element)
         results.append({'number_of_results': int(number_of_results_string)})
@@ -71,8 +71,6 @@ def response(resp):
         title = eval_xpath(result, 'string(.//h2/a)').strip()
         content = extract_text(eval_xpath(result, './/p'))
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({'url': url, 'title': title, 'content': content})
 
     return results

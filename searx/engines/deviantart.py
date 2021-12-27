@@ -32,13 +32,14 @@ time_range_dict = {
 # search-url
 base_url = 'https://www.deviantart.com'
 
+
 def request(query, params):
 
     # https://www.deviantart.com/search/deviations?page=5&q=foo
 
-    query =  {
-        'page' : params['pageno'],
-        'q'    : query,
+    query = {
+        'page': params['pageno'],
+        'q': query,
     }
     if params['time_range'] in time_range_dict:
         query['order'] = time_range_dict[params['time_range']]
@@ -46,6 +47,7 @@ def request(query, params):
     params['url'] = base_url + '/search/deviations?' + urlencode(query)
 
     return params
+
 
 def response(resp):
 
@@ -67,11 +69,13 @@ def response(resp):
                 continue
             img_tag = img_tag[0]
 
-            results.append({
-                'template': 'images.html',
-                'url': a_tag.attrib.get('href'),
-                'img_src': img_tag.attrib.get('src'),
-                'title': img_tag.attrib.get('alt'),
-            })
+            results.append(
+                {
+                    'template': 'images.html',
+                    'url': a_tag.attrib.get('href'),
+                    'img_src': img_tag.attrib.get('src'),
+                    'title': img_tag.attrib.get('alt'),
+                }
+            )
 
     return results

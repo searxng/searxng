@@ -7,7 +7,7 @@ from . import shared_abstract
 
 class SimpleSharedDict(shared_abstract.SharedDict):
 
-    __slots__ = 'd',
+    __slots__ = ('d',)
 
     def __init__(self):
         self.d = {}

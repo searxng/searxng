@@ -27,17 +27,21 @@ paging = True
 # search-url
 # missing attribute: user_id, app_version, app_locale
 url = 'https://api-v2.soundcloud.com/'
-search_url = url + 'search?{query}'\
-                         '&variant_ids='\
-                         '&facet=model'\
-                         '&limit=20'\
-                         '&offset={offset}'\
-                         '&linked_partitioning=1'\
-                         '&client_id={client_id}'   # noqa
+search_url = (
+    url + 'search?{query}'
+    '&variant_ids='
+    '&facet=model'
+    '&limit=20'
+    '&offset={offset}'
+    '&linked_partitioning=1'
+    '&client_id={client_id}'
+)  # noqa
 
-embedded_url = '<iframe width="100%" height="166" ' +\
-    'scrolling="no" frameborder="no" ' +\
-    'data-src="https://w.soundcloud.com/player/?url={uri}"></iframe>'
+embedded_url = (
+    '<iframe width="100%" height="166" '
+    + 'scrolling="no" frameborder="no" '
+    + 'data-src="https://w.soundcloud.com/player/?url={uri}"></iframe>'
+)
 
 cid_re = re.compile(r'client_id:"([^"]*)"', re.I | re.U)
 guest_client_id = ''
@@ -75,9 +79,7 @@ def init(engine_settings=None):
 def request(query, params):
     offset = (params['pageno'] - 1) * 20
 
-    params['url'] = search_url.format(query=urlencode({'q': query}),
-                                      offset=offset,
-                                      client_id=guest_client_id)
+    params['url'] = search_url.format(query=urlencode({'q': query}), offset=offset, client_id=guest_client_id)
 
     return params
 
@@ -98,11 +100,15 @@ def response(resp):
             embedded = embedded_url.format(uri=uri)
 
             # append result
-            results.append({'url': result['permalink_url'],
-                            'title': title,
-                            'publishedDate': publishedDate,
-                            'embedded': embedded,
-                            'content': content})
+            results.append(
+                {
+                    'url': result['permalink_url'],
+                    'title': title,
+                    'publishedDate': publishedDate,
+                    'embedded': embedded,
+                    'content': content,
+                }
+            )
 
     # return results
     return results

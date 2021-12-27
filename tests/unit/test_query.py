@@ -17,7 +17,6 @@ TEST_ENGINES = [
 
 
 class TestQuery(SearxTestCase):
-
     def test_simple_query(self):
         query_text = 'the query'
         query = RawTextQuery(query_text, [])
@@ -58,7 +57,6 @@ class TestQuery(SearxTestCase):
 
 
 class TestLanguageParser(SearxTestCase):
-
     def test_language_code(self):
         language = 'es-ES'
         query_text = 'the query'
@@ -136,7 +134,6 @@ class TestLanguageParser(SearxTestCase):
 
 
 class TestTimeoutParser(SearxTestCase):
-
     def test_timeout_below100(self):
         query_text = '<3 the query'
         query = RawTextQuery(query_text, [])
@@ -189,7 +186,6 @@ class TestTimeoutParser(SearxTestCase):
 
 
 class TestExternalBangParser(SearxTestCase):
-
     def test_external_bang(self):
         query_text = '!!ddg the query'
         query = RawTextQuery(query_text, [])

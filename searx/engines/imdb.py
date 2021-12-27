@@ -27,7 +27,9 @@ about = {
     "results": 'HTML',
 }
 
-categories = ['general', ]
+categories = [
+    'general',
+]
 paging = False
 
 # suggestion_url = "https://sg.media-imdb.com/suggestion/{letter}/{query}.json"
@@ -35,13 +37,7 @@ suggestion_url = "https://v2.sg.media-imdb.com/suggestion/{letter}/{query}.json"
 
 href_base = 'https://imdb.com/{category}/{entry_id}'
 
-search_categories = {
-    "nm": "name",
-    "tt": "title",
-    "kw": "keyword",
-    "co": "company",
-    "ep": "episode"
-}
+search_categories = {"nm": "name", "tt": "title", "kw": "keyword", "co": "company", "ep": "episode"}
 
 
 def request(query, params):
@@ -63,9 +59,7 @@ def response(resp):
         entry_id = entry['id']
         categ = search_categories.get(entry_id[:2])
         if categ is None:
-            logger.error(
-                'skip unknown category tag %s in %s', entry_id[:2], entry_id
-            )
+            logger.error('skip unknown category tag %s in %s', entry_id[:2], entry_id)
             continue
 
         title = entry['l']
@@ -95,11 +89,13 @@ def response(resp):
             if not image_url_name.endswith('_V1_'):
                 magic = '_V1_' + magic
             image_url = image_url_name + magic + '.' + image_url_prefix
-        results.append({
-            "title":  title,
-            "url": href_base.format(category=categ, entry_id=entry_id),
-            "content": content,
-            "img_src" : image_url,
-        })
+        results.append(
+            {
+                "title": title,
+                "url": href_base.format(category=categ, entry_id=entry_id),
+                "content": content,
+                "img_src": image_url,
+            }
+        )
 
     return results

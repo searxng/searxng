@@ -32,6 +32,7 @@ from searx.engines.google import (
     supported_languages_url,
     _fetch_supported_languages,
 )
+
 # pylint: enable=unused-import
 
 from searx.engines.google import (
@@ -71,14 +72,12 @@ time_range_support = True
 #  safesearch : results are identitical for safesearch=0 and safesearch=2
 safesearch = False
 
+
 def request(query, params):
     """Google-News search request"""
 
-    lang_info = get_lang_info(
-        params, supported_languages, language_aliases, False
-    )
-    logger.debug(
-        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
+    lang_info = get_lang_info(params, supported_languages, language_aliases, False)
+    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     # google news has only one domain
     lang_info['subdomain'] = 'news.google.com'
@@ -94,19 +93,26 @@ def request(query, params):
     if params['time_range']:
         query += ' ' + time_range_dict[params['time_range']]
 
-    query_url = 'https://' + lang_info['subdomain'] + '/search' + "?" + urlencode({
-        'q': query,
-        **lang_info['params'],
-        'ie': "utf8",
-        'oe': "utf8",
-        'gl': lang_info['country'],
-    }) + ('&ceid=%s' % ceid)  # ceid includes a ':' character which must not be urlencoded
+    query_url = (
+        'https://'
+        + lang_info['subdomain']
+        + '/search'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                **lang_info['params'],
+                'ie': "utf8",
+                'oe': "utf8",
+                'gl': lang_info['country'],
+            }
+        )
+        + ('&ceid=%s' % ceid)
+    )  # ceid includes a ':' character which must not be urlencoded
     params['url'] = query_url
 
     params['headers'].update(lang_info['headers'])
-    params['headers']['Accept'] = (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-        )
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     params['headers']['Cookie'] = "CONSENT=YES+cb.%s-14-p0.en+F+941;" % datetime.now().strftime("%Y%m%d")
 
     return params
@@ -141,7 +147,7 @@ def response(resp):
             # jslog="95014; 5:W251bGwsbnVsbCxudW...giXQ==; track:click"
             jslog = jslog.split(";")[1].split(':')[1].strip()
             try:
-                padding = (4 -(len(jslog) % 4)) * "="
+                padding = (4 - (len(jslog) % 4)) * "="
                 jslog = b64decode(jslog + padding)
             except binascii.Error:
                 # URL cant be read, skip this result
@@ -178,12 +184,14 @@ def response(resp):
 
         img_src = extract_text(result.xpath('preceding-sibling::a/figure/img/@src'))
 
-        results.append({
-            'url':      url,
-            'title':    title,
-            'content':  content,
-            'img_src':  img_src,
-        })
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'img_src': img_src,
+            }
+        )
 
     # return results
     return results

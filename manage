@@ -24,6 +24,8 @@ PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.30.0"
 export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
+BLACK_OPTIONS=("--target-version" "py37" "--line-length" "120" "--skip-string-normalization")
+BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "searx" "searxng_extra" "tests")
 
 pylint.FILES() {
 
@@ -31,8 +33,7 @@ pylint.FILES() {
     #
     #   # lint: pylint
     #
-    # These py files are linted by test.pylint(), all other files are linted by
-    # test.pep8()
+    # These py files are linted by test.pylint()
 
     grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searxng_extra tests
 }
@@ -89,10 +90,12 @@ pyenv.:
   OK        : test if virtualenv is OK
 pypi.upload:
   Upload python packages to PyPi (to test use pypi.upload.test)
+format.:
+  python    : format Python code source using black
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
   pylint    : lint PYLINT_FILES, searx/engines, searx & tests
-  pep8      : pycodestyle (pep8) for all files except PYLINT_FILES
+  black     : check black code format
   unit      : run unit tests
   coverage  : run unit tests with coverage
   robot     : run robot test
@@ -617,6 +620,12 @@ pypi.upload.test() {
     pyenv.cmd twine upload -r testpypi "${PYDIST}"/*
 }
 
+format.python() {
+    build_msg TEST "[format.python] black \$BLACK_TARGETS"
+    pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    dump_return $?
+}
+
 test.yamllint() {
     build_msg TEST "[yamllint] \$YAMLLINT_FILES"
     pyenv.cmd yamllint --format parsable "${YAMLLINT_FILES[@]}"
@@ -646,15 +655,9 @@ test.pylint() {
     dump_return $?
 }
 
-test.pep8() {
-    build_msg TEST 'pycodestyle (formerly pep8)'
-    local _exclude=""
-    printf -v _exclude '%s, ' "${PYLINT_FILES[@]}"
-    pyenv.cmd pycodestyle \
-              --exclude="searx/static, searx/languages.py, $_exclude " \
-              --max-line-length=120 \
-              --ignore "E117,E252,E402,E722,E741,W503,W504,W605" \
-              searx tests
+test.black() {
+    build_msg TEST "[black] \$BLACK_TARGETS"
+    pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
     dump_return $?
 }
 

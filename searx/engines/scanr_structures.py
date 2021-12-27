@@ -32,12 +32,16 @@ def request(query, params):
     params['url'] = search_url
     params['method'] = 'POST'
     params['headers']['Content-type'] = "application/json"
-    params['data'] = dumps({"query": query,
-                            "searchField": "ALL",
-                            "sortDirection": "ASC",
-                            "sortOrder": "RELEVANCY",
-                            "page": params['pageno'],
-                            "pageSize": page_size})
+    params['data'] = dumps(
+        {
+            "query": query,
+            "searchField": "ALL",
+            "sortDirection": "ASC",
+            "sortOrder": "RELEVANCY",
+            "page": params['pageno'],
+            "pageSize": page_size,
+        }
+    )
 
     return params
 
@@ -69,11 +73,15 @@ def response(resp):
             content = result['highlights'][0]['value']
 
         # append result
-        results.append({'url': url + 'structure/' + result['id'],
-                        'title': result['label'],
-                        # 'thumbnail': thumbnail,
-                        'img_src': thumbnail,
-                        'content': html_to_text(content)})
+        results.append(
+            {
+                'url': url + 'structure/' + result['id'],
+                'title': result['label'],
+                # 'thumbnail': thumbnail,
+                'img_src': thumbnail,
+                'content': html_to_text(content),
+            }
+        )
 
     # return results
     return results

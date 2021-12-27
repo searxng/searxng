@@ -40,7 +40,6 @@ class QueryPartParser(ABC):
 
 
 class TimeoutParser(QueryPartParser):
-
     @staticmethod
     def check(raw_value):
         return raw_value[0] == '<'
@@ -70,7 +69,6 @@ class TimeoutParser(QueryPartParser):
 
 
 class LanguageParser(QueryPartParser):
-
     @staticmethod
     def check(raw_value):
         return raw_value[0] == ':'
@@ -92,11 +90,9 @@ class LanguageParser(QueryPartParser):
             # if correct language-code is found
             # set it as new search-language
 
-            if (value == lang_id
-                or value == lang_name
-                or value == english_name
-                or value.replace('-', ' ') == country)\
-               and value not in self.raw_text_query.languages:
+            if (
+                value == lang_id or value == lang_name or value == english_name or value.replace('-', ' ') == country
+            ) and value not in self.raw_text_query.languages:
                 found = True
                 lang_parts = lang_id.split('-')
                 if len(lang_parts) == 2:
@@ -152,7 +148,6 @@ class LanguageParser(QueryPartParser):
 
 
 class ExternalBangParser(QueryPartParser):
-
     @staticmethod
     def check(raw_value):
         return raw_value.startswith('!!')
@@ -180,7 +175,6 @@ class ExternalBangParser(QueryPartParser):
 
 
 class BangParser(QueryPartParser):
-
     @staticmethod
     def check(raw_value):
         return raw_value[0] == '!' or raw_value[0] == '?'
@@ -208,9 +202,11 @@ class BangParser(QueryPartParser):
         if value in categories:
             # using all engines for that search, which
             # are declared under that categorie name
-            self.raw_text_query.enginerefs.extend(EngineRef(engine.name, value)
-                                                  for engine in categories[value]
-                                                  if (engine.name, value) not in self.raw_text_query.disabled_engines)
+            self.raw_text_query.enginerefs.extend(
+                EngineRef(engine.name, value)
+                for engine in categories[value]
+                if (engine.name, value) not in self.raw_text_query.disabled_engines
+            )
             return True
 
         return False
@@ -246,7 +242,7 @@ class RawTextQuery:
         TimeoutParser,  # this force the timeout
         LanguageParser,  # this force a language
         ExternalBangParser,  # external bang (must be before BangParser)
-        BangParser  # this force a engine or category
+        BangParser,  # this force a engine or category
     ]
 
     def __init__(self, query, disabled_engines):
@@ -281,8 +277,7 @@ class RawTextQuery:
 
         for i, query_part in enumerate(raw_query_parts):
             # part does only contain spaces, skip
-            if query_part.isspace()\
-               or query_part == '':
+            if query_part.isspace() or query_part == '':
                 continue
 
             # parse special commands
@@ -324,14 +319,16 @@ class RawTextQuery:
         return self.getFullQuery()
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} " \
-               + f"query={self.query!r} " \
-               + f"disabled_engines={self.disabled_engines!r}\n  " \
-               + f"languages={self.languages!r} " \
-               + f"timeout_limit={self.timeout_limit!r} "\
-               + f"external_bang={self.external_bang!r} " \
-               + f"specific={self.specific!r} " \
-               + f"enginerefs={self.enginerefs!r}\n  " \
-               + f"autocomplete_list={self.autocomplete_list!r}\n  " \
-               + f"query_parts={self.query_parts!r}\n  " \
-               + f"user_query_parts={self.user_query_parts!r} >"
+        return (
+            f"<{self.__class__.__name__} "
+            + f"query={self.query!r} "
+            + f"disabled_engines={self.disabled_engines!r}\n  "
+            + f"languages={self.languages!r} "
+            + f"timeout_limit={self.timeout_limit!r} "
+            + f"external_bang={self.external_bang!r} "
+            + f"specific={self.specific!r} "
+            + f"enginerefs={self.enginerefs!r}\n  "
+            + f"autocomplete_list={self.autocomplete_list!r}\n  "
+            + f"query_parts={self.query_parts!r}\n  "
+            + f"user_query_parts={self.user_query_parts!r} >"
+        )

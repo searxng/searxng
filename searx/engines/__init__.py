@@ -57,6 +57,7 @@ engine_shortcuts = {}
 
 """
 
+
 def load_engine(engine_data):
     """Load engine from ``engine_data``.
 
@@ -166,20 +167,19 @@ def set_language_attributes(engine):
         # settings.yml
         if engine.language not in engine.supported_languages:
             raise ValueError(
-                "settings.yml - engine: '%s' / language: '%s' not supported" % (
-                    engine.name, engine.language ))
+                "settings.yml - engine: '%s' / language: '%s' not supported" % (engine.name, engine.language)
+            )
 
         if isinstance(engine.supported_languages, dict):
-            engine.supported_languages = {
-                engine.language : engine.supported_languages[engine.language]
-            }
+            engine.supported_languages = {engine.language: engine.supported_languages[engine.language]}
         else:
             engine.supported_languages = [engine.language]
 
     # find custom aliases for non standard language codes
     for engine_lang in engine.supported_languages:
         iso_lang = match_language(engine_lang, BABEL_LANGS, fallback=None)
-        if (iso_lang
+        if (
+            iso_lang
             and iso_lang != engine_lang
             and not engine_lang.startswith(iso_lang)
             and iso_lang not in engine.supported_languages
@@ -197,14 +197,12 @@ def set_language_attributes(engine):
         }
         engine.fetch_supported_languages = (
             # pylint: disable=protected-access
-            lambda: engine._fetch_supported_languages(
-                get(engine.supported_languages_url, headers=headers))
+            lambda: engine._fetch_supported_languages(get(engine.supported_languages_url, headers=headers))
         )
 
 
 def update_attributes_for_tor(engine):
-    if (settings['outgoing'].get('using_tor_proxy')
-        and hasattr(engine, 'onion_url') ):
+    if settings['outgoing'].get('using_tor_proxy') and hasattr(engine, 'onion_url'):
         engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
         engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
 
@@ -217,9 +215,7 @@ def is_missing_required_attributes(engine):
     missing = False
     for engine_attr in dir(engine):
         if not engine_attr.startswith('_') and getattr(engine, engine_attr) is None:
-            logger.error(
-                'Missing engine config attribute: "{0}.{1}"'
-                .format(engine.name, engine_attr))
+            logger.error('Missing engine config attribute: "{0}.{1}"'.format(engine.name, engine_attr))
             missing = True
     return missing
 
@@ -230,8 +226,7 @@ def is_engine_active(engine):
         return False
 
     # exclude onion engines if not using tor
-    if ('onions' in engine.categories
-        and not settings['outgoing'].get('using_tor_proxy') ):
+    if 'onions' in engine.categories and not settings['outgoing'].get('using_tor_proxy'):
         return False
 
     return True
@@ -253,8 +248,7 @@ def register_engine(engine):
 
 
 def load_engines(engine_list):
-    """usage: ``engine_list = settings['engines']``
-    """
+    """usage: ``engine_list = settings['engines']``"""
     engines.clear()
     engine_shortcuts.clear()
     categories.clear()

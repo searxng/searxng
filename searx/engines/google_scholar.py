@@ -32,6 +32,7 @@ from searx.engines.google import (
     supported_languages_url,
     _fetch_supported_languages,
 )
+
 # pylint: enable=unused-import
 
 # about
@@ -52,6 +53,7 @@ use_locale_domain = True
 time_range_support = True
 safesearch = False
 
+
 def time_range_url(params):
     """Returns a URL query component for a google-Scholar time range based on
     ``params['time_range']``.  Google-Scholar does only support ranges in years.
@@ -64,7 +66,7 @@ def time_range_url(params):
     # as_ylo=2016&as_yhi=2019
     ret_val = ''
     if params['time_range'] in time_range_dict:
-        ret_val= urlencode({'as_ylo': datetime.now().year -1 })
+        ret_val = urlencode({'as_ylo': datetime.now().year - 1})
     return '&' + ret_val
 
 
@@ -72,33 +74,37 @@ def request(query, params):
     """Google-Scholar search request"""
 
     offset = (params['pageno'] - 1) * 10
-    lang_info = get_lang_info(
-        params, supported_languages, language_aliases, False
-    )
-    logger.debug(
-        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
+    lang_info = get_lang_info(params, supported_languages, language_aliases, False)
+    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     # subdomain is: scholar.google.xy
     lang_info['subdomain'] = lang_info['subdomain'].replace("www.", "scholar.")
 
-    query_url = 'https://'+ lang_info['subdomain'] + '/scholar' + "?" + urlencode({
-        'q':  query,
-        **lang_info['params'],
-        'ie': "utf8",
-        'oe':  "utf8",
-        'start' : offset,
-    })
+    query_url = (
+        'https://'
+        + lang_info['subdomain']
+        + '/scholar'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                **lang_info['params'],
+                'ie': "utf8",
+                'oe': "utf8",
+                'start': offset,
+            }
+        )
+    )
 
     query_url += time_range_url(params)
     params['url'] = query_url
 
     params['headers'].update(lang_info['headers'])
-    params['headers']['Accept'] = (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    )
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
-    #params['google_subdomain'] = subdomain
+    # params['google_subdomain'] = subdomain
     return params
+
 
 def response(resp):
     """Get response from google's search request"""
@@ -132,11 +138,13 @@ def response(resp):
         if pub_type:
             title = title + " " + pub_type
 
-        results.append({
-            'url':      url,
-            'title':    title,
-            'content':  content,
-        })
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+            }
+        )
 
     # parse suggestion
     for suggestion in eval_xpath(dom, '//div[contains(@class, "gs_qsuggest_wrap")]//li//a'):

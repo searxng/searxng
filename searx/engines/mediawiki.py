@@ -25,23 +25,24 @@ search_type = 'nearmatch'  # possible values: title, text, nearmatch
 
 # search-url
 base_url = 'https://{language}.wikipedia.org/'
-search_postfix = 'w/api.php?action=query'\
-    '&list=search'\
-    '&{query}'\
-    '&format=json'\
-    '&sroffset={offset}'\
-    '&srlimit={limit}'\
+search_postfix = (
+    'w/api.php?action=query'
+    '&list=search'
+    '&{query}'
+    '&format=json'
+    '&sroffset={offset}'
+    '&srlimit={limit}'
     '&srwhat={searchtype}'
+)
 
 
 # do search-request
 def request(query, params):
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=urlencode({'srsearch': query}),
-                       offset=offset,
-                       limit=number_of_results,
-                       searchtype=search_type)
+    string_args = dict(
+        query=urlencode({'srsearch': query}), offset=offset, limit=number_of_results, searchtype=search_type
+    )
 
     format_strings = list(Formatter().parse(base_url))
 
@@ -78,13 +79,14 @@ def response(resp):
     for result in search_results['query']['search']:
         if result.get('snippet', '').startswith('#REDIRECT'):
             continue
-        url = base_url.format(language=resp.search_params['language']) +\
-            'wiki/' + quote(result['title'].replace(' ', '_').encode())
+        url = (
+            base_url.format(language=resp.search_params['language'])
+            + 'wiki/'
+            + quote(result['title'].replace(' ', '_').encode())
+        )
 
         # append result
-        results.append({'url': url,
-                        'title': result['title'],
-                        'content': ''})
+        results.append({'url': url, 'title': result['title'], 'content': ''})
 
     # return results
     return results

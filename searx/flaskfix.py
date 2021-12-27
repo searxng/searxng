@@ -29,6 +29,7 @@ class ReverseProxyPathFix:
 
     :param wsgi_app: the WSGI application
     '''
+
     # pylint: disable=too-few-public-methods
 
     def __init__(self, wsgi_app):
@@ -58,7 +59,7 @@ class ReverseProxyPathFix:
             environ['SCRIPT_NAME'] = script_name
             path_info = environ['PATH_INFO']
             if path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
+                environ['PATH_INFO'] = path_info[len(script_name) :]
 
         scheme = self.scheme or environ.get('HTTP_X_SCHEME', '')
         if scheme:

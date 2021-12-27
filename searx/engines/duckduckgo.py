@@ -39,15 +39,10 @@ language_aliases = {
     'ko': 'kr-KR',
     'sl-SI': 'sl-SL',
     'zh-TW': 'tzh-TW',
-    'zh-HK': 'tzh-HK'
+    'zh-HK': 'tzh-HK',
 }
 
-time_range_dict = {
-    'day': 'd',
-    'week': 'w',
-    'month': 'm',
-    'year': 'y'
-}
+time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # search-url
 url = 'https://lite.duckduckgo.com/lite'
@@ -118,6 +113,7 @@ def request(query, params):
     logger.debug("param cookies: %s", params['cookies'])
     return params
 
+
 # get response from search-request
 def response(resp):
 
@@ -163,21 +159,24 @@ def response(resp):
         if td_content is None:
             continue
 
-        results.append({
-            'title': a_tag.text_content(),
-            'content': extract_text(td_content),
-            'url': a_tag.get('href'),
-        })
+        results.append(
+            {
+                'title': a_tag.text_content(),
+                'content': extract_text(td_content),
+                'url': a_tag.get('href'),
+            }
+        )
 
     return results
+
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
 
     # response is a js file with regions as an embedded object
     response_page = resp.text
-    response_page = response_page[response_page.find('regions:{') + 8:]
-    response_page = response_page[:response_page.find('}') + 1]
+    response_page = response_page[response_page.find('regions:{') + 8 :]
+    response_page = response_page[: response_page.find('}') + 1]
 
     regions_json = loads(response_page)
     supported_languages = map((lambda x: x[3:] + '-' + x[:2].upper()), regions_json.keys())

@@ -44,9 +44,7 @@ def request(query, params):
       pageno  : 1 # number of the requested page
     '''
 
-    search_path = search_string.format(
-        query=urlencode({'q': query}),
-        page=params['pageno'])
+    search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
 
     params['url'] = base_url + search_path
 

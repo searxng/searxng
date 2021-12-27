@@ -7,7 +7,10 @@ from json import loads
 from urllib.parse import urlencode
 from searx.exceptions import SearxEngineAPIException
 from searx.engines.duckduckgo import get_region_code
-from searx.engines.duckduckgo import _fetch_supported_languages, supported_languages_url  # NOQA # pylint: disable=unused-import
+from searx.engines.duckduckgo import (  # pylint: disable=unused-import
+    _fetch_supported_languages,
+    supported_languages_url,
+)
 from searx.network import get
 
 # about
@@ -41,8 +44,8 @@ def get_vqd(query, headers):
     content = res.text
     if content.find('vqd=\'') == -1:
         raise SearxEngineAPIException('Request failed')
-    vqd = content[content.find('vqd=\'') + 5:]
-    vqd = vqd[:vqd.find('\'')]
+    vqd = content[content.find('vqd=\'') + 5 :]
+    vqd = vqd[: vqd.find('\'')]
     return vqd
 
 
@@ -61,10 +64,10 @@ def request(query, params):
     region_code = get_region_code(params['language'], lang_list=supported_languages)
     if region_code:
         params['url'] = images_url.format(
-            query=urlencode({'q': query, 'l': region_code}), offset=offset, safesearch=safesearch, vqd=vqd)
+            query=urlencode({'q': query, 'l': region_code}), offset=offset, safesearch=safesearch, vqd=vqd
+        )
     else:
-        params['url'] = images_url.format(
-            query=urlencode({'q': query}), offset=offset, safesearch=safesearch, vqd=vqd)
+        params['url'] = images_url.format(query=urlencode({'q': query}), offset=offset, safesearch=safesearch, vqd=vqd)
 
     return params
 
@@ -84,11 +87,15 @@ def response(resp):
         image = result['image']
 
         # append result
-        results.append({'template': 'images.html',
-                        'title': title,
-                        'content': '',
-                        'thumbnail_src': thumbnail,
-                        'img_src': image,
-                        'url': url})
+        results.append(
+            {
+                'template': 'images.html',
+                'title': title,
+                'content': '',
+                'thumbnail_src': thumbnail,
+                'img_src': image,
+                'url': url,
+            }
+        )
 
     return results

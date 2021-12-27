@@ -25,6 +25,7 @@ from searx.metrics import counter_inc
 logger = logger.getChild('searx.search.checker')
 
 HTML_TAGS = [
+    # fmt: off
     'embed', 'iframe', 'object', 'param', 'picture', 'source', 'svg', 'math', 'canvas', 'noscript', 'script',
     'del', 'ins', 'area', 'audio', 'img', 'map', 'track', 'video', 'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite',
     'code', 'data', 'dfn', 'em', 'i', 'kdb', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small',
@@ -32,6 +33,7 @@ HTML_TAGS = [
     'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', 'button', 'datalist', 'fieldset', 'form', 'input',
     'label', 'legend', 'meter', 'optgroup', 'option', 'output', 'progress', 'select', 'textarea', 'applet',
     'frame', 'frameset'
+    # fmt: on
 ]
 
 
@@ -72,17 +74,23 @@ def _download_and_check_if_image(image_url: str) -> bool:
         try:
             # use "image_proxy" (avoid HTTP/2)
             network.set_context_network_name('image_proxy')
-            stream = network.stream('GET', image_url, timeout=10.0, allow_redirects=True, headers={
-                'User-Agent': gen_useragent(),
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US;q=0.5,en;q=0.3',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'DNT': '1',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
-                'Sec-GPC': '1',
-                'Cache-Control': 'max-age=0'
-            })
+            stream = network.stream(
+                'GET',
+                image_url,
+                timeout=10.0,
+                allow_redirects=True,
+                headers={
+                    'User-Agent': gen_useragent(),
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-US;q=0.5,en;q=0.3',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'DNT': '1',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1',
+                    'Sec-GPC': '1',
+                    'Cache-Control': 'max-age=0',
+                },
+            )
             r = next(stream)
             r.close()
             if r.status_code == 200:
@@ -102,8 +110,7 @@ def _download_and_check_if_image(image_url: str) -> bool:
 
 
 def _is_url_image(image_url) -> bool:
-    """Normalize image_url
-    """
+    """Normalize image_url"""
     if not isinstance(image_url, str):
         return False
 
@@ -129,8 +136,9 @@ def _search_query_to_dict(search_query: SearchQuery) -> typing.Dict[str, typing.
     }
 
 
-def _search_query_diff(sq1: SearchQuery, sq2: SearchQuery)\
-        -> typing.Tuple[typing.Dict[str, typing.Any], typing.Dict[str, typing.Any]]:
+def _search_query_diff(
+    sq1: SearchQuery, sq2: SearchQuery
+) -> typing.Tuple[typing.Dict[str, typing.Any], typing.Dict[str, typing.Any]]:
     param1 = _search_query_to_dict(sq1)
     param2 = _search_query_to_dict(sq2)
     common = {}
@@ -180,11 +188,9 @@ class ResultContainerTests:
 
     __slots__ = 'test_name', 'search_query', 'result_container', 'languages', 'stop_test', 'test_results'
 
-    def __init__(self,
-                 test_results: TestResults,
-                 test_name: str,
-                 search_query: SearchQuery,
-                 result_container: ResultContainer):
+    def __init__(
+        self, test_results: TestResults, test_name: str, search_query: SearchQuery, result_container: ResultContainer
+    ):
         self.test_name = test_name
         self.search_query = search_query
         self.result_container = result_container
@@ -324,10 +330,9 @@ class CheckerTests:
 
     __slots__ = 'test_results', 'test_name', 'result_container_tests_list'
 
-    def __init__(self,
-                 test_results: TestResults,
-                 test_name: str,
-                 result_container_tests_list: typing.List[ResultContainerTests]):
+    def __init__(
+        self, test_results: TestResults, test_name: str, result_container_tests_list: typing.List[ResultContainerTests]
+    ):
         self.test_results = test_results
         self.test_name = test_name
         self.result_container_tests_list = result_container_tests_list
@@ -340,14 +345,17 @@ class CheckerTests:
             for i, urls_i in enumerate(urls_list):
                 for j, urls_j in enumerate(urls_list):
                     if i < j and urls_i == urls_j:
-                        common, diff = _search_query_diff(self.result_container_tests_list[i].search_query,
-                                                          self.result_container_tests_list[j].search_query)
+                        common, diff = _search_query_diff(
+                            self.result_container_tests_list[i].search_query,
+                            self.result_container_tests_list[j].search_query,
+                        )
                         common_str = ' '.join(['{}={!r}'.format(k, v) for k, v in common.items()])
-                        diff1_str = ', ' .join(['{}={!r}'.format(k, v1) for (k, (v1, v2)) in diff.items()])
-                        diff2_str = ', ' .join(['{}={!r}'.format(k, v2) for (k, (v1, v2)) in diff.items()])
-                        self.test_results.add_error(self.test_name,
-                                                    'results are identitical for {} and {} ({})'
-                                                    .format(diff1_str, diff2_str, common_str))
+                        diff1_str = ', '.join(['{}={!r}'.format(k, v1) for (k, (v1, v2)) in diff.items()])
+                        diff2_str = ', '.join(['{}={!r}'.format(k, v2) for (k, (v1, v2)) in diff.items()])
+                        self.test_results.add_error(
+                            self.test_name,
+                            'results are identitical for {} and {} ({})'.format(diff1_str, diff2_str, common_str),
+                        )
 
 
 class Checker:
@@ -393,9 +401,10 @@ class Checker:
         elif isinstance(method, types.FunctionType):
             method(*args)
         else:
-            self.test_results.add_error(obj.test_name,
-                                        'method {!r} ({}) not found for {}'
-                                        .format(method, method.__class__.__name__, obj.__class__.__name__))
+            self.test_results.add_error(
+                obj.test_name,
+                'method {!r} ({}) not found for {}'.format(method, method.__class__.__name__, obj.__class__.__name__),
+            )
 
     def call_tests(self, obj, test_descriptions):
         for test_description in test_descriptions:

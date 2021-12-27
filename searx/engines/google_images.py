@@ -30,10 +30,8 @@ from searx.engines.google import (
 )
 
 # pylint: disable=unused-import
-from searx.engines.google import (
-    supported_languages_url
-    ,  _fetch_supported_languages
-)
+from searx.engines.google import supported_languages_url, _fetch_supported_languages
+
 # pylint: enable=unused-import
 
 # about
@@ -53,21 +51,16 @@ use_locale_domain = True
 time_range_support = True
 safesearch = True
 
-filter_mapping = {
-    0: 'images',
-    1: 'active',
-    2: 'active'
-}
+filter_mapping = {0: 'images', 1: 'active', 2: 'active'}
 
 
 def scrap_out_thumbs(dom):
-    """Scrap out thumbnail data from <script> tags.
-    """
+    """Scrap out thumbnail data from <script> tags."""
     ret_val = {}
     for script in eval_xpath(dom, '//script[contains(., "_setImgSrc(")]'):
         _script = script.text
         # _setImgSrc('0','data:image\/jpeg;base64,\/9j\/4AAQSkZJR ....');
-        _thumb_no, _img_data = _script[len("_setImgSrc("):-2].split(",", 1)
+        _thumb_no, _img_data = _script[len("_setImgSrc(") : -2].split(",", 1)
         _thumb_no = _thumb_no.replace("'", "")
         _img_data = _img_data.replace("'", "")
         _img_data = _img_data.replace(r"\/", r"/")
@@ -76,8 +69,7 @@ def scrap_out_thumbs(dom):
 
 
 def scrap_img_by_id(script, data_id):
-    """Get full image URL by data-id in parent element
-    """
+    """Get full image URL by data-id in parent element"""
     img_url = ''
     _script = script.split('\n')
     for i, line in enumerate(_script):
@@ -91,20 +83,25 @@ def scrap_img_by_id(script, data_id):
 def request(query, params):
     """Google-Video search request"""
 
-    lang_info = get_lang_info(
-        params, supported_languages, language_aliases, False
-    )
-    logger.debug(
-        "HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
+    lang_info = get_lang_info(params, supported_languages, language_aliases, False)
+    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
-    query_url = 'https://' + lang_info['subdomain'] + '/search' + "?" + urlencode({
-        'q': query,
-        'tbm': "isch",
-        **lang_info['params'],
-        'ie': "utf8",
-        'oe': "utf8",
-        'num': 30,
-    })
+    query_url = (
+        'https://'
+        + lang_info['subdomain']
+        + '/search'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                'tbm': "isch",
+                **lang_info['params'],
+                'ie': "utf8",
+                'oe': "utf8",
+                'num': 30,
+            }
+        )
+    )
 
     if params['time_range'] in time_range_dict:
         query_url += '&' + urlencode({'tbs': 'qdr:' + time_range_dict[params['time_range']]})
@@ -113,9 +110,7 @@ def request(query, params):
     params['url'] = query_url
 
     params['headers'].update(lang_info['headers'])
-    params['headers']['Accept'] = (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    )
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     return params
 
 
@@ -128,8 +123,7 @@ def response(resp):
     # convert the text to dom
     dom = html.fromstring(resp.text)
     img_bas64_map = scrap_out_thumbs(dom)
-    img_src_script = eval_xpath_getindex(
-        dom, '//script[contains(., "AF_initDataCallback({key: ")]', 1).text
+    img_src_script = eval_xpath_getindex(dom, '//script[contains(., "AF_initDataCallback({key: ")]', 1).text
 
     # parse results
     #
@@ -189,15 +183,17 @@ def response(resp):
         if not src_url:
             src_url = thumbnail_src
 
-        results.append({
-            'url': url,
-            'title': img_alt,
-            'content': pub_descr,
-            'source': pub_source,
-            'img_src': src_url,
-            # 'img_format': img_format,
-            'thumbnail_src': thumbnail_src,
-            'template': 'images.html'
-        })
+        results.append(
+            {
+                'url': url,
+                'title': img_alt,
+                'content': pub_descr,
+                'source': pub_source,
+                'img_src': src_url,
+                # 'img_format': img_format,
+                'thumbnail_src': thumbnail_src,
+                'template': 'images.html',
+            }
+        )
 
     return results

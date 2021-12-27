@@ -23,8 +23,7 @@ from searx import logger
 
 logger = logger.getChild('utils')
 
-blocked_tags = ('script',
-                'style')
+blocked_tags = ('script', 'style')
 
 ecma_unescape4_re = re.compile(r'%u([0-9a-fA-F]{4})', re.UNICODE)
 ecma_unescape2_re = re.compile(r'%([0-9a-fA-F]{2})', re.UNICODE)
@@ -43,8 +42,8 @@ NOTSET = NotSetClass()
 def searx_useragent():
     """Return the searx User Agent"""
     return 'searx/{searx_version} {suffix}'.format(
-           searx_version=VERSION_TAG,
-           suffix=settings['outgoing']['useragent_suffix']).strip()
+        searx_version=VERSION_TAG, suffix=settings['outgoing']['useragent_suffix']
+    ).strip()
 
 
 def gen_useragent(os=None):
@@ -60,7 +59,6 @@ class HTMLTextExtractorException(Exception):
 
 
 class HTMLTextExtractor(HTMLParser):  # pylint: disable=W0223  # (see https://bugs.python.org/issue31844)
-
     def __init__(self):
         HTMLParser.__init__(self)
         self.result = []
@@ -135,10 +133,10 @@ def html_to_text(html_str):
 def extract_text(xpath_results, allow_none=False):
     """Extract text from a lxml result
 
-      * if xpath_results is list, extract the text from each result and concat the list
-      * if xpath_results is a xml element, extract all the text node from it
-        ( text_content() method from lxml )
-      * if xpath_results is a string element, then it's already done
+    * if xpath_results is list, extract the text from each result and concat the list
+    * if xpath_results is a xml element, extract all the text node from it
+      ( text_content() method from lxml )
+    * if xpath_results is a string element, then it's already done
     """
     if isinstance(xpath_results, list):
         # it's list of result : concat everything using recursive call
@@ -148,9 +146,7 @@ def extract_text(xpath_results, allow_none=False):
         return result.strip()
     elif isinstance(xpath_results, ElementBase):
         # it's a element
-        text = html.tostring(
-            xpath_results, encoding='unicode', method='text', with_tail=False
-        )
+        text = html.tostring(xpath_results, encoding='unicode', method='text', with_tail=False)
         text = text.strip().replace('\n', ' ')
         return ' '.join(text.split())
     elif isinstance(xpath_results, (_ElementStringResult, _ElementUnicodeResult, str, Number, bool)):
@@ -344,7 +340,7 @@ def is_valid_lang(lang):
     """
     if isinstance(lang, bytes):
         lang = lang.decode()
-    is_abbr = (len(lang) == 2)
+    is_abbr = len(lang) == 2
     lang = lang.lower()
     if is_abbr:
         for l in language_codes:

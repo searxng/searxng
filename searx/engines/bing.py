@@ -36,8 +36,10 @@ inital_query = 'search?{query}&search=&form=QBLH'
 # following queries: https://www.bing.com/search?q=foo&search=&first=11&FORM=PERE
 page_query = 'search?{query}&search=&first={offset}&FORM=PERE'
 
+
 def _get_offset_from_pageno(pageno):
     return (pageno - 1) * 10 + 1
+
 
 def request(query, params):
 
@@ -53,29 +55,22 @@ def request(query, params):
     if params['language'] == 'all':
         lang = 'EN'
     else:
-        lang = match_language(
-            params['language'], supported_languages, language_aliases
-        )
+        lang = match_language(params['language'], supported_languages, language_aliases)
 
-    query = 'language:{} {}'.format(
-        lang.split('-')[0].upper(), query
-    )
+    query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
 
-    search_path = search_string.format(
-        query = urlencode({'q': query}),
-        offset = offset)
+    search_path = search_string.format(query=urlencode({'q': query}), offset=offset)
 
     if offset > 1:
-        referer = base_url + inital_query.format(query = urlencode({'q': query}))
+        referer = base_url + inital_query.format(query=urlencode({'q': query}))
         params['headers']['Referer'] = referer
-        logger.debug("headers.Referer --> %s", referer )
+        logger.debug("headers.Referer --> %s", referer)
 
     params['url'] = base_url + search_path
     params['headers']['Accept-Language'] = "en-US,en;q=0.5"
-    params['headers']['Accept'] = (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    )
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     return params
+
 
 def response(resp):
 
@@ -87,7 +82,7 @@ def response(resp):
     for result in eval_xpath(dom, '//div[@class="sa_cc"]'):
 
         # IMO //div[@class="sa_cc"] does no longer match
-        logger.debug('found //div[@class="sa_cc"] --> %s',  result)
+        logger.debug('found //div[@class="sa_cc"] --> %s', result)
 
         link = eval_xpath(result, './/h3/a')[0]
         url = link.attrib.get('href')
@@ -95,11 +90,7 @@ def response(resp):
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({
-            'url': url,
-            'title': title,
-            'content': content
-        })
+        results.append({'url': url, 'title': title, 'content': content})
 
     # parse results again if nothing is found yet
     for result in eval_xpath(dom, '//li[@class="b_algo"]'):
@@ -110,18 +101,14 @@ def response(resp):
         content = extract_text(eval_xpath(result, './/p'))
 
         # append result
-        results.append({
-            'url': url,
-            'title': title,
-            'content': content
-        })
+        results.append({'url': url, 'title': title, 'content': content})
 
     try:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
 
             # Remove the part "from-to" for paginated request ...
-            result_len_container = result_len_container[result_len_container.find("-") * 2 + 2:]
+            result_len_container = result_len_container[result_len_container.find("-") * 2 + 2 :]
 
         result_len_container = re.sub('[^0-9]', '', result_len_container)
 

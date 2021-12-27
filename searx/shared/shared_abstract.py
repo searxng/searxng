@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 
 class SharedDict(ABC):
-
     @abstractmethod
     def get_int(self, key):
         pass

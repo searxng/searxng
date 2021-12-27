@@ -34,10 +34,7 @@ def request(query, params):
 
     params['url'] = pdbe_solr_url
     params['method'] = 'POST'
-    params['data'] = {
-        'q': query,
-        'wt': "json"  # request response in parsable format
-    }
+    params['data'] = {'q': query, 'wt': "json"}  # request response in parsable format
     return params
 
 
@@ -53,12 +50,21 @@ def construct_body(result):
         if result['journal']:
             content = content.format(
                 title=result['citation_title'],
-                authors=result['entry_author_list'][0], journal=result['journal'], volume=result['journal_volume'],
-                page=result['journal_page'], year=result['citation_year'])
+                authors=result['entry_author_list'][0],
+                journal=result['journal'],
+                volume=result['journal_volume'],
+                page=result['journal_page'],
+                year=result['citation_year'],
+            )
         else:
             content = content.format(
                 title=result['citation_title'],
-                authors=result['entry_author_list'][0], journal='', volume='', page='', year=result['release_year'])
+                authors=result['entry_author_list'][0],
+                journal='',
+                volume='',
+                page='',
+                year=result['release_year'],
+            )
         img_src = pdbe_preview_url.format(pdb_id=result['pdb_id'])
     except (KeyError):
         content = None
@@ -96,20 +102,21 @@ def response(resp):
             # since we can't construct a proper body from the response, we'll make up our own
             msg_superseded = gettext("This entry has been superseded by")
             content = '{msg_superseded}: {url} ({pdb_id})'.format(
-                msg_superseded=msg_superseded,
-                url=superseded_url,
-                pdb_id=result['superseded_by'])
+                msg_superseded=msg_superseded, url=superseded_url, pdb_id=result['superseded_by']
+            )
 
             # obsoleted entries don't have preview images
             img_src = None
         else:
             title, content, img_src = construct_body(result)
 
-        results.append({
-            'url': pdbe_entry_url.format(pdb_id=result['pdb_id']),
-            'title': title,
-            'content': content,
-            'img_src': img_src
-        })
+        results.append(
+            {
+                'url': pdbe_entry_url.format(pdb_id=result['pdb_id']),
+                'title': title,
+                'content': content,
+                'img_src': img_src,
+            }
+        )
 
     return results

@@ -56,7 +56,7 @@ Replacements are:
 
 """
 
-lang_all='en'
+lang_all = 'en'
 '''Replacement ``{lang}`` in :py:obj:`search_url` if language ``all`` is
 selected.
 '''
@@ -110,9 +110,9 @@ requested by the user, the URL paramter is an empty string.  The
 
 time_range_map = {
     'day': 24,
-    'week': 24*7,
-    'month': 24*30,
-    'year': 24*365,
+    'week': 24 * 7,
+    'month': 24 * 30,
+    'year': 24 * 365,
 }
 '''Maps time range value from user to ``{time_range_val}`` in
 :py:obj:`time_range_url`.
@@ -129,11 +129,7 @@ time_range_map = {
 safe_search_support = False
 '''Engine supports safe-search.'''
 
-safe_search_map = {
-    0: '&filter=none',
-    1: '&filter=moderate',
-    2: '&filter=strict'
-}
+safe_search_map = {0: '&filter=none', 1: '&filter=moderate', 2: '&filter=strict'}
 '''Maps safe-search value to ``{safe_search}`` in :py:obj:`search_url`.
 
 .. code:: yaml
@@ -146,10 +142,9 @@ safe_search_map = {
 
 '''
 
-def request(query, params):
-    '''Build request parameters (see :ref:`engine request`).
 
-    '''
+def request(query, params):
+    '''Build request parameters (see :ref:`engine request`).'''
     lang = lang_all
     if params['language'] != 'all':
         lang = params['language'][:2]
@@ -167,8 +162,8 @@ def request(query, params):
         'query': urlencode({'q': query})[2:],
         'lang': lang,
         'pageno': (params['pageno'] - 1) * page_size + first_page_num,
-        'time_range' : time_range,
-        'safe_search' : safe_search,
+        'time_range': time_range,
+        'safe_search': safe_search,
     }
 
     params['url'] = search_url.format(**fargs)
@@ -176,10 +171,9 @@ def request(query, params):
 
     return params
 
-def response(resp):
-    '''Scrap *results* from the response (see :ref:`engine results`).
 
-    '''
+def response(resp):
+    '''Scrap *results* from the response (see :ref:`engine results`).'''
     results = []
     dom = html.fromstring(resp.text)
     is_onion = 'onions' in categories
@@ -200,10 +194,7 @@ def response(resp):
 
             # add alternative cached url if available
             if cached_xpath:
-                tmp_result['cached_url'] = (
-                    cached_url
-                    + extract_text(eval_xpath_list(result, cached_xpath, min_len=1))
-                )
+                tmp_result['cached_url'] = cached_url + extract_text(eval_xpath_list(result, cached_xpath, min_len=1))
 
             if is_onion:
                 tmp_result['is_onion'] = True
@@ -213,31 +204,27 @@ def response(resp):
     else:
         if cached_xpath:
             for url, title, content, cached in zip(
-                (extract_url(x, search_url) for
-                 x in eval_xpath_list(dom, url_xpath)),
+                (extract_url(x, search_url) for x in eval_xpath_list(dom, url_xpath)),
                 map(extract_text, eval_xpath_list(dom, title_xpath)),
                 map(extract_text, eval_xpath_list(dom, content_xpath)),
-                map(extract_text, eval_xpath_list(dom, cached_xpath))
+                map(extract_text, eval_xpath_list(dom, cached_xpath)),
             ):
-                results.append({
-                    'url': url,
-                    'title': title,
-                    'content': content,
-                    'cached_url': cached_url + cached, 'is_onion': is_onion
-                })
+                results.append(
+                    {
+                        'url': url,
+                        'title': title,
+                        'content': content,
+                        'cached_url': cached_url + cached,
+                        'is_onion': is_onion,
+                    }
+                )
         else:
             for url, title, content in zip(
-                (extract_url(x, search_url) for
-                 x in eval_xpath_list(dom, url_xpath)),
+                (extract_url(x, search_url) for x in eval_xpath_list(dom, url_xpath)),
                 map(extract_text, eval_xpath_list(dom, title_xpath)),
-                map(extract_text, eval_xpath_list(dom, content_xpath))
+                map(extract_text, eval_xpath_list(dom, content_xpath)),
             ):
-                results.append({
-                    'url': url,
-                    'title': title,
-                    'content': content,
-                    'is_onion': is_onion
-                })
+                results.append({'url': url, 'title': title, 'content': content, 'is_onion': is_onion})
 
     if suggestion_xpath:
         for suggestion in eval_xpath(dom, suggestion_xpath):

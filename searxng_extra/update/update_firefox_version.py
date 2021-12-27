@@ -19,10 +19,12 @@ NORMAL_REGEX = re.compile('^[0-9]+\.[0-9](\.[0-9])?$')
 
 #
 useragents = {
+    # fmt: off
     "versions": (),
     "os": ('Windows NT 10.0; Win64; x64',
            'X11; Linux x86_64'),
-    "ua": "Mozilla/5.0 ({os}; rv:{version}) Gecko/20100101 Firefox/{version}"
+    "ua": "Mozilla/5.0 ({os}; rv:{version}) Gecko/20100101 Firefox/{version}",
+    # fmt: on
 }
 
 
@@ -38,7 +40,7 @@ def fetch_firefox_versions():
             url = urlparse(urljoin(URL, link))
             path = url.path
             if path.startswith(RELEASE_PATH):
-                version = path[len(RELEASE_PATH):-1]
+                version = path[len(RELEASE_PATH) : -1]
                 if NORMAL_REGEX.match(version):
                     versions.append(LooseVersion(version))
 

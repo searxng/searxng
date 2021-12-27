@@ -15,8 +15,9 @@ def deduplicate_engineref_list(engineref_list: List[EngineRef]) -> List[EngineRe
     return list(engineref_dict.values())
 
 
-def validate_engineref_list(engineref_list: List[EngineRef], preferences: Preferences)\
-        -> Tuple[List[EngineRef], List[EngineRef], List[EngineRef]]:
+def validate_engineref_list(
+    engineref_list: List[EngineRef], preferences: Preferences
+) -> Tuple[List[EngineRef], List[EngineRef], List[EngineRef]]:
     """Validate query_engines according to the preferences
 
     Returns:
@@ -154,9 +155,11 @@ def get_selected_categories(preferences: Preferences, form: Optional[Dict[str, s
 def get_engineref_from_category_list(category_list: List[str], disabled_engines: List[str]) -> List[EngineRef]:
     result = []
     for categ in category_list:
-        result.extend(EngineRef(engine.name, categ)
-                      for engine in categories[categ]
-                      if (engine.name, categ) not in disabled_engines)
+        result.extend(
+            EngineRef(engine.name, categ)
+            for engine in categories[categ]
+            if (engine.name, categ) not in disabled_engines
+        )
     return result
 
 
@@ -170,8 +173,11 @@ def parse_generic(preferences: Preferences, form: Dict[str, str], disabled_engin
         # parse the form only if the categories are not locked
         for pd_name, pd in form.items():
             if pd_name == 'engines':
-                pd_engines = [EngineRef(engine_name, engines[engine_name].categories[0])
-                              for engine_name in map(str.strip, pd.split(',')) if engine_name in engines]
+                pd_engines = [
+                    EngineRef(engine_name, engines[engine_name].categories[0])
+                    for engine_name in map(str.strip, pd.split(','))
+                    if engine_name in engines
+                ]
                 if pd_engines:
                     query_engineref_list.extend(pd_engines)
                     explicit_engine_list = True
@@ -206,8 +212,9 @@ def parse_engine_data(form):
     return engine_data
 
 
-def get_search_query_from_webapp(preferences: Preferences, form: Dict[str, str])\
-        -> Tuple[SearchQuery, RawTextQuery, List[EngineRef], List[EngineRef]]:
+def get_search_query_from_webapp(
+    preferences: Preferences, form: Dict[str, str]
+) -> Tuple[SearchQuery, RawTextQuery, List[EngineRef], List[EngineRef]]:
     # no text for the query ?
     if not form.get('q'):
         raise SearxParameterException('q', '')
@@ -239,12 +246,23 @@ def get_search_query_from_webapp(preferences: Preferences, form: Dict[str, str])
         query_engineref_list = parse_generic(preferences, form, disabled_engines)
 
     query_engineref_list = deduplicate_engineref_list(query_engineref_list)
-    query_engineref_list, query_engineref_list_unknown, query_engineref_list_notoken =\
-        validate_engineref_list(query_engineref_list, preferences)
+    query_engineref_list, query_engineref_list_unknown, query_engineref_list_notoken = validate_engineref_list(
+        query_engineref_list, preferences
+    )
 
-    return (SearchQuery(query, query_engineref_list, query_lang, query_safesearch, query_pageno,
-                        query_time_range, query_timeout, external_bang=external_bang,
-                        engine_data=engine_data),
-            raw_text_query,
-            query_engineref_list_unknown,
-            query_engineref_list_notoken)
+    return (
+        SearchQuery(
+            query,
+            query_engineref_list,
+            query_lang,
+            query_safesearch,
+            query_pageno,
+            query_time_range,
+            query_timeout,
+            external_bang=external_bang,
+            engine_data=engine_data,
+        ),
+        raw_text_query,
+        query_engineref_list_unknown,
+        query_engineref_list_notoken,
+    )

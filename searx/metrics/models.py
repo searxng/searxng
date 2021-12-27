@@ -58,7 +58,7 @@ class Histogram:
 
     @property
     def quartile_percentage(self):
-        ''' Quartile in percentage '''
+        '''Quartile in percentage'''
         with self._lock:
             if self._count > 0:
                 return [int(q * 100 / self._count) for q in self._quartiles]

@@ -23,10 +23,12 @@ running = threading.Lock()
 def _get_interval(every, error_msg):
     if isinstance(every, int):
         every = (every, every)
-    if not isinstance(every, (tuple, list))\
-       or len(every) != 2\
-       or not isinstance(every[0], int)\
-       or not isinstance(every[1], int):
+    if (
+        not isinstance(every, (tuple, list))
+        or len(every) != 2
+        or not isinstance(every[0], int)
+        or not isinstance(every[1], int)
+    ):
         raise SearxSettingsException(error_msg, None)
     return every
 
@@ -50,14 +52,11 @@ def _set_result(result, include_timestamp=True):
 
 
 def run():
-    if not running.acquire(blocking=False): # pylint: disable=consider-using-with
+    if not running.acquire(blocking=False):  # pylint: disable=consider-using-with
         return
     try:
         logger.info('Starting checker')
-        result = {
-            'status': 'ok',
-            'engines': {}
-        }
+        result = {'status': 'ok', 'engines': {}}
         for name, processor in PROCESSORS.items():
             logger.debug('Checking %s engine', name)
             checker = Checker(processor)

@@ -151,10 +151,12 @@ def response(resp):
     user_language = resp.search_params['language']
 
     if resp.search_params['route']:
-        results.append({
-            'answer': gettext('Get directions'),
-            'url': route_url.format(*resp.search_params['route'].groups()),
-            })
+        results.append(
+            {
+                'answer': gettext('Get directions'),
+                'url': route_url.format(*resp.search_params['route'].groups()),
+            }
+        )
 
     fetch_wikidata(nominatim_json, user_language)
 
@@ -170,26 +172,26 @@ def response(resp):
         links, link_keys = get_links(result, user_language)
         data = get_data(result, user_language, link_keys)
 
-        results.append({
-            'template': 'map.html',
-            'title': title,
-            'address': address,
-            'address_label': get_key_label('addr', user_language),
-            'url': url,
-            'osm': osm,
-            'geojson': geojson,
-            'img_src': img_src,
-            'links': links,
-            'data': data,
-            'type': get_tag_label(
-                result.get('category'), result.get('type', ''), user_language
-            ),
-            'type_icon': result.get('icon'),
-            'content': '',
-            'longitude': result['lon'],
-            'latitude': result['lat'],
-            'boundingbox': result['boundingbox'],
-        })
+        results.append(
+            {
+                'template': 'map.html',
+                'title': title,
+                'address': address,
+                'address_label': get_key_label('addr', user_language),
+                'url': url,
+                'osm': osm,
+                'geojson': geojson,
+                'img_src': img_src,
+                'links': links,
+                'data': data,
+                'type': get_tag_label(result.get('category'), result.get('type', ''), user_language),
+                'type_icon': result.get('icon'),
+                'content': '',
+                'longitude': result['lon'],
+                'latitude': result['lat'],
+                'boundingbox': result['boundingbox'],
+            }
+        )
 
     return results
 
@@ -270,9 +272,9 @@ def get_title_address(result):
             # https://github.com/osm-search/Nominatim/issues/1662
             address_name = address_raw.get('address29')
         else:
-            address_name =  address_raw.get(result['category'])
+            address_name = address_raw.get(result['category'])
     elif result['type'] in address_raw:
-        address_name =  address_raw.get(result['type'])
+        address_name = address_raw.get(result['type'])
 
     # add rest of adressdata, if something is already found
     if address_name:
@@ -297,8 +299,7 @@ def get_title_address(result):
 
 
 def get_url_osm_geojson(result):
-    """Get url, osm and geojson
-    """
+    """Get url, osm and geojson"""
     osm_type = result.get('osm_type', result.get('type'))
     if 'osm_id' not in result:
         # see https://github.com/osm-search/Nominatim/issues/1521
@@ -349,11 +350,13 @@ def get_links(result, user_language):
             url, url_label = mapping_function(raw_value)
             if url.startswith('https://wikidata.org'):
                 url_label = result.get('wikidata', {}).get('itemLabel') or url_label
-            links.append({
-                'label': get_key_label(k, user_language),
-                'url': url,
-                'url_label': url_label,
-            })
+            links.append(
+                {
+                    'label': get_key_label(k, user_language),
+                    'url': url,
+                    'url_label': url_label,
+                }
+            )
             link_keys.add(k)
     return links, link_keys
 
@@ -373,11 +376,13 @@ def get_data(result, user_language, ignore_keys):
             continue
         k_label = get_key_label(k, user_language)
         if k_label:
-            data.append({
-                'label': k_label,
-                'key': k,
-                'value': v,
-            })
+            data.append(
+                {
+                    'label': k_label,
+                    'key': k,
+                    'value': v,
+                }
+            )
     data.sort(key=lambda entry: (get_key_rank(entry['key']), entry['label']))
     return data
 

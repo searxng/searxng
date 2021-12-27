@@ -28,21 +28,23 @@ api_key = 'unset'
 base_url = 'https://core.ac.uk:443/api-v2/search/'
 search_string = '{query}?page={page}&pageSize={nb_per_page}&apiKey={apikey}'
 
+
 def request(query, params):
 
     if api_key == 'unset':
         raise SearxEngineAPIException('missing CORE API key')
 
     search_path = search_string.format(
-        query = urlencode({'q': query}),
-        nb_per_page = nb_per_page,
-        page = params['pageno'],
-        apikey = api_key,
+        query=urlencode({'q': query}),
+        nb_per_page=nb_per_page,
+        page=params['pageno'],
+        apikey=api_key,
     )
     params['url'] = base_url + search_path
 
     logger.debug("query_url --> %s", params['url'])
     return params
+
 
 def response(resp):
     results = []
@@ -52,7 +54,7 @@ def response(resp):
 
         source = result['_source']
         time = source['publishedDate'] or source['depositedDate']
-        if time :
+        if time:
             date = datetime.fromtimestamp(time / 1000)
         else:
             date = None
@@ -66,12 +68,14 @@ def response(resp):
             metadata.append(source['doi'])
         metadata = ' / '.join(metadata)
 
-        results.append({
-            'url': source['urls'][0].replace('http://', 'https://', 1),
-            'title': source['title'],
-            'content': source['description'],
-            'publishedDate': date,
-            'metadata' : metadata,
-        })
+        results.append(
+            {
+                'url': source['urls'][0].replace('http://', 'https://', 1),
+                'title': source['title'],
+                'content': source['description'],
+                'publishedDate': date,
+                'metadata': metadata,
+            }
+        )
 
     return results

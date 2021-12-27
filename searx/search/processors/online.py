@@ -23,6 +23,7 @@ from .abstract import EngineProcessor
 def default_request_params():
     """Default request parameters for ``online`` engines."""
     return {
+        # fmt: off
         'method': 'GET',
         'headers': {},
         'data': {},
@@ -30,6 +31,7 @@ def default_request_params():
         'cookies': {},
         'verify': True,
         'auth': None
+        # fmt: on
     }
 
 
@@ -64,10 +66,7 @@ class OnlineProcessor(EngineProcessor):
         # create dictionary which contain all
         # informations about the request
         request_args = dict(
-            headers=params['headers'],
-            cookies=params['cookies'],
-            verify=params['verify'],
-            auth=params['auth']
+            headers=params['headers'], cookies=params['cookies'], verify=params['verify'], auth=params['auth']
         )
 
         # max_redirects
@@ -103,10 +102,12 @@ class OnlineProcessor(EngineProcessor):
             status_code = str(response.status_code or '')
             reason = response.reason_phrase or ''
             hostname = response.url.host
-            count_error(self.engine_name,
-                        '{} redirects, maximum: {}'.format(len(response.history), soft_max_redirects),
-                        (status_code, reason, hostname),
-                        secondary=True)
+            count_error(
+                self.engine_name,
+                '{} redirects, maximum: {}'.format(len(response.history), soft_max_redirects),
+                (status_code, reason, hostname),
+                secondary=True,
+            )
 
         return response
 
@@ -145,22 +146,16 @@ class OnlineProcessor(EngineProcessor):
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             self.logger.error(
-                "HTTP requests timeout (search duration : {0} s, timeout: {1} s) : {2}"
-                .format(
-                    default_timer() - start_time,
-                    timeout_limit,
-                    e.__class__.__name__
+                "HTTP requests timeout (search duration : {0} s, timeout: {1} s) : {2}".format(
+                    default_timer() - start_time, timeout_limit, e.__class__.__name__
                 )
             )
         except (httpx.HTTPError, httpx.StreamError) as e:
             # other requests exception
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception(
-                "requests exception (search duration : {0} s, timeout: {1} s) : {2}"
-                .format(
-                    default_timer() - start_time,
-                    timeout_limit,
-                    e
+                "requests exception (search duration : {0} s, timeout: {1} s) : {2}".format(
+                    default_timer() - start_time, timeout_limit, e
                 )
             )
         except SearxEngineCaptchaException as e:
@@ -186,10 +181,9 @@ class OnlineProcessor(EngineProcessor):
 
         if getattr(self.engine, 'paging', False):
             tests['paging'] = {
-                'matrix': {'query': 'time',
-                           'pageno': (1, 2, 3)},
+                'matrix': {'query': 'time', 'pageno': (1, 2, 3)},
                 'result_container': ['not_empty'],
-                'test': ['unique_results']
+                'test': ['unique_results'],
             }
             if 'general' in self.engine.categories:
                 # avoid documentation about HTML tags (<time> and <input type="time">)
@@ -197,10 +191,9 @@ class OnlineProcessor(EngineProcessor):
 
         if getattr(self.engine, 'time_range', False):
             tests['time_range'] = {
-                'matrix': {'query': 'news',
-                           'time_range': (None, 'day')},
+                'matrix': {'query': 'news', 'time_range': (None, 'day')},
                 'result_container': ['not_empty'],
-                'test': ['unique_results']
+                'test': ['unique_results'],
             }
 
         if getattr(self.engine, 'supported_languages', []):
@@ -214,10 +207,6 @@ class OnlineProcessor(EngineProcessor):
             }
 
         if getattr(self.engine, 'safesearch', False):
-            tests['safesearch'] = {
-                'matrix': {'query': 'porn',
-                           'safesearch': (0, 2)},
-                'test': ['unique_results']
-            }
+            tests['safesearch'] = {'matrix': {'query': 'porn', 'safesearch': (0, 2)}, 'test': ['unique_results']}
 
         return tests

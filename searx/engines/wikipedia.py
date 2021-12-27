@@ -39,8 +39,7 @@ def request(query, params):
         query = query.title()
 
     language = url_lang(params['language'])
-    params['url'] = search_url.format(title=quote(query),
-                                      language=language)
+    params['url'] = search_url.format(title=quote(query), language=language)
 
     if params['language'].lower() in language_variants.get(language, []):
         params['headers']['Accept-Language'] = params['language'].lower()
@@ -63,8 +62,10 @@ def response(resp):
         except:
             pass
         else:
-            if api_result['type'] == 'https://mediawiki.org/wiki/HyperSwitch/errors/bad_request' \
-               and api_result['detail'] == 'title-invalid-characters':
+            if (
+                api_result['type'] == 'https://mediawiki.org/wiki/HyperSwitch/errors/bad_request'
+                and api_result['detail'] == 'title-invalid-characters'
+            ):
                 return []
 
     raise_for_httperror(resp)
@@ -81,11 +82,15 @@ def response(resp):
 
     results.append({'url': wikipedia_link, 'title': title})
 
-    results.append({'infobox': title,
-                    'id': wikipedia_link,
-                    'content': api_result.get('extract', ''),
-                    'img_src': api_result.get('thumbnail', {}).get('source'),
-                    'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}]})
+    results.append(
+        {
+            'infobox': title,
+            'id': wikipedia_link,
+            'content': api_result.get('extract', ''),
+            'img_src': api_result.get('thumbnail', {}).get('source'),
+            'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
+        }
+    )
 
     return results
 

@@ -9,7 +9,6 @@ from tests import SearxTestCase
 
 
 class TestUtils(SearxTestCase):
-
     def test_gen_useragent(self):
         self.assertIsInstance(utils.gen_useragent(), str)
         self.assertIsNotNone(utils.gen_useragent())
@@ -73,6 +72,7 @@ class TestUtils(SearxTestCase):
     def test_extract_url(self):
         def f(html_str, search_url):
             return utils.extract_url(html.fromstring(html_str), search_url)
+
         self.assertEqual(f('<span id="42">https://example.com</span>', 'http://example.com/'), 'https://example.com/')
         self.assertEqual(f('https://example.com', 'http://example.com/'), 'https://example.com/')
         self.assertEqual(f('//example.com', 'http://example.com/'), 'http://example.com/')
@@ -122,14 +122,11 @@ class TestUtils(SearxTestCase):
 
     def test_ecma_unscape(self):
         self.assertEqual(utils.ecma_unescape('text%20with%20space'), 'text with space')
-        self.assertEqual(utils.ecma_unescape('text using %xx: %F3'),
-                         'text using %xx: ó')
-        self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'),
-                         'text using %u: 吉, 世界')
+        self.assertEqual(utils.ecma_unescape('text using %xx: %F3'), 'text using %xx: ó')
+        self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'), 'text using %u: 吉, 世界')
 
 
 class TestHTMLTextExtractor(SearxTestCase):
-
     def setUp(self):
         self.html_text_extractor = utils.HTMLTextExtractor()
 
