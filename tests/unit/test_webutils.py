@@ -22,7 +22,7 @@ class TestWebUtils(SearxTestCase):
         self.assertEqual(webutils.highlight_content('', None), None)
         self.assertEqual(webutils.highlight_content(False, None), None)
 
-        contents = ['<html></html>' 'not<']
+        contents = ['<html></html>not<']
         for content in contents:
             self.assertEqual(webutils.highlight_content(content, None), content)
 

@@ -39,7 +39,12 @@ paging = True
 categories = ['news']
 
 # search-url
-search_url = 'https://news.search.yahoo.com/search' '?{query}&b={offset}'
+search_url = (
+    # fmt: off
+    'https://news.search.yahoo.com/search'
+    '?{query}&b={offset}'
+    # fmt: on
+)
 
 AGO_RE = re.compile(r'([0-9]+)\s*(year|month|week|day|minute|hour)')
 AGO_TIMEDELTA = {

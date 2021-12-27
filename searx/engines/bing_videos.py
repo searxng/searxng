@@ -6,15 +6,15 @@
 from json import loads
 from lxml import html
 from urllib.parse import urlencode
-from searx.utils import match_language
 
+from searx.utils import match_language
 from searx.engines.bing import language_aliases
-from searx.engines.bing import (
+
+from searx.engines.bing import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
-)  # NOQA # pylint: disable=unused-import
+)
 
-# about
 about = {
     "website": 'https://www.bing.com/videos',
     "wikidata_id": 'Q4914152',
@@ -31,7 +31,16 @@ time_range_support = True
 number_of_results = 28
 
 base_url = 'https://www.bing.com/'
-search_string = 'videos/search' '?{query}' '&count={count}' '&first={first}' '&scope=video' '&FORM=QBLH'
+search_string = (
+    # fmt: off
+    'videos/search'
+    '?{query}'
+    '&count={count}'
+    '&first={first}'
+    '&scope=video'
+    '&FORM=QBLH'
+    # fmt: on
+)
 time_range_string = '&qft=+filterui:videoage-lt{interval}'
 time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
 

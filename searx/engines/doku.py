@@ -25,9 +25,14 @@ number_of_results = 5
 # search-url
 # Doku is OpenSearch compatible
 base_url = 'http://localhost:8090'
-search_url = '/?do=search' '&{query}'
-# TODO             '&startRecord={offset}'\
-# TODO             '&maximumRecords={limit}'\
+search_url = (
+    # fmt: off
+    '/?do=search'
+    '&{query}'
+    # fmt: on
+)
+# TODO  '&startRecord={offset}'
+# TODO  '&maximumRecords={limit}'
 
 
 # do search-request

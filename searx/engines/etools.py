@@ -22,7 +22,14 @@ paging = False
 safesearch = True
 
 base_url = 'https://www.etools.ch'
-search_path = '/searchAdvancedSubmit.do' '?query={search_term}' '&pageResults=20' '&safeSearch={safesearch}'
+search_path = (
+    # fmt: off
+    '/searchAdvancedSubmit.do'
+    '?query={search_term}'
+    '&pageResults=20'
+    '&safeSearch={safesearch}'
+    # fmt: on
+)
 
 
 def request(query, params):

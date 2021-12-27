@@ -10,10 +10,10 @@ from lxml import html
 
 from searx.data import WIKIDATA_UNITS
 from searx.engines.duckduckgo import language_aliases
-from searx.engines.duckduckgo import (
+from searx.engines.duckduckgo import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
-)  # NOQA # pylint: disable=unused-import
+)
 from searx.utils import extract_text, html_to_text, match_language, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 

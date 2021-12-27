@@ -6,13 +6,13 @@
 from urllib.parse import urlencode
 from lxml import html
 from json import loads
-from searx.utils import match_language
 
+from searx.utils import match_language
 from searx.engines.bing import language_aliases
-from searx.engines.bing import (
+from searx.engines.bing import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
-)  # NOQA # pylint: disable=unused-import
+)
 
 # about
 about = {
@@ -34,7 +34,15 @@ number_of_results = 28
 
 # search-url
 base_url = 'https://www.bing.com/'
-search_string = 'images/search' '?{query}' '&count={count}' '&first={first}' '&tsc=ImageHoverTitle'
+search_string = (
+    # fmt: off
+    'images/search'
+    '?{query}'
+    '&count={count}'
+    '&first={first}'
+    '&tsc=ImageHoverTitle'
+    # fmt: on
+)
 time_range_string = '&qft=+filterui:age-lt{interval}'
 time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
 

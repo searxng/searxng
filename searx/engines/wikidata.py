@@ -14,10 +14,10 @@ from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
 from searx.utils import match_language, searx_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
-from searx.engines.wikipedia import (
+from searx.engines.wikipedia import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
-)  # NOQA # pylint: disable=unused-import
+)
 
 # about
 about = {

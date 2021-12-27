@@ -7,10 +7,10 @@ from json import loads
 from urllib.parse import urlencode
 from searx.exceptions import SearxEngineAPIException
 from searx.engines.duckduckgo import get_region_code
-from searx.engines.duckduckgo import (
+from searx.engines.duckduckgo import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
-)  # NOQA # pylint: disable=unused-import
+)
 from searx.network import get
 
 # about
