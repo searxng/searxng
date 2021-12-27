@@ -17,15 +17,19 @@ from searx import logger, settings
 logger = logger.getChild("plugins")
 
 required_attrs = (
+    # fmt: off
     ("name", str),
     ("description", str),
     ("default_on", bool)
+    # fmt: on
 )
 
 optional_attrs = (
+    # fmt: off
     ("js_dependencies", tuple),
     ("css_dependencies", tuple),
     ("preference_section", str),
+    # fmt: on
 )
 
 

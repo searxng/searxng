@@ -92,14 +92,20 @@ WHERE {
 
 # https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1
 # https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html
-sparql_string_escape = get_string_replaces_function({'\t': '\\\t',
-                                                     '\n': '\\\n',
-                                                     '\r': '\\\r',
-                                                     '\b': '\\\b',
-                                                     '\f': '\\\f',
-                                                     '\"': '\\\"',
-                                                     '\'': '\\\'',
-                                                     '\\': '\\\\'})
+sparql_string_escape = get_string_replaces_function(
+    # fmt: off
+    {
+        '\t': '\\\t',
+        '\n': '\\\n',
+        '\r': '\\\r',
+        '\b': '\\\b',
+        '\f': '\\\f',
+        '\"': '\\\"',
+        '\'': '\\\'',
+        '\\': '\\\\'
+    }
+    # fmt: on
+)
 
 replace_http_by_https = get_string_replaces_function({'http:': 'https:'})
 

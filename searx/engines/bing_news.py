@@ -69,21 +69,25 @@ def image_url_cleanup(url_string):
 def _get_url(query, language, offset, time_range):
     if time_range in time_range_dict:
         search_path = search_string_with_time.format(
+            # fmt: off
             query = urlencode({
                 'q': query,
                 'setmkt': language
             }),
             offset = offset,
             interval = time_range_dict[time_range]
+            # fmt: on
         )
     else:
         # e.g. setmkt=de-de&setlang=de
         search_path = search_string.format(
+            # fmt: off
             query = urlencode({
                 'q': query,
                 'setmkt': language
             }),
             offset = offset
+            # fmt: on
         )
     return base_url + search_path
 

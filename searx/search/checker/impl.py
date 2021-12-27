@@ -25,6 +25,7 @@ from searx.metrics import counter_inc
 logger = logger.getChild('searx.search.checker')
 
 HTML_TAGS = [
+    # fmt: off
     'embed', 'iframe', 'object', 'param', 'picture', 'source', 'svg', 'math', 'canvas', 'noscript', 'script',
     'del', 'ins', 'area', 'audio', 'img', 'map', 'track', 'video', 'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite',
     'code', 'data', 'dfn', 'em', 'i', 'kdb', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small',
@@ -32,6 +33,7 @@ HTML_TAGS = [
     'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', 'button', 'datalist', 'fieldset', 'form', 'input',
     'label', 'legend', 'meter', 'optgroup', 'option', 'output', 'progress', 'select', 'textarea', 'applet',
     'frame', 'frameset'
+    # fmt: on
 ]
 
 

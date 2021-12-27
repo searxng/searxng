@@ -8,10 +8,14 @@ def fake_result(url='https://aa.bb/cc?dd=ee#ff',
                 title='aaa',
                 content='bbb',
                 engine='wikipedia', **kwargs):
-    result = {'url': url,
-              'title': title,
-              'content': content,
-              'engine': engine}
+    result = {
+        # fmt: off
+        'url': url,
+        'title': title,
+        'content': content,
+        'engine': engine,
+        # fmt: on
+    }
     result.update(kwargs)
     return result
 

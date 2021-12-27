@@ -325,6 +325,7 @@ class Preferences:
         super().__init__()
 
         self.key_value_settings = {
+            # fmt: off
             'categories': MultipleChoiceSetting(
                 ['general'],
                 is_locked('categories'),
@@ -422,6 +423,7 @@ class Preferences:
                     'False': False
                 }
             ),
+            # fmt: on
         }
 
         self.engines = EnginesSetting('engines', choices=engines)

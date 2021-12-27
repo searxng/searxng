@@ -55,7 +55,9 @@ NOT_A_DESCRIPTION = [
 ]
 
 SKIP_ENGINE_SOURCE = [
+    # fmt: off
     ('gitlab', 'wikidata')  # descriptions are about wikipedia disambiguation pages
+    # fmt: on
 ]
 
 LANGUAGES = LOCALE_NAMES.keys()

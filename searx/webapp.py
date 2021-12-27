@@ -616,8 +616,10 @@ def index_error(output_format, error_message):
     # html
     request.errors.append(gettext('search error'))
     return render(
+        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(request.preferences, request.form),
+        # fmt: on
     )
 
 
@@ -631,8 +633,10 @@ def index():
         return redirect(url_for('search') + query, 308)
 
     return render(
+        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(request.preferences, request.form),
+        # fmt: on
     )
 
 
@@ -662,8 +666,10 @@ def search():
     if not request.form.get('q'):
         if output_format == 'html':
             return render(
+                # fmt: off
                 'index.html',
                 selected_categories=get_selected_categories(request.preferences, request.form),
+                # fmt: on
             )
         return index_error(output_format, 'No query'), 400
 
@@ -811,6 +817,7 @@ def search():
         ))
 
     return render(
+        # fmt: off
         'results.html',
         results = results,
         q=request.form['q'],
@@ -835,6 +842,7 @@ def search():
         theme = get_current_theme_name(),
         favicons = global_favicons[themes.index(get_current_theme_name())],
         timeout_limit = request.form.get('timeout_limit', None)
+        # fmt: on
     )
 
 
@@ -1045,6 +1053,7 @@ def preferences():
         }
 
     return render(
+        # fmt: off
         'preferences.html',
         selected_categories = get_selected_categories(request.preferences, request.form),
         locales = LOCALE_NAMES,
@@ -1071,6 +1080,7 @@ def preferences():
         preferences_url_params = request.preferences.get_as_url_params(),
         locked_preferences = settings['preferences']['lock'],
         preferences = True
+        # fmt: on
     )
 
 
@@ -1233,12 +1243,14 @@ def stats():
 
     engine_stats['time'] = sorted(engine_stats['time'], reverse=reverse, key=get_key)
     return render(
+        # fmt: off
         'stats.html',
         sort_order = sort_order,
         engine_stats = engine_stats,
         engine_reliabilities = engine_reliabilities,
         selected_engine_name = selected_engine_name,
         searx_git_branch = GIT_BRANCH,
+        # fmt: on
     )
 
 

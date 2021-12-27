@@ -23,9 +23,11 @@ paging = True
 time_range_support = True
 safesearch = True
 supported_languages = [
+    # fmt: off
     'en', 'fr', 'ja', 'eu', 'ca', 'cs', 'eo', 'el',
     'de', 'it', 'nl', 'es', 'oc', 'gd', 'zh', 'pt',
     'sv', 'pl', 'fi', 'ru'
+    # fmt: on
 ]
 base_url = 'https://sepiasearch.org/api/v1/search/videos'
 

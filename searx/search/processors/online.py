@@ -23,6 +23,7 @@ from .abstract import EngineProcessor
 def default_request_params():
     """Default request parameters for ``online`` engines."""
     return {
+        # fmt: off
         'method': 'GET',
         'headers': {},
         'data': {},
@@ -30,6 +31,7 @@ def default_request_params():
         'cookies': {},
         'verify': True,
         'auth': None
+        # fmt: on
     }
 
 
