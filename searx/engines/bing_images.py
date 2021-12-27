@@ -9,7 +9,10 @@ from json import loads
 from searx.utils import match_language
 
 from searx.engines.bing import language_aliases
-from searx.engines.bing import _fetch_supported_languages, supported_languages_url  # NOQA # pylint: disable=unused-import
+from searx.engines.bing import (
+    _fetch_supported_languages,
+    supported_languages_url,
+)  # NOQA # pylint: disable=unused-import
 
 # about
 about = {
@@ -31,39 +34,25 @@ number_of_results = 28
 
 # search-url
 base_url = 'https://www.bing.com/'
-search_string = 'images/search'\
-    '?{query}'\
-    '&count={count}'\
-    '&first={first}'\
-    '&tsc=ImageHoverTitle'
+search_string = 'images/search' '?{query}' '&count={count}' '&first={first}' '&tsc=ImageHoverTitle'
 time_range_string = '&qft=+filterui:age-lt{interval}'
-time_range_dict = {'day': '1440',
-                   'week': '10080',
-                   'month': '43200',
-                   'year': '525600'}
+time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
 
 # safesearch definitions
-safesearch_types = {2: 'STRICT',
-                    1: 'DEMOTE',
-                    0: 'OFF'}
+safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}
 
 
 # do search-request
 def request(query, params):
     offset = ((params['pageno'] - 1) * number_of_results) + 1
 
-    search_path = search_string.format(
-        query=urlencode({'q': query}),
-        count=number_of_results,
-        first=offset)
+    search_path = search_string.format(query=urlencode({'q': query}), count=number_of_results, first=offset)
 
     language = match_language(params['language'], supported_languages, language_aliases).lower()
 
-    params['cookies']['SRCHHPGUSR'] = \
-        'ADLT=' + safesearch_types.get(params['safesearch'], 'DEMOTE')
+    params['cookies']['SRCHHPGUSR'] = 'ADLT=' + safesearch_types.get(params['safesearch'], 'DEMOTE')
 
-    params['cookies']['_EDGE_S'] = 'mkt=' + language +\
-        '&ui=' + language + '&F=1'
+    params['cookies']['_EDGE_S'] = 'mkt=' + language + '&ui=' + language + '&F=1'
 
     params['url'] = base_url + search_path
     if params['time_range'] in time_range_dict:
@@ -92,14 +81,18 @@ def response(resp):
             # strip 'Unicode private use area' highlighting, they render to Tux
             # the Linux penguin and a standing diamond on my machine...
             title = m.get('t', '').replace('\ue000', '').replace('\ue001', '')
-            results.append({'template': 'images.html',
-                            'url': m['purl'],
-                            'thumbnail_src': m['turl'],
-                            'img_src': m['murl'],
-                            'content': '',
-                            'title': title,
-                            'source': source,
-                            'img_format': img_format})
+            results.append(
+                {
+                    'template': 'images.html',
+                    'url': m['purl'],
+                    'thumbnail_src': m['turl'],
+                    'img_src': m['murl'],
+                    'content': '',
+                    'title': title,
+                    'source': source,
+                    'img_format': img_format,
+                }
+            )
         except:
             continue
 

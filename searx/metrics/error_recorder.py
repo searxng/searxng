@@ -3,8 +3,12 @@ import inspect
 from json import JSONDecodeError
 from urllib.parse import urlparse
 from httpx import HTTPError, HTTPStatusError
-from searx.exceptions import (SearxXPathSyntaxException, SearxEngineXPathException, SearxEngineAPIException,
-                              SearxEngineAccessDeniedException)
+from searx.exceptions import (
+    SearxXPathSyntaxException,
+    SearxEngineXPathException,
+    SearxEngineAPIException,
+    SearxEngineAccessDeniedException,
+)
 from searx import searx_parent_dir
 from searx.engines import engines
 
@@ -14,8 +18,16 @@ errors_per_engines = {}
 
 class ErrorContext:
 
-    __slots__ = ('filename', 'function', 'line_no', 'code', 'exception_classname',
-                 'log_message', 'log_parameters', 'secondary')
+    __slots__ = (
+        'filename',
+        'function',
+        'line_no',
+        'code',
+        'exception_classname',
+        'log_message',
+        'log_parameters',
+        'secondary',
+    )
 
     def __init__(self, filename, function, line_no, code, exception_classname, log_message, log_parameters, secondary):
         self.filename = filename
@@ -30,19 +42,41 @@ class ErrorContext:
     def __eq__(self, o) -> bool:
         if not isinstance(o, ErrorContext):
             return False
-        return self.filename == o.filename and self.function == o.function and self.line_no == o.line_no\
-            and self.code == o.code and self.exception_classname == o.exception_classname\
-            and self.log_message == o.log_message and self.log_parameters == o.log_parameters \
+        return (
+            self.filename == o.filename
+            and self.function == o.function
+            and self.line_no == o.line_no
+            and self.code == o.code
+            and self.exception_classname == o.exception_classname
+            and self.log_message == o.log_message
+            and self.log_parameters == o.log_parameters
             and self.secondary == o.secondary
+        )
 
     def __hash__(self):
-        return hash((self.filename, self.function, self.line_no, self.code, self.exception_classname, self.log_message,
-                     self.log_parameters, self.secondary))
+        return hash(
+            (
+                self.filename,
+                self.function,
+                self.line_no,
+                self.code,
+                self.exception_classname,
+                self.log_message,
+                self.log_parameters,
+                self.secondary,
+            )
+        )
 
     def __repr__(self):
-        return "ErrorContext({!r}, {!r}, {!r}, {!r}, {!r}, {!r}) {!r}".\
-            format(self.filename, self.line_no, self.code, self.exception_classname, self.log_message,
-                   self.log_parameters, self.secondary)
+        return "ErrorContext({!r}, {!r}, {!r}, {!r}, {!r}, {!r}) {!r}".format(
+            self.filename,
+            self.line_no,
+            self.code,
+            self.exception_classname,
+            self.log_message,
+            self.log_parameters,
+            self.secondary,
+        )
 
 
 def add_error_context(engine_name: str, error_context: ErrorContext) -> None:
@@ -68,8 +102,9 @@ def get_hostname(exc: HTTPError) -> typing.Optional[None]:
     return urlparse(url).netloc
 
 
-def get_request_exception_messages(exc: HTTPError)\
-        -> typing.Tuple[typing.Optional[str], typing.Optional[str], typing.Optional[str]]:
+def get_request_exception_messages(
+    exc: HTTPError,
+) -> typing.Tuple[typing.Optional[str], typing.Optional[str], typing.Optional[str]]:
     url = None
     status_code = None
     reason = None
@@ -90,11 +125,11 @@ def get_request_exception_messages(exc: HTTPError)\
 
 def get_messages(exc, filename) -> typing.Tuple:
     if isinstance(exc, JSONDecodeError):
-        return (exc.msg, )
+        return (exc.msg,)
     if isinstance(exc, TypeError):
-        return (str(exc), )
+        return (str(exc),)
     if isinstance(exc, ValueError) and 'lxml' in filename:
-        return (str(exc), )
+        return (str(exc),)
     if isinstance(exc, HTTPError):
         return get_request_exception_messages(exc)
     if isinstance(exc, SearxXPathSyntaxException):
@@ -102,9 +137,9 @@ def get_messages(exc, filename) -> typing.Tuple:
     if isinstance(exc, SearxEngineXPathException):
         return (exc.xpath_str, exc.message)
     if isinstance(exc, SearxEngineAPIException):
-        return (str(exc.args[0]), )
+        return (str(exc.args[0]),)
     if isinstance(exc, SearxEngineAccessDeniedException):
-        return (exc.message, )
+        return (exc.message,)
     return ()
 
 
@@ -121,7 +156,7 @@ def get_error_context(framerecords, exception_classname, log_message, log_parame
     searx_frame = get_trace(framerecords)
     filename = searx_frame.filename
     if filename.startswith(searx_parent_dir):
-        filename = filename[len(searx_parent_dir) + 1:]
+        filename = filename[len(searx_parent_dir) + 1 :]
     function = searx_frame.function
     line_no = searx_frame.lineno
     code = searx_frame.code_context[0].strip()
@@ -140,8 +175,9 @@ def count_exception(engine_name: str, exc: Exception, secondary: bool = False) -
         del framerecords
 
 
-def count_error(engine_name: str, log_message: str, log_parameters: typing.Optional[typing.Tuple] = None,
-                secondary: bool = False) -> None:
+def count_error(
+    engine_name: str, log_message: str, log_parameters: typing.Optional[typing.Tuple] = None, secondary: bool = False
+) -> None:
     framerecords = list(reversed(inspect.stack()[1:]))
     try:
         error_context = get_error_context(framerecords, None, log_message, log_parameters or (), secondary)

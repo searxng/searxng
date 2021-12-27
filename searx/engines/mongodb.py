@@ -26,38 +26,35 @@ result_template = 'key-value.html'
 
 _client = None
 
+
 def init(_):
     connect()
 
+
 def connect():
     global _client  # pylint: disable=global-statement
-    kwargs = { 'port': port }
+    kwargs = {'port': port}
     if username:
         kwargs['username'] = username
     if password:
         kwargs['password'] = password
     _client = MongoClient(host, **kwargs)[database][collection]
 
+
 def search(query, params):
     results = []
     if exact_match_only:
-        q = { '$eq': query }
+        q = {'$eq': query}
     else:
-        _re = re.compile('.*{0}.*'.format(re.escape(query)), re.I | re.M )
-        q = { '$regex': _re }
+        _re = re.compile('.*{0}.*'.format(re.escape(query)), re.I | re.M)
+        q = {'$regex': _re}
 
-    query = _client.find(
-        {key: q}
-    ).skip(
-        ( params['pageno'] -1 ) * results_per_page
-    ).limit(
-        results_per_page
-    )
+    query = _client.find({key: q}).skip((params['pageno'] - 1) * results_per_page).limit(results_per_page)
 
-    results.append({ 'number_of_results': query.count() })
+    results.append({'number_of_results': query.count()})
     for r in query:
         del r['_id']
-        r = { str(k):str(v) for k,v in r.items() }
+        r = {str(k): str(v) for k, v in r.items()}
         r['template'] = result_template
         results.append(r)
 

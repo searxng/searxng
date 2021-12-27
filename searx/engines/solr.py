@@ -14,10 +14,10 @@ from searx.exceptions import SearxEngineAPIException
 base_url = 'http://localhost:8983'
 collection = ''
 rows = 10
-sort = '' # sorting: asc or desc
-field_list = 'name' # list of field names to display on the UI
-default_fields = '' # default field to query
-query_fields = '' # query fields
+sort = ''  # sorting: asc or desc
+field_list = 'name'  # list of field names to display on the UI
+default_fields = ''  # default field to query
+query_fields = ''  # query fields
 _search_url = ''
 paging = True
 

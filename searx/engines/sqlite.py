@@ -47,9 +47,9 @@ def search(query, params):
 
     query_params = {
         'query': query,
-        'wildcard':  r'%' + query.replace(' ', r'%') + r'%',
+        'wildcard': r'%' + query.replace(' ', r'%') + r'%',
         'limit': limit,
-        'offset': (params['pageno'] - 1) * limit
+        'offset': (params['pageno'] - 1) * limit,
     }
     query_to_run = query_str + ' LIMIT :limit OFFSET :offset'
 
@@ -59,7 +59,7 @@ def search(query, params):
         col_names = [cn[0] for cn in cur.description]
 
         for row in cur.fetchall():
-            item = dict( zip(col_names, map(str, row)) )
+            item = dict(zip(col_names, map(str, row)))
             item['template'] = result_template
             logger.debug("append result --> %s", item)
             results.append(item)

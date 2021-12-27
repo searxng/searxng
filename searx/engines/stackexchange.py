@@ -23,25 +23,29 @@ paging = True
 pagesize = 10
 
 api_site = 'stackoverflow'
-api_sort= 'activity'
+api_sort = 'activity'
 api_order = 'desc'
 
 # https://api.stackexchange.com/docs/advanced-search
 search_api = 'https://api.stackexchange.com/2.3/search/advanced?'
 
+
 def request(query, params):
 
-    args = urlencode({
-        'q' : query,
-        'page' : params['pageno'],
-        'pagesize' : pagesize,
-        'site' : api_site,
-        'sort' : api_sort,
-        'order': 'desc',
-        })
+    args = urlencode(
+        {
+            'q': query,
+            'page': params['pageno'],
+            'pagesize': pagesize,
+            'site': api_site,
+            'sort': api_sort,
+            'order': 'desc',
+        }
+    )
     params['url'] = search_api + args
 
     return params
+
 
 def response(resp):
 
@@ -56,10 +60,12 @@ def response(resp):
             content += ' // is answered'
         content += " // score: %s" % result['score']
 
-        results.append({
-            'url': "https://%s.com/q/%s" % (api_site, result['question_id']),
-            'title':  html.unescape(result['title']),
-            'content': html.unescape(content),
-        })
+        results.append(
+            {
+                'url': "https://%s.com/q/%s" % (api_site, result['question_id']),
+                'title': html.unescape(result['title']),
+                'content': html.unescape(content),
+            }
+        )
 
     return results

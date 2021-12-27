@@ -31,17 +31,13 @@ supported_languages = [
 ]
 base_url = 'https://sepiasearch.org/api/v1/search/videos'
 
-safesearch_table = {
-    0: 'both',
-    1: 'false',
-    2: 'false'
-}
+safesearch_table = {0: 'both', 1: 'false', 2: 'false'}
 
 time_range_table = {
     'day': relativedelta.relativedelta(),
     'week': relativedelta.relativedelta(weeks=-1),
     'month': relativedelta.relativedelta(months=-1),
-    'year': relativedelta.relativedelta(years=-1)
+    'year': relativedelta.relativedelta(years=-1),
 }
 
 
@@ -55,13 +51,19 @@ def minute_to_hm(minute):
 
 
 def request(query, params):
-    params['url'] = base_url + '?' + urlencode({
-        'search': query,
-        'start': (params['pageno'] - 1) * 10,
-        'count': 10,
-        'sort': '-match',
-        'nsfw': safesearch_table[params['safesearch']]
-    })
+    params['url'] = (
+        base_url
+        + '?'
+        + urlencode(
+            {
+                'search': query,
+                'start': (params['pageno'] - 1) * 10,
+                'count': 10,
+                'sort': '-match',
+                'nsfw': safesearch_table[params['safesearch']],
+            }
+        )
+    )
 
     language = params['language'].split('-')[0]
     if language in supported_languages:
@@ -91,14 +93,18 @@ def response(resp):
         length = minute_to_hm(result.get('duration'))
         url = result['url']
 
-        results.append({'url': url,
-                        'title': title,
-                        'content': content,
-                        'author': author,
-                        'length': length,
-                        'template': 'videos.html',
-                        'publishedDate': publishedDate,
-                        'embedded': embedded,
-                        'thumbnail': thumbnail})
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'author': author,
+                'length': length,
+                'template': 'videos.html',
+                'publishedDate': publishedDate,
+                'embedded': embedded,
+                'thumbnail': thumbnail,
+            }
+        )
 
     return results

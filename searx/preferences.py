@@ -21,14 +21,12 @@ DOI_RESOLVERS = list(settings['doi_resolvers'])
 
 
 class MissingArgumentException(Exception):
-    """Exption from ``cls._post_init`` when a argument is missed.
-    """
+    """Exption from ``cls._post_init`` when a argument is missed."""
 
 
 class ValidationException(Exception):
 
-    """Exption from ``cls._post_init`` when configuration value is invalid.
-    """
+    """Exption from ``cls._post_init`` when configuration value is invalid."""
 
 
 class Setting:
@@ -84,8 +82,7 @@ class EnumStringSetting(Setting):
             raise ValidationException('Invalid value: "{0}"'.format(selection))
 
     def parse(self, data):
-        """Parse and validate ``data`` and store the result at ``self.value``
-        """
+        """Parse and validate ``data`` and store the result at ``self.value``"""
         self._validate_selection(data)
         self.value = data
 
@@ -104,8 +101,7 @@ class MultipleChoiceSetting(EnumStringSetting):
         self._validate_selections(self.value)
 
     def parse(self, data):
-        """Parse and validate ``data`` and store the result at ``self.value``
-        """
+        """Parse and validate ``data`` and store the result at ``self.value``"""
         if data == '':
             self.value = []
             return
@@ -124,25 +120,23 @@ class MultipleChoiceSetting(EnumStringSetting):
                 self.value.append(choice)
 
     def save(self, name, resp):
-        """Save cookie ``name`` in the HTTP reponse obect
-        """
+        """Save cookie ``name`` in the HTTP reponse obect"""
         resp.set_cookie(name, ','.join(self.value), max_age=COOKIE_MAX_AGE)
 
 
 class SetSetting(Setting):
-    """Setting of values of type ``set`` (comma separated string) """
+    """Setting of values of type ``set`` (comma separated string)"""
+
     def _post_init(self):
         if not hasattr(self, 'values'):
             self.values = set()
 
     def get_value(self):
-        """Returns a string with comma separated values.
-        """
+        """Returns a string with comma separated values."""
         return ','.join(self.values)
 
     def parse(self, data):
-        """Parse and validate ``data`` and store the result at ``self.value``
-        """
+        """Parse and validate ``data`` and store the result at ``self.value``"""
         if data == '':
             self.values = set()  # pylint: disable=attribute-defined-outside-init
             return
@@ -159,8 +153,7 @@ class SetSetting(Setting):
         self.values = set(elements)  # pylint: disable=attribute-defined-outside-init
 
     def save(self, name, resp):
-        """Save cookie ``name`` in the HTTP reponse obect
-        """
+        """Save cookie ``name`` in the HTTP reponse obect"""
         resp.set_cookie(name, ','.join(self.values), max_age=COOKIE_MAX_AGE)
 
 
@@ -172,8 +165,7 @@ class SearchLanguageSetting(EnumStringSetting):
             raise ValidationException('Invalid language code: "{0}"'.format(selection))
 
     def parse(self, data):
-        """Parse and validate ``data`` and store the result at ``self.value``
-        """
+        """Parse and validate ``data`` and store the result at ``self.value``"""
         if data not in self.choices and data != self.value:  # pylint: disable=no-member
             # hack to give some backwards compatibility with old language cookies
             data = str(data).replace('_', '-')
@@ -199,8 +191,7 @@ class MapSetting(Setting):
             raise ValidationException('Invalid default value')
 
     def parse(self, data):
-        """Parse and validate ``data`` and store the result at ``self.value``
-        """
+        """Parse and validate ``data`` and store the result at ``self.value``"""
         # pylint: disable=no-member
         if data not in self.map:
             raise ValidationException('Invalid choice: {0}'.format(data))
@@ -208,14 +199,13 @@ class MapSetting(Setting):
         self.key = data  # pylint: disable=attribute-defined-outside-init
 
     def save(self, name, resp):
-        """Save cookie ``name`` in the HTTP reponse obect
-        """
+        """Save cookie ``name`` in the HTTP reponse obect"""
         if hasattr(self, 'key'):
             resp.set_cookie(name, self.key, max_age=COOKIE_MAX_AGE)
 
 
 class SwitchableSetting(Setting):
-    """ Base class for settings that can be turned on && off"""
+    """Base class for settings that can be turned on && off"""
 
     def _post_init(self):
         self.disabled = set()
@@ -244,7 +234,7 @@ class SwitchableSetting(Setting):
 
         items = self.transform_form_items(items)
         self.disabled = set()  # pylint: disable=attribute-defined-outside-init
-        self.enabled = set()   # pylint: disable=attribute-defined-outside-init
+        self.enabled = set()  # pylint: disable=attribute-defined-outside-init
         for choice in self.choices:  # pylint: disable=no-member
             if choice['default_on']:
                 if choice['id'] in items:
@@ -254,8 +244,7 @@ class SwitchableSetting(Setting):
                     self.enabled.add(choice['id'])
 
     def save(self, resp):  # pylint: disable=arguments-differ
-        """Save cookie in the HTTP reponse obect
-        """
+        """Save cookie in the HTTP reponse obect"""
         resp.set_cookie('disabled_{0}'.format(self.value), ','.join(self.disabled), max_age=COOKIE_MAX_AGE)
         resp.set_cookie('enabled_{0}'.format(self.value), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
 
@@ -289,7 +278,7 @@ class EnginesSetting(SwitchableSetting):
         self.choices = transformed_choices
 
     def transform_form_items(self, items):
-        return [item[len('engine_'):].replace('_', ' ').replace('  ', '__') for item in items]
+        return [item[len('engine_') :].replace('_', ' ').replace('  ', '__') for item in items]
 
     def transform_values(self, values):
         if len(values) == 1 and next(iter(values)) == '':
@@ -315,7 +304,7 @@ class PluginsSetting(SwitchableSetting):
         self.choices = transformed_choices
 
     def transform_form_items(self, items):
-        return [item[len('plugin_'):] for item in items]
+        return [item[len('plugin_') :] for item in items]
 
 
 class Preferences:
@@ -468,19 +457,18 @@ class Preferences:
                     continue
                 self.key_value_settings[user_setting_name].parse(user_setting)
             elif user_setting_name == 'disabled_engines':
-                self.engines.parse_cookie((input_data.get('disabled_engines', ''),
-                                           input_data.get('enabled_engines', '')))
+                self.engines.parse_cookie(
+                    (input_data.get('disabled_engines', ''), input_data.get('enabled_engines', ''))
+                )
             elif user_setting_name == 'disabled_plugins':
-                self.plugins.parse_cookie((input_data.get('disabled_plugins', ''),
-                                           input_data.get('enabled_plugins', '')))
+                self.plugins.parse_cookie(
+                    (input_data.get('disabled_plugins', ''), input_data.get('enabled_plugins', ''))
+                )
             elif user_setting_name == 'tokens':
                 self.tokens.parse(user_setting)
-            elif not any(user_setting_name.startswith(x) for x in [
-                    'enabled_',
-                    'disabled_',
-                    'engine_',
-                    'category_',
-                    'plugin_']):
+            elif not any(
+                user_setting_name.startswith(x) for x in ['enabled_', 'disabled_', 'engine_', 'category_', 'plugin_']
+            ):
                 self.unknown_params[user_setting_name] = user_setting
 
     def parse_form(self, input_data):
@@ -494,7 +482,7 @@ class Preferences:
             elif user_setting_name.startswith('engine_'):
                 disabled_engines.append(user_setting_name)
             elif user_setting_name.startswith('category_'):
-                enabled_categories.append(user_setting_name[len('category_'):])
+                enabled_categories.append(user_setting_name[len('category_') :])
             elif user_setting_name.startswith('plugin_'):
                 disabled_plugins.append(user_setting_name)
             elif user_setting_name == 'tokens':
@@ -507,8 +495,7 @@ class Preferences:
 
     # cannot be used in case of engines or plugins
     def get_value(self, user_setting_name):
-        """Returns the value for ``user_setting_name``
-        """
+        """Returns the value for ``user_setting_name``"""
         ret_val = None
         if user_setting_name in self.key_value_settings:
             ret_val = self.key_value_settings[user_setting_name].get_value()
@@ -517,8 +504,7 @@ class Preferences:
         return ret_val
 
     def save(self, resp):
-        """Save cookie in the HTTP reponse obect
-        """
+        """Save cookie in the HTTP reponse obect"""
         for user_setting_name, user_setting in self.key_value_settings.items():
             # pylint: disable=unnecessary-dict-index-lookup
             if self.key_value_settings[user_setting_name].locked:
@@ -544,8 +530,7 @@ class Preferences:
 
 
 def is_locked(setting_name):
-    """Checks if a given setting name is locked by settings.yml
-    """
+    """Checks if a given setting name is locked by settings.yml"""
     if 'preferences' not in settings:
         return False
     if 'lock' not in settings['preferences']:

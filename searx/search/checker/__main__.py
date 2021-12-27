@@ -37,12 +37,12 @@ else:
 stdout = io.TextIOWrapper(
     # pylint: disable=consider-using-with
     open(sys.stdout.fileno(), 'wb', 0),
-    write_through=True
+    write_through=True,
 )
 stderr = io.TextIOWrapper(
     # pylint: disable=consider-using-with
-    open(sys.stderr.fileno(), 'wb', 0)
-    , write_through=True
+    open(sys.stderr.fileno(), 'wb', 0),
+    write_through=True,
 )
 
 
@@ -91,12 +91,21 @@ def run(engine_name_list, verbose):
 # call by setup.py
 def main():
     parser = argparse.ArgumentParser(description='Check searx engines.')
-    parser.add_argument('engine_name_list', metavar='engine name', type=str, nargs='*',
-                        help='engines name or shortcut list. Empty for all engines.')
-    parser.add_argument('--verbose', '-v',
-                        action='store_true', dest='verbose',
-                        help='Display details about the test results',
-                        default=False)
+    parser.add_argument(
+        'engine_name_list',
+        metavar='engine name',
+        type=str,
+        nargs='*',
+        help='engines name or shortcut list. Empty for all engines.',
+    )
+    parser.add_argument(
+        '--verbose',
+        '-v',
+        action='store_true',
+        dest='verbose',
+        help='Display details about the test results',
+        default=False,
+    )
     args = parser.parse_args()
     run(args.engine_name_list, args.verbose)
 

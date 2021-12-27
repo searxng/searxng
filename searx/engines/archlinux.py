@@ -97,7 +97,7 @@ main_langs = {
     'sl': 'Slovenský',
     'th': 'ไทย',
     'uk': 'Українська',
-    'zh': '简体中文'
+    'zh': '简体中文',
 }
 supported_languages = dict(lang_urls, **main_langs)
 
@@ -141,7 +141,6 @@ def response(resp):
         href = urljoin(base_url, link.attrib.get('href'))
         title = extract_text(link)
 
-        results.append({'url': href,
-                        'title': title})
+        results.append({'url': href, 'title': title})
 
     return results

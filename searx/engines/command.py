@@ -138,7 +138,7 @@ def __check_query_params(params):
 
 
 def check_parsing_options(engine_settings):
-    """ Checks if delimiter based parsing or regex parsing is configured correctly """
+    """Checks if delimiter based parsing or regex parsing is configured correctly"""
 
     if 'delimiter' not in engine_settings and 'parse_regex' not in engine_settings:
         raise ValueError('failed to init settings for parsing lines: missing delimiter or parse_regex')
@@ -151,7 +151,7 @@ def check_parsing_options(engine_settings):
 
 
 def __parse_single_result(raw_result):
-    """ Parses command line output based on configuration """
+    """Parses command line output based on configuration"""
 
     result = {}
 
@@ -167,6 +167,6 @@ def __parse_single_result(raw_result):
             found = regex.search(raw_result)
             if not found:
                 return {}
-            result[result_key] = raw_result[found.start():found.end()]
+            result[result_key] = raw_result[found.start() : found.end()]
 
     return result

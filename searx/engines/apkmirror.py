@@ -35,8 +35,8 @@ search_url = base_url + '/?post_type=app_release&searchtype=apk&page={pageno}&{q
 
 def request(query, params):
     params['url'] = search_url.format(
-        pageno = params['pageno'],
-        query = urlencode({'s': query}),
+        pageno=params['pageno'],
+        query=urlencode({'s': query}),
     )
     logger.debug("query_url --> %s", params['url'])
     return params
@@ -55,11 +55,7 @@ def response(resp):
         url = base_url + link.attrib.get('href') + '#downloads'
         title = extract_text(link)
         img_src = base_url + eval_xpath_getindex(result, './/img/@src', 0)
-        res = {
-            'url': url,
-            'title': title,
-            'img_src': img_src
-        }
+        res = {'url': url, 'title': title, 'img_src': img_src}
 
         results.append(res)
 

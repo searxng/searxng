@@ -8,13 +8,12 @@ from flask_babel import gettext
 # specifies which search query keywords triggers this answerer
 keywords = ('random',)
 
-random_int_max = 2**31
+random_int_max = 2 ** 31
 random_string_letters = string.ascii_lowercase + string.digits + string.ascii_uppercase
 
 
 def random_characters():
-    return [random.choice(random_string_letters)
-            for _ in range(random.randint(8, 32))]
+    return [random.choice(random_string_letters) for _ in range(random.randint(8, 32))]
 
 
 def random_string():
@@ -39,11 +38,13 @@ def random_uuid():
     return str(uuid.uuid4())
 
 
-random_types = {'string': random_string,
-                'int': random_int,
-                'float': random_float,
-                'sha256': random_sha256,
-                'uuid': random_uuid}
+random_types = {
+    'string': random_string,
+    'int': random_int,
+    'float': random_float,
+    'sha256': random_sha256,
+    'uuid': random_uuid,
+}
 
 
 # required answerer function
@@ -62,6 +63,8 @@ def answer(query):
 # required answerer function
 # returns information about the answerer
 def self_info():
-    return {'name': gettext('Random value generator'),
-            'description': gettext('Generate different random values'),
-            'examples': ['random {}'.format(x) for x in random_types]}
+    return {
+        'name': gettext('Random value generator'),
+        'description': gettext('Generate different random values'),
+        'examples': ['random {}'.format(x) for x in random_types],
+    }

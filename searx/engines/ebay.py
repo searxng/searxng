@@ -58,16 +58,17 @@ def response(resp):
         if title == "":
             continue
 
-        results.append({
-            'url': url,
-            'title': title,
-            'content': content,
-            'price': price,
-            'shipping': shipping,
-            'source_country': source_country,
-            'thumbnail': thumbnail,
-            'template': 'products.html',
-
-        })
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'price': price,
+                'shipping': shipping,
+                'source_country': source_country,
+                'thumbnail': thumbnail,
+                'template': 'products.html',
+            }
+        )
 
     return results

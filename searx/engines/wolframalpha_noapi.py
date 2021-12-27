@@ -22,30 +22,29 @@ about = {
 # search-url
 url = 'https://www.wolframalpha.com/'
 
-search_url = url + 'input/json.jsp'\
-    '?async=false'\
-    '&banners=raw'\
-    '&debuggingdata=false'\
-    '&format=image,plaintext,imagemap,minput,moutput'\
-    '&formattimeout=2'\
-    '&{query}'\
-    '&output=JSON'\
-    '&parsetimeout=2'\
-    '&proxycode={token}'\
-    '&scantimeout=0.5'\
-    '&sponsorcategories=true'\
+search_url = (
+    url + 'input/json.jsp'
+    '?async=false'
+    '&banners=raw'
+    '&debuggingdata=false'
+    '&format=image,plaintext,imagemap,minput,moutput'
+    '&formattimeout=2'
+    '&{query}'
+    '&output=JSON'
+    '&parsetimeout=2'
+    '&proxycode={token}'
+    '&scantimeout=0.5'
+    '&sponsorcategories=true'
     '&statemethod=deploybutton'
+)
 
 referer_url = url + 'input/?{query}'
 
-token = {'value': '',
-         'last_updated': None}
+token = {'value': '', 'last_updated': None}
 
 # pods to display as image in infobox
 # this pods do return a plaintext, but they look better and are more useful as images
-image_pods = {'VisualRepresentation',
-              'Illustration',
-              'Symbol'}
+image_pods = {'VisualRepresentation', 'Illustration', 'Symbol'}
 
 
 # seems, wolframalpha resets its token in every hour
@@ -115,12 +114,20 @@ def response(resp):
     if not result_chunks:
         return []
 
-    results.append({'infobox': infobox_title,
-                    'attributes': result_chunks,
-                    'urls': [{'title': 'Wolfram|Alpha', 'url': resp.request.headers['Referer']}]})
+    results.append(
+        {
+            'infobox': infobox_title,
+            'attributes': result_chunks,
+            'urls': [{'title': 'Wolfram|Alpha', 'url': resp.request.headers['Referer']}],
+        }
+    )
 
-    results.append({'url': resp.request.headers['Referer'],
-                    'title': 'Wolfram|Alpha (' + infobox_title + ')',
-                    'content': result_content})
+    results.append(
+        {
+            'url': resp.request.headers['Referer'],
+            'title': 'Wolfram|Alpha (' + infobox_title + ')',
+            'content': result_content,
+        }
+    )
 
     return results

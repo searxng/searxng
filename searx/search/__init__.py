@@ -123,8 +123,11 @@ class Search:
             # Max & user query: From user query except if above max
             actual_timeout = min(query_timeout, max_request_timeout)
 
-        logger.debug("actual_timeout={0} (default_timeout={1}, ?timeout_limit={2}, max_request_timeout={3})"
-                     .format(actual_timeout, default_timeout, query_timeout, max_request_timeout))
+        logger.debug(
+            "actual_timeout={0} (default_timeout={1}, ?timeout_limit={2}, max_request_timeout={3})".format(
+                actual_timeout, default_timeout, query_timeout, max_request_timeout
+            )
+        )
 
         return requests, actual_timeout
 

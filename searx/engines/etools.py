@@ -22,10 +22,7 @@ paging = False
 safesearch = True
 
 base_url = 'https://www.etools.ch'
-search_path = '/searchAdvancedSubmit.do'\
-    '?query={search_term}'\
-    '&pageResults=20'\
-    '&safeSearch={safesearch}'
+search_path = '/searchAdvancedSubmit.do' '?query={search_term}' '&pageResults=20' '&safeSearch={safesearch}'
 
 
 def request(query, params):
@@ -49,8 +46,6 @@ def response(resp):
         title = extract_text(eval_xpath(result, './a//text()'))
         content = extract_text(eval_xpath(result, './/div[@class="text"]//text()'))
 
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({'url': url, 'title': title, 'content': content})
 
     return results

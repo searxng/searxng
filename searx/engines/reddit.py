@@ -52,10 +52,7 @@ def response(resp):
         data = post['data']
 
         # extract post information
-        params = {
-            'url': urljoin(base_url, data['permalink']),
-            'title': data['title']
-        }
+        params = {'url': urljoin(base_url, data['permalink']), 'title': data['title']}
 
         # if thumbnail field contains a valid URL, we need to change template
         thumbnail = data['thumbnail']

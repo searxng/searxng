@@ -61,6 +61,7 @@ category_to_keyword = {
 # search-url
 url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={offset}'
 
+
 def request(query, params):
     """Qwant search request"""
     keyword = category_to_keyword[categories[0]]
@@ -77,10 +78,10 @@ def request(query, params):
         offset = min(offset, 40)
 
     params['url'] = url.format(
-        keyword = keyword,
-        query = urlencode({'q': query}),
-        offset = offset,
-        count = count,
+        keyword=keyword,
+        query=urlencode({'q': query}),
+        offset=offset,
+        count=count,
     )
 
     # add language tag
@@ -111,7 +112,14 @@ def response(resp):
 
     # check for an API error
     if search_results.get('status') != 'success':
-        msg = ",".join(data.get('message', ['unknown', ]))
+        msg = ",".join(
+            data.get(
+                'message',
+                [
+                    'unknown',
+                ],
+            )
+        )
         raise SearxEngineAPIException('API error::' + msg)
 
     # raise for other errors
@@ -128,7 +136,7 @@ def response(resp):
         # result['items'].
         mainline = data.get('result', {}).get('items', [])
         mainline = [
-            {'type' : keyword, 'items' : mainline },
+            {'type': keyword, 'items': mainline},
         ]
 
     # return empty array if there are no results
@@ -153,11 +161,13 @@ def response(resp):
 
             if mainline_type == 'web':
                 content = item['desc']
-                results.append({
-                    'title': title,
-                    'url': res_url,
-                    'content': content,
-                })
+                results.append(
+                    {
+                        'title': title,
+                        'url': res_url,
+                        'content': content,
+                    }
+                )
 
             elif mainline_type == 'news':
 
@@ -168,23 +178,27 @@ def response(resp):
                 img_src = None
                 if news_media:
                     img_src = news_media[0].get('pict', {}).get('url', None)
-                results.append({
-                    'title': title,
-                    'url': res_url,
-                    'publishedDate': pub_date,
-                    'img_src': img_src,
-                })
+                results.append(
+                    {
+                        'title': title,
+                        'url': res_url,
+                        'publishedDate': pub_date,
+                        'img_src': img_src,
+                    }
+                )
 
             elif mainline_type == 'images':
                 thumbnail = item['thumbnail']
                 img_src = item['media']
-                results.append({
-                    'title': title,
-                    'url': res_url,
-                    'template': 'images.html',
-                    'thumbnail_src': thumbnail,
-                    'img_src': img_src,
-                })
+                results.append(
+                    {
+                        'title': title,
+                        'url': res_url,
+                        'template': 'images.html',
+                        'thumbnail_src': thumbnail,
+                        'img_src': img_src,
+                    }
+                )
 
             elif mainline_type == 'videos':
                 # some videos do not have a description: while qwant-video
@@ -208,19 +222,18 @@ def response(resp):
                 thumbnail = item['thumbnail']
                 # from some locations (DE and others?) the s2 link do
                 # response a 'Please wait ..' but does not deliver the thumbnail
-                thumbnail = thumbnail.replace(
-                    'https://s2.qwant.com',
-                    'https://s1.qwant.com', 1
+                thumbnail = thumbnail.replace('https://s2.qwant.com', 'https://s1.qwant.com', 1)
+                results.append(
+                    {
+                        'title': title,
+                        'url': res_url,
+                        'content': content,
+                        'publishedDate': pub_date,
+                        'thumbnail': thumbnail,
+                        'template': 'videos.html',
+                        'length': length,
+                    }
                 )
-                results.append({
-                    'title': title,
-                    'url': res_url,
-                    'content': content,
-                    'publishedDate': pub_date,
-                    'thumbnail': thumbnail,
-                    'template': 'videos.html',
-                    'length':  length,
-            })
 
     return results
 
@@ -229,8 +242,8 @@ def response(resp):
 def _fetch_supported_languages(resp):
     # list of regions is embedded in page as a js object
     response_text = resp.text
-    response_text = response_text[response_text.find('INITIAL_PROPS'):]
-    response_text = response_text[response_text.find('{'):response_text.find('</script>')]
+    response_text = response_text[response_text.find('INITIAL_PROPS') :]
+    response_text = response_text[response_text.find('{') : response_text.find('</script>')]
 
     regions_json = loads(response_text)
 

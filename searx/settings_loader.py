@@ -125,8 +125,7 @@ def load_settings(load_user_setttings=True):
     user_settings_path = get_user_settings_path()
     if user_settings_path is None or not load_user_setttings:
         # no user settings
-        return (load_yaml(default_settings_path),
-                'load the default settings from {}'.format(default_settings_path))
+        return (load_yaml(default_settings_path), 'load the default settings from {}'.format(default_settings_path))
 
     # user settings
     user_settings = load_yaml(user_settings_path)
@@ -134,10 +133,12 @@ def load_settings(load_user_setttings=True):
         # the user settings are merged with the default configuration
         default_settings = load_yaml(default_settings_path)
         update_settings(default_settings, user_settings)
-        return (default_settings,
-                'merge the default settings ( {} ) and the user setttings ( {} )'
-                .format(default_settings_path, user_settings_path))
+        return (
+            default_settings,
+            'merge the default settings ( {} ) and the user setttings ( {} )'.format(
+                default_settings_path, user_settings_path
+            ),
+        )
 
     # the user settings, fully replace the default configuration
-    return (user_settings,
-            'load the user settings from {}'.format(user_settings_path))
+    return (user_settings, 'load the user settings from {}'.format(user_settings_path))

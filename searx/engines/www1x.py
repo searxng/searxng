@@ -46,12 +46,16 @@ def response(resp):
         thumbnail_src = urljoin(gallery_url, eval_xpath_getindex(link, './/img', 0).attrib['src'])
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'img_src': thumbnail_src,
-                        'content': '',
-                        'thumbnail_src': thumbnail_src,
-                        'template': 'images.html'})
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'img_src': thumbnail_src,
+                'content': '',
+                'thumbnail_src': thumbnail_src,
+                'template': 'images.html',
+            }
+        )
 
     # return results
     return results

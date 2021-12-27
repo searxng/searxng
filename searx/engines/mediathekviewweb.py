@@ -22,28 +22,32 @@ paging = True
 time_range_support = False
 safesearch = False
 
+
 def request(query, params):
 
     params['url'] = 'https://mediathekviewweb.de/api/query'
     params['method'] = 'POST'
     params['headers']['Content-type'] = 'text/plain'
-    params['data'] = dumps({
-        'queries' : [
-	    {
-	        'fields' : [
-		    'title',
-		    'topic',
-	        ],
-	    'query' : query
-	    },
-        ],
-        'sortBy' : 'timestamp',
-        'sortOrder' : 'desc',
-        'future' : True,
-        'offset' : (params['pageno'] - 1 )* 10,
-        'size' : 10
-    })
+    params['data'] = dumps(
+        {
+            'queries': [
+                {
+                    'fields': [
+                        'title',
+                        'topic',
+                    ],
+                    'query': query,
+                },
+            ],
+            'sortBy': 'timestamp',
+            'sortOrder': 'desc',
+            'future': True,
+            'offset': (params['pageno'] - 1) * 10,
+            'size': 10,
+        }
+    )
     return params
+
 
 def response(resp):
 
@@ -58,11 +62,13 @@ def response(resp):
 
         item['hms'] = str(datetime.timedelta(seconds=item['duration']))
 
-        results.append({
-            'url' : item['url_video_hd'],
-            'title' : "%(channel)s: %(title)s (%(hms)s)" % item,
-            'length' : item['hms'],
-            'content' : "%(description)s" % item,
-        })
+        results.append(
+            {
+                'url': item['url_video_hd'],
+                'title': "%(channel)s: %(title)s (%(hms)s)" % item,
+                'length': item['hms'],
+                'content': "%(description)s" % item,
+            }
+        )
 
     return results

@@ -30,7 +30,7 @@ def request(query, params):
 
 def response(resp):
     """remove first and last lines to get only json"""
-    json_resp = resp.text[resp.text.find('\n') + 1:resp.text.rfind('\n') - 2]
+    json_resp = resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2]
     results = []
     try:
         conversion_rate = float(json.loads(json_resp)['conversion']['converted-amount'])
@@ -47,7 +47,8 @@ def response(resp):
     )
 
     url = 'https://duckduckgo.com/js/spice/currency/1/{0}/{1}'.format(
-        resp.search_params['from'].upper(), resp.search_params['to'])
+        resp.search_params['from'].upper(), resp.search_params['to']
+    )
 
     results.append({'answer': answer, 'url': url})
 

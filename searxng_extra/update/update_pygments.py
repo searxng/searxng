@@ -120,7 +120,7 @@ def get_css(cssclass, style):
     css_text = HtmlFormatter(style=style).get_style_defs(cssclass)
     result += cssclass + RULE_CODE_LINENOS + '\n\n'
     for line in css_text.splitlines():
-        if ' ' in line  and not line.startswith(cssclass):
+        if ' ' in line and not line.startswith(cssclass):
             line = cssclass + ' ' + line
         result += line + '\n'
     return result

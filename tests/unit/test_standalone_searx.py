@@ -23,8 +23,7 @@ class StandaloneSearx(SearxTestCase):
 
     def test_parse_argument_no_args(self):
         """Test parse argument without args."""
-        with patch.object(sys, 'argv', ['standalone_searx']), \
-                self.assertRaises(SystemExit):
+        with patch.object(sys, 'argv', ['standalone_searx']), self.assertRaises(SystemExit):
             sys.stderr = io.StringIO()
             sas.parse_argument()
             sys.stdout = sys.__stderr__
@@ -33,8 +32,13 @@ class StandaloneSearx(SearxTestCase):
         """Test parse argument with basic args."""
         query = 'red box'
         exp_dict = {
-            'query': query, 'category': 'general', 'lang': 'all', 'pageno': 1,
-            'safesearch': '0', 'timerange': None}
+            'query': query,
+            'category': 'general',
+            'lang': 'all',
+            'pageno': 1,
+            'safesearch': '0',
+            'timerange': None,
+        }
         args = ['standalone_searx', query]
         with patch.object(sys, 'argv', args):
             res = sas.parse_argument()
@@ -45,16 +49,16 @@ class StandaloneSearx(SearxTestCase):
     def test_to_dict(self):
         """test to_dict."""
         self.assertEqual(
-            sas.to_dict(
-                sas.get_search_query(sas.parse_argument(['red box']))),
+            sas.to_dict(sas.get_search_query(sas.parse_argument(['red box']))),
             {
-                'search': {
-                    'q': 'red box', 'pageno': 1, 'lang': 'all',
-                    'safesearch': 0, 'timerange': None
-                },
-                'results': [], 'infoboxes': [], 'suggestions': [],
-                'answers': [], 'paging': False, 'results_number': 0
-            }
+                'search': {'q': 'red box', 'pageno': 1, 'lang': 'all', 'safesearch': 0, 'timerange': None},
+                'results': [],
+                'infoboxes': [],
+                'suggestions': [],
+                'answers': [],
+                'paging': False,
+                'results_number': 0,
+            },
         )
 
     def test_to_dict_with_mock(self):
@@ -77,30 +81,28 @@ class StandaloneSearx(SearxTestCase):
                         'safesearch': m_sq.safesearch,
                         'timerange': m_sq.time_range,
                     },
-                    'suggestions': []
-                }
+                    'suggestions': [],
+                },
             )
 
     def test_get_search_query(self):
         """test get_search_query."""
-        args = sas.parse_argument(['rain', ])
+        args = sas.parse_argument(
+            [
+                'rain',
+            ]
+        )
         search_q = sas.get_search_query(args)
         self.assertTrue(search_q)
-        self.assertEqual(search_q, SearchQuery('rain', [EngineRef('engine1', 'general')],
-                         'all', 0, 1, None, None, None))
+        self.assertEqual(
+            search_q, SearchQuery('rain', [EngineRef('engine1', 'general')], 'all', 0, 1, None, None, None)
+        )
 
     def test_no_parsed_url(self):
         """test no_parsed_url func"""
-        self.assertEqual(
-            sas.no_parsed_url([{'parsed_url': 'http://example.com'}]),
-            [{}]
-        )
+        self.assertEqual(sas.no_parsed_url([{'parsed_url': 'http://example.com'}]), [{}])
 
-    @params(
-        (datetime.datetime(2020, 1, 1), '2020-01-01T00:00:00'),
-        ('a'.encode('utf8'), 'a'),
-        (set([1]), [1])
-    )
+    @params((datetime.datetime(2020, 1, 1), '2020-01-01T00:00:00'), ('a'.encode('utf8'), 'a'), (set([1]), [1]))
     def test_json_serial(self, arg, exp_res):
         """test json_serial func"""
         self.assertEqual(sas.json_serial(arg), exp_res)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # list of language codes
 # this file is generated automatically by utils/fetch_languages.py
-language_codes = \
-(   ('af-ZA', 'Afrikaans', '', 'Afrikaans'),
+language_codes = (
+    ('af-ZA', 'Afrikaans', '', 'Afrikaans'),
     ('ar-EG', 'العربية', '', 'Arabic'),
     ('be-BY', 'Беларуская', '', 'Belarusian'),
     ('bg-BG', 'Български', '', 'Bulgarian'),
@@ -74,4 +74,5 @@ language_codes = \
     ('zh', '中文', '', 'Chinese'),
     ('zh-CN', '中文', '中国', 'Chinese'),
     ('zh-HK', '中文', '中國香港特別行政區', 'Chinese'),
-    ('zh-TW', '中文', '台灣', 'Chinese'))
+    ('zh-TW', '中文', '台灣', 'Chinese'),
+)

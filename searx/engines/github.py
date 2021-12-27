@@ -55,9 +55,7 @@ def response(resp):
             content = ''
 
         # append result
-        results.append({'url': url,
-                        'title': title,
-                        'content': content})
+        results.append({'url': url, 'title': title, 'content': content})
 
     # return results
     return results

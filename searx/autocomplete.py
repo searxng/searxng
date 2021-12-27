@@ -120,14 +120,15 @@ def wikipedia(query, lang):
     return []
 
 
-backends = {'dbpedia': dbpedia,
-            'duckduckgo': duckduckgo,
-            'google': google,
-            'startpage': startpage,
-            'swisscows': swisscows,
-            'qwant': qwant,
-            'wikipedia': wikipedia
-            }
+backends = {
+    'dbpedia': dbpedia,
+    'duckduckgo': duckduckgo,
+    'google': google,
+    'startpage': startpage,
+    'swisscows': swisscows,
+    'qwant': qwant,
+    'wikipedia': wikipedia,
+}
 
 
 def search_autocomplete(backend_name, query, lang):

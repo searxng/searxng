@@ -26,15 +26,11 @@ api_key = 'unset'
 
 base_url = 'https://api.springernature.com/metadata/json?'
 
+
 def request(query, params):
     if api_key == 'unset':
         raise SearxEngineAPIException('missing Springer-Nature API key')
-    args = urlencode({
-        'q' : query,
-        's' : nb_per_page * (params['pageno'] - 1),
-        'p' : nb_per_page,
-        'api_key' : api_key
-        })
+    args = urlencode({'q': query, 's': nb_per_page * (params['pageno'] - 1), 'p': nb_per_page, 'api_key': api_key})
     params['url'] = base_url + args
     logger.debug("query_url --> %s", params['url'])
     return params
@@ -50,21 +46,27 @@ def response(resp):
             content += "..."
         published = datetime.strptime(record['publicationDate'], '%Y-%m-%d')
 
-        metadata = [record[x] for x in [
-            'publicationName',
-            'identifier',
-            'contentType',
-        ] if record.get(x) is not None]
+        metadata = [
+            record[x]
+            for x in [
+                'publicationName',
+                'identifier',
+                'contentType',
+            ]
+            if record.get(x) is not None
+        ]
 
         metadata = ' / '.join(metadata)
         if record.get('startingPage') and record.get('endingPage') is not None:
             metadata += " (%(startingPage)s-%(endingPage)s)" % record
 
-        results.append({
-            'title': record['title'],
-            'url': record['url'][0]['value'].replace('http://', 'https://', 1),
-            'content' : content,
-            'publishedDate' : published,
-            'metadata' : metadata
-        })
+        results.append(
+            {
+                'title': record['title'],
+                'url': record['url'][0]['value'].replace('http://', 'https://', 1),
+                'content': content,
+                'publishedDate': published,
+                'metadata': metadata,
+            }
+        )
     return results

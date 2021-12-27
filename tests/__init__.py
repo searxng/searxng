@@ -50,5 +50,6 @@ class SearxTestCase(aiounittest.AsyncTestCase):
 
         def cleanup_patch():
             setattr(obj, attr, previous_value)
+
         self.addCleanup(cleanup_patch)
         setattr(obj, attr, value)

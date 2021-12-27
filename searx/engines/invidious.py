@@ -46,14 +46,10 @@ def request(query, params):
         base_url_rand = base_url
 
     search_url = base_url_rand + "api/v1/search?q={query}"
-    params["url"] = search_url.format(
-        query=quote_plus(query)
-    ) + "&page={pageno}".format(pageno=params["pageno"])
+    params["url"] = search_url.format(query=quote_plus(query)) + "&page={pageno}".format(pageno=params["pageno"])
 
     if params["time_range"] in time_range_dict:
-        params["url"] += "&date={timerange}".format(
-            timerange=time_range_dict[params["time_range"]]
-        )
+        params["url"] += "&date={timerange}".format(timerange=time_range_dict[params["time_range"]])
 
     if params["language"] != "all":
         lang = params["language"].split("-")
@@ -88,17 +84,13 @@ def response(resp):
             url = base_invidious_url + videoid
             embedded = embedded_url.format(videoid=videoid)
             thumbs = result.get("videoThumbnails", [])
-            thumb = next(
-                (th for th in thumbs if th["quality"] == "sddefault"), None
-            )
+            thumb = next((th for th in thumbs if th["quality"] == "sddefault"), None)
             if thumb:
                 thumbnail = thumb.get("url", "")
             else:
                 thumbnail = ""
 
-            publishedDate = parser.parse(
-                time.ctime(result.get("published", 0))
-            )
+            publishedDate = parser.parse(time.ctime(result.get("published", 0)))
             length = time.gmtime(result.get("lengthSeconds"))
             if length.tm_hour:
                 length = time.strftime("%H:%M:%S", length)

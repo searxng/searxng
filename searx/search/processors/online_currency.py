@@ -12,10 +12,12 @@ from .online import OnlineProcessor
 
 parser_re = re.compile('.*?(\\d+(?:\\.\\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)', re.I)
 
+
 def normalize_name(name):
     name = name.lower().replace('-', ' ').rstrip('s')
     name = re.sub(' +', ' ', name)
     return unicodedata.normalize('NFKD', name).lower()
+
 
 def name_to_iso4217(name):
     name = normalize_name(name)
@@ -24,8 +26,10 @@ def name_to_iso4217(name):
         return currency
     return currency[0]
 
+
 def iso4217_to_name(iso4217, language):
     return CURRENCIES['iso4217'].get(iso4217, {}).get(language, iso4217)
+
 
 class OnlineCurrencyProcessor(OnlineProcessor):
 

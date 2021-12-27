@@ -16,7 +16,7 @@ import tests as searx_tests
 from tests.robot import test_webapp
 
 
-class SearxRobotLayer():
+class SearxRobotLayer:
     """Searx Robot Test Layer"""
 
     def setUp(self):
@@ -42,9 +42,7 @@ class SearxRobotLayer():
 
         # run the server
         self.server = subprocess.Popen(  # pylint: disable=consider-using-with
-            [exe, webapp],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT
+            [exe, webapp], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
         if hasattr(self.server.stdout, 'read1'):
             print(self.server.stdout.read1(1024).decode())

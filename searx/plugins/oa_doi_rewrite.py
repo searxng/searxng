@@ -39,7 +39,7 @@ def on_result(request, search, result):
     if doi and len(doi) < 50:
         for suffix in ('/', '.pdf', '.xml', '/full', '/meta', '/abstract'):
             if doi.endswith(suffix):
-                doi = doi[:-len(suffix)]
+                doi = doi[: -len(suffix)]
         result['url'] = get_doi_resolver(request.preferences) + doi
         result['parsed_url'] = urlparse(result['url'])
     return True

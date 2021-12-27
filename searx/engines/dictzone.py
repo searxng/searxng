@@ -27,9 +27,7 @@ https_support = True
 
 
 def request(query, params):
-    params['url'] = url.format(from_lang=params['from_lang'][2],
-                               to_lang=params['to_lang'][2],
-                               query=params['query'])
+    params['url'] = url.format(from_lang=params['from_lang'][2], to_lang=params['to_lang'][2], query=params['query'])
 
     return params
 
@@ -51,10 +49,12 @@ def response(resp):
             if t.strip():
                 to_results.append(to_result.text_content())
 
-        results.append({
-            'url': urljoin(str(resp.url), '?%d' % k),
-            'title': from_result.text_content(),
-            'content': '; '.join(to_results)
-        })
+        results.append(
+            {
+                'url': urljoin(str(resp.url), '?%d' % k),
+                'title': from_result.text_content(),
+                'content': '; '.join(to_results),
+            }
+        )
 
     return results

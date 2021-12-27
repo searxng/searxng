@@ -56,11 +56,7 @@ def response(resp):
         name_row = rows[i]
 
         links = name_row.xpath('./td[@class="desc-top"]/a')
-        params = {
-            'template': 'torrent.html',
-            'url': links[-1].attrib.get('href'),
-            'title': extract_text(links[-1])
-        }
+        params = {'template': 'torrent.html', 'url': links[-1].attrib.get('href'), 'title': extract_text(links[-1])}
         # I have not yet seen any torrents without magnet links, but
         # it's better to be prepared to stumble upon one some day
         if len(links) == 2:

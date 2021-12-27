@@ -7,7 +7,6 @@ from tests import SearxTestCase
 
 
 class AnswererTest(SearxTestCase):
-
     def test_unicode_input(self):
         query = Mock()
         unicode_payload = 'árvíztűrő tükörfúrógép'

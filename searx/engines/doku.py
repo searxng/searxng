@@ -25,8 +25,7 @@ number_of_results = 5
 # search-url
 # Doku is OpenSearch compatible
 base_url = 'http://localhost:8090'
-search_url = '/?do=search'\
-             '&{query}'
+search_url = '/?do=search' '&{query}'
 # TODO             '&startRecord={offset}'\
 # TODO             '&maximumRecords={limit}'\
 
@@ -34,8 +33,7 @@ search_url = '/?do=search'\
 # do search-request
 def request(query, params):
 
-    params['url'] = base_url +\
-        search_url.format(query=urlencode({'id': query}))
+    params['url'] = base_url + search_url.format(query=urlencode({'id': query}))
 
     return params
 
@@ -60,9 +58,7 @@ def response(resp):
         title = extract_text(eval_xpath(r, './/a[@class="wikilink1"]/@title'))
 
         # append result
-        results.append({'title': title,
-                        'content': "",
-                        'url': base_url + res_url})
+        results.append({'title': title, 'content': "", 'url': base_url + res_url})
 
     # Search results
     for r in eval_xpath(doc, '//dl[@class="search_results"]/*'):
@@ -74,9 +70,7 @@ def response(resp):
                 content = extract_text(eval_xpath(r, '.'))
 
                 # append result
-                results.append({'title': title,
-                                'content': content,
-                                'url': base_url + res_url})
+                results.append({'title': title, 'content': content, 'url': base_url + res_url})
         except:
             continue
 

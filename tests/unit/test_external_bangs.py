@@ -18,9 +18,9 @@ TEST_DB = {
             's': {
                 'on': 'season' + chr(2) + chr(1) + '0',
                 'capes': 'seascape' + chr(2) + chr(1) + '0',
-            }
+            },
         },
-        'error': ['error in external_bangs.json']
+        'error': ['error in external_bangs.json'],
     }
 }
 
@@ -57,7 +57,6 @@ class TestGetNode(SearxTestCase):
 
 
 class TestResolveBangDefinition(SearxTestCase):
-
     def test_https(self):
         url, rank = resolve_bang_definition('//example.com/' + chr(2) + chr(1) + '42', 'query')
         self.assertEqual(url, 'https://example.com/query')
@@ -70,7 +69,6 @@ class TestResolveBangDefinition(SearxTestCase):
 
 
 class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
-
     def test_found(self):
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('exam', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['exam']['*'])
@@ -103,7 +101,6 @@ class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
 
 
 class TestExternalBangJson(SearxTestCase):
-
     def test_no_external_bang_query(self):
         result = get_bang_url(SearchQuery('test', engineref_list=[EngineRef('wikipedia', 'general')]))
         self.assertEqual(result, None)

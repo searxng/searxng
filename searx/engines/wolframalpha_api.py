@@ -36,8 +36,7 @@ img_alt_xpath = './@alt'
 
 # pods to display as image in infobox
 # this pods do return a plaintext, but they look better and are more useful as images
-image_pods = {'VisualRepresentation',
-              'Illustration'}
+image_pods = {'VisualRepresentation', 'Illustration'}
 
 
 # do search-request
@@ -50,15 +49,17 @@ def request(query, params):
 
 # replace private user area characters to make text legible
 def replace_pua_chars(text):
-    pua_chars = {'\uf522': '\u2192',  # rigth arrow
-                 '\uf7b1': '\u2115',  # set of natural numbers
-                 '\uf7b4': '\u211a',  # set of rational numbers
-                 '\uf7b5': '\u211d',  # set of real numbers
-                 '\uf7bd': '\u2124',  # set of integer numbers
-                 '\uf74c': 'd',       # differential
-                 '\uf74d': '\u212f',  # euler's number
-                 '\uf74e': 'i',       # imaginary number
-                 '\uf7d9': '='}       # equals sign
+    pua_chars = {
+        '\uf522': '\u2192',  # rigth arrow
+        '\uf7b1': '\u2115',  # set of natural numbers
+        '\uf7b4': '\u211a',  # set of rational numbers
+        '\uf7b5': '\u211d',  # set of real numbers
+        '\uf7bd': '\u2124',  # set of integer numbers
+        '\uf74c': 'd',  # differential
+        '\uf74d': '\u212f',  # euler's number
+        '\uf74e': 'i',  # imaginary number
+        '\uf7d9': '=',
+    }  # equals sign
 
     for k, v in pua_chars.items():
         text = text.replace(k, v)
@@ -112,9 +113,12 @@ def response(resp):
                 result_chunks.append({'label': pod_title, 'value': content})
 
             elif image:
-                result_chunks.append({'label': pod_title,
-                                      'image': {'src': image[0].xpath(img_src_xpath)[0],
-                                                'alt': image[0].xpath(img_alt_xpath)[0]}})
+                result_chunks.append(
+                    {
+                        'label': pod_title,
+                        'image': {'src': image[0].xpath(img_src_xpath)[0], 'alt': image[0].xpath(img_alt_xpath)[0]},
+                    }
+                )
 
     if not result_chunks:
         return []
@@ -122,13 +126,15 @@ def response(resp):
     title = "Wolfram|Alpha (%s)" % infobox_title
 
     # append infobox
-    results.append({'infobox': infobox_title,
-                    'attributes': result_chunks,
-                    'urls': [{'title': 'Wolfram|Alpha', 'url': resp.request.headers['Referer']}]})
+    results.append(
+        {
+            'infobox': infobox_title,
+            'attributes': result_chunks,
+            'urls': [{'title': 'Wolfram|Alpha', 'url': resp.request.headers['Referer']}],
+        }
+    )
 
     # append link to site
-    results.append({'url': resp.request.headers['Referer'],
-                    'title': title,
-                    'content': result_content})
+    results.append({'url': resp.request.headers['Referer'], 'title': title, 'content': result_content})
 
     return results

@@ -62,7 +62,7 @@ Example to run it from python:
     },
     "suggestions": [...]
 }
-""" # pylint: disable=line-too-long
+"""  # pylint: disable=line-too-long
 
 import argparse
 import sys
@@ -80,7 +80,7 @@ EngineCategoriesVar = Optional[List[str]]
 
 
 def get_search_query(
-        args: argparse.Namespace, engine_categories: EngineCategoriesVar = None
+    args: argparse.Namespace, engine_categories: EngineCategoriesVar = None
 ) -> searx.search.SearchQuery:
     """Get  search results for the query"""
     if engine_categories is None:
@@ -94,14 +94,12 @@ def get_search_query(
         "categories": category,
         "pageno": str(args.pageno),
         "language": args.lang,
-        "time_range": args.timerange
+        "time_range": args.timerange,
     }
-    preferences = searx.preferences.Preferences(
-        ['oscar'], engine_categories, searx.engines.engines, [])
+    preferences = searx.preferences.Preferences(['oscar'], engine_categories, searx.engines.engines, [])
     preferences.key_value_settings['safesearch'].parse(args.safesearch)
 
-    search_query = searx.webadapter.get_search_query_from_webapp(
-        preferences, form)[0]
+    search_query = searx.webadapter.get_search_query_from_webapp(preferences, form)[0]
     return search_query
 
 
@@ -143,14 +141,13 @@ def to_dict(search_query: searx.search.SearchQuery) -> Dict[str, Any]:
         "suggestions": list(result_container.suggestions),
         "answers": list(result_container.answers),
         "paging": result_container.paging,
-        "results_number": result_container.results_number()
+        "results_number": result_container.results_number(),
     }
     return result_container_json
 
 
 def parse_argument(
-        args: Optional[List[str]]=None,
-        category_choices: EngineCategoriesVar=None
+    args: Optional[List[str]] = None, category_choices: EngineCategoriesVar = None
 ) -> argparse.Namespace:
     """Parse command line.
 
@@ -174,24 +171,23 @@ def parse_argument(
     if not category_choices:
         category_choices = list(searx.engines.categories.keys())
     parser = argparse.ArgumentParser(description='Standalone searx.')
-    parser.add_argument('query', type=str,
-                        help='Text query')
-    parser.add_argument('--category', type=str, nargs='?',
-                        choices=category_choices,
-                        default='general',
-                        help='Search category')
-    parser.add_argument('--lang', type=str, nargs='?', default='all',
-                        help='Search language')
-    parser.add_argument('--pageno', type=int, nargs='?', default=1,
-                        help='Page number starting from 1')
+    parser.add_argument('query', type=str, help='Text query')
     parser.add_argument(
-        '--safesearch', type=str, nargs='?',
-        choices=['0', '1', '2'], default='0',
-        help='Safe content filter from none to strict')
+        '--category', type=str, nargs='?', choices=category_choices, default='general', help='Search category'
+    )
+    parser.add_argument('--lang', type=str, nargs='?', default='all', help='Search language')
+    parser.add_argument('--pageno', type=int, nargs='?', default=1, help='Page number starting from 1')
     parser.add_argument(
-        '--timerange', type=str,
-        nargs='?', choices=['day', 'week', 'month', 'year'],
-        help='Filter by time range')
+        '--safesearch',
+        type=str,
+        nargs='?',
+        choices=['0', '1', '2'],
+        default='0',
+        help='Safe content filter from none to strict',
+    )
+    parser.add_argument(
+        '--timerange', type=str, nargs='?', choices=['day', 'week', 'month', 'year'], help='Filter by time range'
+    )
     return parser.parse_args(args)
 
 
@@ -206,6 +202,4 @@ if __name__ == '__main__':
     searx.search.initialize_processors(settings_engines)
     search_q = get_search_query(prog_args, engine_categories=engine_cs)
     res_dict = to_dict(search_q)
-    sys.stdout.write(dumps(
-        res_dict, sort_keys=True, indent=4, ensure_ascii=False,
-        default=json_serial))
+    sys.stdout.write(dumps(res_dict, sort_keys=True, indent=4, ensure_ascii=False, default=json_serial))

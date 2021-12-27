@@ -113,13 +113,13 @@ def parse_ddg_bangs(ddg_bangs):
 
         # only for the https protocol: "https://example.com" becomes "//example.com"
         if bang_url.startswith(HTTPS_COLON + '//'):
-            bang_url = bang_url[len(HTTPS_COLON):]
+            bang_url = bang_url[len(HTTPS_COLON) :]
 
         #
-        if bang_url.startswith(HTTP_COLON + '//') and bang_url[len(HTTP_COLON):] in bang_urls:
+        if bang_url.startswith(HTTP_COLON + '//') and bang_url[len(HTTP_COLON) :] in bang_urls:
             # if the bang_url uses the http:// protocol, and the same URL exists in https://
             # then reuse the https:// bang definition. (written //example.com)
-            bang_def_output = bang_urls[bang_url[len(HTTP_COLON):]]
+            bang_def_output = bang_urls[bang_url[len(HTTP_COLON) :]]
         else:
             # normal use case : new http:// URL or https:// URL (without "https:", see above)
             bang_rank = str(bang_definition['r'])
@@ -151,9 +151,6 @@ def get_bangs_filename():
 if __name__ == '__main__':
     bangs_url, bangs_version = get_bang_url()
     print(f'fetch bangs from {bangs_url}')
-    output = {
-        'version': bangs_version,
-        'trie': parse_ddg_bangs(fetch_ddg_bangs(bangs_url))
-    }
+    output = {'version': bangs_version, 'trie': parse_ddg_bangs(fetch_ddg_bangs(bangs_url))}
     with open(get_bangs_filename(), 'w', encoding="utf8") as fp:
         json.dump(output, fp, ensure_ascii=False, indent=4)

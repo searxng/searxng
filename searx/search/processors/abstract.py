@@ -19,6 +19,7 @@ from searx.utils import get_engine_from_settings
 logger = logger.getChild('searx.search.processor')
 SUSPENDED_STATUS = {}
 
+
 class SuspendedStatus:
     """Class to handle suspend state."""
 
@@ -39,8 +40,10 @@ class SuspendedStatus:
             # update continuous_errors / suspend_end_time
             self.continuous_errors += 1
             if suspended_time is None:
-                suspended_time = min(settings['search']['max_ban_time_on_fail'],
-                                     self.continuous_errors * settings['search']['ban_time_on_fail'])
+                suspended_time = min(
+                    settings['search']['max_ban_time_on_fail'],
+                    self.continuous_errors * settings['search']['ban_time_on_fail'],
+                )
             self.suspend_end_time = default_timer() + suspended_time
             self.suspend_reason = suspend_reason
             logger.debug('Suspend for %i seconds', suspended_time)
@@ -127,9 +130,9 @@ class EngineProcessor(ABC):
 
     def extend_container_if_suspended(self, result_container):
         if self.suspended_status.is_suspended:
-            result_container.add_unresponsive_engine(self.engine_name,
-                                                     self.suspended_status.suspend_reason,
-                                                     suspended=True)
+            result_container.add_unresponsive_engine(
+                self.engine_name, self.suspended_status.suspend_reason, suspended=True
+            )
             return True
         return False
 

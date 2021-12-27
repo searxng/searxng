@@ -31,8 +31,7 @@ def fetch_supported_languages():
     for engine_name in names:
         if hasattr(engines[engine_name], 'fetch_supported_languages'):
             engines_languages[engine_name] = engines[engine_name].fetch_supported_languages()
-            print("fetched %s languages from engine %s" % (
-                len(engines_languages[engine_name]), engine_name))
+            print("fetched %s languages from engine %s" % (len(engines_languages[engine_name]), engine_name))
             if type(engines_languages[engine_name]) == list:
                 engines_languages[engine_name] = sorted(engines_languages[engine_name])
 
@@ -60,8 +59,9 @@ def join_language_lists(engines_languages):
 
             # apply custom fixes if necessary
             if lang_code in getattr(engines[engine_name], 'language_aliases', {}).values():
-                lang_code = next(lc for lc, alias in engines[engine_name].language_aliases.items()
-                                 if lang_code == alias)
+                lang_code = next(
+                    lc for lc, alias in engines[engine_name].language_aliases.items() if lang_code == alias
+                )
 
             locale = get_locale(lang_code)
 
@@ -85,10 +85,12 @@ def join_language_lists(engines_languages):
                     english_name = None
 
                 # add language to list
-                language_list[short_code] = {'name': language_name,
-                                             'english_name': english_name,
-                                             'counter': set(),
-                                             'countries': dict()}
+                language_list[short_code] = {
+                    'name': language_name,
+                    'english_name': english_name,
+                    'counter': set(),
+                    'countries': dict(),
+                }
 
             # add language with country if not in list
             if lang_code != short_code and lang_code not in language_list[short_code]['countries']:
@@ -97,8 +99,7 @@ def join_language_lists(engines_languages):
                     # get country name from babel's Locale object
                     country_name = locale.get_territory_name()
 
-                language_list[short_code]['countries'][lang_code] = {'country_name': country_name,
-                                                                     'counter': set()}
+                language_list[short_code]['countries'][lang_code] = {'country_name': country_name, 'counter': set()}
 
             # count engine for both language_country combination and language alone
             language_list[short_code]['counter'].add(engine_name)
@@ -112,17 +113,23 @@ def join_language_lists(engines_languages):
 def filter_language_list(all_languages):
     min_engines_per_lang = 13
     min_engines_per_country = 7
-    main_engines = [engine_name for engine_name in engines.keys()
-                    if 'general' in engines[engine_name].categories and
-                       engines[engine_name].supported_languages and
-                       not engines[engine_name].disabled]
+    main_engines = [
+        engine_name
+        for engine_name in engines.keys()
+        if 'general' in engines[engine_name].categories
+        and engines[engine_name].supported_languages
+        and not engines[engine_name].disabled
+    ]
 
     # filter list to include only languages supported by most engines or all default general engines
-    filtered_languages = {code: lang for code, lang
-                          in all_languages.items()
-                          if (len(lang['counter']) >= min_engines_per_lang or
-                              all(main_engine in lang['counter']
-                                  for main_engine in main_engines))}
+    filtered_languages = {
+        code: lang
+        for code, lang in all_languages.items()
+        if (
+            len(lang['counter']) >= min_engines_per_lang
+            or all(main_engine in lang['counter'] for main_engine in main_engines)
+        )
+    }
 
     def _copy_lang_data(lang, country_name=None):
         new_dict = dict()
@@ -176,22 +183,24 @@ def write_languages_file(languages):
         "# -*- coding: utf-8 -*-",
         "# list of language codes",
         "# this file is generated automatically by utils/fetch_languages.py",
-        "language_codes ="
+        "language_codes =",
     )
 
-    language_codes = tuple([
-        (
-            code,
-            languages[code]['name'].split(' (')[0],
-            languages[code].get('country_name') or '',
-            languages[code].get('english_name') or ''
-        ) for code in sorted(languages)
-    ])
+    language_codes = tuple(
+        [
+            (
+                code,
+                languages[code]['name'].split(' (')[0],
+                languages[code].get('country_name') or '',
+                languages[code].get('english_name') or '',
+            )
+            for code in sorted(languages)
+        ]
+    )
 
     with open(languages_file, 'w') as new_file:
         file_content = "{file_headers} \\\n{language_codes}".format(
-            file_headers='\n'.join(file_headers),
-            language_codes=pformat(language_codes, indent=4)
+            file_headers='\n'.join(file_headers), language_codes=pformat(language_codes, indent=4)
         )
         new_file.write(file_content)
         new_file.close()

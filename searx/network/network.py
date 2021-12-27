@@ -31,39 +31,49 @@ PROXY_PATTERN_MAPPING = {
     'socks5h:': 'socks5h://',
 }
 
-ADDRESS_MAPPING = {
-    'ipv4': '0.0.0.0',
-    'ipv6': '::'
-}
+ADDRESS_MAPPING = {'ipv4': '0.0.0.0', 'ipv6': '::'}
 
 
 class Network:
 
     __slots__ = (
-        'enable_http', 'verify', 'enable_http2',
-        'max_connections', 'max_keepalive_connections', 'keepalive_expiry',
-        'local_addresses', 'proxies', 'using_tor_proxy', 'max_redirects', 'retries', 'retry_on_http_error',
-        '_local_addresses_cycle', '_proxies_cycle', '_clients', '_logger'
+        'enable_http',
+        'verify',
+        'enable_http2',
+        'max_connections',
+        'max_keepalive_connections',
+        'keepalive_expiry',
+        'local_addresses',
+        'proxies',
+        'using_tor_proxy',
+        'max_redirects',
+        'retries',
+        'retry_on_http_error',
+        '_local_addresses_cycle',
+        '_proxies_cycle',
+        '_clients',
+        '_logger',
     )
 
     _TOR_CHECK_RESULT = {}
 
     def __init__(
-            # pylint: disable=too-many-arguments
-            self,
-            enable_http=True,
-            verify=True,
-            enable_http2=False,
-            max_connections=None,
-            max_keepalive_connections=None,
-            keepalive_expiry=None,
-            proxies=None,
-            using_tor_proxy=False,
-            local_addresses=None,
-            retries=0,
-            retry_on_http_error=None,
-            max_redirects=30,
-            logger_name=None):
+        # pylint: disable=too-many-arguments
+        self,
+        enable_http=True,
+        verify=True,
+        enable_http2=False,
+        max_connections=None,
+        max_keepalive_connections=None,
+        keepalive_expiry=None,
+        proxies=None,
+        using_tor_proxy=False,
+        local_addresses=None,
+        retries=0,
+        retry_on_http_error=None,
+        max_redirects=30,
+        logger_name=None,
+    ):
 
         self.enable_http = enable_http
         self.verify = verify
@@ -144,9 +154,7 @@ class Network:
         response_line = f"{response.http_version} {status}"
         content_type = response.headers.get("Content-Type")
         content_type = f' ({content_type})' if content_type else ''
-        self._logger.debug(
-            f'HTTP Request: {request.method} {request.url} "{response_line}"{content_type}'
-        )
+        self._logger.debug(f'HTTP Request: {request.method} {request.url} "{response_line}"{content_type}')
 
     @staticmethod
     async def check_tor_proxy(client: httpx.AsyncClient, proxies) -> bool:
@@ -187,7 +195,7 @@ class Network:
                 local_address,
                 0,
                 max_redirects,
-                hook_log_response
+                hook_log_response,
             )
             if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
                 await client.aclose()
@@ -201,6 +209,7 @@ class Network:
                 await client.aclose()
             except httpx.HTTPError:
                 pass
+
         await asyncio.gather(*[close_client(client) for client in self._clients.values()], return_exceptions=False)
 
     @staticmethod
@@ -214,7 +223,8 @@ class Network:
 
     def is_valid_respones(self, response):
         # pylint: disable=too-many-boolean-expressions
-        if ((self.retry_on_http_error is True and 400 <= response.status_code <= 599)
+        if (
+            (self.retry_on_http_error is True and 400 <= response.status_code <= 599)
             or (isinstance(self.retry_on_http_error, list) and response.status_code in self.retry_on_http_error)
             or (isinstance(self.retry_on_http_error, int) and response.status_code == self.retry_on_http_error)
         ):
@@ -269,6 +279,7 @@ def check_network_configuration():
                     network._logger.exception('Error')  # pylint: disable=protected-access
                     exception_count += 1
         return exception_count
+
     future = asyncio.run_coroutine_threadsafe(check(), get_loop())
     exception_count = future.result()
     if exception_count > 0:
@@ -279,6 +290,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
     # pylint: disable=import-outside-toplevel)
     from searx.engines import engines
     from searx import settings
+
     # pylint: enable=import-outside-toplevel)
 
     settings_engines = settings_engines or settings['engines']

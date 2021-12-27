@@ -68,14 +68,16 @@ def response(resp):
         else:
             content = f"{views} views - {rumbles} rumbles"
 
-        results.append({
-            'url': url,
-            'title': title,
-            'content': content,
-            'author': author,
-            'length': length,
-            'template': 'videos.html',
-            'publishedDate': fixed_date,
-            'thumbnail': thumbnail,
-        })
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'author': author,
+                'length': length,
+                'template': 'videos.html',
+                'publishedDate': fixed_date,
+                'thumbnail': thumbnail,
+            }
+        )
     return results

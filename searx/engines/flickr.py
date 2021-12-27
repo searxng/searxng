@@ -25,10 +25,12 @@ paging = True
 api_key = None
 
 
-url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search' +\
-      '&api_key={api_key}&{text}&sort=relevance' +\
-      '&extras=description%2C+owner_name%2C+url_o%2C+url_n%2C+url_z' +\
-      '&per_page={nb_per_page}&format=json&nojsoncallback=1&page={page}'
+url = (
+    'https://api.flickr.com/services/rest/?method=flickr.photos.search'
+    + '&api_key={api_key}&{text}&sort=relevance'
+    + '&extras=description%2C+owner_name%2C+url_o%2C+url_n%2C+url_z'
+    + '&per_page={nb_per_page}&format=json&nojsoncallback=1&page={page}'
+)
 photo_url = 'https://www.flickr.com/photos/{userid}/{photoid}'
 
 paging = True
@@ -39,10 +41,9 @@ def build_flickr_url(user_id, photo_id):
 
 
 def request(query, params):
-    params['url'] = url.format(text=urlencode({'text': query}),
-                               api_key=api_key,
-                               nb_per_page=nb_per_page,
-                               page=params['pageno'])
+    params['url'] = url.format(
+        text=urlencode({'text': query}), api_key=api_key, nb_per_page=nb_per_page, page=params['pageno']
+    )
     return params
 
 
@@ -69,7 +70,7 @@ def response(resp):
         else:
             continue
 
-# For a bigger thumbnail, keep only the url_z, not the url_n
+        # For a bigger thumbnail, keep only the url_z, not the url_n
         if 'url_n' in photo:
             thumbnail_src = photo['url_n']
         elif 'url_z' in photo:
@@ -80,13 +81,17 @@ def response(resp):
         url = build_flickr_url(photo['owner'], photo['id'])
 
         # append result
-        results.append({'url': url,
-                        'title': photo['title'],
-                        'img_src': img_src,
-                        'thumbnail_src': thumbnail_src,
-                        'content': photo['description']['_content'],
-                        'author': photo['ownername'],
-                        'template': 'images.html'})
+        results.append(
+            {
+                'url': url,
+                'title': photo['title'],
+                'img_src': img_src,
+                'thumbnail_src': thumbnail_src,
+                'content': photo['description']['_content'],
+                'author': photo['ownername'],
+                'template': 'images.html',
+            }
+        )
 
     # return results
     return results

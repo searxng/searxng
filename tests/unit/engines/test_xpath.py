@@ -6,7 +6,6 @@ from tests import SearxTestCase
 
 
 class TestXpathEngine(SearxTestCase):
-
     def test_request(self):
         xpath.search_url = 'https://url.com/{query}'
         xpath.categories = []

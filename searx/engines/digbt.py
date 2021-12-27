@@ -48,13 +48,17 @@ def response(resp):
         filesize = get_torrent_size(files_data[FILESIZE], files_data[FILESIZE_MULTIPLIER])
         magnetlink = result.xpath('.//div[@class="tail"]//a[@class="title"]/@href')[0]
 
-        results.append({'url': url,
-                        'title': title,
-                        'content': content,
-                        'filesize': filesize,
-                        'magnetlink': magnetlink,
-                        'seed': 'N/A',
-                        'leech': 'N/A',
-                        'template': 'torrent.html'})
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'filesize': filesize,
+                'magnetlink': magnetlink,
+                'seed': 'N/A',
+                'leech': 'N/A',
+                'template': 'torrent.html',
+            }
+        )
 
     return results

@@ -35,13 +35,14 @@ except ImportError:
             self._count.release()
 
         def get(self):
-            if not self._count.acquire(True):  #pylint: disable=consider-using-with
+            if not self._count.acquire(True):  # pylint: disable=consider-using-with
                 raise Empty
             return self._queue.popleft()
 
 
 THREADLOCAL = threading.local()
 """Thread-local data is data for thread specific values."""
+
 
 def reset_time_for_thread():
     THREADLOCAL.total_time = 0
@@ -187,10 +188,7 @@ async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
 def _stream_generator(method, url, **kwargs):
     queue = SimpleQueue()
     network = get_context_network()
-    future = asyncio.run_coroutine_threadsafe(
-        stream_chunk_to_queue(network, queue, method, url, **kwargs),
-        get_loop()
-    )
+    future = asyncio.run_coroutine_threadsafe(stream_chunk_to_queue(network, queue, method, url, **kwargs), get_loop())
 
     # yield chunks
     obj_or_exception = queue.get()
@@ -203,10 +201,7 @@ def _stream_generator(method, url, **kwargs):
 
 
 def _close_response_method(self):
-    asyncio.run_coroutine_threadsafe(
-        self.aclose(),
-        get_loop()
-    )
+    asyncio.run_coroutine_threadsafe(self.aclose(), get_loop())
     # reach the end of _self.generator ( _stream_generator ) to an avoid memory leak.
     # it makes sure that :
     # * the httpx response is closed (see the stream_chunk_to_queue function)

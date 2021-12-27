@@ -15,7 +15,7 @@ about = {
     "wikidata_id": 'Q1540899',
     "official_api_documentation": {
         'url': 'https://www.ncbi.nlm.nih.gov/home/develop/api/',
-        'comment': 'More info on api: https://www.ncbi.nlm.nih.gov/books/NBK25501/'
+        'comment': 'More info on api: https://www.ncbi.nlm.nih.gov/books/NBK25501/',
     },
     "use_official_api": True,
     "require_api_key": False,
@@ -24,8 +24,9 @@ about = {
 
 categories = ['science']
 
-base_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'\
-           + '?db=pubmed&{query}&retstart={offset}&retmax={hits}'
+base_url = (
+    'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi' + '?db=pubmed&{query}&retstart={offset}&retmax={hits}'
+)
 
 # engine dependent config
 number_of_results = 10
@@ -36,9 +37,7 @@ def request(query, params):
     # basic search
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=urlencode({'term': query}),
-                       offset=offset,
-                       hits=number_of_results)
+    string_args = dict(query=urlencode({'term': query}), offset=offset, hits=number_of_results)
 
     params['url'] = base_url.format(**string_args)
 
@@ -49,8 +48,9 @@ def response(resp):
     results = []
 
     # First retrieve notice of each result
-    pubmed_retrieve_api_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'\
-                              + 'db=pubmed&retmode=xml&id={pmids_string}'
+    pubmed_retrieve_api_url = (
+        'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?' + 'db=pubmed&retmode=xml&id={pmids_string}'
+    )
 
     pmids_results = etree.XML(resp.content)
     pmids = pmids_results.xpath('//eSearchResult/IdList/Id')
@@ -88,14 +88,17 @@ def response(resp):
             content = content[0:300] + "..."
         # TODO: center snippet on query term
 
-        res_dict = {'url': url,
-                    'title': title,
-                    'content': content}
+        res_dict = {'url': url, 'title': title, 'content': content}
 
         try:
-            publishedDate = datetime.strptime(entry.xpath('.//DateCreated/Year')[0].text
-                                              + '-' + entry.xpath('.//DateCreated/Month')[0].text
-                                              + '-' + entry.xpath('.//DateCreated/Day')[0].text, '%Y-%m-%d')
+            publishedDate = datetime.strptime(
+                entry.xpath('.//DateCreated/Year')[0].text
+                + '-'
+                + entry.xpath('.//DateCreated/Month')[0].text
+                + '-'
+                + entry.xpath('.//DateCreated/Day')[0].text,
+                '%Y-%m-%d',
+            )
             res_dict['publishedDate'] = publishedDate
         except:
             pass

@@ -35,9 +35,11 @@ api_key = ''
 # https://newznab.readthedocs.io/en/latest/misc/api/#predefined-categories
 torznab_categories = []
 
-def init(engine_settings=None): # pylint: disable=unused-argument
+
+def init(engine_settings=None):  # pylint: disable=unused-argument
     if len(base_url) < 1:
         raise ValueError('missing torznab base_url')
+
 
 def request(query, params):
 
@@ -48,12 +50,11 @@ def request(query, params):
         search_url += '&cat={torznab_categories}'
 
     params['url'] = search_url.format(
-        search_query = quote(query),
-        api_key = api_key,
-        torznab_categories = ",".join([str(x) for x in torznab_categories])
+        search_query=quote(query), api_key=api_key, torznab_categories=",".join([str(x) for x in torznab_categories])
     )
 
     return params
+
 
 def response(resp):
     results = []
@@ -103,8 +104,7 @@ def response(resp):
 
         result["publishedDate"] = None
         try:
-            result["publishedDate"] = datetime.strptime(
-                get_property(item, 'pubDate'), '%a, %d %b %Y %H:%M:%S %z')
+            result["publishedDate"] = datetime.strptime(get_property(item, 'pubDate'), '%a, %d %b %Y %H:%M:%S %z')
         except (ValueError, TypeError) as e:
             logger.debug("ignore exception (publishedDate): %s", e)
 
@@ -134,9 +134,7 @@ def get_property(item, property_name):
 def get_torznab_attr(item, attr_name):
     element = item.find(
         './/torznab:attr[@name="{attr_name}"]'.format(attr_name=attr_name),
-        {
-            'torznab': 'http://torznab.com/schemas/2015/feed'
-        }
+        {'torznab': 'http://torznab.com/schemas/2015/feed'},
     )
 
     if element is not None:

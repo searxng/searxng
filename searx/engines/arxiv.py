@@ -20,8 +20,9 @@ about = {
 categories = ['science']
 paging = True
 
-base_url = 'https://export.arxiv.org/api/query?search_query=all:'\
-           + '{query}&start={offset}&max_results={number_of_results}'
+base_url = (
+    'https://export.arxiv.org/api/query?search_query=all:' + '{query}&start={offset}&max_results={number_of_results}'
+)
 
 # engine dependent config
 number_of_results = 10
@@ -31,9 +32,7 @@ def request(query, params):
     # basic search
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=query,
-                       offset=offset,
-                       number_of_results=number_of_results)
+    string_args = dict(query=query, offset=offset, number_of_results=number_of_results)
 
     params['url'] = base_url.format(**string_args)
 
@@ -65,10 +64,7 @@ def response(resp):
 
         publishedDate = datetime.strptime(eval_xpath_getindex(entry, './/published', 0).text, '%Y-%m-%dT%H:%M:%SZ')
 
-        res_dict = {'url': url,
-                    'title': title,
-                    'publishedDate': publishedDate,
-                    'content': content}
+        res_dict = {'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content}
 
         results.append(res_dict)
 

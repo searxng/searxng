@@ -4,11 +4,7 @@ from operator import mul
 from flask_babel import gettext
 
 
-keywords = ('min',
-            'max',
-            'avg',
-            'sum',
-            'prod')
+keywords = ('min', 'max', 'avg', 'sum', 'prod')
 
 
 # required answerer function
@@ -47,6 +43,8 @@ def answer(query):
 # required answerer function
 # returns information about the answerer
 def self_info():
-    return {'name': gettext('Statistics functions'),
-            'description': gettext('Compute {functions} of the arguments').format(functions='/'.join(keywords)),
-            'examples': ['avg 123 548 2.04 24.2']}
+    return {
+        'name': gettext('Statistics functions'),
+        'description': gettext('Compute {functions} of the arguments').format(functions='/'.join(keywords)),
+        'examples': ['avg 123 548 2.04 24.2'],
+    }

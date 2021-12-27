@@ -26,17 +26,19 @@ def request(query, params):
     params['url'] = search_url
     params['method'] = 'POST'
     params['headers']['content-type'] = 'application/json; charset=utf-8'
-    params['data'] = dumps({
-        'query': query,
-        'queryExpression': '',
-        'filters': [],
-        'orderBy': 0,
-        'skip': (params['pageno'] - 1) * 10,
-        'sortAscending': True,
-        'take': 10,
-        'includeCitationContexts': False,
-        'profileId': '',
-    })
+    params['data'] = dumps(
+        {
+            'query': query,
+            'queryExpression': '',
+            'filters': [],
+            'orderBy': 0,
+            'skip': (params['pageno'] - 1) * 10,
+            'sortAscending': True,
+            'take': 10,
+            'includeCitationContexts': False,
+            'profileId': '',
+        }
+    )
 
     return params
 
@@ -54,11 +56,13 @@ def response(resp):
         title = result['paper']['dn']
         content = _get_content(result['paper'])
         url = _paper_url.format(id=result['paper']['id'])
-        results.append({
-            'url': url,
-            'title': html_to_text(title),
-            'content': html_to_text(content),
-        })
+        results.append(
+            {
+                'url': url,
+                'title': html_to_text(title),
+                'content': html_to_text(content),
+            }
+        )
 
     return results
 

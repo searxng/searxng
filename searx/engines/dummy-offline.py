@@ -15,6 +15,8 @@ about = {
 
 
 def search(query, request_params):
-    return [{
-        'result': 'this is what you get',
-    }]
+    return [
+        {
+            'result': 'this is what you get',
+        }
+    ]

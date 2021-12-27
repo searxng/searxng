@@ -13,10 +13,7 @@ from datetime import datetime
 from dateutil import parser
 from lxml import etree
 from lxml.etree import XPath
-from searx.utils import (
-    match_language,
-    eval_xpath_getindex
-)
+from searx.utils import match_language, eval_xpath_getindex
 from searx.engines.bing import (  # pylint: disable=unused-import
     language_aliases,
     _fetch_supported_languages,
@@ -42,11 +39,8 @@ time_range_support = True
 base_url = 'https://www.bing.com/'
 search_string = 'news/search?{query}&first={offset}&format=RSS'
 search_string_with_time = 'news/search?{query}&first={offset}&qft=interval%3d"{interval}"&format=RSS'
-time_range_dict = {
-    'day': '7',
-    'week': '8',
-    'month': '9'
-}
+time_range_dict = {'day': '7', 'week': '8', 'month': '9'}
+
 
 def url_cleanup(url_string):
     """remove click"""
@@ -57,6 +51,7 @@ def url_cleanup(url_string):
         url_string = query.get('url', None)
     return url_string
 
+
 def image_url_cleanup(url_string):
     """replace the http://*bing.com/th?id=... by https://www.bing.com/th?id=..."""
 
@@ -65,6 +60,7 @@ def image_url_cleanup(url_string):
         query = dict(parse_qsl(parsed_url.query))
         url_string = "https://www.bing.com/th?id=" + quote(query.get('id'))
     return url_string
+
 
 def _get_url(query, language, offset, time_range):
     if time_range in time_range_dict:
@@ -91,6 +87,7 @@ def _get_url(query, language, offset, time_range):
         )
     return base_url + search_path
 
+
 def request(query, params):
 
     if params['time_range'] and params['time_range'] not in time_range_dict:
@@ -104,6 +101,7 @@ def request(query, params):
     params['url'] = _get_url(query, language, offset, params['time_range'])
 
     return params
+
 
 def response(resp):
 
@@ -127,26 +125,16 @@ def response(resp):
             publishedDate = datetime.now()
 
         # thumbnail
-        thumbnail = eval_xpath_getindex(
-            item, XPath('./News:Image/text()', namespaces=namespaces), 0, default=None)
+        thumbnail = eval_xpath_getindex(item, XPath('./News:Image/text()', namespaces=namespaces), 0, default=None)
         if thumbnail is not None:
             thumbnail = image_url_cleanup(thumbnail)
 
         # append result
         if thumbnail is not None:
-            results.append({
-                'url': url,
-                'title': title,
-                'publishedDate': publishedDate,
-                'content': content,
-                'img_src': thumbnail
-            })
+            results.append(
+                {'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content, 'img_src': thumbnail}
+            )
         else:
-            results.append({
-                'url': url,
-                'title': title,
-                'publishedDate': publishedDate,
-                'content': content
-            })
+            results.append({'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content})
 
     return results

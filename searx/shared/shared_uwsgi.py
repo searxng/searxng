@@ -9,7 +9,6 @@ _last_signal = 10
 
 
 class UwsgiCacheSharedDict(shared_abstract.SharedDict):
-
     def get_int(self, key):
         value = uwsgi.cache_get(key)
         if value is None:

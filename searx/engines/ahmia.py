@@ -25,9 +25,7 @@ page_size = 10
 # search url
 search_url = 'http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?{query}'
 time_range_support = True
-time_range_dict = {'day': 1,
-                   'week': 7,
-                   'month': 30}
+time_range_dict = {'day': 1, 'week': 7, 'month': 30}
 
 # xpaths
 results_xpath = '//li[@class="result"]'
@@ -54,7 +52,7 @@ def response(resp):
     # trim results so there's not way too many at once
     first_result_index = page_size * (resp.search_params.get('pageno', 1) - 1)
     all_results = eval_xpath_list(dom, results_xpath)
-    trimmed_results = all_results[first_result_index:first_result_index + page_size]
+    trimmed_results = all_results[first_result_index : first_result_index + page_size]
 
     # get results
     for result in trimmed_results:
@@ -65,10 +63,7 @@ def response(resp):
         title = extract_text(eval_xpath(result, title_xpath))
         content = extract_text(eval_xpath(result, content_xpath))
 
-        results.append({'url': cleaned_url,
-                        'title': title,
-                        'content': content,
-                        'is_onion': True})
+        results.append({'url': cleaned_url, 'title': title, 'content': content, 'is_onion': True})
 
     # get spelling corrections
     for correction in eval_xpath_list(dom, correction_xpath):

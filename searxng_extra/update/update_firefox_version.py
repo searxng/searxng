@@ -40,7 +40,7 @@ def fetch_firefox_versions():
             url = urlparse(urljoin(URL, link))
             path = url.path
             if path.startswith(RELEASE_PATH):
-                version = path[len(RELEASE_PATH):-1]
+                version = path[len(RELEASE_PATH) : -1]
                 if NORMAL_REGEX.match(version):
                     versions.append(LooseVersion(version))
 

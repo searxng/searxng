@@ -21,7 +21,6 @@ class SearxException(Exception):
 
 
 class SearxParameterException(SearxException):
-
     def __init__(self, name, value):
         if value == '' or value is None:
             message = 'Empty ' + name + ' parameter'

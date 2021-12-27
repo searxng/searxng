@@ -11,10 +11,12 @@ except ImportError:
     pass
 else:
     import threading
+
     old_thread_init = threading.Thread.__init__
 
     def new_thread_init(self, *args, **kwargs):
         # pylint: disable=protected-access, disable=c-extension-no-member
         old_thread_init(self, *args, **kwargs)
         setproctitle.setthreadtitle(self._name)
+
     threading.Thread.__init__ = new_thread_init
