@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Bing (Videos)
+# lint: pylint
+"""Bing (Videos)
+
 """
 
 from json import loads
-from lxml import html
 from urllib.parse import urlencode
+
+from lxml import html
 
 from searx.utils import match_language
 from searx.engines.bing import language_aliases
@@ -82,22 +84,18 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in dom.xpath('//div[@class="dg_u"]'):
-        try:
-            metadata = loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
-            info = ' - '.join(result.xpath('.//div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
-            content = '{0} - {1}'.format(metadata['du'], info)
-            thumbnail = '{0}th?id={1}'.format(base_url, metadata['thid'])
-            results.append(
-                {
-                    'url': metadata['murl'],
-                    'thumbnail': thumbnail,
-                    'title': metadata.get('vt', ''),
-                    'content': content,
-                    'template': 'videos.html',
-                }
-            )
-
-        except:
-            continue
+        metadata = loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
+        info = ' - '.join(result.xpath('.//div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
+        content = '{0} - {1}'.format(metadata['du'], info)
+        thumbnail = '{0}th?id={1}'.format(base_url, metadata['thid'])
+        results.append(
+            {
+                'url': metadata['murl'],
+                'thumbnail': thumbnail,
+                'title': metadata.get('vt', ''),
+                'content': content,
+                'template': 'videos.html',
+            }
+        )
 
     return results
