@@ -59,9 +59,11 @@ from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
+    DEFAULT_GROUP_NAME,
     categories,
     engines,
     engine_shortcuts,
+    group_engines_in_tab,
 )
 from searx.webutils import (
     UnicodeWriter,
@@ -152,6 +154,7 @@ app = Flask(__name__, static_folder=settings['ui']['static_path'], template_fold
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-member
+app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
 
 babel = Babel(app)
@@ -169,6 +172,16 @@ _category_names = (
     gettext('map'),
     gettext('onions'),
     gettext('science'),
+    # non-tab categories
+    gettext('apps'),
+    gettext('dictionaries'),
+    gettext('lyrics'),
+    gettext('packages'),
+    gettext('q&a'),
+    gettext('repos'),
+    gettext('software wikis'),
+    gettext('web'),
+    gettext(DEFAULT_GROUP_NAME),
 )
 
 _simple_style = (gettext('auto'), gettext('light'), gettext('dark'))

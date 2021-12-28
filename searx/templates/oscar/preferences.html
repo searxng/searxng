@@ -348,7 +348,11 @@
                                     <th scope="col" class="text-right">{{ _("Allow") }}</th>
                                     {% endif %}
                                 </tr>
-                        {% for search_engine in engines_by_category[categ] %}
+                        {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+                        {% if loop.length > 1 %}
+                        <tr><th colspan="9">{{_(group)}}</th></tr>
+                        {% endif %}
+                        {% for search_engine in engines %}
                             {% if not search_engine.private %}
                                 <tr>
                                     {% if not rtl %}
@@ -382,6 +386,7 @@
                                     {% endif %}
                                 </tr>
                             {% endif %}
+                        {% endfor %}
                         {% endfor %}
                           </table>
                           </div>

@@ -289,7 +289,11 @@
         <th>{{ _("Max time") }}</th>
         <th>{{ _("Reliability") }}</th>
       </tr>
-      {% for search_engine in engines_by_category[categ] %}
+      {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+      {% if loop.length > 1 %}
+      <tr><th colspan="9">{{_(group)}}</th></tr>
+      {% endif %}
+      {% for search_engine in engines %}
       {% if not search_engine.private %}
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
       <tr>
@@ -304,6 +308,7 @@
         {{ engine_reliability(search_engine.name) }}
       </tr>
       {% endif %}
+      {% endfor %}
       {% endfor %}
     </table>
     </div>
