@@ -54,7 +54,7 @@ jinja_filters = {
     'sort_engines':
     lambda engines: sorted(
         engines,
-        key=lambda engine: (engine[1].disabled, engine[1].about.get('language', ''), engine[0])
+        key=lambda engine: (engine[1].about.get('language', ''), engine[0])
     )
 }
 
