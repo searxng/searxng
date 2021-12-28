@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Bing (Images)
+# lint: pylint
+"""Bing (Images)
+
 """
 
-from urllib.parse import urlencode
-from lxml import html
 from json import loads
+from urllib.parse import urlencode
+
+from lxml import html
 
 from searx.utils import match_language
 from searx.engines.bing import language_aliases
@@ -77,31 +79,28 @@ def response(resp):
 
     # parse results
     for result in dom.xpath('//div[@class="imgpt"]'):
-        try:
-            img_format = result.xpath('./div[contains(@class, "img_info")]/span/text()')[0]
-            # Microsoft seems to experiment with this code so don't make the path too specific,
-            # just catch the text section for the first anchor in img_info assuming this to be
-            # the originating site.
-            source = result.xpath('./div[contains(@class, "img_info")]//a/text()')[0]
+        img_format = result.xpath('./div[contains(@class, "img_info")]/span/text()')[0]
+        # Microsoft seems to experiment with this code so don't make the path too specific,
+        # just catch the text section for the first anchor in img_info assuming this to be
+        # the originating site.
+        source = result.xpath('./div[contains(@class, "img_info")]//a/text()')[0]
 
-            m = loads(result.xpath('./a/@m')[0])
+        m = loads(result.xpath('./a/@m')[0])
 
-            # strip 'Unicode private use area' highlighting, they render to Tux
-            # the Linux penguin and a standing diamond on my machine...
-            title = m.get('t', '').replace('\ue000', '').replace('\ue001', '')
-            results.append(
-                {
-                    'template': 'images.html',
-                    'url': m['purl'],
-                    'thumbnail_src': m['turl'],
-                    'img_src': m['murl'],
-                    'content': '',
-                    'title': title,
-                    'source': source,
-                    'img_format': img_format,
-                }
-            )
-        except:
-            continue
+        # strip 'Unicode private use area' highlighting, they render to Tux
+        # the Linux penguin and a standing diamond on my machine...
+        title = m.get('t', '').replace('\ue000', '').replace('\ue001', '')
+        results.append(
+            {
+                'template': 'images.html',
+                'url': m['purl'],
+                'thumbnail_src': m['turl'],
+                'img_src': m['murl'],
+                'content': '',
+                'title': title,
+                'source': source,
+                'img_format': img_format,
+            }
+        )
 
     return results
