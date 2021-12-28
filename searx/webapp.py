@@ -71,6 +71,7 @@ from searx.webutils import (
     get_themes,
     prettify_url,
     new_hmac,
+    is_hmac_of,
     is_flask_run_cmdline,
 )
 from searx.webadapter import (
@@ -1067,9 +1068,7 @@ def image_proxy():
     if not url:
         return '', 400
 
-    h_url = new_hmac(settings['server']['secret_key'], url.encode())
-    h_args = request.args.get('h')
-    if len(h_url) != len(h_args) or not hmac.compare_digest(h_url, h_args):
+    if not is_hmac_of(settings['server']['secret_key'], url.encode(), request.args.get('h', '')):
         return '', 400
 
     maximum_size = 5 * 1024 * 1024

@@ -80,6 +80,11 @@ def new_hmac(secret_key, url):
     return hmac.new(secret_key.encode(), url, hashlib.sha256).hexdigest()
 
 
+def is_hmac_of(secret_key, value, hmac_to_check):
+    hmac_of_value = new_hmac(secret_key, value)
+    return len(hmac_of_value) == len(hmac_to_check) and hmac.compare_digest(hmac_of_value, hmac_to_check)
+
+
 def prettify_url(url, max_length=74):
     if len(url) > max_length:
         chunk_len = int(max_length / 2 + 1)
