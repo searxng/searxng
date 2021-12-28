@@ -59,6 +59,7 @@ from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
+    OTHER_CATEGORY,
     DEFAULT_GROUP_NAME,
     categories,
     engines,
@@ -182,6 +183,7 @@ _category_names = (
     gettext('software wikis'),
     gettext('web'),
     gettext(DEFAULT_GROUP_NAME),
+    gettext(OTHER_CATEGORY),
 )
 
 _simple_style = (gettext('auto'), gettext('light'), gettext('dark'))
@@ -439,6 +441,7 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['theme'] = get_current_theme_name(override=override_theme)
     kwargs['categories_as_tabs'] = settings['categories_as_tabs']
     kwargs['categories'] = _get_enable_categories(categories.keys())
+    kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
 
     # i18n
     kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]

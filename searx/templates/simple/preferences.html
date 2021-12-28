@@ -274,7 +274,7 @@
   {{ tab_header('maintab', 'engines', _('Engines')) }}
     <p>{{ _('Currently used search engines') }}</p>
     {{ tabs_open() }}
-    {% for categ in categories_as_tabs %}
+    {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
     {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
     <div class="scrollx">
     <table class="striped">

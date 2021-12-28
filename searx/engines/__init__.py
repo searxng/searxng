@@ -45,6 +45,9 @@ ENGINE_DEFAULT_ARGS = {
     "display_error_messages": True,
     "tokens": [],
 }
+# set automatically when an engine does not have any tab category
+OTHER_CATEGORY = 'other'
+
 """Defaults for the namespace of an engine module, see :py:func:`load_engine`"""
 
 categories = {'general': []}
@@ -113,6 +116,9 @@ def load_engine(engine_data):
         return None
 
     set_loggers(engine, engine_name)
+
+    if not any(cat in settings['categories_as_tabs'] for cat in engine.categories):
+        engine.categories.append(OTHER_CATEGORY)
 
     return engine
 
@@ -274,7 +280,7 @@ def group_engines_in_tab(engines):  # pylint: disable=redefined-outer-name
         return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
 
     def get_group(eng):
-        non_tab_engines = [c for c in eng.categories if c not in settings['categories_as_tabs']]
+        non_tab_engines = [c for c in eng.categories if c not in settings['categories_as_tabs'] + [OTHER_CATEGORY]]
         return non_tab_engines[0] if len(non_tab_engines) > 0 else DEFAULT_GROUP_NAME
 
     return [
