@@ -222,7 +222,7 @@ class BangParser(QueryPartParser):
         # check if query starts with categorie name
         for category in categories:
             if category.startswith(value):
-                self._add_autocomplete(first_char + category)
+                self._add_autocomplete(first_char + category.replace(' ', '_'))
 
         # check if query starts with engine name
         for engine in engines:
