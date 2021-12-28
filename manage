@@ -17,6 +17,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
 # shellcheck source=utils/lib_go.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 
+# shellcheck source=utils/lib_redis.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_redis.sh"
+
 # config
 
 PYOBJECTS="searx"
@@ -74,9 +77,10 @@ docker.:
 gecko.driver:
   download & install geckodriver if not already installed (required for
   robot_tests)
-EOF
-    nvm.help
-    cat <<EOF
+redis:
+  build     : build redis binaries at $(redis._get_dist)
+  install   : create user (${REDIS_USER}) and install systemd service (${REDIS_SERVICE_NAME})
+  help      : show more redis commands
 node.:
   env       : download & install npm dependencies locally
   clean     : drop locally npm installations
