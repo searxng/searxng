@@ -435,7 +435,7 @@ engines:
     url_xpath: //dl[@class="results-list"]/dt[@class="result-title"]/a/@href
     title_xpath: //dl[@class="results-list"]/dt[@class="result-title"]/a/text()
     content_xpath: //dl[@class="results-list"]/dd[@class="result-details"]
-    categories: general
+    categories: []
     shortcut: ew
     disabled: true
     about:
@@ -494,7 +494,7 @@ engines:
     content_xpath: //section[contains(@class, "word__defination")]
     first_page_num: 1
     shortcut: et
-    categories: [general, dictionaries]
+    categories: [dictionaries]
     disabled: true
     about:
       website: https://www.etymonline.com/
@@ -1419,7 +1419,7 @@ engines:
   - name: wiktionary
     engine: mediawiki
     shortcut: wt
-    categories: [general, dictionaries]
+    categories: [dictionaries]
     base_url: "https://{language}.wiktionary.org/"
     number_of_results: 5
     search_type: text
@@ -1601,14 +1601,14 @@ engines:
     engine: wordnik
     shortcut: def
     base_url: https://www.wordnik.com/
-    categories: [general, dictionaries]
+    categories: [dictionaries]
     timeout: 5.0
     disabled: true
 
   - name: woxikon.de synonyme
     engine: xpath
     shortcut: woxi
-    categories: [general, dictionaries]
+    categories: [dictionaries]
     timeout: 5.0
     disabled: true
     search_url: https://synonyme.woxikon.de/synonyme/{query}.php

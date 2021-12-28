@@ -19,7 +19,7 @@ about = {
     "language": 'de',
 }
 
-categories = ['general', 'dictionaries']
+categories = ['dictionaries']
 paging = True
 
 # search-url

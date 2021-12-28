@@ -27,9 +27,7 @@ about = {
     "results": 'HTML',
 }
 
-categories = [
-    'general',
-]
+categories = []
 paging = False
 
 # suggestion_url = "https://sg.media-imdb.com/suggestion/{letter}/{query}.json"
