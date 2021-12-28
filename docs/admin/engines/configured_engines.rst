@@ -16,7 +16,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
    SearXNG supports {{engines | length}} search engines (of which {{enabled_engine_count}} are enabled by default).
 
-   {% for category, engines in engines.items() | groupby('1.categories.0') %}
+   {% for category, engines in categories.items() %}
 
    {{category}} search engines
    ---------------------------------------
@@ -39,9 +39,9 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Safe search
         - Time range
 
-      {% for name, mod in engines | sort_engines %}
+      {% for mod in engines | sort_engines %}
 
-      * - `{{name}} <{{mod.about and mod.about.website}}>`_
+      * - `{{mod.name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
         - {%- if 'searx.engines.' + mod.__name__ in documented_modules %}
           :py:mod:`~searx.engines.{{mod.__name__}}`

@@ -40,6 +40,7 @@ exclude_patterns = ['build-templates/*.rst']
 import searx.engines
 import searx.plugins
 searx.engines.load_engines(searx.settings['engines'])
+
 jinja_contexts = {
     'searx': {
         'engines': searx.engines.engines,
@@ -48,13 +49,14 @@ jinja_contexts = {
             'node': os.getenv('NODE_MINIMUM_VERSION')
         },
         'enabled_engine_count': sum(not x.disabled for x in searx.engines.engines.values()),
+        'categories': searx.engines.categories,
     },
 }
 jinja_filters = {
     'sort_engines':
     lambda engines: sorted(
         engines,
-        key=lambda engine: (engine[1].about.get('language', ''), engine[0])
+        key=lambda engine: (engine.about.get('language', ''), engine.name)
     )
 }
 
