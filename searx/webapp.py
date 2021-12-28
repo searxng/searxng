@@ -1067,8 +1067,9 @@ def image_proxy():
     if not url:
         return '', 400
 
-    h = new_hmac(settings['server']['secret_key'], url.encode())
-    if h != request.args.get('h'):
+    h_url = new_hmac(settings['server']['secret_key'], url.encode())
+    h_args = request.args.get('h')
+    if len(h_url) != len(h_args) or not hmac.compare_digest(h_url, h_args):
         return '', 400
 
     maximum_size = 5 * 1024 * 1024
