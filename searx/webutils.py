@@ -77,14 +77,12 @@ def get_result_templates(templates_path):
 
 
 def new_hmac(secret_key, url):
-    try:
-        secret_key_bytes = bytes(secret_key, 'utf-8')
-    except TypeError as err:
-        if isinstance(secret_key, bytes):
-            secret_key_bytes = secret_key
-        else:
-            raise err
-    return hmac.new(secret_key_bytes, url, hashlib.sha256).hexdigest()
+    return hmac.new(secret_key.encode(), url, hashlib.sha256).hexdigest()
+
+
+def is_hmac_of(secret_key, value, hmac_to_check):
+    hmac_of_value = new_hmac(secret_key, value)
+    return len(hmac_of_value) == len(hmac_to_check) and hmac.compare_digest(hmac_of_value, hmac_to_check)
 
 
 def prettify_url(url, max_length=74):
