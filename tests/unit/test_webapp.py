@@ -73,7 +73,7 @@ class ViewsTestCase(SearxTestCase):
         def get_current_theme_name_mock(override=None):
             if override:
                 return override
-            return 'oscar'
+            return 'simple'
 
         self.setattr4test(webapp, 'get_current_theme_name', get_current_theme_name_mock)
 
@@ -83,9 +83,7 @@ class ViewsTestCase(SearxTestCase):
         result = self.app.post('/')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
-            b'<div class="text-hide center-block" id="main-logo">'
-            + b'<img class="center-block img-responsive" src="/static/themes/oscar/img/searxng.svg"'
-            + b' alt="searx logo" />SearXNG</div>',
+            b'<div class="title"><h1>SearXNG</h1></div>',
             result.data,
         )
 
@@ -102,7 +100,7 @@ class ViewsTestCase(SearxTestCase):
     def test_search_empty_html(self):
         result = self.app.post('/search', data={'q': ''})
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<span class="instance pull-left"><a href="/">SearXNG</a></span>', result.data)
+        self.assertIn(b'<div class="title"><h1>SearXNG</h1></div>', result.data)
 
     def test_search_empty_json(self):
         result = self.app.post('/search', data={'q': '', 'format': 'json'})
@@ -120,13 +118,12 @@ class ViewsTestCase(SearxTestCase):
         result = self.app.post('/search', data={'q': 'test'})
 
         self.assertIn(
-            b'<h4 class="result_header" id="result-2"><img width="32" height="32" class="favicon"'
-            + b' src="/static/themes/oscar/img/icons/youtube.png" alt="youtube" /><a href="http://second.test.xyz"'
-            + b' rel="noreferrer" aria-labelledby="result-2">Second <span class="highlight">Test</span></a></h4>',  # noqa
+            b'<span class="url_o1"><span class="url_i1">http://second.test.xyz</span></span>',
             result.data,
         )
         self.assertIn(
-            b'<p class="result-content">second <span class="highlight">test</span> content</p>', result.data  # noqa
+            b'<p class="content">\n    second <span class="highlight">test</span> ',
+            result.data,
         )
 
     def test_index_json(self):
@@ -186,9 +183,11 @@ class ViewsTestCase(SearxTestCase):
     def test_preferences(self):
         result = self.app.get('/preferences')
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<form method="post" action="/preferences" id="search_form" autocomplete="off">', result.data)
-        self.assertIn(b'<label class="col-sm-3 col-md-2" for="categories">Default categories</label>', result.data)
-        self.assertIn(b'<label class="col-sm-3 col-md-2" for="locale">Interface language</label>', result.data)
+        self.assertIn(b'<form id="search_form" method="post" action="/preferences"', result.data)
+        self.assertIn(
+            b'<input type="checkbox" id="checkbox_general" name="category_general" checked="checked"/>', result.data
+        )
+        self.assertIn(b'<legend>Interface language</legend>', result.data)
 
     def test_browser_locale(self):
         result = self.app.get('/preferences', headers={'Accept-Language': 'zh-tw;q=0.8'})
