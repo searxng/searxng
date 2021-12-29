@@ -732,7 +732,6 @@ themes.oscar() {
 }
 
 themes.simple() {
-    local static="searx/static/themes/simple"
     (   set -e
         build_msg GRUNT "theme: simple"
         npm --prefix searx/static/themes/simple run build
