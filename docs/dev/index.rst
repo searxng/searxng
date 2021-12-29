@@ -16,3 +16,4 @@ Developer documentation
    lxcdev
    makefile
    reST
+   searxng_extra/index

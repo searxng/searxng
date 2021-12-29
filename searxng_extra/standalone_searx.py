@@ -23,6 +23,14 @@ Example to use this script:
 
     $ python3 searxng_extra/standalone_searx.py rain
 
+.. danger::
+
+   Be warned, using the ``standalone_searx.py`` won't give you privacy!
+
+   On the contrary, this script behaves like a SearXNG server: your IP is
+   exposed and tracked by all active engines (google, bing, qwant, ... ), with
+   every query!
+
 Example to run it from python:
 
 >>> import importlib
@@ -62,6 +70,7 @@ Example to run it from python:
     },
     "suggestions": [...]
 }
+
 """  # pylint: disable=line-too-long
 
 import argparse
