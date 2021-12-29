@@ -511,12 +511,15 @@ gecko.driver() {
     dump_return $?
 }
 
-node.env() {
+nodejs.ensure() {
     if ! nvm.min_node "${NODE_MINIMUM_VERSION}"; then
         info_msg "install Node.js by NVM"
         nvm.nodejs
     fi
+}
 
+node.env() {
+    nodejs.ensure
     (   set -e
 
         build_msg INSTALL "searx/static/themes/oscar/package.json"
@@ -698,6 +701,30 @@ themes.all() {
     dump_return $?
 }
 
+themes.live() {
+    local LIVE_THEME="${LIVE_THEME:-${1}}"
+    case "${LIVE_THEME}" in
+        simple|oscar)
+            theme="searx/static/themes/${LIVE_THEME}"
+            ;;
+        '')
+            die_caller 42 "missing theme argument"
+            ;;
+        *)
+            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple|oscar]'"
+            ;;
+    esac
+    build_msg GRUNT "theme: $1 (live build)"
+    nodejs.ensure
+    cd "${theme}"
+    {
+        npm install
+        npm run watch
+    } 2>&1 \
+        | prefix_stdout "${_Blue}THEME ${1} ${_creset}  " \
+        | grep -E --ignore-case --color 'error[s]?[:]? |warning[s]?[:]? |'
+}
+
 themes.oscar() {
     build_msg GRUNT "theme: oscar"
     npm --prefix searx/static/themes/oscar run build
@@ -715,10 +742,7 @@ themes.simple() {
 
 themes.simple.test() {
     build_msg TEST "theme: simple"
-    if ! nvm.min_node "${NODE_MINIMUM_VERSION}"; then
-        info_msg "install Node.js by NVM"
-        nvm.nodejs
-    fi
+    nodejs.ensure
     npm --prefix searx/static/themes/simple install
     npm --prefix searx/static/themes/simple run test
     dump_return $?
