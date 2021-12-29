@@ -177,7 +177,7 @@ SCHEMA = {
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),
         'templates_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'templates')),
-        'default_theme': SettingsValue(str, 'oscar'),
+        'default_theme': SettingsValue(str, 'simple'),
         'default_locale': SettingsValue(str, ''),
         'theme_args': {
             'oscar_style': SettingsValue(OSCAR_STYLE, 'logicodev'),
