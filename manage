@@ -117,6 +117,17 @@ fi
 # needed by sphinx-docs
 export DOCS_BUILD
 
+webapp.run() {
+    SEARXNG_DEBUG=1 pyenv.cmd python -m searx.webapp &
+    sleep 3
+    if [ "${LIVE_THEME}" ]; then
+        themes.live "${LIVE_THEME}" &
+    fi
+    xdg-open http://127.0.0.1:8888/
+    wait -n
+    kill 0
+}
+
 buildenv() {
 
     # settings file from repository's working tree are used by default

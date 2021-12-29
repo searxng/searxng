@@ -13,7 +13,7 @@ Makefile
 
    To install system requirements follow :ref:`buildhosts`.
 
-All relevant build tasks are implemented in :origin:`manage.sh` and for CI or
+All relevant build tasks are implemented in :origin:`manage` and for CI or
 IDE integration a small ``Makefile`` wrapper is available.  If you are not
 familiar with Makefiles, we recommend to read gnu-make_ introduction.
 
@@ -173,14 +173,19 @@ Install latest Node.js_ LTS locally (uses nvm_)::
 
 To get up a running a developer instance simply call ``make run``.  This enables
 *debug* option in :origin:`searx/settings.yml`, starts a ``./searx/webapp.py``
-instance, disables *debug* option again and opens the URL in your favorite WEB
-browser (:man:`xdg-open`)::
+instance and opens the URL in your favorite WEB browser (:man:`xdg-open`)::
 
    $ make run
-   PYENV     OK
-   SEARXNG_DEBUG=1 ./manage.sh pyenv.cmd python ./searx/webapp.py
-   ...
-   INFO:werkzeug: * Running on http://127.0.0.1:8888/ (Press CTRL+C to quit)
+
+Changes to theme's HTML templates (jinja2) are instant.  Changes to the CSS & JS
+sources of the theme need to be rebuild.  You can do that by running::
+
+  $ make themes.all
+
+Alternatively to ``themes.all`` you can run *live builds* of the theme you are
+modify::
+
+  $ LIVE_THEME=simple make run
 
 .. _make clean:
 

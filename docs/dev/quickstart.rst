@@ -40,9 +40,14 @@ JavaScript:
 
 Alternatively you can also compile selective the theme you have modified,
 e.g. the *simple* theme.
+
 .. code:: sh
 
    make themes.simple
+
+.. tip::
+
+   To get live builds while modifying CSS & JS use: ``LIVE_THEME=simple make run``
 
 If you finished your *tests* you can start to commit your changes.  To separate
 the modified source code from the build products first run:
