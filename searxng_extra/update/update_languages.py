@@ -189,7 +189,7 @@ def write_languages_file(languages):
         "# -*- coding: utf-8 -*-",
         "# list of language codes",
         "# this file is generated automatically by utils/fetch_languages.py",
-        "language_codes =",
+        "language_codes = (\n",
     )
 
     language_codes = []
@@ -212,8 +212,11 @@ def write_languages_file(languages):
     language_codes = tuple(language_codes)
 
     with open(languages_file, 'w') as new_file:
-        file_content = "{file_headers} \\\n{language_codes}".format(
-            file_headers='\n'.join(file_headers), language_codes=pformat(language_codes, indent=4)
+        file_content = "{file_headers} {language_codes},\n)\n".format(
+            # fmt: off
+            file_headers = '\n'.join(file_headers),
+            language_codes = pformat(language_codes, indent=4)[1:-1]
+            # fmt: on
         )
         new_file.write(file_content)
         new_file.close()
