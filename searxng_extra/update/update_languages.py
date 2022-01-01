@@ -35,6 +35,8 @@ def fetch_supported_languages():
             if type(engines_languages[engine_name]) == list:
                 engines_languages[engine_name] = sorted(engines_languages[engine_name])
 
+    print("fetched languages from %s engines" % len(engines_languages))
+
     # write json file
     with open(engines_languages_file, 'w', encoding='utf-8') as f:
         json.dump(engines_languages, f, indent=2, sort_keys=True)
@@ -97,7 +99,11 @@ def join_language_lists(engines_languages):
                 country_name = ''
                 if locale:
                     # get country name from babel's Locale object
-                    country_name = locale.get_territory_name()
+                    try:
+                        country_name = locale.get_territory_name()
+                    except FileNotFoundError as exc:
+                        print("ERROR: %s --> %s" % (locale, exc))
+                        locale = None
 
                 language_list[short_code]['countries'][lang_code] = {'country_name': country_name, 'counter': set()}
 
@@ -186,17 +192,24 @@ def write_languages_file(languages):
         "language_codes =",
     )
 
-    language_codes = tuple(
-        [
-            (
-                code,
-                languages[code]['name'].split(' (')[0],
-                languages[code].get('country_name') or '',
-                languages[code].get('english_name') or '',
-            )
-            for code in sorted(languages)
-        ]
-    )
+    language_codes = []
+
+    for code in sorted(languages):
+
+        name = languages[code]['name']
+        if name is None:
+            print("ERROR: languages['%s'] --> %s" % (code, languages[code]))
+            continue
+        item = (
+            code,
+            languages[code]['name'].split(' (')[0],
+            languages[code].get('country_name') or '',
+            languages[code].get('english_name') or '',
+        )
+
+        language_codes.append(item)
+
+    language_codes = tuple(language_codes)
 
     with open(languages_file, 'w') as new_file:
         file_content = "{file_headers} \\\n{language_codes}".format(
