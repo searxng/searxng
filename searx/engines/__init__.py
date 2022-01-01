@@ -193,7 +193,7 @@ def set_language_attributes(engine):
     if hasattr(engine, '_fetch_supported_languages'):
         headers = {
             'User-Agent': gen_useragent(),
-            'Accept-Language': 'ja-JP,ja;q=0.8,en-US;q=0.5,en;q=0.3',  # bing needs a non-English language
+            'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
         }
         engine.fetch_supported_languages = (
             # pylint: disable=protected-access
