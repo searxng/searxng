@@ -6,7 +6,7 @@
 """
 
 import re
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 from searx.utils import eval_xpath, extract_text, match_language
 
@@ -25,7 +25,7 @@ paging = True
 time_range_support = False
 safesearch = False
 supported_languages_url = 'https://www.bing.com/account/general'
-language_aliases = {'zh-CN': 'zh-CHS', 'zh-TW': 'zh-CHT', 'zh-HK': 'zh-CHT'}
+language_aliases = {}
 
 # search-url
 base_url = 'https://www.bing.com/'
@@ -127,18 +127,27 @@ def response(resp):
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
+
     lang_tags = set()
 
-    setmkt = re.compile('setmkt=([^&]*)')
     dom = html.fromstring(resp.text)
-    lang_links = eval_xpath(dom, "//li/a[contains(@href, 'setmkt')]")
+    lang_links = eval_xpath(dom, '//div[@id="language-section"]//li')
 
-    for a in lang_links:
-        href = eval_xpath(a, './@href')[0]
-        match = setmkt.search(href)
-        l_tag = match.groups()[0]
-        _lang, _nation = l_tag.split('-', 1)
-        l_tag = _lang.lower() + '-' + _nation.upper()
-        lang_tags.add(l_tag)
+    for _li in lang_links:
+
+        href = eval_xpath(_li, './/@href')[0]
+        (_scheme, _netloc, _path, _params, query, _fragment) = urlparse(href)
+        query = parse_qs(query, keep_blank_values=True)
+
+        # fmt: off
+        setlang = query.get('setlang', [None, ])[0]
+        # example: 'mn-Cyrl-MN' --> '['mn', 'Cyrl-MN']
+        lang, nation = (setlang.split('-', maxsplit=1) + [None,])[:2]  # fmt: skip
+        # fmt: on
+
+        if not nation:
+            nation = lang.upper()
+        tag = lang + '-' + nation
+        lang_tags.add(tag)
 
     return list(lang_tags)
