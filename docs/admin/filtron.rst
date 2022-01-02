@@ -23,7 +23,7 @@ it is advised to limit the number of requests processed by SearXNG.
 
 An application firewall, filtron_ solves exactly this problem.  Filtron is just
 a middleware between your web server (nginx, apache, ...) and searx, we describe
-such infratructures in chapter: :ref:`architecture`.
+such infrastructures in chapter: :ref:`architecture`.
 
 
 filtron & go
