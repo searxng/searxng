@@ -180,7 +180,7 @@ New settings.yml
 - ``ui.advanced_search`` - add preference for displaying advanced settings ( #2327 )
 - ``server.method: "POST"`` - Make default query submission method configurable ( #2130 )
 - ``server.default_http_headers`` - add default http headers ( #2295 )
-- ``engines.*.proxies`` - Using proxy only for specific engines ( #1827 #2319 ), see https://searxng.github.io/searxng/dev/engine_overview.html#settings-yml
+- ``engines.*.proxies`` - Using proxy only for specific engines ( #1827 #2319 ), see https://docs.searxng.org/dev/engine_overview.html#settings-yml
 - ``enabled_plugins`` - Enabled plugins ( a05c660e3036ad8d02072fc6731af54c2ed6151c )
 - ``preferences.lock`` - Let admins lock user preferences ( #2270 )
 
@@ -296,8 +296,8 @@ Special thanks to `NLNet <https://nlnet.nl>`__ for sponsoring multiple features 
    - Wikivoyage
    - Rubygems
  - Engine fixes (google, google images, startpage, gigablast, yacy)
- - Private engines introduced - more details: https://searxng.github.io/searxng/blog/private-engines.html
- - Greatly improved documentation - check it at https://searxng.github.io/searxng
+ - Private engines introduced - more details: https://docs.searxng.org/blog/private-engines.html
+ - Greatly improved documentation - check it at https://docs.searxng.org
  - Added autofocus to all search inputs
  - CSP friendly oscar theme
  - Added option to hide engine errors with `display_error_messages` engine option (true/false values, default is true)
@@ -595,7 +595,7 @@ News
 News
 ~~~~
 
-New documentation page is available: https://searxng.github.io/searxng
+New documentation page is available: https://docs.searxng.org
 
 
 0.8.0 2015.09.08

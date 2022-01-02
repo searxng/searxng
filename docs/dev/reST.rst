@@ -320,7 +320,7 @@ To list all anchors of the inventory (e.g. ``python``) use:
 
    $ python -m sphinx.ext.intersphinx https://docs.python.org/3/objects.inv
    ...
-   $ python -m sphinx.ext.intersphinx https://searxng.github.io/searxng/objects.inv
+   $ python -m sphinx.ext.intersphinx https://docs.searxng.org/objects.inv
    ...
 
 Literal blocks

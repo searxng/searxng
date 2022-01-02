@@ -116,7 +116,7 @@ info_searx() {
     # shellcheck disable=SC1117
     cat <<EOF
 To activate result and image proxy in SearXNG read:
-  https://searxng.github.io/searxng/admin/morty.html
+  https://docs.searxng.org/admin/morty.html
 Check settings in file ${SEARXNG_SETTINGS_PATH} ...
   result_proxy:
       url : ${PUBLIC_URL_MORTY}

@@ -10,7 +10,7 @@ from searx.engines import categories as searx_categories
 about = {
     "website": 'https://github.com/searxng/searxng',
     "wikidata_id": 'Q17639196',
-    "official_api_documentation": 'https://searxng.github.io/searxng/dev/search_api.html',
+    "official_api_documentation": 'https://docs.searxng.org/dev/search_api.html',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',

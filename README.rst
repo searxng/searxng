@@ -1,7 +1,7 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
 .. figure:: https://raw.githubusercontent.com/searxng/searxng/master/src/brand/searxng.svg
-   :target: https://searxng.github.io/searxng/
+   :target: https://docs.searxng.org/
    :alt: SearXNG
    :width: 100%
    :align: center
@@ -23,21 +23,21 @@ Otherwise jump to the user_, admin_ and developer_ handbooks you will find on
 our homepage_.
 
 .. _searx.space: https://searx.space
-.. _user: https://searxng.github.io/searxng/user
-.. _admin: https://searxng.github.io/searxng/admin
-.. _developer: https://searxng.github.io/searxng/dev
-.. _homepage: https://searxng.github.io/searxng
+.. _user: https://docs.searxng.org/user
+.. _admin: https://docs.searxng.org/user/admin
+.. _developer: https://docs.searxng.org/dev
+.. _homepage: https://docs.searxng.org/
 .. _metasearch engine: https://en.wikipedia.org/wiki/Metasearch_engine
 
 .. |SearXNG logo| image:: https://raw.githubusercontent.com/searxng/searxng/master/src/brand/searxng-wordmark.svg
-   :target: https://searxng.github.io/searxng
+   :target: https://docs.searxng.org/
    :width: 5%
 
 .. |SearXNG install| image:: https://img.shields.io/badge/-install-blue
-   :target: https://searxng.github.io/searxng/admin/installation.html
+   :target: https://docs.searxng.org/admin/installation.html
 
 .. |SearXNG homepage| image:: https://img.shields.io/badge/-homepage-blue
-   :target: https://searxng.github.io/searxng
+   :target: https://docs.searxng.org/
 
 .. |SearXNG wiki| image:: https://img.shields.io/badge/-wiki-blue
    :target: https://github.com/searxng/searxng/wiki

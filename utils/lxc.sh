@@ -568,7 +568,7 @@ check_connectivity() {
         info_msg "Most often the connectivity is blocked by a docker installation:"
         info_msg "Whenever docker is started (reboot) it sets the iptables policy "
         info_msg "for the FORWARD chain to DROP, see:"
-        info_msg "    https://searxng.github.io/searxng/utils/lxc.sh.html#internet-connectivity-docker"
+        info_msg "    https://docs.searxng.org/utils/lxc.sh.html#internet-connectivity-docker"
         iptables-save | grep ":FORWARD"
     fi
     return $ret_val

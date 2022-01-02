@@ -146,7 +146,7 @@ SCHEMA = {
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
         'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
-        'docs_url': SettingsValue(str, 'https://searxng.github.io/searxng'),
+        'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
         'public_instances': SettingsValue(str, 'https://searx.space'),
         'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
     },
