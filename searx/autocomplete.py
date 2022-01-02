@@ -36,6 +36,20 @@ def get(*args, **kwargs):
     return http_get(*args, **kwargs)
 
 
+def brave(query, lang):
+    # brave search autocompleter
+    url = 'https://search.brave.com/api/suggest?{query}'
+    resp = get(url.format(query=urlencode({'q': query})))
+
+    results = []
+
+    if resp.ok:
+        data = loads(resp.text)
+        for item in data[1]:
+            results.append(item)
+    return results
+
+
 def dbpedia(query, lang):
     # dbpedia autocompleter, no HTTPS
     autocomplete_url = 'https://lookup.dbpedia.org/api/search.asmx/KeywordSearch?'
@@ -128,6 +142,7 @@ backends = {
     'swisscows': swisscows,
     'qwant': qwant,
     'wikipedia': wikipedia,
+    'brave': brave,
 }
 
 
