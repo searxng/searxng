@@ -6,6 +6,15 @@
     searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 14, 6, 200);
     searxng.image_thumbnail_layout.watch();
 
+    d.querySelectorAll('#urls img.image').forEach(
+      img =>
+        img.addEventListener(
+          'error', () => {
+            img.style.display = 'none';
+            img.error = null;
+          }
+        ));
+
     searxng.on('.btn-collapse', 'click', function () {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
