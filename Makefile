@@ -67,12 +67,12 @@ test.shell:
 		utils/lib_nvm.sh \
 		utils/lib_static.sh \
 		utils/lib_go.sh \
-	        utils/filtron.sh \
-	        utils/searx.sh \
-	        utils/morty.sh \
-	        utils/lxc.sh \
-	        utils/lxc-searx.env \
-	        .config.sh
+		utils/filtron.sh \
+		utils/searx.sh \
+		utils/morty.sh \
+		utils/lxc.sh \
+		utils/lxc-searx.env \
+		.config.sh
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 
