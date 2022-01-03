@@ -236,7 +236,7 @@ def get_search_query_from_webapp(
     external_bang = raw_text_query.external_bang
     engine_data = parse_engine_data(form)
 
-    if not is_locked('categories') and raw_text_query.enginerefs and raw_text_query.specific:
+    if not is_locked('categories') and raw_text_query.specific:
         # if engines are calculated from query,
         # set categories by using that informations
         query_engineref_list = raw_text_query.enginerefs
