@@ -13,7 +13,6 @@ usage::
 
 import sys
 import copy
-import itertools
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
@@ -267,26 +266,3 @@ def load_engines(engine_list):
         if engine:
             register_engine(engine)
     return engines
-
-
-DEFAULT_GROUP_NAME = 'others'
-
-
-def group_engines_in_tab(engines):  # pylint: disable=redefined-outer-name
-    def engine_sort_key(engine):
-        return (engine.about.get('language', ''), engine.name)
-
-    def group_sort_key(group):
-        return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
-
-    def get_group(eng):
-        non_tab_engines = [c for c in eng.categories if c not in settings['categories_as_tabs'] + [OTHER_CATEGORY]]
-        return non_tab_engines[0] if len(non_tab_engines) > 0 else DEFAULT_GROUP_NAME
-
-    return [
-        (groupname, sorted(engines, key=engine_sort_key))
-        for groupname, engines in sorted(
-            ((name, list(engines)) for name, engines in itertools.groupby(sorted(engines, key=get_group), get_group)),
-            key=group_sort_key,
-        )
-    ]

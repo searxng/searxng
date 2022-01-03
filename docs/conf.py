@@ -39,6 +39,7 @@ exclude_patterns = ['build-templates/*.rst']
 
 import searx.engines
 import searx.plugins
+import searx.webutils
 searx.engines.load_engines(searx.settings['engines'])
 
 jinja_contexts = {
@@ -54,7 +55,7 @@ jinja_contexts = {
     },
 }
 jinja_filters = {
-    'group_engines_in_tab': searx.engines.group_engines_in_tab,
+    'group_engines_in_tab': searx.webutils.group_engines_in_tab,
 }
 
 # Let the Jinja template in configured_engines.rst access documented_modules

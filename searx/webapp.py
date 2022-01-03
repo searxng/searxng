@@ -60,11 +60,9 @@ from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
     OTHER_CATEGORY,
-    DEFAULT_GROUP_NAME,
     categories,
     engines,
     engine_shortcuts,
-    group_engines_in_tab,
 )
 from searx.webutils import (
     UnicodeWriter,
@@ -76,6 +74,8 @@ from searx.webutils import (
     new_hmac,
     is_hmac_of,
     is_flask_run_cmdline,
+    DEFAULT_GROUP_NAME,
+    group_engines_in_tab,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
