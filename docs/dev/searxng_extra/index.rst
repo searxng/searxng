@@ -5,7 +5,7 @@ Tooling box ``searxng_extra`` for developers and users
 ======================================================
 
 In the folder :origin:`searxng_extra/` we maintain some tools useful for
-developers and users.
+developers.
 
 .. toctree::
    :maxdepth: 2
