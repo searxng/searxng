@@ -3,6 +3,13 @@
 # lint: pylint
 # pylint: disable=missing-module-docstring
 
+"""Fetch units from :origin:`searx/engines/wikidata.py` engine.
+
+Output file: :origin:`searx/data/wikidata_units.json` (:origin:`CI Update data
+...  <.github/workflows/data-update.yml>`).
+
+"""
+
 import json
 import collections
 
@@ -54,5 +61,6 @@ def get_wikidata_units_filename():
     return join(join(searx_dir, "data"), "wikidata_units.json")
 
 
-with open(get_wikidata_units_filename(), 'w', encoding="utf8") as f:
-    json.dump(get_data(), f, indent=4, ensure_ascii=False)
+if __name__ == '__main__':
+    with open(get_wikidata_units_filename(), 'w', encoding="utf8") as f:
+        json.dump(get_data(), f, indent=4, ensure_ascii=False)

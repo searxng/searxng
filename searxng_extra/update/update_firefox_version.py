@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+"""Fetch firefox useragent signatures
+
+Output file: :origin:`searx/data/useragents.json` (:origin:`CI Update data ...
+<.github/workflows/data-update.yml>`).
+
+"""
+
 import json
 import requests
 import re
@@ -66,6 +73,7 @@ def get_useragents_filename():
     return join(join(searx_dir, "data"), "useragents.json")
 
 
-useragents["versions"] = fetch_firefox_last_versions()
-with open(get_useragents_filename(), "w") as f:
-    json.dump(useragents, f, indent=4, ensure_ascii=False)
+if __name__ == '__main__':
+    useragents["versions"] = fetch_firefox_last_versions()
+    with open(get_useragents_filename(), "w", encoding='utf-8') as f:
+        json.dump(useragents, f, indent=4, ensure_ascii=False)

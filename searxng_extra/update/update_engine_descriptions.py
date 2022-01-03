@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+"""Fetch website description from websites and from
+:origin:`searx/engines/wikidata.py` engine.
+
+Output file: :origin:`searx/data/engine_descriptions.json`.
+
+"""
+
 import json
 from urllib.parse import urlparse
 from os.path import join

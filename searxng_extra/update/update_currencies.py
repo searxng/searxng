@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+"""Fetch currencies from :origin:`searx/engines/wikidata.py` engine.
+
+Output file: :origin:`searx/data/currencies.json` (:origin:`CI Update data ...
+<.github/workflows/data-update.yml>`).
+
+"""
 import re
 import unicodedata
 import json

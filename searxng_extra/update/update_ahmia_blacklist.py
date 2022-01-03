@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""This script saves `Ahmia's blacklist`_ for onion sites.
 
-# This script saves Ahmia's blacklist for onion sites.
-# More info in https://ahmia.fi/blacklist/
+Output file: :origin:`searx/data/ahmia_blacklist.txt` (:origin:`CI Update data
+...  <.github/workflows/data-update.yml>`).
 
-# set path
+.. _Ahmia's blacklist: https://ahmia.fi/blacklist/
+
+"""
+
 from os.path import join
 
 import requests
@@ -26,6 +30,7 @@ def get_ahmia_blacklist_filename():
     return join(join(searx_dir, "data"), "ahmia_blacklist.txt")
 
 
-blacklist = fetch_ahmia_blacklist()
-with open(get_ahmia_blacklist_filename(), "w") as f:
-    f.write('\n'.join(blacklist))
+if __name__ == '__main__':
+    blacklist = fetch_ahmia_blacklist()
+    with open(get_ahmia_blacklist_filename(), "w") as f:
+        f.write('\n'.join(blacklist))

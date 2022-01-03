@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""This script generates languages.py from intersecting each engine's supported
+languages.
 
-# This script generates languages.py from intersecting each engine's supported languages.
-#
-# Output files: searx/data/engines_languages.json and searx/languages.py
+Output files: :origin:`searx/data/engines_languages.json` and
+:origin:`searx/languages.py` (:origin:`CI Update data ...
+<.github/workflows/data-update.yml>`).
+
+"""
 
 import json
 from pathlib import Path
