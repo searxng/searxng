@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# lint: pylint
+
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This script generates languages.py from intersecting each engine's supported
 languages.
@@ -8,6 +10,8 @@ Output files: :origin:`searx/data/engines_languages.json` and
 <.github/workflows/data-update.yml>`).
 
 """
+
+# pylint: disable=invalid-name
 
 import json
 from pathlib import Path
@@ -28,7 +32,7 @@ languages_file = Path(searx_dir) / 'languages.py'
 def fetch_supported_languages():
     set_timeout_for_thread(10.0)
 
-    engines_languages = dict()
+    engines_languages = {}
     names = list(engines)
     names.sort()
 
@@ -36,7 +40,7 @@ def fetch_supported_languages():
         if hasattr(engines[engine_name], 'fetch_supported_languages'):
             engines_languages[engine_name] = engines[engine_name].fetch_supported_languages()
             print("fetched %s languages from engine %s" % (len(engines_languages[engine_name]), engine_name))
-            if type(engines_languages[engine_name]) == list:
+            if type(engines_languages[engine_name]) == list:  # pylint: disable=unidiomatic-typecheck
                 engines_languages[engine_name] = sorted(engines_languages[engine_name])
 
     print("fetched languages from %s engines" % len(engines_languages))
@@ -59,7 +63,7 @@ def get_locale(lang_code):
 
 # Join all language lists.
 def join_language_lists(engines_languages):
-    language_list = dict()
+    language_list = {}
     for engine_name in engines_languages:
         for lang_code in engines_languages[engine_name]:
 
@@ -95,7 +99,7 @@ def join_language_lists(engines_languages):
                     'name': language_name,
                     'english_name': english_name,
                     'counter': set(),
-                    'countries': dict(),
+                    'countries': {},
                 }
 
             # add language with country if not in list
@@ -123,6 +127,7 @@ def join_language_lists(engines_languages):
 def filter_language_list(all_languages):
     min_engines_per_lang = 13
     min_engines_per_country = 7
+    # pylint: disable=consider-using-dict-items, consider-iterating-dictionary
     main_engines = [
         engine_name
         for engine_name in engines.keys()
@@ -142,7 +147,7 @@ def filter_language_list(all_languages):
     }
 
     def _copy_lang_data(lang, country_name=None):
-        new_dict = dict()
+        new_dict = {}
         new_dict['name'] = all_languages[lang]['name']
         new_dict['english_name'] = all_languages[lang]['english_name']
         if country_name:
@@ -150,10 +155,10 @@ def filter_language_list(all_languages):
         return new_dict
 
     # for each language get country codes supported by most engines or at least one country code
-    filtered_languages_with_countries = dict()
+    filtered_languages_with_countries = {}
     for lang, lang_data in filtered_languages.items():
         countries = lang_data['countries']
-        filtered_countries = dict()
+        filtered_countries = {}
 
         # get language's country codes with enough supported engines
         for lang_country, country_data in countries.items():
@@ -215,7 +220,7 @@ def write_languages_file(languages):
 
     language_codes = tuple(language_codes)
 
-    with open(languages_file, 'w') as new_file:
+    with open(languages_file, 'w', encoding='utf-8') as new_file:
         file_content = "{file_headers} {language_codes},\n)\n".format(
             # fmt: off
             file_headers = '\n'.join(file_headers),
@@ -228,7 +233,7 @@ def write_languages_file(languages):
 
 if __name__ == "__main__":
     load_engines(settings['engines'])
-    engines_languages = fetch_supported_languages()
-    all_languages = join_language_lists(engines_languages)
-    filtered_languages = filter_language_list(all_languages)
-    write_languages_file(filtered_languages)
+    _engines_languages = fetch_supported_languages()
+    _all_languages = join_language_lists(_engines_languages)
+    _filtered_languages = filter_language_list(_all_languages)
+    write_languages_file(_filtered_languages)

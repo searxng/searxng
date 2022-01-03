@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This script saves `Ahmia's blacklist`_ for onion sites.
 
@@ -21,9 +22,7 @@ def fetch_ahmia_blacklist():
     resp = requests.get(URL, timeout=3.0)
     if resp.status_code != 200:
         raise Exception("Error fetching Ahmia blacklist, HTTP code " + resp.status_code)
-    else:
-        blacklist = resp.text.split()
-        return blacklist
+    return resp.text.split()
 
 
 def get_ahmia_blacklist_filename():
@@ -32,5 +31,5 @@ def get_ahmia_blacklist_filename():
 
 if __name__ == '__main__':
     blacklist = fetch_ahmia_blacklist()
-    with open(get_ahmia_blacklist_filename(), "w") as f:
+    with open(get_ahmia_blacklist_filename(), "w", encoding='utf-8') as f:
         f.write('\n'.join(blacklist))
