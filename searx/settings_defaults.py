@@ -169,6 +169,9 @@ SCHEMA = {
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
     },
+    'redis': {
+        'url': SettingsValue(str, 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'),
+    },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),
         'templates_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'templates')),
