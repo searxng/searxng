@@ -149,8 +149,8 @@ def group_engines_in_tab(engines):
         return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
 
     def get_group(eng):
-        non_tab_engines = [c for c in eng.categories if c not in settings['categories_as_tabs'] + [OTHER_CATEGORY]]
-        return non_tab_engines[0] if len(non_tab_engines) > 0 else DEFAULT_GROUP_NAME
+        non_tab_categories = [c for c in eng.categories if c not in settings['categories_as_tabs'] + [OTHER_CATEGORY]]
+        return non_tab_categories[0] if len(non_tab_categories) > 0 else DEFAULT_GROUP_NAME
 
     return [
         (groupname, sorted(engines, key=engine_sort_key))
