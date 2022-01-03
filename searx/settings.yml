@@ -495,7 +495,7 @@ engines:
     first_page_num: 1
     shortcut: et
     categories: [dictionaries]
-    disabled: true
+    disabled: false
     about:
       website: https://www.etymonline.com/
       wikidata_id: Q1188617
@@ -1423,7 +1423,7 @@ engines:
     base_url: "https://{language}.wiktionary.org/"
     number_of_results: 5
     search_type: text
-    disabled: true
+    disabled: false
     about:
       website: https://www.wiktionary.org/
       wikidata_id: Q151
@@ -1473,7 +1473,7 @@ engines:
     engine: translated
     shortcut: tl
     timeout: 5.0
-    disabled: true
+    disabled: false
     # You can use without an API key, but you are limited to 1000 words/day
     # See: https://mymemory.translated.net/doc/usagelimits.php
     # api_key: ''
@@ -1603,7 +1603,7 @@ engines:
     base_url: https://www.wordnik.com/
     categories: [dictionaries]
     timeout: 5.0
-    disabled: true
+    disabled: false
 
   - name: woxikon.de synonyme
     engine: xpath
