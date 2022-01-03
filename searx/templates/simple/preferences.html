@@ -276,6 +276,9 @@
     {{ tabs_open() }}
     {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
     {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
+    {% if categ == OTHER_CATEGORY %}
+      <p>{{_('This tab does not show up for search results but you can search the engines listed here via bangs.')}}</p>
+    {% endif %}
     <div class="scrollx">
     <table class="striped">
       <tr>

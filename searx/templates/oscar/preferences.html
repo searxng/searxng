@@ -321,6 +321,9 @@
                     <noscript><label>{{ _(categ) }}</label>
                     </noscript>
                     <div class="tab-pane{% if loop.first %} active{% endif %} active_if_nojs" id="tab_engine_{{ categ|replace(' ', '_') }}">
+                        {% if categ == OTHER_CATEGORY %}
+                            <p>{{_('This tab does not show up for search results but you can search the engines listed here via bangs.')}}</p>
+                        {% endif %}
                         <div class="container-fluid">
                         <fieldset>
                           <div class="table-responsive">
