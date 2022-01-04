@@ -13,6 +13,7 @@ usage::
 
 import sys
 import copy
+from typing import List
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
@@ -47,7 +48,26 @@ ENGINE_DEFAULT_ARGS = {
 # set automatically when an engine does not have any tab category
 OTHER_CATEGORY = 'other'
 
-"""Defaults for the namespace of an engine module, see :py:func:`load_engine`"""
+
+class Engine:  # pylint: disable=too-few-public-methods
+    """This class is currently never initialized and only used for type hinting."""
+
+    name: str
+    engine: str
+    shortcut: str
+    categories: List[str]
+    supported_languages: List[str]
+    about: dict
+    inactive: bool
+    disabled: bool
+    language_support: bool
+    paging: bool
+    safesearch: bool
+    time_range_support: bool
+    timeout: float
+
+
+# Defaults for the namespace of an engine module, see :py:func:`load_engine``
 
 categories = {'general': []}
 engines = {}
