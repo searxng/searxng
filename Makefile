@@ -25,11 +25,7 @@ help:
 
 PHONY += run
 run:  install
-	$(Q) ( \
-	sleep 2 ; \
-	xdg-open http://127.0.0.1:8888/ ; \
-	) &
-	SEARXNG_DEBUG=1 ./manage pyenv.cmd python -m searx.webapp
+	$(Q)./manage webapp.run
 
 PHONY += install uninstall
 install uninstall:
