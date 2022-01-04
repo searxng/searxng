@@ -22,8 +22,6 @@ from searx.engines import OTHER_CATEGORY
 
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
-DISABLED = 0
-ENABLED = 1
 DOI_RESOLVERS = list(settings['doi_resolvers'])
 
 
@@ -226,11 +224,11 @@ class SwitchableSetting(Setting):
         # pylint: disable=no-self-use
         return values
 
-    def parse_cookie(self, data):
-        if data[DISABLED] != '':
-            self.disabled = set(data[DISABLED].split(','))
-        if data[ENABLED] != '':
-            self.enabled = set(data[ENABLED].split(','))
+    def parse_cookie(self, data_disabled: str, data_enabled: str):
+        if data_disabled != '':
+            self.disabled = set(data_disabled.split(','))
+        if data_enabled != '':
+            self.enabled = set(data_enabled.split(','))
 
     def parse_form(self, items: List[str]):
         if self.locked:
@@ -455,13 +453,9 @@ class Preferences:
                     continue
                 self.key_value_settings[user_setting_name].parse(user_setting)
             elif user_setting_name == 'disabled_engines':
-                self.engines.parse_cookie(
-                    (input_data.get('disabled_engines', ''), input_data.get('enabled_engines', ''))
-                )
+                self.engines.parse_cookie(input_data.get('disabled_engines', ''), input_data.get('enabled_engines', ''))
             elif user_setting_name == 'disabled_plugins':
-                self.plugins.parse_cookie(
-                    (input_data.get('disabled_plugins', ''), input_data.get('enabled_plugins', ''))
-                )
+                self.plugins.parse_cookie(input_data.get('disabled_plugins', ''), input_data.get('enabled_plugins', ''))
             elif user_setting_name == 'tokens':
                 self.tokens.parse(user_setting)
             elif not any(
