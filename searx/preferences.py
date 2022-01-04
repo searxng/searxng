@@ -207,11 +207,12 @@ class Choice:
     id: str
 
 
-class SwitchableSetting(Setting):
+class SwitchableSetting:
     """Base class for settings that can be turned on && off"""
 
-    def __init__(self, default_value, locked: bool, choices: Iterable[Choice]):
-        super().__init__(default_value, locked)
+    def __init__(self, name: str, locked: bool, choices: Iterable[Choice]):
+        self.name = name
+        self.locked = locked
         self.choices = choices
         self.enabled: Set[str] = set()
         self.disabled: Set[str] = set()
@@ -245,10 +246,10 @@ class SwitchableSetting(Setting):
                 if choice.id not in items:
                     self.enabled.add(choice.id)
 
-    def save(self, resp: flask.Response):  # pylint: disable=arguments-differ
+    def save(self, resp: flask.Response):
         """Save cookie in the HTTP reponse obect"""
-        resp.set_cookie('disabled_{0}'.format(self.value), ','.join(self.disabled), max_age=COOKIE_MAX_AGE)
-        resp.set_cookie('enabled_{0}'.format(self.value), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
+        resp.set_cookie('disabled_{0}'.format(self.name), ','.join(self.disabled), max_age=COOKIE_MAX_AGE)
+        resp.set_cookie('enabled_{0}'.format(self.name), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
 
     def get_disabled(self):
         disabled = self.disabled
