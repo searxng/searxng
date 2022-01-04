@@ -151,7 +151,7 @@ outgoing:
   #    - fe80::/126
 
 # External plugin configuration, for more details see
-#   https://searxng.github.io/searxng/dev/plugins.html
+#   https://docs.searxng.org/dev/plugins.html
 #
 # plugins:
 #   - plugin1
@@ -618,7 +618,7 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    # see https://searxng.github.io/searxng/src/searx.engines.google.html#module-searx.engines.google
+    # see https://docs.searxng.org/src/searx.engines.google.html#module-searx.engines.google
     use_mobile_ui: false
     # additional_tests:
     #   android: *test_android
