@@ -20,18 +20,18 @@ OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
 LANGUAGE_CODES = ['all'] + list(l[0] for l in languages)
 OSCAR_STYLE = ('logicodev', 'logicodev-dark', 'pointhi')
 SIMPLE_STYLE = ('auto', 'light', 'dark')
-CATEGORIES_AS_TABS = [
-    'general',
-    'images',
-    'videos',
-    'news',
-    'map',
-    'music',
-    'it',
-    'science',
-    'files',
-    'social media',
-]
+CATEGORIES_AS_TABS = {
+    'general': {},
+    'images': {},
+    'videos': {},
+    'news': {},
+    'map': {},
+    'music': {},
+    'it': {},
+    'science': {},
+    'files': {},
+    'social media': {},
+}
 STR_TO_BOOL = {
     '0': False,
     'false': False,
@@ -211,7 +211,7 @@ SCHEMA = {
     'checker': {
         'off_when_debug': SettingsValue(bool, True),
     },
-    'categories_as_tabs': SettingsValue(list, CATEGORIES_AS_TABS),
+    'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},
 }

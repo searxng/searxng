@@ -272,7 +272,7 @@ class EnginesSetting(SwitchableSetting):
         transformed_choices = []
         for engine_name, engine in self.choices.items():  # pylint: disable=no-member,access-member-before-definition
             for category in engine.categories:
-                if not category in settings['categories_as_tabs'] + [OTHER_CATEGORY]:
+                if not category in list(settings['categories_as_tabs'].keys()) + [OTHER_CATEGORY]:
                     continue
                 transformed_choice = {}
                 transformed_choice['default_on'] = not engine.disabled

@@ -228,16 +228,16 @@ Categories not listed here can still be searched with the :ref:`search-syntax`.
 .. code-block:: yaml
 
   categories_as_tabs:
-    - general
-    - images
-    - videos
-    - news
-    - map
-    - music
-    - it
-    - science
-    - files
-    - social media
+    general:
+    images:
+    videos:
+    news:
+    map:
+    music:
+    it:
+    science:
+    files:
+    social media:
 
 .. _settings engine:
 
