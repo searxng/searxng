@@ -6,12 +6,13 @@ import hmac
 import re
 import inspect
 import itertools
+from typing import Iterable, List, Tuple
 
 from io import StringIO
 from codecs import getincrementalencoder
 
 from searx import logger, settings
-from searx.engines import OTHER_CATEGORY
+from searx.engines import Engine, OTHER_CATEGORY
 
 
 VALID_LANGUAGE_CODE = re.compile(r'^[a-z]{2,3}(-[a-zA-Z]{2})?$')
@@ -141,21 +142,21 @@ def is_flask_run_cmdline():
 DEFAULT_GROUP_NAME = 'others'
 
 
-def group_engines_in_tab(engines):
-    def engine_sort_key(engine):
-        return (engine.about.get('language', ''), engine.name)
-
-    def group_sort_key(group):
-        return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
+def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[Engine]]]:
+    """Groups an Iterable of engines by their first non tab category"""
 
     def get_group(eng):
         non_tab_categories = [c for c in eng.categories if c not in settings['categories_as_tabs'] + [OTHER_CATEGORY]]
         return non_tab_categories[0] if len(non_tab_categories) > 0 else DEFAULT_GROUP_NAME
 
-    return [
-        (groupname, sorted(engines, key=engine_sort_key))
-        for groupname, engines in sorted(
-            ((name, list(engines)) for name, engines in itertools.groupby(sorted(engines, key=get_group), get_group)),
-            key=group_sort_key,
-        )
-    ]
+    groups = itertools.groupby(sorted(engines, key=get_group), get_group)
+
+    def group_sort_key(group):
+        return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
+
+    sorted_groups = sorted(((name, list(engines)) for name, engines in groups), key=group_sort_key)
+
+    def engine_sort_key(engine):
+        return (engine.about.get('language', ''), engine.name)
+
+    return [(groupname, sorted(engines, key=engine_sort_key)) for groupname, engines in sorted_groups]
