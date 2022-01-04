@@ -13,7 +13,7 @@ usage::
 
 import sys
 import copy
-from typing import List
+from typing import Dict, List, Optional
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
@@ -67,10 +67,10 @@ class Engine:  # pylint: disable=too-few-public-methods
     timeout: float
 
 
-# Defaults for the namespace of an engine module, see :py:func:`load_engine``
+# Defaults for the namespace of an engine module, see :py:func:`load_engine`
 
 categories = {'general': []}
-engines = {}
+engines: Dict[str, Engine] = {}
 engine_shortcuts = {}
 """Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
@@ -81,7 +81,7 @@ engine_shortcuts = {}
 """
 
 
-def load_engine(engine_data):
+def load_engine(engine_data: dict) -> Optional[Engine]:
     """Load engine from ``engine_data``.
 
     :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``
@@ -157,7 +157,7 @@ def set_loggers(engine, engine_name):
             module.logger = logger.getChild(module_engine_name)
 
 
-def update_engine_attributes(engine, engine_data):
+def update_engine_attributes(engine: Engine, engine_data):
     # set engine attributes from engine_data
     for param_name, param_value in engine_data.items():
         if param_name == 'categories':
@@ -175,7 +175,7 @@ def update_engine_attributes(engine, engine_data):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
 
 
-def set_language_attributes(engine):
+def set_language_attributes(engine: Engine):
     # assign supported languages from json file
     if engine.name in ENGINES_LANGUAGES:
         engine.supported_languages = ENGINES_LANGUAGES[engine.name]
@@ -248,7 +248,7 @@ def is_missing_required_attributes(engine):
     return missing
 
 
-def is_engine_active(engine):
+def is_engine_active(engine: Engine):
     # check if engine is inactive
     if engine.inactive is True:
         return False
@@ -260,7 +260,7 @@ def is_engine_active(engine):
     return True
 
 
-def register_engine(engine):
+def register_engine(engine: Engine):
     if engine.name in engines:
         logger.error('Engine config error: ambigious name: {0}'.format(engine.name))
         sys.exit(1)
