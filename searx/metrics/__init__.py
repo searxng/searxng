@@ -9,7 +9,7 @@ from timeit import default_timer
 from operator import itemgetter
 
 from searx.engines import engines
-from .models import HistogramStorage, CounterStorage
+from .models import HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
 from .error_recorder import count_error, count_exception, errors_per_engines
 
 __all__ = [
@@ -69,14 +69,18 @@ def counter(*args):
     return counter_storage.get(*args)
 
 
-def initialize(engine_names=None):
+def initialize(engine_names=None, enabled=True):
     """
     Initialize metrics
     """
     global counter_storage, histogram_storage  # pylint: disable=global-statement
 
-    counter_storage = CounterStorage()
-    histogram_storage = HistogramStorage()
+    if enabled:
+        counter_storage = CounterStorage()
+        histogram_storage = HistogramStorage()
+    else:
+        counter_storage = VoidCounterStorage()
+        histogram_storage = HistogramStorage(histogram_class=VoidHistogram)
 
     # max_timeout = max of all the engine.timeout
     max_timeout = 2

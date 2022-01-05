@@ -102,16 +102,17 @@ class Histogram:
 
 class HistogramStorage:
 
-    __slots__ = 'measures'
+    __slots__ = 'measures', 'histogram_class'
 
-    def __init__(self):
+    def __init__(self, histogram_class=Histogram):
         self.clear()
+        self.histogram_class = histogram_class
 
     def clear(self):
         self.measures = {}
 
     def configure(self, width, size, *args):
-        measure = Histogram(width, size)
+        measure = self.histogram_class(width, size)
         self.measures[args] = measure
         return measure
 
@@ -154,3 +155,13 @@ class CounterStorage:
         logger.debug("Counters:")
         for k in ks:
             logger.debug("- %-60s %s", '|'.join(k), self.counters[k])
+
+
+class VoidHistogram(Histogram):
+    def observe(self, value):
+        pass
+
+
+class VoidCounterStorage(CounterStorage):
+    def add(self, value, *args):
+        pass

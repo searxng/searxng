@@ -24,13 +24,13 @@ from searx.search.checker import initialize as initialize_checker
 logger = logger.getChild('search')
 
 
-def initialize(settings_engines=None, enable_checker=False, check_network=False):
+def initialize(settings_engines=None, enable_checker=False, check_network=False, enable_metrics=True):
     settings_engines = settings_engines or settings['engines']
     load_engines(settings_engines)
     initialize_network(settings_engines, settings['outgoing'])
     if check_network:
         check_network_configuration()
-    initialize_metrics([engine['name'] for engine in settings_engines])
+    initialize_metrics([engine['name'] for engine in settings_engines], enable_metrics)
     initialize_processors(settings_engines)
     if enable_checker:
         initialize_checker()

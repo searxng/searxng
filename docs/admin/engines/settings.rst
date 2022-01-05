@@ -81,6 +81,9 @@ Global Settings
 ``contact_url``:
   Contact ``mailto:`` address or WEB form.
 
+``enable_metrics``:
+  Enabled by default. Record various anonymous metrics availabled at ``/stats``,
+  ``/stats/errors`` and ``/preferences``.
 
 .. _settings global server:
 
