@@ -1,17 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Startpage (Web)
+
 """
- Startpage (Web)
-"""
+
+import re
 
 from urllib.parse import urlencode
-
-from lxml import html
-from dateutil import parser
-from datetime import datetime, timedelta
-import re
 from unicodedata import normalize, combining
+from datetime import datetime, timedelta
+
+from dateutil import parser
+from lxml import html
 from babel import Locale
 from babel.localedata import locale_identifiers
+
 from searx.utils import extract_text, eval_xpath, match_language
 
 # about
@@ -135,10 +138,11 @@ def response(resp):
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
-    # startpage's language selector is a mess
-    # each option has a displayed name and a value, either of which may represent the language name
-    # in the native script, the language name in English, an English transliteration of the native name,
-    # the English name of the writing script used by the language, or occasionally something else entirely.
+    # startpage's language selector is a mess each option has a displayed name
+    # and a value, either of which may represent the language name in the native
+    # script, the language name in English, an English transliteration of the
+    # native name, the English name of the writing script used by the language,
+    # or occasionally something else entirely.
 
     # this cases are so special they need to be hardcoded, a couple of them are mispellings
     language_names = {
@@ -152,7 +156,15 @@ def _fetch_supported_languages(resp):
     }
 
     # get the English name of every language known by babel
-    language_names.update({name.lower(): lang_code for lang_code, name in Locale('en')._data['languages'].items()})
+    language_names.update(
+        {
+            # fmt: off
+            name.lower(): lang_code
+            # pylint: disable=protected-access
+            for lang_code, name in Locale('en')._data['languages'].items()
+            # fmt: on
+        }
+    )
 
     # get the native name of every language known by babel
     for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, locale_identifiers()):
@@ -177,8 +189,8 @@ def _fetch_supported_languages(resp):
         if isinstance(lang_code, str):
             supported_languages[lang_code] = {'alias': sp_option_value}
         elif isinstance(lang_code, list):
-            for lc in lang_code:
-                supported_languages[lc] = {'alias': sp_option_value}
+            for _lc in lang_code:
+                supported_languages[_lc] = {'alias': sp_option_value}
         else:
             print('Unknown language option in Startpage: {} ({})'.format(sp_option_value, sp_option_text))
 
