@@ -26,7 +26,7 @@
 #       SEARXNG_SETTINGS_PATH : /etc/searxng/settings.yml
 #       SEARX_SRC             : /usr/local/searx/searx-src
 #
-# [1] https://searxng.github.io/searxng/admin/engines/settings.html
+# [1] https://docs.searxng.org/admin/engines/settings.html
 
 # utils/filtron.sh
 # ----------------

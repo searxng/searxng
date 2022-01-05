@@ -36,8 +36,8 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3'
     ],
     keywords='metasearch searchengine search web http',
-    author='Adam Tauber',
-    author_email='asciimoo@gmail.com',
+    author='SearXNG dev team',
+    author_email='contact@searxng.org',
     license='GNU Affero General Public License',
     packages=find_packages(exclude=["tests*", "searxng_extra"]),
     zip_safe=False,
