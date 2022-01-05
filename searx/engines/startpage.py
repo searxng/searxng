@@ -3,6 +3,8 @@
  Startpage (Web)
 """
 
+from urllib.parse import urlencode
+
 from lxml import html
 from dateutil import parser
 from datetime import datetime, timedelta
@@ -33,7 +35,7 @@ supported_languages_url = 'https://www.startpage.com/do/settings'
 
 # search-url
 base_url = 'https://startpage.com/'
-search_url = base_url + 'do/search'
+search_url = base_url + 'sp/search?'
 
 # specific xpath variables
 # ads xpath //div[@id="results"]/div[@id="sponsored"]//div[@class="result"]
@@ -46,14 +48,12 @@ content_xpath = './/p[@class="w-gl__description"]'
 # do search-request
 def request(query, params):
 
-    params['url'] = search_url
-    params['method'] = 'POST'
-    params['data'] = {
+    args = {
         'query': query,
         'page': params['pageno'],
         'cat': 'web',
-        'cmd': 'process_search',
-        'engine0': 'v1all',
+        # 'abp': "-1",
+        'sc': 'Mj4jZy61QETj20',
     }
 
     # set language if specified
@@ -61,9 +61,10 @@ def request(query, params):
         lang_code = match_language(params['language'], supported_languages, fallback=None)
         if lang_code:
             language_name = supported_languages[lang_code]['alias']
-            params['data']['language'] = language_name
-            params['data']['lui'] = language_name
+            args['language'] = language_name
+            args['lui'] = language_name
 
+    params['url'] = search_url + urlencode(args)
     return params
 
 
