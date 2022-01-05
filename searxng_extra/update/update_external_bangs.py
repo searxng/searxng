@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
-Update searx/data/external_bangs.json using the duckduckgo bangs.
+"""Update :origin:`searx/data/external_bangs.json` using the duckduckgo bangs
+(:origin:`CI Update data ... <.github/workflows/data-update.yml>`).
 
-https://duckduckgo.com/newbang loads
+https://duckduckgo.com/newbang loads:
+
 * a javascript which provides the bang version ( https://duckduckgo.com/bv1.js )
 * a JSON file which contains the bangs ( https://duckduckgo.com/bang.v260.js for example )
 
 This script loads the javascript, then the bangs.
 
-The javascript URL may change in the future ( for example https://duckduckgo.com/bv2.js ),
-but most probably it will requires to update RE_BANG_VERSION
+The javascript URL may change in the future ( for example
+https://duckduckgo.com/bv2.js ), but most probably it will requires to update
+RE_BANG_VERSION
+
 """
 # pylint: disable=C0116
 

@@ -1,14 +1,15 @@
 .. _searxng_extra:
 
-======================================================
-Tooling box ``searxng_extra`` for developers and users
-======================================================
+=============================
+Tooling box ``searxng_extra``
+=============================
 
-In the folder :origin:`searxng_extra/` we maintain some tools useful for
+In the folder :origin:`searxng_extra/` we maintain some tools useful for CI and
 developers.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
 
+   update
    standalone_searx.py

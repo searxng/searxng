@@ -5,7 +5,10 @@
 
 To get the i18n names, the scripts uses `Wikidata Query Service`_ instead of for
 example `OSM tags API`_ (sidenote: the actual change log from
-map.atownsend.org.uk_ might be useful to normalize OSM tags)
+map.atownsend.org.uk_ might be useful to normalize OSM tags).
+
+Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
+<.github/workflows/data-update.yml>`).
 
 .. _Wikidata Query Service: https://query.wikidata.org/
 .. _OSM tags API: https://taginfo.openstreetmap.org/taginfo/apidoc

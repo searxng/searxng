@@ -1,5 +1,15 @@
 #!/usr/bin/env python
+# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
+
+"""Fetch website description from websites and from
+:origin:`searx/engines/wikidata.py` engine.
+
+Output file: :origin:`searx/data/engine_descriptions.json`.
+
+"""
+
+# pylint: disable=invalid-name, global-statement
 
 import json
 from urllib.parse import urlparse
@@ -102,7 +112,7 @@ def get_wikipedia_summary(lang, pageid):
         response.raise_for_status()
         api_result = json.loads(response.text)
         return api_result.get('extract')
-    except:
+    except Exception:  # pylint: disable=broad-except
         return None
 
 
@@ -134,7 +144,7 @@ def get_website_description(url, lang1, lang2=None):
     try:
         response = searx.network.get(url, headers=headers, timeout=10)
         response.raise_for_status()
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         return (None, None)
 
     try:
