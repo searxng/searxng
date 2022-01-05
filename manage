@@ -121,14 +121,18 @@ fi
 export DOCS_BUILD
 
 webapp.run() {
-    SEARXNG_DEBUG=1 pyenv.cmd python -m searx.webapp &
-    sleep 3
-    if [ "${LIVE_THEME}" ]; then
-        themes.live "${LIVE_THEME}" &
-    fi
-    xdg-open http://127.0.0.1:8888/
-    wait -n
-    kill 0
+    local parent_proc="$$"
+    (
+        if [ "${LIVE_THEME}" ]; then
+            ( themes.live "${LIVE_THEME}" )
+            kill $parent_proc
+        fi
+    )&
+    (
+        sleep 3
+        xdg-open http://127.0.0.1:8888/
+    )&
+    SEARXNG_DEBUG=1 pyenv.cmd python -m searx.webapp
 }
 
 buildenv() {
