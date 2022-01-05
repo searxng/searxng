@@ -76,13 +76,15 @@ class TestNetwork(SearxTestCase):
             'verify': True,
             'max_redirects': 5,
             'timeout': 2,
+            'allow_redirects': True,
         }
-        kwargs_client = Network.get_kwargs_clients(kwargs)
+        kwargs_client = Network.extract_kwargs_clients(kwargs)
 
         self.assertEqual(len(kwargs_client), 2)
-        self.assertEqual(len(kwargs), 1)
+        self.assertEqual(len(kwargs), 2)
 
         self.assertEqual(kwargs['timeout'], 2)
+        self.assertEqual(kwargs['follow_redirects'], True)
 
         self.assertTrue(kwargs_client['verify'])
         self.assertEqual(kwargs_client['max_redirects'], 5)
