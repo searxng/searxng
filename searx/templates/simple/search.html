@@ -9,7 +9,6 @@
       <button id="clear_search" type="button" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
       <button id="send_search" type="submit" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
     </div>
-    {% set display_tooltip = true %}
     {% with categories_class='search-tabs' %}
       {% include 'simple/categories.html' %}
     {% endwith %}

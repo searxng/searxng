@@ -108,7 +108,6 @@
     {% if 'categories' not in locked_preferences %}
     <fieldset>
       <legend>{{ _('Default categories') }}</legend>
-      {% set display_tooltip = false %}
       {% include 'simple/categories.html' %}
     </fieldset>
     {% endif %}
