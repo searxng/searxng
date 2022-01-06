@@ -6,7 +6,7 @@
   flex-flow: row wrap;
   align-content: stretch;
 
-  label, .input-group-addon {
+  .category, .input-group-addon {
     flex-grow: 1;
     flex-basis: auto;
     font-size: 1.2rem;
@@ -15,13 +15,21 @@
     border: @mild-gray 1px solid;
     border-right: none;
     color: @dark-gray;
-    padding-bottom: 0.4rem;
-    padding-top: 0.4rem;
     text-align: center;
     min-width: 50px;
+    display: flex;
+    flex-direction: column;
   }
-  label:last-child, .input-group-addon:last-child {
-      border-right: @mild-gray 1px solid;
+
+  label {
+    flex-grow: 1;
+    margin-bottom: 0;
+    padding-bottom: 0.4rem;
+    padding-top: 0.4rem;
+  }
+
+  .category:last-child, .input-group-addon:last-child {
+    border-right: @mild-gray 1px solid;
   }
 
   input[type="checkbox"]:checked + label {
