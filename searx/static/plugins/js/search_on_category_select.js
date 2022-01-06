@@ -40,3 +40,7 @@ function getHttpRequest() {
     }
     return httpRequest;
 }
+
+const style = document.createElement('style');
+style.textContent = '.category input { display: none; }'
+document.head.append(style);
