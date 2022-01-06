@@ -14,7 +14,7 @@ about = {
 }
 
 engine_type = 'online_dictionary'
-categories = ['general']
+categories = ['dictionaries']
 url = 'https://api.mymemory.translated.net/get?q={query}&langpair={from_lang}|{to_lang}{key}'
 web_url = 'https://mymemory.translated.net/en/{from_lang}/{to_lang}/{query}'
 weight = 100

@@ -59,6 +59,7 @@ from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
+    OTHER_CATEGORY,
     categories,
     engines,
     engine_shortcuts,
@@ -73,6 +74,8 @@ from searx.webutils import (
     new_hmac,
     is_hmac_of,
     is_flask_run_cmdline,
+    DEFAULT_GROUP_NAME,
+    group_engines_in_tab,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -152,6 +155,7 @@ app = Flask(__name__, static_folder=settings['ui']['static_path'], template_fold
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-member
+app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
 
 babel = Babel(app)
@@ -169,6 +173,17 @@ _category_names = (
     gettext('map'),
     gettext('onions'),
     gettext('science'),
+    # non-tab categories
+    gettext('apps'),
+    gettext('dictionaries'),
+    gettext('lyrics'),
+    gettext('packages'),
+    gettext('q&a'),
+    gettext('repos'),
+    gettext('software wikis'),
+    gettext('web'),
+    gettext(DEFAULT_GROUP_NAME),
+    gettext(OTHER_CATEGORY),
 )
 
 _simple_style = (gettext('auto'), gettext('light'), gettext('dark'))
@@ -390,12 +405,6 @@ def get_translations():
     }
 
 
-def _get_ordered_categories():
-    ordered_categories = list(settings['ui']['categories_order'])
-    ordered_categories.extend(x for x in sorted(categories.keys()) if x not in ordered_categories)
-    return ordered_categories
-
-
 def _get_enable_categories(all_categories):
     disabled_engines = request.preferences.engines.get_disabled()
     enabled_categories = set(
@@ -430,8 +439,9 @@ def render(template_name, override_theme=None, **kwargs):
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
     kwargs['theme'] = get_current_theme_name(override=override_theme)
-    kwargs['all_categories'] = _get_ordered_categories()
-    kwargs['categories'] = _get_enable_categories(kwargs['all_categories'])
+    kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
+    kwargs['categories'] = _get_enable_categories(categories.keys())
+    kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
 
     # i18n
     kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]

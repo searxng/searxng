@@ -13,6 +13,7 @@ usage::
 
 import sys
 import copy
+from typing import List
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
@@ -44,7 +45,29 @@ ENGINE_DEFAULT_ARGS = {
     "display_error_messages": True,
     "tokens": [],
 }
-"""Defaults for the namespace of an engine module, see :py:func:`load_engine`"""
+# set automatically when an engine does not have any tab category
+OTHER_CATEGORY = 'other'
+
+
+class Engine:  # pylint: disable=too-few-public-methods
+    """This class is currently never initialized and only used for type hinting."""
+
+    name: str
+    engine: str
+    shortcut: str
+    categories: List[str]
+    supported_languages: List[str]
+    about: dict
+    inactive: bool
+    disabled: bool
+    language_support: bool
+    paging: bool
+    safesearch: bool
+    time_range_support: bool
+    timeout: float
+
+
+# Defaults for the namespace of an engine module, see :py:func:`load_engine``
 
 categories = {'general': []}
 engines = {}
@@ -113,6 +136,9 @@ def load_engine(engine_data):
 
     set_loggers(engine, engine_name)
 
+    if not any(cat in settings['categories_as_tabs'] for cat in engine.categories):
+        engine.categories.append(OTHER_CATEGORY)
+
     return engine
 
 
@@ -138,6 +164,8 @@ def update_engine_attributes(engine, engine_data):
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value
+        elif hasattr(engine, 'about') and param_name == 'about':
+            engine.about = {**engine.about, **engine_data['about']}
         else:
             setattr(engine, param_name, param_value)
 

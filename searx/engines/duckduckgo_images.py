@@ -27,7 +27,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['images']
+categories = ['images', 'web']
 paging = True
 safesearch = True
 

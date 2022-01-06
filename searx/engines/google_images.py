@@ -45,7 +45,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['images']
+categories = ['images', 'web']
 paging = False
 use_locale_domain = True
 time_range_support = True

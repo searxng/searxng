@@ -12,6 +12,7 @@ from urllib.parse import parse_qs, urlencode
 from searx import settings, autocomplete
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
+from searx.engines import OTHER_CATEGORY
 
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
@@ -271,6 +272,8 @@ class EnginesSetting(SwitchableSetting):
         transformed_choices = []
         for engine_name, engine in self.choices.items():  # pylint: disable=no-member,access-member-before-definition
             for category in engine.categories:
+                if not category in list(settings['categories_as_tabs'].keys()) + [OTHER_CATEGORY]:
+                    continue
                 transformed_choice = {}
                 transformed_choice['default_on'] = not engine.disabled
                 transformed_choice['id'] = '{}__{}'.format(engine_name, category)

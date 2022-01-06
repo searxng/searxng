@@ -54,7 +54,7 @@ about = {
 
 # engine dependent config
 
-categories = ['videos']
+categories = ['videos', 'web']
 paging = False
 language_support = True
 use_locale_domain = True

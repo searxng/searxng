@@ -274,8 +274,11 @@
   {{ tab_header('maintab', 'engines', _('Engines')) }}
     <p>{{ _('Currently used search engines') }}</p>
     {{ tabs_open() }}
-    {% for categ in all_categories %}
+    {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
     {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
+    {% if categ == OTHER_CATEGORY %}
+      <p>{{_('This tab does not show up for search results but you can search the engines listed here via bangs.')}}</p>
+    {% endif %}
     <div class="scrollx">
     <table class="striped">
       <tr>
@@ -289,12 +292,22 @@
         <th>{{ _("Max time") }}</th>
         <th>{{ _("Reliability") }}</th>
       </tr>
-      {% for search_engine in engines_by_category[categ] %}
+      {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+      {% if loop.length > 1 %}
+      <tr><th colspan="9" class="engine-group">{{_(group)}}</th></tr>
+      {% endif %}
+      {% for search_engine in engines %}
       {% if not search_engine.private %}
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
       <tr>
         <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
-        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif %} {{ search_engine.name }} {{ engine_about(search_engine) }}</th>
+        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif %}
+          {{ search_engine.name }}
+          {%- if search_engine.about and search_engine.about.language %}
+              ({{search_engine.about.language | upper}})
+          {%- endif %}
+          {{ engine_about(search_engine) }}
+        </th>
         <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
         <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
         <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>
@@ -304,6 +317,7 @@
         {{ engine_reliability(search_engine.name) }}
       </tr>
       {% endif %}
+      {% endfor %}
       {% endfor %}
     </table>
     </div>

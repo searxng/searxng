@@ -298,7 +298,7 @@
             <div class="tab-pane active_if_nojs" id="tab_engine">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-justified hide_if_nojs" role="tablist">
-                    {% for categ in all_categories %}
+                    {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
                     <li{% if loop.first %} class="active"{% endif %}><a href="#tab_engine_{{ categ|replace(' ', '_') }}" role="tab" data-toggle="tab">{{ _(categ) }}</a></li>
                     {% endfor %}
                 </ul>
@@ -317,10 +317,13 @@
                         </p>
                     </div>
 
-                    {% for categ in all_categories %}
+                    {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
                     <noscript><label>{{ _(categ) }}</label>
                     </noscript>
                     <div class="tab-pane{% if loop.first %} active{% endif %} active_if_nojs" id="tab_engine_{{ categ|replace(' ', '_') }}">
+                        {% if categ == OTHER_CATEGORY %}
+                            <p>{{_('This tab does not show up for search results but you can search the engines listed here via bangs.')}}</p>
+                        {% endif %}
                         <div class="container-fluid">
                         <fieldset>
                           <div class="table-responsive">
@@ -348,7 +351,11 @@
                                     <th scope="col" class="text-right">{{ _("Allow") }}</th>
                                     {% endif %}
                                 </tr>
-                        {% for search_engine in engines_by_category[categ] %}
+                        {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+                        {% if loop.length > 1 %}
+                        <tr><th colspan="9">{{_(group)}}</th></tr>
+                        {% endif %}
+                        {% for search_engine in engines %}
                             {% if not search_engine.private %}
                                 <tr>
                                     {% if not rtl %}
@@ -357,7 +364,11 @@
                                         </td>
                                         <th scope="row" data-engine-name="{{ search_engine.name }}"><span aria-labelledby="{{ 'tooltip_' + categ + '_' + search_engine.name }}">
                                             {%- if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif -%}
-                                            {{- search_engine.name -}}</span>
+                                            {{- search_engine.name -}}
+                                            {%- if search_engine.about and search_engine.about.language %}
+                                                ({{search_engine.about.language | upper}})
+                                            {%- endif %}
+                                            </span>
                                             {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
                                         </th>
                                         <td class="name">{{ shortcuts[search_engine.name] }}</td>
@@ -382,6 +393,7 @@
                                     {% endif %}
                                 </tr>
                             {% endif %}
+                        {% endfor %}
                         {% endfor %}
                           </table>
                           </div>
