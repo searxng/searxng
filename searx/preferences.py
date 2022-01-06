@@ -8,8 +8,7 @@
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 from zlib import compress, decompress
 from urllib.parse import parse_qs, urlencode
-from typing import Iterable, Dict, List, Set
-from dataclasses import dataclass
+from typing import Iterable, Dict, List
 
 import flask
 
@@ -199,23 +198,13 @@ class MapSetting(Setting):
             resp.set_cookie(name, self.key, max_age=COOKIE_MAX_AGE)
 
 
-@dataclass
-class Choice:
-    """A choice for a ``SwitchableSetting``."""
+class BooleanChoices:
+    """Maps strings to booleans that are either true or false."""
 
-    default_on: bool
-    id: str
-
-
-class SwitchableSetting:
-    """Base class for settings that can be turned on && off"""
-
-    def __init__(self, name: str, locked: bool, choices: Iterable[Choice]):
+    def __init__(self, name: str, choices: Dict[str, bool], locked: bool = False):
         self.name = name
-        self.locked = locked
         self.choices = choices
-        self.enabled: Set[str] = set()
-        self.disabled: Set[str] = set()
+        self.locked = locked
 
     def transform_form_items(self, items):
         # pylint: disable=no-self-use
@@ -226,25 +215,29 @@ class SwitchableSetting:
         return values
 
     def parse_cookie(self, data_disabled: str, data_enabled: str):
-        if data_disabled != '':
-            self.disabled = set(data_disabled.split(','))
-        if data_enabled != '':
-            self.enabled = set(data_enabled.split(','))
+        for disabled in data_disabled.split(','):
+            if disabled in self.choices:
+                self.choices[disabled] = False
+
+        for enabled in data_enabled.split(','):
+            if enabled in self.choices:
+                self.choices[enabled] = True
 
     def parse_form(self, items: List[str]):
         if self.locked:
             return
 
-        items = self.transform_form_items(items)
-        self.disabled = set()
-        self.enabled = set()
-        for choice in self.choices:
-            if choice.default_on:
-                if choice.id in items:
-                    self.disabled.add(choice.id)
-            else:
-                if choice.id not in items:
-                    self.enabled.add(choice.id)
+        disabled = self.transform_form_items(items)
+        for setting in self.choices:
+            self.choices[setting] = setting not in disabled
+
+    @property
+    def enabled(self):
+        return (k for k, v in self.choices.items() if v)
+
+    @property
+    def disabled(self):
+        return (k for k, v in self.choices.items() if not v)
 
     def save(self, resp: flask.Response):
         """Save cookie in the HTTP reponse obect"""
@@ -252,31 +245,23 @@ class SwitchableSetting:
         resp.set_cookie('enabled_{0}'.format(self.name), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
 
     def get_disabled(self):
-        disabled = self.disabled
-        for choice in self.choices:
-            if not choice.default_on and choice.id not in self.enabled:
-                disabled.add(choice.id)
-        return self.transform_values(disabled)
+        return self.transform_values(list(self.disabled))
 
     def get_enabled(self):
-        enabled = self.enabled
-        for choice in self.choices:
-            if choice.default_on and choice.id not in self.disabled:
-                enabled.add(choice.id)
-        return self.transform_values(enabled)
+        return self.transform_values(list(self.enabled))
 
 
-class EnginesSetting(SwitchableSetting):
+class EnginesSetting(BooleanChoices):
     """Engine settings"""
 
     def __init__(self, default_value, engines: Iterable[Engine]):
-        choices = []
+        choices = {}
         for engine in engines:
             for category in engine.categories:
                 if not category in list(settings['categories_as_tabs'].keys()) + [OTHER_CATEGORY]:
                     continue
-                choices.append(Choice(default_on=not engine.disabled, id='{}__{}'.format(engine.name, category)))
-        super().__init__(default_value, False, choices)
+                choices['{}__{}'.format(engine.name, category)] = not engine.disabled
+        super().__init__(default_value, choices)
 
     def transform_form_items(self, items):
         return [item[len('engine_') :].replace('_', ' ').replace('  ', '__') for item in items]
@@ -291,14 +276,11 @@ class EnginesSetting(SwitchableSetting):
         return transformed_values
 
 
-class PluginsSetting(SwitchableSetting):
+class PluginsSetting(BooleanChoices):
     """Plugin settings"""
 
     def __init__(self, default_value, plugins: Iterable[Plugin]):
-        choices = []
-        for plugin in plugins:
-            choices.append(Choice(default_on=plugin.default_on, id=plugin.id))
-        super().__init__(default_value, False, choices)
+        super().__init__(default_value, {plugin.id: plugin.default_on for plugin in plugins})
 
     def transform_form_items(self, items):
         return [item[len('plugin_') :] for item in items]

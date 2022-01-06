@@ -105,14 +105,14 @@ class TestSettings(SearxTestCase):
         plugin1 = PluginStub('plugin1', True)
         plugin2 = PluginStub('plugin2', True)
         setting = PluginsSetting(['3'], plugins=[plugin1, plugin2])
-        self.assertEqual(setting.get_enabled(), set(['plugin1', 'plugin2']))
+        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin2']))
 
     def test_plugins_setting_few_default_enabled(self):
         plugin1 = PluginStub('plugin1', True)
         plugin2 = PluginStub('plugin2', False)
         plugin3 = PluginStub('plugin3', True)
         setting = PluginsSetting('name', plugins=[plugin1, plugin2, plugin3])
-        self.assertEqual(setting.get_enabled(), set(['plugin1', 'plugin3']))
+        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin3']))
 
 
 class TestPreferences(SearxTestCase):
