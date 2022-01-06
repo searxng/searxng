@@ -11,7 +11,7 @@
     'files': 'file-tray-full-outline',
     'social media': 'people-outline',
 }  -%}
-<div id="categories" class="search_categories">{{- '' -}}
+<div id="categories" class="search_categories {{categories_class}}">{{- '' -}}
     <div id="categories_container">
         {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
         {%- for category in categories_as_tabs -%}

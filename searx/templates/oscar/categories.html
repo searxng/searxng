@@ -1,4 +1,4 @@
-<div id="categories">
+<div id="categories" class="{{categories_class}}">
     {% for category in ((categories_as_tabs | reverse) if rtl else categories_as_tabs) -%}
     <div class="category">
         <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}" {% if category in selected_categories %}checked="checked"{% endif %} />{{- '' -}}

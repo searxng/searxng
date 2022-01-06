@@ -19,7 +19,9 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
+      {% with categories_class='search-tabs' %}
         {%- include 'oscar/categories.html' -%}
+      {% endwith %}
     </div>
   </div>
 </form><!-- / #search_form_full -->

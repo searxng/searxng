@@ -10,7 +10,9 @@
       <button id="send_search" type="submit" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
     </div>
     {% set display_tooltip = true %}
-    {% include 'simple/categories.html' %}
+    {% with categories_class='search-tabs' %}
+      {% include 'simple/categories.html' %}
+    {% endwith %}
   </div>
   <div class="search_filters">
     {% include 'simple/filters/languages.html' %}
