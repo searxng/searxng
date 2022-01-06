@@ -14,9 +14,6 @@ Prefix ``!``
 Prefix: ``:``
   to set language
 
-Prefix: ``?``
-  to add engines and categories to the currently selected categories
-
 Abbrevations of the engines and languages are also accepted.  Engine/category
 modifiers are chainable and inclusive (e.g. with :search:`!it !ddg !wp qwer
 <?q=%21it%20%21ddg%20%21wp%20qwer>` search in IT category **and** duckduckgo

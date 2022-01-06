@@ -230,13 +230,12 @@ class TestExternalBangParser(SearxTestCase):
 class TestBang(SearxTestCase):
 
     SPECIFIC_BANGS = ['!dummy_engine', '!du', '!general']
-    NOT_SPECIFIC_BANGS = ['?dummy_engine', '?du', '?general']
     THE_QUERY = 'the query'
 
     def test_bang(self):
         load_engines(TEST_ENGINES)
 
-        for bang in TestBang.SPECIFIC_BANGS + TestBang.NOT_SPECIFIC_BANGS:
+        for bang in TestBang.SPECIFIC_BANGS:
             with self.subTest(msg="Check bang", bang=bang):
                 query_text = TestBang.THE_QUERY + ' ' + bang
                 query = RawTextQuery(query_text, [])
@@ -251,13 +250,6 @@ class TestBang(SearxTestCase):
                 query_text = TestBang.THE_QUERY + ' ' + bang
                 query = RawTextQuery(query_text, [])
                 self.assertTrue(query.specific)
-
-    def test_not_specific(self):
-        for bang in TestBang.NOT_SPECIFIC_BANGS:
-            with self.subTest(msg="Check bang is not specific", bang=bang):
-                query_text = TestBang.THE_QUERY + ' ' + bang
-                query = RawTextQuery(query_text, [])
-                self.assertFalse(query.specific)
 
     def test_bang_not_found(self):
         load_engines(TEST_ENGINES)
@@ -278,5 +270,5 @@ class TestBang(SearxTestCase):
         query = RawTextQuery('the query !', [])
         self.assertEqual(query.autocomplete_list, ['!images', '!wikipedia', '!osm'])
 
-        query = RawTextQuery('the query ?', ['osm'])
-        self.assertEqual(query.autocomplete_list, ['?images', '?wikipedia'])
+        query = RawTextQuery('the query !', ['osm'])
+        self.assertEqual(query.autocomplete_list, ['!images', '!wikipedia'])
