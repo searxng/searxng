@@ -177,7 +177,7 @@ class ExternalBangParser(QueryPartParser):
 class BangParser(QueryPartParser):
     @staticmethod
     def check(raw_value):
-        return raw_value[0] == '!' or raw_value[0] == '?'
+        return raw_value[0] == '!'
 
     def __call__(self, raw_value):
         value = raw_value[1:].replace('-', ' ').replace('_', ' ')

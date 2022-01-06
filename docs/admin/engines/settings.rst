@@ -302,7 +302,7 @@ engine is shown.  Most of the options have a default value or even are optional.
   search engine.
 
 ``shortcut`` :
-  Code used to execute bang requests (in this case using ``!bi`` or ``?bi``)
+  Code used to execute bang requests (in this case using ``!bi``)
 
 ``base_url`` : optional
   Part of the URL that should be stable across every request.  Can be useful to
