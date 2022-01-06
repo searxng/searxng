@@ -5,6 +5,7 @@
 """
 
 import re
+from time import time
 
 from urllib.parse import urlencode
 from unicodedata import normalize, combining
@@ -15,6 +16,7 @@ from lxml import html
 from babel import Locale
 from babel.localedata import locale_identifiers
 
+from searx import network
 from searx.utils import extract_text, eval_xpath, match_language
 
 # about
@@ -47,6 +49,41 @@ results_xpath = '//div[@class="w-gl__result__main"]'
 link_xpath = './/a[@class="w-gl__result-title result-link"]'
 content_xpath = './/p[@class="w-gl__description"]'
 
+# timestamp of the last fetch of 'sc' code
+sc_code_ts = 0
+sc_code = ''
+
+
+def get_sc_code(headers):
+    """Get an actual `sc` argument from startpage's home page.
+
+    Startpage puts a `sc` argument on every link.  Without this argument
+    startpage considers the request is from a bot.  We do not know what is
+    encoded in the value of the `sc` argument, but it seems to be a kind of a
+    *time-stamp*.  This *time-stamp* is valid for a few hours.
+
+    This function scrap a new *time-stamp* from startpage's home page every hour
+    (3000 sec).
+
+    """
+
+    global sc_code_ts, sc_code  # pylint: disable=global-statement
+
+    if time() > (sc_code_ts + 3000):
+        logger.debug("query new sc time-stamp ...")
+
+        resp = network.get(base_url, headers=headers)
+        dom = html.fromstring(resp.text)
+
+        # href --> '/?sc=adrKJMgF8xwp20'
+        href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+
+        sc_code = href[5:]
+        sc_code_ts = time()
+        logger.debug("new value is: %s", sc_code)
+
+    return sc_code
+
 
 # do search-request
 def request(query, params):
@@ -56,7 +93,7 @@ def request(query, params):
         'page': params['pageno'],
         'cat': 'web',
         # 'abp': "-1",
-        'sc': 'Mj4jZy61QETj20',
+        'sc': get_sc_code(params['headers']),
     }
 
     # set language if specified
