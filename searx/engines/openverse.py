@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
 
- Creative Commons search engine (Images)
+ Openverse (formerly known as: Creative Commons search engine) [Images]
 
 """
 
