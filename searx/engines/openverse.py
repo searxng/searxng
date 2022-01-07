@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
 
- Creative Commons search engine (Images)
+ Openverse (formerly known as: Creative Commons search engine) [Images]
 
 """
 
@@ -10,9 +10,9 @@ from urllib.parse import urlencode
 
 
 about = {
-    "website": 'https://search.creativecommons.org/',
+    "website": 'https://wordpress.org/openverse/',
     "wikidata_id": None,
-    "official_api_documentation": 'https://api.creativecommons.engineering/v1/',
+    "official_api_documentation": 'https://api.openverse.engineering/v1/',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
@@ -23,8 +23,8 @@ categories = ['images']
 paging = True
 nb_per_page = 20
 
-base_url = 'https://api.creativecommons.engineering/v1/images?'
-search_string = '&page={page}&page_size={nb_per_page}&format=json&{query}'
+base_url = 'https://api.openverse.engineering/v1/images/'
+search_string = '?page={page}&page_size={nb_per_page}&format=json&{query}'
 
 
 def request(query, params):
