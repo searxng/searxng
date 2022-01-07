@@ -479,13 +479,6 @@ engines:
     timeout: 3.0
     disabled: true
 
-  - name: etools
-    engine: etools
-    shortcut: eto
-    disabled: true
-    additional_tests:
-      rosebud: *test_rosebud
-
   - name: etymonline
     engine: xpath
     paging: true
