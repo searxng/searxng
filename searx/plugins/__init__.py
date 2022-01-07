@@ -10,8 +10,18 @@ from os.path import abspath, basename, dirname, exists, join
 from shutil import copyfile
 from pkgutil import iter_modules
 from logging import getLogger
+from typing import List
 
 from searx import logger, settings
+
+
+class Plugin:  # pylint: disable=too-few-public-methods
+    """This class is currently never initialized and only used for type hinting."""
+
+    id: str
+    name: str
+    description: str
+    default_on: bool
 
 
 logger = logger.getChild("plugins")
@@ -175,7 +185,7 @@ def load_and_initialize_plugin(plugin_module_name, external, init_args):
 
 class PluginStore:
     def __init__(self):
-        self.plugins = []
+        self.plugins: List[Plugin] = []
 
     def __iter__(self):
         for plugin in self.plugins:

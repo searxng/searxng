@@ -1,7 +1,6 @@
 from searx.preferences import (
     EnumStringSetting,
     MapSetting,
-    MissingArgumentException,
     SearchLanguageSetting,
     MultipleChoiceSetting,
     PluginsSetting,
@@ -18,10 +17,6 @@ class PluginStub:
 
 class TestSettings(SearxTestCase):
     # map settings
-
-    def test_map_setting_invalid_initialization(self):
-        with self.assertRaises(MissingArgumentException):
-            MapSetting(3, wrong_argument={'0': 0})
 
     def test_map_setting_invalid_default_value(self):
         with self.assertRaises(ValidationException):
@@ -43,9 +38,6 @@ class TestSettings(SearxTestCase):
         self.assertEqual(setting.get_value(), 2)
 
     # enum settings
-    def test_enum_setting_invalid_initialization(self):
-        with self.assertRaises(MissingArgumentException):
-            EnumStringSetting('cat', wrong_argument=[0, 1, 2])
 
     def test_enum_setting_invalid_default_value(self):
         with self.assertRaises(ValidationException):
@@ -67,9 +59,6 @@ class TestSettings(SearxTestCase):
         self.assertEqual(setting.get_value(), 2)
 
     # multiple choice settings
-    def test_multiple_setting_invalid_initialization(self):
-        with self.assertRaises(MissingArgumentException):
-            MultipleChoiceSetting(['2'], wrong_argument=['0', '1', '2'])
 
     def test_multiple_setting_invalid_default_value(self):
         with self.assertRaises(ValidationException):
@@ -115,15 +104,15 @@ class TestSettings(SearxTestCase):
     def test_plugins_setting_all_default_enabled(self):
         plugin1 = PluginStub('plugin1', True)
         plugin2 = PluginStub('plugin2', True)
-        setting = PluginsSetting(['3'], choices=[plugin1, plugin2])
-        self.assertEqual(setting.get_enabled(), set(['plugin1', 'plugin2']))
+        setting = PluginsSetting(['3'], plugins=[plugin1, plugin2])
+        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin2']))
 
     def test_plugins_setting_few_default_enabled(self):
         plugin1 = PluginStub('plugin1', True)
         plugin2 = PluginStub('plugin2', False)
         plugin3 = PluginStub('plugin3', True)
-        setting = PluginsSetting('name', choices=[plugin1, plugin2, plugin3])
-        self.assertEqual(setting.get_enabled(), set(['plugin1', 'plugin3']))
+        setting = PluginsSetting('name', plugins=[plugin1, plugin2, plugin3])
+        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin3']))
 
 
 class TestPreferences(SearxTestCase):
