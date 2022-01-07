@@ -1163,8 +1163,8 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   flex-flow: row wrap;
   align-content: stretch;
 }
-.search_categories label,
-#categories label,
+.search_categories .category,
+#categories .category,
 .search_categories .input-group-addon,
 #categories .input-group-addon {
   flex-grow: 1;
@@ -1175,13 +1175,20 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   border: #DDD 1px solid;
   border-right: none;
   color: #666;
-  padding-bottom: 0.4rem;
-  padding-top: 0.4rem;
   text-align: center;
   min-width: 50px;
+  display: flex;
+  flex-direction: column;
 }
-.search_categories label:last-child,
-#categories label:last-child,
+.search_categories label,
+#categories label {
+  flex-grow: 1;
+  margin-bottom: 0;
+  padding-bottom: 0.4rem;
+  padding-top: 0.4rem;
+}
+.search_categories .category:last-child,
+#categories .category:last-child,
 .search_categories .input-group-addon:last-child,
 #categories .input-group-addon:last-child {
   border-right: #DDD 1px solid;
@@ -1255,7 +1262,7 @@ select.form-control {
   margin-bottom: 1rem;
   clear: both;
 }
-#advanced-search-container label,
+#advanced-search-container .category,
 #advanced-search-container .input-group-addon {
   font-size: 1.2rem;
   font-weight: normal;
@@ -1263,11 +1270,8 @@ select.form-control {
   border: #DDD 1px solid;
   border-right: none;
   color: #666;
-  padding-bottom: 0.4rem;
-  padding-right: 0.7rem;
-  padding-left: 0.7rem;
 }
-#advanced-search-container label:last-child,
+#advanced-search-container .category:last-child,
 #advanced-search-container .input-group-addon:last-child {
   border-right: #DDD 1px solid;
 }

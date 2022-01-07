@@ -946,8 +946,8 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   flex-wrap: wrap;
   align-content: stretch;
 }
-.search_categories label,
-#categories label,
+.search_categories .category,
+#categories .category,
 .search_categories .input-group-addon,
 #categories .input-group-addon {
   flex-grow: 1;
@@ -958,13 +958,20 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   border: #DDD 1px solid;
   border-right: none;
   color: #333;
-  padding-bottom: 0.8rem;
-  padding-top: 0.8rem;
   text-align: center;
   min-width: 50px;
+  display: flex;
+  flex-direction: column;
 }
-.search_categories label:last-child,
-#categories label:last-child,
+.search_categories label,
+#categories label {
+  flex-grow: 1;
+  margin-bottom: 0;
+  padding-bottom: 0.8rem;
+  padding-top: 0.8rem;
+}
+.search_categories .category:last-child,
+#categories .category:last-child,
 .search_categories .input-group-addon:last-child,
 #categories .input-group-addon:last-child {
   border-right: #DDD 1px solid;
@@ -992,7 +999,7 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   margin-bottom: 1rem;
   clear: both;
 }
-#advanced-search-container label,
+#advanced-search-container .category,
 #advanced-search-container .input-group-addon {
   font-size: 1.3rem;
   font-weight: normal;
@@ -1000,11 +1007,8 @@ input[type=checkbox]:not(:checked) + .label_hide_if_checked + .label_hide_if_not
   border: #DDD 1px solid;
   border-right: none;
   color: #333;
-  padding-bottom: 0.8rem;
-  padding-left: 1.2rem;
-  padding-right: 1.2rem;
 }
-#advanced-search-container label:last-child,
+#advanced-search-container .category:last-child,
 #advanced-search-container .input-group-addon:last-child {
   border-right: #DDD 1px solid;
 }
