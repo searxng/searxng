@@ -23,8 +23,8 @@ categories = ['images']
 paging = True
 nb_per_page = 20
 
-base_url = 'https://api.openverse.engineering/v1/images?'
-search_string = '&page={page}&page_size={nb_per_page}&format=json&{query}'
+base_url = 'https://api.openverse.engineering/v1/images/'
+search_string = '?page={page}&page_size={nb_per_page}&format=json&{query}'
 
 
 def request(query, params):
