@@ -1,7 +1,12 @@
 
-.. _search-syntax:
+.. _how to search:
 
 =============
+How to search
+=============
+
+.. _search-syntax:
+
 Search syntax
 =============
 

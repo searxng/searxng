@@ -6,5 +6,5 @@ User documentation
    :maxdepth: 2
    :caption: Contents
 
-   search_syntax
+   how-to-search
    own-instance
