@@ -226,7 +226,7 @@ Communication with search engines.
 -----------------------
 
 A list of the categories that are displayed as tabs in the user interface.
-Categories not listed here can still be searched with the :ref:`search-syntax`.
+Categories not listed here can still be searched with the :ref:`bang syntax`.
 
 .. code-block:: yaml
 

@@ -29,7 +29,7 @@ Parameters
   passed to any search engine which does not filter its results based on this
   syntax, you might not get the results you wanted.
 
-  See more at :ref:`search-syntax`
+  See more at :ref:`how to search`
 
 ``categories`` : optional
   Comma separated list, specifies the active search categories
