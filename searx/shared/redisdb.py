@@ -24,10 +24,16 @@ import redis
 from searx import get_setting
 
 logger = logging.getLogger('searx.shared.redis')
+_client = None
 
 
 def client():
-    return redis.Redis.from_url(get_setting('redis.url'))
+    global _client  # pylint: disable=global-statement
+    if _client is None:
+        # not thread safe: in the worst case scenario, two or more clients are
+        # initialized only one is kept, the others are garbage collected.
+        _client = redis.Redis.from_url(get_setting('redis.url'))
+    return _client
 
 
 def init():
