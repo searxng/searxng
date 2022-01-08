@@ -3,6 +3,7 @@
 
 import  sys, os
 from pallets_sphinx_themes import ProjectLink
+from flask import Flask
 
 from searx import get_setting
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
@@ -40,7 +41,13 @@ exclude_patterns = ['build-templates/*.rst']
 import searx.engines
 import searx.plugins
 import searx.webutils
+
+# bypass a creepy check of the secret_key in searx.webapp
+searx.settings['server']['secret_key'] = ''
+from searx.webapp import application
+
 searx.engines.load_engines(searx.settings['engines'])
+searx.plugins.initialize(application)
 
 jinja_contexts = {
     'searx': {
