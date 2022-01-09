@@ -95,7 +95,7 @@ def get_sc_code(headers):
             # suspend startpage API --> https://github.com/searxng/searxng/pull/695
             raise SearxEngineResponseException(
                 suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
-            )
+            ) from exc
 
         sc_code = href[5:]
         sc_code_ts = time()
@@ -107,10 +107,19 @@ def get_sc_code(headers):
 # do search-request
 def request(query, params):
 
+    # pylint: disable=line-too-long
+    # The format string from Startpage's FFox add-on [1]::
+    #
+    #     https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=ext-ff&language=__MSG_extensionUrlLanguage__&extVersion=1.3.0
+    #
+    # [1] https://addons.mozilla.org/en-US/firefox/addon/startpage-private-search/
+
     args = {
         'query': query,
         'page': params['pageno'],
         'cat': 'web',
+        # 'pl': 'ext-ff',
+        # 'extVersion': '1.3.0',
         # 'abp': "-1",
         'sc': get_sc_code(params['headers']),
     }
