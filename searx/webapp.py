@@ -932,7 +932,7 @@ def preferences():
     allowed_plugins = request.preferences.plugins.get_enabled()
 
     # stats for preferences page
-    filtered_engines = dict(filter(lambda kv: (kv[0], request.preferences.validate_token(kv[1])), engines.items()))
+    filtered_engines = dict(filter(lambda kv: request.preferences.validate_token(kv[1]), engines.items()))
 
     engines_by_category = {}
 
@@ -1163,7 +1163,7 @@ def stats():
     sort_order = request.args.get('sort', default='name', type=str)
     selected_engine_name = request.args.get('engine', default=None, type=str)
 
-    filtered_engines = dict(filter(lambda kv: (kv[0], request.preferences.validate_token(kv[1])), engines.items()))
+    filtered_engines = dict(filter(lambda kv: request.preferences.validate_token(kv[1]), engines.items()))
     if selected_engine_name:
         if selected_engine_name not in filtered_engines:
             selected_engine_name = None
@@ -1210,7 +1210,7 @@ def stats():
 
 @app.route('/stats/errors', methods=['GET'])
 def stats_errors():
-    filtered_engines = dict(filter(lambda kv: (kv[0], request.preferences.validate_token(kv[1])), engines.items()))
+    filtered_engines = dict(filter(lambda kv: request.preferences.validate_token(kv[1]), engines.items()))
     result = get_engine_errors(filtered_engines)
     return jsonify(result)
 
