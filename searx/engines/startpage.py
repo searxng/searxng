@@ -18,6 +18,11 @@ from babel.localedata import locale_identifiers
 
 from searx import network
 from searx.utils import extract_text, eval_xpath, match_language
+from searx.exceptions import (
+    SearxEngineResponseException,
+    SearxEngineCaptchaException,
+)
+
 
 # about
 about = {
@@ -54,6 +59,13 @@ sc_code_ts = 0
 sc_code = ''
 
 
+def raise_captcha(resp):
+
+    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
+        # suspend CAPTCHA for 7 days
+        raise SearxEngineCaptchaException(suspended_time=7 * 24 * 3600)
+
+
 def get_sc_code(headers):
     """Get an actual `sc` argument from startpage's home page.
 
@@ -73,10 +85,17 @@ def get_sc_code(headers):
         logger.debug("query new sc time-stamp ...")
 
         resp = network.get(base_url, headers=headers)
+        raise_captcha(resp)
         dom = html.fromstring(resp.text)
 
-        # href --> '/?sc=adrKJMgF8xwp20'
-        href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+        try:
+            # href --> '/?sc=adrKJMgF8xwp20'
+            href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+        except IndexError as exc:
+            # suspend startpage API --> https://github.com/searxng/searxng/pull/695
+            raise SearxEngineResponseException(
+                suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
+            )
 
         sc_code = href[5:]
         sc_code_ts = time()
