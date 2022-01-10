@@ -44,6 +44,7 @@ ENGINE_DEFAULT_ARGS = {
     "enable_http": False,
     "display_error_messages": True,
     "tokens": [],
+    "about": {},
 }
 # set automatically when an engine does not have any tab category
 OTHER_CATEGORY = 'other'
