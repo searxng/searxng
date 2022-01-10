@@ -356,14 +356,15 @@ engine is shown.  Most of the options have a default value or even are optional.
 Example: Multilingual Search
 ----------------------------
 
-SearXNG does not support true multilingual search.
-You have to use the language prefix in your search query when searching in a different language.
+SearXNG does not support true multilingual search.  You have to use the language
+prefix in your search query when searching in a different language.
 
-But there is a workaround:
-By adding a new search engine with a different language, SearXNG will search in your default and other language.
+But there is a workaround: By adding a new search engine with a different
+language, SearXNG will search in your default and other language.
 
 Example configuration in settings.yml for a German and English speaker:
- .. code-block:: yaml
+
+.. code-block:: yaml
 
     search:
         default_lang : "de"
@@ -375,7 +376,9 @@ Example configuration in settings.yml for a German and English speaker:
         language : en
         ...
 
-When searching, the default google engine will return German results and "google english" will return English results.
+When searching, the default google engine will return German results and
+"google english" will return English results.
+
 
 .. _settings use_default_settings:
 
