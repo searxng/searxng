@@ -10,7 +10,7 @@ Type=simple
 User=${SERVICE_USER}
 Group=${SERVICE_GROUP}
 WorkingDirectory=${SERVICE_HOME}
-ExecStart=${SERVICE_HOME}/go-apps/bin/filtron -api '${FILTRON_API}' -listen '${FILTRON_LISTEN}' -rules '${FILTRON_RULES}' -target '${FILTRON_TARGET}'
+ExecStart=${SERVICE_HOME}/go-apps/bin/filtron -api '${FILTRON_API}' -listen '${FILTRON_LISTEN}' -rules '${FILTRON_RULES}' -target '${FILTRON_TARGET}' -read-buffer-size 65536
 
 Restart=always
 Environment=USER=${SERVICE_USER} HOME=${SERVICE_HOME}
