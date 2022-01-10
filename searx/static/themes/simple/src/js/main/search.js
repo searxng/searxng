@@ -73,6 +73,16 @@
             this.DOMResults.style.left = this.Input.offsetLeft + "px";
             this.DOMResults.style.width = this.Input.clientWidth + "px";
           },
+          _Open: function () {
+            var params = this;
+            Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function (li) {
+              if (li.getAttribute("class") != "locked") {
+                li.onmousedown = function () {
+                  params._Select(li);
+                };
+              }
+            });
+          },
         }, "#" + qinput_id);
 
         // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
