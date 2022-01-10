@@ -51,13 +51,13 @@ Example configuration in settings.yml for a German and English speaker:
  .. code-block:: yaml
 
     search:
-        language : "de"
+        default_lang : "de"
         ...
 
     engines:
       - name : google english
         engine : google
-        language : english
+        language : en
         ...
 
 When searching, the default google engine will return German results and "google english" will return English results.
