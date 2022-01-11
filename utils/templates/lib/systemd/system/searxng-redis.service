@@ -1,0 +1,42 @@
+[Unit]
+
+Description=SearXNG redis service
+After=syslog.target
+After=network.target
+Documentation=https://redis.io/documentation
+
+[Service]
+
+Type=simple
+User=${REDIS_USER}
+Group=${REDIS_USER}
+WorkingDirectory=${REDIS_HOME}
+Restart=always
+TimeoutStopSec=0
+
+Environment=USER=${REDIS_USER} HOME=${REDIS_HOME}
+ExecStart=${REDIS_HOME_BIN}/redis-server ${REDIS_CONF}
+ExecPaths=${REDIS_HOME_BIN}
+
+LimitNOFILE=65535
+NoNewPrivileges=true
+PrivateDevices=yes
+
+# ProtectSystem=full
+ProtectHome=yes
+ReadOnlyDirectories=/
+ReadWritePaths=-${REDIS_HOME}/run
+
+UMask=007
+PrivateTmp=yes
+
+MemoryDenyWriteExecute=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+
+[Install]
+
+WantedBy=multi-user.target

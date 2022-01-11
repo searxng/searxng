@@ -142,6 +142,36 @@ Global Settings
 ``default_http_headers``:
   Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
 
+
+.. _settings redis:
+
+``redis:``
+----------
+
+.. _Redis.from_url(url): https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
+
+``url``
+  URL to connect redis database, see `Redis.from_url(url)`_ & :ref:`redis db`::
+
+    redis://[[username]:[password]]@localhost:6379/0
+    rediss://[[username]:[password]]@localhost:6379/0
+    unix://[[username]:[password]]@/path/to/socket.sock?db=0
+
+.. admonition:: Tip for developers
+
+   To set up a redis instance simply use::
+
+     $ ./manage redis.build
+     $ sudo -H ./manage redis.install
+
+   To get access rights to this instance, your developer account needs to be
+   added to the *searxng-redis* group::
+
+     $ sudo -H ./manage redis.addgrp "${USER}"
+     # don't forget to logout & login to get member of group
+
+.. _settings outgoing:
+
 ``outgoing:``
 -------------
 

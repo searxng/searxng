@@ -63,6 +63,7 @@ test.shell:
 		utils/lib_nvm.sh \
 		utils/lib_static.sh \
 		utils/lib_go.sh \
+		utils/lib_redis.sh \
 		utils/filtron.sh \
 		utils/searx.sh \
 		utils/morty.sh \
