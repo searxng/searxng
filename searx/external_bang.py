@@ -2,6 +2,8 @@
 
 from searx.data import EXTERNAL_BANGS
 
+LEAF_KEY = chr(16)
+
 
 def get_node(external_bangs_db, bang):
     node = external_bangs_db['trie']
@@ -26,8 +28,8 @@ def get_bang_definition_and_ac(external_bangs_db, bang):
             if k.startswith(after):
                 bang_ac_list.append(before + k)
     elif isinstance(node, dict):
-        bang_definition = node.get('*')
-        bang_ac_list = [before + k for k in node.keys() if k != '*']
+        bang_definition = node.get(LEAF_KEY)
+        bang_ac_list = [before + k for k in node.keys() if k != LEAF_KEY]
     elif isinstance(node, str):
         bang_definition = node
         bang_ac_list = []
