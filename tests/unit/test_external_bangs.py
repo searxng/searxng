@@ -1,4 +1,10 @@
-from searx.external_bang import get_node, resolve_bang_definition, get_bang_url, get_bang_definition_and_autocomplete
+from searx.external_bang import (
+    get_node,
+    resolve_bang_definition,
+    get_bang_url,
+    get_bang_definition_and_autocomplete,
+    LEAF_KEY,
+)
 from searx.search import SearchQuery, EngineRef
 from tests import SearxTestCase
 
@@ -7,12 +13,12 @@ TEST_DB = {
     'trie': {
         'exam': {
             'ple': '//example.com/' + chr(2) + chr(1) + '0',
-            '*': '//wikipedia.org/wiki/' + chr(2) + chr(1) + '0',
+            LEAF_KEY: '//wikipedia.org/wiki/' + chr(2) + chr(1) + '0',
         },
         'sea': {
-            '*': 'sea' + chr(2) + chr(1) + '0',
+            LEAF_KEY: 'sea' + chr(2) + chr(1) + '0',
             'rch': {
-                '*': 'search' + chr(2) + chr(1) + '0',
+                LEAF_KEY: 'search' + chr(2) + chr(1) + '0',
                 'ing': 'searching' + chr(2) + chr(1) + '0',
             },
             's': {
@@ -31,7 +37,7 @@ class TestGetNode(SearxTestCase):
         'trie': {
             'exam': {
                 'ple': 'test',
-                '*': 'not used',
+                LEAF_KEY: 'not used',
             }
         }
     }
@@ -71,7 +77,7 @@ class TestResolveBangDefinition(SearxTestCase):
 class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
     def test_found(self):
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('exam', external_bangs_db=TEST_DB)
-        self.assertEqual(bang_definition, TEST_DB['trie']['exam']['*'])
+        self.assertEqual(bang_definition, TEST_DB['trie']['exam'][LEAF_KEY])
         self.assertEqual(new_autocomplete, ['example'])
 
     def test_found_optimized(self):
@@ -86,7 +92,7 @@ class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
 
     def test_partial2(self):
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('sea', external_bangs_db=TEST_DB)
-        self.assertEqual(bang_definition, TEST_DB['trie']['sea']['*'])
+        self.assertEqual(bang_definition, TEST_DB['trie']['sea'][LEAF_KEY])
         self.assertEqual(new_autocomplete, ['search', 'searching', 'seascapes', 'season'])
 
     def test_error(self):

@@ -25,7 +25,7 @@ from os.path import join
 import httpx
 
 from searx import searx_dir  # pylint: disable=E0401 C0413
-
+from searx.external_bang import LEAF_KEY
 
 # from https://duckduckgo.com/newbang
 URL_BV1 = 'https://duckduckgo.com/bv1.js'
@@ -51,18 +51,22 @@ def fetch_ddg_bangs(url):
 def merge_when_no_leaf(node):
     """Minimize the number of nodes
 
-    A -> B -> C
-    B is child of A
-    C is child of B
+    ``A -> B -> C``
 
-    If there are no C equals to '*', then each C are merged into A
+    - ``B`` is child of ``A``
+    - ``C`` is child of ``B``
 
-    For example:
-      d -> d -> g -> * (ddg*)
-        -> i -> g -> * (dig*)
-    becomes
-      d -> dg -> *
-        -> ig -> *
+    If there are no ``C`` equals to ``<LEAF_KEY>``, then each ``C`` are merged
+    into ``A``.  For example (5 nodes)::
+
+      d -> d -> g -> <LEAF_KEY> (ddg)
+        -> i -> g -> <LEAF_KEY> (dig)
+
+    becomes (3 noodes)::
+
+      d -> dg -> <LEAF_KEY>
+        -> ig -> <LEAF_KEY>
+
     """
     restart = False
     if not isinstance(node, dict):
@@ -72,12 +76,12 @@ def merge_when_no_leaf(node):
     keys = list(node.keys())
 
     for key in keys:
-        if key == '*':
+        if key == LEAF_KEY:
             continue
 
         value = node[key]
         value_keys = list(value.keys())
-        if '*' not in value_keys:
+        if LEAF_KEY not in value_keys:
             for value_key in value_keys:
                 node[key + value_key] = value[value_key]
                 merge_when_no_leaf(node[key + value_key])
@@ -94,8 +98,8 @@ def optimize_leaf(parent, parent_key, node):
     if not isinstance(node, dict):
         return
 
-    if len(node) == 1 and '*' in node and parent is not None:
-        parent[parent_key] = node['*']
+    if len(node) == 1 and LEAF_KEY in node and parent is not None:
+        parent[parent_key] = node[LEAF_KEY]
     else:
         for key, value in node.items():
             optimize_leaf(node, key, value)
@@ -138,7 +142,7 @@ def parse_ddg_bangs(ddg_bangs):
         t = bang_trie
         for bang_letter in bang:
             t = t.setdefault(bang_letter, {})
-        t = t.setdefault('*', bang_def_output)
+        t = t.setdefault(LEAF_KEY, bang_def_output)
 
     # optimize the trie
     merge_when_no_leaf(bang_trie)

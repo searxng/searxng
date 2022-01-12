@@ -2,6 +2,8 @@
 
 from searx.data import EXTERNAL_BANGS
 
+LEAF_KEY = chr(16)
+
 
 def get_node(external_bangs_db, bang):
     node = external_bangs_db['trie']
@@ -26,8 +28,8 @@ def get_bang_definition_and_ac(external_bangs_db, bang):
             if k.startswith(after):
                 bang_ac_list.append(before + k)
     elif isinstance(node, dict):
-        bang_definition = node.get('*')
-        bang_ac_list = [before + k for k in node.keys() if k != '*']
+        bang_definition = node.get(LEAF_KEY)
+        bang_ac_list = [before + k for k in node.keys() if k != LEAF_KEY]
     elif isinstance(node, str):
         bang_definition = node
         bang_ac_list = []
@@ -77,11 +79,14 @@ def get_bang_url(search_query, external_bangs_db=None):
     :param search_query: This is a search_query object which contains preferences and the submitted queries.
     :return: None if the bang was invalid, else a string of the redirect url.
     """
+    ret_val = None
+
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 
     if search_query.external_bang:
         bang_definition, _ = get_bang_definition_and_ac(external_bangs_db, search_query.external_bang)
-        return resolve_bang_definition(bang_definition, search_query.query)[0] if bang_definition else None
+        if bang_definition and isinstance(bang_definition, str):
+            ret_val = resolve_bang_definition(bang_definition, search_query.query)[0]
 
-    return None
+    return ret_val
