@@ -1,6 +1,6 @@
 #tab-contentquery table td,
 #tab-contentquery table th {
-  text-align: left !important;
+  .ltr-text-align-right() !important;
   height: 3rem;
 }
 
@@ -18,20 +18,23 @@
     margin: 0;
     padding: 5px 0 0 0;
     display: block;
-    float: left;
+    .ltr-float-left();
     width: 300px;
   }
 
   .value {
     margin: 0;
     padding: 0;
-    float: left;
+    .ltr-float-left();
     width: 15em;
 
     select,
     input[type="text"] {
       font-size: inherit !important;
-      margin: 0 1rem 0 0;
+      margin-top: 0;
+      .ltr-margin-right(1rem);
+      margin-bottom: 0;
+      .ltr-margin-left(0);
     }
 
     select {
@@ -63,7 +66,7 @@
   .description {
     margin: 0;
     padding: 5px 0 0 0;
-    float: left;
+    .ltr-float-right();
     width: 50%;
     color: var(--color-settings-engine-description-font);
     font-size: 90%;
@@ -82,7 +85,7 @@
 
     th,
     td {
-      text-align: left;
+      .ltr-text-align-left();
       font-family: monospace;
       font-size: 1rem;
       padding: 0.5em;
@@ -106,7 +109,7 @@
   }
 
   .category {
-    margin-right: 0.5rem;
+    .ltr-margin-right(0.5rem);
 
     label {
       border: 2px solid transparent;
@@ -121,7 +124,7 @@
 
   .name,
   .shortcut {
-    text-align: left;
+    .ltr-text-align-left();
   }
 
   .preferences_back {
@@ -153,7 +156,7 @@
   th.name {
     .engine-tooltip {
       margin-top: 1.8rem;
-      left: calc((100% - 85em) / 2 + 10em);
+      .ltr-left(calc((100% - 85em) / 2 + 10em));
       max-width: 40rem;
 
       .engine-description {
@@ -163,7 +166,7 @@
   }
 
   .engine-group {
-    text-align: left;
+    .ltr-text-align-left();
     font-weight: normal;
     background: var(--color-settings-engine-group-background);
   }
@@ -175,6 +178,6 @@
   }
 
   .engine-tooltip {
-    left: 10em !important;
+    .ltr-left(10em) !important;
   }
 }

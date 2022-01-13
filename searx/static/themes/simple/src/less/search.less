@@ -8,7 +8,9 @@
 }
 
 #search_header {
-  padding: 1.5em 2em 0 @results-offset - 3rem;
+  padding-top: 1.5em;
+  .ltr-padding-right(2em);
+  .ltr-padding-left(@results-offset - 3rem);
   margin: 0;
   background: var(--color-header-background);
   border-bottom: 1px solid var(--color-header-border);
@@ -24,7 +26,7 @@
 .category {
   display: inline-block;
   position: relative;
-  margin-right: 1rem;
+  .ltr-margin-right(1rem);
   padding: 0;
 
   input {
@@ -127,11 +129,11 @@
 
 #q {
   outline: medium none;
-  padding-left: 12px;
-  padding-right: 0 !important;
-  border-right: none;
+  .ltr-padding-left(12px);
+  .ltr-padding-right(0) !important;
+  .ltr-border-right(none);
   width: @search-width;
-  border-radius: 10px 0 0 10px;
+  .ltr-rounded-left-corners();
 }
 
 #q::-ms-clear,
@@ -140,8 +142,8 @@
 }
 
 #send_search {
-  border-left: none;
-  border-radius: 0 10px 10px 0;
+  .ltr-border-left(none);
+  .ltr-rounded-right-corners();
 
   &:hover {
     cursor: pointer;
@@ -153,12 +155,15 @@
 .no-js #clear_search,
 .no-js #send_search {
   width: auto !important;
-  border-left: 1px solid var(--color-search-border);
+  .ltr-border-left(1px solid var(--color-search-border));
   padding: 10px;
 }
 
 .search_filters {
-  margin: 0.6rem 0 0 @results-offset + 0.6rem;
+  margin-top: 0.6rem;
+  .ltr-margin-right(0);
+  margin-bottom: 0;
+  .ltr-margin-left(@results-offset + 0.6rem);
 
   select {
     background-color: inherit;
@@ -177,7 +182,10 @@
   }
 
   .search_filters {
-    margin: 0.6rem 0 0 @results-tablet-offset + 3rem;
+    margin-top: 0.6rem;
+    .ltr-margin-right(0);
+    margin-bottom: 0;
+    .ltr-margin-left(@results-tablet-offset + 3rem);
   }
 
   #categories {
@@ -204,7 +212,7 @@
 
       #categories {
         width: 100%;
-        text-align: left;
+        .ltr-text-align-left();
         overflow-x: scroll;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
@@ -243,7 +251,7 @@
 
   #main_results #q:placeholder-shown ~ #send_search {
     margin-right: 2.6rem;
-    transition: margin-right 0.1s;
+    transition: margin-right 0.1s; // FIX RTL
   }
 
   .search_filters {

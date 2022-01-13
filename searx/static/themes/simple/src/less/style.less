@@ -33,6 +33,7 @@
   vertical-align: bottom;
   line-height: 1;
   text-decoration: inherit;
+  .ltr-transform();
 }
 
 .ion-icon-small {
@@ -139,8 +140,8 @@ a {
 
 article[data-vim-selected] {
   background: var(--color-result-vim-selected);
-  border-left: 0.2rem solid var(--color-result-vim-arrow);
-  .rounded-right-corners;
+  .ltr-border-left(0.2rem solid var(--color-result-vim-arrow));
+  .ltr-rounded-right-corners();
 }
 
 article.result-images[data-vim-selected] {
@@ -166,7 +167,7 @@ article[data-vim-selected].category-social {
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
-  border-left: 0.2rem solid transparent;
+  .ltr-border-left(0.2rem solid transparent);
 
   h3 {
     font-size: 1.2rem;
@@ -264,15 +265,17 @@ article[data-vim-selected].category-social {
 
   img {
     &.thumbnail {
-      float: left;
-      padding: 0.6rem 1rem 0 0;
+      .ltr-float-left();
+      padding-top: 0.6rem;
+      .ltr-padding-right(1rem);
       width: 20rem;
       height: unset; // remove heigth value that was needed for lazy loading
     }
 
     &.image {
-      float: left;
-      padding: 0.6rem 1rem 0 0;
+      .ltr-float-left();
+      padding-top: 0.6rem;
+      .ltr-padding-right(1rem);
       width: 7rem;
       max-height: 7rem;
       object-fit: scale-down;
@@ -308,12 +311,15 @@ article[data-vim-selected].category-social {
 }
 
 .engines {
-  float: right;
+  .ltr-float-right();
   color: var(--color-result-engines-font);
 
   span {
     font-size: smaller;
-    margin: 0 0.5em 0 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    .ltr-margin-right(0.5rem);
+    .ltr-margin-left(0);
   }
 }
 
@@ -356,9 +362,12 @@ article[data-vim-selected].category-social {
     display: block;
     position: absolute;
     bottom: 0;
-    right: 0;
+    .ltr-right(0);
     padding: 4px;
-    margin: 0 0 4px 4px;
+    margin-top: 0;
+    .ltr-margin-right(0);
+    margin-bottom: 4px;
+    .ltr-margin-left(4px);
     // color: @color-result-image-span-font;
     background-color: var(--color-result-image-span-background-hover);
     font-size: 0.7em;
@@ -367,7 +376,7 @@ article[data-vim-selected].category-social {
 
 .result-map {
   img.image {
-    float: right !important;
+    .ltr-float-right() !important;
     height: 100px !important;
     width: auto !important;
   }
@@ -382,12 +391,12 @@ article[data-vim-selected].category-social {
       font-weight: inherit;
       width: 17rem;
       vertical-align: top;
-      text-align: left;
+      .ltr-text-align-left();
     }
 
     td {
       vertical-align: top;
-      text-align: left;
+      .ltr-text-align-left();
     }
   }
 }
@@ -397,7 +406,10 @@ article[data-vim-selected].category-social {
 }
 
 #results {
-  margin: 1rem 2rem 0 @results-offset;
+  margin-top: 1rem;
+  .ltr-margin-right(2rem);
+  margin-bottom: 0;
+  .ltr-margin-left(@results-offset);
   display: grid;
   grid-template-columns: @results-width 25rem;
   grid-template-rows: min-content min-content 1fr min-content;
@@ -533,7 +545,10 @@ article[data-vim-selected].category-social {
 
     dt {
       display: inline;
-      margin: 0.5em 0.25em 0.5em 0;
+      margin-top: 0.5em;
+      .ltr-margin-right(0.25em);
+      margin-bottom: 0.5em;
+      .ltr-margin-left(0);
       padding: 0;
       font-weight: bold;
     }
@@ -571,7 +586,7 @@ article[data-vim-selected].category-social {
 
 #linkto_preferences {
   position: absolute;
-  right: 10px;
+  .ltr-right(10px);
   top: 2.2rem;
   padding: 0;
   border: 0;
@@ -608,7 +623,7 @@ article[data-vim-selected].category-social {
   background: var(--color-backtotop-background);
   position: fixed;
   bottom: 8rem;
-  left: @results-width + @results-offset + (0.5 * @results-gap - 1.2em);
+  .ltr-left(@results-width + @results-offset + (0.5 * @results-gap - 1.2em));
   transition: opacity 0.5s;
   opacity: 0;
   .rounded-corners;
@@ -647,9 +662,12 @@ article[data-vim-selected].category-social {
       clear: both;
 
       img {
-        float: left;
+        .ltr-float-left();
         max-width: 10em;
-        margin: 0.5em 0.5em 0.5em 0;
+        margin-top: 0.5em;
+        .ltr-margin-right(0.5em);
+        margin-bottom: 0.5em;
+        .ltr-margin-left(0);
       }
     }
   }
@@ -690,7 +708,7 @@ article[data-vim-selected].category-social {
     }
 
     .engines {
-      float: right;
+      .ltr-float-right();
       padding: 0 0 3px 0;
     }
   }
@@ -750,12 +768,12 @@ article[data-vim-selected].category-social {
   }
 
   #backToTop {
-    left: auto;
-    right: 1rem;
+    .ltr-left(auto);
+    .ltr-right(1rem);
   }
 
   #pagination {
-    margin-right: 4rem;
+    .ltr-margin-right(4rem);
   }
 }
 
@@ -767,12 +785,12 @@ article[data-vim-selected].category-social {
 
   #linkto_preferences {
     top: 0.8rem;
-    right: 0.7rem;
+    .ltr-right(0.7rem);
   }
 
   #main_index #linkto_preferences {
     top: 0.5rem;
-    right: 0.5rem;
+    .ltr-right(0.5rem);
   }
 
   #results {
