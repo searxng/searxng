@@ -205,6 +205,7 @@ class BooleanChoices:
         self.name = name
         self.choices = choices
         self.locked = locked
+        self.default_choices = dict(choices)
 
     def transform_form_items(self, items):
         # pylint: disable=no-self-use
@@ -241,8 +242,10 @@ class BooleanChoices:
 
     def save(self, resp: flask.Response):
         """Save cookie in the HTTP reponse obect"""
-        resp.set_cookie('disabled_{0}'.format(self.name), ','.join(self.disabled), max_age=COOKIE_MAX_AGE)
-        resp.set_cookie('enabled_{0}'.format(self.name), ','.join(self.enabled), max_age=COOKIE_MAX_AGE)
+        disabled_changed = (k for k in self.disabled if self.default_choices[k])
+        enabled_changed = (k for k in self.enabled if not self.default_choices[k])
+        resp.set_cookie('disabled_{0}'.format(self.name), ','.join(disabled_changed), max_age=COOKIE_MAX_AGE)
+        resp.set_cookie('enabled_{0}'.format(self.name), ','.join(enabled_changed), max_age=COOKIE_MAX_AGE)
 
     def get_disabled(self):
         return self.transform_values(list(self.disabled))
