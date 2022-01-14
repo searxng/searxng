@@ -11,20 +11,19 @@
 # stf <stefan.marsiske@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
 "PO-Revision-Date: 2022-01-14 07:17+0000\n"
 "Last-Translator: Genghis Khan <genghiskhan@gmx.ca>\n"
-"Language-Team: Hebrew <https://weblate.bubu1.eu/projects/searxng/searxng/he/>"
-"\n"
 "Language: he\n"
+"Language-Team: Hebrew "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/he/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
+"&& n % 10 == 0) ? 2 : 3))\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
-"n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:165
@@ -289,8 +288,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"מציגה כתובת IP המשוייכת לך אם השאילתא היא \"ip\" וגם סוכן משתמש אם השאילתא "
-"מכילה \"user agent\"."
+"מציגה כתובת IP המשוייכת לך אם השאילתא היא \"ip\" וגם סוכן משתמש אם "
+"השאילתא מכילה \"user agent\"."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -309,8 +308,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"ניווט בתוצאות בעזרת מקשים חמים כמו Vim (נדרש JavaScript). לחץ על מקש \"h\" "
-"במסך ראשי או תוצאות כדי לקבל עזרה."
+"ניווט בתוצאות בעזרת מקשים חמים כמו Vim (נדרש JavaScript). לחץ על מקש "
+"\"h\" במסך ראשי או תוצאות כדי לקבל עזרה."
 
 #: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -535,7 +534,6 @@ msgstr "קטגוריות ברירת מחדל"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "שפת חיפוש"
 
@@ -672,10 +670,11 @@ msgstr "פתיחת קישורי תוצאה בתוך כרטיסיות דפדפן 
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "שיטה"
+msgid "HTTP Method"
+msgstr ""
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -720,8 +719,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"כאשר פעילה, כותרת עמוד התוצאה תכיל את השאילתא שלך. הדפדפן שלך יכול לתעד את "
-"כותרת זאת"
+"כאשר פעילה, כותרת עמוד התוצאה תכיל את השאילתא שלך. הדפדפן שלך יכול לתעד "
+"את כותרת זאת"
 
 #: searx/templates/oscar/preferences.html:315
 msgid "Allow all"
@@ -734,11 +733,9 @@ msgstr "כבה את כולם"
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"לשונית זאת לא מופיעה לצורך תוצאות חיפוש, אולם באפשרותך לחפש במנועים הרשומים "
-"כאן דרך bang."
 
 #: searx/templates/oscar/preferences.html:334
 #: searx/templates/oscar/preferences.html:350
@@ -1400,3 +1397,16 @@ msgstr "מנוע"
 #~ " contains your query. Your browser "
 #~ "can record this title."
 #~ msgstr ""
+
+#~ msgid "Method"
+#~ msgstr "שיטה"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "לשונית זאת לא מופיעה לצורך תוצאות "
+#~ "חיפוש, אולם באפשרותך לחפש במנועים "
+#~ "הרשומים כאן דרך bang."
+
