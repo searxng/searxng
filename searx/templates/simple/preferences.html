@@ -234,7 +234,7 @@
   {{ tab_header('maintab', 'privacy', _('Privacy')) }}
     {% if 'method' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Method') }}</legend>
+      <legend>{{ _('HTTP Method') }}</legend>
       <p class="value">
         <select name='method'>
           <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
