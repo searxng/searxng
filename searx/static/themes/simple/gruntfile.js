@@ -4,6 +4,15 @@ module.exports = function (grunt) {
 
   const eachAsync = require('each-async');
 
+  function file_exists (filepath) {
+    // filter function to exit grunt task with error if a (src) file not exists
+    if (!grunt.file.exists(filepath)) {
+      grunt.fail.fatal('Could not find: ' + filepath, 42);
+    } else {
+      return true;
+    }
+  }
+
   grunt.initConfig({
 
     _brand: '../../../../src/brand',
@@ -116,10 +125,20 @@ module.exports = function (grunt) {
           sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map'; },
           outputSourceFiles: true,
         },
-        files: {
-          "css/searxng.min.css": "src/less/style.less",
-          "css/searxng-rtl.min.css": "src/less/style-rtl.less"
-        }
+        files: [
+          {
+            src: ['src/less/style.less'],
+            dest: 'css/searxng.min.css',
+            nonull: true,
+            filter: file_exists,
+          },
+          {
+            src: ['src/less/style-rtl.less'],
+            dest: 'css/searxng-rtl.min.css',
+            nonull: true,
+            filter: file_exists,
+          },
+        ],
       },
     },
     image: {
