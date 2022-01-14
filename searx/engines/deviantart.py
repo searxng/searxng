@@ -4,6 +4,7 @@
  Deviantart (Images)
 """
 
+import re
 from urllib.parse import urlencode
 from lxml import html
 
@@ -31,6 +32,9 @@ time_range_dict = {
 
 # search-url
 base_url = 'https://www.deviantart.com'
+w_h_pattern = re.compile(r'/v1/fit/w_([^,]*),h_([^,]*)')
+w_h_format = '/v1/fit/w_%(w)s,h_%(h)s'
+max_size = 1280
 
 
 def request(query, params):
@@ -69,12 +73,35 @@ def response(resp):
                 continue
             img_tag = img_tag[0]
 
+            url = a_tag.attrib.get('href')
+            title = img_tag.attrib.get('alt')
+            img_src = thumbnail_src = img_tag.attrib.get('src')
+
+            w_h = w_h_pattern.search(thumbnail_src)
+            if w_h:
+                # calc img_src with higher solution / aspect raitio
+                w = int(w_h[1])
+                h = int(w_h[2])
+                if w > h:
+                    fact = max_size / w
+                else:
+                    fact = max_size / h
+
+                w = int(fact * w)
+                h = int(fact * h)
+
+                old_uri = w_h[0]
+                new_uri = w_h_format % dict(w=w, h=h)
+                logger.debug("%s: %s --> %s", title, old_uri, new_uri)
+                img_src = img_src.replace(old_uri, new_uri)
+
             results.append(
                 {
                     'template': 'images.html',
-                    'url': a_tag.attrib.get('href'),
-                    'img_src': img_tag.attrib.get('src'),
-                    'title': img_tag.attrib.get('alt'),
+                    'url': url,
+                    'img_src': img_src,
+                    'thumbnail_src': thumbnail_src,
+                    'title': title,
                 }
             )
 
