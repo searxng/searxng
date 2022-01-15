@@ -16,7 +16,7 @@ from lxml import html
 from babel import Locale
 from babel.localedata import locale_identifiers
 
-from searx import network
+from searx.network import get
 from searx.utils import extract_text, eval_xpath, match_language
 from searx.exceptions import (
     SearxEngineResponseException,
@@ -84,7 +84,7 @@ def get_sc_code(headers):
     if time() > (sc_code_ts + 3000):
         logger.debug("query new sc time-stamp ...")
 
-        resp = network.get(base_url, headers=headers)
+        resp = get(base_url, headers=headers)
         raise_captcha(resp)
         dom = html.fromstring(resp.text)
 
