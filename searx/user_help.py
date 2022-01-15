@@ -3,6 +3,7 @@ import os.path
 import pkg_resources
 
 import flask
+import mistletoe
 
 from . import get_setting
 from .version import GIT_URL
@@ -20,7 +21,7 @@ def render(app: flask.Flask):
     """
     for filename in pkg_resources.resource_listdir(__name__, 'help'):
         rootname, ext = os.path.splitext(filename)
-        if ext != '.html':
+        if ext != '.md':
             continue
 
         text = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
@@ -35,4 +36,4 @@ def render(app: flask.Flask):
 
             interpolated = flask.render_template_string(text, get_setting=get_setting, searx_git_url=GIT_URL)
 
-            HELP[rootname] = interpolated
+            HELP[rootname] = mistletoe.markdown(interpolated)
