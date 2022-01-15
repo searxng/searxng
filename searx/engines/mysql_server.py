@@ -11,6 +11,7 @@ import mysql.connector  # pylint: disable=import-error
 engine_type = 'offline'
 auth_plugin = 'caching_sha2_password'
 host = "127.0.0.1"
+port = 3306
 database = ""
 username = ""
 password = ""
@@ -35,6 +36,7 @@ def init(engine_settings):
         user=username,
         password=password,
         host=host,
+        port=port,
         auth_plugin=auth_plugin,
     )
 
