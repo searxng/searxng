@@ -226,10 +226,9 @@ def plugin_module_names():
 
 
 def initialize(app):
-    # it is possible to block plugins from being registered into plugin chain
-    blocked_plugins = settings['outgoing'].get('blocked_plugins', [])
-
     for module_name, external in plugin_module_names():
-        plugin = load_and_initialize_plugin(module_name, external, (app, settings))
-        if plugin and plugin.name not in blocked_plugins:
-            plugins.register(plugin)
+        # it is possible to block plugins from being registered into plugin chain in settings.yml
+        if module_name not in settings['blocked_plugins']:
+            plugin = load_and_initialize_plugin(module_name, external, (app, settings))
+            if plugin:
+                plugins.register(plugin)

@@ -212,6 +212,7 @@ SCHEMA = {
     },
     'plugins': SettingsValue(list, []),
     'enabled_plugins': SettingsValue((None, list), None),
+    'blocked_plugins': SettingsValue(list, []),
     'checker': {
         'off_when_debug': SettingsValue(bool, True),
     },
