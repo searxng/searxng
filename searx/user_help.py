@@ -3,6 +3,7 @@ import os.path
 import pkg_resources
 
 import flask
+from flask.helpers import url_for
 import mistletoe
 
 from . import get_setting
@@ -19,21 +20,29 @@ def render(app: flask.Flask):
 
     We render the user documentation once on startup to improve performance.
     """
+
+    link_targets = {
+        'brand.git_url': GIT_URL,
+        'brand.public_instances': get_setting('brand.public_instances'),
+        'brand.docs_url': get_setting('brand.docs_url'),
+    }
+
+    base_url = get_setting('server.base_url') or None
+    # we specify base_url so that url_for works for base_urls that have a non-root path
+
+    with app.test_request_context(base_url=base_url):
+        link_targets['url_for:index'] = url_for('index')
+        link_targets['url_for:preferences'] = url_for('preferences')
+        link_targets['url_for:stats'] = url_for('stats')
+
+    define_link_targets = ''.join(f'[{name}]: {url}\n' for name, url in link_targets.items())
+
     for filename in pkg_resources.resource_listdir(__name__, 'help'):
         rootname, ext = os.path.splitext(filename)
+
         if ext != '.md':
             continue
 
-        text = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
-
-        base_url = get_setting('server.base_url') or None
-        # we specify base_url so that url_for works for base_urls that have a non-root path
-
-        with app.test_request_context(base_url=base_url):
-            # the request context is needed for Flask's url_for
-            # (otherwise we'd need to set app.config['SERVER_NAME'],
-            # which we don't want)
-
-            interpolated = flask.render_template_string(text, get_setting=get_setting, searx_git_url=GIT_URL)
-
-            HELP[rootname] = mistletoe.markdown(interpolated)
+        markdown = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
+        markdown = define_link_targets + markdown
+        HELP[rootname] = mistletoe.markdown(markdown)

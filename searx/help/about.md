@@ -64,17 +64,8 @@ decentralized the Internet is, the more freedom we have!
 
 See the [SearXNG docs][brand.docs_url] and [SearXNG sources][brand.git_url]
 
-[url_for:index]: {{ url_for('index') }}
-[url_for:preferences]: {{ url_for('preferences') }}
-[url_for:stats]: {{ url_for('stats') }}
-[brand.git_url]: {{ searx_git_url }}
-[brand.public_instances]: {{ get_setting('brand.public_instances') }}
-[brand.docs_url]: {{ get_setting('brand.docs_url') }}
-
 [searx]: https://github.com/searx/searx
 [metasearch engine]: https://en.wikipedia.org/wiki/Metasearch_engine
 [weblate]: https://weblate.bubu1.eu/projects/searxng/
 [seeks project]: https://beniz.github.io/seeks/
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-
-{% include "__common__/aboutextend.html" ignore missing %}
