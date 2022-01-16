@@ -125,11 +125,11 @@ div.selectable_url {
   padding: 1rem;
   margin: 0 0 1em 0;
   border: 1px solid var(--color-toolkit-dialog-border);
-  text-align: left;
+  .ltr-text-align-left();
   .rounded-corners;
 
   .close {
-    float: right;
+    .ltr-float-right();
     position: relative;
     top: -3px;
     color: inherit;
@@ -156,6 +156,10 @@ div.selectable_url {
 
   td {
     padding: 0 1em 0 0;
+    padding-top: 0;
+    .ltr-padding-right(1rem);
+    padding-bottom: 0;
+    .ltr-padding-left(0);
   }
 
   h4 {
@@ -301,7 +305,10 @@ html body .tabs > input:checked {
 /* -- select -- */
 select {
   height: 2.4rem;
-  margin: 0 1rem 0 0;
+  margin-top: 0;
+  .ltr-margin-right(1rem);
+  margin-bottom: 0;
+  .ltr-margin-left(0);
   padding: 0.2rem !important;
   color: var(--color-search-font);
   font-size: 0.9rem;
