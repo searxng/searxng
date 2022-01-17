@@ -857,8 +857,6 @@ def __get_translated_errors(unresponsive_engines):
             error_user_text = exception_classname_to_text[None]
         error_msg = gettext(error_user_text)
         if unresponsive_engine[2]:
-            error_msg = "{} {}".format(error_msg, unresponsive_engine[2])
-        if unresponsive_engine[3]:
             error_msg = gettext('Suspended') + ': ' + error_msg
         translated_errors.append((unresponsive_engine[0], error_msg))
 

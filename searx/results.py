@@ -409,9 +409,9 @@ class ResultContainer:
             return 0
         return resultnum_sum / len(self._number_of_results)
 
-    def add_unresponsive_engine(self, engine_name, error_type, error_message=None, suspended=False):
+    def add_unresponsive_engine(self, engine_name, error_type, suspended=False):
         if engines[engine_name].display_error_messages:
-            self.unresponsive_engines.add((engine_name, error_type, error_message, suspended))
+            self.unresponsive_engines.add((engine_name, error_type, suspended))
 
     def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
         self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
