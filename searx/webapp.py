@@ -14,6 +14,8 @@ from datetime import datetime, timedelta
 from timeit import default_timer
 from html import escape
 from io import StringIO
+import typing
+from typing import List, Dict
 
 import urllib
 from urllib.parse import urlencode
@@ -28,7 +30,6 @@ import flask
 
 from flask import (
     Flask,
-    request,
     render_template,
     url_for,
     Response,
@@ -89,7 +90,7 @@ from searx.utils import (
 )
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
-from searx.plugins import plugins, initialize as plugin_initialize
+from searx.plugins import Plugin, plugins, initialize as plugin_initialize
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -222,6 +223,21 @@ exception_classname_to_text = {
 
 # monkey patch for flask_babel.get_translations
 _flask_babel_get_translations = flask_babel.get_translations
+
+
+class ExtendedRequest(flask.Request):
+    """This class is never initialized and only used for type checking."""
+
+    preferences: Preferences
+    errors: List[str]
+    user_plugins: List[Plugin]
+    form: Dict[str, str]
+    start_time: float
+    render_time: float
+    timings: List[dict]
+
+
+request = typing.cast(ExtendedRequest, flask.request)
 
 
 def _get_translations():
