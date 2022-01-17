@@ -46,6 +46,10 @@ while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
 done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
 
+RST_FILES=(
+    'README.rst'
+)
+
 PYLINT_SEARXNG_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
@@ -103,6 +107,7 @@ test.:
   unit      : run unit tests
   coverage  : run unit tests with coverage
   robot     : run robot test
+  rst       : test .rst files incl. README.rst
   clean     : clean intermediate test stuff
 themes.:
   all       : build all themes
@@ -705,6 +710,13 @@ test.robot() {
     gecko.driver
     PYTHONPATH=. pyenv.cmd python -m tests.robot
     dump_return $?
+}
+
+test.rst() {
+    build_msg TEST "[reST markup] ${RST_FILES[@]}"
+    for rst in "${RST_FILES[@]}"; do
+        pyenv.cmd rst2html.py --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
+    done
 }
 
 test.clean() {

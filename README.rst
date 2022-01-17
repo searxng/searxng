@@ -1,11 +1,21 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
+----
+
 .. figure:: https://raw.githubusercontent.com/searxng/searxng/master/src/brand/searxng.svg
    :target: https://docs.searxng.org/
    :alt: SearXNG
    :width: 100%
    :align: center
-   
+
+----
+
+Privacy-respecting, hackable `metasearch engine`_
+
+If you are looking for running instances, ready to use, then visit searx.space_.
+Otherwise jump to the user_, admin_ and developer_ handbooks you will find on
+our homepage_.
+
 |SearXNG install|
 |SearXNG homepage|
 |SearXNG wiki|
@@ -15,12 +25,7 @@
 |weblate|
 |SearXNG logo|
 
-Privacy-respecting, hackable `metasearch engine`_
-
-If you are looking for running instances, ready to use, then visit searx.space_.
-
-Otherwise jump to the user_, admin_ and developer_ handbooks you will find on
-our homepage_.
+----
 
 .. _searx.space: https://searx.space
 .. _user: https://docs.searxng.org/user
@@ -58,26 +63,76 @@ our homepage_.
    :target: https://weblate.bubu1.eu/projects/searxng/
 
 
-SearXNG is a fork of `searx`_:
+Contact
+=======
 
-* `the differences with searx <https://github.com/searxng/searxng/issues/46>`_
-* `exhaustive changelog <https://github.com/searxng/searxng/wiki/Changes-from-version-1.0.0>`_
+Come join us if you have questions or just want to chat about SearXNG.
+
+Matrix
+  `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
+
+IRC
+  `#searxng on libera.chat <https://web.libera.chat/?channel=#searxng>`_
+  which is bridged to Matrix.
+
+
+Differences to searx
+====================
+
+SearXNG is a fork of `searx`_.  Here are some of the changes:
 
 .. _searx: https://github.com/searx/searx
 
 
-Contact
-"""""""
+User experience
+---------------
 
-Matrix: `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
+- Huge update of the simple theme:
 
-IRC:  `#searxng on libera.chat <https://web.libera.chat/?channel=#searxng>`_ which is bridged to Matrix.
+  * usable on desktop, tablet and mobile
+  * light and dark versions (you can choose in the preferences)
+  * support right-to-left languages
 
- 
+- the translations are up to date, you can contribute on `Weblate`_
+- the preferences page has been updated:
+
+  * you can see which engines are reliable or not
+  * engines are grouped inside each tab
+  * each engine has a description
+
+- it is easier to report a bug of an engine
+- but you can also disable the recording of the metrics on the server
+
+
+Setup
+-----
+
+- the Docker image is now also built for ARM64 and ARM/v7 architectures
+- you don't need `Morty`_ to proxy the images even on a public instance
+- on the way to embed `Filtron`_ into SearXNG
+- up to date installation scripts
+
+
+Contributing is easier
+----------------------
+
+- readable debug log
+- contributions to the themes are made easier, check out our `Development
+  Quickstart`_ guide
+- a lot of code cleanup and bug fixes
+- the dependencies are up to date
+
+.. _Morty: https://github.com/asciimoo/morty
+.. _Filtron: https://github.com/searxng/filtron
+.. _Weblate: https://weblate.bubu1.eu/projects/searxng/searxng/
+.. _Development Quickstart: https://docs.searxng.org/dev/quickstart.html
+
+
 Translations
-""""""""""""
+============
 
-We need translators, suggestions are welcome at https://weblate.bubu1.eu/projects/searxng/searxng/
+We need translators, suggestions are welcome at
+https://weblate.bubu1.eu/projects/searxng/searxng/
 
 .. figure:: https://weblate.bubu1.eu/widgets/searxng/-/multi-auto.svg
    :target: https://weblate.bubu1.eu/projects/searxng/
