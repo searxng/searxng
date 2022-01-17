@@ -4,6 +4,10 @@
 Installation
 ============
 
+.. sidebar:: info
+
+   :ref:`installation switch2ng`
+
 *You're spoilt for choice*, choose your preferred method of installation.
 
 - :ref:`installation docker`

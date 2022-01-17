@@ -12,6 +12,7 @@ Administrator documentation
    installation-nginx
    installation-apache
    installation-docker
+   installation-switch2ng
    update-searxng
    engines/index
    api
