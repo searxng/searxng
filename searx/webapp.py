@@ -15,7 +15,7 @@ from timeit import default_timer
 from html import escape
 from io import StringIO
 import typing
-from typing import List, Dict
+from typing import List, Dict, Iterable
 
 import urllib
 from urllib.parse import urlencode
@@ -56,7 +56,7 @@ from searx import (
     searx_debug,
 )
 from searx.data import ENGINE_DESCRIPTIONS
-from searx.results import Timing
+from searx.results import Timing, UnresponsiveEngine
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
@@ -844,21 +844,21 @@ def search():
     )
 
 
-def __get_translated_errors(unresponsive_engines):
+def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
     translated_errors = []
 
     # make a copy unresponsive_engines to avoid "RuntimeError: Set changed size
     # during iteration" it happens when an engine modifies the ResultContainer
     # after the search_multiple_requests method has stopped waiting
 
-    for unresponsive_engine in list(unresponsive_engines):
-        error_user_text = exception_classname_to_text.get(unresponsive_engine[1])
+    for unresponsive_engine in unresponsive_engines:
+        error_user_text = exception_classname_to_text.get(unresponsive_engine.error_type)
         if not error_user_text:
             error_user_text = exception_classname_to_text[None]
         error_msg = gettext(error_user_text)
-        if unresponsive_engine[2]:
+        if unresponsive_engine.suspended:
             error_msg = gettext('Suspended') + ': ' + error_msg
-        translated_errors.append((unresponsive_engine[0], error_msg))
+        translated_errors.append((unresponsive_engine.engine, error_msg))
 
     return sorted(translated_errors, key=lambda e: e[0])
 
