@@ -2,7 +2,9 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 from threading import RLock
+from typing import List, NamedTuple
 from urllib.parse import urlparse, unquote
+
 from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
@@ -137,6 +139,12 @@ def result_score(result):
     return sum((occurences * weight) / position for position in result['positions'])
 
 
+class Timing(NamedTuple):
+    engine: str
+    total: float
+    load: float
+
+
 class ResultContainer:
     """docstring for ResultContainer"""
 
@@ -169,7 +177,7 @@ class ResultContainer:
         self._closed = False
         self.paging = False
         self.unresponsive_engines = set()
-        self.timings = []
+        self.timings: List[Timing] = []
         self.redirect_url = None
         self.on_result = lambda _: True
         self._lock = RLock()
@@ -405,13 +413,8 @@ class ResultContainer:
         if engines[engine_name].display_error_messages:
             self.unresponsive_engines.add((engine_name, error_type, error_message, suspended))
 
-    def add_timing(self, engine_name, engine_time, page_load_time):
-        timing = {
-            'engine': engines[engine_name].shortcut,
-            'total': engine_time,
-            'load': page_load_time,
-        }
-        self.timings.append(timing)
+    def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
+        self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
     def get_timings(self):
         return self.timings

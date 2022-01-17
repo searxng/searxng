@@ -56,6 +56,7 @@ from searx import (
     searx_debug,
 )
 from searx.data import ENGINE_DESCRIPTIONS
+from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
@@ -234,7 +235,7 @@ class ExtendedRequest(flask.Request):
     form: Dict[str, str]
     start_time: float
     render_time: float
-    timings: List[dict]
+    timings: List[Timing]
 
 
 request = typing.cast(ExtendedRequest, flask.request)
@@ -585,15 +586,14 @@ def post_request(response):
         'render;dur=' + str(round(request.render_time * 1000, 3)),
     ]
     if len(request.timings) > 0:
-        timings = sorted(request.timings, key=lambda v: v['total'])
+        timings = sorted(request.timings, key=lambda t: t.total)
         timings_total = [
-            'total_' + str(i) + '_' + v['engine'] + ';dur=' + str(round(v['total'] * 1000, 3))
-            for i, v in enumerate(timings)
+            'total_' + str(i) + '_' + t.engine + ';dur=' + str(round(t.total * 1000, 3)) for i, t in enumerate(timings)
         ]
         timings_load = [
-            'load_' + str(i) + '_' + v['engine'] + ';dur=' + str(round(v['load'] * 1000, 3))
-            for i, v in enumerate(timings)
-            if v.get('load')
+            'load_' + str(i) + '_' + t.engine + ';dur=' + str(round(t.load * 1000, 3))
+            for i, t in enumerate(timings)
+            if t.load
         ]
         timings_all = timings_all + timings_total + timings_load
     response.headers.add('Server-Timing', ', '.join(timings_all))
