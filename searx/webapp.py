@@ -18,6 +18,7 @@ import typing
 from typing import List, Dict, Iterable
 
 import urllib
+import urllib.parse
 from urllib.parse import urlencode
 
 import httpx
@@ -338,7 +339,7 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-def get_current_theme_name(override=None):
+def get_current_theme_name(override: str = None) -> str:
     """Returns theme name.
 
     Checks in this order:
@@ -354,14 +355,14 @@ def get_current_theme_name(override=None):
     return theme_name
 
 
-def get_result_template(theme_name, template_name):
+def get_result_template(theme_name: str, template_name: str):
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
         return themed_path
     return 'result_templates/' + template_name
 
 
-def url_for_theme(endpoint, override_theme=None, **values):
+def url_for_theme(endpoint: str, override_theme: str = None, **values):
     if endpoint == 'static' and values.get('filename'):
         theme_name = get_current_theme_name(override=override_theme)
         filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
@@ -371,7 +372,7 @@ def url_for_theme(endpoint, override_theme=None, **values):
     return url
 
 
-def proxify(url):
+def proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
@@ -386,7 +387,7 @@ def proxify(url):
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
 
 
-def image_proxify(url):
+def image_proxify(url: str):
 
     if url.startswith('//'):
         url = 'https:' + url
@@ -422,7 +423,7 @@ def get_translations():
     }
 
 
-def _get_enable_categories(all_categories):
+def _get_enable_categories(all_categories: Iterable[str]):
     disabled_engines = request.preferences.engines.get_disabled()
     enabled_categories = set(
         # pylint: disable=consider-using-dict-items
@@ -434,14 +435,14 @@ def _get_enable_categories(all_categories):
     return [x for x in all_categories if x in enabled_categories]
 
 
-def get_pretty_url(parsed_url):
+def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     path = parsed_url.path
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
     path = path.replace("/", " › ")
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
-def render(template_name, override_theme=None, **kwargs):
+def render(template_name: str, override_theme: str = None, **kwargs):
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
@@ -569,7 +570,7 @@ def pre_request():
 
 
 @app.after_request
-def add_default_headers(response):
+def add_default_headers(response: flask.Response):
     # set default http headers
     for header, value in settings['server']['default_http_headers'].items():
         if header in response.headers:
@@ -579,7 +580,7 @@ def add_default_headers(response):
 
 
 @app.after_request
-def post_request(response):
+def post_request(response: flask.Response):
     total_time = default_timer() - request.start_time
     timings_all = [
         'total;dur=' + str(round(total_time * 1000, 3)),
@@ -600,7 +601,7 @@ def post_request(response):
     return response
 
 
-def index_error(output_format, error_message):
+def index_error(output_format: str, error_message: str):
     if output_format == 'json':
         return Response(json.dumps({'error': error_message}), mimetype='application/json')
     if output_format == 'csv':
@@ -1074,7 +1075,7 @@ def preferences():
     )
 
 
-def _is_selected_language_supported(engine, preferences):  # pylint: disable=redefined-outer-name
+def _is_selected_language_supported(engine, preferences: Preferences):  # pylint: disable=redefined-outer-name
     language = preferences.get_value('language')
     if language == 'all':
         return True
