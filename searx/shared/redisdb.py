@@ -20,6 +20,7 @@ A redis DB connect can be tested by::
 """
 
 import logging
+import redis
 from searx import get_setting
 
 logger = logging.getLogger('searx.shared.redis')
@@ -28,8 +29,6 @@ _client = None
 
 def client():
     global _client  # pylint: disable=global-statement
-    import redis  # pylint: disable=import-error, import-outside-toplevel
-
     if _client is None:
         # not thread safe: in the worst case scenario, two or more clients are
         # initialized only one is kept, the others are garbage collected.
@@ -38,8 +37,6 @@ def client():
 
 
 def init():
-    import redis  # pylint: disable=import-error, import-outside-toplevel
-
     try:
         c = client()
         logger.info("connected redis DB --> %s", c.acl_whoami())
