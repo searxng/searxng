@@ -7,6 +7,7 @@ import atexit
 import asyncio
 import ipaddress
 from itertools import cycle
+from typing import Dict
 
 import httpx
 
@@ -16,7 +17,7 @@ from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
-NETWORKS = {}
+NETWORKS: Dict[str, 'Network'] = {}
 # requests compatibility when reading proxy settings from settings.yml
 PROXY_PATTERN_MAPPING = {
     'http': 'http://',

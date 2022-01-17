@@ -8,6 +8,7 @@
 import threading
 from abc import abstractmethod, ABC
 from timeit import default_timer
+from typing import Dict, Union
 
 from searx import settings, logger
 from searx.engines import engines
@@ -17,7 +18,7 @@ from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineRespon
 from searx.utils import get_engine_from_settings
 
 logger = logger.getChild('searx.search.processor')
-SUSPENDED_STATUS = {}
+SUSPENDED_STATUS: Dict[Union[int, str], 'SuspendedStatus'] = {}
 
 
 class SuspendedStatus:
@@ -61,7 +62,7 @@ class EngineProcessor(ABC):
 
     __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger'
 
-    def __init__(self, engine, engine_name):
+    def __init__(self, engine, engine_name: str):
         self.engine = engine
         self.engine_name = engine_name
         self.logger = engines[engine_name].logger
