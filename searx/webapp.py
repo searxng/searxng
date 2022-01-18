@@ -55,6 +55,7 @@ from searx import (
     get_setting,
     settings,
     searx_debug,
+    resource_bundler,
 )
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing, UnresponsiveEngine
@@ -493,12 +494,7 @@ def render(template_name: str, override_theme: str = None, **kwargs):
         url_for('opensearch') + '?' + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
     )
 
-    # scripts from plugins
-    kwargs['scripts'] = set()
-    for plugin in request.user_plugins:
-        for script in plugin.js_dependencies:
-            if current_theme in script.themes:
-                kwargs['scripts'].add(script.path)
+    kwargs['plugin_scripts_bundle_url'] = resource_bundler.get_bundle_url(current_theme, request.user_plugins)
 
     # styles from plugins
     kwargs['styles'] = set()
@@ -1361,6 +1357,7 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
+    resource_bundler.build_bundles()
 
 
 def run():

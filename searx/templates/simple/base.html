@@ -59,8 +59,8 @@
     </p>
   </footer>
   <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
-  {% for script in scripts %}
-    <script src="{{ url_for('static', filename=script) }}"></script>
-  {% endfor %}
+  {% if plugin_scripts_bundle_url %}
+    <script src="{{ plugin_scripts_bundle_url }}"></script>
+  {% endif %}
 </body>
 </html>
