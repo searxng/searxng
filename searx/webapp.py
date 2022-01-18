@@ -456,7 +456,7 @@ def render(template_name: str, override_theme: str = None, **kwargs):
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-    kwargs['theme'] = get_current_theme_name(override=override_theme)
+    kwargs['theme'] = current_theme = get_current_theme_name(override=override_theme)
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = _get_enable_categories(categories.keys())
     kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
@@ -497,13 +497,15 @@ def render(template_name: str, override_theme: str = None, **kwargs):
     kwargs['scripts'] = set()
     for plugin in request.user_plugins:
         for script in plugin.js_dependencies:
-            kwargs['scripts'].add(script)
+            if current_theme in script.themes:
+                kwargs['scripts'].add(script.path)
 
     # styles from plugins
     kwargs['styles'] = set()
     for plugin in request.user_plugins:
         for css in plugin.css_dependencies:
-            kwargs['styles'].add(css)
+            if current_theme in css.themes:
+                kwargs['styles'].add(css.path)
 
     start_time = default_timer()
     result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)

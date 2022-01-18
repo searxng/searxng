@@ -17,6 +17,9 @@
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
+  {%- for css in styles %}
+      <link rel="stylesheet" href="{{ url_for('static', filename=css) }}" type="text/css" />
+  {% endfor %}
   {% block styles %}{% endblock %}
   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
           data-method="{{ method or 'POST' }}"
@@ -59,5 +62,8 @@
     </p>
   </footer>
   <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
+  {% for script in scripts %}
+    <script src="{{ url_for('static', filename=script) }}"></script>
+  {% endfor %}
 </body>
 </html>

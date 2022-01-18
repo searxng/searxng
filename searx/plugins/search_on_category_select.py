@@ -15,6 +15,7 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 (C) 2015 by Adam Tauber, <asciimoo@gmail.com>
 '''
 from flask_babel import gettext
+from . import Resource
 
 name = gettext('Search on category select')
 description = gettext(
@@ -23,4 +24,6 @@ description = gettext(
 default_on = True
 preference_section = 'ui'
 
-js_dependencies = ('plugins/js/search_on_category_select.js',)
+js_dependencies = (
+    Resource(path='plugins/js/search_on_category_select.js', themes=('oscar',)),
+)

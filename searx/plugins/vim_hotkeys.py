@@ -1,4 +1,5 @@
 from flask_babel import gettext
+from . import Resource
 
 name = gettext('Vim-like hotkeys')
 description = gettext(
@@ -9,5 +10,7 @@ description = gettext(
 default_on = False
 preference_section = 'ui'
 
-js_dependencies = ('plugins/js/vim_hotkeys.js',)
-css_dependencies = ('plugins/css/vim_hotkeys.css',)
+js_dependencies = (
+    Resource(path='plugins/js/vim_hotkeys.js', themes=('oscar',)),
+)
+css_dependencies = (Resource(path='plugins/css/vim_hotkeys.css', themes=('oscar',)),)

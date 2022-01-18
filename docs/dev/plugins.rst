@@ -15,12 +15,14 @@ Example plugin
 
 .. code:: python
 
+   from . import Resource
+
    name = 'Example plugin'
    description = 'This plugin extends the suggestions with the word "example"'
    default_on = False  # disabled by default
 
-   js_dependencies = tuple()  # optional, list of static js files
-   css_dependencies = tuple()  # optional, list of static css files
+   js_dependencies = tuple()  # optional, list of static js resources
+   css_dependencies = tuple()  # optional, list of static css resources
 
 
    # attach callback to the post search hook
