@@ -18,7 +18,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
   {% block styles %}{% endblock %}
-  <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
           data-method="{{ method or 'POST' }}"
           data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
@@ -27,7 +26,6 @@
           data-hotkeys="{{ 'true' if 'plugins/js/vim_hotkeys.js' in scripts else 'false' }}"
           data-static-path="{{ url_for('static', filename='themes/simple') }}/"
           data-translations="{{ translations }}"></script>
-  <!--<![endif]-->
   {% block head %}
   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}"/>
   {% endblock %}
@@ -60,8 +58,6 @@
         <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>{% endif %}
     </p>
   </footer>
-  <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
-  <!--<![endif]-->
 </body>
 </html>
