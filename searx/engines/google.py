@@ -353,20 +353,22 @@ def response(resp):
             title_tag = eval_xpath_getindex(result, title_xpath, 0, default=None)
             if title_tag is None:
                 # this not one of the common google results *section*
-                logger.debug('ingoring <div class="g" ../> section: missing title')
+                logger.debug('ingoring item from the result_xpath list: missing title')
                 continue
             title = extract_text(title_tag)
             url = eval_xpath_getindex(result, href_xpath, 0, None)
             if url is None:
                 continue
             content = extract_text(eval_xpath_getindex(result, content_xpath, 0, default=None), allow_none=True)
+            if content is None:
+                logger.debug('ingoring item from the result_xpath list: missing content of title "%s"', title)
+                continue
+
+            logger.debug('add link to results: %s', title)
             results.append({'url': url, 'title': title, 'content': content})
+
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
-            # from lxml import etree
-            # logger.debug(etree.tostring(result, pretty_print=True))
-            # import pdb
-            # pdb.set_trace()
             continue
 
     # parse suggestion
