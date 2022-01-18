@@ -111,8 +111,8 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-# google results are grouped into <div class="g" ../>
-results_xpath = '//div[@class="g"]'
+# google results are grouped into <div class="g ..." ../>
+results_xpath = '//div[contains(@class, "g")]'
 
 # google *sections* are no usual *results*, we ignore them
 g_section_with_header = './g-section-with-header'
@@ -124,8 +124,8 @@ title_xpath = './/h3[1]'
 # href=...>
 href_xpath = './/div[@class="yuRUbf"]//a/@href'
 
-# in the result group there is <div class="IsZvec" ../> containing he *content*
-content_xpath = './/div[@class="IsZvec"]'
+# in the result group there is <div class="VwiC3b ..." ../> containing the *content*
+content_xpath = './/div[contains(@class, "VwiC3b")]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
