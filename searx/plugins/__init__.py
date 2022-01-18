@@ -10,7 +10,7 @@ from os.path import abspath, basename, dirname, exists, join
 from shutil import copyfile
 from pkgutil import iter_modules
 from logging import getLogger
-from typing import List
+from typing import List, Tuple
 
 from searx import logger, settings
 
@@ -22,6 +22,9 @@ class Plugin:  # pylint: disable=too-few-public-methods
     name: str
     description: str
     default_on: bool
+    js_dependencies: Tuple[str]
+    css_dependencies: Tuple[str]
+    preference_section: str
 
 
 logger = logger.getChild("plugins")

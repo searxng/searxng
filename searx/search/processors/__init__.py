@@ -15,6 +15,7 @@ __all__ = [
 ]
 
 import threading
+from typing import Dict
 
 from searx import logger
 from searx import engines
@@ -26,7 +27,7 @@ from .online_currency import OnlineCurrencyProcessor
 from .abstract import EngineProcessor
 
 logger = logger.getChild('search.processors')
-PROCESSORS = {}
+PROCESSORS: Dict[str, EngineProcessor] = {}
 """Cache request processores, stored by *engine-name* (:py:func:`initialize`)"""
 
 
