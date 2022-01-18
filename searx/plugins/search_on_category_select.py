@@ -26,4 +26,5 @@ preference_section = 'ui'
 
 js_dependencies = (
     Resource(path='plugins/js/search_on_category_select.js', themes=('oscar',)),
+    Resource(path='themes/simple/src/js/plugins/search_on_category_select.js', themes=('simple',)),
 )

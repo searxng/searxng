@@ -12,5 +12,6 @@ preference_section = 'ui'
 
 js_dependencies = (
     Resource(path='plugins/js/vim_hotkeys.js', themes=('oscar',)),
+    Resource(path='themes/simple/src/js/plugins/vim_hotkeys.js', themes=('simple',)),
 )
 css_dependencies = (Resource(path='plugins/css/vim_hotkeys.css', themes=('oscar',)),)

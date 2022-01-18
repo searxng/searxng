@@ -19,9 +19,6 @@
     touch: (("ontouchstart" in w) || w.DocumentTouch && document instanceof DocumentTouch) || false,
     method: script.getAttribute('data-method'),
     autocompleter: script.getAttribute('data-autocompleter') === 'true',
-    search_on_category_select: script.getAttribute('data-search-on-category-select') === 'true',
-    infinite_scroll: script.getAttribute('data-infinite-scroll') === 'true',
-    hotkeys: script.getAttribute('data-hotkeys') === 'true',
     static_path: script.getAttribute('data-static-path'),
     translations: JSON.parse(script.getAttribute('data-translations')),
     theme: {
