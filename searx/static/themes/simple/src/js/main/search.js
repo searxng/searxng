@@ -70,9 +70,6 @@
           Delay: 300,
           _Position: function () {
             this.DOMResults.setAttribute("class", "autocomplete");
-            this.DOMResults.style.top = (this.Input.offsetTop + this.Input.offsetHeight) + "px";
-            this.DOMResults.style.left = this.Input.offsetLeft + "px";
-            this.DOMResults.style.width = this.Input.clientWidth + "px";
           },
           _Open: function () {
             var params = this;
@@ -85,12 +82,6 @@
             });
           },
         }, "#" + qinput_id);
-
-        // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
-        w.addEventListener('resize', function () {
-          var event = new CustomEvent("position");
-          qinput.dispatchEvent(event);
-        });
       }
 
       qinput.addEventListener('focus', placeCursorAtEndOnce, false);
