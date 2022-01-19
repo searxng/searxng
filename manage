@@ -103,6 +103,7 @@ format.:
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
   pylint    : lint PYLINT_FILES, searx/engines, searx & tests
+  pyright   : static type check of python sources
   black     : check black code format
   unit      : run unit tests
   coverage  : run unit tests with coverage
@@ -681,6 +682,15 @@ test.pylint() {
     )
     dump_return $?
 }
+
+
+test.pyright() {
+    build_msg TEST "[pyright] static type check of python sources"
+    nodejs.ensure
+    pyenv.cmd pyright
+    dump_return $?
+}
+
 
 test.black() {
     build_msg TEST "[black] \$BLACK_TARGETS"
