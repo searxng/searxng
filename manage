@@ -687,6 +687,8 @@ test.pylint() {
 test.pyright() {
     build_msg TEST "[pyright] static type check of python sources"
     nodejs.ensure
+    # We run Pyright in the virtual environment because Pyright
+    # executes "python" to determine the Python version.
     pyenv.cmd pyright
     dump_return $?
 }
