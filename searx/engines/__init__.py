@@ -255,7 +255,7 @@ def is_engine_active(engine: Engine):
         return False
 
     # exclude onion engines if not using tor
-    if 'onions' in engine.categories and not settings['outgoing'].get('using_tor_proxy'):
+    if 'onions' in engine.categories and not engine.using_tor_proxy:
         return False
 
     return True
