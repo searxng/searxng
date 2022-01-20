@@ -33,7 +33,4 @@ Configuration defaults (at built time):
         - {{(plgin.default_on and "y") or ""}}
         - {{plgin.description}}
 
-          {% for dep in (plgin.js_dependencies + plgin.css_dependencies) %}
-          | ``{{dep}}`` {% endfor %}
-
       {% endfor %}

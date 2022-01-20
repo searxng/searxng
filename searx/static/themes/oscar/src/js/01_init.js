@@ -20,6 +20,7 @@ window.searxng = (function(d) {
     return {
         autocompleter: script.getAttribute('data-autocompleter') === 'true',
         method: script.getAttribute('data-method'),
-        translations: JSON.parse(script.getAttribute('data-translations'))
+        translations: JSON.parse(script.getAttribute('data-translations')),
+        plugins: JSON.parse(script.getAttribute('data-plugins'))
     };
 })(document);

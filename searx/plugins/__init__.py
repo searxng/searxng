@@ -22,8 +22,6 @@ class Plugin:  # pylint: disable=too-few-public-methods
     name: str
     description: str
     default_on: bool
-    js_dependencies: Tuple[str]
-    css_dependencies: Tuple[str]
     preference_section: str
 
 
@@ -39,8 +37,6 @@ required_attrs = (
 
 optional_attrs = (
     # fmt: off
-    ("js_dependencies", tuple),
-    ("css_dependencies", tuple),
     ("preference_section", str),
     # fmt: on
 )
@@ -71,9 +67,7 @@ def sync_resource(base_path, resource_path, name, target_dir, plugin_dir):
     return join("plugins/external_plugins", plugin_dir, file_name)
 
 
-def prepare_package_resources(plugin, plugin_module_name):
-    plugin_base_path = dirname(abspath(plugin.__file__))
-
+def prepare_package_resources(plugin_module_name):
     plugin_dir = plugin_module_name
     target_dir = join(settings["ui"]["static_path"], "plugins/external_plugins", plugin_dir)
     try:
@@ -83,20 +77,6 @@ def prepare_package_resources(plugin, plugin_module_name):
         sys.exit(3)
 
     resources = []
-
-    if hasattr(plugin, "js_dependencies"):
-        resources.extend(map(basename, plugin.js_dependencies))
-        plugin.js_dependencies = [
-            sync_resource(plugin_base_path, x, plugin_module_name, target_dir, plugin_dir)
-            for x in plugin.js_dependencies
-        ]
-
-    if hasattr(plugin, "css_dependencies"):
-        resources.extend(map(basename, plugin.css_dependencies))
-        plugin.css_dependencies = [
-            sync_resource(plugin_base_path, x, plugin_module_name, target_dir, plugin_dir)
-            for x in plugin.css_dependencies
-        ]
 
     for f in listdir(target_dir):
         if basename(f) not in resources:
@@ -168,7 +148,7 @@ def load_plugin(plugin_module_name, external):
 
     # copy ressources if this is an external plugin
     if external:
-        prepare_package_resources(plugin, plugin_module_name)
+        prepare_package_resources(plugin_module_name)
 
     logger.debug("%s: loaded", plugin_module_name)
 

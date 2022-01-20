@@ -493,17 +493,7 @@ def render(template_name: str, override_theme: str = None, **kwargs):
         url_for('opensearch') + '?' + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
     )
 
-    # scripts from plugins
-    kwargs['scripts'] = set()
-    for plugin in request.user_plugins:
-        for script in plugin.js_dependencies:
-            kwargs['scripts'].add(script)
-
-    # styles from plugins
-    kwargs['styles'] = set()
-    for plugin in request.user_plugins:
-        for css in plugin.css_dependencies:
-            kwargs['styles'].add(css)
+    kwargs['enabled_plugin_ids_json'] = json.dumps({plugin.id: True for plugin in request.user_plugins})
 
     start_time = default_timer()
     result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)

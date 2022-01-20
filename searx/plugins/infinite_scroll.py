@@ -5,5 +5,4 @@ description = gettext('Automatically load next page when scrolling to bottom of 
 default_on = False
 preference_section = 'ui'
 
-js_dependencies = ('plugins/js/infinite_scroll.js',)
-css_dependencies = ('plugins/css/infinite_scroll.css',)
+# this plugin is implemented in the themes via JavaScript

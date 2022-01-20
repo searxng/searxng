@@ -23,4 +23,4 @@ description = gettext(
 default_on = True
 preference_section = 'ui'
 
-js_dependencies = ('plugins/js/search_on_category_select.js',)
+# this plugin is implemented in the themes via JavaScript

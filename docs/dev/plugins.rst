@@ -19,9 +19,6 @@ Example plugin
    description = 'This plugin extends the suggestions with the word "example"'
    default_on = False  # disabled by default
 
-   js_dependencies = tuple()  # optional, list of static js files
-   css_dependencies = tuple()  # optional, list of static css files
-
 
    # attach callback to the post search hook
    #  request: flask request object

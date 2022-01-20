@@ -23,10 +23,6 @@
     {{'    '}}<link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.min.css') }}" type="text/css" />
     {%- endif %}
 
-    {%- for css in styles %}
-        <link rel="stylesheet" href="{{ url_for('static', filename=css) }}" type="text/css" />
-    {% endfor %}
-
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" />
 
     {% block styles %}
@@ -100,10 +96,8 @@
     <script src="{{ url_for('static', filename='js/searxng.min.js') }}"
             data-method="{{ method or 'POST' }}"
             data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
+            data-plugins="{{enabled_plugin_ids_json}}"
             data-translations="{{ translations }}"></script>
-    {% for script in scripts %}
-    {{""}}<script src="{{ url_for('static', filename=script) }}"></script>
-    {% endfor %}
     <noscript>
       <style>
         .glyphicon { display: none; }

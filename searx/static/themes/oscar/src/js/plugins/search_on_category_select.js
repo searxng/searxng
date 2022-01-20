@@ -1,3 +1,4 @@
+if (searxng.plugins['searx.plugins.search_on_category_select']) {
 $(document).ready(function() {
     if($('#q').length) {
         $('#categories label').click(function(e) {
@@ -39,4 +40,5 @@ function getHttpRequest() {
         httpRequest = urlParams.get('method');
     }
     return httpRequest;
+}
 }
