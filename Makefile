@@ -50,8 +50,8 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searx-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.yamllint test.black test.pylint test.unit test.robot test.rst
-test:    test.yamllint test.black test.pylint test.unit test.robot test.rst test.shell
+ci.test: test.yamllint test.black test.pyright test.pylint test.unit test.robot test.rst
+test:    test.yamllint test.black test.pyright test.pylint test.unit test.robot test.rst test.shell
 test.shell:
 	$(Q)shellcheck -x -s dash \
 		dockerfiles/docker-entrypoint.sh

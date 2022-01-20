@@ -689,7 +689,7 @@ test.pyright() {
     nodejs.ensure
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
-    pyenv.cmd pyright
+    pyenv.cmd pyright -p pyrightconfig-ci.json
     dump_return $?
 }
 
