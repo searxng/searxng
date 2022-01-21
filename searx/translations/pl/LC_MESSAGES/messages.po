@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
-"PO-Revision-Date: 2022-01-07 13:48+0000\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
+"PO-Revision-Date: 2022-01-19 22:16+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Polish <https://weblate.bubu1.eu/projects/searxng/searxng/pl/>"
 "\n"
@@ -73,35 +73,35 @@ msgstr "aplikacje"
 
 #: searx/webapp.py:178
 msgid "dictionaries"
-msgstr ""
+msgstr "słowniki"
 
 #: searx/webapp.py:179
 msgid "lyrics"
-msgstr ""
+msgstr "teksty piosenek"
 
 #: searx/webapp.py:180
 msgid "packages"
-msgstr ""
+msgstr "pakiety"
 
 #: searx/webapp.py:181
 msgid "q&a"
-msgstr ""
+msgstr "q&a"
 
 #: searx/webapp.py:182
 msgid "repos"
-msgstr ""
+msgstr "repozytorium"
 
 #: searx/webapp.py:183
 msgid "software wikis"
-msgstr ""
+msgstr "dokumentacja aplikacji"
 
 #: searx/webapp.py:184
 msgid "web"
-msgstr ""
+msgstr "web"
 
 #: searx/webapp.py:189
 msgid "auto"
-msgstr "autonatycznie"
+msgstr "automatycznie"
 
 #: searx/webapp.py:189
 msgid "light"
@@ -157,7 +157,7 @@ msgstr "odmowa dostępu"
 
 #: searx/webapp.py:215
 msgid "server API error"
-msgstr ""
+msgstr "błąd serwera API"
 
 #: searx/webapp.py:402
 msgid "No item found"
@@ -210,7 +210,7 @@ msgstr "Oblicz {functions} argumentów"
 
 #: searx/engines/openstreetmap.py:156
 msgid "Get directions"
-msgstr ""
+msgstr "Pokaż wskazówki"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -230,11 +230,11 @@ msgstr "Kanał"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Konwertuje tekst na różne skróty hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "wartość hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -376,7 +376,7 @@ msgstr "Publiczne instancje"
 
 #: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:60
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Skontaktuj się z właścicielem instancji"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
@@ -485,7 +485,7 @@ msgstr "P95"
 #: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Test sprawdzający zakończony niepowodzeniem: "
 
 #: searx/templates/oscar/preferences.html:96
 #: searx/templates/simple/preferences.html:101
@@ -534,7 +534,6 @@ msgstr "Domyślne kategorie"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "Język wyszukiwania"
 
@@ -604,12 +603,12 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:173
 msgid "Engine tokens"
-msgstr ""
+msgstr "Tokeny wyszukiwarek"
 
 #: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:177
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Tokeny dostępu do prywatnych wyszukiwarek"
 
 #: searx/templates/oscar/preferences.html:198
 #: searx/templates/simple/preferences.html:184
@@ -673,10 +672,11 @@ msgstr "Otwórz hiperłącza wyników w nowych kartach przeglądarki"
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "Metoda"
+msgid "HTTP Method"
+msgstr ""
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -713,7 +713,7 @@ msgstr "Wyłączone"
 #: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:261
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Wyszukiwanie w tytule strony"
 
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:268
@@ -735,9 +735,11 @@ msgstr "Wyłącz wszystkie"
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Wyszukiwarki z tej zakładki nie pokazują się w wynikach wyszukiwania, ale "
+"możesz ich używać przez bangs."
 
 #: searx/templates/oscar/preferences.html:334
 #: searx/templates/oscar/preferences.html:350
@@ -814,7 +816,7 @@ msgstr "Przykłady"
 #: searx/templates/oscar/preferences.html:423
 #: searx/templates/simple/preferences.html:341
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "To jest lista modułów \"natychmiastowych odpowiedzi\" SearXNG."
 
 #: searx/templates/oscar/preferences.html:436
 #: searx/templates/simple/preferences.html:352
@@ -833,7 +835,7 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:458
 #: searx/templates/simple/preferences.html:372
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Dzięki tej liście, możesz ocenić przejrzystość SearXNG."
 
 #: searx/templates/oscar/preferences.html:463
 #: searx/templates/simple/preferences.html:377
@@ -952,11 +954,11 @@ msgstr "Rozpocznij wyszukiwanie"
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear search"
-msgstr ""
+msgstr "Wyczyść wyszukiwanie"
 
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear"
-msgstr ""
+msgstr "Wyczyść"
 
 #: searx/templates/oscar/stats.html:4
 msgid "stats"
@@ -968,7 +970,7 @@ msgstr "Wyniki"
 
 #: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:30
 msgid "Result count"
-msgstr ""
+msgstr "Ilość wyników"
 
 #: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:41
 msgid "Scores per result"
@@ -976,7 +978,7 @@ msgstr "Wyniki na rezultat"
 
 #: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:65
 msgid "Total"
-msgstr ""
+msgstr "Suma"
 
 #: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:66
 msgid "HTTP"
@@ -1183,7 +1185,7 @@ msgstr "Data"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
@@ -1252,11 +1254,11 @@ msgstr "Interfejs użytkownika"
 
 #: searx/templates/simple/preferences.html:208
 msgid "Theme style"
-msgstr ""
+msgstr "Styl motywu"
 
 #: searx/templates/simple/preferences.html:216
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Wybierz auto by używać ustawień twojej przeglądarki"
 
 #: searx/templates/simple/preferences.html:275
 msgid "Currently used search engines"
@@ -1273,25 +1275,25 @@ msgstr "Odpowiedzi"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "clear"
-msgstr ""
+msgstr "wyczyść"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "search"
-msgstr ""
+msgstr "wyszukaj"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Ta strona nie podała żadnego opisu."
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
-msgstr ""
+msgstr "Wyszukiwarka"
 
 #~ msgid "request exception"
 #~ msgstr "wyjątek w żądaniu"
@@ -1409,4 +1411,13 @@ msgstr ""
 #~ "When enabled, the result page's title"
 #~ " contains your query. Your browser "
 #~ "can record this title."
+#~ msgstr ""
+
+#~ msgid "Method"
+#~ msgstr "Metoda"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
 #~ msgstr ""

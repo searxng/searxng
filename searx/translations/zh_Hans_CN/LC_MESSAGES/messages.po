@@ -13,18 +13,19 @@
 # WhiredPlanck <fungdaat31@outlook.com>, 2020
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
-"PO-Revision-Date: 2021-12-23 08:13+0000\n"
-"Last-Translator: YFdyh000 <yfdyh000@gmail.com>\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
+"PO-Revision-Date: 2022-01-19 22:16+0000\n"
+"Last-Translator: lucky13820 <hello@ryanyao.design>\n"
+"Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:165
@@ -73,35 +74,35 @@ msgstr "学术"
 
 #: searx/webapp.py:177
 msgid "apps"
-msgstr ""
+msgstr "程序"
 
 #: searx/webapp.py:178
 msgid "dictionaries"
-msgstr ""
+msgstr "字典"
 
 #: searx/webapp.py:179
 msgid "lyrics"
-msgstr ""
+msgstr "歌词"
 
 #: searx/webapp.py:180
 msgid "packages"
-msgstr ""
+msgstr "程序包"
 
 #: searx/webapp.py:181
 msgid "q&a"
-msgstr ""
+msgstr "问答"
 
 #: searx/webapp.py:182
 msgid "repos"
-msgstr ""
+msgstr "软件仓库"
 
 #: searx/webapp.py:183
 msgid "software wikis"
-msgstr ""
+msgstr "软件维基"
 
 #: searx/webapp.py:184
 msgid "web"
-msgstr ""
+msgstr "网页"
 
 #: searx/webapp.py:189
 msgid "auto"
@@ -222,7 +223,7 @@ msgstr "{title} (已过时)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr "此项已被它取代："
+msgstr "此条目已被以下内容取代"
 
 #: searx/engines/pubmed.py:78
 msgid "No abstract is available for this publication."
@@ -527,7 +528,6 @@ msgstr "默认类别"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "搜索语言"
 
@@ -664,10 +664,11 @@ msgstr "在新的标签页中打开搜索结果中的链接"
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "方法"
+msgid "HTTP Method"
+msgstr "HTTP 方法"
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -703,14 +704,14 @@ msgstr "禁用"
 #: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:261
 msgid "Query in the page's title"
-msgstr "搜索时页面的标题"
+msgstr "页面标题显示查询关键词"
 
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:268
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
-msgstr "启用则搜索结果页面会包含您查询的关键词。浏览器很可能记忆网页的标题。"
+msgstr "当启用时，结果页的标题包含你的查询关键词。你的浏览器可以记录这个标题"
 
 #: searx/templates/oscar/preferences.html:315
 msgid "Allow all"
@@ -723,9 +724,9 @@ msgstr "全部禁用"
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
-msgstr ""
+msgstr "这个标签页不显示搜索结果，但你可以通过 bangs 搜索这里列出的引擎。"
 
 #: searx/templates/oscar/preferences.html:334
 #: searx/templates/oscar/preferences.html:350
@@ -1074,7 +1075,7 @@ msgstr "请稍后再试，或换用其他 SearXNG 站点试试看。"
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
-msgstr "很抱歉。"
+msgstr "很抱歉！"
 
 #: searx/templates/oscar/messages/no_results.html:18
 #: searx/templates/simple/messages/no_results.html:21
@@ -1380,3 +1381,11 @@ msgstr "引擎"
 #~ "can record this title."
 #~ msgstr ""
 
+#~ msgid "Method"
+#~ msgstr "方法"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""

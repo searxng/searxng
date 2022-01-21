@@ -6,18 +6,19 @@
 # dd721411 <dd721411@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
-"PO-Revision-Date: 2020-07-09 13:10+0000\n"
-"Last-Translator: dd721411 <dd721411@gmail.com>\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
+"PO-Revision-Date: 2022-01-19 22:16+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Vietnamese <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"vi/>\n"
 "Language: vi\n"
-"Language-Team: Vietnamese "
-"(http://www.transifex.com/asciimoo/searx/language/vi/)\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:165
@@ -66,15 +67,15 @@ msgstr "khoa học"
 
 #: searx/webapp.py:177
 msgid "apps"
-msgstr ""
+msgstr "Ứng dụng"
 
 #: searx/webapp.py:178
 msgid "dictionaries"
-msgstr ""
+msgstr "Từ điển"
 
 #: searx/webapp.py:179
 msgid "lyrics"
-msgstr ""
+msgstr "Lời bài hát"
 
 #: searx/webapp.py:180
 msgid "packages"
@@ -82,7 +83,7 @@ msgstr ""
 
 #: searx/webapp.py:181
 msgid "q&a"
-msgstr ""
+msgstr "hỏi đáp"
 
 #: searx/webapp.py:182
 msgid "repos"
@@ -94,35 +95,35 @@ msgstr ""
 
 #: searx/webapp.py:184
 msgid "web"
-msgstr ""
+msgstr "web"
 
 #: searx/webapp.py:189
 msgid "auto"
-msgstr ""
+msgstr "Tự động"
 
 #: searx/webapp.py:189
 msgid "light"
-msgstr ""
+msgstr "Sáng"
 
 #: searx/webapp.py:189
 msgid "dark"
-msgstr ""
+msgstr "Tối"
 
 #: searx/webapp.py:192
 msgid "timeout"
-msgstr ""
+msgstr "Hết thời gian"
 
 #: searx/webapp.py:193
 msgid "parsing error"
-msgstr ""
+msgstr "Lỗi phân tách"
 
 #: searx/webapp.py:194
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "Lỗi giao thức HTTP"
 
 #: searx/webapp.py:195
 msgid "network error"
-msgstr ""
+msgstr "Lỗi mạng"
 
 #: searx/webapp.py:197
 msgid "unexpected crash"
@@ -150,11 +151,11 @@ msgstr ""
 
 #: searx/webapp.py:214
 msgid "access denied"
-msgstr ""
+msgstr "Truy cập bị từ chối"
 
 #: searx/webapp.py:215
 msgid "server API error"
-msgstr ""
+msgstr "Lỗi server API"
 
 #: searx/webapp.py:402
 msgid "No item found"
@@ -163,7 +164,7 @@ msgstr "Không tìm thấy gì"
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:404
 msgid "Source"
-msgstr ""
+msgstr "Nguồn"
 
 #: searx/webapp.py:515 searx/webapp.py:925
 msgid "Invalid settings, please edit your preferences"
@@ -183,11 +184,11 @@ msgstr "{minutes} phút() trước"
 
 #: searx/webapp.py:728
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "{hours} giờ(), {minutes} phút() trước"
+msgstr "{hours} giờ, {minutes} phút trước"
 
 #: searx/webapp.py:846
 msgid "Suspended"
-msgstr ""
+msgstr "Treo"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -207,11 +208,11 @@ msgstr "Tính toán {functions} của các đối số"
 
 #: searx/engines/openstreetmap.py:156
 msgid "Get directions"
-msgstr ""
+msgstr "Nhận điều hướng"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} (HẾT HẠN)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
@@ -223,7 +224,7 @@ msgstr "Không có bản tóm tắt nào cho ấn phẩm này."
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
-msgstr ""
+msgstr "Kênh"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -235,7 +236,7 @@ msgstr ""
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Thay đổi tên máy chủ"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -527,7 +528,6 @@ msgstr "Các danh mục mặc định"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "Ngôn ngữ tìm kiếm"
 
@@ -666,10 +666,11 @@ msgstr "Mở kết quả trên những thẻ trình duyệt mới"
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "Phương pháp"
+msgid "HTTP Method"
+msgstr ""
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -694,7 +695,7 @@ msgstr ""
 #: searx/templates/simple/preferences.html:252
 #: searx/templates/simple/preferences.html:264
 msgid "Enabled"
-msgstr "Đã "
+msgstr "Đã"
 
 #: searx/templates/oscar/preferences.html:278
 #: searx/templates/oscar/preferences.html:289
@@ -726,7 +727,7 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
 
@@ -780,7 +781,7 @@ msgstr ""
 
 #: searx/templates/oscar/preferences.html:408
 msgid "Query"
-msgstr ""
+msgstr "Truy vấn"
 
 #: searx/templates/oscar/preferences.html:415
 #: searx/templates/simple/preferences.html:335
@@ -1216,7 +1217,7 @@ msgstr "Số lượng tập tin"
 #: searx/templates/oscar/result_templates/videos.html:7
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "show video"
-msgstr "hiện "
+msgstr "hiện"
 
 #: searx/templates/oscar/result_templates/videos.html:7
 #: searx/templates/simple/result_templates/videos.html:6
@@ -1401,3 +1402,11 @@ msgstr ""
 #~ "can record this title."
 #~ msgstr ""
 
+#~ msgid "Method"
+#~ msgstr "Phương pháp"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
