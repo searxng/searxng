@@ -136,12 +136,10 @@ find an example configuration below:
 MySQL
 -----
 
-.. _mysql-connector-python: https://pypi.org/project/mysql-connector-python
-
 .. sidebar:: info
 
    - :origin:`mysql_server.py <searx/engines/mysql_server.py>`
-   - ``pip install`` mysql-connector-python_
+   - ``pip install`` :pypi:`mysql-connector-python <mysql-connector-python>`
 
 MySQL is said to be the most popular open source database. Before enabling MySQL
 engine, you must install the package ``mysql-connector-python``.
