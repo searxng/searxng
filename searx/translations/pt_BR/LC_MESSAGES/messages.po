@@ -13,18 +13,19 @@
 # shizuka, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
-"PO-Revision-Date: 2022-01-06 08:26+0000\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
+"PO-Revision-Date: 2022-01-19 22:16+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Portuguese (Brazil) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/pt_BR/>\n"
 "Language: pt_BR\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/pt_BR/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:165
@@ -73,15 +74,15 @@ msgstr "ciência"
 
 #: searx/webapp.py:177
 msgid "apps"
-msgstr ""
+msgstr "aplicativos"
 
 #: searx/webapp.py:178
 msgid "dictionaries"
-msgstr ""
+msgstr "dicionários"
 
 #: searx/webapp.py:179
 msgid "lyrics"
-msgstr ""
+msgstr "letras"
 
 #: searx/webapp.py:180
 msgid "packages"
@@ -89,7 +90,7 @@ msgstr ""
 
 #: searx/webapp.py:181
 msgid "q&a"
-msgstr ""
+msgstr "dúvidas"
 
 #: searx/webapp.py:182
 msgid "repos"
@@ -121,11 +122,11 @@ msgstr "tempo esgotado"
 
 #: searx/webapp.py:193
 msgid "parsing error"
-msgstr ""
+msgstr "erro de leitura"
 
 #: searx/webapp.py:194
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "error HTTP"
 
 #: searx/webapp.py:195
 msgid "network error"
@@ -133,7 +134,7 @@ msgstr "erro de rede"
 
 #: searx/webapp.py:197
 msgid "unexpected crash"
-msgstr ""
+msgstr "falha inesperada"
 
 #: searx/webapp.py:204
 msgid "HTTP error"
@@ -170,7 +171,7 @@ msgstr "Nenhum item encontrado"
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:404
 msgid "Source"
-msgstr ""
+msgstr "Fonte"
 
 #: searx/webapp.py:515 searx/webapp.py:925
 msgid "Invalid settings, please edit your preferences"
@@ -194,7 +195,7 @@ msgstr "{hours} hora(s), {minutes} minuto(s) atrás"
 
 #: searx/webapp.py:846
 msgid "Suspended"
-msgstr ""
+msgstr "Suspenso"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -242,11 +243,11 @@ msgstr ""
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Troca de host"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "Sobreescreve hosts dos resultados ou remove resultados baseado no host"
 
 #: searx/plugins/infinite_scroll.py:3
 msgid "Infinite scroll"
@@ -284,7 +285,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr ""
+msgstr "Informações Próprias"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -537,7 +538,6 @@ msgstr "Categoria padrão"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "Idioma de busca"
 
@@ -676,10 +676,11 @@ msgstr "Abrir resultados em novas abas do navegador"
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "Método"
+msgid "HTTP Method"
+msgstr ""
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -736,7 +737,7 @@ msgstr "Desativar tudo"
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
 
@@ -1178,11 +1179,11 @@ msgstr "TiB"
 
 #: searx/templates/oscar/result_templates/files.html:46
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
@@ -1196,7 +1197,7 @@ msgstr "Ver código-fonte"
 #: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "endereço"
 
 #: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
@@ -1243,7 +1244,7 @@ msgstr "Clique na lupa para executar a busca"
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "Erros:"
 
 #: searx/templates/simple/preferences.html:181
 msgid "User interface"
@@ -1251,7 +1252,7 @@ msgstr "Interface de usuário"
 
 #: searx/templates/simple/preferences.html:208
 msgid "Theme style"
-msgstr ""
+msgstr "Estilo"
 
 #: searx/templates/simple/preferences.html:216
 msgid "Choose auto to follow your browser settings"
@@ -1272,7 +1273,7 @@ msgstr "Perguntas"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "clear"
-msgstr ""
+msgstr "limpar"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
@@ -1282,11 +1283,11 @@ msgstr ""
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Esse site não tem uma descrição."
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
@@ -1412,3 +1413,11 @@ msgstr ""
 #~ "can record this title."
 #~ msgstr ""
 
+#~ msgid "Method"
+#~ msgstr "Método"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""

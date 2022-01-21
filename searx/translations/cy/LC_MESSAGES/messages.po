@@ -6,19 +6,20 @@
 # Cymrodor <aled@aledpowell.cymru>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 08:25+0000\n"
-"PO-Revision-Date: 2020-07-09 13:10+0000\n"
-"Last-Translator: Adam Tauber <asciimoo@gmail.com>\n"
+"POT-Creation-Date: 2022-01-14 17:47+0000\n"
+"PO-Revision-Date: 2022-01-19 22:16+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Welsh <https://weblate.bubu1.eu/projects/searxng/searxng/cy/>"
+"\n"
 "Language: cy\n"
-"Language-Team: Welsh "
-"(http://www.transifex.com/asciimoo/searx/language/cy/)\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n "
-"!= 11) ? 2 : 3\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
+"11) ? 2 : 3;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:165
@@ -59,7 +60,7 @@ msgstr "map"
 
 #: searx/webapp.py:174
 msgid "onions"
-msgstr ""
+msgstr "winwns"
 
 #: searx/webapp.py:175
 msgid "science"
@@ -107,7 +108,7 @@ msgstr ""
 
 #: searx/webapp.py:189
 msgid "dark"
-msgstr ""
+msgstr "tywyll"
 
 #: searx/webapp.py:192
 msgid "timeout"
@@ -115,7 +116,7 @@ msgstr ""
 
 #: searx/webapp.py:193
 msgid "parsing error"
-msgstr ""
+msgstr "gwall dosrannu"
 
 #: searx/webapp.py:194
 msgid "HTTP protocol error"
@@ -521,7 +522,6 @@ msgstr "Categorïau arferol"
 
 #: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/preferences.html:117
-#: searx/templates/simple/preferences.html:244
 msgid "Search language"
 msgstr "Iaith chwilio"
 
@@ -658,10 +658,11 @@ msgstr "Agor dolenni canlyniadau mewn tabiau newydd yn y porwr"
 
 #: searx/templates/oscar/preferences.html:262
 #: searx/templates/simple/preferences.html:237
-msgid "Method"
-msgstr "Dull"
+msgid "HTTP Method"
+msgstr ""
 
 #: searx/templates/oscar/preferences.html:263
+#: searx/templates/simple/preferences.html:244
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -715,7 +716,7 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:325
 #: searx/templates/simple/preferences.html:280
 msgid ""
-"This tab does not show up for search results but you can search the "
+"This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
 
@@ -1083,7 +1084,7 @@ msgstr "Da iawn!"
 
 #: searx/templates/oscar/messages/save_settings_successfull.html:8
 msgid "Settings saved successfully."
-msgstr "Cadwyd y gosodiadau yn iawn!"
+msgstr "Cadwyd y gosodiadau yn iawn."
 
 #: searx/templates/oscar/messages/unknow_error.html:7
 msgid "Oh snap!"
@@ -1382,3 +1383,11 @@ msgstr ""
 #~ "can record this title."
 #~ msgstr ""
 
+#~ msgid "Method"
+#~ msgstr "Dull"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
