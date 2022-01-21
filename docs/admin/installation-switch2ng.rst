@@ -7,7 +7,7 @@ Switch from searx to SearXNG
 .. sidebar:: info
 
    - :pull:`456`
-   - `A comment about rolling release <https://github.com/searxng/searxng/pull/446#issuecomment-954730358>`_
+   - :pull:`A comment about rolling release <446#issuecomment-954730358>`
 
 .. contents:: Contents
    :depth: 2
