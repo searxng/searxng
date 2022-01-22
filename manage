@@ -20,6 +20,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 # shellcheck source=utils/lib_redis.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_redis.sh"
 
+PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
+
 # config
 
 PYOBJECTS="searx"
@@ -559,6 +561,12 @@ node.env() {
     dump_return $?
 }
 
+node.env.devtools() {
+    nodejs.ensure
+    build_msg INSTALL "package.json: developer and CI tools"
+    npm install
+}
+
 node.clean() {
     if ! required_commands npm 2>/dev/null; then
         build_msg CLEAN "npm is not installed / ignore npm dependencies"
@@ -683,11 +691,9 @@ test.pylint() {
     dump_return $?
 }
 
-
 test.pyright() {
     build_msg TEST "[pyright] static type check of python sources"
-    nodejs.ensure
-    npm install
+    node.env.devtools
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
     pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json

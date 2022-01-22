@@ -117,6 +117,9 @@ nvm.install() {
     info_msg "checkout ${NVM_VERSION_TAG}"
     git checkout "${NVM_VERSION_TAG}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
     popd &> /dev/null
+    if [ -f "${REPO_ROOT}/.nvm_packages" ]; then
+        cp "${REPO_ROOT}/.nvm_packages" "${NVM_DIR}/default-packages"
+    fi
     nvm.env
 }
 
