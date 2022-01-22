@@ -177,7 +177,7 @@ module.exports = function (grunt) {
           'chevron-up-outline': 'node_modules/ionicons/dist/svg/chevron-up-outline.svg',
           'chevron-right': 'node_modules/ionicons/dist/svg/chevron-forward-outline.svg',
           'chevron-left': 'node_modules/ionicons/dist/svg/chevron-back-outline.svg',
-          'menu-outline': 'node_modules/ionicons/dist/svg/menu-outline.svg',
+          'menu-outline': 'node_modules/ionicons/dist/svg/settings-outline.svg',
           'ellipsis-vertical-outline': 'node_modules/ionicons/dist/svg/ellipsis-vertical-outline.svg',
           'magnet-outline': 'node_modules/ionicons/dist/svg/magnet-outline.svg',
           'globe-outline': 'node_modules/ionicons/dist/svg/globe-outline.svg',
