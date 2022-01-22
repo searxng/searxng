@@ -746,22 +746,19 @@ engines:
 
   - name: hoogle
     engine: xpath
-    paging: true
     search_url: https://hoogle.haskell.org/?hoogle={query}&start={pageno}
     results_xpath: '//div[@class="result"]'
-    title_xpath: './/div[@class="ans"]//a'
-    url_xpath: './/div[@class="ans"]//a/@href'
-    content_xpath: './/div[@class="from"]'
-    page_size: 20
-    categories: [it, packages]
+    title_xpath: './div[@class="ans"]'
+    url_xpath: './div[@class="ans"]//a/@href'
+    content_xpath: './div[contains(@class, "doc")]'
+    categories: it
     shortcut: ho
     about:
       website: https://hoogle.haskell.org/
       wikidata_id: Q34010
-      official_api_documentation: https://hackage.haskell.org/api
       use_official_api: false
       require_api_key: false
-      results: JSON
+      results: HTML
 
   - name: imdb
     engine: imdb
