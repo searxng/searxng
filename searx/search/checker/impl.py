@@ -74,7 +74,7 @@ def _download_and_check_if_image(image_url: str) -> bool:
         try:
             # use "image_proxy" (avoid HTTP/2)
             network.set_context_network_name('image_proxy')
-            stream = network.stream(
+            r, stream = network.stream(
                 'GET',
                 image_url,
                 timeout=10.0,
@@ -91,7 +91,6 @@ def _download_and_check_if_image(image_url: str) -> bool:
                     'Cache-Control': 'max-age=0',
                 },
             )
-            r = next(stream)
             r.close()
             if r.status_code == 200:
                 is_image = r.headers.get('content-type', '').startswith('image/')
