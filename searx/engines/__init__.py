@@ -42,6 +42,7 @@ ENGINE_DEFAULT_ARGS = {
     "safesearch": False,
     "time_range_support": False,
     "enable_http": False,
+    "using_tor_proxy": False,
     "display_error_messages": True,
     "tokens": [],
     "about": {},
@@ -230,8 +231,8 @@ def set_language_attributes(engine: Engine):
         )
 
 
-def update_attributes_for_tor(engine):
-    if settings['outgoing'].get('using_tor_proxy') and hasattr(engine, 'onion_url'):
+def update_attributes_for_tor(engine: Engine) -> bool:
+    if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
         engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
         engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
 
@@ -249,13 +250,18 @@ def is_missing_required_attributes(engine):
     return missing
 
 
+def using_tor_proxy(engine: Engine):
+    """Return True if the engine configuration declares to use Tor."""
+    return settings['outgoing'].get('using_tor_proxy') or getattr(engine, 'using_tor_proxy', False)
+
+
 def is_engine_active(engine: Engine):
     # check if engine is inactive
     if engine.inactive is True:
         return False
 
     # exclude onion engines if not using tor
-    if 'onions' in engine.categories and not settings['outgoing'].get('using_tor_proxy'):
+    if 'onions' in engine.categories and not using_tor_proxy(engine):
         return False
 
     return True
