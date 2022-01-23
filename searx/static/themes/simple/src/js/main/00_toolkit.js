@@ -59,43 +59,40 @@ window.searxng = (function (w, d) {
     }
   };
 
-  searxng.http = function (method, url) {
-    var req = new XMLHttpRequest(),
-      resolve = function () {},
-      reject = function () {},
-      promise = {
-        then: function (callback) { resolve = callback; return promise; },
-        catch: function (callback) { reject = callback; return promise; }
-      };
+  searxng.http = function (method, url, data = null) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var req = new XMLHttpRequest();
+        req.open(method, url, true);
 
-    try {
-      req.open(method, url, true);
+        // On load
+        req.onload = function () {
+          if (req.status == 200) {
+            resolve(req.response, req.responseType);
+          } else {
+            reject(Error(req.statusText));
+          }
+        };
 
-      // On load
-      req.onload = function () {
-        if (req.status == 200) {
-          resolve(req.response, req.responseType);
+        // Handle network errors
+        req.onerror = function () {
+          reject(Error("Network Error"));
+        };
+
+        req.onabort = function () {
+          reject(Error("Transaction is aborted"));
+        };
+
+        // Make the request
+        if (data) {
+          req.send(data)
         } else {
-          reject(Error(req.statusText));
+          req.send();
         }
-      };
-
-      // Handle network errors
-      req.onerror = function () {
-        reject(Error("Network Error"));
-      };
-
-      req.onabort = function () {
-        reject(Error("Transaction is aborted"));
-      };
-
-      // Make the request
-      req.send();
-    } catch (ex) {
-      reject(ex);
-    }
-
-    return promise;
+      } catch (ex) {
+        reject(ex);
+      }
+    });
   };
 
   searxng.loadStyle = function (src) {

@@ -19,6 +19,7 @@ window.searxng = (function(d) {
 
     return {
         autocompleter: script.getAttribute('data-autocompleter') === 'true',
+        infinite_scroll: script.getAttribute('data-infinite-scroll') === 'true',
         method: script.getAttribute('data-method'),
         translations: JSON.parse(script.getAttribute('data-translations'))
     };
