@@ -39,7 +39,7 @@ def brave(query, _lang):
     results = []
 
     if resp.ok:
-        data = loads(resp.text)
+        data = resp.json()
         for item in data[1]:
             results.append(item)
     return results
