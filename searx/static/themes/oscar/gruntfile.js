@@ -78,7 +78,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['gruntfile.js', 'src/js/*.js', '../__common__/js/image_layout.js'],
+      files: ['gruntfile.js', 'src/js/*.js'],  // files in __common__ are linted by es lint in simple theme
       options: {
         reporterOutput: "",
         esversion: 6,

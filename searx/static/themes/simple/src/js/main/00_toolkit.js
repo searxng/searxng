@@ -59,43 +59,45 @@ window.searxng = (function (w, d) {
     }
   };
 
-  searxng.http = function (method, url) {
-    var req = new XMLHttpRequest(),
-      resolve = function () {},
-      reject = function () {},
-      promise = {
-        then: function (callback) { resolve = callback; return promise; },
-        catch: function (callback) { reject = callback; return promise; }
-      };
+  searxng.http = function (method, url, data = null) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var req = new XMLHttpRequest();
+        req.open(method, url, true);
+        req.timeout = 20000;
 
-    try {
-      req.open(method, url, true);
+        // On load
+        req.onload = function () {
+          if (req.status == 200) {
+            resolve(req.response, req.responseType);
+          } else {
+            reject(Error(req.statusText));
+          }
+        };
 
-      // On load
-      req.onload = function () {
-        if (req.status == 200) {
-          resolve(req.response, req.responseType);
-        } else {
-          reject(Error(req.statusText));
+        // Handle network errors
+        req.onerror = function () {
+          reject(Error("Network Error"));
+        };
+
+        req.onabort = function () {
+          reject(Error("Transaction is aborted"));
+        };
+
+        req.ontimeout = function () {
+          reject(Error("Timeout"));
         }
-      };
 
-      // Handle network errors
-      req.onerror = function () {
-        reject(Error("Network Error"));
-      };
-
-      req.onabort = function () {
-        reject(Error("Transaction is aborted"));
-      };
-
-      // Make the request
-      req.send();
-    } catch (ex) {
-      reject(ex);
-    }
-
-    return promise;
+        // Make the request
+        if (data) {
+          req.send(data)
+        } else {
+          req.send();
+        }
+      } catch (ex) {
+        reject(ex);
+      }
+    });
   };
 
   searxng.loadStyle = function (src) {
@@ -147,6 +149,17 @@ window.searxng = (function (w, d) {
   searxng.on('.close', 'click', function () {
     this.parentNode.classList.add('invisible');
   });
+
+  function getEndpoint () {
+    for (var className of d.getElementsByTagName('body')[0].classList.values()) {
+      if (className.endsWith('_endpoint')) {
+        return className.split('_')[0];
+      }
+    }
+    return '';
+  }
+
+  searxng.endpoint = getEndpoint();
 
   return searxng;
 })(window, document);

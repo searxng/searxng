@@ -2,6 +2,10 @@
 (function (w, d, searxng) {
   'use strict';
 
+  if (searxng.endpoint !== 'results') {
+    return;
+  }
+
   searxng.ready(function () {
     searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 14, 6, 200);
     searxng.image_thumbnail_layout.watch();

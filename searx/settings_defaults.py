@@ -186,6 +186,7 @@ SCHEMA = {
         'results_on_new_tab': SettingsValue(bool, False),
         'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),
+        'infinite_scroll': SettingsValue(bool, False),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
