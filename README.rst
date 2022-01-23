@@ -29,7 +29,7 @@ our homepage_.
 
 .. _searx.space: https://searx.space
 .. _user: https://docs.searxng.org/user
-.. _admin: https://docs.searxng.org/user/admin
+.. _admin: https://docs.searxng.org/admin
 .. _developer: https://docs.searxng.org/dev
 .. _homepage: https://docs.searxng.org/
 .. _metasearch engine: https://en.wikipedia.org/wiki/Metasearch_engine
