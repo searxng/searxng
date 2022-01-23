@@ -1,32 +1,22 @@
-'''
-searx is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""This module implements functions needed for the autocompleter.
 
-searx is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+"""
 
-You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
-
-(C) 2013- by Adam Tauber, <asciimoo@gmail.com>
-'''
-
-
-from lxml import etree
 from json import loads
 from urllib.parse import urlencode
 
+from lxml import etree
 from httpx import HTTPError
-
 
 from searx import settings
 from searx.data import ENGINES_LANGUAGES
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
+
+# a fetch_supported_languages() for XPath engines isn't available right now
+# _brave = ENGINES_LANGUAGES['brave'].keys()
 
 
 def get(*args, **kwargs):
@@ -36,7 +26,26 @@ def get(*args, **kwargs):
     return http_get(*args, **kwargs)
 
 
-def dbpedia(query, lang):
+def brave(query, _lang):
+    # brave search autocompleter
+    url = 'https://search.brave.com/api/suggest?'
+    url += urlencode({'q': query})
+    country = 'all'
+    # if lang in _brave:
+    #    country = lang
+    kwargs = {'cookies': {'country': country}}
+    resp = get(url, **kwargs)
+
+    results = []
+
+    if resp.ok:
+        data = resp.json()
+        for item in data[1]:
+            results.append(item)
+    return results
+
+
+def dbpedia(query, _lang):
     # dbpedia autocompleter, no HTTPS
     autocomplete_url = 'https://lookup.dbpedia.org/api/search.asmx/KeywordSearch?'
 
@@ -51,7 +60,7 @@ def dbpedia(query, lang):
     return results
 
 
-def duckduckgo(query, lang):
+def duckduckgo(query, _lang):
     # duckduckgo autocompleter
     url = 'https://ac.duckduckgo.com/ac/?{0}&type=list'
 
@@ -85,7 +94,7 @@ def startpage(query, lang):
     return [e['text'] for e in data.get('suggestions', []) if 'text' in e]
 
 
-def swisscows(query, lang):
+def swisscows(query, _lang):
     # swisscows autocompleter
     url = 'https://swisscows.ch/api/suggest?{query}&itemsCount=5'
 
@@ -128,6 +137,7 @@ backends = {
     'swisscows': swisscows,
     'qwant': qwant,
     'wikipedia': wikipedia,
+    'brave': brave,
 }
 
 
