@@ -55,6 +55,7 @@ from searx import (
     get_setting,
     settings,
     searx_debug,
+    user_help,
 )
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing, UnresponsiveEngine
@@ -867,7 +868,7 @@ def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
 @app.route('/about', methods=['GET'])
 def about():
     """Render about page"""
-    return render('about.html')
+    return render('about.html', help=user_help.HELP)
 
 
 @app.route('/autocompleter', methods=['GET', 'POST'])
@@ -1359,6 +1360,7 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
+    user_help.render(app)
 
 
 def run():

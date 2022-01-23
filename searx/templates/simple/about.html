@@ -1,4 +1,5 @@
 {% extends 'simple/base.html' %}
 {% block content %}
-{% include '__common__/about.html' %}
+{{ help.about | safe }}
+{% include "__common__/aboutextend.html" ignore missing %}
 {% endblock %}
