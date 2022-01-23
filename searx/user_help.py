@@ -44,5 +44,9 @@ def render(app: flask.Flask):
             continue
 
         markdown = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
+
+        if rootname == 'about':
+            markdown += pkg_resources.resource_string(__name__, '../config/about.md').decode()
+
         markdown = define_link_targets + markdown
         HELP[rootname] = mistletoe.markdown(markdown)
