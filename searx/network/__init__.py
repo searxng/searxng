@@ -7,6 +7,7 @@ import threading
 import concurrent.futures
 from types import MethodType
 from timeit import default_timer
+from typing import Iterable, Tuple
 
 import httpx
 import anyio
@@ -210,7 +211,7 @@ def _close_response_method(self):
         continue
 
 
-def stream(method, url, **kwargs):
+def stream(method, url, **kwargs) -> Tuple[httpx.Response, Iterable[bytes]]:
     """Replace httpx.stream.
 
     Usage:
