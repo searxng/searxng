@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import time
+from typing import Optional
 import uwsgi  # pylint: disable=E0401
 from . import shared_abstract
 
@@ -9,25 +10,25 @@ _last_signal = 10
 
 
 class UwsgiCacheSharedDict(shared_abstract.SharedDict):
-    def get_int(self, key):
+    def get_int(self, key: str) -> Optional[int]:
         value = uwsgi.cache_get(key)
         if value is None:
             return value
         else:
             return int.from_bytes(value, 'big')
 
-    def set_int(self, key, value):
+    def set_int(self, key: str, value: int):
         b = value.to_bytes(4, 'big')
         uwsgi.cache_update(key, b)
 
-    def get_str(self, key):
+    def get_str(self, key: str) -> Optional[str]:
         value = uwsgi.cache_get(key)
         if value is None:
             return value
         else:
             return value.decode('utf-8')
 
-    def set_str(self, key, value):
+    def set_str(self, key: str, value: str):
         b = value.encode('utf-8')
         uwsgi.cache_update(key, b)
 
