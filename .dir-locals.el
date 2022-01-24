@@ -103,6 +103,10 @@
                ;; use nodejs from the (local) NVM environment (see nvm-dir)
                (nvm-use-for-buffer)
                (setq-local js-indent-level 2)
+               ;; flycheck should use the eslint checker from developer tools
+               (setq-local flycheck-javascript-eslint-executable
+                           (expand-file-name "node_modules/.bin/eslint" prj-root))
+
                (flycheck-mode)
                ))))
 
