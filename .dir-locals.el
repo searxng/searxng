@@ -32,6 +32,10 @@
 ;; Jedi, flycheck & other python stuff should use the 'python-shell-interpreter'
 ;; from the local py3 environment.
 ;;
+;; For pyright support you need to install::
+;;
+;;    M-x package-install lsp-pyright
+;;
 ;; Other useful jedi stuff you might add to your ~/.emacs::
 ;;
 ;;     (global-set-key [f6] 'flycheck-mode)
@@ -104,7 +108,10 @@
 
  (python-mode
   . ((eval . (progn
-
+               ;; use nodejs from the (local) NVM environment (see nvm-dir)
+               (nvm-use-for-buffer)
+               (if (featurep 'lsp-pyright)
+                   (lsp))
                (setq-local python-environment-virtualenv
                            (list (expand-file-name "bin/virtualenv" python-shell-virtualenv-root)
                                  ;;"--system-site-packages"
