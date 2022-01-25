@@ -777,11 +777,16 @@ engines:
 
   - name: invidious
     engine: invidious
+    # Instanes will be selected randomly, see https://api.invidious.io/ for
+    # instances that are stable (good uptime) and close to you.
     base_url:
-      - https://invidious.tube/
       - https://invidious.snopyta.org/
+      - https://vid.puffyan.us/
+      - https://invidious.kavin.rocks/
+      - https://invidio.xamh.de/
+      - https://inv.riverside.rocks/
     shortcut: iv
-    timeout: 5.0
+    timeout: 3.0
     disabled: true
 
   - name: kickass
