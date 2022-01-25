@@ -1,6 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Tineye - Reverse search images
+"""This engine implements *Tineye - reverse image search*
+
+Using TinEye, you can search by image or perform what we call a reverse image
+search.  You can do that by uploading an image or searching by URL. You can also
+simply drag and drop your images to start your search.  TinEye constantly crawls
+the web and adds images to its index.  Today, the TinEye index is over 50.2
+billion images `[tineye.com] <https://tineye.com/how>`_.
+
+.. hint::
+
+   This SearXNG engine only supports *'searching by URL'* and it does not use
+   the official API `[api.tineye.com] <https://api.tineye.com/python/docs/>`_.
 
 """
 
@@ -11,6 +22,7 @@ from datetime import datetime
 about = {
     "website": 'https://tineye.com',
     "wikidata_id": 'Q2382535',
+    "official_api_documentation": 'https://api.tineye.com/python/docs/',
     "use_official_api": False,
     "require_api_key": False,
     "results": 'JSON',
