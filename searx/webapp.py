@@ -1147,8 +1147,6 @@ def image_proxy():
             except httpx.HTTPError:
                 logger.exception('HTTP error on closing')
 
-    assert resp is not None
-
     def close_stream():
         nonlocal resp, stream
         try:
