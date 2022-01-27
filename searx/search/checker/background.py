@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 # pylint: disable=missing-module-docstring
+# pyright: strict
 
 import json
 import random
@@ -8,6 +9,8 @@ import time
 import threading
 import os
 import signal
+from typing import Dict, Union, List, Any, Tuple
+from typing_extensions import TypedDict, Literal
 
 from searx import logger, settings, searx_debug
 from searx.exceptions import SearxSettingsException
@@ -20,17 +23,58 @@ CHECKER_RESULT = 'CHECKER_RESULT'
 running = threading.Lock()
 
 
-def _get_interval(every, error_msg):
+CheckerResult = Union['CheckerOk', 'CheckerErr', 'CheckerOther']
+
+
+class CheckerOk(TypedDict):
+    """Checking the engines succeeded"""
+
+    status: Literal['ok']
+    engines: Dict[str, 'EngineResult']
+    timestamp: int
+
+
+class CheckerErr(TypedDict):
+    """Checking the engines failed"""
+
+    status: Literal['error']
+    timestamp: int
+
+
+class CheckerOther(TypedDict):
+    """The status is unknown or disabled"""
+
+    status: Literal['unknown', 'disabled']
+
+
+EngineResult = Union['EngineOk', 'EngineErr']
+
+
+class EngineOk(TypedDict):
+    """Checking the engine succeeded"""
+
+    success: Literal[True]
+
+
+class EngineErr(TypedDict):
+    """Checking the engine failed"""
+
+    success: Literal[False]
+    errors: Dict[str, List[str]]
+
+
+def _get_interval(every: Any, error_msg: str) -> Tuple[int, int]:
     if isinstance(every, int):
-        every = (every, every)
+        return (every, every)
+
     if (
         not isinstance(every, (tuple, list))
-        or len(every) != 2
+        or len(every) != 2  # type: ignore
         or not isinstance(every[0], int)
         or not isinstance(every[1], int)
     ):
         raise SearxSettingsException(error_msg, None)
-    return every
+    return (every[0], every[1])
 
 
 def _get_every():
@@ -38,17 +82,19 @@ def _get_every():
     return _get_interval(every, 'checker.scheduling.every is not a int or list')
 
 
-def get_result():
+def get_result() -> CheckerResult:
     serialized_result = storage.get_str(CHECKER_RESULT)
     if serialized_result is not None:
         return json.loads(serialized_result)
     return {'status': 'unknown'}
 
 
-def _set_result(result, include_timestamp=True):
-    if include_timestamp:
-        result['timestamp'] = int(time.time() / 3600) * 3600
+def _set_result(result: CheckerResult):
     storage.set_str(CHECKER_RESULT, json.dumps(result))
+
+
+def _timestamp():
+    return int(time.time() / 3600) * 3600
 
 
 def run():
@@ -56,7 +102,7 @@ def run():
         return
     try:
         logger.info('Starting checker')
-        result = {'status': 'ok', 'engines': {}}
+        result: CheckerOk = {'status': 'ok', 'engines': {}, 'timestamp': _timestamp()}
         for name, processor in PROCESSORS.items():
             logger.debug('Checking %s engine', name)
             checker = Checker(processor)
@@ -69,7 +115,7 @@ def run():
         _set_result(result)
         logger.info('Check done')
     except Exception:  # pylint: disable=broad-except
-        _set_result({'status': 'error'})
+        _set_result({'status': 'error', 'timestamp': _timestamp()})
         logger.exception('Error while running the checker')
     finally:
         running.release()
@@ -89,7 +135,7 @@ def _start_scheduling():
         run()
 
 
-def _signal_handler(_signum, _frame):
+def _signal_handler(_signum: int, _frame: Any):
     t = threading.Thread(target=run)
     t.daemon = True
     t.start()
@@ -102,7 +148,7 @@ def initialize():
         signal.signal(signal.SIGUSR1, _signal_handler)
 
     # disabled by default
-    _set_result({'status': 'disabled'}, include_timestamp=False)
+    _set_result({'status': 'disabled'})
 
     # special case when debug is activate
     if searx_debug and settings.get('checker', {}).get('off_when_debug', True):
@@ -116,7 +162,7 @@ def initialize():
         return
 
     #
-    _set_result({'status': 'unknown'}, include_timestamp=False)
+    _set_result({'status': 'unknown'})
 
     start_after = scheduling.get('start_after', (300, 1800))
     start_after = _get_interval(start_after, 'checker.scheduling.start_after is not a int or list')

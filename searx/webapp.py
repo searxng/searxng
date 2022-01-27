@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
+# pyright: basic
 """WebbApp
 
 """
@@ -33,11 +34,11 @@ from flask import (
     Flask,
     render_template,
     url_for,
-    Response,
     make_response,
     redirect,
     send_from_directory,
 )
+from flask.wrappers import Response
 from flask.ctx import has_request_context
 from flask.json import jsonify
 
@@ -255,7 +256,13 @@ flask_babel.get_translations = _get_translations
 
 @babel.localeselector
 def get_locale():
-    locale = request.preferences.get_value('locale') if has_request_context() else 'en'
+    locale = 'en'
+
+    if has_request_context():
+        value = request.preferences.get_value('locale')
+        if value:
+            locale = value
+
     if locale == 'oc':
         request.form['use-translation'] = 'oc'
         locale = 'fr_FR'
@@ -310,6 +317,7 @@ def code_highlighter(codelines, language=None):
     html_code = ''
     tmp_code = ''
     last_line = None
+    line_code_start = None
 
     # parse lines
     for line, code in codelines:
@@ -351,9 +359,11 @@ def get_current_theme_name(override: str = None) -> str:
     if override and (override in themes or override == '__common__'):
         return override
     theme_name = request.args.get('theme', request.preferences.get_value('theme'))
-    if theme_name not in themes:
-        theme_name = default_theme
-    return theme_name
+
+    if theme_name and theme_name in themes:
+        return theme_name
+
+    return default_theme
 
 
 def get_result_template(theme_name: str, template_name: str):
@@ -380,7 +390,7 @@ def proxify(url: str):
     if not settings.get('result_proxy'):
         return url
 
-    url_params = dict(mortyurl=url.encode())
+    url_params = dict(mortyurl=url)
 
     if settings['result_proxy'].get('key'):
         url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
@@ -1140,7 +1150,8 @@ def image_proxy():
     def close_stream():
         nonlocal resp, stream
         try:
-            resp.close()
+            if resp:
+                resp.close()
             del resp
             del stream
         except httpx.HTTPError as e:
@@ -1207,7 +1218,7 @@ def stats():
     reverse, key_name, default_value = STATS_SORT_PARAMETERS[sort_order]
 
     def get_key(engine_stat):
-        reliability = engine_reliabilities.get(engine_stat['name']).get('reliablity', 0)
+        reliability = engine_reliabilities.get(engine_stat['name'], {}).get('reliablity', 0)
         reliability_order = 0 if reliability else 1
         if key_name == 'reliability':
             key = reliability
