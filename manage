@@ -697,7 +697,7 @@ test.pyright() {
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
     build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
-    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
+    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json "$@" \
         | grep -v ".py$" \
         | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
         | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
