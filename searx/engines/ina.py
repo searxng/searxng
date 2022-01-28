@@ -3,12 +3,10 @@
  INA (Videos)
 """
 
-from json import loads
 from html import unescape
 from urllib.parse import urlencode
 from lxml import html
-from dateutil import parser
-from searx.utils import extract_text
+from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
 about = {
@@ -24,25 +22,24 @@ about = {
 # engine dependent config
 categories = ['videos']
 paging = True
-page_size = 48
+page_size = 12
 
 # search-url
 base_url = 'https://www.ina.fr'
-search_url = base_url + '/layout/set/ajax/recherche/result?autopromote=&hf={ps}&b={start}&type=Video&r=&{query}'
+search_url = base_url + '/ajax/recherche?{query}&espace=1&sort=pertinence&order=desc&offset={start}&modified=size'
 
 # specific xpath variables
-results_xpath = '//div[contains(@class,"search-results--list")]//div[@class="media-body"]'
+results_xpath = '//div[@id="searchHits"]/div'
 url_xpath = './/a/@href'
-title_xpath = './/h3[@class="h3--title media-heading"]'
-thumbnail_xpath = './/img/@src'
-publishedDate_xpath = './/span[@class="broadcast"]'
-content_xpath = './/p[@class="media-body__summary"]'
+title_xpath = './/div[contains(@class,"title-bloc-small")]'
+content_xpath = './/div[contains(@class,"sous-titre-fonction")]'
+thumbnail_xpath = './/img/@data-src'
+publishedDate_xpath = './/div[contains(@class,"dateAgenda")]'
 
 
 # do search-request
 def request(query, params):
-    params['url'] = search_url.format(ps=page_size, start=params['pageno'] * page_size, query=urlencode({'q': query}))
-
+    params['url'] = search_url.format(start=params['pageno'] * page_size, query=urlencode({'q': query}))
     return params
 
 
@@ -51,26 +48,17 @@ def response(resp):
     results = []
 
     # we get html in a JSON container...
-    response = loads(resp.text)
-    dom = html.fromstring(response)
+    dom = html.fromstring(resp.text)
 
     # parse results
-    for result in dom.xpath(results_xpath):
-        videoid = result.xpath(url_xpath)[0]
-        url = base_url + videoid
-        title = unescape(extract_text(result.xpath(title_xpath)))
-        try:
-            thumbnail = extract_text(result.xpath(thumbnail_xpath)[0])
-        except:
-            thumbnail = ''
-        if thumbnail and thumbnail[0] == '/':
-            thumbnail = base_url + thumbnail
-        d = extract_text(result.xpath(publishedDate_xpath)[0])
-        d = d.split('/')
-        # force ISO date to avoid wrong parsing
-        d = "%s-%s-%s" % (d[2], d[1], d[0])
-        publishedDate = parser.parse(d)
-        content = extract_text(result.xpath(content_xpath))
+    for result in eval_xpath_list(dom, results_xpath):
+        url_relative = eval_xpath_getindex(result, url_xpath, 0)
+        url = base_url + url_relative
+        title = unescape(extract_text(eval_xpath(result, title_xpath)))
+        thumbnail = extract_text(eval_xpath(result, thumbnail_xpath))
+        content = extract_text(eval_xpath(result, publishedDate_xpath)) + extract_text(
+            eval_xpath(result, content_xpath)
+        )
 
         # append result
         results.append(
@@ -79,7 +67,6 @@ def response(resp):
                 'title': title,
                 'content': content,
                 'template': 'videos.html',
-                'publishedDate': publishedDate,
                 'thumbnail': thumbnail,
             }
         )
