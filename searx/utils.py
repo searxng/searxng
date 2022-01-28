@@ -6,11 +6,13 @@ from numbers import Number
 from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
+from typing import Collection, Dict
 from urllib.parse import urljoin, urlparse
 
 from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
 from babel.core import get_global
+from babel.localedata import locale_identifiers
 
 
 from searx import settings
@@ -436,6 +438,26 @@ def match_language(locale_code, lang_list=[], custom_aliases={}, fallback='en-US
         language = _match_language(lang_code, lang_list, custom_aliases)
 
     return language or fallback
+
+
+_BABEL_LANGS = [
+    lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
+    for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())
+]
+
+
+def find_language_aliases(supported_languages: Collection[str]) -> Dict[str, str]:
+    aliases = {}
+    for engine_lang in supported_languages:
+        iso_lang = match_language(engine_lang, _BABEL_LANGS, fallback=None)
+        if (
+            iso_lang
+            and iso_lang != engine_lang
+            and not engine_lang.startswith(iso_lang)
+            and iso_lang not in supported_languages
+        ):
+            aliases[iso_lang] = engine_lang
+    return aliases
 
 
 def load_module(filename, module_dir):

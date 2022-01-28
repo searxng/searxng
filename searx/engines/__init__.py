@@ -16,19 +16,14 @@ import copy
 from typing import Dict, List, Optional
 
 from os.path import realpath, dirname
-from babel.localedata import locale_identifiers
 from searx import logger, settings
 from searx.data import ENGINES_LANGUAGES
 from searx.network import get
-from searx.utils import load_module, match_language, gen_useragent
+from searx.utils import load_module, gen_useragent, find_language_aliases
 
 
 logger = logger.getChild('engines')
 ENGINE_DIR = dirname(realpath(__file__))
-BABEL_LANGS = [
-    lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
-    for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())
-]
 ENGINE_DEFAULT_ARGS = {
     "engine_type": "online",
     "inactive": False,
@@ -206,15 +201,7 @@ def set_language_attributes(engine: ConfiguredEngine):
             engine.supported_languages = [engine.language]
 
     # find custom aliases for non standard language codes
-    for engine_lang in engine.supported_languages:
-        iso_lang = match_language(engine_lang, BABEL_LANGS, fallback=None)
-        if (
-            iso_lang
-            and iso_lang != engine_lang
-            and not engine_lang.startswith(iso_lang)
-            and iso_lang not in engine.supported_languages
-        ):
-            engine.language_aliases[iso_lang] = engine_lang
+    engine.language_aliases.update(find_language_aliases(engine.supported_languages))
 
     # language_support
     engine.language_support = len(engine.supported_languages) > 0
