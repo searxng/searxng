@@ -23,6 +23,7 @@ from searx.utils import load_module, gen_useragent, find_language_aliases
 from searx.engine import Engine
 
 _NEXTGEN_ENGINES = {
+    'wikipedia': 'WikipediaEngine',
 }
 """maps module names to class names for engines that are implemented using the new class-based approach"""
 

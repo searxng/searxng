@@ -1,16 +1,29 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pyright: basic
 """
  Wikipedia (Web)
 """
 
 from urllib.parse import quote
 from json import loads
+from typing import List
 from lxml.html import fromstring
-from searx.utils import match_language, searx_useragent
+from searx.engine import (
+    About,
+    InfoBox,
+    OnlineEngine,
+    QueryContext,
+    OnlineRequest,
+    Result,
+    Response,
+    StandardResult,
+)
+from searx.utils import match_language, searx_useragent, find_language_aliases
 from searx.network import raise_for_httperror
+import searx.data
 
 # about
-about = {
+about: About = {
     "website": 'https://www.wikipedia.org/',
     "wikidata_id": 'Q52',
     "official_api_documentation": 'https://en.wikipedia.org/api/',
@@ -25,34 +38,36 @@ supported_languages_url = 'https://meta.wikimedia.org/wiki/List_of_Wikipedias'
 language_variants = {"zh": ("zh-cn", "zh-hk", "zh-mo", "zh-my", "zh-sg", "zh-tw")}
 
 
-    # set language in base_url
-    def url_lang(lang):
+class WikipediaEngine(OnlineEngine):
+    about = about
+    supported_languages = searx.data.ENGINES_LANGUAGES['wikipedia']
+    language_aliases = find_language_aliases(supported_languages)
+
+    def _url_lang(self, lang: str):
         lang_pre = lang.split('-')[0]
-        if lang_pre == 'all' or lang_pre not in supported_languages and lang_pre not in language_aliases:
+        if lang_pre == 'all' or lang_pre not in self.supported_languages and lang_pre not in self.language_aliases:
             return 'en'
-        return match_language(lang, supported_languages, language_aliases).split('-')[0]
+        return match_language(lang, self.supported_languages, self.language_aliases).split('-')[0]
 
-
-    # do search-request
-    def request(query, params):
+    def request(self, query: str, ctx: QueryContext) -> OnlineRequest:
         if query.islower():
             query = query.title()
 
-        language = url_lang(params['language'])
-        params['url'] = search_url.format(title=quote(query), language=language)
+        language = self._url_lang(ctx.language)
 
-        if params['language'].lower() in language_variants.get(language, []):
-            params['headers']['Accept-Language'] = params['language'].lower()
+        req = OnlineRequest(
+            url=search_url.format(title=quote(query), language=language),
+            raise_for_httperror=False,
+            soft_max_redirects=2,
+            headers={'User-Agent': searx_useragent()},
+        )
 
-        params['headers']['User-Agent'] = searx_useragent()
-        params['raise_for_httperror'] = False
-        params['soft_max_redirects'] = 2
+        if ctx.language.lower() in language_variants.get(language, []):
+            req.set_header('Accept-Language', ctx.language.lower())
 
-        return params
+        return req
 
-
-    # get response from search-request
-    def response(resp):
+    def response(self, resp: Response) -> List[Result]:
         if resp.status_code == 404:
             return []
 
@@ -70,7 +85,7 @@ language_variants = {"zh": ("zh-cn", "zh-hk", "zh-mo", "zh-my", "zh-sg", "zh-tw"
 
         raise_for_httperror(resp)
 
-        results = []
+        results: List[Result] = []
         api_result = loads(resp.text)
 
         # skip disambiguation pages
@@ -80,16 +95,16 @@ language_variants = {"zh": ("zh-cn", "zh-hk", "zh-mo", "zh-my", "zh-sg", "zh-tw"
         title = api_result['title']
         wikipedia_link = api_result['content_urls']['desktop']['page']
 
-        results.append({'url': wikipedia_link, 'title': title})
+        results.append(StandardResult(url=wikipedia_link, title=title))
 
         results.append(
-            {
-                'infobox': title,
-                'id': wikipedia_link,
-                'content': api_result.get('extract', ''),
-                'img_src': api_result.get('thumbnail', {}).get('source'),
-                'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
-            }
+            InfoBox(
+                url=wikipedia_link,
+                title=title,
+                content=api_result.get('extract', ''),
+                img_src=api_result.get('thumbnail', {}).get('source'),
+                links=[{'title': 'Wikipedia', 'url': wikipedia_link}],
+            )
         )
 
         return results
