@@ -20,6 +20,11 @@ from searx import logger, settings
 from searx.data import ENGINES_LANGUAGES
 from searx.network import get
 from searx.utils import load_module, gen_useragent, find_language_aliases
+from searx.engine import Engine
+
+_NEXTGEN_ENGINES = {
+}
+"""maps module names to class names for engines that are implemented using the new class-based approach"""
 
 
 logger = logger.getChild('engines')
@@ -121,6 +126,11 @@ def load_engine(engine_data: dict) -> Optional[ConfiguredEngine]:
         logger.exception('Cannot load engine "{}"'.format(engine_module))
         return None
 
+    if engine_data['engine'] in _NEXTGEN_ENGINES:
+        engine = getattr(engine, _NEXTGEN_ENGINES[engine_data['engine']])(
+            logger=logger.getChild(engine_name),
+        )
+
     update_engine_attributes(engine, engine_data)
     set_language_attributes(engine)
     update_attributes_for_tor(engine)
@@ -204,10 +214,11 @@ def _get_supported_languages(engine: ConfiguredEngine) -> Collection[str]:
 
 
 def set_language_attributes(engine: ConfiguredEngine):
-    engine.supported_languages = _get_supported_languages(engine)
+    if not isinstance(engine, Engine):
+        engine.supported_languages = _get_supported_languages(engine)
 
-    # find custom aliases for non standard language codes
-    engine.language_aliases.update(find_language_aliases(engine.supported_languages))
+        # find custom aliases for non standard language codes
+        engine.language_aliases.update(find_language_aliases(engine.supported_languages))
 
     # language_support
     engine.language_support = len(engine.supported_languages) > 0

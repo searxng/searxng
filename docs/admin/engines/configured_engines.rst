@@ -48,12 +48,14 @@ Explanation of the :ref:`general engine configuration` shown in the table
 
       {% for mod in engines %}
 
+      {% set mod_name = mod['__name__'] or mod.__module__ %}
+
       * - `{{mod.name}} <{{mod.about and mod.about.website}}>`_
         - ``!{{mod.shortcut}}``
-        - {%- if 'searx.engines.' + mod.__name__ in documented_modules %}
-          :py:mod:`~searx.engines.{{mod.__name__}}`
+        - {%- if 'searx.engines.' + mod_name in documented_modules %}
+          :py:mod:`~searx.engines.{{mod_name}}`
           {%- else %}
-          :origin:`{{mod.__name__}} <searx/engines/{{mod.__name__}}.py>`
+          :origin:`{{mod_name}} <searx/engines/{{mod_name}}.py>`
           {%- endif %}
         - {{(mod.disabled and "y") or ""}}
           {%- if mod.about and  mod.about.language %}

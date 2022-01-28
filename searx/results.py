@@ -6,6 +6,7 @@ from typing import List, NamedTuple, Set
 from urllib.parse import urlparse, unquote
 
 from searx import logger
+from searx.engine import InfoBox, StandardResult
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
 
@@ -195,6 +196,17 @@ class ResultContainer:
         standard_result_count = 0
         error_msgs = set()
         for result in list(results):
+            if isinstance(result, InfoBox):
+                result = {
+                    'infobox': result.title,
+                    'id': result.url,
+                    'content': result.content,
+                    'img_src': result.img_src,
+                    'urls': result.links,
+                }
+            elif isinstance(result, StandardResult):
+                result = result.__dict__
+
             result['engine'] = engine_name
             if 'suggestion' in result and self.on_result(result):
                 self.suggestions.add(result['suggestion'])

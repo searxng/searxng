@@ -17,6 +17,7 @@ from searx.exceptions import (
     SearxEngineTooManyRequestsException,
 )
 from searx.metrics.error_recorder import count_error
+from searx.engine import OnlineEngine, QueryContext
 from .abstract import EngineProcessor
 
 
@@ -114,7 +115,21 @@ class OnlineProcessor(EngineProcessor):
     def _search_basic(self, query, params):
         # update request parameters dependent on
         # search-engine (contained in engines folder)
-        self.engine.request(query, params)
+        if isinstance(self.engine, OnlineEngine):
+            params.update(
+                self.engine.request(
+                    query,
+                    QueryContext(
+                        category=params['category'],
+                        safesearch=params['safesearch'],
+                        time_range=params['time_range'],
+                        pageno=params['pageno'],
+                        language=params['language'],
+                    ),
+                ).__dict__
+            )
+        else:
+            self.engine.request(query, params)
 
         # ignoring empty urls
         if params['url'] is None:
