@@ -13,7 +13,7 @@ usage::
 
 import sys
 import copy
-from typing import Dict, List, Optional
+from typing import Collection, Dict, List, Optional
 
 from os.path import realpath, dirname
 from searx import logger, settings
@@ -172,10 +172,10 @@ def update_engine_attributes(engine: ConfiguredEngine, engine_data):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
 
 
-def set_language_attributes(engine: ConfiguredEngine):
+def _get_supported_languages(engine: ConfiguredEngine) -> Collection[str]:
     # assign supported languages from json file
     if engine.name in ENGINES_LANGUAGES:
-        engine.supported_languages = ENGINES_LANGUAGES[engine.name]
+        return ENGINES_LANGUAGES[engine.name]
 
     elif engine.engine in ENGINES_LANGUAGES:
         # The key of the dictionary ENGINES_LANGUAGES is the *engine name*
@@ -183,7 +183,7 @@ def set_language_attributes(engine: ConfiguredEngine):
         # settings.yml to use the same origin engine (python module) these
         # additional engines can use the languages from the origin engine.
         # For this use the configured ``engine: ...`` from settings.yml
-        engine.supported_languages = ENGINES_LANGUAGES[engine.engine]
+        return ENGINES_LANGUAGES[engine.engine]
 
     if hasattr(engine, 'language'):
         # For an engine, when there is `language: ...` in the YAML settings, the
@@ -196,9 +196,15 @@ def set_language_attributes(engine: ConfiguredEngine):
             )
 
         if isinstance(engine.supported_languages, dict):
-            engine.supported_languages = {engine.language: engine.supported_languages[engine.language]}
+            return {engine.language: engine.supported_languages[engine.language]}
         else:
-            engine.supported_languages = [engine.language]
+            return [engine.language]
+
+    return engine.supported_languages
+
+
+def set_language_attributes(engine: ConfiguredEngine):
+    engine.supported_languages = _get_supported_languages(engine)
 
     # find custom aliases for non standard language codes
     engine.language_aliases.update(find_language_aliases(engine.supported_languages))
