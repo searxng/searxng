@@ -12,7 +12,7 @@ from io import StringIO
 from codecs import getincrementalencoder
 
 from searx import logger, settings
-from searx.engines import Engine, OTHER_CATEGORY
+from searx.engines import ConfiguredEngine, OTHER_CATEGORY
 
 
 VALID_LANGUAGE_CODE = re.compile(r'^[a-z]{2,3}(-[a-zA-Z]{2})?$')
@@ -142,7 +142,7 @@ def is_flask_run_cmdline():
 DEFAULT_GROUP_NAME = 'others'
 
 
-def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[Engine]]]:
+def group_engines_in_tab(engines: Iterable[ConfiguredEngine]) -> List[Tuple[str, Iterable[ConfiguredEngine]]]:
     """Groups an Iterable of engines by their first non tab category"""
 
     def get_group(eng):

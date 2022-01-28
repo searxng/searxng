@@ -13,7 +13,7 @@ from typing import Iterable, Dict, List
 import flask
 
 from searx import settings, autocomplete
-from searx.engines import Engine
+from searx.engines import ConfiguredEngine
 from searx.plugins import Plugin
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
@@ -257,7 +257,7 @@ class BooleanChoices:
 class EnginesSetting(BooleanChoices):
     """Engine settings"""
 
-    def __init__(self, default_value, engines: Iterable[Engine]):
+    def __init__(self, default_value, engines: Iterable[ConfiguredEngine]):
         choices = {}
         for engine in engines:
             for category in engine.categories:
@@ -292,7 +292,9 @@ class PluginsSetting(BooleanChoices):
 class Preferences:
     """Validates and saves preferences to cookies"""
 
-    def __init__(self, themes: List[str], categories: List[str], engines: Dict[str, Engine], plugins: Iterable[Plugin]):
+    def __init__(
+        self, themes: List[str], categories: List[str], engines: Dict[str, ConfiguredEngine], plugins: Iterable[Plugin]
+    ):
         super().__init__()
 
         self.key_value_settings: Dict[str, Setting] = {

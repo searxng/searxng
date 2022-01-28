@@ -51,7 +51,7 @@ ENGINE_DEFAULT_ARGS = {
 OTHER_CATEGORY = 'other'
 
 
-class Engine:  # pylint: disable=too-few-public-methods
+class ConfiguredEngine:  # pylint: disable=too-few-public-methods
     """This class is currently never initialized and only used for type hinting."""
 
     name: str
@@ -72,7 +72,7 @@ class Engine:  # pylint: disable=too-few-public-methods
 # Defaults for the namespace of an engine module, see :py:func:`load_engine`
 
 categories = {'general': []}
-engines: Dict[str, Engine] = {}
+engines: Dict[str, ConfiguredEngine] = {}
 engine_shortcuts = {}
 """Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
@@ -83,7 +83,7 @@ engine_shortcuts = {}
 """
 
 
-def load_engine(engine_data: dict) -> Optional[Engine]:
+def load_engine(engine_data: dict) -> Optional[ConfiguredEngine]:
     """Load engine from ``engine_data``.
 
     :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``
@@ -159,7 +159,7 @@ def set_loggers(engine, engine_name):
             module.logger = logger.getChild(module_engine_name)
 
 
-def update_engine_attributes(engine: Engine, engine_data):
+def update_engine_attributes(engine: ConfiguredEngine, engine_data):
     # set engine attributes from engine_data
     for param_name, param_value in engine_data.items():
         if param_name == 'categories':
@@ -177,7 +177,7 @@ def update_engine_attributes(engine: Engine, engine_data):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
 
 
-def set_language_attributes(engine: Engine):
+def set_language_attributes(engine: ConfiguredEngine):
     # assign supported languages from json file
     if engine.name in ENGINES_LANGUAGES:
         engine.supported_languages = ENGINES_LANGUAGES[engine.name]
@@ -231,7 +231,7 @@ def set_language_attributes(engine: Engine):
         )
 
 
-def update_attributes_for_tor(engine: Engine) -> bool:
+def update_attributes_for_tor(engine: ConfiguredEngine) -> bool:
     if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
         engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
         engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
@@ -250,12 +250,12 @@ def is_missing_required_attributes(engine):
     return missing
 
 
-def using_tor_proxy(engine: Engine):
+def using_tor_proxy(engine: ConfiguredEngine):
     """Return True if the engine configuration declares to use Tor."""
     return settings['outgoing'].get('using_tor_proxy') or getattr(engine, 'using_tor_proxy', False)
 
 
-def is_engine_active(engine: Engine):
+def is_engine_active(engine: ConfiguredEngine):
     # check if engine is inactive
     if engine.inactive is True:
         return False
@@ -267,7 +267,7 @@ def is_engine_active(engine: Engine):
     return True
 
 
-def register_engine(engine: Engine):
+def register_engine(engine: ConfiguredEngine):
     if engine.name in engines:
         logger.error('Engine config error: ambigious name: {0}'.format(engine.name))
         sys.exit(1)
