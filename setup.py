@@ -58,6 +58,7 @@ setup(
             '../requirements.txt',
             '../requirements-dev.txt',
             'data/*',
+            'help/*',
             'plugins/*/*',
             'static/*.*',
             'static/*/*.*',
