@@ -38,7 +38,7 @@ def ahmia_blacklist_loader():
     This function is used by :py:mod:`searx.plugins.ahmia_filter`.
 
     """
-    with open(str(data_dir / 'ahmia_blacklist.txt'), encoding='utf-8') as f:
+    with open(data_dir / 'ahmia_blacklist.txt', encoding='utf-8') as f:
         return f.read().split()
 
 
