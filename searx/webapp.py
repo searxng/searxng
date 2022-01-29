@@ -878,7 +878,7 @@ def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
 @app.route('/about', methods=['GET'])
 def about():
     """Render about page"""
-    return render('about.html', help=user_help.HELP)
+    return render('about.html', help=user_help.get_help_for_locale(get_locale()))
 
 
 @app.route('/autocompleter', methods=['GET', 'POST'])

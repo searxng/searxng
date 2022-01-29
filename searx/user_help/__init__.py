@@ -6,8 +6,9 @@ import flask
 from flask.helpers import url_for
 import mistletoe
 
-from . import get_setting
-from .version import GIT_URL
+from .. import get_setting
+from ..version import GIT_URL
+from ..locales import LOCALE_NAMES
 
 HELP: Dict[str, str] = {}
 """ Maps a filename under help/ without the file extension to the rendered HTML. """
@@ -37,12 +38,24 @@ def render(app: flask.Flask):
 
     define_link_targets = ''.join(f'[{name}]: {url}\n' for name, url in link_targets.items())
 
-    for filename in pkg_resources.resource_listdir(__name__, 'help'):
-        rootname, ext = os.path.splitext(filename)
-
-        if ext != '.md':
+    for locale_name in pkg_resources.resource_listdir(__name__, '.'):
+        if locale_name not in LOCALE_NAMES:
             continue
+        HELP[locale_name] = {}
+        for filename in pkg_resources.resource_listdir(__name__, locale_name):
+            rootname, ext = os.path.splitext(filename)
 
-        markdown = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
-        markdown = define_link_targets + markdown
-        HELP[rootname] = mistletoe.markdown(markdown)
+            if ext != '.md':
+                continue
+
+            markdown = pkg_resources.resource_string(__name__, locale_name + '/' + filename).decode()
+            markdown = define_link_targets + markdown
+            HELP[locale_name][rootname] = mistletoe.markdown(markdown)
+
+
+def get_help_for_locale(locale_name: str) -> Dict[str, str]:
+    result = {**HELP['en']}
+    if locale_name != 'en':
+        for rootname, content in HELP.get(locale_name, {}).items():
+            result[rootname] = content
+    return result
