@@ -1,3 +1,4 @@
+# pyright: basic
 from typing import Dict
 import os.path
 import pkg_resources
