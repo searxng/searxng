@@ -28,7 +28,8 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['images']
+engine_type = 'online_url_search'
+categories = ['general']
 paging = True
 safesearch = False
 base_url = 'https://tineye.com'
@@ -36,8 +37,16 @@ search_string = '/result_json/?page={page}&{query}'
 
 
 def request(query, params):
+
+    if params['search_urls']['data:image']:
+        query = params['search_urls']['data:image']
+    elif params['search_urls']['http']:
+        query = params['search_urls']['http']
+
+    query = urlencode({'url': query})
+
     # see https://github.com/TinEye/pytineye/blob/main/pytineye/api.py
-    params['url'] = base_url + search_string.format(query=urlencode({'url': query}), page=params['pageno'])
+    params['url'] = base_url + search_string.format(query=query, page=params['pageno'])
 
     params['headers'].update(
         {
