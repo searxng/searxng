@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- 1x (Images)
+# lint: pylint
+"""1x (Images)
+
 """
 
-from lxml import html, etree
 from urllib.parse import urlencode, urljoin
+from lxml import html, etree
+
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex
 
 # about
@@ -38,13 +40,14 @@ def request(query, params):
 def response(resp):
     results = []
     xmldom = etree.fromstring(resp.content)
-    xmlsearchresult = eval_xpath_getindex(xmldom, '//searchresult', 0)
+    xmlsearchresult = eval_xpath_getindex(xmldom, '//data', 0)
     dom = html.fragment_fromstring(xmlsearchresult.text, create_parent='div')
-    for link in eval_xpath_list(dom, '/div/table/tr/td/div[2]//a'):
+    for link in eval_xpath_list(dom, '//a'):
         url = urljoin(base_url, link.attrib.get('href'))
         title = extract_text(link)
-        thumbnail_src = urljoin(gallery_url, eval_xpath_getindex(link, './/img', 0).attrib['src'])
-
+        thumbnail_src = urljoin(
+            gallery_url, (eval_xpath_getindex(link, './/img', 0).attrib['src']).replace(base_url, '')
+        )
         # append result
         results.append(
             {
