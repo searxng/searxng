@@ -15,7 +15,6 @@ billion images `[tineye.com] <https://tineye.com/how>`_.
 
 """
 
-from json import loads
 from urllib.parse import urlencode
 from datetime import datetime
 
@@ -64,7 +63,7 @@ def response(resp):
     results = []
 
     # Define wanted results
-    json_data = loads(resp.text)
+    json_data = resp.json()
     number_of_results = json_data['num_matches']
 
     for i in json_data['matches']:
