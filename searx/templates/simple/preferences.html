@@ -1,7 +1,7 @@
 {% from 'simple/macros.html' import tabs_open, tabs_close, tab_header, tab_footer, checkbox_onoff, checkbox %}
 {% from 'simple/icons.html' import icon_big %}
 
-{% extends "simple/base.html" %}
+{% extends "simple/page_with_header.html" %}
 
 {%- macro plugin_preferences(section) -%}
 {%- for plugin in plugins -%}
@@ -95,10 +95,7 @@
 
 {% block head %} {% endblock %}
 {% block content %}
-
-<a href="{{ url_for('index') }}"><h1><span>SearXNG</span></h1></a>
-
-<h2>{{ _('Preferences') }}</h2>
+<h1>{{ _('Preferences') }}</h1>
 
 <form id="search_form" method="post" action="{{ url_for('preferences') }}">
 

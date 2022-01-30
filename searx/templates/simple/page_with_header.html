@@ -1,0 +1,5 @@
+{% set body_class = "page_with_header" %}
+{% extends "simple/base.html" %}
+{% block header %}
+<a href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static', filename='img/searxng.png') }}" alt="SearXNG"></a>
+{% endblock %}
