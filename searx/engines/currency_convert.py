@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- currency convert (DuckDuckGo)
+# lint: pylint
+"""Currency convert (DuckDuckGo)
 """
 
 import json
@@ -18,14 +18,14 @@ about = {
 
 engine_type = 'online_currency'
 categories = []
-url = 'https://duckduckgo.com/js/spice/currency/1/{0}/{1}'
+base_url = 'https://duckduckgo.com/js/spice/currency/1/{0}/{1}'
 weight = 100
 
 https_support = True
 
 
-def request(query, params):
-    params['url'] = url.format(params['from'], params['to'])
+def request(_query, params):
+    params['url'] = base_url.format(params['from'], params['to'])
     return params
 
 
@@ -35,7 +35,7 @@ def response(resp):
     results = []
     try:
         conversion_rate = float(json.loads(json_resp)['conversion']['converted-amount'])
-    except:
+    except ValueError:
         return results
     answer = '{0} {1} = {2} {3}, 1 {1} ({5}) = {4} {3} ({6})'.format(
         resp.search_params['amount'],
