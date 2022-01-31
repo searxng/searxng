@@ -7,4 +7,3 @@ User documentation
    :caption: Contents
 
    search_syntax
-   own-instance

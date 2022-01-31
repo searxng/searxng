@@ -31,6 +31,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    :caption: Contents
 
    user/index
+   own-instance
    admin/index
    dev/index
    utils/index
