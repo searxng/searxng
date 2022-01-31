@@ -1,0 +1,21 @@
+<noscript>This requires JavaScript.</noscript>
+<ul id=links></ul>
+<script>
+(async function() {
+    const links = document.getElementById('links');
+    let res = await fetch('https://searx.space/data/instances.json');
+    let instances = await res.json();
+    for (const [url, info] of Object.entries(instances.instances)) {
+        if (info.error)
+            continue;
+        if (url.startsWith('https://')) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = url + location.hash.substr(2);
+            a.textContent = url + location.hash.substr(2);
+            li.appendChild(a);
+            links.appendChild(li);
+        }
+    }
+})();
+</script>

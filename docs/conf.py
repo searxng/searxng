@@ -69,7 +69,7 @@ jinja_filters = {
 
 def process_link(href):
     if href.startswith('/'):
-        return '../go-to-instance.html'
+        return '../go-to-instance.html#' + href
     else:
         return href
 
