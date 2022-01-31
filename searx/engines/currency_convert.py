@@ -13,6 +13,7 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": 'JSONP',
+    "description": "Service from DuckDuckGo.",
 }
 
 engine_type = 'online_currency'
