@@ -31,7 +31,24 @@ class Template(string.Template):
     idpattern = '(:?[a-z._:]+)'
 
 
-def render(app: flask.Flask):
+def render(markdown: str, variables=Dict[str, str], filename='') -> HelpPage:
+    first_line, markdown = markdown.split('\n', maxsplit=1)
+    assert first_line.startswith('# ')
+
+    try:
+        markdown = Template(markdown).substitute(variables)
+    except KeyError as e:
+        print('[FATAL ERROR] undefined variable ${} in {}'.format(e.args[0], filename))
+        print('available variables are:')
+        for key in variables:
+            print('\t' + key)
+        sys.exit(1)
+
+    content: str = mistletoe.markdown(markdown)
+    return HelpPage(title=first_line.strip('# '), content=content)
+
+
+def initialize(app: flask.Flask):
     """
     Renders the user documentation. Must be called after all Flask routes have been
     registered, because the documentation might try to link to them with Flask's `url_for`.
@@ -57,21 +74,10 @@ def render(app: flask.Flask):
     for pagename in _TOC:
         filename = 'help/en/' + pagename + '.md'
         file_content = pkg_resources.resource_string(__name__, filename).decode()
-        try:
-            markdown = Template(file_content).substitute(variables)
-        except KeyError as e:
-            print('[FATAL ERROR] undefined variable ${} in {}'.format(e.args[0], filename))
-            print('available variables are:')
-            for key in variables:
-                print('\t' + key)
-            sys.exit(1)
-        assert file_content.startswith('# ')
-        title = file_content.split('\n', maxsplit=1)[0].strip('# ')
-        content: str = mistletoe.markdown(markdown)
 
         if pagename == 'about':
             try:
-                content += pkg_resources.resource_string(__name__, 'templates/__common__/aboutextend.html').decode()
+                file_content += pkg_resources.resource_string(__name__, 'templates/__common__/aboutextend.html').decode()
             except FileNotFoundError:
                 pass
-        PAGES[pagename] = HelpPage(title=title, content=content)
+        PAGES[pagename] = render(file_content, variables, filename=filename)
