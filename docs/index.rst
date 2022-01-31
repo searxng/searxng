@@ -30,7 +30,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    :maxdepth: 2
    :caption: Contents
 
-   user/index
+   user_index
    own-instance
    admin/index
    dev/index

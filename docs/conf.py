@@ -3,9 +3,12 @@
 
 import  sys, os
 from pallets_sphinx_themes import ProjectLink
+import docutils.nodes
+import sphinx.parsers
 
 from searx import get_setting
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
+import searx.user_help
 
 # Project --------------------------------------------------------------
 
@@ -64,6 +67,51 @@ jinja_filters = {
     'group_engines_in_tab': searx.webutils.group_engines_in_tab,
 }
 
+def process_link(href):
+    if href.startswith('/'):
+        return '../go-to-instance.html'
+    else:
+        return href
+
+from searx.webapp import app
+
+MD_VARIABLES = {k: process_link(v) for k,v in searx.user_help.get_variables(app).items()}
+
+class MarkdownParser(sphinx.parsers.Parser):
+    """
+    The user documentation in ``searx/help/en/`` is written in Markdown
+    (and integrated into the web application). This code here lets us host an
+    official version of the user documentation on searxng.org, that we can refer
+    users to (since we don't want to promote a singular instance).
+
+    This class also takes care of defining docutils targets for Markdown files.
+    So for example ``searx/help/en/search-syntax.md`` can be linked to from
+    reStructuredText with ``:ref:`search-syntax```.
+    """
+    supported = ('markdown',)
+
+    def parse(self, inputstring, document):
+        page = searx.user_help.render(inputstring, MD_VARIABLES)
+        pagename = document['source'].split('/')[-1].replace('.md', '')
+        sect = docutils.nodes.section(
+            '',
+            docutils.nodes.title(
+                text=page.title,
+            ),
+            docutils.nodes.raw(
+                text=page.content,
+                format='html',
+            ),
+            ids = [pagename],
+            names = [pagename],
+        )
+        document.children = [sect]
+
+        document.nameids[pagename] = pagename
+        document.nametypes[pagename] = True
+        document.ids[pagename] = sect
+
+
 # Let the Jinja template in configured_engines.rst access documented_modules
 # to automatically link documentation for modules if it exists.
 def setup(app):
@@ -82,6 +130,8 @@ def setup(app):
 
     app.connect('env-before-read-docs', before_read_docs)
     app.connect('source-read', source_read)
+    app.add_source_suffix('.md', 'markdown')
+    app.add_source_parser(MarkdownParser)
 
 # usage::   lorem :patch:`f373169` ipsum
 extlinks = {}

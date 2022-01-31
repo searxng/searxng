@@ -6,4 +6,5 @@ User documentation
    :maxdepth: 2
    :caption: Contents
 
-   search_syntax
+   user/about
+   user/search-syntax
