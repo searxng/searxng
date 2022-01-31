@@ -79,9 +79,7 @@ main {
   flex: 1;
 }
 
-#main_preferences,
-#main_about,
-#main_stats {
+.page_with_header {
   margin: 2em auto;
   width: 85em;
 }
@@ -101,16 +99,8 @@ footer {
   }
 }
 
-#main_preferences h1,
-#main_stats h1 {
-  background: url('../img/searxng.png') no-repeat;
-  background-size: contain;
-  min-height: 40px;
-  margin: 0 auto;
-
-  span {
-    visibility: hidden;
-  }
+.page_with_header .logo {
+  height: 40px;
 }
 
 input[type="submit"],
@@ -647,9 +637,7 @@ article[data-vim-selected].category-social {
 }
 
 @media screen and (max-width: @tablet) {
-  #main_preferences,
-  #main_about,
-  #main_stats {
+  .page_with_header {
     margin: 2rem 0.5rem;
     width: auto;
   }

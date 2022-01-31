@@ -35,7 +35,7 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
 </head>
 <body class="{{ endpoint }}_endpoint" >
-  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}">
+  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
     {% if errors %}
         <div class="dialog-error" role="alert">
             <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -47,6 +47,8 @@
         </div>
     {% endif %}
 
+    {% block header %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
   </main>
