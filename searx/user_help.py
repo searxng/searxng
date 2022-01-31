@@ -48,14 +48,7 @@ def render(markdown: str, variables=Dict[str, str], filename='') -> HelpPage:
     return HelpPage(title=first_line.strip('# '), content=content)
 
 
-def initialize(app: flask.Flask):
-    """
-    Renders the user documentation. Must be called after all Flask routes have been
-    registered, because the documentation might try to link to them with Flask's `url_for`.
-
-    We render the user documentation once on startup to improve performance.
-    """
-
+def get_variables(app: flask.Flask):
     variables = {
         'brand.git_url': GIT_URL,
         'brand.public_instances': get_setting('brand.public_instances'),
@@ -71,13 +64,28 @@ def initialize(app: flask.Flask):
         variables['stats'] = url_for('stats')
         variables['search'] = url_for('search')
 
+    return variables
+
+
+def initialize(app: flask.Flask):
+    """
+    Renders the user documentation. Must be called after all Flask routes have been
+    registered, because the documentation might try to link to them with Flask's `url_for`.
+
+    We render the user documentation once on startup to improve performance.
+    """
+
+    variables = get_variables(app)
+
     for pagename in _TOC:
         filename = 'help/en/' + pagename + '.md'
         file_content = pkg_resources.resource_string(__name__, filename).decode()
 
         if pagename == 'about':
             try:
-                file_content += pkg_resources.resource_string(__name__, 'templates/__common__/aboutextend.html').decode()
+                file_content += pkg_resources.resource_string(
+                    __name__, 'templates/__common__/aboutextend.html'
+                ).decode()
             except FileNotFoundError:
                 pass
         PAGES[pagename] = render(file_content, variables, filename=filename)
