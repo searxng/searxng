@@ -889,7 +889,9 @@ def help_page(pagename):
     if page is None:
         flask.abort(404)
 
-    return render('help.html', page=user_help.PAGES[pagename])
+    return render(
+        'help.html', page=user_help.PAGES[pagename], all_pages=user_help.PAGES.items(), page_filename=pagename
+    )
 
 
 @app.route('/autocompleter', methods=['GET', 'POST'])
