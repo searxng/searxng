@@ -1,12 +1,12 @@
 # About SearXNG
 
 SearXNG is a fork from the well-known [searx] [metasearch engine], aggregating
-the results of other [search engines][url_for:preferences] while not storing
+the results of other [search engines]($preferences) while not storing
 information about its users.
 
 More about SearXNG ...
 
-* [SearXNG sources][brand.git_url]
+* [SearXNG sources]($brand.git_url)
 * [weblate]
 
 ---
@@ -20,7 +20,7 @@ More about SearXNG ...
   with a third party, and it can't be used to compromise you.
 
 * SearXNG is free software, the code is 100% open and you can help
-  to make it better.  See more on [SearXNG sources][brand.git_url].
+  to make it better.  See more on [SearXNG sources]($brand.git_url).
 
 If you do care about privacy, want to be a conscious user, or otherwise
 believe in digital freedom, make SearXNG your default search engine or run
@@ -49,20 +49,20 @@ search engine, see your browser's documentation:
 
 ## Where to find anonymous usage statistics of this instance ?
 
-[Stats page][url_for:stats] contains some useful data about the engines used.
+[Stats page]($stats) contains some useful data about the engines used.
 
 ## How can I make it my own?
 
 SearXNG appreciates your concern regarding logs, so take the code from
-the [SearXNG project][brand.git_url] and run it yourself!
+the [SearXNG project]($brand.git_url) and run it yourself!
 
-Add your instance to this [list of public instances][brand.public_instances] to
+Add your instance to this [list of public instances]($brand.public_instances) to
 help other people reclaim their privacy and make the Internet freer!  The more
 decentralized the Internet is, the more freedom we have!
 
 ## Where are the docs & code of this instance?
 
-See the [SearXNG docs][brand.docs_url] and [SearXNG sources][brand.git_url]
+See the [SearXNG docs]($brand.docs_url) and [SearXNG sources]($brand.git_url)
 
 [searx]: https://github.com/searx/searx
 [metasearch engine]: https://en.wikipedia.org/wiki/Metasearch_engine

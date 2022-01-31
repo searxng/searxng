@@ -1,6 +1,8 @@
 # pyright: basic
 from typing import Dict, NamedTuple
 import pkg_resources
+import string
+import sys
 
 import flask
 from flask.helpers import url_for
@@ -22,6 +24,10 @@ PAGES: Dict[str, HelpPage] = {}
 """ Maps a filename under help/ without the file extension to the rendered page. """
 
 
+class Template(string.Template):
+    idpattern = '(:?[a-z._:]+)'
+
+
 def render(app: flask.Flask):
     """
     Renders the user documentation. Must be called after all Flask routes have been
@@ -30,7 +36,7 @@ def render(app: flask.Flask):
     We render the user documentation once on startup to improve performance.
     """
 
-    link_targets = {
+    variables = {
         'brand.git_url': GIT_URL,
         'brand.public_instances': get_setting('brand.public_instances'),
         'brand.docs_url': get_setting('brand.docs_url'),
@@ -40,15 +46,21 @@ def render(app: flask.Flask):
     # we specify base_url so that url_for works for base_urls that have a non-root path
 
     with app.test_request_context(base_url=base_url):
-        link_targets['url_for:index'] = url_for('index')
-        link_targets['url_for:preferences'] = url_for('preferences')
-        link_targets['url_for:stats'] = url_for('stats')
-
-    define_link_targets = ''.join(f'[{name}]: {url}\n' for name, url in link_targets.items())
+        variables['index'] = url_for('index')
+        variables['preferences'] = url_for('preferences')
+        variables['stats'] = url_for('stats')
 
     for pagename in _TOC:
-        file_content = pkg_resources.resource_string(__name__, 'help/en/' + pagename + '.md').decode()
-        markdown = define_link_targets + file_content
+        filename = 'help/en/' + pagename + '.md'
+        file_content = pkg_resources.resource_string(__name__, filename).decode()
+        try:
+            markdown = Template(file_content).substitute(variables)
+        except KeyError as e:
+            print('[FATAL ERROR] undefined variable ${} in {}'.format(e.args[0], filename))
+            print('available variables are:')
+            for key in variables:
+                print('\t' + key)
+            sys.exit(1)
         assert file_content.startswith('# ')
         title = file_content.split('\n', maxsplit=1)[0].strip('# ')
         content: str = mistletoe.markdown(markdown)
