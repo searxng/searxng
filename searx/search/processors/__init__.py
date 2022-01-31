@@ -11,6 +11,7 @@ __all__ = [
     'OnlineProcessor',
     'OnlineDictionaryProcessor',
     'OnlineCurrencyProcessor',
+    'OnlineUrlSearchProcessor',
     'PROCESSORS',
 ]
 
@@ -24,6 +25,7 @@ from .online import OnlineProcessor
 from .offline import OfflineProcessor
 from .online_dictionary import OnlineDictionaryProcessor
 from .online_currency import OnlineCurrencyProcessor
+from .online_url_search import OnlineUrlSearchProcessor
 from .abstract import EngineProcessor
 
 logger = logger.getChild('search.processors')
@@ -33,7 +35,13 @@ PROCESSORS: Dict[str, EngineProcessor] = {}
 
 def get_processor_class(engine_type):
     """Return processor class according to the ``engine_type``"""
-    for c in [OnlineProcessor, OfflineProcessor, OnlineDictionaryProcessor, OnlineCurrencyProcessor]:
+    for c in [
+        OnlineProcessor,
+        OfflineProcessor,
+        OnlineDictionaryProcessor,
+        OnlineCurrencyProcessor,
+        OnlineUrlSearchProcessor,
+    ]:
         if c.engine_type == engine_type:
             return c
     return None
