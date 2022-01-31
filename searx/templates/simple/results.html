@@ -10,7 +10,6 @@
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
 {% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
-<nav id="linkto_preferences"><a href="{{ url_for('preferences') }}">{{ icon_big('menu-outline') }}</a></nav>
 {% include 'simple/search.html' %}
 
 {% if results and results|map(attribute='template')|unique|list|count == 1 %}
