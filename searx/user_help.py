@@ -1,5 +1,5 @@
 # pyright: basic
-from typing import Dict
+from typing import Dict, NamedTuple
 import os.path
 import pkg_resources
 
@@ -10,8 +10,14 @@ import mistletoe
 from . import get_setting
 from .version import GIT_URL
 
-HELP: Dict[str, str] = {}
-""" Maps a filename under help/ without the file extension to the rendered HTML. """
+
+class HelpPage(NamedTuple):
+    title: str
+    content: str
+
+
+PAGES: Dict[str, HelpPage] = {}
+""" Maps a filename under help/ without the file extension to the rendered page. """
 
 
 def render(app: flask.Flask):
@@ -44,6 +50,15 @@ def render(app: flask.Flask):
         if ext != '.md':
             continue
 
-        markdown = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
-        markdown = define_link_targets + markdown
-        HELP[rootname] = mistletoe.markdown(markdown)
+        file_content = pkg_resources.resource_string(__name__, 'help/' + filename).decode()
+        markdown = define_link_targets + file_content
+        assert file_content.startswith('# ')
+        title = file_content.split('\n', maxsplit=1)[0].strip('# ')
+        content: str = mistletoe.markdown(markdown)
+
+        if filename == 'about.md':
+            try:
+                content += pkg_resources.resource_string(__name__, 'templates/__common__/aboutextend.html').decode()
+            except FileNotFoundError:
+                pass
+        PAGES[rootname] = HelpPage(title=title, content=content)

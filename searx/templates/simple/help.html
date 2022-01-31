@@ -1,0 +1,5 @@
+{% extends 'simple/page_with_header.html' %}
+{% block title %}{{ page.title }} - {% endblock %}
+{% block content %}
+{{ page.content | safe }}
+{% endblock %}
