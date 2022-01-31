@@ -18,7 +18,10 @@ class HelpPage(NamedTuple):
 
 
 # Whenever a new .md file is added to help/ it needs to be added here
-_TOC = ('about',)
+_TOC = (
+    'about',
+    'search-syntax',
+)
 
 PAGES: Dict[str, HelpPage] = {}
 """ Maps a filename under help/ without the file extension to the rendered page. """
@@ -49,6 +52,7 @@ def render(app: flask.Flask):
         variables['index'] = url_for('index')
         variables['preferences'] = url_for('preferences')
         variables['stats'] = url_for('stats')
+        variables['search'] = url_for('search')
 
     for pagename in _TOC:
         filename = 'help/en/' + pagename + '.md'
