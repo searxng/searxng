@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
+# pyright: basic
 """WebbApp
 
 """
@@ -14,8 +15,11 @@ from datetime import datetime, timedelta
 from timeit import default_timer
 from html import escape
 from io import StringIO
+import typing
+from typing import List, Dict, Iterable
 
 import urllib
+import urllib.parse
 from urllib.parse import urlencode
 
 import httpx
@@ -28,14 +32,13 @@ import flask
 
 from flask import (
     Flask,
-    request,
     render_template,
     url_for,
-    Response,
     make_response,
     redirect,
     send_from_directory,
 )
+from flask.wrappers import Response
 from flask.ctx import has_request_context
 from flask.json import jsonify
 
@@ -53,8 +56,10 @@ from searx import (
     get_setting,
     settings,
     searx_debug,
+    user_help,
 )
 from searx.data import ENGINE_DESCRIPTIONS
+from searx.results import Timing, UnresponsiveEngine
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
@@ -89,7 +94,7 @@ from searx.utils import (
 )
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
-from searx.plugins import plugins, initialize as plugin_initialize
+from searx.plugins import Plugin, plugins, initialize as plugin_initialize
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -224,6 +229,21 @@ exception_classname_to_text = {
 _flask_babel_get_translations = flask_babel.get_translations
 
 
+class ExtendedRequest(flask.Request):
+    """This class is never initialized and only used for type checking."""
+
+    preferences: Preferences
+    errors: List[str]
+    user_plugins: List[Plugin]
+    form: Dict[str, str]
+    start_time: float
+    render_time: float
+    timings: List[Timing]
+
+
+request = typing.cast(ExtendedRequest, flask.request)
+
+
 def _get_translations():
     if has_request_context() and request.form.get('use-translation') == 'oc':
         babel_ext = flask_babel.current_app.extensions['babel']
@@ -236,7 +256,13 @@ flask_babel.get_translations = _get_translations
 
 @babel.localeselector
 def get_locale():
-    locale = request.preferences.get_value('locale') if has_request_context() else 'en'
+    locale = 'en'
+
+    if has_request_context():
+        value = request.preferences.get_value('locale')
+        if value:
+            locale = value
+
     if locale == 'oc':
         request.form['use-translation'] = 'oc'
         locale = 'fr_FR'
@@ -291,6 +317,7 @@ def code_highlighter(codelines, language=None):
     html_code = ''
     tmp_code = ''
     last_line = None
+    line_code_start = None
 
     # parse lines
     for line, code in codelines:
@@ -321,7 +348,7 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-def get_current_theme_name(override=None):
+def get_current_theme_name(override: str = None) -> str:
     """Returns theme name.
 
     Checks in this order:
@@ -332,19 +359,21 @@ def get_current_theme_name(override=None):
     if override and (override in themes or override == '__common__'):
         return override
     theme_name = request.args.get('theme', request.preferences.get_value('theme'))
-    if theme_name not in themes:
-        theme_name = default_theme
-    return theme_name
+
+    if theme_name and theme_name in themes:
+        return theme_name
+
+    return default_theme
 
 
-def get_result_template(theme_name, template_name):
+def get_result_template(theme_name: str, template_name: str):
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
         return themed_path
     return 'result_templates/' + template_name
 
 
-def url_for_theme(endpoint, override_theme=None, **values):
+def url_for_theme(endpoint: str, override_theme: str = None, **values):
     if endpoint == 'static' and values.get('filename'):
         theme_name = get_current_theme_name(override=override_theme)
         filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
@@ -354,14 +383,14 @@ def url_for_theme(endpoint, override_theme=None, **values):
     return url
 
 
-def proxify(url):
+def proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
     if not settings.get('result_proxy'):
         return url
 
-    url_params = dict(mortyurl=url.encode())
+    url_params = dict(mortyurl=url)
 
     if settings['result_proxy'].get('key'):
         url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
@@ -369,7 +398,7 @@ def proxify(url):
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
 
 
-def image_proxify(url):
+def image_proxify(url: str):
 
     if url.startswith('//'):
         url = 'https:' + url
@@ -405,7 +434,7 @@ def get_translations():
     }
 
 
-def _get_enable_categories(all_categories):
+def _get_enable_categories(all_categories: Iterable[str]):
     disabled_engines = request.preferences.engines.get_disabled()
     enabled_categories = set(
         # pylint: disable=consider-using-dict-items
@@ -417,14 +446,14 @@ def _get_enable_categories(all_categories):
     return [x for x in all_categories if x in enabled_categories]
 
 
-def get_pretty_url(parsed_url):
+def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     path = parsed_url.path
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
     path = path.replace("/", " › ")
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
-def render(template_name, override_theme=None, **kwargs):
+def render(template_name: str, override_theme: str = None, **kwargs):
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
@@ -552,7 +581,7 @@ def pre_request():
 
 
 @app.after_request
-def add_default_headers(response):
+def add_default_headers(response: flask.Response):
     # set default http headers
     for header, value in settings['server']['default_http_headers'].items():
         if header in response.headers:
@@ -562,29 +591,28 @@ def add_default_headers(response):
 
 
 @app.after_request
-def post_request(response):
+def post_request(response: flask.Response):
     total_time = default_timer() - request.start_time
     timings_all = [
         'total;dur=' + str(round(total_time * 1000, 3)),
         'render;dur=' + str(round(request.render_time * 1000, 3)),
     ]
     if len(request.timings) > 0:
-        timings = sorted(request.timings, key=lambda v: v['total'])
+        timings = sorted(request.timings, key=lambda t: t.total)
         timings_total = [
-            'total_' + str(i) + '_' + v['engine'] + ';dur=' + str(round(v['total'] * 1000, 3))
-            for i, v in enumerate(timings)
+            'total_' + str(i) + '_' + t.engine + ';dur=' + str(round(t.total * 1000, 3)) for i, t in enumerate(timings)
         ]
         timings_load = [
-            'load_' + str(i) + '_' + v['engine'] + ';dur=' + str(round(v['load'] * 1000, 3))
-            for i, v in enumerate(timings)
-            if v.get('load')
+            'load_' + str(i) + '_' + t.engine + ';dur=' + str(round(t.load * 1000, 3))
+            for i, t in enumerate(timings)
+            if t.load
         ]
         timings_all = timings_all + timings_total + timings_load
     response.headers.add('Server-Timing', ', '.join(timings_all))
     return response
 
 
-def index_error(output_format, error_message):
+def index_error(output_format: str, error_message: str):
     if output_format == 'json':
         return Response(json.dumps({'error': error_message}), mimetype='application/json')
     if output_format == 'csv':
@@ -828,23 +856,21 @@ def search():
     )
 
 
-def __get_translated_errors(unresponsive_engines):
+def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
     translated_errors = []
 
     # make a copy unresponsive_engines to avoid "RuntimeError: Set changed size
     # during iteration" it happens when an engine modifies the ResultContainer
     # after the search_multiple_requests method has stopped waiting
 
-    for unresponsive_engine in list(unresponsive_engines):
-        error_user_text = exception_classname_to_text.get(unresponsive_engine[1])
+    for unresponsive_engine in unresponsive_engines:
+        error_user_text = exception_classname_to_text.get(unresponsive_engine.error_type)
         if not error_user_text:
             error_user_text = exception_classname_to_text[None]
         error_msg = gettext(error_user_text)
-        if unresponsive_engine[2]:
-            error_msg = "{} {}".format(error_msg, unresponsive_engine[2])
-        if unresponsive_engine[3]:
+        if unresponsive_engine.suspended:
             error_msg = gettext('Suspended') + ': ' + error_msg
-        translated_errors.append((unresponsive_engine[0], error_msg))
+        translated_errors.append((unresponsive_engine.engine, error_msg))
 
     return sorted(translated_errors, key=lambda e: e[0])
 
@@ -852,7 +878,7 @@ def __get_translated_errors(unresponsive_engines):
 @app.route('/about', methods=['GET'])
 def about():
     """Render about page"""
-    return render('about.html')
+    return render('about.html', help=user_help.HELP)
 
 
 @app.route('/autocompleter', methods=['GET', 'POST'])
@@ -1060,7 +1086,7 @@ def preferences():
     )
 
 
-def _is_selected_language_supported(engine, preferences):  # pylint: disable=redefined-outer-name
+def _is_selected_language_supported(engine, preferences: Preferences):  # pylint: disable=redefined-outer-name
     language = preferences.get_value('language')
     if language == 'all':
         return True
@@ -1124,7 +1150,8 @@ def image_proxy():
     def close_stream():
         nonlocal resp, stream
         try:
-            resp.close()
+            if resp:
+                resp.close()
             del resp
             del stream
         except httpx.HTTPError as e:
@@ -1154,6 +1181,13 @@ def engine_descriptions():
         if isinstance(description, str):
             description = [description, 'wikipedia']
         result[engine] = description
+
+    # overwrite by about:description (from settings)
+    for engine_name, engine_mod in engines.items():
+        descr = getattr(engine_mod, 'about', {}).get('description', None)
+        if descr is not None:
+            result[engine_name] = [descr, "SearXNG config"]
+
     return jsonify(result)
 
 
@@ -1184,7 +1218,7 @@ def stats():
     reverse, key_name, default_value = STATS_SORT_PARAMETERS[sort_order]
 
     def get_key(engine_stat):
-        reliability = engine_reliabilities.get(engine_stat['name']).get('reliablity', 0)
+        reliability = engine_reliabilities.get(engine_stat['name'], {}).get('reliablity', 0)
         reliability_order = 0 if reliability else 1
         if key_name == 'reliability':
             key = reliability
@@ -1344,6 +1378,7 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
+    user_help.render(app)
 
 
 def run():

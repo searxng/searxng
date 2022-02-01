@@ -16,6 +16,9 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 '''
 
 
+from typing import Optional, Union
+
+
 class SearxException(Exception):
     pass
 
@@ -35,7 +38,7 @@ class SearxParameterException(SearxException):
 class SearxSettingsException(SearxException):
     """Error while loading the settings"""
 
-    def __init__(self, message, filename):
+    def __init__(self, message: Union[str, Exception], filename: Optional[str]):
         super().__init__(message)
         self.message = message
         self.filename = filename

@@ -11,10 +11,12 @@ __all__ = [
     'OnlineProcessor',
     'OnlineDictionaryProcessor',
     'OnlineCurrencyProcessor',
+    'OnlineUrlSearchProcessor',
     'PROCESSORS',
 ]
 
 import threading
+from typing import Dict
 
 from searx import logger
 from searx import engines
@@ -23,16 +25,23 @@ from .online import OnlineProcessor
 from .offline import OfflineProcessor
 from .online_dictionary import OnlineDictionaryProcessor
 from .online_currency import OnlineCurrencyProcessor
+from .online_url_search import OnlineUrlSearchProcessor
 from .abstract import EngineProcessor
 
 logger = logger.getChild('search.processors')
-PROCESSORS = {}
+PROCESSORS: Dict[str, EngineProcessor] = {}
 """Cache request processores, stored by *engine-name* (:py:func:`initialize`)"""
 
 
 def get_processor_class(engine_type):
     """Return processor class according to the ``engine_type``"""
-    for c in [OnlineProcessor, OfflineProcessor, OnlineDictionaryProcessor, OnlineCurrencyProcessor]:
+    for c in [
+        OnlineProcessor,
+        OfflineProcessor,
+        OnlineDictionaryProcessor,
+        OnlineCurrencyProcessor,
+        OnlineUrlSearchProcessor,
+    ]:
         if c.engine_type == engine_type:
             return c
     return None

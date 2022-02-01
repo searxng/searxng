@@ -3,6 +3,7 @@
 import json
 from urllib.parse import ParseResult
 from mock import Mock
+from searx.results import Timing
 
 import searx.search.processors
 from searx.search import Search
@@ -46,7 +47,10 @@ class ViewsTestCase(SearxTestCase):
             },
         ]
 
-        timings = [{'engine': 'startpage', 'total': 0.8, 'load': 0.7}, {'engine': 'youtube', 'total': 0.9, 'load': 0.6}]
+        timings = [
+            Timing(engine='startpage', total=0.8, load=0.7),
+            Timing(engine='youtube', total=0.9, load=0.6),
+        ]
 
         def search_mock(search_self, *args):
             search_self.result_container = Mock(

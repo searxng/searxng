@@ -2,7 +2,9 @@ import re
 from collections import defaultdict
 from operator import itemgetter
 from threading import RLock
+from typing import List, NamedTuple, Set
 from urllib.parse import urlparse, unquote
+
 from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
@@ -137,6 +139,18 @@ def result_score(result):
     return sum((occurences * weight) / position for position in result['positions'])
 
 
+class Timing(NamedTuple):
+    engine: str
+    total: float
+    load: float
+
+
+class UnresponsiveEngine(NamedTuple):
+    engine: str
+    error_type: str
+    suspended: bool
+
+
 class ResultContainer:
     """docstring for ResultContainer"""
 
@@ -168,8 +182,8 @@ class ResultContainer:
         self.engine_data = defaultdict(dict)
         self._closed = False
         self.paging = False
-        self.unresponsive_engines = set()
-        self.timings = []
+        self.unresponsive_engines: Set[UnresponsiveEngine] = set()
+        self.timings: List[Timing] = []
         self.redirect_url = None
         self.on_result = lambda _: True
         self._lock = RLock()
@@ -401,17 +415,12 @@ class ResultContainer:
             return 0
         return resultnum_sum / len(self._number_of_results)
 
-    def add_unresponsive_engine(self, engine_name, error_type, error_message=None, suspended=False):
+    def add_unresponsive_engine(self, engine_name: str, error_type: str, suspended: bool = False):
         if engines[engine_name].display_error_messages:
-            self.unresponsive_engines.add((engine_name, error_type, error_message, suspended))
+            self.unresponsive_engines.add(UnresponsiveEngine(engine_name, error_type, suspended))
 
-    def add_timing(self, engine_name, engine_time, page_load_time):
-        timing = {
-            'engine': engines[engine_name].shortcut,
-            'total': engine_time,
-            'load': page_load_time,
-        }
-        self.timings.append(timing)
+    def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
+        self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
     def get_timings(self):
         return self.timings

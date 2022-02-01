@@ -20,6 +20,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 # shellcheck source=utils/lib_redis.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_redis.sh"
 
+PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
+
 # config
 
 PYOBJECTS="searx"
@@ -45,6 +47,10 @@ YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
 done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
+
+RST_FILES=(
+    'README.rst'
+)
 
 PYLINT_SEARXNG_DISABLE_OPTION="\
 I,C,R,\
@@ -99,10 +105,12 @@ format.:
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
   pylint    : lint PYLINT_FILES, searx/engines, searx & tests
+  pyright   : static type check of python sources
   black     : check black code format
   unit      : run unit tests
   coverage  : run unit tests with coverage
   robot     : run robot test
+  rst       : test .rst files incl. README.rst
   clean     : clean intermediate test stuff
 themes.:
   all       : build all themes
@@ -553,6 +561,12 @@ node.env() {
     dump_return $?
 }
 
+node.env.devtools() {
+    nodejs.ensure
+    build_msg INSTALL "package.json: developer and CI tools"
+    npm install
+}
+
 node.clean() {
     if ! required_commands npm 2>/dev/null; then
         build_msg CLEAN "npm is not installed / ignore npm dependencies"
@@ -677,6 +691,20 @@ test.pylint() {
     dump_return $?
 }
 
+test.pyright() {
+    build_msg TEST "[pyright] static type check of python sources"
+    node.env.devtools
+    # We run Pyright in the virtual environment because Pyright
+    # executes "python" to determine the Python version.
+    build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
+    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
+        | grep -v ".py$" \
+        | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
+        | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
+        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined'
+    dump_return $?
+}
+
 test.black() {
     build_msg TEST "[black] \$BLACK_TARGETS"
     pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
@@ -705,6 +733,13 @@ test.robot() {
     gecko.driver
     PYTHONPATH=. pyenv.cmd python -m tests.robot
     dump_return $?
+}
+
+test.rst() {
+    build_msg TEST "[reST markup] ${RST_FILES[*]}"
+    for rst in "${RST_FILES[@]}"; do
+        pyenv.cmd rst2html.py --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
+    done
 }
 
 test.clean() {

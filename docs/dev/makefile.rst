@@ -238,10 +238,10 @@ and ``test.robot``.  You can run tests selective, e.g.::
   ...
   TEST      test.sh OK
 
-.. _make test.sh:
+.. _make test.shell:
 
-``make test.sh``
-================
+``make test.shell``
+===================
 
 :ref:`sh lint` / if you have changed some bash scripting run this test before
 commit.

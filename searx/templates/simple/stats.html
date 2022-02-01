@@ -1,7 +1,7 @@
 {% from 'simple/icons.html' import icon_big %}
 {% from '__common__/new_issue.html' import new_issue with context %}
 
-{% extends "simple/base.html" %}
+{% extends "simple/page_with_header.html" %}
 
 {%- macro th_sort(column_order, column_name) -%}
     {% if selected_engine_name %}
@@ -15,10 +15,7 @@
 
 {% block head %} {% endblock %}
 {% block content %}
-
-<a href="{{ url_for('index') }}"><h1><span>SearXNG</span></h1></a>
-
-<h2>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h2>
+<h1>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h1>
 
 {% if not engine_stats.get('time') %}
 {{ _('There is currently no data available. ') }}

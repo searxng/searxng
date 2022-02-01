@@ -111,8 +111,9 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-# google results are grouped into <div class="g" ../>
-results_xpath = '//div[@class="g"]'
+# google results are grouped into <div class="g ..." ../>
+results_xpath = '//div[@id="search"]//div[contains(@class, "g ")]'
+results_xpath_mobile_ui = '//div[contains(@class, "g ")]'
 
 # google *sections* are no usual *results*, we ignore them
 g_section_with_header = './g-section-with-header'
@@ -124,8 +125,8 @@ title_xpath = './/h3[1]'
 # href=...>
 href_xpath = './/div[@class="yuRUbf"]//a/@href'
 
-# in the result group there is <div class="IsZvec" ../> containing he *content*
-content_xpath = './/div[@class="IsZvec"]'
+# in the result group there is <div class="VwiC3b ..." ../> containing the *content*
+content_xpath = './/div[contains(@class, "VwiC3b")]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
@@ -336,7 +337,12 @@ def response(resp):
                 logger.error(e, exc_info=True)
 
     # parse results
-    for result in eval_xpath_list(dom, results_xpath):
+
+    _results_xpath = results_xpath
+    if use_mobile_ui:
+        _results_xpath = results_xpath_mobile_ui
+
+    for result in eval_xpath_list(dom, _results_xpath):
 
         # google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
@@ -347,20 +353,22 @@ def response(resp):
             title_tag = eval_xpath_getindex(result, title_xpath, 0, default=None)
             if title_tag is None:
                 # this not one of the common google results *section*
-                logger.debug('ingoring <div class="g" ../> section: missing title')
+                logger.debug('ingoring item from the result_xpath list: missing title')
                 continue
             title = extract_text(title_tag)
             url = eval_xpath_getindex(result, href_xpath, 0, None)
             if url is None:
                 continue
             content = extract_text(eval_xpath_getindex(result, content_xpath, 0, default=None), allow_none=True)
+            if content is None:
+                logger.debug('ingoring item from the result_xpath list: missing content of title "%s"', title)
+                continue
+
+            logger.debug('add link to results: %s', title)
             results.append({'url': url, 'title': title, 'content': content})
+
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
-            # from lxml import etree
-            # logger.debug(etree.tostring(result, pretty_print=True))
-            # import pdb
-            # pdb.set_trace()
             continue
 
     # parse suggestion

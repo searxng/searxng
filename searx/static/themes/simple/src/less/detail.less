@@ -3,8 +3,8 @@
 }
 
 #main_results #results.only_template_images.image-detail-open #backToTop {
-  left: 56.75rem !important;
-  right: inherit;
+  .ltr-left(56.75rem) !important;
+  .ltr-right(inherit);
 }
 
 article.result-images .detail {
@@ -15,8 +15,8 @@ article.result-images .detail {
   display: flex;
   flex-direction: column;
   position: fixed;
-  left: 60rem;
-  right: 0;
+  .ltr-left(60rem);
+  .ltr-right(0);
   top: @search-height;
   transition: top 0.064s ease-in 0s;
   bottom: 0;
@@ -76,7 +76,7 @@ article.result-images .detail {
     h4,
     p,
     a {
-      text-align: left;
+      .ltr-text-align-left();
     }
 
     p.result-content {
@@ -113,20 +113,23 @@ article.result-images .detail {
 
   a.result-detail-close {
     top: 1rem;
-    left: 1rem;
+    .ltr-left(1rem);
     padding: 0.4rem;
   }
 
   a.result-detail-previous {
     top: 1rem;
-    right: 6rem;
+    .ltr-right(6rem);
     // center the icon by moving it slightly on the left
-    padding: 0.4rem 0.5rem 0.4rem 0.3rem;
+    padding-top: 0.4rem;
+    .ltr-padding-right(0.5rem);
+    padding-bottom: 0.4rem;
+    .ltr-padding-left(0.3rem);
   }
 
   a.result-detail-next {
     top: 1rem;
-    right: 2rem;
+    .ltr-right(2rem);
     padding: 0.4rem;
   }
 
@@ -186,7 +189,7 @@ article.result-images .detail {
   .loader {
     position: absolute;
     top: 1rem;
-    right: 50%;
+    .ltr-right(50%);
     border-top: 0.5em solid var(--color-result-detail-loader-border);
     border-right: 0.5em solid var(--color-result-detail-loader-border);
     border-bottom: 0.5em solid var(--color-result-detail-loader-border);
@@ -205,7 +208,7 @@ article.result-images .detail {
 @media screen and (max-width: @tablet) {
   #results.image-detail-open article.result-images[data-vim-selected] .detail {
     top: 0;
-    left: 0;
+    .ltr-left(0);
 
     a.result-images-source {
       display: flex;
@@ -219,7 +222,7 @@ article.result-images .detail {
     }
 
     a.result-detail-next {
-      right: 1rem;
+      .ltr-right(1rem);
     }
   }
 }
@@ -227,7 +230,7 @@ article.result-images .detail {
 @media screen and (max-width: @phone) {
   #results.image-detail-open article.result-images[data-vim-selected] .detail {
     top: 0;
-    left: 0;
+    .ltr-left(0);
     padding: 1rem;
 
     a.result-images-source img {
@@ -238,7 +241,7 @@ article.result-images .detail {
 
     .result-images-labels p span {
       width: inherit;
-      margin-right: 1rem;
+      .ltr-margin-right(1rem);
     }
   }
 }

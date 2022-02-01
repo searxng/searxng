@@ -1,16 +1,28 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Startpage (Web)
+# lint: pylint
+"""Startpage (Web)
+
 """
 
-from lxml import html
-from dateutil import parser
-from datetime import datetime, timedelta
 import re
+from time import time
+
+from urllib.parse import urlencode
 from unicodedata import normalize, combining
+from datetime import datetime, timedelta
+
+from dateutil import parser
+from lxml import html
 from babel import Locale
 from babel.localedata import locale_identifiers
+
+from searx.network import get
 from searx.utils import extract_text, eval_xpath, match_language
+from searx.exceptions import (
+    SearxEngineResponseException,
+    SearxEngineCaptchaException,
+)
+
 
 # about
 about = {
@@ -33,7 +45,7 @@ supported_languages_url = 'https://www.startpage.com/do/settings'
 
 # search-url
 base_url = 'https://startpage.com/'
-search_url = base_url + 'do/search'
+search_url = base_url + 'sp/search?'
 
 # specific xpath variables
 # ads xpath //div[@id="results"]/div[@id="sponsored"]//div[@class="result"]
@@ -42,18 +54,74 @@ results_xpath = '//div[@class="w-gl__result__main"]'
 link_xpath = './/a[@class="w-gl__result-title result-link"]'
 content_xpath = './/p[@class="w-gl__description"]'
 
+# timestamp of the last fetch of 'sc' code
+sc_code_ts = 0
+sc_code = ''
+
+
+def raise_captcha(resp):
+
+    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
+        # suspend CAPTCHA for 7 days
+        raise SearxEngineCaptchaException(suspended_time=7 * 24 * 3600)
+
+
+def get_sc_code(headers):
+    """Get an actual `sc` argument from startpage's home page.
+
+    Startpage puts a `sc` argument on every link.  Without this argument
+    startpage considers the request is from a bot.  We do not know what is
+    encoded in the value of the `sc` argument, but it seems to be a kind of a
+    *time-stamp*.  This *time-stamp* is valid for a few hours.
+
+    This function scrap a new *time-stamp* from startpage's home page every hour
+    (3000 sec).
+
+    """
+
+    global sc_code_ts, sc_code  # pylint: disable=global-statement
+
+    if time() > (sc_code_ts + 3000):
+        logger.debug("query new sc time-stamp ...")
+
+        resp = get(base_url, headers=headers)
+        raise_captcha(resp)
+        dom = html.fromstring(resp.text)
+
+        try:
+            # href --> '/?sc=adrKJMgF8xwp20'
+            href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+        except IndexError as exc:
+            # suspend startpage API --> https://github.com/searxng/searxng/pull/695
+            raise SearxEngineResponseException(
+                suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
+            ) from exc
+
+        sc_code = href[5:]
+        sc_code_ts = time()
+        logger.debug("new value is: %s", sc_code)
+
+    return sc_code
+
 
 # do search-request
 def request(query, params):
 
-    params['url'] = search_url
-    params['method'] = 'POST'
-    params['data'] = {
+    # pylint: disable=line-too-long
+    # The format string from Startpage's FFox add-on [1]::
+    #
+    #     https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=ext-ff&language=__MSG_extensionUrlLanguage__&extVersion=1.3.0
+    #
+    # [1] https://addons.mozilla.org/en-US/firefox/addon/startpage-private-search/
+
+    args = {
         'query': query,
         'page': params['pageno'],
         'cat': 'web',
-        'cmd': 'process_search',
-        'engine0': 'v1all',
+        # 'pl': 'ext-ff',
+        # 'extVersion': '1.3.0',
+        # 'abp': "-1",
+        'sc': get_sc_code(params['headers']),
     }
 
     # set language if specified
@@ -61,9 +129,10 @@ def request(query, params):
         lang_code = match_language(params['language'], supported_languages, fallback=None)
         if lang_code:
             language_name = supported_languages[lang_code]['alias']
-            params['data']['language'] = language_name
-            params['data']['lui'] = language_name
+            args['language'] = language_name
+            args['lui'] = language_name
 
+    params['url'] = search_url + urlencode(args)
     return params
 
 
@@ -134,10 +203,11 @@ def response(resp):
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
-    # startpage's language selector is a mess
-    # each option has a displayed name and a value, either of which may represent the language name
-    # in the native script, the language name in English, an English transliteration of the native name,
-    # the English name of the writing script used by the language, or occasionally something else entirely.
+    # startpage's language selector is a mess each option has a displayed name
+    # and a value, either of which may represent the language name in the native
+    # script, the language name in English, an English transliteration of the
+    # native name, the English name of the writing script used by the language,
+    # or occasionally something else entirely.
 
     # this cases are so special they need to be hardcoded, a couple of them are mispellings
     language_names = {
@@ -151,7 +221,15 @@ def _fetch_supported_languages(resp):
     }
 
     # get the English name of every language known by babel
-    language_names.update({name.lower(): lang_code for lang_code, name in Locale('en')._data['languages'].items()})
+    language_names.update(
+        {
+            # fmt: off
+            name.lower(): lang_code
+            # pylint: disable=protected-access
+            for lang_code, name in Locale('en')._data['languages'].items()
+            # fmt: on
+        }
+    )
 
     # get the native name of every language known by babel
     for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, locale_identifiers()):
@@ -176,8 +254,8 @@ def _fetch_supported_languages(resp):
         if isinstance(lang_code, str):
             supported_languages[lang_code] = {'alias': sp_option_value}
         elif isinstance(lang_code, list):
-            for lc in lang_code:
-                supported_languages[lc] = {'alias': sp_option_value}
+            for _lc in lang_code:
+                supported_languages[_lc] = {'alias': sp_option_value}
         else:
             print('Unknown language option in Startpage: {} ({})'.format(sp_option_value, sp_option_text))
 

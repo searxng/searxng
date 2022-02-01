@@ -7,6 +7,7 @@ import atexit
 import asyncio
 import ipaddress
 from itertools import cycle
+from typing import Dict
 
 import httpx
 
@@ -16,7 +17,7 @@ from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
-NETWORKS = {}
+NETWORKS: Dict[str, 'Network'] = {}
 # requests compatibility when reading proxy settings from settings.yml
 PROXY_PATTERN_MAPPING = {
     'http': 'http://',
@@ -166,13 +167,14 @@ class Network:
         for transport in client._mounts.values():  # pylint: disable=protected-access
             if isinstance(transport, AsyncHTTPTransportNoHttp):
                 continue
-            if not getattr(transport, '_rdns', False):
-                result = False
-                break
-        else:
-            response = await client.get('https://check.torproject.org/api/ip')
-            if not response.json()['IsTor']:
-                result = False
+            if getattr(transport, "_pool") and getattr(
+                transport._pool, "_rdns", False  # pylint: disable=protected-access
+            ):
+                continue
+            return False
+        response = await client.get("https://check.torproject.org/api/ip", timeout=10)
+        if not response.json()["IsTor"]:
+            result = False
         Network._TOR_CHECK_RESULT[proxies] = result
         return result
 

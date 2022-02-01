@@ -26,11 +26,12 @@ NVM_LOCAL_FOLDER=.nvm
 nvm.env() {
     source "${NVM_DIR}/nvm.sh"
     source "${NVM_DIR}/bash_completion"
+    [ "$VERBOSE" = "1" ] && info_msg "sourced NVM environment from ${NVM_DIR}"
 }
 
 nvm.is_installed() {
     # is true if NVM is installed / in $HOME or even in <repo-root>/.nvm
-    [[ -d "${NVM_DIR}" ]]
+    [[ -f "${NVM_DIR}/nvm.sh" ]]
 }
 
 if [[ -z "${NVM_DIR}" ]]; then
@@ -40,7 +41,6 @@ fi
 export NVM_DIR
 
 if nvm.is_installed; then
-    [ "$VERBOSE" = "1" ] && info_msg "source NVM environment from ${NVM_DIR}"
     nvm.env
 else
     # if nvm is not installed, use this function as a wrapper
@@ -58,7 +58,7 @@ nvm.is_local() {
     [ "${NVM_DIR}" = "$(git rev-parse --show-toplevel)/${NVM_LOCAL_FOLDER}" ]
 }
 
-nvm.min_node(){
+nvm.min_node() {
 
     # usage:  nvm.min_node 16.3.0
     #
@@ -87,7 +87,7 @@ nvm.min_node(){
 # implement nvm command line
 # --------------------------
 
-nvm.help(){
+nvm.help() {
     cat <<EOF
 nvm.: use nvm (without dot) to execute nvm commands directly
   install   : install NVM locally at $(git rev-parse --show-toplevel)/${NVM_LOCAL_FOLDER}
@@ -117,7 +117,9 @@ nvm.install() {
     info_msg "checkout ${NVM_VERSION_TAG}"
     git checkout "${NVM_VERSION_TAG}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
     popd &> /dev/null
-    cp "${REPO_ROOT}/.nvm_packages" "${NVM_DIR}/default-packages"
+    if [ -f "${REPO_ROOT}/.nvm_packages" ]; then
+        cp "${REPO_ROOT}/.nvm_packages" "${NVM_DIR}/default-packages"
+    fi
     nvm.env
 }
 

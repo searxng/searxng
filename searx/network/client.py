@@ -4,7 +4,9 @@
 
 import asyncio
 import logging
+from ssl import SSLContext
 import threading
+from typing import Any, Dict
 
 import httpx
 from httpx_socks import AsyncProxyTransport
@@ -23,7 +25,7 @@ else:
 
 logger = logger.getChild('searx.network.client')
 LOOP = None
-SSLCONTEXTS = {}
+SSLCONTEXTS: Dict[Any, SSLContext] = {}
 TRANSPORT_KWARGS = {
     'trust_env': False,
 }
