@@ -163,6 +163,7 @@ SCHEMA = {
     'server': {
         'port': SettingsValue((int, str), 8888, 'SEARXNG_PORT'),
         'bind_address': SettingsValue(str, '127.0.0.1', 'SEARXNG_BIND_ADDRESS'),
+        'limiter': SettingsValue(bool, False),
         'secret_key': SettingsValue(str, environ_name='SEARXNG_SECRET'),
         'base_url': SettingsValue((False, str), False),
         'image_proxy': SettingsValue(bool, False),
