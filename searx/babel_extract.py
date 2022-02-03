@@ -3,7 +3,7 @@
 """This module implements the :origin:`searxng_msg <babel.cfg>` extractor to
 extract messages from:
 
-- None
+- :origin:`searx/searxng.msg`
 
 The ``searxng.msg`` files are selected by Babel_, see Babel's configuration in
 :origin:`babel.cfg`::
@@ -25,7 +25,7 @@ A ``searxng.msg`` file is a python file that is *executed* by the
 from os import path
 
 SEARXNG_MSG_FILE = "searxng.msg"
-_MSG_FILES = []
+_MSG_FILES = [path.join(path.dirname(__file__), SEARXNG_MSG_FILE)]
 
 
 def extract(
