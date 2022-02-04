@@ -1257,8 +1257,13 @@ engines:
   - name: solidtorrents
     engine: solidtorrents
     shortcut: solid
-    timeout: 3.0
+    timeout: 4.0
     disabled: false
+    base_url:
+      - https://solidtorrents.net
+      - https://solidtorrents.eu
+      - https://solidtorrents.to
+      - https://bitsearch.to
 
   # For this demo of the sqlite engine download:
   #   https://liste.mediathekview.de/filmliste-v2.db.bz2
