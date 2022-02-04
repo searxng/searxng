@@ -382,6 +382,29 @@
 .col-stat {
   width: 10rem;
 }
+@keyframes rotate-forever {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-spinner {
+  animation-duration: 0.75s;
+  animation-iteration-count: infinite;
+  animation-name: rotate-forever;
+  animation-timing-function: linear;
+  height: 30px;
+  width: 30px;
+  border: 8px solid #666;
+  border-right-color: transparent;
+  border-radius: 50% !important;
+  margin: 0 auto;
+}
+html.infinite_scroll #pagination button {
+  visibility: hidden;
+}
 /*
    this file is generated automatically by searxng_extra/update/update_pygments.py
    using pygments version 2.11.2
