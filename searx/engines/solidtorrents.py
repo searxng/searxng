@@ -9,7 +9,12 @@ import random
 
 from lxml import html
 
-from searx.utils import extract_text, eval_xpath, eval_xpath_getindex
+from searx.utils import (
+    extract_text,
+    eval_xpath,
+    eval_xpath_getindex,
+    get_torrent_size,
+)
 
 about = {
     "website": 'https://www.solidtorrents.net/',
@@ -25,13 +30,6 @@ paging = True
 
 base_url = ''
 base_url_rand = ''
-
-units = {"B": 1, "KB": 2 ** 10, "MB": 2 ** 20, "GB": 2 ** 30, "TB": 2 ** 40}
-
-
-def size2int(size_str):
-    n, u = size_str.split()
-    return int(float(n.strip()) * units[u.strip()])
 
 
 def request(query, params):
@@ -58,7 +56,8 @@ def response(resp):
         title = extract_text(a)
         url = eval_xpath_getindex(a, '@href', 0, None)
         stats = eval_xpath(result, './div//div[contains(@class, "stats")]/div')
-        filesize = size2int(extract_text(stats[1]))
+        n, u = extract_text(stats[1]).split()
+        filesize = get_torrent_size(n, u)
         leech = extract_text(stats[2])
         seed = extract_text(stats[3])
         magnet = eval_xpath_getindex(result, './div//a[contains(@class, "dl-magnet")]/@href', 0, None)
