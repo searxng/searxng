@@ -29,17 +29,16 @@ about = {
 categories = ['files']
 paging = True
 
-base_url = ''
-base_url_rand = ''
+# base_url can be overwritten by a list of URLs in the settings.yml
+base_url = 'https://solidtorrents.net'
 
 
 def request(query, params):
-    global base_url_rand  # pylint: disable=global-statement
     if isinstance(base_url, list):
-        base_url_rand = random.choice(base_url)
+        params['base_url'] = random.choice(base_url)
     else:
-        base_url_rand = base_url
-    search_url = base_url_rand + '/search?{query}'
+        params['base_url'] = base_url
+    search_url = params['base_url'] + '/search?{query}'
     page = (params['pageno'] - 1) * 20
     query = urlencode({'q': query, 'page': page})
     params['url'] = search_url.format(query=query)
@@ -70,7 +69,7 @@ def response(resp):
             'seed': seed,
             'leech': leech,
             'title': title,
-            'url': base_url_rand + url,
+            'url': resp.search_params['base_url'] + url,
             'filesize': filesize,
             'magnetlink': magnet,
             'torrentfile': torrentfile,
