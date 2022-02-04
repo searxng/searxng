@@ -98,7 +98,7 @@
 {% block content %}
 <h1>{{ _('Preferences') }}</h1>
 
-<form id="search_form" method="post" action="{{ url_for('preferences') }}">
+<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
 
 {{ tabs_open() }}
 

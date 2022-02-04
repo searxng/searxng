@@ -186,7 +186,7 @@ class ViewsTestCase(SearxTestCase):
     def test_preferences(self):
         result = self.app.get('/preferences')
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<form method="post" action="/preferences" id="search_form">', result.data)
+        self.assertIn(b'<form method="post" action="/preferences" id="search_form" autocomplete="off">', result.data)
         self.assertIn(b'<label class="col-sm-3 col-md-2" for="categories">Default categories</label>', result.data)
         self.assertIn(b'<label class="col-sm-3 col-md-2" for="locale">Interface language</label>', result.data)
 
