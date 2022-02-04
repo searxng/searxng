@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Invidious (Videos)
+# lint: pylint
+"""Invidious (Videos)
 """
 
-from urllib.parse import quote_plus
-from dateutil import parser
 import time
 import random
+from urllib.parse import quote_plus
+from dateutil import parser
 
 # about
 about = {
@@ -27,7 +27,6 @@ time_range_support = True
 base_url = 'https://vid.puffyan.us'
 
 
-# do search-request
 def request(query, params):
     time_range_dict = {
         "day": "today",
@@ -55,7 +54,6 @@ def request(query, params):
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 
