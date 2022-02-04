@@ -8,7 +8,7 @@ from flask_babel import gettext
 # specifies which search query keywords triggers this answerer
 keywords = ('random',)
 
-random_int_max = 2 ** 31
+random_int_max = 2**31
 random_string_letters = string.ascii_lowercase + string.digits + string.ascii_uppercase
 
 
