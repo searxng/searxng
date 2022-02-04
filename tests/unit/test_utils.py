@@ -128,7 +128,7 @@ class TestUtils(SearxTestCase):
 
 class TestHTMLTextExtractor(SearxTestCase):
     def setUp(self):
-        self.html_text_extractor = utils.HTMLTextExtractor()
+        self.html_text_extractor = utils._HTMLTextExtractor()
 
     def test__init__(self):
         self.assertEqual(self.html_text_extractor.result, [])
@@ -149,7 +149,7 @@ class TestHTMLTextExtractor(SearxTestCase):
 
     def test_invalid_html(self):
         text = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
-        with self.assertRaises(utils.HTMLTextExtractorException):
+        with self.assertRaises(utils._HTMLTextExtractorException):
             self.html_text_extractor.feed(text)
 
 
