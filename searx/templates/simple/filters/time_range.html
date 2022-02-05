@@ -1,4 +1,4 @@
-<select name="time_range" id="time_range" class="time_range" tabindex="2">{{- '' -}}
+<select name="time_range" id="time_range" class="time_range" aria-label="{{ _('Time range') }}">{{- '' -}}
     <option id="time-range-anytime" value="" {{ "selected" if time_range=="" or not time_range  else ""}}>
         {{- _('Anytime') -}}
     </option>{{- '' -}}
