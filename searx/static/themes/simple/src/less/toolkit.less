@@ -221,6 +221,16 @@ div.selectable_url {
   font-size: 90%;
 }
 
+ul.tabs {
+  border-bottom: 1px solid var(--color-toolkit-tabs-section-border);
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    display: flex;
+  }
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -235,7 +245,8 @@ div.selectable_url {
     display: none;
   }
 
-  & > label {
+  & > label,
+  & > li > a {
     order: 1;
     padding: 0.7em;
     margin: 0 0.7em;
@@ -243,13 +254,21 @@ div.selectable_url {
     text-transform: uppercase;
     border: solid var(--color-toolkit-tabs-label-border);
     border-width: 0 0 2px 0;
+    color: unset;
 
     .disable-user-select();
 
     cursor: pointer;
+
+    &.active {
+      border-bottom: 2px solid var(--color-categories-item-border-selected);
+      background: var(--color-categories-item-selected);
+      color: var(--color-categories-item-selected-font);
+    }
   }
 
-  & > label:hover {
+  & > label:hover,
+  & > li > a:hover {
     border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
 

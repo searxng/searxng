@@ -877,8 +877,21 @@ def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
 
 @app.route('/about', methods=['GET'])
 def about():
-    """Render about page"""
-    return render('about.html', help=user_help.HELP)
+    """Redirect to about page"""
+    return redirect(url_for('help_page', pagename='about'))
+
+
+@app.route('/help/en/<pagename>', methods=['GET'])
+def help_page(pagename):
+    """Render help page"""
+    page = user_help.PAGES.get(pagename)
+
+    if page is None:
+        flask.abort(404)
+
+    return render(
+        'help.html', page=user_help.PAGES[pagename], all_pages=user_help.PAGES.items(), page_filename=pagename
+    )
 
 
 @app.route('/autocompleter', methods=['GET', 'POST'])

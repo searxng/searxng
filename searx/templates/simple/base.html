@@ -58,7 +58,7 @@
   </main>
   <footer>
     <p>
-    {{ _('Powered by') }} <a href="{{ url_for('about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
+    {{ _('Powered by') }} <a href="{{ url_for('help_page', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
         <a href="{{ searx_git_url }}">{{ _('Source code') }}</a> |
         <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a> |
         <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a> |

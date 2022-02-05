@@ -1,4 +1,4 @@
-# About [searxng][url_for:index]
+# About SearXNG
 
 SearXNG is a fork from the well-known [searx] [metasearch engine], aggregating
 the results of other [search engines][url_for:preferences] while not storing

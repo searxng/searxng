@@ -1,0 +1,12 @@
+{% extends 'simple/page_with_header.html' %}
+{% block title %}{{ page.title }} - {% endblock %}
+{% block content %}
+<ul class="tabs">
+{% for name, page in all_pages %}
+  <li>
+    <a href="{{name}}" {% if name == page_filename %}class="active"{% endif %}>{{page.title}}</a>
+  </li>
+{% endfor %}
+</ul>
+{{ page.content | safe }}
+{% endblock %}

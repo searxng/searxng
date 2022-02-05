@@ -174,9 +174,9 @@ class ViewsTestCase(SearxTestCase):
         self.assertIn(b'<description>first test content</description>', result.data)
 
     def test_about(self):
-        result = self.app.get('/about')
+        result = self.app.get('/help/en/about')
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<h1>About <a href="/">searxng</a></h1>', result.data)
+        self.assertIn(b'<h1>About SearXNG</h1>', result.data)
 
     def test_health(self):
         result = self.app.get('/healthz')
