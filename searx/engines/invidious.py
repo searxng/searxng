@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Invidious (Videos)
+# lint: pylint
+"""Invidious (Videos)
 """
 
-from urllib.parse import quote_plus
-from dateutil import parser
 import time
 import random
+from urllib.parse import quote_plus
+from dateutil import parser
 
 # about
 about = {
@@ -23,16 +23,11 @@ categories = ["videos", "music"]
 paging = True
 time_range_support = True
 
-
-# search-url
-
-base_url = ''
-base_url_rand = ''
+# base_url can be overwritten by a list of URLs in the settings.yml
+base_url = 'https://vid.puffyan.us'
 
 
-# do search-request
 def request(query, params):
-    global base_url_rand
     time_range_dict = {
         "day": "today",
         "week": "week",
@@ -41,11 +36,11 @@ def request(query, params):
     }
 
     if isinstance(base_url, list):
-        base_url_rand = random.choice(base_url)
+        params["base_url"] = random.choice(base_url)
     else:
-        base_url_rand = base_url
+        params["base_url"] = base_url
 
-    search_url = base_url_rand + "api/v1/search?q={query}"
+    search_url = params["base_url"] + "/api/v1/search?q={query}"
     params["url"] = search_url.format(query=quote_plus(query)) + "&page={pageno}".format(pageno=params["pageno"])
 
     if params["time_range"] in time_range_dict:
@@ -59,7 +54,6 @@ def request(query, params):
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 
@@ -67,12 +61,12 @@ def response(resp):
     embedded_url = (
         '<iframe width="540" height="304" '
         + 'data-src="'
-        + base_url_rand
-        + 'embed/{videoid}" '
+        + resp.search_params['base_url']
+        + '/embed/{videoid}" '
         + 'frameborder="0" allowfullscreen></iframe>'
     )
 
-    base_invidious_url = base_url_rand + "watch?v="
+    base_invidious_url = resp.search_params['base_url'] + "/watch?v="
 
     for result in search_results:
         rtype = result.get("type", None)

@@ -786,11 +786,11 @@ engines:
     # Instanes will be selected randomly, see https://api.invidious.io/ for
     # instances that are stable (good uptime) and close to you.
     base_url:
-      - https://invidious.snopyta.org/
-      - https://vid.puffyan.us/
-      - https://invidious.kavin.rocks/
-      - https://invidio.xamh.de/
-      - https://inv.riverside.rocks/
+      - https://invidious.snopyta.org
+      - https://vid.puffyan.us
+      # - https://invidious.kavin.rocks  # Error 1020 // Access denied by Cloudflare
+      - https://invidio.xamh.de
+      - https://inv.riverside.rocks
     shortcut: iv
     timeout: 3.0
     disabled: true
