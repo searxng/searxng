@@ -47,7 +47,7 @@ def render(app: flask.Flask):
     define_link_targets = ''.join(f'[{name}]: {url}\n' for name, url in link_targets.items())
 
     for pagename in _TOC:
-        file_content = pkg_resources.resource_string(__name__, 'help/' + pagename + '.md').decode()
+        file_content = pkg_resources.resource_string(__name__, 'help/en/' + pagename + '.md').decode()
         markdown = define_link_targets + file_content
         assert file_content.startswith('# ')
         title = file_content.split('\n', maxsplit=1)[0].strip('# ')
