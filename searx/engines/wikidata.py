@@ -187,7 +187,7 @@ def response(resp):
 
 
 _IMG_SRC_DEFAULT_URL_PREFIX = "https://commons.wikimedia.org/wiki/Special:FilePath/"
-_IMG_SRC_NEW_URL_PREFIX = "https://upload.wikimedia.org/wikipedia/commons/"
+_IMG_SRC_NEW_URL_PREFIX = "https://upload.wikimedia.org/wikipedia/commons/thumb/"
 
 
 def get_thumbnail(img_src):
@@ -209,8 +209,21 @@ def get_thumbnail(img_src):
             .replace("%28", "(")
             .replace("%29", ")")
         )
+        img_src_size = img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "").split("?", 1)[1]
+        img_src_size = img_src_size[img_src_size.index("=") + 1 : img_src_size.index("&")]
         img_src_name_md5 = md5(img_src_name.encode("utf-8")).hexdigest()
-        img_src = _IMG_SRC_NEW_URL_PREFIX + img_src_name_md5[0] + "/" + img_src_name_md5[0:2] + "/" + img_src_name
+        img_src = (
+            _IMG_SRC_NEW_URL_PREFIX
+            + img_src_name_md5[0]
+            + "/"
+            + img_src_name_md5[0:2]
+            + "/"
+            + img_src_name
+            + "/"
+            + img_src_size
+            + "px-"
+            + img_src_name
+        )
         logger.debug('get_thumbnail() redirected: %s', img_src)
 
     return img_src
