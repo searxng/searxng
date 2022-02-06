@@ -238,7 +238,7 @@ def get_results(attribute_result, attributes, language):
     infobox_attributes = []
     infobox_content = attribute_result.get('itemDescription', [])
     img_src = None
-    img_src_priority = 100
+    img_src_priority = 0
 
     for attribute in attributes:
         value = attribute.get_str(attribute_result, language)
@@ -264,7 +264,7 @@ def get_results(attribute_result, attributes, language):
                 # this attribute is an image.
                 # replace the current image only the priority is lower
                 # (the infobox contain only one image).
-                if attribute.priority < img_src_priority:
+                if attribute.priority > img_src_priority:
                     img_src = get_thumbnail(value)
                     img_src_priority = attribute.priority
             elif attribute_type == WDGeoAttribute:
