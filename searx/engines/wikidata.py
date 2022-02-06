@@ -18,6 +18,7 @@ from searx.engines.wikipedia import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
 )
+from hashlib import md5
 
 # about
 about = {
@@ -185,6 +186,36 @@ def response(resp):
     return results
 
 
+_IMG_SRC_DEFAULT_URL_PREFIX = "https://commons.wikimedia.org/wiki/Special:FilePath/"
+_IMG_SRC_NEW_URL_PREFIX = "https://upload.wikimedia.org/wikipedia/commons/"
+
+
+def get_thumbnail(img_src):
+    """Get Thumbnail image from wikimedia commons
+
+    Images from commons.wikimedia.org are (HTTP) redirected to
+    upload.wikimedia.org.  The redirected URL can be calculated by this
+    function.
+
+    - https://stackoverflow.com/a/33691240
+
+    """
+    logger.debug('get_thumbnail(): %s', img_src)
+    if not img_src is None and _IMG_SRC_DEFAULT_URL_PREFIX in img_src.split()[0]:
+        img_src_name = (
+            img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "")
+            .split("?", 1)[0]
+            .replace("%20", "_")
+            .replace("%28", "(")
+            .replace("%29", ")")
+        )
+        img_src_name_md5 = md5(img_src_name.encode("utf-8")).hexdigest()
+        img_src = _IMG_SRC_NEW_URL_PREFIX + img_src_name_md5[0] + "/" + img_src_name_md5[0:2] + "/" + img_src_name
+        logger.debug('get_thumbnail() redirected: %s', img_src)
+
+    return img_src
+
+
 def get_results(attribute_result, attributes, language):
     results = []
     infobox_title = attribute_result.get('itemLabel')
@@ -221,7 +252,7 @@ def get_results(attribute_result, attributes, language):
                 # replace the current image only the priority is lower
                 # (the infobox contain only one image).
                 if attribute.priority < img_src_priority:
-                    img_src = value
+                    img_src = get_thumbnail(value)
                     img_src_priority = attribute.priority
             elif attribute_type == WDGeoAttribute:
                 # geocoordinate link
