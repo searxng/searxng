@@ -4,7 +4,7 @@
 """
 
 
-from urllib.parse import urlencode
+from urllib.parse import urlencode, unquote
 from json import loads
 
 from dateutil.parser import isoparse
@@ -202,13 +202,13 @@ def get_thumbnail(img_src):
     """
     logger.debug('get_thumbnail(): %s', img_src)
     if not img_src is None and _IMG_SRC_DEFAULT_URL_PREFIX in img_src.split()[0]:
-        img_src_name = (
-            img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "")
-            .split("?", 1)[0]
-            .replace("%20", "_")
-            .replace("%28", "(")
-            .replace("%29", ")")
-        )
+        img_src_name = unquote(img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "").split("?", 1)[0].replace("%20", "_"))
+        img_src_name_first = img_src_name
+        img_src_name_second = img_src_name
+
+        if ".svg" in img_src_name.split()[0]:
+            img_src_name_second = img_src_name + ".png"
+
         img_src_size = img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "").split("?", 1)[1]
         img_src_size = img_src_size[img_src_size.index("=") + 1 : img_src_size.index("&")]
         img_src_name_md5 = md5(img_src_name.encode("utf-8")).hexdigest()
@@ -218,11 +218,11 @@ def get_thumbnail(img_src):
             + "/"
             + img_src_name_md5[0:2]
             + "/"
-            + img_src_name
+            + img_src_name_first
             + "/"
             + img_src_size
             + "px-"
-            + img_src_name
+            + img_src_name_second
         )
         logger.debug('get_thumbnail() redirected: %s', img_src)
 
