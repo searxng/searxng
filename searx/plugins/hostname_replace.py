@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import re
-from urllib.parse import urlunparse
+from urllib.parse import urlunparse, urlparse
 from searx import settings
 from searx.plugins import logger
 from flask_babel import gettext
@@ -28,5 +28,10 @@ def on_result(request, search, result):
                 return False
             result[parsed] = result[parsed]._replace(netloc=pattern.sub(replacement, result[parsed].netloc))
             result['url'] = urlunparse(result[parsed])
+        if result.get('data_src', False):
+            parsed_data_src = urlparse(result['data_src'])
+            if pattern.search(parsed_data_src.netloc):
+                parsed_data_src = parsed_data_src._replace(netloc=pattern.sub(replacement, parsed_data_src.netloc))
+                result['data_src'] = urlunparse(parsed_data_src)
 
     return True
