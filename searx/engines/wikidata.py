@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Wikidata
 """
- Wikidata
-"""
+# pylint: disable=missing-class-docstring
 
-
+from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
 
@@ -18,7 +19,6 @@ from searx.engines.wikipedia import (  # pylint: disable=unused-import
     _fetch_supported_languages,
     supported_languages_url,
 )
-from hashlib import md5
 
 # about
 about = {
@@ -230,6 +230,7 @@ def get_thumbnail(img_src):
 
 
 def get_results(attribute_result, attributes, language):
+    # pylint: disable=too-many-branches
     results = []
     infobox_title = attribute_result.get('itemLabel')
     infobox_id = attribute_result['item']
@@ -322,6 +323,7 @@ def get_query(query, language):
 
 
 def get_attributes(language):
+    # pylint: disable=too-many-statements
     attributes = []
 
     def add_value(name):
@@ -462,7 +464,7 @@ def get_attributes(language):
 
 
 class WDAttribute:
-
+    # pylint: disable=no-self-use
     __slots__ = ('name',)
 
     def __init__(self, name):
@@ -483,7 +485,7 @@ class WDAttribute:
     def get_group_by(self):
         return ""
 
-    def get_str(self, result, language):
+    def get_str(self, result, language):  # pylint: disable=unused-argument
         return result.get(self.name + 's')
 
     def __repr__(self):
@@ -624,6 +626,7 @@ class WDImageAttribute(WDURLAttribute):
 
 
 class WDDateAttribute(WDAttribute):
+    # pylint: disable=no-self-use
     def get_select(self):
         return '?{name} ?{name}timePrecision ?{name}timeZone ?{name}timeCalendar'.replace('{name}', self.name)
 
@@ -644,7 +647,7 @@ class WDDateAttribute(WDAttribute):
     def get_group_by(self):
         return self.get_select()
 
-    def format_8(self, value, locale):
+    def format_8(self, value, locale):  # pylint: disable=unused-argument
         # precision: less than a year
         return value
 
@@ -717,7 +720,7 @@ class WDDateAttribute(WDAttribute):
                     else:
                         value = t[0]
                 return format_method(value, language)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 return value
         return value
 
@@ -731,7 +734,7 @@ def debug_explain_wikidata_query(query, method='GET'):
     return http_response.content
 
 
-def init(engine_settings=None):
+def init(engine_settings=None):  # pylint: disable=unused-argument
     # WIKIDATA_PROPERTIES : add unit symbols
     WIKIDATA_PROPERTIES.update(WIKIDATA_UNITS)
 
