@@ -14,7 +14,7 @@ from flask_babel import gettext
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
 from searx.utils import searx_useragent
 from searx.external_urls import get_external_url
-from searx.engines.wikidata import send_wikidata_query, sparql_string_escape
+from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
 
 # about
 about = {
@@ -168,7 +168,7 @@ def response(resp):
             continue
 
         url, osm, geojson = get_url_osm_geojson(result)
-        img_src = get_img_src(result)
+        img_src = get_thumbnail(get_img_src(result))
         links, link_keys = get_links(result, user_language)
         data = get_data(result, user_language, link_keys)
 
