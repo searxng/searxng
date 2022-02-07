@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Wikidata
 """
- Wikidata
-"""
+# pylint: disable=missing-class-docstring
 
-
-from urllib.parse import urlencode
+from hashlib import md5
+from urllib.parse import urlencode, unquote
 from json import loads
 
 from dateutil.parser import isoparse
@@ -185,7 +186,51 @@ def response(resp):
     return results
 
 
+_IMG_SRC_DEFAULT_URL_PREFIX = "https://commons.wikimedia.org/wiki/Special:FilePath/"
+_IMG_SRC_NEW_URL_PREFIX = "https://upload.wikimedia.org/wikipedia/commons/thumb/"
+
+
+def get_thumbnail(img_src):
+    """Get Thumbnail image from wikimedia commons
+
+    Images from commons.wikimedia.org are (HTTP) redirected to
+    upload.wikimedia.org.  The redirected URL can be calculated by this
+    function.
+
+    - https://stackoverflow.com/a/33691240
+
+    """
+    logger.debug('get_thumbnail(): %s', img_src)
+    if not img_src is None and _IMG_SRC_DEFAULT_URL_PREFIX in img_src.split()[0]:
+        img_src_name = unquote(img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "").split("?", 1)[0].replace("%20", "_"))
+        img_src_name_first = img_src_name
+        img_src_name_second = img_src_name
+
+        if ".svg" in img_src_name.split()[0]:
+            img_src_name_second = img_src_name + ".png"
+
+        img_src_size = img_src.replace(_IMG_SRC_DEFAULT_URL_PREFIX, "").split("?", 1)[1]
+        img_src_size = img_src_size[img_src_size.index("=") + 1 : img_src_size.index("&")]
+        img_src_name_md5 = md5(img_src_name.encode("utf-8")).hexdigest()
+        img_src = (
+            _IMG_SRC_NEW_URL_PREFIX
+            + img_src_name_md5[0]
+            + "/"
+            + img_src_name_md5[0:2]
+            + "/"
+            + img_src_name_first
+            + "/"
+            + img_src_size
+            + "px-"
+            + img_src_name_second
+        )
+        logger.debug('get_thumbnail() redirected: %s', img_src)
+
+    return img_src
+
+
 def get_results(attribute_result, attributes, language):
+    # pylint: disable=too-many-branches
     results = []
     infobox_title = attribute_result.get('itemLabel')
     infobox_id = attribute_result['item']
@@ -194,7 +239,7 @@ def get_results(attribute_result, attributes, language):
     infobox_attributes = []
     infobox_content = attribute_result.get('itemDescription', [])
     img_src = None
-    img_src_priority = 100
+    img_src_priority = 0
 
     for attribute in attributes:
         value = attribute.get_str(attribute_result, language)
@@ -220,8 +265,8 @@ def get_results(attribute_result, attributes, language):
                 # this attribute is an image.
                 # replace the current image only the priority is lower
                 # (the infobox contain only one image).
-                if attribute.priority < img_src_priority:
-                    img_src = value
+                if attribute.priority > img_src_priority:
+                    img_src = get_thumbnail(value)
                     img_src_priority = attribute.priority
             elif attribute_type == WDGeoAttribute:
                 # geocoordinate link
@@ -278,6 +323,7 @@ def get_query(query, language):
 
 
 def get_attributes(language):
+    # pylint: disable=too-many-statements
     attributes = []
 
     def add_value(name):
@@ -418,7 +464,7 @@ def get_attributes(language):
 
 
 class WDAttribute:
-
+    # pylint: disable=no-self-use
     __slots__ = ('name',)
 
     def __init__(self, name):
@@ -439,7 +485,7 @@ class WDAttribute:
     def get_group_by(self):
         return ""
 
-    def get_str(self, result, language):
+    def get_str(self, result, language):  # pylint: disable=unused-argument
         return result.get(self.name + 's')
 
     def __repr__(self):
@@ -580,6 +626,7 @@ class WDImageAttribute(WDURLAttribute):
 
 
 class WDDateAttribute(WDAttribute):
+    # pylint: disable=no-self-use
     def get_select(self):
         return '?{name} ?{name}timePrecision ?{name}timeZone ?{name}timeCalendar'.replace('{name}', self.name)
 
@@ -600,7 +647,7 @@ class WDDateAttribute(WDAttribute):
     def get_group_by(self):
         return self.get_select()
 
-    def format_8(self, value, locale):
+    def format_8(self, value, locale):  # pylint: disable=unused-argument
         # precision: less than a year
         return value
 
@@ -673,7 +720,7 @@ class WDDateAttribute(WDAttribute):
                     else:
                         value = t[0]
                 return format_method(value, language)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 return value
         return value
 
@@ -687,7 +734,7 @@ def debug_explain_wikidata_query(query, method='GET'):
     return http_response.content
 
 
-def init(engine_settings=None):
+def init(engine_settings=None):  # pylint: disable=unused-argument
     # WIKIDATA_PROPERTIES : add unit symbols
     WIKIDATA_PROPERTIES.update(WIKIDATA_UNITS)
 
