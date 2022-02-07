@@ -33,5 +33,10 @@ def on_result(request, search, result):
             if pattern.search(parsed_data_src.netloc):
                 parsed_data_src = parsed_data_src._replace(netloc=pattern.sub(replacement, parsed_data_src.netloc))
                 result['data_src'] = urlunparse(parsed_data_src)
+        if result.get('audio_src', False):
+            parsed_audio_src = urlparse(result['audio_src'])
+            if pattern.search(parsed_audio_src.netloc):
+                parsed_audio_src = parsed_audio_src._replace(netloc=pattern.sub(replacement, parsed_audio_src.netloc))
+                result['audio_src'] = urlunparse(parsed_audio_src)
 
     return True
