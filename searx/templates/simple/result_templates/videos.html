@@ -3,7 +3,7 @@
 {{ result_header(result, favicons, image_proxify) }}
 {{ result_sub_header(result) }}
 {% if result.iframe_src -%}
-<p class="altlink"> &bull; <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
+<p class="altlink"> <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
 {%- endif %}
 {%- if result.content %}
   <p class="content">
