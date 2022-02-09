@@ -111,9 +111,8 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-# google results are grouped into <div class="g ..." ../>
-results_xpath = '//div[@id="search"]//div[contains(@class, "g ")]'
-results_xpath_mobile_ui = '//div[contains(@class, "g ")]'
+# google results are grouped into <div class="jtfYYd ..." ../>
+results_xpath = '//div[@class="jtfYYd"]'
 
 # google *sections* are no usual *results*, we ignore them
 g_section_with_header = './g-section-with-header'
@@ -338,11 +337,7 @@ def response(resp):
 
     # parse results
 
-    _results_xpath = results_xpath
-    if use_mobile_ui:
-        _results_xpath = results_xpath_mobile_ui
-
-    for result in eval_xpath_list(dom, _results_xpath):
+    for result in eval_xpath_list(dom, results_xpath):
 
         # google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
