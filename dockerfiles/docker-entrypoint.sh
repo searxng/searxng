@@ -71,23 +71,24 @@ patch_searxng_settings() {
     export BASE_URL="${BASE_URL%/}/"
 
     # update settings.yml
-    sed -i -e "s|base_url : False|base_url : ${BASE_URL}|g" \
-       -e "s/instance_name : \"searxng\"/instance_name : \"${INSTANCE_NAME}\"/g" \
-       -e "s/autocomplete : \"\"/autocomplete : \"${AUTOCOMPLETE}\"/g" \
-       -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
-       "${CONF}"
+    sed -i \
+        -e "s|base_url: false|base_url: ${BASE_URL}|g" \
+        -e "s/instance_name: \"SearXNG\"/instance_name: \"${INSTANCE_NAME}\"/g" \
+        -e "s/autocomplete: \"\"/autocomplete: \"${AUTOCOMPLETE}\"/g" \
+        -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
+        "${CONF}"
 
     # Morty configuration
 
     if [ -n "${MORTY_KEY}" ] && [ -n "${MORTY_URL}" ]; then
-        sed -i -e "s/image_proxy : False/image_proxy : True/g" \
+        sed -i -e "s/image_proxy: false/image_proxy: true/g" \
             "${CONF}"
         cat >> "${CONF}" <<-EOF
 
 # Morty configuration
 result_proxy:
-   url : ${MORTY_URL}
-   key : !!binary "${MORTY_KEY}"
+   url: ${MORTY_URL}
+   key: !!binary "${MORTY_KEY}"
 EOF
     fi
 }
