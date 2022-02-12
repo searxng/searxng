@@ -42,15 +42,15 @@ def is_accepted_request(inc_get_counter) -> bool:
             return False
         return True
 
-    c = inc_get_counter(interval=25, keys=[b'IP limit, all paths', x_forwarded_for])
-    if c > 30:
-        return False
+    if request.path == '/search' and ('q' in request.args or 'q' in request.form):
+        c = inc_get_counter(interval=20, keys=[b'IP limit, burst', x_forwarded_for])
+        if c > 30:
+            return False
 
-    c = inc_get_counter(interval=60, keys=[b'useragent limit, all paths', x_forwarded_for, user_agent])
-    if c > 30:
-        return False
+        c = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', x_forwarded_for])
+        if c > 300:
+            return False
 
-    if request.path in ('/', '/search') and ('q' in request.args or 'q' in request.form):
         if re_bot.match(user_agent):
             return False
 
