@@ -316,6 +316,14 @@ article[data-vim-selected].category-social {
   padding: 10px 0 0 0;
 }
 
+@supports not (aspect-ratio: 1 / 1) {
+  // support older browsers which do not have aspect-ratio
+  // https://caniuse.com/?search=aspect-ratio
+  .result-videos .embedded-video iframe {
+    height: calc(@results-width * 9 / 16);
+  }
+}
+
 .engines {
   .ltr-float-right();
   color: var(--color-result-engines-font);
