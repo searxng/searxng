@@ -17,7 +17,7 @@ replacements = {re.compile(p): r for (p, r) in settings[plugin_id].items()} if p
 
 logger = logger.getChild(plugin_id)
 parsed = 'parsed_url'
-_url_fields = ['data_src', 'audio_src']
+_url_fields = ['iframe_src', 'audio_src']
 
 
 def on_result(request, search, result):

@@ -4,7 +4,7 @@ Bandcamp (Music)
 @website     https://bandcamp.com/
 @provide-api no
 @results     HTML
-@parse       url, title, content, publishedDate, data_src, thumbnail
+@parse       url, title, content, publishedDate, iframe_src, thumbnail
 """
 
 from urllib.parse import urlencode, urlparse, parse_qs
@@ -27,7 +27,7 @@ paging = True
 
 base_url = "https://bandcamp.com/"
 search_string = search_string = 'search?{query}&page={page}'
-data_src = "https://bandcamp.com/EmbeddedPlayer/{type}={result_id}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/"
+iframe_src = "https://bandcamp.com/EmbeddedPlayer/{type}={result_id}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/"
 
 
 def request(query, params):
@@ -71,9 +71,9 @@ def response(resp):
         if thumbnail:
             new_result['thumbnail'] = thumbnail[0]
         if "album" in result.classes:
-            new_result["data_src"] = data_src.format(type='album', result_id=result_id)
+            new_result["iframe_src"] = iframe_src.format(type='album', result_id=result_id)
         elif "track" in result.classes:
-            new_result["data_src"] = data_src.format(type='track', result_id=result_id)
+            new_result["iframe_src"] = iframe_src.format(type='track', result_id=result_id)
 
         results.append(new_result)
     return results

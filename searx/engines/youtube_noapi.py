@@ -85,7 +85,7 @@ def parse_next_page_response(response_text):
                 'author': section['ownerText']['runs'][0]['text'],
                 'length': section['lengthText']['simpleText'],
                 'template': 'videos.html',
-                'data_src': 'https://www.youtube-nocookie.com/embed/' + section['videoId'],
+                'iframe_src': 'https://www.youtube-nocookie.com/embed/' + section['videoId'],
                 'thumbnail': section['thumbnail']['thumbnails'][-1]['url'],
             }
         )
@@ -156,7 +156,7 @@ def parse_first_page_response(response_text):
                         'author': author,
                         'length': length,
                         'template': 'videos.html',
-                        'data_src': 'https://www.youtube-nocookie.com/embed/' + videoid,
+                        'iframe_src': 'https://www.youtube-nocookie.com/embed/' + videoid,
                         'thumbnail': thumbnail,
                     }
                 )

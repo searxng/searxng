@@ -24,7 +24,7 @@ paging = True
 # search-url
 url = 'https://api.mixcloud.com/'
 search_url = url + 'search/?{query}&type=cloudcast&limit=10&offset={offset}'
-data_src = "https://www.mixcloud.com/widget/iframe/?feed={url}"
+iframe_src = "https://www.mixcloud.com/widget/iframe/?feed={url}"
 
 # do search-request
 def request(query, params):
@@ -53,7 +53,7 @@ def response(resp):
             {
                 'url': url,
                 'title': title,
-                'data_src': data_src.format(url=url),
+                'iframe_src': iframe_src.format(url=url),
                 'publishedDate': publishedDate,
                 'content': content,
             }

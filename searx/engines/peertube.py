@@ -74,7 +74,7 @@ def response(resp):
                 "title": title,
                 "content": content,
                 "publishedDate": publishedDate,
-                "data_src": sanitized_url + res["embedPath"],
+                "iframe_src": sanitized_url + res["embedPath"],
                 "thumbnail": thumbnail,
             }
         )

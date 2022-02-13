@@ -91,7 +91,7 @@ def response(resp):
                     "template": "videos.html",
                     "author": result.get("author"),
                     "publishedDate": publishedDate,
-                    "data_src": resp.search_params['base_url'] + '/embed/' + videoid,
+                    "iframe_src": resp.search_params['base_url'] + '/embed/' + videoid,
                     "thumbnail": thumbnail,
                 }
             )

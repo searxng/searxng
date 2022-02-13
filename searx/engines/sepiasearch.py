@@ -98,7 +98,7 @@ def response(resp):
                 'length': length,
                 'template': 'videos.html',
                 'publishedDate': publishedDate,
-                'data_src': result.get('embedUrl'),
+                'iframe_src': result.get('embedUrl'),
                 'thumbnail': thumbnail,
             }
         )

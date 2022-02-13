@@ -98,7 +98,7 @@ def response(resp):
                     'url': result['permalink_url'],
                     'title': title,
                     'publishedDate': publishedDate,
-                    'data_src': "https://w.soundcloud.com/player/?url=" + uri,
+                    'iframe_src': "https://w.soundcloud.com/player/?url=" + uri,
                     'content': content,
                 }
             )

@@ -78,7 +78,7 @@ def response(resp):
                 'content': content,
                 'template': 'videos.html',
                 'publishedDate': publishedDate,
-                'data_src': "https://www.youtube-nocookie.com/embed/" + videoid,
+                'iframe_src': "https://www.youtube-nocookie.com/embed/" + videoid,
                 'thumbnail': thumbnail,
             }
         )

@@ -57,7 +57,7 @@ def response(resp):
                 'content': '',
                 'template': 'videos.html',
                 'publishedDate': publishedDate,
-                'data_src': "https://player.vimeo.com/video/" + videoid,
+                'iframe_src': "https://player.vimeo.com/video/" + videoid,
                 'thumbnail': thumbnail,
             }
         )

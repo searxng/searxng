@@ -23,7 +23,7 @@ paging = True
 # search-url
 url = 'https://api.deezer.com/'
 search_url = url + 'search?{query}&index={offset}'
-data_src = "https://www.deezer.com/plugins/player?type=tracks&id={audioid}"
+iframe_src = "https://www.deezer.com/plugins/player?type=tracks&id={audioid}"
 
 # do search-request
 def request(query, params):
@@ -53,7 +53,7 @@ def response(resp):
 
             # append result
             results.append(
-                {'url': url, 'title': title, 'data_src': data_src.format(audioid=result['id']), 'content': content}
+                {'url': url, 'title': title, 'iframe_src': iframe_src.format(audioid=result['id']), 'content': content}
             )
 
     # return results

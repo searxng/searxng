@@ -70,7 +70,7 @@ def response(resp):
                 'title': title,
                 'content': content,
                 'publishedDate': publishedDate,
-                'data_src': "https://www.dailymotion.com/embed/video/" + res['id'],
+                'iframe_src': "https://www.dailymotion.com/embed/video/" + res['id'],
                 'thumbnail': thumbnail,
             }
         )

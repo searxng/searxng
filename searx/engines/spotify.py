@@ -67,7 +67,7 @@ def response(resp):
                 {
                     'url': url,
                     'title': title,
-                    'data_src': "https://embed.spotify.com/?uri=spotify:track:" + result['id'],
+                    'iframe_src': "https://embed.spotify.com/?uri=spotify:track:" + result['id'],
                     'content': content,
                 }
             )

@@ -2,7 +2,7 @@
 
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
-{% if result.data_src -%}
+{% if result.iframe_src -%}
 <p class="altlink"> &bull; <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}" data-btn-text-not-collapsed="{{ _('hide media') }}">{{ icon('music-note') }} {{ _('show media') }}</a></p>
 {%- endif %}
 {%- if result.content %}
@@ -15,9 +15,9 @@
   </p>
 {% endif -%}
 {{- result_sub_footer(result, proxify) -}}
-{% if result.data_src -%}
+{% if result.iframe_src -%}
 <div id="result-media-{{ index }}" class="embedded-content invisible">
-  <iframe data-src="{{result.data_src}}" frameborder="0" allowfullscreen></iframe>
+  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
 </div>
 {%- endif %}
 {% if result.audio_src -%}
