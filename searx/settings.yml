@@ -1580,9 +1580,12 @@ engines:
     engine: peertube
     shortcut: ptb
     paging: true
-    base_url: https://peer.tube/
+    # https://instances.joinpeertube.org/instances
+    base_url: https://peertube.biz/
+    # base_url: https://tube.tardis.world/
     categories: videos
     disabled: true
+    timeout: 6.0
 
   - name: mediathekviewweb
     engine: mediathekviewweb
