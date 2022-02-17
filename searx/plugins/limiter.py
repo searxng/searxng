@@ -42,19 +42,16 @@ def is_accepted_request(inc_get_counter) -> bool:
             return False
         return True
 
-    if request.path == '/search' and ('q' in request.args or 'q' in request.form):
-        c = inc_get_counter(interval=20, keys=[b'IP limit, burst', x_forwarded_for])
-        if c > 30:
-            return False
-
-        c = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', x_forwarded_for])
-        if c > 300:
+    if request.path == '/search':
+        c_burst = inc_get_counter(interval=20, keys=[b'IP limit, burst', x_forwarded_for])
+        c_10min = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', x_forwarded_for])
+        if c_burst > 15 or c_10min > 150:
             return False
 
         if re_bot.match(user_agent):
             return False
 
-        if 'Accept-Language' not in request.headers:
+        if len(request.headers.get('Accept-Language', '').strip()) == '':
             return False
 
         if request.headers.get('Connection') == 'close':
@@ -113,7 +110,6 @@ def create_pre_request(get_aggregation_count):
 
 
 def init(app, settings):
-
     if not settings['server']['limiter']:
         return False
 
