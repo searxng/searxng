@@ -68,6 +68,8 @@ def response(resp):
                 'title': "%(channel)s: %(title)s (%(hms)s)" % item,
                 'length': item['hms'],
                 'content': "%(description)s" % item,
+                'iframe_src': item['url_video_hd'],
+                'template': 'videos.html',
             }
         )
 
