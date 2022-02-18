@@ -2,7 +2,7 @@
 
 {{ result_header(result, favicons, image_proxify) }}
 {{ result_sub_header(result) }}
-{% if result.embedded -%}
+{% if result.iframe_src -%}
 <p class="altlink"> &bull; <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
 {%- endif %}
 {%- if result.content %}
@@ -16,9 +16,9 @@
 {% endif -%}
 </p>
 {{- result_sub_footer(result, proxify) -}}
-{% if result.embedded -%}
-<div id="result-video-{{ index }}" class="invisible">
-   {{- result.embedded|safe -}}
+{% if result.iframe_src -%}
+<div id="result-video-{{ index }}" class="embedded-video invisible">
+  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
 </div>
 {%- endif %}
 {{ result_footer(result) }}

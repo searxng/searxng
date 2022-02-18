@@ -25,12 +25,6 @@ paging = True
 base_url = 'https://vimeo.com/'
 search_url = base_url + '/search/page:{pageno}?{query}'
 
-embedded_url = (
-    '<iframe data-src="https://player.vimeo.com/video/{videoid}" '
-    + 'width="540" height="304" frameborder="0" '
-    + 'webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>'
-)
-
 
 # do search-request
 def request(query, params):
@@ -54,7 +48,6 @@ def response(resp):
         title = result['name']
         thumbnail = result['pictures']['sizes'][-1]['link']
         publishedDate = parser.parse(result['created_time'])
-        embedded = embedded_url.format(videoid=videoid)
 
         # append result
         results.append(
@@ -64,7 +57,7 @@ def response(resp):
                 'content': '',
                 'template': 'videos.html',
                 'publishedDate': publishedDate,
-                'embedded': embedded,
+                'iframe_src': "https://player.vimeo.com/video/" + videoid,
                 'thumbnail': thumbnail,
             }
         )

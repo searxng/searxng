@@ -3,15 +3,15 @@
 {{- result_header(result, favicons, loop.index) -}}
 {{- result_sub_header(result, loop.index) -}}
 
-{%- if result.embedded -%}
+{%- if result.iframe_src -%}
     <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer media-loader disabled_if_nojs" data-toggle="collapse" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}" aria-labelledby="result-{{loop.index}}">{{ icon('film') }} {{ _('show video') }}</a></small>
 {%- endif -%}
 
-{%- if result.embedded -%}
-<div id="result-video-{{ index }}" class="collapse">
-   {{- result.embedded|safe -}}
+{% if result.iframe_src -%}
+<div id="result-video-{{ index }}" class="embedded-video collapse">
+  <iframe data-src="{{result.iframe_src}}" width="540" height="304" frameborder="0" scrolling="no" allowfullscreen></iframe>
 </div>
-{%- endif -%}
+{%- endif %}
 
 <div class="container-fluid">{{- "" -}}
     <div class="row">{{- "" -}}

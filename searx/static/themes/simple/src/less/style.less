@@ -17,6 +17,7 @@
 @import "autocomplete.less";
 @import "detail.less";
 @import "animations.less";
+@import "embedded.less";
 
 // for index.html template
 @import "index.less";
@@ -296,8 +297,32 @@ article[data-vim-selected].category-social {
   padding: 0 5px 25px 0 !important;
 }
 
+.audio-control audio {
+  width: 100%;
+  padding: 10px 0 0 0;
+}
+
+.embedded-content iframe {
+  width: 100%;
+  padding: 10px 0 0 0;
+}
+
 .result-videos .content {
   overflow: hidden;
+}
+
+.result-videos .embedded-video iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 10px 0 0 0;
+}
+
+@supports not (aspect-ratio: 1 / 1) {
+  // support older browsers which do not have aspect-ratio
+  // https://caniuse.com/?search=aspect-ratio
+  .result-videos .embedded-video iframe {
+    height: calc(@results-width * 9 / 16);
+  }
 }
 
 .engines {

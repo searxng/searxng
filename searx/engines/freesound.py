@@ -29,9 +29,6 @@ search_url = (
     url + "search/text/?query={query}&page={page}&fields=name,url,download,created,description,type&token={api_key}"
 )
 
-embedded_url = '<audio controls><source src="{uri}" type="audio/{ftype}"></audio>'
-
-
 # search request
 def request(query, params):
     params["url"] = search_url.format(
@@ -52,7 +49,6 @@ def response(resp):
         content = result["description"][:128]
         publishedDate = datetime.fromisoformat(result["created"])
         uri = result["download"]
-        embedded = embedded_url.format(uri=uri, ftype=result["type"])
 
         # append result
         results.append(
@@ -60,7 +56,7 @@ def response(resp):
                 "url": result["url"],
                 "title": title,
                 "publishedDate": publishedDate,
-                "embedded": embedded,
+                "audio_src": uri,
                 "content": content,
             }
         )

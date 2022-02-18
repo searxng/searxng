@@ -41,9 +41,6 @@ time_range_table = {
 }
 
 
-embedded_url = '<iframe width="540" height="304" src="{url}" frameborder="0" allowfullscreen></iframe>'
-
-
 def minute_to_hm(minute):
     if isinstance(minute, int):
         return "%d:%02d" % (divmod(minute, 60))
@@ -88,7 +85,6 @@ def response(resp):
         content = result['description']
         thumbnail = result['thumbnailUrl']
         publishedDate = parser.parse(result['publishedAt'])
-        embedded = embedded_url.format(url=result.get('embedUrl'))
         author = result.get('account', {}).get('displayName')
         length = minute_to_hm(result.get('duration'))
         url = result['url']
@@ -102,7 +98,7 @@ def response(resp):
                 'length': length,
                 'template': 'videos.html',
                 'publishedDate': publishedDate,
-                'embedded': embedded,
+                'iframe_src': result.get('embedUrl'),
                 'thumbnail': thumbnail,
             }
         )

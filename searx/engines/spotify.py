@@ -29,10 +29,6 @@ api_client_secret = None
 url = 'https://api.spotify.com/'
 search_url = url + 'v1/search?{query}&type=track&offset={offset}'
 
-embedded_url = '<iframe data-src="https://embed.spotify.com/?uri=spotify:track:{audioid}"\
-     width="300" height="80" frameborder="0" allowtransparency="true"></iframe>'
-
-
 # do search-request
 def request(query, params):
     offset = (params['pageno'] - 1) * 20
@@ -66,10 +62,15 @@ def response(resp):
             url = result['external_urls']['spotify']
             content = '{} - {} - {}'.format(result['artists'][0]['name'], result['album']['name'], result['name'])
 
-            embedded = embedded_url.format(audioid=result['id'])
-
             # append result
-            results.append({'url': url, 'title': title, 'embedded': embedded, 'content': content})
+            results.append(
+                {
+                    'url': url,
+                    'title': title,
+                    'iframe_src': "https://embed.spotify.com/?uri=spotify:track:" + result['id'],
+                    'content': content,
+                }
+            )
 
     # return results
     return results

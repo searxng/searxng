@@ -3,13 +3,13 @@
 {{- result_header(result, favicons, loop.index) -}}
 {{- result_sub_header(result, loop.index) -}}
 
-{%- if result.embedded -%}
+{%- if result.iframe_src -%}
     <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer media-loader disabled_if_nojs" data-toggle="collapse" data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}" data-btn-text-not-collapsed="{{ _('hide media') }}" aria-labelledby="result-{{loop.index}}">{{ icon('music') }} {{ _('show media') }}</a></small>
 {%- endif -%}
 
-{%- if result.embedded -%}
-<div id="result-media-{{ index }}" class="collapse">
-   {{- result.embedded|safe -}}
+{% if result.iframe_src -%}
+<div id="result-media-{{ index }}" class="embedded-content invisible">
+  <iframe data-src="{{result.iframe_src}}" frameborder="0" scrolling="no" allowfullscreen></iframe>
 </div>
 {%- endif -%}
 
@@ -23,6 +23,13 @@
 {%- else -%}
 {%- if result.content %}<p class="result-content">{{ result.content|safe }}</p>{% endif -%}
 {%- endif -%}
+
+{% if result.audio_src -%}
+<div id="result-media-{{ index }}" class="audio-control">
+  <audio controls><source src="{{result.audio_src}}"></audio>
+</div>
+{%- endif %}
+
 
 {%- if rtl -%}
 {{ result_footer_rtl(result, loop.index) }}

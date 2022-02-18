@@ -37,12 +37,6 @@ search_url = (
     '&client_id={client_id}'
 )  # noqa
 
-embedded_url = (
-    '<iframe width="100%" height="166" '
-    + 'scrolling="no" frameborder="no" '
-    + 'data-src="https://w.soundcloud.com/player/?url={uri}"></iframe>'
-)
-
 cid_re = re.compile(r'client_id:"([^"]*)"', re.I | re.U)
 guest_client_id = ''
 
@@ -97,7 +91,6 @@ def response(resp):
             content = result['description'] or ''
             publishedDate = parser.parse(result['last_modified'])
             uri = quote_plus(result['uri'])
-            embedded = embedded_url.format(uri=uri)
 
             # append result
             results.append(
@@ -105,7 +98,7 @@ def response(resp):
                     'url': result['permalink_url'],
                     'title': title,
                     'publishedDate': publishedDate,
-                    'embedded': embedded,
+                    'iframe_src': "https://w.soundcloud.com/player/?url=" + uri,
                     'content': content,
                 }
             )

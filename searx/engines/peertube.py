@@ -51,12 +51,6 @@ def response(resp):
 
     search_res = loads(resp.text)
 
-    embedded_url = (
-        '<iframe width="560" height="315" sandbox="allow-same-origin allow-scripts allow-popups" '
-        + 'src="'
-        + sanitized_url
-        + '{embed_path}" frameborder="0" allowfullscreen></iframe>'
-    )
     # return empty array if there are no results
     if "data" not in search_res:
         return []
@@ -72,7 +66,6 @@ def response(resp):
             content = ""
         thumbnail = sanitized_url + res["thumbnailPath"]
         publishedDate = datetime.strptime(res["publishedAt"], "%Y-%m-%dT%H:%M:%S.%fZ")
-        embedded = embedded_url.format(embed_path=res["embedPath"])
 
         results.append(
             {
@@ -81,7 +74,7 @@ def response(resp):
                 "title": title,
                 "content": content,
                 "publishedDate": publishedDate,
-                "embedded": embedded,
+                "iframe_src": sanitized_url + res["embedPath"],
                 "thumbnail": thumbnail,
             }
         )

@@ -32,12 +32,6 @@ time_range_url = '&sp=EgII{time_range}%253D%253D'
 next_page_url = 'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'
 time_range_dict = {'day': 'Ag', 'week': 'Aw', 'month': 'BA', 'year': 'BQ'}
 
-embedded_url = (
-    '<iframe width="540" height="304" '
-    + 'data-src="https://www.youtube-nocookie.com/embed/{videoid}" '
-    + 'frameborder="0" allowfullscreen></iframe>'
-)
-
 base_youtube_url = 'https://www.youtube.com/watch?v='
 
 
@@ -91,7 +85,7 @@ def parse_next_page_response(response_text):
                 'author': section['ownerText']['runs'][0]['text'],
                 'length': section['lengthText']['simpleText'],
                 'template': 'videos.html',
-                'embedded': embedded_url.format(videoid=section['videoId']),
+                'iframe_src': 'https://www.youtube-nocookie.com/embed/' + section['videoId'],
                 'thumbnail': section['thumbnail']['thumbnails'][-1]['url'],
             }
         )
@@ -150,7 +144,6 @@ def parse_first_page_response(response_text):
                 thumbnail = 'https://i.ytimg.com/vi/' + videoid + '/hqdefault.jpg'
                 title = get_text_from_json(video.get('title', {}))
                 content = get_text_from_json(video.get('descriptionSnippet', {}))
-                embedded = embedded_url.format(videoid=videoid)
                 author = get_text_from_json(video.get('ownerText', {}))
                 length = get_text_from_json(video.get('lengthText', {}))
 
@@ -163,7 +156,7 @@ def parse_first_page_response(response_text):
                         'author': author,
                         'length': length,
                         'template': 'videos.html',
-                        'embedded': embedded,
+                        'iframe_src': 'https://www.youtube-nocookie.com/embed/' + videoid,
                         'thumbnail': thumbnail,
                     }
                 )

@@ -58,14 +58,6 @@ def response(resp):
     results = []
 
     search_results = resp.json()
-    embedded_url = (
-        '<iframe width="540" height="304" '
-        + 'data-src="'
-        + resp.search_params['base_url']
-        + '/embed/{videoid}" '
-        + 'frameborder="0" allowfullscreen></iframe>'
-    )
-
     base_invidious_url = resp.search_params['base_url'] + "/watch?v="
 
     for result in search_results:
@@ -76,7 +68,6 @@ def response(resp):
                 continue
 
             url = base_invidious_url + videoid
-            embedded = embedded_url.format(videoid=videoid)
             thumbs = result.get("videoThumbnails", [])
             thumb = next((th for th in thumbs if th["quality"] == "sddefault"), None)
             if thumb:
@@ -100,7 +91,7 @@ def response(resp):
                     "template": "videos.html",
                     "author": result.get("author"),
                     "publishedDate": publishedDate,
-                    "embedded": embedded,
+                    "iframe_src": resp.search_params['base_url'] + '/embed/' + videoid,
                     "thumbnail": thumbnail,
                 }
             )

@@ -24,12 +24,7 @@ paging = True
 # search-url
 url = 'https://api.mixcloud.com/'
 search_url = url + 'search/?{query}&type=cloudcast&limit=10&offset={offset}'
-
-embedded_url = (
-    '<iframe scrolling="no" frameborder="0" allowTransparency="true" '
-    + 'data-src="https://www.mixcloud.com/widget/iframe/?feed={url}" width="300" height="300"></iframe>'
-)
-
+iframe_src = "https://www.mixcloud.com/widget/iframe/?feed={url}"
 
 # do search-request
 def request(query, params):
@@ -51,12 +46,17 @@ def response(resp):
         title = result['name']
         url = result['url']
         content = result['user']['name']
-        embedded = embedded_url.format(url=url)
         publishedDate = parser.parse(result['created_time'])
 
         # append result
         results.append(
-            {'url': url, 'title': title, 'embedded': embedded, 'publishedDate': publishedDate, 'content': content}
+            {
+                'url': url,
+                'title': title,
+                'iframe_src': iframe_src.format(url=url),
+                'publishedDate': publishedDate,
+                'content': content,
+            }
         )
 
     # return results
