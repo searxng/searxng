@@ -51,7 +51,7 @@ def parse_lyric(hit):
         'url': hit['result']['url'],
         'title': hit['result']['full_title'],
         'content': content,
-        'thumbnail': hit['result']['song_art_image_thumbnail_url'],
+        'img_src': hit['result']['song_art_image_thumbnail_url'],
     }
     if timestamp:
         result.update({'publishedDate': datetime.fromtimestamp(timestamp)})
@@ -69,7 +69,7 @@ def parse_artist(hit):
         'url': hit['result']['url'],
         'title': hit['result']['name'],
         'content': '',
-        'thumbnail': hit['result']['image_url'],
+        'img_src': hit['result']['image_url'],
     }
     return result
 
@@ -85,7 +85,7 @@ def parse_album(hit):
     return {
         'url': res['url'],
         'title': res['full_title'],
-        'thumbnail': res['cover_art_url'],
+        'img_src': res['cover_art_url'],
         'content': content.strip(),
     }
 
