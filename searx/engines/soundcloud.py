@@ -81,27 +81,23 @@ def request(query, params):
 # get response from search-request
 def response(resp):
     results = []
-
     search_res = loads(resp.text)
 
     # parse results
     for result in search_res.get('collection', []):
+
         if result['kind'] in ('track', 'playlist'):
-            title = result['title']
-            content = result['description'] or ''
-            publishedDate = parser.parse(result['last_modified'])
             uri = quote_plus(result['uri'])
+            res = {
+                'url': result['permalink_url'],
+                'title': result['title'],
+                'content': result['description'] or '',
+                'publishedDate': parser.parse(result['last_modified']),
+                'iframe_src': "https://w.soundcloud.com/player/?url=" + uri,
+            }
+            img_src = result['artwork_url'] or result['user']['avatar_url']
+            if img_src:
+                res['img_src'] = img_src
+            results.append(res)
 
-            # append result
-            results.append(
-                {
-                    'url': result['permalink_url'],
-                    'title': title,
-                    'publishedDate': publishedDate,
-                    'iframe_src': "https://w.soundcloud.com/player/?url=" + uri,
-                    'content': content,
-                }
-            )
-
-    # return results
     return results
