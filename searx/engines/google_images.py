@@ -13,6 +13,7 @@
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
 
+import re
 from urllib.parse import urlencode, unquote
 from lxml import html
 
@@ -68,15 +69,55 @@ def scrap_out_thumbs(dom):
     return ret_val
 
 
-def scrap_img_by_id(script, data_id):
-    """Get full image URL by data-id in parent element"""
-    img_url = ''
-    _script = script.split('\n')
-    for i, line in enumerate(_script):
-        if 'gstatic.com/images' in line and data_id in line and i + 1 < len(_script):
-            url_line = _script[i + 1]
-            img_url = url_line.split('"')[1]
-            img_url = unquote(img_url.replace(r'\u00', r'%'))
+# [0, "-H96xjSoW5DsgM", ["https://encrypted-tbn0.gstatic.com/images?q...", 155, 324]
+# , ["https://assets.cdn.moviepilot.de/files/d3bf..", 576, 1200],
+_RE_JS_IMAGE_URL = re.compile(
+    r'"'
+    r'([^"]*)'  # -H96xjSoW5DsgM
+    r'",\s*\["'
+    r'https://[^\.]*\.gstatic.com/images[^"]*'  # https://encrypted-tbn0.gstatic.com/images?q...
+    r'[^\[]*\["'
+    r'(https?://[^"]*)'  # https://assets.cdn.moviepilot.de/files/d3bf...
+)
+
+
+def parse_urls_img_from_js(dom):
+
+    # There are two HTML script tags starting with a JS function
+    # 'AF_initDataCallback(...)'
+    #
+    # <script nonce="zscm+Ab/JzBk1Qd4GY6wGQ">
+    #   AF_initDataCallback({key: 'ds:0', hash: '1', data:[], sideChannel: {}});
+    # </script>
+    # <script nonce="zscm+Ab/JzBk1Qd4GY6wGQ">
+    #   AF_initDataCallback({key: 'ds:1', hash: '2', data:[null,[[["online_chips",[["the big",
+    #     ["https://encrypted-tbn0.gstatic.com/images?q...",null,null,true,[null,0],f
+    #   ...
+    # </script>
+    #
+    # The second script contains the URLs of the images.
+
+    # The AF_initDataCallback(..) is called with very large dictionary, that
+    # looks like JSON but it is not JSON since it contains JS variables and
+    # constants like 'null' (we can't use a JSON parser for).
+    #
+    # The alternative is to parse the entire <script> and find all image URLs by
+    # a regular expression.
+
+    img_src_script = eval_xpath_getindex(dom, '//script[contains(., "AF_initDataCallback({key: ")]', 1).text
+    data_id_to_img_url = {}
+    for data_id, url in _RE_JS_IMAGE_URL.findall(img_src_script):
+        data_id_to_img_url[data_id] = url
+    return data_id_to_img_url
+
+
+def get_img_url_by_data_id(data_id_to_img_url, img_node):
+    """Get full image URL by @data-id from parent element."""
+
+    data_id = eval_xpath_getindex(img_node, '../../../@data-id', 0)
+    img_url = data_id_to_img_url.get(data_id, '')
+    img_url = unquote(img_url.replace(r'\u00', r'%'))
+
     return img_url
 
 
@@ -123,7 +164,7 @@ def response(resp):
     # convert the text to dom
     dom = html.fromstring(resp.text)
     img_bas64_map = scrap_out_thumbs(dom)
-    img_src_script = eval_xpath_getindex(dom, '//script[contains(., "AF_initDataCallback({key: ")]', 1).text
+    data_id_to_img_url = parse_urls_img_from_js(dom)
 
     # parse results
     #
@@ -178,8 +219,7 @@ def response(resp):
             pub_descr = extract_text(pub_nodes[0])
             pub_source = extract_text(pub_nodes[1])
 
-        img_src_id = eval_xpath_getindex(img_node, '../../../@data-id', 0)
-        src_url = scrap_img_by_id(img_src_script, img_src_id)
+        src_url = get_img_url_by_data_id(data_id_to_img_url, img_node)
         if not src_url:
             src_url = thumbnail_src
 
@@ -190,7 +230,6 @@ def response(resp):
                 'content': pub_descr,
                 'source': pub_source,
                 'img_src': src_url,
-                # 'img_format': img_format,
                 'thumbnail_src': thumbnail_src,
                 'template': 'images.html',
             }
