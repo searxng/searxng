@@ -105,7 +105,7 @@ def get_search_query(
         "language": args.lang,
         "time_range": args.timerange,
     }
-    preferences = searx.preferences.Preferences(['oscar'], engine_categories, searx.engines.engines, [])
+    preferences = searx.preferences.Preferences(['simple'], engine_categories, searx.engines.engines, [])
     preferences.key_value_settings['safesearch'].parse(args.safesearch)
 
     search_query = searx.webadapter.get_search_query_from_webapp(preferences, form)[0]
