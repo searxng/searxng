@@ -2,7 +2,6 @@
 # lint: pylint
 # pylint: disable=,missing-module-docstring,missing-class-docstring
 
-import re
 import os
 import shlex
 import subprocess
@@ -59,25 +58,8 @@ def get_git_url_and_branch():
 
 
 def get_git_version():
-    try:
-        tag = subprocess_run("git describe HEAD")
-        # a. HEAD is on tag name, example: tag = "v1.0.1"
-        # b. HEAD is not a tag name, example "<tag>-<distance>-g<commit>"
-        tag_version, tag_distance, tag_commit = (tag.split("-") + ["", ""])[:3]
-        if re.match(r"v[0-9]+\.[0-9]+\.[0-9]+", tag_version):
-            # tag_version "v1.0.0" becomes "1.0.0" (without the v)
-            # other patterns are kept untouched
-            tag_version = tag_version[1:]
-        # remove "g" prefix from tag_commit
-        if tag_commit and tag_commit[0] == "g":
-            tag_commit = tag_commit[1:]
-        # set git_version to "1.0.0-590-0686e274" or '1.0.0'
-        git_version = "-".join(filter(bool, [tag_version, tag_distance, tag_commit]))
-    except subprocess.CalledProcessError:
-        # fall back to "YYYY.MM.DD.Hash" if there is no tag at all
-        git_version = subprocess_run(r"git show -s --format='%as-%h'")
-        # PEP 440: replace - with .
-        tag_version = git_version = git_version.replace("-", ".")
+    git_commit_date_hash = subprocess_run(r"git show -s --format='%cs-%h'").replace("-", ".", 2)
+    tag_version = git_version = git_commit_date_hash
 
     # add "-dirty" suffix if there are uncommited changes except searx/settings.yml
     try:
