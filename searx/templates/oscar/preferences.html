@@ -248,6 +248,17 @@
                         {{ preferences_item_footer(info, label, rtl) }}
                         {% endif %}
 
+                        {% if 'infinite_scroll' not in locked_preferences %}
+                        {% set label = _('Infinite scroll') %}
+                        {% set info = _('Automatically load next page when scrolling to bottom of current page') %}
+                        {{ preferences_item_header(info, label, rtl, 'infinite_scroll') }}
+                            <select class="form-control {{ custom_select_class(rtl) }}" name="infinite_scroll" id="infinite_scroll">
+                                <option value="1" {% if infinite_scroll %}selected="selected"{% endif %}>{{ _('On') }}</option>
+                                <option value="0" {% if not infinite_scroll %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+                            </select>
+                        {{ preferences_item_footer(info, label, rtl) }}
+                        {% endif %}
+
                         {{ plugin_of_category('ui' )}}
                     </div>
                 </fieldset>

@@ -394,6 +394,17 @@ class Preferences:
                     'False': False
                 }
             ),
+            'infinite_scroll': MapSetting(
+                settings['ui']['infinite_scroll'],
+                locked=is_locked('infinite_scroll'),
+                map={
+                    '': settings['ui']['infinite_scroll'],
+                    '0': False,
+                    '1': True,
+                    'True': True,
+                    'False': False
+                }
+            ),
             # fmt: on
         }
 

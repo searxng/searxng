@@ -771,14 +771,18 @@ article[data-vim-selected].category-social {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: min-content min-content 1fr min-content min-content;
+  grid-template-rows: min-content min-content min-content 1fr min-content;
   gap: 0;
   grid-template-areas:
     "corrections"
-    "urls"
     "answers"
     "sidebar"
+    "urls"
     "pagination";
+
+  #sidebar {
+    display: none;
+  }
 
   #urls {
     width: inherit;

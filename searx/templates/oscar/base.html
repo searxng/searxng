@@ -100,6 +100,7 @@
     <script src="{{ url_for('static', filename='js/searxng.min.js') }}"
             data-method="{{ method or 'POST' }}"
             data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
+            data-infinite-scroll="{% if infinite_scroll %}true{% else %}false{% endif %}"
             data-translations="{{ translations }}"></script>
     {% for script in scripts %}
     {{""}}<script src="{{ url_for('static', filename=script) }}"></script>

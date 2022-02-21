@@ -2,6 +2,10 @@
 (function (w, d, searxng) {
   'use strict';
 
+  if (searxng.endpoint !== 'preferences') {
+    return;
+  }
+
   searxng.ready(function () {
     let engine_descriptions = null;
     function load_engine_descriptions () {
@@ -19,10 +23,8 @@
       }
     }
 
-    if (d.querySelector('body[class="preferences_endpoint"]')) {
-      for (const el of d.querySelectorAll('[data-engine-name]')) {
-        searxng.on(el, 'mouseenter', load_engine_descriptions);
-      }
+    for (const el of d.querySelectorAll('[data-engine-name]')) {
+      searxng.on(el, 'mouseenter', load_engine_descriptions);
     }
   });
 })(window, document, window.searxng);

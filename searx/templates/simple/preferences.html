@@ -226,6 +226,18 @@
       <div class="description">{{_('Open result links on new browser tabs') }}</div>
     </fieldset>
     {% endif %}
+    {% if 'infinite_scroll' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Infinite scroll') }}</legend>
+      <p class="value">
+        <select name='infinite_scroll'>
+          <option value="1" {% if infinite_scroll %}selected="selected"{% endif %}>{{ _('On') }}</option>
+          <option value="0" {% if not infinite_scroll %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Automatically load next page when scrolling to bottom of current page') }}</div>
+    </fieldset>
+    {% endif %}
     {{ plugin_preferences('ui') }}
   {{ tab_footer() }}
 

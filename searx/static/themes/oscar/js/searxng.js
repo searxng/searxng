@@ -19,6 +19,7 @@ window.searxng = (function(d) {
 
     return {
         autocompleter: script.getAttribute('data-autocompleter') === 'true',
+        infinite_scroll: script.getAttribute('data-infinite-scroll') === 'true',
         method: script.getAttribute('data-method'),
         translations: JSON.parse(script.getAttribute('data-translations'))
     };
@@ -189,6 +190,56 @@ $(document).ready(function(){
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+$(document).ready(function() {
+    function hasScrollbar() {
+        var root = document.compatMode=='BackCompat'? document.body : document.documentElement;
+        return root.scrollHeight>root.clientHeight;
+    }
+
+    function loadNextPage() {
+        var formData = $('#pagination form:last').serialize();
+        if (formData) {
+            $('#pagination').html('<div class="loading-spinner"></div>');
+            $.ajax({
+                type: "POST",
+                url: $('#search_form').prop('action'),
+                data: formData,
+                dataType: 'html',
+                success: function(data) {
+                    var body = $(data);
+                    $('#pagination').remove();
+                    $('#main_results').append('<hr/>');
+                    $('#main_results').append(body.find('.result'));
+                    $('#main_results').append(body.find('#pagination'));
+                    if(!hasScrollbar()) {
+                        loadNextPage();
+                    }
+                }
+            });
+        }
+    }
+
+    if (searxng.infinite_scroll) {
+        var win = $(window);
+        $("html").addClass('infinite_scroll');
+        if(!hasScrollbar()) {
+            loadNextPage();
+        }
+        win.on('scroll', function() {
+            if ($(document).height() - win.height() - win.scrollTop() < 150) {
+                loadNextPage();
+            }
+        });
+    }
+
+});
+;/**
+ * @license
+ * (C) Copyright Contributors to the SearXNG project.
+ * (C) Copyright Contributors to the searx project (2014 - 2021).
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 window.addEventListener('load', function() {
     // Hide infobox toggle if shrunk size already fits all content.
     $('.infobox').each(function() {
@@ -348,7 +399,8 @@ $(document).ready(function(){
     this.verticalMargin = verticalMargin;
     this.horizontalMargin = horizontalMargin;
     this.maxHeight = maxHeight;
-    this.isAlignDone = true;
+    this.trottleCallToAlign = null;
+    this.alignAfterThrotteling = false;
   }
 
   /**
@@ -391,12 +443,12 @@ $(document).ready(function(){
         // not loaded image : make it square as _getHeigth said it
         imgWidth = height;
       }
-      img.style.width = imgWidth + 'px';
-      img.style.height = height + 'px';
-      img.style.marginLeft = this.horizontalMargin + 'px';
-      img.style.marginTop = this.horizontalMargin + 'px';
-      img.style.marginRight = this.verticalMargin - 7 + 'px'; // -4 is the negative margin of the inline element
-      img.style.marginBottom = this.verticalMargin - 7 + 'px';
+      img.setAttribute('width', Math.round(imgWidth));
+      img.setAttribute('height', Math.round(height));
+      img.style.marginLeft = Math.round(this.horizontalMargin) + 'px';
+      img.style.marginTop = Math.round(this.horizontalMargin) + 'px';
+      img.style.marginRight = Math.round(this.verticalMargin - 7) + 'px'; // -4 is the negative margin of the inline element
+      img.style.marginBottom = Math.round(this.verticalMargin - 7) + 'px';
       resultNode = img.parentNode.parentNode;
       if (!resultNode.classList.contains('js')) {
         resultNode.classList.add('js');
@@ -431,6 +483,23 @@ $(document).ready(function(){
     }
   };
 
+  ImageLayout.prototype.throttleAlign = function () {
+    var obj = this;
+    if (obj.trottleCallToAlign) {
+      obj.alignAfterThrotteling = true;
+    } else {
+      obj.alignAfterThrotteling = false;
+      obj.align();
+      obj.trottleCallToAlign = setTimeout(function () {
+        if (obj.alignAfterThrotteling) {
+          obj.align();
+        }
+        obj.alignAfterThrotteling = false;
+        obj.trottleCallToAlign = null;
+      }, 20);
+    }
+  }
+
   ImageLayout.prototype.align = function () {
     var i;
     var results_selectorNode = d.querySelectorAll(this.results_selector);
@@ -460,9 +529,9 @@ $(document).ready(function(){
     }
   };
 
-  ImageLayout.prototype.watch = function () {
+  ImageLayout.prototype._monitorImages = function () {
     var i, img;
-    var obj = this;
+    var objthrottleAlign = this.throttleAlign.bind(this);
     var results_nodes = d.querySelectorAll(this.results_selector);
     var results_length = results_nodes.length;
 
@@ -471,34 +540,53 @@ $(document).ready(function(){
       event.originalTarget.src = w.searxng.static_path + w.searxng.theme.img_load_error;
     }
 
-    function throttleAlign () {
-      if (obj.isAlignDone) {
-        obj.isAlignDone = false;
-        setTimeout(function () {
-          obj.align();
-          obj.isAlignDone = true;
-        }, 100);
-      }
-    }
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event
-    w.addEventListener('pageshow', throttleAlign);
-    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/load_event
-    w.addEventListener('load', throttleAlign);
-    // https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event
-    w.addEventListener('resize', throttleAlign);
-
     for (i = 0; i < results_length; i++) {
       img = results_nodes[i].querySelector(this.img_selector);
-      if (img !== null && img !== undefined) {
-        img.addEventListener('load', throttleAlign);
+      if (img !== null && img !== undefined && !img.classList.contains('aligned')) {
+        img.addEventListener('load', objthrottleAlign);
         // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
-        img.addEventListener('error', throttleAlign);
+        img.addEventListener('error', objthrottleAlign);
+        img.addEventListener('timeout', objthrottleAlign);
         if (w.searxng.theme.img_load_error) {
           img.addEventListener('error', img_load_error, {once: true});
         }
+        img.classList.add('aligned');
       }
     }
+  }
+
+  ImageLayout.prototype.watch = function () {
+    var objthrottleAlign = this.throttleAlign.bind(this);
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event
+    w.addEventListener('pageshow', objthrottleAlign);
+    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/load_event
+    w.addEventListener('load', objthrottleAlign);
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event
+    w.addEventListener('resize', objthrottleAlign);
+
+    this._monitorImages();
+
+    var obj = this;
+
+    let observer = new MutationObserver(entries => {
+      let newElement = false;
+      for (let i = 0; i < entries.length; i++) {
+        if (entries[i].addedNodes.length > 0 && entries[i].addedNodes[0].classList.contains('result')) {
+          newElement = true;
+          break;
+        }
+      }
+      if (newElement) {
+        obj._monitorImages();
+      }
+    });
+    observer.observe(d.querySelector(this.container_selector), {
+      childList: true,
+      subtree: true,
+      attributes: false,
+      characterData: false,
+    })
   };
 
   w.searxng.ImageLayout = ImageLayout;
