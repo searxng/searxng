@@ -726,6 +726,9 @@ def search():
     # Server-Timing header
     request.timings = result_container.get_timings()  # pylint: disable=assigning-non-slot
 
+    current_template = None
+    previous_result = None
+
     # output
     for result in results:
         if output_format == 'html':
@@ -761,6 +764,18 @@ def search():
                         )
                 else:
                     result['publishedDate'] = format_date(result['publishedDate'])
+
+        # set result['open_group'] = True when the template changes from the previous result
+        # set result['close_group'] = True when the template changes on the next result
+        if current_template != result.get('template'):
+            result['open_group'] = True
+            if previous_result:
+                previous_result['close_group'] = True  # pylint: disable=unsupported-assignment-operation
+        current_template = result.get('template')
+        previous_result = result
+
+    if previous_result:
+        previous_result['close_group'] = True
 
     if output_format == 'json':
         x = {

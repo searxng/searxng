@@ -143,6 +143,10 @@ article.result-images[data-vim-selected] {
   .image_thumbnail {
     filter: opacity(60%);
   }
+
+  span.title {
+    color: var(--color-result-image-span-font-selected);
+  }
 }
 
 article[data-vim-selected].category-videos,
@@ -284,6 +288,16 @@ article[data-vim-selected].category-social {
   }
 }
 
+.template_group_images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.template_group_images::after {
+  flex-grow: 10;
+  content: "";
+}
+
 .category-videos,
 .category-news,
 .category-map,
@@ -357,40 +371,38 @@ article[data-vim-selected].category-social {
 }
 
 .result-images {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  max-height: 200px;
+  flex-grow: 1;
+  padding: 0.5rem 0.5rem 2rem 0.5rem;
+  margin: 0.25rem;
   border: none !important;
+  height: @results-image-row-height;
+
+  & > a {
+    position: relative;
+  }
 
   img {
-    float: inherit;
-    margin: 0.125rem;
+    margin: 0;
     padding: 0;
     border: none;
-    max-height: 200px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    vertical-align: bottom;
     background: var(--color-result-image-background);
   }
 
   span.title {
-    display: none;
-    color: var(--color-result-image-span-font);
-  }
-
-  &:hover span.title {
     display: block;
     position: absolute;
-    bottom: 0;
-    .ltr-right(0);
-    padding: 4px;
-    margin-top: 0;
-    .ltr-margin-right(0);
-    margin-bottom: 4px;
-    .ltr-margin-left(4px);
-    // color: @color-result-image-span-font;
-    background-color: var(--color-result-image-span-background-hover);
-    font-size: 0.7em;
+
+    width: 100%;
+    font-size: 0.9rem;
+    color: var(--color-result-image-span-font);
+    padding: 0.5rem 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -785,8 +797,14 @@ article[data-vim-selected].category-social {
   }
 
   #urls {
-    width: inherit;
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #urls::after {
+    flex-grow: 10;
+    content: "";
   }
 
   #backToTop {
@@ -837,8 +855,7 @@ article[data-vim-selected].category-social {
 
   .result-images {
     margin: 0;
-    padding: 0;
-    border: none;
+    height: @results-image-row-height-phone;
   }
 }
 

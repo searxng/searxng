@@ -7,9 +7,6 @@
   }
 
   searxng.ready(function () {
-    searxng.image_thumbnail_layout = new searxng.ImageLayout('#urls', '#urls .result-images', 'img.image_thumbnail', 14, 6, 200);
-    searxng.image_thumbnail_layout.watch();
-
     d.querySelectorAll('#urls img.image').forEach(
       img =>
         img.addEventListener(
@@ -74,13 +71,11 @@
         }
       }
       d.getElementById('results').classList.add('image-detail-open');
-      searxng.image_thumbnail_layout.align();
       searxng.scrollPageToSelected();
     }
 
     searxng.closeDetail = function (e) {
       d.getElementById('results').classList.remove('image-detail-open');
-      searxng.image_thumbnail_layout.align();
       searxng.scrollPageToSelected();
     }
     searxng.on('.result-detail-close', 'click', e => {

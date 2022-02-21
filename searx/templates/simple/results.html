@@ -15,7 +15,7 @@
 {% if results and results|map(attribute='template')|unique|list|count == 1 %}
   {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
 {% else %}
-  {% set unique_template = '' %}
+  {% set only_template = '' %}
 {% endif %}
 
 <div id="results" class="{{ only_template }}">
@@ -131,12 +131,10 @@
 
     <div id="urls">
     {% for result in results %}
+        {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
-        {% if result['template'] %}
-            {% include get_result_template('simple', result['template']) %}
-        {% else %}
-            {% include 'simple/result_templates/default.html' %}
-        {% endif %}
+        {% include get_result_template('simple', result['template']) %}
+        {% if result.close_group and not only_template %}</div>{% endif %}
     {% endfor %}
     {% if not results and not answers %}
         {% include 'simple/messages/no_results.html' %}

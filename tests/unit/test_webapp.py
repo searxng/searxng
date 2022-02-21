@@ -33,7 +33,8 @@ class ViewsTestCase(SearxTestCase):
                 'engine': 'startpage',
                 'parsed_url': ParseResult(
                     scheme='http', netloc='first.test.xyz', path='/', params='', query='', fragment=''
-                ),  # noqa
+                ),
+                'template': 'default.html',
             },
             {
                 'content': 'second test content',
@@ -43,7 +44,8 @@ class ViewsTestCase(SearxTestCase):
                 'engine': 'youtube',
                 'parsed_url': ParseResult(
                     scheme='http', netloc='second.test.xyz', path='/', params='', query='', fragment=''
-                ),  # noqa
+                ),
+                'template': 'default.html',
             },
         ]
 

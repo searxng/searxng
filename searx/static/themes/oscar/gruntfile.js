@@ -60,7 +60,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['src/js/*.js', '../__common__/js/image_layout.js'],
+        src: ['src/js/*.js'],
         dest: 'js/searxng.js'
       }
     },

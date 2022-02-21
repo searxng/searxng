@@ -128,7 +128,7 @@
         obj.trottleCallToAlign = null;
       }, 20);
     }
-  }
+  };
 
   ImageLayout.prototype.align = function () {
     var i;
@@ -183,7 +183,7 @@
         img.classList.add('aligned');
       }
     }
-  }
+  };
 
   ImageLayout.prototype.watch = function () {
     var objthrottleAlign = this.throttleAlign.bind(this);
@@ -216,7 +216,7 @@
       subtree: true,
       attributes: false,
       characterData: false,
-    })
+    });
   };
 
   w.searxng.ImageLayout = ImageLayout;
