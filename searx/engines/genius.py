@@ -5,7 +5,6 @@
 
 """
 
-from json import loads
 from urllib.parse import urlencode
 from datetime import datetime
 
@@ -26,6 +25,7 @@ page_size = 5
 
 url = 'https://genius.com/api/'
 search_url = url + 'search/{index}?{query}&page={pageno}&per_page={page_size}'
+music_player = 'https://genius.com{api_path}/apple_music_player'
 
 
 def request(query, params):
@@ -39,20 +39,28 @@ def request(query, params):
 
 
 def parse_lyric(hit):
-    try:
+    content = ''
+    highlights = hit['highlights']
+    if highlights:
         content = hit['highlights'][0]['value']
-    except Exception as e:  # pylint: disable=broad-except
-        logger.error(e, exc_info=True)
-        content = ''
+    else:
+        content = hit['result'].get('title_with_featured', '')
+
     timestamp = hit['result']['lyrics_updated_at']
     result = {
         'url': hit['result']['url'],
         'title': hit['result']['full_title'],
         'content': content,
-        'thumbnail': hit['result']['song_art_image_thumbnail_url'],
+        'img_src': hit['result']['song_art_image_thumbnail_url'],
     }
     if timestamp:
         result.update({'publishedDate': datetime.fromtimestamp(timestamp)})
+    api_path = hit['result'].get('api_path')
+    if api_path:
+        # The players are just playing 30sec from the title.  Some of the player
+        # will be blocked because of a cross-origin request and some players will
+        # link to apple when you press the play button.
+        result['iframe_src'] = music_player.format(api_path=api_path)
     return result
 
 
@@ -61,26 +69,25 @@ def parse_artist(hit):
         'url': hit['result']['url'],
         'title': hit['result']['name'],
         'content': '',
-        'thumbnail': hit['result']['image_url'],
+        'img_src': hit['result']['image_url'],
     }
     return result
 
 
 def parse_album(hit):
-    result = {
-        'url': hit['result']['url'],
-        'title': hit['result']['full_title'],
-        'thumbnail': hit['result']['cover_art_url'],
-        'content': '',
+    res = hit['result']
+    content = res.get('name_with_artist', res.get('name', ''))
+    x = res.get('release_date_components')
+    if x:
+        x = x.get('year')
+        if x:
+            content = "%s / %s" % (x, content)
+    return {
+        'url': res['url'],
+        'title': res['full_title'],
+        'img_src': res['cover_art_url'],
+        'content': content.strip(),
     }
-    try:
-        year = hit['result']['release_date_components']['year']
-    except Exception as e:  # pylint: disable=broad-except
-        logger.error(e, exc_info=True)
-    else:
-        if year:
-            result.update({'content': 'Released: {}'.format(year)})
-    return result
 
 
 parse = {'lyric': parse_lyric, 'song': parse_lyric, 'artist': parse_artist, 'album': parse_album}
@@ -88,10 +95,9 @@ parse = {'lyric': parse_lyric, 'song': parse_lyric, 'artist': parse_artist, 'alb
 
 def response(resp):
     results = []
-    json = loads(resp.text)
-    hits = [hit for section in json['response']['sections'] for hit in section['hits']]
-    for hit in hits:
-        func = parse.get(hit['type'])
-        if func:
-            results.append(func(hit))
+    for section in resp.json()['response']['sections']:
+        for hit in section['hits']:
+            func = parse.get(hit['type'])
+            if func:
+                results.append(func(hit))
     return results

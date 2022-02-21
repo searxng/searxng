@@ -82,7 +82,7 @@ def response(resp):
 
         thumbnail = result.xpath('.//div[@class="art"]/img/@src')
         if thumbnail:
-            new_result['thumbnail'] = thumbnail[0]
+            new_result['img_src'] = thumbnail[0]
 
         result_id = parse_qs(urlparse(link.get('href')).query)["search_item_id"][0]
         itemtype = extract_text(result.xpath('.//div[@class="itemtype"]')).lower()
