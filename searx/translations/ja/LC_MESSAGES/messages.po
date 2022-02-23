@@ -14,18 +14,19 @@
 # Thomas Pointhuber, 2015-2016
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-02-21 11:52+0000\n"
-"PO-Revision-Date: 2022-02-17 09:29+0000\n"
-"Last-Translator: temp <temp@mykolab.com>\n"
+"PO-Revision-Date: 2022-02-25 07:16+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"ja/>\n"
 "Language: ja\n"
-"Language-Team: Japanese "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ja/>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:170
@@ -175,11 +176,11 @@ msgstr "ソース"
 
 #: searx/webapp.py:435
 msgid "Error loading the next page"
-msgstr ""
+msgstr "次のページをロードする最中にエレーが発生しました"
 
 #: searx/webapp.py:547 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
-msgstr "不正な設定です。設定を編集してください。"
+msgstr "不正な設定なので、設定を編集してください"
 
 #: searx/webapp.py:563
 msgid "Invalid settings"
@@ -817,24 +818,24 @@ msgstr "例"
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:351
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "これは SearXNG の即席回答モジュールのリストです。"
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:362
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "これはプラグインのリストです。"
 
 #: searx/templates/oscar/preferences.html:468
 #: searx/templates/simple/preferences.html:381
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr ""
+msgstr "これはクッキーのリストで、これらの値はあなたのコンピュータに保存されています。"
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:382
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "このリストによって、あなたは SearXNG の透明性を評価できます。"
 
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:387
@@ -942,11 +943,11 @@ msgstr "検索を開始"
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear search"
-msgstr ""
+msgstr "探索を消す"
 
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear"
-msgstr ""
+msgstr "消す"
 
 #: searx/templates/oscar/stats.html:4
 msgid "stats"
@@ -966,7 +967,7 @@ msgstr "検索結果当たりスコア"
 
 #: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
 msgid "Total"
-msgstr ""
+msgstr "合計"
 
 #: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
 msgid "HTTP"
@@ -978,7 +979,7 @@ msgstr ""
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Warnings"
-msgstr ""
+msgstr "注意"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Errors and exceptions"
@@ -990,11 +991,11 @@ msgstr ""
 
 #: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
 msgid "Percentage"
-msgstr ""
+msgstr "確率"
 
 #: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
 msgid "Parameter"
@@ -1007,11 +1008,11 @@ msgstr "ファイル名"
 
 #: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
 msgid "Function"
-msgstr ""
+msgstr "ファンクション"
 
 #: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
 msgid "Code"
-msgstr ""
+msgstr "コード"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
 msgid "Checker"
@@ -1023,7 +1024,7 @@ msgstr ""
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
 msgid "Comment(s)"
-msgstr ""
+msgstr "コメント"
 
 #: searx/templates/oscar/time-range.html:5
 #: searx/templates/simple/filters/time_range.html:3
@@ -1057,7 +1058,7 @@ msgstr "気をつけて!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr ""
+msgstr "SearXNGを使うのは初めてみたいです。"
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1080,7 +1081,7 @@ msgstr "エンジンは結果を取得できません。"
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
+msgstr "後でやり直すか、別の SearXNG インスタンスを探して下さい。"
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1127,7 +1128,7 @@ msgstr "メディアを隠す"
 #: searx/templates/oscar/result_templates/videos.html:19
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: searx/templates/oscar/result_templates/files.html:37
 #: searx/templates/oscar/result_templates/torrent.html:7
@@ -1167,7 +1168,7 @@ msgstr "テラバイト"
 
 #: searx/templates/oscar/result_templates/files.html:46
 msgid "Date"
-msgstr ""
+msgstr "日付"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
@@ -1184,8 +1185,9 @@ msgstr "ソースを閲覧する"
 
 #: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
+#, fuzzy
 msgid "address"
-msgstr ""
+msgstr "ｱﾄﾞﾚｽ"
 
 #: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
@@ -1224,7 +1226,7 @@ msgstr "動画を隠す"
 
 #: searx/templates/oscar/result_templates/videos.html:20
 msgid "Length"
-msgstr ""
+msgstr "長さ"
 
 #: searx/templates/simple/categories.html:16
 msgid "Click on the magnifier to perform search"
@@ -1232,7 +1234,7 @@ msgstr "検索を実行するには虫めがねをクリックしてください
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "エラー:"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
@@ -1256,11 +1258,11 @@ msgstr "選択された言語のサポート"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: searx/templates/simple/preferences.html:416
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -1268,21 +1270,21 @@ msgstr "回答"
 
 #: searx/templates/simple/results.html:164
 msgid "Previous page"
-msgstr ""
+msgstr "前のページ"
 
 #: searx/templates/simple/results.html:181
 msgid "Next page"
-msgstr ""
+msgstr "次のページ"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "clear"
-msgstr ""
+msgstr "消す"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "search"
-msgstr ""
+msgstr "検索"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
@@ -1417,4 +1419,3 @@ msgstr ""
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
-
