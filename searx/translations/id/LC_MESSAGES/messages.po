@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-05 07:55+0000\n"
-"PO-Revision-Date: 2022-01-28 07:16+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2022-02-21 11:52+0000\n"
+"PO-Revision-Date: 2022-02-25 07:16+0000\n"
+"Last-Translator: Linerly <linerly@protonmail.com>\n"
+"Language-Team: Indonesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"id/>\n"
 "Language: id\n"
-"Language-Team: Indonesian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/id/>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:170
@@ -164,27 +165,31 @@ msgstr "Item tidak ditemukan"
 msgid "Source"
 msgstr "Sumber"
 
-#: searx/webapp.py:544 searx/webapp.py:964
+#: searx/webapp.py:435
+msgid "Error loading the next page"
+msgstr "Gagal memuat halaman berikutnya"
+
+#: searx/webapp.py:547 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:560
+#: searx/webapp.py:563
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:636 searx/webapp.py:711
+#: searx/webapp.py:639 searx/webapp.py:714
 msgid "search error"
 msgstr "kesalahan pencarian"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} menit yang lalu"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} jam, {minutes} menit yang lalu"
 
-#: searx/webapp.py:872
+#: searx/webapp.py:875
 msgid "Suspended"
 msgstr "Ditangguhkan"
 
@@ -241,16 +246,6 @@ msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
 "Menulis ulang nama-nama host hasil atau menghapus hasil-hasil berdasarkan"
 " pada nama host"
-
-#: searx/plugins/infinite_scroll.py:3
-msgid "Infinite scroll"
-msgstr "Gulir tak terbatas"
-
-#: searx/plugins/infinite_scroll.py:4
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"Secara otomatis memuat halaman selanjutnya saat menggulir ke bawah "
-"halaman saat ini"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -405,11 +400,11 @@ msgid "proxied"
 msgstr "di-proksi"
 
 #: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:333
-#: searx/templates/oscar/preferences.html:351
-#: searx/templates/oscar/preferences.html:414
-#: searx/templates/simple/preferences.html:283
-#: searx/templates/simple/preferences.html:332
+#: searx/templates/oscar/preferences.html:344
+#: searx/templates/oscar/preferences.html:362
+#: searx/templates/oscar/preferences.html:425
+#: searx/templates/simple/preferences.html:295
+#: searx/templates/simple/preferences.html:344
 msgid "Allow"
 msgstr "Izinkan"
 
@@ -503,25 +498,25 @@ msgid "User Interface"
 msgstr "Antarmuka Pengguna"
 
 #: searx/templates/oscar/preferences.html:103
-#: searx/templates/oscar/preferences.html:257
-#: searx/templates/simple/preferences.html:232
+#: searx/templates/oscar/preferences.html:268
+#: searx/templates/simple/preferences.html:244
 msgid "Privacy"
 msgstr "Privasi"
 
 #: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:307
-#: searx/templates/simple/preferences.html:272
+#: searx/templates/oscar/preferences.html:318
+#: searx/templates/simple/preferences.html:284
 msgid "Engines"
 msgstr "Mesin"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:327
+#: searx/templates/simple/preferences.html:339
 msgid "Special Queries"
 msgstr "Pencarian Khusus"
 
 #: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:454
-#: searx/templates/simple/preferences.html:367
+#: searx/templates/oscar/preferences.html:465
+#: searx/templates/simple/preferences.html:379
 msgid "Cookies"
 msgstr "Cookie"
 
@@ -542,13 +537,13 @@ msgid "What language do you prefer for search?"
 msgstr "Bahasa apa yang Anda ingin pakai untuk pencarian?"
 
 #: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:337
-#: searx/templates/oscar/preferences.html:347
+#: searx/templates/oscar/preferences.html:348
+#: searx/templates/oscar/preferences.html:358
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:287
+#: searx/templates/simple/preferences.html:299
 msgid "SafeSearch"
 msgstr "Pencarian Aman"
 
@@ -649,13 +644,17 @@ msgstr "Tampilkan panel pengaturan lanjut di halaman utama secara default"
 
 #: searx/templates/oscar/preferences.html:235
 #: searx/templates/oscar/preferences.html:245
+#: searx/templates/oscar/preferences.html:256
 #: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:234
 msgid "On"
 msgstr "Nyala"
 
 #: searx/templates/oscar/preferences.html:236
 #: searx/templates/oscar/preferences.html:246
+#: searx/templates/oscar/preferences.html:257
 #: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:235
 msgid "Off"
 msgstr "Mati"
 
@@ -669,13 +668,25 @@ msgstr "Hasil pada tab baru"
 msgid "Open result links on new browser tabs"
 msgstr "Buka tautan hasil di tab browser baru"
 
-#: searx/templates/oscar/preferences.html:262
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/oscar/preferences.html:252
+#: searx/templates/simple/preferences.html:231
+msgid "Infinite scroll"
+msgstr "Gulir tak terbatas"
+
+#: searx/templates/oscar/preferences.html:253
+#: searx/templates/simple/preferences.html:238
+msgid "Automatically load next page when scrolling to bottom of current page"
+msgstr ""
+"Secara otomatis memuat halaman selanjutnya saat menggulir ke bawah "
+"halaman saat ini"
+
+#: searx/templates/oscar/preferences.html:273
+#: searx/templates/simple/preferences.html:247
 msgid "HTTP Method"
 msgstr "Metode HTTP"
 
-#: searx/templates/oscar/preferences.html:263
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/oscar/preferences.html:274
+#: searx/templates/simple/preferences.html:254
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -685,37 +696,37 @@ msgstr ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">pelajari lebih lanjut tentang metode permintaan</a>"
 
-#: searx/templates/oscar/preferences.html:273
-#: searx/templates/simple/preferences.html:247
+#: searx/templates/oscar/preferences.html:284
+#: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
 msgstr "Proksi gambar"
 
-#: searx/templates/oscar/preferences.html:274
-#: searx/templates/simple/preferences.html:254
+#: searx/templates/oscar/preferences.html:285
+#: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
 msgstr "Memproksikan hasil gambar melalui SearXNG"
 
-#: searx/templates/oscar/preferences.html:277
 #: searx/templates/oscar/preferences.html:288
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/oscar/preferences.html:299
 #: searx/templates/simple/preferences.html:262
+#: searx/templates/simple/preferences.html:274
 msgid "Enabled"
 msgstr "Diaktifkan"
 
-#: searx/templates/oscar/preferences.html:278
 #: searx/templates/oscar/preferences.html:289
-#: searx/templates/simple/preferences.html:251
+#: searx/templates/oscar/preferences.html:300
 #: searx/templates/simple/preferences.html:263
+#: searx/templates/simple/preferences.html:275
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: searx/templates/oscar/preferences.html:284
-#: searx/templates/simple/preferences.html:259
+#: searx/templates/oscar/preferences.html:295
+#: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
 msgstr "Pencarian pada judul halaman"
 
-#: searx/templates/oscar/preferences.html:285
-#: searx/templates/simple/preferences.html:266
+#: searx/templates/oscar/preferences.html:296
+#: searx/templates/simple/preferences.html:278
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -723,16 +734,16 @@ msgstr ""
 "Ketika diaktifkan, judul halaman hasil mengandung pencarian Anda. Browser"
 " Anda dapat merekam judul ini"
 
-#: searx/templates/oscar/preferences.html:315
+#: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
 msgstr "Izinkan semua"
 
-#: searx/templates/oscar/preferences.html:316
+#: searx/templates/oscar/preferences.html:327
 msgid "Disable all"
 msgstr "Matikan semua"
 
-#: searx/templates/oscar/preferences.html:325
-#: searx/templates/simple/preferences.html:278
+#: searx/templates/oscar/preferences.html:336
+#: searx/templates/simple/preferences.html:290
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -740,90 +751,90 @@ msgstr ""
 "Tab ini tidak ditampilkan untuk hasil pencarian, tetapi Anda dapat "
 "mencari di mesin-mesin berikut ini melalui fitur bangs."
 
-#: searx/templates/oscar/preferences.html:334
-#: searx/templates/oscar/preferences.html:350
+#: searx/templates/oscar/preferences.html:345
+#: searx/templates/oscar/preferences.html:361
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:296
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Nama mesin"
 
-#: searx/templates/oscar/preferences.html:335
-#: searx/templates/oscar/preferences.html:349
-#: searx/templates/simple/preferences.html:285
+#: searx/templates/oscar/preferences.html:346
+#: searx/templates/oscar/preferences.html:360
+#: searx/templates/simple/preferences.html:297
 msgid "Shortcut"
 msgstr "Jalan pintas"
 
-#: searx/templates/oscar/preferences.html:336
-#: searx/templates/oscar/preferences.html:348
+#: searx/templates/oscar/preferences.html:347
+#: searx/templates/oscar/preferences.html:359
 msgid "Selected language"
 msgstr "Bahasa yang dipilih"
 
-#: searx/templates/oscar/preferences.html:338
-#: searx/templates/oscar/preferences.html:346
+#: searx/templates/oscar/preferences.html:349
+#: searx/templates/oscar/preferences.html:357
 #: searx/templates/oscar/time-range.html:2
-#: searx/templates/simple/preferences.html:288
+#: searx/templates/simple/preferences.html:300
 msgid "Time range"
 msgstr "Rentang waktu"
 
-#: searx/templates/oscar/preferences.html:339
-#: searx/templates/oscar/preferences.html:345
+#: searx/templates/oscar/preferences.html:350
+#: searx/templates/oscar/preferences.html:356
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:289
+#: searx/templates/simple/preferences.html:301
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Waktu respons"
 
-#: searx/templates/oscar/preferences.html:340
-#: searx/templates/oscar/preferences.html:344
-#: searx/templates/simple/preferences.html:290
+#: searx/templates/oscar/preferences.html:351
+#: searx/templates/oscar/preferences.html:355
+#: searx/templates/simple/preferences.html:302
 msgid "Max time"
 msgstr "Waktu maksimum"
 
-#: searx/templates/oscar/preferences.html:341
-#: searx/templates/oscar/preferences.html:343
+#: searx/templates/oscar/preferences.html:352
+#: searx/templates/oscar/preferences.html:354
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:291
+#: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Keandalan"
 
-#: searx/templates/oscar/preferences.html:408
+#: searx/templates/oscar/preferences.html:419
 msgid "Query"
 msgstr "Pencarian"
 
-#: searx/templates/oscar/preferences.html:415
-#: searx/templates/simple/preferences.html:333
+#: searx/templates/oscar/preferences.html:426
+#: searx/templates/simple/preferences.html:345
 msgid "Keywords"
 msgstr "Kata kunci"
 
-#: searx/templates/oscar/preferences.html:416
-#: searx/templates/simple/preferences.html:334
+#: searx/templates/oscar/preferences.html:427
+#: searx/templates/simple/preferences.html:346
 msgid "Name"
 msgstr "Nama"
 
-#: searx/templates/oscar/preferences.html:417
-#: searx/templates/simple/preferences.html:335
+#: searx/templates/oscar/preferences.html:428
+#: searx/templates/simple/preferences.html:347
 msgid "Description"
 msgstr "Deskripsi"
 
-#: searx/templates/oscar/preferences.html:418
-#: searx/templates/simple/preferences.html:336
+#: searx/templates/oscar/preferences.html:429
+#: searx/templates/simple/preferences.html:348
 msgid "Examples"
 msgstr "Contoh"
 
-#: searx/templates/oscar/preferences.html:423
-#: searx/templates/simple/preferences.html:339
+#: searx/templates/oscar/preferences.html:434
+#: searx/templates/simple/preferences.html:351
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Ini adalah daftar dari modul penjawab instan SearXNG."
 
-#: searx/templates/oscar/preferences.html:436
-#: searx/templates/simple/preferences.html:350
+#: searx/templates/oscar/preferences.html:447
+#: searx/templates/simple/preferences.html:362
 msgid "This is the list of plugins."
 msgstr "Ini adalah daftar plugin."
 
-#: searx/templates/oscar/preferences.html:457
-#: searx/templates/simple/preferences.html:369
+#: searx/templates/oscar/preferences.html:468
+#: searx/templates/simple/preferences.html:381
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
@@ -831,23 +842,23 @@ msgstr ""
 "Ini adalah daftar cookie dan nilai-nilai mereka yang SearXNG simpan di "
 "komputer Anda."
 
-#: searx/templates/oscar/preferences.html:458
-#: searx/templates/simple/preferences.html:370
+#: searx/templates/oscar/preferences.html:469
+#: searx/templates/simple/preferences.html:382
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Dengan daftar itu, Anda dapat menilai transparansi SearXNG."
 
-#: searx/templates/oscar/preferences.html:463
-#: searx/templates/simple/preferences.html:375
+#: searx/templates/oscar/preferences.html:474
+#: searx/templates/simple/preferences.html:387
 msgid "Cookie name"
 msgstr "Nama cookie"
 
-#: searx/templates/oscar/preferences.html:464
-#: searx/templates/simple/preferences.html:376
+#: searx/templates/oscar/preferences.html:475
+#: searx/templates/simple/preferences.html:388
 msgid "Value"
 msgstr "Nilai"
 
-#: searx/templates/oscar/preferences.html:481
-#: searx/templates/simple/preferences.html:397
+#: searx/templates/oscar/preferences.html:492
+#: searx/templates/simple/preferences.html:409
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -855,8 +866,8 @@ msgstr ""
 "Pengaturan ini disimpan di cookie Anda, ini memungkinkan kami untuk tidak"
 " menyimpan data ini tentang Anda."
 
-#: searx/templates/oscar/preferences.html:482
-#: searx/templates/simple/preferences.html:399
+#: searx/templates/oscar/preferences.html:493
+#: searx/templates/simple/preferences.html:411
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -864,13 +875,13 @@ msgstr ""
 "Cookie ini hanya untuk kenyamanan Anda, kami tidak menggunakan cookie ini"
 " untuk melacak Anda."
 
-#: searx/templates/oscar/preferences.html:486
-#: searx/templates/simple/preferences.html:388
+#: searx/templates/oscar/preferences.html:497
+#: searx/templates/simple/preferences.html:400
 msgid "Search URL of the currently saved preferences"
 msgstr "URL pencarian dari pengaturan yang tersimpan saat ini"
 
-#: searx/templates/oscar/preferences.html:487
-#: searx/templates/simple/preferences.html:392
+#: searx/templates/oscar/preferences.html:498
+#: searx/templates/simple/preferences.html:404
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -879,16 +890,16 @@ msgstr ""
 "mengurangi privasi dengan membocorkan data kepada situs hasil yang "
 "diklik."
 
-#: searx/templates/oscar/preferences.html:492
+#: searx/templates/oscar/preferences.html:503
 msgid "save"
 msgstr "simpan"
 
-#: searx/templates/oscar/preferences.html:493
+#: searx/templates/oscar/preferences.html:504
 msgid "back"
 msgstr "kembali"
 
-#: searx/templates/oscar/preferences.html:494
-#: searx/templates/simple/preferences.html:403
+#: searx/templates/oscar/preferences.html:505
+#: searx/templates/simple/preferences.html:415
 msgid "Reset defaults"
 msgstr "Atur ulang ke bawaan"
 
@@ -1255,19 +1266,19 @@ msgstr "Gaya tema"
 msgid "Choose auto to follow your browser settings"
 msgstr "Pilih otomatis untuk mengikuti pengaturan browser Anda"
 
-#: searx/templates/simple/preferences.html:273
+#: searx/templates/simple/preferences.html:285
 msgid "Currently used search engines"
 msgstr "Mesin pencari yang saat ini digunakan"
 
-#: searx/templates/simple/preferences.html:286
+#: searx/templates/simple/preferences.html:298
 msgid "Supports selected language"
 msgstr "Mendukung bahasa yang dipilih"
 
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:414
 msgid "Save"
 msgstr "Simpan"
 
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:416
 msgid "Back"
 msgstr "Kembali"
 
@@ -1318,4 +1329,3 @@ msgstr "Mesin"
 #~ " pencarian tetapi Anda dapat mencari "
 #~ "di mesin-mesin berikut ini melalui "
 #~ "fitur bangs."
-
