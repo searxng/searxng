@@ -378,92 +378,126 @@ select {
 }
 
 /* -- checkbox-onoff -- */
-@supports (border-radius: 50px) {
-  .checkbox-onoff {
-    display: inline-block;
-    width: 40px;
-    height: 10px;
-    background: var(--color-toolkit-checkbox-onoff-background);
-    margin: 8px 1rem;
-    position: relative;
-    border-radius: 50px;
+input.checkbox-onoff[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  display: inline-block;
+  width: 2.5em;
+  height: 0.7em;
+  box-shadow: none !important;
+  margin: 0 16px;
+  border-radius: 10px;
+  position: relative;
 
-    label {
-      display: block;
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      top: -5px;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: all 0.4s ease;
-      left: 27px;
-      background-color: var(--color-toolkit-checkbox-onoff-label-background);
-    }
+  /* focus & hover */
+  &:focus,
+  &:hover {
+    outline: none;
+  }
 
-    input[type=checkbox] {
-      visibility: hidden;
+  &:focus::after {
+    content: "";
+    position: absolute;
+    width: 3.5em;
+    height: 1.65em;
+    border: 1px solid var(--color-btn-background);
+    border-radius: 12px;
+    box-shadow: var(--color-btn-background) 0 0 3px;
+    z-index: 10000;
+    top: -0.55em;
+    left: -0.6em;
+  }
 
-      &:checked + label {
-        left: -5px;
-        background: var(--color-toolkit-checkbox-onoff-checked-background);
-      }
-    }
+  &::before {
+    position: absolute;
+    top: -0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75em;
+    width: 1.875em;
+    height: 1.875em;
+    border-radius: 50%;
+  }
+}
+
+/* check mark
+reversed-checkbox displays unchecked checkedboxes as checked, and vice versa.
+see https://github.com/searxng/searxng/blob/3408d061aab9abc6168fec9bbc6deab71b236dac/searx/templates/simple/preferences.html#L313
+*/
+input.checkbox-onoff[type="checkbox"],
+.reversed-checkbox input.checkbox-onoff[type="checkbox"]:checked {
+  background: var(--color-toolkit-checkbox-onoff-off-background);
+
+  &::before {
+    left: -0.5em;
+    content: "\2715";
+    color: var(--color-toolkit-checkbox-onoff-off-mark-color);
+    background: var(--color-toolkit-checkbox-onoff-off-mark-background);
+  }
+}
+
+input.checkbox-onoff[type="checkbox"]:checked,
+.reversed-checkbox input.checkbox-onoff[type="checkbox"] {
+  background: var(--color-toolkit-checkbox-onoff-on-background);
+
+  &::before {
+    left: calc(100% - 1.5em);
+    content: "\2713";
+    color: var(--color-toolkit-checkbox-onoff-on-mark-color);
+    background: var(--color-toolkit-checkbox-onoff-on-mark-background);
   }
 }
 
 /* -- checkbox -- */
 @supports (transform: rotate(-45deg)) {
-  .checkbox {
+  input[type=checkbox]:not(.checkbox-onoff) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
     width: 20px;
+    height: 20px;
+    cursor: pointer;
     position: relative;
-    margin: 20px auto;
+    top: 0;
+    left: 0;
+    border: 2px solid var(--color-toolkit-checkbox-input-border);
+    .rounded-corners(0.3em);
 
-    label {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
+    &::after {
+      content: '';
+      width: 9px;
+      height: 5px;
       position: absolute;
-      top: 0;
-      left: 0;
-      background: var(--color-toolkit-checkbox-label-background);
-      .rounded-corners;
-
-      &::after {
-        content: '';
-        width: 9px;
-        height: 5px;
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        border: 3px solid var(--color-toolkit-checkbox-label-border);
-        border-top: none;
-        border-right: none;
-        background: transparent;
-        opacity: 0;
-        transform: rotate(-45deg);
-      }
+      top: 3px;
+      left: 2px;
+      border: 3px solid var(--color-toolkit-checkbox-label-border);
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
     }
 
-    input[type=checkbox] {
-      visibility: hidden;
-
-      &:checked + label::after {
-        border-color: var(--color-toolkit-checkbox-input-border);
-        opacity: 1;
-      }
+    &:checked::after {
+      border-color: var(--color-toolkit-checkbox-input-border);
+      opacity: 1;
     }
+  }
 
-    // disabled : can''t be focused, show only the check mark
-    input[disabled] + label {
-      background-color: transparent !important;
-      cursor: inherit;
-    }
+  // disabled : can't be focused, show only the check mark
+  input[type=checkbox][disabled]:not(.checkbox-onoff) {
+    border: inherit;
+    background-color: transparent !important;
+    cursor: inherit;
+  }
 
-    // if not checked and possible to checked then display a "light" check mark on hover
-    input:not(:checked):not([readonly]):not([disabled]) + label:hover::after {
-      opacity: 0.5;
-    }
+  // if not checked and possible to checked then display a "light" check mark on hover
+  input.checkbox[type=checkbox]:not(:checked):not([disabled]):not(.checkbox-onoff):hover::after {
+    opacity: 0.5;
   }
 }
 

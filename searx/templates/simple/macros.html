@@ -72,19 +72,13 @@
 {%- endmacro -%}
 
 {%- macro checkbox_onoff(name, checked) -%}
-<div class="checkbox-onoff">{{- '' -}}
-    <input type="checkbox" value="None" id="{{ name }}" name="{{ name }}" {% if checked %}checked{% endif %}/>{{- '' -}}
-    <label for="{{ name }}"></label>{{- '' -}}
-</div>
+  <input type="checkbox" name="{{ name }}" id="{{ name }}" value="None" class="checkbox-onoff" {% if checked %}checked{% endif %} />
 {%- endmacro -%}
 
-{%- macro checkbox(name, checked, readonly, disabled) -%}
-<div class="checkbox">{{- '' -}}
-    {%- if checked == '?' -%}
-      {{ icon_small('warning') }}
-    {%- else -%}
-      <input type="checkbox" value="None" id="{{ name }}" name="{{ name }}" {% if checked %}checked{% endif %}{% if readonly %} readonly="readonly" {% endif %}{% if disabled %} disabled="disabled" {% endif %}/>{{- '' -}}
-      <label for="{{ name }}"></label>{{- '' -}}
-    {%- endif -%}
-</div>
+{%- macro checkbox(name, checked, disabled) -%}
+{%- if checked == '?' -%}
+  {{- icon_small('warning') -}}
+{%- else -%}
+  <input type="checkbox"{% if name %} name="{{ name }}"{% endif %} value="None"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %} />
+{%- endif -%}
 {%- endmacro -%}

@@ -80,6 +80,55 @@
     text-align: center;
   }
 
+  .category {
+    .ltr-margin-right(0.5rem);
+
+    label {
+      border: 2px solid transparent;
+      padding: 0.2rem 0.4rem;
+      .rounded-corners-tiny;
+    }
+  }
+
+  .category input[type="checkbox"]:checked + label {
+    border: 2px solid var(--color-categories-item-border-selected);
+  }
+
+  table.table_engines {
+    td {
+      height: 3.75rem;
+    }
+
+    th.name {
+      /* stylelint-disable */
+      label {
+        cursor: pointer;
+      }
+      /* stylelint-enable */
+
+      .engine-tooltip {
+        margin-top: 1.8rem;
+        .ltr-left(calc((100% - 85em) / 2 + 10em));
+        max-width: 40rem;
+
+        .engine-description {
+          margin-top: 0.5rem;
+        }
+      }
+    }
+
+    .engine-group {
+      .ltr-text-align-left();
+      font-weight: normal;
+      background: var(--color-settings-engine-group-background);
+    }
+
+    .name,
+    .shortcut {
+      .ltr-text-align-left();
+    }
+  }
+
   table.cookies {
     width: 100%;
     direction: ltr;
@@ -109,25 +158,6 @@
     }
   }
 
-  .category {
-    .ltr-margin-right(0.5rem);
-
-    label {
-      border: 2px solid transparent;
-      padding: 0.2rem 0.4rem;
-      .rounded-corners-tiny;
-    }
-  }
-
-  .category input[type="checkbox"]:checked + label {
-    border: 2px solid var(--color-categories-item-border-selected);
-  }
-
-  .name,
-  .shortcut {
-    .ltr-text-align-left();
-  }
-
   .preferences_back {
     background: none repeat scroll 0 0 var(--color-btn-background);
     color: var(--color-btn-font);
@@ -152,24 +182,6 @@
     pre {
       width: 100%;
     }
-  }
-
-  th.name {
-    .engine-tooltip {
-      margin-top: 1.8rem;
-      .ltr-left(calc((100% - 85em) / 2 + 10em));
-      max-width: 40rem;
-
-      .engine-description {
-        margin-top: 0.5rem;
-      }
-    }
-  }
-
-  .engine-group {
-    .ltr-text-align-left();
-    font-weight: normal;
-    background: var(--color-settings-engine-group-background);
   }
 }
 
