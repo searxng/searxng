@@ -278,11 +278,17 @@ class ResultContainer:
             result['parsed_url'] = result['parsed_url']._replace(scheme="http")
             result['url'] = result['parsed_url'].geturl()
 
+        # avoid duplicate content between the content and title fields
+        if result.get('content') == result.get('title'):
+            del result['content']
+
+        # make sure there is a template
+        if 'template' not in result:
+            result['template'] = 'default.html'
+
         # strip multiple spaces and cariage returns from content
         if result.get('content'):
             result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
-
-        return True
 
     def __merge_url_result(self, result, position):
         result['engines'] = set([result['engine']])

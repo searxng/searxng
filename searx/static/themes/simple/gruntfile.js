@@ -108,7 +108,6 @@ module.exports = function (grunt) {
           'js/searxng.head.min.js': ['src/js/head/*.js'],
           'js/searxng.min.js': [
             'src/js/main/*.js',
-            '../__common__/js/*.js',
             './node_modules/autocomplete-js/dist/autocomplete.js'
           ]
         }
