@@ -13,7 +13,6 @@
 }  -%}
 <div id="categories" class="search_categories">{{- '' -}}
     <div id="categories_container">
-        {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
         {%- for category in categories_as_tabs -%}
         <div class="category"><input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}/>
             <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
@@ -22,5 +21,6 @@
             </label>
         </div>
         {%- endfor -%}
+        {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
     </div>{{- '' -}}
 </div>
