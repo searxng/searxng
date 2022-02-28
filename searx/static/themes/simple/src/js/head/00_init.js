@@ -4,7 +4,6 @@
  * (C) Copyright Contributors to the searx project (2014 - 2021).
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-/* global DocumentTouch:readonly */
 (function (w, d) {
   'use strict';
 
@@ -16,7 +15,6 @@
 
   // try to detect touch screen
   w.searxng = {
-    touch: (("ontouchstart" in w) || w.DocumentTouch && document instanceof DocumentTouch) || false,
     method: script.getAttribute('data-method'),
     autocompleter: script.getAttribute('data-autocompleter') === 'true',
     search_on_category_select: script.getAttribute('data-search-on-category-select') === 'true',
@@ -34,7 +32,4 @@
   var hmtlElement = d.getElementsByTagName("html")[0];
   hmtlElement.classList.remove('no-js');
   hmtlElement.classList.add('js');
-  if (w.searxng.touch) {
-    hmtlElement.classList.add('touch');
-  }
 })(window, document);
