@@ -23,13 +23,13 @@
 {% if search_engine.about is defined %}
 {% set about = search_engine.about %}
 <div class="engine-tooltip" role="tooltip">{{- "" -}}
-    <p class="engine-description"></p>
+    <p class="engine-description"></p>{{- "" -}}
     <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>
     {%- if about.wikidata_id -%}<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>{%- endif -%}
     {%- if search_engine.enable_http %}<p>{{ icon_big('exclamation-sign', 'No HTTPS') }}{{ _('No HTTPS')}}</p>{% endif -%}
     {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
     <a href="{{ url_for('stats', engine=search_engine.name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
-      {{ _('View error logs and submit a bug report') }}
+      {{ _('View error logs and submit a bug report') -}}
     </a>
     {%- endif -%}
 
@@ -89,7 +89,7 @@
     </div>{{- "" -}}
 </td>
 {%- else -%}
-<td class="{{ label }}"><span>{{ r }}</span></td>
+<td class="{{ label }}">{% if r %}<span>{{ r }}</span>{% endif %}</td>
 {%- endif -%}
 {%- endmacro -%}
 
@@ -98,7 +98,7 @@
 {% block content %}
 <h1>{{ _('Preferences') }}</h1>
 
-<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off" class="reversed-checkbox">
 
 {{ tabs_open() }}
 
@@ -182,9 +182,9 @@
       <legend>{{ _('Interface language') }}</legend>
       <p class="value">
         <select name='locale'>
-          {% for locale_id,locale_name in locales.items() | sort %}
+          {%- for locale_id,locale_name in locales.items() | sort -%}
           <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
-          {% endfor %}
+          {%- endfor -%}
         </select>
       </p>
       <div class="description">{{ _('Change the language of the layout') }}</div>
@@ -290,17 +290,17 @@
       <p>{{_('This tab does not show up for search results, but you can search the engines listed here via bangs.')}}</p>
     {% endif %}
     <div class="scrollx">
-    <table class="striped">
-      <tr>
-        <th class="engine_checkbox">{{ _("Allow") }}</th>
-        <th class="name">{{ _("Engine name") }}</th>
-        <th class="shortcut">{{ _("Shortcut") }}</th>
-        <th>{{ _("Supports selected language") }}</th>
-        <th>{{ _("SafeSearch") }}</th>
-        <th>{{ _("Time range") }}</th>
-        <th>{{ _("Response time") }}</th>
-        <th>{{ _("Max time") }}</th>
-        <th>{{ _("Reliability") }}</th>
+    <table class="striped table_engines">
+      <tr>{{- "" -}}
+        <th class="engine_checkbox">{{ _("Allow") }}</th>{{- "" -}}
+        <th class="name">{{ _("Engine name") }}</th>{{- "" -}}
+        <th class="shortcut">{{ _("Shortcut") }}</th>{{- "" -}}
+        <th>{{ _("Supports selected language") }}</th>{{- "" -}}
+        <th>{{ _("SafeSearch") }}</th>{{- "" -}}
+        <th>{{ _("Time range") }}</th>{{- "" -}}
+        <th>{{ _("Response time") }}</th>{{- "" -}}
+        <th>{{ _("Max time") }}</th>{{- "" -}}
+        <th>{{ _("Reliability") }}</th>{{- "" -}}
       </tr>
       {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
       {% if loop.length > 1 %}
@@ -309,22 +309,24 @@
       {% for search_engine in engines %}
       {% if not search_engine.private %}
       {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
-      <tr>
-        <td class="engine_checkbox">{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>
-        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif %}
-          {{ search_engine.name }}
-          {%- if search_engine.about and search_engine.about.language %}
+      <tr>{{- "" -}}
+        <td>{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>{{- "" -}}
+        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif -%}
+          <label for="{{ engine_id }}">
+            {{- search_engine.name -}}
+            {%- if search_engine.about and search_engine.about.language -%}
               ({{search_engine.about.language | upper}})
-          {%- endif %}
-          {{ engine_about(search_engine) }}
-        </th>
-        <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>
-        <td>{{ checkbox(engine_id + '_supported_languages', supports[search_engine.name]['supports_selected_language'], true, true) }}</td>
-        <td>{{ checkbox(engine_id + '_safesearch', supports[search_engine.name]['safesearch'], true, true) }}</td>
-        <td>{{ checkbox(engine_id + '_time_range_support', supports[search_engine.name]['time_range_support'], true, true) }}</td>
-        {{ engine_time(search_engine.name) }}
-        <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>
-        {{ engine_reliability(search_engine.name) }}
+            {%- endif -%}
+          </label>
+          {{- engine_about(search_engine) -}}
+        </th>{{- "" -}}
+        <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>{{- "" -}}
+        <td>{{ checkbox(None, supports[search_engine.name]['supports_selected_language'], true) }}</td>{{- "" -}}
+        <td>{{ checkbox(None, supports[search_engine.name]['safesearch'], true) }}</td>{{- "" -}}
+        <td>{{ checkbox(None, supports[search_engine.name]['time_range_support'], true) }}</td>{{- "" -}}
+        {{- engine_time(search_engine.name) -}}
+        <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>{{- "" -}}
+        {{ engine_reliability(search_engine.name) -}}
       </tr>
       {% endif %}
       {% endfor %}
@@ -377,20 +379,20 @@
   {{ tab_footer() }}
 
   {{ tab_header('maintab', 'cookies', _('Cookies')) }}
-     <p class="text-muted">
-        {{ _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />
-        {{ _('With that list, you can assess SearXNG transparency.') }}<br />
+     <p class="text-muted">{{- "" -}}
+        {{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />{{- "" -}}
+        {{- _('With that list, you can assess SearXNG transparency.') }}<br />{{- "" -}}
      </p>
      {% if cookies %}
      <table class="cookies">
-       <tr>
-          <th>{{ _('Cookie name') }}</th>
-          <th>{{ _('Value') }}</th>
+       <tr>{{- "" -}}
+          <th>{{ _('Cookie name') }}</th>{{- "" -}}
+          <th>{{ _('Value') }}</th>{{- "" -}}
        </tr>
        {% for cookie in cookies %}
-       <tr>
-          <td>{{ cookie }}</td>
-          <td>{{ cookies[cookie] }}</td>
+       <tr>{{- "" -}}
+          <td>{{ cookie }}</td>{{- "" -}}
+          <td>{{ cookies[cookie] }}</td>{{- "" -}}
        </tr>
        {% endfor %}
      </table>
