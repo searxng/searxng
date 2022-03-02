@@ -100,6 +100,7 @@ def join_language_lists(engines_languages):
                     'english_name': english_name,
                     'counter': set(),
                     'countries': {},
+                    'flag': '',
                 }
 
             # add language with country if not in list
@@ -113,13 +114,87 @@ def join_language_lists(engines_languages):
                         print("ERROR: %s --> %s" % (locale, exc))
                         locale = None
 
-                language_list[short_code]['countries'][lang_code] = {'country_name': country_name, 'counter': set()}
+                language_list[short_code]['countries'][lang_code] = {
+                    'country_name': country_name,
+                    'flag': '',
+                    'counter': set(),
+                }
 
             # count engine for both language_country combination and language alone
             language_list[short_code]['counter'].add(engine_name)
             if lang_code != short_code:
                 language_list[short_code]['countries'][lang_code]['counter'].add(engine_name)
-
+    flags = {
+        'be': '🇧🇾',
+        'bg-BG': '🇧🇬',
+        'cs-CZ': '🇨🇿',
+        'da-DK': '🇩🇰',
+        'de': '🇩🇪',
+        'de-AT': '🇦🇹',
+        'de-CH': '🇨🇭',
+        'de-DE': '🇩🇪',
+        'el-GR': '🇬🇷',
+        'en': '🇬🇧',
+        'en-AU': '🇦🇺',
+        'en-CA': '🇨🇦',
+        'en-GB': '🇬🇧',
+        'en-IE': '🇮🇪',
+        'en-MY': '🇲🇾',
+        'en-NZ': '🇳🇿',
+        'en-US': '🇺🇸',
+        'es': '🇪🇸',
+        'es-AR': '🇦🇷',
+        'es-CL': '🇨🇱',
+        'es-ES': '🇪🇸',
+        'es-MX': '🇲🇽',
+        'et-EE': '🇪🇪',
+        'fa': '🇮🇷',
+        'fi-FI': '🇫🇮',
+        'fr': '🇫🇷',
+        'fr-BE': '🇧🇪',
+        'fr-CA': '🇨🇦',
+        'fr-CH': '🇨🇭',
+        'fr-FR': '🇫🇷',
+        'he': '🇮🇱',
+        'hi': '🇮🇳',
+        'hr-HR': '🇭🇷',
+        'hu-HU': '🇭🇺',
+        'id': '🇮🇩',
+        'is': '🇮🇸',
+        'it-IT': '🇮🇹',
+        'ja': '🇯🇵',
+        'ko': '🇰🇷',
+        'lt-LT': '🇱🇹',
+        'lv-LV': '🇱🇻',
+        'nl': '🇳🇱',
+        'nl-BE': '🇧🇪',
+        'nl-NL': '🇳🇱',
+        'pl-PL': '🇵🇱',
+        'pt': '🇵🇹',
+        'pt-BR': '🇧🇷',
+        'pt-PT': '🇵🇹',
+        'ro-RO': '🇷🇴',
+        'ru-RU': '🇷🇺',
+        'sk-SK': '🇸🇰',
+        'sl': '🇸🇮',
+        'sr': '🇷🇸',
+        'sv-SE': '🇸🇪',
+        'th-TH': '🇹🇭',
+        'tr-TR': '🇹🇷',
+        'uk': '🇺🇦',
+        'vi': '🇻🇳',
+        'zh': '🇨🇳',
+        'zh-CN': '🇨🇳',
+        'zh-HK': '🇭🇰',  # Doesn't work --> takes short_code not lang_code
+        'zh-TW': '🇹🇼',  # The same as above
+    }
+    # Add flag to list
+    for code, flag in flags.items():
+        short_code = code.split('-')[0]
+        if code in language_list:
+            language_list[code]['flag'] = flag
+        elif code in language_list[short_code]['countries']:
+            language_list[short_code]['countries'][code]['flag'] = flag
     return language_list
 
 
@@ -146,28 +221,33 @@ def filter_language_list(all_languages):
         )
     }
 
-    def _copy_lang_data(lang, country_name=None):
+    def _copy_lang_data(lang, country_name=None, flag=None):
         new_dict = {}
         new_dict['name'] = all_languages[lang]['name']
         new_dict['english_name'] = all_languages[lang]['english_name']
         if country_name:
             new_dict['country_name'] = country_name
+        if flag:
+            new_dict['flag'] = flag
         return new_dict
 
     # for each language get country codes supported by most engines or at least one country code
     filtered_languages_with_countries = {}
     for lang, lang_data in filtered_languages.items():
         countries = lang_data['countries']
+        flag = lang_data['flag']
         filtered_countries = {}
 
         # get language's country codes with enough supported engines
         for lang_country, country_data in countries.items():
+            # Get flags of languages with countries
+            country_flag = country_data['flag']
             if len(country_data['counter']) >= min_engines_per_country:
-                filtered_countries[lang_country] = _copy_lang_data(lang, country_data['country_name'])
+                filtered_countries[lang_country] = _copy_lang_data(lang, country_data['country_name'], country_flag)
 
         # add language without countries too if there's more than one country to choose from
         if len(filtered_countries) > 1:
-            filtered_countries[lang] = _copy_lang_data(lang)
+            filtered_countries[lang] = _copy_lang_data(lang, None, flag)
         elif len(filtered_countries) == 1:
             # if there's only one country per language, it's not necessary to show country name
             lang_country = next(iter(filtered_countries))
@@ -183,9 +263,9 @@ def filter_language_list(all_languages):
                     lang_country = "{lang}-{country}".format(lang=lang, country=country_code)
 
             if lang_country:
-                filtered_countries[lang_country] = _copy_lang_data(lang)
+                filtered_countries[lang_country] = _copy_lang_data(lang, None, flag)
             else:
-                filtered_countries[lang] = _copy_lang_data(lang)
+                filtered_countries[lang] = _copy_lang_data(lang, None, flag)
 
         filtered_languages_with_countries.update(filtered_countries)
 
@@ -214,6 +294,7 @@ def write_languages_file(languages):
             languages[code]['name'].split(' (')[0],
             languages[code].get('country_name') or '',
             languages[code].get('english_name') or '',
+            languages[code].get('flag') or '',
         )
 
         language_codes.append(item)
