@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
+import pathlib
 import csv
 import hashlib
 import hmac
 import re
 import inspect
 import itertools
-from typing import Iterable, List, Tuple
+from typing import Iterable, List, Tuple, Dict
 
 from io import StringIO
 from codecs import getincrementalencoder
@@ -58,13 +59,29 @@ def get_themes(templates_path):
     return themes
 
 
-def get_static_files(static_path):
-    static_files = set()
-    static_path_length = len(static_path) + 1
-    for directory, _, files in os.walk(static_path):
-        for filename in files:
-            f = os.path.join(directory[static_path_length:], filename)
-            static_files.add(f)
+def get_hash_for_file(file: pathlib.Path) -> str:
+    m = hashlib.sha1()
+    with file.open('rb') as f:
+        m.update(f.read())
+    return m.hexdigest()
+
+
+def get_static_files(static_path: str) -> Dict[str, str]:
+    static_files: Dict[str, str] = {}
+    static_path_path = pathlib.Path(static_path)
+
+    def walk(path: pathlib.Path):
+        for file in path.iterdir():
+            if file.name.startswith('.'):
+                # ignore hidden file
+                continue
+            if file.is_file():
+                static_files[str(file.relative_to(static_path_path))] = get_hash_for_file(file)
+            if file.is_dir() and file.name not in ('node_modules', 'src'):
+                # ignore "src" and "node_modules" directories
+                walk(file)
+
+    walk(static_path_path)
     return static_files
 
 

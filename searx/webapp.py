@@ -16,7 +16,7 @@ from timeit import default_timer
 from html import escape
 from io import StringIO
 import typing
-from typing import List, Dict, Iterable
+from typing import List, Dict, Iterable, Optional
 
 import urllib
 import urllib.parse
@@ -348,7 +348,7 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-def get_current_theme_name(override: str = None) -> str:
+def get_current_theme_name(override: Optional[str] = None) -> str:
     """Returns theme name.
 
     Checks in this order:
@@ -373,14 +373,16 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
-def url_for_theme(endpoint: str, override_theme: str = None, **values):
+def url_for_theme(endpoint: str, override_theme: Optional[str] = None, **values):
+    suffix = ""
     if endpoint == 'static' and values.get('filename'):
         theme_name = get_current_theme_name(override=override_theme)
         filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
-        if filename_with_theme in static_files:
+        file_hash = static_files.get(filename_with_theme)
+        if file_hash:
             values['filename'] = filename_with_theme
-    url = url_for(endpoint, **values)
-    return url
+            suffix = "?" + file_hash
+    return url_for(endpoint, **values) + suffix
 
 
 def proxify(url: str):

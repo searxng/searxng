@@ -23,6 +23,11 @@ class ViewsTestCase(SearxTestCase):
         webapp.app.config['TESTING'] = True  # to get better error messages
         self.app = webapp.app.test_client()
 
+        # remove sha for the static file
+        # so the tests don't have to care about the changing URLs
+        for k in webapp.static_files:
+            webapp.static_files[k] = None
+
         # set some defaults
         test_results = [
             {
