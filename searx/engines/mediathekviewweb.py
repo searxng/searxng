@@ -64,11 +64,11 @@ def response(resp):
 
         results.append(
             {
-                'url': item['url_video_hd'],
+                'url': item['url_video_hd'].replace("http://", "https://"),
                 'title': "%(channel)s: %(title)s (%(hms)s)" % item,
                 'length': item['hms'],
                 'content': "%(description)s" % item,
-                'iframe_src': item['url_video_hd'],
+                'iframe_src': item['url_video_hd'].replace("http://", "https://"),
                 'template': 'videos.html',
             }
         )
