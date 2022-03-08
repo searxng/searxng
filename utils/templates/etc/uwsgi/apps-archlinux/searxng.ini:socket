@@ -1,3 +1,4 @@
+# -*- mode: conf; coding: utf-8  -*-
 [uwsgi]
 
 # uWSGI core
@@ -79,7 +80,7 @@ pythonpath = ${SEARX_SRC}
 #
 # On some distributions you need to create the app folder for the sockets::
 #
-#   mkdir -p /run/uwsgi/app/searx
-#   chown -R ${SERVICE_USER}:${SERVICE_GROUP}  /run/uwsgi/app/searx
+#   mkdir -p ${SEARX_UWSGI_SOCKET}
+#   chown -R ${SERVICE_USER}:${SERVICE_GROUP} ${SEARX_UWSGI_SOCKET}
 #
-socket = /run/uwsgi/app/searx/socket
+socket = ${SEARX_UWSGI_SOCKET}

@@ -31,7 +31,7 @@ SEARX_SRC="${SERVICE_HOME}/searx-src"
 SEARXNG_SETTINGS_PATH="/etc/searxng/settings.yml"
 SEARXNG_UWSGI_APP="searxng.ini"
 # shellcheck disable=SC2034
-SEARX_UWSGI_SOCKET="/run/uwsgi/app/searx/socket"
+SEARX_UWSGI_SOCKET="/run/uwsgi/app/searxng/socket"
 
 # apt packages
 SEARX_PACKAGES_debian="\
