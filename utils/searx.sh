@@ -118,7 +118,7 @@ case $DIST_ID-$DIST_VERS in
 esac
 
 # Apache Settings
-APACHE_SEARX_SITE="searx.conf"
+APACHE_SEARX_SITE="searxng.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(
