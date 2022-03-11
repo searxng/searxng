@@ -92,6 +92,7 @@ User experience
   * usable on desktop, tablet and mobile
   * light and dark versions (you can choose in the preferences)
   * support right-to-left languages
+  * `see the screenshots <https://dev.searxng.org/screenshots.html>`_
 
 - the translations are up to date, you can contribute on `Weblate`_
 - the preferences page has been updated:
