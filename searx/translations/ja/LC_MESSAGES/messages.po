@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-02-21 11:52+0000\n"
-"PO-Revision-Date: 2022-02-25 07:16+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-03-09 02:41+0000\n"
+"Last-Translator: Deleted User <noreply+256@weblate.org>\n"
 "Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "ja/>\n"
 "Language: ja\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: searx/webapp.py:170
@@ -155,7 +155,7 @@ msgstr "CAPTCHA"
 
 #: searx/webapp.py:218
 msgid "too many requests"
-msgstr "多すぎるリクエスト"
+msgstr "リクエストが多すぎます"
 
 #: searx/webapp.py:219
 msgid "access denied"
@@ -176,7 +176,7 @@ msgstr "ソース"
 
 #: searx/webapp.py:435
 msgid "Error loading the next page"
-msgstr "次のページをロードする最中にエレーが発生しました"
+msgstr "次のページの読み込み中にエラーが発生しました"
 
 #: searx/webapp.py:547 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
@@ -719,14 +719,16 @@ msgstr "無効"
 #: searx/templates/oscar/preferences.html:295
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
-msgstr ""
+msgstr "ページのタイトルでクエリを実行する"
 
 #: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
+#, fuzzy
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
-msgstr ""
+msgstr "有効にすると、検索結果ページのタイトルにクエリが含まれます。お使いのブラウザ"
+"はこのタイトルを記録できます"
 
 #: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
@@ -741,7 +743,8 @@ msgstr "すべて無効"
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
-msgstr ""
+msgstr "このタブは検索結果には表示されませんが、ここにリストされているエンジンをbang"
+"で検索できます。"
 
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
@@ -775,7 +778,7 @@ msgstr "時間範囲"
 #: searx/templates/simple/preferences.html:301
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "応答時間"
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
@@ -793,7 +796,7 @@ msgstr "信頼性"
 
 #: searx/templates/oscar/preferences.html:419
 msgid "Query"
-msgstr "クエリー"
+msgstr "クエリ"
 
 #: searx/templates/oscar/preferences.html:426
 #: searx/templates/simple/preferences.html:345
@@ -958,8 +961,9 @@ msgid "Scores"
 msgstr "スコア"
 
 #: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
+#, fuzzy
 msgid "Result count"
-msgstr ""
+msgstr "結果カウント"
 
 #: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
 msgid "Scores per result"
@@ -974,20 +978,23 @@ msgid "HTTP"
 msgstr "HTTP"
 
 #: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
+#, fuzzy
 msgid "Processing"
-msgstr ""
+msgstr "処理"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Warnings"
 msgstr "注意"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
+#, fuzzy
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "エラーと例外"
 
 #: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
+#, fuzzy
 msgid "Exception"
-msgstr ""
+msgstr "例外"
 
 #: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
 msgid "Message"
@@ -999,7 +1006,7 @@ msgstr "確率"
 
 #: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
 msgid "Parameter"
-msgstr ""
+msgstr "パラメータ"
 
 #: searx/templates/oscar/result_templates/files.html:35
 #: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
@@ -1016,11 +1023,11 @@ msgstr "コード"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "チェッカー"
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
 msgid "Failed test"
-msgstr ""
+msgstr "テストに失敗しました"
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
 msgid "Comment(s)"
@@ -1172,7 +1179,7 @@ msgstr "日付"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
-msgstr ""
+msgstr "タイプ"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
@@ -1187,7 +1194,7 @@ msgstr "ソースを閲覧する"
 #: searx/templates/simple/result_templates/map.html:12
 #, fuzzy
 msgid "address"
-msgstr "ｱﾄﾞﾚｽ"
+msgstr "住所"
 
 #: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
@@ -1242,11 +1249,11 @@ msgstr "ユーザーインターフェース"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
-msgstr ""
+msgstr "テーマスタイル"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "「自動」を選択すると、ブラウザの設定に従います"
 
 #: searx/templates/simple/preferences.html:285
 msgid "Currently used search engines"
@@ -1288,16 +1295,17 @@ msgstr "検索"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
+#, fuzzy
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "このサイトは説明を提供しませんでした。"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
-msgstr ""
+msgstr "フォーマット"
 
 #: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
-msgstr ""
+msgstr "エンジン"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "検索時間 (秒)"
