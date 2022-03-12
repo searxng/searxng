@@ -23,7 +23,6 @@ __all__ = ['InfoPage', 'MistletoePage', 'InfoPageSet']
 
 import os.path
 import logging
-from functools import cached_property
 import typing
 
 import urllib.parse
@@ -32,6 +31,7 @@ from flask.helpers import url_for
 import mistletoe
 
 from .. import get_setting
+from ..compat import cached_property
 from ..version import GIT_URL
 
 logger = logging.getLogger('doc')
