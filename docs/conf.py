@@ -116,7 +116,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "pallets_sphinx_themes",
     "sphinx_issues", # https://github.com/sloria/sphinx-issues/blob/master/README.rst
-    "sphinxcontrib.jinja",  # https://github.com/tardyp/sphinx-jinja
+    "sphinx_jinja",  # https://github.com/tardyp/sphinx-jinja
     "sphinxcontrib.programoutput",  # https://github.com/NextThought/sphinxcontrib-programoutput
     'linuxdoc.kernel_include',  # Implementation of the 'kernel-include' reST-directive.
     'linuxdoc.rstFlatTable',    # Implementation of the 'flat-table' reST-directive.
