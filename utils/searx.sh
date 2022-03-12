@@ -31,7 +31,7 @@ SEARX_SRC="${SERVICE_HOME}/searx-src"
 SEARXNG_SETTINGS_PATH="/etc/searxng/settings.yml"
 SEARXNG_UWSGI_APP="searxng.ini"
 # shellcheck disable=SC2034
-SEARX_UWSGI_SOCKET="/run/uwsgi/app/searx/socket"
+SEARX_UWSGI_SOCKET="/run/uwsgi/app/searxng/socket"
 
 # apt packages
 SEARX_PACKAGES_debian="\
@@ -58,9 +58,9 @@ texlive-core texlive-latexextra ttf-dejavu"
 
 # dnf packages
 SEARX_PACKAGES_fedora="\
-python python-pip python-lxml python-babel
+python python-pip python-lxml python-babel python3-devel
 uwsgi uwsgi-plugin-python3
-git @development-tools libxml2
+git @development-tools libxml2 openssl
 ShellCheck"
 
 BUILD_PACKAGES_fedora="\
@@ -118,7 +118,7 @@ case $DIST_ID-$DIST_VERS in
 esac
 
 # Apache Settings
-APACHE_SEARX_SITE="searx.conf"
+APACHE_SEARX_SITE="searxng.conf"
 
 # shellcheck disable=SC2034
 CONFIG_FILES=(

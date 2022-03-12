@@ -1,3 +1,4 @@
+# -*- mode: conf; coding: utf-8  -*-
 [uwsgi]
 
 # uWSGI core
@@ -78,7 +79,17 @@ pythonpath = ${SEARX_SRC}
 #
 # On some distributions you need to create the app folder for the sockets::
 #
-#   mkdir -p /run/uwsgi/app/searx
-#   chown -R ${SERVICE_USER}:${SERVICE_GROUP}  /run/uwsgi/app/searx
+#   mkdir -p ${SEARX_UWSGI_SOCKET}
+#   chown -R ${SERVICE_USER}:${SERVICE_GROUP} ${SEARX_UWSGI_SOCKET}
 #
-socket = /run/uwsgi/app/searx/socket
+socket = ${SEARX_UWSGI_SOCKET}
+
+# uwsgi serves the static files
+# expires set to one year since there are hashes
+static-map = /static=${SEARX_SRC}/searx/static
+static-expires = /* 31557600
+static-gzip-all = True
+offload-threads = %k
+
+# Cache
+cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1
