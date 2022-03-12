@@ -58,9 +58,9 @@ texlive-core texlive-latexextra ttf-dejavu"
 
 # dnf packages
 SEARX_PACKAGES_fedora="\
-python python-pip python-lxml python-babel
+python python-pip python-lxml python-babel python3-devel
 uwsgi uwsgi-plugin-python3
-git @development-tools libxml2
+git @development-tools libxml2 openssl
 ShellCheck"
 
 BUILD_PACKAGES_fedora="\
