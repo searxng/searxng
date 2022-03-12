@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+# lint: pylint
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+"""Script that implements some prebuild tasks needed by target docs.prebuild
+"""
+
+import sys
+import os.path
+import time
+from searx import settings, get_setting
+from searx.infopage import InfoPageSet, InfoPage
+
+_doc_user = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'docs', 'user'))
+
+def main():
+
+    DOC = None
+    base_url = get_setting('server.base_url', None)
+
+    if base_url:
+        DOC = _render_all_with_flask_ctx(base_url)
+    else:
+        DOC = _render_all()
+    for pagename, page in DOC.all_pages('en'):
+        fname = os.path.join(_doc_user, os.path.basename(page.fname))
+        with open(fname, 'w') as f:
+            f.write(page.content)
+
+
+class OfflinePage(InfoPage):
+
+    def get_ctx(self):  # pylint: disable=no-self-use
+        """Jinja context to render :py:obj:`DocPage.content` for offline purpose (no
+        links to SearXNG instance)"""
+
+        ctx = super().get_ctx()
+        ctx['link'] = lambda name, url: '`%s`' % name
+        ctx['search'] = lambda query: '`%s`' % query
+
+        return ctx
+
+
+def _render_all():
+    DOC = InfoPageSet(OfflinePage)
+    for pagename, page in DOC.all_pages('en'):
+        page.render()
+    return DOC
+
+
+def _render_all_with_flask_ctx(base_url):
+
+    DOC = InfoPageSet(InfoPage, base_url)
+
+    # The url_for functions in the jinja templates need all routes to be
+    # registered in the Flask app.
+
+    settings['server']['secret_key'] = "x"
+    from searx.webapp import app
+
+    # Specify base_url so that url_for() works for base_urls.  If base_url is
+    # specified, then these values from are given preference over any Flask's
+    # generics (see flaskfix.py).
+
+    with app.test_request_context(base_url=base_url):
+        for pagename, page in DOC.all_pages('en'):
+            page.render()
+
+    # The searx.webapp import from above fires some HTTP requests, thats
+    # why we get a RuntimeError::
+    #
+    #     RuntimeError: The connection pool was closed while 1 HTTP \
+    #       requests/responses were still in-flight.
+    #
+    # Closing network won't help ..
+    #   from searx.network import network
+    #   network.done()
+
+    # waiting some seconds before ending the comand line was the only solution I
+    # found ..
+
+    time.sleep(3)
+    return DOC
+
+
+if __name__ == '__main__':
+    sys.exit(main())

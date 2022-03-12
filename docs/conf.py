@@ -35,7 +35,7 @@ master_doc = "index"
 source_suffix = '.rst'
 numfig = True
 
-exclude_patterns = ['build-templates/*.rst']
+exclude_patterns = ['build-templates/*.rst', 'user/*.md']
 
 import searx.engines
 import searx.plugins
@@ -94,7 +94,6 @@ extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR ')
 # links to custom brand
 extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://')
 extlinks['patch'] = (GIT_URL + '/commit/%s', '#')
-extlinks['search'] = (SEARXNG_URL + '/%s', '#')
 extlinks['docs'] = (DOCS_URL + '/%s', 'docs: ')
 extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: ')
 extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '')
@@ -123,7 +122,10 @@ extensions = [
     'linuxdoc.rstFlatTable',    # Implementation of the 'flat-table' reST-directive.
     'linuxdoc.kfigure',         # Sphinx extension which implements scalable image handling.
     "sphinx_tabs.tabs", # https://github.com/djungelorm/sphinx-tabs
+    'myst_parser',  # https://www.sphinx-doc.org/en/master/usage/markdown.html
 ]
+
+suppress_warnings = ['myst.domains']
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
