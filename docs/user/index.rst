@@ -2,9 +2,14 @@
 User documentation
 ==================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
+.. contents:: Contents
+   :depth: 3
+   :local:
+   :backlinks: entry
 
-   search_syntax
-   own-instance
+
+.. _search-syntax:
+
+.. include:: search-syntax.md
+   :parser: myst_parser.sphinx_
+

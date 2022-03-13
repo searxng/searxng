@@ -56,8 +56,9 @@ from searx import (
     get_setting,
     settings,
     searx_debug,
-    user_help,
 )
+
+from searx import infopage
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing, UnresponsiveEngine
 from searx.settings_defaults import OUTPUT_FORMATS
@@ -382,6 +383,11 @@ def url_for_theme(endpoint: str, override_theme: Optional[str] = None, **values)
         if file_hash:
             values['filename'] = filename_with_theme
             suffix = "?" + file_hash
+    if endpoint == 'info' and 'locale' not in values:
+        locale = request.preferences.get_value('locale')
+        if _INFO_PAGES.get_page(values['pagename'], locale) is None:
+            locale = _INFO_PAGES.locale_default
+        values['locale'] = locale
     return url_for(endpoint, **values) + suffix
 
 
@@ -660,6 +666,7 @@ def index():
         # fmt: off
         'index.html',
         selected_categories=get_selected_categories(request.preferences, request.form),
+        current_locale = request.preferences.get_value("locale"),
         # fmt: on
     )
 
@@ -864,6 +871,7 @@ def search():
         unresponsive_engines = __get_translated_errors(
             result_container.unresponsive_engines
         ),
+        current_locale = request.preferences.get_value("locale"),
         current_language = match_language(
             search_query.lang,
             settings['search']['languages'],
@@ -898,19 +906,36 @@ def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
 @app.route('/about', methods=['GET'])
 def about():
     """Redirect to about page"""
-    return redirect(url_for('help_page', pagename='about'))
+    locale = request.preferences.get_value('locale')
+    return redirect(url_for('info', pagename='about', locale=locale))
 
 
-@app.route('/help/en/<pagename>', methods=['GET'])
-def help_page(pagename):
-    """Render help page"""
-    page = user_help.PAGES.get(pagename)
+_INFO_PAGES = infopage.InfoPageSet()
 
+
+@app.route('/info/<locale>/<pagename>', methods=['GET'])
+def info(pagename, locale):
+    """Render page of online user documentation"""
+
+    page = _INFO_PAGES.get_page(pagename, locale)
     if page is None:
         flask.abort(404)
 
+    def all_pages():
+        user_locale = request.preferences.get_value('locale')
+        for for_pagename, for_page in _INFO_PAGES.all_pages(user_locale):
+            for_locale = locale
+            if for_page is None:
+                # we are sure that for_pagename != pagename
+                for_page = _INFO_PAGES.get_page(for_pagename, _INFO_PAGES.locale_default)
+                for_locale = _INFO_PAGES.locale_default
+            yield for_pagename, for_page, for_locale
+
     return render(
-        'help.html', page=user_help.PAGES[pagename], all_pages=user_help.PAGES.items(), page_filename=pagename
+        'info.html',
+        all_pages=all_pages(),
+        active_page=page,
+        active_pagename=pagename,
     )
 
 
@@ -1411,7 +1436,6 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
-    user_help.render(app)
 
 
 def run():

@@ -1,0 +1,12 @@
+{% extends "oscar/base.html" %}
+{% block title %}{{ active_page.title }} - {% endblock %}
+{% block content %}
+<ul class="nav nav-tabs">
+  {% for pagename, page, locale in all_pages %}
+  <li>
+    <a href="{{ url_for('info', pagename=pagename, locale=locale) }}" {% if pagename == active_pagename %}class="active"{% endif %}>{{page.title}}</a>
+  </li>
+{% endfor %}
+</ul>
+{{ active_page.html | safe }}
+{% endblock %}

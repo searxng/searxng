@@ -419,6 +419,7 @@ docs.prebuild() {
         ./utils/searx.sh doc   | cat > "${DOCS_BUILD}/includes/searx.rst"
         ./utils/filtron.sh doc | cat > "${DOCS_BUILD}/includes/filtron.rst"
         ./utils/morty.sh doc   | cat > "${DOCS_BUILD}/includes/morty.rst"
+        pyenv.cmd searxng_extra/docs_prebuild
     )
     dump_return $?
 }
