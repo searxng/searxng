@@ -383,6 +383,11 @@ def url_for_theme(endpoint: str, override_theme: Optional[str] = None, **values)
         if file_hash:
             values['filename'] = filename_with_theme
             suffix = "?" + file_hash
+    if endpoint == 'info' and 'locale' not in values:
+        locale = request.preferences.get_value('locale')
+        if _INFO_PAGES.get_page(values['pagename'], locale) is None:
+            locale = _INFO_PAGES.locale_default
+        values['locale'] = locale
     return url_for(endpoint, **values) + suffix
 
 
@@ -905,23 +910,30 @@ def about():
     return redirect(url_for('info', pagename='about', locale=locale))
 
 
-_INFO_PAGES = infopage.InfoPageSet(infopage.MistletoePage)
+_INFO_PAGES = infopage.InfoPageSet()
 
 
 @app.route('/info/<locale>/<pagename>', methods=['GET'])
 def info(pagename, locale):
     """Render page of online user documentation"""
 
-    locale = locale or request.preferences.get_value('locale')
     page = _INFO_PAGES.get_page(pagename, locale)
-    if page is None:
-        page = _INFO_PAGES.get_page(pagename)
     if page is None:
         flask.abort(404)
 
+    def all_pages():
+        user_locale = request.preferences.get_value('locale')
+        for for_pagename, for_page in _INFO_PAGES.all_pages(user_locale):
+            for_locale = locale
+            if for_page is None:
+                # we are sure that for_pagename != pagename
+                for_page = _INFO_PAGES.get_page(for_pagename, _INFO_PAGES.locale_default)
+                for_locale = _INFO_PAGES.locale_default
+            yield for_pagename, for_page, for_locale
+
     return render(
         'info.html',
-        all_pages=_INFO_PAGES.all_pages,
+        all_pages=all_pages(),
         active_page=page,
         active_pagename=pagename,
     )

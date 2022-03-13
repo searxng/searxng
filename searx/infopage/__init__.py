@@ -19,8 +19,9 @@ Usage in a Flask app route:
 
 """
 
-__all__ = ['InfoPage', 'MistletoePage', 'InfoPageSet']
+__all__ = ['InfoPage', 'InfoPageSet']
 
+import os
 import os.path
 import logging
 import typing
@@ -33,16 +34,18 @@ import mistletoe
 from .. import get_setting
 from ..compat import cached_property
 from ..version import GIT_URL
+from ..locales import LOCALE_NAMES
 
-logger = logging.getLogger('doc')
+
+logger = logging.getLogger('searx.infopage')
+_INFO_FOLDER = os.path.abspath(os.path.dirname(__file__))
 
 
 class InfoPage:
     """A page of the :py:obj:`online documentation <InfoPageSet>`."""
 
-    def __init__(self, fname, base_url=None):
+    def __init__(self, fname):
         self.fname = fname
-        self.base_url = base_url
 
     @cached_property
     def raw_content(self):
@@ -66,19 +69,25 @@ class InfoPage:
                 t = l.strip('# ')
         return t
 
+    @cached_property
+    def html(self):
+        """Render Markdown (CommonMark_) to HTML by using mistletoe_.
+
+        .. _CommonMark: https://commonmark.org/
+        .. _mistletoe: https://github.com/miyuchina/mistletoe
+
+        """
+        return mistletoe.markdown(self.content)
+
     def get_ctx(self):  # pylint: disable=no-self-use
         """Jinja context to render :py:obj:`InfoPage.content`"""
 
         def _md_link(name, url):
-            url = url_for(url)
-            if self.base_url:
-                url = self.base_url + url
+            url = url_for(url, _external=True)
             return "[%s](%s)" % (name, url)
 
         def _md_search(query):
-            url = '%s?q=%s' % (url_for('search'), urllib.parse.quote(query))
-            if self.base_url:
-                url = self.base_url + url
+            url = '%s?q=%s' % (url_for('search', _external=True), urllib.parse.quote(query))
             return '[%s](%s)' % (query, url)
 
         ctx = {}
@@ -89,33 +98,8 @@ class InfoPage:
 
         return ctx
 
-    def render(self):
-        """Render / return content"""
-        return self.content
-
-
-class MistletoePage(InfoPage):
-    """A HTML page of the :py:obj:`online documentation <InfoPageSet>`."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    @cached_property
-    def html(self):
-        """HTML representation of this page"""
-        return self.render()
-
-    def render(self):
-        """Render Markdown (CommonMark_) to HTML by using mistletoe_.
-
-        .. _CommonMark: https://commonmark.org/
-        .. _mistletoe: https://github.com/miyuchina/mistletoe
-
-        """
-        return mistletoe.markdown(self.content)
-
-
-_INFO_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'info'))
+    def __repr__(self):
+        return f'<{self.__class__.__name__} fname={self.fname!r}>'
 
 
 class InfoPageSet:  # pylint: disable=too-few-public-methods
@@ -123,24 +107,26 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
 
     :param page_class: render online documentation by :py:obj:`InfoPage` parser.
     :type page_class: :py:obj:`InfoPage`
+
+    :param info_folder: information directory
+    :type info_folder: str
     """
 
-    def __init__(self, page_class: typing.Type[InfoPage], base_url=None):
-        self.page_class = page_class
-        self.base_url = base_url
-        self.CACHE: typing.Dict[tuple, InfoPage] = {}
+    def __init__(
+        self, page_class: typing.Optional[typing.Type[InfoPage]] = None, info_folder: typing.Optional[str] = None
+    ):
+        self.page_class = page_class or InfoPage
+        self.CACHE: typing.Dict[tuple, typing.Optional[InfoPage]] = {}
 
         # future: could be set from settings.xml
 
-        self.folder: str = _INFO_FOLDER
+        self.folder: str = info_folder or _INFO_FOLDER
         """location of the Markdwon files"""
 
-        self.i18n_origin: str = 'en'
+        self.locale_default: str = 'en'
         """default language"""
 
-        self.l10n: typing.List = [
-            'en',
-        ]
+        self.locales: typing.List = [locale for locale in os.listdir(_INFO_FOLDER) if locale in LOCALE_NAMES]
         """list of supported languages (aka locales)"""
 
         self.toc: typing.List = [
@@ -160,12 +146,13 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
         :type locale: str
 
         """
+        locale = locale or self.locale_default
+
         if pagename not in self.toc:
             return None
-        if locale is not None and locale not in self.l10n:
+        if locale not in self.locales:
             return None
 
-        locale = locale or self.i18n_origin
         cache_key = (pagename, locale)
         page = self.CACHE.get(cache_key)
 
@@ -176,16 +163,17 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
 
         fname = os.path.join(self.folder, locale, pagename) + '.md'
         if not os.path.exists(fname):
-            logger.error('file %s does not exists', fname)
+            logger.info('file %s does not exists', fname)
+            self.CACHE[cache_key] = None
             return None
 
-        page = self.page_class(fname, self.base_url)
+        page = self.page_class(fname)
         self.CACHE[cache_key] = page
         return page
 
     def all_pages(self, locale: typing.Optional[str] = None):
-        """Iterate over all pages"""
-        locale = locale or self.i18n_origin
+        """Iterate over all pages of the TOC"""
+        locale = locale or self.locale_default
         for pagename in self.toc:
             page = self.get_page(pagename, locale)
             yield pagename, page
