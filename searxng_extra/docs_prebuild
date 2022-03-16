@@ -24,7 +24,7 @@ def main():
         infopageset_ctx = _offline_infosetset_ctx()
 
     with infopageset_ctx as infopageset:
-        for _, page in infopageset.all_pages('en'):
+        for _, _, page in infopageset.iter_pages('en'):
             fname = os.path.join(_doc_user, os.path.basename(page.fname))
             with open(fname, 'w') as f:
                 f.write(page.content)
