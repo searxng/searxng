@@ -85,7 +85,7 @@ class LanguageParser(QueryPartParser):
         # check if any language-code is equal with
         # declared language-codes
         for lc in language_codes:
-            lang_id, lang_name, country, english_name = map(str.lower, lc)
+            lang_id, lang_name, country, english_name, _flag = map(str.lower, lc)
 
             # if correct language-code is found
             # set it as new search-language
@@ -128,7 +128,7 @@ class LanguageParser(QueryPartParser):
         for lc in language_codes:
             if lc[0] not in settings['search']['languages']:
                 continue
-            lang_id, lang_name, country, english_name = map(str.lower, lc)
+            lang_id, lang_name, country, english_name, _flag = map(str.lower, lc)
 
             # check if query starts with language-id
             if lang_id.startswith(value):

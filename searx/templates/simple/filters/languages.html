@@ -1,8 +1,8 @@
 <select class="language" id="language" name="language" aria-label="{{ _('Search language') }}">{{- '' -}}
 	<option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
-	{%- for lang_id,lang_name,country_name,english_name in language_codes | sort(attribute=1) -%}
+	{%- for lang_id,lang_name,country_name,english_name,flag in language_codes | sort(attribute=1) -%}
 	<option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>
-		{{- lang_name }} {% if country_name %}({{ country_name }}) {% endif %}- {{ lang_id -}}
+		{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %}({{ country_name }}) {% endif %}
 	</option>
 	{%- endfor -%}
 </select>
