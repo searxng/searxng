@@ -1,6 +1,6 @@
-==================
-User documentation
-==================
+================
+User information
+================
 
 .. contents:: Contents
    :depth: 3

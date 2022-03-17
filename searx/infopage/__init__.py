@@ -116,20 +116,20 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
         self, page_class: typing.Optional[typing.Type[InfoPage]] = None, info_folder: typing.Optional[str] = None
     ):
         self.page_class = page_class or InfoPage
-        self.CACHE: typing.Dict[tuple, typing.Optional[InfoPage]] = {}
-
-        # future: could be set from settings.xml
-
         self.folder: str = info_folder or _INFO_FOLDER
         """location of the Markdwon files"""
+
+        self.CACHE: typing.Dict[tuple, typing.Optional[InfoPage]] = {}
 
         self.locale_default: str = 'en'
         """default language"""
 
-        self.locales: typing.List = [locale for locale in os.listdir(_INFO_FOLDER) if locale in LOCALE_NAMES]
+        self.locales: typing.List[str] = [
+            locale.replace('_', '-') for locale in os.listdir(_INFO_FOLDER) if locale.replace('_', '-') in LOCALE_NAMES
+        ]
         """list of supported languages (aka locales)"""
 
-        self.toc: typing.List = [
+        self.toc: typing.List[str] = [
             'search-syntax',
             'about',
         ]
@@ -161,7 +161,7 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
 
         # not yet instantiated
 
-        fname = os.path.join(self.folder, locale, pagename) + '.md'
+        fname = os.path.join(self.folder, locale.replace('-', '_'), pagename) + '.md'
         if not os.path.exists(fname):
             logger.info('file %s does not exists', fname)
             self.CACHE[cache_key] = None
@@ -171,9 +171,13 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
         self.CACHE[cache_key] = page
         return page
 
-    def all_pages(self, locale: typing.Optional[str] = None):
+    def iter_pages(self, locale: typing.Optional[str] = None, fallback_to_default=False):
         """Iterate over all pages of the TOC"""
         locale = locale or self.locale_default
-        for pagename in self.toc:
-            page = self.get_page(pagename, locale)
-            yield pagename, page
+        for page_name in self.toc:
+            page_locale = locale
+            page = self.get_page(page_name, locale)
+            if fallback_to_default and page is None:
+                page_locale = self.locale_default
+                page = self.get_page(page_name, self.locale_default)
+            yield page_name, page_locale, page
