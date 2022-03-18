@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-02-21 11:52+0000\n"
-"PO-Revision-Date: 2022-03-09 02:41+0000\n"
-"Last-Translator: Dmitry Zakharchenko <dmitz@disroot.org>\n"
+"PO-Revision-Date: 2022-03-18 07:17+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
 ">\n"
 "Language: ru\n"
@@ -31,27 +31,27 @@ msgstr ""
 
 #: searx/webapp.py:170
 msgid "files"
-msgstr "файлы"
+msgstr "Файлы"
 
 #: searx/webapp.py:171
 msgid "general"
-msgstr "общие"
+msgstr "Общие"
 
 #: searx/webapp.py:172
 msgid "music"
-msgstr "музыка"
+msgstr "Музыка"
 
 #: searx/webapp.py:173
 msgid "social media"
-msgstr "социальные сети"
+msgstr "Соцсети"
 
 #: searx/webapp.py:174
 msgid "images"
-msgstr "картинки"
+msgstr "Картинки"
 
 #: searx/webapp.py:175
 msgid "videos"
-msgstr "видео"
+msgstr "Видео"
 
 #: searx/webapp.py:176
 msgid "it"
@@ -59,51 +59,51 @@ msgstr "ИТ"
 
 #: searx/webapp.py:177
 msgid "news"
-msgstr "новости"
+msgstr "Новости"
 
 #: searx/webapp.py:178
 msgid "map"
-msgstr "карты"
+msgstr "Карты"
 
 #: searx/webapp.py:179
 msgid "onions"
-msgstr "онион"
+msgstr ".onion"
 
 #: searx/webapp.py:180
 msgid "science"
-msgstr "наука"
+msgstr "Наука"
 
 #: searx/webapp.py:182
 msgid "apps"
-msgstr "приложения"
+msgstr "Программы"
 
 #: searx/webapp.py:183
 msgid "dictionaries"
-msgstr "словари"
+msgstr "Словари"
 
 #: searx/webapp.py:184
 msgid "lyrics"
-msgstr "тексты"
+msgstr "Текст песни"
 
 #: searx/webapp.py:185
 msgid "packages"
-msgstr "пакеты"
+msgstr "Пакеты"
 
 #: searx/webapp.py:186
 msgid "q&a"
-msgstr "q&a"
+msgstr "Вопросы-ответы"
 
 #: searx/webapp.py:187
 msgid "repos"
-msgstr "репозитории"
+msgstr "Репозитории"
 
 #: searx/webapp.py:188
 msgid "software wikis"
-msgstr "документация приложений"
+msgstr "Программная документация"
 
 #: searx/webapp.py:189
 msgid "web"
-msgstr "веб"
+msgstr "Веб"
 
 #: searx/webapp.py:194
 msgid "auto"
@@ -118,24 +118,25 @@ msgid "dark"
 msgstr "тёмная"
 
 #: searx/webapp.py:197
+#, fuzzy
 msgid "timeout"
 msgstr "перерыв"
 
 #: searx/webapp.py:198
 msgid "parsing error"
-msgstr "ошибка парсинга"
+msgstr "ошибка разбора"
 
 #: searx/webapp.py:199
 msgid "HTTP protocol error"
-msgstr "ошибка HTTP протокола"
+msgstr "ошибка протокола HTTP"
 
 #: searx/webapp.py:200
 msgid "network error"
-msgstr "ошибка сети"
+msgstr "сетевая ошибка"
 
 #: searx/webapp.py:202
 msgid "unexpected crash"
-msgstr "неожиданная поломка"
+msgstr "непредвиденная ошибка"
 
 #: searx/webapp.py:209
 msgid "HTTP error"
@@ -143,7 +144,7 @@ msgstr "ошибка HTTP"
 
 #: searx/webapp.py:210
 msgid "HTTP connection error"
-msgstr "ошибка HTTP соединения"
+msgstr "ошибка HTTP-соединения"
 
 #: searx/webapp.py:216
 msgid "proxy error"
@@ -151,7 +152,7 @@ msgstr "ошибка прокси"
 
 #: searx/webapp.py:217
 msgid "CAPTCHA"
-msgstr "CAPTCHA"
+msgstr "КАПЧА"
 
 #: searx/webapp.py:218
 msgid "too many requests"
@@ -180,9 +181,10 @@ msgstr "Не удалось загрузить следующую страниц
 
 #: searx/webapp.py:547 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
-msgstr "Неправильные параметры, пожалуйста измените Ваши настройки"
+msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
 #: searx/webapp.py:563
+#, fuzzy
 msgid "Invalid settings"
 msgstr "Неверные настройки"
 
@@ -208,7 +210,7 @@ msgstr "Генератор случайных значений"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Генерировать разные случайные значения"
+msgstr "Генерирует разные случайные значения"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -216,11 +218,11 @@ msgstr "Статистические функции"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr "Вычислить {functions} аргументов"
+msgstr "Применяет функции {functions} к аргументам"
 
 #: searx/engines/openstreetmap.py:156
 msgid "Get directions"
-msgstr "Получить инструкции"
+msgstr "Запрашивать маршруты"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -240,15 +242,15 @@ msgstr "Канал"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr "Преобразование строк в разные хеш-digest'ы."
+msgstr "Рассчитывает контрольной суммы от строки."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "хеш-digest"
+msgstr "контрольная сумма"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Подмена имени хоста"
+msgstr "Замена имени сайта"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -256,21 +258,20 @@ msgstr "Заменить имя хоста или удалить результ�
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr "Перезапись DOI в открытом доступе"
+msgstr "Искать Open Access DOI"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr ""
-"Позволяет получить бесплатную версию запрашиваемой статьи, если таковая "
-"имеется"
+msgstr "Пробовать искать бесплатную версию статьи"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
 msgstr "Поиск по выбранной категории"
 
 #: searx/plugins/search_on_category_select.py:20
+#, fuzzy
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
@@ -280,23 +281,23 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr "Самоиформация"
+msgstr "Информация"
 
 #: searx/plugins/self_info.py:21
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Отображать Ваш IP-адрес при запросе \"ip\" и Ваш юзер-агент при запросе "
-"\"user agent\"."
+"Показывает IP-адрес по запросу \"ip\" и версию браузера по запросу \"user "
+"agent\"."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr "Удаление трекинга из URL-адреса"
+msgstr "Убрать отслеживание"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr "Удаление аргументов трекинга из URL-адреса"
+msgstr "Удаление параметров для отслеживания пользователя из URL-адреса"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
@@ -321,6 +322,7 @@ msgid "Go to %(search_page)s."
 msgstr "Перейти к %(search_page)s."
 
 #: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#, fuzzy
 msgid "search page"
 msgstr "страница поиска"
 
@@ -348,7 +350,7 @@ msgstr "Основано на"
 
 #: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "уважающая Вашу приватность, открытая метапоисковая система"
+msgstr "уважающая приватность, открытая метапоисковая система"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
 msgid "Source code"
@@ -356,23 +358,23 @@ msgstr "Исходный код"
 
 #: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
 msgid "Issue tracker"
-msgstr "Трекер проблем"
+msgstr "Сообщить о проблеме"
 
 #: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr "Статистика поисковых систем"
+msgstr "Статистика по поисковым системам"
 
 #: searx/templates/oscar/base.html:89
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr "Публичные экземпляры"
+msgstr "Публичные зеркала"
 
 #: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
-msgstr "Сопровождение контактного экземпляра"
+msgstr "Сопровождающий текущего зеркала"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
@@ -387,7 +389,7 @@ msgstr "Язык по умолчанию"
 #: searx/templates/oscar/macros.html:23
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
-msgstr "магнет-ссылка"
+msgstr "magnet-ссылка"
 
 #: searx/templates/oscar/macros.html:24
 #: searx/templates/simple/result_templates/torrent.html:7
@@ -398,13 +400,13 @@ msgstr "торрент-файл"
 #: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
 #: searx/templates/simple/macros.html:43
 msgid "cached"
-msgstr "архив"
+msgstr "веб-архив"
 
 #: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
 #: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
 #: searx/templates/simple/macros.html:43
 msgid "proxied"
-msgstr "проксируемого"
+msgstr "через прокси"
 
 #: searx/templates/oscar/macros.html:133
 #: searx/templates/oscar/preferences.html:344
@@ -429,18 +431,18 @@ msgstr "не поддерживается"
 
 #: searx/templates/oscar/navbar.html:6
 msgid "about"
-msgstr "о сайте"
+msgstr "О сайте"
 
 #: searx/templates/oscar/navbar.html:7
 #: searx/templates/oscar/preferences.html:90
 #: searx/templates/simple/base.html:52
 msgid "preferences"
-msgstr "настройки"
+msgstr "Настройки"
 
 #: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr "Нет HTTPS"
+msgstr "Без HTTPS"
 
 #: searx/templates/oscar/preferences.html:14
 #: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
@@ -449,7 +451,7 @@ msgstr "Количество результатов"
 
 #: searx/templates/oscar/preferences.html:14
 msgid "Avg."
-msgstr "Avg."
+msgstr "примерно"
 
 #: searx/templates/oscar/messages/no_results.html:8
 #: searx/templates/oscar/preferences.html:17
@@ -459,6 +461,7 @@ msgstr "Avg."
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
+#, fuzzy
 msgid "View error logs and submit a bug report"
 msgstr "Просмотр журнала ошибок и отправка отчета об ошибках"
 
@@ -486,7 +489,7 @@ msgstr "P95"
 #: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr "Неудачная проверка теста(ов): "
+msgstr "Проваленные проверки: "
 
 #: searx/templates/oscar/preferences.html:96
 #: searx/templates/simple/preferences.html:99
@@ -502,7 +505,7 @@ msgstr "Общие"
 #: searx/templates/oscar/preferences.html:102
 #: searx/templates/oscar/preferences.html:193
 msgid "User Interface"
-msgstr "Пользовательский интерфейс"
+msgstr "Внешний вид"
 
 #: searx/templates/oscar/preferences.html:103
 #: searx/templates/oscar/preferences.html:268
@@ -519,7 +522,7 @@ msgstr "Поисковые системы"
 #: searx/templates/oscar/preferences.html:105
 #: searx/templates/simple/preferences.html:339
 msgid "Special Queries"
-msgstr "Специальные настройки"
+msgstr "Особые запросы"
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
@@ -557,7 +560,7 @@ msgstr "Безопасный поиск"
 #: searx/templates/oscar/preferences.html:142
 #: searx/templates/simple/preferences.html:151
 msgid "Filter content"
-msgstr "Фильтрация контента"
+msgstr "Отбирает только пристойные результаты"
 
 #: searx/templates/oscar/preferences.html:145
 #: searx/templates/simple/filters/safesearch.html:2
@@ -575,22 +578,22 @@ msgstr "Умеренный"
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
-msgstr "Никакой"
+msgstr "Отключен"
 
 #: searx/templates/oscar/preferences.html:153
 #: searx/templates/simple/preferences.html:129
 msgid "Autocomplete"
-msgstr "Автозавершение"
+msgstr "Подсказки"
 
 #: searx/templates/oscar/preferences.html:154
 #: searx/templates/simple/preferences.html:138
 msgid "Find stuff as you type"
-msgstr "Поисковые предложения по мере ввода"
+msgstr "Показывать предложения по мере ввода запроса"
 
 #: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
-msgstr "Распознаватель открытого доступа к DOI"
+msgstr "Источник Open Access DOI"
 
 #: searx/templates/oscar/preferences.html:169
 #: searx/templates/simple/preferences.html:167
@@ -598,18 +601,19 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
-"Перенаправление на открытые версии публикаций при их наличии (требуется "
+"Перенаправлять на открытые версии публикаций при их наличии (требуется "
 "плагин)"
 
 #: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
+#, fuzzy
 msgid "Engine tokens"
 msgstr "Токены движка"
 
 #: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr "Доступные токены для персональных движков"
+msgstr "Доступные токены для частных движков"
 
 #: searx/templates/oscar/preferences.html:198
 #: searx/templates/simple/preferences.html:182
@@ -619,7 +623,7 @@ msgstr "Язык интерфейса"
 #: searx/templates/oscar/preferences.html:199
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
-msgstr "Изменение языка сайта"
+msgstr "Языка этого сайта"
 
 #: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
@@ -629,12 +633,12 @@ msgstr "Тема"
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr "Изменить расположение элементов в SearXNG"
+msgstr "Изменить расположение элементов SearXNG"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
 msgid "Choose style for this theme"
-msgstr "Стиль для выбранной темы"
+msgstr "Цветовое решение для выбранной темы"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -643,11 +647,11 @@ msgstr "Стиль"
 
 #: searx/templates/oscar/preferences.html:231
 msgid "Show advanced settings"
-msgstr "Показать расширенные настройки"
+msgstr "Дополнительные настройки"
 
 #: searx/templates/oscar/preferences.html:232
 msgid "Show advanced settings panel in the home page by default"
-msgstr "По умолчанию показывать панель расширенных настроек на главной странице"
+msgstr "Развернуть дополнительные настройки на главной странице"
 
 #: searx/templates/oscar/preferences.html:235
 #: searx/templates/oscar/preferences.html:245
@@ -655,7 +659,7 @@ msgstr "По умолчанию показывать панель расшире
 #: searx/templates/simple/preferences.html:222
 #: searx/templates/simple/preferences.html:234
 msgid "On"
-msgstr "Вкл."
+msgstr "Включен"
 
 #: searx/templates/oscar/preferences.html:236
 #: searx/templates/oscar/preferences.html:246
@@ -663,17 +667,17 @@ msgstr "Вкл."
 #: searx/templates/simple/preferences.html:223
 #: searx/templates/simple/preferences.html:235
 msgid "Off"
-msgstr "Выкл."
+msgstr "Выключен"
 
 #: searx/templates/oscar/preferences.html:241
 #: searx/templates/simple/preferences.html:219
 msgid "Results on new tabs"
-msgstr "Результаты в новых вкладках"
+msgstr "Новые вкладки"
 
 #: searx/templates/oscar/preferences.html:242
 #: searx/templates/simple/preferences.html:226
 msgid "Open result links on new browser tabs"
-msgstr "Открывать ссылки из результатов поиска в новых вкладках"
+msgstr "Открывать результаты поиска в новых вкладках"
 
 #: searx/templates/oscar/preferences.html:252
 #: searx/templates/simple/preferences.html:231
@@ -683,9 +687,7 @@ msgstr "Бесконечная прокрутка"
 #: searx/templates/oscar/preferences.html:253
 #: searx/templates/simple/preferences.html:238
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"Автоматически загружать следующую страницу при прокрутке до конца текущей"
-" страницы"
+msgstr "Автоматически загружать следующую страницу при прокрутке"
 
 #: searx/templates/oscar/preferences.html:273
 #: searx/templates/simple/preferences.html:247
@@ -699,19 +701,18 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Изменяет способ отправки запросов. <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">Узнать больше о методах запроса</a>"
+"Способ отправки запросов. <a href=\"https://ru.wikipedia.org/wiki/HTTP#"
+"Методы\" rel=\"external\">Подробнее о методах HTTP</a>"
 
 #: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
-msgstr "Прокси для изображений"
+msgstr "Прокси для картинок"
 
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
-msgstr "Проксирование изображений в результатах через SearXNG"
+msgstr "Проксировать изображения в результатах методами SearXNG"
 
 #: searx/templates/oscar/preferences.html:288
 #: searx/templates/oscar/preferences.html:299
@@ -738,16 +739,16 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Когда включено, заголовок страницы с результатами будет содержать ваш "
-"поисковый запрос. Ваш браузер может сохранять этот заголовок"
+"Добавить поисковый запрос в заголовок страницы с результатами. Браузер может "
+"сохранять этот заголовок"
 
 #: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
-msgstr "Разрешить все"
+msgstr "Выбрать все"
 
 #: searx/templates/oscar/preferences.html:327
 msgid "Disable all"
-msgstr "Отключить все"
+msgstr "Выключить все"
 
 #: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:290
@@ -755,6 +756,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Результаты из этого раздела не отображаются в общих, но вы можете "
+"использовать эти поисковые движки через восклицательный знак."
 
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
@@ -762,7 +765,7 @@ msgstr ""
 #: searx/templates/simple/preferences.html:296
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr "Имя поисковой системы"
+msgstr "Поисковая система"
 
 #: searx/templates/oscar/preferences.html:346
 #: searx/templates/oscar/preferences.html:360
@@ -816,7 +819,7 @@ msgstr "Ключевые слова"
 #: searx/templates/oscar/preferences.html:427
 #: searx/templates/simple/preferences.html:346
 msgid "Name"
-msgstr "Имя"
+msgstr "Название"
 
 #: searx/templates/oscar/preferences.html:428
 #: searx/templates/simple/preferences.html:347
@@ -826,24 +829,24 @@ msgstr "Описание"
 #: searx/templates/oscar/preferences.html:429
 #: searx/templates/simple/preferences.html:348
 msgid "Examples"
-msgstr "Примеры"
+msgstr "Пример"
 
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:351
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr "Список моделей мгновенных ответов в SearXNG."
+msgstr "Модули SearXNG с мгновенным ответом."
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:362
 msgid "This is the list of plugins."
-msgstr "Это список плагинов."
+msgstr "Список плагинов."
 
 #: searx/templates/oscar/preferences.html:468
 #: searx/templates/simple/preferences.html:381
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr "Список куков и их значений, которые SearXNG хранит на Вашем компьютере."
+msgstr "Список cookies и их значений, которые SearXNG хранит в вашем браузере."
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:382
@@ -853,7 +856,7 @@ msgstr "С этим списком, Вы можете использовать S
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:387
 msgid "Cookie name"
-msgstr "Имя cookie-файла"
+msgstr "Cookie"
 
 #: searx/templates/oscar/preferences.html:475
 #: searx/templates/simple/preferences.html:388
@@ -866,8 +869,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Настройки сохраняются в Ваших cookie-файлах, что позволяет нам не хранить"
-" никаких сведений о Вас."
+"Все настройки сохраняются в cookie вашего браузера. Это позволяет нам не "
+"хранить о вас никаких данных на серверах."
 
 #: searx/templates/oscar/preferences.html:493
 #: searx/templates/simple/preferences.html:411
@@ -875,13 +878,13 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Cookie-файлы служат исключительно для Вашего удобства, мы не используем "
-"cookie-файлы что-бы следить за Вами."
+"Cookie нужны исключительно для вашего удобства, мы не используем cookie для "
+"слежки."
 
 #: searx/templates/oscar/preferences.html:497
 #: searx/templates/simple/preferences.html:400
 msgid "Search URL of the currently saved preferences"
-msgstr "Настройки поиска URL-адреса были сохранены"
+msgstr "URL с сохраненными настройками"
 
 #: searx/templates/oscar/preferences.html:498
 #: searx/templates/simple/preferences.html:404
@@ -889,17 +892,16 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Примечание: специальные пользовательские настройки URL-адреса могут "
-"снизить Вашу конфиденциальность из-за утечки данных на сайтах из "
-"поисковой выдачи, которые Вы посещаете."
+"Внимание: использование URL с параметрами может привести к утечке данных на "
+"сайты, открытые из результатов поиска."
 
 #: searx/templates/oscar/preferences.html:503
 msgid "save"
-msgstr "сохранить"
+msgstr "Сохранить"
 
 #: searx/templates/oscar/preferences.html:504
 msgid "back"
-msgstr "назад"
+msgstr "Назад"
 
 #: searx/templates/oscar/preferences.html:505
 #: searx/templates/simple/preferences.html:415
@@ -908,7 +910,7 @@ msgstr "Восстановить настройки по умолчанию"
 
 #: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:46
 msgid "Engines cannot retrieve results"
-msgstr "Поисковая система не может получить результат"
+msgstr "Поисковые системы не могут получить результат"
 
 #: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:68
 msgid "Suggestions"
@@ -927,6 +929,7 @@ msgid "Download results"
 msgstr "Загрузить результаты"
 
 #: searx/templates/oscar/results.html:95
+#, fuzzy
 msgid "RSS subscription"
 msgstr "RSS-подписка"
 
@@ -963,7 +966,7 @@ msgstr "Начать поиск"
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear search"
-msgstr "Очистить поиск"
+msgstr "Очистить запрос"
 
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear"
@@ -1036,7 +1039,7 @@ msgstr "Код"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr "Чекер"
+msgstr "Checker"
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
 msgid "Failed test"
@@ -1074,15 +1077,15 @@ msgstr "Последний год"
 #: searx/templates/oscar/messages/first_time.html:6
 #: searx/templates/oscar/messages/no_data_available.html:3
 msgid "Heads up!"
-msgstr "Эй!"
+msgstr "Вот чёрт!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr "Похоже на то, что Вы используете SearXNG впервые."
+msgstr "Похоже, вы используете SearXNG впервые."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
-msgstr "Информация!"
+msgstr "Информируем!"
 
 #: searx/templates/oscar/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
@@ -1096,17 +1099,19 @@ msgstr "На данный момент данные недоступны. "
 #: searx/templates/oscar/messages/no_results.html:4
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
-msgstr "Поисковая система не может получить результат."
+msgstr "Поисковые системы не могут получить результат."
 
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr "Пожалуйста, попробуйте еще раз позже либо найдите другой SearXNG."
+msgstr ""
+"Пожалуйста, попробуйте еще раз позднее, либо перейдите на другое зеркало "
+"SearXNG."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
-msgstr "Сожалеем!"
+msgstr "Грусть-печаль!"
 
 #: searx/templates/oscar/messages/no_results.html:18
 #: searx/templates/simple/messages/no_results.html:21
@@ -1162,31 +1167,31 @@ msgstr "Размер файла"
 #: searx/templates/oscar/result_templates/torrent.html:9
 #: searx/templates/simple/result_templates/torrent.html:12
 msgid "Bytes"
-msgstr "Bytes"
+msgstr "Байт"
 
 #: searx/templates/oscar/result_templates/files.html:39
 #: searx/templates/oscar/result_templates/torrent.html:10
 #: searx/templates/simple/result_templates/torrent.html:13
 msgid "kiB"
-msgstr "KiB"
+msgstr "КиБ"
 
 #: searx/templates/oscar/result_templates/files.html:40
 #: searx/templates/oscar/result_templates/torrent.html:11
 #: searx/templates/simple/result_templates/torrent.html:14
 msgid "MiB"
-msgstr "MiB"
+msgstr "МиБ"
 
 #: searx/templates/oscar/result_templates/files.html:41
 #: searx/templates/oscar/result_templates/torrent.html:12
 #: searx/templates/simple/result_templates/torrent.html:15
 msgid "GiB"
-msgstr "GiB"
+msgstr "ГиБ"
 
 #: searx/templates/oscar/result_templates/files.html:42
 #: searx/templates/oscar/result_templates/torrent.html:13
 #: searx/templates/simple/result_templates/torrent.html:16
 msgid "TiB"
-msgstr "TiB"
+msgstr "ТиБ"
 
 #: searx/templates/oscar/result_templates/files.html:46
 msgid "Date"
@@ -1198,12 +1203,12 @@ msgstr "Тип"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
-msgstr "Скачать изображение"
+msgstr "Скачать картинку"
 
 #: searx/templates/oscar/result_templates/images.html:30
 #: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
-msgstr "Посмотреть источник"
+msgstr "Перейти к источнику"
 
 #: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
@@ -1223,12 +1228,12 @@ msgstr "скрыть карту"
 #: searx/templates/oscar/result_templates/torrent.html:6
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "Сидер"
+msgstr "Раздают"
 
 #: searx/templates/oscar/result_templates/torrent.html:6
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "Личер"
+msgstr "Качают"
 
 #: searx/templates/oscar/result_templates/torrent.html:15
 #: searx/templates/simple/result_templates/torrent.html:20
@@ -1247,7 +1252,7 @@ msgstr "скрыть видео"
 
 #: searx/templates/oscar/result_templates/videos.html:20
 msgid "Length"
-msgstr "Длина"
+msgstr "Длительность"
 
 #: searx/templates/simple/categories.html:16
 msgid "Click on the magnifier to perform search"
@@ -1259,7 +1264,7 @@ msgstr "Ошибки:"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
-msgstr "Интерфейс пользователя"
+msgstr "Внешний вид"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
@@ -1275,7 +1280,7 @@ msgstr "Используемые поисковые системы"
 
 #: searx/templates/simple/preferences.html:298
 msgid "Supports selected language"
-msgstr "Поддержка выбранного языка"
+msgstr "Выбор языка"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Save"
