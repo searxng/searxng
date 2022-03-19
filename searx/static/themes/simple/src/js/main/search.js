@@ -31,10 +31,11 @@
 
     // update status, event listener
     updateClearButton();
-    cs.addEventListener('click', function () {
+    cs.addEventListener('click', function (ev) {
       qinput.value = '';
       qinput.focus();
       updateClearButton();
+      ev.preventDefault();
     });
     qinput.addEventListener('keyup', updateClearButton, false);
   }
