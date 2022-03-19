@@ -3,7 +3,6 @@ ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.
 EXPOSE 8080
 VOLUME /etc/searx
 VOLUME /etc/searxng
-VOLUME /var/log/uwsgi
 
 ARG SEARXNG_GID=977
 ARG SEARXNG_UID=977
