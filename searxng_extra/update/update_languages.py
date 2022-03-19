@@ -224,9 +224,7 @@ def filter_language_list(all_languages):
         if len(filtered_countries) > 1:
             filtered_countries[lang] = _copy_lang_data(lang, None)
         elif len(filtered_countries) == 1:
-            # if there's only one country per language, it's not necessary to show country name
             lang_country = next(iter(filtered_countries))
-            filtered_countries[lang_country]['country_name'] = None
 
         # if no country has enough engines try to get most likely country code from babel
         if not filtered_countries:
