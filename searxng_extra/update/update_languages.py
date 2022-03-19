@@ -68,7 +68,6 @@ lang2emoji = {
     'jp': '\U0001F1EF\U0001F1F5',  # Japanese
     'ua': '\U0001F1FA\U0001F1E6',  # Ukrainian
     'he': '\U0001F1EE\U0001F1F7',  # Hebrew
-    'zh': '\U0001F1E8\U0001F1F3',  # China (zh)
 }
 
 
@@ -80,11 +79,7 @@ def get_unicode_flag(lang_code):
         return emoji
 
     if len(lang_code) == 2:
-        l_code = lang_code.lower()
-        c_code = lang_code.upper()
-        if c_code == 'EN':
-            c_code = 'GB'
-        lang_code = "%s-%s" % (l_code, c_code)
+        return '\U0001F310'
 
     language = territory = script = variant = ''
     try:
