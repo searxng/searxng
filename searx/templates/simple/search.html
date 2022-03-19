@@ -1,13 +1,13 @@
-<form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+<form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
   <div id="search_header">
-    <a id="search_logo" href="{{ url_for('index') }}">
+    <a id="search_logo" href="{{ url_for('index') }}" tabindex="0" title="{{ _('Display the front page') }}">
       <span hidden>SearXNG</span>
       {% include '__common__/searxng-wordmark.min.svg' without context %}
     </a>
     <div class="search_box">
-      <input id="q" autofocus name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" spellcheck="false" dir="auto" {% if q %}value="{{ q }}"{% endif %} >
-      <button id="clear_search" type="button" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
-      <button id="send_search" type="submit" tabindex="-1"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+      <input id="q" autofocus name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" spellcheck="false" dir="auto" value="{{ q or '' }}">
+      <button id="clear_search" type="reset" aria-label="{{ _('clear') }}"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+      <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
     </div>
     {% set display_tooltip = true %}
     {% include 'simple/categories.html' %}

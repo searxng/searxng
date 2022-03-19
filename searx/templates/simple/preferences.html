@@ -112,23 +112,23 @@
     {% endif %}
     {% if 'language' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Search language') }}</legend>
+      <legend id="pref_language">{{ _('Search language') }}</legend>
       <p class="value">{{- '' -}}
-        <select name='language'>{{- '' -}}
+        <select name='language' aria-labelledby="pref_language" aria-describedby="desc_language">{{- '' -}}
           <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
           {%- for lang_id,lang_name,country_name,english_name in language_codes | sort(attribute=1) -%}
           <option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>{{ lang_name }} {% if country_name %}({{ country_name }}) {% endif %}- {{ lang_id }}</option>
           {%- endfor -%}
         </select>{{- '' -}}
       </p>
-      <div class="description">{{ _('What language do you prefer for search?') }}</div>
+      <div class="description" id="desc_language">{{ _('What language do you prefer for search?') }}</div>
     </fieldset>
     {% endif %}
     {% if 'autocomplete' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Autocomplete') }}</legend>
+      <legend id="pref_autocomplete">{{ _('Autocomplete') }}</legend>
       <p class="value">
-        <select name="autocomplete">
+        <select name="autocomplete" aria-labelledby="pref_autocomplete">
           <option value=""> - </option>
           {%- for backend in autocomplete_backends -%}
           <option value="{{ backend }}" {% if backend == autocomplete %}selected="selected"{% endif %}>{{ backend }}</option>
@@ -140,9 +140,9 @@
     {% endif %}
     {% if 'safesearch' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('SafeSearch') }}</legend>
+      <legend id="pref_safesearch">{{ _('SafeSearch') }}</legend>
       <p class="value">
-        <select name='safesearch'>
+        <select name='safesearch' aria-labelledby="pref_safesearch">
           <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
           <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
           <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
@@ -154,9 +154,9 @@
     {{ plugin_preferences('general') }}
     {% if 'doi_resolver' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Open Access DOI resolver') }}</legend>
+      <legend id="pref_doi_resolver">{{ _('Open Access DOI resolver') }}</legend>
       <p class="value">
-        <select id='doi_resolver' name='doi_resolver'>
+        <select id='doi_resolver' name='doi_resolver' aria-labelledby="pref_doi_resolver">
         {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
           <option value="{{ doi_resolver_name }}" {% if doi_resolver_url == current_doi_resolver %}selected="selected"{% endif %}>
           {{- doi_resolver_name }} - {{ doi_resolver_url -}}
@@ -168,9 +168,9 @@
     </fieldset>
     {% endif %}
     <fieldset>
-      <legend>{{ _('Engine tokens') }}</legend>
+      <legend id="pref_tokens">{{ _('Engine tokens') }}</legend>
       <p class="value">
-        <input name="tokens" type="text" autocomplete="off" spellcheck="false" autocorrect="off" value='{{ preferences.tokens.get_value() }}'/>
+        <input name="tokens" aria-labelledby="pref_tokens" type="text" autocomplete="off" spellcheck="false" autocorrect="off" value='{{ preferences.tokens.get_value() }}'/>
       </p>
       <p class="description">{{ _('Access tokens for private engines') }}</p>
     </fieldset>
@@ -179,9 +179,9 @@
   {{ tab_header('maintab', 'ui', _('User interface')) }}
     {% if 'locale' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Interface language') }}</legend>
+      <legend id="pref_locale">{{ _('Interface language') }}</legend>
       <p class="value">
-        <select name='locale'>
+        <select name='locale' aria-labelledby="pref_locale">
           {%- for locale_id,locale_name in locales.items() | sort -%}
           <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
           {%- endfor -%}
@@ -192,9 +192,9 @@
     {% endif %}
     {% if 'theme' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Theme') }}</legend>
+      <legend id="pref_theme">{{ _('Theme') }}</legend>
       <p class="value">
-        <select name="theme">
+        <select name="theme" aria-labelledby="pref_theme">
           {%- for name in themes -%}
           <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
           {%- endfor -%}
@@ -203,9 +203,9 @@
       <div class="description">{{ _('Change SearXNG layout') }}</div>
     </fieldset>
     <fieldset>
-      <legend>{{ _('Theme style') }}</legend>
+      <legend id="pref_simple_style">{{ _('Theme style') }}</legend>
       <p class="value">
-        <select name="simple_style">
+        <select name="simple_style" aria-labelledby="pref_simple_style">
           {%- for name in ['auto', 'light', 'dark'] -%}
           <option value="{{ name }}" {% if name == preferences.get_value('simple_style') %}selected="selected"{% endif %}>{{ _(name) }}</option>
           {%- endfor -%}
@@ -216,9 +216,9 @@
     {% endif %}
     {% if 'results_on_new_tab' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Results on new tabs') }}</legend>
+      <legend id="pref_results_on_new_tab">{{ _('Results on new tabs') }}</legend>
       <p class="value">
-        <select name='results_on_new_tab'>
+        <select name='results_on_new_tab' aria-labelledby="pref_results_on_new_tab">
           <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
           <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
         </select>
@@ -244,9 +244,9 @@
   {{ tab_header('maintab', 'privacy', _('Privacy')) }}
     {% if 'method' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('HTTP Method') }}</legend>
+      <legend id="pref_method">{{ _('HTTP Method') }}</legend>
       <p class="value">
-        <select name='method'>
+        <select name='method' aria-labelledby="pref_method">
           <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
           <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
         </select>
@@ -256,9 +256,9 @@
     {% endif %}
     {% if 'image_proxy' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _('Image proxy') }}</legend>
+      <legend id="pref_image_proxy">{{ _('Image proxy') }}</legend>
       <p class="value">
-        <select name='image_proxy'>
+        <select name='image_proxy' aria-labelledby="pref_image_proxy">
           <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
           <option value="" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
         </select>
@@ -268,9 +268,9 @@
     {% endif %}
     {% if 'query_in_title' not in locked_preferences %}
     <fieldset>
-      <legend>{{ _("Query in the page's title") }}</legend>
+      <legend id="pref_query_in_title">{{ _("Query in the page's title") }}</legend>
       <p class="value">
-        <select name='query_in_title'>
+        <select name='query_in_title' aria-labelledby="pref_query_in_title">
           <option value="1" {% if query_in_title %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
           <option value="" {% if not query_in_title %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
         </select>

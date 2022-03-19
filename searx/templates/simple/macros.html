@@ -56,11 +56,9 @@
 {%- endmacro -%}
 
 {%- macro tab_header(name, id, label) -%}
-<input type="radio" name="{{ name }}" id="tab_{{ id }}"/>
-<label for="tab_{{ id }}" role="tab"
-       aria-controls="panel{{ id }}">{{ label }}</label>
-<section id="tab-content{{ id }}" role="tabpanel"
-         aria-labelledby="{{ label }}" aria-hidden="false">
+<input type="radio" name="{{ name }}" id="tab-{{ id }}"/>
+<label id="tab-label-{{ label }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
+<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ label }}" aria-hidden="false">
 {%- endmacro -%}
 
 {%- macro tab_footer() -%}

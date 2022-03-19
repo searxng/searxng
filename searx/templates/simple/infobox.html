@@ -1,4 +1,4 @@
-<aside class="infobox">
+<aside class="infobox" aria-label="{{ infobox.infobox }}">
   <h2><bdi>{{ infobox.infobox }}</bdi></h2>
   {% if infobox.img_src %}<img src="{{ image_proxify(infobox.img_src) }}" title="{{ infobox.infobox|striptags }}" alt="{{ infobox.infobox|striptags }}">{%- endif -%}
   <p><bdi>{{ infobox.content | safe }}</bdi></p>

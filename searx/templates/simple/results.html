@@ -20,7 +20,7 @@
 
 <div id="results" class="{{ only_template }}">
     {% if answers -%}
-    <div id="answers"><h4 class="title">{{ _('Answers') }} : </h4>
+    <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
         {%- for answer in answers.values() -%}
         <div class="answer">
               {% if answer.url %}
@@ -64,8 +64,8 @@
         {% endif %}
 
         {% if suggestions %}
-        <div id="suggestions">
-	  <h4 class="title">{{ _('Suggestions') }} : </h4>
+        <div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
+	  <h4 class="title" id="suggestions-title">{{ _('Suggestions') }} : </h4>
 	  <div class="wrapper">
             {% for suggestion in suggestions %}
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
@@ -75,20 +75,20 @@
               <input type="hidden" name="safesearch" value="{{ safesearch }}">
               <input type="hidden" name="theme" value="{{ theme }}">
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-              <input type="submit" class="suggestion" value="&bull; {{ suggestion.title }}">
+              <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
             </form>
             {% endfor %}
 	  </div>
         </div>
         {% endif %}
 
-        <div id="search_url">
-            <h4 class="title">{{ _('Search URL') }} :</h4>
+        <div id="search_url" role="complementary" aria-labelledby="search_url-title">
+            <h4 class="title" id="search_url-title">{{ _('Search URL') }} :</h4>
             <div class="selectable_url"><pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}{% if pageno > 1 %}&amp;pageno={{ pageno }}{% endif %}{% if selected_categories %}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}{% endif %}{% if timeout_limit %}&amp;timeout_limit={{ timeout_limit|urlencode }}{% endif %}</pre></div>
         </div>
-        <div id="apis">
+        <div id="apis" role="complementary" aria-labelledby="apis-title">
           {% if search_formats %}
-          <h4 class="title">{{ _('Download results') }}</h4>
+          <h4 class="title" id="apis-title">{{ _('Download results') }}</h4>
           {% for output_type in search_formats %}
 	  <div class="left">
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
@@ -102,7 +102,7 @@
               <input type="hidden" name="safesearch" value="{{ safesearch }}">
               <input type="hidden" name="format" value="{{ output_type }}">
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-              <input type="submit" value="{{ output_type }}">
+              <input type="submit" role="link" value="{{ output_type }}">
             </form>
 	  </div>
           {% endfor %}
@@ -111,8 +111,8 @@
     </div>
 
     {% if corrections %}
-    <div id="corrections">
-      <h4>{{ _('Try searching for:') }}</h4>
+    <div id="corrections" role="complementary" aria-labelledby="corrections-title">
+      <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
       {% for correction in corrections %}
       <div class="left">
 	<form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
@@ -122,14 +122,14 @@
           <input type="hidden" name="safesearch" value="{{ safesearch }}">
           <input type="hidden" name="theme" value="{{ theme }}">
           {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit }}" >{% endif %}
-          <input type="submit" value="{{ correction.title }}">
+          <input type="submit" role="link" value="{{ correction.title }}">
 	</form>
       </div>
       {% endfor %}
     </div>
     {% endif %}
 
-    <div id="urls">
+    <div id="urls" role="main">
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
@@ -141,10 +141,10 @@
     {% endif %}
     </div>
     <div id="backToTop">
-      <a href="#">{{ icon_small('chevron-up-outline') }}</a>
+      <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('chevron-up-outline') }}</a>
     </div>
     {% if paging %}
-    <nav id="pagination">
+    <nav id="pagination" role="navigation">
         {% if pageno > 1 %}
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
                 <div class="{% if rtl %}right{% else %}left{% endif %}">
@@ -159,7 +159,7 @@
                   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
                   <input type="hidden" name="theme" value="{{ theme }}" >
                   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-                  <button type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
+                  <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
                 </div>
             </form>
         {% endif %}
@@ -176,7 +176,7 @@
               <input type="hidden" name="safesearch" value="{{ safesearch }}" >
               <input type="hidden" name="theme" value="{{ theme }}" >
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-              <button type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
+              <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
             </div>
         </form>
     </nav>
