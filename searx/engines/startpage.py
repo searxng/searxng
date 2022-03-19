@@ -245,7 +245,7 @@ def _fetch_supported_languages(resp):
 
     dom = html.fromstring(resp.text)
     sp_lang_names = []
-    for option in dom.xpath('//form[@id="settings-form"]//select[@name="language"]/option'):
+    for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
         sp_lang_names.append((option.get('value'), extract_text(option).lower()))
 
     supported_languages = {}
