@@ -165,7 +165,7 @@ SCHEMA = {
         'bind_address': SettingsValue(str, '127.0.0.1', 'SEARXNG_BIND_ADDRESS'),
         'limiter': SettingsValue(bool, False),
         'secret_key': SettingsValue(str, environ_name='SEARXNG_SECRET'),
-        'base_url': SettingsValue((False, str), False),
+        'base_url': SettingsValue((False, str), False, 'SEARXNG_BASE_URL'),
         'image_proxy': SettingsValue(bool, False),
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
         'method': SettingsValue(('POST', 'GET'), 'POST'),
