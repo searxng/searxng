@@ -55,8 +55,8 @@
 <div class="tabs" role="tablist">
 {%- endmacro -%}
 
-{%- macro tab_header(name, id, label) -%}
-<input type="radio" name="{{ name }}" id="tab-{{ id }}"/>
+{%- macro tab_header(name, id, label, checked) -%}
+<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %} />
 <label id="tab-label-{{ label }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
 <section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ label }}" aria-hidden="false">
 {%- endmacro -%}

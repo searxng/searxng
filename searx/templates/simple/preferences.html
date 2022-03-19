@@ -102,7 +102,7 @@
 
 {{ tabs_open() }}
 
-  {{ tab_header('maintab', 'general', _('General')) }}
+  {{ tab_header('maintab', 'general', _('General'), True) }}
     {% if 'categories' not in locked_preferences %}
     <fieldset>
       <legend>{{ _('Default categories') }}</legend>
@@ -284,9 +284,11 @@
   {{ tab_header('maintab', 'engines', _('Engines')) }}
     <p>{{ _('Currently used search engines') }}</p>
     {{ tabs_open() }}
-    {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
-    {{ tab_header('enginetab', 'category' + categ, _(categ)) }}
-    {% if categ == OTHER_CATEGORY %}
+     {% set ns = namespace(checked=true) %}
+     {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
+     {{ tab_header('enginetab', 'category' + categ, _(categ), ns.checked )}}
+     {% set ns.checked = false %}
+   {% if categ == OTHER_CATEGORY %}
       <p>{{_('This tab does not show up for search results, but you can search the engines listed here via bangs.')}}</p>
     {% endif %}
     <div class="scrollx">
