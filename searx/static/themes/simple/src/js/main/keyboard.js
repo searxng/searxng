@@ -32,7 +32,7 @@ searxng.ready(function () {
     return resultElement && resultElement.classList.contains('result-images');
   }
 
-  searxng.on('.result', 'click', function (e) {
+  searxng.on('.result', 'mousedown', function (e) {
     if (!isElementInDetail(e.target)) {
       highlightResult(this)(true);
       let resultElement = getResultElement(e.target);
