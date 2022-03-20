@@ -16,6 +16,7 @@ Translation
 
 .. sidebar:: |translated|
 
+   - :ref:`searx.babel_extract`
    - Weblate_
    - SearXNG `translations branch`_
    - SearXNG `Weblate repository`_

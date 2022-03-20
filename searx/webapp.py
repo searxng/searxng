@@ -80,7 +80,6 @@ from searx.webutils import (
     new_hmac,
     is_hmac_of,
     is_flask_run_cmdline,
-    DEFAULT_GROUP_NAME,
     group_engines_in_tab,
 )
 from searx.webadapter import (
@@ -167,35 +166,6 @@ app.secret_key = settings['server']['secret_key']
 
 babel = Babel(app)
 
-# used when translating category names
-_category_names = (
-    gettext('files'),
-    gettext('general'),
-    gettext('music'),
-    gettext('social media'),
-    gettext('images'),
-    gettext('videos'),
-    gettext('it'),
-    gettext('news'),
-    gettext('map'),
-    gettext('onions'),
-    gettext('science'),
-    # non-tab categories
-    gettext('apps'),
-    gettext('dictionaries'),
-    gettext('lyrics'),
-    gettext('packages'),
-    gettext('q&a'),
-    gettext('repos'),
-    gettext('software wikis'),
-    gettext('web'),
-    gettext(DEFAULT_GROUP_NAME),
-    gettext(OTHER_CATEGORY),
-)
-
-_simple_style = (gettext('auto'), gettext('light'), gettext('dark'))
-
-#
 timeout_text = gettext('timeout')
 parsing_error_text = gettext('parsing error')
 http_protocol_error_text = gettext('HTTP protocol error')
