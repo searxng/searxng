@@ -6,192 +6,223 @@
 # asladic <ales.sladic@gmail.com>, 2017-2018
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-19 11:04+0000\n"
+"POT-Creation-Date: 2022-03-20 07:34+0000\n"
 "PO-Revision-Date: 2022-03-20 07:34+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Slovenian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"sl/>\n"
 "Language: sl\n"
+"Language-Team: Slovenian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/sl/>\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 "
+"|| n%100==4 ? 2 : 3\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 4.11\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: searx/webapp.py:172
+#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#: searx/searxng.msg
+msgid "others"
+msgstr ""
+
+#. CONSTANT_NAMES['OTHER_CATEGORY']
+#: searx/searxng.msg
+msgid "other"
+msgstr ""
+
+#. CATEGORY_NAMES['FILES']
+#: searx/searxng.msg
 msgid "files"
 msgstr "datoteke"
 
-#: searx/webapp.py:173
+#. CATEGORY_NAMES['GENERAL']
+#: searx/searxng.msg
 msgid "general"
 msgstr "splošno"
 
-#: searx/webapp.py:174
+#. CATEGORY_NAMES['MUSIC']
+#: searx/searxng.msg
 msgid "music"
 msgstr "glasba"
 
-#: searx/webapp.py:175
+#. CATEGORY_NAMES['SOCIAL_MEDIA']
+#: searx/searxng.msg
 msgid "social media"
 msgstr "družabna omrežja"
 
-#: searx/webapp.py:176
+#. CATEGORY_NAMES['IMAGES']
+#: searx/searxng.msg
 msgid "images"
 msgstr "slike"
 
-#: searx/webapp.py:177
+#. CATEGORY_NAMES['VIDEOS']
+#: searx/searxng.msg
 msgid "videos"
 msgstr "videi"
 
-#: searx/webapp.py:178
+#. CATEGORY_NAMES['IT']
+#: searx/searxng.msg
 msgid "it"
 msgstr "informatika"
 
-#: searx/webapp.py:179
+#. CATEGORY_NAMES['NEWS']
+#: searx/searxng.msg
 msgid "news"
 msgstr "novice"
 
-#: searx/webapp.py:180
+#. CATEGORY_NAMES['MAP']
+#: searx/searxng.msg
 msgid "map"
 msgstr "zemljevid"
 
-#: searx/webapp.py:181
+#. CATEGORY_NAMES['ONIONS']
+#: searx/searxng.msg
 msgid "onions"
 msgstr "čebula"
 
-#: searx/webapp.py:182
+#. CATEGORY_NAMES['SCIENCE']
+#: searx/searxng.msg
 msgid "science"
 msgstr "znanost"
 
-#: searx/webapp.py:184
+#. CATEGORY_GROUPS['APPS']
+#: searx/searxng.msg
 msgid "apps"
 msgstr "aplikacije"
 
-#: searx/webapp.py:185
+#. CATEGORY_GROUPS['DICTIONARIES']
+#: searx/searxng.msg
 msgid "dictionaries"
 msgstr "slovarji"
 
-#: searx/webapp.py:186
+#. CATEGORY_GROUPS['LYRICS']
+#: searx/searxng.msg
 msgid "lyrics"
 msgstr "besedilo"
 
-#: searx/webapp.py:187
+#. CATEGORY_GROUPS['PACKAGES']
+#: searx/searxng.msg
 msgid "packages"
 msgstr "paketi"
 
-#: searx/webapp.py:188
+#. CATEGORY_GROUPS['Q_A']
+#: searx/searxng.msg
 msgid "q&a"
 msgstr "vprašanja in odgovori"
 
-#: searx/webapp.py:189
+#. CATEGORY_GROUPS['REPOS']
+#: searx/searxng.msg
 msgid "repos"
 msgstr "repozitoriji"
 
-#: searx/webapp.py:190
+#. CATEGORY_GROUPS['SOFTWARE_WIKIS']
+#: searx/searxng.msg
 msgid "software wikis"
 msgstr ""
 
-#: searx/webapp.py:191
+#. CATEGORY_GROUPS['WEB']
+#: searx/searxng.msg
 msgid "web"
 msgstr ""
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['AUTO']
+#: searx/searxng.msg
 msgid "auto"
 msgstr "avtomatsko"
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['LIGHT']
+#: searx/searxng.msg
 msgid "light"
 msgstr "svetlo"
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['DARK']
+#: searx/searxng.msg
 msgid "dark"
 msgstr "temno"
 
-#: searx/webapp.py:199
+#: searx/webapp.py:169
 msgid "timeout"
 msgstr "odmor"
 
-#: searx/webapp.py:200
+#: searx/webapp.py:170
 msgid "parsing error"
 msgstr "napaka pri razčlenjevanju"
 
-#: searx/webapp.py:201
+#: searx/webapp.py:171
 msgid "HTTP protocol error"
 msgstr "napaka protokola HTTP"
 
-#: searx/webapp.py:202
+#: searx/webapp.py:172
 msgid "network error"
 msgstr "omrežna napaka"
 
-#: searx/webapp.py:204
+#: searx/webapp.py:174
 msgid "unexpected crash"
 msgstr "nepričakovana zrušitev"
 
-#: searx/webapp.py:211
+#: searx/webapp.py:181
 msgid "HTTP error"
 msgstr "napaka HTTP"
 
-#: searx/webapp.py:212
+#: searx/webapp.py:182
 msgid "HTTP connection error"
 msgstr "napaka povezave HTTP"
 
-#: searx/webapp.py:218
+#: searx/webapp.py:188
 msgid "proxy error"
 msgstr "napaka proxyja"
 
-#: searx/webapp.py:219
+#: searx/webapp.py:189
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:220
+#: searx/webapp.py:190
 msgid "too many requests"
 msgstr "preveč prošenj"
 
-#: searx/webapp.py:221
+#: searx/webapp.py:191
 msgid "access denied"
 msgstr "dostop zavrnjen"
 
-#: searx/webapp.py:222
+#: searx/webapp.py:192
 msgid "server API error"
 msgstr "napaka API strežnika"
 
-#: searx/webapp.py:440
+#: searx/webapp.py:410
 msgid "No item found"
 msgstr "Ni zadetkov"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:442
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
 msgid "Source"
 msgstr "Vir"
 
-#: searx/webapp.py:444
+#: searx/webapp.py:414
 msgid "Error loading the next page"
 msgstr "Napaka pri nalaganju naslednje strani"
 
-#: searx/webapp.py:556 searx/webapp.py:997
+#: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neveljavne nastavitve. Prosimo, preverite vašo konfiguracijo"
 
-#: searx/webapp.py:572
+#: searx/webapp.py:542
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: searx/webapp.py:648 searx/webapp.py:724
+#: searx/webapp.py:618 searx/webapp.py:694
 msgid "search error"
 msgstr "napaka pri iskanju"
 
-#: searx/webapp.py:770
+#: searx/webapp.py:740
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut nazaj"
 
-#: searx/webapp.py:772
+#: searx/webapp.py:742
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} urami in {minutes} minut"
 
-#: searx/webapp.py:901
+#: searx/webapp.py:871
 msgid "Suspended"
 msgstr "Prekinjeno"
 
@@ -403,8 +434,8 @@ msgstr "preko posredniškega strežnika"
 #: searx/templates/oscar/preferences.html:344
 #: searx/templates/oscar/preferences.html:362
 #: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:295
-#: searx/templates/simple/preferences.html:346
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
 msgid "Allow"
 msgstr "Dovoli"
 
@@ -510,13 +541,13 @@ msgid "Engines"
 msgstr "Iskalniki"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:341
+#: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:381
+#: searx/templates/simple/preferences.html:383
 msgid "Cookies"
 msgstr "Piškotki"
 
@@ -545,7 +576,7 @@ msgstr "V katerem jeziku želite iskati?"
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:301
 msgid "SafeSearch"
 msgstr "Varno iskanje"
 
@@ -741,7 +772,7 @@ msgid "Disable all"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:290
+#: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -750,14 +781,14 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:296
+#: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Ime iskalnika"
 
 #: searx/templates/oscar/preferences.html:346
 #: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Bližnjica"
 
@@ -770,28 +801,28 @@ msgstr "Izbrani jezik"
 #: searx/templates/oscar/preferences.html:357
 #: searx/templates/oscar/time-range.html:2
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:300
+#: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Časovni razpon"
 
 #: searx/templates/oscar/preferences.html:350
 #: searx/templates/oscar/preferences.html:356
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Največji čas"
 
 #: searx/templates/oscar/preferences.html:352
 #: searx/templates/oscar/preferences.html:354
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr ""
@@ -801,59 +832,59 @@ msgid "Query"
 msgstr "Poizvedba"
 
 #: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:347
+#: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Ključne besede"
 
 #: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:348
+#: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Ime"
 
 #: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:349
+#: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Opis"
 
 #: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:350
+#: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Primeri"
 
 #: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:353
+#: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:364
+#: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:383
+#: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:384
+#: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:389
+#: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Ime piškotka"
 
 #: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:390
+#: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Vrednost"
 
 #: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:411
+#: searx/templates/simple/preferences.html:413
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -862,19 +893,19 @@ msgstr ""
 "hranimo teh podatkov o vas."
 
 #: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:413
+#: searx/templates/simple/preferences.html:415
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr "Ti piškotki so za boljšo izkušnjo, ne uporabljamo jih za sledenje."
 
 #: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "Iskalni URL trenutno shranjenih nastavitev"
 
 #: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:406
+#: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -891,7 +922,7 @@ msgid "back"
 msgstr "nazaj"
 
 #: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:417
+#: searx/templates/simple/preferences.html:419
 msgid "Reset defaults"
 msgstr "Ponastavi na privzeto"
 
@@ -1262,15 +1293,15 @@ msgstr ""
 msgid "Currently used search engines"
 msgstr "Trenutno uporabljeni iskalniki"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:300
 msgid "Supports selected language"
 msgstr "Podpira izbrani jezik"
 
-#: searx/templates/simple/preferences.html:416
+#: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:420
 msgid "Back"
 msgstr ""
 
@@ -1443,3 +1474,4 @@ msgstr ""
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+

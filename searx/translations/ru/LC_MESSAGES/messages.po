@@ -12,193 +12,224 @@
 # Дмитрий Михирев, 2016-2017
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-19 11:04+0000\n"
+"POT-Creation-Date: 2022-03-20 07:34+0000\n"
 "PO-Revision-Date: 2022-03-20 07:34+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
-">\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.11\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: searx/webapp.py:172
+#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#: searx/searxng.msg
+msgid "others"
+msgstr ""
+
+#. CONSTANT_NAMES['OTHER_CATEGORY']
+#: searx/searxng.msg
+msgid "other"
+msgstr ""
+
+#. CATEGORY_NAMES['FILES']
+#: searx/searxng.msg
 msgid "files"
 msgstr "Файлы"
 
-#: searx/webapp.py:173
+#. CATEGORY_NAMES['GENERAL']
+#: searx/searxng.msg
 msgid "general"
 msgstr "Общие"
 
-#: searx/webapp.py:174
+#. CATEGORY_NAMES['MUSIC']
+#: searx/searxng.msg
 msgid "music"
 msgstr "Музыка"
 
-#: searx/webapp.py:175
+#. CATEGORY_NAMES['SOCIAL_MEDIA']
+#: searx/searxng.msg
 msgid "social media"
 msgstr "Соцсети"
 
-#: searx/webapp.py:176
+#. CATEGORY_NAMES['IMAGES']
+#: searx/searxng.msg
 msgid "images"
 msgstr "Картинки"
 
-#: searx/webapp.py:177
+#. CATEGORY_NAMES['VIDEOS']
+#: searx/searxng.msg
 msgid "videos"
 msgstr "Видео"
 
-#: searx/webapp.py:178
+#. CATEGORY_NAMES['IT']
+#: searx/searxng.msg
 msgid "it"
 msgstr "ИТ"
 
-#: searx/webapp.py:179
+#. CATEGORY_NAMES['NEWS']
+#: searx/searxng.msg
 msgid "news"
 msgstr "Новости"
 
-#: searx/webapp.py:180
+#. CATEGORY_NAMES['MAP']
+#: searx/searxng.msg
 msgid "map"
 msgstr "Карты"
 
-#: searx/webapp.py:181
+#. CATEGORY_NAMES['ONIONS']
+#: searx/searxng.msg
 msgid "onions"
 msgstr ".onion"
 
-#: searx/webapp.py:182
+#. CATEGORY_NAMES['SCIENCE']
+#: searx/searxng.msg
 msgid "science"
 msgstr "Наука"
 
-#: searx/webapp.py:184
+#. CATEGORY_GROUPS['APPS']
+#: searx/searxng.msg
 msgid "apps"
 msgstr "Программы"
 
-#: searx/webapp.py:185
+#. CATEGORY_GROUPS['DICTIONARIES']
+#: searx/searxng.msg
 msgid "dictionaries"
 msgstr "Словари"
 
-#: searx/webapp.py:186
+#. CATEGORY_GROUPS['LYRICS']
+#: searx/searxng.msg
 msgid "lyrics"
 msgstr "Текст песни"
 
-#: searx/webapp.py:187
+#. CATEGORY_GROUPS['PACKAGES']
+#: searx/searxng.msg
 msgid "packages"
 msgstr "Пакеты"
 
-#: searx/webapp.py:188
+#. CATEGORY_GROUPS['Q_A']
+#: searx/searxng.msg
 msgid "q&a"
 msgstr "Вопросы-ответы"
 
-#: searx/webapp.py:189
+#. CATEGORY_GROUPS['REPOS']
+#: searx/searxng.msg
 msgid "repos"
 msgstr "Репозитории"
 
-#: searx/webapp.py:190
+#. CATEGORY_GROUPS['SOFTWARE_WIKIS']
+#: searx/searxng.msg
 msgid "software wikis"
 msgstr "Программная документация"
 
-#: searx/webapp.py:191
+#. CATEGORY_GROUPS['WEB']
+#: searx/searxng.msg
 msgid "web"
 msgstr "Веб"
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['AUTO']
+#: searx/searxng.msg
 msgid "auto"
 msgstr "автоматически"
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['LIGHT']
+#: searx/searxng.msg
 msgid "light"
 msgstr "светлая"
 
-#: searx/webapp.py:196
+#. STYLE_NAMES['DARK']
+#: searx/searxng.msg
 msgid "dark"
 msgstr "тёмная"
 
-#: searx/webapp.py:199
+#: searx/webapp.py:169
 msgid "timeout"
 msgstr "перерыв"
 
-#: searx/webapp.py:200
+#: searx/webapp.py:170
 msgid "parsing error"
 msgstr "ошибка разбора"
 
-#: searx/webapp.py:201
+#: searx/webapp.py:171
 msgid "HTTP protocol error"
 msgstr "ошибка протокола HTTP"
 
-#: searx/webapp.py:202
+#: searx/webapp.py:172
 msgid "network error"
 msgstr "сетевая ошибка"
 
-#: searx/webapp.py:204
+#: searx/webapp.py:174
 msgid "unexpected crash"
 msgstr "непредвиденная ошибка"
 
-#: searx/webapp.py:211
+#: searx/webapp.py:181
 msgid "HTTP error"
 msgstr "ошибка HTTP"
 
-#: searx/webapp.py:212
+#: searx/webapp.py:182
 msgid "HTTP connection error"
 msgstr "ошибка HTTP-соединения"
 
-#: searx/webapp.py:218
+#: searx/webapp.py:188
 msgid "proxy error"
 msgstr "ошибка прокси"
 
-#: searx/webapp.py:219
+#: searx/webapp.py:189
 msgid "CAPTCHA"
 msgstr "КАПЧА"
 
-#: searx/webapp.py:220
+#: searx/webapp.py:190
 msgid "too many requests"
 msgstr "слишком много запросов"
 
-#: searx/webapp.py:221
+#: searx/webapp.py:191
 msgid "access denied"
 msgstr "доступ запрещён"
 
-#: searx/webapp.py:222
+#: searx/webapp.py:192
 msgid "server API error"
 msgstr "ошибка API сервера"
 
-#: searx/webapp.py:440
+#: searx/webapp.py:410
 msgid "No item found"
 msgstr "Ничего не найдено"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:442
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
 msgid "Source"
 msgstr "Источник"
 
-#: searx/webapp.py:444
+#: searx/webapp.py:414
 msgid "Error loading the next page"
 msgstr "Не удалось загрузить следующую страницу"
 
-#: searx/webapp.py:556 searx/webapp.py:997
+#: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
-#: searx/webapp.py:572
+#: searx/webapp.py:542
 msgid "Invalid settings"
 msgstr "Неверные настройки"
 
-#: searx/webapp.py:648 searx/webapp.py:724
+#: searx/webapp.py:618 searx/webapp.py:694
 msgid "search error"
 msgstr "ошибка поиска"
 
-#: searx/webapp.py:770
+#: searx/webapp.py:740
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} минут(а) назад"
 
-#: searx/webapp.py:772
+#: searx/webapp.py:742
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} час(ов), {minutes} минут(а) назад"
 
-#: searx/webapp.py:901
+#: searx/webapp.py:871
 msgid "Suspended"
 msgstr "Приостановлено"
 
@@ -408,8 +439,8 @@ msgstr "через прокси"
 #: searx/templates/oscar/preferences.html:344
 #: searx/templates/oscar/preferences.html:362
 #: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:295
-#: searx/templates/simple/preferences.html:346
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
 msgid "Allow"
 msgstr "Разрешить"
 
@@ -515,13 +546,13 @@ msgid "Engines"
 msgstr "Поисковые системы"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:341
+#: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
 msgstr "Особые запросы"
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:381
+#: searx/templates/simple/preferences.html:383
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -550,7 +581,7 @@ msgstr "Какой язык предпочтителен для поиска?"
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:301
 msgid "SafeSearch"
 msgstr "Безопасный поиск"
 
@@ -748,7 +779,7 @@ msgid "Disable all"
 msgstr "Выключить все"
 
 #: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:290
+#: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -759,14 +790,14 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:296
+#: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Поисковая система"
 
 #: searx/templates/oscar/preferences.html:346
 #: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Сокращение"
 
@@ -779,28 +810,28 @@ msgstr "Выбранный язык"
 #: searx/templates/oscar/preferences.html:357
 #: searx/templates/oscar/time-range.html:2
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:300
+#: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Временной диапазон"
 
 #: searx/templates/oscar/preferences.html:350
 #: searx/templates/oscar/preferences.html:356
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Время отклика"
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Максимальное время"
 
 #: searx/templates/oscar/preferences.html:352
 #: searx/templates/oscar/preferences.html:354
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Надёжность"
@@ -810,59 +841,59 @@ msgid "Query"
 msgstr "Запрос"
 
 #: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:347
+#: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Ключевые слова"
 
 #: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:348
+#: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Название"
 
 #: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:349
+#: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Описание"
 
 #: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:350
+#: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Пример"
 
 #: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:353
+#: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Модули SearXNG с мгновенным ответом."
 
 #: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:364
+#: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr "Список плагинов."
 
 #: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:383
+#: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr "Список cookies и их значений, которые SearXNG хранит в вашем браузере."
 
 #: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:384
+#: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "С этим списком, Вы можете использовать SearXNG прозрачно."
 
 #: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:389
+#: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Cookie"
 
 #: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:390
+#: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Значение"
 
 #: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:411
+#: searx/templates/simple/preferences.html:413
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -871,7 +902,7 @@ msgstr ""
 "хранить о вас никаких данных на серверах."
 
 #: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:413
+#: searx/templates/simple/preferences.html:415
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -880,12 +911,12 @@ msgstr ""
 "для слежки."
 
 #: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "URL с сохраненными настройками"
 
 #: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:406
+#: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -902,7 +933,7 @@ msgid "back"
 msgstr "Назад"
 
 #: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:417
+#: searx/templates/simple/preferences.html:419
 msgid "Reset defaults"
 msgstr "Восстановить настройки по умолчанию"
 
@@ -1275,15 +1306,15 @@ msgstr "Выберите \"автоматически\" для использо�
 msgid "Currently used search engines"
 msgstr "Используемые поисковые системы"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:300
 msgid "Supports selected language"
 msgstr "Выбор языка"
 
-#: searx/templates/simple/preferences.html:416
+#: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "Сохранить"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:420
 msgid "Back"
 msgstr "Назад"
 
@@ -1459,3 +1490,4 @@ msgstr "Движок"
 #~ "На этой вкладке отсутсвуют результаты, "
 #~ "но вы можете использовать поисковики "
 #~ "перечисленные ниже."
+
