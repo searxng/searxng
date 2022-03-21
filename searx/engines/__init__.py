@@ -44,6 +44,7 @@ ENGINE_DEFAULT_ARGS = {
     "enable_http": False,
     "using_tor_proxy": False,
     "display_error_messages": True,
+    "rate_limit": { "max_requests": float('inf'), "interval": 1 },
     "tokens": [],
     "about": {},
 }
@@ -168,6 +169,11 @@ def update_engine_attributes(engine: Engine, engine_data):
             engine.categories = param_value
         elif hasattr(engine, 'about') and param_name == 'about':
             engine.about = {**engine.about, **engine_data['about']}
+        elif hasattr(engine, 'rate_limit') and param_name == 'rate_limit':
+            engine.rate_limit = {
+                'max_requests': int(param_value.get('max_requests')),
+                'interval': int(param_value.get('interval', 1))
+            }
         else:
             setattr(engine, param_name, param_value)
 

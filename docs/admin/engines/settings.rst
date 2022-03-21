@@ -422,6 +422,9 @@ engine is shown.  Most of the options have a default value or even are optional.
      max_connections: 100
      max_keepalive_connections: 10
      keepalive_expiry: 5.0
+     rate_limit:
+        max_requests: 200
+        interval: 60
      proxies:
        http:
          - http://proxy1:8080
@@ -486,6 +489,15 @@ engine is shown.  Most of the options have a default value or even are optional.
 
   - ``ipv4`` set ``local_addresses`` to ``0.0.0.0`` (use only IPv4 local addresses)
   - ``ipv6`` set ``local_addresses`` to ``::`` (use only IPv6 local addresses)
+
+``rate_limit``: optional
+  Limit how many outgoing requests is SearXNG going to send to the engines.
+  Requires :ref:`Redis <settings redis>`.
+
+  - ``max_requests`` is the maximum number of requests that will be sent to this
+    engine per interval.
+  - ``interval`` (optional) is the number of seconds before this engine's rate
+    limiter is reset. Defaults to 1 second if unspecified.
 
 .. note::
 
