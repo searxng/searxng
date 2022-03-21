@@ -123,6 +123,7 @@ extensions = [
     'linuxdoc.kfigure',         # Sphinx extension which implements scalable image handling.
     "sphinx_tabs.tabs", # https://github.com/djungelorm/sphinx-tabs
     'myst_parser',  # https://www.sphinx-doc.org/en/master/usage/markdown.html
+    'notfound.extension',  # https://github.com/readthedocs/sphinx-notfound-page
 ]
 
 suppress_warnings = ['myst.domains']
@@ -139,6 +140,10 @@ intersphinx_mapping = {
 issues_github_path = "searxng/searxng"
 
 # HTML -----------------------------------------------------------------
+
+# https://searxng.github.io/searxng --> '/searxng/'
+# https://docs.searxng.org --> '/'
+notfound_urls_prefix = '/'
 
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../utils/"))
