@@ -87,7 +87,7 @@ the :origin:`setup.py` file, you have to call :ref:`make clean`.
 =================
 
 Rebuild instance's environment with the modified settings from the
-:ref:`settings global brand` and :ref:`settings global server` section of your
+:ref:`settings brand` and :ref:`settings server` section of your
 :ref:`settings.yml <settings location>`.
 
 We have all SearXNG setups are centralized in the :ref:`settings.yml` file.
@@ -107,10 +107,10 @@ The ``make buildenv`` target will update the *build environment* in:
 Tasks running outside of an *installed instance*, need the following settings
 from the YAML configuration:
 
-- ``SEARXNG_URL`` from :ref:`server.base_url <settings global server>` (aka
+- ``SEARXNG_URL`` from :ref:`server.base_url <settings  server>` (aka
   ``PUBLIC_URL``)
-- ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings global server>`
-- ``SEARXNG_PORT`` from :ref:`server.port <settings global server>`
+- ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings server>`
+- ``SEARXNG_PORT`` from :ref:`server.port <settings server>`
 
 .. _make node.env:
 
