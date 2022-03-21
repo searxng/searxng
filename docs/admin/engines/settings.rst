@@ -123,6 +123,24 @@ Global Settings
   Default search language - leave blank to detect from browser information or
   use codes from :origin:`searx/languages.py`.
 
+``languages``:
+  List of available languages - leave unset to use all codes from
+  :origin:`searx/languages.py`.  Otherwise list codes of available languages.
+  The ``all`` value is shown as the ``Default language`` in the user interface
+  (in most cases, it is meant to send the query without a language parameter ;
+  in some cases, it means the English language) Example:
+
+  .. code:: yaml
+
+     languages:
+       - all
+       - en
+       - en-US
+       - de
+       - it-IT
+       - fr
+       - fr-BE
+
 ``ban_time_on_fail``:
   Ban time in seconds after engine errors.
 
