@@ -70,8 +70,11 @@
             {% for suggestion in suggestions %}
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
               <input type="hidden" name="q" value="{{ suggestion.url }}">
-              <input type="hidden" name="time_range" value="{{ time_range }}">
+              {% for category in selected_categories %}
+              <input type="hidden" name="category_{{ category }}" value="1">
+              {% endfor %}
               <input type="hidden" name="language" value="{{ current_language }}">
+              <input type="hidden" name="time_range" value="{{ time_range }}">
               <input type="hidden" name="safesearch" value="{{ safesearch }}">
               <input type="hidden" name="theme" value="{{ theme }}">
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
@@ -82,10 +85,12 @@
         </div>
         {% endif %}
 
+        {% if method == 'POST' %}
         <div id="search_url" role="complementary" aria-labelledby="search_url-title">
             <h4 class="title" id="search_url-title">{{ _('Search URL') }} :</h4>
             <div class="selectable_url"><pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}{% if pageno > 1 %}&amp;pageno={{ pageno }}{% endif %}{% if selected_categories %}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}{% endif %}{% if timeout_limit %}&amp;timeout_limit={{ timeout_limit|urlencode }}{% endif %}</pre></div>
         </div>
+        {% endif %}
         <div id="apis" role="complementary" aria-labelledby="apis-title">
           {% if search_formats %}
           <h4 class="title" id="apis-title">{{ _('Download results') }}</h4>
@@ -97,8 +102,8 @@
               <input type="hidden" name="category_{{ category }}" value="1">
               {% endfor %}
               <input type="hidden" name="pageno" value="{{ pageno }}">
-              <input type="hidden" name="time_range" value="{{ time_range }}">
               <input type="hidden" name="language" value="{{ current_language }}">
+              <input type="hidden" name="time_range" value="{{ time_range }}">
               <input type="hidden" name="safesearch" value="{{ safesearch }}">
               <input type="hidden" name="format" value="{{ output_type }}">
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
@@ -115,15 +120,18 @@
       <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
       {% for correction in corrections %}
       <div class="left">
-	<form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
+	      <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
+          {% for category in selected_categories %}
+          <input type="hidden" name="category_{{ category }}" value="1">
+          {% endfor %}
           <input type="hidden" name="q" value="{{ correction.url }}">
-          <input type="hidden" name="time_range" value="{{ time_range }}">
           <input type="hidden" name="language" value="{{ current_language }}">
+          <input type="hidden" name="time_range" value="{{ time_range }}">
           <input type="hidden" name="safesearch" value="{{ safesearch }}">
           <input type="hidden" name="theme" value="{{ theme }}">
           {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit }}" >{% endif %}
           <input type="submit" role="link" value="{{ correction.title }}">
-	</form>
+	      </form>
       </div>
       {% endfor %}
     </div>
@@ -149,16 +157,16 @@
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
                 <div class="{% if rtl %}right{% else %}left{% endif %}">
                   <input type="hidden" name="q" value="{{ q|e }}" >
-                  {{- engine_data_form(engine_data) -}}
                   {% for category in selected_categories %}
                   <input type="hidden" name="category_{{ category }}" value="1" >
                   {% endfor %}
                   <input type="hidden" name="pageno" value="{{ pageno-1 }}" >
-                  <input type="hidden" name="time_range" value="{{ time_range }}" >
                   <input type="hidden" name="language" value="{{ current_language }}" >
+                  <input type="hidden" name="time_range" value="{{ time_range }}" >
                   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
                   <input type="hidden" name="theme" value="{{ theme }}" >
                   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+                  {{- engine_data_form(engine_data) -}}
                   <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
                 </div>
             </form>
@@ -166,16 +174,16 @@
         <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
             <div class="{% if rtl %}left{% else %}right{% endif %}">
               <input type="hidden" name="q" value="{{ q|e }}" >
-              {{- engine_data_form(engine_data) -}}
               {% for category in selected_categories %}
               <input type="hidden" name="category_{{ category }}" value="1" >
               {% endfor %}
               <input type="hidden" name="pageno" value="{{ pageno+1 }}" >
-              <input type="hidden" name="time_range" value="{{ time_range }}" >
               <input type="hidden" name="language" value="{{ current_language }}" >
+              <input type="hidden" name="time_range" value="{{ time_range }}" >
               <input type="hidden" name="safesearch" value="{{ safesearch }}" >
               <input type="hidden" name="theme" value="{{ theme }}" >
               {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+              {{- engine_data_form(engine_data) -}}
               <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
             </div>
         </form>
