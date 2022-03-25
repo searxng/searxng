@@ -13,7 +13,7 @@ import json
 import re
 from os.path import join
 from urllib.parse import urlparse, urljoin
-from distutils.version import LooseVersion
+from distutils.version import LooseVersion  # pylint: disable=deprecated-module
 
 import requests
 from lxml import html
