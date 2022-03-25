@@ -350,10 +350,11 @@ def custom_url_for(endpoint: str, override_theme: Optional[str] = None, **values
     if endpoint == 'static' and values.get('filename'):
         theme_name = get_current_theme_name(override=override_theme)
         filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
-        file_hash = static_files.get(filename_with_theme)
-        if file_hash:
-            values['filename'] = filename_with_theme
-            suffix = "?" + file_hash
+        values['filename'] = filename_with_theme
+        if get_setting('ui.static_use_hash', False):
+            file_hash = static_files.get(filename_with_theme)
+            if file_hash:
+                suffix = "?" + file_hash
     if endpoint == 'info' and 'locale' not in values:
         locale = request.preferences.get_value('locale')
         if _INFO_PAGES.get_page(values['pagename'], locale) is None:
