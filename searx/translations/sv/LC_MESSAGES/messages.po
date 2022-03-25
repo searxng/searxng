@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-21 11:52+0000\n"
+"POT-Creation-Date: 2022-03-20 07:34+0000\n"
 "PO-Revision-Date: 2022-02-11 07:15+0000\n"
 "Last-Translator: Justas Zabulionis <justas.zabulionis@gmail.com>\n"
 "Language: sv\n"
@@ -22,176 +22,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: searx/webapp.py:170
+#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#: searx/searxng.msg
+msgid "others"
+msgstr ""
+
+#. CONSTANT_NAMES['OTHER_CATEGORY']
+#: searx/searxng.msg
+msgid "other"
+msgstr ""
+
+#. CATEGORY_NAMES['FILES']
+#: searx/searxng.msg
 msgid "files"
 msgstr "filer"
 
-#: searx/webapp.py:171
+#. CATEGORY_NAMES['GENERAL']
+#: searx/searxng.msg
 msgid "general"
 msgstr "allmänt"
 
-#: searx/webapp.py:172
+#. CATEGORY_NAMES['MUSIC']
+#: searx/searxng.msg
 msgid "music"
 msgstr "musik"
 
-#: searx/webapp.py:173
+#. CATEGORY_NAMES['SOCIAL_MEDIA']
+#: searx/searxng.msg
 msgid "social media"
 msgstr "sociala medier"
 
-#: searx/webapp.py:174
+#. CATEGORY_NAMES['IMAGES']
+#: searx/searxng.msg
 msgid "images"
 msgstr "bilder"
 
-#: searx/webapp.py:175
+#. CATEGORY_NAMES['VIDEOS']
+#: searx/searxng.msg
 msgid "videos"
 msgstr "videor"
 
-#: searx/webapp.py:176
+#. CATEGORY_NAMES['IT']
+#: searx/searxng.msg
 msgid "it"
 msgstr "it"
 
-#: searx/webapp.py:177
+#. CATEGORY_NAMES['NEWS']
+#: searx/searxng.msg
 msgid "news"
 msgstr "nyheter"
 
-#: searx/webapp.py:178
+#. CATEGORY_NAMES['MAP']
+#: searx/searxng.msg
 msgid "map"
 msgstr "karta"
 
-#: searx/webapp.py:179
+#. CATEGORY_NAMES['ONIONS']
+#: searx/searxng.msg
 msgid "onions"
 msgstr "lökar"
 
-#: searx/webapp.py:180
+#. CATEGORY_NAMES['SCIENCE']
+#: searx/searxng.msg
 msgid "science"
 msgstr "vetenskap"
 
-#: searx/webapp.py:182
+#. CATEGORY_GROUPS['APPS']
+#: searx/searxng.msg
 msgid "apps"
 msgstr "appar"
 
-#: searx/webapp.py:183
+#. CATEGORY_GROUPS['DICTIONARIES']
+#: searx/searxng.msg
 msgid "dictionaries"
 msgstr "uppslagsverk"
 
-#: searx/webapp.py:184
+#. CATEGORY_GROUPS['LYRICS']
+#: searx/searxng.msg
 msgid "lyrics"
 msgstr "låttext"
 
-#: searx/webapp.py:185
+#. CATEGORY_GROUPS['PACKAGES']
+#: searx/searxng.msg
 msgid "packages"
 msgstr "paket"
 
-#: searx/webapp.py:186
+#. CATEGORY_GROUPS['Q_A']
+#: searx/searxng.msg
 msgid "q&a"
 msgstr "frågor och svar"
 
-#: searx/webapp.py:187
+#. CATEGORY_GROUPS['REPOS']
+#: searx/searxng.msg
 msgid "repos"
 msgstr "kodförråd"
 
-#: searx/webapp.py:188
+#. CATEGORY_GROUPS['SOFTWARE_WIKIS']
+#: searx/searxng.msg
 msgid "software wikis"
 msgstr "mjukvaruwikier"
 
-#: searx/webapp.py:189
+#. CATEGORY_GROUPS['WEB']
+#: searx/searxng.msg
 msgid "web"
 msgstr "webb"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['AUTO']
+#: searx/searxng.msg
 msgid "auto"
 msgstr "auto"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['LIGHT']
+#: searx/searxng.msg
 msgid "light"
 msgstr "ljus"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['DARK']
+#: searx/searxng.msg
 msgid "dark"
 msgstr "mörk"
 
-#: searx/webapp.py:197
+#: searx/webapp.py:169
 msgid "timeout"
 msgstr "timeout"
 
-#: searx/webapp.py:198
+#: searx/webapp.py:170
 msgid "parsing error"
 msgstr "tolkningsfel"
 
-#: searx/webapp.py:199
+#: searx/webapp.py:171
 msgid "HTTP protocol error"
 msgstr "HTTP-protokollfel"
 
-#: searx/webapp.py:200
+#: searx/webapp.py:172
 msgid "network error"
 msgstr "nätverksfel"
 
-#: searx/webapp.py:202
+#: searx/webapp.py:174
 msgid "unexpected crash"
 msgstr "oförutsedd krasch"
 
-#: searx/webapp.py:209
+#: searx/webapp.py:181
 msgid "HTTP error"
 msgstr "HTTP-fel"
 
-#: searx/webapp.py:210
+#: searx/webapp.py:182
 msgid "HTTP connection error"
 msgstr "HTTP-uppkopplingsfel"
 
-#: searx/webapp.py:216
+#: searx/webapp.py:188
 msgid "proxy error"
 msgstr "proxyfel"
 
-#: searx/webapp.py:217
+#: searx/webapp.py:189
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:218
+#: searx/webapp.py:190
 msgid "too many requests"
 msgstr "för många förfrågningar"
 
-#: searx/webapp.py:219
+#: searx/webapp.py:191
 msgid "access denied"
 msgstr "åtkomst nekad"
 
-#: searx/webapp.py:220
+#: searx/webapp.py:192
 msgid "server API error"
 msgstr "server API-fel"
 
-#: searx/webapp.py:431
+#: searx/webapp.py:410
 msgid "No item found"
 msgstr "Inga artiklar hittade"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:433
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
 msgid "Source"
 msgstr "Källa"
 
-#: searx/webapp.py:435
+#: searx/webapp.py:414
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:547 searx/webapp.py:967
+#: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
-#: searx/webapp.py:563
+#: searx/webapp.py:542
 msgid "Invalid settings"
 msgstr "Ogiltiga inställningar"
 
-#: searx/webapp.py:639 searx/webapp.py:714
+#: searx/webapp.py:618 searx/webapp.py:694
 msgid "search error"
 msgstr "sökfel"
 
-#: searx/webapp.py:757
+#: searx/webapp.py:740
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
-#: searx/webapp.py:759
+#: searx/webapp.py:742
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
 
-#: searx/webapp.py:875
+#: searx/webapp.py:871
 msgid "Suspended"
 msgstr "Avstängd"
 
@@ -402,8 +434,8 @@ msgstr "proxade"
 #: searx/templates/oscar/preferences.html:344
 #: searx/templates/oscar/preferences.html:362
 #: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:295
-#: searx/templates/simple/preferences.html:344
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
 msgid "Allow"
 msgstr "Tillåt"
 
@@ -509,13 +541,13 @@ msgid "Engines"
 msgstr "Sökmotorer"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:339
+#: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:379
+#: searx/templates/simple/preferences.html:383
 msgid "Cookies"
 msgstr "Kakor"
 
@@ -526,6 +558,7 @@ msgid "Default categories"
 msgstr "Standardkategorier"
 
 #: searx/templates/oscar/preferences.html:133
+#: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "Sökspråk"
@@ -538,11 +571,12 @@ msgstr "Vilket språk föredrar du för att söka?"
 #: searx/templates/oscar/preferences.html:141
 #: searx/templates/oscar/preferences.html:348
 #: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:301
 msgid "SafeSearch"
 msgstr "SafeSearch"
 
@@ -738,7 +772,7 @@ msgid "Disable all"
 msgstr "Inaktivera alla"
 
 #: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:290
+#: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -747,14 +781,14 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:296
+#: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Sökmotorns namn"
 
 #: searx/templates/oscar/preferences.html:346
 #: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Genväg"
 
@@ -766,28 +800,29 @@ msgstr "Valt språk"
 #: searx/templates/oscar/preferences.html:349
 #: searx/templates/oscar/preferences.html:357
 #: searx/templates/oscar/time-range.html:2
-#: searx/templates/simple/preferences.html:300
+#: searx/templates/simple/filters/time_range.html:1
+#: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Tidsintervall"
 
 #: searx/templates/oscar/preferences.html:350
 #: searx/templates/oscar/preferences.html:356
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Svarstid"
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Max tid"
 
 #: searx/templates/oscar/preferences.html:352
 #: searx/templates/oscar/preferences.html:354
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr ""
@@ -797,37 +832,37 @@ msgid "Query"
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:345
+#: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Nyckelord"
 
 #: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:346
+#: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Namn"
 
 #: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:347
+#: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Beskrivning"
 
 #: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:348
+#: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Exempel"
 
 #: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:351
+#: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Detta är listan med SearXNG:s direktsvarande moduler."
 
 #: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr "Detta är listan med plugins."
 
 #: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:381
+#: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
@@ -836,22 +871,22 @@ msgstr ""
 "dator."
 
 #: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:382
+#: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr ""
 
 #: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:387
+#: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Kaknamn"
 
 #: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:388
+#: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Värde"
 
 #: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:409
+#: searx/templates/simple/preferences.html:413
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -860,7 +895,7 @@ msgstr ""
 "data om dig."
 
 #: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:411
+#: searx/templates/simple/preferences.html:415
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -869,12 +904,12 @@ msgstr ""
 "för att spåra dig."
 
 #: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:400
+#: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "Sökadressen för de för nuvarande sparade inställningarna"
 
 #: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -891,7 +926,7 @@ msgid "back"
 msgstr "tillbaka"
 
 #: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:419
 msgid "Reset defaults"
 msgstr "Återställ standardvärden"
 
@@ -1238,7 +1273,7 @@ msgstr "göm video"
 msgid "Length"
 msgstr "Längd"
 
-#: searx/templates/simple/categories.html:16
+#: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
 msgstr "Klicka på förstoringsglaset för att utföra sökning"
 
@@ -1262,15 +1297,15 @@ msgstr ""
 msgid "Currently used search engines"
 msgstr "För tillfället används sökmotorer"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:300
 msgid "Supports selected language"
 msgstr "Stöder valda språket"
 
-#: searx/templates/simple/preferences.html:414
+#: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "Spara"
 
-#: searx/templates/simple/preferences.html:416
+#: searx/templates/simple/preferences.html:420
 msgid "Back"
 msgstr ""
 
@@ -1278,13 +1313,21 @@ msgstr ""
 msgid "Answers"
 msgstr "Svar"
 
-#: searx/templates/simple/results.html:164
+#: searx/templates/simple/results.html:144
+msgid "Back to top"
+msgstr ""
+
+#: searx/templates/simple/results.html:162
 msgid "Previous page"
 msgstr "Föregående sida"
 
-#: searx/templates/simple/results.html:181
+#: searx/templates/simple/results.html:179
 msgid "Next page"
 msgstr "Nästa sida"
+
+#: searx/templates/simple/search.html:3
+msgid "Display the front page"
+msgstr ""
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
