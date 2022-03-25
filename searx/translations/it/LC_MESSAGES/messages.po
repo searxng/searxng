@@ -14,191 +14,222 @@
 # Random_R, 2018-2020
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-21 11:52+0000\n"
+"POT-Creation-Date: 2022-03-20 07:34+0000\n"
 "PO-Revision-Date: 2022-03-04 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Italian <https://weblate.bubu1.eu/projects/searxng/searxng/it/"
-">\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: searx/webapp.py:170
+#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#: searx/searxng.msg
+msgid "others"
+msgstr ""
+
+#. CONSTANT_NAMES['OTHER_CATEGORY']
+#: searx/searxng.msg
+msgid "other"
+msgstr ""
+
+#. CATEGORY_NAMES['FILES']
+#: searx/searxng.msg
 msgid "files"
 msgstr "documenti"
 
-#: searx/webapp.py:171
+#. CATEGORY_NAMES['GENERAL']
+#: searx/searxng.msg
 msgid "general"
 msgstr "generale"
 
-#: searx/webapp.py:172
+#. CATEGORY_NAMES['MUSIC']
+#: searx/searxng.msg
 msgid "music"
 msgstr "musica"
 
-#: searx/webapp.py:173
+#. CATEGORY_NAMES['SOCIAL_MEDIA']
+#: searx/searxng.msg
 msgid "social media"
 msgstr "social"
 
-#: searx/webapp.py:174
+#. CATEGORY_NAMES['IMAGES']
+#: searx/searxng.msg
 msgid "images"
 msgstr "immagini"
 
-#: searx/webapp.py:175
+#. CATEGORY_NAMES['VIDEOS']
+#: searx/searxng.msg
 msgid "videos"
 msgstr "video"
 
-#: searx/webapp.py:176
+#. CATEGORY_NAMES['IT']
+#: searx/searxng.msg
 msgid "it"
 msgstr "IT"
 
-#: searx/webapp.py:177
+#. CATEGORY_NAMES['NEWS']
+#: searx/searxng.msg
 msgid "news"
 msgstr "notizie"
 
-#: searx/webapp.py:178
+#. CATEGORY_NAMES['MAP']
+#: searx/searxng.msg
 msgid "map"
 msgstr "mappe"
 
-#: searx/webapp.py:179
+#. CATEGORY_NAMES['ONIONS']
+#: searx/searxng.msg
 msgid "onions"
 msgstr "onions"
 
-#: searx/webapp.py:180
+#. CATEGORY_NAMES['SCIENCE']
+#: searx/searxng.msg
 msgid "science"
 msgstr "scienza"
 
-#: searx/webapp.py:182
+#. CATEGORY_GROUPS['APPS']
+#: searx/searxng.msg
 msgid "apps"
 msgstr "applicazioni"
 
-#: searx/webapp.py:183
+#. CATEGORY_GROUPS['DICTIONARIES']
+#: searx/searxng.msg
 msgid "dictionaries"
 msgstr "dizionari"
 
-#: searx/webapp.py:184
+#. CATEGORY_GROUPS['LYRICS']
+#: searx/searxng.msg
 msgid "lyrics"
 msgstr "testi musicali"
 
-#: searx/webapp.py:185
+#. CATEGORY_GROUPS['PACKAGES']
+#: searx/searxng.msg
 msgid "packages"
 msgstr "pacchetti"
 
-#: searx/webapp.py:186
+#. CATEGORY_GROUPS['Q_A']
+#: searx/searxng.msg
 msgid "q&a"
 msgstr "d&r"
 
-#: searx/webapp.py:187
+#. CATEGORY_GROUPS['REPOS']
+#: searx/searxng.msg
 msgid "repos"
 msgstr "repository"
 
-#: searx/webapp.py:188
+#. CATEGORY_GROUPS['SOFTWARE_WIKIS']
+#: searx/searxng.msg
 msgid "software wikis"
 msgstr "wiki software"
 
-#: searx/webapp.py:189
+#. CATEGORY_GROUPS['WEB']
+#: searx/searxng.msg
 msgid "web"
 msgstr "web"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['AUTO']
+#: searx/searxng.msg
 msgid "auto"
 msgstr "auto"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['LIGHT']
+#: searx/searxng.msg
 msgid "light"
 msgstr "chiaro"
 
-#: searx/webapp.py:194
+#. STYLE_NAMES['DARK']
+#: searx/searxng.msg
 msgid "dark"
 msgstr "scuro"
 
-#: searx/webapp.py:197
+#: searx/webapp.py:169
 msgid "timeout"
 msgstr "timeout"
 
-#: searx/webapp.py:198
+#: searx/webapp.py:170
 msgid "parsing error"
 msgstr "errore di analisi"
 
-#: searx/webapp.py:199
+#: searx/webapp.py:171
 msgid "HTTP protocol error"
 msgstr "errore protocollo HTTP"
 
-#: searx/webapp.py:200
+#: searx/webapp.py:172
 msgid "network error"
 msgstr "errore di rete"
 
-#: searx/webapp.py:202
+#: searx/webapp.py:174
 msgid "unexpected crash"
 msgstr "crash inaspettato"
 
-#: searx/webapp.py:209
+#: searx/webapp.py:181
 msgid "HTTP error"
 msgstr "errore HTTP"
 
-#: searx/webapp.py:210
+#: searx/webapp.py:182
 msgid "HTTP connection error"
 msgstr "errore di connessione HTTP"
 
-#: searx/webapp.py:216
+#: searx/webapp.py:188
 msgid "proxy error"
 msgstr "errore proxy"
 
-#: searx/webapp.py:217
+#: searx/webapp.py:189
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:218
+#: searx/webapp.py:190
 msgid "too many requests"
 msgstr "troppe richieste"
 
-#: searx/webapp.py:219
+#: searx/webapp.py:191
 msgid "access denied"
 msgstr "accesso negato"
 
-#: searx/webapp.py:220
+#: searx/webapp.py:192
 msgid "server API error"
 msgstr "errore server API"
 
-#: searx/webapp.py:431
+#: searx/webapp.py:410
 msgid "No item found"
 msgstr "Nessun oggetto trovato"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:433
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
 msgid "Source"
 msgstr "Sorgente"
 
-#: searx/webapp.py:435
+#: searx/webapp.py:414
 msgid "Error loading the next page"
 msgstr "Errore caricando la pagina successiva"
 
-#: searx/webapp.py:547 searx/webapp.py:967
+#: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
-#: searx/webapp.py:563
+#: searx/webapp.py:542
 msgid "Invalid settings"
 msgstr "Impostazioni non valide"
 
-#: searx/webapp.py:639 searx/webapp.py:714
+#: searx/webapp.py:618 searx/webapp.py:694
 msgid "search error"
 msgstr "errore di ricerca"
 
-#: searx/webapp.py:757
+#: searx/webapp.py:740
 msgid "{minutes} minute(s) ago"
 msgstr "di {minutes} minuti fa"
 
-#: searx/webapp.py:759
+#: searx/webapp.py:742
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "di {hours} ore e {minutes} minuti fa"
 
-#: searx/webapp.py:875
+#: searx/webapp.py:871
 msgid "Suspended"
 msgstr "Sospeso"
 
@@ -412,8 +443,8 @@ msgstr "proxy"
 #: searx/templates/oscar/preferences.html:344
 #: searx/templates/oscar/preferences.html:362
 #: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:295
-#: searx/templates/simple/preferences.html:344
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
 msgid "Allow"
 msgstr "Autorizza"
 
@@ -519,13 +550,13 @@ msgid "Engines"
 msgstr "Motori"
 
 #: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:339
+#: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
 msgstr "Richieste speciali"
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:379
+#: searx/templates/simple/preferences.html:383
 msgid "Cookies"
 msgstr "Cookie"
 
@@ -536,6 +567,7 @@ msgid "Default categories"
 msgstr "Categorie predefinite"
 
 #: searx/templates/oscar/preferences.html:133
+#: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "Lingua di ricerca"
@@ -548,11 +580,12 @@ msgstr "Che lingua preferisci per la ricerca?"
 #: searx/templates/oscar/preferences.html:141
 #: searx/templates/oscar/preferences.html:348
 #: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:301
 msgid "SafeSearch"
 msgstr "Ricerca Sicura"
 
@@ -754,25 +787,25 @@ msgid "Disable all"
 msgstr "Disattiva tutto"
 
 #: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:290
+#: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"Questa scheda non viene mostrata per i risultati di ricerca, ma puoi cercare "
-"i motori elencati qui usando i bang."
+"Questa scheda non viene mostrata per i risultati di ricerca, ma puoi "
+"cercare i motori elencati qui usando i bang."
 
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
 #: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:296
+#: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Nome del motore"
 
 #: searx/templates/oscar/preferences.html:346
 #: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Scorciatoia"
 
@@ -784,28 +817,29 @@ msgstr "Lingua selezionata"
 #: searx/templates/oscar/preferences.html:349
 #: searx/templates/oscar/preferences.html:357
 #: searx/templates/oscar/time-range.html:2
-#: searx/templates/simple/preferences.html:300
+#: searx/templates/simple/filters/time_range.html:1
+#: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Intervallo di tempo"
 
 #: searx/templates/oscar/preferences.html:350
 #: searx/templates/oscar/preferences.html:356
 #: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Tempo di risposta"
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Tempo massimo"
 
 #: searx/templates/oscar/preferences.html:352
 #: searx/templates/oscar/preferences.html:354
 #: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Affidabilità"
@@ -815,37 +849,37 @@ msgid "Query"
 msgstr "Richiesta"
 
 #: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:345
+#: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Parole chiave"
 
 #: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:346
+#: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Nome"
 
 #: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:347
+#: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Descrizione"
 
 #: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:348
+#: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Esempi"
 
 #: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:351
+#: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Questa è la lista dei moduli di risposta istantanea di SearXNG."
 
 #: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr "Questa è la lista di plugins."
 
 #: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:381
+#: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
@@ -854,22 +888,22 @@ msgstr ""
 " tuo computer."
 
 #: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:382
+#: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Con questa lista, potete valutare la trasparenza di SearXNG."
 
 #: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:387
+#: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Nome del cookie"
 
 #: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:388
+#: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Valore"
 
 #: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:409
+#: searx/templates/simple/preferences.html:413
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -878,7 +912,7 @@ msgstr ""
 "conservare dati su di te."
 
 #: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:411
+#: searx/templates/simple/preferences.html:415
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -887,12 +921,12 @@ msgstr ""
 "usiamo per tracciarti."
 
 #: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:400
+#: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "URL di ricerca delle preferenze attualmente salvate"
 
 #: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -909,7 +943,7 @@ msgid "back"
 msgstr "indietro"
 
 #: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:419
 msgid "Reset defaults"
 msgstr "Reimposta i valori iniziali"
 
@@ -1256,7 +1290,7 @@ msgstr "nascondi video"
 msgid "Length"
 msgstr "Lunghezza"
 
-#: searx/templates/simple/categories.html:16
+#: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
 msgstr "Premi sull'icona della lente per avviare la ricerca"
 
@@ -1280,15 +1314,15 @@ msgstr "Seleziona auto per seguire le impostazioni del tuo browser"
 msgid "Currently used search engines"
 msgstr "Motori di ricerca attualmente in uso"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:300
 msgid "Supports selected language"
 msgstr "La lingua selezionata è disponibile"
 
-#: searx/templates/simple/preferences.html:414
+#: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "Salva"
 
-#: searx/templates/simple/preferences.html:416
+#: searx/templates/simple/preferences.html:420
 msgid "Back"
 msgstr "Indietro"
 
@@ -1296,13 +1330,21 @@ msgstr "Indietro"
 msgid "Answers"
 msgstr "Risposte"
 
-#: searx/templates/simple/results.html:164
+#: searx/templates/simple/results.html:144
+msgid "Back to top"
+msgstr ""
+
+#: searx/templates/simple/results.html:162
 msgid "Previous page"
 msgstr "pagina precedente"
 
-#: searx/templates/simple/results.html:181
+#: searx/templates/simple/results.html:179
 msgid "Next page"
 msgstr "pagina successiva"
+
+#: searx/templates/simple/search.html:3
+msgid "Display the front page"
+msgstr ""
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -1450,3 +1492,4 @@ msgstr "Motore"
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+
