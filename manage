@@ -745,6 +745,13 @@ test.rst() {
     done
 }
 
+test.pybabel() {
+    TEST_BABEL_FOLDER="build/test/pybabel"
+    build_msg TEST "[extract messages] pybabel"
+    mkdir -p "${TEST_BABEL_FOLDER}"
+    pyenv.cmd pybabel extract -F babel.cfg -o "${TEST_BABEL_FOLDER}/messages.pot" searx
+}
+
 test.clean() {
     build_msg CLEAN  "test stuff"
     rm -rf geckodriver.log .coverage coverage/
