@@ -5,16 +5,18 @@
 How to protect an instance
 ==========================
 
+.. tip::
+
+   To protect your instance a installation of filtron (as described here) is no
+   longer needed, alternatively activate the :ref:`limiter plugin` in your
+   ``settings.yml``. Note that the :ref:`limiter plugin` requires a :ref:`Redis
+   <settings redis>` database.
+
+
 .. sidebar:: further reading
 
    - :ref:`filtron.sh`
    - :ref:`nginx searxng site`
-
-
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
 
 .. _filtron: https://github.com/searxng/filtron
 
