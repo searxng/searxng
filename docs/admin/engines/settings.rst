@@ -226,6 +226,17 @@ Global Settings
 
 .. _Redis.from_url(url): https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
 
+A redis DB can be connected by an URL, in :py:obj:`searx.shared.redisdb` you
+will find a description to test your redis connection in SerXNG.  When using
+sockets, don't forget to check the access rights on the socket::
+
+  ls -la /usr/local/searxng-redis/run/redis.sock
+  srwxrwx--- 1 searxng-redis searxng-redis ... /usr/local/searxng-redis/run/redis.sock
+
+In this example read/write access is given to the *searxng-redis* group.  To get
+access rights to redis instance (the socket), your SearXNG (or even your
+developer) account needs to be added to the *searxng-redis* group.
+
 ``url``
   URL to connect redis database, see `Redis.from_url(url)`_ & :ref:`redis db`::
 
@@ -235,16 +246,20 @@ Global Settings
 
 .. admonition:: Tip for developers
 
-   To set up a redis instance simply use::
+   To set up a local redis instance using sockets simply use::
 
      $ ./manage redis.build
      $ sudo -H ./manage redis.install
-
-   To get access rights to this instance, your developer account needs to be
-   added to the *searxng-redis* group::
-
      $ sudo -H ./manage redis.addgrp "${USER}"
      # don't forget to logout & login to get member of group
+
+   The YAML setting for such a redis instance is:
+
+   .. code:: yaml
+
+      redis:
+        url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+
 
 .. _settings outgoing:
 
