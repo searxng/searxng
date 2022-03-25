@@ -5,6 +5,8 @@
 
   var firstFocus = true, qinput_id = "q", qinput;
 
+  const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
+
   function placeCursorAtEnd (element) {
     if (element.setSelectionRange) {
       var len = element.value.length;
@@ -68,12 +70,7 @@
           },
           MinChars: 4,
           Delay: 300,
-          _Position: function () {
-            this.DOMResults.setAttribute("class", "autocomplete");
-            this.DOMResults.style.top = (this.Input.offsetTop + this.Input.offsetHeight) + "px";
-            this.DOMResults.style.left = this.Input.offsetLeft + "px";
-            this.DOMResults.style.width = this.Input.clientWidth + "px";
-          },
+          _Position: function () {},
           _Open: function () {
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function (li) {
@@ -85,16 +82,13 @@
             });
           },
         }, "#" + qinput_id);
-
-        // hack, see : https://github.com/autocompletejs/autocomplete.js/issues/37
-        w.addEventListener('resize', function () {
-          var event = new CustomEvent("position");
-          qinput.dispatchEvent(event);
-        });
       }
 
       qinput.addEventListener('focus', placeCursorAtEndOnce, false);
-      qinput.focus();
+
+      if (!isMobile) {
+        qinput.focus();
+      }
     }
 
     // vanilla js version of search_on_category_select.js
