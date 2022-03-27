@@ -179,3 +179,16 @@ def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[
         return (engine.about.get('language', ''), engine.name)
 
     return [(groupname, sorted(engines, key=engine_sort_key)) for groupname, engines in sorted_groups]
+
+def is_math(query):
+    is_math = False
+    characters = set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '*', '/', '^', '%', '.', '+', '-', ','])
+    numbers = 0 
+
+    for i in query:
+        if i in characters:
+            numbers +=1
+
+    if len(query) < numbers+1:
+        is_math = True
+    return is_math

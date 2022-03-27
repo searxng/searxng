@@ -81,6 +81,7 @@ from searx.webutils import (
     is_hmac_of,
     is_flask_run_cmdline,
     group_engines_in_tab,
+    is_math,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -851,7 +852,8 @@ def search():
         ),
         theme = get_current_theme_name(),
         favicons = global_favicons[themes.index(get_current_theme_name())],
-        timeout_limit = request.form.get('timeout_limit', None)
+        timeout_limit = request.form.get('timeout_limit', None),
+        is_math = is_math(search_query.query)
         # fmt: on
     )
 
