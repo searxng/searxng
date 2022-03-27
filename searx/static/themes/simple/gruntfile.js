@@ -172,6 +172,7 @@ module.exports = function (grunt) {
       all: {
         src: {
           'warning': 'node_modules/ionicons/dist/svg/alert-outline.svg',
+          'calculator-outline': 'node_modules/ionicons/dist/svg/calculator-outline.svg',
           'close': 'node_modules/ionicons/dist/svg/close-outline.svg',
           'chevron-up-outline': 'node_modules/ionicons/dist/svg/chevron-up-outline.svg',
           'chevron-right': 'node_modules/ionicons/dist/svg/chevron-forward-outline.svg',

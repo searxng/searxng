@@ -19,6 +19,62 @@
 {% endif %}
 
 <div id="results" class="{{ only_template }}">
+  {% if is_math == True %}
+  <div id="calculator">
+    <div id="calc_header">
+      <div id="calc_title">
+        <div id="calc_icon">{{ icon_big('calculator-outline') }}</div>
+        <span id="calc_title_text">{{ _('Calculator') }}</span>
+      </div>
+      <div id="calc_query"> {{ q }} =</div>
+    </div>
+
+    <div id="calc_input">
+      <div id="calc_switch"></div>
+      <div id="calc_answer"></div>
+    </div>
+
+    <div id="calc_keypad">
+      <div id="keypad_group numbers">
+        <button value="(">(</button>
+        <button value=")">)</button>
+        <button value="%">%</button>
+        <button value="7">7</button>
+        <button value="8">8</button>
+        <button value="9">9</button>
+        <button value="4">4</button>
+        <button value="5">5</button>
+        <button value="6">6</button>
+        <button value="1">1</button>
+        <button value="2">2</button>
+        <button value="3">3</button>
+        <button value="0">0</button>
+        <button value=".">.</button>
+        <button value="=">=</button>
+      </div>
+      <div id="keypad_group operators">
+        <button class="clear"></button>
+        <button value="/">/</button>
+        <button value="*">*</button>
+        <button value="-">-</button>
+        <button value="+">+</button>
+      </div>
+      <div id="keypad_group advanced">
+        <button value="e">e</button>
+        <button value="p">π</button>
+        <button value="s">sin</button>
+        <button value="c">cos</button>
+        <button value="l">ln</button>
+        <button value="g">log</button>
+        <button value="t">tan</button>
+        <button value="q">√</button>
+        <button value="!">x!</button>
+        <button value="^"></button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
     {% if answers -%}
     <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
         {%- for answer in answers.values() -%}
