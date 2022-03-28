@@ -11,9 +11,6 @@ Enable ``settings.yml``:
 - ``interval: ...`` number of seconds before rate limiting resets (optional, by default 1 second)
 """
 
-import hmac
-
-from searx import settings
 from searx.engines import engines
 from searx.shared import redisdb
 
@@ -43,26 +40,24 @@ def check_rate_limiter(engine_name, limit, interval):
     """
     script_sha = redis_client.script_load(lua_script)
 
-    secret_key_bytes = bytes(settings['server']['secret_key'], encoding='utf-8')
-    m = hmac.new(secret_key_bytes, digestmod='sha256')
-    m.update(bytes(engine_name, encoding='utf-8'))
-    key = m.digest()
-
+    key = f'rate_limiter_{engine_name}_{limit}r/{interval}s'.encode()
     requestsCounter = redis_client.evalsha(script_sha, 1, key, limit, interval)
     return int(requestsCounter)
 
 
 def below_rate_limit(engine_name):
     engine = engines[engine_name]
-    max_requests = engine.rate_limit['max_requests']
-    interval = engine.rate_limit['interval']
+    is_below_rate_limit = True
+    for rate_limit in engine.rate_limit:
+        max_requests = rate_limit['max_requests']
+        interval = rate_limit['interval']
+        if max_requests == float('inf'):
+            continue
+        if max_requests < check_rate_limiter(engine_name, max_requests, interval):
+            is_below_rate_limit = False
+            logger.debug(f"{engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds")  # pylint: disable=undefined-variable
 
-    if max_requests == float('inf'):
-        return True
-    if max_requests >= check_rate_limiter(engine_name, max_requests, interval):
-        return True
-    logger.debug(f"{engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds")  # pylint: disable=undefined-variable
-    return False
+    return is_below_rate_limit
 
 
 def pre_search(_, search):

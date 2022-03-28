@@ -423,8 +423,8 @@ engine is shown.  Most of the options have a default value or even are optional.
      max_keepalive_connections: 10
      keepalive_expiry: 5.0
      rate_limit:
-        max_requests: 200
-        interval: 60
+        - max_requests: 200
+          interval: 60
      proxies:
        http:
          - http://proxy1:8080
