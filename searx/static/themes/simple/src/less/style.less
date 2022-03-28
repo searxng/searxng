@@ -448,6 +448,7 @@ article[data-vim-selected].category-social {
   grid-template-rows: min-content min-content 1fr min-content;
   gap: 0 @results-gap;
   grid-template-areas:
+    "calculator sidebar"
     "corrections sidebar"
     "answers sidebar"
     "urls sidebar"
@@ -457,6 +458,45 @@ article[data-vim-selected].category-social {
 #results #sidebar *:first-child,
 #results #urls *:first-child {
   margin-top: 0;
+}
+
+#calculator {
+  grid-area: calculator;
+  padding: 1rem;
+  margin-bottom: 1em;
+  border-radius: 1em;
+
+  #calc_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    #calc_title {
+      display: flex;
+      align-items: center;
+
+      #calc_icon {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0.3em;
+      }
+    }
+  }
+
+  #calc_input {
+    font-size: 2rem;
+    padding: 1.7rem 1rem 1rem;
+    margin-bottom: 0.5rem;
+    text-align: end;
+  }
+
+  #calc_keypad {
+    display: flex;
+
+    #keypad_group {
+      display: grid;
+    }
+  }
 }
 
 #urls {
