@@ -12,12 +12,13 @@ Output files: :origin:`searx/data/engines_languages.json` and
 """
 
 # pylint: disable=invalid-name
-
+from unicodedata import lookup
 import json
 from pathlib import Path
 from pprint import pformat
 from babel import Locale, UnknownLocaleError
 from babel.languages import get_global
+from babel.core import parse_locale
 
 from searx import settings, searx_dir
 from searx.engines import load_engines, engines
@@ -59,6 +60,57 @@ def get_locale(lang_code):
         return locale
     except (UnknownLocaleError, ValueError):
         return None
+
+
+lang2emoji = {
+    'ha': '\U0001F1F3\U0001F1EA',  # Hausa / Niger
+    'bs': '\U0001F1E7\U0001F1E6',  # Bosnian / Bosnia & Herzegovina
+    'jp': '\U0001F1EF\U0001F1F5',  # Japanese
+    'ua': '\U0001F1FA\U0001F1E6',  # Ukrainian
+    'he': '\U0001F1EE\U0001F1F7',  # Hebrew
+}
+
+
+def get_unicode_flag(lang_code):
+    """Determine a unicode flag (emoji) that fits to the ``lang_code``"""
+
+    emoji = lang2emoji.get(lang_code.lower())
+    if emoji:
+        return emoji
+
+    if len(lang_code) == 2:
+        return '\U0001F310'
+
+    language = territory = script = variant = ''
+    try:
+        language, territory, script, variant = parse_locale(lang_code, '-')
+    except ValueError as exc:
+        print(exc)
+
+    # https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    if not territory:
+        # https://www.unicode.org/emoji/charts/emoji-list.html#country-flag
+        emoji = lang2emoji.get(language)
+        if not emoji:
+            print(
+                "%s --> language: %s / territory: %s / script: %s / variant: %s"
+                % (lang_code, language, territory, script, variant)
+            )
+        return emoji
+
+    emoji = lang2emoji.get(territory.lower())
+    if emoji:
+        return emoji
+
+    try:
+        c1 = lookup('REGIONAL INDICATOR SYMBOL LETTER ' + territory[0])
+        c2 = lookup('REGIONAL INDICATOR SYMBOL LETTER ' + territory[1])
+        # print("%s --> territory: %s --> %s%s" %(lang_code, territory, c1, c2 ))
+    except KeyError as exc:
+        print("%s --> territory: %s --> %s" % (lang_code, territory, exc))
+        return None
+
+    return c1 + c2
 
 
 # Join all language lists.
@@ -113,7 +165,10 @@ def join_language_lists(engines_languages):
                         print("ERROR: %s --> %s" % (locale, exc))
                         locale = None
 
-                language_list[short_code]['countries'][lang_code] = {'country_name': country_name, 'counter': set()}
+                language_list[short_code]['countries'][lang_code] = {
+                    'country_name': country_name,
+                    'counter': set(),
+                }
 
             # count engine for both language_country combination and language alone
             language_list[short_code]['counter'].add(engine_name)
@@ -167,11 +222,9 @@ def filter_language_list(all_languages):
 
         # add language without countries too if there's more than one country to choose from
         if len(filtered_countries) > 1:
-            filtered_countries[lang] = _copy_lang_data(lang)
+            filtered_countries[lang] = _copy_lang_data(lang, None)
         elif len(filtered_countries) == 1:
-            # if there's only one country per language, it's not necessary to show country name
             lang_country = next(iter(filtered_countries))
-            filtered_countries[lang_country]['country_name'] = None
 
         # if no country has enough engines try to get most likely country code from babel
         if not filtered_countries:
@@ -183,13 +236,20 @@ def filter_language_list(all_languages):
                     lang_country = "{lang}-{country}".format(lang=lang, country=country_code)
 
             if lang_country:
-                filtered_countries[lang_country] = _copy_lang_data(lang)
+                filtered_countries[lang_country] = _copy_lang_data(lang, None)
             else:
-                filtered_countries[lang] = _copy_lang_data(lang)
+                filtered_countries[lang] = _copy_lang_data(lang, None)
 
         filtered_languages_with_countries.update(filtered_countries)
 
     return filtered_languages_with_countries
+
+
+class UnicodeEscape(str):
+    """Escape unicode string in :py:obj:`pprint.pformat`"""
+
+    def __repr__(self):
+        return "'" + "".join([chr(c) for c in self.encode('unicode-escape')]) + "'"
 
 
 # Write languages.py.
@@ -209,11 +269,14 @@ def write_languages_file(languages):
         if name is None:
             print("ERROR: languages['%s'] --> %s" % (code, languages[code]))
             continue
+
+        flag = get_unicode_flag(code) or ''
         item = (
             code,
             languages[code]['name'].split(' (')[0],
             languages[code].get('country_name') or '',
             languages[code].get('english_name') or '',
+            UnicodeEscape(flag),
         )
 
         language_codes.append(item)
