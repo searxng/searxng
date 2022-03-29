@@ -5,7 +5,7 @@
 
 <!-- Draw favicon -->
 {% macro draw_favicon(favicon) -%}
-    <img width="32" height="32" class="favicon" src="{{ url_for('static', filename='themes/oscar/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}" />
+    <img width="32" height="32" class="favicon" src="{{ url_for('static', filename='img/icons/' + favicon + '.png') }}" alt="{{ favicon }}" />
 {%- endmacro %}
 
 {%- macro result_link(url, title, classes='', id='') -%}
