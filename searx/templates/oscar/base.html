@@ -103,7 +103,7 @@
             data-infinite-scroll="{% if infinite_scroll %}true{% else %}false{% endif %}"
             data-translations="{{ translations }}"></script>
     {% for script in scripts %}
-    {{""}}<script src="{{ url_for('plugins', filename=script) }}"></script>
+    {{""}}<script src="{{ url_for('static', filename=script) }}"></script>
     {% endfor %}
     <noscript>
       <style>
