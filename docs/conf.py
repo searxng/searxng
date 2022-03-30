@@ -139,6 +139,7 @@ intersphinx_mapping = {
     "jinja": ("https://jinja.palletsprojects.com/", None),
     "linuxdoc" : ("https://return42.github.io/linuxdoc/", None),
     "sphinx" : ("https://www.sphinx-doc.org/en/master/", None),
+    "redis": ('https://redis.readthedocs.io/en/stable/', None),
 }
 
 issues_github_path = "searxng/searxng"
