@@ -3,7 +3,6 @@
 Jisho (the Japanese-English dictionary)
 """
 
-import json
 from urllib.parse import urlencode, urljoin
 
 # about
