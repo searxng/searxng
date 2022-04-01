@@ -97,12 +97,12 @@ class ViewsTestCase(SearxTestCase):
     def test_index_html_post(self):
         result = self.app.post('/', data={'q': 'test'})
         self.assertEqual(result.status_code, 308)
-        self.assertEqual(result.location, 'http://localhost/search')
+        self.assertEqual(result.location, '/search')
 
     def test_index_html_get(self):
         result = self.app.post('/?q=test')
         self.assertEqual(result.status_code, 308)
-        self.assertEqual(result.location, 'http://localhost/search?q=test')
+        self.assertEqual(result.location, '/search?q=test')
 
     def test_search_empty_html(self):
         result = self.app.post('/search', data={'q': ''})
