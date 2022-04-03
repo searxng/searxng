@@ -1,6 +1,6 @@
 # Search syntax
 
-SearXNG allows you to modify the default categories, engines and search language
+MAGI allows you to modify the default categories, engines and search language
 via the search query.
 
 Prefix `!` to set category and engine names.
