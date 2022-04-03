@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-03-25 01:21+0000\n"
+"PO-Revision-Date: 2022-04-03 22:16+0800\n"
 "Last-Translator: Colin Xu <xuzhonglinx@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
 "searxng/searxng/zh_Hans/>\n"
-"Language: zh_Hans_CN\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.11\n"
+"X-Generator: Poedit 3.0.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -291,8 +291,8 @@ msgstr "开放访问 DOI 重写"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
-"Avoid paywalls by redirecting to open-access versions of publications "
-"when available"
+"Avoid paywalls by redirecting to open-access versions of publications when "
+"available"
 msgstr "可能时重定向到开放访问的出版版本以免被要求付费"
 
 #: searx/plugins/search_on_category_select.py:19
@@ -303,7 +303,8 @@ msgstr "搜索特定类别"
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
-msgstr "选择一个类别后立即开始搜索。禁用后可以一次选中多个类别。（需启用 JavaScript）"
+msgstr ""
+"选择一个类别后立即开始搜索。禁用后可以一次选中多个类别。（需启用 JavaScript）"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -313,7 +314,9 @@ msgstr "自身信息"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
-msgstr "当您搜索「ip」时，这将会显示您的 IP 地址；同理，在搜索「user agent」时，将会显示您的 User Agent。"
+msgstr ""
+"当您搜索「ip」时，这将会显示您的 IP 地址；同理，在搜索「user agent」时，将会"
+"显示您的 User Agent。"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -329,9 +332,11 @@ msgstr "Vim 式快捷键"
 
 #: searx/plugins/vim_hotkeys.py:4
 msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr "使用 Vim 式快捷键浏览搜索结果（需启用 JavaScript）。在主页或结果页面按“h”键获取帮助。"
+"Navigate search results with Vim-like hotkeys (JavaScript required). Press "
+"\"h\" key on main or result page to get help."
+msgstr ""
+"使用 Vim 式快捷键浏览搜索结果（需启用 JavaScript）。在主页或结果页面按“h”键获"
+"取帮助。"
 
 #: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -370,7 +375,7 @@ msgstr "功能来自"
 
 #: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "一个尊重隐私、可二次开发的元搜索引擎"
+msgstr "一个尊重隐私的元搜索引擎"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
 msgid "Source code"
@@ -651,7 +656,7 @@ msgstr "主题"
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr "更改 SearXNG 布局"
+msgstr "更改 MAGI 布局"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -715,12 +720,12 @@ msgstr "HTTP 方法"
 #: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
 msgid ""
-"Change how forms are submited, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">learn more about request methods</a>"
+"Change how forms are submited, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">learn more "
+"about request methods</a>"
 msgstr ""
-"更改提交表单时使用的请求方法，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
-"rel=\"external\">深入了解请求方法</a>"
+"更改提交表单时使用的请求方法，<a href=\"https://zh.wikipedia.org/wiki/超文本"
+"传输协议#请求方法\" rel=\"external\">深入了解请求方法</a>"
 
 #: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:259
@@ -730,7 +735,7 @@ msgstr "代理图片"
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
-msgstr "通过 SearXNG 代理访问图片结果"
+msgstr "通过 MAGI 代理访问图片结果"
 
 #: searx/templates/oscar/preferences.html:288
 #: searx/templates/oscar/preferences.html:299
@@ -754,8 +759,8 @@ msgstr "页面标题显示查询关键词"
 #: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
 msgid ""
-"When enabled, the result page's title contains your query. Your browser "
-"can record this title"
+"When enabled, the result page's title contains your query. Your browser can "
+"record this title"
 msgstr "当启用时，结果页的标题包含你的查询关键词。你的浏览器可以记录这个标题"
 
 #: searx/templates/oscar/preferences.html:326
@@ -769,8 +774,8 @@ msgstr "全部禁用"
 #: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab does not show up for search results, but you can search the engines "
+"listed here via bangs."
 msgstr "这个标签页不会显示在搜索结果中，但您可以通过 ! 搜索这里列出的引擎。"
 
 #: searx/templates/oscar/preferences.html:345
@@ -849,7 +854,7 @@ msgstr "示例"
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr "这是 SearXNG 即时回应模块的列表。"
+msgstr "这是 MAGI 即时回应模块的列表。"
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
@@ -861,12 +866,12 @@ msgstr "这是插件列表。"
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr "这是 SearXNG 在您的计算机上存储的 Cookie 的列表及相应的值。"
+msgstr "这是 MAGI 在您的计算机上存储的 Cookie 的列表及相应的值。"
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
-msgstr "您可以凭此列表评估 SearXNG 的透明度。"
+msgstr "您可以凭此列表评估 MAGI 的透明度。"
 
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
@@ -881,16 +886,19 @@ msgstr "值"
 #: searx/templates/oscar/preferences.html:492
 #: searx/templates/simple/preferences.html:413
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr "这些设置被存储在您的 Cookie 中，这种保存设置的方式使我们不必保存您的设置数据。"
+"These settings are stored in your cookies, this allows us not to store this "
+"data about you."
+msgstr ""
+"这些设置被存储在您的 Cookie 中，这种保存设置的方式使我们不必保存您的设置数"
+"据。"
 
 #: searx/templates/oscar/preferences.html:493
 #: searx/templates/simple/preferences.html:415
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
-msgstr "这些 Cookie 信息用于辅助您便捷地使用本服务，我们绝不利用这些信息来跟踪您。"
+msgstr ""
+"这些 Cookie 信息用于辅助您便捷地使用本服务，我们绝不利用这些信息来跟踪您。"
 
 #: searx/templates/oscar/preferences.html:497
 #: searx/templates/simple/preferences.html:404
@@ -902,7 +910,9 @@ msgstr "用当前已保存的选项进行搜索的网址"
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
-msgstr "注意：通过搜索网址保存自定义设置有可能将某些数据暴露给被点击的搜索结果的网站，不利于隐私。"
+msgstr ""
+"注意：通过搜索网址保存自定义设置有可能将某些数据暴露给被点击的搜索结果的网"
+"站，不利于隐私。"
 
 #: searx/templates/oscar/preferences.html:503
 msgid "save"
@@ -1089,7 +1099,7 @@ msgstr "小心！"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr "这似乎是您首次使用 SearXNG。"
+msgstr "这似乎是您首次使用 MAGI。"
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1112,7 +1122,7 @@ msgstr "引擎无法检索到结果。"
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr "请稍后再试，或换用其他 SearXNG 站点试试看。"
+msgstr "请稍后再试，或换用其他 MAGI 站点试试看。"
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1353,12 +1363,12 @@ msgstr "引擎"
 #~ msgstr "将支持 HTTPS 的 HTTP 链接改为 HTTPS 链接"
 
 #~ msgid ""
-#~ "Results are opened in the same "
-#~ "window by default. This plugin "
-#~ "overwrites the default behaviour to open"
-#~ " links on new tabs/windows. (JavaScript "
+#~ "Results are opened in the same window by default. This plugin overwrites "
+#~ "the default behaviour to open links on new tabs/windows. (JavaScript "
 #~ "required)"
-#~ msgstr "搜索结果默认在原窗口打开。此插件能使其在新标签页或新窗口打开。（需启用 JavaScript）"
+#~ msgstr ""
+#~ "搜索结果默认在原窗口打开。此插件能使其在新标签页或新窗口打开。（需启用 "
+#~ "JavaScript）"
 
 #~ msgid "Color"
 #~ msgstr "颜色"
@@ -1421,9 +1431,8 @@ msgstr "引擎"
 #~ msgstr "这是 searx 的即时回答模块列表。"
 
 #~ msgid ""
-#~ "This is the list of cookies and"
-#~ " their values searx is storing on "
-#~ "your computer."
+#~ "This is the list of cookies and their values searx is storing on your "
+#~ "computer."
 #~ msgstr "此列表展示了 searx 在您设备上存储的 cookie 信息。"
 
 #~ msgid "With that list, you can assess searx transparency."
@@ -1438,20 +1447,5 @@ msgstr "引擎"
 #~ msgid "Themes"
 #~ msgstr "主题"
 
-#~ msgid "Reliablity"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When enabled, the result page's title"
-#~ " contains your query. Your browser "
-#~ "can record this title."
-#~ msgstr ""
-
 #~ msgid "Method"
 #~ msgstr "方法"
-
-#~ msgid ""
-#~ "This tab does not show up for "
-#~ "search results but you can search "
-#~ "the engines listed here via bangs."
-#~ msgstr ""
