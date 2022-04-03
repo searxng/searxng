@@ -145,9 +145,7 @@ def _fetch_supported_languages(resp):
         lang, nation = (setlang.split('-', maxsplit=1) + [None,])[:2]  # fmt: skip
         # fmt: on
 
-        if not nation:
-            nation = lang.upper()
-        tag = lang + '-' + nation
+        tag = lang + '-' + nation if nation else lang
         lang_tags.add(tag)
 
     return list(lang_tags)
