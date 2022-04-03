@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-03-25 01:21+0000\n"
+"PO-Revision-Date: 2022-04-03 22:19+0800\n"
 "Last-Translator: Colin Xu <xuzhonglinx@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://weblate.bubu1.eu/projects/"
 "searxng/searxng/zh_Hant/>\n"
-"Language: zh_Hant_TW\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.11\n"
+"X-Generator: Poedit 3.0.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -288,8 +288,8 @@ msgstr "開放存取 DOI 重寫"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
-"Avoid paywalls by redirecting to open-access versions of publications "
-"when available"
+"Avoid paywalls by redirecting to open-access versions of publications when "
+"available"
 msgstr "盡可能重新導向至出版品的開放存取版本，來避免付費牆"
 
 #: searx/plugins/search_on_category_select.py:19
@@ -310,7 +310,9 @@ msgstr "自身信息"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
-msgstr "若搜尋字串爲「ip」則顯示您的 IP，而若是「user agent」則顯示您的使用者代理字串。"
+msgstr ""
+"若搜尋字串爲「ip」則顯示您的 IP，而若是「user agent」則顯示您的使用者代理字"
+"串。"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -326,9 +328,11 @@ msgstr "類 Vim 快捷鍵"
 
 #: searx/plugins/vim_hotkeys.py:4
 msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr "以類 Vim 的快捷鍵導覽搜尋結果（需要 JavaScript）。在主頁面或結果頁面按「h」鍵以取得說明。"
+"Navigate search results with Vim-like hotkeys (JavaScript required). Press "
+"\"h\" key on main or result page to get help."
+msgstr ""
+"以類 Vim 的快捷鍵導覽搜尋結果（需要 JavaScript）。在主頁面或結果頁面按「h」鍵"
+"以取得說明。"
 
 #: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -367,7 +371,7 @@ msgstr "技術支援"
 
 #: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "一個尊重隱私，可再開發的集合式搜尋引擎"
+msgstr "一個尊重隱私的集合式搜尋引擎"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
 msgid "Source code"
@@ -648,7 +652,7 @@ msgstr "主題"
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr "更改 SearXNG 佈局"
+msgstr "更改 MAGI 佈局"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -712,12 +716,12 @@ msgstr "HTTP 方法"
 #: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
 msgid ""
-"Change how forms are submited, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">learn more about request methods</a>"
+"Change how forms are submited, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">learn more "
+"about request methods</a>"
 msgstr ""
-"變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
-"rel=\"external\">看看更多關於請求方法的介紹</a>"
+"變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法"
+"\" rel=\"external\">看看更多關於請求方法的介紹</a>"
 
 #: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:259
@@ -727,7 +731,7 @@ msgstr "圖片代理伺服器"
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
-msgstr "通過 SearXNG 代理訪問圖片結果"
+msgstr "通過 MAGI 代理訪問圖片結果"
 
 #: searx/templates/oscar/preferences.html:288
 #: searx/templates/oscar/preferences.html:299
@@ -751,8 +755,8 @@ msgstr "頁面標題顯示查詢關鍵字"
 #: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
 msgid ""
-"When enabled, the result page's title contains your query. Your browser "
-"can record this title"
+"When enabled, the result page's title contains your query. Your browser can "
+"record this title"
 msgstr "啟用時，結果頁的標題包含你的查詢關鍵字。你的瀏覽器會記錄這個標題"
 
 #: searx/templates/oscar/preferences.html:326
@@ -766,8 +770,8 @@ msgstr "停用全部"
 #: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab does not show up for search results, but you can search the engines "
+"listed here via bangs."
 msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
 
 #: searx/templates/oscar/preferences.html:345
@@ -846,7 +850,7 @@ msgstr "範例"
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr "這是 SearXNG 即時回應模塊列表。"
+msgstr "這是 MAGI 即時回應模塊列表。"
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
@@ -858,12 +862,12 @@ msgstr "這是插件列表。"
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr "這是 SearXNG 在您的計算機上存儲的 Cookie 的列表及對於的值。"
+msgstr "這是 MAGI 在您的計算機上存儲的 Cookie 的列表及對於的值。"
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
-msgstr "您可以憑此列表評估 SearXNG 的透明度。"
+msgstr "您可以憑此列表評估 MAGI 的透明度。"
 
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
@@ -878,9 +882,10 @@ msgstr "值"
 #: searx/templates/oscar/preferences.html:492
 #: searx/templates/simple/preferences.html:413
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr "這些設定只會儲存在您的 cookies 中，這樣我們無需也不會存儲關於您的資訊。"
+"These settings are stored in your cookies, this allows us not to store this "
+"data about you."
+msgstr ""
+"這些設定只會儲存在您的 cookies 中，這樣我們無需也不會存儲關於您的資訊。"
 
 #: searx/templates/oscar/preferences.html:493
 #: searx/templates/simple/preferences.html:415
@@ -899,7 +904,9 @@ msgstr "目前偏好設定的搜尋 URL"
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
-msgstr "注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，因為會洩漏資料給點選的結果頁面。"
+msgstr ""
+"注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，因為會洩漏資料給點選的結果頁"
+"面。"
 
 #: searx/templates/oscar/preferences.html:503
 msgid "save"
@@ -1086,7 +1093,7 @@ msgstr "注意！"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr "這似乎是您首次使用 SearXNG。"
+msgstr "這似乎是您首次使用 MAGI。"
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1109,7 +1116,7 @@ msgstr "引擎無法擷取結果。"
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr "請稍後再試，或換用其他 SearXNG 站點。"
+msgstr "請稍後再試，或換用其他 MAGI 站點。"
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1350,12 +1357,12 @@ msgstr "引擎"
 #~ msgstr "可以的話將 HTTP 連結重寫為 HTTPS"
 
 #~ msgid ""
-#~ "Results are opened in the same "
-#~ "window by default. This plugin "
-#~ "overwrites the default behaviour to open"
-#~ " links on new tabs/windows. (JavaScript "
+#~ "Results are opened in the same window by default. This plugin overwrites "
+#~ "the default behaviour to open links on new tabs/windows. (JavaScript "
 #~ "required)"
-#~ msgstr "結果預設會在同一個視窗開啟。這個外掛程式會覆寫預設行為，會在新分頁／視窗中開啟連結。（需要 JavaScript）"
+#~ msgstr ""
+#~ "結果預設會在同一個視窗開啟。這個外掛程式會覆寫預設行為，會在新分頁／視窗中"
+#~ "開啟連結。（需要 JavaScript）"
 
 #~ msgid "Color"
 #~ msgstr "顏色"
@@ -1418,9 +1425,8 @@ msgstr "引擎"
 #~ msgstr "這是 searx 的即時回覆模組清單。"
 
 #~ msgid ""
-#~ "This is the list of cookies and"
-#~ " their values searx is storing on "
-#~ "your computer."
+#~ "This is the list of cookies and their values searx is storing on your "
+#~ "computer."
 #~ msgstr "這是 searx 儲存在您電腦上的 cookies 與它們的值的清單。"
 
 #~ msgid "With that list, you can assess searx transparency."
@@ -1435,20 +1441,5 @@ msgstr "引擎"
 #~ msgid "Themes"
 #~ msgstr "佈景主題"
 
-#~ msgid "Reliablity"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When enabled, the result page's title"
-#~ " contains your query. Your browser "
-#~ "can record this title."
-#~ msgstr ""
-
 #~ msgid "Method"
 #~ msgstr "方法"
-
-#~ msgid ""
-#~ "This tab does not show up for "
-#~ "search results but you can search "
-#~ "the engines listed here via bangs."
-#~ msgstr ""
