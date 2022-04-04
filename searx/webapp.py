@@ -20,7 +20,7 @@ from typing import List, Dict, Iterable, Optional
 
 import urllib
 import urllib.parse
-from urllib.parse import urlencode
+from urllib.parse import urlencode, unquote
 
 import httpx
 
@@ -434,7 +434,7 @@ def _get_enable_categories(all_categories: Iterable[str]):
 def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     path = parsed_url.path
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
-    path = path.replace("/", " › ")
+    path = unquote(path).replace("/", " › ")
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
