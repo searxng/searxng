@@ -36,10 +36,29 @@ re_bot = re.compile(
 )
 
 
+def cdn_reported_ip(headers: dict) -> str:
+    # some commonly used CDNs:
+    cdn_keys = [
+        "CF-Connecting-IP", # Cloudflare
+        "Fastly-Client-IP", # Fastly
+        "True-Client-IP",   # Akamai
+        "ar-real-ip",       # ArvanCloud
+    ]
+
+    for key in cdn_keys:
+        if (v := headers.get(key)):
+            return v
+
+    return ""
+
+
 def is_accepted_request(inc_get_counter) -> bool:
     # pylint: disable=too-many-return-statements
     user_agent = request.headers.get('User-Agent', '')
-    x_forwarded_for = request.headers.get('X-Forwarded-For', '')
+    client_ip  = request.headers.get('X-Forwarded-For', '')
+
+    # uncomment below if you want to use the CDN reported client ip:
+    # client_ip = cdn_reported_ip(request.headers)
 
     if request.path == '/image_proxy':
         if re_bot.match(user_agent):
@@ -47,31 +66,37 @@ def is_accepted_request(inc_get_counter) -> bool:
         return True
 
     if request.path == '/search':
-        c_burst = inc_get_counter(interval=20, keys=[b'IP limit, burst', x_forwarded_for])
-        c_10min = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', x_forwarded_for])
+        c_burst = inc_get_counter(interval=20, keys=[b'IP limit, burst', client_ip])
+        c_10min = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', client_ip])
+
         if c_burst > 15 or c_10min > 150:
             return False
 
         if re_bot.match(user_agent):
             return False
 
-        if len(request.headers.get('Accept-Language', '').strip()) == '':
+        if request.headers.get('Accept-Language', '').strip():
             return False
 
-        if request.headers.get('Connection') == 'close':
-            return False
+        # If SearXNG is behind Cloudflare, all requests will get 429 because
+        # Cloudflare uses "Connection: close" by default.
+        # if request.headers.get('Connection') == 'close':
+        #     return False
 
-        accept_encoding_list = [l.strip() for l in request.headers.get('Accept-Encoding', '').split(',')]
-        if 'gzip' not in accept_encoding_list or 'deflate' not in accept_encoding_list:
-            return False
+        # "Accept-Encoding: gzip" will result in 429 because 'deflate' is not in accept_encoding_list...
+        # accept_encoding_list = [l.strip() for l in request.headers.get('Accept-Encoding', '').split(',')]
+        # if 'gzip' not in accept_encoding_list or 'deflate' not in accept_encoding_list:
+        #     return False
 
         if 'text/html' not in request.accept_mimetypes:
             return False
 
-        if request.args.get('format', 'html') != 'html':
-            c = inc_get_counter(interval=3600, keys=[b'API limit', x_forwarded_for])
-            if c > 4:
-                return False
+        # IDK but maybe api limit should based on path not format?
+        # if request.args.get('format', 'html') != 'html':
+        #     c = inc_get_counter(interval=3600, keys=[b'API limit', client_ip])
+        #     if c > 4:
+        #         return False
+
     return True
 
 
