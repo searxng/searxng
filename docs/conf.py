@@ -126,6 +126,10 @@ extensions = [
     'notfound.extension',  # https://github.com/readthedocs/sphinx-notfound-page
 ]
 
+myst_enable_extensions = [
+  "replacements", "smartquotes"
+]
+
 suppress_warnings = ['myst.domains']
 
 intersphinx_mapping = {
