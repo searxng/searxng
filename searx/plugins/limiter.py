@@ -79,6 +79,8 @@ def is_accepted_request(inc_get_counter) -> bool:
         c_burst = inc_get_counter(interval=20, keys=[b'IP limit, burst', client_ip])
         c_10min = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', client_ip])
 
+        logger.debug(f"counts of [{client_ip}]: c_burst={c_burst}, c_10min={c_10min}")
+
         if c_burst > c_burst_limit or c_10min > c_10min_limit:
             logger.warning(f"reject [{client_ip}]: c_burst({c_burst})>{c_burst_limit} or c_10min({c_10min})>{c_10min_limit}")
             return False
