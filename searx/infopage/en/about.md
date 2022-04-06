@@ -2,16 +2,16 @@
 
 SearXNG is a [metasearch engine], aggregating the results of other
 {{link('search engines', 'preferences')}} while not storing information about
-its users. The SearXNG project is driven by a open community, come join us on
-Matrix if you have questions or just want to chat about SearXNG:
+its users.
 
-- [#searxng:matrix.org]
+The SearXNG project is driven by an open community, come join us on
+Matrix if you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
 
-make SearXNG better.
+Make SearXNG better.
 
-- You can improve SearXNG translations at [Weblate] or
-- track development, send contributions and report issues at [SearXNG sources].
-- To get further information visit SearXNG's project documentation at [SearXNG
+- You can improve SearXNG translations at [Weblate], or...
+- Track development, send contributions, and report issues at [SearXNG sources].
+- To get further information, visit SearXNG's project documentation at [SearXNG
   docs].
 
 ## Why use it?
@@ -34,9 +34,9 @@ SearXNG supports [OpenSearch].  For more information on changing your default
 search engine, see your browser's documentation:
 
 - [Firefox]
-- [Microsoft Edge] - Behind the link you will also find some useful instructions
+- [Microsoft Edge] - Behind the link, you will also find some useful instructions
   for Chrome and Safari.
-- [Chromium] - based browsers only add websites that the user navigates to without
+- [Chromium]-based browsers only add websites that the user navigates to without
   a path.
 
 
