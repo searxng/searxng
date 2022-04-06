@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+import pprint
 
 from os import environ
 from os.path import dirname, join, abspath, isfile
@@ -139,6 +140,13 @@ def load_settings(load_user_setttings=True):
                 default_settings_path, user_settings_path
             ),
         )
+
+    # Consider to deprecate general.debug in the future.
+    # To make everything work correctly, set general.debug = general.log_level=="debug"
+    if "log_level" not in user_settings['general']: user_settings['general']['log_level'] = 'info'
+    user_settings['general']['debug'] = (user_settings['general']['log_level']=="debug")
+
+    pprint.pprint(user_settings['general'], indent=4, sort_dicts=True)
 
     # the user settings, fully replace the default configuration
     return (user_settings, 'load the user settings from {}'.format(user_settings_path))

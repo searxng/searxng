@@ -13,19 +13,20 @@ import searx.settings_loader
 from searx.settings_defaults import settings_set_defaults
 
 
-# Debug
-LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
-
-# Production
-LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
-LOG_LEVEL_PROD = logging.WARNING
-
 searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
 settings, settings_load_message = searx.settings_loader.load_settings()
 
 if settings is not None:
     settings = settings_set_defaults(settings)
+
+# Debug
+LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
+
+# Production
+LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
+LOG_LEVEL_PROD  = (settings['general']).get("log_level", "info").upper()
+LOG_LEVEL_PROD  = logging.getLevelName(LOG_LEVEL_PROD)
 
 _unset = object()
 

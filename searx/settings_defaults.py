@@ -47,6 +47,7 @@ SEARX_ENVIRON_VARIABLES = {
     'SEARX_DISABLE_ETC_SETTINGS': 'SEARXNG_DISABLE_ETC_SETTINGS',
     'SEARX_SETTINGS_PATH': 'SEARXNG_SETTINGS_PATH',
     'SEARX_DEBUG': 'SEARXNG_DEBUG',
+    'SEARX_LOGLEVEL': 'SEARXNG_LOGLEVEL',
     'SEARX_PORT': 'SEARXNG_PORT',
     'SEARX_BIND_ADDRESS': 'SEARXNG_BIND_ADDRESS',
     'SEARX_SECRET': 'SEARXNG_SECRET',
@@ -140,6 +141,7 @@ def apply_schema(settings, schema, path_list):
 SCHEMA = {
     'general': {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
+        'log_level': SettingsValue(str, 'info', 'SEARXNG_LOGLEVEL'),
         'instance_name': SettingsValue(str, 'SearXNG'),
         'contact_url': SettingsValue((None, False, str), None),
         'enable_metrics': SettingsValue(bool, True),
