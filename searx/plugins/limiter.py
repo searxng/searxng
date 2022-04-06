@@ -71,7 +71,7 @@ def is_accepted_request(inc_get_counter) -> bool:
 
     if request.path == '/image_proxy':
         if re_bot.match(user_agent):
-            logger.info(f"reject [{client_ip}]: client may be a bot described by UA=\"{user_agent}\"")
+            logger.warning(f"reject [{client_ip}]: client may be a bot described by UA=\"{user_agent}\"")
             return False
         return True
 
@@ -80,15 +80,15 @@ def is_accepted_request(inc_get_counter) -> bool:
         c_10min = inc_get_counter(interval=600, keys=[b'IP limit, 10 minutes', client_ip])
 
         if c_burst > c_burst_limit or c_10min > c_10min_limit:
-            logger.info(f"reject [{client_ip}]: c_burst({c_burst})>{c_burst_limit} or c_10min({c_10min})>{c_10min_limit}")
+            logger.warning(f"reject [{client_ip}]: c_burst({c_burst})>{c_burst_limit} or c_10min({c_10min})>{c_10min_limit}")
             return False
 
         if re_bot.match(user_agent):
-            logger.info(f"reject [{client_ip}]: client may be a bot described by UA=\"{user_agent}\"")
+            logger.warning(f"reject [{client_ip}]: client may be a bot described by UA=\"{user_agent}\"")
             return False
 
         if request.headers.get('Accept-Language', '').strip():
-            logger.info(f"reject [{client_ip}]: empty Accept-Language")
+            logger.warning(f"reject [{client_ip}]: empty Accept-Language")
             return False
 
         # If SearXNG is behind Cloudflare, all requests will get 429 because
@@ -102,7 +102,7 @@ def is_accepted_request(inc_get_counter) -> bool:
         #     return False
 
         if 'text/html' not in request.accept_mimetypes:
-            logger.info(f"reject [{client_ip}]: non-html request to /search")
+            logger.warning(f"reject [{client_ip}]: non-html request to /search")
             return False
 
         # IDK but maybe api limit should based on path not format?
