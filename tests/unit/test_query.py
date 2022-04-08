@@ -129,8 +129,8 @@ class TestLanguageParser(SearxTestCase):
         query = RawTextQuery(':hu-H', [])
         self.assertEqual(query.autocomplete_list, [":hu-hu"])
 
-        query = RawTextQuery(':v', [])
-        self.assertEqual(query.autocomplete_list, [':vi', ':tiếng việt', ':việt_nam'])
+        query = RawTextQuery(':zh-', [])
+        self.assertEqual(query.autocomplete_list, [':zh-cn', ':zh-hk', ':zh-tw'])
 
 
 class TestTimeoutParser(SearxTestCase):
