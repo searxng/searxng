@@ -48,7 +48,6 @@ about = {
 # engine dependent config
 categories = ['science']
 paging = True
-language_support = True
 use_locale_domain = True
 time_range_support = True
 safesearch = False

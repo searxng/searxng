@@ -32,7 +32,6 @@ about = {
     "results": 'HTML',
 }
 
-language_support = False
 time_range_support = False
 safesearch = False
 paging = True
