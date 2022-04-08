@@ -1,13 +1,28 @@
 #!/usr/bin/env python
 # lint: pylint
-
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""This script generates languages.py from intersecting each engine's supported
-languages.
+"""This script generates :origin:`searx/languages.py` from intersecting each
+engine's supported properites. The script checks all engines about a function::
+
+  def _fetch_engine_properties(resp, engine_properties):
+      ...
+
+and a variable named ``supported_properties_url``.  The HTTP get response of
+``supported_properties_url`` is passed to the ``_fetch_engine_properties``
+function including a template of ``engine_properties`` (see
+:py:obj:`searx.engines.engine_properties_template`).
 
 Output files: :origin:`searx/data/engines_languages.json` and
 :origin:`searx/languages.py` (:origin:`CI Update data ...
 <.github/workflows/data-update.yml>`).
+
+.. hint::
+
+  This implementation is backward compatible and supports the (depricated)
+  ``_fetch_supported_languages`` interface.
+
+  On the long term the depricated implementations in the engines will be
+  replaced by ``_fetch_engine_properties``.
 
 """
 
@@ -21,32 +36,67 @@ from babel.languages import get_global
 from babel.core import parse_locale
 
 from searx import settings, searx_dir
-from searx.engines import load_engines, engines
-from searx.network import set_timeout_for_thread
+from searx import network
+from searx.engines import load_engines, engines, engine_properties_template
+from searx.utils import gen_useragent
 
 # Output files.
 engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
 languages_file = Path(searx_dir) / 'languages.py'
 
 
-# Fetchs supported languages for each engine and writes json file with those.
 def fetch_supported_languages():
-    set_timeout_for_thread(10.0)
+    """Fetchs supported languages for each engine and writes json file with those.
 
+    """
+    network.set_timeout_for_thread(10.0)
     engines_languages = {}
     names = list(engines)
     names.sort()
 
+    # The headers has been moved here from commit 9b6ffed06: Some engines (at
+    # least bing and startpage) return a different result list of supported
+    # languages depending on the IP location where the HTTP request comes from.
+    # The IP based results (from bing) can be avoided by setting a
+    # 'Accept-Language' in the HTTP request.
+
+    headers = {
+        'User-Agent': gen_useragent(),
+        'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
+    }
+
     for engine_name in names:
-        if hasattr(engines[engine_name], 'fetch_supported_languages'):
-            engines_languages[engine_name] = engines[engine_name].fetch_supported_languages()
-            print("fetched %s languages from engine %s" % (len(engines_languages[engine_name]), engine_name))
-            if type(engines_languages[engine_name]) == list:  # pylint: disable=unidiomatic-typecheck
-                engines_languages[engine_name] = sorted(engines_languages[engine_name])
+        engine = engines[engine_name]
+        fetch_languages = getattr(engine, '_fetch_supported_languages', None)
+        fetch_properties = getattr(engine, '_fetch_engine_properties', None)
 
-    print("fetched languages from %s engines" % len(engines_languages))
+        if fetch_properties is not None:
+            resp = network.get(engine.supported_properties_url, headers=headers)
+            engine_properties = engine_properties_template()
+            fetch_properties(resp, engine_properties)
+            print("%s: %s languages" % (engine_name, len(engine_properties['languages'])))
+            print("%s: %s regions" % (engine_name, len(engine_properties['regions'])))
 
-    # write json file
+        elif fetch_languages is not None:
+            # print("%s: using deepricated _fetch_fetch_languages()" % engine_name)
+            resp = network.get(engine.supported_languages_url, headers=headers)
+            engine_properties = fetch_languages(resp)
+            if isinstance(engine_properties, list):
+                engine_properties.sort()
+
+            print("%s: fetched language %s containing %s items" % (
+                engine_name,
+                engine_properties.__class__.__name__,
+                len(engine_properties)
+            ))
+        else:
+            continue
+
+        engines_languages[engine_name] = engine_properties
+
+    print("fetched properties from %s engines" % len(engines_languages))
+    print("write json file: %s" % (engines_languages_file))
+
     with open(engines_languages_file, 'w', encoding='utf-8') as f:
         json.dump(engines_languages, f, indent=2, sort_keys=True)
 
@@ -122,17 +172,33 @@ def get_territory_name(lang_code):
         print("ERROR: %s --> %s" % (locale, exc))
     return country_name
 
-
-# Join all language lists.
 def join_language_lists(engines_languages):
+    """Join all languages of the engines into one list.  The returned language list
+    contains language codes (``zh``) and region codes (``zh-TW``).  The codes can
+    be parsed by babel::
+
+      babel.Locale.parse(language_list[n])
+
+    """
+    # pylint: disable=too-many-branches
     language_list = {}
+
     for engine_name in engines_languages:
-        for lang_code in engines_languages[engine_name]:
+        engine = engines[engine_name]
+        engine_codes = languages = engines_languages[engine_name]
+
+        if isinstance(languages, dict):
+            engine_codes = languages.get('regions', engine_codes)
+
+        if isinstance(engine_codes, dict):
+            engine_codes = engine_codes.keys()
+
+        for lang_code in engine_codes:
 
             # apply custom fixes if necessary
-            if lang_code in getattr(engines[engine_name], 'language_aliases', {}).values():
+            if lang_code in getattr(engine, 'language_aliases', {}).values():
                 lang_code = next(
-                    lc for lc, alias in engines[engine_name].language_aliases.items() if lang_code == alias
+                    lc for lc, alias in engine.language_aliases.items() if lang_code == alias
                 )
 
             locale = get_locale(lang_code)
@@ -197,6 +263,7 @@ def filter_language_list(all_languages):
         engine_name
         for engine_name in engines.keys()
         if 'general' in engines[engine_name].categories
+        and hasattr(engines[engine_name], 'supported_languages')
         and engines[engine_name].supported_languages
         and not engines[engine_name].disabled
     ]

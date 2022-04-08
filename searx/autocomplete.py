@@ -15,7 +15,7 @@ from searx.data import ENGINES_LANGUAGES
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 
-# a fetch_supported_languages() for XPath engines isn't available right now
+# a _fetch_supported_properites() for XPath engines isn't available right now
 # _brave = ENGINES_LANGUAGES['brave'].keys()
 
 

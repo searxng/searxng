@@ -42,7 +42,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - Timeout
         - Weight
         - Paging
-        - Language
+        - Language, Region
         - Safe search
         - Time range
 
