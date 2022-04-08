@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # lint: pylint
-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This script generates languages.py from intersecting each engine's supported
 languages.
@@ -22,31 +21,57 @@ from babel.core import parse_locale
 
 from searx import settings, searx_dir
 from searx.engines import load_engines, engines
-from searx.network import set_timeout_for_thread
+from searx.network import set_timeout_for_thread, get
+from searx.utils import gen_useragent
 
 # Output files.
 engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
 languages_file = Path(searx_dir) / 'languages.py'
 
 
-# Fetchs supported languages for each engine and writes json file with those.
 def fetch_supported_languages():
-    set_timeout_for_thread(10.0)
+    """Fetchs supported languages for each engine and writes json file with those.
 
+    """
+    set_timeout_for_thread(10.0)
     engines_languages = {}
     names = list(engines)
     names.sort()
 
+    # The headers has been moved here from commit 9b6ffed06: Some engines (at
+    # least bing) return a different result list of supported languages
+    # depending on the IP location where the HTTP request comes from.  The IP
+    # based results (from bing) can be avoided by setting a 'Accept-Language' in
+    # the HTTP request.
+
+    headers = {
+        'User-Agent': gen_useragent(),
+        'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
+    }
+
     for engine_name in names:
-        if hasattr(engines[engine_name], 'fetch_supported_languages'):
-            engines_languages[engine_name] = engines[engine_name].fetch_supported_languages()
-            print("fetched %s languages from engine %s" % (len(engines_languages[engine_name]), engine_name))
-            if type(engines_languages[engine_name]) == list:  # pylint: disable=unidiomatic-typecheck
-                engines_languages[engine_name] = sorted(engines_languages[engine_name])
+        if not hasattr(engines[engine_name], '_fetch_supported_languages'):
+            continue
+
+        func = engines[engine_name]._fetch_supported_languages  # pylint: disable=protected-access
+        url =  engines[engine_name].supported_languages_url
+        resp = get(url, headers=headers)
+
+        l = func(resp)
+        if isinstance(l, list):
+            l.sort()
+
+        print("%s: fetched language %s containing %s items" % (
+            engine_name,
+            l.__class__.__name__,
+            len(l)
+        ))
+
+        engines_languages[engine_name] = l
 
     print("fetched languages from %s engines" % len(engines_languages))
+    print("write json file: %s" % (engines_languages_file))
 
-    # write json file
     with open(engines_languages_file, 'w', encoding='utf-8') as f:
         json.dump(engines_languages, f, indent=2, sort_keys=True)
 
