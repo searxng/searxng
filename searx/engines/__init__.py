@@ -19,8 +19,7 @@ from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
 from searx import logger, settings
 from searx.data import ENGINES_LANGUAGES
-from searx.network import get
-from searx.utils import load_module, match_language, gen_useragent
+from searx.utils import load_module, match_language
 
 
 logger = logger.getChild('engines')
@@ -218,18 +217,6 @@ def set_language_attributes(engine: Engine):
 
     # language_support
     engine.language_support = len(engine.supported_languages) > 0
-
-    # assign language fetching method if auxiliary method exists
-    if hasattr(engine, '_fetch_supported_languages'):
-        headers = {
-            'User-Agent': gen_useragent(),
-            'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
-        }
-        engine.fetch_supported_languages = (
-            # pylint: disable=protected-access
-            lambda: engine._fetch_supported_languages(get(engine.supported_languages_url, headers=headers))
-        )
-
 
 def update_attributes_for_tor(engine: Engine) -> bool:
     if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
