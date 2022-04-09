@@ -1,35 +1,70 @@
 # Search syntax
 
-SearXNG allows you to modify the default categories, engines and search language
-via the search query.
+SearXNG comes with a search syntax by with you can modify the categories,
+engines, languages and more.  See the {{link('preferences', 'preferences')}} for
+the list of engines, categories and languages.
 
-Prefix `!` to set category and engine names.
+## `!` select engine and category
 
-Prefix: `:` to set the language.
+To set category and/or engine names use a `!` prefix.  To give a few examples:
 
-Abbrevations of the engines and languages are also accepted.  Engine/category
-modifiers are chainable and inclusive.  E.g. with {{search('!map !ddg !wp paris')}}
-search in map category **and** duckduckgo **and** wikipedia for
-`paris`.
+- search in wikipedia for **paris**
 
-See the {{link('preferences', 'preferences')}} for the list of engines,
-categories and languages.
+  - {{search('!wp paris')}}
+  - {{search('!wikipedia paris')}}
 
-## Examples
+- search in category **map** for **paris**
 
-Search in wikipedia for `paris`:
+  - {{search('!map paris')}}
 
-* {{search('!wp paris')}}
-* {{search('!wikipedia paris')}}
+- image search
 
-Search in category `map` for `paris`:
+  - {{search('!images Wau Holland')}}
 
-* {{search('!map paris')}}
+Abbreviations of the engines and languages are also accepted.  Engine/category
+modifiers are chain able and inclusive.  E.g. with {{search('!map !ddg !wp
+paris')}} search in map category and duckduckgo and wikipedia for **paris**.
 
-Image search:
+## `:` select language
 
-* {{search('!images Wau Holland')}}
+To select language filter use a `:` prefix.  To give an example:
 
-Custom language in wikipedia:
+- search wikipedia by a custom language
 
-* {{search(':fr !wp Wau Holland')}}
+  - {{search(':fr !wp Wau Holland')}}
+
+## `!!` external bangs
+
+SearXNG supports the external bangs from [ddg].  To directly jump to a external
+search page use the `!!` prefix.  To give an example:
+
+- search wikipedia by a custom language
+
+  - {{search('!!wfr Wau Holland')}}
+
+Please note, your search will be performed directly in the external search
+engine, SearXNG cannot protect your privacy on this.
+
+[ddg]: https://duckduckgo.com/bang
+
+## Special Queries
+
+In the {{link('preferences', 'preferences')}} page you find keywords for
+_special queries_.  To give a few examples:
+
+- generate a random UUID
+
+  - {{search('random uuid')}}
+
+- find the average
+
+  - {{search('avg 123 548 2.04 24.2')}}
+
+- show _user agent_ of your browser (needs to be activated)
+
+  - {{search('user-agent')}}
+
+- convert strings to different hash digests (needs to be activated)
+
+  - {{search('md5 lorem ipsum')}}
+  - {{search('sha512 lorem ipsum')}}
