@@ -113,6 +113,16 @@ def get_unicode_flag(lang_code):
     return c1 + c2
 
 
+def get_territory_name(lang_code):
+    country_name = None
+    locale = get_locale(lang_code)
+    try:
+        country_name = locale.get_territory_name()
+    except FileNotFoundError as exc:
+        print("ERROR: %s --> %s" % (locale, exc))
+    return country_name
+
+
 # Join all language lists.
 def join_language_lists(engines_languages):
     language_list = {}
@@ -274,7 +284,7 @@ def write_languages_file(languages):
         item = (
             code,
             languages[code]['name'].split(' (')[0],
-            languages[code].get('country_name') or '',
+            get_territory_name(code) or '',
             languages[code].get('english_name') or '',
             UnicodeEscape(flag),
         )
