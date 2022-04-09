@@ -112,7 +112,7 @@
     {% endif %}
     {% if 'language' not in locked_preferences %}
     <fieldset>
-      <legend id="pref_language">{{ _('Search language') }}</legend>
+      <legend id="pref_language">{{ _('Search language or region') }}</legend>
       <p class="value">{{- '' -}}
         <select name='language' aria-labelledby="pref_language" aria-describedby="desc_language">{{- '' -}}
           <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
@@ -121,7 +121,7 @@
           {%- endfor -%}
         </select>{{- '' -}}
       </p>
-      <div class="description" id="desc_language">{{ _('What language do you prefer for search?') }}</div>
+      <div class="description" id="desc_language">{{ _('What language or region do you prefer for search?') }}</div>
     </fieldset>
     {% endif %}
     {% if 'autocomplete' not in locked_preferences %}
