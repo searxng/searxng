@@ -6,11 +6,8 @@
 
 from json import loads
 from urllib.parse import urlencode
-
 from lxml import html
-
-from searx.utils import match_language
-from searx.engines.bing import language_aliases
+import babel
 
 from searx.engines.bing import (  # pylint: disable=unused-import
     _fetch_supported_languages,
@@ -28,51 +25,102 @@ about = {
 
 categories = ['videos', 'web']
 paging = True
-safesearch = True
-time_range_support = True
 number_of_results = 28
 
+time_range_support = True
+time_range_string = '&qft=+filterui:videoage-lt{interval}'
+time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
+
+safesearch = True
+safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}  # cookie: ADLT=STRICT
+
 base_url = 'https://www.bing.com/'
-search_string = (
+
+inital_query = (
+    # fmt: off
+    'videos/search'
+    '?{query}'
+    '&count={count}'
+    '&scope=video'
+    '&FORM=QBLH'
+    # fmt: on
+)
+
+page_query = (
     # fmt: off
     'videos/search'
     '?{query}'
     '&count={count}'
     '&first={first}'
     '&scope=video'
-    '&FORM=QBLH'
+    '&FORM=QBVR'
     # fmt: on
 )
-time_range_string = '&qft=+filterui:videoage-lt{interval}'
-time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
-
-# safesearch definitions
-safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}
-
 
 # do search-request
 def request(query, params):
-    offset = ((params['pageno'] - 1) * number_of_results) + 1
+    """Results from bing video depend on the HTTP Accept-Language header.  There is
+    no option or filter to search videos by language.
 
-    search_path = search_string.format(query=urlencode({'q': query}), count=number_of_results, first=offset)
+    """
 
-    # safesearch cookie
-    params['cookies']['SRCHHPGUSR'] = 'ADLT=' + safesearch_types.get(params['safesearch'], 'DEMOTE')
-
-    # language cookie
-    language = match_language(params['language'], supported_languages, language_aliases).lower()
-    params['cookies']['_EDGE_S'] = 'mkt=' + language + '&F=1'
+    language = params['language']
+    if language == 'all':
+        language = 'en-US'
+    locale = babel.Locale.parse(language, sep='-')
 
     # query and paging
+
+    query_str = urlencode({'q': query})
+
+    if params['pageno'] == 1:
+        search_path = inital_query.format(
+            query=query_str, count=number_of_results
+        )
+    else:
+        offset = ((params['pageno'] - 1) * number_of_results)
+        search_path = page_query.format(
+            query=query_str, count=number_of_results, first=offset
+        )
+
     params['url'] = base_url + search_path
 
-    # time range
-    if params['time_range'] in time_range_dict:
-        params['url'] += time_range_string.format(interval=time_range_dict[params['time_range']])
+    # safesearch
 
-    # bing videos did not like "older" versions < 70.0.1 when selectin other
-    # languages then 'en' .. very strange ?!?!
-    params['headers']['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:73.0.1) Gecko/20100101 Firefox/73.0.1'
+    # bing-video results are SafeSearch by defautl, setting the '&adlt_set='
+    # parameter seems not enogh to change the default.  I assume there is some
+    # age verification by a cookie and/or session ID is needed to disable the
+    # SafeSearch
+    params['url'] += '&adlt_set=%s' % safesearch_types.get(params['safesearch'], 'off').lower()
+
+    # cookies
+
+    # On bing-video users can select a SafeSearch level what is saved in a
+    # cookies, trying to set this coockie here seems not to work, may be the
+    # cookie needs more values (e.g. a session ID or something like this where a
+    # age validation is noted)
+
+    # SRCHHPGUSR = [
+    #     'SRCHLANG=%s' % locale.language,
+    #     'ADLT=%s' % safesearch_types.get(params['safesearch'], 'OFF')
+    # ]
+    # params['cookies']['SRCHHPGUSR'] = '&'.join(SRCHHPGUSR) + ';'
+    # logger.debug("cookies SRCHHPGUSR=%s", params['cookies']['SRCHHPGUSR'])
+
+    # time range
+
+    time_range = time_range_dict.get(params['time_range'])
+    if time_range:
+        params['url'] += time_range_string.format(interval=time_range)
+
+    # language & locale
+
+    ac_lang = locale.language
+    if locale.territory:
+        ac_lang = "%s-%s,%s;q=0.5" % (locale.language, locale.territory, locale.language)
+    logger.debug("headers.Accept-Language --> %s", ac_lang)
+    params['headers']['Accept-Language'] = ac_lang
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
     return params
 
