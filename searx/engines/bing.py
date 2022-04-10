@@ -8,7 +8,8 @@
 import re
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
-from searx.utils import eval_xpath, extract_text, match_language
+import babel
+from searx.utils import eval_xpath, extract_text
 
 about = {
     "website": 'https://www.bing.com',
@@ -22,10 +23,14 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
-time_range_support = False
-safesearch = False
 supported_languages_url = 'https://www.bing.com/account/general'
 language_aliases = {}
+
+time_range_support = True
+time_range_dict = {'day': 'ex1:"ez1"', 'week': 'ex1:"ez2"', 'month': 'ex1:"ez3"'}
+
+safesearch = True
+safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}  # cookie: ADLT=STRICT
 
 # search-url
 base_url = 'https://www.bing.com/'
@@ -42,33 +47,73 @@ def _get_offset_from_pageno(pageno):
 
 
 def request(query, params):
+    """Assemble a bing request.
 
-    offset = _get_offset_from_pageno(params.get('pageno', 1))
+    Bing tries to guess user's language and territory from the HTTP
+    Accept-Language.  Optional the user can select a language by adding a
+    language tag to the search term.  By example if the user searches for the
+    word 'foo' in articles written in english::
 
-    # logger.debug("params['pageno'] --> %s", params.get('pageno'))
-    # logger.debug("          offset --> %s", offset)
+      language:en foo
 
-    search_string = page_query
-    if offset == 1:
-        search_string = inital_query
+    Bing supports only language tags, the user can't add a territory
+    (e.g. 'en-US') or a script (e.g. 'zh- Hans') to the selected language.
 
-    if params['language'] == 'all':
-        lang = 'EN'
+    """
+    language = params['language']
+    if language == 'all':
+        language = 'en-US'
+    locale = babel.Locale.parse(language, sep='-')
+
+    # query and paging
+
+    bing_language = ''
+    if locale.language in supported_languages:
+        bing_language = 'language:%s ' % locale.language
+    query_str = urlencode({'q': bing_language + query})
+
+    if params['pageno'] == 1:
+        search_path = inital_query.format(query=query_str)
     else:
-        lang = match_language(params['language'], supported_languages, language_aliases)
-
-    query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
-
-    search_path = search_string.format(query=urlencode({'q': query}), offset=offset)
-
-    if offset > 1:
-        referer = base_url + inital_query.format(query=urlencode({'q': query}))
+        offset = _get_offset_from_pageno(params.get('pageno', 1))
+        search_path = page_query.format(query=query_str, offset=offset)
+        referer = base_url + inital_query.format(query=query_str)
         params['headers']['Referer'] = referer
         logger.debug("headers.Referer --> %s", referer)
 
     params['url'] = base_url + search_path
-    params['headers']['Accept-Language'] = "en-US,en;q=0.5"
+
+    # cookies
+
+    # On bing users can disable SafeSearch but this does not have an effect in
+    # the bing search results (except you switch to bing-videos or bing-images)
+
+    # SRCHHPGUSR = [
+    #     # 'SRCHLANG=%s' % locale.language,
+    #     'ADLT=%s' % safesearch_types.get(params['safesearch'], 'OFF')
+    # ]
+    # params['cookies']['SRCHHPGUSR'] = '&'.join(SRCHHPGUSR) + ';'
+    # logger.debug("cookies SRCHHPGUSR=%s", params['cookies']['SRCHHPGUSR'])
+
+    # time range
+
+    time_range = time_range_dict.get(params['time_range'])
+    if time_range:
+        params['url'] += "&filters=" + time_range
+
+    # language & locale
+
+    # language of the UI ...
+    # if locale.language in supported_languages:
+    #     params['url'] += '&setlang=%s' % locale.language
+
+    ac_lang = locale.language
+    if locale.territory:
+        ac_lang = "%s-%s,%s;q=0.5" % (locale.language, locale.territory, locale.language)
+    logger.debug("headers.Accept-Language --> %s", ac_lang)
+    params['headers']['Accept-Language'] = ac_lang
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+
     return params
 
 
