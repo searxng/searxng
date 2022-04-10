@@ -131,21 +131,24 @@ def _fetch_supported_languages(resp):
     lang_tags = set()
 
     dom = html.fromstring(resp.text)
-    lang_links = eval_xpath(dom, '//div[@id="language-section"]//li')
 
-    for _li in lang_links:
+    # Selector to get items from "Display language"
+    ui_lang_links = eval_xpath(dom, '//div[@id="language-section"]//li')
+
+    for _li in ui_lang_links:
 
         href = eval_xpath(_li, './/@href')[0]
         (_scheme, _netloc, _path, _params, query, _fragment) = urlparse(href)
         query = parse_qs(query, keep_blank_values=True)
 
-        # fmt: off
-        setlang = query.get('setlang', [None, ])[0]
-        # example: 'mn-Cyrl-MN' --> '['mn', 'Cyrl-MN']
-        lang, nation = (setlang.split('-', maxsplit=1) + [None,])[:2]  # fmt: skip
-        # fmt: on
+        # The 'language:xx' query string in the request function (above) does
+        # only support the 2 letter language codes from the "Display languages"
+        # list.  Examples of items from the "Display languages" not sopported in
+        # the query string:
+        #    'mn-Cyrl-MN', 'chr-cher', 'zh-Hans', ha-latn, 'ca-es-valencia'
 
-        tag = lang + '-' + nation if nation else lang
-        lang_tags.add(tag)
+        setlang = query.get('setlang', [None, ])[0]
+        lang = setlang.split('-')[0]
+        lang_tags.add(lang)
 
     return list(lang_tags)

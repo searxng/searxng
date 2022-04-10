@@ -49,8 +49,6 @@ language_codes = (
     ('nl-BE', 'Nederlands', 'België', 'Dutch', '\U0001f1e7\U0001f1ea'),
     ('nl-NL', 'Nederlands', 'Nederland', 'Dutch', '\U0001f1f3\U0001f1f1'),
     ('pl-PL', 'Polski', 'Polska', 'Polish', '\U0001f1f5\U0001f1f1'),
-    ('pt', 'Português', '', 'Portuguese', '\U0001f310'),
-    ('pt-BR', 'Português', 'Brasil', 'Portuguese', '\U0001f1e7\U0001f1f7'),
     ('pt-PT', 'Português', 'Portugal', 'Portuguese', '\U0001f1f5\U0001f1f9'),
     ('ro-RO', 'Română', 'România', 'Romanian', '\U0001f1f7\U0001f1f4'),
     ('ru-RU', 'Русский', 'Россия', 'Russian', '\U0001f1f7\U0001f1fa'),
