@@ -11,20 +11,21 @@ from urllib.parse import (
 )
 from datetime import datetime
 from dateutil import parser
-from lxml import etree
+
+import babel
+from lxml import etree, html
 from lxml.etree import XPath
-from searx.utils import match_language, eval_xpath_getindex
-from searx.engines.bing import (  # pylint: disable=unused-import
-    language_aliases,
-    _fetch_supported_languages,
-    supported_languages_url,
+
+from searx.utils import (
+    eval_xpath_getindex,
+    eval_xpath,
 )
 
 # about
 about = {
     "website": 'https://www.bing.com/news',
     "wikidata_id": 'Q2878637',
-    "official_api_documentation": 'https://www.microsoft.com/en-us/bing/apis/bing-news-search-api',
+    "official_api_documentation": 'https://docs.microsoft.com/en-us/bing/search-apis/bing-news-search',
     "use_official_api": False,
     "require_api_key": False,
     "results": 'RSS',
@@ -34,79 +35,72 @@ about = {
 categories = ['news']
 paging = True
 time_range_support = True
+supported_languages_url = 'https://docs.microsoft.com/en-us/bing/search-apis/bing-web-search/reference/market-codes'
 
 # search-url
-base_url = 'https://www.bing.com/'
-search_string = 'news/search?{query}&first={offset}&format=RSS'
-search_string_with_time = 'news/search?{query}&first={offset}&qft=interval%3d"{interval}"&format=RSS'
+base_url = 'https://www.bing.com/news'
+
+#search_string_with_time = 'news/search?{query}&first={offset}&qft=interval%3d"{interval}"&format=RSS'
+
+#https://www.bing.com/news/search?q=foo&format=RSS
+#https://www.bing.com/news/search?q=foo&setmkt=de&first=1&qft=interval%3D%227%22&format=RSS
+
+# https://www.bing.com/news/search?q=foo&cc=en-UK&first=1&qft=interval%3D%227%22&format=RSS
+
 time_range_dict = {'day': '7', 'week': '8', 'month': '9'}
 
-
-def url_cleanup(url_string):
-    """remove click"""
-
-    parsed_url = urlparse(url_string)
-    if parsed_url.netloc == 'www.bing.com' and parsed_url.path == '/news/apiclick.aspx':
-        query = dict(parse_qsl(parsed_url.query))
-        url_string = query.get('url', None)
-    return url_string
-
-
-def image_url_cleanup(url_string):
-    """replace the http://*bing.com/th?id=... by https://www.bing.com/th?id=..."""
-
-    parsed_url = urlparse(url_string)
-    if parsed_url.netloc.endswith('bing.com') and parsed_url.path == '/th':
-        query = dict(parse_qsl(parsed_url.query))
-        url_string = "https://www.bing.com/th?id=" + quote(query.get('id'))
-    return url_string
-
-
-def _get_url(query, language, offset, time_range):
-    if time_range in time_range_dict:
-        search_path = search_string_with_time.format(
-            # fmt: off
-            query = urlencode({
-                'q': query,
-                'setmkt': language
-            }),
-            offset = offset,
-            interval = time_range_dict[time_range]
-            # fmt: on
-        )
-    else:
-        # e.g. setmkt=de-de&setlang=de
-        search_path = search_string.format(
-            # fmt: off
-            query = urlencode({
-                'q': query,
-                'setmkt': language
-            }),
-            offset = offset
-            # fmt: on
-        )
-    return base_url + search_path
 
 
 def request(query, params):
 
-    if params['time_range'] and params['time_range'] not in time_range_dict:
-        return params
-
-    offset = (params['pageno'] - 1) * 10 + 1
-    if params['language'] == 'all':
+    language = params['language']
+    if language == 'all':
         language = 'en-US'
-    else:
-        language = match_language(params['language'], supported_languages, language_aliases)
-    params['url'] = _get_url(query, language, offset, params['time_range'])
+    locale = babel.Locale.parse(language, sep='-')
+
+    req_args = {
+        'q' : query,
+        'format': 'RSS'
+    }
+
+    if locale.territory:
+        market_code = locale.language + '-' + locale.territory
+        if market_code in supported_languages:
+            req_args['setmkt'] = market_code
+        else:
+            # Seems that language code can be used as market_code alternative,
+            # when bing-news does not support the market_code (including
+            # territory), but news results are better if there is a territory
+            # given.
+            req_args['setmkt'] = locale.language
+
+    if params['pageno'] > 1:
+        req_args['first'] =  (params['pageno'] - 1) * 10 + 1
+
+    params['url'] = base_url + '/search?' + urlencode(req_args)
+
+    interval = time_range_dict.get(params['time_range'])
+    if interval:
+        params['url'] += f'&qft=interval%3d"{interval}"'
+
+    ac_lang = locale.language
+    if locale.territory:
+        ac_lang = "%s-%s,%s;q=0.5" % (locale.language, locale.territory, locale.language)
+    logger.debug("headers.Accept-Language --> %s", ac_lang)
+    params['headers']['Accept-Language'] = ac_lang
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
     return params
 
 
 def response(resp):
 
+    try:
+        rss = etree.fromstring(resp.content)
+    except etree.XMLSyntaxError:
+        return []
+
     results = []
-    rss = etree.fromstring(resp.content)
     namespaces = rss.nsmap
 
     for item in rss.xpath('./channel/item'):
@@ -138,3 +132,54 @@ def response(resp):
             results.append({'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content})
 
     return results
+
+def url_cleanup(url_string):
+    """remove click"""
+
+    parsed_url = urlparse(url_string)
+    if parsed_url.netloc == 'www.bing.com' and parsed_url.path == '/news/apiclick.aspx':
+        query = dict(parse_qsl(parsed_url.query))
+        url_string = query.get('url', None)
+    return url_string
+
+
+def image_url_cleanup(url_string):
+    """replace the http://*bing.com/th?id=... by https://www.bing.com/th?id=..."""
+
+    parsed_url = urlparse(url_string)
+    if parsed_url.netloc.endswith('bing.com') and parsed_url.path == '/th':
+        query = dict(parse_qsl(parsed_url.query))
+        url_string = "https://www.bing.com/th?id=" + quote(query.get('id'))
+    return url_string
+
+
+def _fetch_supported_languages(resp):
+    """Market and language codes used by Bing Web Search API"""
+
+    dom = html.fromstring(resp.text)
+
+    market_codes = eval_xpath(
+        dom,
+        "//th[normalize-space(text()) = 'Market code']/../../../tbody/tr/td[3]/text()",
+    )
+    m_codes = set()
+    for value in market_codes:
+        m_codes.add(value)
+
+    # country_codes =  eval_xpath(
+    #     dom,
+    #     "//th[normalize-space(text()) = 'Country Code']/../../../tbody/tr/td[2]/text()",
+    # )
+    # c_codes = set()
+    # for value in country_codes:
+    #     c_codes.add(value)
+
+    # language_codes =  eval_xpath(
+    #     dom,
+    #     "//th[normalize-space(text()) = 'Language Code']/../../../tbody/tr/td[2]/text()",
+    # )
+    # l_codes = set()
+    # for value in language_codes:
+    #     l_codes.add(value)
+
+    return list(m_codes)

@@ -32,7 +32,6 @@ language_codes = (
     ('fr-CA', 'Français', 'Canada', 'French', '\U0001f1e8\U0001f1e6'),
     ('fr-CH', 'Français', 'Suisse', 'French', '\U0001f1e8\U0001f1ed'),
     ('fr-FR', 'Français', 'France', 'French', '\U0001f1eb\U0001f1f7'),
-    ('he-IL', 'עברית', 'ישראל', 'Hebrew', '\U0001f1ee\U0001f1f1'),
     ('hr-HR', 'Hrvatski', 'Hrvatska', 'Croatian', '\U0001f1ed\U0001f1f7'),
     ('hu-HU', 'Magyar', 'Magyarország', 'Hungarian', '\U0001f1ed\U0001f1fa'),
     ('it-IT', 'Italiano', 'Italia', 'Italian', '\U0001f1ee\U0001f1f9'),
