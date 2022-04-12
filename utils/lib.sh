@@ -1535,7 +1535,7 @@ pkg_install() {
             ;;
         arch)
             # shellcheck disable=SC2068
-            pacman --noprogressbar -Sy --noconfirm $@
+            pacman --noprogressbar -Sy --noconfirm --needed $@
             ;;
         fedora)
             # shellcheck disable=SC2068
