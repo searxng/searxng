@@ -170,6 +170,7 @@ SCHEMA = {
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
+        'autocomplete_limit': SettingsValue(dict, {"min":0, "max": 50}),
     },
     'redis': {
         'url': SettingsValue(str, 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'),

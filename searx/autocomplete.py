@@ -18,6 +18,12 @@ from searx.exceptions import SearxEngineResponseException
 # a fetch_supported_languages() for XPath engines isn't available right now
 # _brave = ENGINES_LANGUAGES['brave'].keys()
 
+_autocomplete_limit = settings['server']['autocomplete_limit']
+_autocomplete_limit_enabled = bool(_autocomplete_limit)
+# Make sure _autocomplete_limit['overwrite'] is always a dict.
+if not hasattr(_autocomplete_limit, 'get'):
+    _autocomplete_limit['overwrite'] = {}
+
 
 def get(*args, **kwargs):
     if 'timeout' not in kwargs:
@@ -158,9 +164,24 @@ backends = {
 }
 
 
+def meet_limit(backend_name, query) -> bool:
+    if _autocomplete_limit_enabled:
+        backend_limit = _autocomplete_limit['overwrite'].get(
+            backend_name, _autocomplete_limit
+        )
+        limit_min = backend_limit.get("min", 0)
+        limit_max = backend_limit.get("max", 0x7FFFFFFF)
+
+        return limit_min <= len(query) <= limit_max
+
+    # If autocomplete_limit is not configured,
+    # allow all autocomplete requests.
+    return True
+
+
 def search_autocomplete(backend_name, query, lang):
     backend = backends.get(backend_name)
-    if backend is None:
+    if backend is None or not meet_limit(backend_name, query):
         return []
 
     try:
