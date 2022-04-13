@@ -15,7 +15,7 @@
           for (const [engine_name, description] of Object.entries(engine_descriptions)) {
             let elements = d.querySelectorAll('[data-engine-name="' + engine_name + '"] .engine-description');
             for (const element of elements) {
-              let source = ' (<i>' + searxng.translations['Source'] + ':&nbsp;' + description[1] + '</i>)';
+              let source = ' (<i>' + searxng.settings.translations.Source + ':&nbsp;' + description[1] + '</i>)';
               element.innerHTML = description[0] + source;
             }
           }

@@ -10,6 +10,7 @@ import hmac
 import json
 import os
 import sys
+import base64
 
 from datetime import datetime, timedelta
 from timeit import default_timer
@@ -444,7 +445,36 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
+def get_client_settings():
+    req_pref = request.preferences
+    return {
+        'autocomplete_provider': req_pref.get_value('autocomplete'),
+        'http_method':  req_pref.get_value('method'),
+        'infinite_scroll': req_pref.get_value('infinite_scroll'),
+        'translations': get_translations(),
+        'search_on_category_select': req_pref.plugins.choices['searx.plugins.search_on_category_select'],
+        'hotkeys': req_pref.plugins.choices['searx.plugins.vim_hotkeys'],
+        'theme_static_path': custom_url_for('static', filename='themes/simple'),
+    }
+
+
 def render(template_name: str, override_theme: str = None, **kwargs):
+
+    kwargs['client_settings'] = str(
+        base64.b64encode(
+            bytes(
+                json.dumps(get_client_settings()),
+                encoding='utf-8',
+            )
+        ), encoding='utf-8',
+    )
+
+    # obsolete, only needed by oscar
+    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    kwargs['method'] = request.preferences.get_value('method')
+    kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
+    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
+
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
@@ -452,9 +482,6 @@ def render(template_name: str, override_theme: str = None, **kwargs):
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
-    kwargs['method'] = request.preferences.get_value('method')
-    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
-    kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
@@ -466,7 +493,6 @@ def render(template_name: str, override_theme: str = None, **kwargs):
 
     # i18n
     kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]
-    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
     kwargs['locale_rfc5646'] = _get_locale_rfc5646(locale)
