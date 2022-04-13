@@ -69,7 +69,7 @@ nvm.min_node() {
     local higher_v
 
     if ! command -v node >/dev/null; then
-        wanr_msg "Node.js is not yet installed"
+        warn_msg "Node.js is not yet installed"
         return 42
     fi
 
