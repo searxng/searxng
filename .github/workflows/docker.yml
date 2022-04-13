@@ -7,6 +7,33 @@ on:
   workflow_dispatch:
 
 jobs:
+
+
+  themes:
+    name: Themes
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Ubuntu packages
+      run: sudo ./utils/searx.sh install buildhost
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+    - name: Cache Python dependencies
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+        path: ./local
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+    - name: Install node dependencies
+      run: make V=1 node.env
+    - name: Build themes
+      run: make V=1 themes.all
+
+
   docker:
     runs-on: ubuntu-latest
     steps:
