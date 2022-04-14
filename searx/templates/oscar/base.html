@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=2.0, user-scalable=1" />
     {% block meta %}{% endblock %}
     <title>{% block title %}{% endblock %}{{ instance_name }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css" />
     {% if preferences.get_value('oscar-style') -%}
     {{'    '}}<link rel="stylesheet" href="{{ url_for('static', filename='css/'+preferences.get_value('oscar-style')+'.min.css') }}" type="text/css" />
@@ -27,7 +26,8 @@
     {%- for css in styles %}
         <link rel="stylesheet" href="{{ url_for('static', filename=css) }}" type="text/css" />
     {% endfor %}
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" type="text/css" />
+    
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" />
 
     {% block styles %}
