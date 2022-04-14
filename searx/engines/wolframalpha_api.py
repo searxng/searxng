@@ -123,7 +123,7 @@ def response(resp):
     if not result_chunks:
         return []
 
-    title = "Wolfram|Alpha (%s)" % infobox_title
+    title = "Wolfram Alpha (%s)" % infobox_title
 
     # append infobox
     results.append(

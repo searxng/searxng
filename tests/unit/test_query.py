@@ -130,7 +130,7 @@ class TestLanguageParser(SearxTestCase):
         self.assertEqual(query.autocomplete_list, [":hu-hu"])
 
         query = RawTextQuery(':v', [])
-        self.assertEqual(query.autocomplete_list, [":vi", ":tiếng việt"])
+        self.assertEqual(query.autocomplete_list, [':vi', ':tiếng việt', ':việt_nam'])
 
 
 class TestTimeoutParser(SearxTestCase):

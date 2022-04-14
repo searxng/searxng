@@ -8,19 +8,20 @@
 # Mihai Pora <mihai.pora@gmail.com>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2020-07-09 13:10+0000\n"
-"Last-Translator: Daniel Șerbănescu <daniel@serbanescu.dk>\n"
+"PO-Revision-Date: 2022-04-08 07:18+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Romanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"ro/>\n"
 "Language: ro\n"
-"Language-Team: Romanian "
-"(http://www.transifex.com/asciimoo/searx/language/ro/)\n"
-"Plural-Forms: nplurals=3; "
-"plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1))\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -91,57 +92,57 @@ msgstr "știință"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr ""
+msgstr "aplicații"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
 msgid "dictionaries"
-msgstr ""
+msgstr "dicționare"
 
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr ""
+msgstr "versuri"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
 msgid "packages"
-msgstr ""
+msgstr "pachete"
 
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr ""
+msgstr "î&r"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr ""
+msgstr "arhive digitale"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "enciclopedii de programe"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr ""
+msgstr "rețea"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr ""
+msgstr "automat"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr ""
+msgstr "luminos"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
-msgstr ""
+msgstr "întunecat"
 
 #: searx/webapp.py:169
 msgid "timeout"
@@ -149,27 +150,27 @@ msgstr ""
 
 #: searx/webapp.py:170
 msgid "parsing error"
-msgstr ""
+msgstr "examinare eșuată"
 
 #: searx/webapp.py:171
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "eroare protocol HTTP"
 
 #: searx/webapp.py:172
 msgid "network error"
-msgstr ""
+msgstr "eraore rețea"
 
 #: searx/webapp.py:174
 msgid "unexpected crash"
-msgstr ""
+msgstr "defecțiune neașteptată"
 
 #: searx/webapp.py:181
 msgid "HTTP error"
-msgstr ""
+msgstr "eroare HTTP"
 
 #: searx/webapp.py:182
 msgid "HTTP connection error"
-msgstr ""
+msgstr "eroare conexiune HTTP"
 
 #: searx/webapp.py:188
 msgid "proxy error"
@@ -181,11 +182,11 @@ msgstr ""
 
 #: searx/webapp.py:190
 msgid "too many requests"
-msgstr ""
+msgstr "Prea multe solicitări"
 
 #: searx/webapp.py:191
 msgid "access denied"
-msgstr ""
+msgstr "Acces interzis"
 
 #: searx/webapp.py:192
 msgid "server API error"
@@ -198,15 +199,15 @@ msgstr "Niciun element găsit"
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
 msgid "Source"
-msgstr ""
+msgstr "Sursă"
 
 #: searx/webapp.py:414
 msgid "Error loading the next page"
-msgstr ""
+msgstr "Eroare la încărcarea paginii următoare"
 
 #: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
-msgstr "Configurări nevalide, editați preferințele"
+msgstr "Configurări nevalide, modificați preferințele"
 
 #: searx/webapp.py:542
 msgid "Invalid settings"
@@ -226,7 +227,7 @@ msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
 #: searx/webapp.py:871
 msgid "Suspended"
-msgstr ""
+msgstr "Întrerupt"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -344,7 +345,7 @@ msgstr "Pagină negăsită"
 #: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr "Navighează la %(search_page)s"
+msgstr "Navighează la %(search_page)s."
 
 #: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
 msgid "search page"
@@ -652,7 +653,7 @@ msgstr "Schimbă limba aspectului"
 #: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Temă"
 
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
@@ -716,7 +717,7 @@ msgstr "Încarcă automat pagina următoare când se derulează la baza paginii 
 #: searx/templates/oscar/preferences.html:273
 #: searx/templates/simple/preferences.html:247
 msgid "HTTP Method"
-msgstr ""
+msgstr "Metodă HTTP"
 
 #: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
@@ -767,7 +768,7 @@ msgstr ""
 
 #: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
-msgstr ""
+msgstr "Permite toate"
 
 #: searx/templates/oscar/preferences.html:327
 msgid "Disable all"
@@ -1121,7 +1122,7 @@ msgstr "Deocamdată nu există date disponibile."
 #: searx/templates/oscar/messages/no_results.html:4
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
-msgstr "Motoarele nu pot obține rezultate"
+msgstr "Motoarele nu pot obține rezultate."
 
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
@@ -1479,4 +1480,3 @@ msgstr ""
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
-
