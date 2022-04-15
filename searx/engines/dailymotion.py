@@ -68,6 +68,13 @@ iframe_src = "https://www.dailymotion.com/embed/video/{video_id}"
 # The request query filters by 'languages' & 'country', therefore instead of
 # fetching only languages we need to fetch locales.
 supported_languages_url = 'https://api.dailymotion.com/locales'
+supported_languages_iso639: Set[str] = set()
+
+
+def init(_engine_settings):
+    global supported_languages_iso639
+    supported_languages_iso639 = set([language.split('_')[0] for language in supported_languages])
+
 
 def request(query, params):
 
@@ -79,9 +86,13 @@ def request(query, params):
         language = 'en-US'
     locale = babel.Locale.parse(language, sep='-')
 
+    language_iso639 = locale.language
+    if locale.language not in supported_languages_iso639:
+        language_iso639 = 'en'
+
     query_args = {
         'search': query,
-        'languages': locale.language,
+        'languages': language_iso639,
         'page':  params['pageno'],
     }
 
