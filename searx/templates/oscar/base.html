@@ -44,6 +44,13 @@
             .disabled_if_nojs {pointer-events: none; cursor: default; text-decoration: line-through;}
         </style>
     </noscript>
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script>
+  function addDarkmodeWidget() {
+    new Darkmode().showWidget();
+  }
+  window.addEventListener('load', addDarkmodeWidget);
+</script>
 </head>
 <body class="{{ endpoint }}_endpoint" >
     {% include 'oscar/navbar.html' %}
