@@ -19,6 +19,7 @@ jobs:
           - update_firefox_version.py
           - update_languages.py
           - update_wikidata_units.py
+          - update_engine_descriptions.py
     steps:
       - name: Checkout
         uses: actions/checkout@v2
