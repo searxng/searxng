@@ -7,17 +7,18 @@
 import re
 from time import time
 
-from urllib.parse import urlencode
 from unicodedata import normalize, combining
 from datetime import datetime, timedelta
+from collections import OrderedDict
 
 from dateutil import parser
 from lxml import html
-from babel import Locale
-from babel.localedata import locale_identifiers
+
+import babel
 
 from searx.network import get
-from searx.utils import extract_text, eval_xpath, match_language
+from searx.locales import get_engine_locale
+from searx.utils import extract_text, eval_xpath
 from searx.exceptions import (
     SearxEngineResponseException,
     SearxEngineCaptchaException,
@@ -36,16 +37,22 @@ about = {
 
 # engine dependent config
 categories = ['general', 'web']
-# there is a mechanism to block "bot" search
-# (probably the parameter qid), require
-# storing of qid's between mulitble search-calls
 
 paging = True
-supported_languages_url = 'https://www.startpage.com/do/settings'
+number_of_results = 5
+send_accept_language_header = True
+
+safesearch = True
+filter_mapping = {0: '0', 1: '1', 2: '1'}
+
+time_range_support = True
+time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
+
+supported_properties_url = 'https://www.startpage.com/do/settings'
 
 # search-url
-base_url = 'https://startpage.com/'
-search_url = base_url + 'sp/search?'
+base_url = 'https://www.startpage.com/'
+search_url = base_url + 'sp/search'
 
 # specific xpath variables
 # ads xpath //div[@id="results"]/div[@id="sponsored"]//div[@class="result"]
@@ -104,42 +111,83 @@ def get_sc_code(headers):
     return sc_code
 
 
-# do search-request
 def request(query, params):
 
-    # pylint: disable=line-too-long
-    # The format string from Startpage's FFox add-on [1]::
-    #
-    #     https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=ext-ff&language=__MSG_extensionUrlLanguage__&extVersion=1.3.0
-    #
-    # [1] https://addons.mozilla.org/en-US/firefox/addon/startpage-private-search/
+    # Startpage supports a region value: 'all'
+    engine_region = 'all'
+    engine_language = 'english_uk'
+    if params['language'] != 'all':
+        engine_region = get_engine_locale(params['language'], engine_data.regions, default='all')
+        engine_language = get_engine_locale(
+            params['language'].split('-')[0], engine_data.languages, default='english_uk'
+        )
+    logger.debug(
+        'selected language %s --> engine_language: %s // engine_region: %s',
+        params['language'],
+        engine_language,
+        engine_region,
+    )
 
+    # The Accept header is also needed by the get_sc_code(..) call below.
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+
+    # build arguments
     args = {
         'query': query,
-        'page': params['pageno'],
         'cat': 'web',
-        # 'pl': 'ext-ff',
-        # 'extVersion': '1.3.0',
-        # 'abp': "-1",
-        'sc': get_sc_code(params['headers']),
+        't': 'device',
+        'sc': get_sc_code(params['headers']),  # hint: this func needs HTTP headers
+        'with_date': time_range_dict.get(params['time_range'], ''),
     }
 
-    # set language if specified
-    if params['language'] != 'all':
-        lang_code = match_language(params['language'], supported_languages, fallback=None)
-        if lang_code:
-            language_name = supported_languages[lang_code]['alias']
-            args['language'] = language_name
-            args['lui'] = language_name
+    if engine_language:
+        args['language'] = engine_language
+        args['lui'] = engine_language
 
-    params['url'] = search_url + urlencode(args)
+    if params['pageno'] == 1:
+        args['abp'] = ['-1', '-1']
+
+    else:
+        args['page'] = params['pageno']
+        args['abp'] = '-1'
+
+    # build cookie
+    lang_homepage = 'english'
+    cookie = OrderedDict()
+    cookie['date_time'] = 'world'
+    cookie['disable_family_filter'] = filter_mapping[params['safesearch']]
+    cookie['disable_open_in_new_window'] = '0'
+    cookie['enable_post_method'] = '1'  # hint: POST
+    cookie['enable_proxy_safety_suggest'] = '1'
+    cookie['enable_stay_control'] = '1'
+    cookie['instant_answers'] = '1'
+    cookie['lang_homepage'] = 's/device/%s/' % lang_homepage
+    cookie['num_of_results'] = '10'
+    cookie['suggestions'] = '1'
+    cookie['wt_unit'] = 'celsius'
+
+    if engine_language:
+        cookie['language'] = engine_language
+        cookie['language_ui'] = engine_language
+
+    if engine_region:
+        cookie['search_results_region'] = engine_region
+
+    params['cookies']['preferences'] = 'N1N'.join(["%sEEE%s" % x for x in cookie.items()])
+    logger.debug('cookie preferences: %s', params['cookies']['preferences'])
+    params['method'] = 'POST'
+
+    logger.debug("data: %s", args)
+    params['data'] = args
+
+    params['url'] = search_url
+
     return params
 
 
 # get response from search-request
 def response(resp):
     results = []
-
     dom = html.fromstring(resp.text)
 
     # parse results
@@ -201,62 +249,142 @@ def response(resp):
     return results
 
 
-# get supported languages from their site
-def _fetch_supported_languages(resp):
-    # startpage's language selector is a mess each option has a displayed name
-    # and a value, either of which may represent the language name in the native
-    # script, the language name in English, an English transliteration of the
-    # native name, the English name of the writing script used by the language,
-    # or occasionally something else entirely.
+def _fetch_engine_properties(resp, engine_properties):
 
-    # this cases are so special they need to be hardcoded, a couple of them are mispellings
-    language_names = {
-        'english_uk': 'en-GB',
-        'fantizhengwen': ['zh-TW', 'zh-HK'],
-        'hangul': 'ko',
-        'malayam': 'ml',
-        'norsk': 'nb',
-        'sinhalese': 'si',
-        'sudanese': 'su',
-    }
+    # startpage's language & region selectors are a mess.
+    #
+    # regions:
+    #   in the list of regions there are tags we need to map to common
+    #   region tags:
+    #   - pt-BR_BR --> pt_BR
+    #   - zh-CN_CN --> zh_Hans_CN
+    #   - zh-TW_TW --> zh_Hant_TW
+    #   - zh-TW_HK --> zh_Hant_HK
+    #   - en-GB_GB --> en_GB
+    #   and there is at least one tag with a three letter language tag (ISO 639-2)
+    #   - fil_PH --> fil_PH
+    #
+    # regions
+    # -------
+    #
+    # The locale code 'no_NO' from startpage does not exists and is mapped to
+    # nb-NO::
+    #
+    #     babel.core.UnknownLocaleError: unknown locale 'no_NO'
+    #
+    # For reference see languages-subtag at iana [1], `no` is the
+    # macrolanguage::
+    #
+    #     type: language
+    #     Subtag: nb
+    #     Description: Norwegian Bokmål
+    #     Added: 2005-10-16
+    #     Suppress-Script: Latn
+    #     Macrolanguage: no
+    #
+    # W3C recommends subtag over macrolanguage [2]:
+    #
+    #   Use macrolanguages with care. Some language subtags have a Scope field set to
+    #   macrolanguage, ie. this primary language subtag encompasses a number of more
+    #   specific primary language subtags in the registry.
+    #   ...
+    #   As we recommended for the collection subtags mentioned above, in most cases
+    #   you should try to use the more specific subtags ...
+    #
+    # [1] https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+    # [2] https://www.w3.org/International/questions/qa-choosing-language-tags#langsubtag
+    #
+    # languages
+    # ---------
+    #
+    #   The displayed name in startpage's settings page depend on the location
+    #   of the IP when the 'Accept-Language' HTTP header is unset (in tha
+    #   language update script we use "en-US,en;q=0.5" to get uniform names
+    #   independent from the IP).
+    #
+    #   Each option has a displayed name and a value, either of which
+    #   may represent the language name in the native script, the language name
+    #   in English, an English transliteration of the native name, the English
+    #   name of the writing script used by the language, or occasionally
+    #   something else entirely.
 
-    # get the English name of every language known by babel
-    language_names.update(
-        {
-            # fmt: off
-            name.lower(): lang_code
-            # pylint: disable=protected-access
-            for lang_code, name in Locale('en')._data['languages'].items()
-            # fmt: on
-        }
-    )
+    dom = html.fromstring(resp.text)
+
+    # regions
+
+    sp_region_names = []
+    for option in dom.xpath('//form[@name="settings"]//select[@name="search_results_region"]/option'):
+        sp_region_names.append(option.get('value'))
+
+    for engine_region_tag in sp_region_names:
+        if engine_region_tag == 'all':
+            # 'all' does not fit to a babel locale
+            continue
+
+        locale = None
+        babel_region_tag = {'no_NO': 'nb_NO'}.get(engine_region_tag, engine_region_tag)  # norway
+
+        if '-' in babel_region_tag:
+            # pt-XY_BR --> l=pt, r=BR --> pt-BR
+            l, r = babel_region_tag.split('-')
+            r = r.split('_')[-1]
+            locale = babel.Locale.parse(l + '_' + r, sep='_')
+        else:
+            try:
+                locale = babel.Locale.parse(babel_region_tag, sep='_')
+            except babel.core.UnknownLocaleError:
+                print("ERROR: can't determine babel locale of startpage's locale %s" % engine_region_tag)
+                continue
+
+        if locale is None:
+            continue
+
+        region_tag = locale.language + '-' + locale.territory
+        # print("SearXNG locale tag: %s --> Engine tag: %s" % (region_tag, engine_region_tag))
+        engine_properties.regions[region_tag] = engine_region_tag
+
+    # languages
+
+    catalog_engine2code = {name.lower(): lang_code for lang_code, name in babel.Locale('en').languages.items()}
 
     # get the native name of every language known by babel
-    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, locale_identifiers()):
-        native_name = Locale(lang_code).get_language_name().lower()
+
+    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()):
+        native_name = babel.Locale(lang_code).get_language_name().lower()
         # add native name exactly as it is
-        language_names[native_name] = lang_code
+        catalog_engine2code[native_name] = lang_code
 
         # add "normalized" language name (i.e. français becomes francais and español becomes espanol)
         unaccented_name = ''.join(filter(lambda c: not combining(c), normalize('NFKD', native_name)))
         if len(unaccented_name) == len(unaccented_name.encode()):
             # add only if result is ascii (otherwise "normalization" didn't work)
-            language_names[unaccented_name] = lang_code
+            catalog_engine2code[unaccented_name] = lang_code
 
-    dom = html.fromstring(resp.text)
-    sp_lang_names = []
+    # values that can't be determined by babel's languages names
+
+    catalog_engine2code.update(
+        {
+            'english_uk': 'en',
+            # traditional chinese used in ..
+            'fantizhengwen': 'zh_Hant',
+            # Korean alphabet
+            'hangul': 'ko',
+            # Malayalam is one of 22 scheduled languages of India.
+            'malayam': 'ml',
+            'norsk': 'nb',
+            'sinhalese': 'si',
+        }
+    )
+
     for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
-        sp_lang_names.append((option.get('value'), extract_text(option).lower()))
+        engine_lang = option.get('value')
+        name = extract_text(option).lower()
 
-    supported_languages = {}
-    for sp_option_value, sp_option_text in sp_lang_names:
-        lang_code = language_names.get(sp_option_value) or language_names.get(sp_option_text)
-        if isinstance(lang_code, str):
-            supported_languages[lang_code] = {'alias': sp_option_value}
-        elif isinstance(lang_code, list):
-            for _lc in lang_code:
-                supported_languages[_lc] = {'alias': sp_option_value}
-        else:
-            print('Unknown language option in Startpage: {} ({})'.format(sp_option_value, sp_option_text))
+        lang_code = catalog_engine2code.get(engine_lang)
+        if lang_code is None:
+            lang_code = catalog_engine2code[name]
 
-    return supported_languages
+        # print("SearXNG language tag: %s --> Engine tag: %s" % (lang_code, engine_lang))
+        engine_properties.languages[lang_code] = engine_lang
+
+    return engine_properties
