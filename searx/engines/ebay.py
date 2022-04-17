@@ -20,8 +20,10 @@ about = {
 categories = ['shopping']
 paging = True
 
-url = 'https://www.ebay.com'
-search_url = url + '/sch/i.html?_nkw={query}&_sacat={pageno}'
+# Set base_url in settings.yml in order to
+# have the desired local TLD.
+base_url = None
+search_url = '/sch/i.html?_nkw={query}&_sacat={pageno}'
 
 results_xpath = '//li[contains(@class, "s-item")]'
 url_xpath = './/a[@class="s-item__link"]/@href'
@@ -34,7 +36,7 @@ thumbnail_xpath = './/img[@class="s-item__image-img"]/@src'
 
 
 def request(query, params):
-    params['url'] = search_url.format(query=quote(query), pageno=params['pageno'])
+    params['url'] = f'{base_url}' + search_url.format(query=quote(query), pageno=params['pageno'])
     return params
 
 
