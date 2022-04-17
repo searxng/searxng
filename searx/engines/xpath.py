@@ -85,6 +85,11 @@ suggestion_xpath = ''
 cached_xpath = ''
 cached_url = ''
 
+cookies = {}
+headers = {}
+'''Some engines might offer different result based on cookies or headers.
+Possible use-case: To set safesearch cookie or header to moderate.'''
+
 paging = False
 '''Engine supports paging [True or False].'''
 
@@ -165,6 +170,9 @@ def request(query, params):
         'time_range': time_range,
         'safe_search': safe_search,
     }
+
+    params['cookies'].update(cookies)
+    params['headers'].update(headers)
 
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
