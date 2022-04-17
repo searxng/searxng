@@ -173,7 +173,7 @@ def request(query, params):
 
     params['cookies'] = cookies
     params['headers'] = headers
-    
+
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
 
