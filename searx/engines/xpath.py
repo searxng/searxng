@@ -171,8 +171,8 @@ def request(query, params):
         'safe_search': safe_search,
     }
 
-    params['cookies'] = cookies
-    params['headers'] = headers
+    params['cookies'].update(cookies)
+    params['headers'].update(headers)
 
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
