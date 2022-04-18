@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-04-17 09:18+0000\n"
-"Last-Translator: smallaxe80 <smallaxe1980@gmail.com>\n"
+"PO-Revision-Date: 2022-04-22 07:18+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Greek <https://weblate.bubu1.eu/projects/searxng/searxng/el/>"
 "\n"
 "Language: el_GR\n"
@@ -30,7 +30,7 @@ msgstr "άλλα"
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "Λοιπά"
+msgstr "λοιπά"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -65,7 +65,7 @@ msgstr "Βίντεο"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr ""
+msgstr "αυτό"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -80,7 +80,7 @@ msgstr "χάρτης"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr ""
+msgstr "κρεμμύδια"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -95,7 +95,7 @@ msgstr "Εφαρμογές"
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
 msgid "dictionaries"
-msgstr "Λεξικά"
+msgstr "λεξικά"
 
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
@@ -105,12 +105,12 @@ msgstr "Στίχοι"
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
 msgid "packages"
-msgstr "Πακέτα"
+msgstr "πακέτα"
 
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr "Ερωταπαντήσεις"
+msgstr "ερωταπαντήσεις"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
@@ -119,7 +119,6 @@ msgstr "Αποθηκευτήρια"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
-#, fuzzy
 msgid "software wikis"
 msgstr "Βίκιπαίδιες λογισμικού"
 
@@ -149,7 +148,7 @@ msgstr "Λήξη χρόνου"
 
 #: searx/webapp.py:170
 msgid "parsing error"
-msgstr ""
+msgstr "σφάλμα ανάλυσης"
 
 #: searx/webapp.py:171
 msgid "HTTP protocol error"
@@ -181,7 +180,7 @@ msgstr "Απέδειξε πως είσαι άνθρωπος"
 
 #: searx/webapp.py:190
 msgid "too many requests"
-msgstr ""
+msgstr "υπέρβαση ορίου αιτημάτων"
 
 #: searx/webapp.py:191
 msgid "access denied"
@@ -201,7 +200,6 @@ msgid "Source"
 msgstr "Πηγή"
 
 #: searx/webapp.py:414
-#, fuzzy
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
@@ -223,11 +221,11 @@ msgstr "{minutes} λεπτά πριν"
 
 #: searx/webapp.py:742
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr ""
+msgstr "{ώρες} ώρα(-ες), {λεπτά} λεπτό(-ά) πριν"
 
 #: searx/webapp.py:871
 msgid "Suspended"
-msgstr ""
+msgstr "Σε αναστολή"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -242,26 +240,24 @@ msgid "Statistics functions"
 msgstr "Λειτουργίες στατιστικής"
 
 #: searx/answerers/statistics/answerer.py:48
-#, fuzzy
 msgid "Compute {functions} of the arguments"
-msgstr "Υπολογισμός {λειτουργιών} των παραμέτρων"
+msgstr "Υπολογισμός {συναρτήσεις} των παραμέτρων"
 
 #: searx/engines/openstreetmap.py:156
-#, fuzzy
 msgid "Get directions"
 msgstr "Πάρε οδηγίες"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{τίτλος} (ΠΑΡΩΧΗΜΕΝΟΣ)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr ""
+msgstr "Αυτή η καταχώριση έχει ανασταλλεί από"
 
 #: searx/engines/pubmed.py:78
 msgid "No abstract is available for this publication."
-msgstr ""
+msgstr "Δεν υπάρχει διαθέσιμη σύνοψη για αυτήν την έκδοση."
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
@@ -269,11 +265,11 @@ msgstr "Κανάλι"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Μετατρέπει κείμενο σε διαφορετικές επιτομές κατακερματισμού."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "επιτομή κατακερματισμού"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
