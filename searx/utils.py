@@ -88,6 +88,8 @@ class _HTMLTextExtractor(HTMLParser):  # pylint: disable=W0223  # (see https://b
 
     def handle_starttag(self, tag, attrs):
         self.tags.append(tag)
+        if tag == 'br':
+            self.result.append(' ')
 
     def handle_endtag(self, tag):
         if not self.tags:
@@ -142,7 +144,7 @@ def html_to_text(html_str: str) -> str:
         >>> html_to_text('<style>.span { color: red; }</style><span>Example</span>')
         'Example'
     """
-    html_str = html_str.replace('\n', ' ')
+    html_str = html_str.replace('\n', ' ').replace('\r', ' ')
     html_str = ' '.join(html_str.split())
     s = _HTMLTextExtractor()
     try:
