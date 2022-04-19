@@ -344,7 +344,6 @@
                                     <th scope="col">{{ _("Allow") }}</th>
                                     <th scope="col">{{ _("Engine name") }}</th>
                                     <th scope="col">{{ _("Shortcut") }}</th>
-                                    <th scope="col" class="col-stat">{{ _("Selected language") }}</th>
                                     <th scope="col" class="col-stat">{{ _("SafeSearch") }}</th>
                                     <th scope="col" class="col-stat">{{ _("Time range") }}</th>
                                     <th scope="col">{{ _("Response time") }}</th>
@@ -356,7 +355,6 @@
                                     <th scope="col" class="text-right">{{ _("Response time") }}</th>
                                     <th scope="col" class="text-right">{{ _("Time range") }}</th>
                                     <th scope="col" class="text-right">{{ _("SafeSearch") }}</th>
-                                    <th scope="col" class="text-right">{{ _("Selected language") }}</th>
                                     <th scope="col" class="text-right">{{ _("Shortcut") }}</th>
                                     <th scope="col" class="text-right">{{ _("Engine name") }}</th>
                                     <th scope="col" class="text-right">{{ _("Allow") }}</th>
@@ -383,7 +381,6 @@
                                             {{- engine_about(search_engine, 'tooltip_' + categ + '_' + search_engine.name) -}}
                                         </th>
                                         <td class="name">{{ shortcuts[search_engine.name] }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
                                         <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
                                         <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
                                         {{ engine_time(search_engine.name, 'text-right') }}
@@ -395,7 +392,6 @@
                                         {{ engine_time(search_engine.name, 'text-left') }}
                                         <td>{{ support_toggle(supports[search_engine.name]['time_range_support']) }}</td>
                                         <td>{{ support_toggle(supports[search_engine.name]['safesearch']) }}</td>
-                                        <td>{{ support_toggle(supports[search_engine.name]['supports_selected_language']) }}</td>
                                         <td>{{ shortcuts[search_engine.name] }}</td>
                                         <th scope="row" data-engine-name="{{ search_engine.name }}"><span>{% if search_engine.enable_http %}{{ icon('exclamation-sign', 'No HTTPS') }}{% endif %}{{ search_engine.name }}</span>{{ engine_about(search_engine) }}</th>
                                         <td class="onoff-checkbox">

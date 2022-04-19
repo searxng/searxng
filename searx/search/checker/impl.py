@@ -293,13 +293,6 @@ class ResultContainerTests:
         if len(self.result_container.answers) == 0:
             self._record_error('No answer')
 
-    def has_language(self, lang):
-        """Check at least one title or content of the results is written in the `lang`.
-
-        Detected using pycld3, may be not accurate"""
-        if lang not in self.languages:
-            self._record_error(lang + ' not found')
-
     def not_empty(self):
         """Check the ResultContainer has at least one answer or infobox or result"""
         result_types = set()
