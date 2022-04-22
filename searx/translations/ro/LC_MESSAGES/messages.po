@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-04-13 11:17+0000\n"
-"Last-Translator: A. B. <gamemc@virgilio.it>\n"
+"PO-Revision-Date: 2022-04-22 07:18+0000\n"
+"Last-Translator: Mihai <miihairadu@gmail.com>\n"
 "Language-Team: Romanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "ro/>\n"
 "Language: ro\n"
@@ -27,12 +27,12 @@ msgstr ""
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr "alte"
+msgstr "mai multe"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr ""
+msgstr "Altele"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -82,7 +82,7 @@ msgstr "hărți"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr ""
+msgstr "usturoi"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -146,7 +146,7 @@ msgstr "întunecat"
 
 #: searx/webapp.py:169
 msgid "timeout"
-msgstr ""
+msgstr "pauza"
 
 #: searx/webapp.py:170
 msgid "parsing error"
@@ -174,11 +174,11 @@ msgstr "eroare conexiune HTTP"
 
 #: searx/webapp.py:188
 msgid "proxy error"
-msgstr ""
+msgstr "eroare proxy"
 
 #: searx/webapp.py:189
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: searx/webapp.py:190
 msgid "too many requests"
@@ -190,7 +190,7 @@ msgstr "Acces interzis"
 
 #: searx/webapp.py:192
 msgid "server API error"
-msgstr ""
+msgstr "eroare la API pe Server"
 
 #: searx/webapp.py:410
 msgid "No item found"
@@ -247,11 +247,11 @@ msgstr "Calculează {functions} din argumente"
 
 #: searx/engines/openstreetmap.py:156
 msgid "Get directions"
-msgstr ""
+msgstr "Gaseste directia"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} {OBSOLETE}"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
@@ -263,27 +263,28 @@ msgstr "Niciun abstract disponibil pentru această publicație."
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
-msgstr ""
+msgstr "Canal"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Convertește șirurile în diferite rezumate hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "rezumat hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Schimbă Hostnameul"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Rescrie hostnameurile rezultate sau șterge rezultatele bazate pe hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr "Rescriere către acces deschis DOI"
+msgstr "Rescriere DOI cu acces deschis"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
@@ -307,7 +308,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr ""
+msgstr "Informații despre sine"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -379,11 +380,11 @@ msgstr "un meta-motor de căutare care respectă confidențialitatea"
 
 #: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
 msgid "Source code"
-msgstr ""
+msgstr "Cod sursă"
 
 #: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
 msgid "Issue tracker"
-msgstr ""
+msgstr "Urmăritor de probleme"
 
 #: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
@@ -395,21 +396,21 @@ msgstr "Statisticile motorului"
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr ""
+msgstr "Instanțe publice"
 
 #: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Contactați întreținătorul instanței"
 
 #: searx/templates/oscar/languages.html:2
 msgid "Language"
-msgstr ""
+msgstr "Limbă"
 
 #: searx/templates/oscar/languages.html:4
 #: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:118
 msgid "Default language"
-msgstr "Limba implicită"
+msgstr "Limbă implicită"
 
 #: searx/templates/oscar/macros.html:23
 #: searx/templates/simple/result_templates/torrent.html:6
@@ -444,11 +445,11 @@ msgstr "Permite"
 
 #: searx/templates/oscar/macros.html:139
 msgid "broken"
-msgstr ""
+msgstr "stricat"
 
 #: searx/templates/oscar/macros.html:141
 msgid "supported"
-msgstr "suporat"
+msgstr "suportat"
 
 #: searx/templates/oscar/macros.html:143
 msgid "not supported"
@@ -467,7 +468,7 @@ msgstr "preferințe"
 #: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "Fara HTTPS"
 
 #: searx/templates/oscar/preferences.html:14
 #: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
@@ -476,7 +477,7 @@ msgstr "Numărul de rezultate"
 
 #: searx/templates/oscar/preferences.html:14
 msgid "Avg."
-msgstr ""
+msgstr "Medie"
 
 #: searx/templates/oscar/messages/no_results.html:8
 #: searx/templates/oscar/preferences.html:17
@@ -487,33 +488,33 @@ msgstr ""
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Vizualizați jurnalele de erori și trimiteți un raport de eroare"
 
 #: searx/templates/oscar/preferences.html:38
 #: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
-msgstr ""
+msgstr "Median"
 
 #: searx/templates/oscar/preferences.html:39
 #: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
 #: searx/templates/oscar/preferences.html:40
 #: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
 #: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Testele verificatoare au eșuat "
 
 #: searx/templates/oscar/preferences.html:96
 #: searx/templates/simple/preferences.html:99
@@ -529,7 +530,7 @@ msgstr "Generale"
 #: searx/templates/oscar/preferences.html:102
 #: searx/templates/oscar/preferences.html:193
 msgid "User Interface"
-msgstr ""
+msgstr "Interfața cu utilizatorul"
 
 #: searx/templates/oscar/preferences.html:103
 #: searx/templates/oscar/preferences.html:268
@@ -541,12 +542,12 @@ msgstr "Confidențialitate"
 #: searx/templates/oscar/preferences.html:318
 #: searx/templates/simple/preferences.html:284
 msgid "Engines"
-msgstr "Motoare"
+msgstr "Motoare de căutare"
 
 #: searx/templates/oscar/preferences.html:105
 #: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
-msgstr ""
+msgstr "Întrebări speciale"
 
 #: searx/templates/oscar/preferences.html:106
 #: searx/templates/oscar/preferences.html:465
@@ -633,12 +634,12 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr ""
+msgstr "Tokenurile motorului"
 
 #: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Tokenuri de acces pentru motoare de căutare private"
 
 #: searx/templates/oscar/preferences.html:198
 #: searx/templates/simple/preferences.html:182
@@ -658,7 +659,7 @@ msgstr "Temă"
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Schimbă aspectul la SearXNG"
 
 #: searx/templates/oscar/preferences.html:222
 #: searx/templates/oscar/preferences.html:228
@@ -672,11 +673,11 @@ msgstr "Stil"
 
 #: searx/templates/oscar/preferences.html:231
 msgid "Show advanced settings"
-msgstr ""
+msgstr "Arată setări avansate"
 
 #: searx/templates/oscar/preferences.html:232
 msgid "Show advanced settings panel in the home page by default"
-msgstr ""
+msgstr "Afișați panoul de setări avansate în pagina de pornire în mod implicit"
 
 #: searx/templates/oscar/preferences.html:235
 #: searx/templates/oscar/preferences.html:245
@@ -738,7 +739,7 @@ msgstr "Proxy de imagini"
 #: searx/templates/oscar/preferences.html:285
 #: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Trimitere prin proxy a rezultatelor imagini prin SearXNG"
 
 #: searx/templates/oscar/preferences.html:288
 #: searx/templates/oscar/preferences.html:299
@@ -757,7 +758,7 @@ msgstr "Dezactivat"
 #: searx/templates/oscar/preferences.html:295
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Afișați căutarea în titlul paginii"
 
 #: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
@@ -765,6 +766,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Când este activat, titlul paginii de rezultate conține căutarea dvs. "
+"Browserul dumneavoastră poate înregistra acest titlu"
 
 #: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
@@ -772,7 +775,7 @@ msgstr "Permite toate"
 
 #: searx/templates/oscar/preferences.html:327
 msgid "Disable all"
-msgstr ""
+msgstr "Dezactivați toate"
 
 #: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
@@ -780,6 +783,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Această filă nu apare pentru rezultatele căutării, dar puteți căuta în "
+"motoarele enumerate aici prin banguri."
 
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
@@ -814,7 +819,7 @@ msgstr "Interval de timp"
 #: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Timp de răspuns"
 
 #: searx/templates/oscar/preferences.html:351
 #: searx/templates/oscar/preferences.html:355
@@ -828,11 +833,11 @@ msgstr "Timp maxim"
 #: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Fiabilitate"
 
 #: searx/templates/oscar/preferences.html:419
 msgid "Query"
-msgstr ""
+msgstr "Termen de căutare"
 
 #: searx/templates/oscar/preferences.html:426
 #: searx/templates/simple/preferences.html:349
@@ -857,12 +862,12 @@ msgstr "Exemple"
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Aceasta este lista modulelor de răspuns instantaneu ale SearXNG."
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Aceasta este lista pluginurilor."
 
 #: searx/templates/oscar/preferences.html:468
 #: searx/templates/simple/preferences.html:385
@@ -870,11 +875,13 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Aceasta este lista de cookie-uri și valorile lor pe care SearXNG le "
+"stochează pe computerul dvs."
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Cu această listă, puteți evalua transparența SearXNG."
 
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
@@ -954,7 +961,7 @@ msgstr "Descarcă rezultate"
 
 #: searx/templates/oscar/results.html:95
 msgid "RSS subscription"
-msgstr ""
+msgstr "Abonament RSS"
 
 #: searx/templates/oscar/results.html:104
 msgid "Search results"
@@ -989,11 +996,11 @@ msgstr "Pornește căutarea"
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear search"
-msgstr ""
+msgstr "Ștergeți căutarea"
 
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear"
-msgstr ""
+msgstr "Golește"
 
 #: searx/templates/oscar/stats.html:4
 msgid "stats"
@@ -1005,7 +1012,7 @@ msgstr "Scoruri"
 
 #: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Număr de rezultate"
 
 #: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
 msgid "Scores per result"
@@ -1013,64 +1020,64 @@ msgstr "Scoruri per rezultat"
 
 #: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
 msgid "Processing"
-msgstr ""
+msgstr "Prelucrare"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Warnings"
-msgstr ""
+msgstr "Avertismente"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Erori și excepții"
 
 #: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
 msgid "Exception"
-msgstr ""
+msgstr "Excepție"
 
 #: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
 msgid "Message"
-msgstr ""
+msgstr "Mesaj"
 
 #: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
 msgid "Percentage"
-msgstr ""
+msgstr "Procentaj"
 
 #: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
 msgid "Parameter"
-msgstr ""
+msgstr "Parametru"
 
 #: searx/templates/oscar/result_templates/files.html:35
 #: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
 msgid "Filename"
-msgstr ""
+msgstr "Numele fișierului"
 
 #: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
 msgid "Function"
-msgstr ""
+msgstr "Funcție"
 
 #: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
 msgid "Code"
-msgstr ""
+msgstr "Cod"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "Verificator"
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
 msgid "Failed test"
-msgstr ""
+msgstr "Test eșuat"
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
 msgid "Comment(s)"
-msgstr ""
+msgstr "Comentariu(ii)"
 
 #: searx/templates/oscar/time-range.html:5
 #: searx/templates/simple/filters/time_range.html:3
@@ -1104,7 +1111,7 @@ msgstr "Atenție!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr ""
+msgstr "Se pare că utilizați SearXNG pentru prima dată."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1128,6 +1135,8 @@ msgstr "Motoarele nu pot obține rezultate."
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
 msgstr ""
+"Vă rugăm să încercați din nou mai târziu sau să găsiți o altă instanță "
+"SearXNG."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1176,7 +1185,7 @@ msgstr "ascunde media"
 #: searx/templates/oscar/result_templates/videos.html:19
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: searx/templates/oscar/result_templates/files.html:37
 #: searx/templates/oscar/result_templates/torrent.html:7
@@ -1216,11 +1225,11 @@ msgstr "TiB"
 
 #: searx/templates/oscar/result_templates/files.html:46
 msgid "Date"
-msgstr ""
+msgstr "Dată"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
@@ -1234,7 +1243,7 @@ msgstr "Vizualizare sursă"
 #: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "adresă"
 
 #: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
@@ -1273,7 +1282,7 @@ msgstr "ascunde video"
 
 #: searx/templates/oscar/result_templates/videos.html:20
 msgid "Length"
-msgstr ""
+msgstr "Lungime"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -1281,7 +1290,7 @@ msgstr "Apăsați pe lupă pentru a executa căutarea"
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "Erori:"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
@@ -1289,11 +1298,11 @@ msgstr "Interfața pentru utilizator"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
-msgstr ""
+msgstr "Stilul temei"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Selectați auto pentru a urma setările browserului dvs"
 
 #: searx/templates/simple/preferences.html:285
 msgid "Currently used search engines"
@@ -1305,11 +1314,11 @@ msgstr "Suportă limba selectată"
 
 #: searx/templates/simple/preferences.html:418
 msgid "Save"
-msgstr ""
+msgstr "Salvați"
 
 #: searx/templates/simple/preferences.html:420
 msgid "Back"
-msgstr ""
+msgstr "Înapoi"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -1317,42 +1326,42 @@ msgstr "Răspunsuri"
 
 #: searx/templates/simple/results.html:144
 msgid "Back to top"
-msgstr ""
+msgstr "Înapoi sus"
 
 #: searx/templates/simple/results.html:162
 msgid "Previous page"
-msgstr ""
+msgstr "Pagina precedentă"
 
 #: searx/templates/simple/results.html:179
 msgid "Next page"
-msgstr ""
+msgstr "Pagina următoare"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Afișați prima pagină"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "clear"
-msgstr ""
+msgstr "Ștergeți"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "search"
-msgstr ""
+msgstr "căutați"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Acest site nu a oferit nici o descriere."
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
-msgstr ""
+msgstr "Motor"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Timpul motorului (sec)"
