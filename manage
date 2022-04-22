@@ -702,6 +702,7 @@ test.pyright() {
     pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
         | grep -v ".py$" \
         | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
+        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
         | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
         | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined'
     dump_return $?

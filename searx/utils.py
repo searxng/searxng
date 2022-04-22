@@ -372,7 +372,7 @@ def _get_lang_to_lc_dict(lang_list: List[str]) -> Dict[str, str]:
 
 # babel's get_global contains all sorts of miscellaneous locale and territory related data
 # see get_global in: https://github.com/python-babel/babel/blob/master/babel/core.py
-def _get_from_babel(lang_code: str, key: str):
+def _get_from_babel(lang_code: str, key):
     match = get_global(key).get(lang_code.replace('-', '_'))
     # for some keys, such as territory_aliases, match may be a list
     if isinstance(match, str):
