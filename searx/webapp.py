@@ -449,6 +449,7 @@ def get_client_settings():
     req_pref = request.preferences
     return {
         'autocomplete_provider': req_pref.get_value('autocomplete'),
+        'autocomplete_min' : get_setting('search.autocomplete_min'),
         'http_method':  req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),

@@ -68,7 +68,7 @@
             "Content-type": "application/x-www-form-urlencoded",
             "X-Requested-With": "XMLHttpRequest"
           },
-          MinChars: 4,
+          MinChars: searxng.settings.autocomplete_min,
           Delay: 300,
           _Position: function () {},
           _Open: function () {

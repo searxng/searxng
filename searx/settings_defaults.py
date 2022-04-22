@@ -153,6 +153,7 @@ SCHEMA = {
     'search': {
         'safe_search': SettingsValue((0, 1, 2), 0),
         'autocomplete': SettingsValue(str, ''),
+        'autocomplete_min': SettingsValue(int, 4),
         'default_lang': SettingsValue(tuple(LANGUAGE_CODES + ['']), ''),
         'languages': SettingSublistValue(LANGUAGE_CODES, LANGUAGE_CODES),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),
