@@ -1019,6 +1019,13 @@ engines:
     timeout: 3.0
     disabled: true
 
+  - name: ipfs search
+    engine: ipfs_search
+    shortcut: ipfs
+    paging: true
+    timeout: 5.0
+    disabled: true
+
   - name: kickass
     engine: kickass
     base_url:
