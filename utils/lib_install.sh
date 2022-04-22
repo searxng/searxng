@@ -92,6 +92,10 @@ init_SEARX_SRC_INIT_FILES(){
 
     local fname
     local msg=""
+    local _prefix=""
+    if [[ -n ${SUDO_USER} ]]; then
+        _prefix="sudo -u ${SUDO_USER}"
+    fi
 
     # Monitor local modified files from the repository, only if the local file
     # differs to the corresponding file in the instance
@@ -108,7 +112,7 @@ init_SEARX_SRC_INIT_FILES(){
                 msg="to update use:  sudo -H ./utils/searx.sh install init-src"
             fi
         fi
-    done <<< "$(git diff --name-only)"
+    done <<< "$($_prefix git diff --name-only)"
     [ -n "$msg" ] &&  info_msg "$msg"
 }
 
