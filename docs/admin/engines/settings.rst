@@ -168,6 +168,7 @@ Global Settings
        port: 8888
        bind_address: "127.0.0.1"      # address to listen on
        secret_key: "ultrasecretkey"   # change this!
+       limiter: false
        image_proxy: false             # proxying image results through SearXNG
        default_http_headers:
          X-Content-Type-Options : nosniff
@@ -194,12 +195,16 @@ Global Settings
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
+``limiter`` :
+  Rate limit the number of request on the instance, block some bots.  The
+  :ref:`limiter plugin` requires a :ref:`settings redis` database.
+
 ``image_proxy`` :
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
 
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
-``default_http_headers``:
+``default_http_headers`` :
   Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
 
 
@@ -229,7 +234,7 @@ Global Settings
 ``theme_args.simple_style``:
   Style of simple theme: ``auto``, ``light``, ``dark``
 
-``query_in_title``:
+``query_in_title`` :
   When true, the result page's titles contains the query it decreases the
   privacy, since the browser can records the page titles.
 
@@ -320,7 +325,7 @@ Communication with search engines.
   Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
   engine wish to block you, a contact info here may be useful to avoid that.
 
-``keepalive_expiry``:
+``keepalive_expiry`` :
   Number of seconds to keep a connection in the pool. By default 5.0 seconds.
 
 .. _httpx proxies: https://www.python-httpx.org/advanced/#http-proxying
@@ -480,7 +485,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 ``display_error_messages`` : default ``true``
   When an engine returns an error, the message is displayed on the user interface.
 
-``network``: optional
+``network`` : optional
   Use the network configuration from another engine.
   In addition, there are two default networks:
 
