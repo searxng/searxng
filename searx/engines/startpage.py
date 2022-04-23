@@ -18,6 +18,7 @@ import babel
 
 from searx.network import get
 from searx.utils import extract_text, eval_xpath
+from searx.locales import SupportedLocales
 from searx.exceptions import (
     SearxEngineResponseException,
     SearxEngineCaptchaException,
@@ -46,7 +47,7 @@ filter_mapping = {0: '0', 1: '1', 2: '1'}
 time_range_support = True
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
-supported_properties_url = 'https://www.startpage.com/do/settings'
+supported_locales_url = 'https://www.startpage.com/do/settings'
 
 # search-url
 base_url = 'https://www.startpage.com/'
@@ -109,33 +110,12 @@ def get_sc_code(headers):
     return sc_code
 
 
-def get_engine_locale(language):
-
-    if language == 'all':
-        language = 'en-US'
-    locale = babel.Locale.parse(language, sep='-')
-
-    engine_language = supported_properties['languages'].get(locale.language)
-    if not engine_language:
-        logger.debug("startpage does NOT support language: %s", locale.language)
-
-    engine_region = None
-    if locale.territory:
-        engine_region = supported_properties['regions'].get(locale.language + '-' + locale.territory)
-    if not engine_region:
-        logger.debug("no region in selected (only lang: '%s'), using region 'all'", language)
-        engine_region = 'all'
-
-    logger.debug(
-        "UI language: %s --> engine language: %s // engine region: %s",
-        language, engine_language, engine_region
-    )
-    return locale, engine_language, engine_region
-
-
 def request(query, params):
 
-    locale, engine_language, engine_region = get_engine_locale(params['language'])
+    locale, engine_language, engine_region = params['locale'], params['engine_language'], params['engine_region']
+
+    if engine_region is None:
+        engine_region = 'all'
 
     # prepare HTTP headers
     ac_lang = locale.language
@@ -151,7 +131,7 @@ def request(query, params):
         'cat': 'web',
         't': 'device',
         'sc': get_sc_code(params['headers']),  # hint: this func needs HTTP headers
-        'with_date' : time_range_dict.get(params['time_range'], '')
+        'with_date': time_range_dict.get(params['time_range'], ''),
     }
 
     if engine_language:
@@ -187,7 +167,7 @@ def request(query, params):
     if engine_region:
         cookie['search_results_region'] = engine_region
 
-    params['cookies']['preferences'] = 'N1N'.join([ "%sEEE%s" % x for x in cookie.items() ])
+    params['cookies']['preferences'] = 'N1N'.join(["%sEEE%s" % x for x in cookie.items()])
     logger.debug('cookie preferences: %s', params['cookies']['preferences'])
     params['method'] = 'POST'
 
@@ -263,7 +243,7 @@ def response(resp):
     return results
 
 
-def _fetch_engine_properties(resp, engine_properties):
+def _fetch_supported_locales(resp):
 
     # startpage's language & region selectors are a mess.
     #
@@ -291,6 +271,8 @@ def _fetch_engine_properties(resp, engine_properties):
     #   name of the writing script used by the language, or occasionally
     #   something else entirely.
 
+    supported_locales = SupportedLocales(all_language='en-US')
+
     dom = html.fromstring(resp.text)
 
     # regions
@@ -305,27 +287,21 @@ def _fetch_engine_properties(resp, engine_properties):
         if '-' in sp_region_tag:
             l, r = sp_region_tag.split('-')
             r = r.split('_')[-1]
-            locale = babel.Locale.parse(l +'_'+ r, sep='_')
+            locale = babel.Locale.parse(l + '_' + r, sep='_')
         else:
             locale = babel.Locale.parse(sp_region_tag, sep='_')
 
         region_tag = locale.language + '-' + locale.territory
         # print("internal: %s --> engine: %s" % (region_tag, sp_region_tag))
-        engine_properties['regions'][region_tag] = sp_region_tag
+        supported_locales.regions[region_tag] = sp_region_tag
 
     # languages
 
-    catalog_engine2code = {
-        name.lower(): lang_code
-        for lang_code, name in babel.Locale('en').languages.items()
-    }
+    catalog_engine2code = {name.lower(): lang_code for lang_code, name in babel.Locale('en').languages.items()}
 
     # get the native name of every language known by babel
 
-    for lang_code in filter(
-            lambda lang_code: lang_code.find('_') == -1,
-            babel.localedata.locale_identifiers()
-    ):
+    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()):
         native_name = babel.Locale(lang_code).get_language_name().lower()
         # add native name exactly as it is
         catalog_engine2code[native_name] = lang_code
@@ -338,17 +314,19 @@ def _fetch_engine_properties(resp, engine_properties):
 
     # values that can't be determined by babel's languages names
 
-    catalog_engine2code.update({
-        'english_uk': 'en',
-        # traditional chinese used in ..
-        'fantizhengwen': 'zh_Hant',
-        # Korean alphabet
-        'hangul': 'ko',
-        # Malayalam is one of 22 scheduled languages of India.
-        'malayam': 'ml',
-        'norsk': 'nb',
-        'sinhalese': 'si',
-    })
+    catalog_engine2code.update(
+        {
+            'english_uk': 'en',
+            # traditional chinese used in ..
+            'fantizhengwen': 'zh_Hant',
+            # Korean alphabet
+            'hangul': 'ko',
+            # Malayalam is one of 22 scheduled languages of India.
+            'malayam': 'ml',
+            'norsk': 'nb',
+            'sinhalese': 'si',
+        }
+    )
 
     for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
         engine_lang = option.get('value')
@@ -359,6 +337,6 @@ def _fetch_engine_properties(resp, engine_properties):
             lang_code = catalog_engine2code[name]
 
         # print("internal: %s --> engine: %s" % (lang_code, engine_lang))
-        engine_properties['languages'][lang_code] = engine_lang
+        supported_locales.languages[lang_code] = engine_lang
 
-    return engine_properties
+    return supported_locales

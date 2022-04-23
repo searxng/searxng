@@ -89,22 +89,28 @@ def seznam(query, _lang):
     # seznam search autocompleter
     url = 'https://suggest.seznam.cz/fulltext/cs?{query}'
 
-    resp = get(url.format(query=urlencode(
-        {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
-    )))
+    resp = get(
+        url.format(
+            query=urlencode(
+                {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
+            )
+        )
+    )
 
     if not resp.ok:
         return []
 
     data = resp.json()
-    return [''.join(
-        [part.get('text', '') for part in item.get('text', [])]
-    ) for item in data.get('result', []) if item.get('itemType', None) == 'ItemType.TEXT']
+    return [
+        ''.join([part.get('text', '') for part in item.get('text', [])])
+        for item in data.get('result', [])
+        if item.get('itemType', None) == 'ItemType.TEXT'
+    ]
+
 
 def startpage(query, lang):
     # startpage autocompleter
-    engine = engines['startpage']
-    _, engine_language, _ = engine.get_engine_locale(lang)
+    _, engine_language, _ = engines['startpage'].supported_locales.get(lang)
 
     url = 'https://startpage.com/suggestions?{query}'
     resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': engine_language})))

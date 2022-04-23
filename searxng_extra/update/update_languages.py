@@ -37,8 +37,9 @@ from babel.core import parse_locale
 
 from searx import settings, searx_dir
 from searx import network
-from searx.engines import load_engines, engines, engine_properties_template
+from searx.engines import load_engines, engines
 from searx.utils import gen_useragent
+
 
 # Output files.
 engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
@@ -46,9 +47,7 @@ languages_file = Path(searx_dir) / 'languages.py'
 
 
 def fetch_supported_languages():
-    """Fetchs supported languages for each engine and writes json file with those.
-
-    """
+    """Fetchs supported languages for each engine and writes json file with those."""
     network.set_timeout_for_thread(10.0)
     engines_languages = {}
     names = list(engines)
@@ -68,31 +67,29 @@ def fetch_supported_languages():
     for engine_name in names:
         engine = engines[engine_name]
         fetch_languages = getattr(engine, '_fetch_supported_languages', None)
-        fetch_properties = getattr(engine, '_fetch_engine_properties', None)
+        fetch_locales = getattr(engine, '_fetch_supported_locales', None)
 
-        if fetch_properties is not None:
-            resp = network.get(engine.supported_properties_url, headers=headers)
-            engine_properties = engine_properties_template()
-            fetch_properties(resp, engine_properties)
-            print("%s: %s languages" % (engine_name, len(engine_properties['languages'])))
-            print("%s: %s regions" % (engine_name, len(engine_properties['regions'])))
+        if fetch_locales is not None and fetch_languages is not None:
+            print('%s: Both _fetch_supported_languages and _fetch_supported_locales are defined.' % (engine_name,))
+        if fetch_locales is not None:
+            resp = network.get(engine.supported_locales_url, headers=headers)
+            supported_locales = fetch_locales(resp)
+            print("%s: %s languages" % (engine_name, len(supported_locales.languages)))
+            print("%s: %s regions" % (engine_name, len(supported_locales.regions)))
+            data = supported_locales.dumps()
 
         elif fetch_languages is not None:
-            # print("%s: using deepricated _fetch_fetch_languages()" % engine_name)
+            # print("%s: using deprecated _fetch_fetch_languages()" % engine_name)
             resp = network.get(engine.supported_languages_url, headers=headers)
-            engine_properties = fetch_languages(resp)
-            if isinstance(engine_properties, list):
-                engine_properties.sort()
+            data = fetch_languages(resp)
+            if isinstance(data, list):
+                data.sort()
 
-            print("%s: fetched language %s containing %s items" % (
-                engine_name,
-                engine_properties.__class__.__name__,
-                len(engine_properties)
-            ))
+            print("%s: fetched language %s containing %s items" % (engine_name, data.__class__.__name__, len(data)))
         else:
             continue
 
-        engines_languages[engine_name] = engine_properties
+        engines_languages[engine_name] = data
 
     print("fetched properties from %s engines" % len(engines_languages))
     print("write json file: %s" % (engines_languages_file))
@@ -172,6 +169,7 @@ def get_territory_name(lang_code):
         print("ERROR: %s --> %s" % (locale, exc))
     return country_name
 
+
 def join_language_lists(engines_languages):
     """Join all languages of the engines into one list.  The returned language list
     contains language codes (``zh``) and region codes (``zh-TW``).  The codes can
@@ -197,9 +195,7 @@ def join_language_lists(engines_languages):
 
             # apply custom fixes if necessary
             if lang_code in getattr(engine, 'language_aliases', {}).values():
-                lang_code = next(
-                    lc for lc, alias in engine.language_aliases.items() if lang_code == alias
-                )
+                lang_code = next(lc for lc, alias in engine.language_aliases.items() if lang_code == alias)
 
             locale = get_locale(lang_code)
 

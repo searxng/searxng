@@ -13,13 +13,14 @@ usage::
 
 import sys
 import copy
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
 from searx import logger, settings
 from searx.data import ENGINES_LANGUAGES
 from searx.utils import load_module, match_language
+from searx.locales import SupportedLocales
 
 
 logger = logger.getChild('engines')
@@ -35,7 +36,7 @@ ENGINE_DEFAULT_ARGS = {
     "timeout": settings["outgoing"]["request_timeout"],
     "shortcut": "-",
     "categories": ["general"],
-    "language_support" : False,
+    "language_support": False,
     "paging": False,
     "safesearch": False,
     "time_range_support": False,
@@ -56,11 +57,13 @@ class Engine:  # pylint: disable=too-few-public-methods
     engine: str
     shortcut: str
     categories: List[str]
+    supported_languages: List[str]
+    supported_locales: SupportedLocales
+    # language support, either by selecting a region or by selecting a language
+    language_support: bool
     about: dict
     inactive: bool
     disabled: bool
-    # language support, either by selecting a region or by selecting a language
-    language_support: bool
     paging: bool
     safesearch: bool
     time_range_support: bool
@@ -141,25 +144,6 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
 
     return engine
 
-def engine_properties_template():
-    """A dictionary with languages and regions to map from SearXNG' languages &
-    region tags to engine's language & region tags::
-
-      engine_properties = {
-          'type' : 'engine_properties',
-          'regions': {
-              # 'ca-ES' : <engine's region name>
-          },
-          'languages': {
-              # 'ca' : <engine's language name>
-          },
-      }
-    """
-    return {
-        'type' : 'engine_properties',
-        'regions': {},
-        'languages': {},
-    }
 
 def set_loggers(engine, engine_name):
     # set the logger for engine
@@ -197,10 +181,10 @@ def update_engine_attributes(engine: Engine, engine_data):
 def set_language_attributes(engine: Engine):
     # assign supported languages from json file
 
-    supported_properties = None
+    data: Any = None
 
     if engine.name in ENGINES_LANGUAGES:
-        supported_properties = ENGINES_LANGUAGES[engine.name]
+        data = ENGINES_LANGUAGES[engine.name]
 
     elif engine.engine in ENGINES_LANGUAGES:
         # The key of the dictionary ENGINES_LANGUAGES is the *engine name*
@@ -208,48 +192,48 @@ def set_language_attributes(engine: Engine):
         # settings.yml to use the same origin engine (python module) these
         # additional engines can use the languages from the origin engine.
         # For this use the configured ``engine: ...`` from settings.yml
-        supported_properties = ENGINES_LANGUAGES[engine.engine]
+        data = ENGINES_LANGUAGES[engine.engine]
 
-    if not supported_properties:
+    # supported_locales is always defined
+    engine.supported_locales = SupportedLocales.loads(data)
+    engine.language_support = not engine.supported_locales.empty()
+
+    if data is None:
         return
 
-    if isinstance(supported_properties, dict) and supported_properties.get('type') == 'engine_properties':
-        engine.supported_properties = supported_properties
-        engine.language_support = len(supported_properties['languages']) or len(supported_properties['regions'])
+    if engine.language_support:
+        # to do: implement engine.language equivalent by calling a method of SupportedLocales
+        return
 
-    else:
-        # depricated: does not work for engines that do support languages
-        # based on a region.
-        engine.supported_languages = supported_properties
-        engine.language_support = len(engine.supported_languages) > 0
+    # deprecated: does not work for engines that do support languages based on a region.
+    engine.supported_languages = data
+    engine.language_support = len(engine.supported_languages) > 0
 
-        if hasattr(engine, 'language'):
-            # For an engine, when there is `language: ...` in the YAML settings, the
-            # engine supports only one language, in this case
-            # engine.supported_languages should contains this value defined in
-            # settings.yml
-            if engine.language not in engine.supported_languages:
-                raise ValueError(
-                    "settings.yml - engine: '%s' / language: '%s' not supported" % (engine.name, engine.language)
-                )
+    if hasattr(engine, 'language'):
+        # For an engine, when there is `language: ...` in the YAML settings, the engine supports only one language,
+        # in this case engine.supported_languages should contains this value defined in settings.yml
+        if engine.language not in engine.supported_languages:
+            raise ValueError(
+                "settings.yml - engine: '%s' / language: '%s' not supported" % (engine.name, engine.language)
+            )
 
-            if isinstance(engine.supported_languages, dict):
-                engine.supported_languages = {engine.language: engine.supported_languages[engine.language]}
-            else:
-                engine.supported_languages = [engine.language]
+        if isinstance(engine.supported_languages, dict):
+            engine.supported_languages = {engine.language: engine.supported_languages[engine.language]}
+        else:
+            engine.supported_languages = [engine.language]
 
-        if not hasattr(engine, 'language_aliases'):
-            engine.language_aliases = {}
-        # find custom aliases for non standard language codes
-        for engine_lang in engine.supported_languages:
-            iso_lang = match_language(engine_lang, BABEL_LANGS, fallback=None)
-            if (
-                    iso_lang
-                    and iso_lang != engine_lang
-                    and not engine_lang.startswith(iso_lang)
-                    and iso_lang not in engine.supported_languages
-            ):
-                engine.language_aliases[iso_lang] = engine_lang
+    if not hasattr(engine, 'language_aliases'):
+        engine.language_aliases = {}
+    # find custom aliases for non standard language codes
+    for engine_lang in engine.supported_languages:
+        iso_lang = match_language(engine_lang, BABEL_LANGS, fallback=None)
+        if (
+            iso_lang
+            and iso_lang != engine_lang
+            and not engine_lang.startswith(iso_lang)
+            and iso_lang not in engine.supported_languages
+        ):
+            engine.language_aliases[iso_lang] = engine_lang
 
 
 def update_attributes_for_tor(engine: Engine) -> bool:

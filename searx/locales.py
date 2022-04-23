@@ -4,7 +4,7 @@
 """Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
 """
 
-from typing import Set
+from typing import Set, Dict, Optional, Tuple
 import os
 import pathlib
 
@@ -20,6 +20,70 @@ LOCALE_NAMES = {
 RTL_LOCALES: Set[str] = set()
 """List of *Right-To-Left* locales e.g. 'he' or 'fa-IR' (delimiter is
 *underline* '-')"""
+
+
+class SupportedLocales:
+    """Map the Preferences.get("languages) value to a Locale, a language and a region.
+
+    The class is intended to be instanciated for each engine.
+    """
+
+    all_language: Optional[str]
+    """
+    To which locale value the "all" language is mapped (shown a "Default language")
+    """
+
+    regions: Dict[str, str]
+    """
+    {
+        'fr-BE' : <engine's region name>
+    },
+    """
+
+    languages: Dict[str, str]
+    """
+    {
+        'ca' : <engine's language name>
+    },
+    """
+
+    @classmethod
+    def loads(cls, data):
+        if isinstance(data, dict) and 'all_language' in data and 'languages' in data and 'regions' in data:
+            return cls(data['all_language'], data['regions'], data['languages'])
+        return cls()
+
+    def __init__(self, all_language=None, regions=None, languages=None):
+        self.all_language = all_language
+        self.regions = regions or {}
+        self.languages = languages or {}
+
+    def empty(self):
+        return len(self.regions) == 0 and len(self.languages) == 0
+
+    def get(self, language: str) -> Tuple[Optional[Locale], Optional[str], Optional[str]]:
+        if language == 'all' and self.all_language is None:
+            return None, None, None
+
+        if language == 'all' and self.all_language is not None:
+            language = self.all_language
+
+        locale = Locale.parse(language, sep='-')
+
+        engine_language = self.languages.get(locale.language)
+
+        engine_region = None
+        if locale.territory:
+            engine_region = self.regions.get(locale.language + '-' + locale.territory)
+
+        return locale, engine_language, engine_region
+
+    def dumps(self):
+        return {
+            'all_language': self.all_language,
+            'regions': self.regions,
+            'languages': self.languages,
+        }
 
 
 def _get_name(locale, language_code):

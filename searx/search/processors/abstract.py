@@ -157,6 +157,18 @@ class EngineProcessor(ABC):
             params['language'] = self.engine.language
         else:
             params['language'] = search_query.lang
+
+        params['locale'], params['engine_language'], params['engine_region'] = self.engine.supported_locales.get(
+            params['language']
+        )
+        if params['engine_language']:
+            self.logger.debug(
+                'language:"%s" --> %s, engine_language:"%s", engine_region:"%s"',
+                params['language'],
+                repr(params['locale']),
+                params['engine_language'],
+                params['engine_region'],
+            )
         return params
 
     @abstractmethod
