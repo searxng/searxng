@@ -89,17 +89,24 @@ def seznam(query, _lang):
     # seznam search autocompleter
     url = 'https://suggest.seznam.cz/fulltext/cs?{query}'
 
-    resp = get(url.format(query=urlencode(
-        {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
-    )))
+    resp = get(
+        url.format(
+            query=urlencode(
+                {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
+            )
+        )
+    )
 
     if not resp.ok:
         return []
 
     data = resp.json()
-    return [''.join(
-        [part.get('text', '') for part in item.get('text', [])]
-    ) for item in data.get('result', []) if item.get('itemType', None) == 'ItemType.TEXT']
+    return [
+        ''.join([part.get('text', '') for part in item.get('text', [])])
+        for item in data.get('result', [])
+        if item.get('itemType', None) == 'ItemType.TEXT'
+    ]
+
 
 def startpage(query, lang):
     # startpage autocompleter
