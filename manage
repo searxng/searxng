@@ -30,7 +30,7 @@ GECKODRIVER_VERSION="v0.30.0"
 export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py37" "--line-length" "120" "--skip-string-normalization")
-BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" "searxng.msg" "searx" "searxng_extra" "tests")
+BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
 
 pylint.FILES() {
 
