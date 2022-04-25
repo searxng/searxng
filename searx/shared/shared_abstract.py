@@ -10,7 +10,7 @@ class SharedDict(ABC):
         pass
 
     @abstractmethod
-    def set_int(self, key: str, value: int):
+    def set_int(self, key: str, value: int, expire: Optional[int] = None):
         pass
 
     @abstractmethod
@@ -18,5 +18,5 @@ class SharedDict(ABC):
         pass
 
     @abstractmethod
-    def set_str(self, key: str, value: str):
+    def set_str(self, key: str, value: str, expire: Optional[int] = None):
         pass
