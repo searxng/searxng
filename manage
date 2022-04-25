@@ -702,6 +702,7 @@ test.pyright() {
     pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
         | grep -v ".py$" \
         | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
+        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
         | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
         | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined'
     dump_return $?
@@ -742,6 +743,13 @@ test.rst() {
     for rst in "${RST_FILES[@]}"; do
         pyenv.cmd rst2html.py --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
     done
+}
+
+test.pybabel() {
+    TEST_BABEL_FOLDER="build/test/pybabel"
+    build_msg TEST "[extract messages] pybabel"
+    mkdir -p "${TEST_BABEL_FOLDER}"
+    pyenv.cmd pybabel extract -F babel.cfg -o "${TEST_BABEL_FOLDER}/messages.pot" searx
 }
 
 test.clean() {

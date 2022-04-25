@@ -1667,8 +1667,9 @@ engines:
   - name: brave
     shortcut: brave
     engine: xpath
-    paging: false
-    search_url: https://search.brave.com/search?q={query}
+    paging: true
+    first_page_num: 0
+    search_url: https://search.brave.com/search?q={query}&offset={pageno}&spellcheck=1
     url_xpath: //div[@class="snippet fdb"]/a/@href
     title_xpath: //span[@class="snippet-title"]
     content_xpath: //p[1][@class="snippet-description"]

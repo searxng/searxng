@@ -117,7 +117,8 @@ def get_territory_name(lang_code):
     country_name = None
     locale = get_locale(lang_code)
     try:
-        country_name = locale.get_territory_name()
+        if locale is not None:
+            country_name = locale.get_territory_name()
     except FileNotFoundError as exc:
         print("ERROR: %s --> %s" % (locale, exc))
     return country_name
@@ -190,7 +191,7 @@ def join_language_lists(engines_languages):
 
 # Filter language list so it only includes the most supported languages and countries
 def filter_language_list(all_languages):
-    min_engines_per_lang = 13
+    min_engines_per_lang = 12
     min_engines_per_country = 7
     # pylint: disable=consider-using-dict-items, consider-iterating-dictionary
     main_engines = [
