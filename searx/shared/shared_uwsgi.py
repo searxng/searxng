@@ -2,6 +2,7 @@
 
 import time
 from typing import Optional
+import threading
 import uwsgi  # pyright: ignore # pylint: disable=E0401
 from . import shared_abstract
 
@@ -17,9 +18,11 @@ class UwsgiCacheSharedDict(shared_abstract.SharedDict):
         else:
             return int.from_bytes(value, 'big')
 
-    def set_int(self, key: str, value: int):
+    def set_int(self, key: str, value: int, expire: Optional[int] = None):
         b = value.to_bytes(4, 'big')
         uwsgi.cache_update(key, b)
+        if expire:
+            self._expire(key, expire)
 
     def get_str(self, key: str) -> Optional[str]:
         value = uwsgi.cache_get(key)
@@ -28,9 +31,26 @@ class UwsgiCacheSharedDict(shared_abstract.SharedDict):
         else:
             return value.decode('utf-8')
 
-    def set_str(self, key: str, value: str):
+    def set_str(self, key: str, value: str, expire: Optional[int] = None):
         b = value.encode('utf-8')
         uwsgi.cache_update(key, b)
+        if expire:
+            self._expire(key, expire)
+
+    def _expire(self, key: str, expire: int):
+        t = threading.Timer(expire, uwsgi.cache_del, args=[key])
+        t.daemon = True
+        t.start()
+
+
+def run_locked(func, *args):
+    result = None
+    uwsgi.lock()
+    try:
+        result = func(*args)
+    finally:
+        uwsgi.unlock()
+    return result
 
 
 def schedule(delay, func, *args):

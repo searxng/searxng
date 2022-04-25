@@ -15,6 +15,7 @@ from searx.engines import engines
 from searx.network import get_time_for_thread, get_network
 from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
+from searx.shared import storage, run_locked
 from searx.utils import get_engine_from_settings
 
 logger = logger.getChild('searx.search.processor')
@@ -136,6 +137,36 @@ class EngineProcessor(ABC):
             )
             return True
         return False
+
+    def exceeds_rate_limit(self):
+        def check_rate_limiter(engine_name, max_requests, interval):
+            key = f'rate_limiter_{engine_name}_{max_requests}r/{interval}s'
+            # check requests count
+            count = storage.get_int(key)
+            if count is None:
+                # initialize counter with expiration time
+                storage.set_int(key, 1, interval)
+            elif count >= max_requests:
+                logger.debug(f"{engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds")
+                return True
+            else:
+                # update counter
+                storage.set_int(key, count + 1)
+            return False
+
+        result = False
+        # add counter to all of the engine's rate limiters
+        for rate_limit in self.engine.rate_limit:
+            max_requests = rate_limit['max_requests']
+            interval = rate_limit.get('interval', 1)
+
+            if max_requests == float('inf'):
+                continue
+
+            if run_locked(check_rate_limiter, self.engine_name, max_requests, interval):
+                result = True
+
+        return result
 
     def get_params(self, search_query, engine_category):
         """Returns a set of *request params* or ``None`` if request is not supported.

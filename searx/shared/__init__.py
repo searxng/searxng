@@ -11,7 +11,7 @@ try:
     uwsgi = importlib.import_module('uwsgi')
 except:
     # no uwsgi
-    from .shared_simple import SimpleSharedDict as SharedDict, schedule
+    from .shared_simple import SimpleSharedDict as SharedDict, schedule, run_locked
 
     logger.info('Use shared_simple implementation')
 else:
@@ -32,7 +32,7 @@ else:
 
     else:
         # uwsgi
-        from .shared_uwsgi import UwsgiCacheSharedDict as SharedDict, schedule
+        from .shared_uwsgi import UwsgiCacheSharedDict as SharedDict, schedule, run_locked
 
         logger.info('Use shared_uwsgi implementation')
 
