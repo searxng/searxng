@@ -362,11 +362,6 @@ class Preferences:
                 locked=is_locked('doi_resolver'),
                 choices=DOI_RESOLVERS
             ),
-            'oscar-style': EnumStringSetting(
-                settings['ui']['theme_args']['oscar_style'],
-                locked=is_locked('oscar-style'),
-                choices=['', 'logicodev', 'logicodev-dark', 'pointhi']
-            ),
             'simple_style': EnumStringSetting(
                 settings['ui']['theme_args']['simple_style'],
                 locked=is_locked('simple_style'),

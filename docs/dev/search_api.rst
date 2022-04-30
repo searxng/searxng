@@ -75,24 +75,14 @@ Parameters
   Filter search results of engines which support safe search.  See if an engine
   supports safe search in the preferences page of an instance.
 
-``theme`` : default ``oscar``
-  [ ``oscar``, ``simple`` ]
+``theme`` : default ``simple``
+  [ ``simple`` ]
 
   Theme of instance.
 
   Please note, available themes depend on an instance.  It is possible that an
   instance administrator deleted, created or renamed themes on their instance.
   See the available options in the preferences page of the instance.
-
-``oscar-style`` : default ``logicodev``
-  [ ``pointhi``, ``logicodev`` ]
-
-  Style of Oscar theme.  It is only parsed if the theme of an instance is
-  ``oscar``.
-
-  Please note, available styles depend on an instance.  It is possible that an
-  instance administrator deleted, created or renamed styles on their
-  instance. See the available options in the preferences page of the instance.
 
 ``enabled_plugins`` : optional
   List of enabled plugins.
