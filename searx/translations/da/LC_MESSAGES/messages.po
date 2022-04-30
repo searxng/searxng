@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-03-25 07:17+0000\n"
+"PO-Revision-Date: 2022-04-27 20:53+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Danish <https://weblate.bubu1.eu/projects/searxng/searxng/da/>"
 "\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11\n"
+"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.9.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -30,7 +30,7 @@ msgstr "andre"
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr ""
+msgstr "andre"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -90,7 +90,7 @@ msgstr "videnskab"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr ""
+msgstr "applikationer"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
@@ -100,12 +100,12 @@ msgstr "ordbøger"
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr ""
+msgstr "sangtekster"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
 msgid "packages"
-msgstr ""
+msgstr "pakker"
 
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
@@ -115,17 +115,17 @@ msgstr "spørgsmål og svar"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr ""
+msgstr "databaser"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "software-wikier"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr ""
+msgstr "web"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -201,7 +201,7 @@ msgstr "Kilde"
 
 #: searx/webapp.py:414
 msgid "Error loading the next page"
-msgstr ""
+msgstr "Fejl ved indlæsning af den næste side"
 
 #: searx/webapp.py:526 searx/webapp.py:967
 msgid "Invalid settings, please edit your preferences"
@@ -265,19 +265,20 @@ msgstr "Kanal"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Konverterer strenge til forskellige hash-digests."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "hash-digest"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Værtsnavn erstat"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Omskriv resultatets værtsnavne eller fjerne resultater baseret på værtsnavnet"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -578,7 +579,7 @@ msgstr "Hvilket sprog foretrækker du til søgninger?"
 #: searx/templates/simple/preferences.html:143
 #: searx/templates/simple/preferences.html:301
 msgid "SafeSearch"
-msgstr "SafeSearch"
+msgstr "Sikker Søgning"
 
 #: searx/templates/oscar/preferences.html:142
 #: searx/templates/simple/preferences.html:151
@@ -630,12 +631,12 @@ msgstr ""
 #: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr ""
+msgstr "Maskinmærker"
 
 #: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Adgangstokens til private søgemaskiner"
 
 #: searx/templates/oscar/preferences.html:198
 #: searx/templates/simple/preferences.html:182
@@ -650,7 +651,7 @@ msgstr "Ændring af layout-sproget"
 #: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
@@ -756,7 +757,7 @@ msgstr "Slået fra"
 #: searx/templates/oscar/preferences.html:295
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Søgning i sidens titel"
 
 #: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
@@ -764,6 +765,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Når denne er aktiveret, indeholder titlen på resultatsiden din søgning. Din "
+"browser kan registrere denne titel"
 
 #: searx/templates/oscar/preferences.html:326
 msgid "Allow all"
@@ -771,7 +774,7 @@ msgstr "Tillad alle"
 
 #: searx/templates/oscar/preferences.html:327
 msgid "Disable all"
-msgstr ""
+msgstr "Deaktiver alt"
 
 #: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
@@ -779,6 +782,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Denne fane vises ikke i søgeresultaterne, men du kan søge i de søgemaskiner, "
+"der er anført her, via bangs."
 
 #: searx/templates/oscar/preferences.html:345
 #: searx/templates/oscar/preferences.html:361
@@ -827,11 +832,11 @@ msgstr "Maks-tid"
 #: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Driftsikkerhed"
 
 #: searx/templates/oscar/preferences.html:419
 msgid "Query"
-msgstr ""
+msgstr "Søgning"
 
 #: searx/templates/oscar/preferences.html:426
 #: searx/templates/simple/preferences.html:349
@@ -856,12 +861,12 @@ msgstr "Eksempler"
 #: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Dette er en liste over SearXNG's hurtig-svar moduler."
 
 #: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Dette er listen over plugins."
 
 #: searx/templates/oscar/preferences.html:468
 #: searx/templates/simple/preferences.html:385
@@ -869,11 +874,13 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Dette er listen over de cookies og deres værdier, som SearXNG gemmer på din "
+"computer."
 
 #: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Med denne liste kan du vurdere SearXNG's åbenhed."
 
 #: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
@@ -953,7 +960,7 @@ msgstr "Hent resultater"
 
 #: searx/templates/oscar/results.html:95
 msgid "RSS subscription"
-msgstr ""
+msgstr "RSS-abonnement"
 
 #: searx/templates/oscar/results.html:104
 msgid "Search results"
@@ -988,11 +995,11 @@ msgstr "Start søgning"
 #: searx/templates/oscar/search.html:9
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear search"
-msgstr ""
+msgstr "Ryd søgning"
 
 #: searx/templates/oscar/search_full.html:12
 msgid "Clear"
-msgstr ""
+msgstr "Ryd"
 
 #: searx/templates/oscar/stats.html:4
 msgid "stats"
@@ -1004,7 +1011,7 @@ msgstr "Vægtninger"
 
 #: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Antal resultater"
 
 #: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
 msgid "Scores per result"
@@ -1012,64 +1019,64 @@ msgstr "Vægtninger pr. resultat"
 
 #: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
 msgid "Processing"
-msgstr ""
+msgstr "Behandler"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Warnings"
-msgstr ""
+msgstr "Advarsler"
 
 #: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Fejl og undtagelser"
 
 #: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
 msgid "Exception"
-msgstr ""
+msgstr "Undtagelser"
 
 #: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
 msgid "Message"
-msgstr ""
+msgstr "Besked"
 
 #: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
 msgid "Percentage"
-msgstr ""
+msgstr "Procentdel"
 
 #: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
 msgid "Parameter"
-msgstr ""
+msgstr "Parameter"
 
 #: searx/templates/oscar/result_templates/files.html:35
 #: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
 msgid "Filename"
-msgstr ""
+msgstr "Filnavn"
 
 #: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
 msgid "Function"
-msgstr ""
+msgstr "Funktion"
 
 #: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
 msgid "Code"
-msgstr ""
+msgstr "Kode"
 
 #: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "Kontrollør"
 
 #: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
 msgid "Failed test"
-msgstr ""
+msgstr "Fejlede tekst"
 
 #: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
 msgid "Comment(s)"
-msgstr ""
+msgstr "Kommentar(er)"
 
 #: searx/templates/oscar/time-range.html:5
 #: searx/templates/simple/filters/time_range.html:3
@@ -1103,7 +1110,7 @@ msgstr "OBS!"
 
 #: searx/templates/oscar/messages/first_time.html:7
 msgid "It look like you are using SearXNG first time."
-msgstr ""
+msgstr "Det ser ud til, at det er første gang, du bruger SearXNG."
 
 #: searx/templates/oscar/messages/no_cookies.html:3
 msgid "Information!"
@@ -1126,7 +1133,7 @@ msgstr "Søgemotorer kan ikke hente resultater."
 #: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
+msgstr "Prøv igen senere, eller find en anden SearXNG-instans."
 
 #: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
@@ -1175,7 +1182,7 @@ msgstr "skjul media"
 #: searx/templates/oscar/result_templates/videos.html:19
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Author"
-msgstr ""
+msgstr "Forfatter"
 
 #: searx/templates/oscar/result_templates/files.html:37
 #: searx/templates/oscar/result_templates/torrent.html:7
@@ -1215,11 +1222,11 @@ msgstr "TiB"
 
 #: searx/templates/oscar/result_templates/files.html:46
 msgid "Date"
-msgstr ""
+msgstr "Dato"
 
 #: searx/templates/oscar/result_templates/files.html:48
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: searx/templates/oscar/result_templates/images.html:27
 msgid "Get image"
@@ -1233,7 +1240,7 @@ msgstr "Vis kilde"
 #: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "adresse"
 
 #: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
@@ -1272,7 +1279,7 @@ msgstr "skjul video"
 
 #: searx/templates/oscar/result_templates/videos.html:20
 msgid "Length"
-msgstr ""
+msgstr "Længde"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -1280,7 +1287,7 @@ msgstr "Klik på forstørrelsesglasset for at udføre søgning"
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "Fejl:"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
@@ -1288,11 +1295,11 @@ msgstr "Brugerinterface"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
-msgstr ""
+msgstr "Tema stil"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Vælg auto for at følge dine browserindstillinger"
 
 #: searx/templates/simple/preferences.html:285
 msgid "Currently used search engines"
@@ -1304,11 +1311,11 @@ msgstr "Undstøtter valgte sprog"
 
 #: searx/templates/simple/preferences.html:418
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: searx/templates/simple/preferences.html:420
 msgid "Back"
-msgstr ""
+msgstr "Tilbage"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -1316,42 +1323,42 @@ msgstr "Svar"
 
 #: searx/templates/simple/results.html:144
 msgid "Back to top"
-msgstr ""
+msgstr "Tilbage til toppen"
 
 #: searx/templates/simple/results.html:162
 msgid "Previous page"
-msgstr ""
+msgstr "Forrige side"
 
 #: searx/templates/simple/results.html:179
 msgid "Next page"
-msgstr ""
+msgstr "Næste side"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Vis forsiden"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "clear"
-msgstr ""
+msgstr "ryd"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "search"
-msgstr ""
+msgstr "søg"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Denne side gav ikke nogen beskrivelse."
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
-msgstr ""
+msgstr "Maskine"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Søgemaskine-tid (sek)"
