@@ -119,17 +119,32 @@ class TestPreferences(SearxTestCase):
     def test_encode(self):
         from searx.preferences import Preferences
 
-        pref = Preferences(['oscar', 'simple'], ['general'], {}, [])
+        pref = Preferences(['simple'], ['general'], {}, [])
         url_params = (
-            'eJx1VMmO2zAM_Zr6YrTocujJh6JF0QEKzKAz7VVgJNohLIseUU7ivy-VcWy5yyGOTVGP73GLKJNPYjiYgGeT4NB8BS9YOSY'
-            'TUdifMDYM-vmGY1d5CN0EHTYOK88W_PXNkcDBozOjnzoK0vyi4bWnHs2RU4-zvHr_-RF9a-5Cy3GARByy7X7EkKMoBeMp9CuPQ-SzYMx'
-            '8Vr9P1qKI-XJ_p1fOkRJWNCgVM0a-zAttmBJbHkaPSZlNts-_jiuBFgUh2mPztkpHHLBhsRArDHvm356eHh5vATS0Mqagr0ZsZO_V8hT'
-            'B9srt54_v6jewJugqL4Nn_hYSdhxnI-jRpi05GDQCStOT7UGVmJY8ZnltRKyF23SGiLWjqNcygKGkpyeGZIywJfD1gI5AjRTAmBM55Aw'
-            'Q0Tn626lj7jzWo4e5hnEsIlprX6dTgdBRpyRBFKTDgBF8AasVyT4gvSTEoXRpXWRyG3CYQYld65I_V6lboILTMAlZY65_ejRDcHgp0Tv'
-            'EPtGAsqTiBf3m76g7pP9B84mwjPvuUtASRDei1nDF2ix_JXW91UJkXrPh6RAhznVmKyQl7dwJdMJ6bz1QOmgzYlrEzHDMcEUuo44AgS1'
-            'CvkjaOb2Q2AyY5oGDTs_OLXE_c2I5cg9hk3kEJZ0fu4SuktsIA2RhuJwP86AdripThCBeO9uVUejyPGmFSxPrqEYcuWi25zOEXV9tc1m'
-            '_KP1nafYtdfv6Q9hKfWmGm9A_3G635UwiVndLGdFCiLWkONk0xUxGLGGweGWTa2nZYZ0fS1YKlE3Uuw8fPl52E5U8HJYbC7sbjXUsrnT'
-            'XHXRbELfO-1fGSqskiGnMK7B0dV3t8Lq08pbdtYpuVdoKWA2Yjuyah_vHp2rZWjo0zXL8Gw8DTj0='
+            'eJx1Vk1z4zYM_TXxRZNMd7eddg8-pe21nWnvGoiEJEQkofDDtvzrC1qSRdnbQxQTBA'
+            'Hw8eGRCiJ27AnDsUOHHszBgOsSdHjU-Pr7HwfDCkweHCBFVmxHgxGPB7LiU4-eL9Px'
+            'TzABDxZjz_r491___HsI0GJA8Ko__nSIPVo8BspLDx5DMjHU7GqH5zpCsyzXTLVMsj'
+            'mhPzLI8I19d5iX1SFOUkUu4QD6BE6hrpcE8_LPhH6qydWRonjORnItOYqyXHk2Zs1E'
+            'ARojAdB15GTrMA6VJe_Z13VLBsPL1_ccmk5YUajrBRqxNhSbpAaMdU1Rxkqp13iq6x'
+            'Np5LxMI15RwtgUSOWx7iqNtyqI3S4Wej6TrmsWfHx2lcD5r-PSa7NWN8glxPxf5r5c'
+            'ikGrPedw6wZaj1gFbuMZPFaaPKrIAtFceOvJDQSqCNBRJ7BAiGX6TtCEZt0ta2zQd8'
+            'uwY-4MVqOBqYJxDFvucsbyiXLVd4i6kbUuMeqh8ZA_S1yyutlgIQfFYnLykziFH9vW'
+            'kB8Uet5iDKQGCEWBhiSln6q80UDlBDch4psPSy1wNZMnVYR2o13m3ASwreQRnceRi2'
+            'AjSNqOwsqWmbAZxSp_7kcBFnJBeHez4CKpKqieDQgsQREK5fNcBB_H3HrFIUUeJo4s'
+            'Wx7Abekn6HnHpTM10348UMM8hEejdKbY8ncxfCaO-OgVOHn1ZJX2DRSf8px4eqj6y7'
+            'dvv162anXS6LYjC3h1YEt_yx-IQ2lxcMo82gw-NVOHdj28EdHH1GDBFYuaQFIMQsrz'
+            'GZtiyicrqlAYznyhgd2bHFeYHLvJYlHfy_svL7995bOjofp4ef_55fv36zRANbIJA2'
+            'FX0C_v34oE3Es9oHtQIOFFZcilS5WdV_J5YUHRoeAvdCrZ0IDTCuy4sTOvHvMe96rl'
+            'usfxs5rcrLuTv1lmOApYmqip6_bEz4eORSyR2xA8tmWxKnkvP3fM0Hgi4bpstFisWR'
+            'TWV31adSdvSkPc7SkKbtOOTxgny05ALE6pNdL5vhQ5dFQKhYxjbpJZ0ChuSWcN22nh'
+            'rGpPwC32HXSL7Qm8xf6Dzu6XfLfk19dFoZ4li1sRD9fJVVnWYOmiDCe97Uw0RGi4am'
+            'o-JJA7IMMYUO7fIvM6N6ZG4ILlotrPhyjXSbSQqQZj7i2d-2pzGntRIHefJS8viwaK'
+            '-iW6NN9uyTSuTP88CwtKrG-GPaSz6Qn92fwEtGxVk4QMrAhMdev7m6yMBLMOF86iZN'
+            'JIe_xEadXAQuzW8HltyDCkJrmYVqVOI_oU7ijL64W03LLC81jcA8kFuQpDX1R90-b9'
+            '_iZOD2J1t9xfE0BGSJ5PqHA7kUUudYuG7HFjz12C2Mz3zNhD8eQgFa_sdiy3InNWHg'
+            'pV9OCCkWPUZRivRfA2g3DytC3fnlajSaJs4Zihvrwto7eeQxRVR3noCSDzhbZzYKjn'
+            'd-DZy7PtaVp2WgvPBpzCXUL_J1OGex48RVmOXzBU8_N3kqekkefRDzxNK2_Klp9mBJ'
+            'wsUnXyRqq1mScHuYalUY7_AZTCR4s=&q='
         )
         pref.parse_encoded_data(url_params)
         self.assertEqual(

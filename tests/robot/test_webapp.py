@@ -10,7 +10,7 @@ url = "http://localhost:11111/"
 def test_index(browser):
     # Visit URL
     browser.visit(url)
-    assert browser.is_text_present('about')
+    assert browser.is_text_present('searxng')
 
 
 def test_404(browser):
@@ -21,54 +21,54 @@ def test_404(browser):
 
 def test_about(browser):
     browser.visit(url)
-    browser.click_link_by_text('about')
+    browser.click_link_by_text('searxng')
     assert browser.is_text_present('Why use it?')
 
 
 def test_preferences(browser):
     browser.visit(url)
-    browser.click_link_by_text('preferences')
+    browser.click_link_by_href('/preferences')
     assert browser.is_text_present('Preferences')
-    assert browser.is_text_present('Cookies')
+    assert browser.is_text_present('COOKIES')
 
     assert browser.is_element_present_by_xpath('//label[@for="checkbox_dummy"]')
 
 
 def test_preferences_engine_select(browser):
     browser.visit(url)
-    browser.click_link_by_text('preferences')
+    browser.click_link_by_href('/preferences')
 
-    assert browser.is_element_present_by_xpath('//a[@href="#tab_engine"]')
-    browser.find_by_xpath('//a[@href="#tab_engine"]').first.click()
+    assert browser.is_element_present_by_xpath('//label[@for="tab-engines"]')
+    browser.find_by_xpath('//label[@for="tab-engines"]').first.click()
 
     assert not browser.find_by_xpath('//input[@id="engine_general_dummy__general"]').first.checked
     browser.find_by_xpath('//label[@for="engine_general_dummy__general"]').first.check()
-    browser.find_by_xpath('//input[@value="save"]').first.click()
+    browser.find_by_xpath('//input[@type="submit"]').first.click()
 
     # waiting for the redirect - without this the test is flaky..
     sleep(1)
 
     browser.visit(url)
-    browser.click_link_by_text('preferences')
-    browser.find_by_xpath('//a[@href="#tab_engine"]').first.click()
+    browser.click_link_by_href('/preferences')
+    browser.find_by_xpath('//label[@for="tab-engines"]').first.click()
 
     assert browser.find_by_xpath('//input[@id="engine_general_dummy__general"]').first.checked
 
 
 def test_preferences_locale(browser):
     browser.visit(url)
-    browser.click_link_by_text('preferences')
+    browser.click_link_by_href('/preferences')
 
-    browser.find_by_xpath('//a[@href="#tab_ui"]').first.click()
-    browser.select('locale', 'hu')
-    browser.find_by_xpath('//input[@value="save"]').first.click()
+    browser.find_by_xpath('//label[@for="tab-ui"]').first.click()
+    browser.select('locale', 'fr')
+    browser.find_by_xpath('//input[@type="submit"]').first.click()
 
     # waiting for the redirect - without this the test is flaky..
     sleep(1)
 
     browser.visit(url)
-    browser.click_link_by_text('beállítások')
-    browser.is_text_present('Beállítások')
+    browser.click_link_by_href('/preferences')
+    browser.is_text_present('Préférences')
 
 
 def test_search(browser):

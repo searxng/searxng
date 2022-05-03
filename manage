@@ -115,7 +115,6 @@ test.:
   clean     : clean intermediate test stuff
 themes.:
   all       : build all themes
-  oscar     : build oscar theme
   simple    : build simple theme
 pygments.:
   less      : build LESS files for pygments
@@ -554,9 +553,6 @@ node.env() {
     nodejs.ensure
     (   set -e
 
-        build_msg INSTALL "searx/static/themes/oscar/package.json"
-        npm --prefix searx/static/themes/oscar install
-
         build_msg INSTALL "searx/static/themes/simple/package.json"
         npm --prefix searx/static/themes/simple install
     )
@@ -576,7 +572,6 @@ node.clean() {
     fi
     build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
-        npm --prefix searx/static/themes/oscar run clean
         npm --prefix searx/static/themes/simple run clean
     )
     dump_return $?
@@ -762,7 +757,6 @@ themes.all() {
     (   set -e
         pygments.less
         node.env
-        themes.oscar
         themes.simple
     )
     dump_return $?
@@ -771,14 +765,14 @@ themes.all() {
 themes.live() {
     local LIVE_THEME="${LIVE_THEME:-${1}}"
     case "${LIVE_THEME}" in
-        simple|oscar)
+        simple)
             theme="searx/static/themes/${LIVE_THEME}"
             ;;
         '')
             die_caller 42 "missing theme argument"
             ;;
         *)
-            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple|oscar]'"
+            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple]'"
             ;;
     esac
     build_msg GRUNT "theme: $1 (live build)"
@@ -790,12 +784,6 @@ themes.live() {
     } 2>&1 \
         | prefix_stdout "${_Blue}THEME ${1} ${_creset}  " \
         | grep -E --ignore-case --color 'error[s]?[:]? |warning[s]?[:]? |'
-}
-
-themes.oscar() {
-    build_msg GRUNT "theme: oscar"
-    npm --prefix searx/static/themes/oscar run build
-    dump_return $?
 }
 
 themes.simple() {
