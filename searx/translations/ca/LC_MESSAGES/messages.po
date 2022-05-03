@@ -8,20 +8,19 @@
 # jmontane, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-20 07:34+0000\n"
+"POT-Creation-Date: 2022-05-03 16:51+0000\n"
 "PO-Revision-Date: 2022-04-01 02:04+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
-"Language-Team: Catalan <https://weblate.bubu1.eu/projects/searxng/searxng/ca/"
-">\n"
 "Language: ca\n"
+"Language-Team: Catalan "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ca/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -191,40 +190,40 @@ msgstr "accés denegat"
 msgid "server API error"
 msgstr "error en la API del servidor"
 
-#: searx/webapp.py:410
+#: searx/webapp.py:414
 msgid "No item found"
 msgstr "No s'ha trobat cap element"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
+#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:416
 msgid "Source"
 msgstr "Origen"
 
-#: searx/webapp.py:414
+#: searx/webapp.py:418
 msgid "Error loading the next page"
 msgstr "S'ha produït un error en carregar la pàgina següent"
 
-#: searx/webapp.py:526 searx/webapp.py:967
+#: searx/webapp.py:530 searx/webapp.py:971
 msgid "Invalid settings, please edit your preferences"
 msgstr "La configuració no és vàlida, editeu-la"
 
-#: searx/webapp.py:542
+#: searx/webapp.py:546
 msgid "Invalid settings"
 msgstr "La configuració no és vàlida"
 
-#: searx/webapp.py:618 searx/webapp.py:694
+#: searx/webapp.py:622 searx/webapp.py:698
 msgid "search error"
 msgstr "error en la cerca"
 
-#: searx/webapp.py:740
+#: searx/webapp.py:744
 msgid "{minutes} minute(s) ago"
 msgstr "fa {minutes} minuts"
 
-#: searx/webapp.py:742
+#: searx/webapp.py:746
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "fa {hours} hores i {minutes} minuts"
 
-#: searx/webapp.py:871
+#: searx/webapp.py:875
 msgid "Suspended"
 msgstr "Suspès"
 
@@ -279,8 +278,8 @@ msgstr "Substitueix el nom d'amfitrió"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Reescriu els noms d'amfitrió resultants o suprimeix els resultats segons el "
-"nom d'amfitrió"
+"Reescriu els noms d'amfitrió resultants o suprimeix els resultats segons "
+"el nom d'amfitrió"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -339,150 +338,77 @@ msgstr ""
 "JavaScript). Pitgeu la tecla «h» en la pàgina principal o de resultats "
 "per a obtenir ajuda."
 
-#: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
+#: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "No s'ha trobat la pàgina"
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
 msgstr "Vés a %(search_page)s."
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "pàgina de cerca"
 
-#: searx/templates/oscar/advanced.html:4
-msgid "Advanced settings"
-msgstr "Configuració avançada"
+#: searx/templates/simple/base.html:52
+msgid "preferences"
+msgstr "preferències"
 
-#: searx/templates/oscar/base.html:55
-#: searx/templates/oscar/messages/first_time.html:4
-#: searx/templates/oscar/messages/save_settings_successfull.html:5
-#: searx/templates/oscar/messages/unknow_error.html:5
-msgid "Close"
-msgstr "Tanca"
-
-#: searx/templates/oscar/base.html:57
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Error!"
-
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "Powered by"
 msgstr "Funciona amb"
 
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "un meta motor de cerca personalitzable i respectuós amb la privadesa"
 
-#: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:62
 msgid "Source code"
 msgstr "Codi font"
 
-#: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:63
 msgid "Issue tracker"
 msgstr "Gestor de tiquets"
 
-#: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Estadístiques del motor"
 
-#: searx/templates/oscar/base.html:89
-#: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instàncies públiques"
 
-#: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
 msgstr "Contacteu amb el mantenidor de la instància"
 
-#: searx/templates/oscar/languages.html:2
-msgid "Language"
-msgstr "Llengua"
+#: searx/templates/simple/categories.html:24
+msgid "Click on the magnifier to perform search"
+msgstr "Feu clic en la lupa per a executar la cerca"
 
-#: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:118
-msgid "Default language"
-msgstr "Llengua predeterminada"
+#: searx/templates/simple/macros.html:36
+msgid "Length"
+msgstr "Longitud"
 
-#: searx/templates/oscar/macros.html:23
-#: searx/templates/simple/result_templates/torrent.html:6
-msgid "magnet link"
-msgstr "enllaç magnet"
+#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/images.html:22
+msgid "Author"
+msgstr "Autor"
 
-#: searx/templates/oscar/macros.html:24
-#: searx/templates/simple/result_templates/torrent.html:7
-msgid "torrent file"
-msgstr "fitxer torrent"
-
-#: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
-#: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "en memòria cau"
 
-#: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
-#: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "en servidor intermediari"
 
-#: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:344
-#: searx/templates/oscar/preferences.html:362
-#: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:297
-#: searx/templates/simple/preferences.html:348
-msgid "Allow"
-msgstr "Permet"
-
-#: searx/templates/oscar/macros.html:139
-msgid "broken"
-msgstr "trencat"
-
-#: searx/templates/oscar/macros.html:141
-msgid "supported"
-msgstr "suportat"
-
-#: searx/templates/oscar/macros.html:143
-msgid "not supported"
-msgstr "no suportat"
-
-#: searx/templates/oscar/navbar.html:6
-msgid "about"
-msgstr "quant a"
-
-#: searx/templates/oscar/navbar.html:7
-#: searx/templates/oscar/preferences.html:90
-#: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "preferències"
-
-#: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
 msgstr "Sense HTTPS"
 
-#: searx/templates/oscar/preferences.html:14
-#: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
-msgid "Number of results"
-msgstr "Nombre de resultats"
-
-#: searx/templates/oscar/preferences.html:14
-msgid "Avg."
-msgstr "Mitjana"
-
-#: searx/templates/oscar/messages/no_results.html:8
-#: searx/templates/oscar/preferences.html:17
-#: searx/templates/oscar/preferences.html:18
-#: searx/templates/oscar/results.html:36
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
@@ -490,91 +416,63 @@ msgstr "Mitjana"
 msgid "View error logs and submit a bug report"
 msgstr "Mostra els informes d'error i envia un informe d'error"
 
-#: searx/templates/oscar/preferences.html:38
-#: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
 msgstr "Mitjà"
 
-#: searx/templates/oscar/preferences.html:39
-#: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/oscar/preferences.html:40
-#: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
 msgstr "Proves de control fallides: "
 
-#: searx/templates/oscar/preferences.html:96
+#: searx/templates/simple/preferences.html:85
+msgid "Errors:"
+msgstr "Errors:"
+
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Preferències"
 
-#: searx/templates/oscar/preferences.html:101
-#: searx/templates/oscar/preferences.html:111
 #: searx/templates/simple/preferences.html:105
 msgid "General"
 msgstr "General"
 
-#: searx/templates/oscar/preferences.html:102
-#: searx/templates/oscar/preferences.html:193
-msgid "User Interface"
-msgstr "Interfície d'usuari"
-
-#: searx/templates/oscar/preferences.html:103
-#: searx/templates/oscar/preferences.html:268
-#: searx/templates/simple/preferences.html:244
-msgid "Privacy"
-msgstr "Privadesa"
-
-#: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:318
-#: searx/templates/simple/preferences.html:284
-msgid "Engines"
-msgstr "Motors"
-
-#: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:343
-msgid "Special Queries"
-msgstr "Consultes especials"
-
-#: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:383
-msgid "Cookies"
-msgstr "Galetes"
-
-#: searx/templates/oscar/preferences.html:123
-#: searx/templates/oscar/preferences.html:125
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
 msgstr "Categories predeterminades"
 
-#: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "Llengua de cerca"
 
-#: searx/templates/oscar/preferences.html:134
+#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/preferences.html:118
+msgid "Default language"
+msgstr "Llengua predeterminada"
+
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
 msgstr "En quina llengua preferiu cercar?"
 
-#: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:348
-#: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/preferences.html:129
+msgid "Autocomplete"
+msgstr "Compleció automàtica"
+
+#: searx/templates/simple/preferences.html:138
+msgid "Find stuff as you type"
+msgstr "Troba coses tal com escriu"
+
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
@@ -584,45 +482,29 @@ msgstr "En quina llengua preferiu cercar?"
 msgid "SafeSearch"
 msgstr "Cerca segura"
 
-#: searx/templates/oscar/preferences.html:142
-#: searx/templates/simple/preferences.html:151
-msgid "Filter content"
-msgstr "Filtra el contingut"
-
-#: searx/templates/oscar/preferences.html:145
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
 msgstr "Estricta"
 
-#: searx/templates/oscar/preferences.html:146
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
 msgid "Moderate"
 msgstr "Moderada"
 
-#: searx/templates/oscar/preferences.html:147
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
 msgstr "Cap"
 
-#: searx/templates/oscar/preferences.html:153
-#: searx/templates/simple/preferences.html:129
-msgid "Autocomplete"
-msgstr "Compleció automàtica"
+#: searx/templates/simple/preferences.html:151
+msgid "Filter content"
+msgstr "Filtra el contingut"
 
-#: searx/templates/oscar/preferences.html:154
-#: searx/templates/simple/preferences.html:138
-msgid "Find stuff as you type"
-msgstr "Troba coses tal com escriu"
-
-#: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
 msgstr "Solucionador de l'Open Access DOI"
 
-#: searx/templates/oscar/preferences.html:169
 #: searx/templates/simple/preferences.html:167
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
@@ -631,100 +513,78 @@ msgstr ""
 "Redirigeix cap a versions d'accés obert de les publicacions si són "
 "disponibles (cal un connector)"
 
-#: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
 msgstr "Claus de motors"
 
-#: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
 msgstr "Claus d'accés per a motors privats"
 
-#: searx/templates/oscar/preferences.html:198
+#: searx/templates/simple/preferences.html:179
+msgid "User interface"
+msgstr "Interfície d'usuari"
+
 #: searx/templates/simple/preferences.html:182
 msgid "Interface language"
 msgstr "Llengua de la interfície"
 
-#: searx/templates/oscar/preferences.html:199
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
 msgstr "Canvia la llengua de la disposició"
 
-#: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
 msgstr "Tema"
 
-#: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
 msgstr "Canvia la interfície del SearXNG"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Choose style for this theme"
-msgstr "Trieu un estil per a aquest tema"
+#: searx/templates/simple/preferences.html:206
+msgid "Theme style"
+msgstr "Estil del tema"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Style"
-msgstr "Estil"
+#: searx/templates/simple/preferences.html:214
+msgid "Choose auto to follow your browser settings"
+msgstr "Trieu automàtic per a mantenir la configuració del navegador"
 
-#: searx/templates/oscar/preferences.html:231
-msgid "Show advanced settings"
-msgstr "Mostra els paràmetres avançats"
+#: searx/templates/simple/preferences.html:219
+msgid "Results on new tabs"
+msgstr "Resultats en pestanyes noves"
 
-#: searx/templates/oscar/preferences.html:232
-msgid "Show advanced settings panel in the home page by default"
-msgstr ""
-"Mostra el taulell de configuració avançada en la pàgina d'inicia de forma "
-"predeterminada"
-
-#: searx/templates/oscar/preferences.html:235
-#: searx/templates/oscar/preferences.html:245
-#: searx/templates/oscar/preferences.html:256
 #: searx/templates/simple/preferences.html:222
 #: searx/templates/simple/preferences.html:234
 msgid "On"
 msgstr "Activat"
 
-#: searx/templates/oscar/preferences.html:236
-#: searx/templates/oscar/preferences.html:246
-#: searx/templates/oscar/preferences.html:257
 #: searx/templates/simple/preferences.html:223
 #: searx/templates/simple/preferences.html:235
 msgid "Off"
 msgstr "Desactivat"
 
-#: searx/templates/oscar/preferences.html:241
-#: searx/templates/simple/preferences.html:219
-msgid "Results on new tabs"
-msgstr "Resultats en pestanyes noves"
-
-#: searx/templates/oscar/preferences.html:242
 #: searx/templates/simple/preferences.html:226
 msgid "Open result links on new browser tabs"
 msgstr "Obre els enllaços de resultats en una pestanya nova"
 
-#: searx/templates/oscar/preferences.html:252
 #: searx/templates/simple/preferences.html:231
 msgid "Infinite scroll"
 msgstr "Desplaçament infinit"
 
-#: searx/templates/oscar/preferences.html:253
 #: searx/templates/simple/preferences.html:238
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Carrega automàticament la pàgina següent en desplaçar-se al final de la "
 "pàgina actual"
 
-#: searx/templates/oscar/preferences.html:273
+#: searx/templates/simple/preferences.html:244
+msgid "Privacy"
+msgstr "Privadesa"
+
 #: searx/templates/simple/preferences.html:247
 msgid "HTTP Method"
 msgstr "Mètode HTTP"
 
-#: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
 msgid ""
 "Change how forms are submited, <a "
@@ -735,53 +595,44 @@ msgstr ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">més informació sobre els mètodes de petició</a>"
 
-#: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
 msgstr "Servidor intermediari d'imatges"
 
-#: searx/templates/oscar/preferences.html:285
-#: searx/templates/simple/preferences.html:266
-msgid "Proxying image results through SearXNG"
-msgstr "Les imatges es carreguen via un servidor intermediari SearXNG"
-
-#: searx/templates/oscar/preferences.html:288
-#: searx/templates/oscar/preferences.html:299
 #: searx/templates/simple/preferences.html:262
 #: searx/templates/simple/preferences.html:274
 msgid "Enabled"
 msgstr "Activat"
 
-#: searx/templates/oscar/preferences.html:289
-#: searx/templates/oscar/preferences.html:300
 #: searx/templates/simple/preferences.html:263
 #: searx/templates/simple/preferences.html:275
 msgid "Disabled"
 msgstr "Desactivat"
 
-#: searx/templates/oscar/preferences.html:295
+#: searx/templates/simple/preferences.html:266
+msgid "Proxying image results through SearXNG"
+msgstr "Les imatges es carreguen via un servidor intermediari SearXNG"
+
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
 msgstr "Consulta en el títol de la pàgina"
 
-#: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Si està activat, el títol de la pàgina conté la consulta. El navegador pot "
-"enregistrar aquest títol"
+"Si està activat, el títol de la pàgina conté la consulta. El navegador "
+"pot enregistrar aquest títol"
 
-#: searx/templates/oscar/preferences.html:326
-msgid "Allow all"
-msgstr "Permet-ho tot"
+#: searx/templates/simple/preferences.html:284
+msgid "Engines"
+msgstr "Motors"
 
-#: searx/templates/oscar/preferences.html:327
-msgid "Disable all"
-msgstr "Desactiva-ho tot"
+#: searx/templates/simple/preferences.html:285
+msgid "Currently used search engines"
+msgstr "Motors de cerca usats actualment"
 
-#: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
@@ -790,90 +641,75 @@ msgstr ""
 "Aquesta pestanya no es mostra per als resultats de la cerca, però podeu "
 "cercar en els motors llistats aquí amb els bangs."
 
-#: searx/templates/oscar/preferences.html:345
-#: searx/templates/oscar/preferences.html:361
-#: searx/templates/oscar/stats.html:29
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
+msgid "Allow"
+msgstr "Permet"
+
 #: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Nom del motor"
 
-#: searx/templates/oscar/preferences.html:346
-#: searx/templates/oscar/preferences.html:360
 #: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Drecera"
 
-#: searx/templates/oscar/preferences.html:347
-#: searx/templates/oscar/preferences.html:359
-msgid "Selected language"
-msgstr "Llengua seleccionada"
+#: searx/templates/simple/preferences.html:300
+msgid "Supports selected language"
+msgstr "Suporta la llengua seleccionada"
 
-#: searx/templates/oscar/preferences.html:349
-#: searx/templates/oscar/preferences.html:357
-#: searx/templates/oscar/time-range.html:2
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Interval de temps"
 
-#: searx/templates/oscar/preferences.html:350
-#: searx/templates/oscar/preferences.html:356
-#: searx/templates/oscar/stats.html:32
 #: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Temps de resposta"
 
-#: searx/templates/oscar/preferences.html:351
-#: searx/templates/oscar/preferences.html:355
 #: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Temps màxim"
 
-#: searx/templates/oscar/preferences.html:352
-#: searx/templates/oscar/preferences.html:354
-#: searx/templates/oscar/stats.html:33
 #: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Fiabilitat"
 
-#: searx/templates/oscar/preferences.html:419
-msgid "Query"
-msgstr "Consulta"
+#: searx/templates/simple/preferences.html:343
+msgid "Special Queries"
+msgstr "Consultes especials"
 
-#: searx/templates/oscar/preferences.html:426
 #: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Paraules clau"
 
-#: searx/templates/oscar/preferences.html:427
 #: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Nom"
 
-#: searx/templates/oscar/preferences.html:428
 #: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Descripció"
 
-#: searx/templates/oscar/preferences.html:429
 #: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Exemples"
 
-#: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Aquesta és la llista dels mòduls de resposta instantània de SearXNG."
 
-#: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr "Això és la llista dels connectors."
 
-#: searx/templates/oscar/preferences.html:468
+#: searx/templates/simple/preferences.html:383
+msgid "Cookies"
+msgstr "Galetes"
+
 #: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
@@ -882,45 +718,22 @@ msgstr ""
 "Això és la llista de les galetes, i els seus valors, que el SearXNG "
 "emmagatzema en el vostre ordinador."
 
-#: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Amb aquesta llista, podeu comprovar la transparència de SearXNG."
 
-#: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Nom de la galeta"
 
-#: searx/templates/oscar/preferences.html:475
 #: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Valor"
 
-#: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:413
-msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr ""
-"Aquesta configuració es desa en les galetes. Això ens permet no "
-"emmagatzemar les vostres dades."
-
-#: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:415
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr ""
-"Aquestes galetes només són per a la vostra conveniència. No les usem per "
-"a rastrejar-vos."
-
-#: searx/templates/oscar/preferences.html:497
 #: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "URL de cerca de les preferències desades actualment"
 
-#: searx/templates/oscar/preferences.html:498
 #: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
@@ -930,394 +743,29 @@ msgstr ""
 " reduir la privadesa, amb filtració de dades, en fer clic als llocs dels "
 "resultats."
 
-#: searx/templates/oscar/preferences.html:503
-msgid "save"
-msgstr "desa"
-
-#: searx/templates/oscar/preferences.html:504
-msgid "back"
-msgstr "enrere"
-
-#: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:419
-msgid "Reset defaults"
-msgstr "Restaura els valors predeterminats"
-
-#: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Els motors no poden obtenir cap resultat"
-
-#: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Suggeriments"
-
-#: searx/templates/oscar/results.html:74
-msgid "Links"
-msgstr "Enllaços"
-
-#: searx/templates/oscar/results.html:79 searx/templates/simple/results.html:86
-msgid "Search URL"
-msgstr "URL de cerca"
-
-#: searx/templates/oscar/results.html:84 searx/templates/simple/results.html:91
-msgid "Download results"
-msgstr "Baixa els resultats"
-
-#: searx/templates/oscar/results.html:95
-msgid "RSS subscription"
-msgstr "Subscripció RSS"
-
-#: searx/templates/oscar/results.html:104
-msgid "Search results"
-msgstr "Resultats de la cerca"
-
-#: searx/templates/oscar/results.html:109
-#: searx/templates/simple/results.html:115
-msgid "Try searching for:"
-msgstr "Proveu a cercar:"
-
-#: searx/templates/oscar/results.html:162
-#: searx/templates/oscar/results.html:187
-msgid "next page"
-msgstr "pàgina següent"
-
-#: searx/templates/oscar/results.html:169
-#: searx/templates/oscar/results.html:180
-msgid "previous page"
-msgstr "pàgina anterior"
-
-#: searx/templates/oscar/search.html:6 searx/templates/oscar/search_full.html:9
-#: searx/templates/simple/search.html:8
-#: searx/templates/simple/simple_search.html:4
-msgid "Search for..."
-msgstr "Cerca..."
-
-#: searx/templates/oscar/search.html:8
-#: searx/templates/oscar/search_full.html:11
-msgid "Start search"
-msgstr "Comença la cerca"
-
-#: searx/templates/oscar/search.html:9
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear search"
-msgstr "Buida la cerca"
-
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear"
-msgstr "Buida"
-
-#: searx/templates/oscar/stats.html:4
-msgid "stats"
-msgstr "estadístiques"
-
-#: searx/templates/oscar/stats.html:30 searx/templates/simple/stats.html:26
-msgid "Scores"
-msgstr "Valoració"
-
-#: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
-msgid "Result count"
-msgstr "Resultats"
-
-#: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Valoració segons el resultat"
-
-#: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
-msgid "Total"
-msgstr "Total"
-
-#: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
-msgid "HTTP"
-msgstr "HTTP"
-
-#: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
-msgid "Processing"
-msgstr "S'està processant"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Warnings"
-msgstr "Avisos"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Errors and exceptions"
-msgstr "Errors i excepcions"
-
-#: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
-msgid "Exception"
-msgstr "Excepció"
-
-#: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
-msgid "Message"
-msgstr "Missatge"
-
-#: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
-msgid "Percentage"
-msgstr "Percentatge"
-
-#: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
-msgid "Parameter"
-msgstr "Paràmetre"
-
-#: searx/templates/oscar/result_templates/files.html:35
-#: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
-msgid "Filename"
-msgstr "Nom de fitxer"
-
-#: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
-msgid "Function"
-msgstr "Funció"
-
-#: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
-msgid "Code"
-msgstr "Codi"
-
-#: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
-msgid "Checker"
-msgstr "Comprovador"
-
-#: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
-msgid "Failed test"
-msgstr "Prova fallida"
-
-#: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
-msgid "Comment(s)"
-msgstr "Comentaris"
-
-#: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/filters/time_range.html:3
-msgid "Anytime"
-msgstr "En qualsevol moment"
-
-#: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/filters/time_range.html:6
-msgid "Last day"
-msgstr "Les darreres 24 hores"
-
-#: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/filters/time_range.html:9
-msgid "Last week"
-msgstr "La setmana passada"
-
-#: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/filters/time_range.html:12
-msgid "Last month"
-msgstr "El darrer mes"
-
-#: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/filters/time_range.html:15
-msgid "Last year"
-msgstr "El darrer any"
-
-#: searx/templates/oscar/messages/first_time.html:6
-#: searx/templates/oscar/messages/no_data_available.html:3
-msgid "Heads up!"
-msgstr "Atenció!"
-
-#: searx/templates/oscar/messages/first_time.html:7
-msgid "It look like you are using SearXNG first time."
-msgstr "Sembla que feu servir el SearXNG per primera vegada."
-
-#: searx/templates/oscar/messages/no_cookies.html:3
-msgid "Information!"
-msgstr "Informació!"
-
-#: searx/templates/oscar/messages/no_cookies.html:4
-msgid "currently, there are no cookies defined."
-msgstr "actualment, no hi ha definida cap galeta."
-
-#: searx/templates/oscar/messages/no_data_available.html:4
-#: searx/templates/simple/stats.html:21
-msgid "There is currently no data available. "
-msgstr "Actualment, no hi ha dades disponibles."
-
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Els motors no poden obtenir cap resultat."
-
-#: searx/templates/oscar/messages/no_results.html:13
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"Torneu a intentar-ho més tard, o proveu amb una altra instància SearXNG."
-
-#: searx/templates/oscar/messages/no_results.html:17
-#: searx/templates/simple/messages/no_results.html:20
-msgid "Sorry!"
-msgstr "Disculpeu!"
-
-#: searx/templates/oscar/messages/no_results.html:18
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/preferences.html:413
 msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
 msgstr ""
-"no hem trobat cap resultat. Feu una consulta diferent o cerqueu en més "
-"categories."
+"Aquesta configuració es desa en les galetes. Això ens permet no "
+"emmagatzemar les vostres dades."
 
-#: searx/templates/oscar/messages/save_settings_successfull.html:7
-msgid "Well done!"
-msgstr "Ben fet!"
-
-#: searx/templates/oscar/messages/save_settings_successfull.html:8
-msgid "Settings saved successfully."
-msgstr "La configuració s'ha desat correctament."
-
-#: searx/templates/oscar/messages/unknow_error.html:7
-msgid "Oh snap!"
-msgstr "Cagundena!"
-
-#: searx/templates/oscar/messages/unknow_error.html:8
-msgid "Something went wrong."
-msgstr "Alguna cosa ha anat malament."
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/oscar/result_templates/files.html:10
-#: searx/templates/simple/result_templates/default.html:6
-msgid "show media"
-msgstr "mostra el contingut multimèdia"
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/simple/result_templates/default.html:6
-msgid "hide media"
-msgstr "amaga el contingut multimèdia"
-
-#: searx/templates/oscar/result_templates/files.html:33
-#: searx/templates/oscar/result_templates/videos.html:19
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Author"
-msgstr "Autor"
-
-#: searx/templates/oscar/result_templates/files.html:37
-#: searx/templates/oscar/result_templates/torrent.html:7
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Mida del fitxer"
-
-#: searx/templates/oscar/result_templates/files.html:38
-#: searx/templates/oscar/result_templates/torrent.html:9
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bytes"
-
-#: searx/templates/oscar/result_templates/files.html:39
-#: searx/templates/oscar/result_templates/torrent.html:10
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/oscar/result_templates/files.html:40
-#: searx/templates/oscar/result_templates/torrent.html:11
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/oscar/result_templates/files.html:41
-#: searx/templates/oscar/result_templates/torrent.html:12
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/oscar/result_templates/files.html:42
-#: searx/templates/oscar/result_templates/torrent.html:13
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/oscar/result_templates/files.html:46
-msgid "Date"
-msgstr "Data"
-
-#: searx/templates/oscar/result_templates/files.html:48
-msgid "Type"
-msgstr "Tipus"
-
-#: searx/templates/oscar/result_templates/images.html:27
-msgid "Get image"
-msgstr "Obtén la imatge"
-
-#: searx/templates/oscar/result_templates/images.html:30
-#: searx/templates/simple/result_templates/images.html:25
-msgid "View source"
-msgstr "Mostra el codi font"
-
-#: searx/templates/oscar/result_templates/map.html:26
-#: searx/templates/simple/result_templates/map.html:12
-msgid "address"
-msgstr "adreça"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "show map"
-msgstr "mostra el mapa"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "hide map"
-msgstr "amaga el mapa"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Seeder"
-msgstr "Font"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Leecher"
-msgstr "Descarregador"
-
-#: searx/templates/oscar/result_templates/torrent.html:15
-#: searx/templates/simple/result_templates/torrent.html:20
-msgid "Number of Files"
-msgstr "Nombre de fiters"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "show video"
-msgstr "mostra el vídeo"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "hide video"
-msgstr "amaga el vídeo"
-
-#: searx/templates/oscar/result_templates/videos.html:20
-msgid "Length"
-msgstr "Longitud"
-
-#: searx/templates/simple/categories.html:24
-msgid "Click on the magnifier to perform search"
-msgstr "Feu clic en la lupa per a executar la cerca"
-
-#: searx/templates/simple/preferences.html:85
-msgid "Errors:"
-msgstr "Errors:"
-
-#: searx/templates/simple/preferences.html:179
-msgid "User interface"
-msgstr "Interfície d'usuari"
-
-#: searx/templates/simple/preferences.html:206
-msgid "Theme style"
-msgstr "Estil del tema"
-
-#: searx/templates/simple/preferences.html:214
-msgid "Choose auto to follow your browser settings"
-msgstr "Trieu automàtic per a mantenir la configuració del navegador"
-
-#: searx/templates/simple/preferences.html:285
-msgid "Currently used search engines"
-msgstr "Motors de cerca usats actualment"
-
-#: searx/templates/simple/preferences.html:300
-msgid "Supports selected language"
-msgstr "Suporta la llengua seleccionada"
+#: searx/templates/simple/preferences.html:415
+msgid ""
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
+msgstr ""
+"Aquestes galetes només són per a la vostra conveniència. No les usem per "
+"a rastrejar-vos."
 
 #: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "Desa"
+
+#: searx/templates/simple/preferences.html:419
+msgid "Reset defaults"
+msgstr "Restaura els valors predeterminats"
 
 #: searx/templates/simple/preferences.html:420
 msgid "Back"
@@ -1327,15 +775,44 @@ msgstr "Enrere"
 msgid "Answers"
 msgstr "Respostes"
 
-#: searx/templates/simple/results.html:144
+#: searx/templates/simple/results.html:39
+msgid "Number of results"
+msgstr "Nombre de resultats"
+
+#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/results.html:46
+msgid "Error!"
+msgstr "Error!"
+
+#: searx/templates/simple/results.html:46
+msgid "Engines cannot retrieve results"
+msgstr "Els motors no poden obtenir cap resultat"
+
+#: searx/templates/simple/results.html:68
+msgid "Suggestions"
+msgstr "Suggeriments"
+
+#: searx/templates/simple/results.html:90
+msgid "Search URL"
+msgstr "URL de cerca"
+
+#: searx/templates/simple/results.html:96
+msgid "Download results"
+msgstr "Baixa els resultats"
+
+#: searx/templates/simple/results.html:120
+msgid "Try searching for:"
+msgstr "Proveu a cercar:"
+
+#: searx/templates/simple/results.html:152
 msgid "Back to top"
 msgstr "Torna al capdemunt"
 
-#: searx/templates/simple/results.html:162
+#: searx/templates/simple/results.html:170
 msgid "Previous page"
 msgstr "Pàgina anterior"
 
-#: searx/templates/simple/results.html:179
+#: searx/templates/simple/results.html:187
 msgid "Next page"
 msgstr "Pàgina següent"
 
@@ -1345,26 +822,231 @@ msgstr "Mostra la pàgina principal"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
-msgid "clear"
-msgstr "buida"
+msgid "Search for..."
+msgstr "Cerca..."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
+msgid "clear"
+msgstr "buida"
+
+#: searx/templates/simple/search.html:11
+#: searx/templates/simple/simple_search.html:7
 msgid "search"
 msgstr "cerca"
+
+#: searx/templates/simple/stats.html:21
+msgid "There is currently no data available. "
+msgstr "Actualment, no hi ha dades disponibles."
+
+#: searx/templates/simple/stats.html:26
+msgid "Scores"
+msgstr "Valoració"
+
+#: searx/templates/simple/stats.html:27
+msgid "Result count"
+msgstr "Resultats"
+
+#: searx/templates/simple/stats.html:38
+msgid "Scores per result"
+msgstr "Valoració segons el resultat"
+
+#: searx/templates/simple/stats.html:62
+msgid "Total"
+msgstr "Total"
+
+#: searx/templates/simple/stats.html:63
+msgid "HTTP"
+msgstr "HTTP"
+
+#: searx/templates/simple/stats.html:64
+msgid "Processing"
+msgstr "S'està processant"
+
+#: searx/templates/simple/stats.html:102
+msgid "Warnings"
+msgstr "Avisos"
+
+#: searx/templates/simple/stats.html:102
+msgid "Errors and exceptions"
+msgstr "Errors i excepcions"
+
+#: searx/templates/simple/stats.html:108
+msgid "Exception"
+msgstr "Excepció"
+
+#: searx/templates/simple/stats.html:110
+msgid "Message"
+msgstr "Missatge"
+
+#: searx/templates/simple/stats.html:112
+msgid "Percentage"
+msgstr "Percentatge"
+
+#: searx/templates/simple/stats.html:114
+msgid "Parameter"
+msgstr "Paràmetre"
+
+#: searx/templates/simple/stats.html:122
+msgid "Filename"
+msgstr "Nom de fitxer"
+
+#: searx/templates/simple/stats.html:123
+msgid "Function"
+msgstr "Funció"
+
+#: searx/templates/simple/stats.html:124
+msgid "Code"
+msgstr "Codi"
+
+#: searx/templates/simple/stats.html:131
+msgid "Checker"
+msgstr "Comprovador"
+
+#: searx/templates/simple/stats.html:134
+msgid "Failed test"
+msgstr "Prova fallida"
+
+#: searx/templates/simple/stats.html:135
+msgid "Comment(s)"
+msgstr "Comentaris"
+
+#: searx/templates/simple/filters/time_range.html:3
+msgid "Anytime"
+msgstr "En qualsevol moment"
+
+#: searx/templates/simple/filters/time_range.html:6
+msgid "Last day"
+msgstr "Les darreres 24 hores"
+
+#: searx/templates/simple/filters/time_range.html:9
+msgid "Last week"
+msgstr "La setmana passada"
+
+#: searx/templates/simple/filters/time_range.html:12
+msgid "Last month"
+msgstr "El darrer mes"
+
+#: searx/templates/simple/filters/time_range.html:15
+msgid "Last year"
+msgstr "El darrer any"
+
+#: searx/templates/simple/messages/no_cookies.html:3
+msgid "Information!"
+msgstr "Informació!"
+
+#: searx/templates/simple/messages/no_cookies.html:4
+msgid "currently, there are no cookies defined."
+msgstr "actualment, no hi ha definida cap galeta."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Engines cannot retrieve results."
+msgstr "Els motors no poden obtenir cap resultat."
+
+#: searx/templates/simple/messages/no_results.html:15
+msgid "Please, try again later or find another SearXNG instance."
+msgstr "Torneu a intentar-ho més tard, o proveu amb una altra instància SearXNG."
+
+#: searx/templates/simple/messages/no_results.html:20
+msgid "Sorry!"
+msgstr "Disculpeu!"
+
+#: searx/templates/simple/messages/no_results.html:21
+msgid ""
+"we didn't find any results. Please use another query or search in more "
+"categories."
+msgstr ""
+"no hem trobat cap resultat. Feu una consulta diferent o cerqueu en més "
+"categories."
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "show media"
+msgstr "mostra el contingut multimèdia"
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "hide media"
+msgstr "amaga el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "Aquest lloc no proporciona cap descripció."
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:23
 msgid "Format"
 msgstr "Format"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:25
 msgid "Engine"
 msgstr "Motor"
+
+#: searx/templates/simple/result_templates/images.html:26
+msgid "View source"
+msgstr "Mostra el codi font"
+
+#: searx/templates/simple/result_templates/map.html:12
+msgid "address"
+msgstr "adreça"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "show map"
+msgstr "mostra el mapa"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "hide map"
+msgstr "amaga el mapa"
+
+#: searx/templates/simple/result_templates/torrent.html:6
+msgid "magnet link"
+msgstr "enllaç magnet"
+
+#: searx/templates/simple/result_templates/torrent.html:7
+msgid "torrent file"
+msgstr "fitxer torrent"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Seeder"
+msgstr "Font"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Leecher"
+msgstr "Descarregador"
+
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Mida del fitxer"
+
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Bytes"
+
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "kiB"
+
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
+#: searx/templates/simple/result_templates/torrent.html:20
+msgid "Number of Files"
+msgstr "Nombre de fiters"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "show video"
+msgstr "mostra el vídeo"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "hide video"
+msgstr "amaga el vídeo"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Temps del motor (segons)"
@@ -1494,3 +1176,118 @@ msgstr "Motor"
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+
+#~ msgid "Advanced settings"
+#~ msgstr "Configuració avançada"
+
+#~ msgid "Close"
+#~ msgstr "Tanca"
+
+#~ msgid "Language"
+#~ msgstr "Llengua"
+
+#~ msgid "broken"
+#~ msgstr "trencat"
+
+#~ msgid "supported"
+#~ msgstr "suportat"
+
+#~ msgid "not supported"
+#~ msgstr "no suportat"
+
+#~ msgid "about"
+#~ msgstr "quant a"
+
+#~ msgid "Avg."
+#~ msgstr "Mitjana"
+
+#~ msgid "User Interface"
+#~ msgstr "Interfície d'usuari"
+
+#~ msgid "Choose style for this theme"
+#~ msgstr "Trieu un estil per a aquest tema"
+
+#~ msgid "Style"
+#~ msgstr "Estil"
+
+#~ msgid "Show advanced settings"
+#~ msgstr "Mostra els paràmetres avançats"
+
+#~ msgid "Show advanced settings panel in the home page by default"
+#~ msgstr ""
+#~ "Mostra el taulell de configuració "
+#~ "avançada en la pàgina d'inicia de "
+#~ "forma predeterminada"
+
+#~ msgid "Allow all"
+#~ msgstr "Permet-ho tot"
+
+#~ msgid "Disable all"
+#~ msgstr "Desactiva-ho tot"
+
+#~ msgid "Selected language"
+#~ msgstr "Llengua seleccionada"
+
+#~ msgid "Query"
+#~ msgstr "Consulta"
+
+#~ msgid "save"
+#~ msgstr "desa"
+
+#~ msgid "back"
+#~ msgstr "enrere"
+
+#~ msgid "Links"
+#~ msgstr "Enllaços"
+
+#~ msgid "RSS subscription"
+#~ msgstr "Subscripció RSS"
+
+#~ msgid "Search results"
+#~ msgstr "Resultats de la cerca"
+
+#~ msgid "next page"
+#~ msgstr "pàgina següent"
+
+#~ msgid "previous page"
+#~ msgstr "pàgina anterior"
+
+#~ msgid "Start search"
+#~ msgstr "Comença la cerca"
+
+#~ msgid "Clear search"
+#~ msgstr "Buida la cerca"
+
+#~ msgid "Clear"
+#~ msgstr "Buida"
+
+#~ msgid "stats"
+#~ msgstr "estadístiques"
+
+#~ msgid "Heads up!"
+#~ msgstr "Atenció!"
+
+#~ msgid "It look like you are using SearXNG first time."
+#~ msgstr "Sembla que feu servir el SearXNG per primera vegada."
+
+#~ msgid "Well done!"
+#~ msgstr "Ben fet!"
+
+#~ msgid "Settings saved successfully."
+#~ msgstr "La configuració s'ha desat correctament."
+
+#~ msgid "Oh snap!"
+#~ msgstr "Cagundena!"
+
+#~ msgid "Something went wrong."
+#~ msgstr "Alguna cosa ha anat malament."
+
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgid "Type"
+#~ msgstr "Tipus"
+
+#~ msgid "Get image"
+#~ msgstr "Obtén la imatge"
+

@@ -9,20 +9,19 @@
 # Rejo Zenger <rejo@zenger.nl>, 2016-2017
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-20 07:34+0000\n"
+"POT-Creation-Date: 2022-05-03 16:51+0000\n"
 "PO-Revision-Date: 2022-03-25 01:21+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Dutch <https://weblate.bubu1.eu/projects/searxng/searxng/nl/>"
-"\n"
 "Language: nl\n"
+"Language-Team: Dutch "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/nl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -192,40 +191,40 @@ msgstr "toegang geweigerd"
 msgid "server API error"
 msgstr "server-API-fout"
 
-#: searx/webapp.py:410
+#: searx/webapp.py:414
 msgid "No item found"
 msgstr "Geen resultaat gevonden"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
+#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:416
 msgid "Source"
 msgstr "Bron"
 
-#: searx/webapp.py:414
+#: searx/webapp.py:418
 msgid "Error loading the next page"
 msgstr "Fout bij het laden van de volgende pagina"
 
-#: searx/webapp.py:526 searx/webapp.py:967
+#: searx/webapp.py:530 searx/webapp.py:971
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige instellingen, gelieve je voorkeuren bij te werken"
 
-#: searx/webapp.py:542
+#: searx/webapp.py:546
 msgid "Invalid settings"
 msgstr "Ongeldige instellingen"
 
-#: searx/webapp.py:618 searx/webapp.py:694
+#: searx/webapp.py:622 searx/webapp.py:698
 msgid "search error"
 msgstr "zoekfout"
 
-#: searx/webapp.py:740
+#: searx/webapp.py:744
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minu(u)t(en) geleden"
 
-#: searx/webapp.py:742
+#: searx/webapp.py:746
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} uur, {minutes} minu(u)t(en) geleden"
 
-#: searx/webapp.py:871
+#: searx/webapp.py:875
 msgid "Suspended"
 msgstr "Geschorst"
 
@@ -341,150 +340,77 @@ msgstr ""
 "vereist). Druk op ‘h’ op de hoofdpagina of de pagina met resultaten voor "
 "hulp."
 
-#: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
+#: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Pagina niet gevonden"
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
 msgstr "Ga naar %(search_page)s."
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "zoekpagina"
 
-#: searx/templates/oscar/advanced.html:4
-msgid "Advanced settings"
-msgstr "Geavanceerde instellingen"
+#: searx/templates/simple/base.html:52
+msgid "preferences"
+msgstr "voorkeuren"
 
-#: searx/templates/oscar/base.html:55
-#: searx/templates/oscar/messages/first_time.html:4
-#: searx/templates/oscar/messages/save_settings_successfull.html:5
-#: searx/templates/oscar/messages/unknow_error.html:5
-msgid "Close"
-msgstr "Sluiten"
-
-#: searx/templates/oscar/base.html:57
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Fout!"
-
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "Powered by"
 msgstr "Zoekmachine"
 
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "een privacy-respecterende, aanpasbare meta-zoekmachine"
 
-#: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:62
 msgid "Source code"
 msgstr "Broncode"
 
-#: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:63
 msgid "Issue tracker"
 msgstr "Probleem-tracker"
 
-#: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Zoekmachinestatistieken"
 
-#: searx/templates/oscar/base.html:89
-#: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Openbare instanties"
 
-#: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
 msgstr "Neem contact op met beheerder instantie"
 
-#: searx/templates/oscar/languages.html:2
-msgid "Language"
-msgstr "Taal"
+#: searx/templates/simple/categories.html:24
+msgid "Click on the magnifier to perform search"
+msgstr "Klik op het vergrootglas om te zoeken"
 
-#: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:118
-msgid "Default language"
-msgstr "Standaardtaal"
+#: searx/templates/simple/macros.html:36
+msgid "Length"
+msgstr "Lengte"
 
-#: searx/templates/oscar/macros.html:23
-#: searx/templates/simple/result_templates/torrent.html:6
-msgid "magnet link"
-msgstr "magneetlink"
+#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/images.html:22
+msgid "Author"
+msgstr "Auteur"
 
-#: searx/templates/oscar/macros.html:24
-#: searx/templates/simple/result_templates/torrent.html:7
-msgid "torrent file"
-msgstr "torrentbestand"
-
-#: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
-#: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "gecachet"
 
-#: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
-#: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "geproxyt"
 
-#: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:344
-#: searx/templates/oscar/preferences.html:362
-#: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:297
-#: searx/templates/simple/preferences.html:348
-msgid "Allow"
-msgstr "Toestaan"
-
-#: searx/templates/oscar/macros.html:139
-msgid "broken"
-msgstr "stuk"
-
-#: searx/templates/oscar/macros.html:141
-msgid "supported"
-msgstr "ondersteund"
-
-#: searx/templates/oscar/macros.html:143
-msgid "not supported"
-msgstr "niet ondersteund"
-
-#: searx/templates/oscar/navbar.html:6
-msgid "about"
-msgstr "over"
-
-#: searx/templates/oscar/navbar.html:7
-#: searx/templates/oscar/preferences.html:90
-#: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "voorkeuren"
-
-#: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
 msgstr "Geen HTTPS"
 
-#: searx/templates/oscar/preferences.html:14
-#: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
-msgid "Number of results"
-msgstr "Aantal zoekresultaten"
-
-#: searx/templates/oscar/preferences.html:14
-msgid "Avg."
-msgstr "Gem."
-
-#: searx/templates/oscar/messages/no_results.html:8
-#: searx/templates/oscar/preferences.html:17
-#: searx/templates/oscar/preferences.html:18
-#: searx/templates/oscar/results.html:36
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
@@ -492,91 +418,63 @@ msgstr "Gem."
 msgid "View error logs and submit a bug report"
 msgstr "Bekijk foutenlogboek en verstuur een probleemrapport"
 
-#: searx/templates/oscar/preferences.html:38
-#: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
 msgstr "Mediaan"
 
-#: searx/templates/oscar/preferences.html:39
-#: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/oscar/preferences.html:40
-#: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
 msgstr "Gefaalde controletest(s): "
 
-#: searx/templates/oscar/preferences.html:96
+#: searx/templates/simple/preferences.html:85
+msgid "Errors:"
+msgstr "Fouten:"
+
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: searx/templates/oscar/preferences.html:101
-#: searx/templates/oscar/preferences.html:111
 #: searx/templates/simple/preferences.html:105
 msgid "General"
 msgstr "Algemeen"
 
-#: searx/templates/oscar/preferences.html:102
-#: searx/templates/oscar/preferences.html:193
-msgid "User Interface"
-msgstr "Gebruikersinterface"
-
-#: searx/templates/oscar/preferences.html:103
-#: searx/templates/oscar/preferences.html:268
-#: searx/templates/simple/preferences.html:244
-msgid "Privacy"
-msgstr "Privacy"
-
-#: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:318
-#: searx/templates/simple/preferences.html:284
-msgid "Engines"
-msgstr "Zoekmachines"
-
-#: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:343
-msgid "Special Queries"
-msgstr "Speciale Zoekopdrachten"
-
-#: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:383
-msgid "Cookies"
-msgstr "Cookies"
-
-#: searx/templates/oscar/preferences.html:123
-#: searx/templates/oscar/preferences.html:125
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
 msgstr "Standaardcategorieën"
 
-#: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "Zoektaal"
 
-#: searx/templates/oscar/preferences.html:134
+#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/preferences.html:118
+msgid "Default language"
+msgstr "Standaardtaal"
+
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
 msgstr "Welke taal wil je gebruiken voor het zoeken?"
 
-#: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:348
-#: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/preferences.html:129
+msgid "Autocomplete"
+msgstr "Auto-aanvullen"
+
+#: searx/templates/simple/preferences.html:138
+msgid "Find stuff as you type"
+msgstr "Zoek tijdens het typen"
+
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
@@ -586,45 +484,29 @@ msgstr "Welke taal wil je gebruiken voor het zoeken?"
 msgid "SafeSearch"
 msgstr "SafeSearch"
 
-#: searx/templates/oscar/preferences.html:142
-#: searx/templates/simple/preferences.html:151
-msgid "Filter content"
-msgstr "Filteren op inhoud"
-
-#: searx/templates/oscar/preferences.html:145
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
 msgstr "Strikt"
 
-#: searx/templates/oscar/preferences.html:146
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
 msgid "Moderate"
 msgstr "Gemiddeld"
 
-#: searx/templates/oscar/preferences.html:147
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
 msgstr "Geen"
 
-#: searx/templates/oscar/preferences.html:153
-#: searx/templates/simple/preferences.html:129
-msgid "Autocomplete"
-msgstr "Auto-aanvullen"
+#: searx/templates/simple/preferences.html:151
+msgid "Filter content"
+msgstr "Filteren op inhoud"
 
-#: searx/templates/oscar/preferences.html:154
-#: searx/templates/simple/preferences.html:138
-msgid "Find stuff as you type"
-msgstr "Zoek tijdens het typen"
-
-#: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
 msgstr "Open Access DOI herschrijven"
 
-#: searx/templates/oscar/preferences.html:169
 #: searx/templates/simple/preferences.html:167
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
@@ -633,98 +515,78 @@ msgstr ""
 "Doorverwijzen naar vrij toegankelijke versies van publicaties, indien "
 "beschikbaar (plug-in vereist)"
 
-#: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
 msgstr "Engine tokens"
 
-#: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
 msgstr "Toegangstokens voor privé-engines"
 
-#: searx/templates/oscar/preferences.html:198
+#: searx/templates/simple/preferences.html:179
+msgid "User interface"
+msgstr "Gebruikersinterface"
+
 #: searx/templates/simple/preferences.html:182
 msgid "Interface language"
 msgstr "Interfacetaal"
 
-#: searx/templates/oscar/preferences.html:199
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
 msgstr "Wijzig de taal van de lay-out"
 
-#: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
 msgstr "Thema"
 
-#: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
 msgstr "Verander lay-out van SearXNG"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Choose style for this theme"
-msgstr "Kies een stijl voor dit thema"
+#: searx/templates/simple/preferences.html:206
+msgid "Theme style"
+msgstr "Themastijl"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Style"
-msgstr "Stijl"
+#: searx/templates/simple/preferences.html:214
+msgid "Choose auto to follow your browser settings"
+msgstr "Kies auto om je browserinstellingen te gebruiken"
 
-#: searx/templates/oscar/preferences.html:231
-msgid "Show advanced settings"
-msgstr "Geavanceerde instellingen tonen"
+#: searx/templates/simple/preferences.html:219
+msgid "Results on new tabs"
+msgstr "Resultaten op nieuwe tabbladen"
 
-#: searx/templates/oscar/preferences.html:232
-msgid "Show advanced settings panel in the home page by default"
-msgstr "Paneel met geavanceerde instellingen standaard tonen op homepagina"
-
-#: searx/templates/oscar/preferences.html:235
-#: searx/templates/oscar/preferences.html:245
-#: searx/templates/oscar/preferences.html:256
 #: searx/templates/simple/preferences.html:222
 #: searx/templates/simple/preferences.html:234
 msgid "On"
 msgstr "Aan"
 
-#: searx/templates/oscar/preferences.html:236
-#: searx/templates/oscar/preferences.html:246
-#: searx/templates/oscar/preferences.html:257
 #: searx/templates/simple/preferences.html:223
 #: searx/templates/simple/preferences.html:235
 msgid "Off"
 msgstr "Uit"
 
-#: searx/templates/oscar/preferences.html:241
-#: searx/templates/simple/preferences.html:219
-msgid "Results on new tabs"
-msgstr "Resultaten op nieuwe tabbladen"
-
-#: searx/templates/oscar/preferences.html:242
 #: searx/templates/simple/preferences.html:226
 msgid "Open result links on new browser tabs"
 msgstr "Open koppelingen in nieuwe tabbladen"
 
-#: searx/templates/oscar/preferences.html:252
 #: searx/templates/simple/preferences.html:231
 msgid "Infinite scroll"
 msgstr "Oneindig scrollen"
 
-#: searx/templates/oscar/preferences.html:253
 #: searx/templates/simple/preferences.html:238
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Volgende pagina automatisch laden bij bereiken van onderkant huidige "
 "pagina"
 
-#: searx/templates/oscar/preferences.html:273
+#: searx/templates/simple/preferences.html:244
+msgid "Privacy"
+msgstr "Privacy"
+
 #: searx/templates/simple/preferences.html:247
 msgid "HTTP Method"
 msgstr "HTTP Methode"
 
-#: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
 msgid ""
 "Change how forms are submited, <a "
@@ -735,36 +597,28 @@ msgstr ""
 "href=\"http://nl.wikipedia.org/wiki/Hypertext_Transfer_Protocol#HTTP-"
 "requests\" rel=\"external\">lees meer over opvraagmethodes</a>"
 
-#: searx/templates/oscar/preferences.html:284
 #: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
 msgstr "Afbeeldingenproxy"
 
-#: searx/templates/oscar/preferences.html:285
-#: searx/templates/simple/preferences.html:266
-msgid "Proxying image results through SearXNG"
-msgstr "Afbeeldingsresultaten proxyen langs SearXNG"
-
-#: searx/templates/oscar/preferences.html:288
-#: searx/templates/oscar/preferences.html:299
 #: searx/templates/simple/preferences.html:262
 #: searx/templates/simple/preferences.html:274
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: searx/templates/oscar/preferences.html:289
-#: searx/templates/oscar/preferences.html:300
 #: searx/templates/simple/preferences.html:263
 #: searx/templates/simple/preferences.html:275
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: searx/templates/oscar/preferences.html:295
+#: searx/templates/simple/preferences.html:266
+msgid "Proxying image results through SearXNG"
+msgstr "Afbeeldingsresultaten proxyen langs SearXNG"
+
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
 msgstr "Zoekopdracht in paginatitel"
 
-#: searx/templates/oscar/preferences.html:296
 #: searx/templates/simple/preferences.html:278
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
@@ -773,15 +627,14 @@ msgstr ""
 "Indien aangevinkt, zal de paginatitel je zoekopdracht bevatten. Je "
 "browser kan deze titel mogelijk opslaan"
 
-#: searx/templates/oscar/preferences.html:326
-msgid "Allow all"
-msgstr "Alles inschakelen"
+#: searx/templates/simple/preferences.html:284
+msgid "Engines"
+msgstr "Zoekmachines"
 
-#: searx/templates/oscar/preferences.html:327
-msgid "Disable all"
-msgstr "Alles uitschakelen"
+#: searx/templates/simple/preferences.html:285
+msgid "Currently used search engines"
+msgstr "Momenteel gebruikte zoekmachines"
 
-#: searx/templates/oscar/preferences.html:336
 #: searx/templates/simple/preferences.html:292
 msgid ""
 "This tab does not show up for search results, but you can search the "
@@ -790,90 +643,75 @@ msgstr ""
 "Dit tabblad wordt niet weergegeven voor zoekresultaten, maar u kunt de "
 "hier genoemde zoekmachines doorzoeken via bangs."
 
-#: searx/templates/oscar/preferences.html:345
-#: searx/templates/oscar/preferences.html:361
-#: searx/templates/oscar/stats.html:29
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
+msgid "Allow"
+msgstr "Toestaan"
+
 #: searx/templates/simple/preferences.html:298
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Naam zoekmachine"
 
-#: searx/templates/oscar/preferences.html:346
-#: searx/templates/oscar/preferences.html:360
 #: searx/templates/simple/preferences.html:299
 msgid "Shortcut"
 msgstr "Snelkoppeling"
 
-#: searx/templates/oscar/preferences.html:347
-#: searx/templates/oscar/preferences.html:359
-msgid "Selected language"
-msgstr "Geselecteerde taal"
+#: searx/templates/simple/preferences.html:300
+msgid "Supports selected language"
+msgstr "Ondersteunt geselecteerde taal"
 
-#: searx/templates/oscar/preferences.html:349
-#: searx/templates/oscar/preferences.html:357
-#: searx/templates/oscar/time-range.html:2
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:302
 msgid "Time range"
 msgstr "Tijdspanne"
 
-#: searx/templates/oscar/preferences.html:350
-#: searx/templates/oscar/preferences.html:356
-#: searx/templates/oscar/stats.html:32
 #: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Responstijd"
 
-#: searx/templates/oscar/preferences.html:351
-#: searx/templates/oscar/preferences.html:355
 #: searx/templates/simple/preferences.html:304
 msgid "Max time"
 msgstr "Max. duur"
 
-#: searx/templates/oscar/preferences.html:352
-#: searx/templates/oscar/preferences.html:354
-#: searx/templates/oscar/stats.html:33
 #: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Betrouwbaarheid"
 
-#: searx/templates/oscar/preferences.html:419
-msgid "Query"
-msgstr "Zoekopdracht"
+#: searx/templates/simple/preferences.html:343
+msgid "Special Queries"
+msgstr "Speciale Zoekopdrachten"
 
-#: searx/templates/oscar/preferences.html:426
 #: searx/templates/simple/preferences.html:349
 msgid "Keywords"
 msgstr "Kernwoorden"
 
-#: searx/templates/oscar/preferences.html:427
 #: searx/templates/simple/preferences.html:350
 msgid "Name"
 msgstr "Naam"
 
-#: searx/templates/oscar/preferences.html:428
 #: searx/templates/simple/preferences.html:351
 msgid "Description"
 msgstr "Beschrijving"
 
-#: searx/templates/oscar/preferences.html:429
 #: searx/templates/simple/preferences.html:352
 msgid "Examples"
 msgstr "Voorbeelden"
 
-#: searx/templates/oscar/preferences.html:434
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Dit is de lijst met SearXNG's \"onmiddellijk antwoord\"-modules."
 
-#: searx/templates/oscar/preferences.html:447
 #: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
 msgstr "Dit is de lijst met plug-ins."
 
-#: searx/templates/oscar/preferences.html:468
+#: searx/templates/simple/preferences.html:383
+msgid "Cookies"
+msgstr "Cookies"
+
 #: searx/templates/simple/preferences.html:385
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
@@ -882,45 +720,22 @@ msgstr ""
 "Dit is de lijst met cookies en hun waarden die SearXNG op je computer "
 "opslaat."
 
-#: searx/templates/oscar/preferences.html:469
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Met die lijst kan je de transparantie van SearXNG beoordelen."
 
-#: searx/templates/oscar/preferences.html:474
 #: searx/templates/simple/preferences.html:391
 msgid "Cookie name"
 msgstr "Cookienaam"
 
-#: searx/templates/oscar/preferences.html:475
 #: searx/templates/simple/preferences.html:392
 msgid "Value"
 msgstr "Waarde"
 
-#: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:413
-msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr ""
-"Deze instellingen worden bewaard in je cookies. Hierdoor hoeven wij niets"
-" over jou te bewaren."
-
-#: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:415
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr ""
-"Deze cookies zijn alleen voor je eigen gemak, we gebruiken deze cookies "
-"niet om je te volgen."
-
-#: searx/templates/oscar/preferences.html:497
 #: searx/templates/simple/preferences.html:404
 msgid "Search URL of the currently saved preferences"
 msgstr "Zoek-URL van de huidig opgeslagen voorkeuren"
 
-#: searx/templates/oscar/preferences.html:498
 #: searx/templates/simple/preferences.html:408
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
@@ -930,395 +745,29 @@ msgstr ""
 "voor je privacy, omdat het gegevens lekt aan de aangeklikte "
 "resultaatwebsites."
 
-#: searx/templates/oscar/preferences.html:503
-msgid "save"
-msgstr "bewaren"
-
-#: searx/templates/oscar/preferences.html:504
-msgid "back"
-msgstr "terug"
-
-#: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:419
-msgid "Reset defaults"
-msgstr "Standaardinstellingen herstellen"
-
-#: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Zoekmachines konden geen resultaten ophalen"
-
-#: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Suggesties"
-
-#: searx/templates/oscar/results.html:74
-msgid "Links"
-msgstr "Koppelingen"
-
-#: searx/templates/oscar/results.html:79 searx/templates/simple/results.html:86
-msgid "Search URL"
-msgstr "Zoek-URL"
-
-#: searx/templates/oscar/results.html:84 searx/templates/simple/results.html:91
-msgid "Download results"
-msgstr "Zoekresultaten downloaden"
-
-#: searx/templates/oscar/results.html:95
-msgid "RSS subscription"
-msgstr "RSS-abonnement"
-
-#: searx/templates/oscar/results.html:104
-msgid "Search results"
-msgstr "Zoekresultaten"
-
-#: searx/templates/oscar/results.html:109
-#: searx/templates/simple/results.html:115
-msgid "Try searching for:"
-msgstr "Probeer te zoeken naar:"
-
-#: searx/templates/oscar/results.html:162
-#: searx/templates/oscar/results.html:187
-msgid "next page"
-msgstr "volgende pagina"
-
-#: searx/templates/oscar/results.html:169
-#: searx/templates/oscar/results.html:180
-msgid "previous page"
-msgstr "vorige pagina"
-
-#: searx/templates/oscar/search.html:6 searx/templates/oscar/search_full.html:9
-#: searx/templates/simple/search.html:8
-#: searx/templates/simple/simple_search.html:4
-msgid "Search for..."
-msgstr "Zoeken naar..."
-
-#: searx/templates/oscar/search.html:8
-#: searx/templates/oscar/search_full.html:11
-msgid "Start search"
-msgstr "Start zoeken"
-
-#: searx/templates/oscar/search.html:9
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear search"
-msgstr "Zoekopdracht wissen"
-
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear"
-msgstr "Wissen"
-
-#: searx/templates/oscar/stats.html:4
-msgid "stats"
-msgstr "stats"
-
-#: searx/templates/oscar/stats.html:30 searx/templates/simple/stats.html:26
-msgid "Scores"
-msgstr "Scores"
-
-#: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
-msgid "Result count"
-msgstr "Aantal resultaten"
-
-#: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Scores per zoekresultaat"
-
-#: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
-msgid "Total"
-msgstr "Totaal"
-
-#: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
-msgid "HTTP"
-msgstr "HTTP"
-
-#: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
-msgid "Processing"
-msgstr "Verwerken"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Warnings"
-msgstr "Waarschuwingen"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Errors and exceptions"
-msgstr "Foutmeldingen en uitzonderingen"
-
-#: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
-msgid "Exception"
-msgstr "Uitzondering"
-
-#: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
-msgid "Message"
-msgstr "Bericht"
-
-#: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
-msgid "Percentage"
-msgstr "Percentage"
-
-#: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
-msgid "Parameter"
-msgstr "Parameter"
-
-#: searx/templates/oscar/result_templates/files.html:35
-#: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
-msgid "Filename"
-msgstr "Bestandsnaam"
-
-#: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
-msgid "Function"
-msgstr "Functie"
-
-#: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
-msgid "Code"
-msgstr "Code"
-
-#: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
-msgid "Checker"
-msgstr "Controleur"
-
-#: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
-msgid "Failed test"
-msgstr "Gefaalde test"
-
-#: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
-msgid "Comment(s)"
-msgstr "Opmerking(en)"
-
-#: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/filters/time_range.html:3
-msgid "Anytime"
-msgstr "Altijd"
-
-#: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/filters/time_range.html:6
-msgid "Last day"
-msgstr "Gisteren"
-
-#: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/filters/time_range.html:9
-msgid "Last week"
-msgstr "Vorige week"
-
-#: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/filters/time_range.html:12
-msgid "Last month"
-msgstr "Vorige maand"
-
-#: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/filters/time_range.html:15
-msgid "Last year"
-msgstr "Vorig jaar"
-
-#: searx/templates/oscar/messages/first_time.html:6
-#: searx/templates/oscar/messages/no_data_available.html:3
-msgid "Heads up!"
-msgstr "Opgelet!"
-
-#: searx/templates/oscar/messages/first_time.html:7
-msgid "It look like you are using SearXNG first time."
-msgstr "Het lijkt erop dat je SearXNG voor de eerste keer gebruikt."
-
-#: searx/templates/oscar/messages/no_cookies.html:3
-msgid "Information!"
-msgstr "Informatie!"
-
-#: searx/templates/oscar/messages/no_cookies.html:4
-msgid "currently, there are no cookies defined."
-msgstr "er zijn momenteel geen cookies gedefinieerd."
-
-#: searx/templates/oscar/messages/no_data_available.html:4
-#: searx/templates/simple/stats.html:21
-msgid "There is currently no data available. "
-msgstr "Er zijn momenteel geen gegevens beschikbaar."
-
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Zoekmachines konden geen resultaten ophalen."
-
-#: searx/templates/oscar/messages/no_results.html:13
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"Gelieve later opnieuw te proberen of een andere SearXNG-instantie te "
-"proberen."
-
-#: searx/templates/oscar/messages/no_results.html:17
-#: searx/templates/simple/messages/no_results.html:20
-msgid "Sorry!"
-msgstr "Sorry!"
-
-#: searx/templates/oscar/messages/no_results.html:18
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/preferences.html:413
 msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
 msgstr ""
-"We konden geen resultaten vinden. Probeer een andere zoekopdracht, of "
-"zoek in meer categorieën."
+"Deze instellingen worden bewaard in je cookies. Hierdoor hoeven wij niets"
+" over jou te bewaren."
 
-#: searx/templates/oscar/messages/save_settings_successfull.html:7
-msgid "Well done!"
-msgstr "Goed gedaan!"
-
-#: searx/templates/oscar/messages/save_settings_successfull.html:8
-msgid "Settings saved successfully."
-msgstr "Instellingen opgeslagen."
-
-#: searx/templates/oscar/messages/unknow_error.html:7
-msgid "Oh snap!"
-msgstr "Oeps!"
-
-#: searx/templates/oscar/messages/unknow_error.html:8
-msgid "Something went wrong."
-msgstr "Er ging iets fout."
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/oscar/result_templates/files.html:10
-#: searx/templates/simple/result_templates/default.html:6
-msgid "show media"
-msgstr "toon media"
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/simple/result_templates/default.html:6
-msgid "hide media"
-msgstr "verberg media"
-
-#: searx/templates/oscar/result_templates/files.html:33
-#: searx/templates/oscar/result_templates/videos.html:19
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Author"
-msgstr "Auteur"
-
-#: searx/templates/oscar/result_templates/files.html:37
-#: searx/templates/oscar/result_templates/torrent.html:7
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Bestandsgrootte"
-
-#: searx/templates/oscar/result_templates/files.html:38
-#: searx/templates/oscar/result_templates/torrent.html:9
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bytes"
-
-#: searx/templates/oscar/result_templates/files.html:39
-#: searx/templates/oscar/result_templates/torrent.html:10
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/oscar/result_templates/files.html:40
-#: searx/templates/oscar/result_templates/torrent.html:11
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/oscar/result_templates/files.html:41
-#: searx/templates/oscar/result_templates/torrent.html:12
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/oscar/result_templates/files.html:42
-#: searx/templates/oscar/result_templates/torrent.html:13
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/oscar/result_templates/files.html:46
-msgid "Date"
-msgstr "Datum"
-
-#: searx/templates/oscar/result_templates/files.html:48
-msgid "Type"
-msgstr "Type"
-
-#: searx/templates/oscar/result_templates/images.html:27
-msgid "Get image"
-msgstr "Toon afbeelding"
-
-#: searx/templates/oscar/result_templates/images.html:30
-#: searx/templates/simple/result_templates/images.html:25
-msgid "View source"
-msgstr "Bekijk bron"
-
-#: searx/templates/oscar/result_templates/map.html:26
-#: searx/templates/simple/result_templates/map.html:12
-msgid "address"
-msgstr "Adres"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "show map"
-msgstr "toon kaart"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "hide map"
-msgstr "verberg kaart"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Seeder"
-msgstr "Seeders"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Leecher"
-msgstr "Leechers"
-
-#: searx/templates/oscar/result_templates/torrent.html:15
-#: searx/templates/simple/result_templates/torrent.html:20
-msgid "Number of Files"
-msgstr "Aantal bestanden"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "show video"
-msgstr "toon video"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "hide video"
-msgstr "verberg video"
-
-#: searx/templates/oscar/result_templates/videos.html:20
-msgid "Length"
-msgstr "Lengte"
-
-#: searx/templates/simple/categories.html:24
-msgid "Click on the magnifier to perform search"
-msgstr "Klik op het vergrootglas om te zoeken"
-
-#: searx/templates/simple/preferences.html:85
-msgid "Errors:"
-msgstr "Fouten:"
-
-#: searx/templates/simple/preferences.html:179
-msgid "User interface"
-msgstr "Gebruikersinterface"
-
-#: searx/templates/simple/preferences.html:206
-msgid "Theme style"
-msgstr "Themastijl"
-
-#: searx/templates/simple/preferences.html:214
-msgid "Choose auto to follow your browser settings"
-msgstr "Kies auto om je browserinstellingen te gebruiken"
-
-#: searx/templates/simple/preferences.html:285
-msgid "Currently used search engines"
-msgstr "Momenteel gebruikte zoekmachines"
-
-#: searx/templates/simple/preferences.html:300
-msgid "Supports selected language"
-msgstr "Ondersteunt geselecteerde taal"
+#: searx/templates/simple/preferences.html:415
+msgid ""
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
+msgstr ""
+"Deze cookies zijn alleen voor je eigen gemak, we gebruiken deze cookies "
+"niet om je te volgen."
 
 #: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "Bewaar"
+
+#: searx/templates/simple/preferences.html:419
+msgid "Reset defaults"
+msgstr "Standaardinstellingen herstellen"
 
 #: searx/templates/simple/preferences.html:420
 msgid "Back"
@@ -1328,15 +777,44 @@ msgstr "Terug"
 msgid "Answers"
 msgstr "Antwoorden"
 
-#: searx/templates/simple/results.html:144
+#: searx/templates/simple/results.html:39
+msgid "Number of results"
+msgstr "Aantal zoekresultaten"
+
+#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/results.html:46
+msgid "Error!"
+msgstr "Fout!"
+
+#: searx/templates/simple/results.html:46
+msgid "Engines cannot retrieve results"
+msgstr "Zoekmachines konden geen resultaten ophalen"
+
+#: searx/templates/simple/results.html:68
+msgid "Suggestions"
+msgstr "Suggesties"
+
+#: searx/templates/simple/results.html:90
+msgid "Search URL"
+msgstr "Zoek-URL"
+
+#: searx/templates/simple/results.html:96
+msgid "Download results"
+msgstr "Zoekresultaten downloaden"
+
+#: searx/templates/simple/results.html:120
+msgid "Try searching for:"
+msgstr "Probeer te zoeken naar:"
+
+#: searx/templates/simple/results.html:152
 msgid "Back to top"
 msgstr "Terug naar boven in"
 
-#: searx/templates/simple/results.html:162
+#: searx/templates/simple/results.html:170
 msgid "Previous page"
 msgstr "Vorige pagina"
 
-#: searx/templates/simple/results.html:179
+#: searx/templates/simple/results.html:187
 msgid "Next page"
 msgstr "Volgende pagina"
 
@@ -1346,26 +824,233 @@ msgstr "Geef voorpagina"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
-msgid "clear"
-msgstr "wissen"
+msgid "Search for..."
+msgstr "Zoeken naar..."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
+msgid "clear"
+msgstr "wissen"
+
+#: searx/templates/simple/search.html:11
+#: searx/templates/simple/simple_search.html:7
 msgid "search"
 msgstr "zoeken"
+
+#: searx/templates/simple/stats.html:21
+msgid "There is currently no data available. "
+msgstr "Er zijn momenteel geen gegevens beschikbaar."
+
+#: searx/templates/simple/stats.html:26
+msgid "Scores"
+msgstr "Scores"
+
+#: searx/templates/simple/stats.html:27
+msgid "Result count"
+msgstr "Aantal resultaten"
+
+#: searx/templates/simple/stats.html:38
+msgid "Scores per result"
+msgstr "Scores per zoekresultaat"
+
+#: searx/templates/simple/stats.html:62
+msgid "Total"
+msgstr "Totaal"
+
+#: searx/templates/simple/stats.html:63
+msgid "HTTP"
+msgstr "HTTP"
+
+#: searx/templates/simple/stats.html:64
+msgid "Processing"
+msgstr "Verwerken"
+
+#: searx/templates/simple/stats.html:102
+msgid "Warnings"
+msgstr "Waarschuwingen"
+
+#: searx/templates/simple/stats.html:102
+msgid "Errors and exceptions"
+msgstr "Foutmeldingen en uitzonderingen"
+
+#: searx/templates/simple/stats.html:108
+msgid "Exception"
+msgstr "Uitzondering"
+
+#: searx/templates/simple/stats.html:110
+msgid "Message"
+msgstr "Bericht"
+
+#: searx/templates/simple/stats.html:112
+msgid "Percentage"
+msgstr "Percentage"
+
+#: searx/templates/simple/stats.html:114
+msgid "Parameter"
+msgstr "Parameter"
+
+#: searx/templates/simple/stats.html:122
+msgid "Filename"
+msgstr "Bestandsnaam"
+
+#: searx/templates/simple/stats.html:123
+msgid "Function"
+msgstr "Functie"
+
+#: searx/templates/simple/stats.html:124
+msgid "Code"
+msgstr "Code"
+
+#: searx/templates/simple/stats.html:131
+msgid "Checker"
+msgstr "Controleur"
+
+#: searx/templates/simple/stats.html:134
+msgid "Failed test"
+msgstr "Gefaalde test"
+
+#: searx/templates/simple/stats.html:135
+msgid "Comment(s)"
+msgstr "Opmerking(en)"
+
+#: searx/templates/simple/filters/time_range.html:3
+msgid "Anytime"
+msgstr "Altijd"
+
+#: searx/templates/simple/filters/time_range.html:6
+msgid "Last day"
+msgstr "Gisteren"
+
+#: searx/templates/simple/filters/time_range.html:9
+msgid "Last week"
+msgstr "Vorige week"
+
+#: searx/templates/simple/filters/time_range.html:12
+msgid "Last month"
+msgstr "Vorige maand"
+
+#: searx/templates/simple/filters/time_range.html:15
+msgid "Last year"
+msgstr "Vorig jaar"
+
+#: searx/templates/simple/messages/no_cookies.html:3
+msgid "Information!"
+msgstr "Informatie!"
+
+#: searx/templates/simple/messages/no_cookies.html:4
+msgid "currently, there are no cookies defined."
+msgstr "er zijn momenteel geen cookies gedefinieerd."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Engines cannot retrieve results."
+msgstr "Zoekmachines konden geen resultaten ophalen."
+
+#: searx/templates/simple/messages/no_results.html:15
+msgid "Please, try again later or find another SearXNG instance."
+msgstr ""
+"Gelieve later opnieuw te proberen of een andere SearXNG-instantie te "
+"proberen."
+
+#: searx/templates/simple/messages/no_results.html:20
+msgid "Sorry!"
+msgstr "Sorry!"
+
+#: searx/templates/simple/messages/no_results.html:21
+msgid ""
+"we didn't find any results. Please use another query or search in more "
+"categories."
+msgstr ""
+"We konden geen resultaten vinden. Probeer een andere zoekopdracht, of "
+"zoek in meer categorieën."
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "show media"
+msgstr "toon media"
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "hide media"
+msgstr "verberg media"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "Deze site is niet voorzien van een beschrijving."
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:23
 msgid "Format"
 msgstr "Formaat"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:25
 msgid "Engine"
 msgstr "Zoekmachine"
+
+#: searx/templates/simple/result_templates/images.html:26
+msgid "View source"
+msgstr "Bekijk bron"
+
+#: searx/templates/simple/result_templates/map.html:12
+msgid "address"
+msgstr "Adres"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "show map"
+msgstr "toon kaart"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "hide map"
+msgstr "verberg kaart"
+
+#: searx/templates/simple/result_templates/torrent.html:6
+msgid "magnet link"
+msgstr "magneetlink"
+
+#: searx/templates/simple/result_templates/torrent.html:7
+msgid "torrent file"
+msgstr "torrentbestand"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Seeder"
+msgstr "Seeders"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Leecher"
+msgstr "Leechers"
+
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Bestandsgrootte"
+
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Bytes"
+
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "kiB"
+
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
+#: searx/templates/simple/result_templates/torrent.html:20
+msgid "Number of Files"
+msgstr "Aantal bestanden"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "show video"
+msgstr "toon video"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "hide video"
+msgstr "verberg video"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Snelheid zoekmachine (sec)"
@@ -1493,3 +1178,115 @@ msgstr "Zoekmachine"
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+
+#~ msgid "Advanced settings"
+#~ msgstr "Geavanceerde instellingen"
+
+#~ msgid "Close"
+#~ msgstr "Sluiten"
+
+#~ msgid "Language"
+#~ msgstr "Taal"
+
+#~ msgid "broken"
+#~ msgstr "stuk"
+
+#~ msgid "supported"
+#~ msgstr "ondersteund"
+
+#~ msgid "not supported"
+#~ msgstr "niet ondersteund"
+
+#~ msgid "about"
+#~ msgstr "over"
+
+#~ msgid "Avg."
+#~ msgstr "Gem."
+
+#~ msgid "User Interface"
+#~ msgstr "Gebruikersinterface"
+
+#~ msgid "Choose style for this theme"
+#~ msgstr "Kies een stijl voor dit thema"
+
+#~ msgid "Style"
+#~ msgstr "Stijl"
+
+#~ msgid "Show advanced settings"
+#~ msgstr "Geavanceerde instellingen tonen"
+
+#~ msgid "Show advanced settings panel in the home page by default"
+#~ msgstr "Paneel met geavanceerde instellingen standaard tonen op homepagina"
+
+#~ msgid "Allow all"
+#~ msgstr "Alles inschakelen"
+
+#~ msgid "Disable all"
+#~ msgstr "Alles uitschakelen"
+
+#~ msgid "Selected language"
+#~ msgstr "Geselecteerde taal"
+
+#~ msgid "Query"
+#~ msgstr "Zoekopdracht"
+
+#~ msgid "save"
+#~ msgstr "bewaren"
+
+#~ msgid "back"
+#~ msgstr "terug"
+
+#~ msgid "Links"
+#~ msgstr "Koppelingen"
+
+#~ msgid "RSS subscription"
+#~ msgstr "RSS-abonnement"
+
+#~ msgid "Search results"
+#~ msgstr "Zoekresultaten"
+
+#~ msgid "next page"
+#~ msgstr "volgende pagina"
+
+#~ msgid "previous page"
+#~ msgstr "vorige pagina"
+
+#~ msgid "Start search"
+#~ msgstr "Start zoeken"
+
+#~ msgid "Clear search"
+#~ msgstr "Zoekopdracht wissen"
+
+#~ msgid "Clear"
+#~ msgstr "Wissen"
+
+#~ msgid "stats"
+#~ msgstr "stats"
+
+#~ msgid "Heads up!"
+#~ msgstr "Opgelet!"
+
+#~ msgid "It look like you are using SearXNG first time."
+#~ msgstr "Het lijkt erop dat je SearXNG voor de eerste keer gebruikt."
+
+#~ msgid "Well done!"
+#~ msgstr "Goed gedaan!"
+
+#~ msgid "Settings saved successfully."
+#~ msgstr "Instellingen opgeslagen."
+
+#~ msgid "Oh snap!"
+#~ msgstr "Oeps!"
+
+#~ msgid "Something went wrong."
+#~ msgstr "Er ging iets fout."
+
+#~ msgid "Date"
+#~ msgstr "Datum"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgid "Get image"
+#~ msgstr "Toon afbeelding"
+

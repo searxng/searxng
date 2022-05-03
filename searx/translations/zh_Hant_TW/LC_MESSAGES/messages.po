@@ -10,20 +10,19 @@
 # 黃柏諺 <s8321414@gmail.com>, 2020
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-20 07:34+0000\n"
+"POT-Creation-Date: 2022-05-03 16:51+0000\n"
 "PO-Revision-Date: 2022-03-25 01:21+0000\n"
 "Last-Translator: Colin Xu <xuzhonglinx@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://weblate.bubu1.eu/projects/"
-"searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
+"Language-Team: Chinese (Traditional) "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.11\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -193,40 +192,40 @@ msgstr "拒絕訪問"
 msgid "server API error"
 msgstr "服務器 API 錯誤"
 
-#: searx/webapp.py:410
+#: searx/webapp.py:414
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
+#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:416
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:414
+#: searx/webapp.py:418
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:526 searx/webapp.py:967
+#: searx/webapp.py:530 searx/webapp.py:971
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:542
+#: searx/webapp.py:546
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:618 searx/webapp.py:694
+#: searx/webapp.py:622 searx/webapp.py:698
 msgid "search error"
 msgstr "搜尋錯誤"
 
-#: searx/webapp.py:740
+#: searx/webapp.py:744
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分鐘前"
 
-#: searx/webapp.py:742
+#: searx/webapp.py:746
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
-#: searx/webapp.py:871
+#: searx/webapp.py:875
 msgid "Suspended"
 msgstr "暫停服務"
 
@@ -330,150 +329,77 @@ msgid ""
 "Press \"h\" key on main or result page to get help."
 msgstr "以類 Vim 的快捷鍵導覽搜尋結果（需要 JavaScript）。在主頁面或結果頁面按「h」鍵以取得說明。"
 
-#: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
+#: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "找不到頁面"
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
 msgstr "到 %(search_page)s。"
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "搜尋頁面"
 
-#: searx/templates/oscar/advanced.html:4
-msgid "Advanced settings"
-msgstr "進階設定"
+#: searx/templates/simple/base.html:52
+msgid "preferences"
+msgstr "偏好設定"
 
-#: searx/templates/oscar/base.html:55
-#: searx/templates/oscar/messages/first_time.html:4
-#: searx/templates/oscar/messages/save_settings_successfull.html:5
-#: searx/templates/oscar/messages/unknow_error.html:5
-msgid "Close"
-msgstr "關閉"
-
-#: searx/templates/oscar/base.html:57
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "錯誤！"
-
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "Powered by"
 msgstr "技術支援"
 
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:61
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "一個尊重隱私，可再開發的集合式搜尋引擎"
 
-#: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:62
 msgid "Source code"
 msgstr "原始碼"
 
-#: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:63
 msgid "Issue tracker"
 msgstr "議題追蹤程式"
 
-#: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
 #: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "引擎統計"
 
-#: searx/templates/oscar/base.html:89
-#: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "公開站臺"
 
-#: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
 msgstr "聯繫站點維護人員"
 
-#: searx/templates/oscar/languages.html:2
-msgid "Language"
-msgstr "語言"
+#: searx/templates/simple/categories.html:24
+msgid "Click on the magnifier to perform search"
+msgstr "在磁鐵上點選以執行搜尋"
 
-#: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:118
-msgid "Default language"
-msgstr "預設語言"
+#: searx/templates/simple/macros.html:36
+msgid "Length"
+msgstr "長度"
 
-#: searx/templates/oscar/macros.html:23
-#: searx/templates/simple/result_templates/torrent.html:6
-msgid "magnet link"
-msgstr "磁力連結"
+#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/images.html:22
+msgid "Author"
+msgstr "作者"
 
-#: searx/templates/oscar/macros.html:24
-#: searx/templates/simple/result_templates/torrent.html:7
-msgid "torrent file"
-msgstr "torrent 檔案"
-
-#: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
-#: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "已快取"
 
-#: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
-#: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "已代理"
 
-#: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:344
-#: searx/templates/oscar/preferences.html:362
-#: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:297
-#: searx/templates/simple/preferences.html:348
-msgid "Allow"
-msgstr "允許"
-
-#: searx/templates/oscar/macros.html:139
-msgid "broken"
-msgstr "故障"
-
-#: searx/templates/oscar/macros.html:141
-msgid "supported"
-msgstr "支援"
-
-#: searx/templates/oscar/macros.html:143
-msgid "not supported"
-msgstr "不支援"
-
-#: searx/templates/oscar/navbar.html:6
-msgid "about"
-msgstr "關於"
-
-#: searx/templates/oscar/navbar.html:7
-#: searx/templates/oscar/preferences.html:90
-#: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "偏好設定"
-
-#: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
 msgstr "無 HTTPS"
 
-#: searx/templates/oscar/preferences.html:14
-#: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
-msgid "Number of results"
-msgstr "結果筆數"
-
-#: searx/templates/oscar/preferences.html:14
-msgid "Avg."
-msgstr "平均"
-
-#: searx/templates/oscar/messages/no_results.html:8
-#: searx/templates/oscar/preferences.html:17
-#: searx/templates/oscar/preferences.html:18
-#: searx/templates/oscar/results.html:36
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
@@ -481,91 +407,63 @@ msgstr "平均"
 msgid "View error logs and submit a bug report"
 msgstr "查看錯誤日誌並提交錯誤報告"
 
-#: searx/templates/oscar/preferences.html:38
-#: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
 msgstr "中位數"
 
-#: searx/templates/oscar/preferences.html:39
-#: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/oscar/preferences.html:40
-#: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
 msgstr "檢查程式測試失敗： "
 
-#: searx/templates/oscar/preferences.html:96
+#: searx/templates/simple/preferences.html:85
+msgid "Errors:"
+msgstr "錯誤："
+
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "偏好設定"
 
-#: searx/templates/oscar/preferences.html:101
-#: searx/templates/oscar/preferences.html:111
 #: searx/templates/simple/preferences.html:105
 msgid "General"
 msgstr "一般"
 
-#: searx/templates/oscar/preferences.html:102
-#: searx/templates/oscar/preferences.html:193
-msgid "User Interface"
-msgstr "用戶界面"
-
-#: searx/templates/oscar/preferences.html:103
-#: searx/templates/oscar/preferences.html:268
-#: searx/templates/simple/preferences.html:244
-msgid "Privacy"
-msgstr "隱私"
-
-#: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:318
-#: searx/templates/simple/preferences.html:284
-msgid "Engines"
-msgstr "引擎"
-
-#: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:343
-msgid "Special Queries"
-msgstr "特殊查詢"
-
-#: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:383
-msgid "Cookies"
-msgstr "Cookies"
-
-#: searx/templates/oscar/preferences.html:123
-#: searx/templates/oscar/preferences.html:125
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
 msgstr "預設分類"
 
-#: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "搜尋語言"
 
-#: searx/templates/oscar/preferences.html:134
+#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/preferences.html:118
+msgid "Default language"
+msgstr "預設語言"
+
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
 msgstr "您偏好用哪種語言搜尋？"
 
-#: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:348
-#: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/preferences.html:129
+msgid "Autocomplete"
+msgstr "自動完成"
+
+#: searx/templates/simple/preferences.html:138
+msgid "Find stuff as you type"
+msgstr "隨打即找"
+
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
@@ -575,697 +473,62 @@ msgstr "您偏好用哪種語言搜尋？"
 msgid "SafeSearch"
 msgstr "安全搜尋"
 
-#: searx/templates/oscar/preferences.html:142
-#: searx/templates/simple/preferences.html:151
-msgid "Filter content"
-msgstr "過濾內容"
-
-#: searx/templates/oscar/preferences.html:145
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
 msgstr "嚴格"
 
-#: searx/templates/oscar/preferences.html:146
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
 msgid "Moderate"
 msgstr "適中"
 
-#: searx/templates/oscar/preferences.html:147
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
 msgstr "無"
 
-#: searx/templates/oscar/preferences.html:153
-#: searx/templates/simple/preferences.html:129
-msgid "Autocomplete"
-msgstr "自動完成"
+#: searx/templates/simple/preferences.html:151
+msgid "Filter content"
+msgstr "過濾內容"
 
-#: searx/templates/oscar/preferences.html:154
-#: searx/templates/simple/preferences.html:138
-msgid "Find stuff as you type"
-msgstr "隨打即找"
-
-#: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
 msgstr "開放存取 DOI 解析器"
 
-#: searx/templates/oscar/preferences.html:169
 #: searx/templates/simple/preferences.html:167
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr "盡可能重新導向至出版品的開放存取版本（需要外掛程式）"
 
-#: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
 msgstr "引擎權杖"
 
-#: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
 msgstr "私人引擎的存取權杖"
 
-#: searx/templates/oscar/preferences.html:198
+#: searx/templates/simple/preferences.html:179
+msgid "User interface"
+msgstr "使用者介面"
+
 #: searx/templates/simple/preferences.html:182
 msgid "Interface language"
 msgstr "介面語言"
 
-#: searx/templates/oscar/preferences.html:199
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
 msgstr "變更佈局的語言"
 
-#: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
 msgstr "主題"
 
-#: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
 msgstr "更改 SearXNG 佈局"
-
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Choose style for this theme"
-msgstr "選擇這個主題的樣式"
-
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Style"
-msgstr "樣式"
-
-#: searx/templates/oscar/preferences.html:231
-msgid "Show advanced settings"
-msgstr "顯示高級設置"
-
-#: searx/templates/oscar/preferences.html:232
-msgid "Show advanced settings panel in the home page by default"
-msgstr "首頁默認顯示高級設置面板"
-
-#: searx/templates/oscar/preferences.html:235
-#: searx/templates/oscar/preferences.html:245
-#: searx/templates/oscar/preferences.html:256
-#: searx/templates/simple/preferences.html:222
-#: searx/templates/simple/preferences.html:234
-msgid "On"
-msgstr "開啟"
-
-#: searx/templates/oscar/preferences.html:236
-#: searx/templates/oscar/preferences.html:246
-#: searx/templates/oscar/preferences.html:257
-#: searx/templates/simple/preferences.html:223
-#: searx/templates/simple/preferences.html:235
-msgid "Off"
-msgstr "關閉"
-
-#: searx/templates/oscar/preferences.html:241
-#: searx/templates/simple/preferences.html:219
-msgid "Results on new tabs"
-msgstr "在新分頁開啟結果"
-
-#: searx/templates/oscar/preferences.html:242
-#: searx/templates/simple/preferences.html:226
-msgid "Open result links on new browser tabs"
-msgstr "在新瀏覽器分頁中開啟結果連結"
-
-#: searx/templates/oscar/preferences.html:252
-#: searx/templates/simple/preferences.html:231
-msgid "Infinite scroll"
-msgstr "無限捲動"
-
-#: searx/templates/oscar/preferences.html:253
-#: searx/templates/simple/preferences.html:238
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "當捲動至目前頁面的底部時自動載入下一頁"
-
-#: searx/templates/oscar/preferences.html:273
-#: searx/templates/simple/preferences.html:247
-msgid "HTTP Method"
-msgstr "HTTP 方法"
-
-#: searx/templates/oscar/preferences.html:274
-#: searx/templates/simple/preferences.html:254
-msgid ""
-"Change how forms are submited, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">learn more about request methods</a>"
-msgstr ""
-"變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
-"rel=\"external\">看看更多關於請求方法的介紹</a>"
-
-#: searx/templates/oscar/preferences.html:284
-#: searx/templates/simple/preferences.html:259
-msgid "Image proxy"
-msgstr "圖片代理伺服器"
-
-#: searx/templates/oscar/preferences.html:285
-#: searx/templates/simple/preferences.html:266
-msgid "Proxying image results through SearXNG"
-msgstr "通過 SearXNG 代理訪問圖片結果"
-
-#: searx/templates/oscar/preferences.html:288
-#: searx/templates/oscar/preferences.html:299
-#: searx/templates/simple/preferences.html:262
-#: searx/templates/simple/preferences.html:274
-msgid "Enabled"
-msgstr "已啟用"
-
-#: searx/templates/oscar/preferences.html:289
-#: searx/templates/oscar/preferences.html:300
-#: searx/templates/simple/preferences.html:263
-#: searx/templates/simple/preferences.html:275
-msgid "Disabled"
-msgstr "已停用"
-
-#: searx/templates/oscar/preferences.html:295
-#: searx/templates/simple/preferences.html:271
-msgid "Query in the page's title"
-msgstr "頁面標題顯示查詢關鍵字"
-
-#: searx/templates/oscar/preferences.html:296
-#: searx/templates/simple/preferences.html:278
-msgid ""
-"When enabled, the result page's title contains your query. Your browser "
-"can record this title"
-msgstr "啟用時，結果頁的標題包含你的查詢關鍵字。你的瀏覽器會記錄這個標題"
-
-#: searx/templates/oscar/preferences.html:326
-msgid "Allow all"
-msgstr "允許全部"
-
-#: searx/templates/oscar/preferences.html:327
-msgid "Disable all"
-msgstr "停用全部"
-
-#: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:292
-msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
-msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
-
-#: searx/templates/oscar/preferences.html:345
-#: searx/templates/oscar/preferences.html:361
-#: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:298
-#: searx/templates/simple/stats.html:25
-msgid "Engine name"
-msgstr "引擎名稱"
-
-#: searx/templates/oscar/preferences.html:346
-#: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:299
-msgid "Shortcut"
-msgstr "快捷鍵"
-
-#: searx/templates/oscar/preferences.html:347
-#: searx/templates/oscar/preferences.html:359
-msgid "Selected language"
-msgstr "已選取的語言"
-
-#: searx/templates/oscar/preferences.html:349
-#: searx/templates/oscar/preferences.html:357
-#: searx/templates/oscar/time-range.html:2
-#: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:302
-msgid "Time range"
-msgstr "時間範圍"
-
-#: searx/templates/oscar/preferences.html:350
-#: searx/templates/oscar/preferences.html:356
-#: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:303
-#: searx/templates/simple/stats.html:28
-msgid "Response time"
-msgstr "響應時間"
-
-#: searx/templates/oscar/preferences.html:351
-#: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:304
-msgid "Max time"
-msgstr "最大時間"
-
-#: searx/templates/oscar/preferences.html:352
-#: searx/templates/oscar/preferences.html:354
-#: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:305
-#: searx/templates/simple/stats.html:29
-msgid "Reliability"
-msgstr "可靠性"
-
-#: searx/templates/oscar/preferences.html:419
-msgid "Query"
-msgstr "查詢"
-
-#: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:349
-msgid "Keywords"
-msgstr "關鍵字"
-
-#: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:350
-msgid "Name"
-msgstr "名稱"
-
-#: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:351
-msgid "Description"
-msgstr "描述"
-
-#: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:352
-msgid "Examples"
-msgstr "範例"
-
-#: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:355
-msgid "This is the list of SearXNG's instant answering modules."
-msgstr "這是 SearXNG 即時回應模塊列表。"
-
-#: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:366
-msgid "This is the list of plugins."
-msgstr "這是插件列表。"
-
-#: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:385
-msgid ""
-"This is the list of cookies and their values SearXNG is storing on your "
-"computer."
-msgstr "這是 SearXNG 在您的計算機上存儲的 Cookie 的列表及對於的值。"
-
-#: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:386
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "您可以憑此列表評估 SearXNG 的透明度。"
-
-#: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:391
-msgid "Cookie name"
-msgstr "Cookie 名稱"
-
-#: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:392
-msgid "Value"
-msgstr "值"
-
-#: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:413
-msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr "這些設定只會儲存在您的 cookies 中，這樣我們無需也不會存儲關於您的資訊。"
-
-#: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:415
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr "這些 cookies 僅做為提供您方便之用，我們不會使用這些 cookies 來追蹤您。"
-
-#: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:404
-msgid "Search URL of the currently saved preferences"
-msgstr "目前偏好設定的搜尋 URL"
-
-#: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:408
-msgid ""
-"Note: specifying custom settings in the search URL can reduce privacy by "
-"leaking data to the clicked result sites."
-msgstr "注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，因為會洩漏資料給點選的結果頁面。"
-
-#: searx/templates/oscar/preferences.html:503
-msgid "save"
-msgstr "儲存"
-
-#: searx/templates/oscar/preferences.html:504
-msgid "back"
-msgstr "返回"
-
-#: searx/templates/oscar/preferences.html:505
-#: searx/templates/simple/preferences.html:419
-msgid "Reset defaults"
-msgstr "重設為預設值"
-
-#: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "引擎無法擷取結果"
-
-#: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "建議"
-
-#: searx/templates/oscar/results.html:74
-msgid "Links"
-msgstr "連結"
-
-#: searx/templates/oscar/results.html:79 searx/templates/simple/results.html:86
-msgid "Search URL"
-msgstr "搜尋網址"
-
-#: searx/templates/oscar/results.html:84 searx/templates/simple/results.html:91
-msgid "Download results"
-msgstr "下載結果"
-
-#: searx/templates/oscar/results.html:95
-msgid "RSS subscription"
-msgstr "RSS 訂閱"
-
-#: searx/templates/oscar/results.html:104
-msgid "Search results"
-msgstr "搜尋結果"
-
-#: searx/templates/oscar/results.html:109
-#: searx/templates/simple/results.html:115
-msgid "Try searching for:"
-msgstr "嘗試搜尋："
-
-#: searx/templates/oscar/results.html:162
-#: searx/templates/oscar/results.html:187
-msgid "next page"
-msgstr "下一頁"
-
-#: searx/templates/oscar/results.html:169
-#: searx/templates/oscar/results.html:180
-msgid "previous page"
-msgstr "上一頁"
-
-#: searx/templates/oscar/search.html:6 searx/templates/oscar/search_full.html:9
-#: searx/templates/simple/search.html:8
-#: searx/templates/simple/simple_search.html:4
-msgid "Search for..."
-msgstr "搜尋……"
-
-#: searx/templates/oscar/search.html:8
-#: searx/templates/oscar/search_full.html:11
-msgid "Start search"
-msgstr "開始搜尋"
-
-#: searx/templates/oscar/search.html:9
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear search"
-msgstr "清除搜尋"
-
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear"
-msgstr "清除"
-
-#: searx/templates/oscar/stats.html:4
-msgid "stats"
-msgstr "統計"
-
-#: searx/templates/oscar/stats.html:30 searx/templates/simple/stats.html:26
-msgid "Scores"
-msgstr "分數"
-
-#: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
-msgid "Result count"
-msgstr "結果數量"
-
-#: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "每個結果的分數"
-
-#: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
-msgid "Total"
-msgstr "總計"
-
-#: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
-msgid "HTTP"
-msgstr "HTTP"
-
-#: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
-msgid "Processing"
-msgstr "正在處理"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Warnings"
-msgstr "警告"
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Errors and exceptions"
-msgstr "錯誤及異常"
-
-#: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
-msgid "Exception"
-msgstr "異常"
-
-#: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
-msgid "Message"
-msgstr "消息"
-
-#: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
-msgid "Percentage"
-msgstr "百分比"
-
-#: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
-msgid "Parameter"
-msgstr "參數"
-
-#: searx/templates/oscar/result_templates/files.html:35
-#: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
-msgid "Filename"
-msgstr "文件名"
-
-#: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
-msgid "Function"
-msgstr "函數"
-
-#: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
-msgid "Code"
-msgstr "代碼"
-
-#: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
-msgid "Checker"
-msgstr "檢查程式"
-
-#: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
-msgid "Failed test"
-msgstr "測試未通過"
-
-#: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
-msgid "Comment(s)"
-msgstr "注釋"
-
-#: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/filters/time_range.html:3
-msgid "Anytime"
-msgstr "任何時間"
-
-#: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/filters/time_range.html:6
-msgid "Last day"
-msgstr "一天內"
-
-#: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/filters/time_range.html:9
-msgid "Last week"
-msgstr "一週內"
-
-#: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/filters/time_range.html:12
-msgid "Last month"
-msgstr "一個月內"
-
-#: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/filters/time_range.html:15
-msgid "Last year"
-msgstr "一年內"
-
-#: searx/templates/oscar/messages/first_time.html:6
-#: searx/templates/oscar/messages/no_data_available.html:3
-msgid "Heads up!"
-msgstr "注意！"
-
-#: searx/templates/oscar/messages/first_time.html:7
-msgid "It look like you are using SearXNG first time."
-msgstr "這似乎是您首次使用 SearXNG。"
-
-#: searx/templates/oscar/messages/no_cookies.html:3
-msgid "Information!"
-msgstr "資訊！"
-
-#: searx/templates/oscar/messages/no_cookies.html:4
-msgid "currently, there are no cookies defined."
-msgstr "目前未有已定義的 cookies。"
-
-#: searx/templates/oscar/messages/no_data_available.html:4
-#: searx/templates/simple/stats.html:21
-msgid "There is currently no data available. "
-msgstr "目前無可用資料。"
-
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "引擎無法擷取結果。"
-
-#: searx/templates/oscar/messages/no_results.html:13
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "請稍後再試，或換用其他 SearXNG 站點。"
-
-#: searx/templates/oscar/messages/no_results.html:17
-#: searx/templates/simple/messages/no_results.html:20
-msgid "Sorry!"
-msgstr "抱歉！"
-
-#: searx/templates/oscar/messages/no_results.html:18
-#: searx/templates/simple/messages/no_results.html:21
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
-msgstr "我們找不到任何結果。請使用其他搜尋方式或在更多分類中搜尋。"
-
-#: searx/templates/oscar/messages/save_settings_successfull.html:7
-msgid "Well done!"
-msgstr "很好！"
-
-#: searx/templates/oscar/messages/save_settings_successfull.html:8
-msgid "Settings saved successfully."
-msgstr "設定成功儲存。"
-
-#: searx/templates/oscar/messages/unknow_error.html:7
-msgid "Oh snap!"
-msgstr "糟糕！"
-
-#: searx/templates/oscar/messages/unknow_error.html:8
-msgid "Something went wrong."
-msgstr "發生了一點問題。"
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/oscar/result_templates/files.html:10
-#: searx/templates/simple/result_templates/default.html:6
-msgid "show media"
-msgstr "顯示媒體"
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/simple/result_templates/default.html:6
-msgid "hide media"
-msgstr "隱藏媒體"
-
-#: searx/templates/oscar/result_templates/files.html:33
-#: searx/templates/oscar/result_templates/videos.html:19
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Author"
-msgstr "作者"
-
-#: searx/templates/oscar/result_templates/files.html:37
-#: searx/templates/oscar/result_templates/torrent.html:7
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "檔案大小"
-
-#: searx/templates/oscar/result_templates/files.html:38
-#: searx/templates/oscar/result_templates/torrent.html:9
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "位元組"
-
-#: searx/templates/oscar/result_templates/files.html:39
-#: searx/templates/oscar/result_templates/torrent.html:10
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/oscar/result_templates/files.html:40
-#: searx/templates/oscar/result_templates/torrent.html:11
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/oscar/result_templates/files.html:41
-#: searx/templates/oscar/result_templates/torrent.html:12
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/oscar/result_templates/files.html:42
-#: searx/templates/oscar/result_templates/torrent.html:13
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/oscar/result_templates/files.html:46
-msgid "Date"
-msgstr "日期"
-
-#: searx/templates/oscar/result_templates/files.html:48
-msgid "Type"
-msgstr "類型"
-
-#: searx/templates/oscar/result_templates/images.html:27
-msgid "Get image"
-msgstr "取得圖片"
-
-#: searx/templates/oscar/result_templates/images.html:30
-#: searx/templates/simple/result_templates/images.html:25
-msgid "View source"
-msgstr "檢視來源"
-
-#: searx/templates/oscar/result_templates/map.html:26
-#: searx/templates/simple/result_templates/map.html:12
-msgid "address"
-msgstr "地址"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "show map"
-msgstr "顯示地圖"
-
-#: searx/templates/oscar/result_templates/map.html:59
-#: searx/templates/simple/result_templates/map.html:43
-msgid "hide map"
-msgstr "隱藏地圖"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Seeder"
-msgstr "播種者"
-
-#: searx/templates/oscar/result_templates/torrent.html:6
-#: searx/templates/simple/result_templates/torrent.html:9
-msgid "Leecher"
-msgstr "接收者"
-
-#: searx/templates/oscar/result_templates/torrent.html:15
-#: searx/templates/simple/result_templates/torrent.html:20
-msgid "Number of Files"
-msgstr "檔案數量"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "show video"
-msgstr "顯示影片"
-
-#: searx/templates/oscar/result_templates/videos.html:7
-#: searx/templates/simple/result_templates/videos.html:6
-msgid "hide video"
-msgstr "隱藏影片"
-
-#: searx/templates/oscar/result_templates/videos.html:20
-msgid "Length"
-msgstr "長度"
-
-#: searx/templates/simple/categories.html:24
-msgid "Click on the magnifier to perform search"
-msgstr "在磁鐵上點選以執行搜尋"
-
-#: searx/templates/simple/preferences.html:85
-msgid "Errors:"
-msgstr "錯誤："
-
-#: searx/templates/simple/preferences.html:179
-msgid "User interface"
-msgstr "使用者介面"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
@@ -1275,17 +538,207 @@ msgstr "主題樣式"
 msgid "Choose auto to follow your browser settings"
 msgstr "選擇自動則取決於您的瀏覽器設置"
 
+#: searx/templates/simple/preferences.html:219
+msgid "Results on new tabs"
+msgstr "在新分頁開啟結果"
+
+#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:234
+msgid "On"
+msgstr "開啟"
+
+#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:235
+msgid "Off"
+msgstr "關閉"
+
+#: searx/templates/simple/preferences.html:226
+msgid "Open result links on new browser tabs"
+msgstr "在新瀏覽器分頁中開啟結果連結"
+
+#: searx/templates/simple/preferences.html:231
+msgid "Infinite scroll"
+msgstr "無限捲動"
+
+#: searx/templates/simple/preferences.html:238
+msgid "Automatically load next page when scrolling to bottom of current page"
+msgstr "當捲動至目前頁面的底部時自動載入下一頁"
+
+#: searx/templates/simple/preferences.html:244
+msgid "Privacy"
+msgstr "隱私"
+
+#: searx/templates/simple/preferences.html:247
+msgid "HTTP Method"
+msgstr "HTTP 方法"
+
+#: searx/templates/simple/preferences.html:254
+msgid ""
+"Change how forms are submited, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">learn more about request methods</a>"
+msgstr ""
+"變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
+"rel=\"external\">看看更多關於請求方法的介紹</a>"
+
+#: searx/templates/simple/preferences.html:259
+msgid "Image proxy"
+msgstr "圖片代理伺服器"
+
+#: searx/templates/simple/preferences.html:262
+#: searx/templates/simple/preferences.html:274
+msgid "Enabled"
+msgstr "已啟用"
+
+#: searx/templates/simple/preferences.html:263
+#: searx/templates/simple/preferences.html:275
+msgid "Disabled"
+msgstr "已停用"
+
+#: searx/templates/simple/preferences.html:266
+msgid "Proxying image results through SearXNG"
+msgstr "通過 SearXNG 代理訪問圖片結果"
+
+#: searx/templates/simple/preferences.html:271
+msgid "Query in the page's title"
+msgstr "頁面標題顯示查詢關鍵字"
+
+#: searx/templates/simple/preferences.html:278
+msgid ""
+"When enabled, the result page's title contains your query. Your browser "
+"can record this title"
+msgstr "啟用時，結果頁的標題包含你的查詢關鍵字。你的瀏覽器會記錄這個標題"
+
+#: searx/templates/simple/preferences.html:284
+msgid "Engines"
+msgstr "引擎"
+
 #: searx/templates/simple/preferences.html:285
 msgid "Currently used search engines"
 msgstr "目前使用的搜尋引擎"
+
+#: searx/templates/simple/preferences.html:292
+msgid ""
+"This tab does not show up for search results, but you can search the "
+"engines listed here via bangs."
+msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
+
+#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:348
+msgid "Allow"
+msgstr "允許"
+
+#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/stats.html:25
+msgid "Engine name"
+msgstr "引擎名稱"
+
+#: searx/templates/simple/preferences.html:299
+msgid "Shortcut"
+msgstr "快捷鍵"
 
 #: searx/templates/simple/preferences.html:300
 msgid "Supports selected language"
 msgstr "支援選定的語言"
 
+#: searx/templates/simple/filters/time_range.html:1
+#: searx/templates/simple/preferences.html:302
+msgid "Time range"
+msgstr "時間範圍"
+
+#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/stats.html:28
+msgid "Response time"
+msgstr "響應時間"
+
+#: searx/templates/simple/preferences.html:304
+msgid "Max time"
+msgstr "最大時間"
+
+#: searx/templates/simple/preferences.html:305
+#: searx/templates/simple/stats.html:29
+msgid "Reliability"
+msgstr "可靠性"
+
+#: searx/templates/simple/preferences.html:343
+msgid "Special Queries"
+msgstr "特殊查詢"
+
+#: searx/templates/simple/preferences.html:349
+msgid "Keywords"
+msgstr "關鍵字"
+
+#: searx/templates/simple/preferences.html:350
+msgid "Name"
+msgstr "名稱"
+
+#: searx/templates/simple/preferences.html:351
+msgid "Description"
+msgstr "描述"
+
+#: searx/templates/simple/preferences.html:352
+msgid "Examples"
+msgstr "範例"
+
+#: searx/templates/simple/preferences.html:355
+msgid "This is the list of SearXNG's instant answering modules."
+msgstr "這是 SearXNG 即時回應模塊列表。"
+
+#: searx/templates/simple/preferences.html:366
+msgid "This is the list of plugins."
+msgstr "這是插件列表。"
+
+#: searx/templates/simple/preferences.html:383
+msgid "Cookies"
+msgstr "Cookies"
+
+#: searx/templates/simple/preferences.html:385
+msgid ""
+"This is the list of cookies and their values SearXNG is storing on your "
+"computer."
+msgstr "這是 SearXNG 在您的計算機上存儲的 Cookie 的列表及對於的值。"
+
+#: searx/templates/simple/preferences.html:386
+msgid "With that list, you can assess SearXNG transparency."
+msgstr "您可以憑此列表評估 SearXNG 的透明度。"
+
+#: searx/templates/simple/preferences.html:391
+msgid "Cookie name"
+msgstr "Cookie 名稱"
+
+#: searx/templates/simple/preferences.html:392
+msgid "Value"
+msgstr "值"
+
+#: searx/templates/simple/preferences.html:404
+msgid "Search URL of the currently saved preferences"
+msgstr "目前偏好設定的搜尋 URL"
+
+#: searx/templates/simple/preferences.html:408
+msgid ""
+"Note: specifying custom settings in the search URL can reduce privacy by "
+"leaking data to the clicked result sites."
+msgstr "注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，因為會洩漏資料給點選的結果頁面。"
+
+#: searx/templates/simple/preferences.html:413
+msgid ""
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
+msgstr "這些設定只會儲存在您的 cookies 中，這樣我們無需也不會存儲關於您的資訊。"
+
+#: searx/templates/simple/preferences.html:415
+msgid ""
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
+msgstr "這些 cookies 僅做為提供您方便之用，我們不會使用這些 cookies 來追蹤您。"
+
 #: searx/templates/simple/preferences.html:418
 msgid "Save"
 msgstr "保存"
+
+#: searx/templates/simple/preferences.html:419
+msgid "Reset defaults"
+msgstr "重設為預設值"
 
 #: searx/templates/simple/preferences.html:420
 msgid "Back"
@@ -1295,15 +748,44 @@ msgstr "返回"
 msgid "Answers"
 msgstr "答案"
 
-#: searx/templates/simple/results.html:144
+#: searx/templates/simple/results.html:39
+msgid "Number of results"
+msgstr "結果筆數"
+
+#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/results.html:46
+msgid "Error!"
+msgstr "錯誤！"
+
+#: searx/templates/simple/results.html:46
+msgid "Engines cannot retrieve results"
+msgstr "引擎無法擷取結果"
+
+#: searx/templates/simple/results.html:68
+msgid "Suggestions"
+msgstr "建議"
+
+#: searx/templates/simple/results.html:90
+msgid "Search URL"
+msgstr "搜尋網址"
+
+#: searx/templates/simple/results.html:96
+msgid "Download results"
+msgstr "下載結果"
+
+#: searx/templates/simple/results.html:120
+msgid "Try searching for:"
+msgstr "嘗試搜尋："
+
+#: searx/templates/simple/results.html:152
 msgid "Back to top"
 msgstr "返回頂部"
 
-#: searx/templates/simple/results.html:162
+#: searx/templates/simple/results.html:170
 msgid "Previous page"
 msgstr "上一頁"
 
-#: searx/templates/simple/results.html:179
+#: searx/templates/simple/results.html:187
 msgid "Next page"
 msgstr "下一頁"
 
@@ -1313,26 +795,229 @@ msgstr "顯示前端頁面"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
-msgid "clear"
-msgstr "清除"
+msgid "Search for..."
+msgstr "搜尋……"
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
+msgid "clear"
+msgstr "清除"
+
+#: searx/templates/simple/search.html:11
+#: searx/templates/simple/simple_search.html:7
 msgid "search"
 msgstr "搜索"
+
+#: searx/templates/simple/stats.html:21
+msgid "There is currently no data available. "
+msgstr "目前無可用資料。"
+
+#: searx/templates/simple/stats.html:26
+msgid "Scores"
+msgstr "分數"
+
+#: searx/templates/simple/stats.html:27
+msgid "Result count"
+msgstr "結果數量"
+
+#: searx/templates/simple/stats.html:38
+msgid "Scores per result"
+msgstr "每個結果的分數"
+
+#: searx/templates/simple/stats.html:62
+msgid "Total"
+msgstr "總計"
+
+#: searx/templates/simple/stats.html:63
+msgid "HTTP"
+msgstr "HTTP"
+
+#: searx/templates/simple/stats.html:64
+msgid "Processing"
+msgstr "正在處理"
+
+#: searx/templates/simple/stats.html:102
+msgid "Warnings"
+msgstr "警告"
+
+#: searx/templates/simple/stats.html:102
+msgid "Errors and exceptions"
+msgstr "錯誤及異常"
+
+#: searx/templates/simple/stats.html:108
+msgid "Exception"
+msgstr "異常"
+
+#: searx/templates/simple/stats.html:110
+msgid "Message"
+msgstr "消息"
+
+#: searx/templates/simple/stats.html:112
+msgid "Percentage"
+msgstr "百分比"
+
+#: searx/templates/simple/stats.html:114
+msgid "Parameter"
+msgstr "參數"
+
+#: searx/templates/simple/stats.html:122
+msgid "Filename"
+msgstr "文件名"
+
+#: searx/templates/simple/stats.html:123
+msgid "Function"
+msgstr "函數"
+
+#: searx/templates/simple/stats.html:124
+msgid "Code"
+msgstr "代碼"
+
+#: searx/templates/simple/stats.html:131
+msgid "Checker"
+msgstr "檢查程式"
+
+#: searx/templates/simple/stats.html:134
+msgid "Failed test"
+msgstr "測試未通過"
+
+#: searx/templates/simple/stats.html:135
+msgid "Comment(s)"
+msgstr "注釋"
+
+#: searx/templates/simple/filters/time_range.html:3
+msgid "Anytime"
+msgstr "任何時間"
+
+#: searx/templates/simple/filters/time_range.html:6
+msgid "Last day"
+msgstr "一天內"
+
+#: searx/templates/simple/filters/time_range.html:9
+msgid "Last week"
+msgstr "一週內"
+
+#: searx/templates/simple/filters/time_range.html:12
+msgid "Last month"
+msgstr "一個月內"
+
+#: searx/templates/simple/filters/time_range.html:15
+msgid "Last year"
+msgstr "一年內"
+
+#: searx/templates/simple/messages/no_cookies.html:3
+msgid "Information!"
+msgstr "資訊！"
+
+#: searx/templates/simple/messages/no_cookies.html:4
+msgid "currently, there are no cookies defined."
+msgstr "目前未有已定義的 cookies。"
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Engines cannot retrieve results."
+msgstr "引擎無法擷取結果。"
+
+#: searx/templates/simple/messages/no_results.html:15
+msgid "Please, try again later or find another SearXNG instance."
+msgstr "請稍後再試，或換用其他 SearXNG 站點。"
+
+#: searx/templates/simple/messages/no_results.html:20
+msgid "Sorry!"
+msgstr "抱歉！"
+
+#: searx/templates/simple/messages/no_results.html:21
+msgid ""
+"we didn't find any results. Please use another query or search in more "
+"categories."
+msgstr "我們找不到任何結果。請使用其他搜尋方式或在更多分類中搜尋。"
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "show media"
+msgstr "顯示媒體"
+
+#: searx/templates/simple/result_templates/default.html:6
+msgid "hide media"
+msgstr "隱藏媒體"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "此站點未提供任何描述。"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:23
 msgid "Format"
 msgstr "格式"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:25
 msgid "Engine"
 msgstr "引擎"
+
+#: searx/templates/simple/result_templates/images.html:26
+msgid "View source"
+msgstr "檢視來源"
+
+#: searx/templates/simple/result_templates/map.html:12
+msgid "address"
+msgstr "地址"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "show map"
+msgstr "顯示地圖"
+
+#: searx/templates/simple/result_templates/map.html:43
+msgid "hide map"
+msgstr "隱藏地圖"
+
+#: searx/templates/simple/result_templates/torrent.html:6
+msgid "magnet link"
+msgstr "磁力連結"
+
+#: searx/templates/simple/result_templates/torrent.html:7
+msgid "torrent file"
+msgstr "torrent 檔案"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Seeder"
+msgstr "播種者"
+
+#: searx/templates/simple/result_templates/torrent.html:9
+msgid "Leecher"
+msgstr "接收者"
+
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "檔案大小"
+
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "位元組"
+
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "kiB"
+
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
+#: searx/templates/simple/result_templates/torrent.html:20
+msgid "Number of Files"
+msgstr "檔案數量"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "show video"
+msgstr "顯示影片"
+
+#: searx/templates/simple/result_templates/videos.html:6
+msgid "hide video"
+msgstr "隱藏影片"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "引擎時間（秒）"
@@ -1452,3 +1137,115 @@ msgstr "引擎"
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+
+#~ msgid "Advanced settings"
+#~ msgstr "進階設定"
+
+#~ msgid "Close"
+#~ msgstr "關閉"
+
+#~ msgid "Language"
+#~ msgstr "語言"
+
+#~ msgid "broken"
+#~ msgstr "故障"
+
+#~ msgid "supported"
+#~ msgstr "支援"
+
+#~ msgid "not supported"
+#~ msgstr "不支援"
+
+#~ msgid "about"
+#~ msgstr "關於"
+
+#~ msgid "Avg."
+#~ msgstr "平均"
+
+#~ msgid "User Interface"
+#~ msgstr "用戶界面"
+
+#~ msgid "Choose style for this theme"
+#~ msgstr "選擇這個主題的樣式"
+
+#~ msgid "Style"
+#~ msgstr "樣式"
+
+#~ msgid "Show advanced settings"
+#~ msgstr "顯示高級設置"
+
+#~ msgid "Show advanced settings panel in the home page by default"
+#~ msgstr "首頁默認顯示高級設置面板"
+
+#~ msgid "Allow all"
+#~ msgstr "允許全部"
+
+#~ msgid "Disable all"
+#~ msgstr "停用全部"
+
+#~ msgid "Selected language"
+#~ msgstr "已選取的語言"
+
+#~ msgid "Query"
+#~ msgstr "查詢"
+
+#~ msgid "save"
+#~ msgstr "儲存"
+
+#~ msgid "back"
+#~ msgstr "返回"
+
+#~ msgid "Links"
+#~ msgstr "連結"
+
+#~ msgid "RSS subscription"
+#~ msgstr "RSS 訂閱"
+
+#~ msgid "Search results"
+#~ msgstr "搜尋結果"
+
+#~ msgid "next page"
+#~ msgstr "下一頁"
+
+#~ msgid "previous page"
+#~ msgstr "上一頁"
+
+#~ msgid "Start search"
+#~ msgstr "開始搜尋"
+
+#~ msgid "Clear search"
+#~ msgstr "清除搜尋"
+
+#~ msgid "Clear"
+#~ msgstr "清除"
+
+#~ msgid "stats"
+#~ msgstr "統計"
+
+#~ msgid "Heads up!"
+#~ msgstr "注意！"
+
+#~ msgid "It look like you are using SearXNG first time."
+#~ msgstr "這似乎是您首次使用 SearXNG。"
+
+#~ msgid "Well done!"
+#~ msgstr "很好！"
+
+#~ msgid "Settings saved successfully."
+#~ msgstr "設定成功儲存。"
+
+#~ msgid "Oh snap!"
+#~ msgstr "糟糕！"
+
+#~ msgid "Something went wrong."
+#~ msgstr "發生了一點問題。"
+
+#~ msgid "Date"
+#~ msgstr "日期"
+
+#~ msgid "Type"
+#~ msgstr "類型"
+
+#~ msgid "Get image"
+#~ msgstr "取得圖片"
+
