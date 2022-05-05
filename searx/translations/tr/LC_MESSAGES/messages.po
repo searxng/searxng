@@ -9,24 +9,25 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-03 16:51+0000\n"
-"PO-Revision-Date: 2022-04-27 20:53+0000\n"
-"Last-Translator: Alexandre Flament <alex@al-f.net>\n"
+"PO-Revision-Date: 2022-05-06 07:18+0000\n"
+"Last-Translator: realdep <islekege@gmail.com>\n"
+"Language-Team: Turkish <https://weblate.bubu1.eu/projects/searxng/searxng/tr/"
+">\n"
 "Language: tr\n"
-"Language-Team: Turkish "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/tr/>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr "diğerleri"
+msgstr "diğer"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
@@ -161,7 +162,7 @@ msgstr "bağlantı hatası"
 
 #: searx/webapp.py:174
 msgid "unexpected crash"
-msgstr "beklenmedik çökme"
+msgstr "beklenmeyen çökme"
 
 #: searx/webapp.py:181
 msgid "HTTP error"
@@ -193,7 +194,7 @@ msgstr "sunucu API hatası"
 
 #: searx/webapp.py:414
 msgid "No item found"
-msgstr "Bulunan öğe yok"
+msgstr "Öğe bulunamadı"
 
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:416
@@ -202,7 +203,7 @@ msgstr "Kaynak"
 
 #: searx/webapp.py:418
 msgid "Error loading the next page"
-msgstr "Sayfa yüklenemedi"
+msgstr "Sonraki sayfa yüklenemedi"
 
 #: searx/webapp.py:530 searx/webapp.py:971
 msgid "Invalid settings, please edit your preferences"
@@ -303,8 +304,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
-"Bir kategori seçilirse hemen arama yap. Birden çok kategori seçmeyi "
-"etkisizleştir. (JavaScript gerekli)"
+"Bir kategori seçilirse hemen arama yap. Birden çok kategori seçmek için "
+"devre dışı bırak. (JavaScript gerekli)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -320,33 +321,33 @@ msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr "İzleyici URL'si kaldırıcısı"
+msgstr "Takip URL kaldırıcı"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr "İzleyici bağımsız değişkenlerini döndürülen URL'den kaldır"
+msgstr "Takip parametrelerini URL'den kaldır"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
-msgstr "Vim gibi kısayol tuşları"
+msgstr "Vim benzeri kısayol tuşları"
 
 #: searx/plugins/vim_hotkeys.py:4
 msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Vim-like kısayol tuşlarıyla arama sonuçlarında gezinin (JavaScript "
-"gerekli). Yardım almak için ana sayfada veya sonuç sayfasında \"h\" "
-"tuşuna basın."
+"Vim benzeri kısayol tuşlarıyla arama sonuçlarında gezinin (JavaScript "
+"gerekli). Yardım almak için ana sayfada veya sonuç sayfasında \"h\" tuşuna "
+"basın."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Sayfa bulunamadı"
 
 #: searx/templates/simple/404.html:6
-#, python-format
+#, fuzzy, python-format
 msgid "Go to %(search_page)s."
-msgstr "%(search_page)s sayfasına git."
+msgstr "%(search_page)  sayfasına git."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -379,11 +380,11 @@ msgstr "Motor istatistikleri"
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr "Herkese açık örnekler"
+msgstr "Açık sunucular"
 
 #: searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Sunucu sahibi ile iletişime geçin"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -400,11 +401,11 @@ msgstr "Hazırlayan"
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
-msgstr "önbelleklendi"
+msgstr "önbellek"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
-msgstr "vekaleten"
+msgstr "proxylendi"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -415,7 +416,7 @@ msgstr "HTTPS Yok"
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr "Arıza kayıtlarını inceler ve bir arıza raporu oluşturur"
+msgstr "Hata kayıtlarını incele ve bir hata raporu gönder"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
@@ -1281,4 +1282,3 @@ msgstr "görüntüyü gizle"
 
 #~ msgid "Get image"
 #~ msgstr "Görseli al"
-
