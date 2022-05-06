@@ -220,6 +220,9 @@ def _get_translations():
     if has_request_context() and request.form.get('use-translation') == 'oc':
         babel_ext = flask_babel.current_app.extensions['babel']
         return Translations.load(next(babel_ext.translation_directories), 'oc')
+    if has_request_context() and request.form.get('use-translation') == 'szl':
+        babel_ext = flask_babel.current_app.extensions['babel']
+        return Translations.load(next(babel_ext.translation_directories), 'szl')
     return _flask_babel_get_translations()
 
 
@@ -238,6 +241,9 @@ def get_locale():
     if locale == 'oc':
         request.form['use-translation'] = 'oc'
         locale = 'fr_FR'
+    if locale == 'szl':
+        request.form['use-translation'] = 'szl'
+        locale = 'pl'
     if locale == '':
         # if there is an error loading the preferences
         # the locale is going to be ''
