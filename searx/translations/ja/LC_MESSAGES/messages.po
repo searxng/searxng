@@ -14,18 +14,19 @@
 # Thomas Pointhuber, 2015-2016
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-03 16:51+0000\n"
-"PO-Revision-Date: 2022-05-03 16:51+0000\n"
+"PO-Revision-Date: 2022-05-06 07:18+0000\n"
 "Last-Translator: iFvt;/s:.Io8yejcE! <6dbjomtr@anonaddy.me>\n"
+"Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"ja/>\n"
 "Language: ja\n"
-"Language-Team: Japanese "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ja/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -85,8 +86,9 @@ msgstr "地図"
 
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
+#, fuzzy
 msgid "onions"
-msgstr "オニオン"
+msgstr "Onion"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -153,8 +155,9 @@ msgid "timeout"
 msgstr "タイムアウト"
 
 #: searx/webapp.py:170
+#, fuzzy
 msgid "parsing error"
-msgstr "パースエラー"
+msgstr "解析エラー"
 
 #: searx/webapp.py:171
 msgid "HTTP protocol error"
@@ -215,7 +218,7 @@ msgstr "設定が無効です。設定を変更してください。"
 
 #: searx/webapp.py:546
 msgid "Invalid settings"
-msgstr "無効な設定"
+msgstr "無効な設定です"
 
 #: searx/webapp.py:622 searx/webapp.py:698
 msgid "search error"
@@ -295,7 +298,7 @@ msgstr "オープンアクセス DOI の書き換え"
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr "可能ならば オープンアクセス版へリダイレクトし、有料出版物を回避する"
+msgstr "可能ならば オープンアクセス版の出版物へリダイレクトし、有料出版物を回避する"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -376,8 +379,9 @@ msgstr "検索エンジンの状態"
 
 #: searx/templates/simple/base.html:65
 #: searx/templates/simple/messages/no_results.html:15
+#, fuzzy
 msgid "Public instances"
-msgstr "公開インスタンス"
+msgstr "パブリック インスタンス"
 
 #: searx/templates/simple/base.html:66
 msgid "Contact instance maintainer"
@@ -385,7 +389,7 @@ msgstr "インスタンスメンテナと連絡を取る"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
-msgstr "検索を実行するには虫めがねをクリックしてください"
+msgstr "虫めがねをクリックして検索します"
 
 #: searx/templates/simple/macros.html:36
 msgid "Length"
@@ -402,7 +406,7 @@ msgstr "キャッシュ"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
-msgstr "プロキシされている"
+msgstr "プロキシ"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -413,7 +417,7 @@ msgstr "No HTTPS"
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr "エラーログを見てバグレポートを提出する"
+msgstr "エラーログを表示し、バグレポートを送信します"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
@@ -432,7 +436,7 @@ msgstr "P95"
 
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr "チェッカーテスト失敗: "
+msgstr "失敗したチェッカーテスト: "
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
@@ -458,19 +462,19 @@ msgstr "検索の言語"
 #: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:118
 msgid "Default language"
-msgstr "デフォルト言語"
+msgstr "デフォルトの言語"
 
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
-msgstr "検索に使う言語はどれが良いですか?"
+msgstr "どの言語で検索しますか？"
 
 #: searx/templates/simple/preferences.html:129
 msgid "Autocomplete"
-msgstr "オートコンプリート"
+msgstr "自動補完"
 
 #: searx/templates/simple/preferences.html:138
 msgid "Find stuff as you type"
-msgstr "入力補助に使う検索エンジン"
+msgstr "自動補完に使う検索エンジン"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -586,9 +590,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"フォームがどの方法で送信されるかを変更できます。<a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">リクエストメソッドについて詳しく知るにはここをクリック</a>"
+"フォームの送信方法を変更します。<a href=\"https://ja.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#リクエストメソッド\" rel=\"external\""
+">リクエストメソッドってなに？</a>"
 
 #: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
@@ -690,6 +694,7 @@ msgid "Examples"
 msgstr "例"
 
 #: searx/templates/simple/preferences.html:355
+#, fuzzy
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "これは SearXNG の即席回答モジュールのリストです。"
 
@@ -776,7 +781,7 @@ msgstr "提案"
 
 #: searx/templates/simple/results.html:90
 msgid "Search URL"
-msgstr "検索結果の URL"
+msgstr "この検索結果の URL"
 
 #: searx/templates/simple/results.html:96
 msgid "Download results"
@@ -874,6 +879,7 @@ msgid "Filename"
 msgstr "ファイル名"
 
 #: searx/templates/simple/stats.html:123
+#, fuzzy
 msgid "Function"
 msgstr "ファンクション"
 
@@ -931,7 +937,7 @@ msgstr "後でやり直すか、別の SearXNG インスタンスを試してみ
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
-msgstr "申し訳ありません!"
+msgstr "すみません!"
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid ""
@@ -1259,4 +1265,3 @@ msgstr "動画を隠す"
 
 #~ msgid "Get image"
 #~ msgstr "画像を取得する"
-
