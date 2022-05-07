@@ -30,7 +30,7 @@ number_of_results = 10
 
 time_range_support = True
 time_delta_dict = {
-    "day":  timedelta(days=1),
+    "day": timedelta(days=1),
     "week": timedelta(days=7),
     "month": timedelta(days=31),
     "year": timedelta(days=365),
@@ -58,7 +58,7 @@ search_url = (
     'fields={fields}&password_protected={password_protected}&private={private}&sort={sort}&limit={limit}'
 ).format(
     fields=','.join(result_fields),
-    password_protected= 'false',
+    password_protected='false',
     private='false',
     sort='relevance',
     limit=number_of_results,
@@ -93,7 +93,7 @@ def request(query, params):
     query_args = {
         'search': query,
         'languages': language_iso639,
-        'page':  params['pageno'],
+        'page': params['pageno'],
     }
 
     if locale.territory:
@@ -170,7 +170,4 @@ def response(resp):
 # get supported languages from their site
 def _fetch_supported_languages(resp):
     response_json = resp.json()
-    return [
-        item['locale']
-        for item in response_json['list']
-    ]
+    return [item['locale'] for item in response_json['list']]

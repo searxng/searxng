@@ -77,11 +77,9 @@ class InfoPage:
         .. _markdown-it-py: https://github.com/executablebooks/markdown-it-py
 
         """
-        return MarkdownIt(
-            "commonmark", {"typographer": True}
-        ).enable(
-            ["replacements", "smartquotes"]
-        ).render(self.content)
+        return (
+            MarkdownIt("commonmark", {"typographer": True}).enable(["replacements", "smartquotes"]).render(self.content)
+        )
 
     def get_ctx(self):  # pylint: disable=no-self-use
         """Jinja context to render :py:obj:`InfoPage.content`"""
