@@ -86,8 +86,6 @@ ui:
   # Open result links in a new tab by default
   # results_on_new_tab: false
   theme_args:
-    # default style of oscar
-    oscar_style: logicodev
     # style of simple theme: auto, light, dark
     simple_style: auto
 
@@ -813,8 +811,8 @@ engines:
 
   - name: library genesis
     engine: xpath
-    search_url: https://libgen.rs/search.php?req={query}
-    url_xpath: //a[contains(@href,"bookfi.net/md5")]/@href
+    search_url: https://libgen.fun/search.php?req={query}
+    url_xpath: //a[contains(@href,"get.php?md5")]/@href
     title_xpath: //a[contains(@href,"book/")]/text()[1]
     content_xpath: //td/a[1][contains(@href,"=author")]/text()
     categories: files
@@ -822,7 +820,7 @@ engines:
     disabled: true
     shortcut: lg
     about:
-      website: https://libgen.rs/
+      website: https://libgen.fun/
       wikidata_id: Q22017206
       official_api_documentation:
       use_official_api: false

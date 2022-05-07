@@ -18,9 +18,8 @@ All of the engines above are just commented out in the :origin:`settings.yml
 dependencies before using them.
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`oscar <searx/templates/oscar/result_templates/key-value.html>` &
-:origin:`simple <searx/templates/simple/result_templates/key-value.html>`
-themes.  If you are not satisfied with the original result layout, you can use
+see :origin:`simple <searx/templates/simple/result_templates/key-value.html>`
+theme.  If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
