@@ -53,19 +53,16 @@ def response(resp):
                 if 'reading' in title_raw:
                     title += ' (' + title_raw['reading'] + ')'
                 alt_forms.append(title)
-        
-        #
+
         result_url = urljoin(BASE_URL, page['slug'])
         definitions = get_definitions(page)
 
         # For results, we'll return the URL, all alternative forms (as title),
         # and all definitions (as description) truncated to 300 characters.
         content = " ".join(f"{engdef}." for _, engdef, _ in definitions)
-        results.append({
-            'url': result_url,
-            'title': ", ".join(alt_forms),
-            'content': content[:300] + (content[300:] and '...')
-        })
+        results.append(
+            {'url': result_url, 'title': ", ".join(alt_forms), 'content': content[:300] + (content[300:] and '...')}
+        )
 
         # Like Wordnik, we'll return the first result in an infobox too.
         if first_result:
@@ -93,11 +90,13 @@ def get_definitions(page):
             extra.append(', '.join(defn_raw['info']).capitalize() + '. ')
         if defn_raw.get('restrictions'):
             extra.append('Only applies to: ' + ', '.join(defn_raw['restrictions']) + '. ')
-        definitions.append((
-            ', '.join(defn_raw['parts_of_speech']),
-            '; '.join(defn_raw['english_definitions']),
-            ''.join(extra)[:-1],
-        ))
+        definitions.append(
+            (
+                ', '.join(defn_raw['parts_of_speech']),
+                '; '.join(defn_raw['english_definitions']),
+                ''.join(extra)[:-1],
+            )
+        )
     return definitions
 
 
@@ -109,12 +108,14 @@ def get_infobox(alt_forms, result_url, definitions):
         infobox_content.append(f'<p><i>Other forms:</i> {", ".join(alt_forms[1:])}</p>')
 
     # definitions
-    infobox_content.append('''
+    infobox_content.append(
+        '''
         <small><a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a> 
         and <a href="https://www.edrdg.org/enamdict/enamdict_doc.html">JMnedict</a> 
         by <a href="https://www.edrdg.org/edrdg/licence.html">EDRDG</a>, CC BY-SA 3.0.</small>
         <ul>
-    ''')
+    '''
+    )
     for pos, engdef, extra in definitions:
         if pos == 'Wikipedia definition':
             infobox_content.append('</ul><small>Wikipedia, CC BY-SA 3.0.</small><ul>')
@@ -132,5 +133,5 @@ def get_infobox(alt_forms, result_url, definitions):
                 'title': 'Jisho.org',
                 'url': result_url,
             }
-        ]
+        ],
     }
