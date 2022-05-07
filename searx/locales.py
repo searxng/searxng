@@ -13,6 +13,7 @@ from babel import Locale
 LOCALE_NAMES = {
     "oc": "Occitan",
     "nl-BE": "Vlaams (Dutch, Belgium)",
+    "szl": "Ślōnski (Silesian)",
 }
 """Mapping of locales and their description.  Locales e.g. 'fr' or 'pt-BR'
 (delimiter is *underline* '-')"""
