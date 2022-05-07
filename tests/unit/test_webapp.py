@@ -7,6 +7,7 @@ from searx.results import Timing
 
 import searx.search.processors
 from searx.search import Search
+from searx.preferences import Preferences
 from tests import SearxTestCase
 
 
@@ -77,12 +78,14 @@ class ViewsTestCase(SearxTestCase):
 
         self.setattr4test(Search, 'search', search_mock)
 
-        def get_current_theme_name_mock(override=None):
-            if override:
-                return override
-            return 'simple'
+        original_preferences_get_value = Preferences.get_value
 
-        self.setattr4test(webapp, 'get_current_theme_name', get_current_theme_name_mock)
+        def preferences_get_value(preferences_self, user_setting_name: str):
+            if user_setting_name == 'theme':
+                return 'simple'
+            return original_preferences_get_value(preferences_self, user_setting_name)
+
+        self.setattr4test(Preferences, 'get_value', preferences_get_value)
 
         self.maxDiff = None  # to see full diffs
 

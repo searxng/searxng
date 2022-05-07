@@ -17,7 +17,7 @@ from timeit import default_timer
 from html import escape
 from io import StringIO
 import typing
-from typing import List, Dict, Iterable, Optional
+from typing import List, Dict, Iterable
 
 import urllib
 import urllib.parse
@@ -140,12 +140,6 @@ default_theme = settings['ui']['default_theme']
 templates_path = settings['ui']['templates_path']
 themes = get_themes(templates_path)
 result_templates = get_result_templates(templates_path)
-global_favicons = []
-for indice, theme in enumerate(themes):
-    global_favicons.append([])
-    theme_img_path = os.path.join(settings['ui']['static_path'], 'themes', theme, 'img', 'icons')
-    for (dirpath, dirnames, filenames) in os.walk(theme_img_path):
-        global_favicons[indice].extend(filenames)
 
 STATS_SORT_PARAMETERS = {
     'name': (False, 'name', ''),
@@ -327,24 +321,6 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-def get_current_theme_name(override: Optional[str] = None) -> str:
-    """Returns theme name.
-
-    Checks in this order:
-    1. override
-    2. cookies
-    3. settings"""
-
-    if override and (override in themes or override == '__common__'):
-        return override
-    theme_name = request.args.get('theme', request.preferences.get_value('theme'))
-
-    if theme_name and theme_name in themes:
-        return theme_name
-
-    return default_theme
-
-
 def get_result_template(theme_name: str, template_name: str):
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
@@ -352,13 +328,13 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
-def custom_url_for(endpoint: str, override_theme: Optional[str] = None, **values):
+def custom_url_for(endpoint: str, **values):
     suffix = ""
     if endpoint == 'static' and values.get('filename'):
         file_hash = static_files.get(values['filename'])
         if not file_hash:
             # try file in the current theme
-            theme_name = get_current_theme_name(override=override_theme)
+            theme_name = request.preferences.get_value('theme')
             filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
             file_hash = static_files.get(filename_with_theme)
             if file_hash:
@@ -459,7 +435,7 @@ def get_client_settings():
     }
 
 
-def render(template_name: str, override_theme: str = None, **kwargs):
+def render(template_name: str, **kwargs):
 
     kwargs['client_settings'] = str(
         base64.b64encode(
@@ -470,12 +446,6 @@ def render(template_name: str, override_theme: str = None, **kwargs):
         ),
         encoding='utf-8',
     )
-
-    # obsolete, only needed by oscar
-    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
-    kwargs['method'] = request.preferences.get_value('method')
-    kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
-    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
@@ -488,7 +458,7 @@ def render(template_name: str, override_theme: str = None, **kwargs):
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-    kwargs['theme'] = get_current_theme_name(override=override_theme)
+    kwargs['theme'] = request.preferences.get_value('theme')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = _get_enable_categories(categories.keys())
     kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
@@ -521,7 +491,14 @@ def render(template_name: str, override_theme: str = None, **kwargs):
     kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
     kwargs['get_result_template'] = get_result_template
     kwargs['opensearch_url'] = (
-        url_for('opensearch') + '?' + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
+        url_for('opensearch')
+        + '?'
+        + urlencode(
+            {
+                'method': request.preferences.get_value('method'),
+                'autocomplete': request.preferences.get_value('autocomplete'),
+            }
+        )
     )
 
     # scripts from plugins
@@ -648,7 +625,6 @@ def index_error(output_format: str, error_message: str):
             q=request.form['q'] if 'q' in request.form else '',
             number_of_results=0,
             error_message=error_message,
-            override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
 
@@ -841,7 +817,6 @@ def search():
             suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=number_of_results,
-            override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
 
@@ -886,8 +861,6 @@ def search():
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),
-        theme = get_current_theme_name(),
-        favicons = global_favicons[themes.index(get_current_theme_name())],
         timeout_limit = request.form.get('timeout_limit', None)
         # fmt: on
     )
@@ -984,8 +957,7 @@ def autocompleter():
         suggestions = json.dumps([sug_prefix, results])
         mimetype = 'application/x-suggestions+json'
 
-    if get_current_theme_name() == 'simple':
-        suggestions = escape(suggestions, False)
+    suggestions = escape(suggestions, False)
     return Response(suggestions, mimetype=mimetype)
 
 
@@ -1132,7 +1104,6 @@ def preferences():
         doi_resolvers = settings['doi_resolvers'],
         current_doi_resolver = get_doi_resolver(request.preferences),
         allowed_plugins = allowed_plugins,
-        theme = get_current_theme_name(),
         preferences_url_params = request.preferences.get_as_url_params(),
         locked_preferences = settings['preferences']['lock'],
         preferences = True
@@ -1334,7 +1305,9 @@ def opensearch():
     if request.headers.get('User-Agent', '').lower().find('webkit') >= 0:
         method = 'get'
 
-    ret = render('opensearch.xml', opensearch_method=method, override_theme='__common__')
+    autocomplete = request.preferences.get_value('autocomplete')
+
+    ret = render('opensearch.xml', opensearch_method=method, autocomplete=autocomplete)
 
     resp = Response(response=ret, status=200, mimetype="application/opensearchdescription+xml")
     return resp
@@ -1342,8 +1315,9 @@ def opensearch():
 
 @app.route('/favicon.ico')
 def favicon():
+    theme = request.preferences.get_value("theme")
     return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', get_current_theme_name(), 'img'),
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),
         'favicon.png',
         mimetype='image/vnd.microsoft.icon',
     )

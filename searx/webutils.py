@@ -53,10 +53,7 @@ class UnicodeWriter:
 
 def get_themes(templates_path):
     """Returns available themes list."""
-    themes = os.listdir(templates_path)
-    if '__common__' in themes:
-        themes.remove('__common__')
-    return themes
+    return os.listdir(templates_path)
 
 
 def get_hash_for_file(file: pathlib.Path) -> str:
