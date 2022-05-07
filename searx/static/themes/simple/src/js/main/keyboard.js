@@ -154,7 +154,7 @@ searxng.ready(function () {
     }
   };
 
-  if (searxng.hotkeys) {
+  if (searxng.settings.hotkeys) {
     searxng.on(document, "keydown", function (e) {
       // check for modifiers so we don't break browser's hotkeys
       if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {

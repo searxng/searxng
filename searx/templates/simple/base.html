@@ -19,14 +19,7 @@
   {% endif %}
   {% block styles %}{% endblock %}
   <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
-          data-method="{{ method or 'POST' }}"
-          data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
-          data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
-          data-infinite-scroll="{% if infinite_scroll %}true{% else %}false{% endif %}"
-          data-hotkeys="{{ 'true' if 'plugins/js/vim_hotkeys.js' in scripts else 'false' }}"
-          data-static-path="{{ url_for('static', filename='themes/simple') }}/"
-          data-translations="{{ translations }}"></script>
+  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>
   <!--<![endif]-->
   {% block head %}
   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}"/>

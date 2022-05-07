@@ -59,16 +59,16 @@
       createClearButton(qinput);
 
       // autocompleter
-      if (searxng.autocompleter) {
+      if (searxng.settings.autocomplete_provider) {
         searxng.autocomplete = AutoComplete.call(w, {
           Url: "./autocompleter",
-          EmptyMessage: searxng.translations.no_item_found,
-          HttpMethod: searxng.method,
+          EmptyMessage: searxng.settings.translations.no_item_found,
+          HttpMethod: searxng.settings.http_method,
           HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded",
             "X-Requested-With": "XMLHttpRequest"
           },
-          MinChars: 4,
+          MinChars: searxng.settings.autocomplete_min,
           Delay: 300,
           _Position: function () {},
           _Open: function () {
@@ -92,7 +92,7 @@
     }
 
     // vanilla js version of search_on_category_select.js
-    if (qinput !== null && d.querySelector('.help') != null && searxng.search_on_category_select) {
+    if (qinput !== null && d.querySelector('.help') != null && searxng.settings.search_on_category_select) {
       d.querySelector('.help').className = 'invisible';
 
       searxng.on('#categories input', 'change', function () {

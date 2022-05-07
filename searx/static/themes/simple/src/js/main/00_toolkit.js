@@ -101,7 +101,7 @@ window.searxng = (function (w, d) {
   };
 
   searxng.loadStyle = function (src) {
-    var path = searxng.static_path + src,
+    var path = searxng.settings.theme_static_path + src,
       id = "style_" + src.replace('.', '_'),
       s = d.getElementById(id);
     if (s === null) {
@@ -115,7 +115,7 @@ window.searxng = (function (w, d) {
   };
 
   searxng.loadScript = function (src, callback) {
-    var path = searxng.static_path + src,
+    var path = searxng.settings.theme_static_path + src,
       id = "script_" + src.replace('.', '_'),
       s = d.getElementById(id);
     if (s === null) {
