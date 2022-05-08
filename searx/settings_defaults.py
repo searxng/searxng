@@ -180,7 +180,6 @@ SCHEMA = {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),
         'static_use_hash': SettingsValue(bool, False),
         'templates_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'templates')),
-        'default_theme': SettingsValue(str, 'simple'),
         'default_locale': SettingsValue(str, ''),
         'theme_args': {
             'simple_style': SettingsValue(SIMPLE_STYLE, 'auto'),

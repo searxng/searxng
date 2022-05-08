@@ -290,7 +290,7 @@ class PluginsSetting(BooleanChoices):
 class Preferences:
     """Validates and saves preferences to cookies"""
 
-    def __init__(self, themes: List[str], categories: List[str], engines: Dict[str, Engine], plugins: Iterable[Plugin]):
+    def __init__(self, categories: List[str], engines: Dict[str, Engine], plugins: Iterable[Plugin]):
         super().__init__()
 
         self.key_value_settings: Dict[str, Setting] = {
@@ -339,11 +339,6 @@ class Preferences:
                     '1': 1,
                     '2': 2
                 }
-            ),
-            'theme': EnumStringSetting(
-                settings['ui']['default_theme'],
-                locked=is_locked('theme'),
-                choices=themes
             ),
             'results_on_new_tab': MapSetting(
                 settings['ui']['results_on_new_tab'],

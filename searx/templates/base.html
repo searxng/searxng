@@ -28,7 +28,7 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
 </head>
 <body class="{{ endpoint }}_endpoint" >
-  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
+  <main id="main_{{  self._TemplateReference__context.name|replace(".html", "") }}" class="{{body_class}}">
     {% if errors %}
         <div class="dialog-error" role="alert">
             <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -41,7 +41,7 @@
     {% endif %}
 
     <nav id="links_on_top">
-      {%- from 'simple/icons.html' import icon_big -%}
+      {%- from 'icons.html' import icon_big -%}
       {%- block linkto_about -%}
         <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
       {%- endblock -%}

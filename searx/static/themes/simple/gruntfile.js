@@ -145,7 +145,7 @@ module.exports = function (grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
+          '<%= _templates %>/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
           'img/searxng.svg': '<%= _brand %>/searxng.svg',
           'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
         }
@@ -192,7 +192,7 @@ module.exports = function (grunt) {
           'heart-outline': 'node_modules/ionicons/dist/svg/heart-outline.svg',
           'information-circle-outline': 'src/svg/information-circle-outline.svg',
         },
-        dest: '../../../templates/simple/icons.html',
+        dest: '../../../templates/icons.html',
       },
     },
   });

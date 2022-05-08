@@ -1,5 +1,5 @@
-{% extends "simple/base.html" %}
-{% from 'simple/icons.html' import icon, icon_big, icon_small %}
+{% extends "base.html" %}
+{% from 'icons.html' import icon, icon_big, icon_small %}
 {% macro engine_data_form(engine_data) -%}
     {% for engine_name, kv_data in engine_data.items() %}
         {% for k, v in kv_data.items() %}
@@ -10,7 +10,7 @@
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
 {% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
-{% include 'simple/search.html' %}
+{% include 'search.html' %}
 
 {% if results and results|map(attribute='template')|unique|list|count == 1 %}
   {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
@@ -58,7 +58,7 @@
         {% if infoboxes %}
         <div id="infoboxes">
            {% for infobox in infoboxes -%}
-             {% include 'simple/infobox.html' %}
+             {% include 'infobox.html' %}
            {%- endfor %}
         </div>
         {% endif %}
@@ -145,7 +145,7 @@
         {% if result.close_group and not only_template %}</div>{% endif %}
     {% endfor %}
     {% if not results and not answers %}
-        {% include 'simple/messages/no_results.html' %}
+        {% include 'messages/no_results.html' %}
     {% endif %}
     </div>
     <div id="backToTop">

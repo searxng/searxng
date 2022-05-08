@@ -51,11 +51,6 @@ class UnicodeWriter:
             self.writerow(row)
 
 
-def get_themes(templates_path):
-    """Returns available themes list."""
-    return os.listdir(templates_path)
-
-
 def get_hash_for_file(file: pathlib.Path) -> str:
     m = hashlib.sha1()
     with file.open('rb') as f:

@@ -73,7 +73,6 @@ from searx.webutils import (
     highlight_content,
     get_static_files,
     get_result_templates,
-    get_themes,
     prettify_url,
     new_hmac,
     is_hmac_of,
@@ -138,9 +137,7 @@ static_files = get_static_files(settings['ui']['static_path'])
 
 # about templates
 logger.debug('templates directory is %s', settings['ui']['templates_path'])
-default_theme = settings['ui']['default_theme']
 templates_path = settings['ui']['templates_path']
-themes = get_themes(templates_path)
 result_templates = get_result_templates(templates_path)
 
 STATS_SORT_PARAMETERS = {
@@ -299,9 +296,7 @@ def custom_url_for(endpoint: str, **values):
     if endpoint == 'static' and values.get('filename'):
         file_hash = static_files.get(values['filename'])
         if not file_hash:
-            # try file in the current theme
-            theme_name = request.preferences.get_value('theme')
-            filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
+            filename_with_theme = "themes/simple/" + values['filename']
             file_hash = static_files.get(filename_with_theme)
             if file_hash:
                 values['filename'] = filename_with_theme
@@ -489,7 +484,7 @@ def render(template_name: str, **kwargs):
             kwargs['styles'].add(css)
 
     start_time = default_timer()
-    result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
+    result = render_template(template_name, **kwargs)
     request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result
@@ -502,7 +497,7 @@ def pre_request():
     request.timings = []  # pylint: disable=assigning-non-slot
     request.errors = []  # pylint: disable=assigning-non-slot
 
-    preferences = Preferences(themes, list(categories.keys()), engines, plugins)  # pylint: disable=redefined-outer-name
+    preferences = Preferences(list(categories.keys()), engines, plugins)  # pylint: disable=redefined-outer-name
     user_agent = request.headers.get('User-Agent', '').lower()
     if 'webkit' in user_agent and 'android' in user_agent:
         preferences.key_value_settings['method'].value = 'GET'
@@ -1083,7 +1078,6 @@ def preferences():
         disabled_engines = disabled_engines,
         autocomplete_backends = autocomplete_backends,
         shortcuts = {y: x for x, y in engine_shortcuts.items()},
-        themes = themes,
         plugins = plugins,
         doi_resolvers = settings['doi_resolvers'],
         current_doi_resolver = get_doi_resolver(request.preferences),
@@ -1301,9 +1295,8 @@ def opensearch():
 
 @app.route('/favicon.ico')
 def favicon():
-    theme = request.preferences.get_value("theme")
     return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes/simple/img'),
         'favicon.png',
         mimetype='image/vnd.microsoft.icon',
     )
@@ -1358,7 +1351,6 @@ def config():
             'default_locale': settings['ui']['default_locale'],
             'autocomplete': settings['search']['autocomplete'],
             'safe_search': settings['search']['safe_search'],
-            'default_theme': settings['ui']['default_theme'],
             'version': VERSION_STRING,
             'brand': {
                 'PRIVACYPOLICY_URL': get_setting('general.privacypolicy_url'),

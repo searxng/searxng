@@ -122,7 +122,7 @@ class TestPreferences(SearxTestCase):
     def test_encode(self):
         from searx.preferences import Preferences
 
-        pref = Preferences(['simple'], ['general'], {}, [])
+        pref = Preferences(['general'], {}, [])
         url_params = (
             'eJx1Vk1z4zYM_TXxRZNMd7eddg8-pe21nWnvGoiEJEQkofDDtvzrC1qSRdnbQxQTBA'
             'Hw8eGRCiJ27AnDsUOHHszBgOsSdHjU-Pr7HwfDCkweHCBFVmxHgxGPB7LiU4-eL9Px'

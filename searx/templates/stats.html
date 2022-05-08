@@ -1,7 +1,7 @@
-{% from 'simple/icons.html' import icon_big %}
-{% from 'simple/new_issue.html' import new_issue with context %}
+{% from 'icons.html' import icon_big %}
+{% from 'new_issue.html' import new_issue with context %}
 
-{% extends "simple/page_with_header.html" %}
+{% extends "page_with_header.html" %}
 
 {%- macro th_sort(column_order, column_name) -%}
     {% if selected_engine_name %}
