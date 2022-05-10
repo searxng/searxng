@@ -3,7 +3,7 @@
 # pyright: basic
 """Some bot protection / rate limitation
 
-To monitore rate limits and protect privacy the IP addresses are getting stored
+To monitor rate limits and protect privacy the IP addresses are getting stored
 with a hash so the limiter plugin knows who to block.  A redis database is
 needed to store the hash values.
 
