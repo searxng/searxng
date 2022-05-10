@@ -13,9 +13,9 @@ The google WEB engine itself has a special setup option:
 
   - name: google
     ...
-    use_mobile_ui: true
+    use_mobile_ui: false
 
-``use_mobile_ui``: (default: ``true``)
+``use_mobile_ui``: (default: ``false``)
   Enables to use *mobile endpoint* to bypass the google blocking (see
   :issue:`159`).  On the mobile UI of Google Search, the button :guilabel:`More
   results` is not affected by Google rate limiting and we can still do requests
