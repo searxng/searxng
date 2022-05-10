@@ -46,8 +46,24 @@
   border-radius: 0 @radius @radius 0;
 }
 
+.ltr-rounded-top-left-corners(@radius) {
+  border-radius: 0 @radius 0 0;
+}
+
+.ltr-rounded-bottom-left-corners(@radius) {
+  border-radius: 0 0 @radius 0;
+}
+
 .ltr-rounded-right-corners(@radius) {
   border-radius: @radius 0 0 @radius;
+}
+
+.ltr-rounded-top-right-corners(@radius) {
+  border-radius: @radius 0 0 0;
+}
+
+.ltr-rounded-bottom-right-corners(@radius) {
+  border-radius: 0 0 0 @radius;
 }
 
 .ltr-text-align-left() {

@@ -309,7 +309,7 @@ article[data-vim-selected].category-social {
 .category-files,
 .category-social {
   border: 1px solid var(--color-result-border);
-  margin: 1rem 0;
+  margin: 1rem @results-tablet-offset 0 @results-tablet-offset !important;
   .rounded-corners;
 }
 
@@ -538,7 +538,6 @@ article[data-vim-selected].category-social {
 
 #answers {
   grid-area: answers;
-  border: 1px solid var(--color-answer-border);
   background: var(--color-answer-background);
   padding: @result-padding;
   margin: 1rem 0;
@@ -717,7 +716,7 @@ article[data-vim-selected].category-social {
   }
 
   #sidebar {
-    margin-bottom: @results-margin;
+    margin: 0 @results-tablet-offset @results-margin @results-tablet-offset;
     padding: 0;
     float: none;
     border: none;
@@ -832,9 +831,13 @@ article[data-vim-selected].category-social {
 }
 
 @media screen and (max-width: @phone) {
+  html {
+    background-color: var(--color-base-background-mobile);
+  }
+
   #main_results div#results {
     grid-template-columns: 100%;
-    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+    margin: 1rem 0 0 0;
   }
 
   #linkto_preferences {
@@ -862,14 +865,19 @@ article[data-vim-selected].category-social {
   }
 
   .result {
-    border: 1px solid var(--color-result-border);
+    background: var(--color-result-background);
     margin: 1rem 0;
-    .rounded-corners;
   }
 
   .result-images {
     margin: 0;
     height: @results-image-row-height-phone;
+    background: var(--color-base-background-mobile);
+  }
+
+  .infobox {
+    border: none !important;
+    background-color: var(--color-sidebar-background);
   }
 }
 

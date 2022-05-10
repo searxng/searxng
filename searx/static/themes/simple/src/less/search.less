@@ -94,12 +94,12 @@
 }
 
 .search_box {
-  border: 1px solid var(--color-search-border);
   border-radius: 0.8rem;
   width: @search-width;
   display: inline-flex;
   flex-direction: row;
   white-space: nowrap;
+  box-shadow: var(--color-search-shadow);
 }
 
 #clear_search {
@@ -283,7 +283,7 @@ html.no-js #clear_search.hide_if_nojs {
 
   #search_view:focus-within {
     display: block;
-    background-color: var(--color-base-background);
+    background-color: var(--color-search-background);
     position: absolute;
     top: 0;
     height: 100%;
@@ -291,11 +291,10 @@ html.no-js #clear_search.hide_if_nojs {
     z-index: 10000;
 
     .search_box {
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      border-bottom: 1px solid var(--color-search-border);
       width: 100%;
       border-radius: 0;
+      box-shadow: none;
 
       #send_search {
         .ltr-margin-right(0) !important; // Delete when send_search button is disabled on mobile.
@@ -304,6 +303,7 @@ html.no-js #clear_search.hide_if_nojs {
       * {
         border: none;
         border-radius: 0;
+        box-shadow: none;
       }
     }
   }
