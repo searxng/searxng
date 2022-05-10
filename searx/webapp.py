@@ -459,6 +459,7 @@ def render(template_name: str, **kwargs):
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
     kwargs['theme'] = request.preferences.get_value('theme')
+    kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = _get_enable_categories(categories.keys())
     kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
