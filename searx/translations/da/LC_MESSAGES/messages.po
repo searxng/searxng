@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-03 16:51+0000\n"
+"POT-Creation-Date: 2022-05-08 08:49+0000\n"
 "PO-Revision-Date: 2022-05-03 16:51+0000\n"
 "Last-Translator: Rasmus <rasmus@rosendahl-kaa.name>\n"
 "Language: da\n"
@@ -141,88 +141,88 @@ msgstr "lys"
 msgid "dark"
 msgstr "mørk"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "udløbstid"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "fortolkningsfejl"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP-protokolfejl"
 
-#: searx/webapp.py:172
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "netværksfejl"
 
-#: searx/webapp.py:174
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "uventet nedbrud"
 
-#: searx/webapp.py:181
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "HTTP-fejl"
 
-#: searx/webapp.py:182
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "HTTP-tilkoblingsfejl"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "proxyfejl"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:190
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "for mange forespørgsler"
 
-#: searx/webapp.py:191
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "adgang nægtet"
 
-#: searx/webapp.py:192
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "server-API-fejl"
 
-#: searx/webapp.py:414
+#: searx/webapp.py:397
 msgid "No item found"
 msgstr "Intet fundet"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:416
+#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:399
 msgid "Source"
 msgstr "Kilde"
 
-#: searx/webapp.py:418
+#: searx/webapp.py:401
 msgid "Error loading the next page"
 msgstr "Fejl ved indlæsning af den næste side"
 
-#: searx/webapp.py:530 searx/webapp.py:971
+#: searx/webapp.py:541 searx/webapp.py:977
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige indstillinger, redigér venligst dine valg"
 
-#: searx/webapp.py:546
+#: searx/webapp.py:557
 msgid "Invalid settings"
 msgstr "Ugyldig indstilling"
 
-#: searx/webapp.py:622 searx/webapp.py:698
+#: searx/webapp.py:632 searx/webapp.py:708
 msgid "search error"
 msgstr "søgefejl"
 
-#: searx/webapp.py:744
+#: searx/webapp.py:754
 msgid "{minutes} minute(s) ago"
 msgstr "for {minutes} minut(ter) siden"
 
-#: searx/webapp.py:746
+#: searx/webapp.py:756
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "for {hours} time(r) og {minutes} minut(ter) siden"
 
-#: searx/webapp.py:875
+#: searx/webapp.py:882
 msgid "Suspended"
 msgstr "Suspenderet"
 
@@ -349,36 +349,36 @@ msgstr "Gå til 1%(search_page)s."
 msgid "search page"
 msgstr "søgeside"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:45
 msgid "preferences"
 msgstr "indstillinger"
 
-#: searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:54
 msgid "Powered by"
 msgstr "Leveret af"
 
-#: searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:54
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "en privatlivs--respekterende, hackbar meta-søgemaskine"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:55
 msgid "Source code"
 msgstr "Kildekode"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:56
 msgid "Issue tracker"
 msgstr "Problemsporer"
 
-#: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Søgemaskine-statistik"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:58
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Offentlige instanser"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:59
 msgid "Contact instance maintainer"
 msgstr "Kontakt tilbyderen af instansen"
 
@@ -402,6 +402,10 @@ msgstr "cachet"
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "viderestillet"
+
+#: searx/templates/simple/new_issue.html:63
+msgid "Submit a new issue on Github including the above information"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
