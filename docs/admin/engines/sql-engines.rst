@@ -30,12 +30,12 @@ engines, e.g. ``database:`` ...
      query_str: ...
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`simple <searx/templates/simple/result_templates/key-value.html>`
-theme.  If you are not satisfied with the original result layout, you can use
+see :origin:`simple <searx/templates/result_templates/key-value.html>`.
+If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
-  searx/templates/{theme_name}/result_templates/{template_name}
+  searx/templates/result_templates/{template_name}
 
 If you do not wish to expose these engines on a public instance, you can still
 add them and limit the access by setting ``tokens`` as described in section

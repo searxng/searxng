@@ -232,7 +232,6 @@ Global Settings
      query_in_title: false
      infinite_scroll: false
      center_alignment: false
-     default_theme: simple
      theme_args:
        simple_style: auto
 
@@ -253,9 +252,6 @@ Global Settings
   When enabled, the results are centered instead of being in the left (or RTL)
   side of the screen.  This setting only affects the *desktop layout*
   (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
-
-``default_theme`` :
-  Name of the theme you want to use by default on your SearXNG instance.
 
 ``theme_args.simple_style``:
   Style of simple theme: ``auto``, ``light``, ``dark``

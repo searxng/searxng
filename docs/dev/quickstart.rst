@@ -25,7 +25,7 @@ choose a meaningful commit message and we are happy to receive your pull
 request. To not end in *wild west* we have some directives, please pay attention
 to our ":ref:`how to contribute`" guideline.
 
-If you implement themes, you will need to setup a :ref:`make node.env` once:
+If you implement theme, you will need to setup a :ref:`make node.env` once:
 
 .. code:: sh
 

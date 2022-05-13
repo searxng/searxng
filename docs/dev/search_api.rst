@@ -75,15 +75,6 @@ Parameters
   Filter search results of engines which support safe search.  See if an engine
   supports safe search in the preferences page of an instance.
 
-``theme`` : default ``simple``
-  [ ``simple`` ]
-
-  Theme of instance.
-
-  Please note, available themes depend on an instance.  It is possible that an
-  instance administrator deleted, created or renamed themes on their instance.
-  See the available options in the preferences page of the instance.
-
 ``enabled_plugins`` : optional
   List of enabled plugins.
 
