@@ -971,6 +971,11 @@ def preferences():
     # pylint: disable=too-many-locals, too-many-return-statements, too-many-branches
     # pylint: disable=too-many-statements
 
+    # save preferences using the link the /preferences?preferences=...&save=1
+    if request.args.get('save') == '1':
+        resp = make_response(redirect(url_for('index', _external=True)))
+        return request.preferences.save(resp)
+
     # save preferences
     if request.method == 'POST':
         resp = make_response(redirect(url_for('index', _external=True)))
