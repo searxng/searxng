@@ -7,18 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
 "PO-Revision-Date: 2022-05-13 07:20+0000\n"
 "Last-Translator: gkkulik <gregorykkulik@gmail.com>\n"
-"Language-Team: Silesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"szl/>\n"
 "Language: szl\n"
+"Language-Team: Silesian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/szl/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -202,27 +199,27 @@ msgstr "Zdrzōdło"
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) tymu"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "Strzimane"
 
@@ -746,7 +743,17 @@ msgstr ""
 " może zmyńszyć prywatność bez przenoszynie danych do klikniyntych strōn z"
 " wynikōw."
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -754,7 +761,7 @@ msgstr ""
 "Te sztalōnki sōm trzimane we zbiorach cookies, tōż mogymy niy trzimać "
 "tych danych ô ciebie."
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -762,15 +769,15 @@ msgstr ""
 "Te zbiory cookies sużōm ino twojimu kōmfortowi, niy używōmy ich do "
 "śledzynio cie."
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr "Spamiyntej"
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "Prziwrōć wychodne"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr "Nazod"
 
@@ -1050,3 +1057,4 @@ msgstr "pokoż wideo"
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "hide video"
 msgstr "skryj wideo"
+
