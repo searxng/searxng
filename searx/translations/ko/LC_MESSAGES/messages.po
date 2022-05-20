@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
 "PO-Revision-Date: 2022-03-18 07:17+0000\n"
 "Last-Translator: Joseph Ko <eaglclaws@gmail.com>\n"
 "Language: ko\n"
@@ -200,27 +200,27 @@ msgstr "소스"
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "잘못된 설정"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "검색 오류"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes}분 전"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours}시간 {minutes}분 전"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "중단됨"
 
@@ -722,27 +722,37 @@ msgid ""
 "leaking data to the clicked result sites."
 msgstr "검색 URL에 사용자 설정을 명시하면 결과 사이트에 데이터가 유출되어 사생활 보호가 약해질 수 있습니다."
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr "설정은 쿠키에 저장 되기 때문에 서버측에서 설정 관련 사용자 정보를 저장하는 것은 불가능합니다."
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr "이 쿠키는 오직 편의를 위해 쓰이며, 추적에 이용하지 않습니다."
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr "저장"
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "기본값 복원"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr "뒤로"
 

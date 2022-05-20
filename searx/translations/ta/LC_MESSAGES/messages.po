@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
 "PO-Revision-Date: 2021-12-31 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: ta\n"
@@ -206,27 +206,27 @@ msgstr "ஆதாரம்"
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "ஏற்க முடியாத அமைப்பு,உங்கள் விருப்பத்தை தொகுக்கவும்"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "ஏற்கமுடியாத அமைப்பு"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "தேடல் பிழை"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} நிமிடங்களுக்கு முன்னால்"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} மணிநேரம், {minutes} நிமிடங்களுக்கு முன்னால்"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "இடைநிறுத்தப்பட்டது"
 
@@ -747,7 +747,17 @@ msgstr ""
 "குறிப்பு : தேடல் வலைதள முகவரியில் குறிப்பிட்ட விருப்ப அமைப்புகள், "
 "கிடைத்தத் தளங்களை சொடுக்குவதன் மூலம் தரவுகள் கசிவதால் அகவுரிமை குறையும்."
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -755,7 +765,7 @@ msgstr ""
 "இந்த அமைப்புகள் உங்கள் குக்கீகளில் சேமிக்கப்பட்டுள்ளன, இது உங்களைப் "
 "பற்றிய இந்தத் தரவைச் சேமிக்காமல் இருக்க அனுமதிக்கிறது."
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -763,15 +773,15 @@ msgstr ""
 "இந்த நினைவிகள் உங்களின் வசதிக்காக மட்டுமே. இந்த நினைவிகள் உங்களை உளவு "
 "பார்க்காது."
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "இயல்புநிலைக்குத் திருப்பவும்"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr ""
 

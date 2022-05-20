@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
 "PO-Revision-Date: 2022-03-25 01:21+0000\n"
 "Last-Translator: Colin Xu <xuzhonglinx@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -208,27 +208,27 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "搜索错误"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分钟前"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小时 {minutes} 分钟前"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "暂停服务"
 
@@ -727,27 +727,37 @@ msgid ""
 "leaking data to the clicked result sites."
 msgstr "注意：通过搜索网址保存自定义设置有可能将某些数据暴露给被点击的搜索结果的网站，不利于隐私。"
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr "这些设置被存储在您的 Cookie 中，这种保存设置的方式使我们不必保存您的设置数据。"
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr "这些 Cookie 信息用于辅助您便捷地使用本服务，我们绝不利用这些信息来跟踪您。"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr "保存"
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "恢复默认"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr "返回"
 

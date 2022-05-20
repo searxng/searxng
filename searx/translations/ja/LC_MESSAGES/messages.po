@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
-"PO-Revision-Date: 2022-05-13 07:20+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
+"PO-Revision-Date: 2022-05-20 07:19+0000\n"
 "Last-Translator: tents <remendne@pentrens.jp>\n"
 "Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "ja/>\n"
@@ -212,27 +212,27 @@ msgstr "ソース"
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "検索エラー"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分前"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "一時停止"
 
@@ -257,12 +257,10 @@ msgid "Get directions"
 msgstr "経路を取得する"
 
 #: searx/engines/pdbe.py:96
-#, fuzzy
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (廃止)"
 
 #: searx/engines/pdbe.py:103
-#, fuzzy
 msgid "This entry has been superseded by"
 msgstr "このエントリは、置き換えられました:"
 
@@ -379,7 +377,6 @@ msgstr "検索エンジンの状態"
 
 #: searx/templates/simple/base.html:58
 #: searx/templates/simple/messages/no_results.html:15
-#, fuzzy
 msgid "Public instances"
 msgstr "パブリック インスタンス"
 
@@ -698,7 +695,6 @@ msgid "Examples"
 msgstr "例"
 
 #: searx/templates/simple/preferences.html:355
-#, fuzzy
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "これは SearXNG の即席回答モジュールのリストです。"
 
@@ -738,27 +734,37 @@ msgid ""
 "leaking data to the clicked result sites."
 msgstr "注意: 検索 URL にカスタム設定を指定すると、クリックした結果サイトにデータが漏洩し、プライバシーが低下する恐れがあります。"
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr "このURLで違うブラウザに設定を復活"
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr "初期設定URLを使うことで、特別な設定をデバイスをまたいで同期できる。"
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr "これらの設定はあなたのクッキーに保存されますが、これはサーバーがあなたの情報の保存するわけではありません。"
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr "クッキーはあなたが便利に使えるようにするために使うのであって、サーバーはあなたを追跡するためにクッキーを使うことはありません。"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr "保存"
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "デフォルト設定に戻す"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr "戻る"
 
@@ -883,7 +889,6 @@ msgid "Filename"
 msgstr "ファイル名"
 
 #: searx/templates/simple/stats.html:123
-#, fuzzy
 msgid "Function"
 msgstr "ファンクション"
 

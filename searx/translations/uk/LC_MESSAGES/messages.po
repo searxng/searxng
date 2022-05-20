@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
-"PO-Revision-Date: 2022-03-09 02:41+0000\n"
-"Last-Translator: Dmitry Zakharchenko <dmitz@disroot.org>\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
+"PO-Revision-Date: 2022-05-15 18:46+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: uk\n"
 "Language-Team: Ukrainian "
 "<https://weblate.bubu1.eu/projects/searxng/searxng/uk/>\n"
@@ -27,12 +27,12 @@ msgstr ""
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr ""
+msgstr "інші"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr ""
+msgstr "інше"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -205,27 +205,27 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "Невірні налаштування, будь ласка, зробіть зміни в налаштуваннях"
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr ""
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "помилка пошуку"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} хвилин тому"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} годин, {minutes} хвилин тому"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr ""
 
@@ -736,7 +736,17 @@ msgid ""
 "leaking data to the clicked result sites."
 msgstr ""
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -744,7 +754,7 @@ msgstr ""
 "Налаштування зберігаються в ваших cookie-файлах, що дає нам змогу не "
 "зберігати ці відомості про вас."
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -752,15 +762,15 @@ msgstr ""
 "Ці cookie-файли необхідні винятково для вашої зручності, ми не "
 "використовуємо ці cookie-файли, щоб відслідковувати вас."
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "Відновити стандартні налаштування"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr ""
 
