@@ -7,27 +7,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-08 08:49+0000\n"
-"PO-Revision-Date: 2022-03-18 07:17+0000\n"
+"POT-Creation-Date: 2022-05-15 18:46+0000\n"
+"PO-Revision-Date: 2022-05-20 07:19+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Norwegian Bokmål <https://weblate.bubu1.eu/projects/searxng/"
+"searxng/nb_NO/>\n"
 "Language: nb_NO\n"
-"Language-Team: Norwegian Bokmål "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/nb_NO/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr ""
+msgstr "andre"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr ""
+msgstr "andre"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -200,27 +201,27 @@ msgstr "Kilde"
 msgid "Error loading the next page"
 msgstr "Det var et problem med lasting av neste side"
 
-#: searx/webapp.py:541 searx/webapp.py:977
+#: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige innstillinger. Rediger dine preferanser."
 
-#: searx/webapp.py:557
+#: searx/webapp.py:560
 msgid "Invalid settings"
 msgstr "Ugyldige innstillinger"
 
-#: searx/webapp.py:632 searx/webapp.py:708
+#: searx/webapp.py:635 searx/webapp.py:711
 msgid "search error"
 msgstr "søkefeil"
 
-#: searx/webapp.py:754
+#: searx/webapp.py:757
 msgid "{minutes} minute(s) ago"
 msgstr "for {minutes} minute(s) siden"
 
-#: searx/webapp.py:756
+#: searx/webapp.py:759
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "for {hours} time(r), {minutes} minutt(er) siden"
 
-#: searx/webapp.py:882
+#: searx/webapp.py:885
 msgid "Suspended"
 msgstr "I hvilemodus"
 
@@ -738,7 +739,17 @@ msgstr ""
 "Merk: Å angi egendefinerte innstillinger i søkenettadressen kan redusere "
 "personvernet ved å lekke data til sidene det klikkes på i resultatet."
 
+#: searx/templates/simple/preferences.html:409
+msgid "URL to restore your preferences in another browser"
+msgstr ""
+
 #: searx/templates/simple/preferences.html:413
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -746,7 +757,7 @@ msgstr ""
 "Disse innstillingene lagres i informasjonskapslene dine, noe som tillater"
 " oss å ikke lagre denne dataen om deg."
 
-#: searx/templates/simple/preferences.html:415
+#: searx/templates/simple/preferences.html:420
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -754,15 +765,15 @@ msgstr ""
 "Disse informasjonskapslene er kun til din nytte, de brukes ikke til å "
 "spore deg."
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:423
 msgid "Save"
 msgstr "Lagre"
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:424
 msgid "Reset defaults"
 msgstr "Tilbakestill forvalg"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:425
 msgid "Back"
 msgstr "Tilbake"
 
@@ -1203,4 +1214,3 @@ msgstr "skjul video"
 
 #~ msgid "Get image"
 #~ msgstr "Hent bilde"
-
