@@ -96,7 +96,10 @@ def response(resp):
     for result in eval_xpath(dom, '//li[@class="b_algo"]'):
 
         link = eval_xpath(result, './/h2/a')[0]
-        url = link.attrib.get('href')
+        # url = link.attrib.get('href')
+        # href attr is encoded by bing and directs back to bing for tracking
+        # instead of original. Lets extract original URL.
+        url = extract_text(eval_xpath(result, './/div[@class="b_attribution"]/cite'))
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
