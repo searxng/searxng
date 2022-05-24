@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: ["master"]
 
+permissions:
+  contents: read
+
 jobs:
   python:
     name: Python ${{ matrix.python-version }}
@@ -81,6 +84,8 @@ jobs:
   documentation:
     name: Documentation
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -125,6 +130,8 @@ jobs:
       - python
       - themes
       - documentation
+    permissions:
+      contents: write  # for make V=1 weblate.push.translations
     steps:
     - name: Checkout
       uses: actions/checkout@v2
