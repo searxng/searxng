@@ -9,11 +9,7 @@
                 <a class="result-detail-previous" href="#">{{ icon('chevron-left') }}</a>{{- "" -}}
                 <a class="result-detail-next" href="#">{{ icon('chevron-right') }}</a>{{- "" -}}
                 <a class="result-images-source" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">
-                        {%- if result.thumbnail_src -%}
-                                <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">
-                        {%- else -%}
-                                <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" loading="lazy" width="200" height="200">
-                        {%- endif -%}
+                        <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">{{- "" -}}
                 </a>{{- "" -}}
                 <div class="result-images-labels">{{- "" -}}
                         <h4>{{ result.title|striptags }}</h4>{{- "" -}}
