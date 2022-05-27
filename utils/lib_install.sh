@@ -126,7 +126,7 @@ install_log_searx_instance() {
 
     if in_container; then
         # SearXNG is listening on 127.0.0.1 and not available from outside container
-        # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
+        # in containers the service is listening on 0.0.0.0 (see lxc-searxng.env)
         echo -e "---- container setup"
         echo -e "  ${_BBlack}HINT:${_creset} SearXNG only listen on loopback device" \
              "${_BBlack}inside${_creset} the container."
@@ -198,10 +198,11 @@ if in_container; then
     # hint: Linux containers do not have DNS entries, lets use IPs
     SEARXNG_URL="http://$(primary_ip)"
 fi
+# shellcheck disable=SC2034
 PUBLIC_URL="${SEARXNG_URL}"
 
 source_dot_config
 
-# shellcheck source=utils/lxc-searx.env
-source "${REPO_ROOT}/utils/lxc-searx.env"
+# shellcheck source=utils/lxc-searxng.env
+source "${REPO_ROOT}/utils/lxc-searxng.env"
 in_container && lxc_set_suite_env

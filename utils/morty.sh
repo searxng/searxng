@@ -96,7 +96,7 @@ EOF
 
     install_log_searx_instance
     if in_container; then
-        # in containers the service is listening on 0.0.0.0 (see lxc-searx.env)
+        # in containers the service is listening on 0.0.0.0 (see lxc-searxng.env)
         for ip in $(global_IPs) ; do
             if [[ $ip =~ .*:.* ]]; then
                 echo "  container URL (IPv6): http://[${ip#*|}]:3000/"

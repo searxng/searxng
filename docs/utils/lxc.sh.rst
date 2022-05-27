@@ -23,7 +23,7 @@
 
 With the use of *Linux Containers* (LXC_) we can scale our tasks over a stack of
 containers, what we call the: *lxc suite*.  The *SearXNG suite*
-(:origin:`lxc-searx.env <utils/lxc-searx.env>`) is loaded by default, every time
+(:origin:`lxc-searxng.env <utils/lxc-searxng.env>`) is loaded by default, every time
 you start the ``lxc.sh`` script (*you do not need to care about*).
 
 Before you can start with containers, you need to install and initiate LXD_
@@ -49,7 +49,7 @@ help>`.
 
 If you do not want to build all containers, **you can build just one**::
 
-  $ sudo -H ./utils/lxc.sh build searx-ubu1804
+  $ sudo -H ./utils/lxc.sh build searx-archlinux
 
 *Good to know ...*
 
@@ -62,9 +62,9 @@ of::
 
 In the containers, you can run what ever you want, e.g. to start a bash use::
 
-  $ sudo -H ./utils/lxc.sh cmd searx-ubu1804 bash
-  INFO:  [searx-ubu1804] bash
-  root@searx-ubu1804:/share/searx#
+  $ sudo -H ./utils/lxc.sh cmd searx-archlinux bash
+  INFO:  [searx-archlinux] bash
+  root@searx-archlinux:/share/searxng#
 
 If there comes the time you want to **get rid off all** the containers and
 **clean up local images** just type::
@@ -121,28 +121,26 @@ Install suite
 =============
 
 To install the complete :ref:`SearXNG suite (includes searx, morty & filtron)
-<lxc-searx.env>` into all LXC_ use::
+<lxc-searxng.env>` into all LXC_ use::
 
   $ sudo -H ./utils/lxc.sh install suite
 
-The command above installs a SearXNG suite (see :ref:`installation scripts`).  To
-get the IP (URL) of the filtron service in the containers use ``show suite``
+The command above installs a SearXNG suite (see :ref:`installation scripts`).
+To :ref:`install a nginx <installation nginx>` reverse proxy (or alternatively
+use :ref:`apache <installation apache>`)::
+
+    sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
+
+To get the IP (URL) of the SearXNG service in the containers use ``show suite``
 command.  To test instances from containers just open the URLs in your
 WEB-Browser::
 
-  $ sudo ./utils/lxc.sh show suite | grep filtron
-  [searx-ubu1604]  INFO:  (eth0) filtron:    http://n.n.n.246:4004/ http://n.n.n.246/searx
-  [searx-ubu1804]  INFO:  (eth0) filtron:    http://n.n.n.147:4004/ http://n.n.n.147/searx
-  [searx-ubu1910]  INFO:  (eth0) filtron:    http://n.n.n.140:4004/ http://n.n.n.140/searx
-  [searx-ubu2004]  INFO:  (eth0) filtron:    http://n.n.n.18:4004/ http://n.n.n.18/searx
-  [searx-fedora31]  INFO:  (eth0) filtron:    http://n.n.n.46:4004/ http://n.n.n.46/searx
-  [searx-archlinux]  INFO:  (eth0) filtron:    http://n.n.n.32:4004/ http://n.n.n.32/searx
+  $ sudo ./utils/lxc.sh show suite | grep SEARXNG_URL
 
-To :ref:`install a nginx <installation nginx>` reverse proxy for filtron and
-morty use (or alternatively use :ref:`apache <installation apache>`)::
-
-    sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/filtron.sh nginx install
-    sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/morty.sh nginx install
+  [searxng-ubu2110]      SEARXNG_URL          : http://n.n.n.147/searxng
+  [searxng-ubu2004]      SEARXNG_URL          : http://n.n.n.246/searxng
+  [searxnggfedora35]     SEARXNG_URL          : http://n.n.n.140/searxng
+  [searxng-archlinux]    SEARXNG_URL          : http://n.n.n.165/searxng
 
 
 Running commands
@@ -152,7 +150,7 @@ Running commands
 :ref:`toolboxing`.  By example: to setup a :ref:`buildhosts` and run the
 Makefile target ``test`` in the archlinux_ container::
 
-  sudo -H ./utils/lxc.sh cmd searx-archlinux ./utils/searx.sh install buildhost
+  sudo -H ./utils/lxc.sh cmd searx-archlinux ./utils/searxng.sh install buildhost
   sudo -H ./utils/lxc.sh cmd searx-archlinux make test
 
 
@@ -164,7 +162,7 @@ The installation procedure to set up a :ref:`build host<buildhosts>` takes its
 time.  Installation in all containers will take more time (time for another cup
 of coffee).::
 
-  sudo -H ./utils/lxc.sh cmd -- ./utils/searx.sh install buildhost
+  sudo -H ./utils/lxc.sh cmd -- ./utils/searxng.sh install buildhost
 
 To build (live) documentation inside a archlinux_ container::
 
@@ -189,10 +187,10 @@ The ``--help`` output of the script is largely self-explanatory:
 .. program-output:: ../utils/lxc.sh --help
 
 
-.. _lxc-searx.env:
+.. _lxc-searxng.env:
 
 SearXNG suite
 =============
 
-.. literalinclude:: ../../utils/lxc-searx.env
+.. literalinclude:: ../../utils/lxc-searxng.env
    :language: bash

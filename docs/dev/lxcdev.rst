@@ -91,8 +91,8 @@ fork:
         $ git clone https://github.com/searxng/searxng.git searxng
         $ cd searxng
 
-The :ref:`lxc-searx.env` consists of several images, see ``export
-LXC_SUITE=(...`` near by :origin:`utils/lxc-searx.env#L19`.  For this blog post
+The :ref:`lxc-searxng.env` consists of several images, see ``export
+LXC_SUITE=(...`` near by :origin:`utils/lxc-searxng.env#L19`.  For this blog post
 we exercise on a archlinux_ image.  The container of this image is named
 ``searx-archlinux``.  Lets build the container, but be sure that this container
 does not already exists, so first lets remove possible old one:

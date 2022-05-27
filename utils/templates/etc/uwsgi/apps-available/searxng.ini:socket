@@ -6,7 +6,11 @@
 #
 # https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core
 
-# Who will run the code
+# Who will run the code / Hint: in emperor-tyrant mode uid & gid setting will be
+# ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).
+#
+# [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting
+#
 uid = ${SERVICE_USER}
 gid = ${SERVICE_GROUP}
 
@@ -64,24 +68,7 @@ pythonpath = ${SEARXNG_SRC}
 
 # speak to upstream
 # -----------------
-#
-# Activate the 'http' configuration for filtron or activate the 'socket'
-# configuration if you setup your HTTP server to use uWSGI protocol via sockets.
 
-# using IP:
-#
-# https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-http
-# Native HTTP support: https://uwsgi-docs.readthedocs.io/en/latest/HTTP.html
-
-# http = ${SEARXNG_INTERNAL_HTTP}
-
-# using unix-sockets:
-#
-# Don't forget to create the folder where the sockets should take place::
-#
-#   mkdir -p "$(dirname ${SEARXNG_UWSGI_SOCKET})"
-#   chown -R "${SERVICE_USER}:${SERVICE_GROUP}" "$(dirname ${SEARXNG_UWSGI_SOCKET})"
-#
 socket = ${SEARXNG_UWSGI_SOCKET}
 
 # uWSGI serves the static files and in settings.yml we use::

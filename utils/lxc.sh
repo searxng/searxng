@@ -9,7 +9,7 @@ source_dot_config
 source "${REPO_ROOT}/utils/brand.env"
 
 # load environment of the LXC suite
-LXC_ENV="${LXC_ENV:-${REPO_ROOT}/utils/lxc-searx.env}"
+LXC_ENV="${LXC_ENV:-${REPO_ROOT}/utils/lxc-searxng.env}"
 source "$LXC_ENV"
 lxc_set_suite_env
 
