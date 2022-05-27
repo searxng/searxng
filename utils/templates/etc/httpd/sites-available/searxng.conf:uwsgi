@@ -3,8 +3,8 @@
 LoadModule headers_module       ${APACHE_MODULES}/mod_headers.so
 LoadModule proxy_module         ${APACHE_MODULES}/mod_proxy.so
 LoadModule proxy_uwsgi_module   ${APACHE_MODULES}/mod_proxy_uwsgi.so
-# LoadModule setenvif_module ${APACHE_MODULES}/mod_setenvif.so
-
+# LoadModule setenvif_module      ${APACHE_MODULES}/mod_setenvif.so
+#
 # SetEnvIf Request_URI "${SEARXNG_URL_PATH}" dontlog
 # CustomLog /dev/null combined env=dontlog
 
@@ -22,6 +22,13 @@ LoadModule proxy_uwsgi_module   ${APACHE_MODULES}/mod_proxy_uwsgi.so
     Allow from all
 
     ProxyPreserveHost On
-    ProxyPass unix:${SEARX_UWSGI_SOCKET}|uwsgi://uwsgi-uds-searx/
+    ProxyPass unix:${SEARXNG_UWSGI_SOCKET}|uwsgi://uwsgi-uds-searx/
 
 </Location>
+
+# uWSGI serves the static files and in settings.yml we use::
+#
+#   ui:
+#     static_use_hash: true
+#
+# Alias ${SEARXNG_URL_PATH}/static/ ${SEARXNG_STATIC}/

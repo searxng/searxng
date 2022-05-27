@@ -1,4 +1,4 @@
-.. template evaluated by: ./utils/searx.sh docs
+.. template evaluated by: ./utils/searx.sh doc
 .. hint: all dollar-names are variables, dollar sign itself is quoted by: \\$
 
 .. START distro-packages
@@ -81,7 +81,7 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H -u ${SERVICE_USER} -i
-       (${SERVICE_USER})$ git clone \"$GIT_URL\" \"$SEARX_SRC\"
+       (${SERVICE_USER})$ git clone \"$GIT_URL\" \"$SEARXNG_SRC\"
 
 .. END clone searxng
 
@@ -93,8 +93,8 @@ ${fedora_build}
 
     .. code-block:: sh
 
-       (${SERVICE_USER})$ python3 -m venv \"${SEARX_PYENV}\"
-       (${SERVICE_USER})$ echo \". ${SEARX_PYENV}/bin/activate\" >>  \"$SERVICE_HOME/.profile\"
+       (${SERVICE_USER})$ python3 -m venv \"${SEARXNG_PYENV}\"
+       (${SERVICE_USER})$ echo \". ${SEARXNG_PYENV}/bin/activate\" >>  \"$SERVICE_HOME/.profile\"
 
 .. END create virtualenv
 
@@ -109,7 +109,7 @@ ${fedora_build}
        $ sudo -H -u ${SERVICE_USER} -i
 
        (${SERVICE_USER})$ command -v python && python --version
-       $SEARX_PYENV/bin/python
+       $SEARXNG_PYENV/bin/python
        Python 3.8.1
 
        # update pip's boilerplate ..
@@ -119,7 +119,7 @@ ${fedora_build}
        pip install -U pyyaml
 
        # jump to SearXNG's working tree and install SearXNG into virtualenv
-       (${SERVICE_USER})$ cd \"$SEARX_SRC\"
+       (${SERVICE_USER})$ cd \"$SEARXNG_SRC\"
        (${SERVICE_USER})$ pip install -e .
 
 
@@ -134,7 +134,7 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
-       $ sudo -H cp \"$SEARX_SRC/utils/templates/etc/searxng/settings.yml\" \\
+       $ sudo -H cp \"$SEARXNG_SRC/utils/templates/etc/searxng/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
   .. group-tab:: searx/settings.yml
@@ -142,7 +142,7 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
-       $ sudo -H cp \"$SEARX_SRC/searx/settings.yml\" \\
+       $ sudo -H cp \"$SEARXNG_SRC/searx/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
 .. tabs::
@@ -168,14 +168,14 @@ ${fedora_build}
 
        # start webapp
        $ sudo -H -u ${SERVICE_USER} -i
-       (${SERVICE_USER})$ cd ${SEARX_SRC}
+       (${SERVICE_USER})$ cd ${SEARXNG_SRC}
        (${SERVICE_USER})$ export SEARXNG_SETTINGS_PATH=\"${SEARXNG_SETTINGS_PATH}\"
        (${SERVICE_USER})$ python searx/webapp.py
 
        # disable debug
        $ sudo -H sed -i -e \"s/debug : True/debug : False/g\" \"$SEARXNG_SETTINGS_PATH\"
 
-Open WEB browser and visit http://$SEARX_INTERNAL_HTTP .  If you are inside a
+Open WEB browser and visit http://$SEARXNG_INTERNAL_HTTP .  If you are inside a
 container or in a script, test with curl:
 
 .. tabs::
@@ -184,13 +184,13 @@ container or in a script, test with curl:
 
     .. code-block:: sh
 
-       $ xdg-open http://$SEARX_INTERNAL_HTTP
+       $ xdg-open http://$SEARXNG_INTERNAL_HTTP
 
   .. group-tab:: curl
 
     .. code-block:: none
 
-       $ curl --location --verbose --head --insecure $SEARX_INTERNAL_HTTP
+       $ curl --location --verbose --head --insecure $SEARXNG_INTERNAL_HTTP
 
        *   Trying 127.0.0.1:8888...
        * TCP_NODELAY set

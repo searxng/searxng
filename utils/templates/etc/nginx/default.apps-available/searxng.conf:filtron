@@ -12,5 +12,5 @@ location ${SEARXNG_URL_PATH} {
 }
 
 location ${SEARXNG_URL_PATH}/static/ {
-    alias ${SEARX_SRC}/searx/static/;
+    alias ${SEARXNG_STATIC}/;
 }

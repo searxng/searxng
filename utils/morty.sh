@@ -502,7 +502,7 @@ This installs a reverse proxy (ProxyPass) into nginx site (${NGINX_MORTY_SITE})"
     "${REPO_ROOT}/utils/searx.sh" install uwsgi
 
     # shellcheck disable=SC2034
-    SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
+    SEARXNG_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_SRC)
     # shellcheck disable=SC2034
     SEARXNG_URL_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_URL_PATH)
     nginx_install_app "${NGINX_MORTY_SITE}"

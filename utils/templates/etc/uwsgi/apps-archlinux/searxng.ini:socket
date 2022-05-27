@@ -16,7 +16,7 @@ env = LANGUAGE=C.UTF-8
 env = LC_ALL=C.UTF-8
 
 # chdir to specified directory before apps loading
-chdir = ${SEARX_SRC}/searx
+chdir = ${SEARXNG_SRC}/searx
 
 # SearXNG configuration (settings.yml)
 env = SEARXNG_SETTINGS_PATH=${SEARXNG_SETTINGS_PATH}
@@ -57,10 +57,10 @@ enable-threads = true
 module = searx.webapp
 
 # set PYTHONHOME/virtualenv
-virtualenv = ${SEARX_PYENV}
+virtualenv = ${SEARXNG_PYENV}
 
 # add directory (or glob) to pythonpath
-pythonpath = ${SEARX_SRC}
+pythonpath = ${SEARXNG_SRC}
 
 
 # speak to upstream
@@ -74,20 +74,24 @@ pythonpath = ${SEARX_SRC}
 # https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-http
 # Native HTTP support: https://uwsgi-docs.readthedocs.io/en/latest/HTTP.html
 
-# http = ${SEARX_INTERNAL_HTTP}
+# http = ${SEARXNG_INTERNAL_HTTP}
 
 # using unix-sockets:
 #
-# On some distributions you need to create the app folder for the sockets::
+# Don't forget to create the folder where the sockets should take place::
 #
-#   mkdir -p ${SEARX_UWSGI_SOCKET}
-#   chown -R ${SERVICE_USER}:${SERVICE_GROUP} ${SEARX_UWSGI_SOCKET}
+#   mkdir -p "$(dirname ${SEARXNG_UWSGI_SOCKET})"
+#   chown -R "${SERVICE_USER}:${SERVICE_GROUP}" "$(dirname ${SEARXNG_UWSGI_SOCKET})"
 #
-socket = ${SEARX_UWSGI_SOCKET}
+socket = ${SEARXNG_UWSGI_SOCKET}
 
-# uwsgi serves the static files
+# uWSGI serves the static files and in settings.yml we use::
+#
+#   ui:
+#     static_use_hash: true
+#
+static-map = /static=${SEARXNG_STATIC}
 # expires set to one year since there are hashes
-static-map = /static=${SEARX_SRC}/searx/static
 static-expires = /* 31557600
 static-gzip-all = True
 offload-threads = %k

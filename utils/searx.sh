@@ -12,7 +12,7 @@ source "${REPO_ROOT}/utils/lib_install.sh"
 # config
 # ----------------------------------------------------------------------------
 
-SEARX_INTERNAL_HTTP="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
+SEARXNG_INTERNAL_HTTP="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
 
 SEARXNG_URL_PATH="${SEARXNG_URL_PATH:-$(echo "${PUBLIC_URL}" \
 | sed -e 's,^.*://[^/]*\(/.*\),\1,g')}"
@@ -26,12 +26,14 @@ SERVICE_HOME="${SERVICE_HOME_BASE}/${SERVICE_USER}"
 SERVICE_GROUP="${SERVICE_USER}"
 
 GIT_BRANCH="${GIT_BRANCH:-master}"
-SEARX_PYENV="${SERVICE_HOME}/searx-pyenv"
-SEARX_SRC="${SERVICE_HOME}/searx-src"
+SEARXNG_PYENV="${SERVICE_HOME}/searx-pyenv"
+SEARXNG_SRC="${SERVICE_HOME}/searx-src"
+# shellcheck disable=SC2034
+SEARXNG_STATIC="${SEARXNG_SRC}/searx/static"
 SEARXNG_SETTINGS_PATH="/etc/searxng/settings.yml"
 SEARXNG_UWSGI_APP="searxng.ini"
 # shellcheck disable=SC2034
-SEARX_UWSGI_SOCKET="/run/uwsgi/app/searxng/socket"
+SEARXNG_UWSGI_SOCKET="/run/uwsgi/app/searxng/socket"
 
 # apt packages
 SEARX_PACKAGES_debian="\
@@ -153,10 +155,10 @@ shell
 install / remove
   :all:        complete (de-) installation of SearXNG service
   :user:       add/remove service user '$SERVICE_USER' ($SERVICE_HOME)
-  :dot-config: copy ./config.sh to ${SEARX_SRC}
+  :dot-config: copy ./config.sh to ${SEARXNG_SRC}
   :searx-src:  clone $GIT_URL
-  :init-src:   copy files (SEARX_SRC_INIT_FILES) to ${SEARX_SRC}
-  :pyenv:      create/remove virtualenv (python) in $SEARX_PYENV
+  :init-src:   copy files (SEARXNG_SRC_INIT_FILES) to ${SEARXNG_SRC}
+  :pyenv:      create/remove virtualenv (python) in $SEARXNG_PYENV
   :uwsgi:      install SearXNG uWSGI application
   :settings:   reinstall settings from ${SEARXNG_SETTINGS_PATH}
   :packages:   install needed packages from OS package manager
@@ -173,7 +175,7 @@ deactivate service
   stop and deactivate service daemon (systemd unit)
 inspect
   :service:    run some small tests and inspect service's status and log
-  :settings:   inspect YAML setting <key> from SearXNG instance (${SEARX_SRC})
+  :settings:   inspect YAML setting <key> from SearXNG instance (${SEARXNG_SRC})
 option
   set one of the available options
 apache
@@ -267,8 +269,8 @@ main() {
                     rst_title "SearXNG (install uwsgi)"
                     verify_continue_install
                     install_searx_uwsgi
-                    if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
-                        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
+                    if ! service_is_available "http://${SEARXNG_INTERNAL_HTTP}"; then
+                        err_msg "URL http://${SEARXNG_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
                     fi
                     ;;
                 packages)
@@ -355,8 +357,8 @@ install_all() {
     test_local_searx
     wait_key
     install_searx_uwsgi
-    if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
-        err_msg "URL http://${SEARX_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
+    if ! service_is_available "http://${SEARXNG_INTERNAL_HTTP}"; then
+        err_msg "URL http://${SEARXNG_INTERNAL_HTTP} not available, check SearXNG & uwsgi setup!"
     fi
     if ask_yn "Do you want to inspect the installation?" Ny; then
         inspect_service
@@ -391,7 +393,7 @@ install_check() {
     uWSGI_app_available "$SEARXNG_UWSGI_APP" \
         || err_msg "uWSGI app $SEARXNG_UWSGI_APP not available!"
 
-    sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" "utils/searxng_check.py"
+    sudo -H -u "${SERVICE_USER}" "${SEARXNG_PYENV}/bin/python" "utils/searxng_check.py"
 
     if uWSGI_app_available 'searx.ini'; then
         warn_msg "old searx.ini uWSGI app exists"
@@ -404,7 +406,7 @@ update_searx() {
 
     rst_para "fetch from $GIT_URL and reset to origin/$GIT_BRANCH"
     tee_stderr 0.3 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 git fetch origin "$GIT_BRANCH"
 git reset --hard "origin/$GIT_BRANCH"
 pip install -U pip
@@ -458,7 +460,7 @@ EOF
 }
 
 clone_is_available() {
-    [[ -f "$SEARX_SRC/.git/config" ]]
+    [[ -f "$SEARXNG_SRC/.git/config" ]]
 }
 
 # shellcheck disable=SC2164
@@ -482,12 +484,12 @@ clone_searx() {
         warn_msg "take into account, installing branch $GIT_BRANCH while current branch is $(git rev-parse --abbrev-ref HEAD)"
     fi
     export SERVICE_HOME
-    git_clone "$REPO_ROOT" "$SEARX_SRC" \
+    git_clone "$REPO_ROOT" "$SEARXNG_SRC" \
               "$GIT_BRANCH" "$SERVICE_USER"
 
-    pushd "${SEARX_SRC}" > /dev/null
+    pushd "${SEARXNG_SRC}" > /dev/null
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
-cd "${SEARX_SRC}"
+cd "${SEARXNG_SRC}"
 git remote set-url origin ${GIT_URL}
 git config user.email "$ADMIN_EMAIL"
 git config user.name "$ADMIN_NAME"
@@ -509,7 +511,7 @@ prompt_installation_status(){
             return 0
             ;;
         *)
-            info_msg "SearXNG instance already installed at: $SEARX_SRC"
+            info_msg "SearXNG instance already installed at: $SEARXNG_SRC"
             info_msg "status:  ${_BBlue}$(install_searx_get_state)${_creset} "
             branch="$(git name-rev --name-only HEAD)"
             remote="$(git config branch."${branch}".remote)"
@@ -549,7 +551,7 @@ prompt_installation_setting(){
     _state="$(install_searx_get_state)"
     case $_state in
         python-installed|installer-modified)
-            sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" <<EOF
+            sudo -H -u "${SERVICE_USER}" "${SEARXNG_PYENV}/bin/python" <<EOF
 import sys
 from searx import get_setting
 name = "${1}"
@@ -578,7 +580,7 @@ get_installed_version_variables() {
     _state="$(install_searx_get_state)"
     case $_state in
         python-installed|installer-modified)
-            sudo -H -u "${SERVICE_USER}" "${SEARX_PYENV}/bin/python" -m searx.version;;
+            sudo -H -u "${SERVICE_USER}" "${SEARXNG_PYENV}/bin/python" -m searx.version;;
         *)
             return 42
             ;;
@@ -586,7 +588,7 @@ get_installed_version_variables() {
 }
 
 init_SEARX_SRC(){
-    rst_title "Update instance: ${SEARX_SRC}/" section
+    rst_title "Update instance: ${SEARXNG_SRC}/" section
 
     if ! clone_is_available; then
         err_msg "you have to install SearXNG first"
@@ -624,19 +626,19 @@ init_SEARX_SRC(){
                     break
                     ;;
                 "replace file")
-                    info_msg "copy: ${REPO_ROOT}/${fname} --> ${SEARX_SRC}/${fname}"
-                    cp "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"
+                    info_msg "copy: ${REPO_ROOT}/${fname} --> ${SEARXNG_SRC}/${fname}"
+                    cp "${REPO_ROOT}/${fname}" "${SEARXNG_SRC}/${fname}"
                     break
                     ;;
                 "diff files")
-                    $DIFF_CMD "${SEARX_SRC}/${fname}" "${REPO_ROOT}/${fname}"
+                    $DIFF_CMD "${SEARXNG_SRC}/${fname}" "${REPO_ROOT}/${fname}"
                     ;;
                 "interactive shell")
-                    backup_file "${SEARX_SRC}/${fname}"
+                    backup_file "${SEARXNG_SRC}/${fname}"
                     echo -e "// edit ${_Red}${dst}${_creset} to your needs"
                     echo -e "// exit with [${_BCyan}CTRL-D${_creset}]"
                     sudo -H -u "${SERVICE_USER}" -i
-                    $DIFF_CMD "${SEARX_SRC}/${fname}"  "${REPO_ROOT}/${fname}"
+                    $DIFF_CMD "${SEARXNG_SRC}/${fname}"  "${REPO_ROOT}/${fname}"
                     echo
                     echo -e "// ${_BBlack}did you edit file ...${_creset}"
                     echo -en "//  ${_Red}${dst}${_creset}"
@@ -650,19 +652,19 @@ init_SEARX_SRC(){
 }
 
 install_DOT_CONFIG(){
-    rst_title "Update instance: ${SEARX_SRC}/.config.sh" section
+    rst_title "Update instance: ${SEARXNG_SRC}/.config.sh" section
 
-    if cmp --silent "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"; then
-        info_msg "${SEARX_SRC}/.config.sh is up to date"
+    if cmp --silent "${REPO_ROOT}/.config.sh" "${SEARXNG_SRC}/.config.sh"; then
+        info_msg "${SEARXNG_SRC}/.config.sh is up to date"
         return 0
     fi
 
-    diff "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"
+    diff "${REPO_ROOT}/.config.sh" "${SEARXNG_SRC}/.config.sh"
     if ! ask_yn "Do you want to copy file .config.sh into instance?" Yn; then
         return 42
     fi
-    backup_file "${SEARX_SRC}/.config.sh"
-    cp "${REPO_ROOT}/.config.sh" "${SEARX_SRC}/.config.sh"
+    backup_file "${SEARXNG_SRC}/.config.sh"
+    cp "${REPO_ROOT}/.config.sh" "${SEARXNG_SRC}/.config.sh"
 }
 
 install_settings() {
@@ -689,30 +691,30 @@ remove_settings() {
 
 remove_searx() {
     rst_title "Drop SearXNG sources" section
-    if ask_yn "Do you really want to drop SearXNG sources ($SEARX_SRC)?"; then
-        rm -rf "$SEARX_SRC"
+    if ask_yn "Do you really want to drop SearXNG sources ($SEARXNG_SRC)?"; then
+        rm -rf "$SEARXNG_SRC"
     else
         rst_para "Leave SearXNG sources unchanged."
     fi
 }
 
 pyenv_is_available() {
-    [[ -f "${SEARX_PYENV}/bin/activate" ]]
+    [[ -f "${SEARXNG_PYENV}/bin/activate" ]]
 }
 
 create_pyenv() {
     rst_title "Create virtualenv (python)" section
     echo
-    if [[ ! -f "${SEARX_SRC}/manage" ]]; then
+    if [[ ! -f "${SEARXNG_SRC}/manage" ]]; then
         err_msg "to create pyenv for SearXNG, SearXNG has to be cloned first"
         return 42
     fi
-    info_msg "create pyenv in ${SEARX_PYENV}"
+    info_msg "create pyenv in ${SEARXNG_PYENV}"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
-rm -rf "${SEARX_PYENV}"
-python3 -m venv "${SEARX_PYENV}"
-grep -qFs -- 'source ${SEARX_PYENV}/bin/activate' ~/.profile \
-  || echo 'source ${SEARX_PYENV}/bin/activate' >> ~/.profile
+rm -rf "${SEARXNG_PYENV}"
+python3 -m venv "${SEARXNG_PYENV}"
+grep -qFs -- 'source ${SEARXNG_PYENV}/bin/activate' ~/.profile \
+  || echo 'source ${SEARXNG_PYENV}/bin/activate' >> ~/.profile
 EOF
     info_msg "inspect python's virtual environment"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
@@ -725,22 +727,22 @@ pip install -U pip
 pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 pip install -e .
 EOF
 }
 
 remove_pyenv() {
     rst_title "Remove virtualenv (python)" section
-    if ! ask_yn "Do you really want to drop ${SEARX_PYENV} ?"; then
+    if ! ask_yn "Do you really want to drop ${SEARXNG_PYENV} ?"; then
         return
     fi
     info_msg "remove pyenv activation from ~/.profile"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
-grep -v 'source ${SEARX_PYENV}/bin/activate' ~/.profile > ~/.profile.##
+grep -v 'source ${SEARXNG_PYENV}/bin/activate' ~/.profile > ~/.profile.##
 mv ~/.profile.## ~/.profile
 EOF
-    rm -rf "${SEARX_PYENV}"
+    rm -rf "${SEARXNG_PYENV}"
 }
 
 configure_searx() {
@@ -748,7 +750,7 @@ configure_searx() {
     rst_para "Setup SearXNG config located at $SEARXNG_SETTINGS_PATH"
     echo
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "$SEARXNG_SETTINGS_PATH"
 EOF
 }
@@ -757,8 +759,8 @@ test_local_searx() {
     rst_title "Testing SearXNG instance localy" section
     echo
 
-    if service_is_available "http://${SEARX_INTERNAL_HTTP}" &>/dev/null; then
-        err_msg "URL/port http://${SEARX_INTERNAL_HTTP} is already in use, you"
+    if service_is_available "http://${SEARXNG_INTERNAL_HTTP}" &>/dev/null; then
+        err_msg "URL/port http://${SEARXNG_INTERNAL_HTTP} is already in use, you"
         err_msg "should stop that service before starting local tests!"
         if ! ask_yn "Continue with local tests?"; then
             return
@@ -767,10 +769,10 @@ test_local_searx() {
     sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
 export SEARXNG_SETTINGS_PATH="${SEARXNG_SETTINGS_PATH}"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 timeout 10 python searx/webapp.py &
 sleep 3
-curl --location --verbose --head --insecure $SEARX_INTERNAL_HTTP
+curl --location --verbose --head --insecure $SEARXNG_INTERNAL_HTTP
 EOF
     sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 }
@@ -805,7 +807,7 @@ deactivate_service() {
 enable_image_proxy() {
     info_msg "try to enable image_proxy ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 sed -i -e "s/image_proxy: false/image_proxy: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARXNG_UWSGI_APP"
@@ -814,7 +816,7 @@ EOF
 disable_image_proxy() {
     info_msg "try to enable image_proxy ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 sed -i -e "s/image_proxy: true/image_proxy: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARXNG_UWSGI_APP"
@@ -824,7 +826,7 @@ enable_debug() {
     warn_msg "Do not enable debug in production environments!!"
     info_msg "try to enable debug mode ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARXNG_UWSGI_APP"
@@ -833,7 +835,7 @@ EOF
 disable_debug() {
     info_msg "try to disable debug mode ..."
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
-cd ${SEARX_SRC}
+cd ${SEARXNG_SRC}
 sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
     uWSGI_restart "$SEARXNG_UWSGI_APP"
@@ -903,11 +905,11 @@ EOF
         lxc_suite_info
     else
         info_msg "public URL   --> ${PUBLIC_URL}"
-        info_msg "internal URL --> http://${SEARX_INTERNAL_HTTP}"
+        info_msg "internal URL --> http://${SEARXNG_INTERNAL_HTTP}"
     fi
 
-    if ! service_is_available "http://${SEARX_INTERNAL_HTTP}"; then
-        err_msg "uWSGI app (service) at http://${SEARX_INTERNAL_HTTP} is not available!"
+    if ! service_is_available "http://${SEARXNG_INTERNAL_HTTP}"; then
+        err_msg "uWSGI app (service) at http://${SEARXNG_INTERNAL_HTTP} is not available!"
         MSG="${_Green}[${_BCyan}CTRL-C${_Green}] to stop or [${_BCyan}KEY${_Green}] to continue"\
            wait_key
     fi

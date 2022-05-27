@@ -8,7 +8,7 @@
 # Initialize installation procedures:
 #
 # - Modified source_dot_config function that
-#   - loads .config.sh from an existing installation (at SEARX_SRC).
+#   - loads .config.sh from an existing installation (at SEARXNG_SRC).
 #   - initialize **SEARX_SRC_INIT_FILES**
 # - functions like:
 #   - install_log_searx_instance()
@@ -25,13 +25,13 @@
 # - utils/morty.sh
 # - utils/filtron.sh
 #
-# If '${SEARX_SRC}/.config.sh' exists, the modified source_dot_config() function
+# If '${SEARXNG_SRC}/.config.sh' exists, the modified source_dot_config() function
 # loads this configuration (instead of './.config.sh').
 
 # **SEARX_SRC_INIT_FILES**
 #
-# Array of file names to sync into a installation at $SEARX_SRC.  The file names
-# are relative to the $REPO_ROOT.  Set by function init_SEARX_SRC_INIT_FILES().
+# Array of file names to sync into a installation at $SEARXNG_SRC.  The file names
+# are relative to the $REPO_ROOT.  Set by function init_SEARXNG_SRC_INIT_FILES().
 # Most often theses are files like:
 # - .config.sh
 # - searx/settings.yml
@@ -46,25 +46,25 @@ eval orig_"$(declare -f source_dot_config)"
 source_dot_config() {
 
     # Modified source_dot_config function that
-    # - loads .config.sh from an existing installation (at SEARX_SRC).
+    # - loads .config.sh from an existing installation (at SEARXNG_SRC).
     # - initialize SEARX_SRC_INIT_FILES
 
-    if [ -z "$eval_SEARX_SRC" ]; then
-        export eval_SEARX_SRC='true'
-        SEARX_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_SRC)
-        SEARX_PYENV=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARX_PYENV)
+    if [ -z "$eval_SEARXNG_SRC" ]; then
+        export eval_SEARXNG_SRC='true'
+        SEARXNG_SRC=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_SRC)
+        SEARXNG_PYENV=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_PYENV)
         SEARXNG_SETTINGS_PATH=$("${REPO_ROOT}/utils/searx.sh" --getenv SEARXNG_SETTINGS_PATH)
-        if [ ! -r "${SEARX_SRC}" ]; then
-            info_msg "not yet cloned: ${SEARX_SRC}"
+        if [ ! -r "${SEARXNG_SRC}" ]; then
+            info_msg "not yet cloned: ${SEARXNG_SRC}"
             orig_source_dot_config
             return 0
         fi
-        info_msg "using instance at: ${SEARX_SRC}"
+        info_msg "using instance at: ${SEARXNG_SRC}"
 
         # set and log DOT_CONFIG
-        if [ -r "${SEARX_SRC}/.config.sh" ]; then
-            info_msg "switching to ${SEARX_SRC}/.config.sh"
-            DOT_CONFIG="${SEARX_SRC}/.config.sh"
+        if [ -r "${SEARXNG_SRC}/.config.sh" ]; then
+            info_msg "switching to ${SEARXNG_SRC}/.config.sh"
+            DOT_CONFIG="${SEARXNG_SRC}/.config.sh"
         else
             info_msg "using local config: ${DOT_CONFIG}"
         fi
@@ -86,7 +86,7 @@ init_SEARX_SRC_INIT_FILES(){
 
     # keep list empty if there is no installation
     SEARX_SRC_INIT_FILES=()
-    if [ ! -r "$SEARX_SRC" ]; then
+    if [ ! -r "$SEARXNG_SRC" ]; then
         return 0
     fi
 
@@ -104,9 +104,9 @@ init_SEARX_SRC_INIT_FILES(){
         if [ -z "$fname" ]; then
             continue
         fi
-        if [ -r "${SEARX_SRC}/${fname}" ]; then
-            # diff  "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"
-            if ! cmp --silent "${REPO_ROOT}/${fname}" "${SEARX_SRC}/${fname}"; then
+        if [ -r "${SEARXNG_SRC}/${fname}" ]; then
+            # diff  "${REPO_ROOT}/${fname}" "${SEARXNG_SRC}/${fname}"
+            if ! cmp --silent "${REPO_ROOT}/${fname}" "${SEARXNG_SRC}/${fname}"; then
                 SEARX_SRC_INIT_FILES+=("${fname}")
                 info_msg "local clone (workingtree), modified file: ./$fname"
                 msg="to update use:  sudo -H ./utils/searx.sh install init-src"
@@ -120,8 +120,8 @@ install_log_searx_instance() {
 
     echo -e "---- SearXNG instance setup ${_BBlue}(status: $(install_searx_get_state))${_creset}"
     echo -e "  SEARXNG_SETTINGS_PATH : ${_BBlue}${SEARXNG_SETTINGS_PATH}${_creset}"
-    echo -e "  SEARX_PYENV         : ${_BBlue}${SEARX_PYENV}${_creset}"
-    echo -e "  SEARX_SRC           : ${_BBlue}${SEARX_SRC:-none}${_creset}"
+    echo -e "  SEARXNG_PYENV         : ${_BBlue}${SEARXNG_PYENV}${_creset}"
+    echo -e "  SEARXNG_SRC           : ${_BBlue}${SEARXNG_SRC:-none}${_creset}"
     echo -e "  SEARXNG_URL         : ${_BBlue}${SEARXNG_URL:-none}${_creset}"
 
     if in_container; then
@@ -148,26 +148,26 @@ install_searx_get_state(){
     # Prompts a string indicating the status of the installation procedure
     #
     # missing-searx-clone:
-    #    There is no clone at ${SEARX_SRC}
+    #    There is no clone at ${SEARXNG_SRC}
     # missing-searx-pyenv:
-    #    There is no pyenv in ${SEARX_PYENV}
+    #    There is no pyenv in ${SEARXNG_PYENV}
     # installer-modified:
     #    There are files modified locally in the installer (clone),
     #    see ${SEARX_SRC_INIT_FILES} description.
     # python-installed:
     #    Scripts can be executed in instance's environment
     #    - user:  ${SERVICE_USER}
-    #    - pyenv: ${SEARX_PYENV}
+    #    - pyenv: ${SEARXNG_PYENV}
 
     if [ -f /etc/searx/settings.yml ]; then
         err_msg "settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/"
     fi
 
-    if ! [ -r "${SEARX_SRC}" ]; then
+    if ! [ -r "${SEARXNG_SRC}" ]; then
         echo "missing-searx-clone"
         return
     fi
-    if ! [ -f "${SEARX_PYENV}/bin/activate" ]; then
+    if ! [ -f "${SEARXNG_PYENV}/bin/activate" ]; then
         echo "missing-searx-pyenv"
         return
     fi

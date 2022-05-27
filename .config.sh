@@ -4,7 +4,7 @@
 #
 # This file should be edited only ones just before the installation of any
 # service is done.  After the installation of the searx service a copy of this
-# file is placed into the $SEARX_SRC of the instance, e.g.::
+# file is placed into the $SEARXNG_SRC of the instance, e.g.::
 #
 #     /usr/local/searx/searx-src/.config.sh
 #
@@ -24,7 +24,7 @@
 #     $ ./utils/searx.sh --help
 #     ---- SearXNG instance setup (already installed)
 #       SEARXNG_SETTINGS_PATH : /etc/searxng/settings.yml
-#       SEARX_SRC             : /usr/local/searx/searx-src
+#       SEARXNG_SRC           : /usr/local/searx/searx-src
 #
 # [1] https://docs.searxng.org/admin/engines/settings.html
 
