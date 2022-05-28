@@ -8,7 +8,7 @@ the list of engines, categories and languages.
 
 To set category and/or engine names use a `!` prefix.  To give a few examples:
 
-- search in wikipedia for **paris**
+- search in Wikipedia for **paris**
 
   - {{search('!wp paris')}}
   - {{search('!wikipedia paris')}}
@@ -23,29 +23,29 @@ To set category and/or engine names use a `!` prefix.  To give a few examples:
 
 Abbreviations of the engines and languages are also accepted.  Engine/category
 modifiers are chain able and inclusive.  E.g. with {{search('!map !ddg !wp
-paris')}} search in map category and duckduckgo and wikipedia for **paris**.
+paris')}} search in map category and DuckDuckGo and Wikipedia for **paris**.
 
 ## `:` select language
 
 To select language filter use a `:` prefix.  To give an example:
 
-- search wikipedia by a custom language
+- search Wikipedia by a custom language
 
   - {{search(':fr !wp Wau Holland')}}
 
 ## `!!` external bangs
 
-SearXNG supports the external bangs from [ddg].  To directly jump to a external
+SearXNG supports the external bangs from [DuckDuckGo].  To directly jump to a external
 search page use the `!!` prefix.  To give an example:
 
-- search wikipedia by a custom language
+- search Wikipedia by a custom language
 
   - {{search('!!wfr Wau Holland')}}
 
 Please note, your search will be performed directly in the external search
 engine, SearXNG cannot protect your privacy on this.
 
-[ddg]: https://duckduckgo.com/bang
+[DuckDuckGo]: https://duckduckgo.com/bang
 
 ## Special Queries
 
