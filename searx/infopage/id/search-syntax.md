@@ -8,7 +8,7 @@ daftar mesin pencari, kategori dan bahasa.
 
 Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.  Sebagai contoh:
 
-- cari di wikipedia tentang **Jakarta**
+- cari di Wikipedia tentang **Jakarta**
 
   - {{search('!wp Jakarta')}}
   - {{search('!wikipedia Jakarta')}}
@@ -23,29 +23,29 @@ Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.  Sebag
 
 Singkatan mesin pencari dan bahasa juga diterima.  Pengubah
 mesin/kategori dapat dirantai dan inklusif.  Misalnya dengan pencarian {{search('!map !ddg !wp
-Jakarta')}} dalam kategori peta dan duckduckgo dan wikipedia tentang **Jakarta**.
+Jakarta')}} dalam kategori peta dan DuckDuckGo dan Wikipedia tentang **Jakarta**.
 
 ## `:` pilih bahasa
 
 Untuk memilih saringan bahasa gunakan awalan `:`.  Sebagai contoh:
 
-- cari wikipedia dengan bahasa lain
+- cari Wikipedia dengan bahasa lain
 
   - {{search(':en !wp Jakarta')}}
 
 ## `!!` mesin pencarian (*bangs*) eksternal
 
-SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [ddg].  Untuk langsung lompat ke sebuah
+SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [DuckDuckGo].  Untuk langsung lompat ke sebuah
 laman pencarian eksternal gunakan awalan `!!`.  Sebagai contoh:
 
-- cari wikipedia dengan bahasa yang lain
+- cari Wikipedia dengan bahasa yang lain
 
   - {{search('!!wen cat')}}
 
 Diingat, pencarian Anda akan dilakukan secara langsung di mesin pencari eksternal,
 SearXNG tidak dapat melindungi privasi Anda di sana.
 
-[ddg]: https://duckduckgo.com/bang
+[DuckDuckGo]: https://duckduckgo.com/bang
 
 ## Kueri Khusus
 
