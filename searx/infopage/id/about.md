@@ -61,6 +61,6 @@ mendapatkan kembali privasi mereka dan membuat internet lebih bebas.  Lebih terd
 [Weblate]: https://weblate.bubu1.eu/projects/searxng/
 [proyek Seeks]: https://beniz.github.io/seeks/
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-[Firefox]: [https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox](https://support.mozilla.org/id/kb/add-or-remove-search-engine-firefox)
+[Firefox]: https://support.mozilla.org/id/kb/add-or-remove-search-engine-firefox
 [Microsoft Edge]: https://support.microsoft.com/id-id/microsoft-edge/ubah-mesin-pencarian-default-anda-f863c519-5994-a8ed-6859-00fbc123b782
 [Chromium]: https://www.chromium.org/tab-to-search
