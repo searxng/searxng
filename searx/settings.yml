@@ -1720,6 +1720,26 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: petalsearch news
+    shortcut: ptsn
+    categories: news
+    engine: xpath
+    paging: true
+    search_url: https://petalsearch.com/search?channel=news&query={query}&pn={pageno}
+    results_xpath: //div[@class="news-container"]/div/div/div/a
+    url_xpath: ./@href
+    title_xpath: ./div
+    content_xpath: ../div[@class="news-text"]
+    thumbnail_xpath: ../../../../img/@src
+    first_page_num: 1
+    disabled: true
+    about:
+      website: https://petalsearch.com/
+      wikidata_id: Q104399280
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
 #  - name: ubuntuwiki
