@@ -1539,10 +1539,10 @@ engines:
     paging: true
     categories: [general, web]
     search_url: https://www.mojeek.com/search?q={query}&s={pageno}
-    results_xpath: /html/body//div[@class="results"]/ul[@class="results-standard"]/li
-    url_xpath: ./h2/a/@href
-    title_xpath: ./h2
-    content_xpath: ./p[@class="s"]
+    results_xpath: //a[@class="ob"]
+    url_xpath: ./@href
+    title_xpath: ./..
+    content_xpath: ../../p[@class="s"]
     suggestion_xpath: /html/body//div[@class="top-info"]/p[@class="top-info spell"]/a
     first_page_num: 0
     page_size: 10
