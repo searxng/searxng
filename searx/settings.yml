@@ -1701,6 +1701,25 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: petalsearch
+    shortcut: pts
+    engine: xpath
+    paging: true
+    search_url: https://petalsearch.com/search?query={query}&pn={pageno}
+    results_xpath: //div[@class="webpage-content"]/div[@class="title-cont"]/a
+    url_xpath: ./@href
+    title_xpath: .
+    content_xpath: ../../div[@class="webpage-text"]
+    suggestion_xpath: //div[@class="related-search-items"]/a
+    first_page_num: 1
+    disabled: true
+    about:
+      website: https://petalsearch.com/
+      wikidata_id: Q104399280
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
 #  - name: ubuntuwiki
