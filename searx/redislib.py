@@ -14,6 +14,34 @@ import hmac
 
 from searx import get_setting
 
+LUA_SCRIPT_STORAGE = {}
+"""A global dictionary to cache client's ``Script`` objects, used by
+:py:obj:`lua_script_storage`"""
+
+
+def lua_script_storage(client, script):
+    """Returns a redis :py:obj:`Script
+    <redis.commands.core.CoreCommands.register_script>` instance.
+
+    Due to performance reason the ``Script`` object is instantiated only once
+    for a client (``client.register_script(..)``) and is cached in
+    :py:obj:`LUA_SCRIPT_STORAGE`.
+
+    """
+
+    # redis connection can be closed, lets use the id() of the redis connector
+    # as key in the script-storage:
+    client_id = id(client)
+
+    if LUA_SCRIPT_STORAGE.get(client_id) is None:
+        LUA_SCRIPT_STORAGE[client_id] = {}
+
+    if LUA_SCRIPT_STORAGE[client_id].get(script) is None:
+        LUA_SCRIPT_STORAGE[client_id][script] = client.register_script(script)
+
+    return LUA_SCRIPT_STORAGE[client_id][script]
+
+
 PURGE_BY_PREFIX = """
 local prefix = tostring(ARGV[1])
 for i, name in ipairs(redis.call('KEYS', prefix .. '*')) do
@@ -41,7 +69,7 @@ def purge_by_prefix(client, prefix: str = "SearXNG_"):
     .. _DEL: https://redis.io/commands/del/
 
     """
-    script = client.register_script(PURGE_BY_PREFIX)
+    script = lua_script_storage(client, PURGE_BY_PREFIX)
     script(args=[prefix])
 
 
@@ -123,7 +151,7 @@ def incr_counter(client, name: str, limit: int = 0, expire: int = 0):
       (5, 1)
 
     """
-    script = client.register_script(INCR_COUNTER)
+    script = lua_script_storage(client, INCR_COUNTER)
     name = "SearXNG_counter_" + secret_hash(name)
     c = script(args=[limit, expire], keys=[name])
     return c
@@ -207,7 +235,7 @@ def incr_sliding_window(client, name: str, duration: int):
       1
 
     """
-    script = client.register_script(INCR_SLIDING_WINDOW)
+    script = lua_script_storage(client, INCR_SLIDING_WINDOW)
     name = "SearXNG_counter_" + secret_hash(name)
     c = script(args=[duration], keys=[name])
     return c
