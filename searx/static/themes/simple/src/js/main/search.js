@@ -86,7 +86,7 @@
 
       qinput.addEventListener('focus', placeCursorAtEndOnce, false);
 
-      if (!isMobile) {
+      if (!isMobile && document.querySelector('.index_endpoint')) {
         qinput.focus();
       }
     }
