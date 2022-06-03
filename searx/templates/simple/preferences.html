@@ -213,6 +213,16 @@
       </p>
       <div class="description">{{ _('Choose auto to follow your browser settings') }}</div>
     </fieldset>
+    <fieldset>
+      <legend id="pref_center_aligment">{{ _('Center Alignment') }}</legend>
+      <p class="value">
+        <select name="center_aligment" aria-labelledby="pref_center_aligment">
+            <option value="1" {% if preferences.get_value('center_aligment') %}selected="selected"{% endif %}>{{ _('On') }}</option>
+            <option value="0" {% if not preferences.get_value('center_aligment') %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Displays results in the center of the page (Oscar layout).') }}</div>
+    </fieldset>
     {% endif %}
     {% if 'results_on_new_tab' not in locked_preferences %}
     <fieldset>

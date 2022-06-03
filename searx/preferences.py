@@ -367,6 +367,16 @@ class Preferences:
                 locked=is_locked('simple_style'),
                 choices=['', 'auto', 'light', 'dark']
             ),
+            'center_aligment': MapSetting(
+                settings['ui']['center_aligment'],
+                locked=is_locked('center_aligment'),
+                map={
+                    '0': False,
+                    '1': True,
+                    'False': False,
+                    'True': True
+                }
+            ),
             'advanced_search': MapSetting(
                 settings['ui']['advanced_search'],
                 locked=is_locked('advanced_search'),
