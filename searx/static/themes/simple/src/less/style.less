@@ -29,6 +29,9 @@
 // Search-Field
 @import "search.less";
 
+// to center the results
+@import "style-center.less";
+
 // ion-icon
 .ion-icon {
   display: inline-block;
@@ -460,7 +463,7 @@ article[data-vim-selected].category-social {
   margin-bottom: 0;
   .ltr-margin-left(@results-offset);
   display: grid;
-  grid-template-columns: @results-width 25rem;
+  grid-template-columns: @results-width @results-sidebar-width;
   grid-template-rows: min-content min-content 1fr min-content;
   gap: 0 @results-gap;
   grid-template-areas:
@@ -698,7 +701,11 @@ article[data-vim-selected].category-social {
   opacity: 1;
 }
 
-@media screen and (max-width: @tablet) {
+/*
+  tablet layout
+*/
+
+.results-tablet() {
   .page_with_header {
     margin: 2rem 0.5rem;
     width: auto;
@@ -799,6 +806,17 @@ article[data-vim-selected].category-social {
   }
 }
 
+@media screen and (min-width: @phone) and (max-width: @tablet) {
+  // when .center-aligment-yes, see style-center.less
+  // the media query includes "min-width: @phone"
+  // because the phone layout includes the tablet layout unconditionally.
+  .center-aligment-no {
+    .results-tablet();
+  }
+}
+
+/* Misc */
+
 #main_results div#results.only_template_images {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
@@ -837,7 +855,14 @@ article[data-vim-selected].category-social {
   }
 }
 
+/*
+  phone layout
+*/
+
 @media screen and (max-width: @phone) {
+  // based on the tablet layout
+  .results-tablet();
+
   html {
     background-color: var(--color-base-background-mobile);
   }
@@ -887,6 +912,10 @@ article[data-vim-selected].category-social {
     background-color: var(--color-sidebar-background);
   }
 }
+
+/*
+  small-phone layout
+*/
 
 @media screen and (max-width: @small-phone) {
   .result-videos {
