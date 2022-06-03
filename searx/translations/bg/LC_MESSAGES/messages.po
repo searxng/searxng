@@ -7,18 +7,19 @@
 # ubone <van_ds_ff@mail.bg>, 2016-2017
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-15 18:46+0000\n"
-"PO-Revision-Date: 2022-05-06 07:18+0000\n"
+"PO-Revision-Date: 2022-06-03 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Bulgarian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"bg/>\n"
 "Language: bg\n"
-"Language-Team: Bulgarian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/bg/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.12\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -316,11 +317,11 @@ msgstr "Показва IP-то ви и др. инфо, ако търсенето
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr ""
+msgstr "Премахвач на URL тракери"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
+msgstr "Премахни следящите аргументи от върнатия URL"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
@@ -342,7 +343,7 @@ msgstr "Страницата не е намерена."
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr ""
+msgstr "Отиди на %(search_page)s."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -362,11 +363,11 @@ msgstr "за спазване на поверителността, хакерс�
 
 #: searx/templates/simple/base.html:55
 msgid "Source code"
-msgstr ""
+msgstr "Код на SearXNG"
 
 #: searx/templates/simple/base.html:56
 msgid "Issue tracker"
-msgstr ""
+msgstr "Търсачка на проблеми"
 
 #: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -375,11 +376,11 @@ msgstr "Статистика на търсачката"
 #: searx/templates/simple/base.html:58
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr ""
+msgstr "Публични сървъри"
 
 #: searx/templates/simple/base.html:59
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Контакт за връзка с поддържащия публичния сървър"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -400,11 +401,13 @@ msgstr "кеширана"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
-msgstr ""
+msgstr "прекарана"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
+"Изпращане на сигнал за нов проблем на Github, съдържащ горепосочената "
+"информация"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -415,12 +418,12 @@ msgstr "Без HTTPS"
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Виж грешката и я докладвай"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
-msgstr ""
+msgstr "Медиaна"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
@@ -434,7 +437,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Провалили се тест(ове) на проверяващия: "
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
@@ -460,7 +463,7 @@ msgstr "Език на търсене"
 #: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:118
 msgid "Default language"
-msgstr "Търси на език"
+msgstr "Основен език"
 
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
@@ -511,6 +514,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
+"Пренасочване към версий на публикации с отворен достъп, когато са достъпни ("
+"Изисква допълнение)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -518,7 +523,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Жетони за достъп до частни търсачки"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
@@ -526,7 +531,7 @@ msgstr "Потребителски интерфейс"
 
 #: searx/templates/simple/preferences.html:182
 msgid "Interface language"
-msgstr "Език"
+msgstr "Език на интерфейса"
 
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
@@ -534,11 +539,11 @@ msgstr "Промени езика на оформлението"
 
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Смяна на оформлението на SearXNG"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
@@ -550,7 +555,7 @@ msgstr "Изберете автоматични настойки, за да сл
 
 #: searx/templates/simple/preferences.html:219
 msgid "Results on new tabs"
-msgstr ""
+msgstr "Резултати на нови раздели"
 
 #: searx/templates/simple/preferences.html:222
 #: searx/templates/simple/preferences.html:234
@@ -580,7 +585,7 @@ msgstr "Поверителност"
 
 #: searx/templates/simple/preferences.html:247
 msgid "HTTP Method"
-msgstr ""
+msgstr "HTTP Метод"
 
 #: searx/templates/simple/preferences.html:254
 msgid ""
@@ -591,7 +596,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:259
 msgid "Image proxy"
-msgstr ""
+msgstr "Прокси на изображения"
 
 #: searx/templates/simple/preferences.html:262
 #: searx/templates/simple/preferences.html:274
@@ -605,17 +610,19 @@ msgstr "Изключено"
 
 #: searx/templates/simple/preferences.html:266
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Прекарване на получените изображения през прокси на SearXNG"
 
 #: searx/templates/simple/preferences.html:271
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Запитване в заглавието на страницата"
 
 #: searx/templates/simple/preferences.html:278
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Когато включено, резултата от заглавието на страницата съдържа вашето "
+"запитване. Браузърът ви може да записва това"
 
 #: searx/templates/simple/preferences.html:284
 msgid "Engines"
@@ -652,7 +659,7 @@ msgstr "Поддържка на избраният език"
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:302
 msgid "Time range"
-msgstr ""
+msgstr "Времева зона"
 
 #: searx/templates/simple/preferences.html:303
 #: searx/templates/simple/stats.html:28
@@ -661,16 +668,16 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:304
 msgid "Max time"
-msgstr "Макс. време"
+msgstr "Максимално време"
 
 #: searx/templates/simple/preferences.html:305
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Надеждност"
 
 #: searx/templates/simple/preferences.html:343
 msgid "Special Queries"
-msgstr ""
+msgstr "Специялни Запитвания"
 
 #: searx/templates/simple/preferences.html:349
 msgid "Keywords"
@@ -690,11 +697,11 @@ msgstr "Примери"
 
 #: searx/templates/simple/preferences.html:355
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Това е листа, съдържащ моментално-отговарящите модули на SearXNG."
 
 #: searx/templates/simple/preferences.html:366
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Това е листа с добавки."
 
 #: searx/templates/simple/preferences.html:383
 msgid "Cookies"
@@ -705,6 +712,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Това е листът с бисквитките и техните стойност които SearXNG запазва на "
+"компютъра ви."
 
 #: searx/templates/simple/preferences.html:386
 msgid "With that list, you can assess SearXNG transparency."
@@ -1275,4 +1284,3 @@ msgstr "скрий видеото"
 
 #~ msgid "Get image"
 #~ msgstr "Вземи изображение"
-
