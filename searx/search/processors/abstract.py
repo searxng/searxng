@@ -170,5 +170,5 @@ class EngineProcessor(ABC):
             tests.update(self.get_default_tests())
         return tests
 
-    def get_default_tests(self):  # pylint: disable=no-self-use
+    def get_default_tests(self):
         return {}

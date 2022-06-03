@@ -198,7 +198,6 @@ class PluginStore:
         self.plugins.append(plugin)
 
     def call(self, ordered_plugin_list, plugin_type, *args, **kwargs):
-        # pylint: disable=no-self-use
         ret = True
         for plugin in ordered_plugin_list:
             if hasattr(plugin, plugin_type):

@@ -464,7 +464,7 @@ def to_string(obj: Any) -> str:
     if isinstance(obj, str):
         return obj
     if hasattr(obj, '__str__'):
-        return obj.__str__()
+        return str(obj)
     return repr(obj)
 
 

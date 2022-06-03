@@ -133,7 +133,7 @@ class Search:
 
     def search_multiple_requests(self, requests):
         # pylint: disable=protected-access
-        search_id = uuid4().__str__()
+        search_id = str(uuid4())
 
         for engine_name, query, request_params in requests:
             th = threading.Thread(  # pylint: disable=invalid-name

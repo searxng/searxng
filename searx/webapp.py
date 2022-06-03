@@ -1048,6 +1048,7 @@ def preferences():
             # even if there is no exception
             reliablity = 0
         else:
+            # pylint: disable=consider-using-generator
             reliablity = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
 
         reliabilities[e.name] = {
