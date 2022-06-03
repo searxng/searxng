@@ -13,7 +13,7 @@ from typing import Iterable, Tuple
 import httpx
 import anyio
 
-from .network import get_network, initialize, check_network_configuration
+from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
 from .client import get_loop
 from .raise_for_httperror import raise_for_httperror
 

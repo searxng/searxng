@@ -464,7 +464,6 @@ def get_attributes(language):
 
 
 class WDAttribute:
-    # pylint: disable=no-self-use
     __slots__ = ('name',)
 
     def __init__(self, name):
@@ -626,7 +625,6 @@ class WDImageAttribute(WDURLAttribute):
 
 
 class WDDateAttribute(WDAttribute):
-    # pylint: disable=no-self-use
     def get_select(self):
         return '?{name} ?{name}timePrecision ?{name}timeZone ?{name}timeCalendar'.replace('{name}', self.name)
 

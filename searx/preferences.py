@@ -208,11 +208,9 @@ class BooleanChoices:
         self.default_choices = dict(choices)
 
     def transform_form_items(self, items):
-        # pylint: disable=no-self-use
         return items
 
     def transform_values(self, values):
-        # pylint: disable=no-self-use
         return values
 
     def parse_cookie(self, data_disabled: str, data_enabled: str):
