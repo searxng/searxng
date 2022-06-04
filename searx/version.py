@@ -58,7 +58,7 @@ def get_git_url_and_branch():
 
 
 def get_git_version():
-    git_commit_date_hash = subprocess_run(r"git show -s --format='%cs-%h'").replace("-", ".", 2)
+    git_commit_date_hash = subprocess_run(r"git show -s --date='format:%Y.%m.%d' --format='%cd-%h'")
     tag_version = git_version = git_commit_date_hash
 
     # add "-dirty" suffix if there are uncommited changes except searx/settings.yml
