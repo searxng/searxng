@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
+<html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-aligment-{{ preferences.get_value('center_aligment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
 <head>
   <meta charset="UTF-8" />
   <meta name="description" content="SearXNG — a privacy-respecting, hackable metasearch engine">
