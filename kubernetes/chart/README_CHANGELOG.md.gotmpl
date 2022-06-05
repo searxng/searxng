@@ -1,0 +1,29 @@
+{{- define "custom.notes" -}}
+Since a lot of the {{ template "custom.repository.organization" . }} charts follow a similar pattern, this library was built to reduce maintenance cost between the charts that use it and try achieve a goal of being DRY.
+{{- end -}}
+
+{{- define "custom.custom.configuration.header" -}}
+## Custom configuration
+{{- end -}}
+
+{{- define "custom.custom.configuration" -}}
+{{ template "custom.custom.configuration.header" . }}
+
+N/A
+{{- end -}}
+
+{{- define "custom.usage" }}
+## Using this library
+
+Include this chart as a dependency in your `Chart.yaml` e.g.
+
+```yaml
+# Chart.yaml
+dependencies:
+- name: common
+  version: 3.0.0
+  repository: {{ template "custom.helm.url" }}
+```
+
+For more information, take a look at the [Docs](http://docs.k8s-at-home.com/our-helm-charts/common-library/).
+{{- end -}}

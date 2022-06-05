@@ -1,0 +1,27 @@
+apiVersion: v2
+appVersion: latest
+description: SearXNG is a free internet metasearch engine which aggregates results from various search services and databases.
+name: searxng
+version: 1.0.0
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - searx
+  - searxng
+  - search engine
+  - privacy
+icon: https://github.com/searxng/searxng/blob/master/searx/static/themes/simple/img/favicon.png?raw=true
+sources:
+  - https://github.com/searxng/searxng
+  - https://docs.searxng.org
+  - https://hub.docker.com/r/searxng/searxng
+maintainers:
+  - name: unixfox
+    email: searxngatunixfoxdoteu
+dependencies:
+  - name: common
+    repository: https://library-charts.k8s-at-home.com
+    version: 4.4.2
+  - name: redis
+    version: 0.0.3
+    repository: https://charts.pascaliske.dev
+    condition: redis.enabled

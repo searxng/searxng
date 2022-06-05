@@ -1,0 +1,17 @@
+{{/* First Make sure all variables are set and merged properly */}}
+{{- include "common.values.setup" . }}
+
+{{/* Append the configMap volume to the volumes */}}
+{{- define "searxng.settingsVolume" -}}
+enabled: "true"
+mountPath: "/etc/searxng/settings.yml"
+subPath: "settings.yml"
+type: "custom"
+volumeSpec:
+  secret:
+    secretName: {{ include "common.names.fullname" . }}-config
+{{- end -}}
+{{- $_ := set .Values.persistence "searxng-config" (include "searxng.settingsVolume" . | fromYaml) -}}
+
+{{/* Render the templates */}}
+{{ include "common.all" . }}

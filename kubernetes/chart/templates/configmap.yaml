@@ -1,0 +1,11 @@
+{{- include "common.values.setup" . -}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "common.names.fullname" . }}-config
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+data:
+  settings.yml: |-
+{{ toYaml .Values.searxng.config | b64enc | indent 4 }}

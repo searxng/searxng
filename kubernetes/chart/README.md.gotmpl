@@ -1,0 +1,99 @@
+{{- define "custom.repository.organization" -}}
+k8s-at-home
+{{- end -}}
+
+{{- define "custom.repository.url" -}}
+https://github.com/k8s-at-home/charts
+{{- end -}}
+
+{{- define "custom.helm.url" -}}
+https://k8s-at-home.com/charts/
+{{- end -}}
+
+{{- define "custom.helm.path" -}}
+{{ template "custom.repository.organization" . }}/{{ template "chart.name" . }}
+{{- end -}}
+
+{{- define "custom.notes" -}}
+{{- end -}}
+
+{{- define "custom.requirements" -}}
+## Requirements
+
+{{ template "chart.kubeVersionLine" . }}
+{{- end -}}
+
+{{- define "custom.dependencies" -}}
+## Dependencies
+
+{{ template "chart.requirementsTable" . }}
+{{- end -}}
+
+{{- define "custom.install" -}}
+## Installing the Chart
+
+This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm).
+
+**WARNING: THIS CHART IS NOT MEANT TO BE INSTALLED DIRECTLY**
+{{- end -}}
+
+{{- define "custom.usage" -}}
+{{- end -}}
+
+{{- define "custom.configuration.header" -}}
+## Configuration
+{{- end -}}
+
+{{- define "custom.configuration.readValues" -}}
+Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+{{- end -}}
+
+{{- define "custom.valuesSection" -}}
+## Values
+
+**Important**: When deploying an application Helm chart you can add more values from our common library chart [here](https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common)
+
+{{ template "chart.valuesTable" . }}
+{{- end -}}
+
+{{- define "custom.support" -}}
+## Support
+
+- See the [Docs](https://docs.k8s-at-home.com/our-helm-charts/getting-started/)
+- Open an [issue](https://github.com/k8s-at-home/charts/issues/new/choose)
+- Ask a [question](https://github.com/k8s-at-home/organization/discussions)
+- Join our [Discord](https://discord.gg/sTMX7Vh) community
+{{- end -}}
+
+{{ template "chart.header" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "custom.notes" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "custom.requirements" . }}
+
+{{ template "custom.dependencies" . }}
+
+{{ template "custom.install" . }}
+
+{{ template "custom.usage" . }}
+
+{{ template "custom.configuration.header" . }}
+
+{{ template "custom.configuration.readValues" . }}
+
+{{ template "custom.custom.configuration" . }}
+
+{{ template "custom.valuesSection" . }}
+
+{{ template "custom.changelog" . }}
+
+{{ template "custom.support" . }}
+
+{{ template "helm-docs.versionFooter" . }}
+{{ "" }}
