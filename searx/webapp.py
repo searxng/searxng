@@ -448,8 +448,9 @@ def render(template_name: str, **kwargs):
     # values from settings
     kwargs['search_formats'] = [x for x in settings['search']['formats'] if x != 'html']
     kwargs['instance_name'] = get_setting('general.instance_name')
-    kwargs['searx_version'] = VERSION_STRING
-    kwargs['searx_git_url'] = GIT_URL
+    kwargs['searxng_version'] = VERSION_STRING
+    kwargs['GIT_URL'] = GIT_URL
+    kwargs['GIT_BRANCH'] = GIT_BRANCH  # url: GIT_URL + '/tree/' + GIT_BRANCH
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
 
@@ -1241,7 +1242,6 @@ def stats():
         engine_stats = engine_stats,
         engine_reliabilities = engine_reliabilities,
         selected_engine_name = selected_engine_name,
-        searx_git_branch = GIT_BRANCH,
         # fmt: on
     )
 

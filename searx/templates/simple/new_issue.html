@@ -6,10 +6,10 @@
     <textarea name="body" class="issue-hide">{{- '' -}}
 
 **Version of SearXNG, commit number if you are using on master branch and stipulate if you forked SearXNG**
-{% if searx_git_url and searx_git_url != 'unknow' %}
-Repository: {{ searx_git_url }}
-Branch: {{ searx_git_branch }}
-Version: {{ searx_version }}
+{% if GIT_URL and GIT_URL != 'unknow' %}
+Repository: {{ GIT_URL }}
+Branch: {{ GIT_BRANCH }}
+Version: {{ searxng_version }}
 <!-- Check if these values are correct -->
 
 {% else %}

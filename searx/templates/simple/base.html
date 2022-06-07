@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="description" content="SearXNG — a privacy-respecting, hackable metasearch engine">
   <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
-  <meta name="generator" content="searxng/{{ searx_version }}">
+  <meta name="generator" content="searxng/{{ searxng_version }}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noarchive">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,8 +51,8 @@
   </main>
   <footer>
     <p>
-    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
-        <a href="{{ searx_git_url }}">{{ _('Source code') }}</a> |
+    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searxng_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
+        <a href="{{ GIT_URL + '/tree/' + GIT_BRANCH }}">{{ _('Source code') }}</a> |
         <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a> |
         <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a> |
         <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>{% if get_setting('general.contact_url') %} |

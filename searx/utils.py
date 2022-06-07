@@ -61,8 +61,8 @@ _NOTSET = _NotSetClass()
 
 def searx_useragent() -> str:
     """Return the searx User Agent"""
-    return 'searx/{searx_version} {suffix}'.format(
-        searx_version=VERSION_TAG, suffix=settings['outgoing']['useragent_suffix']
+    return 'searx/{searxng_version} {suffix}'.format(
+        searxng_version=VERSION_TAG, suffix=settings['outgoing']['useragent_suffix']
     ).strip()
 
 
