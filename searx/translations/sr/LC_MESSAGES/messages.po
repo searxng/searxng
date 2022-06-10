@@ -8,19 +8,20 @@
 # jugi1, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-15 18:46+0000\n"
-"PO-Revision-Date: 2022-05-13 07:20+0000\n"
-"Last-Translator: Luka <jovanovic.luka3214@gmail.com>\n"
+"POT-Creation-Date: 2022-06-05 21:15+0000\n"
+"PO-Revision-Date: 2022-06-10 07:19+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Serbian <https://weblate.bubu1.eu/projects/searxng/searxng/sr/"
+">\n"
 "Language: sr\n"
-"Language-Team: Serbian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sr/>\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.1\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -126,22 +127,22 @@ msgstr ""
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr ""
+msgstr "мрежа"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr ""
+msgstr "ауто"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr ""
+msgstr "светло"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
-msgstr ""
+msgstr "тамно"
 
 #: searx/webapp.py:164
 msgid "timeout"
@@ -149,15 +150,15 @@ msgstr ""
 
 #: searx/webapp.py:165
 msgid "parsing error"
-msgstr ""
+msgstr "грешка при парсирању"
 
 #: searx/webapp.py:166
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "грешка у HTTP протоколу"
 
 #: searx/webapp.py:167
 msgid "network error"
-msgstr ""
+msgstr "грешка на мрежи"
 
 #: searx/webapp.py:169
 msgid "unexpected crash"
@@ -165,7 +166,7 @@ msgstr ""
 
 #: searx/webapp.py:176
 msgid "HTTP error"
-msgstr ""
+msgstr "HTTP грешка"
 
 #: searx/webapp.py:177
 msgid "HTTP connection error"
@@ -173,7 +174,7 @@ msgstr ""
 
 #: searx/webapp.py:183
 msgid "proxy error"
-msgstr ""
+msgstr "прокси грешка"
 
 #: searx/webapp.py:184
 msgid "CAPTCHA"
@@ -181,28 +182,28 @@ msgstr ""
 
 #: searx/webapp.py:185
 msgid "too many requests"
-msgstr ""
+msgstr "превише захтева"
 
 #: searx/webapp.py:186
 msgid "access denied"
-msgstr ""
+msgstr "није дозвољен приступ"
 
 #: searx/webapp.py:187
 msgid "server API error"
-msgstr ""
+msgstr "серверска API грешка"
 
 #: searx/webapp.py:397
 msgid "No item found"
 msgstr "Ставка није пронађена"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:24 searx/webapp.py:399
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:399
 msgid "Source"
-msgstr ""
+msgstr "Извор"
 
 #: searx/webapp.py:401
 msgid "Error loading the next page"
-msgstr ""
+msgstr "Грешка приликом учитавања следеће странице"
 
 #: searx/webapp.py:544 searx/webapp.py:985
 msgid "Invalid settings, please edit your preferences"
@@ -226,7 +227,7 @@ msgstr "пре {hours} час(a) и {minutes} минут(у,е,а)"
 
 #: searx/webapp.py:885
 msgid "Suspended"
-msgstr ""
+msgstr "Суспендован"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -262,11 +263,11 @@ msgstr "Абстракт није доступан за ову публикац�
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
-msgstr ""
+msgstr "Канал"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Претвара стринг у другачије хешеве."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
@@ -304,7 +305,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr ""
+msgstr "Информације о себи"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -379,7 +380,7 @@ msgstr "Јавне инстанце"
 
 #: searx/templates/simple/base.html:59
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Контактирај домара инстанце"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -390,7 +391,7 @@ msgid "Length"
 msgstr "Дужина"
 
 #: searx/templates/simple/macros.html:37
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:18
 msgid "Author"
 msgstr "Аутор"
 
@@ -976,15 +977,15 @@ msgstr "сакриј медије"
 msgid "This site did not provide any description."
 msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:23
+#: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
 msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
 msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:26
+#: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
 msgstr "Види извор"
 
@@ -1287,3 +1288,8 @@ msgstr "сакриј видео"
 #~ msgid "Get image"
 #~ msgstr "Узми слику"
 
+#~ msgid "Center Alignment"
+#~ msgstr ""
+
+#~ msgid "Displays results in the center of the page (Oscar layout)."
+#~ msgstr ""
