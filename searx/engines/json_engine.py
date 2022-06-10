@@ -16,6 +16,11 @@ paging = False
 suggestion_query = ''
 results_query = ''
 
+cookies = {}
+headers = {}
+'''Some engines might offer different result based on cookies or headers.
+Possible use-case: To set safesearch cookie or header to moderate.'''
+
 # parameters for engines with paging support
 #
 # number of results on each page
@@ -87,6 +92,9 @@ def request(query, params):
     fp = {'query': query}
     if paging and search_url.find('{pageno}') >= 0:
         fp['pageno'] = (params['pageno'] - 1) * page_size + first_page_num
+
+    params['cookies'].update(cookies)
+    params['headers'].update(headers)
 
     params['url'] = search_url.format(**fp)
     params['query'] = query

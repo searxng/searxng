@@ -402,6 +402,30 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: yep
+    engine: json_engine
+    shortcut: yep
+    categories: general
+    disabled: true
+    paging: false
+    page_size: 10
+    content_html_to_text: true
+    title_html_to_text: true
+    search_url: https://api.yep.com/fs/1/?type=web&q={query}&no_correct=false
+    results_query: 1/results
+    title_query: title
+    url_query: url
+    content_query: snippet
+    timeout: 12.0
+    headers:
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+      'Sec-Fetch-Dest': 'document'
+    about:
+      website: https://yep.com
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
   - name: currency
     engine: currency_convert
     categories: general
