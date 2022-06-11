@@ -94,6 +94,12 @@ WHERE {
 }
 """
 
+# see the property "dummy value" of https://www.wikidata.org/wiki/Q2013 (Wikidata)
+# hard coded here to avoid to an additional SPARQL request when the server starts
+DUMMY_ENTITY_URLS = set(
+    "http://www.wikidata.org/entity/" + wid for wid in ("Q4115189", "Q13406268", "Q15397819", "Q17339402")
+)
+
 
 # https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1
 # https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html
@@ -178,7 +184,7 @@ def response(resp):
     for result in jsonresponse.get('results', {}).get('bindings', []):
         attribute_result = {key: value['value'] for key, value in result.items()}
         entity_url = attribute_result['item']
-        if entity_url not in seen_entities:
+        if entity_url not in seen_entities and entity_url not in DUMMY_ENTITY_URLS:
             seen_entities.add(entity_url)
             results += get_results(attribute_result, attributes, language)
         else:
