@@ -162,6 +162,8 @@ class OnlineProcessor(EngineProcessor):
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('CAPTCHA')
         except SearxEngineTooManyRequestsException as e:
+            if "google" in self.engine_name:
+                self.logger.warn("We recommend enabling the use_mobile_ui parameter if google is blocked for you.")
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('Too many requests')
         except SearxEngineAccessDeniedException as e:
