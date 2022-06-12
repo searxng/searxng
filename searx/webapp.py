@@ -450,7 +450,8 @@ def render(template_name: str, **kwargs):
     kwargs['instance_name'] = get_setting('general.instance_name')
     kwargs['searxng_version'] = VERSION_STRING
     kwargs['GIT_URL'] = GIT_URL
-    kwargs['GIT_BRANCH'] = GIT_BRANCH  # url: GIT_URL + '/tree/' + GIT_BRANCH
+    kwargs['GIT_BRANCH'] = GIT_BRANCH
+    kwargs['git_url_format'] = get_setting('general.git_url_format')
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
 

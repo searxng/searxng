@@ -33,7 +33,7 @@ from markdown_it import MarkdownIt
 
 from .. import get_setting
 from ..compat import cached_property
-from ..version import GIT_URL
+from ..version import GIT_URL, GIT_BRANCH
 from ..locales import LOCALE_NAMES
 
 
@@ -93,7 +93,7 @@ class InfoPage:
             return '[%s](%s)' % (query, url)
 
         ctx = {}
-        ctx['GIT_URL'] = GIT_URL
+        ctx['GIT_URL'] = get_setting('general.git_url_format').format(GIT_URL=GIT_URL, GIT_BRANCH=GIT_BRANCH)
         ctx['get_setting'] = get_setting
         ctx['link'] = _md_link
         ctx['search'] = _md_search

@@ -52,7 +52,7 @@
   <footer>
     <p>
     {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searxng_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
-        <a href="{{ GIT_URL + '/tree/' + GIT_BRANCH }}">{{ _('Source code') }}</a> |
+        <a href="{{ git_url_format.format(GIT_URL=GIT_URL, GIT_BRANCH=GIT_BRANCH) }}">{{ _('Source code') }}</a> |
         <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a> |
         <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a> |
         <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>{% if get_setting('general.contact_url') %} |

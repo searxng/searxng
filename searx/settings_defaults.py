@@ -141,6 +141,7 @@ SCHEMA = {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
         'instance_name': SettingsValue(str, 'SearXNG'),
         'contact_url': SettingsValue((None, False, str), None),
+        'git_url_format': SettingsValue(str, "{GIT_URL}/tree/{GIT_BRANCH}"),
         'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
