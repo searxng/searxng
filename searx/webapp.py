@@ -909,7 +909,8 @@ def autocompleter():
         for result in raw_results:
             # attention: this loop will change raw_text_query object and this is
             # the reason why the sug_prefix was stored before (see above)
-            results.append(raw_text_query.changeQuery(result).getFullQuery())
+            if result != sug_prefix:
+                results.append(raw_text_query.changeQuery(result).getFullQuery())
 
     if len(raw_text_query.autocomplete_list) > 0:
         for autocomplete_text in raw_text_query.autocomplete_list:
