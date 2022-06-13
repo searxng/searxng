@@ -639,16 +639,30 @@ article[data-vim-selected].category-social {
   }
 }
 
-#linkto_preferences {
+#links_on_top {
   position: absolute;
   .ltr-right(1.8rem);
+  .ltr-text-align-right();
   top: 2.2rem;
   padding: 0;
   border: 0;
-  display: block;
-  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
   color: var(--color-search-font);
 
+  a {
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
+
+    svg {
+      font-size: 1.2em;
+      .ltr-margin-right(0.125em);
+    }
+  }
+
+  a,
   a:link *,
   a:hover *,
   a:visited *,
@@ -706,6 +720,12 @@ article[data-vim-selected].category-social {
 */
 
 .results-tablet() {
+  #links_on_top {
+    span {
+      display: none;
+    }
+  }
+
   .page_with_header {
     margin: 2rem 0.5rem;
     width: auto;
@@ -806,6 +826,25 @@ article[data-vim-selected].category-social {
   }
 }
 
+@media screen and (max-width: calc(@tablet - 0.5px)) {
+  #links_on_top {
+    span {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 52rem) {
+  body.results_endpoint {
+    #links_on_top {
+      .link_on_top_about,
+      .link_on_top_donate {
+        display: none;
+      }
+    }
+  }
+}
+
 @media screen and (min-width: @phone) and (max-width: @tablet) {
   // when .center-aligment-yes, see style-center.less
   // the media query includes "min-width: @phone"
@@ -872,12 +911,12 @@ article[data-vim-selected].category-social {
     margin: 1rem 0 0 0;
   }
 
-  #linkto_preferences {
+  #links_on_top {
     top: 0.8rem;
     .ltr-right(0.7rem);
   }
 
-  #main_index #linkto_preferences {
+  #main_index #links_on_top {
     top: 0.5rem;
     .ltr-right(0.5rem);
   }

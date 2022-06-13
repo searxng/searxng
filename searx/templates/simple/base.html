@@ -40,10 +40,18 @@
         </div>
     {% endif %}
 
-    {% block linkto_preferences %}
-    {% from 'simple/icons.html' import icon_big %}
-      <nav id="linkto_preferences"><a href="{{ url_for('preferences') }}" aria-label="{{ _('preferences') }}">{{ icon_big('menu-outline') }}</a></nav>
-    {% endblock %}
+    <nav id="links_on_top">
+      {%- from 'simple/icons.html' import icon_big -%}
+      {%- block linkto_about -%}
+        <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('help-circle-outline') }}<span>{{ _('About') }}</span></a>
+      {%- endblock -%}
+      {%- block linkto_donate -%}
+        <a href="{{ url_for('info', pagename='donate') }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate') }}</span></a>
+      {%- endblock -%}
+      {%- block linkto_preferences -%}
+        <a href="{{ url_for('preferences') }}" aria-label="{{ _('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline') }}</a>
+      {%- endblock -%}
+    </nav>
     {% block header %}
     {% endblock %}
     {% block content %}
