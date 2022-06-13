@@ -34,12 +34,17 @@ searxng.ready(function () {
 
   searxng.on('.result', 'click', function (e) {
     if (!isElementInDetail(e.target)) {
-      highlightResult(this)(true);
       let resultElement = getResultElement(e.target);
       if (isImageResult(resultElement)) {
         e.preventDefault();
         searxng.selectImage(resultElement);
       }
+    }
+  });
+
+  searxng.on('.result', 'mousedown', function (e) {
+    if (!isElementInDetail(e.target)) {
+      highlightResult(this)(true);
     }
   });
 
