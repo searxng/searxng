@@ -317,7 +317,12 @@ searxng.ready(function () {
 
   function searchInputFocus () {
     window.scrollTo(0, 0);
-    document.querySelector('#q').focus();
+    var q = document.querySelector('#q');
+    q.focus();
+    if (q.setSelectionRange) {
+      var len = q.value.length;
+      q.setSelectionRange(len, len);
+    }
   }
 
   function openResult (newTab) {

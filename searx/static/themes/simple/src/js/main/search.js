@@ -3,16 +3,9 @@
 (function (w, d, searxng) {
   'use strict';
 
-  var firstFocus = true, qinput_id = "q", qinput;
+  var qinput_id = "q", qinput;
 
   const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
-
-  function placeCursorAtEnd (element) {
-    if (element.setSelectionRange) {
-      var len = element.value.length;
-      element.setSelectionRange(len, len);
-    }
-  }
 
   function submitIfQuery () {
     if (qinput.value.length  > 0) {
@@ -45,15 +38,6 @@
   searxng.ready(function () {
     qinput = d.getElementById(qinput_id);
 
-    function placeCursorAtEndOnce () {
-      if (firstFocus) {
-        placeCursorAtEnd(qinput);
-        firstFocus = false;
-      } else {
-        // e.preventDefault();
-      }
-    }
-
     if (qinput !== null) {
       // clear button
       createClearButton(qinput);
@@ -83,8 +67,6 @@
           },
         }, "#" + qinput_id);
       }
-
-      qinput.addEventListener('focus', placeCursorAtEndOnce, false);
 
       if (!isMobile && document.querySelector('.index_endpoint')) {
         qinput.focus();
