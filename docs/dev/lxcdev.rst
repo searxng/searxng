@@ -45,9 +45,7 @@ be set on a *production* system.
 The scripts from :ref:`searx_utils` can divide in those to install and maintain
 software:
 
-- :ref:`searx.sh`
-- :ref:`filtron.sh`
-- :ref:`morty.sh`
+- :ref:`searxng.sh`
 
 and the script :ref:`lxc.sh`, with we can scale our installation, maintenance or
 even development tasks over a stack of isolated containers / what we call the:
@@ -73,7 +71,7 @@ once:
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
         $ snap install lxd
         $ lxd init --auto
@@ -85,7 +83,7 @@ fork:
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
         $ cd ~/Downloads
         $ git clone https://github.com/searxng/searxng.git searxng
@@ -94,19 +92,19 @@ fork:
 The :ref:`lxc-searxng.env` consists of several images, see ``export
 LXC_SUITE=(...`` near by :origin:`utils/lxc-searxng.env#L19`.  For this blog post
 we exercise on a archlinux_ image.  The container of this image is named
-``searx-archlinux``.  Lets build the container, but be sure that this container
+``searxng-archlinux``.  Lets build the container, but be sure that this container
 does not already exists, so first lets remove possible old one:
 
 .. tabs::
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh remove searx-archlinux
-        $ sudo -H ./utils/lxc.sh build searx-archlinux
+        $ sudo -H ./utils/lxc.sh remove searxng-archlinux
+        $ sudo -H ./utils/lxc.sh build searxng-archlinux
 
-.. sidebar:: The ``searx-archlinux`` container
+.. sidebar:: The ``searxng-archlinux`` container
 
    is the base of all our exercises here.
 
@@ -117,9 +115,9 @@ In this container we install all services :ref:`including searx, morty & filtron
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh install suite searx-archlinux
+        $ sudo -H ./utils/lxc.sh install suite searxng-archlinux
 
 To proxy HTTP from filtron and morty in the container to the outside of the
 container, install nginx into the container.  Once for the bot blocker filtron:
@@ -128,9 +126,9 @@ container, install nginx into the container.  Once for the bot blocker filtron:
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           ./utils/filtron.sh nginx install
         ...
         INFO:  got 429 from http://10.174.184.156/searx
@@ -141,9 +139,9 @@ and once for the content sanitizer (content proxy morty):
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           ./utils/morty.sh nginx install
         ...
         INFO:  got 200 from http://10.174.184.156/morty/
@@ -154,7 +152,7 @@ and once for the content sanitizer (content proxy morty):
    blocker (filtron) and WEB content sanitizer (content proxy morty), both are
    needed for a *privacy protecting* search engine.
 
-On your system, the IP of your ``searx-archlinux`` container differs from
+On your system, the IP of your ``searxng-archlinux`` container differs from
 http://10.174.184.156/searx, just open the URL reported in your installation
 protocol in your WEB browser from the desktop to test the instance from outside
 of the container.
@@ -169,27 +167,27 @@ In containers, work as usual
 
 Usually you open a root-bash using ``sudo -H bash``.  In case of LXC containers
 open the root-bash in the container using ``./utils/lxc.sh cmd
-searx-archlinux``:
+searxng-archlinux``:
 
 .. tabs::
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux bash
-        INFO:  [searx-archlinux] bash
-        [root@searx-archlinux searx]# pwd
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux bash
+        INFO:  [searxng-archlinux] bash
+        [root@searxng-archlinux searx]# pwd
         /share/searxng
 
-The prompt ``[root@searx-archlinux ...]`` signals, that you are the root user in
-the searx-container.  To debug the running SearXNG instance use:
+The prompt ``[root@searxng-archlinux ...]`` signals, that you are the root user in
+the searxng-container.  To debug the running SearXNG instance use:
 
 .. tabs::
 
-  .. group-tab:: root@searx-archlinux
+  .. group-tab:: root@searxng-archlinux
 
-     .. code:: sh
+     .. code:: bash
 
         $ ./utils/searx.sh inspect service
         ...
@@ -202,56 +200,42 @@ above.  You can stop monitoring using ``CTRL-C``, this also disables the *"debug
 option"* in SearXNG's settings file and restarts the SearXNG uwsgi application.
 To debug services from filtron and morty analogous use:
 
-.. tabs::
-
-  .. group-tab:: root@searx-archlinux
-
-     .. code:: sh
-
-        $ ./utils/filtron.sh inspect service
-        $ ./utils/morty.sh inspect service
-
-Another point we have to notice is that each service (:ref:`SearXNG <searx.sh>`,
-:ref:`filtron <filtron.sh>` and :ref:`morty <morty.sh>`) runs under dedicated
-system user account with the same name (compare :ref:`create searxng user`).  To
-get a shell from theses accounts, simply call one of the scripts:
+Another point we have to notice is that the service (:ref:`SearXNG <searxng.sh>`
+runs under dedicated system user account with the same name (compare
+:ref:`create searxng user`).  To get a shell from theses accounts, simply call:
 
 .. tabs::
 
-  .. group-tab:: root@searx-archlinux
+  .. group-tab:: root@searxng-archlinux
 
-     .. code:: sh
+     .. code:: bash
 
-        $ ./utils/searx.sh shell
-        $ ./utils/filtron.sh shell
-        $ ./utils/morty.sh shell
+        $ ./utils/searxng.sh instance cmd bash
 
-To get in touch, open a shell from the service user (searx@searx-archlinux):
+To get in touch, open a shell from the service user (searxng@searxng-archlinux):
 
 .. tabs::
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
-        ./utils/searx.sh shell
-        // exit with [CTRL-D]
-        (searx-pyenv) [searx@searx-archlinux ~]$ ...
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux ./utils/searxng.sh instance cmd bash
+        INFO:  [searxng-archlinux] ./utils/searxng.sh instance cmd bash
+        [searxng@searxng-archlinux ~]$
 
-The prompt ``[searx@searx-archlinux]`` signals that you are logged in as system
-user ``searx`` in the ``searx-archlinux`` container and the python *virtualenv*
-``(searx-pyenv)`` environment is activated.
+The prompt ``[searxng@searxng-archlinux]`` signals that you are logged in as system
+user ``searx`` in the ``searxng-archlinux`` container and the python *virtualenv*
+``(searxng-pyenv)`` environment is activated.
 
 .. tabs::
 
-  .. group-tab:: searx@searx-archlinux
+  .. group-tab:: searxng@searxng-archlinux
 
-     .. code:: sh
+     .. code:: bash
 
-        (searx-pyenv) [searx@searx-archlinux ~]$ pwd
-        /usr/local/searx
-
+        (searxng-pyenv) [searxng@searxng-archlinux ~]$ pwd
+        /usr/local/searxng
 
 
 Wrap production into developer suite
@@ -262,23 +246,22 @@ from a LXC container (which is quite ready for production) into a developer
 suite.  For this, we have to keep an eye on the :ref:`installation basic`:
 
 - SearXNG setup in: ``/etc/searxng/settings.yml``
-- SearXNG user's home: ``/usr/local/searx``
-- virtualenv in: ``/usr/local/searx/searx-pyenv``
-- SearXNG software in: ``/usr/local/searx/searx-src``
+- SearXNG user's home: ``/usr/local/searxng``
+- virtualenv in: ``/usr/local/searxng/searxng-pyenv``
+- SearXNG software in: ``/usr/local/searxng/searxng-src``
 
-With the use of the :ref:`searx.sh` the SearXNG service was installed as
+With the use of the :ref:`searxng.sh` the SearXNG service was installed as
 :ref:`uWSGI application <searxng uwsgi>`.  To maintain this service, we can use
-``systemctl`` (compare :ref:`service architectures on distributions <uwsgi
-configuration>`).
+``systemctl`` (compare :ref:`uWSGI maintenance`).
 
 .. tabs::
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
-          systemctl stop uwsgi@searx
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
+          systemctl stop uwsgi@searxng
 
 With the command above, we stopped the SearXNG uWSGI-App in the archlinux
 container.
@@ -291,29 +274,29 @@ least you should attend the settings of ``uid``, ``chdir``, ``env`` and
   env = SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
   http = 127.0.0.1:8888
 
-  chdir = /usr/local/searx/searx-src/searx
-  virtualenv = /usr/local/searx/searx-pyenv
-  pythonpath = /usr/local/searx/searx-src
+  chdir = /usr/local/searxng/searxng-src/searx
+  virtualenv = /usr/local/searxng/searxng-pyenv
+  pythonpath = /usr/local/searxng/searxng-src
 
 If you have read the :ref:`"Good to know section" <lxc.sh>` you remember, that
 each container shares the root folder of the repository and the command
 ``utils/lxc.sh cmd`` handles relative path names **transparent**.  To wrap the
 SearXNG installation into a developer one, we simple have to create a smylink to
 the **transparent** reposetory from the desktop.  Now lets replace the
-repository at ``searx-src`` in the container with the working tree from outside
+repository at ``searxng-src`` in the container with the working tree from outside
 of the container:
 
 .. tabs::
 
   .. group-tab:: container becomes a developer suite
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
-          mv /usr/local/searx/searx-src /usr/local/searx/searx-src.old
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
+          mv /usr/local/searxng/searxng-src /usr/local/searxng/searxng-src.old
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
-          ln -s /share/searx/ /usr/local/searx/searx-src
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
+          ln -s /share/searx/ /usr/local/searxng/searxng-src
 
 Now we can develop as usual in the working tree of our desktop system.  Every
 time the software was changed, you have to restart the SearXNG service (in the
@@ -323,9 +306,9 @@ conatiner):
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           systemctl restart uwsgi@searx
 
 
@@ -338,30 +321,30 @@ daily usage:
 
      To *inspect* the SearXNG instance (already described above):
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           ./utils/searx.sh inspect service
 
      Run :ref:`makefile`, e.g. to test inside the container:
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           make test
 
      To install all prerequisites needed for a :ref:`buildhosts`:
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
-          ./utils/searx.sh install buildhost
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
+          ./utils/searxng.sh install buildhost
 
      To build the docs on a buildhost :ref:`buildhosts`:
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh cmd searx-archlinux \
+        $ sudo -H ./utils/lxc.sh cmd searxng-archlinux \
           make docs.html
 
 .. _lxcdev summary:
@@ -371,18 +354,18 @@ Summary
 
 We build up a fully functional SearXNG suite in a archlinux container:
 
-.. code:: sh
+.. code:: bash
 
-   $ sudo -H ./utils/lxc.sh install suite searx-archlinux
+   $ sudo -H ./utils/lxc.sh install suite searxng-archlinux
 
 To access HTTP from the desktop we installed nginx for the services inside the
 conatiner:
 
 .. tabs::
 
-  .. group-tab:: [root@searx-archlinux]
+  .. group-tab:: [root@searxng-archlinux]
 
-     .. code:: sh
+     .. code:: bash
 
         $ ./utils/filtron.sh nginx install
         $ ./utils/morty.sh nginx install
@@ -393,12 +376,12 @@ the container :
 
 .. tabs::
 
-  .. group-tab:: [root@searx-archlinux]
+  .. group-tab:: [root@searxng-archlinux]
 
-     .. code:: sh
+     .. code:: bash
 
-	$ mv /usr/local/searx/searx-src /usr/local/searx/searx-src.old
-	$ ln -s /share/searx/ /usr/local/searx/searx-src
+	$ mv /usr/local/searxng/searxng-src /usr/local/searxng/searxng-src.old
+	$ ln -s /share/searx/ /usr/local/searxng/searxng-src
 	$ systemctl restart uwsgi@searx
 
 To get information about the searxNG suite in the archlinux container we can
@@ -408,13 +391,13 @@ use:
 
   .. group-tab:: desktop
 
-     .. code:: sh
+     .. code:: bash
 
-        $ sudo -H ./utils/lxc.sh show suite searx-archlinux
+        $ sudo -H ./utils/lxc.sh show suite searxng-archlinux
         ...
-        [searx-archlinux]  INFO:  (eth0) filtron:    http://10.174.184.156:4004/ http://10.174.184.156/searx
-        [searx-archlinux]  INFO:  (eth0) morty:      http://10.174.184.156:3000/
-        [searx-archlinux]  INFO:  (eth0) docs.live:  http://10.174.184.156:8080/
-        [searx-archlinux]  INFO:  (eth0) IPv6:       http://[fd42:573b:e0b3:e97e:216:3eff:fea5:9b65]
+        [searxng-archlinux]  INFO:  (eth0) filtron:    http://10.174.184.156:4004/ http://10.174.184.156/searx
+        [searxng-archlinux]  INFO:  (eth0) morty:      http://10.174.184.156:3000/
+        [searxng-archlinux]  INFO:  (eth0) docs.live:  http://10.174.184.156:8080/
+        [searxng-archlinux]  INFO:  (eth0) IPv6:       http://[fd42:573b:e0b3:e97e:216:3eff:fea5:9b65]
         ...
 

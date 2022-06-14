@@ -416,7 +416,7 @@ docs.prebuild() {
         set -e
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searx.sh doc   | cat > "${DOCS_BUILD}/includes/searx.rst"
+        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
         ./utils/filtron.sh doc | cat > "${DOCS_BUILD}/includes/filtron.rst"
         ./utils/morty.sh doc   | cat > "${DOCS_BUILD}/includes/morty.rst"
         pyenv.cmd searxng_extra/docs_prebuild

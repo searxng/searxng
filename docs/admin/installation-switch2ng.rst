@@ -22,7 +22,11 @@ If your searx instance was installed *"Step by step"* or by the *"Installation
 scripts"*, you need to undo the installation procedure completely.  If you have
 morty & filtron installed, it is recommended to uninstall these services also.
 In case of scripts, to uninstall use the scripts from the origin you installed
-searx from.
+searx from or try::
+
+  $ sudo -H ./utils/filtron.sh remve all
+  $ sudo -H ./utils/morty.sh remve all
+  $ sudo -H ./utils/searx.sh remve all
 
 If you have removed the old searx installation, clone from SearXNG and and start
 with your installation procedure (e.g. :ref:`installation scripts`):
@@ -53,7 +57,7 @@ Once you have done your installation, you can run a SearXNG *check* procedure,
 to see if there are some left overs.  In this example there exists a *old*
 ``/etc/searx/settings.yml``::
 
-   $ sudo -H ./utils/searx.sh install check
+   $ sudo -H ./utils/searxng.sh instance check
 
    ============================
    SearXNG (check installation)

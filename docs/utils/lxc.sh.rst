@@ -49,7 +49,7 @@ help>`.
 
 If you do not want to build all containers, **you can build just one**::
 
-  $ sudo -H ./utils/lxc.sh build searx-archlinux
+  $ sudo -H ./utils/lxc.sh build searxng-archlinux
 
 *Good to know ...*
 
@@ -62,9 +62,9 @@ of::
 
 In the containers, you can run what ever you want, e.g. to start a bash use::
 
-  $ sudo -H ./utils/lxc.sh cmd searx-archlinux bash
-  INFO:  [searx-archlinux] bash
-  root@searx-archlinux:/share/searxng#
+  $ sudo -H ./utils/lxc.sh cmd searxng-archlinux bash
+  INFO:  [searxng-archlinux] bash
+  [root@searxng-archlinux SearXNG]#
 
 If there comes the time you want to **get rid off all** the containers and
 **clean up local images** just type::
@@ -150,8 +150,8 @@ Running commands
 :ref:`toolboxing`.  By example: to setup a :ref:`buildhosts` and run the
 Makefile target ``test`` in the archlinux_ container::
 
-  sudo -H ./utils/lxc.sh cmd searx-archlinux ./utils/searxng.sh install buildhost
-  sudo -H ./utils/lxc.sh cmd searx-archlinux make test
+  sudo -H ./utils/lxc.sh cmd searxng-archlinux ./utils/searxng.sh install buildhost
+  sudo -H ./utils/lxc.sh cmd searxng-archlinux make test
 
 
 Setup SearXNG buildhost
@@ -166,7 +166,7 @@ of coffee).::
 
 To build (live) documentation inside a archlinux_ container::
 
-  sudo -H ./utils/lxc.sh cmd searx-archlinux make docs.clean docs.live
+  sudo -H ./utils/lxc.sh cmd searxng-archlinux make docs.clean docs.live
   ...
   [I 200331 15:00:42 server:296] Serving on http://0.0.0.0:8080
 
@@ -174,7 +174,7 @@ To get IP of the container and the port number *live docs* is listening::
 
   $ sudo ./utils/lxc.sh show suite | grep docs.live
   ...
-  [searx-archlinux]  INFO:  (eth0) docs.live:  http://n.n.n.12:8080/
+  [searxng-archlinux]  INFO:  (eth0) docs.live:  http://n.n.n.12:8080/
 
 
 .. _lxc.sh help:

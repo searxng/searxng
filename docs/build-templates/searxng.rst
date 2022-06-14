@@ -1,4 +1,4 @@
-.. template evaluated by: ./utils/searx.sh doc
+.. template evaluated by: ./utils/searxng.sh searxng.doc.rst
 .. hint: all dollar-names are variables, dollar sign itself is quoted by: \\$
 
 .. START distro-packages
@@ -65,7 +65,8 @@ ${fedora_build}
 
       $ sudo -H useradd --shell /bin/bash --system \\
           --home-dir \"$SERVICE_HOME\" \\
-          --comment 'Privacy-respecting metasearch engine' $SERVICE_USER
+          --comment 'Privacy-respecting metasearch engine' \\
+          $SERVICE_USER
 
       $ sudo -H mkdir \"$SERVICE_HOME\"
       $ sudo -H chown -R \"$SERVICE_GROUP:$SERVICE_GROUP\" \"$SERVICE_HOME\"
@@ -81,7 +82,8 @@ ${fedora_build}
     .. code-block:: sh
 
        $ sudo -H -u ${SERVICE_USER} -i
-       (${SERVICE_USER})$ git clone \"$GIT_URL\" \"$SEARXNG_SRC\"
+       (${SERVICE_USER})$ git clone \"$GIT_URL\" \\
+                          \"$SEARXNG_SRC\"
 
 .. END clone searxng
 
@@ -94,7 +96,8 @@ ${fedora_build}
     .. code-block:: sh
 
        (${SERVICE_USER})$ python3 -m venv \"${SEARXNG_PYENV}\"
-       (${SERVICE_USER})$ echo \". ${SEARXNG_PYENV}/bin/activate\" >>  \"$SERVICE_HOME/.profile\"
+       (${SERVICE_USER})$ echo \". ${SEARXNG_PYENV}/bin/activate\" \\
+                          >>  \"$SERVICE_HOME/.profile\"
 
 .. END create virtualenv
 
@@ -137,21 +140,12 @@ ${fedora_build}
        $ sudo -H cp \"$SEARXNG_SRC/utils/templates/etc/searxng/settings.yml\" \\
                     \"${SEARXNG_SETTINGS_PATH}\"
 
-  .. group-tab:: searx/settings.yml
-
-    .. code-block:: sh
-
-       $ sudo -H mkdir -p \"$(dirname ${SEARXNG_SETTINGS_PATH})\"
-       $ sudo -H cp \"$SEARXNG_SRC/searx/settings.yml\" \\
-                    \"${SEARXNG_SETTINGS_PATH}\"
-
-.. tabs::
-
   .. group-tab:: minimal setup
 
     .. code-block:: sh
 
-       $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \"$SEARXNG_SETTINGS_PATH\"
+       $ sudo -H sed -i -e \"s/ultrasecretkey/\$(openssl rand -hex 16)/g\" \\
+                     \"$SEARXNG_SETTINGS_PATH\"
 
 .. END searxng config
 

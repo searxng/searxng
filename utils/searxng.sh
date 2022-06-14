@@ -889,6 +889,129 @@ _searxng.instance.inspect() {
     fi
 }
 
+searxng.doc.rst() {
+    local debian="${SEARXNG_PACKAGES_debian}"
+    local arch="${SEARXNG_PACKAGES_arch}"
+    local fedora="${SEARXNG_PACKAGES_fedora}"
+    local debian_build="${SEARXNG_BUILD_PACKAGES_debian}"
+    local arch_build="${SEARXNG_BUILD_PACKAGES_arch}"
+    local fedora_build="${SEARXNG_BUILD_PACKAGES_fedora}"
+    debian="$(echo "${debian}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    arch="$(echo "${arch}"     | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    fedora="$(echo "${fedora}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    debian_build="$(echo "${debian_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    arch_build="$(echo "${arch_build}"     | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    fedora_build="$(echo "${fedora_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+
+    if [[ ${SEARXNG_UWSGI_USE_SOCKET} == true ]]; then
+        uwsgi_variant=':socket'
+    else
+        uwsgi_variant=':socket'
+    fi
+
+    eval "echo \"$(< "${REPO_ROOT}/docs/build-templates/searxng.rst")\""
+
+    # I use ubuntu-20.04 here to demonstrate that versions are also suported,
+    # normaly debian-* and ubuntu-* are most the same.
+
+    for DIST_NAME in ubuntu-20.04 arch fedora; do
+        (
+            DIST_ID=${DIST_NAME%-*}
+            DIST_VERS=${DIST_NAME#*-}
+            [[ $DIST_VERS =~ $DIST_ID ]] && DIST_VERS=
+            uWSGI_distro_setup
+
+            echo -e "\n.. START searxng uwsgi-description $DIST_NAME"
+
+            case $DIST_ID-$DIST_VERS in
+                ubuntu-*|debian-*)  cat <<EOF
+
+.. code:: bash
+
+   # init.d --> /usr/share/doc/uwsgi/README.Debian.gz
+   # For uWSGI debian uses the LSB init process, this might be changed
+   # one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067
+
+   create     ${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}
+   enable:    sudo -H ln -s ${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP} ${uWSGI_APPS_ENABLED}/
+   start:     sudo -H service uwsgi start   ${SEARXNG_UWSGI_APP%.*}
+   restart:   sudo -H service uwsgi restart ${SEARXNG_UWSGI_APP%.*}
+   stop:      sudo -H service uwsgi stop    ${SEARXNG_UWSGI_APP%.*}
+   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+
+EOF
+                ;;
+                arch-*) cat <<EOF
+
+.. code:: bash
+
+   # systemd --> /usr/lib/systemd/system/uwsgi@.service
+   # For uWSGI archlinux uses systemd template units, see
+   # - http://0pointer.de/blog/projects/instances.html
+   # - https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd
+
+   create:    ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   enable:    sudo -H systemctl enable   uwsgi@${SEARXNG_UWSGI_APP%.*}
+   start:     sudo -H systemctl start    uwsgi@${SEARXNG_UWSGI_APP%.*}
+   restart:   sudo -H systemctl restart  uwsgi@${SEARXNG_UWSGI_APP%.*}
+   stop:      sudo -H systemctl stop     uwsgi@${SEARXNG_UWSGI_APP%.*}
+   disable:   sudo -H systemctl disable  uwsgi@${SEARXNG_UWSGI_APP%.*}
+
+EOF
+                ;;
+                fedora-*|centos-7) cat <<EOF
+
+.. code:: bash
+
+   # systemd --> /usr/lib/systemd/system/uwsgi.service
+   # The unit file starts uWSGI in emperor mode (/etc/uwsgi.ini), see
+   # - https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html
+
+   create:    ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   restart:   sudo -H touch ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+   disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
+
+EOF
+                ;;
+            esac
+            echo -e ".. END searxng uwsgi-description $DIST_NAME"
+
+            local _show_cursor=""  # prevent from prefix_stdout's trailing show-cursor
+
+            echo -e "\n.. START searxng uwsgi-appini $DIST_NAME"
+            echo ".. code:: bash"
+            echo
+            eval "echo \"$(< "${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}${uwsgi_variant}")\"" | prefix_stdout "  "
+            echo -e "\n.. END searxng uwsgi-appini $DIST_NAME"
+
+            echo -e "\n.. START nginx socket"
+            echo ".. code:: nginx"
+            echo
+            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            echo -e "\n.. END nginx socket"
+
+            echo -e "\n.. START nginx http"
+            echo ".. code:: nginx"
+            echo
+            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}")\"" | prefix_stdout "  "
+            echo -e "\n.. END nginx http"
+
+            echo -e "\n.. START apache socket"
+            echo ".. code:: apache"
+            echo
+            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            echo -e "\n.. END apache socket"
+
+            echo -e "\n.. START apache http"
+            echo ".. code:: apache"
+            echo
+            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}")\"" | prefix_stdout "  "
+            echo -e "\n.. END apache http"
+        )
+    done
+
+}
+
 # ----------------------------------------------------------------------------
 main "$@"
 # ----------------------------------------------------------------------------
