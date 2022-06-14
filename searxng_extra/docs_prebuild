@@ -9,7 +9,7 @@ import sys
 import os.path
 import time
 from contextlib import contextmanager
-from searx import settings, get_setting
+from searx import settings, get_setting, locales
 from searx.infopage import InfoPageSet, InfoPage
 
 
@@ -17,6 +17,7 @@ _doc_user = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'docs'
 
 
 def main():
+    locales.locales_initialize()
     base_url = get_setting('server.base_url', None)
     if base_url:
         infopageset_ctx = _instance_infosetset_ctx(base_url)

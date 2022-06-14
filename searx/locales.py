@@ -72,7 +72,7 @@ def localeselector():
 
 
 def get_translations():
-    """Monkey patch of flask_babel.get_translations"""
+    """Monkey patch of :py:obj:`flask_babel.get_translations`"""
     if has_request_context() and flask.request.form.get('use-translation') == 'oc':
         babel_ext = flask_babel.current_app.extensions['babel']
         return Translations.load(next(babel_ext.translation_directories), 'oc')
@@ -117,7 +117,7 @@ def _get_locale_descr(locale, language_code):
 def locales_initialize(directory=None):
     """Initialize locales environment of the SearXNG session.
 
-    - monkey patch :py:obj:`flask_babel.get_translations` by :obj:py:`get_translations`
+    - monkey patch :py:obj:`flask_babel.get_translations` by :py:obj:`get_translations`
     - init global names :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`
     """
 
