@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Ubuntu packages
         run: |
-          sudo ./utils/searx.sh install packages
+          sudo ./utils/searxng.sh install packages
 
       - name: Set up Python
         uses: actions/setup-python@v2

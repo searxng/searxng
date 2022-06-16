@@ -59,7 +59,6 @@ test.shell:
 		utils/brand.env \
 		$(MTOOLS) \
 		utils/lib.sh \
-		utils/lib_install.sh \
 		utils/lib_nvm.sh \
 		utils/lib_static.sh \
 		utils/lib_go.sh \
@@ -69,8 +68,7 @@ test.shell:
 		utils/searxng.sh \
 		utils/morty.sh \
 		utils/lxc.sh \
-		utils/lxc-searxng.env \
-		.config.sh
+		utils/lxc-searxng.env
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 
