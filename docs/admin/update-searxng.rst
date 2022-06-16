@@ -37,3 +37,79 @@ script.
 .. code:: sh
 
     sudo -H ./utils/searxng.sh instance inspect
+
+.. _migrate and stay tuned:
+
+Migrate and stay tuned!
+=======================
+
+.. sidebar:: info
+
+   - :pull:`1332`
+   - :pull:`456`
+   - :pull:`A comment about rolling release <446#issuecomment-954730358>`
+
+SearXNG is a *rolling release*; each commit to the master branch is a release.
+SearXNG is growing rapidly, the services and opportunities are change every now
+and then, to name just a few:
+
+- Bot protection has been switched from filtron to SearXNG's :ref:`limiter
+  <limiter>`, this requires a :ref:`Redis <settings redis>` database.
+
+- The image proxy morty is no longer needed, it has been replaced by the
+  :ref:`image proxy <image_proxy>` from SearXNG.
+
+- To save bandwith :ref:`cache busting <static_use_hash>` has been implemented.
+  To get in use, the ``static-expires`` needs to be set in the :ref:`uwsgi
+  setup`.
+
+To stay tuned and get in use of the new features, instance maintainers have to
+update the SearXNG code regularly (see :ref:`update searxng`).  As the above
+examples show, this is not always enough, sometimes services have to be set up
+or reconfigured and sometimes services that are no longer needed should be
+uninstalled.
+
+.. hint::
+
+   First of all: SearXNG is installed by the script :ref:`searxng.sh`.  If you
+   have old filtron, morty or searx setup you should consider complete
+   uninstall/reinstall.
+
+
+remove obsolete services
+------------------------
+
+If your searx instance was installed *"Step by step"* or by the *"Installation
+scripts"*, you need to undo the installation procedure completely.  If you have
+morty & filtron installed, it is recommended to uninstall these services also.
+In case of scripts, to uninstall use the scripts from the origin you installed
+searx from or try::
+
+  $ sudo -H ./utils/filtron.sh remove all
+  $ sudo -H ./utils/morty.sh   remove all
+  $ sudo -H ./utils/searx.sh   remove all
+
+.. hint::
+
+   If you are migrate from searx take into account that the ``.config.sh`` is no
+   longer used.
+
+
+Check after Installation
+------------------------
+
+Once you have done your installation, you can run a SearXNG *check* procedure,
+to see if there are some left overs.  In this example there exists a *old*
+``/etc/searx/settings.yml``::
+
+   $ sudo -H ./utils/searxng.sh instance check
+
+   SearXNG checks
+   --------------
+   ERROR: settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/
+   INFO:  [OK] (old) account 'searx' does not exists
+   INFO:  [OK] (old) account 'filtron' does not exists
+   INFO:  [OK] (old) account 'morty' does not exists
+   ...
+   INFO    searx.shared                  : Use shared_simple implementation
+   INFO    searx.shared.redis            : connected redis DB --> default

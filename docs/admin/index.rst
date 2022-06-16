@@ -13,7 +13,6 @@ Administrator documentation
    installation-uwsgi
    installation-nginx
    installation-apache
-   installation-switch2ng
    update-searxng
    engines/index
    api
