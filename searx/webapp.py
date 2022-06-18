@@ -1355,6 +1355,7 @@ def config():
             'default_theme': settings['ui']['default_theme'],
             'version': VERSION_STRING,
             'brand': {
+                'PRIVACYPOLICY_URL': get_setting('general.privacypolicy_url'),
                 'CONTACT_URL': get_setting('general.contact_url'),
                 'GIT_URL': GIT_URL,
                 'GIT_BRANCH': GIT_BRANCH,

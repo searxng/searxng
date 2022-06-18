@@ -72,11 +72,15 @@ Global Settings
    general:
      debug: false               # Debug mode, only for development
      instance_name:  "SearXNG"  # displayed name
+     privacypolicy_url: false   # https://example.com/privacy
      contact_url: false         # mailto:contact@example.com
 
 ``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
+
+``privacypolicy_url``:
+  Link to privacy policy.
 
 ``contact_url``:
   Contact ``mailto:`` address or WEB form.
