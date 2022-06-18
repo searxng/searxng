@@ -149,7 +149,11 @@ def set_loggers(engine, engine_name):
     engine.logger = logger.getChild(engine_name)
     # the engine may have load some other engines
     # may sure the logger is initialized
-    for module_name, module in sys.modules.items():
+    # use sys.modules.copy() to avoid "RuntimeError: dictionary changed size during iteration"
+    # see https://github.com/python/cpython/issues/89516
+    # and https://docs.python.org/3.10/library/sys.html#sys.modules
+    modules = sys.modules.copy()
+    for module_name, module in modules.items():
         if (
             module_name.startswith("searx.engines")
             and module_name != "searx.engines.__init__"
