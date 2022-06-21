@@ -16,7 +16,7 @@ import httpx
 
 from searx import network, logger
 from searx.utils import gen_useragent
-from searx.results import ResultContainer
+from searx.results.container import ResultContainer
 from searx.search.models import SearchQuery, EngineRef
 from searx.search.processors import EngineProcessor
 from searx.metrics import counter_inc

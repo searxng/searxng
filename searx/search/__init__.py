@@ -11,7 +11,7 @@ import flask
 from searx import settings
 from searx.answerers import ask
 from searx.external_bang import get_bang_url
-from searx.results import ResultContainer
+from searx.results.container import ResultContainer
 from searx import logger
 from searx.plugins import plugins
 from searx.search.models import EngineRef, SearchQuery

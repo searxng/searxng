@@ -61,6 +61,8 @@ Scripts to update static data in :origin:`searx/data/`
   :members:
 
 
+.. _update_osm_keys_tags.py:
+
 ``update_osm_keys_tags.py``
 ===========================
 
