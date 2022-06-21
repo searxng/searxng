@@ -353,25 +353,43 @@ all`` directive and replace ``192.168.0.0/16`` with your subnet IP/class.
 
       .. code:: apache
 
-	 LoadModule headers_module /usr/lib/apache2/mod_headers.so
-	 LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
-	 LoadModule proxy_uwsgi_module /usr/lib/apache2/modules/mod_proxy_uwsgi.so
+    <VirtualHost *:80>
+        ServerName your_domain
+        Redirect / your_https_url
 
-	 # SetEnvIf Request_URI /searx dontlog
-	 # CustomLog /dev/null combined env=dontlog
+        RewriteEngine on
+        RewriteCond %{SERVER_NAME} = your_domain
+        RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 
-	 <Location /searx>
+    </VirtualHost>
+    <IfModule mod_ssl.c>
+    <VirtualHost *:443>
+        ServerName your_domain
+	    LoadModule headers_module /usr/lib/apache2/mod_headers.so
+	    LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
+	    LoadModule proxy_uwsgi_module /usr/lib/apache2/modules/mod_proxy_uwsgi.so
 
-	     Require all granted
-	     Order deny,allow
-	     Deny from all
-	     # Allow from fd00::/8 192.168.0.0/16 fe80::/10 127.0.0.0/8 ::1
-	     Allow from all
+	    # SetEnvIf Request_URI /searx dontlog
+	    # CustomLog /dev/null combined env=dontlog
 
-	     ProxyPreserveHost On
-	     ProxyPass unix:/run/uwsgi/app/searx/socket|uwsgi://uwsgi-uds-searx/
+	    <Location /searx>
 
-	 </Location>
+	        Require all granted
+	        Order deny,allow
+	        Deny from all
+	        # Allow from fd00::/8 192.168.0.0/16 fe80::/10 127.0.0.0/8 ::1
+	        Allow from all
+
+	         ProxyPreserveHost On
+	         ProxyPass unix:/run/uwsgi/app/searx/socket|uwsgi://uwsgi-uds-searx/
+
+	    </Location>
+
+        SSLCertificateFile path_to_cert_file
+        SSLCertificateKeyFile path_to_cert_key
+    </VirtualHost>
+    </IfModule>
+
 
    .. group-tab:: Arch Linux
 
