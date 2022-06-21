@@ -3,7 +3,7 @@
 import json
 from urllib.parse import ParseResult
 from mock import Mock
-from searx.results import Timing
+from searx.results.core import Timing
 
 import searx.search.processors
 from searx.search import Search

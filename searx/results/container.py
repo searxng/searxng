@@ -1,158 +1,95 @@
-import re
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""ResultContainer
+"""
+
 from collections import defaultdict
 from operator import itemgetter
 from threading import RLock
-from typing import List, NamedTuple, Set
-from urllib.parse import urlparse, unquote
+from typing import List, Set
+from urllib.parse import urlparse
 
 from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
 
+from .core import (
+    WHITESPACE_REGEX,
+    Timing,
+    UnresponsiveEngine,
+    result_content_len,
+    result_score,
+    compare_urls,
+)
 
-CONTENT_LEN_IGNORED_CHARS_REGEX = re.compile(r'[,;:!?\./\\\\ ()-_]', re.M | re.U)
-WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
-
-
-# return the meaningful length of the content for a result
-def result_content_len(content):
-    if isinstance(content, str):
-        return len(CONTENT_LEN_IGNORED_CHARS_REGEX.sub('', content))
-    else:
-        return 0
-
-
-def compare_urls(url_a, url_b):
-    """Lazy compare between two URL.
-    "www.example.com" and "example.com" are equals.
-    "www.example.com/path/" and "www.example.com/path" are equals.
-    "https://www.example.com/" and "http://www.example.com/" are equals.
-
-    Args:
-        url_a (ParseResult): first URL
-        url_b (ParseResult): second URL
-
-    Returns:
-        bool: True if url_a and url_b are equals
-    """
-    # ignore www. in comparison
-    if url_a.netloc.startswith('www.'):
-        host_a = url_a.netloc.replace('www.', '', 1)
-    else:
-        host_a = url_a.netloc
-    if url_b.netloc.startswith('www.'):
-        host_b = url_b.netloc.replace('www.', '', 1)
-    else:
-        host_b = url_b.netloc
-
-    if host_a != host_b or url_a.query != url_b.query or url_a.fragment != url_b.fragment:
-        return False
-
-    # remove / from the end of the url if required
-    path_a = url_a.path[:-1] if url_a.path.endswith('/') else url_a.path
-    path_b = url_b.path[:-1] if url_b.path.endswith('/') else url_b.path
-
-    return unquote(path_a) == unquote(path_b)
+from .infobox import Infoboxes, merge_two_infoboxes
+from .suggestion import Suggestions
+from .answer import Answers
+from .correction import Corrections
 
 
-def merge_two_infoboxes(infobox1, infobox2):
-    # get engines weights
-    if hasattr(engines[infobox1['engine']], 'weight'):
-        weight1 = engines[infobox1['engine']].weight
-    else:
-        weight1 = 1
-    if hasattr(engines[infobox2['engine']], 'weight'):
-        weight2 = engines[infobox2['engine']].weight
-    else:
-        weight2 = 1
-
-    if weight2 > weight1:
-        infobox1['engine'] = infobox2['engine']
-
-    infobox1['engines'] |= infobox2['engines']
-
-    if 'urls' in infobox2:
-        urls1 = infobox1.get('urls', None)
-        if urls1 is None:
-            urls1 = []
-
-        for url2 in infobox2.get('urls', []):
-            unique_url = True
-            parsed_url2 = urlparse(url2.get('url', ''))
-            entity_url2 = url2.get('entity')
-            for url1 in urls1:
-                if (entity_url2 is not None and url1.get('entity') == entity_url2) or compare_urls(
-                    urlparse(url1.get('url', '')), parsed_url2
-                ):
-                    unique_url = False
-                    break
-            if unique_url:
-                urls1.append(url2)
-
-        infobox1['urls'] = urls1
-
-    if 'img_src' in infobox2:
-        img1 = infobox1.get('img_src', None)
-        img2 = infobox2.get('img_src')
-        if img1 is None:
-            infobox1['img_src'] = img2
-        elif weight2 > weight1:
-            infobox1['img_src'] = img2
-
-    if 'attributes' in infobox2:
-        attributes1 = infobox1.get('attributes')
-        if attributes1 is None:
-            infobox1['attributes'] = attributes1 = []
-
-        attributeSet = set()
-        for attribute in attributes1:
-            label = attribute.get('label')
-            if label not in attributeSet:
-                attributeSet.add(label)
-            entity = attribute.get('entity')
-            if entity not in attributeSet:
-                attributeSet.add(entity)
-
-        for attribute in infobox2.get('attributes', []):
-            if attribute.get('label') not in attributeSet and attribute.get('entity') not in attributeSet:
-                attributes1.append(attribute)
-
-    if 'content' in infobox2:
-        content1 = infobox1.get('content', None)
-        content2 = infobox2.get('content', '')
-        if content1 is not None:
-            if result_content_len(content2) > result_content_len(content1):
-                infobox1['content'] = content2
-        else:
-            infobox1['content'] = content2
+def is_suggestion(result):
+    """Returns ``True`` if result type is :py:obj:`.suggestion`, otherwise
+    ``False``"""
+    return 'suggestion' in result
 
 
-def result_score(result):
-    weight = 1.0
-
-    for result_engine in result['engines']:
-        if hasattr(engines[result_engine], 'weight'):
-            weight *= float(engines[result_engine].weight)
-
-    occurences = len(result['positions'])
-
-    return sum((occurences * weight) / position for position in result['positions'])
+def is_answer(result):
+    """Returns ``True`` if result type is :py:obj:`.answer`, otherwise ``False``"""
+    return 'answer' in result
 
 
-class Timing(NamedTuple):
-    engine: str
-    total: float
-    load: float
+def is_correction(result):
+    """Returns ``True`` if result type is :py:obj:`.correction`, otherwise
+    ``False``"""
+    return 'correction' in result
 
 
-class UnresponsiveEngine(NamedTuple):
-    engine: str
-    error_type: str
-    suspended: bool
+def is_infobox(result):
+    """Returns ``True`` if result type is :py:obj:`.infobox`, otherwise ``False``"""
+    return 'infobox' in result
+
+
+def is_number_of_results(result):
+    """Returns ``True`` if result type is ``number_of_results``, otherwise
+    ``False``"""
+    return 'number_of_results' in result
+
+
+def is_engine_data(result):
+    """Returns ``True`` if result type is :ref:`engine_data`, otherwise ``False``"""
+    return 'engine_data' in result
+
+
+def is_standard_result(result):
+    """Returns ``True`` if result type is a :ref:`standard result <standard
+    result>`, otherwise ``False``"""
+    return 'url' in result
 
 
 class ResultContainer:
-    """docstring for ResultContainer"""
+    """A container to organize the result items and the various result types.  New
+    results can be added by :py:obj:`ResultContainer.extend`.
+
+    To be clear, a result-type is not a special python data-type, a result is
+    always a python dicticonary.  The result-type is determined by the presence
+    of one of the following keys (in that order, first match wins)
+
+    1. suggestion: :py:obj:`.suggestion`
+    2. answer: :py:obj:`.answer`
+    3. correction: :py:obj:`.correction`
+    4. infobox: :py:obj:`.infobox`
+    5. number_of_results: Number of results origin engine has.
+
+       .. code:: python
+
+          results.append({
+              'number_of_results' : int,
+          })
+
+    6. engine_data: used to pass :ref:`engine_data <engine_data>` to next request.
+    7. url: :ref:`standard result <standard result>`
+    """
 
     __slots__ = (
         '_merged_results',
@@ -174,10 +111,10 @@ class ResultContainer:
     def __init__(self):
         super().__init__()
         self._merged_results = []
-        self.infoboxes = []
-        self.suggestions = set()
-        self.answers = {}
-        self.corrections = set()
+        self.infoboxes = Infoboxes()
+        self.suggestions = Suggestions()
+        self.answers = Answers()
+        self.corrections = Corrections()
         self._number_of_results = []
         self.engine_data = defaultdict(dict)
         self._closed = False
@@ -188,7 +125,8 @@ class ResultContainer:
         self.on_result = lambda _: True
         self._lock = RLock()
 
-    def extend(self, engine_name, results):
+    def extend(self, engine_name, results):  # pylint: disable=too-many-branches
+        """Add a result item to the container."""
         if self._closed:
             return
 
@@ -196,19 +134,19 @@ class ResultContainer:
         error_msgs = set()
         for result in list(results):
             result['engine'] = engine_name
-            if 'suggestion' in result and self.on_result(result):
+            if is_suggestion(result) and self.on_result(result):
                 self.suggestions.add(result['suggestion'])
-            elif 'answer' in result and self.on_result(result):
-                self.answers[result['answer']] = result
-            elif 'correction' in result and self.on_result(result):
+            elif is_answer(result) and self.on_result(result):
+                self.answers.add(result)
+            elif is_correction(result) and self.on_result(result):
                 self.corrections.add(result['correction'])
-            elif 'infobox' in result and self.on_result(result):
+            elif is_infobox(result) and self.on_result(result):
                 self._merge_infobox(result)
-            elif 'number_of_results' in result and self.on_result(result):
+            elif is_number_of_results(result) and self.on_result(result):
                 self._number_of_results.append(result['number_of_results'])
-            elif 'engine_data' in result and self.on_result(result):
+            elif is_engine_data(result) and self.on_result(result):
                 self.engine_data[engine_name][result['key']] = result['engine_data']
-            elif 'url' in result:
+            elif is_standard_result(result):
                 # standard result (url, title, content)
                 if not self._is_valid_url_result(result, error_msgs):
                     continue
@@ -313,11 +251,10 @@ class ResultContainer:
                 if result_template != 'images.html':
                     # not an image, same template, same url : it's a duplicate
                     return merged_result
-                else:
-                    # it's an image
-                    # it's a duplicate if the parsed_url, template and img_src are differents
-                    if result.get('img_src', '') == merged_result.get('img_src', ''):
-                        return merged_result
+                # it's an image
+                # it's a duplicate if the parsed_url, template and img_src are differents
+                if result.get('img_src', '') == merged_result.get('img_src', ''):
+                    return merged_result
         return None
 
     def __merge_duplicated_http_result(self, duplicated, result, position):
@@ -363,6 +300,7 @@ class ResultContainer:
         categoryPositions = {}
 
         for res in results:
+            # pylint: disable=fixme
             # FIXME : handle more than one category per engine
             engine = engines[res['engine']]
             res['category'] = engine.categories[0] if len(engine.categories) > 0 else ''
@@ -389,7 +327,7 @@ class ResultContainer:
 
                 # update every index after the current one
                 # (including the current one)
-                for k in categoryPositions:
+                for k in categoryPositions:  # pylint: disable=consider-using-dict-items
                     v = categoryPositions[k]['index']
                     if v >= index:
                         categoryPositions[k]['index'] = v + 1
