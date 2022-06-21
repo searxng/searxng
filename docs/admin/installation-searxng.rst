@@ -52,8 +52,8 @@ In the same shell create *virtualenv*:
    :start-after: START create virtualenv
    :end-before: END create virtualenv
 
-To install searx's dependencies, exit the SearXNG *bash* session you opened above
-and restart a new.  Before install, first check if your *virtualenv* was sourced
+To install SearXNG's dependencies, exit the SearXNG *bash* session you opened above
+and start a new one.  Before installing, check if your *virtualenv* was sourced
 from the login (*~/.profile*):
 
 .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
@@ -127,6 +127,6 @@ configuration file.
    :end-before: END check searxng installation
 
 If everything works fine, hit ``[CTRL-C]`` to stop the *webapp* and disable the
-debug option in ``settings.yml``. You can now exit SearXNG user bash (enter exit
+debug option in ``settings.yml``. You can now exit SearXNG user bash session (enter exit
 command twice).  At this point SearXNG is not demonized; uwsgi allows this.
 

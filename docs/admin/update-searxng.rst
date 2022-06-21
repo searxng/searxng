@@ -18,7 +18,7 @@ How to update
 =============
 
 How to update depends on the :ref:`installation` method.  If you have used the
-:ref:`installation scripts`, use ``update`` command from the :ref:`searxng.sh`
+:ref:`installation scripts`, use the ``update`` command from the :ref:`searxng.sh`
 script.
 
 .. code:: sh
@@ -31,7 +31,7 @@ How to inspect & debug
 ======================
 
 How to debug depends on the :ref:`installation` method.  If you have used the
-:ref:`installation scripts`, use ``inspect`` command from the :ref:`searxng.sh`
+:ref:`installation scripts`, use the ``inspect`` command from the :ref:`searxng.sh`
 script.
 
 .. code:: sh

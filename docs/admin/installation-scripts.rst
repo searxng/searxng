@@ -4,12 +4,12 @@
 Installation Script
 ===================
 
-.. sidebar:: Update OS first!
+.. sidebar:: Update the OS first!
 
    To avoid unwanted side effects, update your OS before installing SearXNG.
 
 The following will install a setup as shown in :ref:`the reference architecture
-<arch public>`.  First you need to get a clone.  The clone is only needed for
+<arch public>`.  First you need to get a clone of the repository.  The clone is only needed for
 the installation procedure and some maintenance tasks.
 
 .. sidebar:: further read
@@ -41,9 +41,9 @@ including a :ref:`uWSGI setup <architecture uWSGI>` as described in the
 
    For the installation procedure, use a *sudoer* login to run the scripts.  If
    you install from ``root``, take into account that the scripts are creating a
-   ``searxng`` user.  In the installation procedure this new created user do
-   need read access to the clone of searx, which is not the case if you clone
-   into a folder below ``/root``!
+   ``searxng`` user.  In the installation procedure this new created user does
+   need read access to the cloned SearXNG repository, which is not the case if you clone
+   it into a folder below ``/root``!
 
 .. sidebar:: further read
 

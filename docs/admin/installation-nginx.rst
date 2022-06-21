@@ -19,8 +19,8 @@ NGINX
 .. _SCRIPT_NAME:
    https://werkzeug.palletsprojects.com/en/1.0.x/wsgi/#werkzeug.wsgi.get_script_name
 
-This section explains how to set up a SearXNG site using the HTTP server nginx_.
-If you have used the :ref:`installation scripts` and do not have any preference
+This section explains how to set up a SearXNG instance using the HTTP server nginx_.
+If you have used the :ref:`installation scripts` and do not have any special preferences
 you can install the :ref:`SearXNG site <nginx searxng site>` using
 :ref:`searxng.sh <searxng.sh overview>`:
 
@@ -78,7 +78,7 @@ If nginx_ is not installed, install it now.
 
 Now at http://localhost you should see a *Welcome to nginx!* page, on Fedora you
 see a *Fedora Webserver - Test Page*.  The test page comes from the default
-`nginx server configuration`_.  How this default intro site is configured,
+`nginx server configuration`_.  How this default site is configured,
 depends on the linux distribution:
 
 .. tabs::
@@ -134,7 +134,7 @@ site.  If nginx_ is new to you, the `nginx beginners guide`_ is a good starting
 point and the `Getting Started wiki`_ is always a good resource *to keep in the
 pocket*.
 
-Depending on what your SearXNG installation is listen, you need a http or socket
+Depending on what your SearXNG installation is listening on, you need a http or socket
 communication to upstream.
 
 .. tabs::
@@ -151,8 +151,8 @@ communication to upstream.
          :start-after: START nginx http
          :end-before: END nginx http
 
-The :ref:`installation scripts` installs by default the :ref:`reference setup
-<use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket.
+The :ref:`installation scripts` installs the :ref:`reference setup
+<use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket by default.
 
 .. tabs::
 

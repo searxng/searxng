@@ -12,7 +12,7 @@
    - :ref:`installation nginx`
    - :ref:`installation apache`
 
-To simplify installation and maintenance of a SearXNG instance you can use the
+To simplify the installation and maintenance of a SearXNG instance you can use the
 script :origin:`utils/searxng.sh`.
 
 Install

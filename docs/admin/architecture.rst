@@ -19,7 +19,7 @@ SearXNG infrastructures.
 uWSGI Setup
 ===========
 
-We start with a *reference* setup for public SearXNG instances which can build
+We start with a *reference* setup for public SearXNG instances which can be build
 up and maintained by the scripts from our :ref:`toolboxing`.
 
 .. _arch public:

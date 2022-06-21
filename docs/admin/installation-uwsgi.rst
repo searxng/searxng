@@ -80,7 +80,7 @@ Distributors
 
 The `uWSGI Emperor`_ mode and `systemd unit template`_ is what the distributors
 mostly offer their users, even if they differ in the way they implement both
-modes and their defaults.  Another point they might differ is the packaging of
+modes and their defaults.  Another point they might differ in is the packaging of
 plugins (if so, compare :ref:`install packages`) and what the default python
 interpreter is (python2 vs. python3).
 
@@ -98,8 +98,8 @@ Debian's uWSGI layout
     https://salsa.debian.org/uwsgi-team/uwsgi/-/raw/debian/latest/debian/uwsgi.README.Debian
 
 Be aware, Debian's uWSGI layout is quite different from the standard uWSGI
-configuration.  Your are familiar with :ref:`Debian's Apache layout`? .. they do
-similar for the uWSGI infrastructure. The folders are::
+configuration.  Your are familiar with :ref:`Debian's Apache layout`? .. they do a
+similar thing for the uWSGI infrastructure. The folders are::
 
     /etc/uwsgi/apps-available/
     /etc/uwsgi/apps-enabled/
@@ -108,7 +108,7 @@ The `uwsgi ini file`_ is enabled by a symbolic link::
 
   ln -s /etc/uwsgi/apps-available/searxng.ini /etc/uwsgi/apps-enabled/
 
-More details you will find in the uwsgi.README.Debian_
+More details can be found in the uwsgi.README.Debian_
 (``/usr/share/doc/uwsgi/README.Debian.gz``).  Some commands you should know on
 Debian:
 
@@ -235,8 +235,8 @@ major release is from Dec. 2013, since the there had been only bugfix releases
   **In Tyrant mode, there is no way to get additional groups, and the uWSGI
   process misses additional permissions that may be needed.**
 
-By example, on Fedora (RHEL): If you try to install a redis DB with socket
-communication and you want to connect from the SearXNG uWSGI, you will see a
+For example on Fedora (RHEL): If you try to install a redis DB with socket
+communication and you want to connect to it from the SearXNG uWSGI, you will see a
 *Permission denied* in the log of your instance::
 
   ERROR:searx.shared.redis: [searxng (993)] can't connect redis DB ...

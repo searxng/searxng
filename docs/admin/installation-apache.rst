@@ -40,8 +40,8 @@ Apache
     https://httpd.apache.org/docs/current/mod/mod_proxy.html
 
 
-This section explains how to set up a SearXNG site using the HTTP server Apache_.
-If you have used the :ref:`installation scripts` and do not have any preference
+This section explains how to set up a SearXNG instance using the HTTP server Apache_.
+If you did use the :ref:`installation scripts` and do not have any special preferences
 you can install the :ref:`SearXNG site <apache searxng site>` using
 :ref:`searxng.sh <searxng.sh overview>`:
 
@@ -99,8 +99,8 @@ Directives`_ documentation gives first orientation.  There is also a list of
          sudo -H systemctl enable httpd
          sudo -H systemctl start httpd
 
-Now at http://localhost you should see any kind of *Welcome* or *Test* page.
-How this default intro site is configured, depends on the linux distribution
+Now at http://localhost you should see some kind of *Welcome* or *Test* page.
+How this default site is configured, depends on the linux distribution
 (compare `Apache directives`_).
 
 .. tabs::
@@ -322,11 +322,11 @@ mod_proxy_ module (:ref:`apache modules`).
    With ProxyPreserveHost_ the incoming ``Host`` header is passed to the proxied
    host.
 
-Depending on what your SearXNG installation is listen, you need a http
+Depending on what your SearXNG installation is listening on, you need a http
 mod_proxy_http_) or socket (mod_proxy_uwsgi_) communication to upstream.
 
-The :ref:`installation scripts` installs by default the :ref:`reference setup
-<use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket.
+The :ref:`installation scripts` installs the :ref:`reference setup
+<use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket by default.
 You can install and activate your own ``searxng.conf`` like shown in
 :ref:`apache sites`.
 
@@ -383,6 +383,6 @@ one of the lines and `restart apache`_:
    SetEnvIf Request_URI "/searxng" dontlog
    # CustomLog /dev/null combined env=dontlog
 
-The ``CustomLog`` directive disable logs of the entire (virtual) server, use it
-when the URL of the service does not have a path component (``/searxng``), when
+The ``CustomLog`` directive disables logs for the entire (virtual) server, use it
+when the URL of the service does not have a path component (``/searxng``), so when
 SearXNG is located at root (``/``).

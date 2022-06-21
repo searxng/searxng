@@ -51,8 +51,8 @@ of this container:
 Get Docker
 ==========
 
-If you plan to build and maintain a docker image by your own, make sure you have
-`Docker installed <https://docs.docker.com/get-docker/>`_ and on Linux, don't
+If you plan to build and maintain a docker image by yourself, make sure you have
+`Docker installed <https://docs.docker.com/get-docker/>`_. On Linux don't
 forget to add your user to the docker group (log out and log back in so that
 your group membership is re-evaluated):
 
