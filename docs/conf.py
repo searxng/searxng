@@ -136,7 +136,7 @@ suppress_warnings = ['myst.domains']
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "flask": ("https://flask.palletsprojects.com/", None),
-    "flask_babel": ("https://flask-babel.tkte.ch/", None),
+    "flask_babel": ("https://python-babel.github.io/flask-babel/", None),
     # "werkzeug": ("https://werkzeug.palletsprojects.com/", None),
     "jinja": ("https://jinja.palletsprojects.com/", None),
     "linuxdoc" : ("https://return42.github.io/linuxdoc/", None),
