@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-05 21:15+0000\n"
+"POT-Creation-Date: 2022-06-18 10:38+0000\n"
 "PO-Revision-Date: 2022-06-03 07:18+0000\n"
 "Last-Translator: Tony <papetouses@gmail.com>\n"
 "Language: zh_Hant_TW\n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -144,88 +144,88 @@ msgstr "明亮"
 msgid "dark"
 msgstr "黑暗"
 
-#: searx/webapp.py:164
+#: searx/webapp.py:165
 msgid "timeout"
 msgstr "超時"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:166
 msgid "parsing error"
 msgstr "解析錯誤"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:167
 msgid "HTTP protocol error"
 msgstr "HTTP 協議錯誤"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:168
 msgid "network error"
 msgstr "網絡錯誤"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "意外崩潰"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "HTTP 錯誤"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "HTTP 連接錯誤"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "代理錯誤"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "驗證碼"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "頻繁請求"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "拒絕訪問"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "服務器 API 錯誤"
 
-#: searx/webapp.py:397
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:399
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:401
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:544 searx/webapp.py:985
+#: searx/webapp.py:510 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:560
+#: searx/webapp.py:526
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:635 searx/webapp.py:711
+#: searx/webapp.py:603 searx/webapp.py:679
 msgid "search error"
 msgstr "搜尋錯誤"
 
-#: searx/webapp.py:757
+#: searx/webapp.py:725
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分鐘前"
 
-#: searx/webapp.py:759
+#: searx/webapp.py:727
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
-#: searx/webapp.py:885
+#: searx/webapp.py:853
 msgid "Suspended"
 msgstr "暫停服務"
 
@@ -371,7 +371,11 @@ msgstr "引擎統計"
 msgid "Public instances"
 msgstr "公開站臺"
 
-#: searx/templates/simple/base.html:59
+#: searx/templates/simple/base.html:60
+msgid "Privacy policy"
+msgstr ""
+
+#: searx/templates/simple/base.html:63
 msgid "Contact instance maintainer"
 msgstr "聯繫站點維護人員"
 
@@ -473,7 +477,7 @@ msgstr "隨打即找"
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:311
 msgid "SafeSearch"
 msgstr "安全搜尋"
 
@@ -542,41 +546,51 @@ msgstr "主題樣式"
 msgid "Choose auto to follow your browser settings"
 msgstr "選擇自動則取決於您的瀏覽器設置"
 
-#: searx/templates/simple/preferences.html:219
-msgid "Results on new tabs"
-msgstr "在新分頁開啟結果"
+#: searx/templates/simple/preferences.html:217
+msgid "Center Alignment"
+msgstr ""
 
-#: searx/templates/simple/preferences.html:222
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:232
+#: searx/templates/simple/preferences.html:244
 msgid "On"
 msgstr "開啟"
 
-#: searx/templates/simple/preferences.html:223
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:221
+#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:245
 msgid "Off"
 msgstr "關閉"
 
-#: searx/templates/simple/preferences.html:226
+#: searx/templates/simple/preferences.html:224
+msgid "Displays results in the center of the page (Oscar layout)."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:229
+msgid "Results on new tabs"
+msgstr "在新分頁開啟結果"
+
+#: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
 msgstr "在新瀏覽器分頁中開啟結果連結"
 
-#: searx/templates/simple/preferences.html:231
+#: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
 msgstr "無限捲動"
 
-#: searx/templates/simple/preferences.html:238
+#: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "當捲動至目前頁面的底部時自動載入下一頁"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:254
 msgid "Privacy"
 msgstr "隱私"
 
-#: searx/templates/simple/preferences.html:247
+#: searx/templates/simple/preferences.html:257
 msgid "HTTP Method"
 msgstr "HTTP 方法"
 
-#: searx/templates/simple/preferences.html:254
+#: searx/templates/simple/preferences.html:264
 msgid ""
 "Change how forms are submited, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -585,176 +599,176 @@ msgstr ""
 "變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
 "rel=\"external\">看看更多關於請求方法的介紹</a>"
 
-#: searx/templates/simple/preferences.html:259
+#: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
 msgstr "圖片代理伺服器"
 
-#: searx/templates/simple/preferences.html:262
-#: searx/templates/simple/preferences.html:274
+#: searx/templates/simple/preferences.html:272
+#: searx/templates/simple/preferences.html:284
 msgid "Enabled"
 msgstr "已啟用"
 
-#: searx/templates/simple/preferences.html:263
-#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:273
+#: searx/templates/simple/preferences.html:285
 msgid "Disabled"
 msgstr "已停用"
 
-#: searx/templates/simple/preferences.html:266
+#: searx/templates/simple/preferences.html:276
 msgid "Proxying image results through SearXNG"
 msgstr "通過 SearXNG 代理訪問圖片結果"
 
-#: searx/templates/simple/preferences.html:271
+#: searx/templates/simple/preferences.html:281
 msgid "Query in the page's title"
 msgstr "頁面標題顯示查詢關鍵字"
 
-#: searx/templates/simple/preferences.html:278
+#: searx/templates/simple/preferences.html:288
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr "啟用時，結果頁的標題包含你的查詢關鍵字。你的瀏覽器會記錄這個標題"
 
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:294
 msgid "Engines"
 msgstr "引擎"
 
-#: searx/templates/simple/preferences.html:285
+#: searx/templates/simple/preferences.html:295
 msgid "Currently used search engines"
 msgstr "目前使用的搜尋引擎"
 
-#: searx/templates/simple/preferences.html:292
+#: searx/templates/simple/preferences.html:302
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
 
-#: searx/templates/simple/preferences.html:297
-#: searx/templates/simple/preferences.html:348
+#: searx/templates/simple/preferences.html:307
+#: searx/templates/simple/preferences.html:358
 msgid "Allow"
 msgstr "允許"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:308
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "引擎名稱"
 
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:309
 msgid "Shortcut"
 msgstr "快捷鍵"
 
-#: searx/templates/simple/preferences.html:300
+#: searx/templates/simple/preferences.html:310
 msgid "Supports selected language"
 msgstr "支援選定的語言"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:312
 msgid "Time range"
 msgstr "時間範圍"
 
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "響應時間"
 
-#: searx/templates/simple/preferences.html:304
+#: searx/templates/simple/preferences.html:314
 msgid "Max time"
 msgstr "最大時間"
 
-#: searx/templates/simple/preferences.html:305
+#: searx/templates/simple/preferences.html:315
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "可靠性"
 
-#: searx/templates/simple/preferences.html:343
+#: searx/templates/simple/preferences.html:353
 msgid "Special Queries"
 msgstr "特殊查詢"
 
-#: searx/templates/simple/preferences.html:349
+#: searx/templates/simple/preferences.html:359
 msgid "Keywords"
 msgstr "關鍵字"
 
-#: searx/templates/simple/preferences.html:350
+#: searx/templates/simple/preferences.html:360
 msgid "Name"
 msgstr "名稱"
 
-#: searx/templates/simple/preferences.html:351
+#: searx/templates/simple/preferences.html:361
 msgid "Description"
 msgstr "描述"
 
-#: searx/templates/simple/preferences.html:352
+#: searx/templates/simple/preferences.html:362
 msgid "Examples"
 msgstr "範例"
 
-#: searx/templates/simple/preferences.html:355
+#: searx/templates/simple/preferences.html:365
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "這是 SearXNG 即時回應模塊列表。"
 
-#: searx/templates/simple/preferences.html:366
+#: searx/templates/simple/preferences.html:376
 msgid "This is the list of plugins."
 msgstr "這是插件列表。"
 
-#: searx/templates/simple/preferences.html:383
+#: searx/templates/simple/preferences.html:393
 msgid "Cookies"
 msgstr "Cookies"
 
-#: searx/templates/simple/preferences.html:385
+#: searx/templates/simple/preferences.html:395
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr "這是 SearXNG 在您的計算機上存儲的 Cookie 的列表及對應的值。"
 
-#: searx/templates/simple/preferences.html:386
+#: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "您可以憑此列表評估 SearXNG 的透明度。"
 
-#: searx/templates/simple/preferences.html:391
+#: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
 msgstr "Cookie 名稱"
 
-#: searx/templates/simple/preferences.html:392
+#: searx/templates/simple/preferences.html:402
 msgid "Value"
 msgstr "值"
 
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
 msgstr "目前偏好設定的搜尋 URL"
 
-#: searx/templates/simple/preferences.html:408
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr "注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，因為會洩漏資料給點選的結果頁面。"
 
-#: searx/templates/simple/preferences.html:409
+#: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
 msgstr "用於在其他瀏覽器上還原您的偏好設定的網址"
 
-#: searx/templates/simple/preferences.html:413
+#: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr "於URL中指定設定可把您的偏好設定同步至其他設備。"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:428
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr "這些設定只會儲存在您的 cookies 中，這樣我們無需也不會存儲關於您的資訊。"
 
-#: searx/templates/simple/preferences.html:420
+#: searx/templates/simple/preferences.html:430
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr "這些 cookies 僅為提供您方便之用，我們不會使用這些 cookies 來追蹤您。"
 
-#: searx/templates/simple/preferences.html:423
+#: searx/templates/simple/preferences.html:433
 msgid "Save"
 msgstr "保存"
 
-#: searx/templates/simple/preferences.html:424
+#: searx/templates/simple/preferences.html:434
 msgid "Reset defaults"
 msgstr "重設為預設值"
 
-#: searx/templates/simple/preferences.html:425
+#: searx/templates/simple/preferences.html:435
 msgid "Back"
 msgstr "返回"
 
