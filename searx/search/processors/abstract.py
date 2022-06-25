@@ -136,34 +136,27 @@ class EngineProcessor(ABC):
                 self.engine_name, self.suspended_status.suspend_reason, suspended=True
             )
             return True
+        if self.exceeds_rate_limit():
+            result_container.add_unresponsive_engine(self.engine_name, "Exceed rate limit", suspended=True)
+            return True
         return False
 
     def exceeds_rate_limit(self):
-        def check_rate_limiter(engine_name, max_requests, interval):
-            key = f'rate_limiter_{engine_name}_{max_requests}r/{interval}s'
-            # check requests count
-            count = storage.get_int(key)
-            if count is None:
-                # initialize counter with expiration time
-                storage.set_int(key, 1, interval)
-            elif count >= max_requests:
-                logger.debug(f"{engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds")
-                return True
-            else:
-                # update counter
-                storage.set_int(key, count + 1)
-            return False
-
         result = False
+
         # add counter to all of the engine's rate limiters
         for rate_limit in self.engine.rate_limit:
             max_requests = rate_limit['max_requests']
             interval = rate_limit.get('interval', 1)
 
-            if max_requests == float('inf'):
+            if not max_requests:
                 continue
 
-            if run_locked(check_rate_limiter, self.engine_name, max_requests, interval):
+            name = f'{self.engine_name}_{max_requests}r/{interval}s'
+            if run_locked(storage.incr_counter, name, max_requests, interval) >= max_requests:
+                logger.debug(
+                    f"{self.engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds"
+                )
                 result = True
 
         return result
