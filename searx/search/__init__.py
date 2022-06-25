@@ -98,10 +98,6 @@ class Search:
             if request_params is None:
                 continue
 
-            # stop request if it exceeds engine's rate limit
-            if processor.exceeds_rate_limit():
-                continue
-
             counter_inc('engine', engineref.name, 'search', 'count', 'sent')
 
             # append request to list

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+import time
 import threading
 from typing import Optional
 
@@ -12,27 +13,32 @@ class SimpleSharedDict(shared_abstract.SharedDict):
 
     def __init__(self):
         self.d = {}
+        self.expire_times = {}
+        schedule(1, self._expire)
 
     def get_int(self, key: str) -> Optional[int]:
         return self.d.get(key, None)
 
     def set_int(self, key: str, value: int, expire: Optional[int] = None):
         self.d[key] = value
-        if expire:
-            self._expire(key, expire)
+        if expire and not self.expire_times.get(key):
+            self.expire_times[key] = (time.time(), expire)
 
     def get_str(self, key: str) -> Optional[str]:
         return self.d.get(key, None)
 
     def set_str(self, key: str, value: str, expire: Optional[int] = None):
         self.d[key] = value
-        if expire:
-            self._expire(key, expire)
+        if expire and not self.expire_times.get(key):
+            self.expire_times[key] = (time.time(), expire)
 
-    def _expire(self, key: str, expire: int):
-        t = threading.Timer(expire, lambda k, d: d.pop(k), args=[key, self.d])
-        t.daemon = True
-        t.start()
+    def _expire(self):
+        now = time.time()
+        for key, val in self.expire_times.items():
+            created_at, expire = val
+            if now - created_at >= expire:
+                self.d.pop(key)
+                self.expire_times.pop(key)
 
 
 def run_locked(func, *args):
