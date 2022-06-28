@@ -19,19 +19,18 @@
 # Thomas Pointhuber, 2016-2017
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
 "PO-Revision-Date: 2022-06-24 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: German <https://weblate.bubu1.eu/projects/searxng/searxng/de/>"
-"\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -364,40 +363,48 @@ msgstr "Gehe zu %(search_page)s."
 msgid "search page"
 msgstr "Suchseite"
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr ""
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr ""
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr "Einstellungen"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr "Betrieben mit"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "eine privatsphären-respektierende, hackbare Metasuchmaschine"
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "Quellcode"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr "Bugtracker"
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Suchmaschinenstatistiken"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Öffentliche Instanzen"
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
 msgstr "Datenschutzerklärung"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr "Kontakt zum Betreuer der Instanz"
 
@@ -1343,3 +1350,4 @@ msgstr "Video verstecken"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
