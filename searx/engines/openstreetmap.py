@@ -29,6 +29,7 @@ about = {
 # engine dependent config
 categories = ['map']
 paging = False
+language_support = True
 
 # search-url
 base_url = 'https://nominatim.openstreetmap.org/'
@@ -141,6 +142,9 @@ def request(query, params):
     params['url'] = base_url + search_string.format(query=urlencode({'q': query}))
     params['route'] = route_re.match(query)
     params['headers']['User-Agent'] = searx_useragent()
+
+    accept_language = 'en' if params['language'] == 'all' else params['language']
+    params['headers']['Accept-Language'] = accept_language
     return params
 
 
@@ -223,7 +227,7 @@ def fetch_wikidata(nominatim_json, user_langage):
                 wd_to_results.setdefault(wd_id, []).append(result)
 
     if wikidata_ids:
-        user_langage = 'en' if user_langage == 'all' else user_langage
+        user_langage = 'en' if user_langage == 'all' else user_langage.split('-')[0]
         wikidata_ids_str = " ".join(wikidata_ids)
         query = wikidata_image_sparql.replace('%WIKIDATA_IDS%', sparql_string_escape(wikidata_ids_str)).replace(
             '%LANGUAGE%', sparql_string_escape(user_langage)
