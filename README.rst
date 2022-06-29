@@ -142,4 +142,4 @@ https://weblate.bubu1.eu/projects/searxng/searxng/
 Make a donation
 ===============
 
-Follow the `donate <https://docs.searxng.org/donate.html>`_ link.
+You can support the SearXNG project by clicking on the donation page: `https://docs.searxng.org/donate.html <https://docs.searxng.org/donate.html>`_
