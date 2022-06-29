@@ -137,3 +137,9 @@ https://weblate.bubu1.eu/projects/searxng/searxng/
 
 .. figure:: https://weblate.bubu1.eu/widgets/searxng/-/multi-auto.svg
    :target: https://weblate.bubu1.eu/projects/searxng/
+
+
+Make a donation
+===============
+
+You can support the SearXNG project by clicking on the donation page: `https://docs.searxng.org/donate.html <https://docs.searxng.org/donate.html>`_
