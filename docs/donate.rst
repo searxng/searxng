@@ -12,7 +12,7 @@ This will help us to pay the costs for:
 - the domain names (searxng.org and searx.space)
 - the protonmail account
 
-If there is enough fund we can ask for a security audit or pay an UX designer.
+If there is enough fund we can ask for a security audit or pay an User Experience (UX) designer.
 
 Payment methods
 ---------------
