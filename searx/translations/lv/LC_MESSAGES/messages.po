@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
 "PO-Revision-Date: 2022-06-24 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Latvian <https://weblate.bubu1.eu/projects/searxng/searxng/lv/"
-">\n"
 "Language: lv\n"
+"Language-Team: Latvian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/lv/>\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100"
+" <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
-"19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
-"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -343,40 +342,48 @@ msgstr "Doties uz %(search_page)s."
 msgid "search page"
 msgstr ""
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr ""
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr ""
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr ""
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr ""
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "Pirmkods"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr ""
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr ""
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr ""
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
 msgstr "Privātuma politika"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr ""
 
@@ -583,8 +590,7 @@ msgstr "Bezgalīgā ritināšana"
 
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"Automātiski ielādēt nākamo lappusi, ritinot uz pašreizējās lappuses beigām"
+msgstr "Automātiski ielādēt nākamo lappusi, ritinot uz pašreizējās lappuses beigām"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
@@ -600,9 +606,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Mainīt veidu, kā veidlapas tiek iesniegtas, <a href=\"http://en.wikipedia."
-"org/wiki/Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\""
-">uzzināt vairāk par pieprasījuma metodēm</a>"
+"Mainīt veidu, kā veidlapas tiek iesniegtas, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">uzzināt vairāk par pieprasījuma metodēm</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1060,3 +1066,4 @@ msgstr "slēpt video"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+

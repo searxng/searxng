@@ -7,21 +7,23 @@
 # Lukáš Kucharczyk <lukas@kucharczyk.xyz>, 2020
 # Venca24 <Vaclav.Zouzalik@seznam.cz>, 2020
 # Venca24 <Vaclav.Zouzalik@seznam.cz>, 2018
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
-"PO-Revision-Date: 2022-04-13 11:17+0000\n"
-"Last-Translator: Michal Kuncl <michal.kuncl@gmail.com>\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
+"PO-Revision-Date: 2022-07-01 07:18+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Czech <https://weblate.bubu1.eu/projects/searxng/searxng/cs/>"
+"\n"
 "Language: cs\n"
-"Language-Team: Czech "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/cs/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
-"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -351,40 +353,48 @@ msgstr "Přejít na %(search_page)s."
 msgid "search page"
 msgstr "stránka vyhledávání"
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr ""
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr ""
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr "nastavení"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr "Poháněno softwarem"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "soukromí respektujícím, nastavitelným multivyhledávačem"
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "Zdrojový kód"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr "Hlášení chyb"
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statistiky vyhledávače"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Veřejné instance"
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
-msgstr ""
+msgstr "Zásady soukromí"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr "Kontaktujte správce instance"
 
@@ -1319,4 +1329,3 @@ msgstr "skrýt video"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
-
