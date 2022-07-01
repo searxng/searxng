@@ -11,20 +11,23 @@
 # wenke, 2015
 # wenke, 2015-2018
 # WhiredPlanck <fungdaat31@outlook.com>, 2020
+# wordpure <wordlesspure@gmail.com>, 2022.
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
-"PO-Revision-Date: 2022-06-18 10:38+0000\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
+"PO-Revision-Date: 2022-07-01 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -345,40 +348,48 @@ msgstr "前往 %(search_page)s。"
 msgid "search page"
 msgstr "搜索页面"
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr "关于"
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr "捐赠"
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr "首选项"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr "功能来自"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "一个尊重隐私、可二次开发的元搜索引擎"
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "源代码"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr "问题跟踪系统"
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "搜索引擎统计"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "公共站点"
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
 msgstr "隐私政策"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr "联系站点维护人员"
 
@@ -551,7 +562,7 @@ msgstr "选择自动则取决于您的浏览器设置"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "居中对齐"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -567,7 +578,7 @@ msgstr "禁用"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "在页面中心显示结果（Oscar 布局）。"
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -749,7 +760,7 @@ msgstr "用于在其他浏览器上还原您的设置的网址"
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
-msgstr "在首选项URL中指定可跨设备同步的自定义设置"
+msgstr "在首选项 URL 中指定可跨设备同步的自定义设置。"
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -1285,4 +1296,3 @@ msgstr "隐藏视频"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
-

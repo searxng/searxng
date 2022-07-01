@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the  project.
 #
 # Translators:
-# Alexandre Flament <alex@al-f.net>, 2017-2018
+# Alexandre Flament <alex@al-f.net>, 2017-2018, 2022.
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2014
 # Cqoicebordel, 2014
 # Cqoicebordel, 2014-2017,2020
@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
-"PO-Revision-Date: 2022-06-24 07:18+0000\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
+"PO-Revision-Date: 2022-07-01 07:18+0000\n"
 "Last-Translator: Alexandre Flament <alex@al-f.net>\n"
 "Language-Team: French <https://weblate.bubu1.eu/projects/searxng/searxng/fr/>"
 "\n"
@@ -355,40 +355,48 @@ msgstr "Aller à %(search_page)s."
 msgid "search page"
 msgstr "la page d'accueil"
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr "À propos"
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr "Faire un don"
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr "préférences"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr "Propulsé par"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "un métamoteur de recherche hackable et respectueux de la vie privée"
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "Code source"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr "Suivi des problèmes"
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statistiques des moteurs"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instances publiques"
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
 msgstr "Politique de confidentialité"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr "Contacter le responsable de l'instance"
 
@@ -644,8 +652,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Activer pour inclure la requête utilisateur dans le titre de la page HTML. "
-"Votre navigateur peut enregistrer ce titre de page"
+"Activer pour inclure la requête utilisateur dans le titre de la page "
+"HTML. Votre navigateur peut enregistrer ce titre de page"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"

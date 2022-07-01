@@ -11,13 +11,14 @@
 # Neton Brício <fervelinux@gmail.com>, 2015
 # pizzaiolo, 2016
 # shizuka, 2018
+# Leonardo Colman <dev@leonardo.colman.com.br>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 10:38+0000\n"
-"PO-Revision-Date: 2022-06-24 07:18+0000\n"
-"Last-Translator: Vander <vander.azevedo88@gmail.com>\n"
+"POT-Creation-Date: 2022-06-28 18:34+0000\n"
+"PO-Revision-Date: 2022-07-01 07:18+0000\n"
+"Last-Translator: Leonardo Colman <dev@leonardo.colman.com.br>\n"
 "Language-Team: Portuguese (Brazil) <https://weblate.bubu1.eu/projects/"
 "searxng/searxng/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -51,7 +52,7 @@ msgstr "geral"
 #. CATEGORY_NAMES['MUSIC']
 #: searx/searxng.msg
 msgid "music"
-msgstr "áudio"
+msgstr "música"
 
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
@@ -71,7 +72,7 @@ msgstr "vídeos"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "tecnologia"
+msgstr "TI"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -126,12 +127,12 @@ msgstr "repositórios"
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr "wiki de software"
+msgstr "wikis de software"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr "site"
+msgstr "web"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -247,11 +248,11 @@ msgstr "Funções estatísticas"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr "Compute {functions} dos argumentos"
+msgstr "Computa {functions} dos argumentos"
 
 #: searx/engines/openstreetmap.py:156
 msgid "Get directions"
-msgstr "Obter instruções"
+msgstr "Obter direções"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -279,7 +280,7 @@ msgstr "resultado de hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Troca de host"
+msgstr "Substituir host"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -318,8 +319,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Exibe o seu IP se a consulta contém \"ip\" assim como seu agente de "
-"usuário, se a consulta contém \"user agent\"."
+"Exibe o seu IP se a consulta contiver \"ip\" e seu agente de usuário, se a "
+"consulta contiver \"user agent\"."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -338,7 +339,7 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Navegar pelos resultados de busca com atalhos à la Vim (JavaScript "
+"Navegar pelos resultados de busca com atalhos semelhantes ao Vim (JavaScript "
 "necessário). Aperte \"h\" na página de resultados para obter ajuda."
 
 #: searx/templates/simple/404.html:4
@@ -354,40 +355,48 @@ msgstr "Ir a %(search_page)s."
 msgid "search page"
 msgstr "página de busca"
 
-#: searx/templates/simple/base.html:45
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr "Sobre"
+
+#: searx/templates/simple/base.html:49
+msgid "Donate"
+msgstr "Doar"
+
+#: searx/templates/simple/base.html:52
 msgid "preferences"
 msgstr "preferências"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "Powered by"
 msgstr "Distribuído por"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "um mecanismo de metabusca que respeita a sua privacidade"
 
-#: searx/templates/simple/base.html:55
+#: searx/templates/simple/base.html:63
 msgid "Source code"
 msgstr "Código fonte"
 
-#: searx/templates/simple/base.html:56
+#: searx/templates/simple/base.html:64
 msgid "Issue tracker"
 msgstr "Rastreador de problemas"
 
-#: searx/templates/simple/base.html:57 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Estatísticas de busca"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instâncias públicas"
 
-#: searx/templates/simple/base.html:60
+#: searx/templates/simple/base.html:68
 msgid "Privacy policy"
 msgstr "Política de Privacidade"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
 msgstr "Contatar o responsável da instância"
 
@@ -460,7 +469,7 @@ msgstr "Geral"
 
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
-msgstr "Categoria padrão"
+msgstr "Categorias padrão"
 
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
@@ -550,7 +559,7 @@ msgstr "Tema"
 
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr "Mudar o interface do SearXNG"
+msgstr "Mudar a interface do SearXNG"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
@@ -617,6 +626,7 @@ msgstr ""
 " rel=\"external\">saiba mais sobre os métodos de solicitação</a>"
 
 #: searx/templates/simple/preferences.html:269
+#, fuzzy
 msgid "Image proxy"
 msgstr "Imagem proxy"
 
@@ -643,8 +653,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Quando ativado, o título da página de resultados contém sua consulta. Seu"
-" navegador pode registrar este título"
+"Quando ativado, o título da página de resultados conterá sua consulta. Seu "
+"navegador pode registrar este título"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -670,7 +680,7 @@ msgstr "Permitir"
 #: searx/templates/simple/preferences.html:308
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr "Nome do serviço"
+msgstr "Nome do motor"
 
 #: searx/templates/simple/preferences.html:309
 msgid "Shortcut"
