@@ -70,14 +70,22 @@ Global Settings
 .. code:: yaml
 
    general:
-     debug: false               # Debug mode, only for development
-     instance_name:  "SearXNG"  # displayed name
-     privacypolicy_url: false   # https://example.com/privacy
-     contact_url: false         # mailto:contact@example.com
+     debug: false
+     instance_name:  "SearXNG"
+     privacypolicy_url: false
+     donation_url: https://docs.searxng.org/donate.html
+     contact_url: false
+     enable_metrics: true
 
 ``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
+
+``donation_url`` :
+  At default the donation link points to the `SearXNG project
+  <https://docs.searxng.org/donate.html>`_.  Set value to ``true`` to use your
+  own donation page written in the :ref:`searx/info/en/donate.md
+  <searx.infopage>` and use ``false`` to disable the donation link altogether.
 
 ``privacypolicy_url``:
   Link to privacy policy.
