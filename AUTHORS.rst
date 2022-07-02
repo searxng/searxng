@@ -164,3 +164,4 @@ features or generally made searx better:
 - @OliveiraHermogenes
 - Paul Alcock @Guilvareux
 - Sam A. `<https://samsapti.dev>`_
+- @XavierHorwood
