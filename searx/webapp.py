@@ -453,6 +453,12 @@ def render(template_name: str, **kwargs):
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
 
+    # values from settings: donation_url
+    donation_url = get_setting('general.donation_url')
+    if donation_url is True:
+        donation_url = custom_url_for('info', pagename='donate')
+    kwargs['donation_url'] = donation_url
+
     # helpers to create links to other pages
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify

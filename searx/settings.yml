@@ -1,9 +1,17 @@
 general:
-  debug: false              # Debug mode, only for development
-  instance_name: "SearXNG"  # displayed name
-  privacypolicy_url: false  # https://example.com/privacy
-  contact_url: false        # mailto:contact@example.com
-  enable_metrics: true      # record stats
+  # Debug mode, only for development
+  debug: false
+  # displayed name
+  instance_name: "SearXNG"
+  # For example: https://example.com/privacy
+  privacypolicy_url: false
+  # use true to use your own donation page written in searx/info/en/donate.md
+  # use false to disable the donation link
+  donation_url: https://docs.searxng.org/donate.html
+  # mailto:contact@example.com
+  contact_url: false
+  # record stats
+  enable_metrics: true
 
 brand:
   new_issue_url: https://github.com/searxng/searxng/issues/new
