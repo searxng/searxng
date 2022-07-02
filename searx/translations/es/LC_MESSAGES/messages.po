@@ -16,21 +16,21 @@
 # rivera valdez <riveravaldezmail@gmail.com>, 2016
 # wefwefew ewfewfewf <nnnedmz0d@moakt.ws>, 2016
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Fijxu <fijxu@zzls.xyz>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-28 18:34+0000\n"
-"PO-Revision-Date: 2022-07-01 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Spanish <https://weblate.bubu1.eu/projects/searxng/searxng/es/"
-">\n"
+"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"PO-Revision-Date: 2022-07-02 09:00+0000\n"
+"Last-Translator: Fijxu <fijxu@zzls.xyz>\n"
 "Language: es\n"
+"Language-Team: Spanish "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/es/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -159,7 +159,7 @@ msgstr "expirado"
 
 #: searx/webapp.py:166
 msgid "parsing error"
-msgstr "error de procesamiento"
+msgstr "error de parseo"
 
 #: searx/webapp.py:167
 msgid "HTTP protocol error"
@@ -236,11 +236,11 @@ msgstr "hace {hours} hora(s) y {minutes} minuto(s)"
 
 #: searx/webapp.py:853
 msgid "Suspended"
-msgstr "Suspendido/a"
+msgstr "Suspendido"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
-msgstr "Generador de valores aleaorios"
+msgstr "Generador de valores aleatorios"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
@@ -264,7 +264,7 @@ msgstr "{titulo} (OBSOLETO)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr "Esta entrada la ha sustituido"
+msgstr "Esta entrada ha sido sustituida por"
 
 #: searx/engines/pubmed.py:78
 msgid "No abstract is available for this publication."
@@ -280,17 +280,17 @@ msgstr "Convierte hilos de texto a differentes digestiones hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "digestion hash"
+msgstr "procesar hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Reemplazo de nombre de anfitrion"
+msgstr "Sustituir el nombre de host"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Reescribir los resultados basándose en los nombres del host o eliminar "
-"resultados basándose en el nombre del host"
+"Reescribir los nombres de host de los resultados o eliminar los "
+"resultados en función del nombre de host"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -326,7 +326,7 @@ msgid ""
 "contains \"user agent\"."
 msgstr ""
 "Muestra tu dirección IP si la consulta es \"ip\" y tu Agente de Usuario "
-"si la consulta contiene \"agente de usuario\"."
+"si la consulta contiene \"user agent\"."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -338,7 +338,7 @@ msgstr "Eliminar los argumentos de los rastreadores en la URL devuelta"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
-msgstr "Teclas de acceso rápido como-Vim"
+msgstr "Teclas de acceso rápido como Vim"
 
 #: searx/plugins/vim_hotkeys.py:4
 msgid ""
@@ -371,16 +371,17 @@ msgid "Donate"
 msgstr "Donar"
 
 #: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "preferencias"
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
+msgstr "Preferencias"
 
 #: searx/templates/simple/base.html:62
 msgid "Powered by"
-msgstr "Creado por"
+msgstr "Desarrollado por"
 
 #: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "un metabuscador hackable que respeta la privacidad"
+msgstr "un metabuscador hackeable que respeta la privacidad"
 
 #: searx/templates/simple/base.html:63
 msgid "Source code"
@@ -388,7 +389,7 @@ msgstr "Código fuente"
 
 #: searx/templates/simple/base.html:64
 msgid "Issue tracker"
-msgstr "Gestor de incidencias"
+msgstr "Rastreador de problemas"
 
 #: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -430,7 +431,7 @@ msgstr "por un proxy"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
-msgstr "Envíe un nuevo problema en Github que incluya la información encima"
+msgstr "Enviar un nuevo problema a Github que incluya la información de arriba"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -441,7 +442,7 @@ msgstr "No HTTPS"
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr "Ver los logs de errores y presentar un reporte de errores"
+msgstr "Ver los logs de errores y enviar un informe de error"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
@@ -465,10 +466,6 @@ msgstr "Prueba de verificación fallida. "
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
 msgstr "Errores:"
-
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "Preferencias"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -512,7 +509,7 @@ msgstr "Búsqueda segura"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
-msgstr "Riguroso"
+msgstr "Estricto"
 
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
@@ -578,7 +575,7 @@ msgstr "Escoge automático para seguir la configuración de tu navegador"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "Alineación central"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -594,7 +591,7 @@ msgstr "Desactivado"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Muestra los resultados en el centro de la página (diseño Oscar)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -602,7 +599,7 @@ msgstr "Resultados en nuevas pestañas"
 
 #: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
-msgstr "Abrir los enlaces resultantes en nuevas pestañas del navegador"
+msgstr "Abrir los resultados en nuevas pestañas del navegador"
 
 #: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
@@ -628,13 +625,13 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Modifica cómo se envian los formularios <a "
+"Modifica cómo se envían los formularios <a "
 "href=\"http://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_petici.C3.B3n\""
 " rel=\"external\">más información sobre métodos de peticiones</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
-msgstr "Imagen proxy"
+msgstr "Proxy de imágenes"
 
 #: searx/templates/simple/preferences.html:272
 #: searx/templates/simple/preferences.html:284
@@ -652,7 +649,7 @@ msgstr "Cargando los resultados de imágenes a través de SearXNG"
 
 #: searx/templates/simple/preferences.html:281
 msgid "Query in the page's title"
-msgstr "Peticion en el titulo de la pagina"
+msgstr "Petición en el titulo de la pagina"
 
 #: searx/templates/simple/preferences.html:288
 msgid ""
@@ -777,7 +774,7 @@ msgid ""
 "leaking data to the clicked result sites."
 msgstr ""
 "Nota: especificar configuraciones personalizadas en la URL de búsqueda "
-"puede reducir la privacidad al filtrar datos a los sitios de resultados "
+"puede reducir la privacidad por filtrar datos a los sitios de resultados "
 "en los que se ha hecho clic."
 
 #: searx/templates/simple/preferences.html:419
@@ -806,7 +803,7 @@ msgid ""
 "track you."
 msgstr ""
 "Estas cookies son para su propia comodidad, no las utilizamos para "
-"rastrearle."
+"rastrearte."
 
 #: searx/templates/simple/preferences.html:433
 msgid "Save"
@@ -886,7 +883,7 @@ msgstr "buscar"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Actualmente no hay datos disponibles."
+msgstr "Actualmente no hay datos disponibles. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -950,7 +947,7 @@ msgstr "Código"
 
 #: searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr "Chequeador"
+msgstr "Verificador"
 
 #: searx/templates/simple/stats.html:134
 msgid "Failed test"
@@ -994,19 +991,19 @@ msgstr "Los motores no pueden obtener resultados."
 
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr "Por favor, pruébalo más tarde o encuentra otra instancia de SearXNG."
+msgstr "Por favor, prueba más tarde o encuentra otra instancia de SearXNG."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
-msgstr "¡Lo siento!"
+msgstr "¡Lo sentimos!"
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"No encontramos nada. Por favor, formule su búsqueda de otra forma o "
-"busque en más categorías."
+"No encontramos ningún resultado. Por favor, formule su búsqueda de otra "
+"forma o busque en más categorías."
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1019,7 +1016,7 @@ msgstr "ocultar multimedia"
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr "Este sitio no proveyó ninguna descripción."
+msgstr "Este sitio no provee ninguna descripción."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1047,7 +1044,7 @@ msgstr "ocultar mapa"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
-msgstr "magnet link (enlace sin archivo)"
+msgstr "magnet link"
 
 #: searx/templates/simple/result_templates/torrent.html:7
 msgid "torrent file"
@@ -1055,11 +1052,11 @@ msgstr "archivo torrent"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "Fuente"
+msgstr "Seeders"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "Descargador"
+msgstr "Leechers"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
@@ -1346,3 +1343,7 @@ msgstr "ocultar video"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "preferencias"
+
