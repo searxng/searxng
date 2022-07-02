@@ -8,19 +8,18 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-28 18:34+0000\n"
-"PO-Revision-Date: 2022-07-01 07:18+0000\n"
+"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"PO-Revision-Date: 2022-07-02 09:00+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Bulgarian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"bg/>\n"
 "Language: bg\n"
+"Language-Team: Bulgarian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/bg/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -206,7 +205,7 @@ msgstr "Грешка при зареждането на следващата с�
 
 #: searx/webapp.py:510 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
-msgstr "Неправилни настройки, моля проверете предпочитанията си."
+msgstr "Неправилни настройки, моля проверете предпочитанията си"
 
 #: searx/webapp.py:526
 msgid "Invalid settings"
@@ -352,15 +351,16 @@ msgstr "търси страница"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Относно за"
 
 #: searx/templates/simple/base.html:49
 msgid "Donate"
-msgstr ""
+msgstr "Дарете"
 
 #: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "предпочитания"
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
+msgstr "Предпочитания"
 
 #: searx/templates/simple/base.html:62
 msgid "Powered by"
@@ -455,10 +455,6 @@ msgstr "Провалили се тест(ове) на проверяващия: 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
 msgstr "Грешки:"
-
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "Предпочитания"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -568,7 +564,7 @@ msgstr "Изберете автоматични настойки, за да сл
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "Централно подреждане"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -584,7 +580,7 @@ msgstr "Изключено"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Показване на резултатите в средата на страницата (Оскарово оформление)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -592,15 +588,15 @@ msgstr "Резултати на нови раздели"
 
 #: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
-msgstr "Отвори връзките в нов раздел."
+msgstr "Отвори връзките в нов раздел"
 
 #: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
-msgstr "Списък без страници."
+msgstr "Списък без страници"
 
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Автоматично зареждане на следващата страница."
+msgstr "Автоматично зареждане на следващата страница"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
@@ -687,7 +683,7 @@ msgstr "Времева зона"
 #: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Време за отговор"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Max time"
@@ -740,7 +736,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "С този лист можете да оцените прозрачността на SearXNG."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
@@ -752,23 +748,28 @@ msgstr "Стойност"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
-msgstr ""
+msgstr "Потърсете URL на запазените предпочитания"
 
 #: searx/templates/simple/preferences.html:418
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
+"Бележка: специфичните персонализирани настройки в URL-то за търсене може "
+"да намалят поверителността Ви като издадат данни към кликнатите сайтове "
+"при търсене."
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL да възстановите предпочитанията си в друг браузър"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Специфицирането на персонализирани настройки в URL-то за предпочитания "
+"може да позволи синхронизация между различни устройства."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -788,7 +789,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:433
 msgid "Save"
-msgstr ""
+msgstr "Запази"
 
 #: searx/templates/simple/preferences.html:434
 msgid "Reset defaults"
@@ -796,7 +797,7 @@ msgstr "Върни първоначалните"
 
 #: searx/templates/simple/preferences.html:435
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -813,7 +814,7 @@ msgstr "Грешка!"
 
 #: searx/templates/simple/results.html:46
 msgid "Engines cannot retrieve results"
-msgstr ""
+msgstr "Търсачките не можаха да намерят резултати"
 
 #: searx/templates/simple/results.html:68
 msgid "Suggestions"
@@ -829,23 +830,23 @@ msgstr "Свали резултатите"
 
 #: searx/templates/simple/results.html:120
 msgid "Try searching for:"
-msgstr ""
+msgstr "Пробвайте да потърсите:"
 
 #: searx/templates/simple/results.html:152
 msgid "Back to top"
-msgstr ""
+msgstr "Обратно към началото"
 
 #: searx/templates/simple/results.html:170
 msgid "Previous page"
-msgstr ""
+msgstr "Предишна страница"
 
 #: searx/templates/simple/results.html:187
 msgid "Next page"
-msgstr ""
+msgstr "Следваща страница"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Покажи начална страница"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -868,11 +869,11 @@ msgstr "Няма налична достъпна информация."
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
-msgstr ""
+msgstr "Резултати"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Брой резултати"
 
 #: searx/templates/simple/stats.html:38
 msgid "Scores per result"
@@ -880,19 +881,19 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:62
 msgid "Total"
-msgstr ""
+msgstr "Общо"
 
 #: searx/templates/simple/stats.html:63
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:64
 msgid "Processing"
-msgstr ""
+msgstr "Обработка"
 
 #: searx/templates/simple/stats.html:102
 msgid "Warnings"
-msgstr ""
+msgstr "Предупреждения"
 
 #: searx/templates/simple/stats.html:102
 msgid "Errors and exceptions"
@@ -904,11 +905,11 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:110
 msgid "Message"
-msgstr ""
+msgstr "Съобщение"
 
 #: searx/templates/simple/stats.html:112
 msgid "Percentage"
-msgstr ""
+msgstr "Процент"
 
 #: searx/templates/simple/stats.html:114
 msgid "Parameter"
@@ -928,7 +929,7 @@ msgstr "Код"
 
 #: searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "Проверител"
 
 #: searx/templates/simple/stats.html:134
 msgid "Failed test"
@@ -1313,3 +1314,7 @@ msgstr "скрий видеото"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "предпочитания"
+

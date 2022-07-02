@@ -2,14 +2,14 @@
 # Copyright (C) 2021 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-#
+# Morten R. Bjørklund <mortenrb@live.no>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-28 18:34+0000\n"
-"PO-Revision-Date: 2022-05-20 07:19+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"PO-Revision-Date: 2022-07-02 09:00+0000\n"
+"Last-Translator: Morten R. Bjørklund <mortenrb@live.no>\n"
 "Language: nb_NO\n"
 "Language-Team: Norwegian Bokmål "
 "<https://weblate.bubu1.eu/projects/searxng/searxng/nb_NO/>\n"
@@ -347,15 +347,16 @@ msgstr "søkeside"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: searx/templates/simple/base.html:49
 msgid "Donate"
-msgstr ""
+msgstr "Doner"
 
 #: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "innstillinger"
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
+msgstr "Innstillinger"
 
 #: searx/templates/simple/base.html:62
 msgid "Powered by"
@@ -384,7 +385,7 @@ msgstr "Offentlige instanser"
 
 #: searx/templates/simple/base.html:68
 msgid "Privacy policy"
-msgstr ""
+msgstr "Personvernerklæring"
 
 #: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
@@ -413,7 +414,7 @@ msgstr "mellomtjent"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Opprett en ny sak på Github med informasjonen ovenfor"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -448,10 +449,6 @@ msgstr "Mislykket/ede sjekkingstest(er): "
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
 msgstr "Feil:"
-
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "Innstillinger"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -561,7 +558,7 @@ msgstr "Velg «Automatisk» for å følge nettleserinnstillingene"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "Senterjustering"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -577,7 +574,7 @@ msgstr "Av"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Viser resultatet midt på siden (Oscar layout)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -726,15 +723,15 @@ msgstr "Dette er en liste over programtillegg."
 
 #: searx/templates/simple/preferences.html:393
 msgid "Cookies"
-msgstr "Kaker"
+msgstr "Informasjonskapsler"
 
 #: searx/templates/simple/preferences.html:395
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dette er listen over kaker og deres verdier SearXNG lagrer på "
-"datamaskinen din."
+"Dette er listen over informasjonskapsler og deres verdier SearXNG lagrer "
+"på datamaskinen din."
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
@@ -742,7 +739,7 @@ msgstr "Med denne listen kan du gjennomse SearXNG."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
-msgstr "Kakenavn"
+msgstr "Informasjonskapselnavn"
 
 #: searx/templates/simple/preferences.html:402
 msgid "Value"
@@ -750,7 +747,7 @@ msgstr "Verdi"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
-msgstr "Søkenettadresse med nåværende lagrede innstillinger"
+msgstr "Søk nettadresse med nåværende lagrede innstillinger"
 
 #: searx/templates/simple/preferences.html:418
 msgid ""
@@ -762,13 +759,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "Nettadresse for å gjenopprette dine preferanser i en annen nettleser"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Å spesifisere egendefinerte innstillinger i preferanse-URLen kan brukes "
+"til å synkronisere preferanser på tvers av enheter."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -833,7 +832,7 @@ msgstr "Prøv å søke etter:"
 
 #: searx/templates/simple/results.html:152
 msgid "Back to top"
-msgstr ""
+msgstr "Til toppen"
 
 #: searx/templates/simple/results.html:170
 msgid "Previous page"
@@ -845,7 +844,7 @@ msgstr "Neste side"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Vis forsiden"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -888,7 +887,7 @@ msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:64
 msgid "Processing"
-msgstr "Behandler …"
+msgstr "Behandler"
 
 #: searx/templates/simple/stats.html:102
 msgid "Warnings"
@@ -1241,4 +1240,7 @@ msgstr "skjul video"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "innstillinger"
 

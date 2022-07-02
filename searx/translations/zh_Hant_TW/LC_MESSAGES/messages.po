@@ -8,13 +8,14 @@
 # Marc Abonce Seguin, 2019
 # Mingye Wang <arthur200126@gmail.com>, 2018
 # 黃柏諺 <s8321414@gmail.com>, 2020
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-28 18:34+0000\n"
-"PO-Revision-Date: 2022-06-03 07:18+0000\n"
-"Last-Translator: Tony <papetouses@gmail.com>\n"
+"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"PO-Revision-Date: 2022-07-02 09:00+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: Chinese (Traditional) "
 "<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
@@ -344,14 +345,15 @@ msgstr "搜尋頁面"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "關於"
 
 #: searx/templates/simple/base.html:49
 msgid "Donate"
-msgstr ""
+msgstr "捐獻"
 
 #: searx/templates/simple/base.html:52
-msgid "preferences"
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
 msgstr "偏好設定"
 
 #: searx/templates/simple/base.html:62
@@ -381,7 +383,7 @@ msgstr "公開站臺"
 
 #: searx/templates/simple/base.html:68
 msgid "Privacy policy"
-msgstr ""
+msgstr "私隱權條款"
 
 #: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
@@ -445,10 +447,6 @@ msgstr "檢查程式測試失敗： "
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
 msgstr "錯誤："
-
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "偏好設定"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -556,7 +554,7 @@ msgstr "選擇自動則取決於您的瀏覽器設置"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "置中對齊"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -572,7 +570,7 @@ msgstr "關閉"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "搜尋結果置顯示於網頁中間。"
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -1290,4 +1288,7 @@ msgstr "隱藏影片"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "偏好設定"
 
