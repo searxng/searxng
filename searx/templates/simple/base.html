@@ -46,7 +46,9 @@
         <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
       {%- endblock -%}
       {%- block linkto_donate -%}
-        <a href="{{ url_for('info', pagename='donate') }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate') }}</span></a>
+        {%- if donation_url -%}
+        <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate') }}</span></a>
+        {%- endif -%}
       {%- endblock -%}
       {%- block linkto_preferences -%}
         <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline') }}<span>{{ _('Preferences') }}</span></a>
