@@ -163,3 +163,64 @@ def merge_two_infoboxes(infobox1, infobox2):
                 infobox1['content'] = content2
         else:
             infobox1['content'] = content2
+
+
+def infobox_modify_url(modify_url_func, result):
+    """Modify URL fields in the infobox-result.
+
+    :param func modify_url_func: A function that gets one argument; a *url*
+        field of the ``result`` item.  The function returns the URL to use
+        instead (even the URL is not modified).  To drop the 'url' field from
+        the result the function returns ``None``.  This function is called for
+        each field that contains URL.
+
+    :param dict result: The result item.
+
+    """
+
+    if not is_infobox(result):
+        return
+
+    img_src = result.get('img_src')
+    urls = result.get('urls', [])
+    attributes = result.get('attributes', [])
+
+    # infobox.img_src
+    if img_src:
+        _img_src = modify_url_func(img_src)
+        if _img_src is None:
+            # logger.debug("infobox: remove img_src from %s", infobox_name)
+            del result['img_src']
+        elif _img_src != img_src:
+            # logger.debug("infobox: redirect img_src %s", _img_src)
+            result['img_src'] = _img_src
+
+    # A 'url' item in the infobox.urls list has this attributes:
+    #
+    #     'title', 'url'
+
+    for url in urls:
+        url_url = url.get('url')
+        if url_url:
+            _url_url = modify_url_func(url_url)
+            if _url_url is None:
+                # logger.debug("infobox: remove url %s", url)
+                urls.remove(url)
+            elif _url_url != url_url:
+                # logger.debug("infobox: redirect url %s", _url_url)
+                url['url'] = _url_url
+
+    # A 'attr' item in the infobox.attributes list has this attributes:
+    #
+    #      'label', 'image'
+
+    for attr in attributes:
+        image = attr.get('image')
+        if image:
+            _image = modify_url_func(image)
+            if image is None:
+                # logger.debug("infobox: remove image %s", attr)
+                attributes.remove(attr)
+            elif _image != image:
+                # logger.debug("infobox: redirect %s", _image)
+                attr['image'] = _image
