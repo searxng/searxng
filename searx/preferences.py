@@ -408,6 +408,17 @@ class Preferences:
                     'False': False
                 }
             ),
+            'search_on_category_select': MapSetting(
+                settings['ui']['search_on_category_select'],
+                locked=is_locked('search_on_category_select'),
+                map={
+                    '': settings['ui']['search_on_category_select'],
+                    '0': False,
+                    '1': True,
+                    'True': True,
+                    'False': False
+                }
+            ),
             # fmt: on
         }
 

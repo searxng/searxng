@@ -248,6 +248,18 @@
       <div class="description">{{ _('Automatically load next page when scrolling to bottom of current page') }}</div>
     </fieldset>
     {% endif %}
+    {% if 'search_on_category_select' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Search on category select') }}</legend>
+      <p class="value">
+        <select name='search_on_category_select'>
+          <option value="1" {% if search_on_category_select %}selected="selected"{% endif %}>{{ _('On') }}</option>
+          <option value="0" {% if not search_on_category_select %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Perform search immediately if a category selected. Disable to select multiple categories. (JavaScript required)') }}</div>
+    </fieldset>
+    {% endif %}
     {{ plugin_preferences('ui') }}
   {{ tab_footer() }}
 

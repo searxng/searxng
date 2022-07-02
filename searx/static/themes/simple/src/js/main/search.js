@@ -73,24 +73,9 @@
       }
     }
 
-    // vanilla js version of search_on_category_select.js
-    if (qinput !== null && d.querySelector('.help') != null && searxng.settings.search_on_category_select) {
-      d.querySelector('.help').className = 'invisible';
-
-      searxng.on('#categories input', 'change', function () {
-        var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
-        for (i = 0; i < categories.length; i++) {
-          if (categories[i] !== this && categories[i].checked) {
-            categories[i].click();
-          }
-        }
-        if (! this.checked) {
-          this.click();
-        }
-        submitIfQuery();
-        return false;
-      });
-
+    // when search_on_category_select is enabled, autosubmit the query when the user
+    // change the filters (safesearch, time_range, language)
+    if (qinput !== null && searxng.settings.search_on_category_select) {
       searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);

@@ -189,6 +189,7 @@ SCHEMA = {
         'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),
         'infinite_scroll': SettingsValue(bool, False),
+        'search_on_category_select': SettingsValue(bool, True),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
