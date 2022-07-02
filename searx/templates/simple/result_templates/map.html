@@ -35,7 +35,7 @@
     <tr><th scope="row">{{ info.label }}</th><td>{{ info.value|safe }}</td></tr>
     {%- endfor -%}
     {%- for link in result.links -%}
-    <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url|safe }}</a></td></tr>
+    <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td></tr>
     {%- endfor -%}
 </table>
 
