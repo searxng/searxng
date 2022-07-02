@@ -6,21 +6,23 @@
 # Issa1552 <fairfull.playing@gmail.com>, 2020
 # Marc Abonce Seguin, 2019
 # jugi1, 2017
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-06-17 07:17+0000\n"
-"Last-Translator: vmisovic <vladimir.misovic03@gmail.com>\n"
+"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Serbian <https://weblate.bubu1.eu/projects/searxng/searxng/sr/"
+">\n"
 "Language: sr\n"
-"Language-Team: Serbian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sr/>\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -111,7 +113,7 @@ msgstr "пакети"
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr ""
+msgstr "q&a"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
@@ -121,7 +123,7 @@ msgstr "репозиторијуми"
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "Софтверске енциклопедије"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -145,7 +147,7 @@ msgstr "тамно"
 
 #: searx/webapp.py:165
 msgid "timeout"
-msgstr ""
+msgstr "тајмаут"
 
 #: searx/webapp.py:166
 msgid "parsing error"
@@ -161,7 +163,7 @@ msgstr "грешка на мрежи"
 
 #: searx/webapp.py:170
 msgid "unexpected crash"
-msgstr ""
+msgstr "неочекивана грешка"
 
 #: searx/webapp.py:177
 msgid "HTTP error"
@@ -169,7 +171,7 @@ msgstr "HTTP грешка"
 
 #: searx/webapp.py:178
 msgid "HTTP connection error"
-msgstr ""
+msgstr "проблем при HTTPS конекцији"
 
 #: searx/webapp.py:184
 msgid "proxy error"
@@ -177,7 +179,7 @@ msgstr "прокси грешка"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: searx/webapp.py:186
 msgid "too many requests"
@@ -221,7 +223,6 @@ msgid "{minutes} minute(s) ago"
 msgstr "пре {minutes} минут(у,е,а)"
 
 #: searx/webapp.py:727
-#, fuzzy
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "пре {hours} час(a) и {minutes} минут(у,е,а)"
 
@@ -275,11 +276,13 @@ msgstr ""
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Замени име хостинга"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Поново упишите име хостинга или избришите резултате базиране на имену "
+"хостинга"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -351,11 +354,11 @@ msgstr "Претражи страницу"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "О нама"
 
 #: searx/templates/simple/base.html:49
 msgid "Donate"
-msgstr ""
+msgstr "Донирај"
 
 #: searx/templates/simple/base.html:52
 #: searx/templates/simple/preferences.html:99
@@ -389,7 +392,7 @@ msgstr "Јавне инстанце"
 
 #: searx/templates/simple/base.html:68
 msgid "Privacy policy"
-msgstr ""
+msgstr "Политика приватности"
 
 #: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
@@ -418,7 +421,7 @@ msgstr "прокси"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Пријавите нову грешку на Гитхабу укључујући следеће инфоржације"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -429,7 +432,7 @@ msgstr "Нема HTTPS"
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Погледајте информације о грешки и пријавите"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
@@ -1315,4 +1318,3 @@ msgstr "сакриј видео"
 
 #~ msgid "preferences"
 #~ msgstr "ПОДЕШАВАЊА"
-
