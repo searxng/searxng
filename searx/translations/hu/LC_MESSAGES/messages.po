@@ -8,13 +8,14 @@
 # Noémi Ványi <sitbackandwait@gmail.com>, 2016
 # Noémi Ványi <sitbackandwait@gmail.com>, 2016-2017
 # Kuka Manó <dumpster@perjel.hu>, 2022.
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-02 08:59+0000\n"
 "PO-Revision-Date: 2022-07-02 22:57+0000\n"
-"Last-Translator: Kuka Manó <dumpster@perjel.hu>\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Hungarian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "hu/>\n"
 "Language: hu\n"
@@ -281,6 +282,8 @@ msgstr "Hosztnév kicserélése"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Találatok állomásnevének átírása vagy találatok eltávolítása állomásnév "
+"alapján"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -333,8 +336,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Navigálj néhány gombnyomással a találatok között. Aktiválás után a \"h\" "
-"betű lenyomásával jeleníthető meg részletes segítség a használatról. (Ez "
+"Navigálj Vim stílusú gombnyomásokkal a találatok között. Aktiválás után a \"h"
+"\" betű lenyomásával jeleníthető meg részletes segítség a használatról. (Ez "
 "a funkció JavaScript-et igényel)."
 
 #: searx/templates/simple/404.html:4
@@ -348,15 +351,15 @@ msgstr "Vissza a %(search_page)s."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
-msgstr "kereső oldalra"
+msgstr "kereső oldal"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Rólunk"
 
 #: searx/templates/simple/base.html:49
 msgid "Donate"
-msgstr ""
+msgstr "Adományozás"
 
 #: searx/templates/simple/base.html:52
 #: searx/templates/simple/preferences.html:99
@@ -390,7 +393,7 @@ msgstr "Publikus példányok"
 
 #: searx/templates/simple/base.html:68
 msgid "Privacy policy"
-msgstr ""
+msgstr "Adatbiztonsági feltételek"
 
 #: searx/templates/simple/base.html:71
 msgid "Contact instance maintainer"
@@ -453,7 +456,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "Hibák:"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -545,7 +548,7 @@ msgstr "Felület nyelve"
 
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Témák"
 
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
