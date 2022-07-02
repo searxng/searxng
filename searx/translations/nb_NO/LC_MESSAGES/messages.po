@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-28 18:34+0000\n"
+"POT-Creation-Date: 2022-07-02 08:59+0000\n"
 "PO-Revision-Date: 2022-07-02 09:00+0000\n"
 "Last-Translator: Morten R. Bjørklund <mortenrb@live.no>\n"
-"Language-Team: Norwegian Bokmål <https://weblate.bubu1.eu/projects/searxng/"
-"searxng/nb_NO/>\n"
 "Language: nb_NO\n"
+"Language-Team: Norwegian Bokmål "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/nb_NO/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.2\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -355,8 +354,9 @@ msgid "Donate"
 msgstr "Doner"
 
 #: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "innstillinger"
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
+msgstr "Innstillinger"
 
 #: searx/templates/simple/base.html:62
 msgid "Powered by"
@@ -449,10 +449,6 @@ msgstr "Mislykket/ede sjekkingstest(er): "
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
 msgstr "Feil:"
-
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "Innstillinger"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -734,8 +730,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dette er listen over informasjonskapsler og deres verdier SearXNG lagrer på "
-"datamaskinen din."
+"Dette er listen over informasjonskapsler og deres verdier SearXNG lagrer "
+"på datamaskinen din."
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
@@ -770,8 +766,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Å spesifisere egendefinerte innstillinger i preferanse-URLen kan brukes til "
-"å synkronisere preferanser på tvers av enheter."
+"Å spesifisere egendefinerte innstillinger i preferanse-URLen kan brukes "
+"til å synkronisere preferanser på tvers av enheter."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -1244,3 +1240,7 @@ msgstr "skjul video"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
 #~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "innstillinger"
+
