@@ -60,6 +60,16 @@ or manually by executing the searx/webapp.py file? -->
 {{-'\n  '}}* {{ test_name }}: {% for result in results%}`{{ result }}`,{% endfor -%}
 {%- endfor -%}
     </textarea>
-    <button type="submit" class="github-issue-button" title="{{ get_setting('brand.new_issue_url') }}">{{ _('Submit a new issue on Github including the above information') }}</button>
+    <input type="checkbox" id="step1">
+    <label for="step1">{{ _('Start submiting a new issue on GitHub') }}</label>
+    <div class="step1 step_content">
+        <p><a href="https://github.com/searxng/searxng/issues?q=is%3Aissue+Bug:%20{{ engine_name }}" target="_blank" rel="noreferrer noreferrer">{{ _('Please check for existing bugs about this engine on GitHub') }}</a></p>
+    </div>
+    <input class="step1 step1_delay" type="checkbox" id="step2">
+    <label class="step1 step1_delay" for="step2" >{{ _('I confirm there is no existing bug about the issue I encounter') }}</label>
+    <div class="step2 step_content">
+        <p>{{ _('If this is a public instance, please specify the URL in the bug report') }}</p>
+        <button type="submit" class="github-issue-button" title="{{ get_setting('brand.new_issue_url') }}">{{ _('Submit a new issue on Github including the above information') }}</button>
+    </div>
 </form>
 {% endmacro %}
