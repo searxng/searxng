@@ -230,6 +230,7 @@ Global Settings
    ui:
      default_locale: ""
      query_in_title: false
+     center_alignment: false
      default_theme: simple
      theme_args:
        simple_style: auto
@@ -240,15 +241,20 @@ Global Settings
   specific instance of searx, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
+``query_in_title`` :
+  When true, the result page's titles contains the query it decreases the
+  privacy, since the browser can records the page titles.
+
+``center_alignment`` : default ``false``
+  When enabled, the results are centered instead of being in the left (or RTL)
+  side of the screen.  This setting only affects the *desktop layout*
+  (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
+
 ``default_theme`` :
   Name of the theme you want to use by default on your SearXNG instance.
 
 ``theme_args.simple_style``:
   Style of simple theme: ``auto``, ``light``, ``dark``
-
-``query_in_title`` :
-  When true, the result page's titles contains the query it decreases the
-  privacy, since the browser can records the page titles.
 
 ``results_on_new_tab``:
   Open result links in a new tab by default.
