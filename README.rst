@@ -108,10 +108,12 @@ User experience
 Setup
 -----
 
-- the Docker image is now also built for ARM64 and ARM/v7 architectures
 - you don't need `Morty`_ to proxy the images even on a public instance
-- on the way to embed `Filtron`_ into SearXNG
-- up to date installation scripts
+- you don't need `Filtron`_ to block bots, we implemented the builtin `limiter`_
+- you get a well maintained `Docker image`_, now also built for ARM64 and ARM/v7 architectures
+- alternatively we have up to date installation scripts
+
+.. _Docker image: https://github.com/searxng/searxng-docker
 
 
 Contributing is easier
@@ -125,6 +127,7 @@ Contributing is easier
 
 .. _Morty: https://github.com/asciimoo/morty
 .. _Filtron: https://github.com/searxng/filtron
+.. _limiter: https://docs.searxng.org/src/searx.plugins.limiter.html
 .. _Weblate: https://weblate.bubu1.eu/projects/searxng/searxng/
 .. _Development Quickstart: https://docs.searxng.org/dev/quickstart.html
 
@@ -142,4 +145,5 @@ https://weblate.bubu1.eu/projects/searxng/searxng/
 Make a donation
 ===============
 
-You can support the SearXNG project by clicking on the donation page: `https://docs.searxng.org/donate.html <https://docs.searxng.org/donate.html>`_
+You can support the SearXNG project by clicking on the donation page:
+https://docs.searxng.org/donate.html
