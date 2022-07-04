@@ -1319,6 +1319,8 @@ def clear_cookies():
 
 @app.route('/config')
 def config():
+    if not get_setting('security.config_page'):
+        flask.abort(403)
     """Return configuration in JSON format."""
     _engines = []
     for name, engine in engines.items():
