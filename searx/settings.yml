@@ -886,6 +886,12 @@ engines:
     shortcut: loc
     categories: images
 
+  - name: lingva
+    engine: lingva
+    shortcut: lv
+    # set lingva instance in url, by default it will use the official instance
+    # url: https://lingva.ml
+
   - name: lobste.rs
     engine: xpath
     search_url: https://lobste.rs/search?utf8=%E2%9C%93&q={query}&what=stories&order=relevance
