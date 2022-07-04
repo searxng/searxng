@@ -223,6 +223,9 @@ SCHEMA = {
     'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},
+    'security': {
+        'config_page': SettingsValue(bool, True),
+    }
 }
 
 
