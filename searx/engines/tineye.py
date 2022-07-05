@@ -17,6 +17,7 @@ billion images `[tineye.com] <https://tineye.com/how>`_.
 
 from urllib.parse import urlencode
 from datetime import datetime
+from flask_babel import gettext
 
 about = {
     "website": 'https://tineye.com',
@@ -34,8 +35,15 @@ safesearch = False
 base_url = 'https://tineye.com'
 search_string = '/result_json/?page={page}&{query}'
 
+format_not_supported = gettext(
+    "TinEye could not read that image url. This may be due to an unsupported file"
+    "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or WebP."
+)
+
 
 def request(query, params):
+
+    params['raise_for_httperror'] = False
 
     if params['search_urls']['data:image']:
         query = params['search_urls']['data:image']
@@ -62,8 +70,18 @@ def request(query, params):
 def response(resp):
     results = []
 
-    # Define wanted results
+    if resp.is_error:
+        # handle error codes from Tineye
+        if resp.status_code == 422:
+            json_data = resp.json()
+            k = json_data.get('suggestions', {}).get('key', '')
+            if k.startswith("Invalid image URL"):
+                results.append({'answer': format_not_supported})
+                return results
+        resp.raise_for_status()
+
     json_data = resp.json()
+    # Define wanted results
     number_of_results = json_data['num_matches']
 
     for i in json_data['matches']:
