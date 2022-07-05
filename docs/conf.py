@@ -88,26 +88,26 @@ def setup(app):
 extlinks = {}
 
 # upstream links
-extlinks['wiki'] = ('https://github.com/searxng/searxng/wiki/%s', ' ')
-extlinks['pull'] = ('https://github.com/searxng/searxng/pull/%s', 'PR ')
-extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR ')
+extlinks['wiki'] = ('https://github.com/searxng/searxng/wiki/%s', ' %s')
+extlinks['pull'] = ('https://github.com/searxng/searxng/pull/%s', 'PR %s')
+extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR %s')
 
 # links to custom brand
-extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://')
-extlinks['patch'] = (GIT_URL + '/commit/%s', '#')
-extlinks['docs'] = (DOCS_URL + '/%s', 'docs: ')
-extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: ')
-extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '')
+extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://%s')
+extlinks['patch'] = (GIT_URL + '/commit/%s', '#%s')
+extlinks['docs'] = (DOCS_URL + '/%s', 'docs: %s')
+extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: %s')
+extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '%s')
 #extlinks['role'] = (
 #    'https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-%s', '')
 extlinks['duref'] = (
-    'https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#%s', '%s')
 extlinks['durole'] = (
-    'https://docutils.sourceforge.io/docs/ref/rst/roles.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/roles.html#%s', '%s')
 extlinks['dudir'] =  (
-    'https://docutils.sourceforge.io/docs/ref/rst/directives.html#%s', '')
+    'https://docutils.sourceforge.io/docs/ref/rst/directives.html#%s', '%s')
 extlinks['ctan'] =  (
-    'https://ctan.org/pkg/%s', 'CTAN: ')
+    'https://ctan.org/pkg/%s', 'CTAN: %s')
 
 extensions = [
     'sphinx.ext.imgmath',
