@@ -85,7 +85,7 @@ def is_accepted_request() -> bool:
 
 def pre_request():
     if not is_accepted_request():
-        return '', 429
+        return 'Too Many Requests', 429
     return None
 
 
