@@ -946,7 +946,7 @@ EOF
     while true;  do
         trap break 2
         case $DIST_ID-$DIST_VERS in
-            ubuntu-*|debian-*) tail -f /var/log/uwsgi/app/searx.log ;;
+            ubuntu-*|debian-*) tail -f /var/log/uwsgi/app/searxng.log ;;
             arch-*)  journalctl -f -u "uwsgi@${SERVICE_NAME%.*}" ;;
             fedora-*|centos-7)  journalctl -f -u uwsgi ;;
         esac
