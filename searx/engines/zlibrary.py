@@ -39,7 +39,7 @@ def init(engine_settings=None):
         resp = http_get('https://z-lib.org', timeout=5.0)
         if resp.ok:
             dom = html.fromstring(resp.text)
-            base_url = "https:" + extract_text(
+            base_url = extract_text(
                 eval_xpath(dom, './/a[contains(@class, "domain-check-link") and @data-mode="books"]/@href')
             )
     logger.debug("using base_url: %s" % base_url)
