@@ -101,8 +101,14 @@ User experience
   * engines are grouped inside each tab
   * each engine has a description
 
-- it is easier to report a bug of an engine
-- but you can also disable the recording of the metrics on the server
+- thanks to the anonymous metrics, it is easier to report a bug of an engine and
+  thus engines get fixed more quickly
+
+  - if you don't want any metrics to be recorded, you can `disable them on the server
+    <https://docs.searxng.org/admin/engines/settings.html#general>`_
+
+- administrator can `block and/or replace the URLs in the search results
+  <https://github.com/searxng/searxng/blob/5c1c0817c3996c5670a545d05831d234d21e6217/searx/settings.yml#L191-L199>`_
 
 
 Setup
