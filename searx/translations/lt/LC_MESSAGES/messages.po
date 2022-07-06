@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-06 22:11+0000\n"
+"PO-Revision-Date: 2022-07-08 07:17+0000\n"
 "Last-Translator: John Doe <cryptiox@protonmail.com>\n"
 "Language-Team: Lithuanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "lt/>\n"
@@ -174,7 +174,7 @@ msgstr "HTTP ryšio klaida"
 
 #: searx/webapp.py:184
 msgid "proxy error"
-msgstr "tarpinio serverio klaida"
+msgstr "persiuntimų serverio klaida"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
@@ -203,11 +203,11 @@ msgstr "Šaltinis"
 
 #: searx/webapp.py:367
 msgid "Error loading the next page"
-msgstr "Klaida keliant ateinantį puslapį"
+msgstr "Klaida keliant kitą puslapį"
 
 #: searx/webapp.py:510 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
-msgstr "Neteisingi nustatymai, pataisykite savo nuostatas"
+msgstr "Neteisingi nustatymai, pakeiskite savo nuostatas"
 
 #: searx/webapp.py:526
 msgid "Invalid settings"
@@ -235,7 +235,7 @@ msgstr "Atsitiktinių skaičiu generatorius"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Generuoja įvairias atsitiktines skaičius"
+msgstr "Generuoja įvairias atsitiktinius skaičius"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -292,8 +292,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Vengti apmokamų sienų, kai įmanoma, peradresuojant į atviros prieigos "
-"publikacijų versijas"
+"Vengti apmokamas sienas, peradresuojant į atviros prieigos publikacijų "
+"versijas"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -309,7 +309,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr "Informacija apie save"
+msgstr "Jūsų informacija"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -372,7 +372,7 @@ msgstr "Veikia su"
 
 #: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "gerbiantis privatumą, programuojamas metapaieškos variklis"
+msgstr "gerbianti privatumą, programuojama metapaieškos sistema"
 
 #: searx/templates/simple/base.html:63
 msgid "Source code"
@@ -384,7 +384,7 @@ msgstr "Klaidų sekiklis"
 
 #: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr "Variklio statistika"
+msgstr "Statistika statistika"
 
 #: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
@@ -413,13 +413,12 @@ msgid "Author"
 msgstr "Autorius"
 
 #: searx/templates/simple/macros.html:45
-#, fuzzy
 msgid "cached"
-msgstr "podėlio versija"
+msgstr "patalpinta"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
-msgstr "per įgaliotąjį serverį"
+msgstr "persiustas"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
@@ -522,17 +521,16 @@ msgid "Open Access DOI resolver"
 msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
 
 #: searx/templates/simple/preferences.html:167
-#, fuzzy
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
 "Kai įmanoma, peradresuoti į atvirojoje prieigoje esančias publikacijų "
-"versijas (reikalingas įskiepis)"
+"versijas (reikalingas papildinys)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr "Variklio prieigos raktai"
+msgstr "Sistemos prieigos raktai"
 
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
@@ -588,11 +586,11 @@ msgstr "Rodo rezultatus puslapio viduryje (Oskaro išdėstymas)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
-msgstr "Rezultatai naujose kortelėse"
+msgstr "Rezultatai naujose skirtukuose"
 
 #: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
-msgstr "Atverti rezultatų nuorodas naujose naršyklės kortelėse"
+msgstr "Atverti rezultatų nuorodas naujose naršyklės skirtukuose"
 
 #: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
@@ -622,17 +620,17 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
-msgstr "Paveikslų įgaliotasis serveris"
+msgstr "Paveikslų persiuntimas"
 
 #: searx/templates/simple/preferences.html:272
 #: searx/templates/simple/preferences.html:284
 msgid "Enabled"
-msgstr "Įjungta"
+msgstr "Įjungtas"
 
 #: searx/templates/simple/preferences.html:273
 #: searx/templates/simple/preferences.html:285
 msgid "Disabled"
-msgstr "Išjungta"
+msgstr "Išjungtas"
 
 #: searx/templates/simple/preferences.html:276
 msgid "Proxying image results through SearXNG"
@@ -659,11 +657,12 @@ msgid "Currently used search engines"
 msgstr "Šiuo metu naudojamos paieškos sistemos"
 
 #: searx/templates/simple/preferences.html:302
-#, fuzzy
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
-msgstr "Šis skirtukas nepasirodo"
+msgstr ""
+"Šis skirtukas nepasirodo ieškojimo rezultastuose, bet jūs galite ieškoti "
+"sistemas saraše naudojant trumpinius."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -686,7 +685,7 @@ msgstr "Palaiko pasirinktą kalbą"
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:312
 msgid "Time range"
-msgstr "Laiko rėžis"
+msgstr "Laiko diapazonas"
 
 #: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
@@ -695,7 +694,7 @@ msgstr "Atsakymo greitis"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Max time"
-msgstr "Maks. laikas"
+msgstr "Maksimalus laikas"
 
 #: searx/templates/simple/preferences.html:315
 #: searx/templates/simple/stats.html:29
@@ -740,13 +739,12 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Čia yra slapukų(angl. \"cookies\") sąrašas ir jų informacija, kurią SearXNG "
-"saugo jūsų kompiuterije."
+"Čia yra slapukų sąrašas ir jų informacija, kurią SearXNG saugo jūsų "
+"kompiuterije."
 
 #: searx/templates/simple/preferences.html:396
-#, fuzzy
 msgid "With that list, you can assess SearXNG transparency."
-msgstr "Su šiuo sąrašu, jūs gaunate prieiga prie SearXNG permatomumo."
+msgstr "Su šiuo sąrašu, jūs gaunate prieiga prie SearXNG permatomumą."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
@@ -778,7 +776,7 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Nurodant nustatymus nuostatų nuorodoje, jūs galite susinchronizuoti "
+"Nurodant tinkintus nustatymus nuostatų URL, jūs galite susinchronizuoti "
 "nuostatas tarp prietaisų."
 
 #: searx/templates/simple/preferences.html:428
@@ -803,7 +801,7 @@ msgstr "Išsaugoti"
 
 #: searx/templates/simple/preferences.html:434
 msgid "Reset defaults"
-msgstr "Atstatyti numatytuosius"
+msgstr "Atstatyti numatytasias nuostatas"
 
 #: searx/templates/simple/preferences.html:435
 msgid "Back"
@@ -875,11 +873,11 @@ msgstr "ieškoti"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Šiuo metu nėra jokių prieinamų duomenų."
+msgstr "Šiuo metu nėra jokių prieinamų duomenų. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
-msgstr "Įverčiai"
+msgstr "Įvertinimas"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
@@ -887,7 +885,7 @@ msgstr "Rezultatų skaičius"
 
 #: searx/templates/simple/stats.html:38
 msgid "Scores per result"
-msgstr "Įverčiai pagal rezultatą"
+msgstr "Įvertinimai pagal rezultatą"
 
 #: searx/templates/simple/stats.html:62
 msgid "Total"
@@ -919,7 +917,7 @@ msgstr "Žinutė"
 
 #: searx/templates/simple/stats.html:112
 msgid "Percentage"
-msgstr "Procentai"
+msgstr "Procentinė dalis"
 
 #: searx/templates/simple/stats.html:114
 msgid "Parameter"
@@ -943,11 +941,11 @@ msgstr "Tikrintojas"
 
 #: searx/templates/simple/stats.html:134
 msgid "Failed test"
-msgstr "Nepavykes testas"
+msgstr "Nepavykęs testas"
 
 #: searx/templates/simple/stats.html:135
 msgid "Comment(s)"
-msgstr "Komentarai"
+msgstr "Komentaras(-ai)"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
@@ -975,7 +973,7 @@ msgstr "Informacija!"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr "Šiuo metu nėra jokių apibrėžtų slapukų."
+msgstr "šiuo metu nėra jokių apibrėžtų slapukų."
 
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
@@ -983,7 +981,7 @@ msgstr "Sistemos negali gauti rezultatų."
 
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr "Prasau, pabandykite vėliau arba suraskite kita SearXNG sesija."
+msgstr "Prašau, pabandykite vėliau arba suraskite kita SearXNG instanciją."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
@@ -994,7 +992,7 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"Mes neradome jokių rezultatų. Naudokite kitokią užklausą arba ieškokite "
+"mes neradome jokių rezultatų. Naudokite kitokią užklausą arba ieškokite "
 "kitose kategorijose."
 
 #: searx/templates/simple/result_templates/default.html:6
@@ -1016,7 +1014,7 @@ msgstr "Formatas"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr "Variklis"
+msgstr "Sistema"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
