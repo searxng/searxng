@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"PO-Revision-Date: 2022-07-06 22:11+0000\n"
 "Last-Translator: John Doe <cryptiox@protonmail.com>\n"
 "Language-Team: Lithuanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "lt/>\n"
@@ -57,7 +57,7 @@ msgstr "socialiniai tinklai"
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
 msgid "images"
-msgstr "paveikslai"
+msgstr "nuotraukos"
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -122,7 +122,7 @@ msgstr "saugyklos"
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr "programų žinynas"
+msgstr "programų žinynai"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -170,7 +170,7 @@ msgstr "HTTP klaida"
 
 #: searx/webapp.py:178
 msgid "HTTP connection error"
-msgstr "HTTP prisijungimo klaida"
+msgstr "HTTP ryšio klaida"
 
 #: searx/webapp.py:184
 msgid "proxy error"
@@ -231,11 +231,11 @@ msgstr "Sustabdytas"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
-msgstr "Atsitiktinių reikmių generatorius"
+msgstr "Atsitiktinių skaičiu generatorius"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Generuoja įvairias atsitiktines reikšmes"
+msgstr "Generuoja įvairias atsitiktines skaičius"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -278,11 +278,10 @@ msgid "Hostname replace"
 msgstr "Kompiuterio pavadinimo pakeitimas"
 
 #: searx/plugins/hostname_replace.py:10
-#, fuzzy
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Perašyti kompiuterio pavadinimo rezultatus arba ištrinkite rezultatus pagal "
-"kompiuterio pavadinima"
+"Perašyti kompiuterio pavadinimo rezultatus arba ištrinti rezultatus pagal "
+"kompiuterio pavadinimą"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -305,8 +304,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
-"Jei pasirenkama kategorija, nedelsiant atlikti paiešką. Išjunkite "
-"norėdami pasirinkti kelias kategorijas. (reikalinga JavaScript)"
+"Jei pasirenkama kategorija, nedelsiant atlikti paiešką. Išjunkite norėdami "
+"pasirinkti kelias kategorijas. (reikalingas JavaScript)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -337,9 +336,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Naršyti po paieškos rezultatus naudojant Vim pavidalo sparčiuosius "
-"klavišus (reikalinga JavaScript). Paspauskite pagrindiniame ar rezultatų "
-"puslapyje \"h\" klavišą norėdami gauti pagalbos."
+"Naršyti po paieškos rezultatus naudojant Vim pavidalo sparčiuosius klavišus ("
+"reikalingas JavaScript). Paspauskite pagrindiniame ar rezultatų puslapyje \"h"
+"\" klavišą norėdami gauti pagalbos."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -373,11 +372,11 @@ msgstr "Veikia su"
 
 #: searx/templates/simple/base.html:62
 msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "gerbianti privatumą, programuojama metapaieškos sistema"
+msgstr "gerbiantis privatumą, programuojamas metapaieškos variklis"
 
 #: searx/templates/simple/base.html:63
 msgid "Source code"
-msgstr "Pradinis kodas"
+msgstr "Šaltinio kodas"
 
 #: searx/templates/simple/base.html:64
 msgid "Issue tracker"
@@ -385,12 +384,12 @@ msgstr "Klaidų sekiklis"
 
 #: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr "Sistemos statistika"
+msgstr "Variklio statistika"
 
 #: searx/templates/simple/base.html:66
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr "Viešieji egzemplioriai"
+msgstr "Viešos instancijos"
 
 #: searx/templates/simple/base.html:68
 msgid "Privacy policy"
@@ -414,6 +413,7 @@ msgid "Author"
 msgstr "Autorius"
 
 #: searx/templates/simple/macros.html:45
+#, fuzzy
 msgid "cached"
 msgstr "podėlio versija"
 
@@ -423,7 +423,7 @@ msgstr "per įgaliotąjį serverį"
 
 #: searx/templates/simple/new_issue.html:63
 msgid "Submit a new issue on Github including the above information"
-msgstr "Pateikite nauja klaida Github, pridedant informacija viršuje"
+msgstr "Pateikite nauja klaidą Github, įvedant informaciją viršuje."
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -522,6 +522,7 @@ msgid "Open Access DOI resolver"
 msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
 
 #: searx/templates/simple/preferences.html:167
+#, fuzzy
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
@@ -531,7 +532,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr "Sistemos prieigos raktai"
+msgstr "Variklio prieigos raktai"
 
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
@@ -583,7 +584,7 @@ msgstr "Išjungta"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Rodykite rezultatus puslapio viduryje (Oskaro išdėstymas)."
+msgstr "Rodo rezultatus puslapio viduryje (Oskaro išdėstymas)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -646,6 +647,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Įjungus, prie rezultatų puslapio pavadinimo pridedama jūsų užklausa. Jūsų "
+"naršykle gali šį pavadinimą įrašyti"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -656,10 +659,11 @@ msgid "Currently used search engines"
 msgstr "Šiuo metu naudojamos paieškos sistemos"
 
 #: searx/templates/simple/preferences.html:302
+#, fuzzy
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
-msgstr ""
+msgstr "Šis skirtukas nepasirodo"
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -742,7 +746,7 @@ msgstr ""
 #: searx/templates/simple/preferences.html:396
 #, fuzzy
 msgid "With that list, you can assess SearXNG transparency."
-msgstr "Su šiuo sąrašu, jūs gaunate prieiga prie SearXNG permatomuma."
+msgstr "Su šiuo sąrašu, jūs gaunate prieiga prie SearXNG permatomumo."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
@@ -774,6 +778,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Nurodant nustatymus nuostatų nuorodoje, jūs galite susinchronizuoti "
+"nuostatas tarp prietaisų."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
