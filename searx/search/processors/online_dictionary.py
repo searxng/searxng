@@ -9,7 +9,7 @@ import re
 from searx.utils import is_valid_lang
 from .online import OnlineProcessor
 
-parser_re = re.compile('.*?([a-z]+)-([a-z]+) ([^ ]+)$', re.I)
+parser_re = re.compile('.*?([a-z]+)-([a-z]+) (.+)$', re.I)
 
 
 class OnlineDictionaryProcessor(OnlineProcessor):
