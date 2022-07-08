@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# Thai translations for PROJECT.
 # Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
 "PO-Revision-Date: 2022-07-06 22:11+0000\n"
 "Last-Translator: watchakorn-18k <porton2559@gmail.com>\n"
-"Language-Team: Thai <https://weblate.bubu1.eu/projects/searxng/searxng/th/>\n"
 "Language: th\n"
+"Language-Team: Thai "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/th/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -200,27 +200,27 @@ msgstr "แหล่งที่มา"
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} นาทีก่อน"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ชั่วโมง),{minutes} นาทีก่อน"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "ถูกระงับ"
 
@@ -240,7 +240,7 @@ msgstr "ฟังก์ชันสถิติ"
 msgid "Compute {functions} of the arguments"
 msgstr "คำนวณ {functions} จากอาร์กิวเมนต์"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "รับเส้นทาง"
 
@@ -284,8 +284,7 @@ msgstr "เปิดการเข้าถึง DOI ที่เขียน�
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr ""
-"หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
+msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -328,8 +327,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"นำทางผลลัพธ์จากการค้นหาด้วยปุ่มลัดแบบ Vim (ต้องใช้ JavaScript) กดปุ่ม \"h\" "
-"บนหน้าหลักหรือหน้าผลลัพธ์เพื่อรับความช่วยเหลือ"
+"นำทางผลลัพธ์จากการค้นหาด้วยปุ่มลัดแบบ Vim (ต้องใช้ JavaScript) กดปุ่ม "
+"\"h\" บนหน้าหลักหรือหน้าผลลัพธ์เพื่อรับความช่วยเหลือ"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -348,45 +347,45 @@ msgstr "หน้าค้นหา"
 msgid "About"
 msgstr "เกี่ยวกับ"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "บริจาค"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "การตั้งค่า"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "ขับเคลื่อนโดย"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "เคารพความเป็นส่วนตัว เครื่องมือค้นหา meta ที่แฮ็กได้"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "แหล่งที่เก็บโค้ด"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "ตัวติดตามปัญหา"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "เครื่องมือสถิติ"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "อินสแตนซ์สาธารณะ"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "นโยบายความเป็นส่วนตัว"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "ติดต่อผู้ดูแลอินสแตนซ์"
 
@@ -411,7 +410,23 @@ msgstr "แคช"
 msgid "proxied"
 msgstr "พร็อกซี่"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr "ส่งปัญหาใหม่บน Github รวมทั้งข้อมูลข้างต้นด้วย"
 
@@ -603,9 +618,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"เปลี่ยนวิธีการส่งแบบฟอร์ม <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\""
-">เรียนรู้เพิ่มเติมเกี่ยวกับวิธีการส่งคำขอ</a>"
+"เปลี่ยนวิธีการส่งแบบฟอร์ม <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">เรียนรู้เพิ่มเติมเกี่ยวกับวิธีการส่งคำขอ</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -726,9 +741,7 @@ msgstr "คุกกี้"
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr ""
-"นี่คือรายการคุกกี้และค่าของคุกกี้ที่เซียร์เอ็กซ์เอ็นจีจัดเก็บไว้ในคอมพิวเตอร์"
-"ของคุณ"
+msgstr "นี่คือรายการคุกกี้และค่าของคุกกี้ที่เซียร์เอ็กซ์เอ็นจีจัดเก็บไว้ในคอมพิวเตอร์ของคุณ"
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
@@ -751,8 +764,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"หมายเหตุ: การระบุการตั้งค่าแบบกำหนดเองใน URL การค้นหาสามารถลดความเป็นส่วนตัวไ"
-"ด้โดยการทำให้ข้อมูลรั่วไหลไปยังไซต์ผลลัพธ์ที่คลิก"
+"หมายเหตุ: การระบุการตั้งค่าแบบกำหนดเองใน URL "
+"การค้นหาสามารถลดความเป็นส่วนตัวได้โดยการทำให้ข้อมูลรั่วไหลไปยังไซต์ผลลัพธ์ที่คลิก"
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
@@ -1068,3 +1081,4 @@ msgstr "แสดงวิดีโอ"
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "hide video"
 msgstr "ซ่อนวิดีโอ"
+

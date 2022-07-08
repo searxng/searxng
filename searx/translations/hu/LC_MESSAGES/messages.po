@@ -11,19 +11,18 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
 "PO-Revision-Date: 2022-07-06 00:21+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Hungarian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"hu/>\n"
 "Language: hu\n"
+"Language-Team: Hungarian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/hu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -207,27 +206,27 @@ msgstr "Forrás"
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, kérlek módosítsd őket"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "Érvénytelen beállítások"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "keresési hiba"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} perce"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} óra, {minutes} perce"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "Felfüggesztve"
 
@@ -247,7 +246,7 @@ msgstr "Statisztikai függvények"
 msgid "Compute {functions} of the arguments"
 msgstr "{functions} függvények alkalmazása az argumentumokon"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "Útvonal tervezés"
 
@@ -282,7 +281,8 @@ msgstr "Hosztnév kicserélése"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Találatok hosztnevének átírása vagy találatok eltávolítása hosztnév alapján"
+"Találatok hosztnevének átírása vagy találatok eltávolítása hosztnév "
+"alapján"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -317,8 +317,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Saját IP cím, user agent megjelenítése az \"ip\", \"user agent\" szavakra "
-"keresve."
+"Saját IP cím, user agent megjelenítése az \"ip\", \"user agent\" szavakra"
+" keresve."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -337,9 +337,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Navigálj Vim stílusú gombnyomásokkal a találatok között. Aktiválás után a \"h"
-"\" betű lenyomásával jeleníthető meg részletes segítség a használatról. (Ez "
-"a funkció JavaScriptet igényel)."
+"Navigálj Vim stílusú gombnyomásokkal a találatok között. Aktiválás után a"
+" \"h\" betű lenyomásával jeleníthető meg részletes segítség a "
+"használatról. (Ez a funkció JavaScriptet igényel)."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -358,45 +358,45 @@ msgstr "kereső oldal"
 msgid "About"
 msgstr "Rólunk"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Támogatás"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Az oldalt kiszolgálja"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "egy magánszféra tisztelő, könnyen módosítható metakereső"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Forráskód"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Hibajegy kezelő"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Kereső statisztikák"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Publikus példányok"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Adatvédelmi irányelvek"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Kapcsolat felvétele az egység fenntartójával"
 
@@ -421,10 +421,27 @@ msgstr "tárolt"
 msgid "proxied"
 msgstr "proxy nézet"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
-"Jelents be egy új problémát GitHubon, amely tartalmazza a fenti információkat"
+"Jelents be egy új problémát GitHubon, amely tartalmazza a fenti "
+"információkat"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
@@ -768,15 +785,16 @@ msgstr "Megjegyzés: URL-ben tárolt saját beállítások csökkenthetik az ano
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
 msgstr ""
-"Ennek a linknek segítségével átviheted a beállításaidat egy másik böngészőbe"
+"Ennek a linknek segítségével átviheted a beállításaidat egy másik "
+"böngészőbe"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Meghatározhatsz egyéni beállításokat a \"beállítások\" linkben, amelyeket "
-"szinkronizálhatsz az eszközeid között."
+"Meghatározhatsz egyéni beállításokat a \"beállítások\" linkben, amelyeket"
+" szinkronizálhatsz az eszközeid között."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -989,8 +1007,8 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"Nincs megjeleníthető találat. Kérlek, hogy használj másik kifejezést vagy "
-"keress több kategóriában."
+"Nincs megjeleníthető találat. Kérlek, hogy használj másik kifejezést vagy"
+" keress több kategóriában."
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1324,3 +1342,4 @@ msgstr "videó elrejtése"
 
 #~ msgid "preferences"
 #~ msgstr "beállítások"
+

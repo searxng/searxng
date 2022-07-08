@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
 "PO-Revision-Date: 2022-05-20 07:19+0000\n"
 "Last-Translator: Anthony ocic <drake@zmmapperz.net>\n"
 "Language: hr\n"
@@ -203,27 +203,27 @@ msgstr "Izvor"
 msgid "Error loading the next page"
 msgstr "Greška u učitavnju sljedeće stranice"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nevažeće postavke, uredite svoje postavke"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "Nevažeće postavke"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "greška u pretraživanju"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "prije {minutes} minut(u,e,a)"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "prije {hours} sat(i) i {minutes} minut(u,e,a)"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "Zaustavljeno"
 
@@ -243,7 +243,7 @@ msgstr "Funkcije statistike"
 msgid "Compute {functions} of the arguments"
 msgstr "Izračunajte {functions} argumenata"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "Uzmi upute za smjer"
 
@@ -351,45 +351,45 @@ msgstr "pretraži stranicu"
 msgid "About"
 msgstr ""
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr ""
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Postavke"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Pokreće"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "meta-tražilica koja poštuje privatnost"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Izvorni kod"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Tragač problema"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Podaci o tražilic"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Javne instance"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr ""
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr ""
 
@@ -414,7 +414,23 @@ msgstr "spremljeno"
 msgid "proxied"
 msgstr "preko proxyja"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr "Postavi novi problem na Github uključujući podatke poviše"
 
