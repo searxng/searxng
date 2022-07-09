@@ -287,6 +287,7 @@ def request(query, params):
                 'oe': "utf8",
                 'start': offset,
                 'filter': '0',
+                'ucbcb': 1,
                 **additional_parameters,
             }
         )

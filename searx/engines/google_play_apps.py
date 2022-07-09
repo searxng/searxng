@@ -22,7 +22,7 @@ about = {
 }
 
 categories = ["files", "apps"]
-search_url = "https://play.google.com/store/search?{query}&c=apps"
+search_url = "https://play.google.com/store/search?{query}&c=apps&ucbcb=1"
 
 
 def request(query, params):

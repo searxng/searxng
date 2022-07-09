@@ -133,14 +133,7 @@ def request(query, params):
         + '/search'
         + "?"
         + urlencode(
-            {
-                'q': query,
-                'tbm': "isch",
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'num': 30,
-            }
+            {'q': query, 'tbm': "isch", **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'num': 30, 'ucbcb': 1}
         )
     )
 

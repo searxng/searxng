@@ -3,7 +3,6 @@
  Youtube (Videos)
 """
 
-from datetime import datetime
 from functools import reduce
 from json import loads, dumps
 from urllib.parse import quote_plus
@@ -26,7 +25,7 @@ time_range_support = True
 
 # search-url
 base_url = 'https://www.youtube.com/results'
-search_url = base_url + '?search_query={query}&page={page}'
+search_url = base_url + '?search_query={query}&page={page}&ucbcb=1'
 time_range_url = '&sp=EgII{time_range}%253D%253D'
 # the key seems to be constant
 next_page_url = 'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'
@@ -52,7 +51,6 @@ def request(query, params):
         )
         params['headers']['Content-Type'] = 'application/json'
 
-    params['headers']['Cookie'] = "CONSENT=YES+cb.%s-17-p0.en+F+941;" % datetime.now().strftime("%Y%m%d")
     return params
 
 
