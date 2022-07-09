@@ -25,6 +25,9 @@ title_xpath = './/h2[@class="MPhl6c pqv9ne azTb0d ulfEhd YAEPj XkyFEf"]'
 url_xpath = './/a[@class="loT5Qd kneS6c"]/@href'
 price_xpath = './/span[@class="aZK3gc Lhpu7d"]'
 thumbnail_xpath = './/img[@class="Ws3Esf"]/@src'
+shipping_xpath = './/div[@class="KT7Ysc"]'
+site_xpath = './/div[@class="X8HN5e FAZYFf ApBhXe"]'
+condition_xpath = './/span[@class="JkJxid HFeBod"]'
 
 
 def request(query, params):
@@ -45,6 +48,9 @@ def response(resp):
         title = extract_text(result.xpath(title_xpath))
         price = extract_text(result.xpath(price_xpath))
         thumbnail = extract_text(result.xpath(thumbnail_xpath))
+        shipping = extract_text(result.xpath(shipping_xpath))
+        site = extract_text(result.xpath(site_xpath))
+        condition = extract_text(result.xpath(condition_xpath))
 
         results.append(
             {
@@ -53,6 +59,9 @@ def response(resp):
                 "price": price,
                 "thumbnail": thumbnail,
                 "template": "products.html",
+                "shipping": shipping,
+                "content": condition,
+                "source_country": site,
             }
         )
 
