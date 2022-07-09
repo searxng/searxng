@@ -29,6 +29,7 @@ about = {
 # engine dependent config
 categories = ['map']
 paging = False
+language_support = True
 
 # search-url
 base_url = 'https://nominatim.openstreetmap.org/'
@@ -141,6 +142,9 @@ def request(query, params):
     params['url'] = base_url + search_string.format(query=urlencode({'q': query}))
     params['route'] = route_re.match(query)
     params['headers']['User-Agent'] = searx_useragent()
+
+    accept_language = 'en' if params['language'] == 'all' else params['language']
+    params['headers']['Accept-Language'] = accept_language
     return params
 
 
@@ -202,7 +206,7 @@ def get_wikipedia_image(raw_value):
     return get_external_url('wikimedia_image', raw_value)
 
 
-def fetch_wikidata(nominatim_json, user_langage):
+def fetch_wikidata(nominatim_json, user_language):
     """Update nominatim_json using the result of an unique to wikidata
 
     For result in nominatim_json:
@@ -223,10 +227,10 @@ def fetch_wikidata(nominatim_json, user_langage):
                 wd_to_results.setdefault(wd_id, []).append(result)
 
     if wikidata_ids:
-        user_langage = 'en' if user_langage == 'all' else user_langage
+        user_language = 'en' if user_language == 'all' else user_language.split('-')[0]
         wikidata_ids_str = " ".join(wikidata_ids)
         query = wikidata_image_sparql.replace('%WIKIDATA_IDS%', sparql_string_escape(wikidata_ids_str)).replace(
-            '%LANGUAGE%', sparql_string_escape(user_langage)
+            '%LANGUAGE%', sparql_string_escape(user_language)
         )
         wikidata_json = send_wikidata_query(query)
         for wd_result in wikidata_json.get('results', {}).get('bindings', {}):
@@ -241,7 +245,7 @@ def fetch_wikidata(nominatim_json, user_langage):
                 # overwrite wikipedia link
                 wikipedia_name = wd_result.get('wikipediaName', {}).get('value')
                 if wikipedia_name:
-                    result['extratags']['wikipedia'] = user_langage + ':' + wikipedia_name
+                    result['extratags']['wikipedia'] = user_language + ':' + wikipedia_name
                 # get website if not already defined
                 website = wd_result.get('website', {}).get('value')
                 if (

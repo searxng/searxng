@@ -22,13 +22,14 @@ from langdetect.lang_detect_exception import LangDetectException
 
 from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text, match_language
-from searx.locales import LOCALE_NAMES
+from searx.locales import LOCALE_NAMES, locales_initialize
 from searx import searx_dir
 from searx.utils import gen_useragent
 import searx.search
 import searx.network
 
 set_loggers(wikidata, 'wikidata')
+locales_initialize()
 
 SPARQL_WIKIPEDIA_ARTICLE = """
 SELECT DISTINCT ?item ?name

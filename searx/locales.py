@@ -32,6 +32,7 @@ RTL_LOCALES: Set[str] = set()
 ADDITIONAL_TRANSLATIONS = {
     "oc": "Occitan",
     "szl": "Ślōnski (Silesian)",
+    "pap": "Papiamento",
 }
 """Additional languages SearXNG has translations for but not supported by
 python-babel (see :py:obj:`locales_initialize`)."""
@@ -41,6 +42,7 @@ LOCALE_BEST_MATCH = {
     "szl": "pl",
     "nl-BE": "nl",
     "zh-HK": "zh-Hant-TW",
+    "pap": "pt-BR",
 }
 """Map a locale we do not have a translations for to a locale we have a
 translation for. By example: use Taiwan version of the translation for Hong
@@ -79,6 +81,9 @@ def get_translations():
     if has_request_context() and flask.request.form.get('use-translation') == 'szl':
         babel_ext = flask_babel.current_app.extensions['babel']
         return Translations.load(next(babel_ext.translation_directories), 'szl')
+    if has_request_context() and flask.request.form.get('use-translation') == 'pap':
+        babel_ext = flask_babel.current_app.extensions['babel']
+        return Translations.load(next(babel_ext.translation_directories), 'pap')
     return _flask_babel_get_translations()
 
 

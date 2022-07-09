@@ -163,7 +163,10 @@ class OnlineProcessor(EngineProcessor):
             self.logger.exception('CAPTCHA')
         except SearxEngineTooManyRequestsException as e:
             if "google" in self.engine_name:
-                self.logger.warn("We recommend enabling the use_mobile_ui parameter if google is blocked for you.")
+                self.logger.warn(
+                    "Set to 'true' the use_mobile_ui parameter in the 'engines:'"
+                    " section of your settings.yml file if google is blocked for you."
+                )
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('Too many requests')
         except SearxEngineAccessDeniedException as e:

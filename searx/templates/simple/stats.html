@@ -91,15 +91,15 @@
 </table>
 {% endif %}
 
-<div>
-    {% if selected_engine_name %}
+{% if selected_engine_name %}
+    <div class="engine-errors">
         {% for secondary in [False, True] %}
             {% set ns = namespace(first=true) %}
             {% for error in engine_reliabilities[selected_engine_name].errors %}
                 {% if secondary == error.secondary %}
                     {% if ns.first %}
                         {% set ns.first = false %}
-                        <h3>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h3>
+                        <h2>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h2>
                     {% endif %}
                     <table class="engine-error">
                         <tbody>
@@ -145,7 +145,7 @@
             </table>
         {% endif %}
         {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 
 {% endblock %}

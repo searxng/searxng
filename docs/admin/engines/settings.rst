@@ -70,13 +70,25 @@ Global Settings
 .. code:: yaml
 
    general:
-     debug: false               # Debug mode, only for development
-     instance_name:  "SearXNG"  # displayed name
-     contact_url: false         # mailto:contact@example.com
+     debug: false
+     instance_name:  "SearXNG"
+     privacypolicy_url: false
+     donation_url: https://docs.searxng.org/donate.html
+     contact_url: false
+     enable_metrics: true
 
 ``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
+
+``donation_url`` :
+  At default the donation link points to the `SearXNG project
+  <https://docs.searxng.org/donate.html>`_.  Set value to ``true`` to use your
+  own donation page written in the :ref:`searx/info/en/donate.md
+  <searx.infopage>` and use ``false`` to disable the donation link altogether.
+
+``privacypolicy_url``:
+  Link to privacy policy.
 
 ``contact_url``:
   Contact ``mailto:`` address or WEB form.
@@ -218,6 +230,7 @@ Global Settings
    ui:
      default_locale: ""
      query_in_title: false
+     center_alignment: false
      default_theme: simple
      theme_args:
        simple_style: auto
@@ -228,15 +241,20 @@ Global Settings
   specific instance of searx, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
+``query_in_title`` :
+  When true, the result page's titles contains the query it decreases the
+  privacy, since the browser can records the page titles.
+
+``center_alignment`` : default ``false``
+  When enabled, the results are centered instead of being in the left (or RTL)
+  side of the screen.  This setting only affects the *desktop layout*
+  (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
+
 ``default_theme`` :
   Name of the theme you want to use by default on your SearXNG instance.
 
 ``theme_args.simple_style``:
   Style of simple theme: ``auto``, ``light``, ``dark``
-
-``query_in_title`` :
-  When true, the result page's titles contains the query it decreases the
-  privacy, since the browser can records the page titles.
 
 ``results_on_new_tab``:
   Open result links in a new tab by default.

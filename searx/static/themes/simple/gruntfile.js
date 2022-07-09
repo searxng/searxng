@@ -189,6 +189,8 @@ module.exports = function (grunt) {
           'school-outline': 'node_modules/ionicons/dist/svg/school-outline.svg',
           'file-tray-full-outline': 'node_modules/ionicons/dist/svg/file-tray-full-outline.svg',
           'people-outline': 'node_modules/ionicons/dist/svg/people-outline.svg',
+          'heart-outline': 'node_modules/ionicons/dist/svg/heart-outline.svg',
+          'information-circle-outline': 'src/svg/information-circle-outline.svg',
         },
         dest: '../../../templates/simple/icons.html',
       },

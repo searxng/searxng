@@ -1,5 +1,7 @@
 {% extends 'simple/page_with_header.html' %}
 {% block title %}{{ active_page.title }} - {% endblock %}
+{% block linkto_about %}{% endblock %}
+{% block linkto_donate %}{% endblock %}
 {% block content %}
 <ul class="tabs">
 {% for pagename, locale, page in all_pages %}

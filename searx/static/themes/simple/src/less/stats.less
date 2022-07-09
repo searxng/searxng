@@ -1,6 +1,25 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 .engine-stats {
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  tr td,
+  tr th {
+    border-bottom: 1px solid var(--color-result-border);
+    padding: 0.25rem;
+  }
+
+  table.engine-tooltip {
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    td,
+    th {
+      border: none;
+    }
+  }
+
   .engine-name {
     width: 20rem;
   }
@@ -13,23 +32,33 @@
   .engine-reliability {
     text-align: right;
   }
+}
+
+table.engine-error th.engine-error-type,
+table.engine-error td.engine-error-type,
+failed-test {
+  width: 10rem;
+}
+
+.engine-errors {
+  margin-top: 3rem;
 
   table.engine-error {
     max-width: 1280px;
-    margin: 1rem;
-    border: 1px solid gray;
-  }
+    margin: 1rem 0 3rem 0;
+    border: 1px solid var(--color-result-border);
+    .ltr-text-align-left();
 
-  table.engine-error th.engine-error-type,
-  table.engine-error td.engine-error-type,
-  failed-test {
-    width: 10rem;
-  }
+    tr th,
+    tr td {
+      padding: 0.5rem;
+    }
 
-  table.engine-error span.log_parameters {
-    border-right: 1px solid gray;
-    padding: 0 1rem 0 0;
-    margin: 0 0 0 0.5rem;
+    & span.log_parameters {
+      border-right: 1px solid solid var(--color-result-border);
+      padding: 0 1rem 0 0;
+      margin: 0 0 0 0.5rem;
+    }
   }
 }
 

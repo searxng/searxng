@@ -36,5 +36,6 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    dev/index
    utils/index
    src/index
+   donate
 
 .. _searx.space: https://searx.space

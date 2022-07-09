@@ -1,8 +1,17 @@
 general:
-  debug: false              # Debug mode, only for development
-  instance_name: "SearXNG"  # displayed name
-  contact_url: false        # mailto:contact@example.com
-  enable_metrics: true      # record stats
+  # Debug mode, only for development
+  debug: false
+  # displayed name
+  instance_name: "SearXNG"
+  # For example: https://example.com/privacy
+  privacypolicy_url: false
+  # use true to use your own donation page written in searx/info/en/donate.md
+  # use false to disable the donation link
+  donation_url: https://docs.searxng.org/donate.html
+  # mailto:contact@example.com
+  contact_url: false
+  # record stats
+  enable_metrics: true
 
 brand:
   new_issue_url: https://github.com/searxng/searxng/issues/new
@@ -82,6 +91,8 @@ ui:
   query_in_title: false
   # ui theme
   default_theme: simple
+  # center the results ?
+  center_alignment: false
   # Default interface locale - leave blank to detect from browser information or
   # use codes from the 'locales' config section
   default_locale: ""
@@ -426,6 +437,26 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: curlie
+    engine: xpath
+    shortcut: cl
+    categories: general
+    disabled: true
+    paging: true
+    lang_all: ''
+    search_url: https://curlie.org/search?q={query}&lang={lang}&start={pageno}&stime=92452189
+    page_size: 20
+    results_xpath: //div[@id="site-list-content"]/div[@class="site-item"]
+    url_xpath: ./div[@class="title-and-desc"]/a/@href
+    title_xpath: ./div[@class="title-and-desc"]/a/div
+    content_xpath: ./div[@class="title-and-desc"]/div[@class="site-descr"]
+    about:
+      website: https://curlie.org/
+      wikidata_id: Q60715723
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: currency
     engine: currency_convert
     categories: general
@@ -702,23 +733,9 @@ engines:
     shortcut: gos
 
   - name: google play apps
-    engine: xpath
-    search_url: https://play.google.com/store/search?q={query}&c=apps
-    results_xpath: '//div[@class="ImZGtf mpg5gc"]'
-    title_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a'
-    url_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a/@href'
-    content_xpath: './/div[@class="RZEgze"]//a[@class="mnKHRc"]'
-    thumbnail_xpath: './/div[@class="uzcko"]/div/span[1]//img/@data-src'
-    categories: [files, apps]
+    engine: google_play_apps
     shortcut: gpa
     disabled: true
-    about:
-      website: https://play.google.com/
-      wikidata_id: Q79576
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
 
   - name: google play movies
     engine: xpath
@@ -872,6 +889,12 @@ engines:
     engine: loc
     shortcut: loc
     categories: images
+
+  - name: lingva
+    engine: lingva
+    shortcut: lv
+    # set lingva instance in url, by default it will use the official instance
+    # url: https://lingva.ml
 
   - name: lobste.rs
     engine: xpath

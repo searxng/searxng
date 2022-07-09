@@ -140,14 +140,16 @@ SCHEMA = {
     'general': {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
         'instance_name': SettingsValue(str, 'SearXNG'),
+        'privacypolicy_url': SettingsValue((None, False, str), None),
         'contact_url': SettingsValue((None, False, str), None),
+        'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),
         'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
         'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
         'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
-        'public_instances': SettingsValue(str, 'https://searx.space'),
+        'public_instances': SettingsValue((False, str), 'https://searx.space'),
         'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
     },
     'search': {
@@ -183,6 +185,7 @@ SCHEMA = {
         'theme_args': {
             'simple_style': SettingsValue(SIMPLE_STYLE, 'auto'),
         },
+        'center_alignment': SettingsValue(bool, False),
         'results_on_new_tab': SettingsValue(bool, False),
         'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),

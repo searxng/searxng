@@ -101,17 +101,25 @@ User experience
   * engines are grouped inside each tab
   * each engine has a description
 
-- it is easier to report a bug of an engine
-- but you can also disable the recording of the metrics on the server
+- thanks to the anonymous metrics, it is easier to report a bug of an engine and
+  thus engines get fixed more quickly
+
+  - if you don't want any metrics to be recorded, you can `disable them on the server
+    <https://docs.searxng.org/admin/engines/settings.html#general>`_
+
+- administrator can `block and/or replace the URLs in the search results
+  <https://github.com/searxng/searxng/blob/5c1c0817c3996c5670a545d05831d234d21e6217/searx/settings.yml#L191-L199>`_
 
 
 Setup
 -----
 
-- the Docker image is now also built for ARM64 and ARM/v7 architectures
 - you don't need `Morty`_ to proxy the images even on a public instance
-- on the way to embed `Filtron`_ into SearXNG
-- up to date installation scripts
+- you don't need `Filtron`_ to block bots, we implemented the builtin `limiter`_
+- you get a well maintained `Docker image`_, now also built for ARM64 and ARM/v7 architectures
+- alternatively we have up to date installation scripts
+
+.. _Docker image: https://github.com/searxng/searxng-docker
 
 
 Contributing is easier
@@ -125,6 +133,7 @@ Contributing is easier
 
 .. _Morty: https://github.com/asciimoo/morty
 .. _Filtron: https://github.com/searxng/filtron
+.. _limiter: https://docs.searxng.org/src/searx.plugins.limiter.html
 .. _Weblate: https://weblate.bubu1.eu/projects/searxng/searxng/
 .. _Development Quickstart: https://docs.searxng.org/dev/quickstart.html
 
@@ -137,3 +146,10 @@ https://weblate.bubu1.eu/projects/searxng/searxng/
 
 .. figure:: https://weblate.bubu1.eu/widgets/searxng/-/multi-auto.svg
    :target: https://weblate.bubu1.eu/projects/searxng/
+
+
+Make a donation
+===============
+
+You can support the SearXNG project by clicking on the donation page:
+https://docs.searxng.org/donate.html
