@@ -8,7 +8,8 @@
 import re
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
-from searx.utils import eval_xpath, extract_text, match_language
+from searx.utils import eval_xpath, extract_text, eval_xpath_list, match_language
+from searx.network import multi_requests, Request
 
 about = {
     "website": 'https://www.bing.com',
@@ -79,30 +80,48 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath(dom, '//div[@class="sa_cc"]'):
-
-        # IMO //div[@class="sa_cc"] does no longer match
-        logger.debug('found //div[@class="sa_cc"] --> %s', result)
-
-        link = eval_xpath(result, './/h3/a')[0]
-        url = link.attrib.get('href')
-        title = extract_text(link)
-        content = extract_text(eval_xpath(result, './/p'))
-
-        # append result
-        results.append({'url': url, 'title': title, 'content': content})
-
     # parse results again if nothing is found yet
-    for result in eval_xpath(dom, '//li[@class="b_algo"]'):
+
+    url_to_resolve = []
+    url_to_resolve_index = []
+    for i, result in enumerate(eval_xpath_list(dom, '//li[@class="b_algo"]')):
 
         link = eval_xpath(result, './/h2/a')[0]
         url = link.attrib.get('href')
         title = extract_text(link)
         content = extract_text(eval_xpath(result, './/p'))
 
+        # get the real URL either using the URL shown to user or following the Bing URL
+        if url.startswith('https://www.bing.com/ck/a?'):
+            url_cite = extract_text(eval_xpath(result, './/div[@class="b_attribution"]/cite'))
+            # Bing can shorten the URL either at the end or in the middle of the string
+            if (
+                url_cite.startswith('https://')
+                and '…' not in url_cite
+                and '...' not in url_cite
+                and '›' not in url_cite
+            ):
+                # no need for an additional HTTP request
+                url = url_cite
+            else:
+                # resolve the URL with an additional HTTP request
+                url_to_resolve.append(url.replace('&ntb=1', '&ntb=F'))
+                url_to_resolve_index.append(i)
+                url = None  # remove the result if the HTTP Bing redirect raise an exception
+
         # append result
         results.append({'url': url, 'title': title, 'content': content})
 
+    # resolve all Bing redirections in parallel
+    request_list = [
+        Request.get(u, allow_redirects=False, headers=resp.search_params['headers']) for u in url_to_resolve
+    ]
+    response_list = multi_requests(request_list)
+    for i, redirect_response in enumerate(response_list):
+        if not isinstance(redirect_response, Exception):
+            results[url_to_resolve_index[i]]['url'] = redirect_response.headers['location']
+
+    # get number_of_results
     try:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
