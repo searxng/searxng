@@ -85,15 +85,7 @@ def request(query, params):
         + lang_info['subdomain']
         + '/scholar'
         + "?"
-        + urlencode(
-            {
-                'q': query,
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'start': offset,
-            }
-        )
+        + urlencode({'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'start': offset, 'ucbcb': 1})
     )
 
     query_url += time_range_url(params)

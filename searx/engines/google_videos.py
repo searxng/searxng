@@ -118,15 +118,7 @@ def request(query, params):
         + lang_info['subdomain']
         + '/search'
         + "?"
-        + urlencode(
-            {
-                'q': query,
-                'tbm': "vid",
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-            }
-        )
+        + urlencode({'q': query, 'tbm': "vid", **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'ucbcb': 1})
     )
 
     if params['time_range'] in time_range_dict:

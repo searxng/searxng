@@ -14,7 +14,6 @@ ignores some parameters from the common :ref:`google API`:
 # pylint: disable=invalid-name
 
 import binascii
-from datetime import datetime
 import re
 from urllib.parse import urlencode
 from base64 import b64decode
@@ -99,13 +98,7 @@ def request(query, params):
         + '/search'
         + "?"
         + urlencode(
-            {
-                'q': query,
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'gl': lang_info['country'],
-            }
+            {'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'gl': lang_info['country'], 'ucbcb': 1}
         )
         + ('&ceid=%s' % ceid)
     )  # ceid includes a ':' character which must not be urlencoded
@@ -113,7 +106,6 @@ def request(query, params):
 
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    params['headers']['Cookie'] = "CONSENT=YES+cb.%s-14-p0.en+F+941;" % datetime.now().strftime("%Y%m%d")
 
     return params
 
