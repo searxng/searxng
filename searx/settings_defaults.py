@@ -225,7 +225,7 @@ SCHEMA = {
     'doi_resolvers': {},
     'security': {
         'config_page': SettingsValue(bool, True),
-    }
+    },
 }
 
 
