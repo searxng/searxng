@@ -63,7 +63,7 @@ or manually by executing the searx/webapp.py file? -->
     <input type="checkbox" id="step1">
     <label for="step1">{{ _('Start submiting a new issue on GitHub') }}</label>
     <div class="step1 step_content">
-        <p><a href="https://github.com/searxng/searxng/issues?q=is%3Aissue+Bug:%20{{ engine_name }}" target="_blank" rel="noreferrer noreferrer">{{ _('Please check for existing bugs about this engine on GitHub') }}</a></p>
+        <p><a href="{{ get_setting('brand.issue_url') }}?q=is%3Aissue+Bug:%20{{ engine_name }}" target="_blank" rel="noreferrer noreferrer">{{ _('Please check for existing bugs about this engine on GitHub') }}</a></p>
     </div>
     <input class="step1 step1_delay" type="checkbox" id="step2">
     <label class="step1 step1_delay" for="step2" >{{ _('I confirm there is no existing bug about the issue I encounter') }}</label>
