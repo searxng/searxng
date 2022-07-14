@@ -29,7 +29,7 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
-supported_languages_url = 'https://duckduckgo.com/util/u588.js'
+supported_languages_url = 'https://duckduckgo.com/util/u588.js' # <-- ISSUE/FIXME: searx.engines.__init__ won't update this URL.
 time_range_support = True
 
 language_aliases = {
@@ -45,8 +45,13 @@ language_aliases = {
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # search-url
-url = 'https://lite.duckduckgo.com/lite'
-url_ping = 'https://duckduckgo.com/t/sl_l'
+base_url = 'https://lite.duckduckgo.com'
+onion_url = 'https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion'
+search_path = '/lite?'
+ping_path = '/t/sl_l'
+
+search_url = base_url + search_path
+ping_url = base_url + ping_path
 
 # match query's language to a region code that duckduckgo will accept
 def get_region_code(lang, lang_list=None):
@@ -118,7 +123,7 @@ def request(query, params):
 def response(resp):
 
     headers_ping = dict_subset(resp.request.headers, ['User-Agent', 'Accept-Encoding', 'Accept', 'Cookie'])
-    get(url_ping, headers=headers_ping)
+    get(ping_url, headers=headers_ping)
 
     if resp.status_code == 303:
         return []
