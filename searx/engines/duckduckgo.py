@@ -29,7 +29,8 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
-supported_languages_url = 'https://duckduckgo.com/util/u588.js' # <-- ISSUE/FIXME: searx.engines.__init__ won't update this URL.
+# ISSUE/FIXME: searx.engines.__init__ won't update this URL.
+supported_languages_url = 'https://duckduckgo.com/util/u588.js'
 time_range_support = True
 
 language_aliases = {
@@ -47,11 +48,11 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 # search-url
 base_url = 'https://lite.duckduckgo.com'
 onion_url = 'https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion'
-search_path = '/lite?'
+search_path = '/lite'
 ping_path = '/t/sl_l'
 
 search_url = base_url + search_path
-ping_url = base_url + ping_path
+ping_url = 'https://duckduckgo.com' + ping_path
 
 # match query's language to a region code that duckduckgo will accept
 def get_region_code(lang, lang_list=None):
@@ -67,7 +68,7 @@ def get_region_code(lang, lang_list=None):
 
 def request(query, params):
 
-    params['url'] = url
+    params['url'] = search_url
     params['method'] = 'POST'
 
     params['data']['q'] = query
