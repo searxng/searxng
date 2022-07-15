@@ -30,7 +30,7 @@ logger = logging.getLogger('searx.shared.redis')
 _client = None
 
 
-def client():
+def client() -> redis.Redis:
     global _client  # pylint: disable=global-statement
     if _client is None:
         # not thread safe: in the worst case scenario, two or more clients are

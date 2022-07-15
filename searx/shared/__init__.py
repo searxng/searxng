@@ -1,39 +1,50 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import logging
-import importlib
 
 logger = logging.getLogger('searx.shared')
 
-__all__ = ['SharedDict', 'schedule']
+__all__ = ["storage", "schedule"]
+
 
 try:
-    uwsgi = importlib.import_module('uwsgi')
-except:
-    # no uwsgi
-    from .shared_simple import SimpleSharedDict as SharedDict, schedule
+    # First: try to use Redis
+    from .redisdb import client
 
-    logger.info('Use shared_simple implementation')
-else:
+    client().ping()
+    from .shared_redis import RedisCacheSharedDict as SharedDict, schedule
+
+    logger.info('Use shared_redis implementation')
+except Exception as e:
+    # Second: try to use uwsgi
     try:
-        uwsgi.cache_update('dummy', b'dummy')
-        if uwsgi.cache_get('dummy') != b'dummy':
-            raise Exception()
+        import uwsgi
     except:
-        # uwsgi.ini configuration problem: disable all scheduling
-        logger.error(
-            'uwsgi.ini configuration error, add this line to your uwsgi.ini\n'
-            'cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1'
-        )
-        from .shared_simple import SimpleSharedDict as SharedDict
+        # Third : fall back to shared_simple
+        from .shared_simple import SimpleSharedDict as SharedDict, schedule
 
-        def schedule(delay, func, *args):
-            return False
-
+        logger.info('Use shared_simple implementation')
     else:
-        # uwsgi
-        from .shared_uwsgi import UwsgiCacheSharedDict as SharedDict, schedule
+        # Make sure uwsgi is okay
+        try:
+            uwsgi.cache_update('dummy', b'dummy')
+            if uwsgi.cache_get('dummy') != b'dummy':
+                raise Exception()  # pylint: disable=raise-missing-from
+        except:
+            # there is exception on a get/set test: disable all scheduling
+            logger.exception(
+                'uwsgi.ini configuration error, add this line to your uwsgi.ini\n'
+                'cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1\n'
+            )
+            from .shared_simple import SimpleSharedDict as SharedDict
 
-        logger.info('Use shared_uwsgi implementation')
+            def schedule(delay, func, *args):
+                return False
+
+        else:
+            # use uwsgi
+            from .shared_uwsgi import UwsgiCacheSharedDict as SharedDict, schedule
+
+            logger.info('Use shared_uwsgi implementation')
 
 storage = SharedDict()
