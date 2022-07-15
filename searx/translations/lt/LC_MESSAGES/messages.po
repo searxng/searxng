@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-08 07:17+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"PO-Revision-Date: 2022-07-13 15:40+0000\n"
 "Last-Translator: John Doe <cryptiox@protonmail.com>\n"
 "Language-Team: Lithuanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "lt/>\n"
@@ -205,27 +205,27 @@ msgstr "Šaltinis"
 msgid "Error loading the next page"
 msgstr "Klaida keliant kitą puslapį"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neteisingi nustatymai, pakeiskite savo nuostatas"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "Neteisingi nustatymai"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "paieškos klaida"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "prieš {minutes} min"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "prieš {hours} val., {minutes} min"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "Sustabdytas"
 
@@ -245,7 +245,7 @@ msgstr "Statistikos funkcijos"
 msgid "Compute {functions} of the arguments"
 msgstr "Skaičiuoti argumentų {functions} funkcijas"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "Gauti nurodymus"
 
@@ -280,8 +280,8 @@ msgstr "Kompiuterio pavadinimo pakeitimas"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Perašyti kompiuterio pavadinimo rezultatus arba ištrinti rezultatus pagal "
-"kompiuterio pavadinimą"
+"Perašyti kompiuterio pavadinimo rezultatus arba ištrinti rezultatus pagal"
+" kompiuterio pavadinimą"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -304,8 +304,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
-"Jei pasirenkama kategorija, nedelsiant atlikti paiešką. Išjunkite norėdami "
-"pasirinkti kelias kategorijas. (reikalingas JavaScript)"
+"Jei pasirenkama kategorija, nedelsiant atlikti paiešką. Išjunkite "
+"norėdami pasirinkti kelias kategorijas. (reikalingas JavaScript)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -336,9 +336,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Naršyti po paieškos rezultatus naudojant Vim pavidalo sparčiuosius klavišus ("
-"reikalingas JavaScript). Paspauskite pagrindiniame ar rezultatų puslapyje \"h"
-"\" klavišą norėdami gauti pagalbos."
+"Naršyti po paieškos rezultatus naudojant Vim pavidalo sparčiuosius "
+"klavišus (reikalingas JavaScript). Paspauskite pagrindiniame ar rezultatų"
+" puslapyje \"h\" klavišą norėdami gauti pagalbos."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -357,45 +357,45 @@ msgstr "paieškos puslapį"
 msgid "About"
 msgstr "Apie"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Paaukoti"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Nuostatos"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Veikia su"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "gerbianti privatumą, programuojama metapaieškos sistema"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Šaltinio kodas"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Klaidų sekiklis"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statistika statistika"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Viešos instancijos"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Privatumo politika"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Susisiekite su instancijos prižiūrėtoju"
 
@@ -420,7 +420,24 @@ msgstr "patalpinta"
 msgid "proxied"
 msgstr "persiustas"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr "Pateikite naują klaidą Github'e"
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr "Prasome paziurėti esamas klaidas apie šią sistemą Github'e"
+
+#: searx/templates/simple/new_issue.html:69
+#, fuzzy
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr "Aš patvirtinu, kad nera jokių esamų"
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr "Pateikite nauja klaidą Github, įvedant informaciją viršuje."
 
@@ -645,8 +662,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Įjungus, prie rezultatų puslapio pavadinimo pridedama jūsų užklausa. Jūsų "
-"naršykle gali šį pavadinimą įrašyti"
+"Įjungus, prie rezultatų puslapio pavadinimo pridedama jūsų užklausa. Jūsų"
+" naršykle gali šį pavadinimą įrašyti"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
