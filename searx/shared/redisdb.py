@@ -26,26 +26,20 @@ import redis
 from searx import get_setting
 
 
-logger = logging.getLogger('searx.shared.redis')
+logger = logging.getLogger('searx.shared.redisdb')
 _client = None
 
 
-def client():
-    global _client  # pylint: disable=global-statement
-    if _client is None:
-        # not thread safe: in the worst case scenario, two or more clients are
-        # initialized only one is kept, the others are garbage collected.
-        _client = redis.Redis.from_url(get_setting('redis.url'))
+def client() -> redis.Redis:
     return _client
 
 
-def init():
+def initialize():
+    global _client  # pylint: disable=global-statement
     try:
-        c = client()
-        logger.info("connected redis DB --> %s", c.acl_whoami())
-        return True
+        _client = redis.Redis.from_url(get_setting('redis.url'))
+        logger.info("connected redis: %s", get_setting('redis.url'))
     except redis.exceptions.ConnectionError as exc:
         _pw = pwd.getpwuid(os.getuid())
         logger.error("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
         logger.error("  %s", exc)
-    return False
