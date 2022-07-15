@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-08 07:17+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"PO-Revision-Date: 2022-07-15 07:19+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: German <https://weblate.bubu1.eu/projects/searxng/searxng/de/>"
 "\n"
@@ -216,27 +216,27 @@ msgstr "Quelle"
 msgid "Error loading the next page"
 msgstr "Fehler beim Laden der nächsten Seite"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
-msgstr "Ungültige Einstellungen, bitte Einstellungen ändern."
+msgstr "Ungültige Einstellungen, bitte Einstellungen ändern"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "Ungültige Einstellungen"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "Suchfehler"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "vor {minutes} Minute(n)"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "vor {hours} Stunde(n), {minutes} Minute(n)"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "Ausgesetzt"
 
@@ -256,7 +256,7 @@ msgstr "Statistikfunktionen"
 msgid "Compute {functions} of the arguments"
 msgstr "{functions} der Argumente berechnen"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "Richtung holen"
 
@@ -369,45 +369,45 @@ msgstr "Suchseite"
 msgid "About"
 msgstr "Über"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Spenden"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Betrieben mit"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "eine privatsphären-respektierende, hackbare Metasuchmaschine"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Quellcode"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Bugtracker"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Suchmaschinenstatistiken"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Öffentliche Instanzen"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Datenschutzerklärung"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Kontakt zum Betreuer der Instanz"
 
@@ -432,7 +432,27 @@ msgstr "Im Cache"
 msgid "proxied"
 msgstr "proxy"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr "Fehlerbericht auf GitHub erstellen"
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr "Zuvor überprüfe bitte bereits existierende Fehlereinträge auf GitHub"
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+"Ich bestätige, dass es für das Problem, auf das ich stoße, keinen "
+"existierenden Fehlereintrag gibt"
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+"Wenn es sich um eine öffentliche Instanz handelt, gib bitte die URL in dem "
+"Fehlerbericht an"
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
 "Erstelle mit den oben stehenden Informationen auf GitHub einen neuen "

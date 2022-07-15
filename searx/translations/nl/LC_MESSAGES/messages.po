@@ -8,12 +8,13 @@
 # Nathan Follens, 2015-2018
 # Rejo Zenger <rejo@zenger.nl>, 2016-2017
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Chris Capisce <christof1588@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"PO-Revision-Date: 2022-07-15 07:19+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Dutch <https://weblate.bubu1.eu/projects/searxng/searxng/nl/>"
 "\n"
@@ -206,27 +207,27 @@ msgstr "Bron"
 msgid "Error loading the next page"
 msgstr "Fout bij het laden van de volgende pagina"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige instellingen, gelieve je voorkeuren bij te werken"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "Ongeldige instellingen"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "zoekfout"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minu(u)t(en) geleden"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} uur, {minutes} minu(u)t(en) geleden"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "Geschorst"
 
@@ -246,7 +247,7 @@ msgstr "Statistische functies"
 msgid "Compute {functions} of the arguments"
 msgstr "Bereken {functions} van de argumenten"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "Routebeschrijving"
 
@@ -359,45 +360,45 @@ msgstr "zoekpagina"
 msgid "About"
 msgstr "Over"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Doneren"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Zoekmachine"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "een privacy-respecterende, aanpasbare meta-zoekmachine"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Broncode"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Probleem-tracker"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Zoekmachinestatistieken"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Openbare instanties"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Privacybeleid"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Neem contact op met beheerder instantie"
 
@@ -422,7 +423,27 @@ msgstr "gecachet"
 msgid "proxied"
 msgstr "geproxyt"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr "Maak een nieuwe issue op Github"
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr "Controleer op bestaande bugs over deze engine op GitHub"
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+"Ik bevestig dat er geen bestaand probleem is over het probleem dat ik "
+"tegenkom"
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+"Indien dit een openbare instantie is, specificeer de URL in het "
+"probleemrapport"
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr "Maak een nieuwe issue op Github met de bovenstaande informatie"
 

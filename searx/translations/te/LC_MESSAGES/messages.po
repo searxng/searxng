@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-02 08:59+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
-"Last-Translator: networkneil <shankyneil1@gmail.com>\n"
+"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"PO-Revision-Date: 2022-07-15 07:19+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Telugu <https://weblate.bubu1.eu/projects/searxng/searxng/te/>"
 "\n"
 "Language: te\n"
@@ -204,27 +204,27 @@ msgstr "మూలం"
 msgid "Error loading the next page"
 msgstr "తదుపరి పేజీని లోడ్ చేయడంలో లోపం"
 
-#: searx/webapp.py:510 searx/webapp.py:954
+#: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
 msgstr "చెల్లని సెట్టింగ్‌లు, దయచేసి మీ ప్రాధాన్యతలను సవరించండి"
 
-#: searx/webapp.py:526
+#: searx/webapp.py:532
 msgid "Invalid settings"
 msgstr "చెల్లని అమరికలు"
 
-#: searx/webapp.py:603 searx/webapp.py:679
+#: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
 msgstr "శోధనలో లోపము"
 
-#: searx/webapp.py:725
+#: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} నిమిషము(ల) క్రిందట"
 
-#: searx/webapp.py:727
+#: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} గంట(లు), {minutes} నిమిషం(లు) క్రితం"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:859
 msgid "Suspended"
 msgstr "రద్ధు చెయ్యబడింది"
 
@@ -244,7 +244,7 @@ msgstr "సాంఖ్యకశాస్త్ర ప్రమేయాలు"
 msgid "Compute {functions} of the arguments"
 msgstr "ఆర్గ్యుమెంట్‌ల {functions} గణించండి"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
 msgstr "దిశలను పొందండి"
 
@@ -303,8 +303,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
-"వర్గం ఎంపిక చేయబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను ఎంచుకోవడానికి "
-"నిలిపివేయండి. (జావాస్క్రిప్ట్ అవసరం)"
+"వర్గం ఎంపిక చేయబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను "
+"ఎంచుకోవడానికి నిలిపివేయండి. (జావాస్క్రిప్ట్ అవసరం)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -315,8 +315,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"ప్రశ్న \"ip\" అయితే మీ IPని మరియు ప్రశ్నలో \"యూజర్ ఏజెంట్\" ఉంటే మీ యూజర్ "
-"ఏజెంట్‌ని ప్రదర్శిస్తుంది."
+"ప్రశ్న \"ip\" అయితే మీ IPని మరియు ప్రశ్నలో \"యూజర్ ఏజెంట్\" ఉంటే మీ యూజర్"
+" ఏజెంట్‌ని ప్రదర్శిస్తుంది."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -335,8 +335,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Vim లాంటి హాట్‌కీలతో శోధన ఫలితాలను నావిగేట్ చేయండి (జావాస్క్రిప్ట్ అవసరం). "
-"సహాయం పొందడానికి ప్రధాన లేదా ఫలితాల పేజీలో \"h\" కీని నొక్కండి."
+"Vim లాంటి హాట్‌కీలతో శోధన ఫలితాలను నావిగేట్ చేయండి (జావాస్క్రిప్ట్ "
+"అవసరం). సహాయం పొందడానికి ప్రధాన లేదా ఫలితాల పేజీలో \"h\" కీని నొక్కండి."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -355,45 +355,45 @@ msgstr "శోధన పుట"
 msgid "About"
 msgstr "గురించి"
 
-#: searx/templates/simple/base.html:49
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "దానం చేయండి"
 
-#: searx/templates/simple/base.html:52
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
 msgstr "అభిరుచులు"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "ద్వారా ఆధారితం"
 
-#: searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
 msgstr "గోప్యతను గౌరవించే, హ్యాక్ చేయదగిన మెటా సెర్చ్ ఇంజిన్"
 
-#: searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "సోర్స్ కోడ్"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "ఇష్యూ ట్రాకర్"
 
-#: searx/templates/simple/base.html:65 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "ఇంజిన్ గణాంకాలు"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "పబ్లిక్ ఇన్స్తంచెస్"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "గోప్యతా విధానం"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "నిర్వహించేవాడిని సంప్రదించండి"
 
@@ -418,7 +418,23 @@ msgstr "కాష్ చేయబడింది"
 msgid "proxied"
 msgstr "ప్రాక్సీడ్"
 
-#: searx/templates/simple/new_issue.html:63
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr "GitHub లో కొత్త సంచికను సమర్పించడం ప్రారంభించండి"
+
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+
+#: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr "పై సమాచారంతో సహా Github పై కొత్త సంచికను సమర్పించండి"
 
@@ -597,8 +613,8 @@ msgstr "అనంతమైన స్క్రోల్"
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా "
-"లోడ్ చేయండి"
+"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
+" లోడ్ చేయండి"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
@@ -614,9 +630,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"ఫారమ్‌లను ఎలా సమర్పించాలో మార్చండి, <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">అభ్యర్థన "
-"పద్ధతుల గురించి మరింత తెలుసుకోండి</a>"
+"ఫారమ్‌లను ఎలా సమర్పించాలో మార్చండి, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">అభ్యర్థన పద్ధతుల గురించి మరింత తెలుసుకోండి</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -645,8 +661,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"ప్రారంభించబడినప్పుడు, ఫలిత పేజీ యొక్క శీర్షిక మీ ప్రశ్నను కలిగి ఉంటుంది. మీ "
-"బ్రౌజర్ ఈ శీర్షికను రికార్డ్ చేయగలదు"
+"ప్రారంభించబడినప్పుడు, ఫలిత పేజీ యొక్క శీర్షిక మీ ప్రశ్నను కలిగి ఉంటుంది. "
+"మీ బ్రౌజర్ ఈ శీర్షికను రికార్డ్ చేయగలదు"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -661,8 +677,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"ఈ ట్యాబ్ శోధన ఫలితాల కోసం చూపబడదు, కానీ మీరు ఇక్కడ జాబితా చేయబడిన ఇంజిన్‌లను "
-"బ్యాంగ్స్ ద్వారా శోధించవచ్చు."
+"ఈ ట్యాబ్ శోధన ఫలితాల కోసం చూపబడదు, కానీ మీరు ఇక్కడ జాబితా చేయబడిన "
+"ఇంజిన్‌లను బ్యాంగ్స్ ద్వారా శోధించవచ్చు."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -762,8 +778,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"గమనిక: శోధన URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం క్లిక్ చేసిన ఫలితాల సైట్‌లకు"
-" డేటాను లీక్ చేయడం ద్వారా గోప్యతను తగ్గిస్తుంది."
+"గమనిక: శోధన URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం క్లిక్ చేసిన ఫలితాల "
+"సైట్‌లకు డేటాను లీక్ చేయడం ద్వారా గోప్యతను తగ్గిస్తుంది."
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
@@ -782,8 +798,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను నిల్వ "
-"చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
+"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
+"నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
 
 #: searx/templates/simple/preferences.html:430
 msgid ""
@@ -979,8 +995,7 @@ msgstr "యంత్రాలు ఫలితాలను రాబట్టల�
 
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"దయచేసి, తర్వాత మళ్లీ ప్రయత్నించండి లేదా మరొక SearXNG ఇన్స్తంచె కనుగొనండి."
+msgstr "దయచేసి, తర్వాత మళ్లీ ప్రయత్నించండి లేదా మరొక SearXNG ఇన్స్తంచె కనుగొనండి."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
@@ -991,8 +1006,8 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని "
-"వర్గాల్లో శోధించండి."
+"మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని"
+" వర్గాల్లో శోధించండి."
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
