@@ -6,11 +6,15 @@ Scheduler:
   * SearXNG_scheduler: for each function, the timestamp of the next call
   * SearXNG_scheduler_delay: for each function, the delay between the calls
 
-SCHEDULER_REGISTER_FUNCTION register a new function to call
-
-SCHEDULER_NOW_SCRIPT must be call in loop. It returns two values:
-* in how many seconds to the script must be called again
-* the list of function to call now
+Two Lua scripts:
+* SCHEDULER_REGISTER_FUNCTION registers a new function to call
+* SCHEDULER_NOW_SCRIPT has to be called in loop. It returns two values:
+  * the number of seconds to wait before making a new call to this script
+  * the list of function to call now. 
+    This list won't be returned anymore: the script except the Python worker to call these functions.
+    If there are multiple worker, the functions are called only once for all the worker. 
+    This script can be called before the expected time without side effect.
+    This is useful when a new function is scheduled.
 """
 
 import threading
@@ -20,6 +24,7 @@ import logging
 from . import shared_abstract
 from .redisdb import client as get_redis_client
 from ..redislib import lua_script_storage
+from searx import redislib
 
 
 logger = logging.getLogger('searx.shared.shared_redis')
@@ -34,21 +39,25 @@ SCHEDULED_FUNCTIONS: Dict[str, ScheduleInfo] = {}
 SCHEDULER_THREAD: Optional[threading.Thread] = None
 SCHEDULER_EVENT = threading.Event()
 
-
-SCHEDULER_REGISTER_FUNCTION = """
+SCHEDULER_COMMON_VARIABLES = """
 local hash_key = 'SearXNG_scheduler_ts'
 local hash_delay_key = 'SearXNG_scheduler_delay'
+"""
+
+SCHEDULER_REGISTER_FUNCTION = (
+    SCHEDULER_COMMON_VARIABLES
+    + """
 local now = redis.call('TIME')[1]
 local redis_key = KEYS[1]
 local delay = ARGV[1]
 redis.call('HSET', hash_key, redis_key, now + delay)
 redis.call('HSET', hash_delay_key, redis_key, delay)
 """
+)
 
-
-SCHEDULER_NOW_SCRIPT = """
-local hash_key = 'SearXNG_scheduler_ts'
-local hash_delay_key = 'SearXNG_scheduler_delay'
+SCHEDULER_NOW_SCRIPT = (
+    SCHEDULER_COMMON_VARIABLES
+    + """
 local now = redis.call('TIME')[1]
 local result = {}
 local next_call_ts_list = {}
@@ -58,11 +67,11 @@ for i = 1, #flat_map, 2 do
     -- 
     local redis_key = flat_map[i]
     local next_call_ts = flat_map[i + 1]
-    -- do we have to exec the function now?
+    -- do we have to call the function now?
     if next_call_ts <= now then
         -- the function must be called now
         table.insert(result, redis_key)
-        -- schedule next call of the function
+        -- schedule the next call of the function
         local delay = redis.call('HGET', hash_delay_key, redis_key)
         next_call_ts = redis.call('HINCRBY', hash_key, redis_key, delay)
     end
@@ -78,10 +87,11 @@ table.insert(result, 1, next_call_delay)
 
 return result
 """
+)
 
 
 def scheduler_loop():
-    while True:
+    while SCHEDULER_THREAD == threading.current_thread():
         script = lua_script_storage(get_redis_client(), SCHEDULER_NOW_SCRIPT)
         result = script()
 
@@ -120,6 +130,15 @@ def schedule(delay, func, *args):
         SCHEDULER_THREAD.daemon = True
         SCHEDULER_THREAD.start()
     return True
+
+
+def reset_scheduler():
+    global SCHEDULER_THREAD
+    # stop the scheduler thread
+    SCHEDULER_THREAD = None
+    SCHEDULER_EVENT.set()
+    # erase Redis keys
+    redislib.purge_by_prefix(get_redis_client(), 'SearXNG_scheduler_')
 
 
 class RedisCacheSharedDict(shared_abstract.SharedDict):
