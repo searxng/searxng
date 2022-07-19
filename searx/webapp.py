@@ -325,7 +325,10 @@ def proxify(url: str):
     url_params = dict(mortyurl=url)
 
     if settings['result_proxy'].get('key'):
-        url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
+        key = settings['result_proxy']['key']
+        if isinstance(key, str):
+            key = bytearray(key.encode())
+        url_params['mortyhash'] = hmac.new(key, url.encode(), hashlib.sha256).hexdigest()
 
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
 
