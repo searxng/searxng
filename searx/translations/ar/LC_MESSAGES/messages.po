@@ -10,20 +10,19 @@
 # ken kailer <kenkailer@yahoo.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
 "PO-Revision-Date: 2022-07-19 05:45+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Arabic <https://weblate.bubu1.eu/projects/searxng/searxng/ar/>"
-"\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -304,7 +303,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
-"اقامت بحث فوري اذا تم اختيار مجموعة, توقيف تعدد الخيارات (java script ضروريه)"
+"اقامت بحث فوري اذا تم اختيار مجموعة, توقيف تعدد الخيارات (java script "
+"ضروريه)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -315,8 +315,32 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان الاستعلام "
-"يحتوي على\"user agent\""
+"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان "
+"الاستعلام يحتوي على\"user agent\""
+
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -325,8 +349,8 @@ msgstr "مزيل روابط التعقّب"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
-"إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من محدد "
-"موقع الموارد الموحد الذي تم إرجاعه"
+"إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
+"محدد موقع الموارد الموحد الذي تم إرجاعه"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
@@ -337,8 +361,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"تصفح نتائج البحث باستخدام مفاتيح الاختصار التي تشبه Vim (مطلوب JavaScript). "
-"اضغط على مفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج للحصول على المساعدة."
+"تصفح نتائج البحث باستخدام مفاتيح الاختصار التي تشبه Vim (مطلوب "
+"JavaScript). اضغط على مفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج "
+"للحصول على المساعدة."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -541,8 +566,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
-"إعادة التوجيه إلى إصدارات مفتوحة الوصول من المنشورات حيثما أمكن ذلك (يلزم "
-"وجود مكون إضافي)"
+"إعادة التوجيه إلى إصدارات مفتوحة الوصول من المنشورات حيثما أمكن ذلك (يلزم"
+" وجود مكون إضافي)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -630,9 +655,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"تغيير طريقة إرسال النماذج ، <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\"> تعرف على "
-"المزيد حول طرق الطلب </a>"
+"تغيير طريقة إرسال النماذج ، <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\"> تعرف على المزيد حول طرق الطلب </a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -661,8 +686,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"عند التمكين ، يحتوي عنوان صفحة النتائج على كلمات البحث الرئيسية الخاصة بك. "
-"يمكن لمتصفحك تسجيل هذا العنوان"
+"عند التمكين ، يحتوي عنوان صفحة النتائج على كلمات البحث الرئيسية الخاصة "
+"بك. يمكن لمتصفحك تسجيل هذا العنوان"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -1329,3 +1354,4 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "preferences"
 #~ msgstr "التفضيلات"
+

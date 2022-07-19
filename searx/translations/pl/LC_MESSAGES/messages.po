@@ -7,21 +7,20 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
 "PO-Revision-Date: 2022-07-13 15:40+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Polish <https://weblate.bubu1.eu/projects/searxng/searxng/pl/>"
-"\n"
 "Language: pl\n"
+"Language-Team: Polish "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/pl/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -317,6 +316,30 @@ msgstr ""
 "Wyświetla Twój adres IP, jeśli zapytanie to \"ip\", i Twojego agenta "
 "użytkownika, jeśli zapytanie zawiera \"user agent\"."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
 msgstr "Usuwanie elementów śledzących z URL-ów"
@@ -428,14 +451,13 @@ msgstr "Sprawdź istniejące błędy dotyczące tego silnika na GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
-"Potwierdzam, że nie ma istniejącego błędu dotyczącego napotkanego problemu"
+msgstr "Potwierdzam, że nie ma istniejącego błędu dotyczącego napotkanego problemu"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Jeśli jest to instancja publiczna, podaj adres URL w zgłoszeniu dotyczącego "
-"tego błędu"
+"Jeśli jest to instancja publiczna, podaj adres URL w zgłoszeniu "
+"dotyczącego tego błędu"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1348,3 +1370,4 @@ msgstr "ukryj wideo"
 
 #~ msgid "preferences"
 #~ msgstr "preferencje"
+
