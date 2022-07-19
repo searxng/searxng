@@ -7,6 +7,7 @@
 
 from timeit import default_timer
 import asyncio
+import ssl
 import httpx
 
 import searx.network
@@ -29,7 +30,6 @@ def default_request_params():
         'data': {},
         'url': '',
         'cookies': {},
-        'verify': True,
         'auth': None
         # fmt: on
     }
@@ -76,9 +76,15 @@ class OnlineProcessor(EngineProcessor):
     def _send_http_request(self, params):
         # create dictionary which contain all
         # information about the request
-        request_args = dict(
-            headers=params['headers'], cookies=params['cookies'], verify=params['verify'], auth=params['auth']
-        )
+        request_args = dict(headers=params['headers'], cookies=params['cookies'], auth=params['auth'])
+
+        # verify
+        # if not None, it overrides the verify value defined in the network.
+        # use False to accept any server certificate
+        # use a path to file to specify a server certificate
+        verify = params.get('verify')
+        if verify is not None:
+            request_args['verify'] = params['verify']
 
         # max_redirects
         max_redirects = params.get('max_redirects')
@@ -153,6 +159,10 @@ class OnlineProcessor(EngineProcessor):
             # send requests and parse the results
             search_results = self._search_basic(query, params)
             self.extend_container(result_container, start_time, search_results)
+        except ssl.SSLError as e:
+            # requests timeout (connect or read)
+            self.handle_exception(result_container, e, suspend=True)
+            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine_name).verify))
         except (httpx.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)

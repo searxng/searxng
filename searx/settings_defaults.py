@@ -199,6 +199,7 @@ SCHEMA = {
         'useragent_suffix': SettingsValue(str, ''),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
         'enable_http2': SettingsValue(bool, True),
+        'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
         # Magic number kept from previous code
         'pool_connections': SettingsValue(int, 100),

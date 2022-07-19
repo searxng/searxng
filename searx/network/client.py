@@ -26,9 +26,6 @@ else:
 logger = logger.getChild('searx.network.client')
 LOOP = None
 SSLCONTEXTS: Dict[Any, SSLContext] = {}
-TRANSPORT_KWARGS = {
-    'trust_env': False,
-}
 
 
 def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
@@ -74,7 +71,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         rdns = True
 
     proxy_type, proxy_host, proxy_port, proxy_username, proxy_password = parse_proxy_url(proxy_url)
-    verify = get_sslcontexts(proxy_url, None, True, False, http2) if verify is True else verify
+    verify = get_sslcontexts(proxy_url, None, verify, True, http2) if verify is True else verify
     return AsyncProxyTransportFixed(
         proxy_type=proxy_type,
         proxy_host=proxy_host,
@@ -88,12 +85,11 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         local_address=local_address,
         limits=limit,
         retries=retries,
-        **TRANSPORT_KWARGS,
     )
 
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    verify = get_sslcontexts(None, None, True, False, http2) if verify is True else verify
+    verify = get_sslcontexts(None, None, verify, True, http2) if verify is True else verify
     return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
         verify=verify,
@@ -102,7 +98,6 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
         proxy=httpx._config.Proxy(proxy_url) if proxy_url else None,
         local_address=local_address,
         retries=retries,
-        **TRANSPORT_KWARGS,
     )
 
 
