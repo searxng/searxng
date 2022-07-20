@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from searx.results import ResultContainer
+from searx.results.container import ResultContainer
 from tests import SearxTestCase
 
 

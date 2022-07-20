@@ -120,6 +120,11 @@ module:
 Making a Request
 ================
 
+.. sidebar:: info
+
+   - Demo of :py:obj:`request(query, params)
+     <searx.engines.demo_online.request>` function.
+
 To perform a search an URL have to be specified.  In addition to specifying an
 URL, arguments can be passed to the query.
 
@@ -205,109 +210,18 @@ following parameters can be used to specify a search request:
    raise_for_httperror bool        True by default: raise an exception if the HTTP code of response is >= 300
    =================== =========== ==========================================================================
 
+.. _engine response:
 
-.. _engine results:
-.. _engine media types:
+Making a Response
+=================
 
-Media Types
-===========
+.. sidebar:: info
 
-Each result item of an engine can be of different media-types.  Currently the
-following media-types are supported.  To set another media-type as ``default``,
-the parameter ``template`` must be set to the desired type.
+   - Demo of a :py:obj:`response(resp) <searx.engines.demo_online.response>` function.
 
-.. table::  Parameter of the **default** media type:
-   :width: 100%
+In the ``response`` function of the engine, the HTTP response (``resp``) is
+parsed and a list of results is returned.
 
-   ========================= =====================================================
-   result-parameter          information
-   ========================= =====================================================
-   url                       string, url of the result
-   title                     string, title of the result
-   content                   string, general result-text
-   publishedDate             :py:class:`datetime.datetime`, time of publish
-   ========================= =====================================================
-
-
-.. table::  Parameter of the **images** media type:
-   :width: 100%
-
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``images.html``
-   ========================= =====================================================
-   url                       string, url to the result site
-   title                     string, title of the result *(partly implemented)*
-   content                   *(partly implemented)*
-   publishedDate             :py:class:`datetime.datetime`,
-                             time of publish *(partly implemented)*
-   img\_src                  string, url to the result image
-   thumbnail\_src            string, url to a small-preview image
-   ========================= =====================================================
-
-
-.. table::  Parameter of the **videos** media type:
-   :width: 100%
-
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``videos.html``
-   ========================= =====================================================
-   url                       string, url of the result
-   title                     string, title of the result
-   content                   *(not implemented yet)*
-   publishedDate             :py:class:`datetime.datetime`, time of publish
-   thumbnail                 string, url to a small-preview image
-   ========================= =====================================================
-
-.. _magnetlink: https://en.wikipedia.org/wiki/Magnet_URI_scheme
-
-.. table::  Parameter of the **torrent** media type:
-   :width: 100%
-
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``torrent.html``
-   ========================= =====================================================
-   url                       string, url of the result
-   title                     string, title of the result
-   content                   string, general result-text
-   publishedDate             :py:class:`datetime.datetime`,
-                             time of publish *(not implemented yet)*
-   seed                      int, number of seeder
-   leech                     int, number of leecher
-   filesize                  int, size of file in bytes
-   files                     int, number of files
-   magnetlink                string, magnetlink_ of the result
-   torrentfile               string, torrentfile of the result
-   ========================= =====================================================
-
-.. table::  Parameter of the **map** media type:
-   :width: 100%
-
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``map.html``
-   ========================= =====================================================
-   url                       string, url of the result
-   title                     string, title of the result
-   content                   string, general result-text
-   publishedDate             :py:class:`datetime.datetime`, time of publish
-   latitude                  latitude of result (in decimal format)
-   longitude                 longitude of result (in decimal format)
-   boundingbox               boundingbox of result (array of 4. values
-                             ``[lat-min, lat-max, lon-min, lon-max]``)
-   geojson                   geojson of result (https://geojson.org/)
-   osm.type                  type of osm-object (if OSM-Result)
-   osm.id                    id of osm-object (if OSM-Result)
-   address.name              name of object
-   address.road              street name of object
-   address.house_number      house number of object
-   address.locality          city, place of object
-   address.postcode          postcode of object
-   address.country           country of object
-   ========================= =====================================================
+A engine can append result-items of different media-types and different
+result-types to the result list.  The list of the result items is render to HTML
+by templates.  For more details read section :ref:`engine results`.

@@ -58,7 +58,7 @@ from searx import (
 
 from searx import infopage
 from searx.data import ENGINE_DESCRIPTIONS
-from searx.results import Timing, UnresponsiveEngine
+from searx.results.core import Timing, UnresponsiveEngine
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
