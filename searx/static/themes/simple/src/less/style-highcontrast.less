@@ -1,0 +1,130 @@
+@media (forced-colors: active) {
+  // toolkit.less
+  html body select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    background: none;
+    border: 1px solid lightgray;
+    padding: inherit;
+
+    &:hover,
+    &:focus {
+      background-color: inherit;
+    }
+
+    option {
+      background-color: inherit;
+    }
+  }
+
+  // toolkit.less
+  input.checkbox-onoff[type="checkbox"] {
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+    background: none;
+    margin: inherit;
+    padding: inherit;
+    width: auto;
+    font-size: 1.5em;
+
+    &:focus,
+    &:hover {
+      outline: inherit;
+    }
+
+    &::after,
+    &::before,
+    &:focus::after,
+    &:focus::before,
+    &:hover::after,
+    &:hover::before {
+      display: none;
+      content: inherit;
+    }
+  }
+
+  // details.less
+  #results.image-detail-open article.result-images[data-vim-selected] .detail {
+    a.result-detail-close,
+    a.result-detail-next,
+    a.result-detail-previous {
+      filter: none;
+    }
+  }
+
+  // search.less
+  #q {
+    border: 1px solid black;
+    .ltr-border-right(none);
+  }
+
+  #clear_search {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+
+  #send_search {
+    border: 1px solid black;
+    .ltr-border-left(none);
+  }
+
+  .category {
+    label {
+      height: 21px;
+      font-size: 1rem;
+      border: inherit;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+
+      svg {
+        display: none;
+      }
+    }
+
+    input[type="checkbox"]:checked + label {
+      filter: invert(100%);
+      background-color: white;
+      color: black;
+      border: inherit;
+    }
+  }
+
+  // autocomplete.less
+  .autocomplete.open {
+    border: 2px solid black;
+    width: calc(44rem - 4px);
+
+    > ul > li {
+      &.active,
+      &:active,
+      &:focus,
+      &:hover {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  // style.less
+  article[data-vim-selected] {
+    outline: 0.2rem solid var(--color-result-vim-arrow);
+    outline-offset: 0.25rem;
+    border-radius: 10px;
+  }
+
+  article[data-vim-selected].category-videos,
+  article[data-vim-selected].category-news,
+  article[data-vim-selected].category-map,
+  article[data-vim-selected].category-music,
+  article[data-vim-selected].category-files,
+  article[data-vim-selected].category-social {
+    border: 1px dotted var(--color-result-vim-arrow);
+    box-shadow: none;
+  }
+
+  // preferences.less
+  #main_preferences .value input[type="text"] {
+    border: 1px solid black;
+  }
+}
