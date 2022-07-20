@@ -15,6 +15,7 @@ from searx.engines import engines
 from searx.network import get_time_for_thread, get_network
 from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
+from searx.shared import storage, run_locked
 from searx.utils import get_engine_from_settings
 
 logger = logger.getChild('searx.search.processor')
@@ -135,7 +136,30 @@ class EngineProcessor(ABC):
                 self.engine_name, self.suspended_status.suspend_reason, suspended=True
             )
             return True
+        if self.exceeds_rate_limit():
+            result_container.add_unresponsive_engine(self.engine_name, "Exceed rate limit", suspended=True)
+            return True
         return False
+
+    def exceeds_rate_limit(self):
+        result = False
+
+        # add counter to all of the engine's rate limiters
+        for rate_limit in self.engine.rate_limit:
+            max_requests = rate_limit['max_requests']
+            interval = rate_limit.get('interval', 1)
+
+            if not max_requests:
+                continue
+
+            name = f'{self.engine_name}_{max_requests}r/{interval}s'
+            if run_locked(storage.incr_counter, name, max_requests, interval) >= max_requests:
+                logger.debug(
+                    f"{self.engine_name} exceeded rate limit of {max_requests} requests per {interval} seconds"
+                )
+                result = True
+
+        return result
 
     def get_params(self, search_query, engine_category):
         # if paging is not supported, skip

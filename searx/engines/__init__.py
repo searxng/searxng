@@ -44,6 +44,7 @@ ENGINE_DEFAULT_ARGS = {
     "enable_http": False,
     "using_tor_proxy": False,
     "display_error_messages": True,
+    "rate_limit": [{"max_requests": None, "interval": 1}],
     "tokens": [],
     "about": {},
 }
