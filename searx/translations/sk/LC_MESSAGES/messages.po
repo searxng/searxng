@@ -7,19 +7,20 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-15 07:19+0000\n"
+"PO-Revision-Date: 2022-07-21 21:02+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
+"\n"
 "Language: sk\n"
-"Language-Team: Slovak "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
-"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -180,7 +181,7 @@ msgstr "CAPTCHA"
 
 #: searx/webapp.py:186
 msgid "too many requests"
-msgstr "priveľa dotazov"
+msgstr "priveľa žiadostí"
 
 #: searx/webapp.py:187
 msgid "access denied"
@@ -192,7 +193,7 @@ msgstr "API chyba servera"
 
 #: searx/webapp.py:363
 msgid "No item found"
-msgstr "Neboli nájdené záznamy"
+msgstr "Nič sa nenašlo"
 
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
@@ -201,15 +202,15 @@ msgstr "Zdroj"
 
 #: searx/webapp.py:367
 msgid "Error loading the next page"
-msgstr "Chyba pri načítaní ďalšej strany"
+msgstr "Chyba pri načítaní ďalšej stránky"
 
 #: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
-msgstr "Neplatné nastavenia, upravte svoje hodnoty, prosím"
+msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
 #: searx/webapp.py:532
 msgid "Invalid settings"
-msgstr "Chybná konfigurácia"
+msgstr "Nesprávne nastavenia"
 
 #: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
@@ -217,11 +218,11 @@ msgstr "chyba vyhľadávania"
 
 #: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
-msgstr "{minutes} min. pred"
+msgstr "pred {minutes} min."
 
 #: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "{hours} hod., {minutes} min. pred"
+msgstr "pred {hours} hod., {minutes} min."
 
 #: searx/webapp.py:859
 msgid "Suspended"
@@ -233,7 +234,7 @@ msgstr "Generátor nahodných hodnôt"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Vytvoriť iné náhodné hodnoty"
+msgstr "Vytvoriť rôzné náhodné hodnoty"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -273,7 +274,7 @@ msgstr "hash hodnota"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Zámeny názvov serverov"
+msgstr "Nahradenie názvu servera"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -1351,4 +1352,3 @@ msgstr "skryť video"
 
 #~ msgid "preferences"
 #~ msgstr "nastavenia"
-
