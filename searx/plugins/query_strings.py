@@ -13,9 +13,9 @@ def on_result(request, search, result):
     siteitems = [x.lower() for x in qs if x.startswith('site:')]
     msiteitems = [x.lower() for x in qs if x.startswith('-site:')]
     url, title, content = result["url"].lower(), result["title"].lower(), (result.get("content").lower() if result.get("content") else '')
-    if all(x not in (title or content) for x in spitems):
+    if all((x not in title or x not in content) for x in spitems):
         return False
-    if all(x in (title or content) for x in mitems):
+    if all((x in title or x in content) for x in mitems):
         return False
     if all(x not in url for x in siteitems):
         return False
