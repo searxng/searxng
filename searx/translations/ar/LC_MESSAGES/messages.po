@@ -7,22 +7,22 @@
 # ButterflyOfFire, 2018
 # d506c013dc1b502e7a53f91ebcbf8f29_985b4b3, 2017-2018
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# ken kailer <kenkailer@yahoo.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-13 15:40+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-19 05:45+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Arabic <https://weblate.bubu1.eu/projects/searxng/searxng/ar/>"
-"\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -43,7 +43,7 @@ msgstr "ملفات"
 #. CATEGORY_NAMES['GENERAL']
 #: searx/searxng.msg
 msgid "general"
-msgstr "الرئيسية"
+msgstr "عامة"
 
 #. CATEGORY_NAMES['MUSIC']
 #: searx/searxng.msg
@@ -53,7 +53,7 @@ msgstr "موسيقى"
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
 msgid "social media"
-msgstr "الشبكات الإجتماعية"
+msgstr "الشبكات التواصل الإجتماعية"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -68,7 +68,7 @@ msgstr "فيديوهات"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "علوم و تكنولوجيا"
+msgstr "علوم التكنولوجيا"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -78,7 +78,7 @@ msgstr "أخبار"
 #. CATEGORY_NAMES['MAP']
 #: searx/searxng.msg
 msgid "map"
-msgstr "خرائط"
+msgstr "خريطة"
 
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
@@ -244,7 +244,7 @@ msgstr "الدالات الإحصائية"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr ""
+msgstr "حوسبة معطيات ال{العملية}"
 
 #: searx/engines/openstreetmap.py:160
 msgid "Get directions"
@@ -268,11 +268,11 @@ msgstr "القناة"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "يحول السلسلة إلى ملخص التجزئة"
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "ملخص التجزئة"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -284,13 +284,15 @@ msgstr "أعد كتابة أسماء مضيفي النتائج أو أزل ال�
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "فتح الوصول معرف الكائن الرقمي إعادة كتابة"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"تجنب جدران الدفع عن طريق إعادة التوجيه إلى إصدارات الوصول المفتوح من "
+"المنشورات عند توفرها"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -301,6 +303,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
+"اقامت بحث فوري اذا تم اختيار مجموعة, توقيف تعدد الخيارات (java script "
+"ضروريه)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -311,6 +315,32 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان "
+"الاستعلام يحتوي على\"user agent\""
+
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -319,6 +349,8 @@ msgstr "مزيل روابط التعقّب"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
+"إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
+"محدد موقع الموارد الموحد الذي تم إرجاعه"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
@@ -329,6 +361,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
+"تصفح نتائج البحث باستخدام مفاتيح الاختصار التي تشبه Vim (مطلوب "
+"JavaScript). اضغط على مفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج "
+"للحصول على المساعدة."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -345,11 +380,11 @@ msgstr "صفحة البحث"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "حَول"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
-msgstr ""
+msgstr "تبرُّع"
 
 #: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
@@ -366,11 +401,11 @@ msgstr "محرك بحث يحمي الخصوصية و قابل للتهكير"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
-msgstr "الشفرة المصدرية"
+msgstr "الكود المصدري"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
-msgstr ""
+msgstr "متتبع القضايا"
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -383,7 +418,7 @@ msgstr "مثيلات الخوادم العمومية"
 
 #: searx/templates/simple/base.html:72
 msgid "Privacy policy"
-msgstr ""
+msgstr "سياسة الخصوصية"
 
 #: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
@@ -391,7 +426,7 @@ msgstr "الإتصال بالمشرف على مثيل الخادم"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
-msgstr ""
+msgstr "انقر على المكبرة للقيام بالبحث"
 
 #: searx/templates/simple/macros.html:36
 msgid "Length"
@@ -412,53 +447,53 @@ msgstr "النفاذ عبر البروكسي"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "ابدأ بتقديم قضية جديدة على GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "الرجاء التحقق من الأخطاء الموجودة حول هذا المحرك على GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "أؤكد عدم وجود أخطاء حول المشكلة التي أواجهها"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "إذا كان هذا مثيلًا عامًا ، فيرجى تحديد عنوان URL في تقرير الخطأ"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "قم بتقديم مشكلة جديدة على GitHub بالمعلومات الواردة أعلاه"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "دون HTTPS"
 
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "عرض سجلات الأخطاء وتقديم تقرير خطأ"
 
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
-msgstr ""
+msgstr "وسطي"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
-msgstr ""
+msgstr "صفحة 80"
 
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
-msgstr ""
+msgstr "صفحة 95"
 
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "فشل اختبار المدقق: "
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
@@ -524,21 +559,23 @@ msgstr "فلترة المحتوى"
 
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
-msgstr ""
+msgstr "فتح الوصول إلى محلل DOI"
 
 #: searx/templates/simple/preferences.html:167
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
+"إعادة التوجيه إلى إصدارات مفتوحة الوصول من المنشورات حيثما أمكن ذلك (يلزم"
+" وجود مكون إضافي)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr ""
+msgstr "الرمز المميز للمحرك"
 
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "رمز الوصول إلى المحرك الخاص"
 
 #: searx/templates/simple/preferences.html:179
 msgid "User interface"
@@ -562,15 +599,15 @@ msgstr "تغيير مظهر سيركس"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
-msgstr ""
+msgstr "نمط"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "اختر تلقائي لاحترام إعدادات متصفحك"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "محاذاة المركز"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -586,7 +623,7 @@ msgstr "مُعطَّل"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "اعرض النتائج في منتصف الصفحة (تخطيط Oscar)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -610,7 +647,7 @@ msgstr "الخصوصية"
 
 #: searx/templates/simple/preferences.html:257
 msgid "HTTP Method"
-msgstr ""
+msgstr "أسلوب HTTP"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
@@ -618,6 +655,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"تغيير طريقة إرسال النماذج ، <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\"> تعرف على المزيد حول طرق الطلب </a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -639,13 +679,15 @@ msgstr "تمرير نتائج البحث عن الصور عبر بروكسي Sea
 
 #: searx/templates/simple/preferences.html:281
 msgid "Query in the page's title"
-msgstr ""
+msgstr "طلب بحث في عنوان الصفحة"
 
 #: searx/templates/simple/preferences.html:288
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"عند التمكين ، يحتوي عنوان صفحة النتائج على كلمات البحث الرئيسية الخاصة "
+"بك. يمكن لمتصفحك تسجيل هذا العنوان"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -918,11 +960,11 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:124
 msgid "Code"
-msgstr ""
+msgstr "كود"
 
 #: searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "مدقّق"
 
 #: searx/templates/simple/stats.html:134
 msgid "Failed test"
@@ -997,7 +1039,7 @@ msgstr "هذا الموقع لا يتوفر على أي وصف."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
-msgstr ""
+msgstr "صيغة"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
@@ -1312,3 +1354,4 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "preferences"
 #~ msgstr "التفضيلات"
+

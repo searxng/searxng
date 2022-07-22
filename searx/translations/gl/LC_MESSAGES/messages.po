@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-19 05:46+0000\n"
 "Last-Translator: Xosé M. <correo@xmgz.eu>\n"
 "Language: gl\n"
 "Language-Team: Galician "
@@ -316,6 +316,30 @@ msgstr ""
 "Mostra o teu IP se a consulta é \"ip\" e o teu Use Agent se a consulta "
 "contén \"user agent\"."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
 msgstr "Eliminador de rastrexadores na URL"
@@ -419,19 +443,19 @@ msgstr "a través de proxy"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Crea un novo informe en GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Comproba que non exista xa un informe sobre este motor en GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "Confirmo que non existe un informe acerca deste problema que atopei"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Se esta é unha instancia pública, indica o URL no informe do problema"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -762,7 +786,7 @@ msgstr "Con esta lista podes dar conta da transparencia de SearXNG."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
-msgstr "Nome do testemuño"
+msgstr "Nome da cookie"
 
 #: searx/templates/simple/preferences.html:402
 msgid "Value"

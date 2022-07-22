@@ -16,19 +16,18 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
 "PO-Revision-Date: 2022-07-13 15:40+0000\n"
 "Last-Translator: tents <remendne@pentrens.jp>\n"
-"Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"ja/>\n"
 "Language: ja\n"
+"Language-Team: Japanese "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ja/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -318,6 +317,30 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr "クエリが \"ip\" の場合にあなたのIPを、クエリに \"user agent\" が含まれる場合にあなたのユーザーエージェントを表示します。"
+
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1319,3 +1342,4 @@ msgstr "動画を隠す"
 
 #~ msgid "preferences"
 #~ msgstr "設定"
+

@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-15 07:19+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-21 21:02+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: German <https://weblate.bubu1.eu/projects/searxng/searxng/de/>"
 "\n"
@@ -331,6 +331,35 @@ msgstr ""
 "Zeigt deine IP-Adresse an, wenn die Suchabfrage \"ip\" lautet, und deinen"
 " User-Agent, wenn deine Suchabfrage \"user agent\" beinhaltet."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr "Tor Prüf-Plugin"
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+"Dieses Plugin prüft, ob es sich bei der Adresse der Anfrage um einen TOR-"
+"Exit-Knoten handelt und informiert den Benutzer, wenn dies der Fall ist. "
+"Vergleichbar mit check.torproject.org aber innerhalb von SearXNG."
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+"Die Liste der TOR Exit-Nodes kann nicht geladen werden (https://check."
+"torproject.org/exit-addresses)."
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr "Sie verwenden TOR. Die IP Adresse ist: {ip_address}."
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr "Sie verwenden kein TOR. Die IP Adresse ist: {ip_address}."
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
 msgstr "Tracker-URL-Entferner"
@@ -449,8 +478,8 @@ msgstr ""
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Wenn es sich um eine öffentliche Instanz handelt, gib bitte die URL in dem "
-"Fehlerbericht an"
+"Wenn es sich um eine öffentliche Instanz handelt, gib bitte die URL in "
+"dem Fehlerbericht an"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"

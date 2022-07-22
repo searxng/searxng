@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-15 07:19+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-21 21:02+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
 "\n"
@@ -181,7 +181,7 @@ msgstr "CAPTCHA"
 
 #: searx/webapp.py:186
 msgid "too many requests"
-msgstr "priveľa dotazov"
+msgstr "priveľa žiadostí"
 
 #: searx/webapp.py:187
 msgid "access denied"
@@ -193,7 +193,7 @@ msgstr "API chyba servera"
 
 #: searx/webapp.py:363
 msgid "No item found"
-msgstr "Neboli nájdené záznamy"
+msgstr "Nič sa nenašlo"
 
 #: searx/engines/qwant.py:212
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
@@ -202,15 +202,15 @@ msgstr "Zdroj"
 
 #: searx/webapp.py:367
 msgid "Error loading the next page"
-msgstr "Chyba pri načítaní ďalšej strany"
+msgstr "Chyba pri načítaní ďalšej stránky"
 
 #: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
-msgstr "Neplatné nastavenia, upravte svoje hodnoty, prosím"
+msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
 #: searx/webapp.py:532
 msgid "Invalid settings"
-msgstr "Chybná konfigurácia"
+msgstr "Nesprávne nastavenia"
 
 #: searx/webapp.py:609 searx/webapp.py:685
 msgid "search error"
@@ -218,11 +218,11 @@ msgstr "chyba vyhľadávania"
 
 #: searx/webapp.py:731
 msgid "{minutes} minute(s) ago"
-msgstr "{minutes} min. pred"
+msgstr "pred {minutes} min."
 
 #: searx/webapp.py:733
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "{hours} hod., {minutes} min. pred"
+msgstr "pred {hours} hod., {minutes} min."
 
 #: searx/webapp.py:859
 msgid "Suspended"
@@ -234,7 +234,7 @@ msgstr "Generátor nahodných hodnôt"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Vytvoriť iné náhodné hodnoty"
+msgstr "Vytvoriť rôzné náhodné hodnoty"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -274,7 +274,7 @@ msgstr "hash hodnota"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Zámeny názvov serverov"
+msgstr "Nahradenie názvu servera"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
@@ -315,6 +315,30 @@ msgid ""
 msgstr ""
 "Zobrazí vašu IP ak je dotaz \"ip\" a user agenta ak dotaz obsahuje \"user"
 " agent\"."
+
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
