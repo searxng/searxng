@@ -12,13 +12,14 @@
 # Noémi Ványi <sitbackandwait@gmail.com>, 2017
 # rike, 2014
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Cedrik Boudreau <cedrik@arweave.org>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-19 05:45+0000\n"
 "PO-Revision-Date: 2022-07-23 14:09+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Last-Translator: Cedrik Boudreau <cedrik@arweave.org>\n"
 "Language-Team: French <https://weblate.bubu1.eu/projects/searxng/searxng/fr/>"
 "\n"
 "Language: fr\n"
@@ -324,23 +325,28 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Plugin de vérification de Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Ce plugin vérifie si l'adresse de la requête est un nœud de sortie TOR, et "
+"informe l'utilisateur si c'est le cas, comme check.torproject.org mais "
+"depuis searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"La liste des nœuds de sortie TOR (https://check.torproject.org/exit-"
+"addresses) est inaccessible."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Vous utilisez TOR. Votre adresse IP semble être : {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
