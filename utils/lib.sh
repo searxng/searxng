@@ -195,7 +195,7 @@ wait_key(){
     [[ -n $_t ]] && _t="-t $_t"
     printf "$msg"
     # shellcheck disable=SC2086
-    read -r -s -n1 $_t
+    read -r -s -n1 $_t || true
     echo
     clean_stdin
 }
@@ -1027,7 +1027,7 @@ nginx_include_apps_enabled() {
     local include_directive="include ${NGINX_APPS_ENABLED}/*.conf;"
     local include_directive_re="^\s*include ${NGINX_APPS_ENABLED}/\*\.conf;"
 
-    info_msg "checking existence: '${include_directive}' in file  ${server_conf}"
+    info_msg "checking existence: '${include_directive}' in file ${server_conf}"
     if grep "${include_directive_re}" "${server_conf}"; then
         info_msg "OK, already exists."
         return
@@ -1117,7 +1117,7 @@ apache_distro_setup() {
             APACHE_SITES_AVAILABLE="/etc/httpd/sites-available"
             APACHE_SITES_ENABLED="/etc/httpd/sites-enabled"
             APACHE_MODULES="modules"
-            APACHE_PACKAGES="httpd"
+            APACHE_PACKAGES="httpd mod_ssl"
             ;;
         *)
             err_msg "$DIST_ID-$DIST_VERS: apache not yet implemented"
@@ -1249,8 +1249,6 @@ apache_dissable_site() {
 # -----
 
 uWSGI_SETUP="${uWSGI_SETUP:=/etc/uwsgi}"
-uWSGI_USER=
-uWSGI_GROUP=
 
 # How distros manage uWSGI apps is very different.  From uWSGI POV read:
 # - https://uwsgi-docs.readthedocs.io/en/latest/Management.html
@@ -1276,13 +1274,14 @@ uWSGI_distro_setup() {
             ;;
         fedora-*|centos-7)
             # systemd --> /usr/lib/systemd/system/uwsgi.service
-            # The unit file starts uWSGI in emperor mode (/etc/uwsgi.ini), see
-            # - https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html
+            # Fedora runs uWSGI in emperor-tyrant mode: in Tyrant mode the
+            # Emperor will run the vassal using the UID/GID of the vassal
+            # configuration file [1] (user and group of the app .ini file).
+            # There are some quirks abbout additional POSIX groups in uWSGI
+            # 2.0.x, read at least: https://github.com/unbit/uwsgi/issues/2099
             uWSGI_APPS_AVAILABLE="${uWSGI_SETUP}/apps-available"
             uWSGI_APPS_ENABLED="${uWSGI_SETUP}.d"
             uWSGI_PACKAGES="uwsgi"
-            uWSGI_USER="uwsgi"
-            uWSGI_GROUP="uwsgi"
             ;;
         *)
             err_msg "$DIST_ID-$DIST_VERS: uWSGI not yet implemented"
@@ -1344,30 +1343,6 @@ uWSGI_restart() {
     esac
 }
 
-uWSGI_prepare_app() {
-
-    # usage:  uWSGI_prepare_app <myapp.ini>
-
-    [[ -z $1 ]] && die_caller 42 "missing argument <myapp.ini>"
-
-    local APP="${1%.*}"
-
-    case $DIST_ID-$DIST_VERS in
-        fedora-*|centos-7)
-            # in emperor mode, the uwsgi user is the owner of the sockets
-            info_msg "prepare (uwsgi:uwsgi)  /run/uwsgi/app/${APP}"
-            mkdir -p "/run/uwsgi/app/${APP}"
-            chown -R "uwsgi:uwsgi"  "/run/uwsgi/app/${APP}"
-            ;;
-        *)
-            info_msg "prepare (${SERVICE_USER}:${SERVICE_GROUP})  /run/uwsgi/app/${APP}"
-            mkdir -p "/run/uwsgi/app/${APP}"
-            chown -R "${SERVICE_USER}:${SERVICE_GROUP}"  "/run/uwsgi/app/${APP}"
-            ;;
-    esac
-}
-
-
 uWSGI_app_available() {
     # usage:  uWSGI_app_available <myapp.ini>
     local CONF="$1"
@@ -1378,7 +1353,7 @@ uWSGI_app_available() {
 
 uWSGI_install_app() {
 
-    # usage:  uWSGI_install_app [<template option> ...] <myapp.ini>
+    # usage:  uWSGI_install_app [<template option> ...] <myapp.ini> [{owner} [{group} [{chmod}]]]
     #
     # <template option>:  see install_template
 
@@ -1390,11 +1365,10 @@ uWSGI_install_app() {
             *)  pos_args+=("$i");;
         esac
     done
-    uWSGI_prepare_app "${pos_args[1]}"
     mkdir -p "${uWSGI_APPS_AVAILABLE}"
     install_template "${template_opts[@]}" \
                      "${uWSGI_APPS_AVAILABLE}/${pos_args[1]}" \
-                     root root 644
+                     "${pos_args[2]:-root}" "${pos_args[3]:-root}" "${pos_args[4]:-644}"
     uWSGI_enable_app "${pos_args[1]}"
     uWSGI_restart "${pos_args[1]}"
     info_msg "uWSGI app: ${pos_args[1]} is installed"
@@ -1468,7 +1442,6 @@ uWSGI_enable_app() {
             mkdir -p "${uWSGI_APPS_ENABLED}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ln -s "${uWSGI_APPS_AVAILABLE}/${CONF}" "${uWSGI_APPS_ENABLED}/${CONF}"
-            chown "${uWSGI_USER}:${uWSGI_GROUP}" "${uWSGI_APPS_ENABLED}/${CONF}"
             info_msg "enabled uWSGI app: ${CONF}"
             ;;
         *)

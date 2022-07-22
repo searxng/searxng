@@ -40,7 +40,7 @@ We do no longer need to build up the virtualenv manually.  Jump into your git
 working tree and release a ``make install`` to get a virtualenv with a
 *developer install* of SearXNG (:origin:`setup.py`). ::
 
-   $ cd ~/searx-clone
+   $ cd ~/searxng-clone
    $ make install
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
@@ -288,27 +288,3 @@ To filter out HTTP redirects (3xx_)::
     https://news.google.com:443 "GET /search?q=computer&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0
     https://news.google.com:443 "GET /search?q=computer&hl=en-US&lr=lang_en&ie=utf8&oe=utf8&ceid=US:en&gl=US HTTP/1.1" 200 None
     --
-
-
-``make pybuild``
-================
-
-.. _PyPi: https://pypi.org/
-.. _twine: https://twine.readthedocs.io/en/latest/
-
-Build Python packages in ``./dist/py``::
-
-  $ make pybuild
-  ...
-  BUILD     pybuild
-  running sdist
-  running egg_info
-  ...
-  running bdist_wheel
-
-  $ ls  ./dist
-  searx-0.18.0-py3-none-any.whl  searx-0.18.0.tar.gz
-
-To upload packages to PyPi_, there is also a ``pypi.upload`` target (to test use
-``pypi.upload.test``).  Since you are not the owner of :pypi:`searx` you will
-never need to upload.

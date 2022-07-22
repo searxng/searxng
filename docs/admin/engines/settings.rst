@@ -207,9 +207,13 @@ Global Settings
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
+.. _limiter:
+
 ``limiter`` :
   Rate limit the number of request on the instance, block some bots.  The
   :ref:`limiter plugin` requires a :ref:`settings redis` database.
+
+.. _image_proxy:
 
 ``image_proxy`` :
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
@@ -225,9 +229,13 @@ Global Settings
 ``ui:``
 -------
 
+.. _cache busting:
+   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#caching_static_assets_with_cache_busting
+
 .. code:: yaml
 
    ui:
+     static_use_hash: false
      default_locale: ""
      query_in_title: false
      infinite_scroll: false
@@ -235,6 +243,11 @@ Global Settings
      default_theme: simple
      theme_args:
        simple_style: auto
+
+.. _static_use_hash:
+
+``static_use_hash`` :
+  Enables `cache busting`_ of static files.
 
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the

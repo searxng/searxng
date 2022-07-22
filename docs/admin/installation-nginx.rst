@@ -1,8 +1,8 @@
 .. _installation nginx:
 
-==================
-Install with nginx
-==================
+=====
+NGINX
+=====
 
 .. _nginx:
    https://docs.nginx.com/nginx/admin-guide/
@@ -19,6 +19,19 @@ Install with nginx
 .. _SCRIPT_NAME:
    https://werkzeug.palletsprojects.com/en/1.0.x/wsgi/#werkzeug.wsgi.get_script_name
 
+This section explains how to set up a SearXNG instance using the HTTP server nginx_.
+If you have used the :ref:`installation scripts` and do not have any special preferences
+you can install the :ref:`SearXNG site <nginx searxng site>` using
+:ref:`searxng.sh <searxng.sh overview>`:
+
+.. code:: bash
+
+   $ sudo -H ./utils/searxng.sh install nginx
+
+If you have special interests or problems with setting up nginx, the following
+section might give you some guidance.
+
+
 .. sidebar:: further reading
 
    - nginx_
@@ -27,39 +40,23 @@ Install with nginx
    - `Getting Started wiki`_
    - `uWSGI support from nginx`_
 
+
 .. contents:: Contents
    :depth: 2
    :local:
    :backlinks: entry
 
-----
-
-**Install** :ref:`nginx searxng site` using :ref:`filtron.sh <filtron.sh overview>`
-
-.. code:: bash
-
-   $ sudo -H ./utils/filtron.sh nginx install
-
-**Install** :ref:`nginx searxng site` using :ref:`morty.sh <morty.sh overview>`
-
-.. code:: bash
-
-   $ sudo -H ./utils/morty.sh nginx install
-
-----
-
 
 The nginx HTTP server
 =====================
 
-If nginx_ is not installed (uwsgi will not work with the package nginx-light),
-install it now.
+If nginx_ is not installed, install it now.
 
 .. tabs::
 
    .. group-tab:: Ubuntu / debian
 
-      .. code:: sh
+      .. code:: bash
 
          sudo -H apt-get install nginx
 
@@ -81,18 +78,18 @@ install it now.
 
 Now at http://localhost you should see a *Welcome to nginx!* page, on Fedora you
 see a *Fedora Webserver - Test Page*.  The test page comes from the default
-`nginx server configuration`_.  How this default intro site is configured,
+`nginx server configuration`_.  How this default site is configured,
 depends on the linux distribution:
 
 .. tabs::
 
    .. group-tab:: Ubuntu / debian
 
-      .. code:: sh
+      .. code:: bash
 
          less /etc/nginx/nginx.conf
 
-      there is a line including site configurations from:
+      There is one line that includes site configurations from:
 
       .. code:: nginx
 
@@ -104,7 +101,7 @@ depends on the linux distribution:
 
          less /etc/nginx/nginx.conf
 
-      in there is a configuration section named ``server``:
+      There is a configuration section named ``server``:
 
       .. code-block:: nginx
 
@@ -120,249 +117,121 @@ depends on the linux distribution:
 
          less /etc/nginx/nginx.conf
 
-      there is a line including site configurations from:
+      There is one line that includes site configurations from:
 
       .. code:: nginx
 
           include /etc/nginx/conf.d/*.conf;
 
+
 .. _nginx searxng site:
 
-A nginx SearXNG site
+NGINX's SearXNG site
 ====================
 
-.. sidebar:: public to the internet?
+Now you have to create a configuration file (``searxng.conf``) for the SearXNG
+site.  If nginx_ is new to you, the `nginx beginners guide`_ is a good starting
+point and the `Getting Started wiki`_ is always a good resource *to keep in the
+pocket*.
 
-   If your SearXNG instance is public, stop here and first install :ref:`filtron
-   reverse proxy <filtron.sh>` and :ref:`result proxy morty <morty.sh>`, see
-   :ref:`installation scripts`.  If already done, follow setup: *SearXNG via
-   filtron plus morty*.
+Depending on what your SearXNG installation is listening on, you need a http or socket
+communication to upstream.
 
-Now you have to create a configuration for the SearXNG site.  If nginx_ is new to
-you, the `nginx beginners guide`_ is a good starting point and the `Getting
-Started wiki`_ is always a good resource *to keep in the pocket*.
+.. tabs::
+
+   .. group-tab:: socket
+
+      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+         :start-after: START nginx socket
+         :end-before: END nginx socket
+
+   .. group-tab:: http
+
+      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+         :start-after: START nginx http
+         :end-before: END nginx http
+
+The :ref:`installation scripts` installs the :ref:`reference setup
+<use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket by default.
 
 .. tabs::
 
    .. group-tab:: Ubuntu / debian
 
-      Create configuration at ``/etc/nginx/sites-available/searxng`` and place a
-      symlink to sites-enabled:
+      Create configuration at ``/etc/nginx/sites-available/`` and place a
+      symlink to ``sites-enabled``:
 
-      .. code:: sh
+      .. code:: bash
 
-         sudo -H ln -s /etc/nginx/sites-available/searxng /etc/nginx/sites-enabled/searxng
+         sudo -H ln -s /etc/nginx/sites-available/searxng.conf \
+                       /etc/nginx/sites-enabled/searxng.conf
 
    .. group-tab:: Arch Linux
 
-      In the ``/etc/nginx/nginx.conf`` file, replace the configuration section
-      named ``server``.
-
-   .. group-tab::  Fedora / RHEL
-
-      Create configuration at ``/etc/nginx/conf.d/searxng`` and place a
-      symlink to sites-enabled:
-
-.. _nginx searxng via filtron plus morty:
-
-.. tabs::
-
-   .. group-tab:: SearXNG via filtron plus morty
-
-      Use this setup, if your instance is public to the internet, compare
-      figure: :ref:`architecture <arch public>` and :ref:`installation scripts`.
-
-      1. Configure a reverse proxy for :ref:`filtron <filtron.sh>`, listening on
-         *localhost 4004* (:ref:`filtron route request`):
-
-      .. code:: nginx
-
-	 # https://example.org/searx
-
-	 location /searx {
-	     proxy_pass         http://127.0.0.1:4004/;
-
-	     proxy_set_header   Host             $host;
-	     proxy_set_header   Connection       $http_connection;
-	     proxy_set_header   X-Real-IP        $remote_addr;
-	     proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-	     proxy_set_header   X-Scheme         $scheme;
-	     proxy_set_header   X-Script-Name    /searx;
-	 }
-
-	 location /searx/static/ {
-	     alias /usr/local/searx/searx-src/searx/static/;
-	 }
-
-
-      2. Configure reverse proxy for :ref:`morty <searxng morty>`, listening on
-         *localhost 3000*:
-
-      .. code:: nginx
-
-	 # https://example.org/morty
-
-	 location /morty {
-             proxy_pass         http://127.0.0.1:3000/;
-
-             proxy_set_header   Host             $host;
-             proxy_set_header   Connection       $http_connection;
-             proxy_set_header   X-Real-IP        $remote_addr;
-             proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-             proxy_set_header   X-Scheme         $scheme;
-         }
-
-      For a fully result proxification add :ref:`morty's <searxng morty>` **public
-      URL** to your :origin:`searx/settings.yml`:
-
-      .. code:: yaml
-
-         result_proxy:
-             # replace example.org with your server's public name
-             url : https://example.org/morty
-             key : !!binary "insert_your_morty_proxy_key_here"
-
-         server:
-             image_proxy : True
-
-
-   .. group-tab:: proxy or uWSGI
-
-      Be warned, with this setup, your instance isn't :ref:`protected <searxng
-      filtron>`.  Nevertheless it is good enough for intranet usage and it is a
-      excellent example of; *how different services can be set up*.  The next
-      example shows a reverse proxy configuration wrapping the :ref:`searx-uWSGI
-      application <uwsgi configuration>`, listening on ``http =
-      127.0.0.1:8888``.
-
-      .. code:: nginx
-
-	 # https://hostname.local/
-
-	 location / {
-	     proxy_pass http://127.0.0.1:8888;
-
-             proxy_set_header Host $host;
-             proxy_set_header Connection       $http_connection;
-             proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
-             proxy_set_header X-Scheme         $scheme;
-             proxy_buffering                   off;
-         }
-
-      Alternatively you can use the `uWSGI support from nginx`_ via unix
-      sockets.  For socket communication, you have to activate ``socket =
-      /run/uwsgi/app/searx/socket`` and comment out the ``http =
-      127.0.0.1:8888`` configuration in your :ref:`uwsgi ini file <uwsgi
-      configuration>`.
-
-      The example shows a nginx virtual ``server`` configuration, listening on
-      port 80 (IPv4 and IPv6 http://[::]:80).  The uWSGI app is configured at
-      location ``/`` by importing the `uwsgi_params`_ and passing requests to
-      the uWSGI socket (``uwsgi_pass``).  The ``server``\'s root points to the
-      :ref:`searx-src clone <searx-src>` and wraps directly the
-      :origin:`searx/static/` content at ``location /static``.
+      In the ``/etc/nginx/nginx.conf`` file, in the ``server`` section add a
+      `include <https://nginx.org/en/docs/ngx_core_module.html#include>`_
+      directive:
 
       .. code:: nginx
 
          server {
-             # replace hostname.local with your server's name
-             server_name hostname.local;
-
-             listen 80;
-             listen [::]:80;
-
-             location / {
-                 include uwsgi_params;
-                 uwsgi_pass unix:/run/uwsgi/app/searx/socket;
-             }
-
-             root /usr/local/searx/searx-src/searx;
-             location /static { }
+             # ...
+             include /etc/nginx/default.d/*.conf;
+             # ...
          }
 
-      If not already exists, create a folder for the unix sockets, which can be
-      used by the SearXNG account:
+      Create two folders, one for the *available sites* and one for the *enabled sites*:
 
       .. code:: bash
 
-         mkdir -p /run/uwsgi/app/searx/
-         sudo -H chown -R searx:searx /run/uwsgi/app/searx/
+         mkdir -p /etc/nginx/default.d
+         mkdir -p /etc/nginx/default.apps-available
 
-   .. group-tab:: \.\. at subdir URL
+      Create configuration at ``/etc/nginx/default.apps-available`` and place a
+      symlink to ``default.d``:
 
-      Be warned, with these setups, your instance isn't :ref:`protected <searxng
-      filtron>`.  The examples are just here to demonstrate how to export the
-      SearXNG application from a subdirectory URL ``https://example.org/searx/``.
+      .. code:: bash
 
-      .. code:: nginx
+         sudo -H ln -s /etc/nginx/default.apps-available/searxng.conf \
+                       /etc/nginx/default.d/searxng.conf
 
-	 # https://hostname.local/searx
+   .. group-tab::  Fedora / RHEL
 
-         location /searx {
-             proxy_pass http://127.0.0.1:8888;
+      Create a folder for the *available sites*:
 
-             proxy_set_header Host $host;
-             proxy_set_header Connection       $http_connection;
-             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-             proxy_set_header X-Scheme $scheme;
-             proxy_set_header X-Script-Name /searx;
-             proxy_buffering off;
-         }
+      .. code:: bash
 
-         location /searx/static/ {
-             alias /usr/local/searx/searx-src/searx/static/;
-         }
+         mkdir -p /etc/nginx/default.apps-available
 
-      The ``X-Script-Name /searx`` is needed by the SearXNG implementation to
-      calculate relative URLs correct.  The next example shows a uWSGI
-      configuration.  Since there are no HTTP headers in a (u)WSGI protocol, the
-      value is shipped via the SCRIPT_NAME_ in the WSGI environment.
+      Create configuration at ``/etc/nginx/default.apps-available`` and place a
+      symlink to ``conf.d``:
 
-      .. code:: nginx
+      .. code:: bash
 
-	 # https://hostname.local/searx
+         sudo -H ln -s /etc/nginx/default.apps-available/searxng.conf \
+                       /etc/nginx/conf.d/searxng.conf
 
-         location /searx {
-             uwsgi_param SCRIPT_NAME /searx;
-             include uwsgi_params;
-             uwsgi_pass unix:/run/uwsgi/app/searx/socket;
-         }
-
-         location /searx/static/ {
-             alias /usr/local/searx/searx-src/searx/;
-         }
-
-      For SearXNG to work correctly the ``base_url`` must be set in the
-      :origin:`searx/settings.yml`.
-
-      .. code:: yaml
-
-         server:
-             # replace example.org with your server's public name
-             base_url : https://example.org/searx/
-
-
-Restart service:
+Restart services:
 
 .. tabs::
 
    .. group-tab:: Ubuntu / debian
 
-      .. code:: sh
+      .. code:: bash
 
          sudo -H systemctl restart nginx
-         sudo -H service uwsgi restart searx
+         sudo -H service uwsgi restart searxng
 
    .. group-tab:: Arch Linux
 
-      .. code:: sh
+      .. code:: bash
 
          sudo -H systemctl restart nginx
-         sudo -H systemctl restart uwsgi@searx
+         sudo -H systemctl restart uwsgi@searxng
 
-   .. group-tab:: Fedora
+   .. group-tab:: Fedora / RHEL
 
-      .. code:: sh
+      .. code:: bash
 
          sudo -H systemctl restart nginx
          sudo -H touch /etc/uwsgi.d/searxng.ini

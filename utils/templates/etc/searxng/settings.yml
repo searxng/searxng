@@ -1,46 +1,55 @@
-# SearXNG settings, before editing this file read:
-#
-#     https://docs.searxng.org/admin/engines/settings.html
+# SearXNG settings
 
 use_default_settings: true
 
 general:
-  # Debug mode, only for development
   debug: false
-  # change displayed name
-  # instance_name: "SearXNG"
+  instance_name: "SearXNG"
 
 search:
-  # Filter results. 0: None, 1: Moderate, 2: Strict
-  safe_search: 0
-  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google",
-  # "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
-  # by default.
-  autocomplete: ''
-  # Default search language - leave blank to detect from browser information or
-  # use codes from 'languages.py'
-  default_lang: ''
-  # remove format to deny access, use lower case.
-  formats:
-    - html
+  safe_search: 2
+  autocomplete: 'duckduckgo'
 
 server:
-  secret_key: "ultrasecretkey"  # change this!
-  # Proxying image results through SearXNG
-  image_proxy: false
+  secret_key: "ultrasecretkey"
+  limiter: true
+  image_proxy: true
 
-# result_proxy:
-#   url: http://127.0.0.1:3000/
-#   key: !!binary "your_morty_proxy_key"
+redis:
+  url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+
+ui:
+  static_use_hash: true
+
+# preferences:
+#   lock:
+#     - autocomplete
+#     - method
+
+enabled_plugins:
+  - 'Hash plugin'
+  - 'Search on category select'
+  - 'Self Informations'
+  - 'Tracker URL remover'
+  - 'Ahmia blacklist'
+  # - 'Hostname replace'  # see hostname_replace configuration below
+  # - 'Infinite scroll'
+  # - 'Open Access DOI rewrite'
+  # - 'Vim-like hotkeys'
 
 # plugins:
 #   - only_show_green_results
 
-# engines:
+# hostname_replace:
 #
-#   - name: duckduckgo
-#     disabled: false
-#
+#   # twitter --> nitter
+#   '(www\.)?twitter\.com$': 'nitter.net'
+
+engines:
+
+  - name: google
+    use_mobile_ui: true
+
 #   - name: fdroid
 #     disabled: false
 #
@@ -48,6 +57,13 @@ server:
 #     disabled: false
 #
 #   - name: mediathekviewweb
-#     engine: mediathekviewweb
-#     shortcut: mvw
-#     categories: general
+#     categories: TV
+#     disabled: false
+#
+#   - name: invidious
+#     disabled: false
+#     base_url:
+#       - https://invidious.snopyta.org
+#       - https://invidious.tiekoetter.com
+#       - https://invidio.xamh.de
+#       - https://inv.riverside.rocks

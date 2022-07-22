@@ -15,19 +15,19 @@ Buildhosts
    :backlinks: entry
 
 To get best results from build, its recommend to install additional packages
-on build hosts (see :ref:`searx.sh`).::
+on build hosts (see :ref:`searxng.sh`).::
 
-  sudo -H ./utils/searx.sh install buildhost
+  sudo -H ./utils/searxng.sh install buildhost
 
 This will install packages needed by searx:
 
-.. kernel-include:: $DOCS_BUILD/includes/searx.rst
+.. kernel-include:: $DOCS_BUILD/includes/searxng.rst
    :start-after: START distro-packages
    :end-before: END distro-packages
 
 and packages needed to build docuemtation and run tests:
 
-.. kernel-include:: $DOCS_BUILD/includes/searx.rst
+.. kernel-include:: $DOCS_BUILD/includes/searxng.rst
    :start-after: START build-packages
    :end-before: END build-packages
 
