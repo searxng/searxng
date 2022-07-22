@@ -74,7 +74,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         rdns = True
 
     proxy_type, proxy_host, proxy_port, proxy_username, proxy_password = parse_proxy_url(proxy_url)
-    verify = get_sslcontexts(proxy_url, None, True, False, http2) if verify is True else verify
+    verify = get_sslcontexts(proxy_url, None, verify, True, http2) if verify is True else verify
     return AsyncProxyTransportFixed(
         proxy_type=proxy_type,
         proxy_host=proxy_host,
@@ -93,7 +93,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
 
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    verify = get_sslcontexts(None, None, True, False, http2) if verify is True else verify
+    verify = get_sslcontexts(None, None, verify, True, http2) if verify is True else verify
     return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
         verify=verify,
