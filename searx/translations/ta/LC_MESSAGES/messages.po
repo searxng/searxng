@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-17 09:38+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: ta\n"
 "Language-Team: Tamil "
@@ -205,7 +205,7 @@ msgstr "ஆதாரம்"
 
 #: searx/webapp.py:367
 msgid "Error loading the next page"
-msgstr ""
+msgstr "அடுத்த பக்கத்தை திறப்பதில் தவறு நிகழ்ந்துவிட்டது."
 
 #: searx/webapp.py:516 searx/webapp.py:960
 msgid "Invalid settings, please edit your preferences"
@@ -321,6 +321,30 @@ msgstr ""
 "\"ip\" என்று தேடினால் உங்கள் ip முகவரியையும், \"user agent\" என்று "
 "தேடினால் உங்கள் user-agent-ம் காட்டப்படும்."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
 msgstr "உளவுப் பார்க்கும் வலைதள முகவரி நீக்கி"
@@ -359,7 +383,7 @@ msgstr "தேடல் பக்கம்"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "பற்றி"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"

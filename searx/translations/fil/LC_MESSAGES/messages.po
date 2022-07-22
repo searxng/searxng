@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-08 18:28+0000\n"
-"PO-Revision-Date: 2022-07-15 07:19+0000\n"
-"Last-Translator: Hachiki <ninonakano408@gmail.com>\n"
+"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-07-21 21:02+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Filipino <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "fil/>\n"
 "Language: fil\n"
@@ -317,6 +317,30 @@ msgstr ""
 "Ipapakita ang iyong IP kapag ang tanong ay \"ip\" at ang iyong user agent"
 " kapag ang sa tanong ay naglalaman ng \"user agent\"."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr ""
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr ""
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
 msgstr "Alisin ang URL tracker"
@@ -433,8 +457,8 @@ msgstr "Kinukumpirma kong walang umiiral na bug tungkol sa isyung nakatagpo ko"
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Kung ito ay isang pampublikong instance, mangyaring tukuyin ang URL sa ulat "
-"ng bug"
+"Kung ito ay isang pampublikong instance, mangyaring tukuyin ang URL sa "
+"ulat ng bug"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -679,8 +703,9 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"Ang tab na ito ay hindi lumalabas para sa mga resulta ng paghahanap, ngunit "
-"maaari kang maghanap sa mga engine na nakalista dito sa pamamagitan ng bangs."
+"Ang tab na ito ay hindi lumalabas para sa mga resulta ng paghahanap, "
+"ngunit maaari kang maghanap sa mga engine na nakalista dito sa "
+"pamamagitan ng bangs."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -767,7 +792,7 @@ msgstr "Pangalan ng cookie"
 
 #: searx/templates/simple/preferences.html:402
 msgid "Value"
-msgstr ""
+msgstr "Nilalaman"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
