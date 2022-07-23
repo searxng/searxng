@@ -11,20 +11,19 @@
 # Masterix <masterix@duck.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
 "PO-Revision-Date: 2022-07-23 14:09+0000\n"
 "Last-Translator: Masterix <masterix@duck.com>\n"
-"Language-Team: Czech <https://weblate.bubu1.eu/projects/searxng/searxng/cs/>"
-"\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -268,6 +267,23 @@ msgstr "Pro tuto publikaci neexistuje žádný abstrakt."
 msgid "Channel"
 msgstr "Kanál"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Převádí řetězce na různé hash hodnoty."
@@ -329,22 +345,22 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
-"Tento plugin kontroluje, jestli adresa požadavku je výstupní uzel TORu, a "
-"infromuje uživatele pokud je, jako check.torproject.org ale od searxng."
+"Tento plugin kontroluje, jestli adresa požadavku je výstupní uzel TORu, a"
+" infromuje uživatele pokud je, jako check.torproject.org ale od searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
-"Seznam výstupních uzlů TOR (https://check.torproject.org/exit-addresses) je "
-"nedostupný."
+"Seznam výstupních uzlů TOR (https://check.torproject.org/exit-addresses) "
+"je nedostupný."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
 msgstr ""
-"List výstupního uzlu TORu (https://check.torproject.org/exit-addresses) je "
-"nedosažitelný."
+"List výstupního uzlu TORu (https://check.torproject.org/exit-addresses) "
+"je nedosažitelný."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
@@ -467,8 +483,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
+msgstr "Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1381,3 +1396,4 @@ msgstr "skrýt video"
 
 #~ msgid "preferences"
 #~ msgstr "nastavení"
+
