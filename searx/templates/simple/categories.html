@@ -13,7 +13,7 @@
 }  -%}
 <div id="categories" class="search_categories">{{- '' -}}
     <div id="categories_container">
-        {%- for category in categories_as_tabs -%}
+        {%- for category in categories -%}
         <div class="category"><input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}/>
             <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
                 {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe-outline') -}}
