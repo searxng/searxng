@@ -373,16 +373,15 @@ def get_translations():
     }
 
 
-def _get_enable_categories(all_categories: Iterable[str]):
-    disabled_engines = request.preferences.engines.get_disabled()
-    enabled_categories = set(
-        # pylint: disable=consider-using-dict-items
-        category
-        for engine_name in engines
-        for category in engines[engine_name].categories
-        if (engine_name, category) not in disabled_engines
-    )
-    return [x for x in all_categories if x in enabled_categories]
+def get_enabled_categories(category_names: Iterable[str]):
+    """The categories in ``category_names```for which there is no active engine
+    are filtered out and a reduced list is returned."""
+
+    enabled_engines = [item[0] for item in request.preferences.engines.get_enabled()]
+    enabled_categories = set()
+    for engine_name in enabled_engines:
+        enabled_categories.update(engines[engine_name].categories)
+    return [x for x in category_names if x in enabled_categories]
 
 
 def get_pretty_url(parsed_url: urllib.parse.ParseResult):
@@ -434,7 +433,7 @@ def render(template_name: str, **kwargs):
     kwargs['theme'] = request.preferences.get_value('theme')
     kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
-    kwargs['categories'] = _get_enable_categories(categories.keys())
+    kwargs['categories'] = get_enabled_categories(settings['categories_as_tabs'].keys())
     kwargs['DEFAULT_CATEGORY'] = DEFAULT_CATEGORY
 
     # i18n
