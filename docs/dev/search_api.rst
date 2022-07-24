@@ -32,12 +32,14 @@ Parameters
   See more at :ref:`search-syntax`
 
 ``categories`` : optional
-  Comma separated list, specifies the active search categories
+  Comma separated list, specifies the active search categories (see
+  :ref:`configured engines`)
 
 ``engines`` : optional
-  Comma separated list, specifies the active search engines.
+  Comma separated list, specifies the active search engines (see
+  :ref:`configured engines`).
 
-``lang`` : default ``all``
+``language`` : default from :ref:`settings search`
   Code of the language.
 
 ``pageno`` : default ``1``
@@ -52,25 +54,27 @@ Parameters
 ``format`` : optional
   [ ``json``, ``csv``, ``rss`` ]
 
-  Output format of results.
+  Output format of results.  Format needs to be activated in :ref:`settings
+  search`.
 
 ``results_on_new_tab`` : default ``0``
   [ ``0``, ``1`` ]
 
   Open search results on new tab.
 
-``image_proxy`` : default ``False``
+``image_proxy`` : default from :ref:`settings server`
   [  ``True``, ``False`` ]
 
   Proxy image results through SearXNG.
 
-``autocomplete`` : default *empty*
-  [ ``google``, ``dbpedia``, ``duckduckgo``, ``startpage``, ``wikipedia`` ]
+``autocomplete`` : default from :ref:`settings search`
+  [ ``google``, ``dbpedia``, ``duckduckgo``, ``startpage``, ``wikipedia``,
+  ``swisscows``, ``qwant`` ]
 
   Service which completes words as you type.
 
-``safesearch`` :  default ``None``
-  [ ``0``, ``1``, ``None`` ]
+``safesearch`` :  default from :ref:`settings search`
+  [ ``0``, ``1``, ``2`` ]
 
   Filter search results of engines which support safe search.  See if an engine
   supports safe search in the preferences page of an instance.
@@ -92,15 +96,17 @@ Parameters
 
   :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
     ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select``, ``Hostname_replace``
+    ``Search_on_category_select``, ``Hostname_replace``, ``Tor_check_plugin``
 
 ``disabled_plugins``: optional
   List of disabled plugins.
 
-  :default: ``DOAI_rewrite``, ``Infinite_scroll``, ``Vim-like_hotkeys``, ``Hostname_replace``
+  :default: ``DOAI_rewrite``, ``Infinite_scroll``, ``Vim-like_hotkeys``,
+     ``Hostname_replace``, ``Tor_check_plugin``
+
   :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
     ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select``, ``Hostname_replace``
+    ``Search_on_category_select``, ``Hostname_replace``, ``Tor_check_plugin``
 
 ``enabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
   List of enabled engines.
