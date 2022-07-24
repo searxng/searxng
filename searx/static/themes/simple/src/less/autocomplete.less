@@ -2,9 +2,11 @@
 
 .autocomplete {
   position: absolute;
-  width: @search-width;
+  width: 45rem;
   max-height: 0;
+  top: 0.8rem;
   overflow-y: hidden;
+
   .ltr-text-align-left();
 
   .rounded-corners;
@@ -26,7 +28,7 @@
 
     > li {
       cursor: pointer;
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
 
       &.active,
       &:active,
@@ -52,15 +54,20 @@
     background-color: var(--color-autocomplete-background);
     color: var(--color-autocomplete-font);
     max-height: 32rem;
-    overflow-y: auto;
+    transition: max-height 0.3s ease-in;
+    overflow-y: hidden;
     z-index: 100;
     margin-top: 3.5rem;
     border-radius: 0.8rem;
-    box-shadow: 0 2px 8px rgb(34 38 46 / 25%);
+    box-shadow: var(--search-bar-shadow);
 
     &:empty {
       display: none;
     }
+  }
+
+  &.close {
+    transition: 0 0.8s ease-out;
   }
 }
 
@@ -69,7 +76,7 @@
     width: 100%;
 
     > ul > li {
-      padding: 1rem;
+      padding: 1.5rem;
     }
   }
 }
