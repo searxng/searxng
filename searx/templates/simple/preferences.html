@@ -32,7 +32,8 @@
       {{ _('View error logs and submit a bug report') -}}
     </a>
     {%- endif -%}
-
+    <p><span class="right">{{ _("!bang for this engine") }}</span>{% for bang in [search_engine.name] + [search_engine.shortcut] %}<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>{% endfor %}</p>
+    <p><span class="right">{{ _("!bang for its categories") }}</span>{% for bang in search_engine.categories %}<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>{% endfor %}</p>
 </div>
 {%- endif -%}
 {%- endmacro %}
@@ -309,7 +310,7 @@
       <tr>{{- "" -}}
         <th class="engine_checkbox">{{ _("Allow") }}</th>{{- "" -}}
         <th class="name">{{ _("Engine name") }}</th>{{- "" -}}
-        <th class="shortcut">{{ _("!bang") }}</th>{{- "" -}}
+        <th class="shortcut">{{ _("Bang") }}</th>{{- "" -}}
         <th>{{ _("Supports selected language") }}</th>{{- "" -}}
         <th>{{ _("SafeSearch") }}</th>{{- "" -}}
         <th>{{ _("Time range") }}</th>{{- "" -}}
@@ -317,9 +318,12 @@
         <th>{{ _("Max time") }}</th>{{- "" -}}
         {%- if enable_metrics %}<th>{{ _("Reliability") }}</th>{% endif -%}
       </tr>
-      {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+      {% for group, group_bang, engines in engines_by_category[categ] | group_engines_in_tab %}
       {% if loop.length > 1 %}
-      <tr><th colspan="9" class="engine-group">{{_(group)}}</th></tr>
+      <tr>
+        <th class="engine-group" colspan="2">{{_(group)}}</th>
+        <th class="engine-group" colspan="7">{% if group_bang %}<span class="bang">{{group_bang}}</span>{% endif %}</th>
+      </tr>{{- "" -}}
       {% endif %}
       {% for search_engine in engines %}
       {% if not search_engine.private %}
@@ -329,13 +333,13 @@
         <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif -%}
           <label for="{{ engine_id }}">
             {{- search_engine.name -}}
-            {%- if search_engine.about and search_engine.about.language -%}
+            {%- if search_engine.about and search_engine.about.language %}
               ({{search_engine.about.language | upper}})
             {%- endif -%}
           </label>
           {{- engine_about(search_engine) -}}
         </th>{{- "" -}}
-        <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>{{- "" -}}
+        <td class="shortcut"><span class="bang">{{ '!' + shortcuts[search_engine.name] }}</span></td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['supports_selected_language'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['safesearch'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['time_range_support'], true) }}</td>{{- "" -}}
