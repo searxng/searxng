@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Słownik Języka Polskiego (general)
+# lint: pylint
+"""Słownik Języka Polskiego
 
+Dictionary of the polish language from PWN (sjp.pwn)
 """
 
 from lxml.html import fromstring
