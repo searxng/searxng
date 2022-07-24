@@ -18,7 +18,7 @@ from codecs import getincrementalencoder
 from flask_babel import gettext, format_date
 
 from searx import logger, settings
-from searx.engines import OTHER_CATEGORY
+from searx.engines import DEFAULT_CATEGORY
 
 if TYPE_CHECKING:
     from searx.enginelib import Engine
@@ -222,26 +222,24 @@ def is_flask_run_cmdline():
     return frames[-2].filename.endswith('flask/cli.py')
 
 
-DEFAULT_GROUP_NAME = 'others'
+NO_SUBGROUPING = 'without further subgrouping'
 
 
 def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[Engine]]]:
-    """Groups an Iterable of engines by their first non tab category"""
+    """Groups an Iterable of engines by their first non tab category (first subgroup)"""
 
-    def get_group(eng):
-        non_tab_categories = [
-            c for c in eng.categories if c not in list(settings['categories_as_tabs'].keys()) + [OTHER_CATEGORY]
-        ]
-        return non_tab_categories[0] if len(non_tab_categories) > 0 else DEFAULT_GROUP_NAME
-
-    groups = itertools.groupby(sorted(engines, key=get_group), get_group)
+    def get_subgroup(eng):
+        non_tab_categories = [c for c in eng.categories if c not in tabs + [DEFAULT_CATEGORY]]
+        return non_tab_categories[0] if len(non_tab_categories) > 0 else NO_SUBGROUPING
 
     def group_sort_key(group):
-        return (group[0] == DEFAULT_GROUP_NAME, group[0].lower())
-
-    sorted_groups = sorted(((name, list(engines)) for name, engines in groups), key=group_sort_key)
+        return (group[0] == NO_SUBGROUPING, group[0].lower())
 
     def engine_sort_key(engine):
         return (engine.about.get('language', ''), engine.name)
+
+    tabs = list(settings['categories_as_tabs'].keys())
+    subgroups = itertools.groupby(sorted(engines, key=get_subgroup), get_subgroup)
+    sorted_groups = sorted(((name, list(engines)) for name, engines in subgroups), key=group_sort_key)
 
     return [(groupname, sorted(engines, key=engine_sort_key)) for groupname, engines in sorted_groups]

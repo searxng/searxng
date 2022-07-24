@@ -298,18 +298,18 @@
     <p>{{ _('Currently used search engines') }}</p>
     {{ tabs_open() }}
      {% set ns = namespace(checked=true) %}
-     {% for categ in categories_as_tabs + [OTHER_CATEGORY] %}
+     {% for categ in categories_as_tabs + [DEFAULT_CATEGORY] %}
      {{ tab_header('enginetab', 'category' + categ, _(categ), ns.checked )}}
      {% set ns.checked = false %}
-   {% if categ == OTHER_CATEGORY %}
-      <p>{{_('This tab does not show up for search results, but you can search the engines listed here via bangs.')}}</p>
-    {% endif %}
+     {% if categ == DEFAULT_CATEGORY %}
+      <p>{{_('This tab dues not exists in the user interface, but you can search in these engines by its !bangs.')}} <a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a></p>
+     {% endif %}
     <div class="scrollx">
     <table class="striped table_engines">
       <tr>{{- "" -}}
         <th class="engine_checkbox">{{ _("Allow") }}</th>{{- "" -}}
         <th class="name">{{ _("Engine name") }}</th>{{- "" -}}
-        <th class="shortcut">{{ _("Shortcut") }}</th>{{- "" -}}
+        <th class="shortcut">{{ _("!bang") }}</th>{{- "" -}}
         <th>{{ _("Supports selected language") }}</th>{{- "" -}}
         <th>{{ _("SafeSearch") }}</th>{{- "" -}}
         <th>{{ _("Time range") }}</th>{{- "" -}}

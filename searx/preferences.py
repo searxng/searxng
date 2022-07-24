@@ -17,7 +17,7 @@ from searx.enginelib import Engine
 from searx.plugins import Plugin
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
-from searx.engines import OTHER_CATEGORY
+from searx.engines import DEFAULT_CATEGORY
 
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
@@ -259,7 +259,7 @@ class EnginesSetting(BooleanChoices):
         choices = {}
         for engine in engines:
             for category in engine.categories:
-                if not category in list(settings['categories_as_tabs'].keys()) + [OTHER_CATEGORY]:
+                if not category in list(settings['categories_as_tabs'].keys()) + [DEFAULT_CATEGORY]:
                     continue
                 choices['{}__{}'.format(engine.name, category)] = not engine.disabled
         super().__init__(default_value, choices)

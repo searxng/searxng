@@ -36,7 +36,7 @@ about = {
 send_accept_language_header = True
 
 # engine dependent config
-categories = ["others"]
+categories = ["weather"]
 URL = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
 
 
