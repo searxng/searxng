@@ -153,7 +153,7 @@ def is_flask_run_cmdline():
     return frames[-2].filename.endswith('flask/cli.py')
 
 
-DEFAULT_GROUP_NAME = 'others'
+DEFAULT_GROUP_NAME = 'ungrouped'
 
 
 def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[Engine]]]:
