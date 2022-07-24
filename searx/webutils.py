@@ -175,4 +175,8 @@ def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[
     def engine_sort_key(engine):
         return (engine.about.get('language', ''), engine.name)
 
-    return [(groupname, sorted(engines, key=engine_sort_key)) for groupname, engines in sorted_groups]
+    ret_val = []
+    for groupname, engines in sorted_groups:
+        group_bang = '!' + groupname.replace(' ', '_') if groupname != DEFAULT_GROUP_NAME else ''
+        ret_val.append((groupname, group_bang, sorted(engines, key=engine_sort_key)))
+    return ret_val

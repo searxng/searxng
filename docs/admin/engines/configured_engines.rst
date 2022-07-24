@@ -6,25 +6,37 @@ Configured Engines
 
 .. sidebar:: Further reading ..
 
+   - :ref:`settings categories_as_tabs`
    - :ref:`engines-dev`
    - :ref:`settings engine`
-
-Explanation of the :ref:`general engine configuration` shown in the table
-:ref:`configured engines`.
+   - :ref:`general engine configuration`
 
 .. jinja:: searx
 
-   SearXNG supports {{engines | length}} search engines (of which {{enabled_engine_count}} are enabled by default).
+   SearXNG supports {{engines | length}} search engines (of which
+   {{enabled_engine_count}} are enabled by default).  The UI displays the tabs
+   that are configured in :ref:`categories_as_tabs <settings
+   categories_as_tabs>`.  In addition to these main categories (aka *tabs*),
+   engines can be added to *secondary* categories (aka *groups*).  A *tab*,
+   *group* or *engine* can be selected with a `!` (*bang*) in the
+   :ref:`search-syntax`.
+
+.. contents:: Contents
+   :depth: 2
+   :local:
+   :backlinks: entry
+
+.. jinja:: searx
 
    {% for category, engines in categories_as_tabs.items() %}
 
-   {{category}} search engines
+   tab ``!{{category.replace(' ', '_')}}``
    ---------------------------------------
 
-   {% for group, engines in engines | group_engines_in_tab %}
+   {% for group, group_bang, engines in engines | group_engines_in_tab %}
 
    {% if loop.length > 1 %}
-   {{group}}
+   {% if group_bang %}group ``{{group_bang}}``{% else %}{{group}}{% endif %}
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    {% endif %}
 
@@ -36,7 +48,7 @@ Explanation of the :ref:`general engine configuration` shown in the table
         - :cspan:`3` :ref:`Supported features <engine file>`
 
       * - Name
-        - Shortcut
+        - bang
         - Module
         - Disabled
         - Timeout

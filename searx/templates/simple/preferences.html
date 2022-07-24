@@ -314,9 +314,9 @@
         <th>{{ _("Max time") }}</th>{{- "" -}}
         <th>{{ _("Reliability") }}</th>{{- "" -}}
       </tr>
-      {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
+      {% for group, group_bang, engines in engines_by_category[categ] | group_engines_in_tab %}
       {% if loop.length > 1 %}
-      <tr><th colspan="9" class="engine-group">{{_(group)}}</th></tr>
+      <tr><th colspan="9" class="engine-group">{{_(group)}}{% if group_bang %}<span class="group-bang">{{group_bang}}</span>{% endif %}</th></tr>{{- "" -}}
       {% endif %}
       {% for search_engine in engines %}
       {% if not search_engine.private %}
