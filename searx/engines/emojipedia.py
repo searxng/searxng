@@ -47,7 +47,7 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath_list(dom, "/html/body/div[2]/div[1]/ol/li"):
+    for result in eval_xpath_list(dom, "//ol[@class='search-results']/li"):
 
         extracted_desc = extract_text(eval_xpath_getindex(result, './/p', 0))
 
