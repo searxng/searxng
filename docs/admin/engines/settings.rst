@@ -264,6 +264,36 @@ Global Settings
   Open result links in a new tab by default.
 
 
+.. _settings categories_as_tabs:
+
+``categories_as_tabs:``
+-----------------------
+
+.. code:: yaml
+
+   categories_as_tabs:
+     general:
+     images:
+     videos:
+     news:
+     map:
+     music:
+     it:
+     science:
+     files:
+     social media:
+
+Engines are added to ``categories:`` (compare :ref:`settings engine`), the
+categories listed in ``categories_as_tabs`` are shown as tabs in the UI.  If
+there are no active engines in a category, the tab is not displayed (e.g. if a
+user disables all engines in a category).
+
+On the preferences page (``/preferences``) -- under *engines* -- there is an
+additional tab called *other* which lists all categories that are not displayed
+in the UI (not included in ``categories_as_tabs``).  Engines that are not
+assigned to any category are listed there under the title *ungrouped*.
+
+
 .. _settings redis:
 
 ``redis:``
