@@ -97,13 +97,12 @@ def request(query, params):
         + lang_info['subdomain']
         + '/search'
         + "?"
-        + urlencode(
-            {'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'gl': lang_info['country'], 'ucbcb': 1}
-        )
+        + urlencode({'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'gl': lang_info['country']})
         + ('&ceid=%s' % ceid)
     )  # ceid includes a ':' character which must not be urlencoded
     params['url'] = query_url
 
+    params['cookies']['CONSENT'] = "YES+"
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
