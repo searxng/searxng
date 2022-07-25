@@ -118,7 +118,7 @@ def request(query, params):
         + lang_info['subdomain']
         + '/search'
         + "?"
-        + urlencode({'q': query, 'tbm': "vid", **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'ucbcb': 1})
+        + urlencode({'q': query, 'tbm': "vid", **lang_info['params'], 'ie': "utf8", 'oe': "utf8"})
     )
 
     if params['time_range'] in time_range_dict:
@@ -127,6 +127,7 @@ def request(query, params):
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
 
+    params['cookies']['CONSENT'] = "YES+"
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     return params
