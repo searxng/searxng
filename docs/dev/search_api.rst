@@ -91,22 +91,32 @@ Parameters
 ``enabled_plugins`` : optional
   List of enabled plugins.
 
-  :default: ``HTTPS_rewrite``, ``Self_Informations``,
-    ``Search_on_category_select``, ``Tracker_URL_remover``
+  :default:
+     ``Hash_plugin``, ``Search_on_category_select``,
+     ``Self_Informations``, ``Tracker_URL_remover``,
+     ``Ahmia_blacklist``
 
-  :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
-    ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select``, ``Hostname_replace``, ``Tor_check_plugin``
+  :values:
+     .. enabled by default
+
+     ``Hash_plugin``, ``Search_on_category_select``,
+     ``Self_Informations``, ``Tracker_URL_remover``,
+     ``Ahmia_blacklist``,
+
+     .. disabled by default
+
+     ``Hostname_replace``, ``Open_Access_DOI_rewrite``,
+     ``Vim-like_hotkeys``, ``Tor_check_plugin``
 
 ``disabled_plugins``: optional
   List of disabled plugins.
 
-  :default: ``DOAI_rewrite``, ``Infinite_scroll``, ``Vim-like_hotkeys``,
-     ``Hostname_replace``, ``Tor_check_plugin``
+  :default:
+     ``Hostname_replace``, ``Open_Access_DOI_rewrite``,
+     ``Vim-like_hotkeys``, ``Tor_check_plugin``
 
-  :values: ``DOAI_rewrite``, ``HTTPS_rewrite``, ``Infinite_scroll``,
-    ``Vim-like_hotkeys``, ``Self_Informations``, ``Tracker_URL_remover``,
-    ``Search_on_category_select``, ``Hostname_replace``, ``Tor_check_plugin``
+  :values:
+     see values from ``enabled_plugins``
 
 ``enabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
   List of enabled engines.
