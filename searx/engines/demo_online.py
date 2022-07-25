@@ -19,7 +19,7 @@ list in ``settings.yml``:
 from json import loads
 from urllib.parse import urlencode
 
-engine_type = 'offline'
+engine_type = 'online'
 categories = ['general']
 disabled = True
 timeout = 2.0
