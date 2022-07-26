@@ -287,7 +287,6 @@ def request(query, params):
                 'oe': "utf8",
                 'start': offset,
                 'filter': '0',
-                'ucbcb': 1,
                 **additional_parameters,
             }
         )
@@ -299,6 +298,7 @@ def request(query, params):
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
 
+    params['cookies']['CONSENT'] = "YES+"
     params['headers'].update(lang_info['headers'])
     if use_mobile_ui:
         params['headers']['Accept'] = '*/*'
