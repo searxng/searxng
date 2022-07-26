@@ -710,6 +710,7 @@ def search():
 
     # output
     for result in results:
+        result = typing.cast(dict, result)
         if output_format == 'html':
             if 'content' in result and result['content']:
                 result['content'] = highlight_content(escape(result['content'][:1024]), search_query.query)
@@ -763,7 +764,9 @@ def search():
         keys = ('title', 'url', 'content', 'host', 'engine', 'score', 'type')
         csv.writerow(keys)
         for row in results:
-            row['host'] = row['parsed_url'].netloc
+            row = typing.cast(dict, row)
+            if 'parsed_url' in row:
+                row['host'] = row['parsed_url'].netloc
             row['type'] = 'result'
             csv.writerow([row.get(key, '') for key in keys])
         for a in result_container.answers:

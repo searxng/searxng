@@ -1,13 +1,17 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pyright: basic
+
 import re
 from collections import defaultdict
 from operator import itemgetter
 from threading import RLock
-from typing import List, NamedTuple, Set
+from typing import NamedTuple, Optional, List, Set, Dict, cast
 from urllib.parse import urlparse, unquote
 
 from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
+from . import models
 
 
 CONTENT_LEN_IGNORED_CHARS_REGEX = re.compile(r'[,;:!?\./\\\\ ()-_]', re.M | re.U)
@@ -55,7 +59,7 @@ def compare_urls(url_a, url_b):
     return unquote(path_a) == unquote(path_b)
 
 
-def merge_two_infoboxes(infobox1, infobox2):
+def merge_two_infoboxes(infobox1: models.Infobox, infobox2: models.Infobox):
     # get engines weights
     if hasattr(engines[infobox1['engine']], 'weight'):
         weight1 = engines[infobox1['engine']].weight
@@ -91,8 +95,8 @@ def merge_two_infoboxes(infobox1, infobox2):
 
         infobox1['urls'] = urls1
 
-    if 'img_src' in infobox2:
-        img1 = infobox1.get('img_src', None)
+    if infobox2.get('img_src') is not None:
+        img1 = infobox1.get('img_src')
         img2 = infobox2.get('img_src')
         if img1 is None:
             infobox1['img_src'] = img2
@@ -127,7 +131,7 @@ def merge_two_infoboxes(infobox1, infobox2):
             infobox1['content'] = content2
 
 
-def result_score(result):
+def result_score(result: models.Result):
     weight = 1.0
 
     for result_engine in result['engines']:
@@ -173,18 +177,18 @@ class ResultContainer:
 
     def __init__(self):
         super().__init__()
-        self._merged_results = []
-        self.infoboxes = []
-        self.suggestions = set()
-        self.answers = {}
-        self.corrections = set()
+        self._merged_results: List[models.MainResult] = []
+        self.infoboxes: List[models.Infobox] = []
+        self.suggestions: Set[models.Suggestion] = set()
+        self.answers: Dict[str, models.Answer] = {}
+        self.corrections: Set[models.Correction] = set()
         self._number_of_results = []
         self.engine_data = defaultdict(dict)
-        self._closed = False
-        self.paging = False
+        self._closed: bool = False
+        self.paging: bool = False
         self.unresponsive_engines: Set[UnresponsiveEngine] = set()
         self.timings: List[Timing] = []
-        self.redirect_url = None
+        self.redirect_url: Optional[str] = None
         self.on_result = lambda _: True
         self._lock = RLock()
 
@@ -193,7 +197,7 @@ class ResultContainer:
             return
 
         standard_result_count = 0
-        error_msgs = set()
+        error_msgs: Set[str] = set()
         for result in list(results):
             result['engine'] = engine_name
             if 'suggestion' in result and self.on_result(result):
@@ -234,7 +238,7 @@ class ResultContainer:
         if not self.paging and standard_result_count > 0 and engine_name in engines and engines[engine_name].paging:
             self.paging = True
 
-    def _merge_infobox(self, infobox):
+    def _merge_infobox(self, infobox: models.Infobox):
         add_infobox = True
         infobox_id = infobox.get('id', None)
         infobox['engines'] = set([infobox['engine']])
@@ -249,7 +253,7 @@ class ResultContainer:
         if add_infobox:
             self.infoboxes.append(infobox)
 
-    def _is_valid_url_result(self, result, error_msgs):
+    def _is_valid_url_result(self, result: models.UrlResult, error_msgs: Set[str]) -> bool:
         if 'url' in result:
             if not isinstance(result['url'], str):
                 logger.debug('result: invalid URL: %s', str(result))
@@ -269,7 +273,7 @@ class ResultContainer:
 
         return True
 
-    def _normalize_url_result(self, result):
+    def _normalize_url_result(self, result: models.UrlResult):
         """Return True if the result is valid"""
         result['parsed_url'] = urlparse(result['url'])
 
@@ -288,9 +292,9 @@ class ResultContainer:
 
         # strip multiple spaces and carriage returns from content
         if result.get('content'):
-            result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
+            result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])  # type: ignore
 
-    def __merge_url_result(self, result, position):
+    def __merge_url_result(self, result: models.UrlResult, position: int):
         result['engines'] = set([result['engine']])
         with self._lock:
             duplicated = self.__find_duplicated_http_result(result)
@@ -302,11 +306,12 @@ class ResultContainer:
             result['positions'] = [position]
             self._merged_results.append(result)
 
-    def __find_duplicated_http_result(self, result):
+    def __find_duplicated_http_result(self, result: models.UrlResult) -> Optional[models.UrlResult]:
         result_template = result.get('template')
         for merged_result in self._merged_results:
             if 'parsed_url' not in merged_result:
                 continue
+            merged_result = cast(models.UrlResult, merged_result)
             if compare_urls(result['parsed_url'], merged_result['parsed_url']) and result_template == merged_result.get(
                 'template'
             ):
@@ -320,10 +325,10 @@ class ResultContainer:
                         return merged_result
         return None
 
-    def __merge_duplicated_http_result(self, duplicated, result, position):
+    def __merge_duplicated_http_result(self, duplicated: models.UrlResult, result: models.UrlResult, position: int):
         # using content with more text
         if result_content_len(result.get('content', '')) > result_content_len(duplicated.get('content', '')):
-            duplicated['content'] = result['content']
+            duplicated['content'] = result['content']  # type: ignore
 
         # merge all result's parameters not found in duplicate
         for key in result.keys():
@@ -341,11 +346,11 @@ class ResultContainer:
             duplicated['url'] = result['parsed_url'].geturl()
             duplicated['parsed_url'] = result['parsed_url']
 
-    def __merge_result_no_url(self, result, position):
+    def __merge_result_no_url(self, result: models.KeyValueResult, position: int):
         result['engines'] = set([result['engine']])
         result['positions'] = [position]
         with self._lock:
-            self._merged_results.append(result)
+            self._merged_results.append(result)  # type: ignore
 
     def close(self):
         self._closed = True

@@ -68,6 +68,8 @@ class Engine:  # pylint: disable=too-few-public-methods
     safesearch: bool
     time_range_support: bool
     timeout: float
+    weight: float
+    display_error_messages: bool
 
 
 # Defaults for the namespace of an engine module, see :py:func:`load_engine`
