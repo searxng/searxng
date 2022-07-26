@@ -65,25 +65,54 @@ def update_dict(default_dict, user_dict):
 
 
 def update_settings(default_settings, user_settings):
-    # merge everything except the engines
+    # merge everything except the engines and categories_as_tabs
     for k, v in user_settings.items():
-        if k not in ('use_default_settings', 'engines'):
-            if k in default_settings and isinstance(v, Mapping):
-                update_dict(default_settings[k], v)
-            else:
-                default_settings[k] = v
-
-    categories_as_tabs = user_settings.get('categories_as_tabs')
-    if categories_as_tabs:
-        default_settings['categories_as_tabs'] = categories_as_tabs
+        if k in ('use_default_settings', 'engines', 'categories_as_tabs'):
+            continue
+        if k in default_settings and isinstance(v, Mapping):
+            update_dict(default_settings[k], v)
+        else:
+            default_settings[k] = v
 
     # parse the engines
     remove_engines = None
     keep_only_engines = None
+    remove_cat = None
+    keep_only_cat = None
     use_default_settings = user_settings.get('use_default_settings')
     if isinstance(use_default_settings, dict):
         remove_engines = use_default_settings.get('engines', {}).get('remove')
         keep_only_engines = use_default_settings.get('engines', {}).get('keep_only')
+        remove_cat = use_default_settings.get('categories_as_tabs', {}).get('remove')
+        keep_only_cat = use_default_settings.get('categories_as_tabs', {}).get('keep_only')
+
+    if 'categories_as_tabs' in user_settings or remove_cat is not None or keep_only_cat is not None:
+        categories_as_tabs = default_settings['categories_as_tabs']
+
+        # parse "use_default_settings.categories_as_tabs.remove"
+        if remove_cat is not None:
+            categories_as_tabs = dict(
+                filterfalse(lambda category_tuple: category_tuple[0] in remove_cat, categories_as_tabs.items())
+            )
+
+        # parse "use_default_settings.categories_as_tabs.keep_only"
+        if keep_only_cat is not None:
+            categories_as_tabs = dict(
+                filter(lambda category_tuple: category_tuple[0] in keep_only_cat, categories_as_tabs.items())
+            )
+
+        # parse "categories_as_tabs"
+        user_cat = user_settings.get('categories_as_tabs')
+        if user_cat:
+            for user_category_name, user_category_definition in user_cat.items():
+                default_cat = categories_as_tabs.get(user_category_name)
+                if default_cat:
+                    update_dict(default_cat, user_category_definition)
+                else:
+                    categories_as_tabs[user_category_name] = user_category_definition
+
+        # store the result
+        default_settings['categories_as_tabs'] = categories_as_tabs
 
     if 'engines' in user_settings or remove_engines is not None or keep_only_engines is not None:
         engines = default_settings['engines']

@@ -80,6 +80,11 @@ class TestUserSettings(SearxTestCase):
             self.assertNotIn('wikinews', engine_names)
             self.assertNotIn('wikibooks', engine_names)
             self.assertIn('wikipedia', engine_names)
+            # check categories_as_tabs
+            self.assertEqual(
+                list(settings['categories_as_tabs'].keys()),
+                ['general', 'images', 'videos', 'news', 'map', 'music', 'it', 'science'],
+            )
 
     def test_user_settings_remove2(self):
         with patch.dict(
@@ -98,6 +103,11 @@ class TestUserSettings(SearxTestCase):
             self.assertEqual(wikipedia[0]['tokens'], ['secret_token'])
             newengine = list(filter(lambda engine: (engine.get('name')) == 'newengine', settings['engines']))
             self.assertEqual(newengine[0]['engine'], 'dummy')
+            # check categories_as_tabs
+            self.assertEqual(
+                list(settings['categories_as_tabs'].keys()),
+                ['general', 'images', 'videos', 'news', 'map', 'music', 'it', 'science', 'onions'],
+            )
 
     def test_user_settings_keep_only(self):
         with patch.dict(
@@ -109,6 +119,8 @@ class TestUserSettings(SearxTestCase):
             self.assertEqual(engine_names, ['wikibooks', 'wikinews', 'wikipedia', 'newengine'])
             # wikipedia has been removed, then added again with the "engine" section of user_settings_keep_only.yml
             self.assertEqual(len(settings['engines'][2]), 1)
+            # check categories_as_tabs
+            self.assertEqual(list(settings['categories_as_tabs'].keys()), ['general', 'images'])
 
     def test_custom_settings(self):
         with patch.dict(

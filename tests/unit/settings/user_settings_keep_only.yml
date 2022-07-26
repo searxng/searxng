@@ -3,6 +3,10 @@ use_default_settings:
     keep_only:
       - wikibooks
       - wikinews
+  categories_as_tabs:
+    keep_only:
+      - general
+      - images
 server:
   secret_key: "user_secret_key"
   bind_address: "0.0.0.0"
