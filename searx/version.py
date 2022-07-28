@@ -6,6 +6,7 @@ import os
 import shlex
 import subprocess
 import logging
+import importlib
 
 # fallback values
 # if there is searx.version_frozen module, and it is not possible to get the git tag
@@ -73,7 +74,8 @@ def get_git_version():
 
 
 try:
-    from searx.version_frozen import VERSION_STRING, VERSION_TAG, GIT_URL, GIT_BRANCH
+    vf = importlib.import_module('searx.version_frozen')
+    VERSION_STRING, VERSION_TAG, GIT_URL, GIT_BRANCH = vf.VERSION_STRING, vf.VERSION_TAG, vf.GIT_URL, vf.GIT_BRANCH
 except ImportError:
     try:
         try:

@@ -2,7 +2,7 @@
 
 import time
 from typing import Optional
-import uwsgi  # pylint: disable=E0401
+import uwsgi  # pyright: ignore # pylint: disable=E0401
 from . import shared_abstract
 
 

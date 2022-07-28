@@ -16,7 +16,7 @@ from searx import logger, settings, searx_debug
 from searx.exceptions import SearxSettingsException
 from searx.search.processors import PROCESSORS
 from searx.search.checker import Checker
-from searx.shared import schedule, storage
+from searx.shared import schedule, storage  # pyright: ignore
 
 
 CHECKER_RESULT = 'CHECKER_RESULT'

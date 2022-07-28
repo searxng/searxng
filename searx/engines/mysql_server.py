@@ -6,7 +6,7 @@
 
 # import error is ignored because the admin has to install mysql manually to use
 # the engine
-import mysql.connector  # pylint: disable=import-error
+import mysql.connector  # pyright: ignore # pylint: disable=import-error
 
 engine_type = 'offline'
 auth_plugin = 'caching_sha2_password'

@@ -7,8 +7,11 @@
 # pylint: disable=C,R
 
 
+__all__ = ('cached_property',)
+
+
 try:
-    from functools import cached_property  # pylint: disable=unused-import
+    from functools import cached_property  # type: ignore
 
 except ImportError:
 
