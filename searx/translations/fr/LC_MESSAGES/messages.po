@@ -12,20 +12,22 @@
 # Noémi Ványi <sitbackandwait@gmail.com>, 2017
 # rike, 2014
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Cedrik Boudreau <cedrik@arweave.org>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-13 15:40+0000\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: French <https://weblate.bubu1.eu/projects/searxng/searxng/fr/>"
+"\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -269,6 +271,29 @@ msgstr "Aucun résumé disponible pour cette publication."
 msgid "Channel"
 msgstr "Chaîne"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Impossible de lire l'url de l'image. Cela peut être dû à un format de "
+"fichier non pris en charge. TinEye ne prend en charge que les images au "
+"format JPEG, PNG, GIF, BMP, TIFF ou WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"L'image est trop simple pour trouver des correspondances. TinEye a besoin "
+"d'un niveau de détail visuel minimum pour réussir à identifier les "
+"correspondances."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "L'image n'a pas pu être téléchargée."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Convertit les chaînes de caractères en différents condensés de hachage."
@@ -323,27 +348,32 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Plugin de vérification de Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Ce plugin vérifie si l'adresse de la requête est un nœud de sortie TOR, "
+"et informe l'utilisateur si c'est le cas, comme check.torproject.org mais"
+" depuis searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"La liste des nœuds de sortie TOR (https://check.torproject.org/exit-"
+"addresses) est inaccessible."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Vous utilisez TOR. Votre adresse IP semble être : {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Vous n'utilisez pas TOR. Votre adresse ip semble être : {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1384,4 +1414,3 @@ msgstr "cacher la vidéo"
 
 #~ msgid "preferences"
 #~ msgstr "préférences"
-

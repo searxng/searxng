@@ -4,32 +4,34 @@
 #
 # Translators:
 # Cymrodor <aled@aledpowell.cymru>, 2019
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-01-19 22:16+0000\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Welsh <https://weblate.bubu1.eu/projects/searxng/searxng/cy/>"
+"\n"
 "Language: cy\n"
-"Language-Team: Welsh "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/cy/>\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n "
-"!= 11) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
+"11) ? 2 : 3;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr ""
+msgstr "eraill"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr ""
+msgstr "arall"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -89,17 +91,17 @@ msgstr "gwyddoniaeth"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr ""
+msgstr "apps"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
 msgid "dictionaries"
-msgstr ""
+msgstr "geiriaduron"
 
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr ""
+msgstr "geiriau"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -151,35 +153,35 @@ msgstr "gwall dosrannu"
 
 #: searx/webapp.py:167
 msgid "HTTP protocol error"
-msgstr ""
+msgstr "Gwall protocol HTTP"
 
 #: searx/webapp.py:168
 msgid "network error"
-msgstr ""
+msgstr "gwall rhwydwaith"
 
 #: searx/webapp.py:170
 msgid "unexpected crash"
-msgstr ""
+msgstr "damwain annisgwyl"
 
 #: searx/webapp.py:177
 msgid "HTTP error"
-msgstr ""
+msgstr "gwall http"
 
 #: searx/webapp.py:178
 msgid "HTTP connection error"
-msgstr ""
+msgstr "gwall cysylltiad http"
 
 #: searx/webapp.py:184
 msgid "proxy error"
-msgstr ""
+msgstr "gwall dirprwy"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: searx/webapp.py:186
 msgid "too many requests"
-msgstr ""
+msgstr "gormod o geisiadau"
 
 #: searx/webapp.py:187
 msgid "access denied"
@@ -260,6 +262,23 @@ msgstr ""
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
+msgstr ""
+
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
 msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
@@ -1335,4 +1354,3 @@ msgstr "cuddio fideo"
 
 #~ msgid "preferences"
 #~ msgstr "dewisiadau"
-

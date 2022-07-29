@@ -9,21 +9,23 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Albin Håkanson <albin@sweplox.se>, 2022.
 # Waldemar Björnström <waldemar.bjornstrom@unfnorrbotten.se>, 2022.
+# Solaris <zcauchemar@gmail.com>, 2022.
+# sebstrgg <sebastian@wollter.nu>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-19 05:46+0000\n"
-"Last-Translator: Waldemar Björnström "
-"<waldemar.bjornstrom@unfnorrbotten.se>\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Swedish <https://weblate.bubu1.eu/projects/searxng/searxng/sv/"
+">\n"
 "Language: sv\n"
-"Language-Team: Swedish "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sv/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -267,6 +269,29 @@ msgstr "Inget abstract är tillgänglig för denna publikation."
 msgid "Channel"
 msgstr "Kanal"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Kunde inte läsa bildens webbadress. Detta kan bero på ett filformat som inte "
+"stöds. TinEye stöder endast bilder som är JPEG, PNG, GIF, BMP, TIFF eller "
+"WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Bilden är för enkel för att hitta matchningar. TinEye kräver en "
+"grundläggande nivå av visuell detalj för att framgångsrikt kunna identifiera "
+"matchningar."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Det gick inte att ladda ner bilden."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Konverterar strängar till olika hashvärden."
@@ -321,27 +346,32 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor kontroll plugin"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Denna plugin kollar om IP-adressen av TOR-requesten är en TOR exit node, "
+"och informerar användaren om den är det, som till exempel "
+"check.torproject.org men från searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"TOR exit node listan (https://check.torproject.org/exit-addresses) går "
+"inte at nås för tillfället."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Du använder TOR. Din IP-adress verkar vara: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Du använder inte TOR. Din IP-adress verkar vara: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -815,6 +845,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Dina anpassade inställningar i inställningarnas URL kan användas för att "
+"synkronisera inställningar mellan olika enheter."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -974,7 +1006,7 @@ msgstr "Kod"
 
 #: searx/templates/simple/stats.html:131
 msgid "Checker"
-msgstr ""
+msgstr "Kontrollera"
 
 #: searx/templates/simple/stats.html:134
 msgid "Failed test"
@@ -1018,7 +1050,7 @@ msgstr "Sökmotorer kan inte hämta resultat."
 
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
+msgstr "Var snäll och försök igen senare eller hitta annan SearXNG-instans."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
@@ -1051,7 +1083,7 @@ msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "Sökmotor"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
@@ -1366,4 +1398,3 @@ msgstr "göm video"
 
 #~ msgid "preferences"
 #~ msgstr "inställningar"
-

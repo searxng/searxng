@@ -8,20 +8,22 @@
 # jmontane, 2018
 # Gerard Oliva Viñas <oliva3032001@gmail.com>, 2022.
 # adriadam10 <adriadam10@gmail.com>, 2022.
+# alexfs2015 <alex04fs@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
-"Last-Translator: adriadam10 <adriadam10@gmail.com>\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"Last-Translator: alexfs2015 <alex04fs@gmail.com>\n"
+"Language-Team: Catalan <https://weblate.bubu1.eu/projects/searxng/searxng/ca/"
+">\n"
 "Language: ca\n"
-"Language-Team: Catalan "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ca/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -265,6 +267,28 @@ msgstr "No hi ha resum disponible per a aquesta publicació."
 msgid "Channel"
 msgstr "Canal"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"No s'ha pogut llegir l'URL de la imatge. Això pot ser degut a un format de "
+"fitxer no compatible. TinEye només admet imatges en format JPEG, PNG, GIF, "
+"BMP, TIFF o WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"La imatge és massa senzilla per trobar coincidències. TinEye requereix un "
+"nivell bàsic de detall visual per identificar amb èxit les coincidències."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "No s'ha pogut baixar la imatge."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Converteix cadenes a diferent formats de resum."
@@ -321,27 +345,32 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Plugin de comprovació de Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Aquest plugin comprova si l'adreça de la sol·licitud és un node de sortida "
+"TOR i informa a l'usuari si ho és, com check.torproject.org però des de "
+"searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"No es pot accedir a la llista de nodes de sortida TOR (https://check."
+"torproject.org/exit-addresses)."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Esteu utilitzant TOR. La vostra adreça IP sembla ser: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "No esteu utilitzant TOR. La vostra adreça IP sembla ser: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -446,19 +475,21 @@ msgstr "en servidor intermediari"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Enviar un nou problema a GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Si us plau revisa si ja hi ha un problema amb aquest motor a GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "Confirmo que no hi ha un bug relacionat amb el problema que he trobat"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
+"Si aquesta és una instància pública, si us plau especifica la URL al report "
+"del bug"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1376,4 +1407,3 @@ msgstr "amaga el vídeo"
 
 #~ msgid "preferences"
 #~ msgstr "preferències"
-

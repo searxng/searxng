@@ -5,21 +5,23 @@
 # Translators:
 # df3fdd29c9d33426452a2db187d128e3, 2017
 # Issa1552 <fairfull.playing@gmail.com>, 2020
+# Matija Kromar <matija.kromar@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-05-20 07:19+0000\n"
-"Last-Translator: Anthony ocic <drake@zmmapperz.net>\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"Last-Translator: Matija Kromar <matija.kromar@gmail.com>\n"
+"Language-Team: Croatian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"hr/>\n"
 "Language: hr\n"
-"Language-Team: Croatian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/hr/>\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -115,12 +117,12 @@ msgstr "pitanja i odgovori"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr ""
+msgstr "spremišta"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "programski wikiji"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -172,11 +174,11 @@ msgstr "HTTP veza greška"
 
 #: searx/webapp.py:184
 msgid "proxy error"
-msgstr ""
+msgstr "greška zastupnika"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: searx/webapp.py:186
 msgid "too many requests"
@@ -263,13 +265,35 @@ msgstr "Nijedan sažetak nije dostupan za ovu objavu."
 msgid "Channel"
 msgstr "Kanal"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Nije moguće učitati sliku sa URL-a. Moguće da je u pitanju neispravan format "
+"dokumenta. TinEye samo podržava slike JPEG, PNG, GIF, BMP, TIFF i WebP "
+"formata."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Slika je previše jednostavna da bi se pronašla sličnost. TinEye zahtjeva "
+"osnovnu razinu detalja za pronalaženje sličnosti."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Sliku nije moguće preuzeti."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Pretvara niz u drukčije hash mješavine."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "hash digest"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -277,7 +301,7 @@ msgstr "Lokalnoime zamijeniti"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "Ponovo upišite rezultat hostnameova ili maknite rezultate"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -315,19 +339,23 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor plugin za provjeru"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Ovaj plugin provjerava da li je adresa zahtjeva TOR izlazna adresa, i šalje "
+"obavijest korisniku, kao check.torproject.org ali od strane searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"TOR lista izlaznih adresa (https://check.torproject.org/exit-addresses) je "
+"nedostupna."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -1357,4 +1385,3 @@ msgstr "sakrij video"
 
 #~ msgid "preferences"
 #~ msgstr "postavke"
-

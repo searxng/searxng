@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-21 21:02+0000\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Linerly <linerly@protonmail.com>\n"
 "Language-Team: Indonesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "id/>\n"
@@ -262,6 +262,28 @@ msgstr "Tidak ada abstrak yang tersedia untuk publikasi ini."
 msgid "Channel"
 msgstr "Saluran"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Tidak dapat membaca url gambar. Ini mungkin dikarenakan oleh format file "
+"yang tidak didukung. TinEye hanya mendukung gambar JPEG, PNG, GIF, BMP, "
+"TIFF, atau WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Gambar ini terlalu sederhana untuk menemukan kecocokan. TinEye membutuhkan "
+"sebuah detail yang dasar untuk mengenal kecocokan dengan berhasil."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Gambar ini tidak dapat diunduh."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Mengubah string menjadi hash digest yang berbeda."
@@ -322,21 +344,27 @@ msgstr "Plugin pemeriksaan Tor"
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
-msgstr "Plugin ini memeriksa jika alamat peminta adalah node"
+msgstr ""
+"Plugin ini memeriksa jika alamat peminta adalah node keluaran TOR, dan "
+"memberitahukan pengguna jika iya, seperti check.torproject.org tetapi dari "
+"searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"Daftar node keluar TOR (https://check.torproject.org/exit-addresses) "
+"tidak dapat dijangkau."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Anda menggunakan TOR. Alamat IP Anda adalah: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
 msgstr ""
+"Anda tidak menggunakan TOR. Alamat IP Anda terlihat sebagai: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
