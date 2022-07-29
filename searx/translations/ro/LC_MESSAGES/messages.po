@@ -7,27 +7,29 @@
 # Daniel Șerbănescu <daniel@serbanescu.dk>, 2018
 # Mihai Pora <mihai.pora@gmail.com>, 2019
 # lukasig <lukasig@hotmail.com>, 2022.
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-02 09:00+0000\n"
-"Last-Translator: lukasig <lukasig@hotmail.com>\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Romanian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"ro/>\n"
 "Language: ro\n"
-"Language-Team: Romanian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ro/>\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
-"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr "mai multe"
+msgstr "altele"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
@@ -264,6 +266,27 @@ msgstr "Niciun abstract disponibil pentru această publicație."
 #: searx/engines/qwant.py:214
 msgid "Channel"
 msgstr "Canal"
+
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Nu s-a putut citi url-ul imagini.Asta s-ar putea fi din cauza unui format "
+"nesuportat de fișier.Tineye suportă doar imagini care sunt JPEG, PNG,GIF."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Imaginea este prea simpla pentru a găsi potrivire. Tineye necesită un nivel  "
+"de baza de detalii pentru a găsi cu succes potriviri."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Imaginea nu-a putut fii descărcată."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -1371,4 +1394,3 @@ msgstr "ascunde video"
 
 #~ msgid "preferences"
 #~ msgstr "preferințe"
-

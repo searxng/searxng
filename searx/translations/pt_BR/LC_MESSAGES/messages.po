@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-21 21:02+0000\n"
-"Last-Translator: calb sepherus <calb.sepherus@protonmail.com>\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Portuguese (Brazil) <https://weblate.bubu1.eu/projects/"
 "searxng/searxng/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -273,6 +273,29 @@ msgstr "Nenhum resumo disponível para essa publicação."
 msgid "Channel"
 msgstr "Canal"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Não foi possível fazer a leitura desta URL. Isso pode ocorrido devido a um "
+"formato de arquivo não suportado. Apenas os seguintes tipos de imagem são "
+"suportados pelo TinEye: JPEG, PNG, GIF, BMP, TIFF ou WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Esta imagem é simples demais para achar outras correspondências. TinEye "
+"necessita de um nível básico de detalhe visual para identificar as "
+"correspondências."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Essa imagem não pode ser baixada."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Converte as sequências em diferentes resultados de hash."
@@ -334,12 +357,17 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Esse plugin checa se o endereço do requerimento é um nódulo de saída TOR,"
+" e informa o usuário se ele realmente for, parecido com "
+"check.torproject.org mas para searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"A lista de nódulos de saída TOR (https://check.torproject.org/exit-"
+"addresses) não pode ser alcançada."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."

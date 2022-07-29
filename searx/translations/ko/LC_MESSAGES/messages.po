@@ -8,16 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-19 05:45+0000\n"
-"PO-Revision-Date: 2022-07-06 00:21+0000\n"
+"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Sangha Lee <totoriato@gmail.com>\n"
+"Language-Team: Korean <https://weblate.bubu1.eu/projects/searxng/searxng/ko/>"
+"\n"
 "Language: ko\n"
-"Language-Team: Korean "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ko/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -63,9 +64,7 @@ msgstr "비디오"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr ""
-"ITSpecifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+msgstr "IT"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -263,6 +262,28 @@ msgstr "이 출판물에 대한 초록이 없습니다."
 msgid "Channel"
 msgstr "채널"
 
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"이미지 주소를 읽을 수 없습니다. 파일 포맷을 지원하지 않아 발생하는 문제일 "
+"수도 있습니다. TinEye는 JPEG, PNG, GIF, BMP, TIFF 그리고 WebP 이미지만 "
+"지원합니다."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"이미지가 너무 단순해 일치하는 항목을 찾을 수 없습니다. TinEye가 일치하는 "
+"이미지를 성공적으로 식별하기 위해선 최소 수준의 시각적 정보가 필요합니다;."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "다운로드할 수 없는 이미지입니다."
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
@@ -311,27 +332,31 @@ msgstr "쿼리가 \"ip\"인 경우 사용자의 IP를 표시하고 쿼리에 \"u
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor 검사 플러그인"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"이 플러그인은 요청한 주소가 TOR 출구 노드인지 확인하고 사용자에게 "
+"알려줍니다, check.torproject.org 와 비슷하지만 searxng 에서 제공됩니다."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
-msgstr ""
+msgstr "TOR 출구 노드 목록(https://check.torproject.org/exit-addresses)에 연결할 수 "
+"없습니다."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "TOR 를 사용하고 있습니다. 당신의 아이피 주소는 다음과 같습니다: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "TOR 를 사용하고 있지 않습니다. 당신의 아이피 주소는 다음과 같습니다: "
+"{ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -435,19 +460,19 @@ msgstr "프록시됨"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "GitHub 에서 새 이슈 시작하기"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "GitHub 에서 이 엔진에 대한 기존 버그를 확인하세요"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "제가 격은 버그에 대한 이슈가 존재하지 않은 것을 확인했습니다"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "공개 인스턴스라면 버그 보고서에 URL을 적어주세요"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1212,4 +1237,3 @@ msgstr "비디오 숨기기"
 
 #~ msgid "preferences"
 #~ msgstr "설정"
-
