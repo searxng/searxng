@@ -66,11 +66,11 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
 .. table:: Common options in the engine setup (``settings.yml``)
    :width: 100%
 
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
    argument                type        information
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
    name                    string      name of search-engine
-   engine                  string      name of searx-engine (filename without ``.py``)
+   engine                  string      name of searxng-engine (file name without ``.py``)
    enable_http             bool        enable HTTP (by default only HTTPS is enabled).
    shortcut                string      shortcut of search-engine
    timeout                 string      specific timeout for search-engine
@@ -78,7 +78,7 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
    proxies                 dict        set proxies for a specific engine
                                        (e.g. ``proxies : {http: socks5://proxy:port,
                                        https: socks5://proxy:port}``)
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
 
 .. _engine overrides:
 

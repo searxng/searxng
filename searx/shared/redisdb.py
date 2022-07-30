@@ -19,9 +19,12 @@ A redis DB connect can be tested by::
 
 """
 
+import os
+import pwd
 import logging
 import redis
 from searx import get_setting
+
 
 logger = logging.getLogger('searx.shared.redis')
 _client = None
@@ -42,6 +45,7 @@ def init():
         logger.info("connected redis DB --> %s", c.acl_whoami())
         return True
     except redis.exceptions.ConnectionError as exc:
-        logger.error("can't connet redis DB ...")
+        _pw = pwd.getpwuid(os.getuid())
+        logger.error("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
         logger.error("  %s", exc)
     return False

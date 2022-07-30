@@ -25,3 +25,10 @@ if os.path.isfile(OLD_SETTING):
             os.environ.get('SEARXNG_SETTINGS_PATH', '/etc/searxng/settings.yml')
         ))
     warnings.warn(msg, DeprecationWarning)
+
+from searx.shared import redisdb
+from searx import get_setting
+
+if not redisdb.init():
+    warnings.warn("can't connect to redis DB at: %s" % get_setting('redis.url'), RuntimeWarning, stacklevel=2)
+    warnings.warn("--> no bot protection without redis DB", RuntimeWarning, stacklevel=2)

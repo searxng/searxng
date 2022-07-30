@@ -55,10 +55,10 @@ admins can install packages in advance.
 
 If there is a need to install additional packages in *Python's Virtual
 Environment* of your SearXNG instance you need to switch into the environment
-(:ref:`searx-src`) first, for this you can use :ref:`searx.sh`::
+(:ref:`searxng-src`) first, for this you can use :ref:`searxng.sh`::
 
-  $ sudo utils/searx.sh shell
-  (searx-pyenv)$ pip install ...
+  $ sudo utils/searxng.sh instance cmd bash
+  (searxng-pyenv)$ pip install ...
 
 
 Private engines (Security)

@@ -1,33 +1,30 @@
 digraph G {
 
-  node [style=filled, shape=box, fillcolor="#ffffcc", fontname="Sans"];
+  node [style=filled, shape=box, fillcolor="#ffffcc", fontname=Sans];
   edge [fontname="Sans"];
 
-  browser [label="Browser", shape=Mdiamond];
-  rp      [label="Reverse Proxy", href="https://docs.searxng.org/utils/filtron.sh.html#public-reverse-proxy"];
-  filtron [label="Filtron",       href="https://docs.searxng.org/utils/filtron.sh.html"];
-  morty   [label="Morty",         href="https://docs.searxng.org/utils/morty.sh.html"];
-  static  [label="Static files",  href="url to configure static files"];
-  uwsgi   [label="uwsgi",         href="https://docs.searxng.org/utils/searx.sh.html"]
-  searx1  [label="Searx #1"];
-  searx2  [label="Searx #2"];
-  searx3  [label="Searx #3"];
-  searx4  [label="Searx #4"];
+  browser [label="browser", shape=tab, fillcolor=aliceblue];
+  rp      [label="reverse proxy"];
+  static  [label="static files", shape=folder, href="url to configure static files", fillcolor=lightgray];
+  uwsgi   [label="uwsgi", shape=parallelogram href="https://docs.searxng.org/utils/searx.sh.html"]
+  redis     [label="redis DB", shape=cylinder];
+  searxng1  [label="SearXNG #1", fontcolor=blue3];
+  searxng2  [label="SearXNG #2", fontcolor=blue3];
+  searxng3  [label="SearXNG #3", fontcolor=blue3];
+  searxng4  [label="SearXNG #4", fontcolor=blue3];
 
   browser -> rp [label="HTTPS"]
 
-  subgraph cluster_searx {
-      label = "Searx instance" fontname="Sans";
+  subgraph cluster_searxng {
+      label = "SearXNG instance" fontname=Sans;
       bgcolor="#fafafa";
       { rank=same; static rp };
-      rp -> morty      [label="optional: images and HTML pages proxy"];
-      rp -> static     [label="optional: reverse proxy serves directly static files"];
-      rp -> filtron    [label="HTTP"];
-      filtron -> uwsgi [label="HTTP"];
-      uwsgi -> searx1;
-      uwsgi -> searx2;
-      uwsgi -> searx3;
-      uwsgi -> searx4;
+      rp -> static  [label="optional: reverse proxy serves static files", fillcolor=slategray, fontcolor=slategray];
+      rp -> uwsgi [label="http:// (tcp) or unix:// (socket)"];
+      uwsgi -> searxng1 -> redis;
+      uwsgi -> searxng2 -> redis;
+      uwsgi -> searxng3 -> redis;
+      uwsgi -> searxng4 -> redis;
   }
 
 }
