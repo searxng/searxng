@@ -4,10 +4,14 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+# shellcheck source=utils/brand.env
+source "${REPO_ROOT}/utils/brand.env"
 
 # ----------------------------------------------------------------------------
 # config
 # ----------------------------------------------------------------------------
+
+PUBLIC_URL="${PUBLIC_URL:-${SEARXNG_URL}}"
 
 SERVICE_NAME="searx"
 SERVICE_USER="${SERVICE_USER:-${SERVICE_NAME}}"
@@ -24,6 +28,9 @@ usage::
   $(basename "$0") remove     all
 
 remove all:    complete uninstall of SearXNG service
+
+environment:
+  PUBLIC_URL   : ${PUBLIC_URL}
 EOF
 
     [[ -n ${1} ]] &&  err_msg "$1"

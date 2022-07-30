@@ -94,6 +94,20 @@ searx from or try::
    If you are migrate from searx take into account that the ``.config.sh`` is no
    longer used.
 
+If you upgrade from searx or from before :pull:`1332` has been merged and you
+have filtron and/or morty installed, don't forget to remove HTTP sites.
+
+Apache::
+
+  $ sudo -H ./utils/filtron.sh apache remove
+  $ sudo -H ./utils/morty.sh apache remove
+
+nginx::
+
+  $ sudo -H ./utils/filtron.sh nginx remove
+  $ sudo -H ./utils/morty.sh nginx remove
+
+
 
 Check after Installation
 ------------------------

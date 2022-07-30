@@ -4,10 +4,14 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+# shellcheck source=utils/brand.env
+source "${REPO_ROOT}/utils/brand.env"
 
 # ----------------------------------------------------------------------------
 # config
 # ----------------------------------------------------------------------------
+
+PUBLIC_URL="${PUBLIC_URL:-${SEARXNG_URL}}"
 
 FILTRON_ETC="/etc/filtron"
 
@@ -25,13 +29,16 @@ usage() {
     # shellcheck disable=SC1117
     cat <<EOF
 usage::
-  $(basename "$0") remove all]
+  $(basename "$0") remove all
   $(basename "$0") apache remove
   $(basename "$0") nginx  remove
 
 remove all     : drop all components of the filtron service
 apache remove  : drop apache site ${APACHE_FILTRON_SITE}
 nginx  remove  : drop nginx site ${NGINX_FILTRON_SITE}
+
+environment:
+  PUBLIC_URL   : ${PUBLIC_URL}
 EOF
 
     [[ -n ${1} ]] &&  err_msg "$1"
