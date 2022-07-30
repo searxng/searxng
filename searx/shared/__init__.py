@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import logging
+import importlib
 
 logger = logging.getLogger('searx.shared')
 
+__all__ = ['SharedDict', 'schedule']
+
 try:
-    import uwsgi
+    uwsgi = importlib.import_module('uwsgi')
 except:
     # no uwsgi
     from .shared_simple import SimpleSharedDict as SharedDict, schedule

@@ -6,7 +6,7 @@
 
 # import error is ignored because the admin has to install mysql manually to use
 # the engine
-import psycopg2  # pylint: disable=import-error
+import psycopg2  # pyright: ignore # pylint: disable=import-error
 
 engine_type = 'offline'
 host = "127.0.0.1"

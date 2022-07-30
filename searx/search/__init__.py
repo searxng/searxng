@@ -2,10 +2,11 @@
 # lint: pylint
 # pylint: disable=missing-module-docstring, too-few-public-methods
 
-import typing
 import threading
 from timeit import default_timer
 from uuid import uuid4
+
+import flask
 
 from searx import settings
 from searx.answerers import ask
@@ -181,7 +182,7 @@ class SearchWithPlugins(Search):
 
     __slots__ = 'ordered_plugin_list', 'request'
 
-    def __init__(self, search_query: SearchQuery, ordered_plugin_list, request: "flask.Request"):
+    def __init__(self, search_query: SearchQuery, ordered_plugin_list, request: flask.Request):
         super().__init__(search_query)
         self.ordered_plugin_list = ordered_plugin_list
         self.result_container.on_result = self._on_result

@@ -66,7 +66,7 @@ def searx_useragent() -> str:
     ).strip()
 
 
-def gen_useragent(os_string: str = None) -> str:
+def gen_useragent(os_string: Optional[str] = None) -> str:
     """Return a random browser User Agent
 
     See searx/data/useragents.json
@@ -570,7 +570,7 @@ def eval_xpath(element: ElementBase, xpath_spec: XPathSpecType):
         raise SearxEngineXPathException(xpath_spec, arg) from e
 
 
-def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: int = None):
+def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: Optional[int] = None):
     """Same as eval_xpath, check if the result is a list
 
     Args:

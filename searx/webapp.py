@@ -1303,7 +1303,7 @@ def opensearch():
 def favicon():
     theme = request.preferences.get_value("theme")
     return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
         'favicon.png',
         mimetype='image/vnd.microsoft.icon',
     )
