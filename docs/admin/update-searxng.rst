@@ -75,6 +75,13 @@ uninstalled.
    have old filtron, morty or searx setup you should consider complete
    uninstall/reinstall.
 
+Here you will find a list of changes that affect the infrastructure.  Please
+check to what extent it is necessary to update your installations:
+
+:pull:`1595`: ``[fix] uWSGI: increase buffer-size``
+  Re-install uWSGI (:ref:`searxng.sh`) or fix your uWSGI ``searxng.ini``
+  file manually.
+
 
 remove obsolete services
 ------------------------
