@@ -60,6 +60,7 @@ language_support = True
 use_locale_domain = True
 time_range_support = True
 safesearch = True
+send_accept_language_header = True
 
 RE_CACHE = {}
 
@@ -111,7 +112,6 @@ def request(query, params):
     """Google-Video search request"""
 
     lang_info = get_lang_info(params, supported_languages, language_aliases, False)
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     query_url = (
         'https://'

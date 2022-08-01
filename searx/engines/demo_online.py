@@ -20,6 +20,7 @@ from json import loads
 from urllib.parse import urlencode
 
 engine_type = 'online'
+send_accept_language_header = True
 categories = ['general']
 disabled = True
 timeout = 2.0

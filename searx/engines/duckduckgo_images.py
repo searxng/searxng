@@ -30,6 +30,7 @@ about = {
 categories = ['images', 'web']
 paging = True
 safesearch = True
+send_accept_language_header = True
 
 # search-url
 images_url = 'https://duckduckgo.com/i.js?{query}&s={offset}&p={safesearch}&o=json&vqd={vqd}'

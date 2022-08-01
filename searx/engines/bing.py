@@ -25,6 +25,7 @@ categories = ['general', 'web']
 paging = True
 time_range_support = False
 safesearch = False
+send_accept_language_header = True
 supported_languages_url = 'https://www.bing.com/account/general'
 language_aliases = {}
 
@@ -68,7 +69,6 @@ def request(query, params):
         logger.debug("headers.Referer --> %s", referer)
 
     params['url'] = base_url + search_path
-    params['headers']['Accept-Language'] = "en-US,en;q=0.5"
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     return params
 

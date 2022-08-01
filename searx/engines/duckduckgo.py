@@ -31,6 +31,7 @@ categories = ['general', 'web']
 paging = True
 supported_languages_url = 'https://duckduckgo.com/util/u588.js'
 time_range_support = True
+send_accept_language_header = True
 
 language_aliases = {
     'ar-SA': 'ar-XA',

@@ -440,6 +440,7 @@ engine is shown.  Most of the options have a default value or even are optional.
      engine: example
      shortcut: demo
      base_url: 'https://{language}.example.com/'
+     send_accept_language_header: false
      categories: general
      timeout: 3.0
      api_key: 'apikey'
@@ -487,6 +488,13 @@ engine is shown.  Most of the options have a default value or even are optional.
   Part of the URL that should be stable across every request.  Can be useful to
   use multiple sites using only one engine, or updating the site URL without
   touching at the code.
+
+``send_accept_language_header`` :
+  Several engines that support languages (or regions) deal with the HTTP header
+  ``Accept-Language`` to build a response that fits to the locale.  When this
+  option is activated, the language (locale) that is selected by the user is used
+  to build and send a ``Accept-Language`` header in the request to the origin
+  search engine.
 
 ``categories`` : optional
   Define in which categories this engine will be active.  Most of the time, it is
