@@ -9,20 +9,22 @@
 # Mingye Wang <arthur200126@gmail.com>, 2018
 # 黃柏諺 <s8321414@gmail.com>, 2020
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# GooGuJiang <gu@gmoe.cc>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-07-23 14:09+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-08-04 15:00+0000\n"
+"Last-Translator: GooGuJiang <gu@gmoe.cc>\n"
+"Language-Team: Chinese (Traditional) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -271,17 +273,20 @@ msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr ""
+msgstr "无法读取该图像网址。这可能是由于不支持的文件格式造成的。TinEye只支持JPEG、PNG"
+"、GIF、BMP、TIFF或WebP的图像。"
 
 #: searx/engines/tineye.py:46
+#, fuzzy
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr ""
+msgstr "图像信息过少，无法找到匹配的内容。TinEye需要一个基本的视觉细节水平来成功识别"
+"匹配。"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "无法下载该图像。"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -1348,4 +1353,3 @@ msgstr "隱藏影片"
 
 #~ msgid "preferences"
 #~ msgstr "偏好設定"
-
