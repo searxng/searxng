@@ -60,6 +60,17 @@ class OnlineProcessor(EngineProcessor):
         # add an user agent
         params['headers']['User-Agent'] = gen_useragent()
 
+        # add Accept-Language header
+        if self.engine.send_accept_language_header and search_query.locale:
+            ac_lang = search_query.locale.language
+            if search_query.locale.territory:
+                ac_lang = "%s-%s,%s;q=0.9,*;q=0.5" % (
+                    search_query.locale.language,
+                    search_query.locale.territory,
+                    search_query.locale.language,
+                )
+            params['headers']['Accept-Language'] = ac_lang
+
         return params
 
     def _send_http_request(self, params):

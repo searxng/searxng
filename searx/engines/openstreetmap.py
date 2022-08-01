@@ -30,6 +30,7 @@ about = {
 categories = ['map']
 paging = False
 language_support = True
+send_accept_language_header = True
 
 # search-url
 base_url = 'https://nominatim.openstreetmap.org/'
@@ -142,9 +143,8 @@ def request(query, params):
     params['url'] = base_url + search_string.format(query=urlencode({'q': query}))
     params['route'] = route_re.match(query)
     params['headers']['User-Agent'] = searx_useragent()
-
-    accept_language = 'en' if params['language'] == 'all' else params['language']
-    params['headers']['Accept-Language'] = accept_language
+    if 'Accept-Language' not in params['headers']:
+        params['headers']['Accept-Language'] = 'en'
     return params
 
 

@@ -52,6 +52,7 @@ language_support = True
 use_locale_domain = True
 time_range_support = True
 safesearch = False
+send_accept_language_header = True
 
 
 def time_range_url(params):
@@ -75,7 +76,6 @@ def request(query, params):
 
     offset = (params['pageno'] - 1) * 10
     lang_info = get_lang_info(params, supported_languages, language_aliases, False)
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     # subdomain is: scholar.google.xy
     lang_info['subdomain'] = lang_info['subdomain'].replace("www.", "scholar.")

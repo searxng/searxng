@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import typing
+import babel
 
 
 class EngineRef:
@@ -29,6 +30,7 @@ class SearchQuery:
         'query',
         'engineref_list',
         'lang',
+        'locale',
         'safesearch',
         'pageno',
         'time_range',
@@ -58,6 +60,13 @@ class SearchQuery:
         self.timeout_limit = timeout_limit
         self.external_bang = external_bang
         self.engine_data = engine_data or {}
+
+        self.locale = None
+        if self.lang:
+            try:
+                self.locale = babel.Locale.parse(self.lang, sep='-')
+            except babel.core.UnknownLocaleError:
+                pass
 
     @property
     def categories(self):

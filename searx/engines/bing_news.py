@@ -34,6 +34,7 @@ about = {
 categories = ['news']
 paging = True
 time_range_support = True
+send_accept_language_header = True
 
 # search-url
 base_url = 'https://www.bing.com/'

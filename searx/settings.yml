@@ -748,6 +748,7 @@ engines:
 
   - name: google play movies
     engine: xpath
+    send_accept_language_header: true
     search_url: https://play.google.com/store/search?q={query}&c=movies
     results_xpath: '//div[@class="ImZGtf mpg5gc"]'
     title_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a'

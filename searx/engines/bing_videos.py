@@ -30,6 +30,7 @@ categories = ['videos', 'web']
 paging = True
 safesearch = True
 time_range_support = True
+send_accept_language_header = True
 number_of_results = 28
 
 base_url = 'https://www.bing.com/'
@@ -69,10 +70,6 @@ def request(query, params):
     # time range
     if params['time_range'] in time_range_dict:
         params['url'] += time_range_string.format(interval=time_range_dict[params['time_range']])
-
-    # bing videos did not like "older" versions < 70.0.1 when selectin other
-    # languages then 'en' .. very strange ?!?!
-    params['headers']['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:73.0.1) Gecko/20100101 Firefox/73.0.1'
 
     return params
 

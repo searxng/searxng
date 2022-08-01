@@ -22,6 +22,8 @@ about = {
 }
 
 categories = ["files", "apps"]
+send_accept_language_header = True
+
 search_url = "https://play.google.com/store/search?{query}&c=apps"
 
 
