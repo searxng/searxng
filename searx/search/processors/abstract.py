@@ -138,6 +138,13 @@ class EngineProcessor(ABC):
         return False
 
     def get_params(self, search_query, engine_category):
+        """Returns a set of *request params* or ``None`` if request is not supported.
+
+        Not supported conditions (``None`` is returned):
+
+        - A page-number > 1 when engine does not support paging.
+        - A time range when the engine does not support time range.
+        """
         # if paging is not supported, skip
         if search_query.pageno > 1 and not self.engine.paging:
             return None
