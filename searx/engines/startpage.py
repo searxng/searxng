@@ -114,10 +114,16 @@ def request(query, params):
     #
     # [1] https://addons.mozilla.org/en-US/firefox/addon/startpage-private-search/
 
+    #set safesearch
+    family = ''
+    if params['safesearch'] == 0:
+        family += '26edcb9d2db7168438f47a16f48020b9b73edd4a5fcaba97fb11ce8497dd03cdab5b7b508ab460c642ebc4b8477d08d78cd0d3da8251a5b51b03aada722a0f62ef8c78b2ead007b6c7a7ac'
+        
     args = {
         'query': query,
         'page': params['pageno'],
         'cat': 'web',
+        'prfe': family,
         # 'pl': 'ext-ff',
         # 'extVersion': '1.3.0',
         # 'abp': "-1",
