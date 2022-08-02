@@ -18,6 +18,7 @@
 
 import re
 from urllib.parse import urlencode
+from random import random
 from lxml import html
 
 from searx.utils import (
@@ -127,7 +128,7 @@ def request(query, params):
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
 
-    params['cookies']['CONSENT'] = "YES+"
+    params['cookies']['CONSENT'] = "PENDING+" + str(random() * 100)
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     return params

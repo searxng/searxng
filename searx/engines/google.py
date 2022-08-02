@@ -26,6 +26,7 @@ The google WEB engine itself has a special setup option:
 """
 
 from urllib.parse import urlencode
+from random import random
 from lxml import html
 from searx.utils import match_language, extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 from searx.exceptions import SearxEngineCaptchaException
@@ -282,7 +283,7 @@ def request(query, params):
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
 
-    params['cookies']['CONSENT'] = "YES+"
+    params['cookies']['CONSENT'] = "PENDING+" + str(random() * 100)
     params['headers'].update(lang_info['headers'])
     if use_mobile_ui:
         params['headers']['Accept'] = '*/*'

@@ -6,6 +6,7 @@
 from functools import reduce
 from json import loads, dumps
 from urllib.parse import quote_plus
+from random import random
 
 # about
 about = {
@@ -36,7 +37,7 @@ base_youtube_url = 'https://www.youtube.com/watch?v='
 
 # do search-request
 def request(query, params):
-    params['cookies']['CONSENT'] = "YES+"
+    params['cookies']['CONSENT'] = "PENDING+" + str(random() * 100)
     if not params['engine_data'].get('next_page_token'):
         params['url'] = search_url.format(query=quote_plus(query), page=params['pageno'])
         if params['time_range'] in time_range_dict:

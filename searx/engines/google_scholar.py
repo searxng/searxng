@@ -13,6 +13,7 @@ Definitions`_.
 
 from urllib.parse import urlencode
 from datetime import datetime
+from random import random
 from lxml import html
 
 from searx.utils import (
@@ -91,7 +92,7 @@ def request(query, params):
     query_url += time_range_url(params)
     params['url'] = query_url
 
-    params['cookies']['CONSENT'] = "YES+"
+    params['cookies']['CONSENT'] = "PENDING+" + str(random() * 100)
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
