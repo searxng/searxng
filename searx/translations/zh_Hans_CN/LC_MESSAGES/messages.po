@@ -13,20 +13,22 @@
 # WhiredPlanck <fungdaat31@outlook.com>, 2020
 # wordpure <wordlesspure@gmail.com>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Academic tyro <y13593582403@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-07-01 07:18+0000\n"
+"PO-Revision-Date: 2022-08-05 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -276,6 +278,8 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"无法读取该图片网址。这可能是由于文件格式不受支持。 TinEye 仅支持 "
+"JPEG、PNG、GIF、BMP、TIFF 或 WebP 格式的图像。"
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -285,7 +289,7 @@ msgstr ""
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "无法下载该图像."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -335,7 +339,7 @@ msgstr "当您搜索「ip」时，这将会显示您的 IP 地址；同理，在
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor检查插件"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
@@ -347,15 +351,15 @@ msgstr ""
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
-msgstr ""
+msgstr "TOR出口节点(https://check.torproject.org/exit-addresses)不可达。"
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "你在使用TOR。你的IP地址应该是{ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "你没有在使用Tor。你的IP地址应该是{ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -457,11 +461,11 @@ msgstr "代理"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "在GitHub上提交一个新问题"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "请在 GitHub 上检查有关此引擎的现有错误"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -469,7 +473,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "如果这是一个公共问题，请在Bug报告页面提交URL"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1352,4 +1356,3 @@ msgstr "隐藏视频"
 
 #~ msgid "preferences"
 #~ msgstr "首选项"
-

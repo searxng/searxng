@@ -3,20 +3,22 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# PRATYAY MUSTAFI <pratyaymustafi@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-07-19 05:46+0000\n"
+"PO-Revision-Date: 2022-08-05 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Bengali <https://weblate.bubu1.eu/projects/searxng/searxng/bn/"
+">\n"
 "Language: bn\n"
-"Language-Team: Bengali "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/bn/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -181,7 +183,7 @@ msgstr "অনেক বেশি অনুরোধ"
 
 #: searx/webapp.py:187
 msgid "access denied"
-msgstr "অ্যাক্সেস অস্বীকৃত"
+msgstr "অ্যাক্সেস অমান্য"
 
 #: searx/webapp.py:188
 msgid "server API error"
@@ -266,16 +268,20 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"ছবির url টি পড়তে পারা যাচ্ছে না । এটি হতে পারে ফাইল ফরম্যাট এর পড়তে না পারা"
+"র জন্যে। TinEye কেবল JPEG, PNG, GIF, BMP, TIFF আর WebP ফরম্যাট কে পড়তে পারে।"
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"এই ছবিটি খুবই সাধারণ হওয়ায় কোন মিল পাওয়া যাচ্ছে না। TinEye এর একটু চাক্ষু"
+"ষ বিস্তর প্রয়োজন সফল ভাবে মিল পাওয়ার জন্যে ।"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "ছবিটি ডাউনলোড করা যায়নি ।"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -295,27 +301,31 @@ msgstr "ফলাফল হোস্টনাম পুনরায় লিখ
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Open Access DOI পুনর্লিখন"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"Paywall এড়িয়ে চলতে প্রকাশন গুলির open-access সংস্করণে রিডাইরেক্ট করুন উপলব্"
+"ধ থাকলে"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
-msgstr ""
+msgstr "বিভাগ নির্বাচন খুঁজে দেখুন"
 
 #: searx/plugins/search_on_category_select.py:20
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
+"যখন একটি বিভাগ নির্বাচন করা হয়, অনুসন্ধান অবিলম্বে সঞ্চালিত হয়. একাধিক বিভা"
+"গ নির্বাচন করতে অক্ষম করুন। (জাভাস্ক্রিপ্ট প্রয়োজন)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr ""
+msgstr "নিজের তথ্য"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -325,7 +335,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "টর চেক প্লাগইন"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
@@ -1110,4 +1120,3 @@ msgstr ""
 
 #~ msgid "preferences"
 #~ msgstr "পছন্দসমূহ"
-
