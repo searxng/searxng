@@ -9,20 +9,22 @@
 # Mingye Wang <arthur200126@gmail.com>, 2018
 # 黃柏諺 <s8321414@gmail.com>, 2020
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# GooGuJiang <gu@gmoe.cc>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-07-23 14:09+0000\n"
+"PO-Revision-Date: 2022-08-05 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Chinese (Traditional) <https://weblate.bubu1.eu/projects/"
+"searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -271,17 +273,19 @@ msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr ""
+msgstr "無法存取該圖像網址。這可能是因為不支援的文件格式造成的。TinEye只支持JPEG、PNG"
+"、GIF、BMP、TIFF或WebP的圖像。"
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr ""
+msgstr "圖片訊息量過少，無法找到相符的結果。TinEye需要一個更基礎的圖片細節以成功辨識"
+"相符的結果。"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "圖片無法下載。。"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -297,7 +301,7 @@ msgstr "主機名替換"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "重寫結果的主機名或基於主機名移除結果"
+msgstr "重寫結果的主機名或在此主機名移除結果"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -321,7 +325,7 @@ msgstr "若分類被選取時立刻執行搜尋。停用以選取多個分類。
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
-msgstr "自身信息"
+msgstr "自身訊息"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -331,7 +335,7 @@ msgstr "若搜尋字串爲「ip」則顯示您的 IP，而若是「user agent」
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr "Tor 網絡檢測"
+msgstr "Tor 網路檢測"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
@@ -1348,4 +1352,3 @@ msgstr "隱藏影片"
 
 #~ msgid "preferences"
 #~ msgstr "偏好設定"
-
