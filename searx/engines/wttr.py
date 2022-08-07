@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""wttr.in"""
+"""wttr.in (weather forecast service)"""
 
 from json import loads
 from urllib.parse import quote
@@ -8,7 +8,7 @@ from flask_babel import gettext
 
 about = {
     "website": "https://wttr.in",
-    "wikidata_id": None,
+    "wikidata_id": "Q107586666",
     "official_api_documentation": "https://github.com/chubin/wttr.in#json-output",
     "use_official_api": True,
     "require_api_key": False,
