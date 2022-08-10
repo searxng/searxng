@@ -9,16 +9,16 @@ https://www.qwant.com/ queries.
 This implementation is used by different qwant engines in the settings.yml::
 
   - name: qwant
-    categories: general
+    qwant_categ: web
     ...
   - name: qwant news
-    categories: news
+    qwant_categ: news
     ...
   - name: qwant images
-    categories: images
+    qwant_categ: images
     ...
   - name: qwant videos
-    categories: videos
+    qwant_categ: videos
     ...
 
 """
@@ -50,13 +50,7 @@ about = {
 categories = []
 paging = True
 supported_languages_url = about['website']
-
-category_to_keyword = {
-    'general': 'web',
-    'news': 'news',
-    'images': 'images',
-    'videos': 'videos',
-}
+qwant_categ = None  # web|news|inages|videos
 
 # search-url
 url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={offset}'
@@ -64,10 +58,9 @@ url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={o
 
 def request(query, params):
     """Qwant search request"""
-    keyword = category_to_keyword[categories[0]]
     count = 10  # web: count must be equal to 10
 
-    if keyword == 'images':
+    if qwant_categ == 'images':
         count = 50
         offset = (params['pageno'] - 1) * count
         # count + offset must be lower than 250
@@ -78,7 +71,7 @@ def request(query, params):
         offset = min(offset, 40)
 
     params['url'] = url.format(
-        keyword=keyword,
+        keyword=qwant_categ,
         query=urlencode({'q': query}),
         offset=offset,
         count=count,
@@ -103,7 +96,6 @@ def response(resp):
     """Get response from Qwant's search request"""
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
-    keyword = category_to_keyword[categories[0]]
     results = []
 
     # load JSON result
@@ -125,7 +117,7 @@ def response(resp):
     # raise for other errors
     raise_for_httperror(resp)
 
-    if keyword == 'web':
+    if qwant_categ == 'web':
         # The WEB query contains a list named 'mainline'.  This list can contain
         # different result types (e.g. mainline[0]['type'] returns type of the
         # result items in mainline[0]['items']
@@ -136,7 +128,7 @@ def response(resp):
         # result['items'].
         mainline = data.get('result', {}).get('items', [])
         mainline = [
-            {'type': keyword, 'items': mainline},
+            {'type': qwant_categ, 'items': mainline},
         ]
 
     # return empty array if there are no results
@@ -146,7 +138,7 @@ def response(resp):
     for row in mainline:
 
         mainline_type = row.get('type', 'web')
-        if mainline_type != keyword:
+        if mainline_type != qwant_categ:
             continue
 
         if mainline_type == 'ads':
