@@ -261,7 +261,7 @@ def request(query, params):
     if use_mobile_ui:
         additional_parameters = {
             'asearch': 'arc',
-            'async': 'use_ac:true,_fmt:pc',
+            'async': 'use_ac:true,_fmt:html',
         }
 
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
