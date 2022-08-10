@@ -1863,6 +1863,26 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: sourcehut
+    shortcut: srht
+    engine: xpath
+    paging: true
+    search_url: https://sr.ht/projects?page={pageno}&search={query}
+    results_xpath: (//div[@class="event-list"])[1]/div[@class="event"]
+    url_xpath: ./h4/a[2]/@href
+    title_xpath: ./h4/a[2]
+    content_xpath: ./p
+    first_page_num: 1
+    categories: [it, repos]
+    disabled: true
+    about:
+      website: https://sr.ht
+      wikidata_id: Q78514485
+      official_api_documentation: https://man.sr.ht/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
 #  - name: ubuntuwiki
