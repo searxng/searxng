@@ -244,7 +244,9 @@ class ViewsTestCase(SearxTestCase):
     def test_opensearch_xml(self):
         result = self.app.get('/opensearch.xml')
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<Description>a privacy-respecting, hackable metasearch engine</Description>', result.data)
+        self.assertIn(
+            b'<Description>SearXNG is a metasearch engine that respects your privacy.</Description>', result.data
+        )
 
     def test_favicon(self):
         result = self.app.get('/favicon.ico')
