@@ -10,13 +10,14 @@
 # rike, 2014
 # stf <stefan.marsiske@gmail.com>, 2014
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Shopimisrel <shopisrael12@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-08-05 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-08-12 07:18+0000\n"
+"Last-Translator: Shopimisrel <shopisrael12@gmail.com>\n"
 "Language-Team: Hebrew <https://weblate.bubu1.eu/projects/searxng/searxng/he/>"
 "\n"
 "Language: he\n"
@@ -275,6 +276,8 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"לא ניתן היה לקרוא את כתובת האתר של התמונה. ייתכן שהסיבה לכך היא פורמט קובץ "
+"שאינו נתמך. TinEye תומך רק בתמונות שהן JPEG, PNG, GIF, BMP, TIFF או WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -342,27 +345,31 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "טור בודק תוסף"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"תוסף זה בודק אם הכתובת של הבקשה היא צומת יציאה של TOR, ומודיע למשתמש אם כן, "
+"כמו check.torproject.org אבל מ-searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"רשימת צומת היציאה של TOR (https://check.torproject.org/exit-addresses) אינה "
+"ניתנת לגישה."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "אתה משתמש ב-TOR. נראה שכתובת ה-IP שלך היא: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "אתה לא משתמש ב-TOR. נראה שכתובת ה-IP שלך היא: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -466,19 +473,19 @@ msgstr "פרוקסי"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "התחל להגיש גיליון חדש ב- GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "בדוק אם קיימים באגים לגבי מנוע זה ב-GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "אני מאשר שאין באג קיים לגבי הבעיה שאני נתקל בה"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "אם זה מופע ציבורי, אנא ציין את כתובת האתר בדוח הבאג"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -624,7 +631,7 @@ msgstr "בחר אוטומטית כדי לשמור על התאמה עם הגדר�
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
-msgstr ""
+msgstr "יישור מרכז"
 
 #: searx/templates/simple/preferences.html:220
 #: searx/templates/simple/preferences.html:232
@@ -640,7 +647,7 @@ msgstr "כבוי"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "מציג תוצאות במרכז העמוד (פריסת אוסקר)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -823,13 +830,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "כתובת אתר לשחזור ההעדפות שלך בדפדפן אחר"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"ניתן להשתמש בציון הגדרות מותאמות אישית בכתובת ההעדפות כדי לסנכרן העדפות בין "
+"מכשירים."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""

@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-08-04 19:15+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-08-12 07:18+0000\n"
+"Last-Translator: Edrean Ernst <edrean@allesbeste.com>\n"
 "Language-Team: Afrikaans <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "af/>\n"
 "Language: af\n"
@@ -171,7 +171,7 @@ msgstr "HTTP koppelingsfout"
 
 #: searx/webapp.py:184
 msgid "proxy error"
-msgstr ""
+msgstr "proksie fout"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
@@ -309,6 +309,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"Vermy betaalmure deur na ope-toegang weergawes van publikasies te herlei "
+"wanneer beskikbaar"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -319,6 +321,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories. (JavaScript required)"
 msgstr ""
+"Doen soektog onmiddelik indien 'n kategorie geselekteer is. Deaktiveer om "
+"veelvoudige kategoriee te selekteer. (JavaScript benodig)"
 
 #: searx/plugins/self_info.py:20
 msgid "Self Informations"
@@ -329,6 +333,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"Vertoon jou IP indien die navraag \"ip\" is en jou gebruiker agent indien "
+"die navraag \"user agent\" bevat."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -339,20 +345,25 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Hierdie inprop toepassing kontroleer of die adres van die versoek 'n TOR "
+"uitgang nodus is en stel die gebruiker in kennis indien wel, soos "
+"check.torproject.org maar vanaf searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"Die TOR uitgang nodus lys (https://check.torproject.org/exit-addresses) is "
+"nie bereikbaar nie."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Jy gebruik tans TOR. Jou IP adres lyk na : {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Jy gebruik nie tans TOR nie. Jou IP adres lyk na: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -374,33 +385,33 @@ msgstr ""
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
-msgstr ""
+msgstr "Bladsy nie gevind"
 
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr ""
+msgstr "Gaan na %(search_page)s."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
-msgstr ""
+msgstr "soekblad"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Aangaande"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
-msgstr ""
+msgstr "Skenk"
 
 #: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
 msgid "Preferences"
-msgstr ""
+msgstr "Voorkeure"
 
 #: searx/templates/simple/base.html:64
 msgid "Powered by"
-msgstr ""
+msgstr "Aangedryf deur"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, hackable metasearch engine"
@@ -408,7 +419,7 @@ msgstr ""
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
-msgstr ""
+msgstr "Bronkode"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
@@ -416,7 +427,7 @@ msgstr ""
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr ""
+msgstr "Enjin statistieke"
 
 #: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
@@ -425,7 +436,7 @@ msgstr ""
 
 #: searx/templates/simple/base.html:72
 msgid "Privacy policy"
-msgstr ""
+msgstr "Privaatheidsbeleid"
 
 #: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
@@ -433,16 +444,16 @@ msgstr ""
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
-msgstr ""
+msgstr "Kliek op die vergrootglas om 'n soektog te doen"
 
 #: searx/templates/simple/macros.html:36
 msgid "Length"
-msgstr ""
+msgstr "Lengte"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
 msgid "Author"
-msgstr ""
+msgstr "Outeur"
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
@@ -454,15 +465,15 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Begin om 'n nuwe probleem op GitHub in te dien"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Kyk asseblief vir bestaande goggas vir hierdie enjin op GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "Ek bevestig daar is geen bestaande gogga oor die probleem wat ek teekom"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -470,11 +481,11 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Dien 'n nuwe probleem in op GitHub insluitend die bogenoemde inligting"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "Geen HTTPS"
 
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
@@ -486,17 +497,17 @@ msgstr ""
 #: searx/templates/simple/preferences.html:53
 #: searx/templates/simple/stats.html:67
 msgid "Median"
-msgstr ""
+msgstr "Mediaan"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:73
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:79
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
@@ -504,37 +515,37 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr ""
+msgstr "Foute:"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
-msgstr ""
+msgstr "Verstek kategoriee"
 
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
-msgstr ""
+msgstr "Soek taal"
 
 #: searx/templates/simple/filters/languages.html:2
 #: searx/templates/simple/preferences.html:118
 msgid "Default language"
-msgstr ""
+msgstr "Verstek taal"
 
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
-msgstr ""
+msgstr "Watter taal verkies jy vir soek?"
 
 #: searx/templates/simple/preferences.html:129
 msgid "Autocomplete"
-msgstr ""
+msgstr "Outovoltooi"
 
 #: searx/templates/simple/preferences.html:138
 msgid "Find stuff as you type"
-msgstr ""
+msgstr "Vind goed soos jy tik"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -543,26 +554,26 @@ msgstr ""
 #: searx/templates/simple/preferences.html:143
 #: searx/templates/simple/preferences.html:311
 msgid "SafeSearch"
-msgstr ""
+msgstr "SafeSearch"
 
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
-msgstr ""
+msgstr "Streng"
 
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
 msgid "Moderate"
-msgstr ""
+msgstr "Matig"
 
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: searx/templates/simple/preferences.html:151
 msgid "Filter content"
-msgstr ""
+msgstr "Filter inhoud"
 
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
@@ -592,23 +603,23 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
-msgstr ""
+msgstr "Verander die uitleg taal"
 
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Verander SearXNG uitleg"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Theme style"
-msgstr ""
+msgstr "Tema styl"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Kies outo om jou blaaier verstellings te volg"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
@@ -618,41 +629,43 @@ msgstr ""
 #: searx/templates/simple/preferences.html:232
 #: searx/templates/simple/preferences.html:244
 msgid "On"
-msgstr ""
+msgstr "Aan"
 
 #: searx/templates/simple/preferences.html:221
 #: searx/templates/simple/preferences.html:233
 #: searx/templates/simple/preferences.html:245
 msgid "Off"
-msgstr ""
+msgstr "Af"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Vertoon resultate in die middel van die bladsy (Oscar uitleg)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
-msgstr ""
+msgstr "Resultate op nuwe oortjies"
 
 #: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
-msgstr ""
+msgstr "Maak resultaat skakels oop in nuwe blaaier oortjies"
 
 #: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
-msgstr ""
+msgstr "Oneindige blaai"
 
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
+"Laai die volgende bladsy outomaties wanneer blaai na die onderkant van die "
+"huidige bladsy"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
-msgstr ""
+msgstr "Privaatheid"
 
 #: searx/templates/simple/preferences.html:257
 msgid "HTTP Method"
-msgstr ""
+msgstr "HTTP Metode"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
@@ -660,42 +673,47 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Verander hoe vorms ingedien word, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\"> leer meer "
+"oor versoek metodes</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
-msgstr ""
+msgstr "Beeld proksie"
 
 #: searx/templates/simple/preferences.html:272
 #: searx/templates/simple/preferences.html:284
 msgid "Enabled"
-msgstr ""
+msgstr "Geaktiveer"
 
 #: searx/templates/simple/preferences.html:273
 #: searx/templates/simple/preferences.html:285
 msgid "Disabled"
-msgstr ""
+msgstr "Gedeaktiveer"
 
 #: searx/templates/simple/preferences.html:276
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Proksie beeld resultate deur SearXNG"
 
 #: searx/templates/simple/preferences.html:281
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Navraag in die bladsy se titel"
 
 #: searx/templates/simple/preferences.html:288
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Wanneer geaktiveer sal die resultaat se bladsy titel jou navraag bevat. Jou "
+"blaaier kan hierdie titel opneem"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
-msgstr ""
+msgstr "Enjins"
 
 #: searx/templates/simple/preferences.html:295
 msgid "Currently used search engines"
-msgstr ""
+msgstr "Huidige gebruikte soekenjins"
 
 #: searx/templates/simple/preferences.html:302
 msgid ""
@@ -706,59 +724,59 @@ msgstr ""
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
 msgid "Allow"
-msgstr ""
+msgstr "Laat toe"
 
 #: searx/templates/simple/preferences.html:308
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr ""
+msgstr "Enjin naam"
 
 #: searx/templates/simple/preferences.html:309
 msgid "Shortcut"
-msgstr ""
+msgstr "Kortpad"
 
 #: searx/templates/simple/preferences.html:310
 msgid "Supports selected language"
-msgstr ""
+msgstr "Ondersteun gekose taal"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:312
 msgid "Time range"
-msgstr ""
+msgstr "Tydreeks"
 
 #: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Reaksietyd"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Max time"
-msgstr ""
+msgstr "Maks tyd"
 
 #: searx/templates/simple/preferences.html:315
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Betroubaarheid"
 
 #: searx/templates/simple/preferences.html:353
 msgid "Special Queries"
-msgstr ""
+msgstr "Spesiale Navrae"
 
 #: searx/templates/simple/preferences.html:359
 msgid "Keywords"
-msgstr ""
+msgstr "Sleutelwoorde"
 
 #: searx/templates/simple/preferences.html:360
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: searx/templates/simple/preferences.html:361
 msgid "Description"
-msgstr ""
+msgstr "Beskrywing"
 
 #: searx/templates/simple/preferences.html:362
 msgid "Examples"
-msgstr ""
+msgstr "Voorbeelde"
 
 #: searx/templates/simple/preferences.html:365
 msgid "This is the list of SearXNG's instant answering modules."
@@ -770,7 +788,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:393
 msgid "Cookies"
-msgstr ""
+msgstr "Koekies"
 
 #: searx/templates/simple/preferences.html:395
 msgid ""
