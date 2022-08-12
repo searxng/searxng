@@ -52,6 +52,9 @@ paging = True
 supported_languages_url = about['website']
 qwant_categ = None  # web|news|inages|videos
 
+safesearch = True
+safe_search_map = {0: '&safesearch=0', 1: '&safesearch=1', 2: '&safesearch=2'}
+
 # fmt: off
 qwant_news_locales = [
     'ca_ad', 'ca_es', 'ca_fr', 'co_fr', 'de_at', 'de_ch', 'de_de', 'en_au',
@@ -94,6 +97,9 @@ def request(query, params):
     # add quant's locale
     q_locale = get_engine_locale(params['language'], supported_languages, default='en_US')
     params['url'] += '&locale=' + q_locale
+
+    # add safesearch option
+    params['url'] += safe_search_map.get(params['safesearch'], '')
 
     params['raise_for_httperror'] = False
     return params
