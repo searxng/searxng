@@ -963,6 +963,13 @@ engines:
   - name: neeva
     engine: xpath
     shortcut: nv
+    time_range_support: true
+    time_range_url: '&alf%5Bfreshness%5D={time_range_val}'
+    time_range_map:
+      day: 'Day'
+      week: 'Week'
+      month: 'Month'
+      year: 'Year'
     search_url: https://neeva.com/search?q={query}&c=All&src=Pagination&page={pageno}{time_range}
     results_xpath: //div[@class="web-index__component-2rKiM"] | //li[@class="web-rich-deep-links__deepLink-SIbD4"]
     url_xpath: .//a[@class="lib-doc-title__link-1b9rC"]/@href | ./h2/a/@href
@@ -977,6 +984,7 @@ engines:
     disabled: true
     categories: [general, web]
     timeout: 5.0
+    soft_max_redirects: 2
     about:
       website: https://neeva.com
       official_api_documentation:
