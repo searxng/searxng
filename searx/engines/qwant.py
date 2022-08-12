@@ -30,11 +30,11 @@ from datetime import (
 from json import loads
 from urllib.parse import urlencode
 from flask_babel import gettext
+import babel
 
-from searx.utils import match_language
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
-
+from searx.locales import get_engine_locale
 
 # about
 about = {
@@ -52,12 +52,26 @@ paging = True
 supported_languages_url = about['website']
 qwant_categ = None  # web|news|inages|videos
 
+# fmt: off
+qwant_news_locales = [
+    'ca_ad', 'ca_es', 'ca_fr', 'co_fr', 'de_at', 'de_ch', 'de_de', 'en_au',
+    'en_ca', 'en_gb', 'en_ie', 'en_my', 'en_nz', 'en_us', 'es_ad', 'es_ar',
+    'es_cl', 'es_co', 'es_es', 'es_mx', 'es_pe', 'eu_es', 'eu_fr', 'fc_ca',
+    'fr_ad', 'fr_be', 'fr_ca', 'fr_ch', 'fr_fr', 'it_ch', 'it_it', 'nl_be',
+    'nl_nl', 'pt_ad', 'pt_pt',
+]
+# fmt: on
+
 # search-url
 url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={offset}'
 
 
 def request(query, params):
     """Qwant search request"""
+
+    if not query:
+        return None
+
     count = 10  # web: count must be equal to 10
 
     if qwant_categ == 'images':
@@ -77,16 +91,9 @@ def request(query, params):
         count=count,
     )
 
-    # add language tag
-    if params['language'] == 'all':
-        params['url'] += '&locale=en_US'
-    else:
-        language = match_language(
-            params['language'],
-            supported_languages,
-            language_aliases,
-        )
-        params['url'] += '&locale=' + language.replace('-', '_')
+    # add quant's locale
+    q_locale = get_engine_locale(params['language'], supported_languages, default='en_US')
+    params['url'] += '&locale=' + q_locale
 
     params['raise_for_httperror'] = False
     return params
@@ -230,19 +237,43 @@ def response(resp):
     return results
 
 
-# get supported languages from their site
 def _fetch_supported_languages(resp):
-    # list of regions is embedded in page as a js object
-    response_text = resp.text
-    response_text = response_text[response_text.find('INITIAL_PROPS') :]
-    response_text = response_text[response_text.find('{') : response_text.find('</script>')]
 
-    regions_json = loads(response_text)
+    text = resp.text
+    text = text[text.find('INITIAL_PROPS') :]
+    text = text[text.find('{') : text.find('</script>')]
 
-    supported_languages = []
-    for country, langs in regions_json['locales'].items():
-        for lang in langs['langs']:
-            lang_code = "{lang}-{country}".format(lang=lang, country=country)
-            supported_languages.append(lang_code)
+    q_initial_props = loads(text)
+    q_locales = q_initial_props.get('locales')
+    q_valid_locales = []
+
+    for country, v in q_locales.items():
+        for lang in v['langs']:
+            _locale = "{lang}_{country}".format(lang=lang, country=country)
+
+            if qwant_categ == 'news' and _locale.lower() not in qwant_news_locales:
+                # qwant-news does not support all locales from qwant-web:
+                continue
+
+            q_valid_locales.append(_locale)
+
+    supported_languages = {}
+
+    for q_locale in q_valid_locales:
+        try:
+            locale = babel.Locale.parse(q_locale, sep='_')
+        except babel.core.UnknownLocaleError:
+            print("ERROR: can't determine babel locale of quant's locale %s" % q_locale)
+            continue
+
+        # note: supported_languages (dict)
+        #
+        #   dict's key is a string build up from a babel.Locale object / the
+        #   notation 'xx-XX' (and 'xx') conforms to SearXNG's locale (and
+        #   language) notation and dict's values are the locale strings used by
+        #   the engine.
+
+        searxng_locale = locale.language + '-' + locale.territory  # --> params['language']
+        supported_languages[searxng_locale] = q_locale
 
     return supported_languages
