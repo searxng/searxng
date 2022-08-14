@@ -217,7 +217,7 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
         locale = babel.Locale.parse(searxng_locale, sep='-')
     except babel.core.UnknownLocaleError:
         try:
-            locale = babel.Locale.parse(searxng_locale.split('-')[1])
+            locale = babel.Locale.parse(searxng_locale.split('-')[0])
         except babel.core.UnknownLocaleError:
             return default
 
