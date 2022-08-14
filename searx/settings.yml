@@ -1198,6 +1198,7 @@ engines:
       results: HTML
 
   - name: qwant
+    qwant_categ: web
     engine: qwant
     shortcut: qw
     categories: [general, web]
@@ -1206,6 +1207,7 @@ engines:
       rosebud: *test_rosebud
 
   - name: qwant news
+    qwant_categ: news
     engine: qwant
     shortcut: qwn
     categories: news
@@ -1213,6 +1215,7 @@ engines:
     network: qwant
 
   - name: qwant images
+    qwant_categ: images
     engine: qwant
     shortcut: qwi
     categories: [images, web]
@@ -1220,6 +1223,7 @@ engines:
     network: qwant
 
   - name: qwant videos
+    qwant_categ: videos
     engine: qwant
     shortcut: qwv
     categories: [videos, web]
