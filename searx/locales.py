@@ -213,7 +213,13 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
         # need to narrow language nor territory.
         return engine_locale
 
-    locale = babel.Locale.parse(searxng_locale, sep='-')
+    try:
+        locale = babel.Locale.parse(searxng_locale, sep='-')
+    except babel.core.UnknownLocaleError:
+        try:
+            locale = babel.Locale.parse(searxng_locale.split('-')[1])
+        except babel.core.UnknownLocaleError:
+            return default
 
     # SearXNG's selected locale is not supported by the engine ..
 
