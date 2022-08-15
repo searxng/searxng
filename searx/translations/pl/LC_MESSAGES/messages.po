@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-08-12 07:18+0000\n"
+"PO-Revision-Date: 2022-08-19 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Polish <https://weblate.bubu1.eu/projects/searxng/searxng/pl/>"
 "\n"
@@ -280,6 +280,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Zdjęcie jest za proste by znaleźć wyniki TinEye wymaga prostego poziomu "
+"szczegółów wizualnych aby poprawnie zidentyfikować wyniki."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -339,19 +341,24 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Sprawdzenie plugin TOR"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Ten plugin sprawdza, czy adres wysyłający zapytanie jest węzłem wyjściowym "
+"sieci Tor, i powiadamia użytkownika jeśli jest, tak jak check.torproject.org "
+"ale z searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"Lista węzłów wyjsciowych sieci Tor (https://check.torproject.org/exit-"
+"addresses) jest nieosiągalna."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
