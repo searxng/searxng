@@ -62,7 +62,12 @@ def response(resp):
 
     for user in json_res['users'].values():
         results.append(
-            {'title': user['name'], 'content': user['description'], 'url': 'https://twitter.com/' + user['screen_name']}
+            {
+                'title': user['name'],
+                'content': user['description'],
+                'url': 'https://twitter.com/' + user['screen_name'],
+                'img_src': user['profile_image_url_https'],
+            }
         )
 
     return results
