@@ -27,6 +27,8 @@ def request(query, params):
     params['url'] = search_url.format(url=url, query=urlencode({'q': query}))
 
     params['headers'] = {
+        # This token is used in the Twitter web interface (twitter.com). Without this header, the API doesn't work.
+        # The value of the token has never changed (or maybe once a long time ago).
         # https://github.com/zedeus/nitter/blob/5f31e86e0e8578377fa7d5aeb9631bbb2d35ef1e/src/consts.nim#L5
         'Authorization': (
             "Bearer AAAAAAAAAAAAAAAAAAAAAPYXBAAAAAAACLXUNDekMxqa8h%2F40K4moUkGsoc%3DTYfbDKb"
