@@ -1808,6 +1808,7 @@ engines:
     url_xpath: //div[@class="upper-synonyms"]/a/@href
     content_xpath: //div[@class="synonyms-list-group"]
     title_xpath: //div[@class="upper-synonyms"]/a
+    raise_for_httperror: false
     about:
       website: https://www.woxikon.de/
       wikidata_id:  # No Wikidata ID

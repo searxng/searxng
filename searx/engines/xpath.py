@@ -60,6 +60,9 @@ lang_all = 'en'
 '''Replacement ``{lang}`` in :py:obj:`search_url` if language ``all`` is
 selected.
 '''
+raise_for_httperror = True
+'''True by default: raise an exception if the HTTP code of response is ``>=
+300``'''
 
 soft_max_redirects = 0
 '''Maximum redirects, soft limit. Record an error but don't stop the engine'''
@@ -176,7 +179,7 @@ def request(query, params):
 
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
-
+    params['raise_for_httperror'] = raise_for_httperror
     return params
 
 
