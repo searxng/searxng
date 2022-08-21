@@ -217,7 +217,7 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
         locale = babel.Locale.parse(searxng_locale, sep='-')
     except babel.core.UnknownLocaleError:
         try:
-            locale = babel.Locale.parse(searxng_locale.split('-')[1])
+            locale = babel.Locale.parse(searxng_locale.split('-')[0])
         except babel.core.UnknownLocaleError:
             return default
 
@@ -252,8 +252,12 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
             terr_lang_dict[territory] = langs.get(searxng_lang)
 
         # first: check fr-FR, de-DE .. is supported by the engine
+        # exception: 'en' --> 'en-US'
 
         territory = locale.language.upper()
+        if territory == 'EN':
+            territory = 'US'
+
         if terr_lang_dict.get(territory):
             searxng_locale = locale.language + '-' + territory
             engine_locale = engine_locales.get(searxng_locale)
