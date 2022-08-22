@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-# pylint: disable=C0103
+# pylint: disable=invalid-name
 """9GAG (social media)"""
 
 from json import loads
