@@ -80,7 +80,7 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    for result in dom.xpath('//div[@class="dg_u"]'):
+    for result in dom.xpath('//div[@class="dg_u"]/div[contains(@class, "mc_vtvc")]'):
         metadata = loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
         info = ' - '.join(result.xpath('.//div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
         content = '{0} - {1}'.format(metadata['du'], info)
