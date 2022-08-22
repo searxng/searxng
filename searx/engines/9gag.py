@@ -34,9 +34,9 @@ def request(query, params):
 def response(resp):
     results = []
 
-    json_results = loads(resp.text)['data']['posts']
+    json_results = loads(resp.text)['data']
 
-    for result in json_results:
+    for result in json_results['posts']:
         result_type = result['type']
 
         if result_type == 'Photo':
@@ -62,5 +62,9 @@ def response(resp):
                     'thumbnail': result['images']['imageFbThumbnail']['url'],
                 }
             )
+
+    if 'tags' in json_results:
+        for suggestion in json_results['tags']:
+            results.append({'suggestion': suggestion['key']})
 
     return results
