@@ -82,11 +82,16 @@ def request(query, params):
 
     params["url"] = url.format(query=quote(query), lang=params["language"])
 
+    params["raise_for_httperror"] = False
+
     return params
 
 
 def response(resp):
     results = []
+
+    if resp.status_code == 404:
+        return []
 
     result = loads(resp.text)
 
