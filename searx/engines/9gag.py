@@ -39,6 +39,12 @@ def response(resp):
     for result in json_results['posts']:
         result_type = result['type']
 
+        # Get the not cropped version of the thumbnail when the image height is not too important
+        if result['images']['image700']['height'] > 400:
+            thumbnail = result['images']['imageFbThumbnail']['url']
+        else:
+            thumbnail = result['images']['image700']['url']
+
         if result_type == 'Photo':
             results.append(
                 {
@@ -48,7 +54,7 @@ def response(resp):
                     'content': result['description'],
                     'publishedDate': datetime.utcfromtimestamp(result['creationTs']),
                     'img_src': result['images']['image700']['url'],
-                    'thumbnail_src': result['images']['imageFbThumbnail']['url'],
+                    'thumbnail_src': thumbnail,
                 }
             )
         elif result_type == 'Animated':
@@ -59,7 +65,7 @@ def response(resp):
                     'title': result['title'],
                     'content': result['description'],
                     'publishedDate': datetime.utcfromtimestamp(result['creationTs']),
-                    'thumbnail': result['images']['imageFbThumbnail']['url'],
+                    'thumbnail': thumbnail,
                     'iframe_src': result['images'].get('image460sv', {}).get('url'),
                 }
             )
