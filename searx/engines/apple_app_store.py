@@ -41,10 +41,11 @@ def response(resp):
             {
                 'url': result['trackViewUrl'],
                 'title': result['trackName'],
-                'content': result['sellerName'] + ': ' + result['description'],
+                'content': result['description'],
                 'img_src': result['artworkUrl100'],
                 'thumbnail': result['screenshotUrls'][0],
                 'publishedDate': parse(result['currentVersionReleaseDate']),
+                'author': result['sellerName'],
             }
         )
 
