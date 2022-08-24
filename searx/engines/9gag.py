@@ -60,6 +60,7 @@ def response(resp):
                     'content': result['description'],
                     'publishedDate': datetime.utcfromtimestamp(result['creationTs']),
                     'thumbnail': result['images']['imageFbThumbnail']['url'],
+                    'iframe_src': result['images'].get('image460sv', {}).get('url'),
                 }
             )
 
