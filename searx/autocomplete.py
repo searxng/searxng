@@ -15,9 +15,6 @@ from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 from searx.engines import engines
 
-# a _fetch_supported_properites() for XPath engines isn't available right now
-# _brave = ENGINES_LANGUAGES['brave'].keys()
-
 
 def get(*args, **kwargs):
     if 'timeout' not in kwargs:

@@ -48,7 +48,7 @@ filter_mapping = {0: '0', 1: '1', 2: '1'}
 time_range_support = True
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
-supported_properties_url = 'https://www.startpage.com/do/settings'
+engine_data_url = 'https://www.startpage.com/do/settings'
 
 # search-url
 base_url = 'https://www.startpage.com/'
@@ -249,7 +249,7 @@ def response(resp):
     return results
 
 
-def _fetch_engine_properties(resp, engine_properties):
+def _fetch_engine_data(resp, engine_data):
 
     # startpage's language & region selectors are a mess.
     #
@@ -341,7 +341,7 @@ def _fetch_engine_properties(resp, engine_properties):
 
         region_tag = locale.language + '-' + locale.territory
         # print("SearXNG locale tag: %s --> Engine tag: %s" % (region_tag, engine_region_tag))
-        engine_properties.regions[region_tag] = engine_region_tag
+        engine_data.regions[region_tag] = engine_region_tag
 
     # languages
 
@@ -385,6 +385,6 @@ def _fetch_engine_properties(resp, engine_properties):
             lang_code = catalog_engine2code[name]
 
         # print("SearXNG language tag: %s --> Engine tag: %s" % (lang_code, engine_lang))
-        engine_properties.languages[lang_code] = engine_lang
+        engine_data.languages[lang_code] = engine_lang
 
-    return engine_properties
+    return engine_data

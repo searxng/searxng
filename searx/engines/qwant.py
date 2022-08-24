@@ -49,7 +49,7 @@ about = {
 # engine dependent config
 categories = []
 paging = True
-supported_properties_url = about['website']
+engine_data_url = about['website']
 qwant_categ = None  # web|news|inages|videos
 
 safesearch = True
@@ -95,7 +95,7 @@ def request(query, params):
     )
 
     # add quant's locale
-    q_locale = get_engine_locale(params['language'], supported_properties['regions'], default='en_US')
+    q_locale = get_engine_locale(params['language'], engine_data.regions, default='en_US')
     params['url'] += '&locale=' + q_locale
 
     # add safesearch option
@@ -243,7 +243,7 @@ def response(resp):
     return results
 
 
-def _fetch_engine_properties(resp, engine_properties):
+def _fetch_engine_data(resp, engine_data):
 
     text = resp.text
     text = text[text.find('INITIAL_PROPS') :]
@@ -270,7 +270,7 @@ def _fetch_engine_properties(resp, engine_properties):
             print("ERROR: can't determine babel locale of quant's locale %s" % q_locale)
             continue
 
-        # note: engine_properties.regions (dict)
+        # note: engine_data.regions (dict)
         #
         #   dict's key is a string build up from a babel.Locale object / the
         #   notation 'xx-XX' (and 'xx') conforms to SearXNG's locale (and
@@ -278,6 +278,6 @@ def _fetch_engine_properties(resp, engine_properties):
         #   the engine.
 
         searxng_locale = locale.language + '-' + locale.territory  # --> params['language']
-        engine_properties.regions[searxng_locale] = q_locale
+        engine_data.regions[searxng_locale] = q_locale
 
-    return engine_properties
+    return engine_data

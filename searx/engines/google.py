@@ -136,7 +136,7 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     :param dict param: request parameters of the engine
 
     :param list lang_list: list of supported languages of the engine
-        :py:obj:`ENGINES_LANGUAGES[engine-name] <searx.data.ENGINES_LANGUAGES>`
+        :py:obj:`ENGINES_DATAS[engine-name].languages <searx.data.ENGINES_DATAS>`
 
     :param dict lang_list: custom aliases for non standard language codes
         (used when calling :py:func:`searx.utils.match_language`)

@@ -12,19 +12,22 @@ usage::
 """
 
 import sys
+import json
 import copy
+import pathlib
 import dataclasses
 from typing import Dict, List, Optional
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
 from searx import logger, settings
-from searx.data import ENGINES_LANGUAGES
 from searx.utils import load_module, match_language
-
+from searx.data import data_dir, ENGINES_DATAS
 
 logger = logger.getChild('engines')
-ENGINE_DIR = dirname(realpath(__file__))
+
+ENGINE_DIR = pathlib.Path(__file__).parent
+
 BABEL_LANGS = [
     lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
     for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())
@@ -52,32 +55,58 @@ OTHER_CATEGORY = 'other'
 
 
 @dataclasses.dataclass
-class EngineProperties(dict):
-    """
-
-    The class is intended to be instanciated for each engine.
-    """
+class EngineData:
+    """The class is intended to be instanciated for each engine."""
 
     regions: Dict[str, str] = dataclasses.field(default_factory=dict)
     """
-    {
-        'fr-BE' : <engine's region name>
-    },
+    .. code:: python
+
+       {
+           'fr-BE' : <engine's region name>,
+       }
     """
 
     languages: Dict[str, str] = dataclasses.field(default_factory=dict)
     """
-    {
-        'ca' : <engine's language name>
-    },
+    .. code:: python
+
+       {
+           'ca' : <engine's language name>,
+       }
     """
 
-    def asdict(self):
-        return {
-            'type': 'engine_properties',
-            'regions': self.regions,
-            'languages': self.languages,
-        }
+    data_type: str = 'engine_data'
+    """Data type, default is 'engine_data' for vintage use 'supported_languages'"""
+
+
+class EngineDataEncoder(json.JSONEncoder):
+    """Encodes :class:`EngineData` to a serializable object, see
+    :class:`json.JSONEncoder`."""
+
+    def default(self, o):
+        """Return dictionary of a :class:`EngineData` object."""
+        if isinstance(o, EngineData):
+            return o.__dict__
+        return super().default(o)
+
+
+class EngineDataDict(dict):
+    """A python dictionary to map :class:`EngineData` by engine name."""
+
+    ENGINE_DATA_FILE = (data_dir / 'engines_datas.json').resolve()
+
+    def save_data(self):
+        with open(self.ENGINE_DATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(self, f, indent=2, sort_keys=True, cls=EngineDataEncoder)
+
+    @classmethod
+    def from_data(cls):
+        """Instantiate :class:`EngineDataDict` object from :py:obj:`ENGINES_DATAS`"""
+        obj = EngineDataDict()
+        for k, v in ENGINES_DATAS.items():
+            obj[k] = EngineData(**v)
+        return obj
 
 
 class Engine:  # pylint: disable=too-few-public-methods
@@ -96,7 +125,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     safesearch: bool
     time_range_support: bool
     timeout: float
-    properties: EngineProperties
+    engine_data: EngineData
 
 
 # Defaults for the namespace of an engine module, see :py:func:`load_engine`
@@ -110,18 +139,19 @@ engine_shortcuts = {}
 
     engine_shortcuts[engine.shortcut] = engine.name
 
+:meta hide-value:
 """
 
 
-def load_engine(engine_data: dict) -> Optional[Engine]:
-    """Load engine from ``engine_data``.
+def load_engine(engine_setting: dict) -> Optional[Engine]:
+    """Load engine from ``engine_setting``.
 
-    :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``
+    :param dict engine_setting:  Attributes from YAML ``settings:engines/<engine>``
     :return: initialized namespace of the ``<engine>``.
 
     1. create a namespace and load module of the ``<engine>``
     2. update namespace with the defaults from :py:obj:`ENGINE_DEFAULT_ARGS`
-    3. update namespace with values from ``engine_data``
+    3. update namespace with values from ``engine_setting``
 
     If engine *is active*, return namespace of the engine, otherwise return
     ``None``.
@@ -135,7 +165,7 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
 
     """
 
-    engine_name = engine_data['name']
+    engine_name = engine_setting['name']
     if '_' in engine_name:
         logger.error('Engine name contains underscore: "{}"'.format(engine_name))
         return None
@@ -143,10 +173,10 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
     if engine_name.lower() != engine_name:
         logger.warn('Engine name is not lowercase: "{}", converting to lowercase'.format(engine_name))
         engine_name = engine_name.lower()
-        engine_data['name'] = engine_name
+        engine_setting['name'] = engine_name
 
     # load_module
-    engine_module = engine_data['engine']
+    engine_module = engine_setting['engine']
     try:
         engine = load_module(engine_module + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
@@ -156,7 +186,7 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
         logger.exception('Cannot load engine "{}"'.format(engine_module))
         return None
 
-    update_engine_attributes(engine, engine_data)
+    update_engine_attributes(engine, engine_setting)
     set_language_attributes(engine)
     update_attributes_for_tor(engine)
 
@@ -193,15 +223,15 @@ def set_loggers(engine, engine_name):
             module.logger = logger.getChild(module_engine_name)
 
 
-def update_engine_attributes(engine: Engine, engine_data):
-    # set engine attributes from engine_data
-    for param_name, param_value in engine_data.items():
+def update_engine_attributes(engine: Engine, engine_setting):
+    # set engine attributes from engine_setting
+    for param_name, param_value in engine_setting.items():
         if param_name == 'categories':
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value
         elif hasattr(engine, 'about') and param_name == 'about':
-            engine.about = {**engine.about, **engine_data['about']}
+            engine.about = {**engine.about, **engine_setting['about']}
         else:
             setattr(engine, param_name, param_value)
 
@@ -211,33 +241,36 @@ def update_engine_attributes(engine: Engine, engine_data):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
 
 
-def set_language_attributes(engine: Engine):
+def set_language_attributes(engine: Engine):  # pylint: disable=too-many-branches
     # assign supported languages from json file
 
-    supported_properties = None
+    engine_data_dict = EngineDataDict.from_data()
+    engine_data = None
 
-    if engine.name in ENGINES_LANGUAGES:
-        supported_properties = ENGINES_LANGUAGES[engine.name]
+    if engine.name in engine_data_dict:
+        engine_data = engine_data_dict[engine.name]
 
-    elif engine.engine in ENGINES_LANGUAGES:
-        # The key of the dictionary ENGINES_LANGUAGES is the *engine name*
+    elif engine.engine in engine_data_dict:
+        # The key of the dictionary engine_data_dict is the *engine name*
         # configured in settings.xml.  When multiple engines are configured in
         # settings.yml to use the same origin engine (python module) these
         # additional engines can use the languages from the origin engine.
         # For this use the configured ``engine: ...`` from settings.yml
-        supported_properties = ENGINES_LANGUAGES[engine.engine]
+        engine_data = engine_data_dict[engine.engine]
 
-    if not supported_properties:
+    if not engine_data:
         return
 
-    if isinstance(supported_properties, dict) and supported_properties.get('type') == 'engine_properties':
-        engine.supported_properties = supported_properties
-        engine.language_support = len(supported_properties['languages']) or len(supported_properties['regions'])
+    if engine_data.data_type == 'engine_data':
+        engine.engine_data = engine_data
+        engine.language_support = len(engine_data.languages) or len(engine_data.regions)
 
-    else:
+    elif engine_data.data_type == 'supported_languages':
+        # vintage
+
         # depricated: does not work for engines that do support languages
         # based on a region.
-        engine.supported_languages = supported_properties
+        engine.supported_languages = engine_data.languages
         engine.language_support = len(engine.supported_languages) > 0
 
         if hasattr(engine, 'language'):
@@ -267,6 +300,9 @@ def set_language_attributes(engine: Engine):
                 and iso_lang not in engine.supported_languages
             ):
                 engine.language_aliases[iso_lang] = engine_lang
+
+    else:
+        raise TypeError('unknown type of engine data: %s' % engine_data.data_type)
 
 
 def update_attributes_for_tor(engine: Engine) -> bool:
