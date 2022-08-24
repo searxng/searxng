@@ -21,12 +21,18 @@ about = {
 }
 
 categories = ['files', 'apps']
+safesearch = True
 
 search_url = 'https://itunes.apple.com/search?{query}'
 
 
 def request(query, params):
-    params['url'] = search_url.format(query=urlencode({'term': query, 'media': 'software'}))
+    explicit = "Yes"
+
+    if params['safesearch'] > 0:
+        explicit = "No"
+
+    params['url'] = search_url.format(query=urlencode({'term': query, 'media': 'software', 'explicit': explicit}))
 
     return params
 
