@@ -13,10 +13,12 @@ Definitions`_.
 
 from urllib.parse import urlencode
 from datetime import datetime
+from typing import Optional
 from lxml import html
 
 from searx.utils import (
     eval_xpath,
+    eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
 )
@@ -46,7 +48,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 language_support = True
 use_locale_domain = True
@@ -99,7 +101,43 @@ def request(query, params):
     return params
 
 
-def response(resp):
+def parse_gs_a(text: Optional[str]):
+    """Parse the text written in green.
+
+    Possible formats:
+    * "{authors} - {journal}, {year} - {publisher}"
+    * "{authors} - {year} - {publisher}"
+    * "{authors} - {publisher}"
+    """
+    if text is None or text == "":
+        return None, None, None, None
+
+    s_text = text.split(' - ')
+    authors = s_text[0].split(', ')
+    publisher = s_text[-1]
+    if len(s_text) != 3:
+        return authors, None, publisher, None
+
+    # the format is "{authors} - {journal}, {year} - {publisher}" or "{authors} - {year} - {publisher}"
+    # get journal and year
+    journal_year = s_text[1].split(', ')
+    # journal is optional and may contains some coma
+    if len(journal_year) > 1:
+        journal = ', '.join(journal_year[0:-1])
+        if journal == '…':
+            journal = None
+    else:
+        journal = None
+    # year
+    year = journal_year[-1]
+    try:
+        publishedDate = datetime.strptime(year.strip(), '%Y')
+    except ValueError:
+        publishedDate = None
+    return authors, journal, publisher, publishedDate
+
+
+def response(resp):  # pylint: disable=too-many-locals
     """Get response from google's search request"""
     results = []
 
@@ -112,30 +150,53 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     # parse results
-    for result in eval_xpath_list(dom, '//div[@class="gs_ri"]'):
+    for result in eval_xpath_list(dom, '//div[@data-cid]'):
 
-        title = extract_text(eval_xpath(result, './h3[1]//a'))
+        title = extract_text(eval_xpath(result, './/h3[1]//a'))
 
         if not title:
             # this is a [ZITATION] block
             continue
 
-        url = eval_xpath(result, './h3[1]//a/@href')[0]
-        content = extract_text(eval_xpath(result, './div[@class="gs_rs"]')) or ''
-
-        pub_info = extract_text(eval_xpath(result, './div[@class="gs_a"]'))
-        if pub_info:
-            content += "[%s]" % pub_info
-
         pub_type = extract_text(eval_xpath(result, './/span[@class="gs_ct1"]'))
         if pub_type:
-            title = title + " " + pub_type
+            pub_type = pub_type[1:-1].lower()
+
+        url = eval_xpath_getindex(result, './/h3[1]//a/@href', 0)
+        content = extract_text(eval_xpath(result, './/div[@class="gs_rs"]'))
+        authors, journal, publisher, publishedDate = parse_gs_a(
+            extract_text(eval_xpath(result, './/div[@class="gs_a"]'))
+        )
+        if publisher in url:
+            publisher = None
+
+        # cited by
+        comments = extract_text(eval_xpath(result, './/div[@class="gs_fl"]/a[starts-with(@href,"/scholar?cites=")]'))
+
+        # link to the html or pdf document
+        html_url = None
+        pdf_url = None
+        doc_url = eval_xpath_getindex(result, './/div[@class="gs_or_ggsm"]/a/@href', 0, default=None)
+        doc_type = extract_text(eval_xpath(result, './/span[@class="gs_ctg2"]'))
+        if doc_type == "[PDF]":
+            pdf_url = doc_url
+        else:
+            html_url = doc_url
 
         results.append(
             {
+                'template': 'paper.html',
+                'type': pub_type,
                 'url': url,
                 'title': title,
+                'authors': authors,
+                'publisher': publisher,
+                'journal': journal,
+                'publishedDate': publishedDate,
                 'content': content,
+                'comments': comments,
+                'html_url': html_url,
+                'pdf_url': pdf_url,
             }
         )
 

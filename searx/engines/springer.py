@@ -19,7 +19,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 nb_per_page = 10
 api_key = 'unset'
@@ -41,32 +41,30 @@ def response(resp):
     json_data = loads(resp.text)
 
     for record in json_data['records']:
-        content = record['abstract'][0:500]
-        if len(record['abstract']) > len(content):
-            content += "..."
+        content = record['abstract']
         published = datetime.strptime(record['publicationDate'], '%Y-%m-%d')
-
-        metadata = [
-            record[x]
-            for x in [
-                'publicationName',
-                'identifier',
-                'contentType',
-            ]
-            if record.get(x) is not None
-        ]
-
-        metadata = ' / '.join(metadata)
-        if record.get('startingPage') and record.get('endingPage') is not None:
-            metadata += " (%(startingPage)s-%(endingPage)s)" % record
-
+        authors = [" ".join(author['creator'].split(', ')[::-1]) for author in record['creators']]
+        tags = record.get('genre')
+        if isinstance(tags, str):
+            tags = [tags]
         results.append(
             {
+                'template': 'paper.html',
                 'title': record['title'],
                 'url': record['url'][0]['value'].replace('http://', 'https://', 1),
+                'type': record.get('contentType'),
                 'content': content,
                 'publishedDate': published,
-                'metadata': metadata,
+                'authors': authors,
+                'doi': record.get('doi'),
+                'journal': record.get('publicationName'),
+                'start_page': record.get('start_page'),
+                'end_page': record.get('end_page'),
+                'tags': tags,
+                'issn': [record.get('issn')],
+                'isbn': [record.get('isbn')],
+                'volume': record.get('volume') or None,
+                'number': record.get('number') or None,
             }
         )
     return results
