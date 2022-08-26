@@ -7,10 +7,13 @@ import hmac
 import re
 import inspect
 import itertools
+from datetime import datetime, timedelta
 from typing import Iterable, List, Tuple, Dict
 
 from io import StringIO
 from codecs import getincrementalencoder
+
+from flask_babel import gettext, format_date
 
 from searx import logger, settings
 from searx.engines import Engine, OTHER_CATEGORY
@@ -136,6 +139,22 @@ def highlight_content(content, query):
         content = re.sub(query_regex, '<span class="highlight">\\1</span>', content, flags=re.I | re.U)
 
     return content
+
+
+def searxng_format_date(dt: datetime):  # pylint: disable=invalid-name
+    # TODO, check if timezone is calculated right  # pylint: disable=fixme
+    d = dt.date()
+    t = dt.time()
+    if d.month == 1 and d.day == 1 and t.hour == 0 and t.minute == 0 and t.second == 0:
+        return str(d.year)
+    if dt.replace(tzinfo=None) >= datetime.now() - timedelta(days=1):
+        timedifference = datetime.now() - dt.replace(tzinfo=None)
+        minutes = int((timedifference.seconds / 60) % 60)
+        hours = int(timedifference.seconds / 60 / 60)
+        if hours == 0:
+            return gettext('{minutes} minute(s) ago').format(minutes=minutes)
+        return gettext('{hours} hour(s), {minutes} minute(s) ago').format(hours=hours, minutes=minutes)
+    return format_date(dt)
 
 
 def is_flask_run_cmdline():
