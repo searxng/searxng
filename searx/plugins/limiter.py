@@ -67,7 +67,7 @@ def is_accepted_request() -> bool:
             return False
 
         accept_encoding_list = [l.strip() for l in request.headers.get('Accept-Encoding', '').split(',')]
-        if 'gzip' not in accept_encoding_list or 'deflate' not in accept_encoding_list:
+        if 'gzip' not in accept_encoding_list and 'deflate' not in accept_encoding_list:
             logger.debug("suspicious Accept-Encoding")  # pylint: disable=undefined-variable
             return False
 
