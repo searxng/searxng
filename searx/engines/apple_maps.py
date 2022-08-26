@@ -7,6 +7,7 @@ from time import time
 from urllib.parse import urlencode
 
 from searx.network import get as http_get
+from searx.engines.openstreetmap import get_key_label
 
 about = {
     "website": 'https://www.apple.com/maps/',
@@ -43,10 +44,6 @@ def obtain_token():
     return token
 
 
-def init(_engine_settings=None):
-    obtain_token()
-
-
 def request(query, params):
     if time() - (token['last_updated'] or 0) > 1800:
         obtain_token()
@@ -63,25 +60,52 @@ def response(resp):
 
     resp_json = loads(resp.text)
 
+    user_language = resp.search_params['language']
+
     for result in resp_json['results']:
-        box = result['displayMapRegion']
+        boundingbox = None
+        if 'displayMapRegion' in result:
+            box = result['displayMapRegion']
+            boundingbox = [box['southLat'], box['northLat'], box['westLng'], box['eastLng']]
+
+        links = []
+        if 'telephone' in result:
+            telephone = result['telephone']
+            links.append(
+                {
+                    'label': get_key_label('phone', user_language),
+                    'url': 'tel:' + telephone,
+                    'url_label': telephone,
+                }
+            )
+        if result.get('urls'):
+            url = result['urls'][0]
+            links.append(
+                {
+                    'label': get_key_label('website', user_language),
+                    'url': url,
+                    'url_label': url,
+                }
+            )
 
         results.append(
             {
                 'template': 'map.html',
+                'type': result.get('poiCategory'),
                 'title': result['name'],
+                'links': links,
                 'latitude': result['center']['lat'],
                 'longitude': result['center']['lng'],
                 'url': result['placecardUrl'],
-                'boundingbox': [box['southLat'], box['northLat'], box['westLng'], box['eastLng']],
+                'boundingbox': boundingbox,
                 'geojson': {'type': 'Point', 'coordinates': [result['center']['lng'], result['center']['lat']]},
                 'address': {
                     'name': result['name'],
-                    'house_number': result.get('subThoroughfare', {}),
-                    'road': result.get('thoroughfare', {}),
-                    'locality': result.get('locality', {}),
-                    'postcode': result.get('postCode', {}),
-                    'country': result.get('country', {}),
+                    'house_number': result.get('subThoroughfare'),
+                    'road': result.get('thoroughfare'),
+                    'locality': result.get('locality'),
+                    'postcode': result.get('postCode'),
+                    'country': result.get('country'),
                 },
             }
         )
