@@ -49,7 +49,6 @@ def response(resp):
                 'title': result['trackName'],
                 'content': result['description'],
                 'img_src': result['artworkUrl100'],
-                'thumbnail': result['screenshotUrls'][0],
                 'publishedDate': parse(result['currentVersionReleaseDate']),
                 'author': result['sellerName'],
             }
