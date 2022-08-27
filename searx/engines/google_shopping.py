@@ -6,6 +6,19 @@ from urllib.parse import urlencode
 from lxml import html
 from searx.utils import extract_text
 
+from searx.engines.google import (
+    get_lang_info,
+    detect_google_sorry,
+)
+
+# pylint: disable=unused-import
+from searx.engines.google import (
+    supported_languages_url,
+    _fetch_supported_languages,
+)
+
+# pylint: enable=unused-import
+
 about = {
     "website": "https://shopping.google.com",
     "wikidata_id": "Q1433417",
@@ -31,13 +44,22 @@ condition_xpath = './/span[@class="JkJxid HFeBod"]'
 
 def request(query, params):
     pageno = (params["pageno"] - 1) * 60
+    lang_info = get_lang_info(params, supported_languages, language_aliases, False)
+
     params["url"] = search_url.format(query=urlencode({"q": query}), pageno=pageno)
+
+    params['headers'].update(lang_info['headers'])
+    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+
+    params['cookies']['CONSENT'] = "YES+"
 
     return params
 
 
 def response(resp):
     results = []
+
+    detect_google_sorry(resp)
 
     dom = html.fromstring(resp.text)
 
