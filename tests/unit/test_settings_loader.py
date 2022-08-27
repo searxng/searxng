@@ -23,10 +23,10 @@ class TestLoad(SearxTestCase):
             settings_loader.load_yaml(join(test_dir, '/settings/empty_settings.yml'))
 
     def test_check_settings_yml(self):
-        self.assertIsNone(settings_loader.check_settings_yml('/dev/zero'))
+        self.assertIsNone(settings_loader.existing_filename_or_none('/dev/zero'))
 
         bad_settings_path = join(test_dir, 'settings/syntaxerror_settings.yml')
-        self.assertEqual(settings_loader.check_settings_yml(bad_settings_path), bad_settings_path)
+        self.assertEqual(settings_loader.existing_filename_or_none(bad_settings_path), bad_settings_path)
 
 
 class TestDefaultSettings(SearxTestCase):

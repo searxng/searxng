@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+from typing import Optional
 from os import environ
 from os.path import dirname, join, abspath, isfile
 from collections.abc import Mapping
@@ -13,7 +14,7 @@ from searx.exceptions import SearxSettingsException
 searx_dir = abspath(dirname(__file__))
 
 
-def check_settings_yml(file_name):
+def existing_filename_or_none(file_name: str) -> Optional[str]:
     if isfile(file_name):
         return file_name
     return None
@@ -30,29 +31,51 @@ def load_yaml(file_name):
 
 
 def get_default_settings_path():
-    return check_settings_yml(join(searx_dir, 'settings.yml'))
+    return existing_filename_or_none(join(searx_dir, 'settings.yml'))
 
 
-def get_user_settings_path():
-    # find location of settings.yml
+def get_user_settings_path() -> Optional[str]:
+    """Get an user settings file.
+
+    By descending priority:
+    * environ['SEARXNG_SETTINGS_PATH']
+    * '/etc/searxng/settings.yml'
+    * environ['SEARX_SETTINGS_PATH']
+    * '/etc/searx/settings.yml'
+    * None
+
+    Note: check only SEARXNG_SETTINGS_PATH if environ['SEARXNG_SETTINGS_PATH'] is 1 or true
+    """
+
+    # check the environment variable SEARXNG_SETTINGS_PATH
+    # if the environment variable is defined, this is the last check
     if 'SEARXNG_SETTINGS_PATH' in environ:
-        # if possible set path to settings using the
-        # enviroment variable SEARXNG_SETTINGS_PATH
-        return check_settings_yml(environ['SEARXNG_SETTINGS_PATH'])
+        return existing_filename_or_none(environ['SEARXNG_SETTINGS_PATH'])
 
+    # if SEARXNG_DISABLE_ETC_SETTINGS don't look any futher
     if environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
         return None
 
-    # if not, get it from searx code base or last solution from /etc/searxng
-    try:
-        return check_settings_yml('/etc/searxng/settings.yml')
-    except SearxSettingsException as e:
-        # fall back to searx settings
-        try:
-            return check_settings_yml('/etc/searx/settings.yml')
-        except SearxSettingsException:
-            # if none are found, raise the exception about SearXNG
-            raise e  # pylint: disable=raise-missing-from
+    # check /etc/searxng/settings.yml
+    # (continue with other locations if the file is not found)
+    path = existing_filename_or_none('/etc/searxng/settings.yml')
+
+    # check the environment variable SEARX_SETTINGS_PATH (not SEARXNG_SETTINGS_PATH)
+    # if the environment variable is defined, this is the last check
+    if path is None and 'SEARX_SETTINGS_PATH' in environ:
+        return existing_filename_or_none(environ['SEARX_SETTINGS_PATH'])
+
+    # second: check /etc/searx/settings.yml (not /etc/searxng/settings.yml)
+    # (continue if the file is not found)
+    if path is None:
+        path = existing_filename_or_none('/etc/searx/settings.yml')
+
+    # path is one of these values (by priority):
+    # * "/etc/searxng/settings.yml"
+    # * environ['SEARX_SETTINGS_PATH']
+    # * "/etc/searx/settings.yml"
+    # * None
+    return path
 
 
 def update_dict(default_dict, user_dict):
