@@ -68,6 +68,43 @@
         }, "#" + qinput_id);
       }
 
+      /*
+        Monkey patch autocomplete.js to fix a bug
+        With the POST method, the values are not URL encoded: query like "1 + 1" are sent as "1  1" since space are URL encoded as plus.
+        See HTML specifications:
+        * HTML5: https://url.spec.whatwg.org/#concept-urlencoded-serializer
+        * HTML4: https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
+
+        autocomplete.js does not URL encode the name and values:
+        https://github.com/autocompletejs/autocomplete.js/blob/87069524f3b95e68f1b54d8976868e0eac1b2c83/src/autocomplete.ts#L665
+
+        The monkey patch overrides the compiled version of the ajax function.
+        See https://github.com/autocompletejs/autocomplete.js/blob/87069524f3b95e68f1b54d8976868e0eac1b2c83/dist/autocomplete.js#L143-L158
+        The patch changes only the line 156 from
+          params.Request.send(params._QueryArg() + "=" + params._Pre());
+        to
+          params.Request.send(encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(params._Pre()));
+
+        Related to:
+        * https://github.com/autocompletejs/autocomplete.js/issues/78
+        * https://github.com/searxng/searxng/issues/1695
+       */
+      AutoComplete.prototype.ajax = function (params, request, timeout) {
+        if (timeout === void 0) { timeout = true; }
+        if (params.$AjaxTimer) {
+          window.clearTimeout(params.$AjaxTimer);
+        }
+        if (timeout === true) {
+          params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, request, false), params.Delay);
+        } else {
+          if (params.Request) {
+            params.Request.abort();
+          }
+          params.Request = request;
+          params.Request.send(encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(params._Pre()));
+        }
+      };
+
       if (!isMobile && document.querySelector('.index_endpoint')) {
         qinput.focus();
       }
