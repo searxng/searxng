@@ -121,6 +121,7 @@ ui:
 #
 # result_proxy:
 #   url: http://127.0.0.1:3000/
+#   # the key is a base64 encoded string, the YAML !!binary prefix is optional
 #   key: !!binary "your_morty_proxy_key"
 #   # [true|false] enable the "proxy" button next to each result
 #   proxify_results: true

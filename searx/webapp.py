@@ -315,16 +315,16 @@ def custom_url_for(endpoint: str, **values):
     return url_for(endpoint, **values) + suffix
 
 
-def proxify(url: str):
+def morty_proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
-    if not settings.get('result_proxy'):
+    if not settings['result_proxy']['url']:
         return url
 
     url_params = dict(mortyurl=url)
 
-    if settings['result_proxy'].get('key'):
+    if settings['result_proxy']['key']:
         url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
 
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
@@ -349,8 +349,8 @@ def image_proxify(url: str):
             return url
         return None
 
-    if settings.get('result_proxy'):
-        return proxify(url)
+    if settings['result_proxy']['url']:
+        return morty_proxify(url)
 
     h = new_hmac(settings['server']['secret_key'], url.encode())
 
@@ -462,8 +462,8 @@ def render(template_name: str, **kwargs):
     # helpers to create links to other pages
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
-    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
-    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
+    kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
+    kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
     kwargs['get_result_template'] = get_result_template
     kwargs['opensearch_url'] = (
         url_for('opensearch')
