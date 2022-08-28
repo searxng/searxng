@@ -10,19 +10,20 @@
 # ken kailer <kenkailer@yahoo.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-23 14:08+0000\n"
-"PO-Revision-Date: 2022-07-19 05:45+0000\n"
+"PO-Revision-Date: 2022-09-02 07:25+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Arabic <https://weblate.bubu1.eu/projects/searxng/searxng/ar/>"
+"\n"
 "Language: ar\n"
-"Language-Team: Arabic "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ar/>\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
-"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -260,7 +261,7 @@ msgstr "هذا الإدخال تم استبداله بـ"
 
 #: searx/engines/pubmed.py:78
 msgid "No abstract is available for this publication."
-msgstr "لا يوجد ملخص لهذا المنشور"
+msgstr "لا يوجد ملخص متاح لهذا المنشور."
 
 #: searx/engines/qwant.py:214
 msgid "Channel"
@@ -272,20 +273,24 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"تعذر قراءة عنوان url للصورة. قد يكون هذا بسبب تنسيق ملف غير مدعوم. تدعم "
+"TinEye فقط الصور بتنسيق JPEG أو PNG أو GIF أو BMP أو TIFF أو WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"الصورة أبسط من أن تجد مطابقات. يتطلب TinEye مستوى أساسيًا من التفاصيل "
+"المرئية لتحديد التطابقات بنجاح."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "لا يمكن تنزيل الصورة."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr "يحول السلسلة إلى ملخص التجزئة"
+msgstr "يحول السلسلة إلى ملخص التجزئة."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
@@ -332,32 +337,36 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان "
-"الاستعلام يحتوي على\"user agent\""
+"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان الاستعلام "
+"يحتوي على\"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "فحص المكون الإضافي ل Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"يتحقق هذا المكون الإضافي مما إذا كان عنوان الطلب هو عقدة خروج TOR ، ويبلغ "
+"المستخدم إذا كان كذلك ، مثل check.torproject.org ولكن من searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"لا يمكن الوصول إلى قائمة عقدة الخروج TOR (https://check.torproject.org/exit-"
+"addresses)."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "انك تستخدم شبكة TOR. ان IP Adress الخاص بك يبدو انه: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "انك لا تستخدم شبكة TOR. ان IP Adress الخاص بك يبدو انه: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -759,7 +768,7 @@ msgstr "إمكانية الإشتغال"
 
 #: searx/templates/simple/preferences.html:353
 msgid "Special Queries"
-msgstr ""
+msgstr "استفسارات خاصة"
 
 #: searx/templates/simple/preferences.html:359
 msgid "Keywords"
@@ -779,11 +788,11 @@ msgstr "أمثلة"
 
 #: searx/templates/simple/preferences.html:365
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "هذه قائمة وحدات الرد الفوري في SearXNG."
 
 #: searx/templates/simple/preferences.html:376
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "هذه قائمة المكونات الإضافية."
 
 #: searx/templates/simple/preferences.html:393
 msgid "Cookies"
@@ -794,10 +803,12 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"هذه قائمة ملفات تعريف الارتباط وقيمها التي يخزنها SearXNG على جهاز الكمبيوتر "
+"الخاص بك."
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "باستخدام هذه القائمة ، يمكنك تقييم شفافية SearXNG."
 
 #: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
@@ -809,35 +820,43 @@ msgstr "القيمة"
 
 #: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
-msgstr ""
+msgstr "ابحث عن عنوان URL للتفضيلات المحفوظة حاليًا"
 
 #: searx/templates/simple/preferences.html:418
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
+"ملاحظة: يمكن أن يؤدي تحديد إعدادات مخصصة في عنوان URL للبحث إلى تقليل "
+"الخصوصية عن طريق تسريب البيانات إلى مواقع النتائج التي تم النقر عليها."
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL لاستعادة تفضيلاتك في متصفح آخر"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"يمكن استخدام تحديد الإعدادات المخصصة في تفضيلات URL لمزامنة التفضيلات عبر "
+"الأجهزة."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
+"يتم تخزين هذه الإعدادات في ملفات تعريف الارتباط الخاصة بك ، وهذا يسمح لنا "
+"بعدم تخزين هذه البيانات عنك."
 
 #: searx/templates/simple/preferences.html:430
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
+"تخدم ملفات تعريف الارتباط هذه راحتك وحدك ، فنحن لا نستخدم ملفات تعريف "
+"الارتباط هذه لتتبعك."
 
 #: searx/templates/simple/preferences.html:433
 msgid "Save"
@@ -913,15 +932,15 @@ msgstr "مسح"
 #: searx/templates/simple/search.html:11
 #: searx/templates/simple/simple_search.html:7
 msgid "search"
-msgstr "بحت"
+msgstr "بحث"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "لم يتم العثور على أية بيانات بعدُ."
+msgstr "لم يتم العثور على أية بيانات بعد."
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
-msgstr ""
+msgstr "نتائج"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
@@ -929,7 +948,7 @@ msgstr "نتيجة العد"
 
 #: searx/templates/simple/stats.html:38
 msgid "Scores per result"
-msgstr ""
+msgstr "درجات لكل نتيجة"
 
 #: searx/templates/simple/stats.html:62
 msgid "Total"
@@ -937,11 +956,11 @@ msgstr "إجمالي"
 
 #: searx/templates/simple/stats.html:63
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:64
 msgid "Processing"
-msgstr ""
+msgstr "يتم المعالجة"
 
 #: searx/templates/simple/stats.html:102
 msgid "Warnings"
@@ -949,7 +968,7 @@ msgstr "تحذيرات"
 
 #: searx/templates/simple/stats.html:102
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "الأخطاء والاستثناءات"
 
 #: searx/templates/simple/stats.html:108
 msgid "Exception"
@@ -965,7 +984,7 @@ msgstr "نسبة"
 
 #: searx/templates/simple/stats.html:114
 msgid "Parameter"
-msgstr ""
+msgstr "معامل"
 
 #: searx/templates/simple/stats.html:122
 msgid "Filename"
@@ -973,11 +992,11 @@ msgstr "اسم الملف"
 
 #: searx/templates/simple/stats.html:123
 msgid "Function"
-msgstr ""
+msgstr "وظيفة"
 
 #: searx/templates/simple/stats.html:124
 msgid "Code"
-msgstr "كود"
+msgstr "شفرة"
 
 #: searx/templates/simple/stats.html:131
 msgid "Checker"
@@ -997,7 +1016,7 @@ msgstr "في أي وقت"
 
 #: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
-msgstr "يوم أمس"
+msgstr "آخر يوم"
 
 #: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
@@ -1052,7 +1071,7 @@ msgstr "إخفاء الوسائط"
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr "هذا الموقع لا يتوفر على أي وصف."
+msgstr "هذا الموقع لم يقدم أي وصف."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1371,4 +1390,3 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "preferences"
 #~ msgstr "التفضيلات"
-
