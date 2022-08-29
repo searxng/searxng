@@ -41,16 +41,6 @@ STR_TO_BOOL = {
 }
 _UNDEFINED = object()
 
-# compatibility
-SEARX_ENVIRON_VARIABLES = {
-    'SEARX_DISABLE_ETC_SETTINGS': 'SEARXNG_DISABLE_ETC_SETTINGS',
-    'SEARX_SETTINGS_PATH': 'SEARXNG_SETTINGS_PATH',
-    'SEARX_DEBUG': 'SEARXNG_DEBUG',
-    'SEARX_PORT': 'SEARXNG_PORT',
-    'SEARX_BIND_ADDRESS': 'SEARXNG_BIND_ADDRESS',
-    'SEARX_SECRET': 'SEARXNG_SECRET',
-}
-
 
 class SettingsValue:
     """Check and update a setting value"""
@@ -227,11 +217,5 @@ SCHEMA = {
 
 
 def settings_set_defaults(settings):
-    # compatibility with searx variables
-    for searx, searxng in SEARX_ENVIRON_VARIABLES.items():
-        if searx in os.environ and searxng not in os.environ:
-            os.environ[searxng] = os.environ[searx]
-            logger.warning('%s uses value from %s', searxng, searx)
-
     apply_schema(settings, SCHEMA, [])
     return settings
