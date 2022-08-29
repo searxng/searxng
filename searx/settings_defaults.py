@@ -9,6 +9,7 @@ import numbers
 import errno
 import os
 import logging
+from base64 import b64decode
 from os.path import dirname, abspath
 
 from searx.languages import language_codes as languages
@@ -104,6 +105,15 @@ class SettingsDirectoryValue(SettingsValue):
     def __call__(self, value: typing.Any) -> typing.Any:
         if value == '':
             value = self.default
+        return super().__call__(value)
+
+
+class SettingsBytesValue(SettingsValue):
+    """str are base64 decoded"""
+
+    def __call__(self, value: typing.Any) -> typing.Any:
+        if isinstance(value, str):
+            value = b64decode(value)
         return super().__call__(value)
 
 
@@ -204,6 +214,11 @@ SCHEMA = {
         'using_tor_proxy': SettingsValue(bool, False),
         'extra_proxy_timeout': SettingsValue(int, 0),
         'networks': {},
+    },
+    'result_proxy': {
+        'url': SettingsValue((None, str), None),
+        'key': SettingsBytesValue((None, bytes), None),
+        'proxify_results': SettingsValue(bool, False),
     },
     'plugins': SettingsValue(list, []),
     'enabled_plugins': SettingsValue((None, list), None),
