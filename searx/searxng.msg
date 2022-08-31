@@ -31,6 +31,7 @@ CATEGORY_NAMES = {
     'MAP': 'map',
     'ONIONS': 'onions',
     'SCIENCE': 'science',
+    'WEATHER': 'weather',
 }
 
 CATEGORY_GROUPS = {
