@@ -102,24 +102,21 @@ def response(resp):
 
     title = f"{location['areaName'][0]['value']}, {location['region'][0]['value']}"
 
-    infobox = f"<h2>{gettext('Current condition')}</h2><table><tbody>"
+    infobox = f"<h3>{gettext('Current condition')}</h3><table><tbody>"
 
     infobox += generate_condition_table(current, resp.search_params['language'], True)
 
     infobox += "</tbody></table>"
 
     for day in result["weather"]:
-        infobox += "<hr />"
-        infobox += f"<h2>{day['date']}</h2>"
+        infobox += f"<h3>{day['date']}</h3>"
 
-        infobox += f"<h3>{gettext('Overview')}</h3>"
         infobox += "<table><tbody>"
 
         infobox += generate_day_table(day)
 
         infobox += "</tbody></table>"
 
-        infobox += f"<h3>{gettext('Forecast')}</h3>"
         infobox += "<table><tbody>"
 
         for time in forecast_indices.items():
