@@ -165,3 +165,4 @@ features or generally made searx better:
 - Paul Alcock @Guilvareux
 - Sam A. `<https://samsapti.dev>`_
 - @XavierHorwood
+- Marko Korhonen `@FunctionalHacker <https://github.com/FunctionalHacker>`_
