@@ -1,0 +1,28 @@
+name: "Security checks"
+on:
+  schedule:
+    - cron: "42 05 * * *"
+  workflow_dispatch:
+
+jobs:
+  dockers:
+    name: Trivy ${{ matrix.image }}
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'searxng/searxng:latest'
+          ignore-unfixed: false
+          vuln-type: 'os,library'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
