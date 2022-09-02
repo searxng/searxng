@@ -33,10 +33,7 @@
         <td class="engine-name"><a href="{{ url_for('stats', engine=engine_stat.name|e) }}">{{ engine_stat.name }}</a></td>
         <td class="engine-score">
             {% if engine_stat.score %}
-            <span aria-labelledby="{{engine_stat.name}}_score" >{{ engine_stat.score|round(1) }}</span>
-            <div class="engine-tooltip" role="tooltip" id="{{engine_stat.name}}_score">{{- "" -}}
-                <p>{{ _('Scores per result') }}: {{ engine_stat.score_per_result | round(3) }}</p>
-            </div>
+            <span>{{ engine_stat.score_per_result|round(1) }}</span>
             {% endif %}
         </td>
         <td class="engine-result-count">

@@ -145,7 +145,7 @@ result_templates = get_result_templates(templates_path)
 
 STATS_SORT_PARAMETERS = {
     'name': (False, 'name', ''),
-    'score': (True, 'score', 0),
+    'score': (True, 'score_per_result', 0),
     'result_count': (True, 'result_count', 0),
     'time': (False, 'total', 0),
     'reliability': (False, 'reliability', 100),
