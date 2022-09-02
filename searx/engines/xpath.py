@@ -22,6 +22,7 @@ from urllib.parse import urlencode
 
 from lxml import html
 from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
+from searx.network import raise_for_httperror
 
 search_url = None
 """
@@ -60,9 +61,14 @@ lang_all = 'en'
 '''Replacement ``{lang}`` in :py:obj:`search_url` if language ``all`` is
 selected.
 '''
-raise_for_httperror = True
-'''True by default: raise an exception if the HTTP code of response is ``>=
-300``'''
+
+no_result_for_http_status = []
+'''Return empty result for these HTTP status codes instead of throwing an error.
+
+.. code:: yaml
+
+    no_result_for_http_status: []
+'''
 
 soft_max_redirects = 0
 '''Maximum redirects, soft limit. Record an error but don't stop the engine'''
@@ -179,12 +185,19 @@ def request(query, params):
 
     params['url'] = search_url.format(**fargs)
     params['soft_max_redirects'] = soft_max_redirects
-    params['raise_for_httperror'] = raise_for_httperror
+
+    params['raise_for_httperror'] = False
+
     return params
 
 
-def response(resp):
+def response(resp):  # pylint: disable=too-many-branches
     '''Scrap *results* from the response (see :ref:`engine results`).'''
+    if no_result_for_http_status and resp.status_code in no_result_for_http_status:
+        return []
+
+    raise_for_httperror(resp)
+
     results = []
     dom = html.fromstring(resp.text)
     is_onion = 'onions' in categories
