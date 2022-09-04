@@ -310,9 +310,9 @@
         <th>{{ _("Supports selected language") }}</th>{{- "" -}}
         <th>{{ _("SafeSearch") }}</th>{{- "" -}}
         <th>{{ _("Time range") }}</th>{{- "" -}}
-        <th>{{ _("Response time") }}</th>{{- "" -}}
+        {%- if enable_metrics %}<th>{{ _("Response time") }}</th>{% endif -%}
         <th>{{ _("Max time") }}</th>{{- "" -}}
-        <th>{{ _("Reliability") }}</th>{{- "" -}}
+        {%- if enable_metrics %}<th>{{ _("Reliability") }}</th>{% endif -%}
       </tr>
       {% for group, engines in engines_by_category[categ] | group_engines_in_tab %}
       {% if loop.length > 1 %}
@@ -336,9 +336,9 @@
         <td>{{ checkbox(None, supports[search_engine.name]['supports_selected_language'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['safesearch'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['time_range_support'], true) }}</td>{{- "" -}}
-        {{- engine_time(search_engine.name) -}}
+        {%- if enable_metrics %}{{- engine_time(search_engine.name) -}}{% endif -%}
         <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>{{- "" -}}
-        {{ engine_reliability(search_engine.name) -}}
+        {%- if enable_metrics %}{{ engine_reliability(search_engine.name) -}}{% endif -%}
       </tr>
       {% endif %}
       {% endfor %}
