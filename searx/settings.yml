@@ -759,24 +759,9 @@ engines:
     disabled: true
 
   - name: google play movies
-    engine: xpath
-    send_accept_language_header: true
-    search_url: https://play.google.com/store/search?q={query}&c=movies
-    results_xpath: '//div[@class="ImZGtf mpg5gc"]'
-    title_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a'
-    url_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a/@href'
-    content_xpath: './/div[@class="kCSSQe"]'
-    thumbnail_xpath: './/div[@class="uzcko"]/div/span[1]//img/@data-src'
-    categories: videos
+    engine: google_play_movies
     shortcut: gpm
     disabled: true
-    about:
-      website: https://play.google.com/
-      wikidata_id: Q79576
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
 
   - name: gpodder
     engine: json_engine
