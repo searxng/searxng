@@ -464,6 +464,7 @@ def render(template_name: str, **kwargs):
     kwargs['image_proxify'] = image_proxify
     kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
     kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
+    kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
     kwargs['opensearch_url'] = (
         url_for('opensearch')
