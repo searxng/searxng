@@ -8,19 +8,18 @@
 # Mico Hautaluoma <m@mha.fi>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-08-05 07:18+0000\n"
 "Last-Translator: Mico Hautaluoma <m@mha.fi>\n"
-"Language-Team: Finnish <https://weblate.bubu1.eu/projects/searxng/searxng/fi/"
-">\n"
 "Language: fi\n"
+"Language-Team: Finnish "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/fi/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -195,7 +194,7 @@ msgstr "palvelimen API-virhe"
 msgid "No item found"
 msgstr "Tietuetta ei löytynyt"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Lähde"
@@ -204,27 +203,27 @@ msgstr "Lähde"
 msgid "Error loading the next page"
 msgstr "Virhe ladattaessa seuraavaa sivua"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "Virheelliset asetukset, muokkaa siis asetuksia"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "Virheelliset asetukset"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "hakuvirhe"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minuutti(a) sitten"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} tunti(a), {minutes} minuutti(a) sitten"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "Keskeytetty"
 
@@ -260,7 +259,7 @@ msgstr "Tämän kohdan on korvannut"
 msgid "No abstract is available for this publication."
 msgstr "Tästä julkaisusta ei ole yhteenvetoa."
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanava"
 
@@ -270,17 +269,17 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Kuvan url-osoitetta ei voitu lukea. Tämä saattaa johtua tiedostomuodosta, "
-"jota ei tueta. TinEye tukee vain kuvia, jotka ovat JPEG, PNG, GIF, BMP, TIFF "
-"tai WebP."
+"Kuvan url-osoitetta ei voitu lukea. Tämä saattaa johtua tiedostomuodosta,"
+" jota ei tueta. TinEye tukee vain kuvia, jotka ovat JPEG, PNG, GIF, BMP, "
+"TIFF tai WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Kuva on liian yksinkertainen löytääkseen osumia. TinEye vaatii visuaalisen "
-"tarkkuuden perustason, jotta osumien tunnistaminen onnistuu."
+"Kuva on liian yksinkertainen löytääkseen osumia. TinEye vaatii "
+"visuaalisen tarkkuuden perustason, jotta osumien tunnistaminen onnistuu."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -358,8 +357,8 @@ msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
-"TOR exit node listaan (https://check.torproject.org/exit-addresses) ei saada "
-"yhteyttä."
+"TOR exit node listaan (https://check.torproject.org/exit-addresses) ei "
+"saada yhteyttä."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -484,7 +483,8 @@ msgstr "Vahvistan, että tästä bugista ei ole olemassaolevaa issue:ta"
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Jos kyseessä on julkinen instanssi, määritä sen URL-osoite vikailmoituksessa"
+"Jos kyseessä on julkinen instanssi, määritä sen URL-osoite "
+"vikailmoituksessa"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -502,17 +502,17 @@ msgid "View error logs and submit a bug report"
 msgstr "Katso virhelokit ja lähetä virhe raportti"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Mediaani"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -948,67 +948,63 @@ msgstr "Pisteet"
 msgid "Result count"
 msgstr "Tulosten määrä"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Pisteet per tulos"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "Yhteensä"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "Käsitellään"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "Varoitukset"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "Virheet ja poikkeukset"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "Poikkeus"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "Viesti"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "Prosentti"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "Parametri"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Tiedoston nimi"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "Funktio"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Koodi"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "Tarkistaja"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "Epäonnistunut testi"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "Kommentit"
 
@@ -1396,3 +1392,7 @@ msgstr "piilota video"
 
 #~ msgid "preferences"
 #~ msgstr "asetukset"
+
+#~ msgid "Scores per result"
+#~ msgstr "Pisteet per tulos"
+
