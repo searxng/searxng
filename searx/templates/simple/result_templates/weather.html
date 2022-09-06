@@ -1,0 +1,95 @@
+<article class="result result-default">
+  <h2>{{ result.location }}</h2>
+  <p>
+  <div style="font-size: 1.5em"><b>{{ result.currently.metric.temperature }}°C / {{
+      result.currently.imperial.temperature }}°F</b></div>
+  <b>{{ result.currently.condition }}</b>
+  </p>
+
+  <table>
+    <tr>
+      <td>{{ _('Feels Like') }}</td>
+      <td>{{ result.currently.metric.feels_like }}°C / {{ result.currently.imperial.feels_like }}°F</td>
+    </tr>
+    <tr>
+      <td>{{ _('Wind') }}</td>
+      <td>{{ result.currently.wind_direction }}°, {{ result.currently.metric.wind_speed }} km/h / {{
+        result.currently.imperial.wind_speed }} mph</td>
+    </tr>
+    <tr>
+      <td>{{ _('Visibility') }}</td>
+      <td>{{ result.currently.metric.visibility }} km</td>
+    </tr>
+    <tr>
+      <td>{{ _('Humidity') }}</td>
+      <td>{{ result.currently.humidity }}%</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <details>
+    <summary><b>{{ _('Forecast') }}</b></summary>
+    <table>
+      {% for day in result.forecast %}
+      <tr>
+        <td rowspan="{{ (day.forecast|length * 7) + 6 }}"><b>{{ day.date }}</b></td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>{{ _('Min. temp.') }}</b></td>
+        <td>{{ day.metric.min_temp }}°C</td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>{{ _('Max. temp.') }}</b></td>
+        <td>{{ day.metric.max_temp }}°C</td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>{{ _('UV Index') }}</b></td>
+        <td>{{ day.uv_index }}</td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>{{ _('Sunrise') }}</b></td>
+        <td>{{ day.sunrise }}</td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>{{ _('Sunset') }}</b></td>
+        <td>{{ day.sunset }}</td>
+      </tr>
+
+      {% for condition in day.forecast %}
+      <tr>
+        <td rowspan="7"><b>{{ condition.time }}</b></td>
+      </tr>
+      <tr>
+        <td><b>{{ _('Condition') }}</b></td>
+        <td><b>{{ result.currently.condition }}</b></td>
+      </tr>
+      <tr>
+        <td><b>{{ _('Temperature') }}</b></td>
+        <td><b>{{ result.currently.metric.temperature }}°C / {{
+          result.currently.imperial.temperature }}°F</b></td>
+      </tr>
+      <tr>
+        <td>{{ _('Feels Like') }}</td>
+        <td>{{ condition.metric.feels_like }}°C / {{ condition.imperial.feels_like }}°F</td>
+      </tr>
+      <tr>
+        <td>{{ _('Wind') }}</td>
+        <td>{{ condition.wind_direction }}°, {{ condition.metric.wind_speed }} km/h / {{
+          condition.imperial.wind_speed }} mph</td>
+      </tr>
+      <tr>
+        <td>{{ _('Visibility') }}</td>
+        <td>{{ condition.metric.visibility }} km</td>
+      </tr>
+      <tr>
+        <td>{{ _('Humidity') }}</td>
+        <td>{{ condition.humidity }}%</td>
+      </tr>
+      {% endfor %}
+      </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </details>
+</article>
