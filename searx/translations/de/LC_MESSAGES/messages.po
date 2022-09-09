@@ -20,19 +20,18 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: German <https://weblate.bubu1.eu/projects/searxng/searxng/de/>"
-"\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -207,7 +206,7 @@ msgstr "Server-API-Fehler"
 msgid "No item found"
 msgstr "Keine Einträge gefunden"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Quelle"
@@ -216,27 +215,27 @@ msgstr "Quelle"
 msgid "Error loading the next page"
 msgstr "Fehler beim Laden der nächsten Seite"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ungültige Einstellungen, bitte Einstellungen ändern"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "Ungültige Einstellungen"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "Suchfehler"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "vor {minutes} Minute(n)"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "vor {hours} Stunde(n), {minutes} Minute(n)"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "Ausgesetzt"
 
@@ -272,7 +271,7 @@ msgstr "Dieser Eintrag wurde überschrieben von"
 msgid "No abstract is available for this publication."
 msgstr "Keine Zusammenfassung für die Veröffentlichung verfügbar."
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanal"
 
@@ -282,18 +281,18 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Die URL von dem Bild konnte nicht gelesen werden. Dies kann auf ein nicht "
-"unterstütztes Dateiformat zurückzuführen sein. TinEye unterstützt nur Bilder "
-"im Format JPEG, PNG, GIF, BMP, TIFF oder WebP."
+"Die URL von dem Bild konnte nicht gelesen werden. Dies kann auf ein nicht"
+" unterstütztes Dateiformat zurückzuführen sein. TinEye unterstützt nur "
+"Bilder im Format JPEG, PNG, GIF, BMP, TIFF oder WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Das Bild ist zu einfach um Übereinstimmungen zu finden. TinEye benötigt ein "
-"grundlegendes Maß an visuellen Details, um erfolgreich Übereinstimmungen zu "
-"erkennen."
+"Das Bild ist zu einfach um Übereinstimmungen zu finden. TinEye benötigt "
+"ein grundlegendes Maß an visuellen Details, um erfolgreich "
+"Übereinstimmungen zu erkennen."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -522,17 +521,17 @@ msgid "View error logs and submit a bug report"
 msgstr "Fehlerprotokolle einsehen und einen Fehlerbericht einreichen"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Median"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -970,67 +969,63 @@ msgstr "Punkte"
 msgid "Result count"
 msgstr "Ergebnisanzahl"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Punkte pro Treffer"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "Insgesamt"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "Verarbeitung"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "Fehler und Ausnahmen"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "Ausnahmefehler"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "Meldung"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "Prozentsatz"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "Parameter"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Dateiname"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "Funktion"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Code"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "Checker"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "Test fehlgeschlagen"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "Kommentar(e)"
 
@@ -1426,3 +1421,7 @@ msgstr "Video verstecken"
 
 #~ msgid "preferences"
 #~ msgstr "Einstellungen"
+
+#~ msgid "Scores per result"
+#~ msgstr "Punkte pro Treffer"
+

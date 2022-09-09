@@ -7,21 +7,20 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-08-19 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Polish <https://weblate.bubu1.eu/projects/searxng/searxng/pl/>"
-"\n"
 "Language: pl\n"
+"Language-Team: Polish "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/pl/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -196,7 +195,7 @@ msgstr "błąd serwera API"
 msgid "No item found"
 msgstr "Nie znaleziono elementu"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Źródło"
@@ -205,27 +204,27 @@ msgstr "Źródło"
 msgid "Error loading the next page"
 msgstr "Błąd wczytywania następnej strony"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nieprawidłowe ustawienia, proszę zmienić swoje preferencje"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "Nieprawidłowe ustawienia"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "błąd wyszukiwania"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) temu"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) temu"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "Zawieszone"
 
@@ -261,7 +260,7 @@ msgstr "Ten wpis został zastąpiony przez"
 msgid "No abstract is available for this publication."
 msgstr "Streszczenie nie jest dostępne dla tej publikacji."
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanał"
 
@@ -272,8 +271,8 @@ msgid ""
 " WebP."
 msgstr ""
 "Nie można odczytać obrazu z tego adresu URL. Może być to spowodowane "
-"nieobsługiwanym formatem pliku. TinEye obsługuje jedynie obrazy w formatach "
-"JPEG, PNG, GIF, BMP, TIFF i WebP."
+"nieobsługiwanym formatem pliku. TinEye obsługuje jedynie obrazy w "
+"formatach JPEG, PNG, GIF, BMP, TIFF i WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -348,9 +347,9 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
-"Ten plugin sprawdza, czy adres wysyłający zapytanie jest węzłem wyjściowym "
-"sieci Tor, i powiadamia użytkownika jeśli jest, tak jak check.torproject.org "
-"ale z searxng."
+"Ten plugin sprawdza, czy adres wysyłający zapytanie jest węzłem "
+"wyjściowym sieci Tor, i powiadamia użytkownika jeśli jest, tak jak "
+"check.torproject.org ale z searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -503,17 +502,17 @@ msgid "View error logs and submit a bug report"
 msgstr "Zobacz dziennik błędów i zgłoś je"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Mediana"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -951,67 +950,63 @@ msgstr "Wyniki"
 msgid "Result count"
 msgstr "Ilość wyników"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Wyniki na rezultat"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "Suma"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "Przetwarzanie"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "Ostrzeżenia"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "Błędy i wyjątki"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "Wyjątek"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "Wiadomość"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "Odsetek"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "Parametr"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nazwa pliku"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "Funkcja"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kod"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "Weryfikacja"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "Test zakończony niepowodzeniem"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "Komentarz(e)"
 
@@ -1398,3 +1393,7 @@ msgstr "ukryj wideo"
 
 #~ msgid "preferences"
 #~ msgstr "preferencje"
+
+#~ msgid "Scores per result"
+#~ msgstr "Wyniki na rezultat"
+

@@ -8,17 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-08-26 07:23+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Norwegian Bokmål <https://weblate.bubu1.eu/projects/searxng/"
-"searxng/nb_NO/>\n"
 "Language: nb_NO\n"
+"Language-Team: Norwegian Bokmål "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/nb_NO/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -193,7 +192,7 @@ msgstr "Tjener-API-feil"
 msgid "No item found"
 msgstr "Fant ingen elementer"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Kilde"
@@ -202,27 +201,27 @@ msgstr "Kilde"
 msgid "Error loading the next page"
 msgstr "Det var et problem med lasting av neste side"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige innstillinger, rediger dine preferanser"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "Ugyldige innstillinger"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "søkefeil"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "for {minutes} minuter siden"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "for {hours} time(r), {minutes} minutt(er) siden"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "I hvilemodus"
 
@@ -258,7 +257,7 @@ msgstr "Denne oppføringen har blitt erstattet av"
 msgid "No abstract is available for this publication."
 msgstr "Sammendrag er ikke tilgjengelig for denne publikasjonen."
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanal"
 
@@ -268,9 +267,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Kunne ikke lese bilde-lenken. Dette kan være fordi bildet er i et format som "
-"ikke er støttet. TinEye støtter bare JPEG, PNG, GIF, BMP, TIFF eller WebP "
-"formater."
+"Kunne ikke lese bilde-lenken. Dette kan være fordi bildet er i et format "
+"som ikke er støttet. TinEye støtter bare JPEG, PNG, GIF, BMP, TIFF eller "
+"WebP formater."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -492,17 +491,17 @@ msgid "View error logs and submit a bug report"
 msgstr "Vis feillogger og send inn en feilrapport"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Median"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -937,67 +936,63 @@ msgstr "Poengsummer"
 msgid "Result count"
 msgstr "Antall resultater"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Vektninger per resultat"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "Totalt"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "Behandler"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "Advarsler"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "Feil og unntag"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "Unntak"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "Melding"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "Prosentsats"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "Parameter"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Filnavn"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "Funksjon"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kode"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "Sjekker"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "Mislykket test"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "Kommentar(er)"
 
@@ -1307,3 +1302,7 @@ msgstr "skjul video"
 
 #~ msgid "preferences"
 #~ msgstr "innstillinger"
+
+#~ msgid "Scores per result"
+#~ msgstr "Vektninger per resultat"
+
