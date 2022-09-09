@@ -16,19 +16,18 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: tents <remendne@pentrens.jp>\n"
-"Language-Team: Japanese <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"ja/>\n"
 "Language: ja\n"
+"Language-Team: Japanese "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ja/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -203,7 +202,7 @@ msgstr "サーバー API エラー"
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "ソース"
@@ -212,27 +211,27 @@ msgstr "ソース"
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "検索エラー"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分前"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "一時停止"
 
@@ -268,7 +267,7 @@ msgstr "このエントリは、置き換えられました:"
 msgid "No abstract is available for this publication."
 msgstr "この出版物には要約がありません。"
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "チャンネル"
 
@@ -277,17 +276,13 @@ msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr ""
-"この画像URLは読み取ることができません。サポートされていないフォーマットだと考"
-"えられます。TinEyeはJPEG、PNG、GIF、BMP、TIFF、WebPの画像のみサポートしていま"
-"す。"
+msgstr "この画像URLは読み取ることができません。サポートされていないフォーマットだと考えられます。TinEyeはJPEG、PNG、GIF、BMP、TIFF、WebPの画像のみサポートしています。"
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "画像がマッチするものが多すぎます。TinEyeは基本的に視覚情報の詳細が一致するこ"
-"とで成功しやすいです。"
+msgstr "画像がマッチするものが多すぎます。TinEyeは基本的に視覚情報の詳細が一致することで成功しやすいです。"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -348,26 +343,22 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
-"このプラグインはsearxngからTOR exit node にアドレスを要求したとき、check."
-"torproject.orgサイトのように、ユーザーに通知します。"
+"このプラグインはsearxngからTOR exit node "
+"にアドレスを要求したとき、check.torproject.orgサイトのように、ユーザーに通知します。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
-msgstr ""
-"TOR exit node のリスト(https://check.torproject.org/exit-"
-"addresses)に到達できません。"
+msgstr "TOR exit node のリスト(https://check.torproject.org/exit-addresses)に到達できません。"
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "TORを利用しています。あなたのIPアドレスはここから来ていると思われます : "
-"{ip_address}."
+msgstr "TORを利用しています。あなたのIPアドレスはここから来ていると思われます : {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "TORを利用していません。あなたのIPアドレスはここから来ていると思われます: "
-"{ip_address}."
+msgstr "TORを利用していません。あなたのIPアドレスはここから来ていると思われます: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -501,17 +492,17 @@ msgid "View error logs and submit a bug report"
 msgstr "エラーログを表示し、バグレポートを送信します"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "中央値"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -930,67 +921,63 @@ msgstr "スコア"
 msgid "Result count"
 msgstr "結果カウント"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "検索結果当たりスコア"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "合計"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "処理"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "注意"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "エラーと例外"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "例外"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "メッセージ"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "確率"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "パラメータ"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "ファイル名"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "ファンクション"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "コード"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "チェッカー"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "テストに失敗しました"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "コメント"
 
@@ -1369,3 +1356,7 @@ msgstr "動画を隠す"
 
 #~ msgid "preferences"
 #~ msgstr "設定"
+
+#~ msgid "Scores per result"
+#~ msgstr "検索結果当たりスコア"
+

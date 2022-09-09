@@ -8,17 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-23 14:08+0000\n"
+"POT-Creation-Date: 2022-09-04 09:33+0000\n"
 "PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Linerly <linerly@protonmail.com>\n"
-"Language-Team: Indonesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"id/>\n"
 "Language: id\n"
+"Language-Team: Indonesian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/id/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -193,7 +192,7 @@ msgstr "kesalahan server API"
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:212
+#: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Sumber"
@@ -202,27 +201,27 @@ msgstr "Sumber"
 msgid "Error loading the next page"
 msgstr "Gagal memuat halaman berikutnya"
 
-#: searx/webapp.py:516 searx/webapp.py:960
+#: searx/webapp.py:518 searx/webapp.py:962
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:532
+#: searx/webapp.py:534
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:609 searx/webapp.py:685
+#: searx/webapp.py:611 searx/webapp.py:687
 msgid "search error"
 msgstr "kesalahan pencarian"
 
-#: searx/webapp.py:731
+#: searx/webapp.py:733
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} menit yang lalu"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:735
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} jam, {minutes} menit yang lalu"
 
-#: searx/webapp.py:859
+#: searx/webapp.py:861
 msgid "Suspended"
 msgstr "Ditangguhkan"
 
@@ -258,7 +257,7 @@ msgstr "Masukan ini telah digantikan oleh"
 msgid "No abstract is available for this publication."
 msgstr "Tidak ada abstrak yang tersedia untuk publikasi ini."
 
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Saluran"
 
@@ -277,8 +276,9 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Gambar ini terlalu sederhana untuk menemukan kecocokan. TinEye membutuhkan "
-"sebuah detail yang dasar untuk mengenal kecocokan dengan berhasil."
+"Gambar ini terlalu sederhana untuk menemukan kecocokan. TinEye "
+"membutuhkan sebuah detail yang dasar untuk mengenal kecocokan dengan "
+"berhasil."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -346,8 +346,8 @@ msgid ""
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
 "Plugin ini memeriksa jika alamat peminta adalah node keluaran TOR, dan "
-"memberitahukan pengguna jika iya, seperti check.torproject.org tetapi dari "
-"searxng."
+"memberitahukan pengguna jika iya, seperti check.torproject.org tetapi "
+"dari searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -363,8 +363,7 @@ msgstr "Anda menggunakan TOR. Alamat IP Anda adalah: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
-"Anda tidak menggunakan TOR. Alamat IP Anda terlihat sebagai: {ip_address}."
+msgstr "Anda tidak menggunakan TOR. Alamat IP Anda terlihat sebagai: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -501,17 +500,17 @@ msgid "View error logs and submit a bug report"
 msgstr "Lihat log kesalahan dan kirim sebuah laporan bug"
 
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Median"
 
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -949,67 +948,63 @@ msgstr "Skor"
 msgid "Result count"
 msgstr "Jumlah hasil"
 
-#: searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr "Skor per hasil"
-
-#: searx/templates/simple/stats.html:62
+#: searx/templates/simple/stats.html:59
 msgid "Total"
 msgstr "Total"
 
-#: searx/templates/simple/stats.html:63
+#: searx/templates/simple/stats.html:60
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:61
 msgid "Processing"
 msgstr "Memproses"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Warnings"
 msgstr "Peringatan"
 
-#: searx/templates/simple/stats.html:102
+#: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
 msgstr "Kesalahan dan pengecualian"
 
-#: searx/templates/simple/stats.html:108
+#: searx/templates/simple/stats.html:105
 msgid "Exception"
 msgstr "Pengecualian"
 
-#: searx/templates/simple/stats.html:110
+#: searx/templates/simple/stats.html:107
 msgid "Message"
 msgstr "Pesan"
 
-#: searx/templates/simple/stats.html:112
+#: searx/templates/simple/stats.html:109
 msgid "Percentage"
 msgstr "Persentase"
 
-#: searx/templates/simple/stats.html:114
+#: searx/templates/simple/stats.html:111
 msgid "Parameter"
 msgstr "Parameter"
 
-#: searx/templates/simple/stats.html:122
+#: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nama berkas"
 
-#: searx/templates/simple/stats.html:123
+#: searx/templates/simple/stats.html:120
 msgid "Function"
 msgstr "Fungsi"
 
-#: searx/templates/simple/stats.html:124
+#: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kode"
 
-#: searx/templates/simple/stats.html:131
+#: searx/templates/simple/stats.html:128
 msgid "Checker"
 msgstr "Pemeriksa"
 
-#: searx/templates/simple/stats.html:134
+#: searx/templates/simple/stats.html:131
 msgid "Failed test"
 msgstr "Tes gagal"
 
-#: searx/templates/simple/stats.html:135
+#: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
 msgstr "Komentar"
 
@@ -1282,3 +1277,7 @@ msgstr "sembunyikan video"
 
 #~ msgid "preferences"
 #~ msgstr "preferensi"
+
+#~ msgid "Scores per result"
+#~ msgstr "Skor per hasil"
+
