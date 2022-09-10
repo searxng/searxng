@@ -91,25 +91,50 @@ def get_query_url_images(query, lang_info, query_params):
     )
 
 
+def get_query_url_news(query, lang_info, query_params):
+    return (
+        'https://'
+        + lang_info['subdomain']
+        + '/search'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                'tbm': "nws",
+                **query_params,
+            }
+        )
+    )
+
+
 CATEGORY_TO_GET_QUERY_URL = {
     'general': get_query_url_general,
     'images': get_query_url_images,
+    'news': get_query_url_news,
+}
+
+CATEGORY_RESULT_COUNT_PER_PAGE = {
+    'general': 10,
+    'images': 100,
+    'news': 10,
 }
 
 
 def request(query, params):
     """Google search request"""
 
-    offset = (params['pageno'] - 1) * 10
+    result_count_per_page = CATEGORY_RESULT_COUNT_PER_PAGE[categories[0]]  # pylint: disable=unsubscriptable-object
+
+    offset = (params['pageno'] - 1) * result_count_per_page
 
     lang_info = get_lang_info(params, supported_languages, language_aliases, True)
 
     query_params = {
         **lang_info['params'],
-        'ie': "utf8",
-        'oe': "utf8",
-        'num': 30,
+        'ie': 'utf8',
+        'oe': 'utf8',
         'start': offset,
+        'num': result_count_per_page,
         'filter': '0',
         'asearch': 'arc',
         'async': 'use_ac:true,_fmt:json',
@@ -182,6 +207,7 @@ class ParseResultGroupItem:
             "WEB_ANSWERS_CARD_BLOCK": self.web_answers_card_block,
             "IMAGE_RESULT_GROUP": self.image_result_group,
             "TWITTER_RESULT_GROUP": self.twitter_result_group,
+            "NEWS_WHOLEPAGE": self.news_wholepage,
             # WHOLEPAGE_PAGE_GROUP - found for keyword what is t in English language
             # EXPLORE_UNIVERSAL_BLOCK
             # TRAVEL_ANSWERS_RESULT
@@ -351,6 +377,65 @@ class ParseResultGroupItem:
 
         for item in item_to_parse["image_result_group_element"]:
             results.append(parse_search_feature_proto(item["image_result"]))
+        return results
+
+    def news_wholepage(self, item_to_parse):
+        """Parse a news search result"""
+
+        def iter_snippets():
+            """Iterate over all the results, yield result_index, snippet to deal with nested structured"""
+            result_index = 0
+            for item in item_to_parse["element"]:
+                if "news_singleton_result_group" in item:
+                    payload = item["news_singleton_result_group"]["result"]["payload"]["liquid_item_data"]
+                    yield result_index, payload["article"]["stream_simplified_snippet"]
+                    result_index += 1
+                    continue
+
+                if "top_coverage" in item:
+                    for element in item["top_coverage"]["element"]:
+                        yield result_index, element["result"]["payload"]["liquid_item_data"]["article"][
+                            "stream_simplified_snippet"
+                        ]
+                        result_index += 1
+                    continue
+
+                if "news_sports_hub_result_group" in item:
+                    for element in item["news_sports_hub_result_group"]["element"]:
+                        yield result_index, element["result"]["payload"]["liquid_item_data"]["article"][
+                            "stream_simplified_snippet"
+                        ]
+                        result_index += 1
+                    continue
+
+                if "news_topic_hub_refinements_result_group" in item:
+                    for ref_list in item["news_topic_hub_refinements_result_group"]["refinements"]["refinement_list"]:
+                        for result in ref_list["results"]:
+                            yield result_index, result["payload"]["liquid_item_data"]["article"][
+                                "stream_simplified_snippet"
+                            ]
+                            result_index += 1
+                    continue
+
+                print("unknow news", item)
+
+        results = []
+        for result_index, snippet in iter_snippets():
+            publishedDate = snippet["date"]["timestamp"]
+            url = snippet["url"]["result_url"]
+            title = html_to_text(snippet["title"]["text"])
+            content = html_to_text(snippet["snippet"]["snippet"])
+            img_src = snippet.get("thumbnail_info", {}).get("sffe_50k_thumbnail_url")
+            results.append(
+                {
+                    'url': url,
+                    'title': title,
+                    'content': content,
+                    'img_src': img_src,
+                    'publishedDate': datetime.fromtimestamp(publishedDate),
+                    "result_index": result_index,
+                }
+            )
         return results
 
 

@@ -721,8 +721,9 @@ engines:
     #       - ['one_title_contains', 'Salvador']
 
   - name: google news
-    engine: google_news
+    engine: google_internal_search
     shortcut: gon
+    categories: [news, web]
     # additional_tests:
     #   android: *test_android
 
