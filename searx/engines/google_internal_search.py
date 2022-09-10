@@ -19,6 +19,10 @@ The implementation is shared by other engines:
 
 from urllib.parse import urlencode
 from json import loads, dumps
+from datetime import datetime
+from zoneinfo import ZoneInfo
+from babel.dates import format_datetime
+import babel
 from searx.utils import html_to_text
 
 # pylint: disable=unused-import
@@ -44,11 +48,53 @@ about = {
 }
 
 # engine dependent config
-categories = ['general', 'web']
+categories = None
 paging = True
 time_range_support = True
 safesearch = True
 send_accept_language_header = True
+
+# configuration
+include_image_results = True
+include_twitter_results = False
+
+
+def get_query_url_general(query, lang_info, query_params):
+    return (
+        'https://'
+        + lang_info['subdomain']
+        + '/search'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                **query_params,
+            }
+        )
+    )
+
+
+def get_query_url_images(query, lang_info, query_params):
+    # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
+    return (
+        'https://'
+        + lang_info['subdomain']
+        + '/search'
+        + "?"
+        + urlencode(
+            {
+                'q': query,
+                'tbm': "isch",
+                **query_params,
+            }
+        )
+    )
+
+
+CATEGORY_TO_GET_QUERY_URL = {
+    'general': get_query_url_general,
+    'images': get_query_url_images,
+}
 
 
 def request(query, params):
@@ -58,25 +104,21 @@ def request(query, params):
 
     lang_info = get_lang_info(params, supported_languages, language_aliases, True)
 
+    query_params = {
+        **lang_info['params'],
+        'ie': "utf8",
+        'oe': "utf8",
+        'num': 30,
+        'start': offset,
+        'filter': '0',
+        'asearch': 'arc',
+        'async': 'use_ac:true,_fmt:json',
+    }
+
+    get_query_url = CATEGORY_TO_GET_QUERY_URL[categories[0]]  # pylint: disable=unsubscriptable-object
+
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
-    query_url = (
-        'https://'
-        + lang_info['subdomain']
-        + '/search'
-        + "?"
-        + urlencode(
-            {
-                'q': query,
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'start': offset,
-                'filter': '0',
-                'asearch': 'arc',
-                'async': 'use_ac:true,_fmt:json',
-            }
-        )
-    )
+    query_url = get_query_url(query, lang_info, query_params)
 
     if params['time_range'] in time_range_dict:
         query_url += '&' + urlencode({'tbs': 'qdr:' + time_range_dict[params['time_range']]})
@@ -90,10 +132,46 @@ def request(query, params):
     return params
 
 
-class ParseItem:
-    """Parse one tier 1 result"""
+def parse_search_feature_proto(search_feature_proto):
+    result_index = search_feature_proto["feature_metadata"]["logging_tree_ref_feature_metadata_extension"][
+        "result_index"
+    ]
+    image_result_data = search_feature_proto["payload"]["image_result_data"]
+    title = html_to_text(image_result_data["page_title"])
+    content = html_to_text(image_result_data.get("snippet", ""))
+    url = image_result_data["coupled_url"]
+    img_src = image_result_data["url"]
+    thumbnail_src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:" + image_result_data["encrypted_docid"]
+    img_format = f'{image_result_data["full_image_size"]["width"]} * {image_result_data["full_image_size"]["height"]}'
 
-    def __init__(self):
+    iptc = image_result_data.get("iptc_info", {}).get("iptc", {})
+    copyright_notice = iptc.get("copyright_notice")
+    creator = iptc.get("creator")
+    if isinstance(creator, list):
+        creator = ", ".join(creator)
+    if creator and copyright_notice and creator != copyright_notice:
+        author = f'{creator} ; {copyright_notice}'
+    else:
+        author = creator
+    return {
+        "template": "images.html",
+        "title": title,
+        "content": content,
+        "url": url,
+        "img_src": img_src,
+        "thumbnail_src": thumbnail_src,
+        'img_format': img_format,
+        "author": author,
+        "result_index": result_index,
+    }
+
+
+class ParseResultGroupItem:
+    """Parse result_group_search_feature_proto.search_feature_proto"""
+
+    def __init__(self, locale):
+        """Parse one tier 1 result"""
+        self.locale = locale
         self.item_types = {
             "EXPLORE_UNIVERSAL_BLOCK": self.explore_universal_block,
             "HOST_CLUSTER": self.host_cluster,
@@ -102,10 +180,9 @@ class ParseItem:
             "VIDEO_UNIVERSAL_GROUP": self.video_universal_group,
             "WEB_RESULT": self.web_result,
             "WEB_ANSWERS_CARD_BLOCK": self.web_answers_card_block,
+            "IMAGE_RESULT_GROUP": self.image_result_group,
+            "TWITTER_RESULT_GROUP": self.twitter_result_group,
             # WHOLEPAGE_PAGE_GROUP - found for keyword what is t in English language
-            # IMAGE_RESULT_GROUP
-            # EXPLORE_UNIVERSAL_BLOCK
-            # TWITTER_RESULT_GROUP
             # EXPLORE_UNIVERSAL_BLOCK
             # TRAVEL_ANSWERS_RESULT
             # TOP_STORIES : news.html template
@@ -117,8 +194,10 @@ class ParseItem:
         for item in item_to_parse["explore_universal_unit_sfp_interface"]:
             explore_unit = item["explore_block_extension"]["payload"]["explore_unit"]
             if "lookup_key" in explore_unit:
-                results.append({'suggestion': html_to_text(explore_unit["lookup_key"]["aquarium_query"]), 'result_index': -1})
-            elif "label":
+                results.append(
+                    {'suggestion': html_to_text(explore_unit["lookup_key"]["aquarium_query"]), 'result_index': -1}
+                )
+            elif "label" in explore_unit:
                 results.append({'suggestion': html_to_text(explore_unit["label"]["text"]), 'result_index': -1})
         return results
 
@@ -222,26 +301,89 @@ class ParseItem:
                 content = html_to_text(payload["snippet_text"])
 
         return [{'url': url, 'title': title, 'content': content, 'result_index': result_index}]
-    
+
     def web_answers_card_block(self, item_to_parse):
         results = []
 
         for item in item_to_parse["web_answers_card_block_elements"]:
             answer = None
             url = None
-            title = None
             for item_webanswers in item["webanswers_container"]["webanswers_container_elements"]:
-                if "web_answers_result" in item_webanswers and "text" in item_webanswers["web_answers_result"]["payload"]:
+                if (
+                    "web_answers_result" in item_webanswers
+                    and "text" in item_webanswers["web_answers_result"]["payload"]
+                ):
                     answer = html_to_text(item_webanswers["web_answers_result"]["payload"]["text"])
                 if "web_answers_standard_result" in item_webanswers:
-                    primary_link = item_webanswers["web_answers_standard_result"]["payload"]["standard_result"]["primary_link"]
+                    primary_link = item_webanswers["web_answers_standard_result"]["payload"]["standard_result"][
+                        "primary_link"
+                    ]
                     url = primary_link["url"]
 
             results.append({'answer': answer, 'url': url, 'result_index': -1})
 
-        return(results)
+        return results
 
-def parse_web_results_list(json_data):
+    def twitter_result_group(self, item_to_parse):
+        results = []
+        if not include_twitter_results:
+            return results
+
+        result_index = item_to_parse["twitter_carousel_header"]["feature_metadata"][
+            "logging_tree_ref_feature_metadata_extension"
+        ]["result_index"]
+        for item in item_to_parse["twitter_cards"]:
+            profile_payload = item["profile_link"]["payload"]["author"]
+            results.append(
+                {
+                    "title": profile_payload["display_name"],
+                    "url": profile_payload["profile_page_url"],
+                    "result_index": result_index,
+                }
+            )
+
+        return results
+
+    def image_result_group(self, item_to_parse):
+        results = []
+        if not include_image_results:
+            return results
+
+        for item in item_to_parse["image_result_group_element"]:
+            print(item)
+            results.append(parse_search_feature_proto(item["image_result"]))
+        return results
+
+
+class ParseResultItem:  # pylint: disable=too-few-public-methods
+    """Parse result_search_feature_proto.search_feature_proto"""
+
+    def __init__(self, locale):
+        self.locale = locale
+        self.item_types = {
+            "LOCAL_TIME": self.local_time,
+            "IMAGE_RESULT": self.image_result,
+        }
+
+    def local_time(self, item_to_parse):
+        """Query like 'time in auckland' or 'time'
+        Note: localized_location reveal the location of the server
+        """
+        seconds_utc = item_to_parse["payload"]["current_time"]["seconds_utc"]
+        timezones_0 = item_to_parse["payload"]["target_location"]["timezones"][0]
+        iana_timezone = timezones_0["iana_timezone"]
+        localized_location = timezones_0["localized_location"]
+        result_tz = ZoneInfo(iana_timezone)
+        result_dt = datetime.fromtimestamp(seconds_utc, tz=result_tz)
+        result_dt_str = format_datetime(result_dt, 'long', tzinfo=result_tz, locale=self.locale)
+        answer = f"{result_dt_str} ( {localized_location} )"
+        return [{'answer': answer, 'result_index': -1}]
+
+    def image_result(self, item_to_parse):
+        return [parse_search_feature_proto(item_to_parse)]
+
+
+def parse_web_results_list(json_data, locale):
     results = []
 
     tier_1_search_results = json_data["arcResponse"]["search_results"]["tier_1_search_results"]
@@ -257,7 +399,8 @@ def parse_web_results_list(json_data):
         elif "full_page" in spell_suggestion:
             results.append({'correction': spell_suggestion["full_page"]["raw_query"], 'result_index': -1})
 
-    parse_item = ParseItem()
+    parseResultItem = ParseResultItem(locale)
+    parseResultGroupItem = ParseResultGroupItem(locale)
     for item in results_list:
         if "result_group" in item:
             result_item = item["result_group"]
@@ -266,11 +409,14 @@ def parse_web_results_list(json_data):
             result_item = item["result"]
             result_item_extension = result_item["result_extension"]
         one_namespace_type = result_item_extension["one_namespace_type"]
-        if one_namespace_type in parse_item.item_types and "result_group_search_feature_proto" in result_item:
+        if one_namespace_type in parseResultGroupItem.item_types and "result_group_search_feature_proto" in result_item:
             search_feature_proto = result_item["result_group_search_feature_proto"]["search_feature_proto"]
-            results = results + parse_item.item_types[one_namespace_type](search_feature_proto)
-        elif "result_group_search_feature_proto" not in result_item:
-            print(dumps(json_data["arcResponse"]))
+            results = results + parseResultGroupItem.item_types[one_namespace_type](search_feature_proto)
+        elif one_namespace_type in parseResultItem.item_types and "result_search_feature_proto" in result_item:
+            search_feature_proto = result_item["result_search_feature_proto"]["search_feature_proto"]
+            results = results + parseResultItem.item_types[one_namespace_type](search_feature_proto)
+        elif "result_group_search_feature_proto" in result_item:
+            print(dumps(one_namespace_type))
 
     return sorted(results, key=lambda d: d['result_index'])
 
@@ -280,7 +426,15 @@ def response(resp):
 
     detect_google_sorry(resp)
 
+    language = resp.search_params["language"]
+    locale = 'en'
+    try:
+        locale = babel.Locale.parse(language, sep='-')
+    except babel.core.UnknownLocaleError:
+        pass
+
     # only the 2nd line has the JSON content
     response_2nd_line = resp.text.split("\n", 1)[1]
     json_data = loads(response_2nd_line)
-    return parse_web_results_list(json_data)
+
+    return parse_web_results_list(json_data, locale)
