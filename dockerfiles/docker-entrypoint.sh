@@ -81,15 +81,16 @@ patch_searxng_settings() {
     # Morty configuration
 
     if [ -n "${MORTY_KEY}" ] && [ -n "${MORTY_URL}" ]; then
-        sed -i -e "s/image_proxy: false/image_proxy: true/g" \
+        sed -i \
+            -e "s/image_proxy: false/image_proxy: true/g" \
+            -e "s|# result_proxy:|result_proxy:|g" \
+            -e "s|#   url: http://127.0.0.1:3000/|  url: ${MORTY_URL}|g" \
+            -e "s|#   # the key is a base64 encoded string|  # the key is a base64 encoded string|g" \
+            -e "s|#   key: \!\!binary|  key: \!\!binary|g" \
+            -e "s/your_morty_proxy_key/${MORTY_KEY}/g" \
+            -e "s|#   # \[true|  # \[true|g" \
+            -e "s|#   proxify_results: true|  proxify_results: true|g" \
             "${CONF}"
-        cat >> "${CONF}" <<-EOF
-
-# Morty configuration
-result_proxy:
-   url: ${MORTY_URL}
-   key: !!binary "${MORTY_KEY}"
-EOF
     fi
 }
 
