@@ -5,21 +5,23 @@
 # Translators:
 # Jan Hovancik, 2017
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Fero Novák <itzwowsmile@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-09-04 09:33+0000\n"
-"PO-Revision-Date: 2022-09-02 07:25+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-09-16 07:30+0000\n"
+"Last-Translator: Fero Novák <itzwowsmile@gmail.com>\n"
+"Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
+"\n"
 "Language: sk\n"
-"Language-Team: Slovak "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
-"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 4.14\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -30,7 +32,7 @@ msgstr "iné"
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "ostatne"
+msgstr "ostatné"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -65,7 +67,7 @@ msgstr "videá"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "technika"
+msgstr "technológia"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -75,7 +77,7 @@ msgstr "správy"
 #. CATEGORY_NAMES['MAP']
 #: searx/searxng.msg
 msgid "map"
-msgstr "mapy"
+msgstr "mapa"
 
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
@@ -120,7 +122,7 @@ msgstr "repozitáre"
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr "Dokumentácia aplikácií"
+msgstr "Dokumentácie aplikácií"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -168,7 +170,7 @@ msgstr "HTTP chyba"
 
 #: searx/webapp.py:178
 msgid "HTTP connection error"
-msgstr "chyba pripojenie cez HTTP"
+msgstr "chyba pripojenia cez HTTP"
 
 #: searx/webapp.py:184
 msgid "proxy error"
@@ -269,12 +271,17 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Danú webovú adresu obrázka sa nepodarilo načítať. Môže to byť spôsobené "
+"nepodporovaným formátom súboru. TinEye podporuje iba obrázky JPEG, PNG, GIF, "
+"BMP, TIFF alebo WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Obrázok je príliš nízkej kvality na to aby sa našla zhoda. TinEye vyžaduje "
+"vyššiu kvalitu detailov v obrázku na identifikáciu zhôd."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -350,11 +357,11 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Používate TOR. Zdá sa, že vaša IP adresa je: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Nepoužívate TOR. Zdá sa, že vaša IP adresa je: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1367,4 +1374,3 @@ msgstr "skryť video"
 
 #~ msgid "Scores per result"
 #~ msgstr ""
-
