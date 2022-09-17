@@ -152,6 +152,16 @@ def wikipedia(query, lang):
     return []
 
 
+def yandex(query, _lang):
+    # yandex autocompleter
+    url = "https://suggest.yandex.com/suggest-ff.cgi?{0}"
+
+    resp = loads(get(url.format(urlencode(dict(part=query)))).text)
+    if len(resp) > 1:
+        return resp[1]
+    return []
+
+
 backends = {
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
@@ -162,6 +172,7 @@ backends = {
     'qwant': qwant,
     'wikipedia': wikipedia,
     'brave': brave,
+    'yandex': yandex,
 }
 
 
