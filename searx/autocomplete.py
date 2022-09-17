@@ -157,7 +157,6 @@ def yandex(query, _lang):
     url = "https://suggest.yandex.com/suggest-ff.cgi?{0}"
 
     resp = loads(get(url.format(urlencode(dict(part=query)))).text)
-    print(resp)
     if len(resp) > 1:
         return resp[1]
     return []
