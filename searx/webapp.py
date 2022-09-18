@@ -984,9 +984,9 @@ def preferences():
     max_rate95 = 0
     for _, e in filtered_engines.items():
         h = histogram('engine', e.name, 'time', 'total')
-        median = round(h.percentage(50), 1) if h.count > 0 else None
-        rate80 = round(h.percentage(80), 1) if h.count > 0 else None
-        rate95 = round(h.percentage(95), 1) if h.count > 0 else None
+        median = round(h.percentile(50), 1) if h.count > 0 else None  # type: ignore
+        rate80 = round(h.percentile(80), 1) if h.count > 0 else None  # type: ignore
+        rate95 = round(h.percentile(95), 1) if h.count > 0 else None  # type: ignore
 
         max_rate95 = max(max_rate95, rate95 or 0)
 

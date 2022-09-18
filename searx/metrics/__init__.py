@@ -2,14 +2,13 @@
 # lint: pylint
 # pylint: disable=missing-module-docstring
 
-import typing
+from typing import Dict, TypedDict, List, Optional, Any
 import math
 import contextlib
 from timeit import default_timer
-from operator import itemgetter
 
 from searx.engines import engines
-from .models import HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
+from .models import Histogram, HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
 from .error_recorder import count_error, count_exception, errors_per_engines
 
 __all__ = [
@@ -27,11 +26,8 @@ __all__ = [
 ]
 
 
-ENDPOINTS = {'search'}
-
-
-histogram_storage: typing.Optional[HistogramStorage] = None
-counter_storage: typing.Optional[CounterStorage] = None
+histogram_storage: Optional[HistogramStorage] = None
+counter_storage: Optional[CounterStorage] = None
 
 
 @contextlib.contextmanager
@@ -50,7 +46,7 @@ def histogram_observe(duration, *args):
     histogram_storage.get(*args).observe(duration)
 
 
-def histogram(*args, raise_on_not_found=True):
+def histogram(*args, raise_on_not_found=True) -> Histogram:
     h = histogram_storage.get(*args)
     if raise_on_not_found and h is None:
         raise ValueError("histogram " + repr((*args,)) + " doesn't not exist")
@@ -65,7 +61,7 @@ def counter_add(value, *args):
     counter_storage.add(value, *args)
 
 
-def counter(*args):
+def counter(*args) -> int:
     return counter_storage.get(*args)
 
 
@@ -110,7 +106,21 @@ def initialize(engine_names=None, enabled=True):
         histogram_storage.configure(histogram_width, histogram_size, 'engine', engine_name, 'time', 'total')
 
 
-def get_engine_errors(engline_name_list):
+class EngineError(TypedDict):
+    """Describe an engine error. To do : check the types"""
+
+    filename: str
+    function: str
+    line_no: int
+    code: str
+    exception_classname: str
+    log_message: str
+    log_parameters: List[str]
+    secondary: bool
+    percentage: int
+
+
+def get_engine_errors(engline_name_list) -> Dict[str, List[EngineError]]:
     result = {}
     engine_names = list(errors_per_engines.keys())
     engine_names.sort()
@@ -141,7 +151,15 @@ def get_engine_errors(engline_name_list):
     return result
 
 
-def get_reliabilities(engline_name_list, checker_results):
+class EngineReliability(TypedDict):
+    """Describe the engine reliability. To do: update the checker field type"""
+
+    reliability: int
+    errors: List[EngineError]
+    checker: Optional[Any]
+
+
+def get_reliabilities(engline_name_list, checker_results) -> Dict[str, EngineReliability]:
     reliabilities = {}
 
     engine_errors = get_engine_errors(engline_name_list)
@@ -184,11 +202,11 @@ def get_engines_stats(engine_name_list):
         if sent_count == 0:
             continue
 
-        result_count = histogram('engine', engine_name, 'result', 'count').percentage(50)
+        result_count = histogram('engine', engine_name, 'result', 'count').percentile(50)
         result_count_sum = histogram('engine', engine_name, 'result', 'count').sum
         successful_count = counter('engine', engine_name, 'search', 'count', 'successful')
 
-        time_total = histogram('engine', engine_name, 'time', 'total').percentage(50)
+        time_total = histogram('engine', engine_name, 'time', 'total').percentile(50)
         max_time_total = max(time_total or 0, max_time_total or 0)
         max_result_count = max(result_count or 0, max_result_count or 0)
 
@@ -214,13 +232,13 @@ def get_engines_stats(engine_name_list):
             stats['score'] = score
             stats['score_per_result'] = score / float(result_count_sum)
 
-        time_http = histogram('engine', engine_name, 'time', 'http').percentage(50)
+        time_http = histogram('engine', engine_name, 'time', 'http').percentile(50)
         time_http_p80 = time_http_p95 = 0
 
         if time_http is not None:
 
-            time_http_p80 = histogram('engine', engine_name, 'time', 'http').percentage(80)
-            time_http_p95 = histogram('engine', engine_name, 'time', 'http').percentage(95)
+            time_http_p80 = histogram('engine', engine_name, 'time', 'http').percentile(80)
+            time_http_p95 = histogram('engine', engine_name, 'time', 'http').percentile(95)
 
             stats['http'] = round(time_http, 1)
             stats['http_p80'] = round(time_http_p80, 1)
@@ -228,8 +246,8 @@ def get_engines_stats(engine_name_list):
 
         if time_total is not None:
 
-            time_total_p80 = histogram('engine', engine_name, 'time', 'total').percentage(80)
-            time_total_p95 = histogram('engine', engine_name, 'time', 'total').percentage(95)
+            time_total_p80 = histogram('engine', engine_name, 'time', 'total').percentile(80)
+            time_total_p95 = histogram('engine', engine_name, 'time', 'total').percentile(95)
 
             stats['total'] = round(time_total, 1)
             stats['total_p80'] = round(time_total_p80, 1)

@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import decimal
+from numbers import Number
 import threading
+from typing import Dict, List, Optional, Tuple
 
 from searx import logger
 
@@ -15,15 +17,19 @@ class Histogram:
 
     _slots__ = '_lock', '_size', '_sum', '_quartiles', '_count', '_width'
 
-    def __init__(self, width=10, size=200):
+    def __init__(self, width: int = 10, size: int = 200):
+        """
+        * width: quantile width
+        * size: number of quantiles
+        """
         self._lock = threading.Lock()
         self._width = width
         self._size = size
         self._quartiles = [0] * size
-        self._count = 0
-        self._sum = 0
+        self._count: int = 0
+        self._sum: int = 0
 
-    def observe(self, value):
+    def observe(self, value: Number):
         q = int(value / self._width)
         if q < 0:
             """Value below zero is ignored"""
@@ -37,19 +43,19 @@ class Histogram:
             self._sum += value
 
     @property
-    def quartiles(self):
+    def quartiles(self) -> List[int]:
         return list(self._quartiles)
 
     @property
-    def count(self):
+    def count(self) -> int:
         return self._count
 
     @property
-    def sum(self):
+    def sum(self) -> int:
         return self._sum
 
     @property
-    def average(self):
+    def average(self) -> float:
         with self._lock:
             if self._count != 0:
                 return self._sum / self._count
@@ -57,31 +63,20 @@ class Histogram:
                 return 0
 
     @property
-    def quartile_percentage(self):
-        '''Quartile in percentage'''
+    def quartile_percentages(self) -> List[int]:
+        """Quartile in percentage"""
         with self._lock:
             if self._count > 0:
                 return [int(q * 100 / self._count) for q in self._quartiles]
             else:
                 return self._quartiles
 
-    @property
-    def quartile_percentage_map(self):
-        result = {}
-        # use Decimal to avoid rounding errors
-        x = decimal.Decimal(0)
-        width = decimal.Decimal(self._width)
-        width_exponent = -width.as_tuple().exponent
-        with self._lock:
-            if self._count > 0:
-                for y in self._quartiles:
-                    yp = int(y * 100 / self._count)
-                    if yp != 0:
-                        result[round(float(x), width_exponent)] = yp
-                    x += width
-        return result
+    def percentile(self, percentage: Number) -> Optional[decimal.Decimal]:
+        """
+        Return the percentile.
 
-    def percentage(self, percentage):
+        * percentage from 0 to 100
+        """
         # use Decimal to avoid rounding errors
         x = decimal.Decimal(0)
         width = decimal.Decimal(self._width)
@@ -109,14 +104,14 @@ class HistogramStorage:
         self.histogram_class = histogram_class
 
     def clear(self):
-        self.measures = {}
+        self.measures: Dict[Tuple[str], Histogram] = {}
 
     def configure(self, width, size, *args):
         measure = self.histogram_class(width, size)
         self.measures[args] = measure
         return measure
 
-    def get(self, *args):
+    def get(self, *args) -> Optional[Histogram]:
         return self.measures.get(args, None)
 
     def dump(self):
@@ -136,13 +131,13 @@ class CounterStorage:
 
     def clear(self):
         with self.lock:
-            self.counters = {}
+            self.counters: Dict[Tuple[str], int] = {}
 
     def configure(self, *args):
         with self.lock:
             self.counters[args] = 0
 
-    def get(self, *args):
+    def get(self, *args) -> int:
         return self.counters[args]
 
     def add(self, value, *args):
