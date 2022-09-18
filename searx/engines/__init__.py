@@ -81,6 +81,7 @@ engine_shortcuts = {}
 
     engine_shortcuts[engine.shortcut] = engine.name
 
+:meta hide-value:
 """
 
 
