@@ -103,7 +103,7 @@ from searx.answerers import (
     ask,
 )
 from searx.metrics import (
-    get_engines_stats,
+    get_engines_metrics,
     get_engine_errors,
     get_reliabilities,
     histogram,
@@ -1222,7 +1222,7 @@ def stats():
         checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
     )
 
-    engine_stats = get_engines_stats(filtered_engines)
+    engine_metrics = get_engines_metrics(filtered_engines)
     engine_reliabilities = get_reliabilities(filtered_engines, checker_results)
 
     if sort_order not in STATS_SORT_PARAMETERS:
@@ -1242,12 +1242,12 @@ def stats():
                 reliability_order = 1 - reliability_order
         return (reliability_order, key, engine_stat['name'])
 
-    engine_stats['time'] = sorted(engine_stats['time'], reverse=reverse, key=get_key)
+    engine_metrics['time'] = sorted(engine_metrics['time'], reverse=reverse, key=get_key)
     return render(
         # fmt: off
         'stats.html',
         sort_order = sort_order,
-        engine_stats = engine_stats,
+        engine_stats = engine_metrics,
         engine_reliabilities = engine_reliabilities,
         selected_engine_name = selected_engine_name,
         searx_git_branch = GIT_BRANCH,

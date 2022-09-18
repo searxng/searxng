@@ -13,7 +13,7 @@ from .error_recorder import count_error, count_exception, errors_per_engines
 
 __all__ = [
     "initialize",
-    "get_engines_stats",
+    "get_engines_metrics",
     "get_engine_errors",
     "histogram",
     "histogram_observe",
@@ -189,7 +189,36 @@ def get_reliabilities(engline_name_list, checker_results) -> Dict[str, EngineRel
     return reliabilities
 
 
-def get_engines_stats(engine_name_list):
+class EngineStat(TypedDict):
+    """Metrics for one engine. To do: check the types"""
+
+    name: str
+    total: Optional[float]
+    total_p80: Optional[float]
+    totla_p95: Optional[float]
+    http: Optional[float]
+    http_p80: Optional[float]
+    http_p95: Optional[float]
+    processing: Optional[float]
+    processing_p80: Optional[float]
+    processing_p95: Optional[float]
+    score: float
+    score_per_result: float
+    result_count: int
+
+
+class EngineStatResult(TypedDict):
+    time: List[EngineStat]
+    """List of engine stat"""
+
+    max_time: float
+    """Maximum response time for all the engines"""
+
+    max_result_count: int
+    """Maximum number of result for all the engines"""
+
+
+def get_engines_metrics(engine_name_list) -> EngineStatResult:
     assert counter_storage is not None
     assert histogram_storage is not None
 
