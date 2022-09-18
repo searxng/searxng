@@ -25,7 +25,10 @@ _flask_babel_get_translations = flask_babel.get_translations
 
 LOCALE_NAMES = {}
 """Mapping of locales and their description.  Locales e.g. 'fr' or 'pt-BR' (see
-:py:obj:`locales_initialize`)."""
+:py:obj:`locales_initialize`).
+
+:meta hide-value:
+"""
 
 RTL_LOCALES: Set[str] = set()
 """List of *Right-To-Left* locales e.g. 'he' or 'fa-IR' (see
@@ -159,7 +162,7 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
     ``searxng_locale``.
 
     Argument ``engine_locales`` is a python dict that maps *SearXNG locales* to
-    corresponding *engine locales*:
+    corresponding *engine locales*::
 
       <engine>: {
           # SearXNG string : engine-string
