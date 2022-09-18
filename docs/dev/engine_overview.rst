@@ -311,3 +311,30 @@ the parameter ``template`` must be set to the desired type.
    address.postcode          postcode of object
    address.country           country of object
    ========================= =====================================================
+
+
+.. _engine weather media types:
+
+.. list-table:: Parameter of the **weather** media type
+   :header-rows: 2
+   :width: 100%
+
+   * - result parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``weather.html``
+
+   * - location
+     - :py:class:`str`
+     - name of the location
+
+   * - currently
+     - :py:class:`dict`
+     - current weather data
+
+   * - forecast
+     - :py:class:`List <list>`\ [\ :py:class:`dict`\ ]
+     - weather forecast data
