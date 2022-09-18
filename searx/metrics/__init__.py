@@ -208,6 +208,8 @@ class EngineStat(TypedDict):
 
 
 class EngineStatResult(TypedDict):
+    """result of the get_engines_metrics function"""
+
     time: List[EngineStat]
     """List of engine stat"""
 
