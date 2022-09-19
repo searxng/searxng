@@ -125,6 +125,7 @@ extensions = [
     "sphinx_tabs.tabs", # https://github.com/djungelorm/sphinx-tabs
     'myst_parser',  # https://www.sphinx-doc.org/en/master/usage/markdown.html
     'notfound.extension',  # https://github.com/readthedocs/sphinx-notfound-page
+    'sphinx.ext.inheritance_diagram',  # https://www.sphinx-doc.org/en/master/usage/extensions/inheritance.html
 ]
 
 myst_enable_extensions = [
