@@ -150,24 +150,12 @@ def response(resp):
         # the first <h3> tag in the <article> contains the title of the link
         title = extract_text(eval_xpath(result, './article/h3[1]'))
 
-        # the first <div> tag in the <article> contains the content of the link
-        content = extract_text(eval_xpath(result, './article/div[1]'))
+        # The pub_date is mostly a string like 'yesertday', not a real
+        # timezone date or time.  Therefore we can't use publishedDate.
+        pub_date = extract_text(eval_xpath(result, './article/div[1]/div[1]/time'))
+        pub_origin = extract_text(eval_xpath(result, './article/div[1]/div[1]/a'))
 
-        # the second <div> tag contains origin publisher and the publishing date
-
-        pub_date = extract_text(eval_xpath(result, './article/div[2]//time'))
-        pub_origin = extract_text(eval_xpath(result, './article/div[2]//a'))
-
-        pub_info = []
-        if pub_origin:
-            pub_info.append(pub_origin)
-        if pub_date:
-            # The pub_date is mostly a string like 'yesertday', not a real
-            # timezone date or time.  Therefore we can't use publishedDate.
-            pub_info.append(pub_date)
-        pub_info = ', '.join(pub_info)
-        if pub_info:
-            content = pub_info + ': ' + content
+        content = ' / '.join([x for x in [pub_origin, pub_date] if x])
 
         # The image URL is located in a preceding sibling <img> tag, e.g.:
         # "https://lh3.googleusercontent.com/DjhQh7DMszk.....z=-p-h100-w100"
