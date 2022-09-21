@@ -17,68 +17,42 @@ __all__ = [
     "initialize",
     "get_engines_metrics",
     "get_engine_errors",
-    "histogram",
-    "histogram_observe",
-    "histogram_observe_time",
-    "counter",
-    "counter_inc",
-    "counter_add",
     "count_error",
     "count_exception",
 ]
 
 
-histogram_storage: Optional[HistogramStorage] = None
-counter_storage: Optional[CounterStorage] = None
+HISTOGRAM_STORAGE: Optional[HistogramStorage] = None
+COUNTER_STORAGE: Optional[CounterStorage] = None
 
 
-@contextlib.contextmanager
-def histogram_observe_time(*args):
-    h = histogram_storage.get(*args)
-    before = default_timer()
-    yield before
-    duration = default_timer() - before
-    if h:
-        h.observe(duration)
-    else:
-        raise ValueError("histogram " + repr((*args,)) + " doesn't not exist")
-
-
-def histogram_observe(duration, *args):
-    histogram_storage.get(*args).observe(duration)
-
-
-def histogram(*args, raise_on_not_found=True) -> Histogram:
-    h = histogram_storage.get(*args)
-    if raise_on_not_found and h is None:
-        raise ValueError("histogram " + repr((*args,)) + " doesn't not exist")
-    return h
-
-
-def counter_inc(*args):
-    counter_storage.add(1, *args)
-
-
-def counter_add(value, *args):
-    counter_storage.add(value, *args)
-
-
-def counter(*args) -> int:
-    return counter_storage.get(*args)
+# We do not have a usage of this context manager
+#
+# @contextlib.contextmanager
+# def histogram_observe_time(*args):
+#     h = histogram_storage.get(*args)
+#     before = default_timer()
+#     yield before
+#     duration = default_timer() - before
+#     if h:
+#         h.observe(duration)
+#     else:
+#         raise ValueError("histogram " + repr((*args,)) + " doesn't not exist")
 
 
 def initialize(engine_names=None, enabled=True):
     """
     Initialize metrics
     """
-    global counter_storage, histogram_storage  # pylint: disable=global-statement
+
+    global COUNTER_STORAGE, HISTOGRAM_STORAGE  # pylint: disable=global-statement
 
     if enabled:
-        counter_storage = CounterStorage()
-        histogram_storage = HistogramStorage()
+        COUNTER_STORAGE = CounterStorage()
+        HISTOGRAM_STORAGE = HistogramStorage()
     else:
-        counter_storage = VoidCounterStorage()
-        histogram_storage = HistogramStorage(histogram_class=VoidHistogram)
+        COUNTER_STORAGE = VoidCounterStorage()
+        HISTOGRAM_STORAGE = HistogramStorage(histogram_class=VoidHistogram)
 
     # max_timeout = max of all the engine.timeout
     max_timeout = 2
@@ -93,19 +67,19 @@ def initialize(engine_names=None, enabled=True):
     # engines
     for engine_name in engine_names or engines:
         # search count
-        counter_storage.configure('engine', engine_name, 'search', 'count', 'sent')
-        counter_storage.configure('engine', engine_name, 'search', 'count', 'successful')
+        COUNTER_STORAGE.configure('engine', engine_name, 'search', 'count', 'sent')
+        COUNTER_STORAGE.configure('engine', engine_name, 'search', 'count', 'successful')
         # global counter of errors
-        counter_storage.configure('engine', engine_name, 'search', 'count', 'error')
+        COUNTER_STORAGE.configure('engine', engine_name, 'search', 'count', 'error')
         # score of the engine
-        counter_storage.configure('engine', engine_name, 'score')
+        COUNTER_STORAGE.configure('engine', engine_name, 'score')
         # result count per requests
-        histogram_storage.configure(1, 100, 'engine', engine_name, 'result', 'count')
+        HISTOGRAM_STORAGE.configure(1, 100, 'engine', engine_name, 'result', 'count')
         # time doing HTTP requests
-        histogram_storage.configure(histogram_width, histogram_size, 'engine', engine_name, 'time', 'http')
+        HISTOGRAM_STORAGE.configure(histogram_width, histogram_size, 'engine', engine_name, 'time', 'http')
         # total time
         # .time.request and ...response times may overlap .time.http time.
-        histogram_storage.configure(histogram_width, histogram_size, 'engine', engine_name, 'time', 'total')
+        HISTOGRAM_STORAGE.configure(histogram_width, histogram_size, 'engine', engine_name, 'time', 'total')
 
 
 class EngineError(TypedDict):
@@ -131,7 +105,7 @@ def get_engine_errors(engline_name_list) -> Dict[str, List[EngineError]]:
             continue
 
         error_stats = errors_per_engines[engine_name]
-        sent_search_count = max(counter('engine', engine_name, 'search', 'count', 'sent'), 1)
+        sent_search_count = max(COUNTER_STORAGE.get('engine', engine_name, 'search', 'count', 'sent'), 1)
         sorted_context_count_list = sorted(error_stats.items(), key=lambda context_count: context_count[1])
         r = []
         for context, count in sorted_context_count_list:
@@ -170,7 +144,7 @@ def get_reliabilities(engline_name_list, checker_results) -> Dict[str, EngineRel
         checker_result = checker_results.get(engine_name, {})
         checker_success = checker_result.get('success', True)
         errors = engine_errors.get(engine_name) or []
-        if counter('engine', engine_name, 'search', 'count', 'sent') == 0:
+        if COUNTER_STORAGE.get('engine', engine_name, 'search', 'count', 'sent') == 0:
             # no request
             reliablity = None
         elif checker_success and not errors:
@@ -223,23 +197,23 @@ class EngineStatResult(TypedDict):
 
 
 def get_engines_metrics(engine_name_list) -> EngineStatResult:
-    assert counter_storage is not None
-    assert histogram_storage is not None
+    assert COUNTER_STORAGE is not None
+    assert HISTOGRAM_STORAGE is not None
 
     list_time = []
     max_time_total = max_result_count = None
 
     for engine_name in engine_name_list:
 
-        sent_count = counter('engine', engine_name, 'search', 'count', 'sent')
+        sent_count = COUNTER_STORAGE.get('engine', engine_name, 'search', 'count', 'sent')
         if sent_count == 0:
             continue
 
-        result_count = histogram('engine', engine_name, 'result', 'count').percentile(50)
-        result_count_sum = histogram('engine', engine_name, 'result', 'count').sum
-        successful_count = counter('engine', engine_name, 'search', 'count', 'successful')
+        result_count = HISTOGRAM_STORAGE.get('engine', engine_name, 'result', 'count').percentile(50)
+        result_count_sum = HISTOGRAM_STORAGE.get('engine', engine_name, 'result', 'count').sum
+        successful_count = COUNTER_STORAGE.get('engine', engine_name, 'search', 'count', 'successful')
 
-        time_total = histogram('engine', engine_name, 'time', 'total').percentile(50)
+        time_total = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'total').percentile(50)
         max_time_total = max(time_total or 0, max_time_total or 0)
         max_result_count = max(result_count or 0, max_result_count or 0)
 
@@ -260,18 +234,18 @@ def get_engines_metrics(engine_name_list) -> EngineStatResult:
         }
 
         if successful_count and result_count_sum:
-            score = counter('engine', engine_name, 'score')
+            score = COUNTER_STORAGE.get('engine', engine_name, 'score')
 
             stats['score'] = score
             stats['score_per_result'] = score / float(result_count_sum)
 
-        time_http = histogram('engine', engine_name, 'time', 'http').percentile(50)
+        time_http = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'http').percentile(50)
         time_http_p80 = time_http_p95 = 0
 
         if time_http is not None:
 
-            time_http_p80 = histogram('engine', engine_name, 'time', 'http').percentile(80)
-            time_http_p95 = histogram('engine', engine_name, 'time', 'http').percentile(95)
+            time_http_p80 = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'http').percentile(80)
+            time_http_p95 = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'http').percentile(95)
 
             stats['http'] = round(time_http, 1)
             stats['http_p80'] = round(time_http_p80, 1)
@@ -279,8 +253,8 @@ def get_engines_metrics(engine_name_list) -> EngineStatResult:
 
         if time_total is not None:
 
-            time_total_p80 = histogram('engine', engine_name, 'time', 'total').percentile(80)
-            time_total_p95 = histogram('engine', engine_name, 'time', 'total').percentile(95)
+            time_total_p80 = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'total').percentile(80)
+            time_total_p95 = HISTOGRAM_STORAGE.get('engine', engine_name, 'time', 'total').percentile(95)
 
             stats['total'] = round(time_total, 1)
             stats['total_p80'] = round(time_total_p80, 1)

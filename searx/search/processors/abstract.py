@@ -13,7 +13,7 @@ from typing import Dict, Union
 from searx import settings, logger
 from searx.engines import engines
 from searx.network import get_time_for_thread, get_network
-from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
+from searx import metrics
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
 from searx.utils import get_engine_from_settings
 
@@ -95,11 +95,11 @@ class EngineProcessor(ABC):
             error_message = exception_or_message
         result_container.add_unresponsive_engine(self.engine_name, error_message)
         # metrics
-        counter_inc('engine', self.engine_name, 'search', 'count', 'error')
+        metrics.COUNTER_STORAGE.inc('engine', self.engine_name, 'search', 'count', 'error')
         if isinstance(exception_or_message, BaseException):
-            count_exception(self.engine_name, exception_or_message)
+            metrics.count_exception(self.engine_name, exception_or_message)
         else:
-            count_error(self.engine_name, exception_or_message)
+            metrics.count_error(self.engine_name, exception_or_message)
         # suspend the engine ?
         if suspend:
             suspended_time = None
@@ -114,10 +114,10 @@ class EngineProcessor(ABC):
         page_load_time = get_time_for_thread()
         result_container.add_timing(self.engine_name, engine_time, page_load_time)
         # metrics
-        counter_inc('engine', self.engine_name, 'search', 'count', 'successful')
-        histogram_observe(engine_time, 'engine', self.engine_name, 'time', 'total')
+        metrics.COUNTER_STORAGE.inc('engine', self.engine_name, 'search', 'count', 'successful')
+        metrics.HISTOGRAM_STORAGE.observe(engine_time, 'engine', self.engine_name, 'time', 'total')
         if page_load_time is not None:
-            histogram_observe(page_load_time, 'engine', self.engine_name, 'time', 'http')
+            metrics.HISTOGRAM_STORAGE.observe(page_load_time, 'engine', self.engine_name, 'time', 'http')
 
     def extend_container(self, result_container, start_time, search_results):
         if getattr(threading.current_thread(), '_timeout', False):

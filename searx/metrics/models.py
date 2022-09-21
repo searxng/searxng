@@ -111,8 +111,14 @@ class HistogramStorage:
         self.measures[args] = measure
         return measure
 
-    def get(self, *args) -> Optional[Histogram]:
-        return self.measures.get(args, None)
+    def get(self, *args, raise_on_not_found=True) -> Optional[Histogram]:
+        h = self.measures.get(args, None)
+        if raise_on_not_found and h is None:
+            raise ValueError("histogram " + repr((*args,)) + " doesn't not exist")
+        return h
+
+    def observe(self, duration, *args):
+        self.get(*args).observe(duration)
 
     def dump(self):
         logger.debug("Histograms:")
@@ -139,6 +145,9 @@ class CounterStorage:
 
     def get(self, *args) -> int:
         return self.counters[args]
+
+    def inc(self, *args):
+        self.add(1, *args)
 
     def add(self, value, *args):
         with self.lock:

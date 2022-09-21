@@ -17,7 +17,7 @@ from searx.plugins import plugins
 from searx.search.models import EngineRef, SearchQuery
 from searx.engines import load_engines
 from searx.network import initialize as initialize_network, check_network_configuration
-from searx.metrics import initialize as initialize_metrics, counter_inc, histogram_observe_time
+from searx import metrics
 from searx.search.processors import PROCESSORS, initialize as initialize_processors
 from searx.search.checker import initialize as initialize_checker
 
@@ -31,7 +31,7 @@ def initialize(settings_engines=None, enable_checker=False, check_network=False,
     initialize_network(settings_engines, settings['outgoing'])
     if check_network:
         check_network_configuration()
-    initialize_metrics([engine['name'] for engine in settings_engines], enable_metrics)
+    metrics.initialize([engine['name'] for engine in settings_engines], enable_metrics)
     initialize_processors(settings_engines)
     if enable_checker:
         initialize_checker()
@@ -98,7 +98,7 @@ class Search:
             if request_params is None:
                 continue
 
-            counter_inc('engine', engineref.name, 'search', 'count', 'sent')
+            metrics.COUNTER_STORAGE.inc('engine', engineref.name, 'search', 'count', 'sent')
 
             # append request to list
             requests.append((engineref.name, self.search_query.query, request_params))

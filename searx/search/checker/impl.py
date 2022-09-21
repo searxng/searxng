@@ -19,7 +19,7 @@ from searx.utils import gen_useragent
 from searx.results import ResultContainer
 from searx.search.models import SearchQuery, EngineRef
 from searx.search.processors import EngineProcessor
-from searx.metrics import counter_inc
+from searx import metrics
 
 
 logger = logger.getChild('searx.search.checker')
@@ -414,7 +414,7 @@ class Checker:
         engineref_category = search_query.engineref_list[0].category
         params = self.processor.get_params(search_query, engineref_category)
         if params is not None:
-            counter_inc('engine', search_query.engineref_list[0].name, 'search', 'count', 'sent')
+            metrics.COUNTER_STORAGE.inc('engine', search_query.engineref_list[0].name, 'search', 'count', 'sent')
             self.processor.search(search_query.query, params, result_container, default_timer(), 5)
         return result_container
 
