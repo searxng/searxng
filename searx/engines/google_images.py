@@ -1,22 +1,16 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""This is the implementation of the google images engine using the google internal API used the Google Go Android app.
+"""This is the implementation of the google images engine using the google
+internal API used the Google Go Android app.
+
 This internal API offer results in
+
 - JSON (_fmt:json)
 - Protobuf (_fmt:pb)
 - Protobuf compressed? (_fmt:pc)
 - HTML (_fmt:html)
 - Protobuf encoded in JSON (_fmt:jspb).
 
-.. admonition:: Content-Security-Policy (CSP)
-
-   This engine needs to allow images from the `data URLs`_ (prefixed with the
-   ``data:`` scheme)::
-
-       Header set Content-Security-Policy "img-src 'self' data: ;"
-
-.. _data URLs:
-   https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
 
 from urllib.parse import urlencode
@@ -95,21 +89,34 @@ def response(resp):
 
     detect_google_sorry(resp)
 
-    response_2nd_line = resp.text.split("\n", 1)[1]
-    json_data = loads(response_2nd_line)["ischj"]
+    json_start = resp.text.find('{"ischj":')
+    json_data = loads(resp.text[json_start:])
 
-    for item in json_data["metadata"]:
-        results.append(
-            {
-                'url': item["result"]["referrer_url"],
-                'title': item["result"]["page_title"],
-                'content': item["text_in_grid"]["snippet"],
-                'source': item["result"]["site_title"],
-                'format': f'{item["original_image"]["width"]} x item["original_image"]["height"]',
-                'img_src': item["original_image"]["url"],
-                'thumbnail_src': item["thumbnail"]["url"],
-                'template': 'images.html',
-            }
-        )
+    for item in json_data["ischj"]["metadata"]:
+
+        result_item = {
+            'url': item["result"]["referrer_url"],
+            'title': item["result"]["page_title"],
+            'content': item["text_in_grid"]["snippet"],
+            'source': item["result"]["site_title"],
+            'img_format': f'{item["original_image"]["width"]} x {item["original_image"]["height"]}',
+            'img_src': item["original_image"]["url"],
+            'thumbnail_src': item["thumbnail"]["url"],
+            'template': 'images.html',
+        }
+
+        author = item["result"].get('iptc', {}).get('creator')
+        if author:
+            result_item['author'] = ', '.join(author)
+
+        copyright_notice = item["result"].get('iptc', {}).get('copyright_notice')
+        if copyright_notice:
+            result_item['source'] += ' / ' + copyright_notice
+
+        file_size = item.get('gsa', {}).get('file_size')
+        if file_size:
+            result_item['source'] += ' (%s)' % file_size
+
+        results.append(result_item)
 
     return results
