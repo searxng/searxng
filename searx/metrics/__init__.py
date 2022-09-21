@@ -2,10 +2,12 @@
 # lint: pylint
 # pylint: disable=missing-module-docstring
 
-from typing import Dict, TypedDict, List, Optional, Any
 import math
 import contextlib
 from timeit import default_timer
+
+from typing import Dict, List, Optional, Any
+from typing_extensions import TypedDict
 
 from searx.engines import engines
 from .models import Histogram, HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
