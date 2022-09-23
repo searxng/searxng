@@ -369,13 +369,9 @@ the parameter ``template`` must be set to the desired type.
      - :py:class:`str`
      - volume number
 
-   * - start_page
-     - :py:class:`int`
-     - page number where the article starts
-
-   * - end_page
-     - :py:class:`int`
-     - page number where the article ends
+   * - pages
+     - :py:class:`str`
+     - page range where the article is
 
    * - number
      - :py:class:`str`

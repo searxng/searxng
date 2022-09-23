@@ -141,7 +141,13 @@ def highlight_content(content, query):
     return content
 
 
-def searxng_format_date(dt: datetime):  # pylint: disable=invalid-name
+def searxng_l10n_timespan(dt: datetime) -> str:  # pylint: disable=invalid-name
+    """Returns a human-readable and translated string indicating how long ago
+    a date was in the past / the time span of the date to the present.
+
+    On January 1st, midnight, the returned string only indicates how many years
+    ago the date was.
+    """
     # TODO, check if timezone is calculated right  # pylint: disable=fixme
     d = dt.date()
     t = dt.time()

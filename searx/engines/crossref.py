@@ -33,10 +33,10 @@ def response(resp):
         if record_type == 'book-chapter':
             title = record['container-title'][0]
             if record['title'][0].lower().strip() != title.lower().strip():
-                title = title + ' (' + record['title'][0] + ')'
+                title = html_to_text(title) + ' (' + html_to_text(record['title'][0]) + ')'
             journal = None
         else:
-            title = record['title'][0]
+            title = html_to_text(record['title'][0])
             journal = record.get('container-title', [None])[0]
         url = record.get('resource', {}).get('primary', {}).get('URL') or record['URL']
         authors = [author.get('given', '') + ' ' + author.get('family', '') for author in record.get('author', [])]

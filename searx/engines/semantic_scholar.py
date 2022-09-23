@@ -48,7 +48,6 @@ def request(query, params):
 def response(resp):
     res = loads(resp.text)
     results = []
-
     for result in res['results']:
         url = result.get('primaryPaperLink', {}).get('url')
         if not url and result.get('links'):
@@ -72,7 +71,7 @@ def response(resp):
         # pick for the first alternate link, but not from the crawler
         pdf_url = None
         for doc in result.get('alternatePaperLinks', []):
-            if doc['linkType'] != 'crawler':
+            if doc['linkType'] not in ('crawler', 'doi'):
                 pdf_url = doc['url']
                 break
 

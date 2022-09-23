@@ -77,7 +77,7 @@ from searx.webutils import (
     is_hmac_of,
     is_flask_run_cmdline,
     group_engines_in_tab,
-    searxng_format_date,
+    searxng_l10n_timespan,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -723,7 +723,7 @@ def search():
             except ValueError:
                 result['publishedDate'] = None
             else:
-                result['publishedDate'] = searxng_format_date(result['publishedDate'])
+                result['publishedDate'] = searxng_l10n_timespan(result['publishedDate'])
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
