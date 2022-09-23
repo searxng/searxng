@@ -8,20 +8,19 @@
 # Fero Novák <itzwowsmile@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-04 09:33+0000\n"
-"PO-Revision-Date: 2022-09-16 07:30+0000\n"
-"Last-Translator: Fero Novák <itzwowsmile@gmail.com>\n"
-"Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
-"\n"
+"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"PO-Revision-Date: 2022-09-21 15:58+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: sk\n"
+"Language-Team: Slovak "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/sk/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
+"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
-">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 4.14\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -272,16 +271,16 @@ msgid ""
 " WebP."
 msgstr ""
 "Danú webovú adresu obrázka sa nepodarilo načítať. Môže to byť spôsobené "
-"nepodporovaným formátom súboru. TinEye podporuje iba obrázky JPEG, PNG, GIF, "
-"BMP, TIFF alebo WebP."
+"nepodporovaným formátom súboru. TinEye podporuje iba obrázky JPEG, PNG, "
+"GIF, BMP, TIFF alebo WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Obrázok je príliš nízkej kvality na to aby sa našla zhoda. TinEye vyžaduje "
-"vyššiu kvalitu detailov v obrázku na identifikáciu zhôd."
+"Obrázok je príliš nízkej kvality na to aby sa našla zhoda. TinEye "
+"vyžaduje vyššiu kvalitu detailov v obrázku na identifikáciu zhôd."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -348,12 +347,16 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Tento plugin kontroluje, či žiadaná adresa je výstupný bod TORu, a "
+"informuje používateľa ak je, ako check.torproject.org ale od searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"Zoznam výstupných bodov TORu (https://check.torproject.org/exit-"
+"addresses) je nedostupný."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -415,8 +418,8 @@ msgid "Powered by"
 msgstr "Používame"
 
 #: searx/templates/simple/base.html:64
-msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "prispôsobitelný meta-vyhľadávač, ktorý rešpektuje vaše súkromie"
+msgid "a privacy-respecting, open metasearch engine"
+msgstr ""
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -424,7 +427,7 @@ msgstr "Zdrojový kód"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
-msgstr ""
+msgstr "Sledovanie problémov"
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -466,11 +469,11 @@ msgstr "cez proxy"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Začnite s pridaním nového problému na Githube"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Skontrolujte prosím existujúce chyby tohto vyhľadávaču na Githube"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -712,7 +715,7 @@ msgstr "Vyhľadávače"
 
 #: searx/templates/simple/preferences.html:295
 msgid "Currently used search engines"
-msgstr "poruba@contours.cz"
+msgstr "List práve používaných vyhľadávačov"
 
 #: searx/templates/simple/preferences.html:302
 msgid ""
@@ -1374,3 +1377,7 @@ msgstr "skryť video"
 
 #~ msgid "Scores per result"
 #~ msgstr ""
+
+#~ msgid "a privacy-respecting, hackable metasearch engine"
+#~ msgstr "prispôsobitelný meta-vyhľadávač, ktorý rešpektuje vaše súkromie"
+
