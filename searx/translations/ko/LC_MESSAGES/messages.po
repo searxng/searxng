@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-23 16:19+0000\n"
+"POT-Creation-Date: 2022-09-23 21:13+0000\n"
 "PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: Sangha Lee <totoriato@gmail.com>\n"
 "Language: ko\n"
@@ -125,6 +125,11 @@ msgstr "소프트웨어 위키"
 msgid "web"
 msgstr "웹"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -140,90 +145,90 @@ msgstr "라이트"
 msgid "dark"
 msgstr "다크"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "대기 시간"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "구문 분석 오류"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP 프로토콜 오류"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "네트워크 오류"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "예상치 못한 충돌"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "HTTP 오류"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "HTTP 연결 오류"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "프록시 오류"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "너무 많은 요청"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "액세스 거부"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "서버 API 오류"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "검색 결과가 없습니다"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "소스"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:517 searx/webapp.py:949
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:533
 msgid "Invalid settings"
 msgstr "잘못된 설정"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:610 searx/webapp.py:686
 msgid "search error"
 msgstr "검색 오류"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:848
+msgid "Suspended"
+msgstr "중단됨"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes}분 전"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours}시간 {minutes}분 전"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "중단됨"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -253,13 +258,15 @@ msgstr "{title} (사용되지 않음)"
 msgid "This entry has been superseded by"
 msgstr "이 항목은 다음으로 대체되었습니다"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "이 출판물에 대한 초록이 없습니다."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "채널"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -459,6 +466,7 @@ msgstr "길이"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "저자"
 
@@ -1074,6 +1082,50 @@ msgstr "지도 표시"
 msgid "hide map"
 msgstr "지도 숨기기"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:37
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "마그넷 링크"
@@ -1251,4 +1303,7 @@ msgstr "비디오 숨기기"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "개인 정보를 존중하는 맞춤형 메타 검색 엔진"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "이 출판물에 대한 초록이 없습니다."
 

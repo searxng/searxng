@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-23 16:19+0000\n"
+"POT-Creation-Date: 2022-09-23 21:13+0000\n"
 "PO-Revision-Date: 2022-07-29 07:17+0000\n"
 "Last-Translator: tents <remendne@pentrens.jp>\n"
 "Language: ja\n"
@@ -135,6 +135,11 @@ msgstr "ソフトウェアWiki"
 msgid "web"
 msgstr "ウェブ"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -150,90 +155,90 @@ msgstr "ライト"
 msgid "dark"
 msgstr "ダーク"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "タイムアウト"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "解析エラー"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP プロトコルエラー"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "ネットワークエラー"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "予期しないクラッシュ"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "HTTP エラー"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "HTTP 接続エラー"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "プロキシエラー"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "リクエストが多すぎます"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "アクセスが拒否されました"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "サーバー API エラー"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "ソース"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:517 searx/webapp.py:949
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:533
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:610 searx/webapp.py:686
 msgid "search error"
 msgstr "検索エラー"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:848
+msgid "Suspended"
+msgstr "一時停止"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分前"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "一時停止"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -263,13 +268,15 @@ msgstr "{title} (廃止)"
 msgid "This entry has been superseded by"
 msgstr "このエントリは、置き換えられました:"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "この出版物には要約がありません。"
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "チャンネル"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -465,6 +472,7 @@ msgstr "長さ"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "作者"
 
@@ -1080,6 +1088,50 @@ msgstr "地図を表示する"
 msgid "hide map"
 msgstr "地図を隠す"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:37
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "マグネットリンク"
@@ -1378,4 +1430,7 @@ msgstr "動画を隠す"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "プライバシー保護を重視した、ハッカブルなメタ検索エンジン"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "この出版物には要約がありません。"
 
