@@ -319,7 +319,6 @@ engines:
   - name: arxiv
     engine: arxiv
     shortcut: arx
-    categories: science
     timeout: 4.0
 
   # tmp suspended:  dh key too small
@@ -411,23 +410,10 @@ engines:
   #   api_key: 'unset'
 
   - name: crossref
-    engine: json_engine
-    paging: true
-    search_url: https://search.crossref.org/dois?q={query}&page={pageno}
-    url_query: doi
-    title_query: title
-    title_html_to_text: true
-    content_query: fullCitation
-    content_html_to_text: true
-    categories: science
+    engine: crossref
     shortcut: cr
-    about:
-      website: https://www.crossref.org/
-      wikidata_id: Q5188229
-      official_api_documentation: https://github.com/CrossRef/rest-api-doc
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+    timeout: 30
+    disable: true
 
   - name: yep
     engine: json_engine
@@ -1068,7 +1054,7 @@ engines:
     title_query: metadata/oaf:entity/oaf:result/title/$
     content_query: metadata/oaf:entity/oaf:result/description/$
     content_html_to_text: true
-    categories: science
+    categories: "science"
     shortcut: oad
     timeout: 5.0
     about:
@@ -1198,7 +1184,6 @@ engines:
   - name: pubmed
     engine: pubmed
     shortcut: pub
-    categories: science
     timeout: 3.0
 
   - name: pypi
@@ -1346,7 +1331,6 @@ engines:
     engine: semantic_scholar
     disabled: true
     shortcut: se
-    categories: science
 
   # Spotify needs API credentials
   # - name: spotify
@@ -1372,8 +1356,7 @@ engines:
   #   # working API key, for test & debug: "a69685087d07eca9f13db62f65b8f601"
   #   api_key: 'unset'
   #   shortcut: springer
-  #   categories: science
-  #   timeout: 6.0
+  #   timeout: 15.0
 
   - name: startpage
     engine: startpage

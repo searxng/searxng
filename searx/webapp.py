@@ -12,7 +12,6 @@ import os
 import sys
 import base64
 
-from datetime import datetime, timedelta
 from timeit import default_timer
 from html import escape
 from io import StringIO
@@ -45,7 +44,6 @@ from flask.json import jsonify
 from flask_babel import (
     Babel,
     gettext,
-    format_date,
     format_decimal,
 )
 
@@ -79,6 +77,7 @@ from searx.webutils import (
     is_hmac_of,
     is_flask_run_cmdline,
     group_engines_in_tab,
+    searxng_l10n_timespan,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -718,25 +717,13 @@ def search():
         if 'url' in result:
             result['pretty_url'] = prettify_url(result['url'])
 
-        # TODO, check if timezone is calculated right  # pylint: disable=fixme
         if result.get('publishedDate'):  # do not try to get a date from an empty string or a None type
             try:  # test if publishedDate >= 1900 (datetime module bug)
                 result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
             except ValueError:
                 result['publishedDate'] = None
             else:
-                if result['publishedDate'].replace(tzinfo=None) >= datetime.now() - timedelta(days=1):
-                    timedifference = datetime.now() - result['publishedDate'].replace(tzinfo=None)
-                    minutes = int((timedifference.seconds / 60) % 60)
-                    hours = int(timedifference.seconds / 60 / 60)
-                    if hours == 0:
-                        result['publishedDate'] = gettext('{minutes} minute(s) ago').format(minutes=minutes)
-                    else:
-                        result['publishedDate'] = gettext('{hours} hour(s), {minutes} minute(s) ago').format(
-                            hours=hours, minutes=minutes
-                        )
-                else:
-                    result['publishedDate'] = format_date(result['publishedDate'])
+                result['publishedDate'] = searxng_l10n_timespan(result['publishedDate'])
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result

@@ -43,6 +43,7 @@ CATEGORY_GROUPS = {
     'REPOS': 'repos',
     'SOFTWARE_WIKIS': 'software wikis',
     'WEB': 'web',
+    'SCIENTIFIC PUBLICATIONS': 'scientific publications',
 }
 
 STYLE_NAMES = {
