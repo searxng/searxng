@@ -68,6 +68,6 @@ language_codes = (
     ('vi-VN', 'Tiếng Việt', 'Việt Nam', 'Vietnamese', '\U0001f1fb\U0001f1f3'),
     ('zh', '中文', '', 'Chinese', '\U0001f310'),
     ('zh-CN', '中文', '中国', 'Chinese', '\U0001f1e8\U0001f1f3'),
-    ('zh-HK', '中文', '中國香港', 'Chinese', '\U0001f1ed\U0001f1f0'),
+    ('zh-HK', '中文', '香港', 'Chinese', '\U0001f1ed\U0001f1f0'),
     ('zh-TW', '中文', '台灣', 'Chinese', '\U0001f1f9\U0001f1fc'),
 )
