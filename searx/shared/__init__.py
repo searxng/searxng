@@ -1,39 +1,48 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Module implements a :py:obj:`storage`."""
+
+__all__ = ['schedule', 'storage']
 
 import logging
 import importlib
 
+from . import redisdb
+from . import shared_redis
+from . import shared_simple
+
 logger = logging.getLogger('searx.shared')
 
-__all__ = ['SharedDict', 'schedule']
+SharedDict = None
+schedule = None
+
+if redisdb.init():
+    SharedDict = shared_redis.RedisCacheSharedDict
+    logger.info('use redis DB for SharedDict')
 
 try:
+    from . import shared_uwsgi
     uwsgi = importlib.import_module('uwsgi')
-except:
-    # no uwsgi
-    from .shared_simple import SimpleSharedDict as SharedDict, schedule
+    uwsgi.cache_update('dummy', b'dummy')
+    if uwsgi.cache_get('dummy') != b'dummy':
+        raise Exception()
 
-    logger.info('Use shared_simple implementation')
-else:
-    try:
-        uwsgi.cache_update('dummy', b'dummy')
-        if uwsgi.cache_get('dummy') != b'dummy':
-            raise Exception()
-    except:
-        # uwsgi.ini configuration problem: disable all scheduling
-        logger.error(
-            'uwsgi.ini configuration error, add this line to your uwsgi.ini\n'
-            'cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1'
-        )
-        from .shared_simple import SimpleSharedDict as SharedDict
+    schedule = shared_uwsgi.schedule
+    logger.info('use shared_uwsgi for schedule')
 
-        def schedule(delay, func, *args):
-            return False
+    if SharedDict is None:
+        SharedDict = shared_simple.SimpleSharedDict
+        logger.info('use shared_uwsgi for SharedDict')
 
-    else:
-        # uwsgi
-        from .shared_uwsgi import UwsgiCacheSharedDict as SharedDict, schedule
+except Exception:  # pylint: disable=broad-except
+    logger.debug('skip uwsgi setup ..', exc_info=1)
 
-        logger.info('Use shared_uwsgi implementation')
+if SharedDict is None:
+    logger.info('use shared_simple for SharedDict')
+    SharedDict = shared_simple.SimpleSharedDict
 
-storage = SharedDict()
+if schedule is None:
+    logger.info('use shared_simple for schedule')
+    schedule = shared_simple.schedule
+
+storage = SharedDict(key_prefix='SearXNG_storage')

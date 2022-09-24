@@ -5,6 +5,10 @@ from typing import Optional
 
 
 class SharedDict(ABC):
+
+    def __init__(self, *args, **kwarg):
+        pass
+
     @abstractmethod
     def get_int(self, key: str) -> Optional[int]:
         pass
