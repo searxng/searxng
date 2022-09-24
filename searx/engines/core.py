@@ -4,7 +4,6 @@
 
 """
 
-from json import loads
 from datetime import datetime
 from urllib.parse import urlencode
 
@@ -48,36 +47,47 @@ def request(query, params):
 
 def response(resp):
     results = []
-    json_data = loads(resp.text)
+    json_data = resp.json()
 
     for result in json_data['data']:
-
         source = result['_source']
         if not source['urls']:
             continue
 
         time = source['publishedDate'] or source['depositedDate']
         if time:
-            date = datetime.fromtimestamp(time / 1000)
-        else:
-            date = None
+            publishedDate = datetime.fromtimestamp(time / 1000)
 
-        metadata = []
-        if source['publisher'] and len(source['publisher']) > 3:
-            metadata.append(source['publisher'])
-        if source['topics']:
-            metadata.append(source['topics'][0])
-        if source['doi']:
-            metadata.append(source['doi'])
-        metadata = ' / '.join(metadata)
+        journals = []
+        if source['journals']:
+            for j in source['journals']:
+                journals.append(j['title'])
+
+        publisher = source['publisher']
+        if publisher:
+            publisher = source['publisher'].strip("'")
 
         results.append(
             {
-                'url': source['urls'][0].replace('http://', 'https://', 1),
+                'template': 'paper.html',
                 'title': source['title'],
+                'url': source['urls'][0].replace('http://', 'https://', 1),
                 'content': source['description'],
-                'publishedDate': date,
-                'metadata': metadata,
+                # 'comments': '',
+                'tags': source['topics'],
+                'publishedDate': publishedDate,
+                'type': (source['types'] or [None])[0],
+                'authors': source['authors'],
+                'editor': ', '.join(source['contributors'] or []),
+                'publisher': publisher,
+                'journal': ', '.join(journals),
+                # 'volume': '',
+                # 'pages' : '',
+                # 'number': '',
+                'doi': source['doi'],
+                'issn': source['issn'],
+                'isbn': source.get('isbn'),  # exists in the rawRecordXml
+                'pdf_url': source.get('repositoryDocument', {}).get('pdfOrigin'),
             }
         )
 
