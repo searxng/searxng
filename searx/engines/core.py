@@ -41,7 +41,6 @@ def request(query, params):
     )
     params['url'] = base_url + search_path
 
-    logger.debug("query_url --> %s", params['url'])
     return params
 
 
@@ -51,17 +50,39 @@ def response(resp):
 
     for result in json_data['data']:
         source = result['_source']
-        if not source['urls']:
+        url = None
+        if source.get('urls'):
+            url = source['urls'][0].replace('http://', 'https://', 1)
+
+        if url is None and source.get('doi'):
+            # use the DOI reference
+            url = 'https://doi.org/' + source['doi']
+
+        if url is None and source.get('downloadUrl'):
+            # use the downloadUrl
+            url = source['downloadUrl']
+
+        if url is None and source.get('identifiers'):
+            # try to find an ark id, see
+            # https://www.wikidata.org/wiki/Property:P8091
+            # and https://en.wikipedia.org/wiki/Archival_Resource_Key
+            arkids = [
+                identifier[5:]  # 5 is the length of "ark:/"
+                for identifier in source.get('identifiers')
+                if isinstance(identifier, str) and identifier.startswith('ark:/')
+            ]
+            if len(arkids) > 0:
+                url = 'https://n2t.net/' + arkids[0]
+
+        if url is None:
             continue
 
         time = source['publishedDate'] or source['depositedDate']
         if time:
             publishedDate = datetime.fromtimestamp(time / 1000)
 
-        journals = []
-        if source['journals']:
-            for j in source['journals']:
-                journals.append(j['title'])
+        # sometimes the 'title' is None / filter None values
+        journals = [j['title'] for j in (source.get('journals') or []) if j['title']]
 
         publisher = source['publisher']
         if publisher:
@@ -71,8 +92,8 @@ def response(resp):
             {
                 'template': 'paper.html',
                 'title': source['title'],
-                'url': source['urls'][0].replace('http://', 'https://', 1),
-                'content': source['description'],
+                'url': url,
+                'content': source['description'] or '',
                 # 'comments': '',
                 'tags': source['topics'],
                 'publishedDate': publishedDate,
