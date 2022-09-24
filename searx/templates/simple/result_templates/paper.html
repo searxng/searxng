@@ -1,4 +1,4 @@
-{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
 
 {{ result_header(result, favicons, image_proxify) -}}
 <div class="attributes">
@@ -23,7 +23,7 @@
   {%- if result.publisher %}<div class="result_publisher"><span>{{ _("Publisher") }}:</span><span>{{ result.publisher }}</span></div>{% endif -%}
   {%- if result.type %}<div class="result_type"><span>{{ _("Type") }}:</span><span>{{ result.type }}</span></div>{% endif -%}
   {%- if result.tags %}<div class="result_tags"><span>{{ _("Tags") }}:</span><span>{{ result.tags | join(", ")}}</span></div>{%- endif -%}
-  {%- if result.doi %}<div class="result_doi"><span>{{ _("DOI") }}:</span><span>{{- result.doi -}}</span></div>{% endif -%}
+  {%- if result.doi %}<div class="result_doi"><span>{{ _("DOI") }}:</span><span>{{ result_link(doi_resolver + result.doi, result.doi) }}</span></div>{% endif -%}
   {%- if result.issn %}<div class="result_issn"><span>{{ _("ISSN") }}:</span><span>{{ result.issn | join(", ") }}</span></div>{% endif -%}
   {%- if result.isbn %}<div class="result_isbn"><span>{{ _("ISBN") }}:</span><span>{{ result.isbn | join(", ") }}</span></div>{% endif -%}
 </div>
