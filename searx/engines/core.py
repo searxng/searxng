@@ -18,7 +18,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 nb_per_page = 10
 
