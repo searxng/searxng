@@ -53,6 +53,9 @@ def response(resp):
     for result in json_data['data']:
 
         source = result['_source']
+        if not source['urls']:
+            continue
+
         time = source['publishedDate'] or source['depositedDate']
         if time:
             date = datetime.fromtimestamp(time / 1000)
