@@ -348,6 +348,10 @@ the parameter ``template`` must be set to the desired type.
      - :py:class:`datetime <datetime.datetime>`
      - last publication date
 
+   * - type
+     - :py:class:`str`
+     - short description of medium type, e.g. *book*, *pdf* or *html* ...
+
    * - authors
      - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
      - list of authors of the work (authors with a "s")
