@@ -77,6 +77,7 @@ def response(resp):
         if url is None:
             continue
 
+        publishedDate = None
         time = source['publishedDate'] or source['depositedDate']
         if time:
             publishedDate = datetime.fromtimestamp(time / 1000)
@@ -106,8 +107,8 @@ def response(resp):
                 # 'pages' : '',
                 # 'number': '',
                 'doi': source['doi'],
-                'issn': source['issn'],
-                'isbn': source.get('isbn'),  # exists in the rawRecordXml
+                'issn': [x for x in [source.get('issn')] if x],
+                'isbn': [x for x in [source.get('isbn')] if x],  # exists in the rawRecordXml
                 'pdf_url': source.get('repositoryDocument', {}).get('pdfOrigin'),
             }
         )
