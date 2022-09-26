@@ -1,0 +1,13 @@
+# YAML file to configure SearXNG services
+
+services:
+
+  # service named 'test001'
+  test001:
+    cmd:
+      - python
+      - $SEARXNG_ROOT/searx/services/dummy.py
+
+  # service named 'test002'
+  test002:
+    cmd: [python, -m, searx.services.dummy]
