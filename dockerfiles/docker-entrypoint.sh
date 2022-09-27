@@ -106,7 +106,7 @@ update_conf() {
             # There is a new version
             if [ "$FORCE_CONF_UPDATE" -ne 0 ]; then
                 # Replace the current configuration
-                printf '⚠️  Automaticaly update %s to the new version\n' "${CONF}"
+                printf '⚠️  Automatically update %s to the new version\n' "${CONF}"
                 if [ ! -f "${OLD_CONF}" ]; then
                     printf 'The previous configuration is saved to %s\n' "${OLD_CONF}"
                     mv "${CONF}" "${OLD_CONF}"

@@ -47,7 +47,7 @@ Engine File
    argument                type        information
    ======================= =========== ========================================================
    categories              list        pages, in which the engine is working
-   paging                  boolean     support multible pages
+   paging                  boolean     support multiple pages
    time_range_support      boolean     support search time range
    engine_type             str         - ``online`` :ref:`[ref] <demo online engine>` by
                                          default, other possibles values are:

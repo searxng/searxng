@@ -25,7 +25,7 @@ place the templates at::
 
   searx/templates/{theme_name}/result_templates/{template_name}
 
-Futhermore, if you do not wish to expose these engines on a public instance, you
+Furthermore, if you do not wish to expose these engines on a public instance, you
 can still add them and limit the access by setting ``tokens`` as described in
 section :ref:`private engines`.
 

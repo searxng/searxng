@@ -70,7 +70,7 @@ def run(engine_name_list, verbose):
             stderr.write(f'{BOLD_SEQ}Engine {name:30}{RESET_SEQ}Checking\n')
         checker = searx.search.checker.Checker(processor)
         checker.run()
-        if checker.test_results.succesfull:
+        if checker.test_results.successful:
             stdout.write(f'{BOLD_SEQ}Engine {name:30}{RESET_SEQ}{GREEN}OK{RESET_SEQ}\n')
             if verbose:
                 stdout.write(f'    {"found languages":15}: {" ".join(sorted(list(checker.test_results.languages)))}\n')

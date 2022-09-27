@@ -79,7 +79,7 @@ def response(resp):
     # * book / performing art / film / television  / media franchise / concert tour / playwright
     # * prepared food
     # * website / software / os / programming language / file format / software engineer
-    # * compagny
+    # * company
 
     content = ''
     heading = search_res.get('Heading', '')

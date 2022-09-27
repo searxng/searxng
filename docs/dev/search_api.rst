@@ -93,14 +93,14 @@ Parameters
 
   :default:
      ``Hash_plugin``, ``Search_on_category_select``,
-     ``Self_Informations``, ``Tracker_URL_remover``,
+     ``Self_Information``, ``Tracker_URL_remover``,
      ``Ahmia_blacklist``
 
   :values:
      .. enabled by default
 
      ``Hash_plugin``, ``Search_on_category_select``,
-     ``Self_Informations``, ``Tracker_URL_remover``,
+     ``Self_Information``, ``Tracker_URL_remover``,
      ``Ahmia_blacklist``,
 
      .. disabled by default

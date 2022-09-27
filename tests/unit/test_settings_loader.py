@@ -31,7 +31,7 @@ class TestLoad(SearxTestCase):
 
 class TestDefaultSettings(SearxTestCase):
     def test_load(self):
-        settings, msg = settings_loader.load_settings(load_user_setttings=False)
+        settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
         self.assertFalse(settings['general']['debug'])
         self.assertTrue(isinstance(settings['general']['instance_name'], str))

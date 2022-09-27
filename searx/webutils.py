@@ -42,7 +42,7 @@ class UnicodeWriter:
         # Fetch UTF-8 output from the queue ...
         data = self.queue.getvalue()
         data = data.strip('\x00')
-        # ... and reencode it into the target encoding
+        # ... and re-encode it into the target encoding
         data = self.encoder.encode(data)
         # write to the target stream
         self.stream.write(data.decode())

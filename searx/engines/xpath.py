@@ -53,7 +53,7 @@ Replacements are:
 
       0: none, 1: moderate, 2:strict
 
-  If not supported, the URL paramter is an empty string.
+  If not supported, the URL parameter is an empty string.
 
 """
 
@@ -114,7 +114,7 @@ time_range_support = False
 
 time_range_url = '&hours={time_range_val}'
 '''Time range URL parameter in the in :py:obj:`search_url`.  If no time range is
-requested by the user, the URL paramter is an empty string.  The
+requested by the user, the URL parameter is an empty string.  The
 ``{time_range_val}`` replacement is taken from the :py:obj:`time_range_map`.
 
 .. code:: yaml

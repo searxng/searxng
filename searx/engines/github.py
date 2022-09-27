@@ -40,7 +40,7 @@ def response(resp):
 
     search_res = loads(resp.text)
 
-    # check if items are recieved
+    # check if items are received
     if 'items' not in search_res:
         return []
 
