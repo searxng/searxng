@@ -4,20 +4,22 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Sangha Lee <totoriato@gmail.com>, 2022.
+# Soochaehwa <Soochaehwa@shwa.space>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-09-23 21:13+0000\n"
-"PO-Revision-Date: 2022-07-29 07:17+0000\n"
-"Last-Translator: Sangha Lee <totoriato@gmail.com>\n"
+"PO-Revision-Date: 2022-09-28 07:29+0000\n"
+"Last-Translator: Soochaehwa <Soochaehwa@shwa.space>\n"
+"Language-Team: Korean <https://weblate.bubu1.eu/projects/searxng/searxng/ko/>"
+"\n"
 "Language: ko\n"
-"Language-Team: Korean "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ko/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.14\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -128,7 +130,7 @@ msgstr "웹"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr ""
+msgstr "과학 출판물"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -267,6 +269,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{firstCitationVelocityYear}년부터 {lastCitationVelocityYear}년까지의 "
+"{numCitations}회 인용"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -291,19 +295,19 @@ msgstr "다운로드할 수 없는 이미지입니다."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "아침"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "정오"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "저녁"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "밤"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -429,7 +433,7 @@ msgstr "Powered by"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "개인정보를 존중하는 개방형 메타 검색 엔진"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -530,7 +534,7 @@ msgstr "실패한 검사기 테스트: "
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
-msgstr "에러:"
+msgstr "오류:"
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
@@ -1001,23 +1005,23 @@ msgstr "설명"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
-msgstr "전체"
+msgstr "모든 날짜"
 
 #: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
-msgstr "전날"
+msgstr "지난 1일"
 
 #: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
-msgstr "전주"
+msgstr "지난 1주"
 
 #: searx/templates/simple/filters/time_range.html:12
 msgid "Last month"
-msgstr "전달"
+msgstr "지난 1개월"
 
 #: searx/templates/simple/filters/time_range.html:15
 msgid "Last year"
-msgstr "전년"
+msgstr "지난 1년"
 
 #: searx/templates/simple/messages/no_cookies.html:3
 msgid "Information!"
@@ -1084,47 +1088,47 @@ msgstr "지도 숨기기"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "발행일"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "발행처"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "편집자"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "발행자"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
-msgstr ""
+msgstr "분류"
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "태그"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:37
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1306,4 +1310,3 @@ msgstr "비디오 숨기기"
 
 #~ msgid "No abstract is available for this publication."
 #~ msgstr "이 출판물에 대한 초록이 없습니다."
-
