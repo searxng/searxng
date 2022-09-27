@@ -30,15 +30,9 @@
 {%- if result.content -%}<p class="content">{{- result.content | safe -}}</p>{%- endif -%}
 {%- if result.comments -%}<p class="comments">{{- result.comments -}}</p>{%- endif -%}
 <p class="altlink">
-  {%- if result.pdf_url -%}
-    <a href="{{ result.pdf_url }}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>{{ _('PDF') }}</a>
-  {%- endif -%}
-  {%- if result.html_url -%}
-      <a href="{{ result.html_url }}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>{{ _('HTML') }}</a>
-  {%- endif -%}
-  {%- if result.doi %}
-    <a href="https://www.altmetric.com/details/doi/{{result.doi}}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>Altmetric</a>
-  {% endif -%}
+  {%- if result.pdf_url -%}{{ result_link(result.pdf_url, _('PDF')) }}{%- endif -%}
+  {%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
+  {%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif -%}
 </p>
 {{- result_sub_footer(result, proxify) -}}
 {{- result_footer(result) }}
