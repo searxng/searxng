@@ -202,7 +202,7 @@ To debug services from filtron and morty analogous use:
 
 Another point we have to notice is that the service (:ref:`SearXNG <searxng.sh>`
 runs under dedicated system user account with the same name (compare
-:ref:`create searxng user`).  To get a shell from theses accounts, simply call:
+:ref:`create searxng user`).  To get a shell from these accounts, simply call:
 
 .. tabs::
 
@@ -300,7 +300,7 @@ of the container:
 
 Now we can develop as usual in the working tree of our desktop system.  Every
 time the software was changed, you have to restart the SearXNG service (in the
-conatiner):
+container):
 
 .. tabs::
 
@@ -359,7 +359,7 @@ We build up a fully functional SearXNG suite in a archlinux container:
    $ sudo -H ./utils/lxc.sh install suite searxng-archlinux
 
 To access HTTP from the desktop we installed nginx for the services inside the
-conatiner:
+container:
 
 .. tabs::
 

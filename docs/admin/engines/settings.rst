@@ -341,7 +341,7 @@ Communication with search engines.
    outgoing:
      request_timeout: 2.0       # default timeout in seconds, can be override by engine
      max_request_timeout: 10.0  # the maximum timeout in seconds
-     useragent_suffix: ""       # informations like an email address to the administrator
+     useragent_suffix: ""       # information like an email address to the administrator
      pool_connections: 100      # Maximum number of allowable connections, or null
                                 # for no limits. The default is 100.
      pool_maxsize: 10           # Number of allowable keep-alive connections, or null

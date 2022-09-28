@@ -50,7 +50,7 @@ WIKIDATA_PROPERTIES = {
 # SERVICE wikibase:label: https://en.wikibooks.org/wiki/SPARQL/SERVICE_-_Label#Manual_Label_SERVICE
 # https://en.wikibooks.org/wiki/SPARQL/WIKIDATA_Precision,_Units_and_Coordinates
 # https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format#Data_model
-# optmization:
+# optimization:
 # * https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/query_optimization
 # * https://github.com/blazegraph/database/wiki/QueryHints
 QUERY_TEMPLATE = """
@@ -386,7 +386,7 @@ def get_attributes(language):
     add_amount('P2046')  # area
     add_amount('P281')  # postal code
     add_label('P38')  # currency
-    add_amount('P2048')  # heigth (building)
+    add_amount('P2048')  # height (building)
 
     # Media
     for p in [

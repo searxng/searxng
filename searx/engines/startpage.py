@@ -209,7 +209,7 @@ def _fetch_supported_languages(resp):
     # native name, the English name of the writing script used by the language,
     # or occasionally something else entirely.
 
-    # this cases are so special they need to be hardcoded, a couple of them are mispellings
+    # this cases are so special they need to be hardcoded, a couple of them are misspellings
     language_names = {
         'english_uk': 'en-GB',
         'fantizhengwen': ['zh-TW', 'zh-HK'],

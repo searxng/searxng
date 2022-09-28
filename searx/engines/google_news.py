@@ -141,7 +141,7 @@ def response(resp):
                 padding = (4 - (len(jslog) % 4)) * "="
                 jslog = b64decode(jslog + padding)
             except binascii.Error:
-                # URL cant be read, skip this result
+                # URL can't be read, skip this result
                 continue
 
             # now we have : b'[null, ... null,"https://www.cnn.com/.../index.html"]'

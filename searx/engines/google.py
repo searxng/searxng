@@ -326,14 +326,14 @@ def response(resp):
 
         # google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
-            logger.debug("ingoring <g-section-with-header>")
+            logger.debug("ignoring <g-section-with-header>")
             continue
 
         try:
             title_tag = eval_xpath_getindex(result, title_xpath, 0, default=None)
             if title_tag is None:
                 # this not one of the common google results *section*
-                logger.debug('ingoring item from the result_xpath list: missing title')
+                logger.debug('ignoring item from the result_xpath list: missing title')
                 continue
             title = extract_text(title_tag)
             url = eval_xpath_getindex(result, href_xpath, 0, None)
@@ -341,7 +341,7 @@ def response(resp):
                 continue
             content = extract_text(eval_xpath_getindex(result, content_xpath, 0, default=None), allow_none=True)
             if content is None:
-                logger.debug('ingoring item from the result_xpath list: missing content of title "%s"', title)
+                logger.debug('ignoring item from the result_xpath list: missing content of title "%s"', title)
                 continue
 
             logger.debug('add link to results: %s', title)

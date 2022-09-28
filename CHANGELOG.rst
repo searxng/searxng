@@ -323,7 +323,7 @@ Special thanks to `NLNet <https://nlnet.nl>`__ for sponsoring multiple features 
  - Removed engines: faroo
 
 Special thanks to `NLNet <https://nlnet.nl>`__ for sponsoring multiple features of this release.
-Special thanks to https://www.accessibility.nl/english for making accessibilty audit.
+Special thanks to https://www.accessibility.nl/english for making accessibility audit.
 
 News
 ~~~~

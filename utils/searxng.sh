@@ -911,8 +911,8 @@ searxng.doc.rst() {
 
     eval "echo \"$(< "${REPO_ROOT}/docs/build-templates/searxng.rst")\""
 
-    # I use ubuntu-20.04 here to demonstrate that versions are also suported,
-    # normaly debian-* and ubuntu-* are most the same.
+    # I use ubuntu-20.04 here to demonstrate that versions are also supported,
+    # normally debian-* and ubuntu-* are most the same.
 
     for DIST_NAME in ubuntu-20.04 arch fedora; do
         (

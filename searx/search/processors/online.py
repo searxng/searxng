@@ -75,7 +75,7 @@ class OnlineProcessor(EngineProcessor):
 
     def _send_http_request(self, params):
         # create dictionary which contain all
-        # informations about the request
+        # information about the request
         request_args = dict(
             headers=params['headers'], cookies=params['cookies'], verify=params['verify'], auth=params['auth']
         )

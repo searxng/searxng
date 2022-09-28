@@ -21,7 +21,7 @@ above are added to ``settings.yml`` just commented out, as you have to
 Please note that if you are not using HTTPS to access these engines, you have to enable
 HTTP requests by setting ``enable_http`` to ``True``.
 
-Futhermore, if you do not want to expose these engines on a public instance, you
+Furthermore, if you do not want to expose these engines on a public instance, you
 can still add them and limit the access by setting ``tokens`` as described in
 section :ref:`private engines`.
 

@@ -38,7 +38,7 @@ brand_env = 'utils' + sep + 'brand.env'
 
 # Some defaults in the settings.yml are taken from the environment,
 # e.g. SEARXNG_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
-# 'brand.env' file is created these enviroment variables should be unset first::
+# 'brand.env' file is created these envirnoment variables should be unset first::
 
 _unset = object()
 for name, option in name_val:

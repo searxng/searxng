@@ -54,7 +54,7 @@ def parse_lang(preferences: Preferences, form: Dict[str, str], raw_text_query: R
         return preferences.get_value('language')
     # get language
     # set specific language if set on request, query or preferences
-    # TODO support search with multible languages
+    # TODO support search with multiple languages
     if len(raw_text_query.languages):
         query_lang = raw_text_query.languages[-1]
     elif 'language' in form:
@@ -223,7 +223,7 @@ def get_search_query_from_webapp(
     disabled_engines = preferences.engines.get_disabled()
 
     # parse query, if tags are set, which change
-    # the serch engine or search-language
+    # the search engine or search-language
     raw_text_query = RawTextQuery(form['q'], disabled_engines)
 
     # set query
@@ -238,7 +238,7 @@ def get_search_query_from_webapp(
 
     if not is_locked('categories') and raw_text_query.specific:
         # if engines are calculated from query,
-        # set categories by using that informations
+        # set categories by using that information
         query_engineref_list = raw_text_query.enginerefs
     else:
         # otherwise, using defined categories to
