@@ -41,7 +41,6 @@ def response(resp):
     json_data = loads(resp.text)
 
     for record in json_data['records']:
-        content = record['abstract']
         published = datetime.strptime(record['publicationDate'], '%Y-%m-%d')
         authors = [" ".join(author['creator'].split(', ')[::-1]) for author in record['creators']]
         tags = record.get('genre')
@@ -50,20 +49,24 @@ def response(resp):
         results.append(
             {
                 'template': 'paper.html',
-                'title': record['title'],
                 'url': record['url'][0]['value'].replace('http://', 'https://', 1),
-                'type': record.get('contentType'),
-                'content': content,
-                'publishedDate': published,
-                'authors': authors,
-                'doi': record.get('doi'),
-                'journal': record.get('publicationName'),
-                'pages': record.get('start_page') + '-' + record.get('end_page'),
+                'title': record['title'],
+                'content': record['abstract'],
+                'comments': record['publicationName'],
                 'tags': tags,
-                'issn': [record.get('issn')],
-                'isbn': [record.get('isbn')],
+                'publishedDate': published,
+                'type': record.get('contentType'),
+                'authors': authors,
+                # 'editor': '',
+                'publisher': record.get('publisher'),
+                'journal': record.get('publicationName'),
                 'volume': record.get('volume') or None,
+                'pages': '-'.join([x for x in [record.get('startingPage'), record.get('endingPage')] if x]),
                 'number': record.get('number') or None,
+                'doi': record.get('doi'),
+                'issn': [x for x in [record.get('issn')] if x],
+                'isbn': [x for x in [record.get('isbn')] if x],
+                # 'pdf_url' : ''
             }
         )
     return results
