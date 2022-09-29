@@ -569,10 +569,13 @@ engine is shown.  Most of the options have a default value or even are optional.
   To disable by default the engine, but not deleting it.  It will allow the user
   to manually activate it in the settings.
 
+``inactive``: optional
+  Remove the engine from the settings (*disabled & removed*).
+
 ``language`` : optional
   If you want to use another language for a specific engine, you can define it
-  by using the full ISO code of language and country, like ``fr_FR``, ``en_US``,
-  ``de_DE``.
+  by using the ISO code of language (and region), like ``fr``, ``en-US``,
+  ``de-DE``.
 
 ``tokens`` : optional
   A list of secret tokens to make this engine *private*, more details see

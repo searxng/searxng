@@ -51,6 +51,9 @@ class OnlineProcessor(EngineProcessor):
         super().initialize()
 
     def get_params(self, search_query, engine_category):
+        """Returns a set of :ref:`request params <engine request online>` or ``None``
+        if request is not supported.
+        """
         params = super().get_params(search_query, engine_category)
         if params is None:
             return None

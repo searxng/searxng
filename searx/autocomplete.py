@@ -12,7 +12,7 @@ from lxml import etree
 from httpx import HTTPError
 
 from searx import settings
-from searx.data import ENGINES_LANGUAGES
+from searx.engines import engines
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 
@@ -111,7 +111,7 @@ def seznam(query, _lang):
 
 def startpage(query, lang):
     # startpage autocompleter
-    lui = ENGINES_LANGUAGES['startpage'].get(lang, 'english')
+    lui = engines['startpage'].supported_languages.get(lang, 'english')  # vintage / deprecated
     url = 'https://startpage.com/suggestions?{query}'
     resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
     data = resp.json()
@@ -177,12 +177,19 @@ backends = {
 }
 
 
-def search_autocomplete(backend_name, query, lang):
+def search_autocomplete(backend_name, query, sxng_locale):
     backend = backends.get(backend_name)
     if backend is None:
         return []
 
+    if engines[backend_name].traits.data_type != "traits_v1":
+        # vintage / deprecated
+        if not sxng_locale or sxng_locale == 'all':
+            sxng_locale = 'en'
+        else:
+            sxng_locale = sxng_locale.split('-')[0]
+
     try:
-        return backend(query, lang)
+        return backend(query, sxng_locale)
     except (HTTPError, SearxEngineResponseException):
         return []

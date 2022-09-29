@@ -907,16 +907,11 @@ def autocompleter():
     # and there is a query part
     if len(raw_text_query.autocomplete_list) == 0 and len(sug_prefix) > 0:
 
-        # get language from cookie
-        language = request.preferences.get_value('language')
-        if not language or language == 'all':
-            language = 'en'
-        else:
-            language = language.split('-')[0]
+        # get SearXNG's locale and autocomplete backend from cookie
+        sxng_locale = request.preferences.get_value('language')
+        backend_name = request.preferences.get_value('autocomplete')
 
-        # run autocompletion
-        raw_results = search_autocomplete(request.preferences.get_value('autocomplete'), sug_prefix, language)
-        for result in raw_results:
+        for result in search_autocomplete(backend_name, sug_prefix, sxng_locale):
             # attention: this loop will change raw_text_query object and this is
             # the reason why the sug_prefix was stored before (see above)
             if result != sug_prefix:
@@ -1001,7 +996,9 @@ def preferences():
             'rate80': rate80,
             'rate95': rate95,
             'warn_timeout': e.timeout > settings['outgoing']['request_timeout'],
-            'supports_selected_language': _is_selected_language_supported(e, request.preferences),
+            'supports_selected_language': e.traits.is_locale_supported(
+                str(request.preferences.get_value('language') or 'all')
+            ),
             'result_count': result_count,
         }
     # end of stats
@@ -1052,7 +1049,9 @@ def preferences():
     # supports
     supports = {}
     for _, e in filtered_engines.items():
-        supports_selected_language = _is_selected_language_supported(e, request.preferences)
+        supports_selected_language = e.traits.is_locale_supported(
+            str(request.preferences.get_value('language') or 'all')
+        )
         safesearch = e.safesearch
         time_range_support = e.time_range_support
         for checker_test_name in checker_results.get(e.name, {}).get('errors', {}):
@@ -1097,16 +1096,6 @@ def preferences():
         preferences = True
         # fmt: on
     )
-
-
-def _is_selected_language_supported(engine, preferences: Preferences):  # pylint: disable=redefined-outer-name
-    language = preferences.get_value('language')
-    if language == 'all':
-        return True
-    x = match_language(
-        language, getattr(engine, 'supported_languages', []), getattr(engine, 'language_aliases', {}), None
-    )
-    return bool(x)
 
 
 @app.route('/image_proxy', methods=['GET'])
@@ -1327,9 +1316,11 @@ def config():
         if not request.preferences.validate_token(engine):
             continue
 
-        supported_languages = engine.supported_languages
-        if isinstance(engine.supported_languages, dict):
-            supported_languages = list(engine.supported_languages.keys())
+        _languages = engine.traits.languages.keys()
+        if engine.traits.data_type == 'supported_languages':  # vintage / deprecated
+            _languages = engine.traits.supported_languages
+            if isinstance(_languages, dict):
+                _languages = _languages.keys()
 
         _engines.append(
             {
@@ -1339,7 +1330,8 @@ def config():
                 'enabled': not engine.disabled,
                 'paging': engine.paging,
                 'language_support': engine.language_support,
-                'supported_languages': supported_languages,
+                'languages': list(_languages),
+                'regions': list(engine.traits.regions.keys()),
                 'safesearch': engine.safesearch,
                 'time_range_support': engine.time_range_support,
                 'timeout': engine.timeout,

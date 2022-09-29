@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
+
 import os
 import pathlib
 import csv
@@ -8,7 +10,7 @@ import re
 import inspect
 import itertools
 from datetime import datetime, timedelta
-from typing import Iterable, List, Tuple, Dict
+from typing import Iterable, List, Tuple, Dict, TYPE_CHECKING
 
 from io import StringIO
 from codecs import getincrementalencoder
@@ -16,7 +18,10 @@ from codecs import getincrementalencoder
 from flask_babel import gettext, format_date
 
 from searx import logger, settings
-from searx.engines import Engine, OTHER_CATEGORY
+from searx.engines import OTHER_CATEGORY
+
+if TYPE_CHECKING:
+    from searx.enginelib import Engine
 
 
 VALID_LANGUAGE_CODE = re.compile(r'^[a-z]{2,3}(-[a-zA-Z]{2})?$')

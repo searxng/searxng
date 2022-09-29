@@ -52,12 +52,12 @@ Scripts to update static data in :origin:`searx/data/`
   :members:
 
 
-``update_languages.py``
-=======================
+``update_engine_traits.py``
+===========================
 
-:origin:`[source] <searxng_extra/update/update_languages.py>`
+:origin:`[source] <searxng_extra/update/update_engine_traits.py>`
 
-.. automodule:: searxng_extra.update.update_languages
+.. automodule:: searxng_extra.update.update_engine_traits
   :members:
 
 

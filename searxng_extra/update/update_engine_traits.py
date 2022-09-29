@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # lint: pylint
-
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""This script generates languages.py from intersecting each engine's supported
-languages.
+"""Update :py:obj:`searx.enginelib.traits.EngineTraitsMap` and :origin:`searx/languages.py`
 
-Output files: :origin:`searx/data/engines_languages.json` and
-:origin:`searx/languages.py` (:origin:`CI Update data ...
-<.github/workflows/data-update.yml>`).
+:py:obj:`searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE`:
+  Persistence of engines traits, fetched from the engines.
+
+:origin:`searx/languages.py`
+  Is generated  from intersecting each engine's supported traits.
+
+The script :origin:`searxng_extra/update/update_engine_traits.py` is called in
+the :origin:`CI Update data ... <.github/workflows/data-update.yml>`
 
 """
 
 # pylint: disable=invalid-name
 from unicodedata import lookup
-import json
 from pathlib import Path
 from pprint import pformat
 from babel import Locale, UnknownLocaleError
@@ -21,36 +23,26 @@ from babel.languages import get_global
 from babel.core import parse_locale
 
 from searx import settings, searx_dir
+from searx import network
 from searx.engines import load_engines, engines
-from searx.network import set_timeout_for_thread
+from searx.enginelib.traits import EngineTraitsMap
 
 # Output files.
-engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
 languages_file = Path(searx_dir) / 'languages.py'
 
 
-# Fetches supported languages for each engine and writes json file with those.
-def fetch_supported_languages():
-    set_timeout_for_thread(10.0)
+def fetch_traits_map():
+    """Fetchs supported languages for each engine and writes json file with those."""
+    network.set_timeout_for_thread(10.0)
 
-    engines_languages = {}
-    names = list(engines)
-    names.sort()
+    def log(msg):
+        print(msg)
 
-    for engine_name in names:
-        if hasattr(engines[engine_name], 'fetch_supported_languages'):
-            engines_languages[engine_name] = engines[engine_name].fetch_supported_languages()
-            print("fetched %s languages from engine %s" % (len(engines_languages[engine_name]), engine_name))
-            if type(engines_languages[engine_name]) == list:  # pylint: disable=unidiomatic-typecheck
-                engines_languages[engine_name] = sorted(engines_languages[engine_name])
-
-    print("fetched languages from %s engines" % len(engines_languages))
-
-    # write json file
-    with open(engines_languages_file, 'w', encoding='utf-8') as f:
-        json.dump(engines_languages, f, indent=2, sort_keys=True)
-
-    return engines_languages
+    traits_map = EngineTraitsMap.fetch_traits(log=log)
+    print("fetched properties from %s engines" % len(traits_map))
+    print("write json file: %s" % traits_map.ENGINE_TRAITS_FILE)
+    traits_map.save_data()
+    return traits_map
 
 
 # Get babel Locale object from lang_code if possible.
@@ -124,17 +116,43 @@ def get_territory_name(lang_code):
     return country_name
 
 
-# Join all language lists.
-def join_language_lists(engines_languages):
-    language_list = {}
-    for engine_name in engines_languages:
-        for lang_code in engines_languages[engine_name]:
+def join_language_lists(traits_map: EngineTraitsMap):
+    """Join all languages of the engines into one list.  The returned language list
+    contains language codes (``zh``) and region codes (``zh-TW``).  The codes can
+    be parsed by babel::
 
-            # apply custom fixes if necessary
-            if lang_code in getattr(engines[engine_name], 'language_aliases', {}).values():
-                lang_code = next(
-                    lc for lc, alias in engines[engine_name].language_aliases.items() if lang_code == alias
-                )
+      babel.Locale.parse(language_list[n])
+    """
+    # pylint: disable=too-many-branches
+    language_list = {}
+
+    for eng_name, eng_traits in traits_map.items():
+        eng = engines[eng_name]
+        eng_codes = set()
+
+        if eng_traits.data_type == 'traits_v1':
+            # items of type 'engine_traits' do have regions & languages, the
+            # list of eng_codes should contain both.
+            eng_codes.update(eng_traits.regions.keys())
+            eng_codes.update(eng_traits.languages.keys())
+
+        elif eng_traits.data_type == 'supported_languages':
+            # vintage / deprecated
+            _codes = set()
+            if isinstance(eng_traits.supported_languages, dict):
+                _codes.update(eng_traits.supported_languages.keys())
+            elif isinstance(eng_traits.supported_languages, list):
+                _codes.update(eng_traits.supported_languages)
+            else:
+                raise TypeError('engine.supported_languages type %s is unknown' % type(eng_traits.supported_languages))
+
+            for lang_code in _codes:
+                # apply custom fixes if necessary
+                if lang_code in getattr(eng, 'language_aliases', {}).values():
+                    lang_code = next(lc for lc, alias in eng.language_aliases.items() if lang_code == alias)
+                eng_codes.add(lang_code)
+
+        for lang_code in eng_codes:
 
             locale = get_locale(lang_code)
 
@@ -149,10 +167,10 @@ def join_language_lists(engines_languages):
                     # get language's data from babel's Locale object
                     language_name = locale.get_language_name().title()
                     english_name = locale.english_name.split(' (')[0]
-                elif short_code in engines_languages['wikipedia']:
+                elif short_code in traits_map['wikipedia'].supported_languages:
                     # get language's data from wikipedia if not known by babel
-                    language_name = engines_languages['wikipedia'][short_code]['name']
-                    english_name = engines_languages['wikipedia'][short_code]['english_name']
+                    language_name = traits_map['wikipedia'].supported_languages[short_code]['name']
+                    english_name = traits_map['wikipedia'].supported_languages[short_code]['english_name']
                 else:
                     language_name = None
                     english_name = None
@@ -182,15 +200,15 @@ def join_language_lists(engines_languages):
                 }
 
             # count engine for both language_country combination and language alone
-            language_list[short_code]['counter'].add(engine_name)
+            language_list[short_code]['counter'].add(eng_name)
             if lang_code != short_code:
-                language_list[short_code]['countries'][lang_code]['counter'].add(engine_name)
+                language_list[short_code]['countries'][lang_code]['counter'].add(eng_name)
 
     return language_list
 
 
 # Filter language list so it only includes the most supported languages and countries
-def filter_language_list(all_languages):
+def filter_language_list(joined_languages_map):
     min_engines_per_lang = 12
     min_engines_per_country = 7
     # pylint: disable=consider-using-dict-items, consider-iterating-dictionary
@@ -198,6 +216,7 @@ def filter_language_list(all_languages):
         engine_name
         for engine_name in engines.keys()
         if 'general' in engines[engine_name].categories
+        and hasattr(engines[engine_name], 'supported_languages')
         and engines[engine_name].supported_languages
         and not engines[engine_name].disabled
     ]
@@ -205,7 +224,7 @@ def filter_language_list(all_languages):
     # filter list to include only languages supported by most engines or all default general engines
     filtered_languages = {
         code: lang
-        for code, lang in all_languages.items()
+        for code, lang in joined_languages_map.items()
         if (
             len(lang['counter']) >= min_engines_per_lang
             or all(main_engine in lang['counter'] for main_engine in main_engines)
@@ -214,8 +233,8 @@ def filter_language_list(all_languages):
 
     def _copy_lang_data(lang, country_name=None):
         new_dict = {}
-        new_dict['name'] = all_languages[lang]['name']
-        new_dict['english_name'] = all_languages[lang]['english_name']
+        new_dict['name'] = joined_languages_map[lang]['name']
+        new_dict['english_name'] = joined_languages_map[lang]['english_name']
         if country_name:
             new_dict['country_name'] = country_name
         return new_dict
@@ -305,9 +324,13 @@ def write_languages_file(languages):
         new_file.close()
 
 
-if __name__ == "__main__":
+def main():
     load_engines(settings['engines'])
-    _engines_languages = fetch_supported_languages()
-    _all_languages = join_language_lists(_engines_languages)
-    _filtered_languages = filter_language_list(_all_languages)
-    write_languages_file(_filtered_languages)
+    traits_map = fetch_traits_map()
+    joined_languages_map = join_language_lists(traits_map)
+    filtered_languages = filter_language_list(joined_languages_map)
+    write_languages_file(filtered_languages)
+
+
+if __name__ == "__main__":
+    main()
