@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-07-13 15:40+0000\n"
 "Last-Translator: John Doe <cryptiox@protonmail.com>\n"
 "Language: lt\n"
@@ -128,6 +128,11 @@ msgstr "programų žinynai"
 msgid "web"
 msgstr "internetas"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -143,68 +148,68 @@ msgstr "šviesi"
 msgid "dark"
 msgstr "tamsi"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "laikas baigėsi"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "parsavymo klaida"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP protokolo klaida"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "tinklo klaida"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "netikėta klaida"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "HTTP klaida"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "HTTP ryšio klaida"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "persiuntimų serverio klaida"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "per daug užklausų"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "prieiga uždrausta"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "serverio API klaida"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Elementų nerasta"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "Šaltinis"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Klaida keliant kitą puslapį"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neteisingi nustatymai, pakeiskite savo nuostatas"
 
@@ -216,17 +221,17 @@ msgstr "Neteisingi nustatymai"
 msgid "search error"
 msgstr "paieškos klaida"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Sustabdytas"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "prieš {minutes} min"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "prieš {hours} val., {minutes} min"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Sustabdytas"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -256,13 +261,15 @@ msgstr "{title} (PASENĘS)"
 msgid "This entry has been superseded by"
 msgstr "Šį įrašą pakeitė"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Šiai publikacijai nėra prieinama jokia santrauka."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanalas"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -279,6 +286,22 @@ msgstr ""
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
 msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
@@ -324,8 +347,8 @@ msgstr ""
 "norėdami pasirinkti kelias kategorijas. (reikalingas JavaScript)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr "Jūsų informacija"
+msgid "Self Information"
+msgstr ""
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -449,6 +472,7 @@ msgstr "Trukmė"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autorius"
 
@@ -667,13 +691,10 @@ msgstr "HTTP Metodas"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Keisti kaip yra pateikiamos formos, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">sužinokite daugiau apie užklausos metodus</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1085,6 +1106,50 @@ msgstr "rodyti žemėlapį"
 msgid "hide map"
 msgstr "slėpti žemėlapį"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "magnet nuoroda"
@@ -1389,4 +1454,22 @@ msgstr "slėpti vaizdo įrašą"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "gerbianti privatumą, programuojama metapaieškos sistema"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Šiai publikacijai nėra prieinama jokia santrauka."
+
+#~ msgid "Self Informations"
+#~ msgstr "Jūsų informacija"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Keisti kaip yra pateikiamos formos, <a"
+#~ " "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">sužinokite daugiau apie "
+#~ "užklausos metodus</a>"
 
