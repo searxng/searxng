@@ -50,7 +50,7 @@ def request(query, params):
 # replace private user area characters to make text legible
 def replace_pua_chars(text):
     pua_chars = {
-        '\uf522': '\u2192',  # rigth arrow
+        '\uf522': '\u2192',  # right arrow
         '\uf7b1': '\u2115',  # set of natural numbers
         '\uf7b4': '\u211a',  # set of rational numbers
         '\uf7b5': '\u211d',  # set of real numbers

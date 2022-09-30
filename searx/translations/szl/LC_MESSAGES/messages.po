@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-08-19 07:18+0000\n"
 "Last-Translator: gkkulik <gregorykkulik@gmail.com>\n"
 "Language: szl\n"
@@ -123,6 +123,11 @@ msgstr "wiki ôprogramowanio"
 msgid "web"
 msgstr "nec"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -138,68 +143,68 @@ msgstr "jasny"
 msgid "dark"
 msgstr "ciymny"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "kōniec czasu"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "feler przetworzanio"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "Feler protokołu HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "feler necu"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "niyspodziano awaryjo"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "Feler HTTP"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "Feler połōnczynio HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "feler proxy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "za moc żōndań"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "dostymp ôdkozany"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "feler serwera API"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Żodyn elymynt niy znojdziōny"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "Zdrzōdło"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
@@ -211,17 +216,17 @@ msgstr "Niynoleżne sztalōnki"
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Strzimane"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) tymu"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Strzimane"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -251,13 +256,15 @@ msgstr "{title} (ZASTARZAŁE)"
 msgid "This entry has been superseded by"
 msgstr "Tyn wpis bōł zastōmpiōny ôd"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Skrōcynie niy ma dostympne dlo tyj publikacyje."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanał"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -281,6 +288,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "Tego ôbrazu niy szło ściōngnōńć."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -325,8 +348,8 @@ msgstr ""
 "wiyncyj kategoryji. (Potrzebny Javascript)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr "Informacyje ô siebie"
+msgid "Self Information"
+msgstr ""
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -450,6 +473,7 @@ msgstr "Dugość"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autōr"
 
@@ -669,13 +693,10 @@ msgstr "Metoda HTTP"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Zmiyń metoda przesyłanio formularōw, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">przewiydz sie wiyncyj ô metodach HTTP</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1084,6 +1105,50 @@ msgstr "pokoż karta"
 msgid "hide map"
 msgstr "skryj karta"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "link magnet"
@@ -1150,4 +1215,21 @@ msgstr "skryj wideo"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "hakowalno metawyszukowarka, co szanuje prywatność"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Skrōcynie niy ma dostympne dlo tyj publikacyje."
+
+#~ msgid "Self Informations"
+#~ msgstr "Informacyje ô siebie"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Zmiyń metoda przesyłanio formularōw, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">przewiydz sie wiyncyj ô "
+#~ "metodach HTTP</a>"
 

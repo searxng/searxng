@@ -134,9 +134,9 @@ def result_score(result):
         if hasattr(engines[result_engine], 'weight'):
             weight *= float(engines[result_engine].weight)
 
-    occurences = len(result['positions'])
+    occurrences = len(result['positions'])
 
-    return sum((occurences * weight) / position for position in result['positions'])
+    return sum((occurrences * weight) / position for position in result['positions'])
 
 
 class Timing(NamedTuple):
@@ -286,7 +286,7 @@ class ResultContainer:
         if 'template' not in result:
             result['template'] = 'default.html'
 
-        # strip multiple spaces and cariage returns from content
+        # strip multiple spaces and carriage returns from content
         if result.get('content'):
             result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
 
@@ -315,7 +315,7 @@ class ResultContainer:
                     return merged_result
                 else:
                     # it's an image
-                    # it's a duplicate if the parsed_url, template and img_src are differents
+                    # it's a duplicate if the parsed_url, template and img_src are different
                     if result.get('img_src', '') == merged_result.get('img_src', ''):
                         return merged_result
         return None

@@ -145,7 +145,7 @@ engine, you must install the package ``mysql-connector-python``.
 
 The authentication plugin is configurable by setting ``auth_plugin`` in the
 attributes.  By default it is set to ``caching_sha2_password``.  This is an
-example configuration for quering a MySQL server:
+example configuration for querying a MySQL server:
 
 .. code:: yaml
 

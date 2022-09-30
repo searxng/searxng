@@ -47,7 +47,7 @@ Engine File
    argument                type        information
    ======================= =========== ========================================================
    categories              list        pages, in which the engine is working
-   paging                  boolean     support multible pages
+   paging                  boolean     support multiple pages
    time_range_support      boolean     support search time range
    engine_type             str         - ``online`` :ref:`[ref] <demo online engine>` by
                                          default, other possibles values are:
@@ -386,11 +386,11 @@ the parameter ``template`` must be set to the desired type.
      - DOI number (like ``10.1038/d41586-018-07848-2``)
 
    * - issn
-     - :py:class:`str`
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
      - ISSN number like ``1476-4687``
 
    * - isbn
-     - :py:class:`str`
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
      - ISBN number like ``9780201896831``
 
    * - pdf_url

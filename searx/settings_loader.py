@@ -121,10 +121,10 @@ def is_use_default_settings(user_settings):
     raise ValueError('Invalid value for use_default_settings')
 
 
-def load_settings(load_user_setttings=True):
+def load_settings(load_user_settings=True):
     default_settings_path = get_default_settings_path()
     user_settings_path = get_user_settings_path()
-    if user_settings_path is None or not load_user_setttings:
+    if user_settings_path is None or not load_user_settings:
         # no user settings
         return (load_yaml(default_settings_path), 'load the default settings from {}'.format(default_settings_path))
 
@@ -136,7 +136,7 @@ def load_settings(load_user_setttings=True):
         update_settings(default_settings, user_settings)
         return (
             default_settings,
-            'merge the default settings ( {} ) and the user setttings ( {} )'.format(
+            'merge the default settings ( {} ) and the user settings ( {} )'.format(
                 default_settings_path, user_settings_path
             ),
         )

@@ -107,7 +107,7 @@ def run():
             logger.debug('Checking %s engine', name)
             checker = Checker(processor)
             checker.run()
-            if checker.test_results.succesfull:
+            if checker.test_results.successful:
                 result['engines'][name] = {'success': True}
             else:
                 result['engines'][name] = {'success': False, 'errors': checker.test_results.errors}

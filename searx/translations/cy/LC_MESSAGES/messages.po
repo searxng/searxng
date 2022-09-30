@@ -5,13 +5,14 @@
 # Translators:
 # Cymrodor <aled@aledpowell.cymru>, 2019
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# CJ <charl.cj.monke@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
-"PO-Revision-Date: 2022-07-29 07:17+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
+"PO-Revision-Date: 2022-09-28 07:29+0000\n"
+"Last-Translator: CJ <charl.cj.monke@gmail.com>\n"
 "Language: cy\n"
 "Language-Team: Welsh "
 "<https://weblate.bubu1.eu/projects/searxng/searxng/cy/>\n"
@@ -105,105 +106,110 @@ msgstr "geiriau"
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
 msgid "packages"
-msgstr ""
+msgstr "pecyn"
 
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr ""
+msgstr "q&a"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr ""
+msgstr "repos"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "wikis meddalwedd"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr ""
+msgstr "gwe"
+
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr "cyhoeddiadau gwyddonol"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr ""
+msgstr "auto"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr ""
+msgstr "golau"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
 msgstr "tywyll"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
-msgstr ""
+msgstr "amser allan"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "gwall dosrannu"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "Gwall protocol HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "gwall rhwydwaith"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "damwain annisgwyl"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "gwall http"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "gwall cysylltiad http"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "gwall dirprwy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "gormod o geisiadau"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
-msgstr ""
+msgstr "mynediad wedi ei wrthod"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
-msgstr ""
+msgstr "gwall API gweinydd"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Ni chanfuwyd eitem"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
-msgstr ""
+msgstr "Ffynhonnell"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
-msgstr ""
+msgstr "Gwall wrth lwytho'r dudalen nesaf"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Gosodiadau annilys. Addasa dy ddewisiadau."
 
@@ -215,17 +221,17 @@ msgstr "Gosodiadau annilys"
 msgid "search error"
 msgstr "gwall chwilio"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr ""
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} munud yn ôl"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} awr, {minutes} munud yn ôl"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr ""
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -255,12 +261,14 @@ msgstr ""
 msgid "This entry has been superseded by"
 msgstr ""
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr ""
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
+msgstr ""
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
 msgstr ""
 
 #: searx/engines/tineye.py:40
@@ -278,6 +286,22 @@ msgstr ""
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
 msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
@@ -317,7 +341,7 @@ msgid ""
 msgstr ""
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
+msgid "Self Information"
 msgstr ""
 
 #: searx/plugins/self_info.py:21
@@ -437,6 +461,7 @@ msgstr ""
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr ""
 
@@ -652,7 +677,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
@@ -1051,6 +1076,50 @@ msgstr "dangos map"
 msgid "hide map"
 msgstr "cuddio map"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "dolen magnet"
@@ -1354,5 +1423,18 @@ msgstr "cuddio fideo"
 #~ msgstr ""
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
+#~ msgstr ""
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr ""
+
+#~ msgid "Self Informations"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
 #~ msgstr ""
 

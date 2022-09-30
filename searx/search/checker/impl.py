@@ -174,7 +174,7 @@ class TestResults:
         self.languages.add(language)
 
     @property
-    def succesfull(self):
+    def successful(self):
         return len(self.errors) == 0
 
     def __iter__(self):
@@ -317,7 +317,7 @@ class ResultContainerTests:
             self._record_error('No result')
 
     def one_title_contains(self, title: str):
-        """Check one of the title contains `title` (case insensitive comparaison)"""
+        """Check one of the title contains `title` (case insensitive comparison)"""
         title = title.lower()
         for result in self.result_container.get_ordered_results():
             if title in result['title'].lower():

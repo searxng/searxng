@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-09-21 15:58+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: bn\n"
@@ -125,6 +125,11 @@ msgstr "সফটওয়্যার উইকি"
 msgid "web"
 msgstr "ওয়েব"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -140,68 +145,68 @@ msgstr "সাদা"
 msgid "dark"
 msgstr "কালো"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "সময় শেষ"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "পার্স ত্রুটি"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP প্রোটোকল ত্রুটি"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "নেটওয়ার্ক ত্রুটি"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "অপ্রত্যাশিত ক্র্যাশ"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "এইচটিটিপি ত্রুটি"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "এইচটিটিপি সংযোগ ত্রুটি"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "প্রক্সি ত্রুটি"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "ক্যাপচা"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "অনেক বেশি অনুরোধ"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "অ্যাক্সেস অমান্য"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "সার্ভার এপিআই ত্রুটি"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "উৎস"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করার সময় ত্রুটি৷."
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "অবৈধ সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন৷"
 
@@ -213,17 +218,17 @@ msgstr "অবৈধ সেটিংস"
 msgid "search error"
 msgstr "অনুসন্ধানের ত্রুটি"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "স্থগিত"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} মিনিট আগে"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ঘণ্টা, {minutes} মিনিট আগে"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "স্থগিত"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -253,13 +258,15 @@ msgstr "{title} (অচল)"
 msgid "This entry has been superseded by"
 msgstr "এই এন্ট্রিটি দ্বারা বাতিল করা হয়েছে৷"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "এই প্রকাশনার জন্য কোন বিমূর্ত উপলব্ধ নেই."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "চ্যানেল"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -282,6 +289,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "ছবিটি ডাউনলোড করা যায়নি ।"
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -324,8 +347,8 @@ msgstr ""
 "বিভাগ নির্বাচন করতে অক্ষম করুন। (জাভাস্ক্রিপ্ট প্রয়োজন)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr "নিজের তথ্য"
+msgid "Self Information"
+msgstr ""
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -444,6 +467,7 @@ msgstr "দৈর্ঘ্য"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "লেখক"
 
@@ -659,7 +683,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
@@ -1056,6 +1080,50 @@ msgstr ""
 msgid "hide map"
 msgstr ""
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr ""
@@ -1121,5 +1189,18 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
+#~ msgstr ""
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "এই প্রকাশনার জন্য কোন বিমূর্ত উপলব্ধ নেই."
+
+#~ msgid "Self Informations"
+#~ msgstr "নিজের তথ্য"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
 #~ msgstr ""
 

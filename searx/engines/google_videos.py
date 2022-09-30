@@ -150,7 +150,7 @@ def response(resp):
 
         # ignore google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
-            logger.debug("ingoring <g-section-with-header>")
+            logger.debug("ignoring <g-section-with-header>")
             continue
 
         # ingnore articles without an image id / e.g. news articles

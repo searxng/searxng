@@ -30,7 +30,7 @@ def get_external_url(url_id, item_id, alternative="default"):
     """Return an external URL or None if url_id is not found.
 
     url_id can take value from data/external_urls.json
-    The "imdb_id" value is automaticaly converted according to the item_id value.
+    The "imdb_id" value is automatically converted according to the item_id value.
 
     If item_id is None, the raw URL with the $1 is returned.
     """

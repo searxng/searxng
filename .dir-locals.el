@@ -7,7 +7,7 @@
 ;;
 ;;    If you get ``*** EPC Error ***`` (even after a jedi:install-server) in
 ;;    your emacs session, mostly you have jedi-mode enabled but the python
-;;    enviroment is missed.  The python environment has to be next to the
+;;    environment is missed.  The python environment has to be next to the
 ;;    ``<repo>/.dir-locals.el`` in::
 ;;
 ;;       ./local/py3
@@ -64,10 +64,10 @@
                (setq-local python-environment-directory
                            (expand-file-name "./local" prj-root))
 
-               ;; to get in use of NVM enviroment, install https://github.com/rejeep/nvm.el
+               ;; to get in use of NVM environment, install https://github.com/rejeep/nvm.el
                (setq-local nvm-dir (expand-file-name "./.nvm" prj-root))
 
-               ;; use 'py3' enviroment as default
+               ;; use 'py3' environment as default
                (setq-local python-environment-default-root-name
                            "py3")
 

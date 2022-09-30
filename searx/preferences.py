@@ -52,7 +52,7 @@ class Setting:
         return self.value
 
     def save(self, name: str, resp: flask.Response):
-        """Save cookie ``name`` in the HTTP reponse obect
+        """Save cookie ``name`` in the HTTP response object
 
         If needed, its overwritten in the inheritance."""
         resp.set_cookie(name, self.value, max_age=COOKIE_MAX_AGE)
@@ -113,7 +113,7 @@ class MultipleChoiceSetting(Setting):
                 self.value.append(choice)
 
     def save(self, name: str, resp: flask.Response):
-        """Save cookie ``name`` in the HTTP reponse obect"""
+        """Save cookie ``name`` in the HTTP response object"""
         resp.set_cookie(name, ','.join(self.value), max_age=COOKIE_MAX_AGE)
 
 
@@ -146,7 +146,7 @@ class SetSetting(Setting):
         self.values = set(elements)
 
     def save(self, name: str, resp: flask.Response):
-        """Save cookie ``name`` in the HTTP reponse obect"""
+        """Save cookie ``name`` in the HTTP response object"""
         resp.set_cookie(name, ','.join(self.values), max_age=COOKIE_MAX_AGE)
 
 
@@ -193,7 +193,7 @@ class MapSetting(Setting):
         self.key = data  # pylint: disable=attribute-defined-outside-init
 
     def save(self, name: str, resp: flask.Response):
-        """Save cookie ``name`` in the HTTP reponse obect"""
+        """Save cookie ``name`` in the HTTP response object"""
         if hasattr(self, 'key'):
             resp.set_cookie(name, self.key, max_age=COOKIE_MAX_AGE)
 
@@ -239,7 +239,7 @@ class BooleanChoices:
         return (k for k, v in self.choices.items() if not v)
 
     def save(self, resp: flask.Response):
-        """Save cookie in the HTTP reponse obect"""
+        """Save cookie in the HTTP response object"""
         disabled_changed = (k for k in self.disabled if self.default_choices[k])
         enabled_changed = (k for k in self.enabled if not self.default_choices[k])
         resp.set_cookie('disabled_{0}'.format(self.name), ','.join(disabled_changed), max_age=COOKIE_MAX_AGE)
@@ -496,7 +496,7 @@ class Preferences:
         return ret_val
 
     def save(self, resp: flask.Response):
-        """Save cookie in the HTTP reponse obect"""
+        """Save cookie in the HTTP response object"""
         for user_setting_name, user_setting in self.key_value_settings.items():
             # pylint: disable=unnecessary-dict-index-lookup
             if self.key_value_settings[user_setting_name].locked:

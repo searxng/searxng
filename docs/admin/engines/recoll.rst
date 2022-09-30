@@ -39,7 +39,7 @@ Example
 Scenario:
 
 #. Recoll indexes a local filesystem mounted in ``/export/documents/reference``,
-#. the Recoll search inteface can be reached at https://recoll.example.org/ and
+#. the Recoll search interface can be reached at https://recoll.example.org/ and
 #. the contents of this filesystem can be reached though https://download.example.org/reference
 
 .. code:: yaml
