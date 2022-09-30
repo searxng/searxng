@@ -15,18 +15,19 @@
 # Cedrik Boudreau <cedrik@arweave.org>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
-"PO-Revision-Date: 2022-07-29 07:17+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
+"PO-Revision-Date: 2022-09-30 07:43+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: French <https://weblate.bubu1.eu/projects/searxng/searxng/fr/>"
+"\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -134,6 +135,11 @@ msgstr "wikis"
 msgid "web"
 msgstr "web"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr "publications scientifiques"
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -149,68 +155,68 @@ msgstr "clair"
 msgid "dark"
 msgstr "sombre"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "délai dépassé"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "erreur d'analyse"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "erreur de protocole HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "Erreur réseau"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "erreur inattendue"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "erreur HTTP"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "erreur de connexion HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "Erreur proxy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "trop de requêtes"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "accès refusé"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "erreur API du serveur"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Pas d'élément trouvé"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "Source"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Erreur lors du chargement de la page suivante"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Paramètres non valides, veuillez éditer vos préférences"
 
@@ -222,17 +228,17 @@ msgstr "Paramètres non valides"
 msgid "search error"
 msgstr "erreur de recherche"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Suspendu"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "il y a {minutes} minute(s)"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "il y a {hours} heure(s), {minutes} minute(s)"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Suspendu"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -262,13 +268,17 @@ msgstr "{titre} (OBSOLÈTE)"
 msgid "This entry has been superseded by"
 msgstr "Cet item a été remplacé par"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Aucun résumé disponible pour cette publication."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Chaîne"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
+"{numCitations} citations de l'année {firstCitationVelocityYear} à "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -292,6 +302,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "L'image n'a pas pu être téléchargée."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr "Matin"
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr "Midi"
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr "Soir"
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr "Nuit"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -334,7 +360,7 @@ msgstr ""
 "Désactiver pour sélectionner plusieurs catégories (nécessite JavaScript)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
+msgid "Self Information"
 msgstr "Informations sur le navigateur"
 
 #: searx/plugins/self_info.py:21
@@ -427,7 +453,7 @@ msgstr "Propulsé par"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "un métamoteur ouvert et respectueux de la vie privée"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -464,6 +490,7 @@ msgstr "Durée"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Auteur"
 
@@ -687,13 +714,13 @@ msgstr "Méthode HTTP"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Permet de choisir comment la recherche est envoyée, <a "
-"href=\"https://fr.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9thodes\""
-" rel=\"external\">en savoir plus sur les méthodes HTTP</a>"
+"Permet de choisir comment la recherche est envoyée, <a href=\"https://fr."
+"wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9thodes\" rel=\"external"
+"\">en savoir plus sur les méthodes HTTP</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1105,6 +1132,50 @@ msgstr "afficher la carte"
 msgid "hide map"
 msgstr "cacher la carte"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr "Date de publication"
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr "Journal"
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr "Rédacteur·rice en chef"
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr "Éditeur"
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Type"
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Tags"
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr "DOI"
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr "ISSN"
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr "ISBN"
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr "PDF"
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr "HTML"
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "lien magnet"
@@ -1416,3 +1487,20 @@ msgstr "cacher la vidéo"
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "un métamoteur de recherche hackable et respectueux de la vie privée"
 
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Aucun résumé disponible pour cette publication."
+
+#~ msgid "Self Informations"
+#~ msgstr "Informations sur le navigateur"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Permet de choisir comment la recherche"
+#~ " est envoyée, <a "
+#~ "href=\"https://fr.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9thodes\""
+#~ " rel=\"external\">en savoir plus sur les"
+#~ " méthodes HTTP</a>"

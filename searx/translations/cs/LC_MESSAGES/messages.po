@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-09-21 15:58+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: cs\n"
@@ -132,6 +132,11 @@ msgstr "softwarové wikipédie"
 msgid "web"
 msgstr "web"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -147,68 +152,68 @@ msgstr "světlý"
 msgid "dark"
 msgstr "tmavý"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "čas vypršel"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "chyba parsování"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "chyba HTTP protokolu"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "síťová chyba"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "nečekaná chyba"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "chyba HTTP"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "Chyba spojení HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "chyba proxy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "příliš mnoho požadavků"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "přístup odepřen"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "chyba API serveru"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Nic nenalezeno"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "zdroj"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
@@ -220,17 +225,17 @@ msgstr "Neplatné nastavení"
 msgid "search error"
 msgstr "chyba vyhledávání"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Pozastaveno"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "před {minutes} minutami"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "před {hours} hodinami, {minutes} minutami"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Pozastaveno"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -260,13 +265,15 @@ msgstr "{title} (ZASTARALÉ)"
 msgid "This entry has been superseded by"
 msgstr "Tato položka byla nahrazena položkou"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Pro tuto publikaci neexistuje žádný abstrakt."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanál"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -289,6 +296,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "Obrázek se nepodařilo stáhnout."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -331,8 +354,8 @@ msgstr ""
 "vypnuta, je možné vybrat více kategorií (vyžaduje JavaScript)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr "Informace o sobě"
+msgid "Self Information"
+msgstr ""
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -460,6 +483,7 @@ msgstr "Délka"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autor"
 
@@ -679,13 +703,10 @@ msgstr "Metoda HTTP"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Určuje způsob odesílání formulářů. Informace o dotazovacích metodách <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">viz Wikipedie</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1095,6 +1116,50 @@ msgstr "zobrazit mapu"
 msgid "hide map"
 msgstr "skrýt mapu"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "odkaz magnet"
@@ -1402,4 +1467,21 @@ msgstr "skrýt video"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "soukromí respektujícím, nastavitelným multivyhledávačem"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Pro tuto publikaci neexistuje žádný abstrakt."
+
+#~ msgid "Self Informations"
+#~ msgstr "Informace o sobě"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Určuje způsob odesílání formulářů. Informace"
+#~ " o dotazovacích metodách <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">viz Wikipedie</a>"
 

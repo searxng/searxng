@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-08-05 07:18+0000\n"
 "Last-Translator: Mico Hautaluoma <m@mha.fi>\n"
 "Language: fi\n"
@@ -127,6 +127,11 @@ msgstr "ohjelmistowikit"
 msgid "web"
 msgstr "web"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr ""
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -142,68 +147,68 @@ msgstr "vaalea"
 msgid "dark"
 msgstr "tumma"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "aikakatkaistu"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "jäsentämisvirhe"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "HTTP-protokollavirhe"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "verkkovirhe"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "odottamaton kaatuminen"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "HTTP-virhe"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "HTTP-yhteysvirhe"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "proxy-virhe"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "liian monta pyyntöä"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "pääsy kielletty"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "palvelimen API-virhe"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Tietuetta ei löytynyt"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "Lähde"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Virhe ladattaessa seuraavaa sivua"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Virheelliset asetukset, muokkaa siis asetuksia"
 
@@ -215,17 +220,17 @@ msgstr "Virheelliset asetukset"
 msgid "search error"
 msgstr "hakuvirhe"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Keskeytetty"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minuutti(a) sitten"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} tunti(a), {minutes} minuutti(a) sitten"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Keskeytetty"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -255,13 +260,15 @@ msgstr "{title} (VANHENTUNUT)"
 msgid "This entry has been superseded by"
 msgstr "Tämän kohdan on korvannut"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Tästä julkaisusta ei ole yhteenvetoa."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Kanava"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -284,6 +291,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "Tätä kuvaa ei voida ladata."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr ""
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -328,8 +351,8 @@ msgstr ""
 "valitaksesi useita luokkia. (JavaScript vaaditaan)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr "Itsetiedot"
+msgid "Self Information"
+msgstr ""
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -457,6 +480,7 @@ msgstr "Pituus"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Tekijä"
 
@@ -676,13 +700,10 @@ msgstr "HTTP-menetelmä"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Muuta tapaa, miten lomaketiedot välitetään. <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">Lisätietoja eri välitystavoista.</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1093,6 +1114,50 @@ msgstr "näytä kartta"
 msgid "hide map"
 msgstr "piilota kartta"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "magnet-linkki"
@@ -1398,4 +1463,21 @@ msgstr "piilota video"
 
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "yksityisyyttä kunnioittava, muokattava metahakukone"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Tästä julkaisusta ei ole yhteenvetoa."
+
+#~ msgid "Self Informations"
+#~ msgstr "Itsetiedot"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Muuta tapaa, miten lomaketiedot välitetään."
+#~ " <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">Lisätietoja eri välitystavoista.</a>"
 

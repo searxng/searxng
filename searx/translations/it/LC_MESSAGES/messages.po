@@ -15,20 +15,22 @@
 # carlonigiulio <giuliocarloni20@gmail.com>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Content Card <weblate-bubu1@gabg.email>, 2022.
+# Robert Bridda <briddarobert@icloud.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-21 15:58+0000\n"
-"PO-Revision-Date: 2022-08-22 12:54+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2022-09-28 07:29+0000\n"
+"PO-Revision-Date: 2022-09-30 07:43+0000\n"
+"Last-Translator: Robert Bridda <briddarobert@icloud.com>\n"
+"Language-Team: Italian <https://weblate.bubu1.eu/projects/searxng/searxng/it/"
+">\n"
 "Language: it\n"
-"Language-Team: Italian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -136,6 +138,11 @@ msgstr "wiki software"
 msgid "web"
 msgstr "web"
 
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr "pubblicazioni scientifiche"
+
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
@@ -151,68 +158,68 @@ msgstr "chiaro"
 msgid "dark"
 msgstr "scuro"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:164
 msgid "timeout"
 msgstr "tempo scaduto"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:165
 msgid "parsing error"
 msgstr "errore di analisi"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:166
 msgid "HTTP protocol error"
 msgstr "errore protocollo HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:167
 msgid "network error"
 msgstr "errore di rete"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:169
 msgid "unexpected crash"
 msgstr "crash inaspettato"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:176
 msgid "HTTP error"
 msgstr "errore HTTP"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:177
 msgid "HTTP connection error"
 msgstr "errore di connessione HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:183
 msgid "proxy error"
 msgstr "errore proxy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:184
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:185
 msgid "too many requests"
 msgstr "troppe richieste"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:186
 msgid "access denied"
 msgstr "accesso negato"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:187
 msgid "server API error"
 msgstr "errore server API"
 
-#: searx/webapp.py:363
+#: searx/webapp.py:362
 msgid "No item found"
 msgstr "Nessun oggetto trovato"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
 msgid "Source"
 msgstr "Sorgente"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:366
 msgid "Error loading the next page"
 msgstr "Errore caricando la pagina successiva"
 
-#: searx/webapp.py:518 searx/webapp.py:962
+#: searx/webapp.py:518 searx/webapp.py:950
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
@@ -224,17 +231,17 @@ msgstr "Impostazioni non valide"
 msgid "search error"
 msgstr "errore di ricerca"
 
-#: searx/webapp.py:733
+#: searx/webapp.py:849
+msgid "Suspended"
+msgstr "Sospeso"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "di {minutes} minuti fa"
 
-#: searx/webapp.py:735
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "di {hours} ore e {minutes} minuti fa"
-
-#: searx/webapp.py:861
-msgid "Suspended"
-msgstr "Sospeso"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -264,13 +271,17 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Questa voce è stata sostituita da"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Nessun sommario disponibile per questa pubblicazione."
-
 #: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Canale"
+
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
+"{numCitations} citazioni dall anno {firstCitationVelocityYear} fino al "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -294,6 +305,22 @@ msgstr ""
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
 msgstr "L'immagine non può essere scaricata."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr "Mattina"
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr "Mezzogiorno"
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr "Sera"
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr "Notte"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -339,7 +366,7 @@ msgstr ""
 "necessario)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
+msgid "Self Information"
 msgstr "Informazioni su di sé"
 
 #: searx/plugins/self_info.py:21
@@ -431,7 +458,7 @@ msgstr "Offerto da"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "un meta-motore di ricerca web, open source e rispettoso della privacy"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -468,6 +495,7 @@ msgstr "Lunghezza"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autore"
 
@@ -659,7 +687,7 @@ msgstr "On"
 #: searx/templates/simple/preferences.html:233
 #: searx/templates/simple/preferences.html:245
 msgid "Off"
-msgstr "Off"
+msgstr "Spento"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
@@ -693,13 +721,13 @@ msgstr "Metodo HTTP"
 
 #: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Seleziona il metodo di richiesta HTTP (<a "
-"href=\"https://it.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Messaggio_di_richiesta\""
-" rel=\"external\">Cos'è un metodo di richiesta?</a>)"
+"Seleziona il metodo di richiesta HTTP (<a href=\"https://it.wikipedia.org/"
+"wiki/Hypertext_Transfer_Protocol#Messaggio_di_richiesta\" rel=\"external\""
+">Cos'è un metodo di richiesta?</a>)"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1109,6 +1137,50 @@ msgstr "mostra mappa"
 msgid "hide map"
 msgstr "nascondi mappa"
 
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr "Data di pubblicazione"
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr "Editore"
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Tipo"
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr "ISSN"
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr "ISBN"
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr "PDF"
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr "HTML"
+
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
 msgstr "link magnet"
@@ -1414,3 +1486,20 @@ msgstr "nascondi video"
 #~ msgid "a privacy-respecting, hackable metasearch engine"
 #~ msgstr "un metamotore di ricerca personalizzabile e rispettoso della privacy"
 
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Nessun sommario disponibile per questa pubblicazione."
+
+#~ msgid "Self Informations"
+#~ msgstr "Informazioni su di sé"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Seleziona il metodo di richiesta HTTP"
+#~ " (<a "
+#~ "href=\"https://it.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Messaggio_di_richiesta\""
+#~ " rel=\"external\">Cos'è un metodo di "
+#~ "richiesta?</a>)"
