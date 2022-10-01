@@ -990,7 +990,6 @@ def preferences():
             'rate80': rate80,
             'rate95': rate95,
             'warn_timeout': e.timeout > settings['outgoing']['request_timeout'],
-            'supports_selected_language': _is_selected_language_supported(e, request.preferences),
             'result_count': result_count,
         }
     # end of stats
@@ -1041,18 +1040,18 @@ def preferences():
     # supports
     supports = {}
     for _, e in filtered_engines.items():
-        supports_selected_language = _is_selected_language_supported(e, request.preferences)
+        language_support = e.language_support
         safesearch = e.safesearch
         time_range_support = e.time_range_support
         for checker_test_name in checker_results.get(e.name, {}).get('errors', {}):
-            if supports_selected_language and checker_test_name.startswith('lang_'):
-                supports_selected_language = '?'
+            if language_support and checker_test_name.startswith('lang_'):
+                language_support = '?'
             elif safesearch and checker_test_name == 'safesearch':
                 safesearch = '?'
             elif time_range_support and checker_test_name == 'time_range':
                 time_range_support = '?'
         supports[e.name] = {
-            'supports_selected_language': supports_selected_language,
+            'language_support': language_support,
             'safesearch': safesearch,
             'time_range_support': time_range_support,
         }
@@ -1086,16 +1085,6 @@ def preferences():
         preferences = True
         # fmt: on
     )
-
-
-def _is_selected_language_supported(engine, preferences: Preferences):  # pylint: disable=redefined-outer-name
-    language = preferences.get_value('language')
-    if language == 'all':
-        return True
-    x = match_language(
-        language, getattr(engine, 'supported_languages', []), getattr(engine, 'language_aliases', {}), None
-    )
-    return bool(x)
 
 
 @app.route('/image_proxy', methods=['GET'])
@@ -1316,10 +1305,6 @@ def config():
         if not request.preferences.validate_token(engine):
             continue
 
-        supported_languages = engine.supported_languages
-        if isinstance(engine.supported_languages, dict):
-            supported_languages = list(engine.supported_languages.keys())
-
         _engines.append(
             {
                 'name': name,
@@ -1328,7 +1313,6 @@ def config():
                 'enabled': not engine.disabled,
                 'paging': engine.paging,
                 'language_support': engine.language_support,
-                'supported_languages': supported_languages,
                 'safesearch': engine.safesearch,
                 'time_range_support': engine.time_range_support,
                 'timeout': engine.timeout,

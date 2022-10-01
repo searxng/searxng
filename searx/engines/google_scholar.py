@@ -50,7 +50,6 @@ about = {
 # engine dependent config
 categories = ['science', 'scientific publications']
 paging = True
-language_support = True
 use_locale_domain = True
 time_range_support = True
 safesearch = False

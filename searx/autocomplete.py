@@ -11,9 +11,10 @@ from lxml import etree
 from httpx import HTTPError
 
 from searx import settings
-from searx.data import ENGINES_LANGUAGES
+from searx.locales import get_engine_locale
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
+from searx.engines import engines
 
 # a fetch_supported_languages() for XPath engines isn't available right now
 # _brave = ENGINES_LANGUAGES['brave'].keys()
@@ -110,9 +111,12 @@ def seznam(query, _lang):
 
 def startpage(query, lang):
     # startpage autocompleter
-    lui = ENGINES_LANGUAGES['startpage'].get(lang, 'english')
+    engine_language = default_language = 'english_uk'
+    if 'startpage' in engines:
+        engine_language = get_engine_locale(lang, engines['startpage'].engine_data.languages, default=default_language)
+
     url = 'https://startpage.com/suggestions?{query}'
-    resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
+    resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': engine_language})))
     data = resp.json()
     return [e['text'] for e in data.get('suggestions', []) if 'text' in e]
 

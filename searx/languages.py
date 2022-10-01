@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # list of language codes
-# this file is generated automatically by utils/fetch_languages.py
+# this file is generated automatically by:
+#
+#   ./manage pyenv.cmd searxng_extra/update/update_languages.py
 language_codes = (
     ('af-ZA', 'Afrikaans', 'Suid-Afrika', 'Afrikaans', '\U0001f1ff\U0001f1e6'),
     ('ar-EG', 'العربية', 'مصر', 'Arabic', '\U0001f1ea\U0001f1ec'),

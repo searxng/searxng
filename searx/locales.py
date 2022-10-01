@@ -4,7 +4,7 @@
 """Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
 """
 
-from typing import Set
+from typing import Set, Optional, Dict
 import os
 import pathlib
 
@@ -24,11 +24,8 @@ logger = logger.getChild('locales')
 _flask_babel_get_translations = flask_babel.get_translations
 
 LOCALE_NAMES = {}
-"""Mapping of locales and their description.  Locales e.g. 'fr' or 'pt-BR' (see
-:py:obj:`locales_initialize`).
-
-:meta hide-value:
-"""
+"""Mapping of locales and their description.  Locales e.g. ``fr`` or ``pt-BR``
+(see :py:obj:`locales_initialize`)."""
 
 RTL_LOCALES: Set[str] = set()
 """List of *Right-To-Left* locales e.g. 'he' or 'fa-IR' (see
@@ -157,12 +154,16 @@ def locales_initialize(directory=None):
                 RTL_LOCALES.add(tag)
 
 
-def get_engine_locale(searxng_locale, engine_locales, default=None):
+def get_engine_locale(
+    searxng_locale: str, engine_locales: Dict[str, str], default: Optional[str] = None
+) -> Optional[str]:
     """Return engine's language (aka locale) string that best fits to argument
     ``searxng_locale``.
 
     Argument ``engine_locales`` is a python dict that maps *SearXNG locales* to
     corresponding *engine locales*::
+
+    .. code:: python
 
       <engine>: {
           # SearXNG string : engine-string

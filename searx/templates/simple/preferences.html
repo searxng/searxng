@@ -307,7 +307,7 @@
         <th class="engine_checkbox">{{ _("Allow") }}</th>{{- "" -}}
         <th class="name">{{ _("Engine name") }}</th>{{- "" -}}
         <th class="shortcut">{{ _("Shortcut") }}</th>{{- "" -}}
-        <th>{{ _("Supports selected language") }}</th>{{- "" -}}
+        <th>{{ _("Language / Region") }}</th>{{- "" -}}
         <th>{{ _("SafeSearch") }}</th>{{- "" -}}
         <th>{{ _("Time range") }}</th>{{- "" -}}
         {%- if enable_metrics %}<th>{{ _("Response time") }}</th>{% endif -%}
@@ -333,7 +333,7 @@
           {{- engine_about(search_engine) -}}
         </th>{{- "" -}}
         <td class="shortcut">{{ shortcuts[search_engine.name] }}</td>{{- "" -}}
-        <td>{{ checkbox(None, supports[search_engine.name]['supports_selected_language'], true) }}</td>{{- "" -}}
+        <td>{{ checkbox(None, supports[search_engine.name]['language_support'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['safesearch'], true) }}</td>{{- "" -}}
         <td>{{ checkbox(None, supports[search_engine.name]['time_range_support'], true) }}</td>{{- "" -}}
         {%- if enable_metrics %}{{- engine_time(search_engine.name) -}}{% endif -%}
