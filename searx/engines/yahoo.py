@@ -17,8 +17,10 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    match_language,
 )
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
 
 # about
 about = {
@@ -34,8 +36,7 @@ about = {
 categories = ['general', 'web']
 paging = True
 time_range_support = True
-supported_languages_url = 'https://search.yahoo.com/preferences/languages'
-"""Supported languages are read from Yahoo preference page."""
+# send_accept_language_header = True
 
 time_range_dict = {
     'day': ('1d', 'd'),
@@ -43,15 +44,10 @@ time_range_dict = {
     'month': ('1m', 'm'),
 }
 
-language_aliases = {
-    'zh-HK': 'zh_chs',
-    'zh-CN': 'zh_chs',  # dead since 2015 / routed to hk.search.yahoo.com
-    'zh-TW': 'zh_cht',
-}
-
 lang2domain = {
     'zh_chs': 'hk.search.yahoo.com',
     'zh_cht': 'tw.search.yahoo.com',
+    'any': 'search.yahoo.com',
     'en': 'search.yahoo.com',
     'bg': 'search.yahoo.com',
     'cs': 'search.yahoo.com',
@@ -67,21 +63,23 @@ lang2domain = {
 }
 """Map language to domain"""
 
-
-def _get_language(params):
-
-    lang = language_aliases.get(params['language'])
-    if lang is None:
-        lang = match_language(params['language'], supported_languages, language_aliases)
-    lang = lang.split('-')[0]
-    logger.debug("params['language']: %s --> %s", params['language'], lang)
-    return lang
+locale_aliases = {
+    'zh': 'zh_Hans',
+    'zh-HK': 'zh_Hans',
+    'zh-CN': 'zh_Hans',  # dead since 2015 / routed to hk.search.yahoo.com
+    'zh-TW': 'zh_Hant',
+}
 
 
 def request(query, params):
     """build request"""
+
+    lang = locale_aliases.get(params['language'], None)
+    if not lang:
+        lang = params['language'].split('-')[0]
+    lang = traits.get_language(lang, traits.all_locale)
+
     offset = (params['pageno'] - 1) * 7 + 1
-    lang = _get_language(params)
     age, btf = time_range_dict.get(params['time_range'], ('', ''))
 
     args = urlencode(
@@ -154,13 +152,37 @@ def response(resp):
     return results
 
 
-# get supported languages from their site
-def _fetch_supported_languages(resp):
-    supported_languages = []
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages from yahoo"""
+
+    # pylint: disable=import-outside-toplevel
+    import babel
+    from searx import network
+    from searx.locales import language_tag
+
+    engine_traits.all_locale = 'any'
+
+    resp = network.get('https://search.yahoo.com/preferences/languages')
+    if not resp.ok:
+        print("ERROR: response from peertube is not OK.")
+
     dom = html.fromstring(resp.text)
     offset = len('lang_')
 
-    for val in eval_xpath_list(dom, '//div[contains(@class, "lang-item")]/input/@value'):
-        supported_languages.append(val[offset:])
+    eng2sxng = {'zh_chs': 'zh_Hans', 'zh_cht': 'zh_Hant'}
 
-    return supported_languages
+    for val in eval_xpath_list(dom, '//div[contains(@class, "lang-item")]/input/@value'):
+        eng_tag = val[offset:]
+
+        try:
+            sxng_tag = language_tag(babel.Locale.parse(eng2sxng.get(eng_tag, eng_tag)))
+        except babel.UnknownLocaleError:
+            print('ERROR: unknown language --> %s' % eng_tag)
+            continue
+
+        conflict = engine_traits.languages.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.languages[sxng_tag] = eng_tag
