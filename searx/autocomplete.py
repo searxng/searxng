@@ -126,16 +126,16 @@ def swisscows(query, _lang):
     return resp
 
 
-def qwant(query, lang):
-    # qwant autocompleter (additional parameter : lang=en_en&count=xxx )
-    url = 'https://api.qwant.com/api/suggest?{query}'
-
-    resp = get(url.format(query=urlencode({'q': query, 'lang': lang})))
-
+def qwant(query, sxng_locale):
+    """Autocomplete from Qwant. Supports Qwant's regions."""
     results = []
 
+    locale = engines['qwant'].traits.get_region(sxng_locale, 'en_US')
+    url = 'https://api.qwant.com/v3/suggest?{query}'
+    resp = get(url.format(query=urlencode({'q': query, 'locale': locale, 'version': '2'})))
+
     if resp.ok:
-        data = loads(resp.text)
+        data = resp.json()
         if data['status'] == 'success':
             for item in data['data']['items']:
                 results.append(item['value'])

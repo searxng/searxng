@@ -34,7 +34,9 @@ import babel
 
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
-from searx.locales import get_engine_locale
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
 
 # about
 about = {
@@ -49,7 +51,6 @@ about = {
 # engine dependent config
 categories = []
 paging = True
-supported_languages_url = about['website']
 qwant_categ = None  # web|news|inages|videos
 
 safesearch = True
@@ -95,7 +96,7 @@ def request(query, params):
     )
 
     # add quant's locale
-    q_locale = get_engine_locale(params['language'], supported_languages, default='en_US')
+    q_locale = traits.get_region(params["searxng_locale"], default='en_US')
     params['url'] += '&locale=' + q_locale
 
     # add safesearch option
@@ -243,15 +244,20 @@ def response(resp):
     return results
 
 
-def _fetch_supported_languages(resp):
+def fetch_traits(engine_traits: EngineTraits):
 
+    # pylint: disable=import-outside-toplevel
+    from searx import network
+    from searx.locales import region_tag
+
+    resp = network.get(about['website'])
     text = resp.text
     text = text[text.find('INITIAL_PROPS') :]
     text = text[text.find('{') : text.find('</script>')]
 
     q_initial_props = loads(text)
     q_locales = q_initial_props.get('locales')
-    q_valid_locales = []
+    eng_tag_list = set()
 
     for country, v in q_locales.items():
         for lang in v['langs']:
@@ -261,25 +267,18 @@ def _fetch_supported_languages(resp):
                 # qwant-news does not support all locales from qwant-web:
                 continue
 
-            q_valid_locales.append(_locale)
+            eng_tag_list.add(_locale)
 
-    supported_languages = {}
-
-    for q_locale in q_valid_locales:
+    for eng_tag in eng_tag_list:
         try:
-            locale = babel.Locale.parse(q_locale, sep='_')
-        except babel.core.UnknownLocaleError:
-            print("ERROR: can't determine babel locale of quant's locale %s" % q_locale)
+            sxng_tag = region_tag(babel.Locale.parse(eng_tag, sep='_'))
+        except babel.UnknownLocaleError:
+            print("ERROR: can't determine babel locale of quant's locale %s" % eng_tag)
             continue
 
-        # note: supported_languages (dict)
-        #
-        #   dict's key is a string build up from a babel.Locale object / the
-        #   notation 'xx-XX' (and 'xx') conforms to SearXNG's locale (and
-        #   language) notation and dict's values are the locale strings used by
-        #   the engine.
-
-        searxng_locale = locale.language + '-' + locale.territory  # --> params['language']
-        supported_languages[searxng_locale] = q_locale
-
-    return supported_languages
+        conflict = engine_traits.regions.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.regions[sxng_tag] = eng_tag
