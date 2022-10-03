@@ -17,6 +17,7 @@ from searx.utils import match_language, eval_xpath_getindex
 from searx.engines.bing import (  # pylint: disable=unused-import
     language_aliases,
     _fetch_supported_languages,
+    fetch_traits,
     supported_languages_url,
 )
 

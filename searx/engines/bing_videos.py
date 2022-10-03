@@ -14,6 +14,7 @@ from searx.engines.bing import language_aliases
 
 from searx.engines.bing import (  # pylint: disable=unused-import
     _fetch_supported_languages,
+    fetch_traits,
     supported_languages_url,
 )
 

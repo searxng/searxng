@@ -12,6 +12,10 @@ from lxml import html
 from searx.utils import eval_xpath, extract_text, eval_xpath_list, match_language, eval_xpath_getindex
 from searx.network import multi_requests, Request
 
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
+
 about = {
     "website": 'https://www.bing.com',
     "wikidata_id": 'Q182496',
@@ -181,3 +185,96 @@ def _fetch_supported_languages(resp):
         lang_tags.add(tag)
 
     return list(lang_tags)
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages and regions from bing."""
+
+    # pylint: disable=import-outside-toplevel, disable=too-many-branches,
+    # pylint: disable=too-many-locals, too-many-statements
+
+    engine_traits.data_type = 'supported_languages'  # deprecated
+
+    import babel
+    import babel.languages
+    from searx import network
+    from searx.locales import get_offical_locales, language_tag, region_tag
+    from searx.utils import gen_useragent
+
+    headers = {
+        'User-Agent': gen_useragent(),
+        'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
+    }
+    resp = network.get('https://www.bing.com/account/general', headers=headers)
+
+    if not resp.ok:
+        print("ERROR: response from peertube is not OK.")
+
+    dom = html.fromstring(resp.text)
+
+    # Selector to get items from "Display language"
+
+    lang_map = {
+        'prs': 'fa',  # Persian
+        'pt_BR': 'pt',  # Portuguese (Brasil)
+        'pt_PT': 'pt',  # Portuguese (Portugal)
+        'ca-ES-VALENCIA': 'ca',  # Catalan (Spain, Valencian)
+    }
+
+    unknow_langs = [
+        'quc',  # K'iche'
+        'nso',  # Sesotho sa Leboa
+        'tn',  # Setswana
+    ]
+
+    for div in eval_xpath(dom, '//div[@id="limit-languages"]//input/..'):
+
+        eng_lang = eval_xpath(div, './/input/@value')[0]
+        if eng_lang in unknow_langs:
+            continue
+
+        eng_lang = lang_map.get(eng_lang, eng_lang)
+        label = extract_text(eval_xpath(div, './/label'))
+
+        # The 'language:xx' query string in the request function (above) does
+        # only support the language codes from the "Display languages" list.
+        # Examples of items from the "Display languages" not sopported in the
+        # query string: zh_Hans --> zh / sr_latn --> sr
+        #
+        # eng_lang = eng_lang.split('_')[0]
+
+        try:
+            sxng_tag = language_tag(babel.Locale.parse(eng_lang.replace('-', '_'), sep='_'))
+        except babel.UnknownLocaleError:
+            print("ERROR: %s (%s) is unknown by babel" % (label, eng_lang))
+            continue
+
+        conflict = engine_traits.languages.get(sxng_tag)
+        if conflict:
+            if conflict != eng_lang:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_lang))
+            continue
+        engine_traits.languages[sxng_tag] = eng_lang
+
+    engine_traits.languages['zh'] = 'zh_Hans'
+
+    # regiones
+
+    for a in eval_xpath(dom, '//div[@id="region-section-content"]//li/a'):
+        href = eval_xpath(a, './/@href')[0]
+        # lang_name = extract_text(a)
+        query = urlparse(href)[4]
+        query = parse_qs(query, keep_blank_values=True)
+        cc = query.get('cc')[0]  # pylint:disable=invalid-name
+        if cc == 'clear':
+            continue
+
+        # Assert babel supports this locales
+        sxng_locales = get_offical_locales(cc.upper(), engine_traits.languages.keys())
+
+        if not sxng_locales:
+            # print("ERROR: can't map from bing country %s (%s) to a babel region." % (a.text_content().strip(), cc))
+            continue
+
+        for sxng_locale in sxng_locales:
+            engine_traits.regions[region_tag(sxng_locale)] = cc
