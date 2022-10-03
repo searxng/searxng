@@ -1,6 +1,63 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Startpage (Web)
+"""Startpage's language & region selectors are a mess ..
+
+.. _startpage regions:
+
+Startpage regions
+=================
+
+In the list of regions there are tags we need to map to common region tags::
+
+  pt-BR_BR --> pt_BR
+  zh-CN_CN --> zh_Hans_CN
+  zh-TW_TW --> zh_Hant_TW
+  zh-TW_HK --> zh_Hant_HK
+  en-GB_GB --> en_GB
+
+and there is at least one tag with a three letter language tag (ISO 639-2)::
+
+  fil_PH --> fil_PH
+
+The locale code ``no_NO`` from Startpage does not exists and is mapped to
+``nb-NO``::
+
+    babel.core.UnknownLocaleError: unknown locale 'no_NO'
+
+For reference see languages-subtag at iana; ``no`` is the macrolanguage [1]_ and
+W3C recommends subtag over macrolanguage [2]_.
+
+.. [1] `iana: language-subtag-registry
+   <https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry>`_ ::
+
+      type: language
+      Subtag: nb
+      Description: Norwegian Bokmål
+      Added: 2005-10-16
+      Suppress-Script: Latn
+      Macrolanguage: no
+
+.. [2]
+   Use macrolanguages with care.  Some language subtags have a Scope field set to
+   macrolanguage, i.e. this primary language subtag encompasses a number of more
+   specific primary language subtags in the registry.  ...  As we recommended for
+   the collection subtags mentioned above, in most cases you should try to use
+   the more specific subtags ... `W3: The primary language subtag
+   <https://www.w3.org/International/questions/qa-choosing-language-tags#langsubtag>`_
+
+.. _startpage languages:
+
+Startpage languages
+===================
+
+The displayed name in Startpage's settings page depend on the location of the IP
+when the 'Accept-Language' HTTP header is unset (in the language update script
+we use "en-US,en;q=0.5" to get uniform names independent from the IP).
+
+Each option has a displayed name and a value, either of which may represent the
+language name in the native script, the language name in English, an English
+transliteration of the native name, the English name of the writing script used
+by the language, or occasionally something else entirely.
 
 """
 
@@ -16,13 +73,16 @@ from lxml import html
 from babel import Locale
 from babel.localedata import locale_identifiers
 
-from searx.network import get
+from searx import network
 from searx.utils import extract_text, eval_xpath, match_language
 from searx.exceptions import (
     SearxEngineResponseException,
     SearxEngineCaptchaException,
 )
 
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
 
 # about
 about = {
@@ -66,11 +126,11 @@ def raise_captcha(resp):
 
 
 def get_sc_code(headers):
-    """Get an actual `sc` argument from startpage's home page.
+    """Get an actual ``sc`` argument from Startpage's home page.
 
-    Startpage puts a `sc` argument on every link.  Without this argument
-    startpage considers the request is from a bot.  We do not know what is
-    encoded in the value of the `sc` argument, but it seems to be a kind of a
+    Startpage puts a ``sc`` argument on every link.  Without this argument
+    Startpage considers the request is from a bot.  We do not know what is
+    encoded in the value of the ``sc`` argument, but it seems to be a kind of a
     *time-stamp*.  This *time-stamp* is valid for a few hours.
 
     This function scrap a new *time-stamp* from startpage's home page every hour
@@ -83,7 +143,7 @@ def get_sc_code(headers):
     if time() > (sc_code_ts + 3000):
         logger.debug("query new sc time-stamp ...")
 
-        resp = get(base_url, headers=headers)
+        resp = network.get(base_url, headers=headers)
         raise_captcha(resp)
         dom = html.fromstring(resp.text)
 
@@ -258,3 +318,112 @@ def _fetch_supported_languages(resp):
             print('Unknown language option in Startpage: {} ({})'.format(sp_option_value, sp_option_text))
 
     return supported_languages
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch :ref:`languages <startpage languages>` and :ref:`regions <startpage
+    regions>` from Startpage."""
+    # pylint: disable=import-outside-toplevel, too-many-locals, too-many-branches
+    # pylint: disable=too-many-statements
+
+    engine_traits.data_type = 'supported_languages'  # deprecated
+
+    import babel
+    from searx.utils import gen_useragent
+    from searx.locales import region_tag
+
+    headers = {
+        'User-Agent': gen_useragent(),
+        'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
+    }
+    resp = network.get('https://www.startpage.com/do/settings', headers=headers)
+
+    if not resp.ok:
+        print("ERROR: response from Startpage is not OK.")
+
+    dom = html.fromstring(resp.text)
+
+    # regions
+
+    sp_region_names = []
+    for option in dom.xpath('//form[@name="settings"]//select[@name="search_results_region"]/option'):
+        sp_region_names.append(option.get('value'))
+
+    for eng_tag in sp_region_names:
+        if eng_tag == 'all':
+            continue
+        babel_region_tag = {'no_NO': 'nb_NO'}.get(eng_tag, eng_tag)  # norway
+
+        if '-' in babel_region_tag:
+            l, r = babel_region_tag.split('-')
+            r = r.split('_')[-1]
+            sxng_tag = region_tag(babel.Locale.parse(l + '_' + r, sep='_'))
+
+        else:
+            try:
+                sxng_tag = region_tag(babel.Locale.parse(babel_region_tag, sep='_'))
+
+            except babel.UnknownLocaleError:
+                print("ERROR: can't determine babel locale of startpage's locale %s" % eng_tag)
+                continue
+
+        conflict = engine_traits.regions.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.regions[sxng_tag] = eng_tag
+
+    # languages
+
+    catalog_engine2code = {name.lower(): lang_code for lang_code, name in babel.Locale('en').languages.items()}
+
+    # get the native name of every language known by babel
+
+    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()):
+        native_name = babel.Locale(lang_code).get_language_name().lower()
+        # add native name exactly as it is
+        catalog_engine2code[native_name] = lang_code
+
+        # add "normalized" language name (i.e. français becomes francais and español becomes espanol)
+        unaccented_name = ''.join(filter(lambda c: not combining(c), normalize('NFKD', native_name)))
+        if len(unaccented_name) == len(unaccented_name.encode()):
+            # add only if result is ascii (otherwise "normalization" didn't work)
+            catalog_engine2code[unaccented_name] = lang_code
+
+    # values that can't be determined by babel's languages names
+
+    catalog_engine2code.update(
+        {
+            # traditional chinese used in ..
+            'fantizhengwen': 'zh_Hant',
+            # Korean alphabet
+            'hangul': 'ko',
+            # Malayalam is one of 22 scheduled languages of India.
+            'malayam': 'ml',
+            'norsk': 'nb',
+            'sinhalese': 'si',
+        }
+    )
+
+    skip_eng_tags = {
+        'english_uk',  # SearXNG lang 'en' already maps to 'english'
+    }
+
+    for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
+
+        eng_tag = option.get('value')
+        if eng_tag in skip_eng_tags:
+            continue
+        name = extract_text(option).lower()
+
+        sxng_tag = catalog_engine2code.get(eng_tag)
+        if sxng_tag is None:
+            sxng_tag = catalog_engine2code[name]
+
+        conflict = engine_traits.languages.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.languages[sxng_tag] = eng_tag
