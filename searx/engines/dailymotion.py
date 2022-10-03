@@ -10,8 +10,9 @@ import time
 import babel
 
 from searx.exceptions import SearxEngineAPIException
-from searx.network import raise_for_httperror
+from searx import network
 from searx.utils import html_to_text
+from searx.enginelib.traits import EngineTraits
 
 # about
 about = {
@@ -123,7 +124,7 @@ def response(resp):
     if 'error' in search_res:
         raise SearxEngineAPIException(search_res['error'].get('message'))
 
-    raise_for_httperror(resp)
+    network.raise_for_httperror(resp)
 
     # parse results
     for res in search_res.get('list', []):
@@ -171,3 +172,41 @@ def response(resp):
 def _fetch_supported_languages(resp):
     response_json = resp.json()
     return [item['locale'] for item in response_json['list']]
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch regions from dailymotion.
+
+    There are duplications in the locale codes returned from Dailymotion which
+    can be ignored::
+
+      en_EN --> en_GB, en_US
+      ar_AA --> ar_EG, ar_AE, ar_SA
+
+    """
+    # pylint: disable=import-outside-toplevel
+
+    engine_traits.data_type = 'supported_languages'  # deprecated
+
+    from searx.locales import region_tag
+
+    resp = network.get('https://api.dailymotion.com/locales')
+    if not resp.ok:
+        print("ERROR: response from peertube is not OK.")
+
+    for item in resp.json()['list']:
+        eng_tag = item['locale']
+        if eng_tag in ('en_EN', 'ar_AA'):
+            continue
+        try:
+            sxng_tag = region_tag(babel.Locale.parse(eng_tag))
+        except babel.UnknownLocaleError:
+            print("ERROR: item unknown --> %s" % item)
+            continue
+
+        conflict = engine_traits.regions.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.regions[sxng_tag] = eng_tag
