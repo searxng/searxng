@@ -3,9 +3,8 @@
 """DuckDuckGo Lite
 """
 
-from json import loads
-
-from lxml.html import fromstring
+import json
+from lxml import html
 
 from searx.utils import (
     dict_subset,
@@ -14,7 +13,10 @@ from searx.utils import (
     extract_text,
     match_language,
 )
-from searx.network import get
+from searx import network
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
 
 # about
 about = {
@@ -120,13 +122,13 @@ def request(query, params):
 def response(resp):
 
     headers_ping = dict_subset(resp.request.headers, ['User-Agent', 'Accept-Encoding', 'Accept', 'Cookie'])
-    get(url_ping, headers=headers_ping)
+    network.get(url_ping, headers=headers_ping)
 
     if resp.status_code == 303:
         return []
 
     results = []
-    doc = fromstring(resp.text)
+    doc = html.fromstring(resp.text)
 
     result_table = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table')
     if not len(result_table) >= 3:
@@ -180,7 +182,70 @@ def _fetch_supported_languages(resp):
     response_page = response_page[response_page.find('regions:{') + 8 :]
     response_page = response_page[: response_page.find('}') + 1]
 
-    regions_json = loads(response_page)
+    regions_json = json.loads(response_page)
     supported_languages = map((lambda x: x[3:] + '-' + x[:2].upper()), regions_json.keys())
 
     return list(supported_languages)
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch regions from DuckDuckGo."""
+    # pylint: disable=import-outside-toplevel
+
+    engine_traits.data_type = 'supported_languages'  # deprecated
+
+    import babel
+    from searx.locales import region_tag
+
+    engine_traits.all_locale = 'wt-wt'
+
+    resp = network.get('https://duckduckgo.com/util/u588.js')
+    if not resp.ok:
+        print("ERROR: response from DuckDuckGo is not OK.")
+
+    pos = resp.text.find('regions:{') + 8
+    js_code = resp.text[pos:]
+    pos = js_code.find('}') + 1
+    regions = json.loads(js_code[:pos])
+
+    reg_map = {
+        'tw-tzh': 'zh_TW',
+        'hk-tzh': 'zh_HK',
+        'ct-ca': 'skip',  # ct-ca and es-ca both map to ca_ES
+        'es-ca': 'ca_ES',
+        'id-en': 'id_ID',
+        'no-no': 'nb_NO',
+        'jp-jp': 'ja_JP',
+        'kr-kr': 'ko_KR',
+        'xa-ar': 'ar_SA',
+        'sl-sl': 'sl_SI',
+        'th-en': 'th_TH',
+        'vn-en': 'vi_VN',
+    }
+
+    for eng_tag, name in regions.items():
+
+        if eng_tag == 'wt-wt':
+            engine_traits.all_locale = 'wt-wt'
+            continue
+
+        region = reg_map.get(eng_tag)
+        if region == 'skip':
+            continue
+
+        if not region:
+            eng_territory, eng_lang = eng_tag.split('-')
+            region = eng_lang + '_' + eng_territory.upper()
+
+        try:
+            sxng_tag = region_tag(babel.Locale.parse(region))
+        except babel.UnknownLocaleError:
+            print("ERROR: %s (%s) -> %s is unknown by babel" % (name, eng_tag, region))
+            continue
+
+        conflict = engine_traits.regions.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.regions[sxng_tag] = eng_tag

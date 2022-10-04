@@ -11,6 +11,7 @@ from lxml import html
 from searx.data import WIKIDATA_UNITS
 from searx.engines.duckduckgo import language_aliases
 from searx.engines.duckduckgo import (  # pylint: disable=unused-import
+    fetch_traits,
     _fetch_supported_languages,
     supported_languages_url,
 )

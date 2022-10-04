@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 from searx.exceptions import SearxEngineAPIException
 from searx.engines.duckduckgo import get_region_code
 from searx.engines.duckduckgo import (  # pylint: disable=unused-import
+    fetch_traits,
     _fetch_supported_languages,
     supported_languages_url,
 )
