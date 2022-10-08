@@ -31,6 +31,7 @@ from searx.engines.google import (
 
 # pylint: disable=unused-import
 from searx.engines.google import (
+    fetch_traits,
     supported_languages_url,
     _fetch_supported_languages,
 )

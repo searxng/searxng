@@ -29,6 +29,9 @@ from urllib.parse import urlencode
 from lxml import html
 from searx.utils import match_language, extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 from searx.exceptions import SearxEngineCaptchaException
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
 
 # about
 about = {
@@ -373,3 +376,87 @@ def _fetch_supported_languages(resp):
         ret_val[code] = {"name": name}
 
     return ret_val
+
+
+skip_countries = [
+    # official language of google-country not in google-languages
+    'AL',  # Albanien (sq)
+    'AZ',  # Aserbaidschan  (az)
+    'BD',  # Bangladesch (bn)
+    'BN',  # Brunei Darussalam (ms)
+    'BT',  # Bhutan (dz)
+    'ET',  # Äthiopien (am)
+    'GE',  # Georgien (ka, os)
+    'GL',  # Grönland (kl)
+    'KH',  # Kambodscha (km)
+    'LA',  # Laos (lo)
+    'LK',  # Sri Lanka (si, ta)
+    'ME',  # Montenegro (sr)
+    'MK',  # Nordmazedonien (mk, sq)
+    'MM',  # Myanmar (my)
+    'MN',  # Mongolei (mn)
+    'MV',  # Malediven (dv) // dv_MV is unknown by babel
+    'MY',  # Malaysia (ms)
+    'NP',  # Nepal (ne)
+    'TJ',  # Tadschikistan (tg)
+    'TM',  # Turkmenistan (tk)
+    'UZ',  # Usbekistan (uz)
+]
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages from Google."""
+    # pylint: disable=import-outside-toplevel
+
+    engine_traits.data_type = 'supported_languages'  # deprecated
+
+    import babel
+    import babel.languages
+    from searx import network
+    from searx.locales import language_tag, region_tag, get_offical_locales
+
+    resp = network.get('https://www.google.com/preferences')
+    if not resp.ok:
+        print("ERROR: response from Google is not OK.")
+
+    dom = html.fromstring(resp.text)
+
+    lang_map = {'no': 'nb'}
+
+    for x in eval_xpath_list(dom, '//*[@id="langSec"]//input[@name="lr"]'):
+
+        eng_lang = x.get("value").split('_')[-1]
+        try:
+            locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
+        except babel.UnknownLocaleError:
+            print("ERROR: %s -> %s is unknown by babel" % (x.get("data-name"), eng_lang))
+            continue
+        sxng_lang = language_tag(locale)
+
+        conflict = engine_traits.languages.get(sxng_lang)
+        if conflict:
+            if conflict != eng_lang:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_lang, conflict, eng_lang))
+            continue
+        engine_traits.languages[sxng_lang] = 'lang_' + eng_lang
+
+    # alias languages
+    engine_traits.languages['zh'] = 'lang_zh-CN'
+
+    for x in eval_xpath_list(dom, '//*[@name="region"]/..//input[@name="region"]'):
+        eng_country = x.get("value")
+
+        if eng_country in skip_countries:
+            continue
+        if eng_country == 'ZZ':
+            engine_traits.all_locale = 'ZZ'
+            continue
+
+        sxng_locales = get_offical_locales(eng_country, engine_traits.languages.keys(), regional=True)
+
+        if not sxng_locales:
+            print("ERROR: can't map from google country %s (%s) to a babel region." % (x.get('data-name'), eng_country))
+            continue
+
+        for sxng_locale in sxng_locales:
+            engine_traits.regions[region_tag(sxng_locale)] = 'country' + eng_country
