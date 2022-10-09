@@ -40,8 +40,6 @@ from urllib.parse import urlencode
 from dateutil.parser import isoparse
 
 from searx.engines.google import get_lang_info
-from searx.exceptions import SearxEngineTooManyRequestsException
-from searx.network import raise_for_httperror
 
 about = {
     "website": 'https://www.google.com',
@@ -190,22 +188,11 @@ def request(query, params):
 
     params['url'] = base_url.format(query=urlencode(query))
     params['headers']['X-Goog-Api-Key'] = api_key
-    params['raise_for_httperror'] = False
     return params
 
 
 def response(resp):
     result = resp.json()
-
-    if resp.status_code == 403:
-        try:
-            if result['errors'][0]['reason'] == 'quotaExceeded':
-                raise SearxEngineTooManyRequestsException(message=result['message'])
-        except (KeyError, IndexError):
-            pass
-
-    raise_for_httperror(resp)
-
     metadata = [
         {'number_of_results': min(MAX_SEARCH_RESULT, int(result['searchInformation']['totalResults'], 10))},
     ]
