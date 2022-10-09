@@ -164,7 +164,7 @@ def request(query, params):
     start = (params['pageno'] * number_of_results) + 1
 
     if start > MAX_SEARCH_RESULT:
-        raise PageTooLargeException
+        return params
 
     query = {
         'key': api_key,
@@ -232,10 +232,3 @@ def _convert_result(search, search_type=''):
         out['url'] = search['image']['contextLink']
 
     return out
-
-
-class PageTooLargeException(SearxEngineAPIException):
-    """Requested page size is over Google's maximum limit"""
-
-    def __init__(self):
-        super().__init__('Page size too large')
