@@ -167,7 +167,6 @@ def request(query, params):
         return params
 
     query = {
-        'key': api_key,
         'cx': cx,
         'q': query,
         'safe': 'active' if params['safesearch'] > 0 else 'off',
@@ -188,6 +187,7 @@ def request(query, params):
         query['lr'] = lang_info['params']['lr']
 
     params['url'] = base_url.format(query=urlencode(query))
+    params['headers']['X-Goog-Api-Key'] = api_key
     params['raise_for_httperror'] = False
     return params
 
