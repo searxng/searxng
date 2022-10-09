@@ -49,7 +49,7 @@ about = {
     "official_api_documentation": 'https://developers.google.com/custom-search/v1/overview',
     "use_official_api": True,
     "require_api_key": True,
-    "results": 'HTML',
+    "results": 'JSON',
 }
 
 # engine dependent config
