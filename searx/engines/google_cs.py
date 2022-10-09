@@ -37,8 +37,10 @@
 """
 from urllib.parse import urlencode
 
+from dateutil.parser import isoparse
+
 from searx.engines.google import get_lang_info
-from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
+from searx.exceptions import SearxEngineTooManyRequestsException
 from searx.network import raise_for_httperror
 
 about = {
@@ -215,20 +217,37 @@ def response(resp):
     return metadata + [_convert_result(search, search_type) for search in result.get('items', [])]
 
 
-def _convert_result(search, search_type=''):
+def _convert_result(result, search_type=''):
     """Convert `result JSON <https://developers.google.com/custom-search/v1/reference/rest/v1/Search#Result>`_
     to Searx result"""
     out = {
-        "url": search['link'],
-        "title": search['title'],
-        "content": search.get('snippet', ''),
+        "url": result['link'],
+        "title": result['title'],
+        "content": result.get('snippet', ''),
     }
 
-    if search_type == 'image' and 'image' in search:
+    try:
+        dt = result['pagemap']['metatags'][0]['date']
+        parsed_dt = isoparse(dt)
+        out['publishedDate'] = parsed_dt
+    except (KeyError, IndexError):
+        pass
+
+    try:
+        out['author'] = result['pagemap']['metatags'][0]['author']
+    except (KeyError, IndexError):
+        pass
+
+    try:
+        out['img_src'] = result['pagemap']['cse_thumbnail'][0]['src']
+    except (KeyError, IndexError):
+        pass
+
+    if search_type == 'image' and 'image' in result:
         out['template'] = 'images.html'
-        out['img_src'] = search['link']
-        out['thumbnail_src'] = search['image']['thumbnailLink']
-        out['img_format'] = f"{search['image']['width']} x {search['image']['height']} {search['fileFormat']}"
-        out['url'] = search['image']['contextLink']
+        out['img_src'] = result['link']
+        out['thumbnail_src'] = result['image']['thumbnailLink']
+        out['img_format'] = f"{result['image']['width']} x {result['image']['height']} {result['fileFormat']}"
+        out['url'] = result['image']['contextLink']
 
     return out
