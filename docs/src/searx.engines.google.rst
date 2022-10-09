@@ -30,6 +30,14 @@ Google WEB
 .. automodule:: searx.engines.google
   :members:
 
+.. _google custom search engine:
+
+Google Custom Search
+====================
+
+.. automodule:: searx.engines.google_cs
+  :members:
+
 .. _google images engine:
 
 Google Images
