@@ -50,7 +50,7 @@ from pathlib import Path
 from searx import searx_dir
 from searx.network import set_timeout_for_thread
 from searx.engines import wikidata, set_loggers
-from searx.languages import language_codes
+from searx.sxng_locales import sxng_locales
 from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
 
 set_loggers(wikidata, 'wikidata')
@@ -76,7 +76,7 @@ GROUP BY ?key ?item ?itemLabel
 ORDER BY ?key ?item ?itemLabel
 """
 
-LANGUAGES = [l[0].lower() for l in language_codes]
+LANGUAGES = [l[0].lower() for l in sxng_locales]
 
 PRESET_KEYS = {
     ('wikidata',): {'en': 'Wikidata'},

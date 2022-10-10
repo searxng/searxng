@@ -24,7 +24,7 @@ from babel.core import get_global
 from searx import settings
 from searx.data import USER_AGENTS, data_dir
 from searx.version import VERSION_TAG
-from searx.languages import language_codes
+from searx.sxng_locales import sxng_locales
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import logger
 
@@ -53,8 +53,8 @@ _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 _FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None
 """fasttext model to predict laguage of a search term"""
 
-SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in language_codes])
-"""Languages supported by most searxng engines (:py:obj:`searx.languages.language_codes`)."""
+SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in sxng_locales])
+"""Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`)."""
 
 
 class _NotSetClass:  # pylint: disable=too-few-public-methods
@@ -355,11 +355,11 @@ def is_valid_lang(lang) -> Optional[Tuple[bool, str, str]]:
     is_abbr = len(lang) == 2
     lang = lang.lower()
     if is_abbr:
-        for l in language_codes:
+        for l in sxng_locales:
             if l[0][:2] == lang:
                 return (True, l[0][:2], l[3].lower())
         return None
-    for l in language_codes:
+    for l in sxng_locales:
         if l[1].lower() == lang or l[3].lower() == lang:
             return (True, l[0][:2], l[3].lower())
     return None

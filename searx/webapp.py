@@ -121,8 +121,8 @@ from searx.locales import (
 
 # renaming names from searx imports ...
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
-from searx.languages import language_codes as languages
 from searx.redisdb import initialize as redis_initialize
+from searx.sxng_locales import sxng_locales
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
@@ -438,7 +438,7 @@ def render(template_name: str, **kwargs):
     kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
 
     # i18n
-    kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]
+    kwargs['sxng_locales'] = [l for l in sxng_locales if l[0] in settings['search']['languages']]
 
     locale = request.preferences.get_value('locale')
     kwargs['locale_rfc5646'] = _get_locale_rfc5646(locale)

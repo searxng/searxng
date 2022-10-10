@@ -12,13 +12,13 @@ import logging
 from base64 import b64decode
 from os.path import dirname, abspath
 
-from searx.languages import language_codes as languages
+from .sxng_locales import sxng_locales
 
 searx_dir = abspath(dirname(__file__))
 
 logger = logging.getLogger('searx')
 OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
-LANGUAGE_CODES = ['all', 'auto'] + list(l[0] for l in languages)
+SXNG_LOCALE_TAGS = ['all', 'auto'] + list(l[0] for l in sxng_locales)
 SIMPLE_STYLE = ('auto', 'light', 'dark')
 CATEGORIES_AS_TABS = {
     'general': {},
@@ -156,8 +156,8 @@ SCHEMA = {
         'safe_search': SettingsValue((0, 1, 2), 0),
         'autocomplete': SettingsValue(str, ''),
         'autocomplete_min': SettingsValue(int, 4),
-        'default_lang': SettingsValue(tuple(LANGUAGE_CODES + ['']), ''),
-        'languages': SettingSublistValue(LANGUAGE_CODES, LANGUAGE_CODES),
+        'default_lang': SettingsValue(tuple(SXNG_LOCALE_TAGS + ['']), ''),
+        'languages': SettingSublistValue(SXNG_LOCALE_TAGS, SXNG_LOCALE_TAGS),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),
         'max_ban_time_on_fail': SettingsValue(numbers.Real, 120),
         'suspended_times': {
