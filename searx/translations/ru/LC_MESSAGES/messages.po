@@ -12,13 +12,14 @@
 # Дмитрий Михирев, 2016-2017
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Surepusofu Arutemu <crexlight@gmail.com>, 2022.
+# No4vick <MineBor1@yandex.ru>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-09-28 07:29+0000\n"
-"PO-Revision-Date: 2022-10-11 13:31+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-10-14 07:38+0000\n"
+"Last-Translator: No4vick <MineBor1@yandex.ru>\n"
 "Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
 ">\n"
 "Language: ru\n"
@@ -149,12 +150,12 @@ msgstr "автоматически"
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr "светлая"
+msgstr "Светлая"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
-msgstr "тёмная"
+msgstr "Тёмная"
 
 #: searx/webapp.py:164
 msgid "timeout"
@@ -511,7 +512,7 @@ msgstr "Пожалуйста проверьте ныне существующи�
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Я подтверждаю, что не существует ошибки, связанной с встретившейся мне "
+"Я подтверждаю, что не существует ошибки, связанной со встретившейся мне "
 "проблемой"
 
 #: searx/templates/simple/new_issue.html:71
@@ -646,7 +647,7 @@ msgstr "Язык интерфейса"
 
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
-msgstr "Языка этого сайта"
+msgstr "Изменить язык интерфейса"
 
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
@@ -686,7 +687,7 @@ msgstr "Отображать результаты по центру страни
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
-msgstr "Новые вкладки"
+msgstr "Результаты в новых вкладках"
 
 #: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
@@ -698,7 +699,8 @@ msgstr "Бесконечная прокрутка"
 
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Автоматически загружать следующую страницу при прокрутке"
+msgstr ""
+"Автоматически загружать следующую страницу при прокрутке до конца страницы"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
@@ -779,7 +781,7 @@ msgstr "Сокращение"
 
 #: searx/templates/simple/preferences.html:310
 msgid "Supports selected language"
-msgstr "Выбор языка"
+msgstr "Поддерживает выбранный язык"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences.html:312
@@ -871,7 +873,7 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Пользовательские настройки URL-адреса можно использовать для "
+"URL-адреса с пользовательскими настройками можно использовать для "
 "синхронизации настроек между устройствами."
 
 #: searx/templates/simple/preferences.html:428
@@ -925,7 +927,7 @@ msgstr "Предложения"
 
 #: searx/templates/simple/results.html:90
 msgid "Search URL"
-msgstr "Ссылка на поиск"
+msgstr "Ссылка поиска"
 
 #: searx/templates/simple/results.html:96
 msgid "Download results"
@@ -941,11 +943,11 @@ msgstr "Наверх"
 
 #: searx/templates/simple/results.html:170
 msgid "Previous page"
-msgstr "предыдущая страница"
+msgstr "Предыдущая страница"
 
 #: searx/templates/simple/results.html:187
 msgid "Next page"
-msgstr "следующая страница"
+msgstr "Следующая страница"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
@@ -976,7 +978,7 @@ msgstr "Попаданий"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr "Подсчёт результатов"
+msgstr "Число результатов"
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
@@ -1060,11 +1062,11 @@ msgstr "Последний год"
 
 #: searx/templates/simple/messages/no_cookies.html:3
 msgid "Information!"
-msgstr "Информируем!"
+msgstr "Информация!"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr "в данный момент cookie-файлы не установлены."
+msgstr "в данный момент cookie-файлы не определены."
 
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
@@ -1073,7 +1075,7 @@ msgstr "Поисковые системы не могут получить ре�
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
 msgstr ""
-"Пожалуйста, попробуйте еще раз позднее, либо перейдите на другое зеркало "
+"Пожалуйста, попробуйте ещё раз позднее, либо перейдите на другое зеркало "
 "SearXNG."
 
 #: searx/templates/simple/messages/no_results.html:20
@@ -1085,8 +1087,8 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"мы не нашли никаких результатов. Попробуйте изменить поисковый запрос или"
-" поищите в других категориях."
+"мы не нашли никаких результатов. Попробуйте изменить запрос или поищите в "
+"других категориях."
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1099,7 +1101,7 @@ msgstr "скрыть медиа"
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr "Этот сайт не предоставил какое-либо описание."
+msgstr "Этот сайт не предоставил описания."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1179,11 +1181,11 @@ msgstr "торрент-файл"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "Раздают"
+msgstr "Сиды"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "Качают"
+msgstr "Личи"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
