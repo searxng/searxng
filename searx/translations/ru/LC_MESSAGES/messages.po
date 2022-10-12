@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-09-28 07:29+0000\n"
 "PO-Revision-Date: 2022-10-14 07:38+0000\n"
-"Last-Translator: No4vick <MineBor1@yandex.ru>\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
 ">\n"
 "Language: ru\n"
@@ -279,7 +279,7 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} цитирований с года {firstCitationVelocityYear} по "
+"{numCitations} цитирований с {firstCitationVelocityYear} года по "
 "{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
@@ -297,8 +297,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Изображение слишком простое для нахождения похожих. TinEye требует "
-"базовый уровень визуальных деталей для успешной идентификации совпадений."
+"Изображение слишком простое для нахождения похожих. TinEye требует базовый "
+"уровень визуальных деталей для успешного определения совпадений."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -318,11 +318,11 @@ msgstr "Вечер"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr "Ночная"
+msgstr "Ночь"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr "Рассчитывает контрольной суммы от строки."
+msgstr "Рассчитывает контрольные суммы от строки."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
@@ -344,7 +344,9 @@ msgstr "Искать Open Access DOI"
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr "Пробовать искать бесплатную версию статьи"
+msgstr ""
+"Пробовать избегать платного доступа путём перенаправления на открытые версии "
+"публикаций"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -379,9 +381,9 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
-"Этот плагин проверяет не является ли запрошенный адрес выходным узлом "
-"Tor'a, и информирует пользователя если это так, как check.torproject.org,"
-" но от searxng."
+"Этот плагин проверяет, не является ли запрошенный адрес выходным узлом "
+"Tor'a, и информирует пользователя, если это так, как check.torproject.org, "
+"но от searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -401,7 +403,7 @@ msgstr "Вы не используете Tor. Ваш IP адрес может б
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr "Убрать отслеживание"
+msgstr "Убрать отслеживание URL"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
