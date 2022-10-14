@@ -145,6 +145,11 @@ outgoing:
   pool_maxsize: 20
   # See https://www.python-httpx.org/http2/
   enable_http2: true
+  # uncomment below section if you want to use a custom server certificate
+  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
+  #
   # uncomment below section if you want to use a proxyq see: SOCKS proxies
   #   https://2.python-requests.org/en/latest/user/advanced/#proxies
   # are also supported: see

@@ -165,6 +165,7 @@ timeout_text = gettext('timeout')
 parsing_error_text = gettext('parsing error')
 http_protocol_error_text = gettext('HTTP protocol error')
 network_error_text = gettext('network error')
+ssl_cert_error_text = gettext("SSL error: certificate validation has failed")
 exception_classname_to_text = {
     None: gettext('unexpected crash'),
     'timeout': timeout_text,
@@ -189,6 +190,8 @@ exception_classname_to_text = {
     'KeyError': parsing_error_text,
     'json.decoder.JSONDecodeError': parsing_error_text,
     'lxml.etree.ParserError': parsing_error_text,
+    'ssl.SSLCertVerificationError': ssl_cert_error_text,  # for Python > 3.7
+    'ssl.CertificateError': ssl_cert_error_text,  # for Python 3.7
 }
 
 

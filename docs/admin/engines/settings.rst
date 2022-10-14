@@ -347,18 +347,27 @@ Communication with search engines.
      pool_maxsize: 10           # Number of allowable keep-alive connections, or null
                                 # to always allow. The default is 10.
      enable_http2: true         # See https://www.python-httpx.org/http2/
-     # uncomment below section if you want to use a proxy
-     # proxies:
-     #   all://:
-     #     - http://proxy1:8080
-     #     - http://proxy2:8080
-     # uncomment below section only if you have more than one network interface
-     # which can be the source of outgoing search requests
-     # source_ips:
-     #   - 1.1.1.1
-     #   - 1.1.1.2
-     #   - fe80::/126
-
+     # uncomment below section if you want to use a custom server certificate
+     # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+     # and https://www.python-httpx.org/compatibility/#ssl-configuration
+     #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
+     #
+     # uncomment below section if you want to use a proxyq see: SOCKS proxies
+     #   https://2.python-requests.org/en/latest/user/advanced/#proxies
+     # are also supported: see
+     #   https://2.python-requests.org/en/latest/user/advanced/#socks
+     #
+     #  proxies:
+     #    all://:
+     #      - http://proxy1:8080
+     #      - http://proxy2:8080
+     #
+     #  using_tor_proxy: true
+     #
+     # Extra seconds to add in order to account for the time taken by the proxy
+     #
+     #  extra_proxy_timeout: 10.0
+     #
 
 ``request_timeout`` :
   Global timeout of the requests made to others engines in seconds.  A bigger
@@ -407,6 +416,17 @@ Communication with search engines.
 
 ``enable_http2`` :
   Enable by default. Set to ``false`` to disable HTTP/2.
+
+.. _httpx verification defaults: https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+.. _httpx ssl configuration: https://www.python-httpx.org/compatibility/#ssl-configuration
+
+``verify``: : ``$SSL_CERT_FILE``, ``$SSL_CERT_DIR``
+  Allow to specify a path to certificate.
+  see `httpx verification defaults`_.
+
+  In addition to ``verify``, SearXNG supports the ``$SSL_CERT_FILE`` (for a file) and
+  ``$SSL_CERT_DIR`` (for a directory) OpenSSL variables.  
+  see `httpx ssl configuration`_.
 
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
