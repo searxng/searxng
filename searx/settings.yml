@@ -78,7 +78,7 @@ server:
 
 redis:
   # https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
-  url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+  url: false
 
 ui:
   # Custom static path - leave it blank if you didn't change

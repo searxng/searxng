@@ -18,8 +18,8 @@ if (next_call_ts == false or next_call_ts == nil) then
     -- the scheduler has never run on this Redis instance, so:
     -- 1/ the scheduler does not run now
     -- 2/ the next call is a random time between start_after_from and start_after_to
-    local delay = start_after_from + math.random(start_after_to - start_after_from)
-    redis.call('SET', redis_key, now + delay)
+    local initial_delay = math.random(start_after_from, start_after_to)
+    redis.call('SET', redis_key, now + initial_delay)
     return { false, delay }
 end
 
@@ -30,7 +30,7 @@ local call_now = next_call_ts <= now
 if call_now then
     -- the checker runs now, define the timestamp of the next call:
     -- this is a random delay between every_from and every_to
-    local periodic_delay = every_from + math.random(every_to - every_from)
+    local periodic_delay = math.random(every_from, every_to)
     next_call_ts = redis.call('INCRBY', redis_key, periodic_delay)
 end
 return { call_now, next_call_ts - now }

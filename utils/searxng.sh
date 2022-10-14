@@ -295,7 +295,7 @@ In your instance, redis DB connector is configured at:
 
     ${redis_url}
 "
-    if searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.init() or exit(42)"; then
+    if searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.initialize() or exit(42)"; then
         info_msg "SearXNG instance is able to connect redis DB."
         return
     fi
@@ -684,7 +684,7 @@ To install uWSGI use::
         die 42 "SearXNG's uWSGI app not available"
     fi
 
-    if ! searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.init() or exit(42)"; then
+    if ! searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.initialize() or exit(42)"; then
         rst_para "\
 The configured redis DB is not available: If your server is public to the
 internet, you should setup a bot protection to block excessively bot queries.
