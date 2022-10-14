@@ -89,15 +89,14 @@ def get_sc_code(headers):
         dom = html.fromstring(resp.text)
 
         try:
-            # href --> '/?sc=adrKJMgF8xwp20'
-            href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+            # <input type="hidden" name="sc" value="...">
+            sc_code = eval_xpath(dom, '//input[@name="sc"]/@value')[0]
         except IndexError as exc:
             # suspend startpage API --> https://github.com/searxng/searxng/pull/695
             raise SearxEngineResponseException(
                 suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
             ) from exc
 
-        sc_code = href[5:]
         sc_code_ts = time()
         logger.debug("new value is: %s", sc_code)
 
