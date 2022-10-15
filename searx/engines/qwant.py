@@ -34,7 +34,6 @@ import babel
 
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
-from searx.locales import get_engine_locale
 
 # about
 about = {
@@ -95,7 +94,7 @@ def request(query, params):
     )
 
     # add quant's locale
-    q_locale = get_engine_locale(params['language'], engine_locales.regions, default='en_US')
+    q_locale = engine_locales.get_region(params['language'], 'en_US')
     params['url'] += '&locale=' + q_locale
 
     # add safesearch option

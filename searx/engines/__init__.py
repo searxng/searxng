@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Any
 
 from os.path import realpath, dirname
 from babel.localedata import locale_identifiers
-from searx import logger, settings
+from searx import logger, settings, locales
 from searx.data import ENGINES_LANGUAGES, ENGINES_LOCALES
 from searx.utils import load_module, match_language
 
@@ -71,6 +71,73 @@ class EngineLocales:
            'ca' : <engine's language name>,
        }
     """
+
+    all_locale: Optional[str] = None
+    """To which locale value SearXNG's ``all`` language is mapped (shown a "Default
+    language").
+    """
+
+    def get_language(self, searxng_locale: str, default: Optional[str] = None):
+        """Return engine's language string that *best fits* to SearXNG's locale.
+        :param searxng_locale: SearXNG's internal representation of locale
+          selected by the user.
+        :param default: engine's default language
+        The *best fits* rules are implemented in
+        :py:obj:`locales.get_engine_locale`.  Except for the special value ``all``
+        which is determined from :py:obj`EngineTraits.all_language`.
+        """
+        if searxng_locale == 'all' and self.all_locale is not None:
+            return self.all_locale
+        sxng_lang = searxng_locale.split('-')[0]
+        return locales.get_engine_locale(sxng_lang, self.languages, default=default)
+
+    def get_region(self, searxng_locale: str, default: Optional[str] = None):
+        """Return engine's region string that best fits to SearXNG's locale.
+        :param searxng_locale: SearXNG's internal representation of locale
+          selected by the user.
+        :param default: engine's default region
+        The *best fits* rules are implemented in
+        :py:obj:`locales.get_engine_locale`.  Except for the special value ``all``
+        which is determined from :py:obj`EngineTraits.all_language`.
+        """
+        if searxng_locale == 'all' and self.all_locale is not None:
+            return self.all_locale
+        return locales.get_engine_locale(searxng_locale, self.regions, default=default)
+
+    def is_locale_supported(self, searxng_locale: str) -> bool:
+        """A *locale* (SearXNG's internal representation) is considered to be supported
+        by the engine if the *region* or the *language* is supported by the
+        engine.  For verification the functions :py:func:`self.get_region` and
+        :py:func:`self.get_region` are used.
+        """
+        return bool(self.get_region(searxng_locale) or self.get_language(searxng_locale))
+
+    @classmethod
+    def load(
+        cls, engine_locales_key: str, language: Optional[str] = None, region: Optional[str] = None
+    ) -> "EngineLocales":
+        #
+        engine_locales_value = {**ENGINES_LOCALES[engine_locales_key]}
+
+        _msg = "settings.yml - engine: '%s' / %s: '%s' not supported"
+
+        if language is not None:
+            el_languages = engine_locales_value['languages']
+            if language not in el_languages:
+                raise ValueError(_msg % (engine_locales_key, 'language', language))
+            engine_locales_value['languages'] = {language: el_languages[language]}
+
+        if region is not None:
+            el_regions = engine_locales_value['regions']
+            if region in el_regions:
+                raise ValueError(_msg % (engine_locales_key, 'region', region))
+            engine_locales_value['regions'] = {region: el_regions[region]}
+
+        return cls(**engine_locales_value)
+
+    @classmethod
+    def exists(cls, engine_locales_key: str):
+        return engine_locales_key in ENGINES_LOCALES
 
 
 class Engine:  # pylint: disable=too-few-public-methods
@@ -210,9 +277,9 @@ def update_engine_attributes(engine: Engine, engine_setting: Dict[str, Any]):
 def set_engine_locales(engine: Engine):
     engine_locales_key = None
 
-    if engine.name in ENGINES_LOCALES:
+    if EngineLocales.exists(engine.name):
         engine_locales_key = engine.name
-    elif engine.engine in ENGINES_LOCALES:
+    elif EngineLocales.exists(engine.engine):
         # The key of the dictionary engine_data_dict is the *engine name*
         # configured in settings.xml.  When multiple engines are configured in
         # settings.yml to use the same origin engine (python module) these
@@ -222,9 +289,13 @@ def set_engine_locales(engine: Engine):
     else:
         return False
 
-    print(engine.name, ENGINES_LOCALES[engine_locales_key])
-    engine.engine_locales = EngineLocales(**ENGINES_LOCALES[engine_locales_key])
+    #
+    engine.engine_locales = EngineLocales.load(
+        engine_locales_key, getattr(engine, 'language', None), getattr(engine, 'region', None)
+    )
+
     # language_support
+    # NOTE: actually the value should be true, or the entry in engine_locales.json should not exists.
     engine.language_support = len(engine.engine_locales.regions) > 0 or len(engine.engine_locales.languages) > 0
     return True
 

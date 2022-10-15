@@ -109,7 +109,6 @@ def fetch_engine_locales() -> Tuple[EngineLocalesDict, EngineLanguageDict]:
                 % (engine_name, len(engine_data.languages), len(engine_data.regions))
             )
         elif fetch_languages is not None:
-            print(engine_name)
             resp = network.get(engine.supported_languages_url, headers=headers)  # type: ignore
             engines_languages[engine_name] = fetch_languages(resp)
             print(
@@ -425,6 +424,7 @@ def write_engine_data(file_name, engine_data_dict: EngineLocalesDict):
         engine_name: {
             'regions': engine_data.regions,
             'languages': engine_data.languages,
+            'all_locale': engine_data.all_locale,
         }
         for engine_name, engine_data in engine_data_dict.items()
     }

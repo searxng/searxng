@@ -17,13 +17,11 @@ from lxml import html
 import babel
 
 from searx.network import get
-from searx.locales import get_engine_locale
 from searx.utils import extract_text, eval_xpath
 from searx.exceptions import (
     SearxEngineResponseException,
     SearxEngineCaptchaException,
 )
-
 
 # about
 about = {
@@ -116,10 +114,8 @@ def request(query, params):
     engine_region = 'all'
     engine_language = 'english_uk'
     if params['language'] != 'all':
-        engine_region = get_engine_locale(params['language'], engine_locales.regions, default='all')
-        engine_language = get_engine_locale(
-            params['language'].split('-')[0], engine_locales.languages, default='english_uk'
-        )
+        engine_region = engine_locales.get_region(params['language'], 'all')
+        engine_language = engine_locales.get_language(params['language'], 'english_uk')
     logger.debug(
         'selected language %s --> engine_language: %s // engine_region: %s',
         params['language'],
@@ -375,8 +371,14 @@ def _fetch_engine_locales(resp, engine_locales):
         }
     )
 
+    skip_eng_tags = {
+        'english_uk',  # SearXNG lang 'en' already maps to 'english'
+    }
+
     for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
         engine_lang = option.get('value')
+        if engine_lang in skip_eng_tags:
+            continue
         name = extract_text(option).lower()
 
         lang_code = catalog_engine2code.get(engine_lang)
