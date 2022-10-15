@@ -10,12 +10,7 @@ from urllib.parse import urlencode
 from lxml import html
 
 from searx.utils import match_language
-from searx.engines.bing import language_aliases
-from searx.engines.bing import (  # pylint: disable=unused-import
-    _fetch_supported_languages,
-    fetch_traits,
-    supported_languages_url,
-)
+from searx.enginelib.traits import EngineTraits
 
 # about
 about = {
@@ -106,3 +101,19 @@ def response(resp):
         )
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages and regions from Bing-News."""
+    # pylint: disable=import-outside-toplevel
+
+    from searx.engines.bing import _fetch_traits
+
+    url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-news-search/reference/market-codes'
+
+    xpath_market_codes = '//table[1]/tbody/tr/td[3]'
+
+    # xpath_country_codes = '//table[2]/tbody/tr/td[2]'
+    xpath_language_codes = '//table[3]/tbody/tr/td[2]'
+
+    _fetch_traits(engine_traits, url, xpath_language_codes, xpath_market_codes)

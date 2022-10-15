@@ -14,12 +14,7 @@ from dateutil import parser
 from lxml import etree
 from lxml.etree import XPath
 from searx.utils import match_language, eval_xpath_getindex
-from searx.engines.bing import (  # pylint: disable=unused-import
-    language_aliases,
-    _fetch_supported_languages,
-    fetch_traits,
-    supported_languages_url,
-)
+from searx.enginelib.traits import EngineTraits
 
 # about
 about = {
@@ -140,3 +135,21 @@ def response(resp):
             results.append({'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content})
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages and regions from Bing-News."""
+    # pylint: disable=import-outside-toplevel
+
+    from searx.engines.bing import _fetch_traits
+
+    url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-news-search/reference/market-codes'
+
+    # The description of the first table says "query parameter when calling the
+    # Video Search API." .. thats why I use the 4. table "News Category API markets"
+    xpath_market_codes = '//table[4]/tbody/tr/td[3]'
+
+    # xpath_country_codes = '//table[2]/tbody/tr/td[2]'
+    xpath_language_codes = '//table[3]/tbody/tr/td[2]'
+
+    _fetch_traits(engine_traits, url, xpath_language_codes, xpath_market_codes)
