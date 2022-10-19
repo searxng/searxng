@@ -39,12 +39,12 @@ def generate_condition_table(condition):
 
     res += (
         f"<tr><td>{gettext('Wind')}</td><td>{condition['windBearing']}° — "
-        f"{'%.2f' % (condition['windSpeed'] * 1.6093440006147)} km/h / {condition['windSpeed']} mph</td></tr>"
+        f"{(condition['windSpeed'] * 1.6093440006147):.2f} km/h / {condition['windSpeed']} mph</td></tr>"
     )
 
     res += f"<tr><td>{gettext('Visibility')}</td><td>{condition['visibility']} km</td>"
 
-    res += f"<tr><td>{gettext('Humidity')}</td><td>{condition['humidity'] * 100}%</td></tr>"
+    res += f"<tr><td>{gettext('Humidity')}</td><td>{(condition['humidity'] * 100):.1f}%</td></tr>"
 
     return res
 
