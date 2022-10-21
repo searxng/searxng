@@ -8,21 +8,23 @@
 # Matija Kromar <matija.kromar@gmail.com>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # SecularSteve <fairfull.playing@gmail.com>, 2022.
+# prljav <marin.ruskica@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
-"PO-Revision-Date: 2022-09-02 07:25+0000\n"
-"Last-Translator: SecularSteve <fairfull.playing@gmail.com>\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"PO-Revision-Date: 2022-10-20 07:00+0000\n"
+"Last-Translator: prljav <marin.ruskica@gmail.com>\n"
+"Language-Team: Croatian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"hr/>\n"
 "Language: hr\n"
-"Language-Team: Croatian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/hr/>\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -166,64 +168,68 @@ msgstr "HTTP protokol greška"
 msgid "network error"
 msgstr "greška u mreži"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr ""
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "neočekivan izlaz"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "HTTP greška"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "HTTP veza greška"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "greška zastupnika"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "previše upita"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "pristup odbijen"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "server API greška"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "Nije pronađena nijedna stavka"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "Izvor"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
 msgstr "Greška u učitavnju sljedeće stranice"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nevažeće postavke, uredite svoje postavke"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "Nevažeće postavke"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "greška u pretraživanju"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "Zaustavljeno"
 
@@ -297,19 +303,19 @@ msgstr "Sliku nije moguće preuzeti."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Jutro"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Podne"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Večer"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Noć"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -1481,4 +1487,3 @@ msgstr "sakrij video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">saznajte više o metodama "
 #~ "zahtjeva</a>"
-

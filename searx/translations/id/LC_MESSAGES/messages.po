@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
-"PO-Revision-Date: 2022-09-30 07:43+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"PO-Revision-Date: 2022-10-20 07:00+0000\n"
+"Last-Translator: Linerly <linerly@protonmail.com>\n"
 "Language-Team: Indonesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "id/>\n"
 "Language: id\n"
@@ -162,64 +162,68 @@ msgstr "kesalahan protokol HTTP"
 msgid "network error"
 msgstr "kesalahan jaringan"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr "Kesalahan SSL: validasi sertifikat gagal"
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "kegagalan yang tak terduga"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "kesalahan HTTP"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "kesalahan koneksi HTTP"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "kesalahan proksi"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "terlalu banyak permintaan"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "akses ditolak"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "kesalahan server API"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "Sumber"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
 msgstr "Gagal memuat halaman berikutnya"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "kesalahan pencarian"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "Ditangguhkan"
 
@@ -707,9 +711,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Ubah bagaimana formulir dikirimkan, <a href=\"https://id.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Metode_permintaan\" rel=\"external\">pelajari "
-"lebih lanjut tentang metode permintaan</a>"
+"Ubah bagaimana formulir dikirimkan, <a "
+"href=\"https://id.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Metode_permintaan\""
+" rel=\"external\">pelajari lebih lanjut tentang metode permintaan</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
