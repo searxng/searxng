@@ -15,21 +15,20 @@
 # No4vick <MineBor1@yandex.ru>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
 "PO-Revision-Date: 2022-10-14 07:38+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Russian <https://weblate.bubu1.eu/projects/searxng/searxng/ru/"
-">\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -173,64 +172,68 @@ msgstr "ошибка протокола HTTP"
 msgid "network error"
 msgstr "сетевая ошибка"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr ""
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "непредвиденная ошибка"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "ошибка HTTP"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "ошибка HTTP-соединения"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "ошибка прокси"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "КАПЧА"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "слишком много запросов"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "доступ запрещён"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "ошибка API сервера"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "Ничего не найдено"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "Источник"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
 msgstr "Не удалось загрузить следующую страницу"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "Неверные настройки"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "ошибка поиска"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "Приостановлено"
 
@@ -297,8 +300,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Изображение слишком простое для нахождения похожих. TinEye требует базовый "
-"уровень визуальных деталей для успешного определения совпадений."
+"Изображение слишком простое для нахождения похожих. TinEye требует "
+"базовый уровень визуальных деталей для успешного определения совпадений."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -345,8 +348,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Пробовать избегать платного доступа путём перенаправления на открытые версии "
-"публикаций"
+"Пробовать избегать платного доступа путём перенаправления на открытые "
+"версии публикаций"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -382,8 +385,8 @@ msgid ""
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
 "Этот плагин проверяет, не является ли запрошенный адрес выходным узлом "
-"Tor'a, и информирует пользователя, если это так, как check.torproject.org, "
-"но от searxng."
+"Tor'a, и информирует пользователя, если это так, как "
+"check.torproject.org, но от searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -701,8 +704,7 @@ msgstr "Бесконечная прокрутка"
 
 #: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"Автоматически загружать следующую страницу при прокрутке до конца страницы"
+msgstr "Автоматически загружать следующую страницу при прокрутке до конца страницы"
 
 #: searx/templates/simple/preferences.html:254
 msgid "Privacy"
@@ -718,8 +720,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Способ отправки запросов. <a href=\"http://ru.wikipedia.org/wiki/HTTP#"
-"Методы\" rel=\"external\">Подробнее о методах HTTP</a>"
+"Способ отправки запросов. <a "
+"href=\"http://ru.wikipedia.org/wiki/HTTP#Методы\" "
+"rel=\"external\">Подробнее о методах HTTP</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1089,8 +1092,8 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"мы не нашли никаких результатов. Попробуйте изменить запрос или поищите в "
-"других категориях."
+"мы не нашли никаких результатов. Попробуйте изменить запрос или поищите в"
+" других категориях."
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1496,3 +1499,4 @@ msgstr "скрыть видео"
 #~ "Способ отправки запросов. <a "
 #~ "href=\"http://ru.wikipedia.org/wiki/HTTP#Методы\" "
 #~ "rel=\"external\">Подробнее о методах HTTP</a>"
+

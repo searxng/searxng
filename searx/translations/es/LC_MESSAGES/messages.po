@@ -21,13 +21,14 @@
 # Cedrik Boudreau <cedrik@arweave.org>, 2022.
 # alexfs2015 <alex04fs@gmail.com>, 2022.
 # KEINOS <github@keinos.com>, 2022.
+# Peter Martin <weblate@pe7er.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
-"PO-Revision-Date: 2022-10-14 07:38+0000\n"
-"Last-Translator: KEINOS <github@keinos.com>\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"PO-Revision-Date: 2022-10-20 07:00+0000\n"
+"Last-Translator: Peter Martin <weblate@pe7er.com>\n"
 "Language-Team: Spanish <https://weblate.bubu1.eu/projects/searxng/searxng/es/"
 ">\n"
 "Language: es\n"
@@ -179,64 +180,68 @@ msgstr "Error de protocolo HTTP"
 msgid "network error"
 msgstr "error de red"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr "Error SSL: la validación del certificado ha fallado"
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "cierre inesperado"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "Error de HTTP"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "Error de conexión HTTP"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "error de proxy"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "demasiadas peticiones"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "acceso denegado"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "error en la API del servidor"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "Ningún artículo encontrado"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "Fuente"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
 msgstr "Error al cargar la siguiente página"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Parámetros incorrectos, por favor, cambia tus preferencias"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "Ajustes no válidos"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "error en la búsqueda"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "Suspendido"
 
@@ -728,9 +733,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Modifica cómo se envían los formularios <a href=\"http://es.wikipedia.org/"
-"wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_petici.C3.B3n\" rel="
-"\"external\">más información sobre métodos de peticiones</a>"
+"Modifica cómo se envían los formularios <a "
+"href=\"http://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_petici.C3.B3n\""
+" rel=\"external\">más información sobre métodos de peticiones</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"

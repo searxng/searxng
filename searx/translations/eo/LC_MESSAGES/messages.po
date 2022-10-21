@@ -8,20 +8,22 @@
 # pizzaiolo, 2016
 # Venca24 <Vaclav.Zouzalik@seznam.cz>, 2018
 # Gergely <gergely@fsfe.org>, 2022.
+# Markus Heiser <markus.heiser@darmarit.de>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
-"PO-Revision-Date: 2022-09-28 07:29+0000\n"
-"Last-Translator: Gergely <gergely@fsfe.org>\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"PO-Revision-Date: 2022-10-20 07:00+0000\n"
+"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Esperanto <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"eo/>\n"
 "Language: eo\n"
-"Language-Team: Esperanto "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/eo/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -165,64 +167,68 @@ msgstr "HTTP-protokolo-eraro"
 msgid "network error"
 msgstr "reta eraro"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL-eraro: atestila validigo malsukcesis"
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "neatendita kraŝo"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "HTTP-eraro"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "HTTP-konekto-eraro"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "proxy-eraro"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "tro da petoj"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "aliro rifuzita"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "servilo-API-eraro"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "Nenio trovita"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "Fonto"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
-msgstr ""
+msgstr "Eraro dum la ŝerĝado de la sekvan paĝon"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nevalidaj agordoj, bonvolu redakti viajn agordojn"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "Nevalidaj agordoj"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "serĉa eraro"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "Suspendigita"
 
@@ -271,6 +277,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} citaĵoj de la {firstCitationVelocityYear}-a jaro ĝis la "
+"{lastCitationVelocityYear}-a jaro"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -278,16 +286,21 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Neeblas legi la URL de ĉi tiun bildon. Ĝi povas esti pro nesubtenata "
+"dosierformo. TineEye nur subtenas bildojn, kiuj estas JPEG, PNG, GIF, BMP, "
+"TIFF aŭ WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"La bildo estas tro simpla por trovi kongruojn. TinEye bezonas bazan levelon "
+"de detalo por sukcese identigi kongruojn."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "La bildo ne eblis elŝuti."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
@@ -349,7 +362,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Meminformoj"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -361,7 +374,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor-kontrolo kromprogramo"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
@@ -1456,4 +1469,3 @@ msgstr "kaŝi videojn"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">sciu pli pri peto-"
 #~ "metodoj</a>"
-

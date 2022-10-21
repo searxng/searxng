@@ -18,19 +18,18 @@
 # a <a@daimashili.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-28 07:29+0000\n"
+"POT-Creation-Date: 2022-10-14 14:11+0000\n"
 "PO-Revision-Date: 2022-10-02 18:01+0000\n"
 "Last-Translator: a <a@daimashili.com>\n"
-"Language-Team: Chinese (Simplified) <https://weblate.bubu1.eu/projects/"
-"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified) "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -174,64 +173,68 @@ msgstr "HTTP 协议错误"
 msgid "network error"
 msgstr "网络错误"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:168
+msgid "SSL error: certificate validation has failed"
+msgstr ""
+
+#: searx/webapp.py:170
 msgid "unexpected crash"
 msgstr "意外崩溃"
 
-#: searx/webapp.py:176
+#: searx/webapp.py:177
 msgid "HTTP error"
 msgstr "HTTP 错误"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP connection error"
 msgstr "HTTP 连接错误"
 
-#: searx/webapp.py:183
+#: searx/webapp.py:184
 msgid "proxy error"
 msgstr "代理错误"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "CAPTCHA"
 msgstr "验证码"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "too many requests"
 msgstr "频繁请求"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "access denied"
 msgstr "拒绝访问"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "server API error"
 msgstr "服务器 API 错误"
 
-#: searx/webapp.py:362
+#: searx/webapp.py:365
 msgid "No item found"
 msgstr "未找到项目"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:364
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
 msgid "Source"
 msgstr "来源"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:369
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:518 searx/webapp.py:950
+#: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:534
+#: searx/webapp.py:537
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:611 searx/webapp.py:687
+#: searx/webapp.py:614 searx/webapp.py:690
 msgid "search error"
 msgstr "搜索错误"
 
-#: searx/webapp.py:849
+#: searx/webapp.py:852
 msgid "Suspended"
 msgstr "暂停服务"
 
@@ -279,9 +282,7 @@ msgstr "频道"
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
-msgstr ""
-"{numCitations}次引用，从{firstCitationVelocityYear}年到{lastCitationVelocityY"
-"ear}年"
+msgstr "{numCitations}次引用，从{firstCitationVelocityYear}年到{lastCitationVelocityYear}年"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -360,8 +361,7 @@ msgstr "自身信息"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
-msgstr "当您搜索“ip”时，这将会显示您的 IP 地址；同理，在搜索“user agent”时，"
-"将会显示您的 User Agent。"
+msgstr "当您搜索“ip”时，这将会显示您的 IP 地址；同理，在搜索“user agent”时，将会显示您的 User Agent。"
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -371,9 +371,7 @@ msgstr "Tor 网络检测插件"
 msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
-msgstr ""
-"该插件检查请求的 IP 地址是否为 Tor 出口节点，如果是则通知用户，可视为 "
-"searxng 中的 check.torproject.org 。"
+msgstr "该插件检查请求的 IP 地址是否为 Tor 出口节点，如果是则通知用户，可视为 searxng 中的 check.torproject.org 。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -696,9 +694,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"更改表单的提交方式， <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\""
-">详细了解请求方法</a>"
+"更改表单的提交方式， <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">详细了解请求方法</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -838,10 +836,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"注意：当您从 SearXNG 搜索结果页点击进入一个网站时，SearXNG 搜索结果页的 URL "
-"将会在请求头的 Referer 字段中发送给目标网站服务器。如果您的设置了自定义搜索，"
-"URL 中将会包含您的个性化设置参数（如语言等），它们会被目标网站得知，这不利于"
-"您的隐私。"
+"注意：当您从 SearXNG 搜索结果页点击进入一个网站时，SearXNG 搜索结果页的 URL 将会在请求头的 Referer "
+"字段中发送给目标网站服务器。如果您的设置了自定义搜索，URL 中将会包含您的个性化设置参数（如语言等），它们会被目标网站得知，这不利于您的隐私。"
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
@@ -1452,3 +1448,4 @@ msgstr "隐藏视频"
 #~ "更改提交表单时使用的请求方法，<a "
 #~ "href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\" "
 #~ "rel=\"external\">深入了解请求方法</a>"
+
