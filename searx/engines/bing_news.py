@@ -1,20 +1,30 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Bing (News)
+"""Bing-News: description see :py:obj:`searx.engines.bing`.
 """
 
-from urllib.parse import (
-    urlencode,
-    urlparse,
-    parse_qsl,
-    quote,
-)
-from datetime import datetime
-from dateutil import parser
-from lxml import etree
-from lxml.etree import XPath
-from searx.utils import match_language, eval_xpath_getindex
+# pylint: disable=invalid-name
+
+from typing import TYPE_CHECKING
+import uuid
+from urllib.parse import urlencode
+
+from lxml import html
+
 from searx.enginelib.traits import EngineTraits
+from searx.engines.bing import (
+    set_bing_cookies,
+    _fetch_traits,
+)
+from searx.engines.bing import send_accept_language_header  # pylint: disable=unused-import
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
+
 
 # about
 about = {
@@ -30,126 +40,111 @@ about = {
 categories = ['news']
 paging = True
 time_range_support = True
-send_accept_language_header = True
+time_map = {
+    'day': '4',
+    'week': '8',
+    'month': '9',
+}
+"""A string '4' means *last hour*. We use *last hour* for ``day`` here since the
+difference of *last day* and *last week* in the result list is just marginally.
+"""
 
-# search-url
-base_url = 'https://www.bing.com/'
-search_string = 'news/search?{query}&first={offset}&format=RSS'
-search_string_with_time = 'news/search?{query}&first={offset}&qft=interval%3d"{interval}"&format=RSS'
-time_range_dict = {'day': '7', 'week': '8', 'month': '9'}
+base_url = 'https://www.bing.com/news/infinitescrollajax'
+"""Bing (News) search URL"""
 
+bing_traits_url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-news-search/reference/market-codes'
+"""Bing (News) search API description"""
 
-def url_cleanup(url_string):
-    """remove click"""
-
-    parsed_url = urlparse(url_string)
-    if parsed_url.netloc == 'www.bing.com' and parsed_url.path == '/news/apiclick.aspx':
-        query = dict(parse_qsl(parsed_url.query))
-        url_string = query.get('url', None)
-    return url_string
-
-
-def image_url_cleanup(url_string):
-    """replace the http://*bing.com/th?id=... by https://www.bing.com/th?id=..."""
-
-    parsed_url = urlparse(url_string)
-    if parsed_url.netloc.endswith('bing.com') and parsed_url.path == '/th':
-        query = dict(parse_qsl(parsed_url.query))
-        url_string = "https://www.bing.com/th?id=" + quote(query.get('id'))
-    return url_string
-
-
-def _get_url(query, language, offset, time_range):
-    if time_range in time_range_dict:
-        search_path = search_string_with_time.format(
-            # fmt: off
-            query = urlencode({
-                'q': query,
-                'setmkt': language
-            }),
-            offset = offset,
-            interval = time_range_dict[time_range]
-            # fmt: on
-        )
-    else:
-        # e.g. setmkt=de-de&setlang=de
-        search_path = search_string.format(
-            # fmt: off
-            query = urlencode({
-                'q': query,
-                'setmkt': language
-            }),
-            offset = offset
-            # fmt: on
-        )
-    return base_url + search_path
+mkt_alias = {
+    'zh': 'en-WW',
+    'zh-CN': 'en-WW',
+}
+"""Bing News has an official market code 'zh-CN' but we won't get a result with
+this market code.  For 'zh' and 'zh-CN' we better use the *Worldwide aggregate*
+market code (en-WW).
+"""
 
 
 def request(query, params):
+    """Assemble a Bing-News request."""
 
-    if params['time_range'] and params['time_range'] not in time_range_dict:
-        return params
+    sxng_locale = params['searxng_locale']
+    engine_region = traits.get_region(mkt_alias.get(sxng_locale, sxng_locale), traits.all_locale)
+    engine_language = traits.get_language(sxng_locale, 'en')
 
-    offset = (params['pageno'] - 1) * 10 + 1
-    if params['language'] == 'all':
-        language = 'en-US'
-    else:
-        language = match_language(params['language'], supported_languages, language_aliases)
-    params['url'] = _get_url(query, language, offset, params['time_range'])
+    SID = uuid.uuid1().hex.upper()
+    set_bing_cookies(params, engine_language, engine_region, SID)
+
+    # build URL query
+    #
+    # example: https://www.bing.com/news/infinitescrollajax?q=london&first=1
+
+    query_params = {
+        # fmt: off
+        'q': query,
+        'InfiniteScroll': 1,
+        # to simplify the page count lets use the default of 10 images per page
+        'first' : (int(params.get('pageno', 1)) - 1) * 10 + 1,
+        # fmt: on
+    }
+
+    if params['time_range']:
+        # qft=interval:"7"
+        query_params['qft'] = 'qft=interval="%s"' % time_map.get(params['time_range'], '9')
+
+    params['url'] = base_url + '?' + urlencode(query_params)
 
     return params
 
 
 def response(resp):
-
+    """Get response from Bing-Video"""
     results = []
-    rss = etree.fromstring(resp.content)
-    namespaces = rss.nsmap
 
-    for item in rss.xpath('./channel/item'):
-        # url / title / content
-        url = url_cleanup(eval_xpath_getindex(item, './link/text()', 0, default=None))
-        title = eval_xpath_getindex(item, './title/text()', 0, default=url)
-        content = eval_xpath_getindex(item, './description/text()', 0, default='')
+    if not resp.ok or not resp.text:
+        return results
 
-        # publishedDate
-        publishedDate = eval_xpath_getindex(item, './pubDate/text()', 0, default=None)
-        try:
-            publishedDate = parser.parse(publishedDate, dayfirst=False)
-        except TypeError:
-            publishedDate = datetime.now()
-        except ValueError:
-            publishedDate = datetime.now()
+    dom = html.fromstring(resp.text)
 
-        # thumbnail
-        thumbnail = eval_xpath_getindex(item, XPath('./News:Image/text()', namespaces=namespaces), 0, default=None)
-        if thumbnail is not None:
-            thumbnail = image_url_cleanup(thumbnail)
+    for newsitem in dom.xpath('//div[contains(@class, "newsitem")]'):
 
-        # append result
-        if thumbnail is not None:
-            results.append(
-                {'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content, 'img_src': thumbnail}
-            )
-        else:
-            results.append({'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content})
+        url = newsitem.xpath('./@url')[0]
+        title = ' '.join(newsitem.xpath('.//div[@class="caption"]//a[@class="title"]/text()')).strip()
+        content = ' '.join(newsitem.xpath('.//div[@class="snippet"]/text()')).strip()
+        thumbnail = None
+        author = newsitem.xpath('./@data-author')[0]
+        metadata = ' '.join(newsitem.xpath('.//div[@class="source"]/span/text()')).strip()
+
+        img_src = newsitem.xpath('.//a[@class="imagelink"]//img/@src')
+        if img_src:
+            thumbnail = 'https://www.bing.com/' + img_src[0]
+
+        results.append(
+            {
+                'url': url,
+                'title': title,
+                'content': content,
+                'img_src': thumbnail,
+                'author': author,
+                'metadata': metadata,
+            }
+        )
 
     return results
 
 
 def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages and regions from Bing-News."""
-    # pylint: disable=import-outside-toplevel
+    """Fetch languages and regions from Bing-News.
 
-    from searx.engines.bing import _fetch_traits
+    The :py:obj:`description <searx.engines.bing_news.bing_traits_url>` of the
+    first table says *"query parameter when calling the Video Search API."*
+    .. thats why I use the 4. table "News Category API markets" for the
+    ``xpath_market_codes``.
 
-    url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-news-search/reference/market-codes'
+    """
 
-    # The description of the first table says "query parameter when calling the
-    # Video Search API." .. thats why I use the 4. table "News Category API markets"
     xpath_market_codes = '//table[4]/tbody/tr/td[3]'
-
     # xpath_country_codes = '//table[2]/tbody/tr/td[2]'
     xpath_language_codes = '//table[3]/tbody/tr/td[2]'
 
-    _fetch_traits(engine_traits, url, xpath_language_codes, xpath_market_codes)
+    _fetch_traits(engine_traits, bing_traits_url, xpath_language_codes, xpath_market_codes)
