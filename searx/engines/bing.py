@@ -1,10 +1,31 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Bing (Web)
+"""This is the implementation of the Bing-WEB engine. Some of this
+implementations are shared by other engines:
 
-- https://github.com/searx/searx/issues/2019#issuecomment-648227442
+- :ref:`bing images engine`
+- :ref:`bing news engine`
+- :ref:`bing videos engine`
+
+On the `preference page`_ Bing offers a lot of languages an regions (see section
+'Search results languages' and 'Country/region').  However, the abundant choice
+does not correspond to reality, where Bing has a full-text indexer only for a
+limited number of languages.  By example: you can select a language like Māori
+but you never get a result in this language.
+
+What comes a bit closer to the truth are the `search-APIs`_ but they don`t seem
+to be completely correct either (if you take a closer look you will find some
+inaccuracies there too):
+
+- :py:obj:`searx.engines.bing.bing_traits_url`
+- :py:obj:`searx.engines.bing_videos.bing_traits_url`
+- :py:obj:`searx.engines.bing_images.bing_traits_url`
+- :py:obj:`searx.engines.bing_news.bing_traits_url`
+
+.. _preference page: https://www.bing.com/account/general
+.. _search-APIs: https://learn.microsoft.com/en-us/bing/search-apis/
+
 """
-
 # pylint: disable=too-many-branches, invalid-name
 
 from typing import TYPE_CHECKING
