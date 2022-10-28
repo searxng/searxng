@@ -41,6 +41,14 @@ Standardsuchmaschine finden Sie in der Dokumentation zu Ihrem [WEB-Browser]:
 - [Chromium]-basierte Browser fügen nur Websites hinzu, zu denen der Benutzer
   ohne Pfadangabe navigiert.
 
+Wenn Sie eine Suchmaschine hinzufügen, darf es keine Duplikate mit demselben
+Namen geben.  Wenn Sie auf ein Problem stoßen, bei dem Sie die Suchmaschine
+nicht hinzufügen können, dann können Sie entweder:
+
+- das Duplikat entfernen (Standardname: SearXNG) oder
+- den Eigentümer kontaktieren, damit dieser der Instance einen anderen Namen als
+  den Standardnamen gibt.
+
 ## Wie funktioniert SearXNG?
 
 SearXNG ist ein Fork der bekannten [searx] [Metasuchmaschine], die durch das

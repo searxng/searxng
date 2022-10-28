@@ -40,6 +40,13 @@ pencari bawaan Anda, lihat dokumentasi peramban Anda:
 - Peramban berbasis [Chromium] hanya menambahkan situs web yang dikunjungi oleh
   pengguna tanpa sebuah jalur.
 
+Apabila menambahkan mesin pencari, tidak boleh ada duplikat dengan nama yang
+sama.  Jika Anda menemukan masalah di mana Anda tidak bisa menambahkan mesin
+pencari, Anda bisa:
+
+- menghapus duplikat (nama default: SearXNG) atau
+- menghubungi pemilik untuk memberikan nama yang berbeda dari nama default.
+
 ## Bagaimana caranya SearXNG bekerja?
 
 SearXNG adalah sebuah *fork* dari [mesin pencari meta] [searx] yang banyak
