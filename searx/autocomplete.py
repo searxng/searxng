@@ -143,14 +143,31 @@ def qwant(query, sxng_locale):
     return results
 
 
-def wikipedia(query, lang):
-    # wikipedia autocompleter
-    url = 'https://' + lang + '.wikipedia.org/w/api.php?action=opensearch&{0}&limit=10&namespace=0&format=json'
+def wikipedia(query, sxng_locale):
+    """Autocomplete from Wikipedia. Supports Wikipedia's languages (aka netloc)."""
+    results = []
+    eng_traits = engines['wikipedia'].traits
+    wiki_lang = eng_traits.get_language(sxng_locale, 'en')
+    wiki_netloc = eng_traits.custom['wiki_netloc'].get(wiki_lang, 'en.wikipedia.org')
 
-    resp = loads(get(url.format(urlencode(dict(search=query)))).text)
-    if len(resp) > 1:
-        return resp[1]
-    return []
+    url = 'https://{wiki_netloc}/w/api.php?{args}'
+    args = urlencode(
+        {
+            'action': 'opensearch',
+            'format': 'json',
+            'formatversion': '2',
+            'search': query,
+            'namespace': '0',
+            'limit': '10',
+        }
+    )
+    resp = get(url.format(args=args, wiki_netloc=wiki_netloc))
+    if resp.ok:
+        data = resp.json()
+        if len(data) > 1:
+            results = data[1]
+
+    return results
 
 
 def yandex(query, _lang):
