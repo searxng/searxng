@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-10-14 14:11+0000\n"
-"PO-Revision-Date: 2022-10-11 13:31+0000\n"
+"PO-Revision-Date: 2022-11-04 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Bengali <https://weblate.bubu1.eu/projects/searxng/searxng/bn/"
+">\n"
 "Language: bn\n"
-"Language-Team: Bengali "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/bn/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -163,7 +164,7 @@ msgstr "নেটওয়ার্ক ত্রুটি"
 
 #: searx/webapp.py:168
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "SSL ত্রুটি: শংসাপত্রের বৈধতা ব্যর্থ হয়েছে৷"
 
 #: searx/webapp.py:170
 msgid "unexpected crash"
@@ -361,6 +362,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"ক্যোয়ারীটি \"ip\" হলে আপনার আইপি এবং যদি ক্যোয়ারীতে \"ব্যবহারকারী এজেন্ট\" "
+"থাকে তাহলে আপনার ব্যবহারকারী এজেন্ট প্রদর্শন করে।"
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -371,28 +374,34 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"এই প্লাগইনটি চেক করে যে অনুরোধের ঠিকানাটি একটি TOR প্রস্থান নোড কিনা এবং "
+"ব্যবহারকারীকে জানিয়ে দেয় যে এটি কিনা, যেমন check.torproject.org কিন্তু "
+"searxng থেকে।"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"TOR প্রস্থান নোড তালিকা (https://check.torproject.org/exit-addresses) পৌঁছানো"
+" যায় না।"
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "আপনি TOR ব্যবহার করছেন। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
 msgstr ""
+"আপনি TOR ব্যবহার করছেন না। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr ""
+msgstr "ট্র্যাকার URL রিমুভার"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
+msgstr "ফিরে আসা URL থেকে ট্র্যাকার আর্গুমেন্টগুলি সরান৷"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
@@ -1209,4 +1218,3 @@ msgstr ""
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
-
