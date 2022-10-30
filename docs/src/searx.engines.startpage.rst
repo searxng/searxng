@@ -10,9 +10,4 @@ Startpage engines
    :backlinks: entry
 
 .. automodule:: searx.engines.startpage
-
-Functions
-=========
-
-.. autofunction:: searx.engines.startpage.fetch_traits
-.. autofunction:: searx.engines.startpage.get_sc_code
+   :members:

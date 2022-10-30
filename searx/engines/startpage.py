@@ -50,37 +50,57 @@ W3C recommends subtag over macrolanguage [2]_.
 Startpage languages
 ===================
 
-The displayed name in Startpage's settings page depend on the location of the IP
-when the 'Accept-Language' HTTP header is unset (in the language update script
-we use "en-US,en;q=0.5" to get uniform names independent from the IP).
+:py:obj:`send_accept_language_header`:
+  The displayed name in Startpage's settings page depend on the location of the
+  IP when ``Accept-Language`` HTTP header is unset.  In :py:obj:`fetch_traits`
+  we use::
 
-Each option has a displayed name and a value, either of which may represent the
-language name in the native script, the language name in English, an English
-transliteration of the native name, the English name of the writing script used
-by the language, or occasionally something else entirely.
+    'Accept-Language': "en-US,en;q=0.5",
+    ..
+
+  to get uniform names independent from the IP).
+
+.. _startpage categories:
+
+Startpage categories
+====================
+
+Startpage's category (for Web-search, News, Videos, ..) is set by
+:py:obj:`startpage_categ` in  settings.yml::
+
+  - name: startpage
+    engine: startpage
+    startpage_categ: web
+    ...
+
+.. hint::
+
+   The default category is ``web`` .. and other categories than ``web`` are not
+   yet implemented.
 
 """
 
+from typing import TYPE_CHECKING
+from collections import OrderedDict
 import re
-from time import time
-
-from urllib.parse import urlencode
 from unicodedata import normalize, combining
+from time import time
 from datetime import datetime, timedelta
 
-from dateutil import parser
-from lxml import html
-from babel import Locale
-from babel.localedata import locale_identifiers
+import dateutil.parser
+import lxml.html
+import babel
 
 from searx import network
-from searx.utils import extract_text, eval_xpath, match_language
-from searx.exceptions import (
-    SearxEngineResponseException,
-    SearxEngineCaptchaException,
-)
-
+from searx.utils import extract_text, eval_xpath, gen_useragent
+from searx.exceptions import SearxEngineCaptchaException
+from searx.locales import region_tag
 from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
 
 traits: EngineTraits
 
@@ -94,18 +114,28 @@ about = {
     "results": 'HTML',
 }
 
+startpage_categ = 'web'
+"""Startpage's category, visit :ref:`startpage categories`.
+"""
+
+send_accept_language_header = True
+"""Startpage tries to guess user's language and territory from the HTTP
+``Accept-Language``.  Optional the user can select a search-language (can be
+different to the UI language) and a region filter.
+"""
+
 # engine dependent config
 categories = ['general', 'web']
-# there is a mechanism to block "bot" search
-# (probably the parameter qid), require
-# storing of qid's between mulitble search-calls
-
 paging = True
-supported_languages_url = 'https://www.startpage.com/do/settings'
+time_range_support = True
+safesearch = True
+
+time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
+safesearch_dict = {0: '0', 1: '1', 2: '1'}
 
 # search-url
-base_url = 'https://startpage.com/'
-search_url = base_url + 'sp/search?'
+base_url = 'https://www.startpage.com'
+search_url = base_url + '/sp/search'
 
 # specific xpath variables
 # ads xpath //div[@id="results"]/div[@id="sponsored"]//div[@class="result"]
@@ -113,92 +143,193 @@ search_url = base_url + 'sp/search?'
 results_xpath = '//div[@class="w-gl__result__main"]'
 link_xpath = './/a[@class="w-gl__result-title result-link"]'
 content_xpath = './/p[@class="w-gl__description"]'
+search_form_xpath = '//form[@id="search"]'
+"""XPath of Startpage's origin search form
+
+.. code: html
+
+    <form action="/sp/search" method="post">
+      <input type="text" name="query"  value="" ..>
+      <input type="hidden" name="t" value="device">
+      <input type="hidden" name="lui" value="english">
+      <input type="hidden" name="sc" value="Q7Mt5TRqowKB00">
+      <input type="hidden" name="cat" value="web">
+      <input type="hidden" class="abp" id="abp-input" name="abp" value="1">
+    </form>
+"""
 
 # timestamp of the last fetch of 'sc' code
 sc_code_ts = 0
 sc_code = ''
+sc_code_cache_sec = 30
+"""Time in seconds the sc-code is cached in memory :py:obj:`get_sc_code`."""
 
 
-def raise_captcha(resp):
+def get_sc_code(searxng_locale, params):
+    """Get an actual ``sc`` argument from Startpage's search form (HTML page).
 
-    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
-        raise SearxEngineCaptchaException()
+    Startpage puts a ``sc`` argument on every HTML :py:obj:`search form
+    <search_form_xpath>`.  Without this argument Startpage considers the request
+    is from a bot.  We do not know what is encoded in the value of the ``sc``
+    argument, but it seems to be a kind of a *time-stamp*.
 
-
-def get_sc_code(headers):
-    """Get an actual ``sc`` argument from Startpage's home page.
-
-    Startpage puts a ``sc`` argument on every link.  Without this argument
-    Startpage considers the request is from a bot.  We do not know what is
-    encoded in the value of the ``sc`` argument, but it seems to be a kind of a
-    *time-stamp*.  This *time-stamp* is valid for a few hours.
-
-    This function scrap a new *time-stamp* from startpage's home page every hour
-    (3000 sec).
+    Startpage's search form generates a new sc-code on each request.  This
+    function scrap a new sc-code from Startpage's home page every
+    :py:obj:`sc_code_cache_sec` seconds.
 
     """
 
     global sc_code_ts, sc_code  # pylint: disable=global-statement
 
-    if time() > (sc_code_ts + 3000):
-        logger.debug("query new sc time-stamp ...")
+    if sc_code and (time() < (sc_code_ts + sc_code_cache_sec)):
+        logger.debug("get_sc_code: reuse '%s'", sc_code)
+        return sc_code
 
-        resp = network.get(base_url, headers=headers)
-        raise_captcha(resp)
-        dom = html.fromstring(resp.text)
+    headers = {**params['headers']}
+    headers['Origin'] = base_url
+    headers['Referer'] = base_url + '/'
+    # headers['Connection'] = 'keep-alive'
+    # headers['Accept-Encoding'] = 'gzip, deflate, br'
+    # headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+    # headers['User-Agent'] = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0'
 
-        try:
-            # <input type="hidden" name="sc" value="...">
-            sc_code = eval_xpath(dom, '//input[@name="sc"]/@value')[0]
-        except IndexError as exc:
-            # suspend startpage API --> https://github.com/searxng/searxng/pull/695
-            raise SearxEngineResponseException(
-                suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
-            ) from exc
+    # add Accept-Language header
+    if searxng_locale == 'all':
+        searxng_locale = 'en-US'
+    locale = babel.Locale.parse(searxng_locale, sep='-')
 
-        sc_code_ts = time()
-        logger.debug("new value is: %s", sc_code)
+    if send_accept_language_header:
+        ac_lang = locale.language
+        if locale.territory:
+            ac_lang = "%s-%s,%s;q=0.9,*;q=0.5" % (
+                locale.language,
+                locale.territory,
+                locale.language,
+            )
+        headers['Accept-Language'] = ac_lang
 
+    get_sc_url = base_url + '/?sc=%s' % (sc_code)
+    logger.debug("query new sc time-stamp ... %s", get_sc_url)
+    logger.debug("headers: %s", headers)
+    resp = network.get(get_sc_url, headers=headers)
+
+    # ?? x = network.get('https://www.startpage.com/sp/cdn/images/filter-chevron.svg', headers=headers)
+    # ?? https://www.startpage.com/sp/cdn/images/filter-chevron.svg
+    # ?? ping-back URL: https://www.startpage.com/sp/pb?sc=TLsB0oITjZ8F21
+
+    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
+        raise SearxEngineCaptchaException(
+            message="get_sc_code: got redirected to https://www.startpage.com/sp/captcha",
+        )
+
+    dom = lxml.html.fromstring(resp.text)
+
+    try:
+        sc_code = eval_xpath(dom, search_form_xpath + '//input[@name="sc"]/@value')[0]
+    except IndexError as exc:
+        logger.debug("suspend startpage API --> https://github.com/searxng/searxng/pull/695")
+        raise SearxEngineCaptchaException(
+            message="get_sc_code: [PR-695] query new sc time-stamp failed! (%s)" % resp.url,
+        ) from exc
+
+    sc_code_ts = time()
+    logger.debug("get_sc_code: new value is: %s", sc_code)
     return sc_code
 
 
-# do search-request
 def request(query, params):
+    """Assemble a Startpage request.
 
-    # pylint: disable=line-too-long
-    # The format string from Startpage's FFox add-on [1]::
-    #
-    #     https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=ext-ff&language=__MSG_extensionUrlLanguage__&extVersion=1.3.0
-    #
-    # [1] https://addons.mozilla.org/en-US/firefox/addon/startpage-private-search/
+    To avoid CAPTCHA we need to send a well formed HTTP POST request with a
+    cookie.  We need to form a request that is identical to the request build by
+    Startpage's search form:
 
+    - in the cookie the **region** is selected
+    - in the HTTP POST data the **language** is selected
+
+    Additionally the arguments form Startpage's search form needs to be set in
+    HTML POST data / compare ``<input>`` elements: :py:obj:`search_form_xpath`.
+    """
+    if startpage_categ == 'web':
+        return _request_cat_web(query, params)
+
+    logger.error("Startpages's category '%' is not yet implemented.", startpage_categ)
+    return params
+
+
+def _request_cat_web(query, params):
+
+    engine_region = traits.get_region(params['searxng_locale'], 'en-US')
+    engine_language = traits.get_language(params['searxng_locale'], 'en')
+
+    # build arguments
     args = {
         'query': query,
-        'page': params['pageno'],
         'cat': 'web',
-        # 'pl': 'ext-ff',
-        # 'extVersion': '1.3.0',
-        # 'abp': "-1",
-        'sc': get_sc_code(params['headers']),
+        't': 'device',
+        'sc': get_sc_code(params['searxng_locale'], params),  # hint: this func needs HTTP headers,
+        'with_date': time_range_dict.get(params['time_range'], ''),
     }
 
-    # set language if specified
-    if params['language'] != 'all':
-        lang_code = match_language(params['language'], supported_languages, fallback=None)
-        if lang_code:
-            language_name = supported_languages[lang_code]['alias']
-            args['language'] = language_name
-            args['lui'] = language_name
+    if engine_language:
+        args['language'] = engine_language
+        args['lui'] = engine_language
 
-    params['url'] = search_url + urlencode(args)
+    args['abp'] = '1'
+    if params['pageno'] > 1:
+        args['page'] = params['pageno']
+
+    # build cookie
+    lang_homepage = 'en'
+    cookie = OrderedDict()
+    cookie['date_time'] = 'world'
+    cookie['disable_family_filter'] = safesearch_dict[params['safesearch']]
+    cookie['disable_open_in_new_window'] = '0'
+    cookie['enable_post_method'] = '1'  # hint: POST
+    cookie['enable_proxy_safety_suggest'] = '1'
+    cookie['enable_stay_control'] = '1'
+    cookie['instant_answers'] = '1'
+    cookie['lang_homepage'] = 's/device/%s/' % lang_homepage
+    cookie['num_of_results'] = '10'
+    cookie['suggestions'] = '1'
+    cookie['wt_unit'] = 'celsius'
+
+    if engine_language:
+        cookie['language'] = engine_language
+        cookie['language_ui'] = engine_language
+
+    if engine_region:
+        cookie['search_results_region'] = engine_region
+
+    params['cookies']['preferences'] = 'N1N'.join(["%sEEE%s" % x for x in cookie.items()])
+    logger.debug('cookie preferences: %s', params['cookies']['preferences'])
+
+    # POST request
+    logger.debug("data: %s", args)
+    params['data'] = args
+    params['method'] = 'POST'
+    params['url'] = search_url
+    params['headers']['Origin'] = base_url
+    params['headers']['Referer'] = base_url + '/'
+    # is the Accept header needed?
+    # params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+
     return params
 
 
 # get response from search-request
 def response(resp):
-    results = []
+    dom = lxml.html.fromstring(resp.text)
 
-    dom = html.fromstring(resp.text)
+    if startpage_categ == 'web':
+        return _response_cat_web(dom)
+
+    logger.error("Startpages's category '%' is not yet implemented.", startpage_categ)
+    return []
+
+
+def _response_cat_web(dom):
+    results = []
 
     # parse results
     for result in eval_xpath(dom, results_xpath):
@@ -233,7 +364,7 @@ def response(resp):
             content = content[date_pos:]
 
             try:
-                published_date = parser.parse(date_string, dayfirst=True)
+                published_date = dateutil.parser.parse(date_string, dayfirst=True)
             except ValueError:
                 pass
 
@@ -259,78 +390,10 @@ def response(resp):
     return results
 
 
-# get supported languages from their site
-def _fetch_supported_languages(resp):
-    # startpage's language selector is a mess each option has a displayed name
-    # and a value, either of which may represent the language name in the native
-    # script, the language name in English, an English transliteration of the
-    # native name, the English name of the writing script used by the language,
-    # or occasionally something else entirely.
-
-    # this cases are so special they need to be hardcoded, a couple of them are misspellings
-    language_names = {
-        'english_uk': 'en-GB',
-        'fantizhengwen': ['zh-TW', 'zh-HK'],
-        'hangul': 'ko',
-        'malayam': 'ml',
-        'norsk': 'nb',
-        'sinhalese': 'si',
-        'sudanese': 'su',
-    }
-
-    # get the English name of every language known by babel
-    language_names.update(
-        {
-            # fmt: off
-            name.lower(): lang_code
-            # pylint: disable=protected-access
-            for lang_code, name in Locale('en')._data['languages'].items()
-            # fmt: on
-        }
-    )
-
-    # get the native name of every language known by babel
-    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, locale_identifiers()):
-        native_name = Locale(lang_code).get_language_name().lower()
-        # add native name exactly as it is
-        language_names[native_name] = lang_code
-
-        # add "normalized" language name (i.e. français becomes francais and español becomes espanol)
-        unaccented_name = ''.join(filter(lambda c: not combining(c), normalize('NFKD', native_name)))
-        if len(unaccented_name) == len(unaccented_name.encode()):
-            # add only if result is ascii (otherwise "normalization" didn't work)
-            language_names[unaccented_name] = lang_code
-
-    dom = html.fromstring(resp.text)
-    sp_lang_names = []
-    for option in dom.xpath('//form[@name="settings"]//select[@name="language"]/option'):
-        sp_lang_names.append((option.get('value'), extract_text(option).lower()))
-
-    supported_languages = {}
-    for sp_option_value, sp_option_text in sp_lang_names:
-        lang_code = language_names.get(sp_option_value) or language_names.get(sp_option_text)
-        if isinstance(lang_code, str):
-            supported_languages[lang_code] = {'alias': sp_option_value}
-        elif isinstance(lang_code, list):
-            for _lc in lang_code:
-                supported_languages[_lc] = {'alias': sp_option_value}
-        else:
-            print('Unknown language option in Startpage: {} ({})'.format(sp_option_value, sp_option_text))
-
-    return supported_languages
-
-
 def fetch_traits(engine_traits: EngineTraits):
     """Fetch :ref:`languages <startpage languages>` and :ref:`regions <startpage
     regions>` from Startpage."""
-    # pylint: disable=import-outside-toplevel, too-many-locals, too-many-branches
-    # pylint: disable=too-many-statements
-
-    engine_traits.data_type = 'supported_languages'  # deprecated
-
-    import babel
-    from searx.utils import gen_useragent
-    from searx.locales import region_tag
+    # pylint: disable=too-many-branches
 
     headers = {
         'User-Agent': gen_useragent(),
@@ -341,7 +404,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         print("ERROR: response from Startpage is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = lxml.html.fromstring(resp.text)
 
     # regions
 

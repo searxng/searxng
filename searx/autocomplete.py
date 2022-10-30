@@ -109,9 +109,9 @@ def seznam(query, _lang):
     ]
 
 
-def startpage(query, lang):
-    # startpage autocompleter
-    lui = engines['startpage'].supported_languages.get(lang, 'english')  # vintage / deprecated
+def startpage(query, sxng_locale):
+    """Autocomplete from Startpage. Supports Startpage's languages"""
+    lui = engines['startpage'].traits.get_language(sxng_locale, 'english')
     url = 'https://startpage.com/suggestions?{query}'
     resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
     data = resp.json()
