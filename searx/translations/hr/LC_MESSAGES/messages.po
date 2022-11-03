@@ -9,13 +9,14 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # SecularSteve <fairfull.playing@gmail.com>, 2022.
 # prljav <marin.ruskica@gmail.com>, 2022.
+# ptomljanovic <phill2605@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-10-14 14:11+0000\n"
-"PO-Revision-Date: 2022-10-20 07:00+0000\n"
-"Last-Translator: prljav <marin.ruskica@gmail.com>\n"
+"PO-Revision-Date: 2022-11-04 07:18+0000\n"
+"Last-Translator: ptomljanovic <phill2605@gmail.com>\n"
 "Language-Team: Croatian <https://weblate.bubu1.eu/projects/searxng/searxng/"
 "hr/>\n"
 "Language: hr\n"
@@ -30,12 +31,12 @@ msgstr ""
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
 msgid "others"
-msgstr "aviti"
+msgstr "drugi"
 
 #. CONSTANT_NAMES['OTHER_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "avite"
+msgstr "drugo"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -55,7 +56,7 @@ msgstr "glazba"
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
 msgid "social media"
-msgstr "društveni mediji"
+msgstr "društvene mreže"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -70,7 +71,7 @@ msgstr "video zapisi"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "it"
+msgstr "IT"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -95,17 +96,17 @@ msgstr "znanost"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr "ôcenti"
+msgstr "aplikacije"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
 msgid "dictionaries"
-msgstr "drzûlknvuti"
+msgstr "rječnici"
 
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr "lirike"
+msgstr "tekst"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -120,7 +121,7 @@ msgstr "pitanja i odgovori"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr "spremišta"
+msgstr "repozitoriji"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
@@ -135,7 +136,7 @@ msgstr "mreža"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr ""
+msgstr "znanstvene publikacije"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -158,11 +159,11 @@ msgstr "pauza"
 
 #: searx/webapp.py:165
 msgid "parsing error"
-msgstr "parsing greška"
+msgstr "pogreška pri raščlanjivanju"
 
 #: searx/webapp.py:166
 msgid "HTTP protocol error"
-msgstr "HTTP protokol greška"
+msgstr "greška HTTP protokola"
 
 #: searx/webapp.py:167
 msgid "network error"
@@ -170,11 +171,11 @@ msgstr "greška u mreži"
 
 #: searx/webapp.py:168
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "SSL pogreška: provjera valjanosti certifikata nije uspjela"
 
 #: searx/webapp.py:170
 msgid "unexpected crash"
-msgstr "neočekivan izlaz"
+msgstr "neočekivano rušenje"
 
 #: searx/webapp.py:177
 msgid "HTTP error"
@@ -182,11 +183,11 @@ msgstr "HTTP greška"
 
 #: searx/webapp.py:178
 msgid "HTTP connection error"
-msgstr "HTTP veza greška"
+msgstr "greška HTTP veze"
 
 #: searx/webapp.py:184
 msgid "proxy error"
-msgstr "greška zastupnika"
+msgstr "proxy greška"
 
 #: searx/webapp.py:185
 msgid "CAPTCHA"
@@ -219,7 +220,7 @@ msgstr "Greška u učitavnju sljedeće stranice"
 
 #: searx/webapp.py:521 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
-msgstr "Nevažeće postavke, uredite svoje postavke"
+msgstr "Nevažeće postavke, molimo uredite svoje postavke"
 
 #: searx/webapp.py:537
 msgid "Invalid settings"
@@ -278,6 +279,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} citati iz godine {firstCitationVelocityYear} do "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -357,7 +360,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Informacije o sebi"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -449,7 +452,7 @@ msgstr "Pokreće"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "otvoreni metapretraživač koji poštuje privatnost"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -710,6 +713,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Promijenite način slanja obrazaca, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">saznajte više "
+"o metodama zahtjeva</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1124,47 +1130,47 @@ msgstr "sakrij kartu"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Datum objave"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Časopis"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Urednik"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Izdavač"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Oznake"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
