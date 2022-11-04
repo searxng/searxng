@@ -22,10 +22,13 @@ jobs:
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ./local
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+        path: |
+          ./local
+          ./.nvm
+          ./node_modules
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
     - name: weblate & git setup
       env:
         WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
