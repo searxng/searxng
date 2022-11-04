@@ -35,6 +35,7 @@ RTL_LOCALES: Set[str] = set()
 :py:obj:`locales_initialize`)."""
 
 ADDITIONAL_TRANSLATIONS = {
+    "dv": "ދިވެހި (Dhivehi)",
     "oc": "Occitan",
     "szl": "Ślōnski (Silesian)",
     "pap": "Papiamento",
@@ -43,6 +44,7 @@ ADDITIONAL_TRANSLATIONS = {
 python-babel (see :py:obj:`locales_initialize`)."""
 
 LOCALE_BEST_MATCH = {
+    "dv": "si",
     "oc": 'fr-FR',
     "szl": "pl",
     "nl-BE": "nl",
