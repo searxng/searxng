@@ -5,21 +5,23 @@
 # Translators:
 # asladic <ales.sladic@gmail.com>, 2017-2018
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Alexandre Flament <alex@al-f.net>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-10-14 14:11+0000\n"
-"PO-Revision-Date: 2022-08-19 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2022-11-07 18:11+0000\n"
+"Last-Translator: Alexandre Flament <alex@al-f.net>\n"
+"Language-Team: Slovenian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"sl/>\n"
 "Language: sl\n"
-"Language-Team: Slovenian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sl/>\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 "
-"|| n%100==4 ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.10.3\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -280,9 +282,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Ne morem prebrati slike hiperpovezave. Razlog je lahko zaradi nepodprtega"
-" formata datoteke. TinEye podpira samo slikovne formate JPEG, PNG, GIF, "
-"BMP, TIFF ali WebP."
+"Ne morem prebrati slike hiperpovezave. Razlog je lahko zaradi nepodprtega "
+"formata datoteke. TinEye podpira samo slikovne formate JPEG, PNG, GIF, BMP, "
+"TIFF ali WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -339,8 +341,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Izogibanje plačilom s preusmeritvijo na prostodostopne različice "
-"publikacij, ko so na voljo"
+"Izogibanje plačilom s preusmeritvijo na prostodostopne različice publikacij, "
+"ko so na voljo"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -363,8 +365,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Prikaže IP naslov, če je niz poizvedbe \"ip\", in uporabniški agent, če "
-"je niz \"user agent\"."
+"Prikaže IP naslov, če je niz poizvedbe \"ip\", in uporabniški agent, če je "
+"niz \"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -376,16 +378,16 @@ msgid ""
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
 "Ta vtičnik preveri, če je naslov poizvedbe izhodni prikluček TOR in "
-"informira uporabnika o njem, kot naprimer check.torproject.org ampak "
-"preko searxng-ja."
+"informira uporabnika o njem, kot naprimer check.torproject.org ampak preko "
+"searxng-ja."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
-"Seznam izhodnih priključkov TOR (https://check.torproject.org/exit-"
-"addresses) je nedosegljiv."
+"Seznam izhodnih priključkov TOR (https://check.torproject.org/exit-addresses)"
+" je nedosegljiv."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -412,9 +414,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Premikanje po zadetkih z tipkovnimi bližnjicami Vim (zahtevan "
-"JavaScript). Pritisnite tipko \"h\" na glavni strani ali strani z zadetki"
-" za pomoč."
+"Premikanje po zadetkih z tipkovnimi bližnjicami Vim (zahtevan JavaScript). "
+"Pritisnite tipko \"h\" na glavni strani ali strani z zadetki za pomoč."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -507,7 +508,8 @@ msgstr "Prosim preveri že aktivne hrošče glede engine-a na GitHub-u"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Potrjujem da o problemu, na katerega sem naletel, ni že obstoječega hrošča"
+msgstr ""
+"Potrjujem da o problemu, na katerega sem naletel, ni že obstoječega hrošča"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -618,8 +620,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
-"Preusmeri na prosto dostopne različice publikacij, ko so na voljo "
-"(zahtevan vtičnik)"
+"Preusmeri na prosto dostopne različice publikacij, ko so na voljo (zahtevan "
+"vtičnik)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -1472,4 +1474,3 @@ msgstr "skrij video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">, več o metodah za "
 #~ "zahtevke </a>"
-
