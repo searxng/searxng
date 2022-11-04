@@ -16,7 +16,7 @@ jobs:
         fetch-depth: '0'
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'

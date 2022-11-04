@@ -22,7 +22,7 @@ jobs:
         sudo ./utils/searxng.sh install packages
         sudo apt install firefox
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
         architecture: 'x64'
@@ -57,7 +57,7 @@ jobs:
     - name: Install Ubuntu packages
       run: sudo ./utils/searxng.sh install buildhost
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
@@ -84,7 +84,7 @@ jobs:
     - name: Install Ubuntu packages
       run: sudo ./utils/searxng.sh install buildhost
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
@@ -123,7 +123,7 @@ jobs:
         fetch-depth: '0'
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
@@ -165,7 +165,7 @@ jobs:
           # make sure "make docker.push" can get the git history
           fetch-depth: '0'
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           architecture: 'x64'
