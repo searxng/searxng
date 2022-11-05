@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: ["master"]
 
+permissions:
+  contents: read
+
 jobs:
   python:
     name: Python ${{ matrix.python-version }}
@@ -13,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        python-version:  ["3.7", "3.8", "3.9", "3.10"]
+        python-version:  ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -22,15 +25,18 @@ jobs:
         sudo ./utils/searxng.sh install packages
         sudo apt install firefox
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ./local
+        path: |
+          ./local
+          ./.nvm
+          ./node_modules
         key: python-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
     - name: Install Python dependencies
       if: steps.cache-python.outputs.cache-hit != 'true'
@@ -57,16 +63,19 @@ jobs:
     - name: Install Ubuntu packages
       run: sudo ./utils/searxng.sh install buildhost
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ./local
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+        path: |
+          ./local
+          ./.nvm
+          ./node_modules
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
     - name: Install node dependencies
       run: make V=1 node.env
     - name: Build themes
@@ -75,6 +84,8 @@ jobs:
   documentation:
     name: Documentation
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -84,16 +95,19 @@ jobs:
     - name: Install Ubuntu packages
       run: sudo ./utils/searxng.sh install buildhost
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ./local
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+        path: |
+          ./local
+          ./.nvm
+          ./node_modules
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
     - name: Build documentation
       run: |
         make V=1 docs.clean docs.html
@@ -116,6 +130,8 @@ jobs:
       - python
       - themes
       - documentation
+    permissions:
+      contents: write  # for make V=1 weblate.push.translations
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -123,16 +139,19 @@ jobs:
         fetch-depth: '0'
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ./local
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+        path: |
+          ./local
+          ./.nvm
+          ./node_modules
+        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
     - name: weblate & git setup
       env:
         WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
@@ -165,16 +184,19 @@ jobs:
           # make sure "make docker.push" can get the git history
           fetch-depth: '0'
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
-          path: ./local
-          key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py') }}
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
       - name: Set up QEMU
         if: env.DOCKERHUB_USERNAME != null
         uses: docker/setup-qemu-action@v1
