@@ -314,19 +314,20 @@ developer) account needs to be added to the *searxng-redis* group.
 
 .. admonition:: Tip for developers
 
-   To set up a local redis instance using sockets simply use::
-
-     $ ./manage redis.build
-     $ sudo -H ./manage redis.install
-     $ sudo -H ./manage redis.addgrp "${USER}"
-     # don't forget to logout & login to get member of group
-
-   The YAML setting for such a redis instance is:
+   To set up a local redis instance, first set the socket path of the Redis DB
+   in your YAML setting:
 
    .. code:: yaml
 
       redis:
         url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+
+   Then use the following commands to install the redis instance ::
+
+     $ ./manage redis.build
+     $ sudo -H ./manage redis.install
+     $ sudo -H ./manage redis.addgrp "${USER}"
+     # don't forget to logout & login to get member of group
 
 
 .. _settings outgoing:

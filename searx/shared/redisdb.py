@@ -26,26 +26,31 @@ import redis
 from searx import get_setting
 
 
-logger = logging.getLogger('searx.shared.redis')
-_client = None
+OLD_REDIS_URL_DEFAULT_URL = 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'
+"""This was the default Redis URL in settings.yml."""
+
+_CLIENT = None
+logger = logging.getLogger('searx.shared.redisdb')
 
 
-def client():
-    global _client  # pylint: disable=global-statement
-    if _client is None:
-        # not thread safe: in the worst case scenario, two or more clients are
-        # initialized only one is kept, the others are garbage collected.
-        _client = redis.Redis.from_url(get_setting('redis.url'))
-    return _client
+def client() -> redis.Redis:
+    return _CLIENT
 
 
-def init():
+def initialize():
+    global _CLIENT  # pylint: disable=global-statement
+    redis_url = get_setting('redis.url')
     try:
-        c = client()
-        logger.info("connected redis DB --> %s", c.acl_whoami())
-        return True
-    except redis.exceptions.ConnectionError as exc:
+        if redis_url:
+            _CLIENT = redis.Redis.from_url(redis_url)
+            logger.info("connected redis: %s", redis_url)
+            return True
+    except redis.exceptions.ConnectionError:
         _pw = pwd.getpwuid(os.getuid())
-        logger.error("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
-        logger.error("  %s", exc)
+        logger.exception("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
+        if redis_url == OLD_REDIS_URL_DEFAULT_URL:
+            logger.info(
+                "You can safely ignore the above Redis error if you don't use Redis."
+                "You can remove this error by setting redis.url to false in your settings.yml."
+            )
     return False

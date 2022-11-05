@@ -93,9 +93,8 @@ def init(app, settings):
     if not settings['server']['limiter']:
         return False
 
-    logger.debug("init limiter DB")  # pylint: disable=undefined-variable
-    if not redisdb.init():
-        logger.error("init limiter DB failed!!!")  # pylint: disable=undefined-variable
+    if not redisdb.client():
+        logger.error("The limiter requires Redis")  # pylint: disable=undefined-variable
         return False
 
     app.before_request(pre_request)
