@@ -1,22 +1,32 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""DuckDuckGo (Instant Answer API)
+"""
+DuckDuckGo Instant Answer API
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `DDG-API <https://duckduckgo.com/api>`__ is no longer documented but from
+reverse engineering we can see that some services (e.g. instant answers) still
+in use from the DDG search engine.
+
+As far we can say the *instant answers* API does not support languages, or at
+least we could not find out how language support should work.  It seems that
+most of the features are based on English terms.
 
 """
 
-import json
+from typing import TYPE_CHECKING
+
 from urllib.parse import urlencode, urlparse, urljoin
 from lxml import html
 
 from searx.data import WIKIDATA_UNITS
-from searx.engines.duckduckgo import language_aliases
-from searx.engines.duckduckgo import (  # pylint: disable=unused-import
-    fetch_traits,
-    _fetch_supported_languages,
-    supported_languages_url,
-)
-from searx.utils import extract_text, html_to_text, match_language, get_string_replaces_function
+from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
 
 # about
 about = {
@@ -38,7 +48,7 @@ replace_http_by_https = get_string_replaces_function({'http:': 'https:'})
 
 
 def is_broken_text(text):
-    """duckduckgo may return something like "<a href="xxxx">http://somewhere Related website<a/>"
+    """duckduckgo may return something like ``<a href="xxxx">http://somewhere Related website<a/>``
 
     The href URL is broken, the "Related website" may contains some HTML.
 
@@ -63,8 +73,6 @@ def result_to_text(text, htmlResult):
 
 def request(query, params):
     params['url'] = URL.format(query=urlencode({'q': query}))
-    language = match_language(params['language'], supported_languages, language_aliases)
-    language = language.split('-')[0]
     return params
 
 
@@ -72,7 +80,7 @@ def response(resp):
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
     results = []
 
-    search_res = json.loads(resp.text)
+    search_res = resp.json()
 
     # search_res.get('Entity') possible values (not exhaustive) :
     # * continent / country / department / location / waterfall
@@ -236,7 +244,7 @@ def unit_to_str(unit):
 
 
 def area_to_str(area):
-    """parse {'unit': 'http://www.wikidata.org/entity/Q712226', 'amount': '+20.99'}"""
+    """parse ``{'unit': 'https://www.wikidata.org/entity/Q712226', 'amount': '+20.99'}``"""
     unit = unit_to_str(area.get('unit'))
     if unit is not None:
         try:

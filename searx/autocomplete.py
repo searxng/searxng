@@ -61,14 +61,24 @@ def dbpedia(query, _lang):
     return results
 
 
-def duckduckgo(query, _lang):
-    # duckduckgo autocompleter
-    url = 'https://ac.duckduckgo.com/ac/?{0}&type=list'
+def duckduckgo(query, sxng_locale):
+    """Autocomplete from DuckDuckGo. Supports DuckDuckGo's languages"""
 
-    resp = loads(get(url.format(urlencode(dict(q=query)))).text)
-    if len(resp) > 1:
-        return resp[1]
-    return []
+    traits = engines['duckduckgo'].traits
+    args = {
+        'q': query,
+        'kl': traits.get_region(sxng_locale, traits.all_locale),
+    }
+
+    url = 'https://duckduckgo.com/ac/?type=list&' + urlencode(args)
+    resp = get(url)
+
+    ret_val = []
+    if resp.ok:
+        j = resp.json()
+        if len(j) > 1:
+            ret_val = j[1]
+    return ret_val
 
 
 def google(query, lang):
