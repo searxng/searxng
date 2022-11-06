@@ -173,7 +173,7 @@ class Network:
             ):
                 continue
             return False
-        response = await client.get("https://check.torproject.org/api/ip", timeout=10)
+        response = await client.get("https://check.torproject.org/api/ip", timeout=60)
         if not response.json()["IsTor"]:
             result = False
         Network._TOR_CHECK_RESULT[proxies] = result
