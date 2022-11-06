@@ -35,6 +35,7 @@ RTL_LOCALES: Set[str] = set()
 :py:obj:`locales_initialize`)."""
 
 ADDITIONAL_TRANSLATIONS = {
+    "dv": "ދިވެހި (Dhivehi)",
     "oc": "Occitan",
     "szl": "Ślōnski (Silesian)",
     "pap": "Papiamento",
@@ -43,6 +44,7 @@ ADDITIONAL_TRANSLATIONS = {
 python-babel (see :py:obj:`locales_initialize`)."""
 
 LOCALE_BEST_MATCH = {
+    "dv": "si",
     "oc": 'fr-FR',
     "szl": "pl",
     "nl-BE": "nl",
@@ -80,15 +82,11 @@ def localeselector():
 
 def get_translations():
     """Monkey patch of :py:obj:`flask_babel.get_translations`"""
-    if has_request_context() and flask.request.form.get('use-translation') == 'oc':
-        babel_ext = flask_babel.current_app.extensions['babel']
-        return Translations.load(next(babel_ext.translation_directories), 'oc')
-    if has_request_context() and flask.request.form.get('use-translation') == 'szl':
-        babel_ext = flask_babel.current_app.extensions['babel']
-        return Translations.load(next(babel_ext.translation_directories), 'szl')
-    if has_request_context() and flask.request.form.get('use-translation') == 'pap':
-        babel_ext = flask_babel.current_app.extensions['babel']
-        return Translations.load(next(babel_ext.translation_directories), 'pap')
+    if has_request_context():
+        use_translation = flask.request.form.get('use-translation')
+        if use_translation in ADDITIONAL_TRANSLATIONS:
+            babel_ext = flask_babel.current_app.extensions['babel']
+            return Translations.load(next(babel_ext.translation_directories), use_translation)
     return _flask_babel_get_translations()
 
 
@@ -136,13 +134,18 @@ def locales_initialize(directory=None):
     flask_babel.get_translations = get_translations
 
     for tag, descr in ADDITIONAL_TRANSLATIONS.items():
+        locale = Locale.parse(LOCALE_BEST_MATCH[tag], sep='-')
         LOCALE_NAMES[tag] = descr
+        if locale.text_direction == 'rtl':
+            RTL_LOCALES.add(tag)
 
     for tag in LOCALE_BEST_MATCH:
         descr = LOCALE_NAMES.get(tag)
         if not descr:
             locale = Locale.parse(tag, sep='-')
             LOCALE_NAMES[tag] = get_locale_descr(locale, tag.replace('-', '_'))
+            if locale.text_direction == 'rtl':
+                RTL_LOCALES.add(tag)
 
     for dirname in sorted(os.listdir(directory)):
         # Based on https://flask-babel.tkte.ch/_modules/flask_babel.html#Babel.list_translations
