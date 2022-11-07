@@ -40,17 +40,31 @@ def client() -> redis.Redis:
 def initialize():
     global _CLIENT  # pylint: disable=global-statement
     redis_url = get_setting('redis.url')
+    if not redis_url:
+        return False
     try:
-        if redis_url:
-            _CLIENT = redis.Redis.from_url(redis_url)
-            logger.info("connected redis: %s", redis_url)
-            return True
-    except redis.exceptions.ConnectionError:
+        # create a client, but no connection is done
+        _CLIENT = redis.Redis.from_url(redis_url)
+
+        # log the parameters as seen by the redis lib, without the password
+        kwargs = _CLIENT.get_connection_kwargs()
+        kwargs.pop('password', None)
+        kwargs = ' '.join([f'{k}={v!r}' for k, v in kwargs.items()])
+        logger.info("connecting to Redis %s", kwargs)
+
+        # check the connection
+        _CLIENT.ping()
+
+        # no error: the redis connection is working
+        logger.info("connected to Redis")
+        return True
+    except redis.exceptions.RedisError as e:
+        _CLIENT = None
         _pw = pwd.getpwuid(os.getuid())
         logger.exception("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
-        if redis_url == OLD_REDIS_URL_DEFAULT_URL:
+        if redis_url == OLD_REDIS_URL_DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):
             logger.info(
-                "You can safely ignore the above Redis error if you don't use Redis."
+                "You can safely ignore the above Redis error if you don't use Redis. "
                 "You can remove this error by setting redis.url to false in your settings.yml."
             )
     return False
