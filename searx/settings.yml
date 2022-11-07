@@ -950,6 +950,12 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: metacpan
+    engine: metacpan
+    shortcut: cpan
+    disabled: true
+    number_of_results: 20
+
   # - name: meilisearch
   #   engine: meilisearch
   #   shortcut: mes
