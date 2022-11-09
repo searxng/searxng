@@ -64,8 +64,11 @@ def fetch_firefox_last_versions():
     major_list = (major_last, major_last - 1)
     for version in versions:
         major_current = version.version[0]
+        minor_current = version.version[1]
         if major_current in major_list:
-            result.append(version.vstring)
+            user_agent_version = f'{major_current}.{minor_current}'
+            if user_agent_version not in result:
+                result.append(user_agent_version)
 
     return result
 
