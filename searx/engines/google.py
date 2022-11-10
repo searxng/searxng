@@ -112,9 +112,9 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-results_xpath = '//div[contains(@class, "MjjYud")]'
-title_xpath = './/h3[1]'
-href_xpath = './/a/@href'
+results_xpath = './/div[@data-sokoban-container]'
+title_xpath = './/a/h3[1]'
+href_xpath = './/a[h3]/@href'
 content_xpath = './/div[@data-content-feature=1]'
 
 # google *sections* are no usual *results*, we ignore them
