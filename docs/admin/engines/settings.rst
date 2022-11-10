@@ -305,7 +305,7 @@ In this example read/write access is given to the *searxng-redis* group.  To get
 access rights to redis instance (the socket), your SearXNG (or even your
 developer) account needs to be added to the *searxng-redis* group.
 
-``url``
+``url``: ``unix:///usr/local/searxng-redis/run/redis.sock?db=0``
   URL to connect redis database, see `Redis.from_url(url)`_ & :ref:`redis db`::
 
     redis://[[username]:[password]]@localhost:6379/0
@@ -314,20 +314,14 @@ developer) account needs to be added to the *searxng-redis* group.
 
 .. admonition:: Tip for developers
 
-   To set up a local redis instance, first set the socket path of the Redis DB
-   in your YAML setting:
-
-   .. code:: yaml
-
-      redis:
-        url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
-
-   Then use the following commands to install the redis instance ::
+   To install a local redis instance that is connected by the default URL use
+   the following commands::
 
      $ ./manage redis.build
      $ sudo -H ./manage redis.install
      $ sudo -H ./manage redis.addgrp "${USER}"
-     # don't forget to logout & login to get member of group
+
+   Don't forget to logout & login to get member of group.
 
 
 .. _settings outgoing:

@@ -174,7 +174,7 @@ SCHEMA = {
         'default_http_headers': SettingsValue(dict, {}),
     },
     'redis': {
-        'url': SettingsValue((None, False, str), False),
+        'url': SettingsValue((None, False, str), 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'),
     },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),

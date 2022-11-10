@@ -26,8 +26,8 @@ import redis
 from searx import get_setting
 
 
-OLD_REDIS_URL_DEFAULT_URL = 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'
-"""This was the default Redis URL in settings.yml."""
+DEFAULT_URL = 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'
+"""This is the default Redis URL."""
 
 _CLIENT = None
 logger = logging.getLogger('searx.shared.redisdb')
@@ -37,7 +37,7 @@ def client() -> redis.Redis:
     return _CLIENT
 
 
-def initialize():
+def init():
     global _CLIENT  # pylint: disable=global-statement
     redis_url = get_setting('redis.url')
     if not redis_url:
@@ -62,7 +62,7 @@ def initialize():
         _CLIENT = None
         _pw = pwd.getpwuid(os.getuid())
         logger.exception("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
-        if redis_url == OLD_REDIS_URL_DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):
+        if redis_url == DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):
             logger.info(
                 "You can safely ignore the above Redis error if you don't use Redis. "
                 "You can remove this error by setting redis.url to false in your settings.yml."
