@@ -239,8 +239,8 @@ For example on Fedora (RHEL): If you try to install a redis DB with socket
 communication and you want to connect to it from the SearXNG uWSGI, you will see a
 *Permission denied* in the log of your instance::
 
-  ERROR:searx.shared.redis: [searxng (993)] can't connect redis DB ...
-  ERROR:searx.shared.redis:   Error 13 connecting to unix socket: /usr/local/searxng-redis/run/redis.sock. Permission denied.
+  ERROR:searx.redisdb: [searxng (993)] can't connect redis DB ...
+  ERROR:searx.redisdb:   Error 13 connecting to unix socket: /usr/local/searxng-redis/run/redis.sock. Permission denied.
   ERROR:searx.plugins.limiter: init limiter DB failed!!!
 
 Even if your *searxng* user of the uWSGI process is added to additional groups

@@ -132,5 +132,4 @@ to see if there are some left overs.  In this example there exists a *old*
    INFO:  [OK] (old) account 'filtron' does not exists
    INFO:  [OK] (old) account 'morty' does not exists
    ...
-   INFO    searx.shared                  : Use shared_simple implementation
-   INFO    searx.shared.redis            : connected redis DB --> default
+   INFO    searx.redisdb            : connected redis DB --> default

@@ -14,7 +14,7 @@ from typing_extensions import TypedDict, Literal
 import redis.exceptions
 
 from searx import logger, settings, searx_debug
-from searx.shared.redisdb import client as get_redis_client
+from searx.redisdb import client as get_redis_client
 from searx.exceptions import SearxSettingsException
 from searx.search.processors import PROCESSORS
 from searx.search.checker import Checker
