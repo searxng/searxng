@@ -69,10 +69,18 @@ class SearxEngineAPIException(SearxEngineResponseException):
 class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """The website is blocking the access"""
 
-    def __init__(self, suspended_time=24 * 3600, message='Access denied'):
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineAccessDenied"
+
+    def __init__(self, suspended_time=None, message='Access denied'):
+        suspended_time = suspended_time or self._get_default_suspended_time()
         super().__init__(message + ', suspended_time=' + str(suspended_time))
         self.suspended_time = suspended_time
         self.message = message
+
+    def _get_default_suspended_time(self):
+        from searx import get_setting
+
+        return get_setting(self.SUSPEND_TIME_SETTING)
 
 
 class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
@@ -81,7 +89,9 @@ class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
     By default, searx stops sending requests to this engine for 1 day.
     """
 
-    def __init__(self, suspended_time=24 * 3600, message='CAPTCHA'):
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineCaptcha"
+
+    def __init__(self, suspended_time=None, message='CAPTCHA'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
@@ -91,7 +101,9 @@ class SearxEngineTooManyRequestsException(SearxEngineAccessDeniedException):
     By default, searx stops sending requests to this engine for 1 hour.
     """
 
-    def __init__(self, suspended_time=3600, message='Too many request'):
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineTooManyRequests"
+
+    def __init__(self, suspended_time=None, message='Too many request'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 

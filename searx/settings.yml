@@ -45,6 +45,20 @@ search:
   ban_time_on_fail: 5
   # max ban time in seconds after engine errors
   max_ban_time_on_fail: 120
+  suspend_times:
+    # Engine suspension time after error (in seconds; set to 0 to disable)
+    # For error "Access denied" and "HTTP error [402, 403]"
+    SearxEngineAccessDenied: 86400
+    # For error "CAPTCHA"
+    SearxEngineCaptcha: 86400
+    # For error "Too many request" and "HTTP error 429"
+    SearxEngineTooManyRequests: 3600
+    # Cloudflare CAPTCHA
+    cf_SearxEngineCaptcha: 1296000
+    cf_SearxEngineAccessDenied: 86400
+    # ReCAPTCHA
+    recaptcha_SearxEngineCaptcha: 604800
+
   # remove format to deny access, use lower case.
   # formats: [html, csv, json, rss]
   formats:

@@ -160,6 +160,14 @@ SCHEMA = {
         'languages': SettingSublistValue(LANGUAGE_CODES, LANGUAGE_CODES),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),
         'max_ban_time_on_fail': SettingsValue(numbers.Real, 120),
+        'suspended_times': {
+            'SearxEngineAccessDenied': SettingsValue(numbers.Real, 86400),
+            'SearxEngineCaptcha': SettingsValue(numbers.Real, 86400),
+            'SearxEngineTooManyRequests': SettingsValue(numbers.Real, 3600),
+            'cf_SearxEngineCaptcha': SettingsValue(numbers.Real, 1296000),
+            'cf_SearxEngineAccessDenied': SettingsValue(numbers.Real, 86400),
+            'recaptcha_SearxEngineCaptcha': SettingsValue(numbers.Real, 604800),
+        },
         'formats': SettingsValue(list, OUTPUT_FORMATS),
     },
     'server': {
