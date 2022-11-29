@@ -22,8 +22,7 @@ WORKDIR /usr/local/searxng
 
 COPY requirements.txt ./requirements.txt
 
-RUN apk upgrade --no-cache \
- && apk add --no-cache -t build-dependencies \
+RUN apk add --no-cache -t build-dependencies \
     build-base \
     py3-setuptools \
     python3-dev \
@@ -47,8 +46,7 @@ RUN apk upgrade --no-cache \
     brotli \
  && pip3 install --no-cache -r requirements.txt \
  && apk del build-dependencies \
- && rm -rf /root/.cache \
- && find /usr/lib/python*/ -name '*.pyc' -delete
+ && rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
 COPY --chown=searxng:searxng searx ./searx
@@ -57,7 +55,8 @@ ARG TIMESTAMP_SETTINGS=0
 ARG TIMESTAMP_UWSGI=0
 ARG VERSION_GITCOMMIT=unknown
 
-RUN touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
+RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
+ && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
  && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
  && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
