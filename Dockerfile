@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
@@ -18,7 +18,6 @@ ENV INSTANCE_NAME=searxng \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
 
 WORKDIR /usr/local/searxng
-
 
 COPY requirements.txt ./requirements.txt
 
