@@ -47,7 +47,7 @@ def initialize():
         _CLIENT = redis.Redis.from_url(redis_url)
 
         # log the parameters as seen by the redis lib, without the password
-        kwargs = _CLIENT.get_connection_kwargs()
+        kwargs = _CLIENT.get_connection_kwargs().copy()
         kwargs.pop('password', None)
         kwargs = ' '.join([f'{k}={v!r}' for k, v in kwargs.items()])
         logger.info("connecting to Redis %s", kwargs)
