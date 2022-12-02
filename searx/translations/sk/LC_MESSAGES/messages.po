@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-10-14 14:11+0000\n"
-"PO-Revision-Date: 2022-10-28 07:18+0000\n"
+"PO-Revision-Date: 2022-11-30 15:33+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
 "\n"
@@ -275,6 +275,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} citácií od roku {firstCitationVelocityYear} do roku "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -300,19 +302,19 @@ msgstr "Obrázok nemohol byť stiahnutý."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Ráno"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Poludnie"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Večer"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Noc"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -332,7 +334,7 @@ msgstr "Informácie o sebe"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Otvoriť prístup k prepísaniu DOI"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
@@ -356,7 +358,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Vlastné informácie"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -368,7 +370,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Kontrola Tor plugin"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
@@ -447,7 +449,7 @@ msgstr "Používame"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "otvorený metavyhľadávač rešpektujúci súkromie"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -507,10 +509,12 @@ msgstr "Skontrolujte prosím existujúce chyby tohto vyhľadávaču na Githube"
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
+"Potvrdzujem, že neexistuje žiadna chyba týkajúca sa problému, s ktorým sa "
+"stretávam"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Ak ide o verejnú inštanciu, uveďte v hlásení o chybe adresu URL"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -544,7 +548,7 @@ msgstr "P95"
 
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Neúspešný(é) kontrolný(é) test(y): "
 
 #: searx/templates/simple/preferences.html:85
 msgid "Errors:"
@@ -617,6 +621,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
+"Presmerovanie na verzie publikácií s otvoreným prístupom, ak sú k dispozícii "
+"(vyžaduje sa plugin)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -652,7 +658,7 @@ msgstr "Štýl témy"
 
 #: searx/templates/simple/preferences.html:214
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Vyberte možnosť auto, aby sa riadila nastaveniami vášho prehliadača"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Center Alignment"
@@ -706,6 +712,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Zmena spôsobu odosielania formulárov, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">dozvedieť sa "
+"viac o metódach žiadosti</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -723,17 +732,19 @@ msgstr "Zakázané"
 
 #: searx/templates/simple/preferences.html:276
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Sprostredkovanie výsledkov snímok cez SearXNG"
 
 #: searx/templates/simple/preferences.html:281
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Dotaz v názve stránky"
 
 #: searx/templates/simple/preferences.html:288
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Ak je táto možnosť povolená, názov stránky s výsledkami obsahuje vašu "
+"požiadavku. Váš prehliadač môže tento názov zaznamenať"
 
 #: searx/templates/simple/preferences.html:294
 msgid "Engines"
@@ -748,6 +759,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Táto karta sa nezobrazuje vo výsledkoch vyhľadávania, ale môžete vyhľadávať "
+"v enginoch, ktoré sú tu uvedené, pomocou Bangs."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -775,7 +788,7 @@ msgstr "Časový rozsah"
 #: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Doba odozvy"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Max time"
@@ -784,7 +797,7 @@ msgstr "Maximálny čas"
 #: searx/templates/simple/preferences.html:315
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Spoľahlivosť"
 
 #: searx/templates/simple/preferences.html:353
 msgid "Special Queries"
