@@ -731,21 +731,8 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    # see https://docs.searxng.org/src/searx.engines.google.html#module-searx.engines.google
-    use_mobile_ui: false
     # additional_tests:
     #   android: *test_android
-
-  # - name: google italian
-  #   engine: google
-  #   shortcut: goit
-  #   use_mobile_ui: false
-  #   language: it
-
-  # - name: google mobile ui
-  #   engine: google
-  #   shortcut: gomui
-  #   use_mobile_ui: true
 
   - name: google images
     engine: google_images

@@ -5,14 +5,17 @@
 """
 # pylint: disable=use-dict-literal
 
-from json import loads
+import json
 from urllib.parse import urlencode
 
-from lxml import etree
+import lxml
 from httpx import HTTPError
 
 from searx import settings
-from searx.engines import engines
+from searx.engines import (
+    engines,
+    google,
+)
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 
@@ -55,7 +58,7 @@ def dbpedia(query, _lang):
     results = []
 
     if response.ok:
-        dom = etree.fromstring(response.content)
+        dom = lxml.etree.fromstring(response.content)
         results = dom.xpath('//Result/Label//text()')
 
     return results
@@ -81,18 +84,32 @@ def duckduckgo(query, sxng_locale):
     return ret_val
 
 
-def google(query, lang):
-    # google autocompleter
-    autocomplete_url = 'https://suggestqueries.google.com/complete/search?client=toolbar&'
+def google_complete(query, sxng_locale):
+    """Autocomplete from Google.  Supports Google's languages and subdomains
+    (:py:obj:`searx.engines.google.get_google_info`) by using the async REST
+    API::
 
-    response = get(autocomplete_url + urlencode(dict(hl=lang, q=query)))
+        https://{subdomain}/complete/search?{args}
 
+    """
+
+    google_info = google.get_google_info({'searxng_locale': sxng_locale}, engines['google'].traits)
+
+    url = 'https://{subdomain}/complete/search?{args}'
+    args = urlencode(
+        {
+            'q': query,
+            'client': 'gws-wiz',
+            'hl': google_info['params']['hl'],
+        }
+    )
     results = []
-
-    if response.ok:
-        dom = etree.fromstring(response.text)
-        results = dom.xpath('//suggestion/@data')
-
+    resp = get(url.format(subdomain=google_info['subdomain'], args=args))
+    if resp.ok:
+        json_txt = resp.text[resp.text.find('[') : resp.text.find(']', -3) + 1]
+        data = json.loads(json_txt)
+        for item in data[0]:
+            results.append(lxml.html.fromstring(item[0]).text_content())
     return results
 
 
@@ -132,7 +149,7 @@ def swisscows(query, _lang):
     # swisscows autocompleter
     url = 'https://swisscows.ch/api/suggest?{query}&itemsCount=5'
 
-    resp = loads(get(url.format(query=urlencode({'query': query}))).text)
+    resp = json.loads(get(url.format(query=urlencode({'query': query}))).text)
     return resp
 
 
@@ -184,7 +201,7 @@ def yandex(query, _lang):
     # yandex autocompleter
     url = "https://suggest.yandex.com/suggest-ff.cgi?{0}"
 
-    resp = loads(get(url.format(urlencode(dict(part=query)))).text)
+    resp = json.loads(get(url.format(urlencode(dict(part=query)))).text)
     if len(resp) > 1:
         return resp[1]
     return []
@@ -193,7 +210,7 @@ def yandex(query, _lang):
 backends = {
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
-    'google': google,
+    'google': google_complete,
     'seznam': seznam,
     'startpage': startpage,
     'swisscows': swisscows,
