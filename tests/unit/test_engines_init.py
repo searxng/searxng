@@ -53,3 +53,25 @@ class TestEnginesInit(SearxTestCase):
         self.assertIn('onions', engines.categories)
         self.assertIn('http://engine1.onion', engines.engines['engine1'].search_url)
         self.assertEqual(engines.engines['engine1'].timeout, 120.0)
+
+    def test_missing_name_field(self):
+        settings['outgoing']['using_tor_proxy'] = False
+        engine_list = [
+            {'engine': 'dummy', 'shortcut': 'e1', 'categories': 'general'},
+        ]
+        with self.assertLogs('searx.engines', level='ERROR') as cm:
+            engines.load_engines(engine_list)
+            self.assertEqual(len(engines.engines), 0)
+            self.assertEqual(cm.output, ['ERROR:searx.engines:An engine does not have a "name" field'])
+
+    def test_missing_engine_field(self):
+        settings['outgoing']['using_tor_proxy'] = False
+        engine_list = [
+            {'name': 'engine2', 'shortcut': 'e2', 'categories': 'onions'},
+        ]
+        with self.assertLogs('searx.engines', level='ERROR') as cm:
+            engines.load_engines(engine_list)
+            self.assertEqual(len(engines.engines), 0)
+            self.assertEqual(
+                cm.output, ['ERROR:searx.engines:The "engine" field is missing for the engine named "engine2"']
+            )

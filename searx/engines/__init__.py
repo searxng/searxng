@@ -106,8 +106,12 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
     - required attribute is not set :py:func:`is_missing_required_attributes`
 
     """
+    # pylint: disable=too-many-return-statements
 
-    engine_name = engine_data['name']
+    engine_name = engine_data.get('name')
+    if engine_name is None:
+        logger.error('An engine does not have a "name" field')
+        return None
     if '_' in engine_name:
         logger.error('Engine name contains underscore: "{}"'.format(engine_name))
         return None
@@ -118,7 +122,10 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
         engine_data['name'] = engine_name
 
     # load_module
-    engine_module = engine_data['engine']
+    engine_module = engine_data.get('engine')
+    if engine_module is None:
+        logger.error('The "engine" field is missing for the engine named "{}"'.format(engine_name))
+        return None
     try:
         engine = load_module(engine_module + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
