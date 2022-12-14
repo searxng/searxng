@@ -174,7 +174,7 @@ SCHEMA = {
         'default_http_headers': SettingsValue(dict, {}),
     },
     'redis': {
-        'url': SettingsValue((None, False, str), False),
+        'url': SettingsValue((None, False, str), False, 'SEARXNG_REDIS_URL'),
     },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),

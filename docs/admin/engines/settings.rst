@@ -294,7 +294,7 @@ Global Settings
 
 .. _Redis.from_url(url): https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
 
-A redis DB can be connected by an URL, in :py:obj:`searx.shared.redisdb` you
+A redis DB can be connected by an URL, in :py:obj:`searx.redisdb` you
 will find a description to test your redis connection in SerXNG.  When using
 sockets, don't forget to check the access rights on the socket::
 

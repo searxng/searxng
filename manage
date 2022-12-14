@@ -32,6 +32,12 @@ export NODE_MINIMUM_VERSION="16.13.0"
 BLACK_OPTIONS=("--target-version" "py37" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
 
+_dev_redis_sock="/usr/local/searxng-redis/run/redis.sock"
+# set SEARXNG_REDIS_URL if it is not defined and "{_dev_redis_sock}" exists.
+if [ -S "${_dev_redis_sock}" ] && [ -z "${SEARXNG_REDIS_URL}" ]; then
+    export SEARXNG_REDIS_URL="unix://${_dev_redis_sock}?db=0"
+fi
+
 pylint.FILES() {
 
     # List files tagged by comment:
@@ -65,6 +71,8 @@ help() {
     cat <<EOF
 buildenv:
   rebuild ./utils/brand.env
+webapp.:
+  run       : run developer instance
 weblate.:
   push.translations: push translation changes from SearXNG to Weblate's counterpart
   to.translations: Update 'translations' branch with last additions from Weblate.
@@ -121,6 +129,10 @@ pygments.:
 EOF
     go.help
     static_help
+    cat <<EOF
+environment ...
+  SEARXNG_REDIS_URL : ${SEARXNG_REDIS_URL}
+EOF
 }
 
 

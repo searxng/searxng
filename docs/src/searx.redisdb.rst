@@ -4,5 +4,5 @@
 Redis DB
 ========
 
-.. automodule:: searx.shared.redisdb
+.. automodule:: searx.redisdb
   :members:

@@ -17,7 +17,7 @@ import time
 import importlib
 from typing import Callable
 
-from searx.shared.redisdb import client as get_redis_client
+from searx.redisdb import client as get_redis_client
 from searx.redislib import lua_script_storage
 
 

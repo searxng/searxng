@@ -7,8 +7,8 @@
 This implementation uses the :ref:`settings redis` setup from ``settings.yml``.
 A redis DB connect can be tested by::
 
-  >>> from searx.shared import redisdb
-  >>> redisdb.init()
+  >>> from searx import redisdb
+  >>> redisdb.initialize()
   True
   >>> db = redisdb.client()
   >>> db.set("foo", "bar")
@@ -30,7 +30,7 @@ OLD_REDIS_URL_DEFAULT_URL = 'unix:///usr/local/searxng-redis/run/redis.sock?db=0
 """This was the default Redis URL in settings.yml."""
 
 _CLIENT = None
-logger = logging.getLogger('searx.shared.redisdb')
+logger = logging.getLogger(__name__)
 
 
 def client() -> redis.Redis:
