@@ -71,7 +71,6 @@ import babel
 from searx.utils import detect_language
 from searx.languages import language_codes
 
-
 name = gettext('Autodetect search language')
 description = gettext('Automatically detect the query search language and switch to it.')
 preference_section = 'general'

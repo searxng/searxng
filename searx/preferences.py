@@ -441,7 +441,7 @@ class Preferences:
         """parse (base64) preferences from request (``flask.request.form['preferences']``)"""
         bin_data = decompress(urlsafe_b64decode(input_data))
         dict_data = {}
-        for x, y in parse_qs(bin_data.decode('ascii')).items():
+        for x, y in parse_qs(bin_data.decode('ascii'), keep_blank_values=True).items():
             dict_data[x] = y[0]
         self.parse_dict(dict_data)
 

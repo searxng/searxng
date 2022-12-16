@@ -16,7 +16,7 @@ Enable the plugin in ``settings.yml``:
 import re
 from flask import request
 
-from searx.shared import redisdb
+from searx import redisdb
 from searx.redislib import incr_sliding_window
 
 name = "Request limiter"

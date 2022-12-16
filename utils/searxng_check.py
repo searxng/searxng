@@ -26,8 +26,7 @@ if os.path.isfile(OLD_SETTING):
         ))
     warnings.warn(msg, DeprecationWarning)
 
-from searx.shared import redisdb
-from searx import get_setting
+from searx import redisdb, get_setting
 
 if not redisdb.initialize():
     warnings.warn("can't connect to redis DB at: %s" % get_setting('redis.url'), RuntimeWarning, stacklevel=2)

@@ -295,7 +295,7 @@ In your instance, redis DB connector is configured at:
 
     ${redis_url}
 "
-    if searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.initialize() or exit(42)"; then
+    if searxng.instance.exec python -c "from searx import redisdb; redisdb.initialize() or exit(42)"; then
         info_msg "SearXNG instance is able to connect redis DB."
         return
     fi
@@ -317,8 +317,8 @@ In your instance, redis DB connector is configured at:
             # fedora35 there is v2.0.20 installed --> no way to get additional
             # groups on fedora's tyrant mode.
             #
-            # ERROR:searx.shared.redis: [searxng (993)] can't connect redis DB ...
-            # ERROR:searx.shared.redis:   Error 13 connecting to unix socket: /usr/local/searxng-redis/run/redis.sock. Permission denied.
+            # ERROR:searx.redisdb: [searxng (993)] can't connect redis DB ...
+            # ERROR:searx.redisdb:   Error 13 connecting to unix socket: /usr/local/searxng-redis/run/redis.sock. Permission denied.
             # ERROR:searx.plugins.limiter: init limiter DB failed!!!
             #
             # $ ps -aef | grep '/usr/sbin/uwsgi --ini searxng.ini'

@@ -10,18 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"POT-Creation-Date: 2022-12-12 07:18+0000\n"
 "PO-Revision-Date: 2022-11-25 07:16+0000\n"
 "Last-Translator: MSI Shafik <shafik.te@gmail.com>\n"
-"Language-Team: Bengali <https://weblate.bubu1.eu/projects/searxng/searxng/bn/"
-">\n"
 "Language: bn\n"
+"Language-Team: Bengali "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/bn/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.14.1\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -148,84 +147,84 @@ msgstr "সাদা"
 msgid "dark"
 msgstr "কালো"
 
-#: searx/webapp.py:164
+#: searx/webapp.py:165
 msgid "timeout"
 msgstr "সময় শেষ"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:166
 msgid "parsing error"
 msgstr "পার্স ত্রুটি"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:167
 msgid "HTTP protocol error"
 msgstr "HTTP প্রোটোকল ত্রুটি"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:168
 msgid "network error"
 msgstr "নেটওয়ার্ক ত্রুটি"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL ত্রুটি: শংসাপত্রের বৈধতা ব্যর্থ হয়েছে৷"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:171
 msgid "unexpected crash"
 msgstr "অপ্রত্যাশিত ক্র্যাশ"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP error"
 msgstr "এইচটিটিপি ত্রুটি"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:179
 msgid "HTTP connection error"
 msgstr "এইচটিটিপি সংযোগ ত্রুটি"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "proxy error"
 msgstr "প্রক্সি ত্রুটি"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "CAPTCHA"
 msgstr "ক্যাপচা"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "too many requests"
 msgstr "অনেক বেশি অনুরোধ"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "access denied"
 msgstr "অ্যাক্সেস অমান্য"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:189
 msgid "server API error"
 msgstr "সার্ভার এপিআই ত্রুটি"
 
-#: searx/webapp.py:365
+#: searx/webapp.py:366
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
 msgid "Source"
 msgstr "উৎস"
 
-#: searx/webapp.py:369
+#: searx/webapp.py:370
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করার সময় ত্রুটি৷."
 
-#: searx/webapp.py:521 searx/webapp.py:953
+#: searx/webapp.py:522 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
 msgstr "অবৈধ সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন৷"
 
-#: searx/webapp.py:537
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr "অবৈধ সেটিংস"
 
-#: searx/webapp.py:614 searx/webapp.py:690
+#: searx/webapp.py:615 searx/webapp.py:691
 msgid "search error"
 msgstr "অনুসন্ধানের ত্রুটি"
 
-#: searx/webapp.py:852
+#: searx/webapp.py:853
 msgid "Suspended"
 msgstr "স্থগিত"
 
@@ -315,6 +314,14 @@ msgstr "রাত"
 msgid "Night"
 msgstr "রাত"
 
+#: searx/plugins/autodetect_search_language.py:79
+msgid "Autodetect search language"
+msgstr ""
+
+#: searx/plugins/autodetect_search_language.py:80
+msgid "Automatically detect the query search language and switch to it."
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "স্ট্রিংগুলিকে বিভিন্ন হ্যাশ ডাইজেস্টে রূপান্তর করে।"
@@ -364,8 +371,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"ক্যোয়ারীটি \"ip\" হলে আপনার আইপি এবং যদি ক্যোয়ারীতে \"ব্যবহারকারী এজেন্ট\" "
-"থাকে তাহলে আপনার ব্যবহারকারী এজেন্ট প্রদর্শন করে।"
+"ক্যোয়ারীটি \"ip\" হলে আপনার আইপি এবং যদি ক্যোয়ারীতে \"ব্যবহারকারী "
+"এজেন্ট\" থাকে তাহলে আপনার ব্যবহারকারী এজেন্ট প্রদর্শন করে।"
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -385,8 +392,8 @@ msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
-"TOR প্রস্থান নোড তালিকা (https://check.torproject.org/exit-addresses) পৌঁছানো"
-" যায় না।"
+"TOR প্রস্থান নোড তালিকা (https://check.torproject.org/exit-addresses) "
+"পৌঁছানো যায় না।"
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -394,8 +401,7 @@ msgstr "আপনি TOR ব্যবহার করছেন। আপনা�
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
-"আপনি TOR ব্যবহার করছেন না। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
+msgstr "আপনি TOR ব্যবহার করছেন না। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -414,8 +420,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Vim-এর মতো হটকি (জাভাস্ক্রিপ্ট প্রয়োজন) দিয়ে অনুসন্ধান ফলাফল নেভিগেট করুন। "
-"সাহায্য পেতে প্রধান বা ফলাফল পৃষ্ঠায় \"h\" কী চাপুন।"
+"Vim-এর মতো হটকি (জাভাস্ক্রিপ্ট প্রয়োজন) দিয়ে অনুসন্ধান ফলাফল নেভিগেট "
+"করুন। সাহায্য পেতে প্রধান বা ফলাফল পৃষ্ঠায় \"h\" কী চাপুন।"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -504,14 +510,13 @@ msgstr "GitHub এ একটি নতুন সমস্যা জমা দে
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
-"GitHub এ এই ইঞ্জিন সম্পর্কে বিদ্যমান বাগগুলির জন্য দয়া করে পরীক্ষা করুন"
+msgstr "GitHub এ এই ইঞ্জিন সম্পর্কে বিদ্যমান বাগগুলির জন্য দয়া করে পরীক্ষা করুন"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"আমি নিশ্চিত করছি যে আমি যে সমস্যার সম্মুখীন হচ্ছি সে সম্পর্কে কোন বিদ্যমান বা"
-"গ নেই"
+"আমি নিশ্চিত করছি যে আমি যে সমস্যার সম্মুখীন হচ্ছি সে সম্পর্কে কোন "
+"বিদ্যমান বাগ নেই"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -1229,3 +1234,4 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
