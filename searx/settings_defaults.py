@@ -18,7 +18,7 @@ searx_dir = abspath(dirname(__file__))
 
 logger = logging.getLogger('searx')
 OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
-LANGUAGE_CODES = ['all'] + list(l[0] for l in languages)
+LANGUAGE_CODES = ['all', 'auto'] + list(l[0] for l in languages)
 SIMPLE_STYLE = ('auto', 'light', 'dark')
 CATEGORIES_AS_TABS = {
     'general': {},

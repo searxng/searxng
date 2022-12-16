@@ -116,12 +116,15 @@
       <p class="value">{{- '' -}}
         <select name='language' aria-labelledby="pref_language" aria-describedby="desc_language">{{- '' -}}
           <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
+          <option value="auto" {% if current_language == 'auto' %}selected="selected"{% endif %}>{{ _('Auto-detect') }}</option>
           {%- for lang_id,lang_name,country_name,english_name,flag in language_codes | sort(attribute=1) -%}
           <option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %}({{ country_name }}) {% endif %}</option>
           {%- endfor -%}
         </select>{{- '' -}}
       </p>
-      <div class="description" id="desc_language">{{ _('What language do you prefer for search?') }}</div>
+      <div class="description" id="desc_language">
+        {{- _('What language do you prefer for search?') }} {{ _('Choose Auto-detect to let SearXNG detect the language of your query.') -}}
+      </div>
     </fieldset>
     {% endif %}
     {% if 'autocomplete' not in locked_preferences %}
