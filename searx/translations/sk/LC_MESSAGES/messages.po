@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-10-14 14:11+0000\n"
-"PO-Revision-Date: 2022-12-09 07:15+0000\n"
+"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"PO-Revision-Date: 2022-12-12 23:30+0000\n"
 "Last-Translator: JohnyPeaN <johnypean@gmail.com>\n"
 "Language-Team: Slovak <https://weblate.bubu1.eu/projects/searxng/searxng/sk/>"
 "\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
 ">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 4.14.1\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -150,84 +150,84 @@ msgstr "svetlý"
 msgid "dark"
 msgstr "tmavý"
 
-#: searx/webapp.py:164
+#: searx/webapp.py:165
 msgid "timeout"
 msgstr "časový limit"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:166
 msgid "parsing error"
 msgstr "chyba parsovania"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:167
 msgid "HTTP protocol error"
 msgstr "chyba HTTP protokolu"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:168
 msgid "network error"
 msgstr "chyba siete"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL error: overenie certifikátu zlyhalo"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:171
 msgid "unexpected crash"
 msgstr "neočakávaná chyba"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP error"
 msgstr "HTTP chyba"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:179
 msgid "HTTP connection error"
 msgstr "chyba pripojenia cez HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "proxy error"
 msgstr "chyba proxy"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "too many requests"
 msgstr "priveľa žiadostí"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "access denied"
 msgstr "prístup bol odmietnutý"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:189
 msgid "server API error"
 msgstr "API chyba servera"
 
-#: searx/webapp.py:365
+#: searx/webapp.py:366
 msgid "No item found"
 msgstr "Nič sa nenašlo"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
 msgid "Source"
 msgstr "Zdroj"
 
-#: searx/webapp.py:369
+#: searx/webapp.py:370
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:521 searx/webapp.py:953
+#: searx/webapp.py:522 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
-#: searx/webapp.py:537
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr "Nesprávne nastavenia"
 
-#: searx/webapp.py:614 searx/webapp.py:690
+#: searx/webapp.py:615 searx/webapp.py:691
 msgid "search error"
 msgstr "chyba vyhľadávania"
 
-#: searx/webapp.py:852
+#: searx/webapp.py:853
 msgid "Suspended"
 msgstr "Pozastavené"
 
@@ -316,6 +316,14 @@ msgstr "Večer"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "Noc"
+
+#: searx/plugins/autodetect_search_language.py:79
+msgid "Autodetect search language"
+msgstr "Autodetekcia jazyka vyhľadávania"
+
+#: searx/plugins/autodetect_search_language.py:80
+msgid "Automatically detect the query search language and switch to it."
+msgstr "Automatická detekcia a prepnutie na jazyk dopytu."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -510,8 +518,8 @@ msgstr "Skontrolujte prosím existujúce chyby tohto vyhľadávaču na Githube"
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Potvrdzujem, že neexistuje žiadna chyba týkajúca sa problému, s ktorým sa "
-"stretávam"
+"Potvrdzujem, že neexistuje žiadna chyba týkajúca sa problému, s ktorým sa"
+" stretávam"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -622,8 +630,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
-"Presmerovanie na verzie publikácií s otvoreným prístupom, ak sú k dispozícii "
-"(vyžaduje sa plugin)"
+"Presmerovanie na verzie publikácií s otvoreným prístupom, ak sú k "
+"dispozícii (vyžaduje sa plugin)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -713,9 +721,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Zmena spôsobu odosielania formulárov, <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">dozvedieť sa "
-"viac o metódach žiadosti</a>"
+"Zmena spôsobu odosielania formulárov, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">dozvedieť sa viac o metódach žiadosti</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -760,8 +768,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"Táto karta sa nezobrazuje vo výsledkoch vyhľadávania, ale môžete vyhľadávať "
-"v enginoch, ktoré sú tu uvedené, pomocou Bangs."
+"Táto karta sa nezobrazuje vo výsledkoch vyhľadávania, ale môžete "
+"vyhľadávať v enginoch, ktoré sú tu uvedené, pomocou Bangs."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -837,7 +845,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Toto je zoznam cookies a ich hodnôt, ktoré vo vašom počítači ukladá SearXNG."
+"Toto je zoznam cookies a ich hodnôt, ktoré vo vašom počítači ukladá "
+"SearXNG."
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
@@ -873,8 +882,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Zadaním osobitých nastavení v adrese (URL) nastavení je možné synchronizovať "
-"nastavenia do iných zariadení."
+"Zadaním osobitých nastavení v adrese (URL) nastavení je možné "
+"synchronizovať nastavenia do iných zariadení."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
