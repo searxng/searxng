@@ -8,21 +8,20 @@
 # Alexandre Flament <alex@al-f.net>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-10-14 14:11+0000\n"
+"POT-Creation-Date: 2022-12-12 07:18+0000\n"
 "PO-Revision-Date: 2022-12-03 16:35+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Slovenian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"sl/>\n"
 "Language: sl\n"
+"Language-Team: Slovenian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/sl/>\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 "
+"|| n%100==4 ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 4.14.1\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -149,84 +148,84 @@ msgstr "svetlo"
 msgid "dark"
 msgstr "temno"
 
-#: searx/webapp.py:164
+#: searx/webapp.py:165
 msgid "timeout"
 msgstr "odmor"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:166
 msgid "parsing error"
 msgstr "napaka pri razčlenjevanju"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:167
 msgid "HTTP protocol error"
 msgstr "napaka protokola HTTP"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:168
 msgid "network error"
 msgstr "omrežna napaka"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL-napaka: Preveritev certifikata je spodletela"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:171
 msgid "unexpected crash"
 msgstr "nepričakovana zrušitev"
 
-#: searx/webapp.py:177
+#: searx/webapp.py:178
 msgid "HTTP error"
 msgstr "napaka HTTP"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:179
 msgid "HTTP connection error"
 msgstr "napaka povezave HTTP"
 
-#: searx/webapp.py:184
+#: searx/webapp.py:185
 msgid "proxy error"
 msgstr "napaka proxyja"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:186
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:187
 msgid "too many requests"
 msgstr "preveč prošenj"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:188
 msgid "access denied"
 msgstr "dostop zavrnjen"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:189
 msgid "server API error"
 msgstr "napaka API strežnika"
 
-#: searx/webapp.py:365
+#: searx/webapp.py:366
 msgid "No item found"
 msgstr "Ni zadetkov"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:367
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
 msgid "Source"
 msgstr "Vir"
 
-#: searx/webapp.py:369
+#: searx/webapp.py:370
 msgid "Error loading the next page"
 msgstr "Napaka pri nalaganju naslednje strani"
 
-#: searx/webapp.py:521 searx/webapp.py:953
+#: searx/webapp.py:522 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neveljavne nastavitve. Prosimo, preverite vašo konfiguracijo"
 
-#: searx/webapp.py:537
+#: searx/webapp.py:538
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: searx/webapp.py:614 searx/webapp.py:690
+#: searx/webapp.py:615 searx/webapp.py:691
 msgid "search error"
 msgstr "napaka pri iskanju"
 
-#: searx/webapp.py:852
+#: searx/webapp.py:853
 msgid "Suspended"
 msgstr "Prekinjeno"
 
@@ -282,9 +281,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Ne morem prebrati slike hiperpovezave. Razlog je lahko zaradi nepodprtega "
-"formata datoteke. TinEye podpira samo slikovne formate JPEG, PNG, GIF, BMP, "
-"TIFF ali WebP."
+"Ne morem prebrati slike hiperpovezave. Razlog je lahko zaradi nepodprtega"
+" formata datoteke. TinEye podpira samo slikovne formate JPEG, PNG, GIF, "
+"BMP, TIFF ali WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -314,6 +313,14 @@ msgstr ""
 msgid "Night"
 msgstr ""
 
+#: searx/plugins/autodetect_search_language.py:79
+msgid "Autodetect search language"
+msgstr ""
+
+#: searx/plugins/autodetect_search_language.py:80
+msgid "Automatically detect the query search language and switch to it."
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Pretvori besede v drugo hash vrednost."
@@ -341,8 +348,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Izogibanje plačilom s preusmeritvijo na prostodostopne različice publikacij, "
-"ko so na voljo"
+"Izogibanje plačilom s preusmeritvijo na prostodostopne različice "
+"publikacij, ko so na voljo"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -365,8 +372,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Prikaže IP naslov, če je niz poizvedbe \"ip\", in uporabniški agent, če je "
-"niz \"user agent\"."
+"Prikaže IP naslov, če je niz poizvedbe \"ip\", in uporabniški agent, če "
+"je niz \"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -378,16 +385,16 @@ msgid ""
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
 "Ta vtičnik preveri, če je naslov poizvedbe izhodni prikluček TOR in "
-"informira uporabnika o njem, kot naprimer check.torproject.org ampak preko "
-"searxng-ja."
+"informira uporabnika o njem, kot naprimer check.torproject.org ampak "
+"preko searxng-ja."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
-"Seznam izhodnih priključkov TOR (https://check.torproject.org/exit-addresses)"
-" je nedosegljiv."
+"Seznam izhodnih priključkov TOR (https://check.torproject.org/exit-"
+"addresses) je nedosegljiv."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
@@ -414,8 +421,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Premikanje po zadetkih z tipkovnimi bližnjicami Vim (zahtevan JavaScript). "
-"Pritisnite tipko \"h\" na glavni strani ali strani z zadetki za pomoč."
+"Premikanje po zadetkih z tipkovnimi bližnjicami Vim (zahtevan "
+"JavaScript). Pritisnite tipko \"h\" na glavni strani ali strani z zadetki"
+" za pomoč."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -508,8 +516,7 @@ msgstr "Prosim preveri že aktivne hrošče glede engine-a na GitHub-u"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
-"Potrjujem da o problemu, na katerega sem naletel, ni že obstoječega hrošča"
+msgstr "Potrjujem da o problemu, na katerega sem naletel, ni že obstoječega hrošča"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -620,8 +627,8 @@ msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
-"Preusmeri na prosto dostopne različice publikacij, ko so na voljo (zahtevan "
-"vtičnik)"
+"Preusmeri na prosto dostopne različice publikacij, ko so na voljo "
+"(zahtevan vtičnik)"
 
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
@@ -1474,3 +1481,4 @@ msgstr "skrij video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">, več o metodah za "
 #~ "zahtevke </a>"
+
