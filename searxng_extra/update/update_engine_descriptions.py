@@ -17,14 +17,11 @@ from os.path import join
 
 from lxml.html import fromstring
 
-from langdetect import detect_langs
-from langdetect.lang_detect_exception import LangDetectException
-
 from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text, match_language
 from searx.locales import LOCALE_NAMES, locales_initialize
 from searx import searx_dir
-from searx.utils import gen_useragent
+from searx.utils import gen_useragent, detect_language
 import searx.search
 import searx.network
 
@@ -115,17 +112,6 @@ def get_wikipedia_summary(lang, pageid):
         return api_result.get('extract')
     except Exception:  # pylint: disable=broad-except
         return None
-
-
-def detect_language(text):
-    try:
-        r = detect_langs(str(text))  # pylint: disable=E1101
-    except LangDetectException:
-        return None
-
-    if len(r) > 0 and r[0].prob > 0.95:
-        return r[0].lang
-    return None
 
 
 def get_website_description(url, lang1, lang2=None):

@@ -15,6 +15,7 @@ from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
+import fasttext
 
 from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
@@ -22,7 +23,7 @@ from babel.core import get_global
 
 
 from searx import settings
-from searx.data import USER_AGENTS
+from searx.data import USER_AGENTS, data_dir
 from searx.version import VERSION_TAG
 from searx.languages import language_codes
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
@@ -49,6 +50,12 @@ _STORAGE_UNIT_VALUE: Dict[str, int] = {
 
 _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
+
+_FASTTEXT_MODEL: Optional[fasttext.FastText._FastText] = None
+"""fasttext model to predict laguage of a search term"""
+
+# Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
+fasttext.FastText.eprint = lambda x: None
 
 
 class _NotSetClass:  # pylint: disable=too-few-public-methods
@@ -621,3 +628,20 @@ def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index:
         # to record xpath_spec
         raise SearxEngineXPathException(xpath_spec, 'index ' + str(index) + ' not found')
     return default
+
+
+def _get_fasttext_model() -> fasttext.FastText._FastText:
+    global _FASTTEXT_MODEL  # pylint: disable=global-statement
+    if _FASTTEXT_MODEL is None:
+        _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
+    return _FASTTEXT_MODEL
+
+
+def detect_language(text: str, threshold: float = 0.3, min_probability: float = 0.5) -> Optional[str]:
+    """https://fasttext.cc/docs/en/language-identification.html"""
+    if not isinstance(text, str):
+        raise ValueError('text must a str')
+    r = _get_fasttext_model().predict(text.replace('\n', ' '), k=1, threshold=threshold)
+    if isinstance(r, tuple) and len(r) == 2 and len(r[0]) > 0 and len(r[1]) > 0 and r[1][0] > min_probability:
+        return r[0][0].split('__label__')[1]
+    return None

@@ -66,46 +66,28 @@ that is identified as an English term (try ``:de-DE thermomix``, for example).
 """
 
 from flask_babel import gettext
-import fasttext
 import babel
 
-from searx.data import data_dir
+from searx.utils import detect_language
 from searx.languages import language_codes
-
-# Monkey patch: prevent fasttext from showing a (useless) warning when loading a
-# model.
-fasttext.FastText.eprint = lambda x: None
 
 name = gettext('Autodetect search language')
 description = gettext('Automatically detect the query search language and switch to it.')
 preference_section = 'general'
 default_on = False
 
-lang_model: fasttext.FastText._FastText = None
-"""fasttext model to predict laguage of a search term"""
-
 supported_langs = set()
 """Languages supported by most searxng engines (:py:obj:`searx.languages.language_codes`)."""
 
 
-def get_model():
-    # lazy load, in order to to save memory
-    global lang_model  # pylint: disable=global-statement
-    if lang_model is None:
-        lang_model = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
-    return lang_model
-
-
 def pre_search(request, search):  # pylint: disable=unused-argument
-    prediction = get_model().predict(search.search_query.query, k=1, threshold=0.3)
-    if prediction:
-        lang = prediction[0][0].split('__label__')[1]
-        if lang in supported_langs:
-            search.search_query.lang = lang
-            try:
-                search.search_query.locale = babel.Locale.parse(lang)
-            except babel.core.UnknownLocaleError:
-                pass
+    lang = detect_language(search.search_query.query, min_probability=0)
+    if lang in supported_langs:
+        search.search_query.lang = lang
+        try:
+            search.search_query.locale = babel.Locale.parse(lang)
+        except babel.core.UnknownLocaleError:
+            pass
     return True
 
 
