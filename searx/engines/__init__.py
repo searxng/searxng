@@ -248,6 +248,8 @@ def update_attributes_for_tor(engine: Engine) -> bool:
     if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
         engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
         engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
+        if hasattr(engine, 'ping_url'):
+            engine.ping_url = engine.onion_url + getattr(engine, 'ping_path', '')
 
 
 def is_missing_required_attributes(engine):
