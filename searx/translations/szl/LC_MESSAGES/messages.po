@@ -8,14 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-12 07:18+0000\n"
-"PO-Revision-Date: 2022-08-19 07:18+0000\n"
+"PO-Revision-Date: 2022-12-30 07:14+0000\n"
 "Last-Translator: gkkulik <gregorykkulik@gmail.com>\n"
+"Language-Team: Silesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"szl/>\n"
 "Language: szl\n"
-"Language-Team: Silesian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/szl/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -126,7 +129,7 @@ msgstr "nec"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr ""
+msgstr "naukowe publikacyje"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -161,7 +164,7 @@ msgstr "feler necu"
 
 #: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "Feler SSL: niy podarziło sie poświadczynie certyfikatu"
 
 #: searx/webapp.py:171
 msgid "unexpected crash"
@@ -269,6 +272,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} cytowań ôd roku {firstCitationVelocityYear} do "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -295,27 +300,27 @@ msgstr "Tego ôbrazu niy szło ściōngnōńć."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Rano"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Połednie"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Wieczōr"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Noc"
 
 #: searx/plugins/autodetect_search_language.py:79
 msgid "Autodetect search language"
-msgstr ""
+msgstr "Autowykrywanie jynzyka wyszukowanio"
 
 #: searx/plugins/autodetect_search_language.py:80
 msgid "Automatically detect the query search language and switch to it."
-msgstr ""
+msgstr "Autōmatycznie wykrywo jynzyk zapytanio i szaltruje na niego."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -361,7 +366,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Włosne informacyje"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -380,20 +385,24 @@ msgid ""
 "This plugin checks if the address of the request is a TOR exit node, and "
 "informs the user if it is, like check.torproject.org but from searxng."
 msgstr ""
+"Tyn przidowek sprawdzo, jeźli adresa ôd żōndanio to je wynzoł wyjścio TOR i "
+"informuje używocza, jeźli tak je. To jak check.torproject.org ino ôd searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "The TOR exit node list (https://check.torproject.org/exit-addresses) is "
 "unreachable."
 msgstr ""
+"Wykoz wynzłōw wyjścio TOR (https://check.torproject.org/exit-addresses) niy "
+"ôdpowiado."
 
 #: searx/plugins/tor_check.py:78
 msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
 
 #: searx/plugins/tor_check.py:84
 msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr ""
+msgstr "Niy używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -448,7 +457,7 @@ msgstr "Spiyrane ôd"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "ôtwarto metawyszukowarka, co szanuje prywatność"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -499,19 +508,20 @@ msgstr "ze proxy"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Zacznij ôtwiyrać nowy problym na GitHubie"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Sprawdź teroźne felery ôd tego motoru na GitHubie"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
+"Potwiyrdzōm, że niy ma teroźnego feleru, co by sie tykoł mojigo problymu"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Jeźli to je publiczno instancyjo, to podej URL we reporcie ô felerze"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -675,7 +685,7 @@ msgstr "Zastawiōne"
 
 #: searx/templates/simple/preferences.html:224
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Pokoż wyniki we postrzodku strōny (ukłod Oscar)."
 
 #: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
@@ -709,6 +719,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Zmiyń to, jak sōm wysyłane formulary, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">przewiydz sie "
+"wiyncyj ô metodach żōndań</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -860,13 +873,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:419
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL to prziwrōcynio twojich sztalōnkōw na inkszyj przeglōndarce"
 
 #: searx/templates/simple/preferences.html:423
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Skazowanie włosnych parametrōw we adresie sztalōnkōw może być używane do "
+"synchrōnizowanio sztalōnkōw miyndzy maszinami."
 
 #: searx/templates/simple/preferences.html:428
 msgid ""
@@ -1119,47 +1134,47 @@ msgstr "skryj karta"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Data publikacyje"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Cajtōng"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Redachtōr"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Wydowca"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Etykety"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1244,4 +1259,3 @@ msgstr "skryj wideo"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">przewiydz sie wiyncyj ô "
 #~ "metodach HTTP</a>"
-
