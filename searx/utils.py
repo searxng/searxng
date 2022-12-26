@@ -15,7 +15,6 @@ from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
-import fasttext
 
 from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
@@ -51,11 +50,8 @@ _STORAGE_UNIT_VALUE: Dict[str, int] = {
 _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 
-_FASTTEXT_MODEL: Optional[fasttext.FastText._FastText] = None
+_FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None
 """fasttext model to predict laguage of a search term"""
-
-# Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
-fasttext.FastText.eprint = lambda x: None
 
 
 class _NotSetClass:  # pylint: disable=too-few-public-methods
@@ -630,9 +626,13 @@ def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index:
     return default
 
 
-def _get_fasttext_model() -> fasttext.FastText._FastText:
+def _get_fasttext_model() -> "fasttext.FastText._FastText":
     global _FASTTEXT_MODEL  # pylint: disable=global-statement
     if _FASTTEXT_MODEL is None:
+        import fasttext  # pylint: disable=import-outside-toplevel
+
+        # Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
+        fasttext.FastText.eprint = lambda x: None
         _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
     return _FASTTEXT_MODEL
 
