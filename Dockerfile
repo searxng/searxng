@@ -36,7 +36,6 @@ RUN apk add --no-cache -t build-dependencies \
     su-exec \
     python3 \
     py3-pip \
-    py3-numpy \
     libxml2 \
     libxslt \
     openssl \
@@ -44,8 +43,6 @@ RUN apk add --no-cache -t build-dependencies \
     uwsgi \
     uwsgi-python3 \
     brotli \
- && pip3 install --no-cache setuptools wheel \
- && sed -i s/fasttext-wheel/fasttext/ requirements.txt \
  && pip3 install --no-cache -r requirements.txt \
  && apk del build-dependencies \
  && rm -rf /root/.cache
