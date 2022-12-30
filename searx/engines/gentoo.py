@@ -25,6 +25,7 @@ base_url = 'https://wiki.gentoo.org'
 # xpath queries
 xpath_results = '//ul[@class="mw-search-results"]/li'
 xpath_link = './/div[@class="mw-search-result-heading"]/a'
+xpath_content = './/div[@class="searchresult"]'
 
 
 # cut 'en' from 'en-US', 'de' from 'de-CH', and so on
@@ -77,8 +78,6 @@ main_langs = {
     'uk': 'Українська',
     'zh': '简体中文',
 }
-supported_languages = dict(lang_urls, **main_langs)
-
 
 # do search-request
 def request(query, params):
@@ -118,7 +117,8 @@ def response(resp):
         link = result.xpath(xpath_link)[0]
         href = urljoin(base_url, link.attrib.get('href'))
         title = extract_text(link)
+        content = extract_text(result.xpath(xpath_content))
 
-        results.append({'url': href, 'title': title})
+        results.append({'url': href, 'title': title, 'content': content})
 
     return results

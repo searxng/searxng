@@ -134,10 +134,3 @@ class Engine:  # pylint: disable=too-few-public-methods
           require_api_key: true
           results: HTML
     """
-
-    # deprecated properties
-
-    _fetch_supported_languages: Callable  # deprecated use fetch_traits
-    supported_languages: Union[List[str], Dict[str, str]]  # deprecated use traits
-    language_aliases: Dict[str, str]  # deprecated not needed when using triats
-    supported_languages_url: str  # deprecated not needed when using triats

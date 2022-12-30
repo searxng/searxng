@@ -13,10 +13,8 @@ used.
 from __future__ import annotations
 import json
 import dataclasses
-from typing import Dict, Union, List, Callable, Optional, TYPE_CHECKING
+from typing import Dict, Union, Callable, Optional, TYPE_CHECKING
 from typing_extensions import Literal, Self
-
-from babel.localedata import locale_identifiers
 
 from searx import locales
 from searx.data import data_dir, ENGINE_TRAITS
@@ -79,18 +77,8 @@ class EngineTraits:
     language").
     """
 
-    data_type: Literal['traits_v1', 'supported_languages'] = 'traits_v1'
-    """Data type, default is 'traits_v1' for vintage use 'supported_languages'.
-
-    .. hint::
-
-       For the transition period until the *fetch* functions of all the engines
-       are converted there will be the data_type 'supported_languages', which
-       maps the old logic unchanged 1:1.
-
-       Instances of data_type 'supported_languages' do not implement methods
-       like ``self.get_language(..)`` and ``self.get_region(..)``
-
+    data_type: Literal['traits_v1'] = 'traits_v1'
+    """Data type, default is 'traits_v1'.
     """
 
     custom: Dict[str, Dict] = dataclasses.field(default_factory=dict)
@@ -139,16 +127,6 @@ class EngineTraits:
         if self.data_type == 'traits_v1':
             return bool(self.get_region(searxng_locale) or self.get_language(searxng_locale))
 
-        if self.data_type == 'supported_languages':  # vintage / deprecated
-            # pylint: disable=import-outside-toplevel
-            from searx.utils import match_language
-
-            if searxng_locale == 'all':
-                return True
-            x = match_language(searxng_locale, self.supported_languages, self.language_aliases, None)
-            return bool(x)
-
-            # return bool(self.get_supported_language(searxng_locale))
         raise TypeError('engine traits of type %s is unknown' % self.data_type)
 
     def copy(self):
@@ -178,10 +156,6 @@ class EngineTraits:
 
         if self.data_type == 'traits_v1':
             self._set_traits_v1(engine)
-
-        elif self.data_type == 'supported_languages':  # vintage / deprecated
-            self._set_supported_languages(engine)
-
         else:
             raise TypeError('engine traits of type %s is unknown' % self.data_type)
 
@@ -211,106 +185,6 @@ class EngineTraits:
             traits.regions = {engine.region: regions[engine.region]}
 
         engine.language_support = bool(traits.languages or traits.regions)
-
-        # set the copied & modified traits in engine's namespace
-        engine.traits = traits
-
-    # -------------------------------------------------------------------------
-    # The code below is deprecated an can hopefully be deleted at one day
-    # -------------------------------------------------------------------------
-
-    supported_languages: Union[List[str], Dict[str, str]] = dataclasses.field(default_factory=dict)
-    """depricated: does not work for engines that do support languages based on a
-    region.  With this type it is not guaranteed that the key values can be
-    parsed by :py:obj:`babel.Locale.parse`!
-    """
-
-    # language_aliases: Dict[str, str] = dataclasses.field(default_factory=dict)
-    # """depricated: does not work for engines that do support languages based on a
-    # region.  With this type it is not guaranteed that the key values can be
-    # parsed by :py:obj:`babel.Locale.parse`!
-    # """
-
-    BABEL_LANGS = [
-        lang_parts[0] + '-' + lang_parts[-1] if len(lang_parts) > 1 else lang_parts[0]
-        for lang_parts in (lang_code.split('_') for lang_code in locale_identifiers())
-    ]
-
-    # def get_supported_language(self, searxng_locale, default=None):  # vintage / deprecated
-    #     """Return engine's language string that *best fits* to SearXNG's locale."""
-    #     if searxng_locale == 'all' and self.all_locale is not None:
-    #         return self.all_locale
-    #     return locales.get_engine_locale(searxng_locale, self.supported_languages, default=default)
-
-    @classmethod  # vintage / deprecated
-    def fetch_supported_languages(cls, engine: Engine) -> Union[Self, None]:
-        """DEPRECATED: Calls a function ``_fetch_supported_languages`` from engine's
-        namespace to fetch languages from the origin engine.  If function does
-        not exists, ``None`` is returned.
-        """
-
-        # pylint: disable=import-outside-toplevel
-        from searx import network
-        from searx.utils import gen_useragent
-
-        fetch_languages = getattr(engine, '_fetch_supported_languages', None)
-        if fetch_languages is None:
-            return None
-
-        # The headers has been moved here from commit 9b6ffed06: Some engines (at
-        # least bing and startpage) return a different result list of supported
-        # languages depending on the IP location where the HTTP request comes from.
-        # The IP based results (from bing) can be avoided by setting a
-        # 'Accept-Language' in the HTTP request.
-
-        headers = {
-            'User-Agent': gen_useragent(),
-            'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
-        }
-        resp = network.get(engine.supported_languages_url, headers=headers)
-        supported_languages = fetch_languages(resp)
-        if isinstance(supported_languages, list):
-            supported_languages.sort()
-
-        engine_traits = cls()
-        engine_traits.data_type = 'supported_languages'
-        engine_traits.supported_languages = supported_languages
-        return engine_traits
-
-    def _set_supported_languages(self, engine: Engine):  # vintage / deprecated
-        traits = self.copy()
-
-        # pylint: disable=import-outside-toplevel
-        from searx.utils import match_language
-
-        _msg = "settings.yml - engine: '%s' / %s: '%s' not supported"
-
-        if hasattr(engine, 'language'):
-            if engine.language not in self.supported_languages:
-                raise ValueError(_msg % (engine.name, 'language', engine.language))
-
-            if isinstance(self.supported_languages, dict):
-                traits.supported_languages = {engine.language: self.supported_languages[engine.language]}
-            else:
-                traits.supported_languages = [engine.language]
-
-        engine.language_support = bool(traits.supported_languages)
-        engine.supported_languages = traits.supported_languages
-
-        # find custom aliases for non standard language codes
-        traits.language_aliases = {}  # pylint: disable=attribute-defined-outside-init
-
-        for engine_lang in getattr(engine, 'language_aliases', {}):
-            iso_lang = match_language(engine_lang, self.BABEL_LANGS, fallback=None)
-            if (
-                iso_lang
-                and iso_lang != engine_lang
-                and not engine_lang.startswith(iso_lang)
-                and iso_lang not in self.supported_languages
-            ):
-                traits.language_aliases[iso_lang] = engine_lang
-
-        engine.language_aliases = traits.language_aliases
 
         # set the copied & modified traits in engine's namespace
         engine.traits = traits
@@ -351,17 +225,6 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
                 log("%-20s: SearXNG languages --> %s " % (engine_name, len(traits.languages)))
                 log("%-20s: SearXNG regions   --> %s" % (engine_name, len(traits.regions)))
                 obj[engine_name] = traits
-
-            # vintage / deprecated
-            _traits = EngineTraits.fetch_supported_languages(engine)
-            if _traits is not None:
-                log("%-20s: %s supported_languages (deprecated)" % (engine_name, len(_traits.supported_languages)))
-                if traits is not None:
-                    traits.supported_languages = _traits.supported_languages
-                    obj[engine_name] = traits
-                else:
-                    obj[engine_name] = _traits
-                continue
 
         return obj
 

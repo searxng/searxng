@@ -19,9 +19,6 @@ from searx.engines import (
 from searx.network import get as http_get
 from searx.exceptions import SearxEngineResponseException
 
-# a fetch_supported_languages() for XPath engines isn't available right now
-# _brave = ENGINES_LANGUAGES['brave'].keys()
-
 
 def get(*args, **kwargs):
     if 'timeout' not in kwargs:
@@ -225,14 +222,6 @@ def search_autocomplete(backend_name, query, sxng_locale):
     backend = backends.get(backend_name)
     if backend is None:
         return []
-
-    if engines[backend_name].traits.data_type != "traits_v1":
-        # vintage / deprecated
-        if not sxng_locale or sxng_locale == 'all':
-            sxng_locale = 'en'
-        else:
-            sxng_locale = sxng_locale.split('-')[0]
-
     try:
         return backend(query, sxng_locale)
     except (HTTPError, SearxEngineResponseException):

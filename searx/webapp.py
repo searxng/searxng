@@ -1317,11 +1317,6 @@ def config():
             continue
 
         _languages = engine.traits.languages.keys()
-        if engine.traits.data_type == 'supported_languages':  # vintage / deprecated
-            _languages = engine.traits.supported_languages
-            if isinstance(_languages, dict):
-                _languages = _languages.keys()
-
         _engines.append(
             {
                 'name': name,

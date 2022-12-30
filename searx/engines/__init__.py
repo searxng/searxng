@@ -43,8 +43,6 @@ ENGINE_DEFAULT_ARGS = {
     "send_accept_language_header": False,
     "tokens": [],
     "about": {},
-    "supported_languages": [],  # deprecated use traits
-    "language_aliases": {},  # deprecated not needed when using traits
 }
 # set automatically when an engine does not have any tab category
 OTHER_CATEGORY = 'other'
