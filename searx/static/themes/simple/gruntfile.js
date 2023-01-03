@@ -27,7 +27,7 @@ module.exports = function (grunt) {
           'copy',
           'uglify',
           'less',
-          'image',
+          'imagemin',
           'svg2png',
           'svg2jinja'
         ]
@@ -139,7 +139,7 @@ module.exports = function (grunt) {
         ],
       },
     },
-    image: {
+    imagemin: {
       svg4web: {
         options: {
           svgo: ['--config', 'svg4web.svgo.js']
@@ -286,7 +286,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-image');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-stylelint');
@@ -300,7 +300,7 @@ module.exports = function (grunt) {
     'copy',
     'uglify',
     'less',
-    'image',
+    'imagemin',
     'svg2png',
     'svg2jinja',
   ]);
