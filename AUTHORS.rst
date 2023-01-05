@@ -167,3 +167,4 @@ features or generally made searx better:
 - @XavierHorwood
 - Ahmad Alkadri `<https://github.com/ahmad-alkadri>`_
 - Milad Laly @Milad-Laly
+- @llmII

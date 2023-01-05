@@ -734,6 +734,36 @@ article[data-vim-selected].category-social {
   }
 }
 
+.numbered_pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+@media screen and (max-width: calc(@phone - 0.5px)) {
+  .numbered_pagination {
+    display: none;
+  }
+}
+
+.page_number {
+  background: none !important;
+  border: none !important;
+  color: var(--color-result-link-font) !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+}
+
+.page_number_current {
+  background: none !important;
+  border: none !important;
+  color: var(--color-result-link-visited-font) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
 #apis {
   margin-top: 8px;
   clear: both;
