@@ -35,8 +35,8 @@ To select language filter use a `:` prefix.  To give an example:
 
 ## `!!` external bangs
 
-SearXNG supports the external bangs from [DuckDuckGo].  To directly jump to a external
-search page use the `!!` prefix.  To give an example:
+SearXNG supports the external bangs from [DuckDuckGo].  To directly jump to a
+external search page use the `!!` prefix.  To give an example:
 
 - search Wikipedia by a custom language
 

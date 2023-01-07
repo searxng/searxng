@@ -4,8 +4,8 @@ SearXNG is a [metasearch engine], aggregating the results of other
 {{link('search engines', 'preferences')}} while not storing information about
 its users.
 
-The SearXNG project is driven by an open community, come join us on
-Matrix if you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
+The SearXNG project is driven by an open community, come join us on Matrix if
+you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
 
 Make SearXNG better.
 
@@ -27,7 +27,6 @@ If you do care about privacy, want to be a conscious user, or otherwise believe
 in digital freedom, make SearXNG your default search engine or run it on your
 own server!
 
-
 ## How do I set it as the default search engine?
 
 SearXNG supports [OpenSearch].  For more information on changing your default
@@ -39,6 +38,11 @@ search engine, see your browser's documentation:
 - [Chromium]-based browsers only add websites that the user navigates to without
   a path.
 
+When adding a search engine, there must be no duplicates with the same name.  If
+you encounter a problem where you cannot add the search engine, you can either:
+
+- remove the duplicate (default name: SearXNG) or
+- contact the owner to give the instance a different name than the default.
 
 ## How does it work?
 

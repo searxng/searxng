@@ -1,12 +1,13 @@
 # Sintaks pencarian
 
 SearXNG mempunyai sintaks pencarian memungkinkan Anda untuk mengubah kategori,
-mesin pencari, bahasa dan lainnya.  Lihat {{link('preferensi', 'preferences')}} untuk
-daftar mesin pencari, kategori dan bahasa.
+mesin pencari, bahasa dan lainnya.  Lihat {{link('preferensi', 'preferences')}}
+untuk daftar mesin pencari, kategori dan bahasa.
 
 ## `!` pilih mesin pencari dan kategori
 
-Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.  Sebagai contoh:
+Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.
+Sebagai contoh:
 
 - cari di Wikipedia tentang **Jakarta**
 
@@ -21,9 +22,10 @@ Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.  Sebag
 
   - {{search('!images kucing')}}
 
-Singkatan mesin pencari dan bahasa juga diterima.  Pengubah
-mesin/kategori dapat dirantai dan inklusif.  Misalnya dengan pencarian {{search('!map !ddg !wp
-Jakarta')}} dalam kategori peta dan DuckDuckGo dan Wikipedia tentang **Jakarta**.
+Singkatan mesin pencari dan bahasa juga diterima.  Pengubah mesin/kategori dapat
+dirantai dan inklusif.  Misalnya dengan pencarian {{search('!map !ddg !wp
+Jakarta')}} dalam kategori peta dan DuckDuckGo dan Wikipedia tentang
+**Jakarta**.
 
 ## `:` pilih bahasa
 
@@ -35,15 +37,16 @@ Untuk memilih saringan bahasa gunakan awalan `:`.  Sebagai contoh:
 
 ## `!!` mesin pencarian (*bangs*) eksternal
 
-SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [DuckDuckGo].  Untuk langsung lompat ke sebuah
-laman pencarian eksternal gunakan awalan `!!`.  Sebagai contoh:
+SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [DuckDuckGo].  Untuk
+langsung lompat ke sebuah laman pencarian eksternal gunakan awalan `!!`.
+Sebagai contoh:
 
 - cari Wikipedia dengan bahasa yang lain
 
   - {{search('!!wen cat')}}
 
-Diingat, pencarian Anda akan dilakukan secara langsung di mesin pencari eksternal,
-SearXNG tidak dapat melindungi privasi Anda di sana.
+Diingat, pencarian Anda akan dilakukan secara langsung di mesin pencari
+eksternal, SearXNG tidak dapat melindungi privasi Anda di sana.
 
 [DuckDuckGo]: https://duckduckgo.com/bang
 
