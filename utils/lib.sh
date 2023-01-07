@@ -600,7 +600,7 @@ pyenv.OK() {
     fi
 
     if [ ! -f "${PY_ENV}/requirements.sha256" ] \
-        || ! sha256sum --check --status <"${PY_ENV}/requirements.sha256" 2>/dev/null; then
+        || ! sha256sum -c "${PY_ENV}/requirements.sha256" > /dev/null 2>&1; then
         build_msg PYENV "[virtualenv] requirements.sha256 failed"
         sed 's/^/          [virtualenv] - /' <"${PY_ENV}/requirements.sha256"
         return 1
