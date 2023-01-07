@@ -1,56 +1,65 @@
 # Tentang SearXNG
 
-SearXNG adalah sebuah [mesin pencari meta], yang mendapatkan hasil dari {{link('mesin pencari', 'preferences')}}
-lainnya sambil tidak melacak penggunanya.
+SearXNG adalah sebuah [mesin pencari meta], yang mendapatkan hasil dari
+{{link('mesin pencari', 'preferences')}} lainnya sambil tidak melacak
+penggunanya.
 
-Proyek SearXNG diarahkan oleh sebuah komunitas terbuka, bergabung dengan kami
-di Matrix jika Anda memiliki pertanyaan atau ingin mengobrol tentang SearXNG di [#searxng:matrix.org]
+Proyek SearXNG diarahkan oleh sebuah komunitas terbuka, bergabung dengan kami di
+Matrix jika Anda memiliki pertanyaan atau ingin mengobrol tentang SearXNG di
+[#searxng:matrix.org]
 
 Buat SearXNG lebih baik.
 
 - Anda dapat membuat terjemahan SearXNG lebih baik di [Weblate], atau...
-- Lacak pengembangan, kirim kontribusi, dan laporkan masalah di [sumber SearXNG].
-- Untuk mendapatkan informasi lanjut, kunjungi dokumentasi proyek SearXNG di [dokumentasi SearXNG].
+- Lacak pengembangan, kirim kontribusi, dan laporkan masalah di [sumber
+  SearXNG].
+- Untuk mendapatkan informasi lanjut, kunjungi dokumentasi proyek SearXNG di
+  [dokumentasi SearXNG].
 
 ## Kenapa menggunakan SearXNG?
 
-- SearXNG mungkin tidak menawarkan Anda hasil yang dipersonalisasikan seperti Google, tetapi tidak membuat sebuah profil tentang Anda.
-- SearXNG tidak peduli apa yang Anda cari, tidak akan membagikan apa pun dengan pihak ketiga, dan tidak dapat digunakan untuk mengkompromikan Anda.
-- SearXNG adalah perangkat lunak bebas, kodenya 100% terbuka, dan semuanya dipersilakan untuk membuatnya lebih baik.
+- SearXNG mungkin tidak menawarkan Anda hasil yang dipersonalisasikan seperti
+  Google, tetapi tidak membuat sebuah profil tentang Anda.
+- SearXNG tidak peduli apa yang Anda cari, tidak akan membagikan apa pun dengan
+  pihak ketiga, dan tidak dapat digunakan untuk mengkompromikan Anda.
+- SearXNG adalah perangkat lunak bebas, kodenya 100% terbuka, dan semuanya
+  dipersilakan untuk membuatnya lebih baik.
 
-Jika Anda peduli dengan privasi, ingin menjadi pengguna yang sadar, ataupun percaya
-dalam kebebasan digital, buat SearXNG sebagai mesin pencari bawaan atau jalankan di server Anda sendiri!
-
+Jika Anda peduli dengan privasi, ingin menjadi pengguna yang sadar, ataupun
+percaya dalam kebebasan digital, buat SearXNG sebagai mesin pencari bawaan atau
+jalankan di server Anda sendiri!
 
 ## Bagaimana saya dapat membuat SearXNG sebagai mesin pencari bawaan?
 
-SearXNG mendukung [OpenSearch].  Untuk informasi lanjut tentang mengubah mesin pencari
-bawaan Anda, lihat dokumentasi peramban Anda:
+SearXNG mendukung [OpenSearch].  Untuk informasi lanjut tentang mengubah mesin
+pencari bawaan Anda, lihat dokumentasi peramban Anda:
 
 - [Firefox]
-- [Microsoft Edge] - Dibalik tautan, Anda juga akan menemukan beberapa instruksi berguna untuk Chrome dan Safari.
-- Peramban berbasis [Chromium] hanya menambahkan situs web yang dikunjungi oleh pengguna tanpa sebuah jalur.
-
+- [Microsoft Edge] - Dibalik tautan, Anda juga akan menemukan beberapa instruksi
+  berguna untuk Chrome dan Safari.
+- Peramban berbasis [Chromium] hanya menambahkan situs web yang dikunjungi oleh
+  pengguna tanpa sebuah jalur.
 
 ## Bagaimana caranya SearXNG bekerja?
 
-SearXNG adalah sebuah *fork* dari [mesin pencari meta] [searx] yang banyak dikenal
-yang diinspirasi oleh [proyek Seeks].  SearXNG menyediakan privasi dasar dengan mencampur kueri
-Anda dengan pencarian pada *platform* lainnya tanpa menyimpan data pencarian.
-SearXNG dapat ditambahkan ke bilah pencarian peramban Anda; lain lagi, SearXNG dapat diatur sebagai
-mesin pencarian bawaan.
+SearXNG adalah sebuah *fork* dari [mesin pencari meta] [searx] yang banyak
+dikenal yang diinspirasi oleh [proyek Seeks].  SearXNG menyediakan privasi dasar
+dengan mencampur kueri Anda dengan pencarian pada *platform* lainnya tanpa
+menyimpan data pencarian.  SearXNG dapat ditambahkan ke bilah pencarian peramban
+Anda; lain lagi, SearXNG dapat diatur sebagai mesin pencarian bawaan.
 
-{{link('Laman statistik', 'stats')}} berisi beberapa statistik penggunaan anonim berguna tentang mesin pencarian yang digunakan.
-
+{{link('Laman statistik', 'stats')}} berisi beberapa statistik penggunaan anonim
+berguna tentang mesin pencarian yang digunakan.
 
 ## Bagaimana caranya untuk membuat SearXNG milik saya?
 
-SearXNG menghargai kekhawatiran Anda tentang pencatatan (*log*), jadi ambil kodenya dari
-[sumber SearXNG] dan jalankan sendiri!
+SearXNG menghargai kekhawatiran Anda tentang pencatatan (*log*), jadi ambil
+kodenya dari [sumber SearXNG] dan jalankan sendiri!
 
 Tambahkan instansi Anda ke [daftar instansi
 publik]({{get_setting('brand.public_instances')}}) ini untuk membantu orang lain
-mendapatkan kembali privasi mereka dan membuat internet lebih bebas.  Lebih terdesentralisasinya internet, lebih banyak kebebasan yang kita punya!
+mendapatkan kembali privasi mereka dan membuat internet lebih bebas.  Lebih
+terdesentralisasinya internet, lebih banyak kebebasan yang kita punya!
 
 
 [sumber SearXNG]: {{GIT_URL}}

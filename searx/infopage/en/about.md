@@ -4,8 +4,8 @@ SearXNG is a [metasearch engine], aggregating the results of other
 {{link('search engines', 'preferences')}} while not storing information about
 its users.
 
-The SearXNG project is driven by an open community, come join us on
-Matrix if you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
+The SearXNG project is driven by an open community, come join us on Matrix if
+you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
 
 Make SearXNG better.
 
