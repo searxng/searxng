@@ -165,3 +165,4 @@ features or generally made searx better:
 - Paul Alcock @Guilvareux
 - Sam A. `<https://samsapti.dev>`_
 - @XavierHorwood
+- Ahmad Alkadri `<https://github.com/ahmad-alkadri>`_
