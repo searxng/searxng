@@ -81,6 +81,7 @@ sxng_locales = (
     ('ru-RU', 'Русский', 'Россия', 'Russian', '\U0001f1f7\U0001f1fa'),
     ('sk', 'Slovenčina', '', 'Slovak', '\U0001f310'),
     ('sl', 'Slovenščina', '', 'Slovenian', '\U0001f310'),
+    ('sr', 'Српски', '', 'Serbian', '\U0001f310'),
     ('sv', 'Svenska', '', 'Swedish', '\U0001f310'),
     ('sv-SE', 'Svenska', 'Sverige', 'Swedish', '\U0001f1f8\U0001f1ea'),
     ('th', 'ไทย', '', 'Thai', '\U0001f310'),
