@@ -395,7 +395,7 @@ searxng.remove.all() {
     wait_key
 
     if service_is_available "${SEARXNG_URL}"; then
-        MSG="** Don't forgett to remove your public site! (${SEARXNG_URL}) **" wait_key 10
+        MSG="** Don't forget to remove your public site! (${SEARXNG_URL}) **" wait_key 10
     fi
 }
 
@@ -650,7 +650,7 @@ searxng.remove.redis() {
 }
 
 searxng.instance.localtest() {
-    rst_title "Test SearXNG instance localy" section
+    rst_title "Test SearXNG instance locally" section
     rst_para "Activate debug mode, start a minimal SearXNG "\
              "service and debug a HTTP request/response cycle."
 
@@ -783,7 +783,7 @@ This removes Nginx site ${NGINX_SEARXNG_SITE}::
 
 searxng.instance.exec() {
     if ! service_account_is_available "${SERVICE_USER}"; then
-        die 42 "can't execute: instance does not exists (missed account ${SERVICE_USER})"
+        die 42 "can't execute: instance does not exist (missed account ${SERVICE_USER})"
     fi
     sudo -H -i -u "${SERVICE_USER}" \
          SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET}" \
