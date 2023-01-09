@@ -9,7 +9,7 @@
 import re
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
-from searx.utils import eval_xpath, extract_text, eval_xpath_list, match_language
+from searx.utils import eval_xpath, extract_text, eval_xpath_list, match_language, eval_xpath_getindex
 from searx.network import multi_requests, Request
 
 about = {
@@ -84,9 +84,12 @@ def response(resp):
 
     url_to_resolve = []
     url_to_resolve_index = []
-    for i, result in enumerate(eval_xpath_list(dom, '//li[contains(@class, "b_algo")]')):
+    i = 0
+    for result in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
 
-        link = eval_xpath(result, './/h2/a')[0]
+        link = eval_xpath_getindex(result, './/h2/a', 0, None)
+        if link is None:
+            continue
         url = link.attrib.get('href')
         title = extract_text(link)
 
@@ -119,6 +122,8 @@ def response(resp):
 
         # append result
         results.append({'url': url, 'title': title, 'content': content})
+        # increment result pointer for the next iteration in this loop
+        i += 1
 
     # resolve all Bing redirections in parallel
     request_list = [
