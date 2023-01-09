@@ -1706,12 +1706,12 @@ engines:
     engine: xpath
     paging: true
     categories: [general, web]
-    search_url: https://www.mojeek.com/search?q={query}&s={pageno}
-    results_xpath: //a[@class="ob"]
+    search_url: https://www.mojeek.com/search?q={query}&s={pageno}&lang={lang}&lb={lang}
+    results_xpath: //ul[@class="results-standard"]/li/a[@class="ob"]
     url_xpath: ./@href
-    title_xpath: ./h2
-    content_xpath: ../p[@class="s"]
-    suggestion_xpath: /html/body//div[@class="top-info"]/p[@class="top-info spell"]/a
+    title_xpath: ../h2/a
+    content_xpath: ..//p[@class="s"]
+    suggestion_xpath: //div[@class="top-info"]/p[@class="top-info spell"]/em/a
     first_page_num: 0
     page_size: 10
     disabled: true
