@@ -42,6 +42,7 @@ language_codes = (
     ('hu-HU', 'Magyar', 'Magyarország', 'Hungarian', '\U0001f1ed\U0001f1fa'),
     ('id-ID', 'Indonesia', 'Indonesia', 'Indonesian', '\U0001f1ee\U0001f1e9'),
     ('is-IS', 'Íslenska', 'Ísland', 'Icelandic', '\U0001f1ee\U0001f1f8'),
+    ('it-CH', 'Italiano', 'Svizzera', 'Italian', '\U0001f1e8\U0001f1ed'),
     ('it-IT', 'Italiano', 'Italia', 'Italian', '\U0001f1ee\U0001f1f9'),
     ('ja-JP', '日本語', '日本', 'Japanese', '\U0001f1ef\U0001f1f5'),
     ('ko-KR', '한국어', '대한민국', 'Korean', '\U0001f1f0\U0001f1f7'),
