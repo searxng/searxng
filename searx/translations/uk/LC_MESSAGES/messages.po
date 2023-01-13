@@ -6,24 +6,25 @@
 # pvhn4 <pvhn4@protonmail.com>, 2017
 # zubr139, 2016-2017
 # Andrij Mizyk <andmizyk@gmail.com>, 2022.
-# Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# Markus Heiser <markus.heiser@darmarit.de>, 2022, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-12 07:18+0000\n"
-"PO-Revision-Date: 2022-11-25 07:16+0000\n"
+"PO-Revision-Date: 2023-01-13 07:14+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"Language-Team: Ukrainian <https://weblate.bubu1.eu/projects/searxng/searxng/"
+"uk/>\n"
 "Language: uk\n"
-"Language-Team: Ukrainian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/uk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 !="
-" 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n "
-"% 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9)"
-" || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -277,6 +278,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} цитувань з {firstCitationVelocityYear} по "
+"{lastCitationVelocityYear} рік"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -284,6 +287,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Не вдалось зчитати зображення за вказаним URL. Можливо, тому що формат "
+"даного зображення не підтримується. TinEye підтримує зображення у форматах "
+"JPEG, PNG, GIF, BMP, TIFF та WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -299,7 +305,7 @@ msgstr "Зображення не можливо завантажити."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Ранок"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
@@ -1472,4 +1478,3 @@ msgstr "приховати відео"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">детальніше про методи "
 #~ "запитів</a>"
-
