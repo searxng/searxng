@@ -11,8 +11,25 @@ import os
 import logging
 from base64 import b64decode
 from os.path import dirname, abspath
+from importlib import metadata
 
 from searx.languages import language_codes as languages
+
+try:
+    metadata = metadata.metadata('searxng')
+    project_urls = {}
+    for k, v in metadata.items():
+        if k == 'Project-URL':
+            url_type, url = v.split(',')
+            project_urls[url_type.strip()] = url.strip()
+except metadata.PackageNotFoundError:
+    project_urls = {
+        "Code": "https://github.com/searxng/searxng",
+        "Documentation": 'https://docs.searxng.org/',
+        "Issue tracker": 'https://github.com/searxng/searxng/issues',
+        "New issue": 'https://github.com/searxng/searxng/issues/new',
+        'Public instances': 'https//searx.space',
+    }
 
 searx_dir = abspath(dirname(__file__))
 
@@ -146,11 +163,10 @@ SCHEMA = {
         'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
-        'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
-        'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
-        'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
-        'public_instances': SettingsValue((False, str), 'https://searx.space'),
-        'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
+        'issue_url': SettingsValue(str, project_urls['Issue tracker']),
+        'new_issue_url': SettingsValue(str, project_urls['New issue']),
+        'docs_url': SettingsValue(str, project_urls['Documentation']),
+        'public_instances': SettingsValue((False, str), project_urls['Public instances']),
     },
     'search': {
         'safe_search': SettingsValue((0, 1, 2), 0),

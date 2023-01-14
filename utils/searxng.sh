@@ -488,9 +488,6 @@ EOF
     info_msg "install needed python packages"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 pip install -U pip
-pip install -U setuptools
-pip install -U wheel
-pip install -U pyyaml
 cd ${SEARXNG_SRC}
 pip install -e .
 EOF
@@ -558,9 +555,6 @@ cd ${SEARXNG_SRC}
 git fetch origin "$GIT_BRANCH"
 git reset --hard "origin/$GIT_BRANCH"
 pip install -U pip
-pip install -U setuptools
-pip install -U wheel
-pip install -U pyyaml
 pip install -U -e .
 EOF
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
