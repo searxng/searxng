@@ -61,6 +61,12 @@ echo "SearXNG version ${SEARXNG_VERSION}"
 # helpers to update the configuration files
 patch_uwsgi_settings() {
     CONF="$1"
+
+    # update uwsg.ini
+    sed -i \
+        -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
+        -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
+        "${CONF}"
 }
 
 patch_searxng_settings() {
