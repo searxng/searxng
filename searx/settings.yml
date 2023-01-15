@@ -2,7 +2,7 @@ general:
   # Debug mode, only for development
   debug: false
   # displayed name
-  instance_name: "SearXNG"
+  instance_name: "SpicerHome"
   # For example: https://example.com/privacy
   privacypolicy_url: false
   # use true to use your own donation page written in searx/info/en/donate.md
@@ -22,7 +22,7 @@ brand:
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
-  safe_search: 0
+  safe_search: 1
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex",
   # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
@@ -31,7 +31,7 @@ search:
   autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
-  default_lang: ""
+  default_lang: "en-US"
   # Available languages
   # languages:
   #   - all
@@ -90,11 +90,11 @@ ui:
   # it decreases the privacy, since the browser can records the page titles.
   query_in_title: false
   # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
-  infinite_scroll: false
+  infinite_scroll: true
   # ui theme
   default_theme: simple
   # center the results ?
-  center_alignment: false
+  center_alignment: true
   # URL prefix of the internet archive, don't forgett trailing slash (if needed).
   # cache_url: "https://webcache.googleusercontent.com/search?q=cache:"
   # Default interface locale - leave blank to detect from browser information or
@@ -556,7 +556,6 @@ engines:
   - name: apple maps
     engine: apple_maps
     shortcut: apm
-    disabled: true
     timeout: 5.0
 
   - name: emojipedia
@@ -1111,6 +1110,7 @@ engines:
   - name: openstreetmap
     engine: openstreetmap
     shortcut: osm
+    disabled: true
 
   - name: openrepos
     engine: xpath
@@ -1160,6 +1160,7 @@ engines:
   - name: photon
     engine: photon
     shortcut: ph
+    disabled: true
 
   - name: piratebay
     engine: piratebay
