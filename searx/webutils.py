@@ -124,13 +124,14 @@ def contains_cjko(s: str) -> bool:
     Returns:
         bool: True if the input s contains the characters and False otherwise.
     """
-    unicode_ranges = ('\u4e00-\u9fff' # Chinese characters
-                      '\u3040-\u309f' # Japanese hiragana
-                      '\u30a0-\u30ff' # Japanese katakana
-                      '\u4e00-\u9faf' # Japanese kanji
-                      '\uac00-\ud7af' # Korean hangul syllables
-                      '\u1100-\u11ff' # Korean hangul jamo
-                      )
+    unicode_ranges = (
+        '\u4e00-\u9fff'  # Chinese characters
+        '\u3040-\u309f'  # Japanese hiragana
+        '\u30a0-\u30ff'  # Japanese katakana
+        '\u4e00-\u9faf'  # Japanese kanji
+        '\uac00-\ud7af'  # Korean hangul syllables
+        '\u1100-\u11ff'  # Korean hangul jamo
+    )
     return bool(re.search(fr'[{unicode_ranges}]', s))
 
 
@@ -168,7 +169,9 @@ def highlight_content(content, query):
     querysplit = query.split()
     queries = []
     for qs in querysplit:
-        queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
+        qs = qs.replace("'", "").replace('"', '').replace(" ", "")
+        if len(qs) > 0:
+            queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
     if len(queries) > 0:
         for q in set(queries):
             content = re.sub(regex_highlight_cjk(q), f'<span class="highlight">{q}</span>', content)
