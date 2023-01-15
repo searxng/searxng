@@ -3,6 +3,7 @@
 module.exports = function (grunt) {
 
   const eachAsync = require('each-async');
+  const svgo = require('svgo');
 
   function file_exists (filepath) {
     // filter function to exit grunt task with error if a (src) file not exists
@@ -27,7 +28,7 @@ module.exports = function (grunt) {
           'copy',
           'uglify',
           'less',
-          'image',
+          'optimizesvg',
           'svg2png',
           'svg2jinja'
         ]
@@ -139,10 +140,19 @@ module.exports = function (grunt) {
         ],
       },
     },
-    image: {
+    optimizesvg: {
       svg4web: {
-        options: {
-          svgo: ['--config', 'svg4web.svgo.js']
+        config: {
+          plugins: [
+            {
+              name: 'preset-default',
+            },
+            // make diff friendly
+            'sortAttrs',
+            // Optimize SVG for WEB usage
+            'convertStyleToAttrs',
+            'removeXMLNS'
+          ],
         },
         files: {
           '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
@@ -151,8 +161,14 @@ module.exports = function (grunt) {
         }
       },
       favicon: {
-        options: {
-          svgo: ['--config', 'svg4favicon.svgo.js']
+        config: {
+          plugins: [
+            {
+              name: 'preset-default',
+            },
+            // make diff friendly
+            'sortAttrs',
+          ],
         },
         files: {
           'img/favicon.svg': '<%= _brand %>/searxng-wordmark.svg'
@@ -197,8 +213,21 @@ module.exports = function (grunt) {
     },
   });
 
+  grunt.registerMultiTask('optimizesvg', 'Optimize SVG', function () {
+    for (const file of this.files) {
+      try {
+        const svgContent = grunt.file.read(file.src[0], { encoding: 'utf8' });
+        const optimizedSvgContent = svgo.optimize(svgContent, this.config);
+        grunt.file.write(file.dest, optimizedSvgContent.data, { encoding: 'utf8' });
+        grunt.log.ok(file.dest + ' created (' + optimizedSvgContent.data.length + ' bytes)');
+      } catch (err) {
+        grunt.log.error(err);
+      }
+    }
+  })
+
   grunt.registerMultiTask('svg2jinja', 'Create Jinja2 macro', function () {
-    const ejs = require('ejs'), svgo = require('svgo');
+    const ejs = require('ejs');
     const icons = {}
     for (const iconName in this.data.src) {
       const svgFileName = this.data.src[iconName];
@@ -286,7 +315,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-image');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-stylelint');
@@ -300,7 +328,7 @@ module.exports = function (grunt) {
     'copy',
     'uglify',
     'less',
-    'image',
+    'optimizesvg',
     'svg2png',
     'svg2jinja',
   ]);
