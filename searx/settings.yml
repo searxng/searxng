@@ -26,7 +26,7 @@ search:
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex",
   # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
-  autocomplete: ""
+  autocomplete: "google"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or
@@ -184,16 +184,16 @@ outgoing:
 
 # Comment or un-comment plugin to activate / deactivate by default.
 #
-# enabled_plugins:
+ enabled_plugins:
 #   # these plugins are enabled if nothing is configured ..
 #   - 'Hash plugin'
 #   - 'Search on category select'
 #   - 'Self Information'
-#   - 'Tracker URL remover'
+   - 'Tracker URL remover'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
 #   - 'Hostname replace'  # see hostname_replace configuration below
-#   - 'Open Access DOI rewrite'
+   - 'Open Access DOI rewrite'
 #   - 'Vim-like hotkeys'
 #   - 'Tor check plugin'
 #   # Read the docs before activate: auto-detection of the language could be
