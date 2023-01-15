@@ -14,7 +14,7 @@ ENV INSTANCE_NAME=SpicerHome \
     BASE_URL= \
     MORTY_KEY= \
     MORTY_URL= \
-#    SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
+    SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
 
 WORKDIR /usr/local/searxng
