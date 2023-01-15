@@ -9,12 +9,12 @@ ARG SEARXNG_UID=977
 RUN addgroup -g ${SEARXNG_GID} searxng && \
     adduser -u ${SEARXNG_UID} -D -h /usr/local/searxng -s /bin/sh -G searxng searxng
 
-ENV INSTANCE_NAME=searxng \
+ENV INSTANCE_NAME=SpicerHome \
     AUTOCOMPLETE= \
     BASE_URL= \
     MORTY_KEY= \
     MORTY_URL= \
-    SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
+#    SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
 
 WORKDIR /usr/local/searxng
