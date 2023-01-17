@@ -113,31 +113,68 @@ def prettify_url(url, max_length=74):
         return url
 
 
+def contains_cjko(s: str) -> bool:
+    """This function check whether or not a string contains Chinese, Japanese,
+    or Korean characters. It employs regex and uses the u escape sequence to
+    match any character in a set of Unicode ranges.
+
+    Args:
+        s (str): string to be checked.
+
+    Returns:
+        bool: True if the input s contains the characters and False otherwise.
+    """
+    unicode_ranges = (
+        '\u4e00-\u9fff'  # Chinese characters
+        '\u3040-\u309f'  # Japanese hiragana
+        '\u30a0-\u30ff'  # Japanese katakana
+        '\u4e00-\u9faf'  # Japanese kanji
+        '\uac00-\ud7af'  # Korean hangul syllables
+        '\u1100-\u11ff'  # Korean hangul jamo
+    )
+    return bool(re.search(fr'[{unicode_ranges}]', s))
+
+
+def regex_highlight_cjk(word: str) -> str:
+    """Generate the regex pattern to match for a given word according
+    to whether or not the word contains CJK characters or not.
+    If the word is and/or contains CJK character, the regex pattern
+    will match standalone word by taking into account the presence
+    of whitespace before and after it; if not, it will match any presence
+    of the word throughout the text, ignoring the whitespace.
+
+    Args:
+        word (str): the word to be matched with regex pattern.
+
+    Returns:
+        str: the regex pattern for the word.
+    """
+    rword = re.escape(word)
+    if contains_cjko(rword):
+        return fr'({rword})'
+    else:
+        return fr'\b({rword})(?!\w)'
+
+
 def highlight_content(content, query):
 
     if not content:
         return None
+
     # ignoring html contents
     # TODO better html content detection
     if content.find('<') != -1:
         return content
 
-    if content.lower().find(query.lower()) > -1:
-        query_regex = '({0})'.format(re.escape(query))
-        content = re.sub(query_regex, '<span class="highlight">\\1</span>', content, flags=re.I | re.U)
-    else:
-        regex_parts = []
-        for chunk in query.split():
-            chunk = chunk.replace('"', '')
-            if len(chunk) == 0:
-                continue
-            elif len(chunk) == 1:
-                regex_parts.append('\\W+{0}\\W+'.format(re.escape(chunk)))
-            else:
-                regex_parts.append('{0}'.format(re.escape(chunk)))
-        query_regex = '({0})'.format('|'.join(regex_parts))
-        content = re.sub(query_regex, '<span class="highlight">\\1</span>', content, flags=re.I | re.U)
-
+    querysplit = query.split()
+    queries = []
+    for qs in querysplit:
+        qs = qs.replace("'", "").replace('"', '').replace(" ", "")
+        if len(qs) > 0:
+            queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
+    if len(queries) > 0:
+        for q in set(queries):
+            content = re.sub(regex_highlight_cjk(q), f'<span class="highlight">{q}</span>', content)
     return content
 
 
