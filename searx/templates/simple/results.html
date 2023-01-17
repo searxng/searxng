@@ -65,7 +65,7 @@
 
         {% if suggestions %}
         <div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
-	  <h4 class="title" id="suggestions-title">{{ _('Suggestions') }} : </h4>
+	  <h4 class="title" id="suggestions-title">{{ _('Suggestions') }}: </h4>
 	  <div class="wrapper">
             {% for suggestion in suggestions %}
             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
