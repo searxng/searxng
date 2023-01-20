@@ -16,3 +16,34 @@
     <div id="chatbot-response"></div>
 </div>
 {% endblock %}
+
+<script>
+const form = document.getElementById('chatbot-form');
+const input = document.getElementById('chatbot-input');
+const responseContainer = document.getElementById('chatbot-response');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const message = input.value;
+
+  // Make the API call to GPT-3
+  const apiKey = 'YOUR_API_KEY';
+  const response = await fetch(`https://api.openai.com/v1/engines/davinci-codex/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt: message,
+      max_tokens: 128,
+    })
+  });
+
+  const json = await response.json();
+  const answer = json.choices[0].text;
+
+  // Display the response
+  responseContainer.innerHTML = answer;
+});
+</script>
