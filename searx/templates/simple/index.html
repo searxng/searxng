@@ -1,19 +1,18 @@
 {% extends "simple/base.html" %}
 {% from 'simple/icons.html' import icon_big %}
 {% block content %}
+{% block content %}
 <div class="index">
     <div class="title"><h1>SearXNG</h1></div>
     {% include 'simple/simple_search.html' %}
-</div>
-{% endblock %}
-{% block chatbot_content %}
-<div class="chatbot-container">
-    <form id="chatbot-form">
-        <label for="chatbot-input">Enter your message:</label>
-        <input type="text" id="chatbot-input" name="chatbot-input">
-        <button type="submit" style="display:none;"></button>
-    </form>
-    <div id="chatbot-response"></div>
+    <div class="chatbot-container">
+        <form id="chatbot-form">
+            <label for="chatbot-input">Enter your message:</label>
+            <input type="text" id="chatbot-input" name="chatbot-input">
+            <button type="submit" style="display:none;"></button>
+        </form>
+        <div id="chatbot-response"></div>
+    </div>
 </div>
 {% endblock %}
 
