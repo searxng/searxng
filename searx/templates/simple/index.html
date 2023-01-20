@@ -6,3 +6,13 @@
     {% include 'simple/simple_search.html' %}
 </div>
 {% endblock %}
+{% block content %}
+<div class="chatbot-container">
+    <form id="chatbot-form">
+        <label for="chatbot-input">Enter your message:</label>
+        <input type="text" id="chatbot-input" name="chatbot-input">
+        <button type="submit" style="display:none;"></button>
+    </form>
+    <div id="chatbot-response"></div>
+</div>
+{% endblock %}
