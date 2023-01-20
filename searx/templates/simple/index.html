@@ -1,48 +1,8 @@
 {% extends "simple/base.html" %}
 {% from 'simple/icons.html' import icon_big %}
 {% block content %}
-{% block content %}
 <div class="index">
     <div class="title"><h1>SearXNG</h1></div>
     {% include 'simple/simple_search.html' %}
-    <div class="chatbot-container">
-        <form id="chatbot-form">
-            <label for="chatbot-input">Enter your message:</label>
-            <input type="text" id="chatbot-input" name="chatbot-input">
-            <button type="submit" style="display:none;"></button>
-        </form>
-        <div id="chatbot-response"></div>
-    </div>
 </div>
 {% endblock %}
-
-<script>
-const form = document.getElementById('chatbot-form');
-const input = document.getElementById('chatbot-input');
-const responseContainer = document.getElementById('chatbot-response');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const message = input.value;
-
-  // Make the API call to GPT-3
-  const apiKey = 'YOUR_API_KEY';
-  const response = await fetch(`https://api.openai.com/v1/engines/davinci-codex/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      prompt: message,
-      max_tokens: 128,
-    })
-  });
-
-  const json = await response.json();
-  const answer = json.choices[0].text;
-
-  // Display the response
-  responseContainer.innerHTML = answer;
-});
-</script>
