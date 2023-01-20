@@ -478,7 +478,7 @@ docker.build() {
         eval "$(python -m searx.version)"
 
         # Get the last git commit id
-        VERSION_GITCOMMIT=$(echo "$VERSION_STRING" | cut -d- -f3)
+        VERSION_GITCOMMIT=$(echo "$VERSION_TAG" | cut -d+ -f2)
         build_msg DOCKER "Last commit : $VERSION_GITCOMMIT"
 
         # define the docker image name
@@ -500,6 +500,7 @@ docker.build() {
         docker $BUILD \
          --build-arg BASE_IMAGE="${DEPENDENCIES_IMAGE_NAME}" \
          --build-arg GIT_URL="${GIT_URL}" \
+         --build-arg SEARXNG_DOCKER_TAG="${DOCKER_TAG}" \
          --build-arg SEARXNG_GIT_VERSION="${VERSION_STRING}" \
          --build-arg VERSION_GITCOMMIT="${VERSION_GITCOMMIT}" \
          --build-arg LABEL_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
@@ -507,11 +508,11 @@ docker.build() {
          --build-arg LABEL_VCS_URL="${GIT_URL}" \
          --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searx/settings.yml)" \
          --build-arg TIMESTAMP_UWSGI="$(git log -1 --format="%cd" --date=unix -- dockerfiles/uwsgi.ini)" \
-         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${VERSION_STRING}" .
+         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${DOCKER_TAG}" .
 
         if [ "$1" = "push" ]; then
 	        docker push "${SEARXNG_IMAGE_NAME}:latest"
-	        docker push "${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
+	        docker push "${SEARXNG_IMAGE_NAME}:${DOCKER_TAG}"
 	    fi
     )
     dump_return $?
