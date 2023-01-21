@@ -11,12 +11,6 @@
         <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
       </div>
     </div>
-    <div class="chat-form">
-      <form id="chat-form">
-        <input type="text" id="chat-input" placeholder="Ask me a question...">
-        <button type="submit" id="chat-submit">Submit</button>
-      </form>
-    </div>
     {% set display_tooltip = true %}
     {% include 'simple/categories.html' %}
   </div>
@@ -28,27 +22,3 @@
   <input type="hidden" name="theme" value="{{ theme }}" >
   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
 </form>
-
-<script>
-document.getElementById("chat-form").addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  // Get the value of the chat input field
-  let chatInput = document.getElementById("chat-input").value;
-
-  // Make a POST request to the back-end with the chat input as the data
-  fetch("/chat", {
-    method: "POST",
-    body: JSON.stringify({ chatInput }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    .then(response => response.json())
-    .then(data => {
-      // Display the response from the back-end in the page
-      let chatResponse = document.getElementById("chat-response");
-      chatResponse.innerHTML = data.response;
-    });
-});
-</script>
