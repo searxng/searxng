@@ -71,7 +71,7 @@ internet is, the more freedom we have!
 [SearXNG docs]: {{get_setting('brand.docs_url')}}
 [searx]: https://github.com/searx/searx
 [metasearch engine]: https://en.wikipedia.org/wiki/Metasearch_engine
-[Weblate]: https://weblate.bubu1.eu/projects/searxng/
+[Weblate]: https://translate.codeberg.org/projects/searxng/
 [Seeks project]: https://beniz.github.io/seeks/
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
 [Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
