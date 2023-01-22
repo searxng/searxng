@@ -10,8 +10,8 @@ import importlib
 
 # fallback values
 # if there is searx.version_frozen module, and it is not possible to get the git tag
-VERSION_STRING = "1.0.0"
-VERSION_TAG = "1.0.0"
+VERSION_STRING = "2.0.0"
+VERSION_TAG = "2.0.0"
 GIT_URL = "unknow"
 GIT_BRANCH = "unknow"
 
@@ -67,7 +67,7 @@ def get_git_version():
         subprocess_run("git diff --quiet -- . ':!searx/settings.yml' ':!utils/brand.env'")
     except subprocess.CalledProcessError as e:
         if e.returncode == 1:
-            git_version += "+dirty"
+            git_version += ".dirty"
         else:
             logger.warning('"%s" returns an unexpected return code %i', e.returncode, e.cmd)
     docker_tag = git_version.replace("+", "-")
@@ -76,13 +76,12 @@ def get_git_version():
 
 try:
     vf = importlib.import_module('searx.version_frozen')
-    VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = (
-        vf.VERSION_STRING,
-        vf.VERSION_TAG,
-        vf.DOCKER_TAG,
-        vf.GIT_URL,
-        vf.GIT_BRANCH,
-    )
+    vt = vf.version_tuple
+    VERSION_STRING = vf.version
+    VERSION_TAG = f"{vt[0]}.{vt[1]}.{vt[2]}-{vt[3].split('.')[0]}"
+    DOCKER_TAG = f"{vt[0]}.{vt[1]}.{vt[2]}-{vt[3]}"
+    GIR_URL = ""
+    GIT_BRANCH = ""
 except ImportError:
     try:
         try:

@@ -16,8 +16,9 @@ def version_yyyymmdd_tag():
     def custom_local_scheme(version: ScmVersion):
         return '.dirty' if version.dirty else ''
 
+    # FIXME : GIT_URL and GIT_BRANCH are missing from searx/version_frozen.py
     return {
-        'write_to': 'searx/_version.py',
+        'write_to': 'searx/version_frozen.py',
         'version_scheme': custom_version_scheme,
         'local_scheme': custom_local_scheme
     }
