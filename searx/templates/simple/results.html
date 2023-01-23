@@ -209,9 +209,9 @@
                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                 {{- engine_data_form(engine_data) -}}
                 {% if pageno == x %}
-                <button role="link" class="page_number_current" type="button">{{ x }}</button>
+                <input role="link" class="page_number_current" type="button" value="{{ x }}">
                 {% else %}
-                <button role="link" class="page_number" type="submit">{{ x }}</button>
+                <input role="link" class="page_number" type="submit" value="{{ x }}">
                 {% endif %}
             </form>
         {% endfor %}

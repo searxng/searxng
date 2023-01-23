@@ -362,7 +362,7 @@ article[data-vim-selected].category-social {
 .category-files,
 .category-social {
   border: 1px solid var(--color-result-border);
-  margin: 1rem @results-tablet-offset 0 @results-tablet-offset !important;
+  margin: 0 @results-tablet-offset 1rem @results-tablet-offset !important;
   .rounded-corners;
 }
 
@@ -742,26 +742,16 @@ article[data-vim-selected].category-social {
   overflow: hidden;
 }
 
-@media screen and (max-width: calc(@phone - 0.5px)) {
-  .numbered_pagination {
-    display: none;
-  }
-}
-
 .page_number {
-  background: none !important;
-  border: none !important;
+  background: transparent !important;
   color: var(--color-result-link-font) !important;
-  text-decoration: underline !important;
-  cursor: pointer !important;
+  text-decoration: underline;
 }
 
 .page_number_current {
-  background: none !important;
-  border: none !important;
-  color: var(--color-result-link-visited-font) !important;
-  text-decoration: none !important;
-  cursor: pointer !important;
+  background: transparent;
+  color: var(--color-result-link-visited-font);
+  border: none;
 }
 
 #apis {
@@ -1037,6 +1027,10 @@ article[data-vim-selected].category-social {
   .infobox {
     border: none !important;
     background-color: var(--color-sidebar-background);
+  }
+
+  .numbered_pagination {
+    display: none;
   }
 
   .result-paper {
