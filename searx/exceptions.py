@@ -70,8 +70,15 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """The website is blocking the access"""
 
     SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineAccessDenied"
+    """This settings contains the default suspended time"""
 
-    def __init__(self, suspended_time=None, message='Access denied'):
+    def __init__(self, suspended_time: int = None, message: str = 'Access denied'):
+        """Generic exception to raise when an engine denies access to the results
+
+        Args:
+            suspended_time (int, optional): How long the engine is going to be suspended in second. Defaults to None.
+            message (str, optional): Internal message. Defaults to 'Access denied'.
+        """
         suspended_time = suspended_time or self._get_default_suspended_time()
         super().__init__(message + ', suspended_time=' + str(suspended_time))
         self.suspended_time = suspended_time
