@@ -110,6 +110,13 @@ Global Settings
      default_lang: ""
      ban_time_on_fail: 5
      max_ban_time_on_fail: 120
+     suspended_times:
+       SearxEngineAccessDenied: 86400
+       SearxEngineCaptcha: 86400
+       SearxEngineTooManyRequests: 3600
+       cf_SearxEngineCaptcha: 1296000
+       cf_SearxEngineAccessDenied: 86400
+       recaptcha_SearxEngineCaptcha: 604800
      formats:
        - html
 
@@ -159,6 +166,25 @@ Global Settings
 ``max_ban_time_on_fail``:
   Max ban time in seconds after engine errors.
 
+``suspended_times``:
+  Engine suspension time after error (in seconds; set to 0 to disable)
+
+  ``SearxEngineAccessDenied``: 86400
+    For error "Access denied" and "HTTP error [402, 403]"
+
+  ``SearxEngineCaptcha``: 86400
+    For error "CAPTCHA"
+
+  ``SearxEngineTooManyRequests``: 3600
+    For error "Too many request" and "HTTP error 429"
+
+  Cloudflare CAPTCHA:
+     - ``cf_SearxEngineCaptcha``: 1296000
+     - ``cf_SearxEngineAccessDenied``: 86400
+
+  Google CAPTCHA:
+    - ``recaptcha_SearxEngineCaptcha``: 604800
+
 ``formats``:
   Result formats available from web, remove format to deny access (use lower
   case).
@@ -167,6 +193,7 @@ Global Settings
   - ``csv``
   - ``json``
   - ``rss``
+
 
 .. _settings server:
 
