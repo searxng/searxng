@@ -22,9 +22,7 @@ about = {
 categories = ["videos"]
 paging = True
 base_url = "https://peer.tube"
-supported_languages_url = (
-    'https://framagit.org/framasoft/peertube/search-index/-/raw/master/client/src/views/Search.vue'
-)
+supported_languages_url = 'https://peer.tube/api/v1/videos/languages'
 
 
 # do search-request
@@ -84,9 +82,6 @@ def response(resp):
 
 
 def _fetch_supported_languages(resp):
-    import re
-
-    # https://docs.python.org/3/howto/regex.html#greedy-versus-non-greedy
-    videolanguages = re.search(r"videoLanguages \(\)[^\n]+(.*?)\]", resp.text, re.DOTALL)
-    peertube_languages = [m.group(1) for m in re.finditer(r"\{ id: '([a-z]+)', label:", videolanguages.group(1))]
+    videolanguages = resp.json()
+    peertube_languages = list(videolanguages.keys())
     return peertube_languages
