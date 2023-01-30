@@ -96,6 +96,7 @@ from searx.plugins import Plugin, plugins, initialize as plugin_initialize
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
+    ClientPref,
     ValidationException,
 )
 from searx.answerers import (
@@ -221,16 +222,9 @@ babel = Babel(app, locale_selector=get_locale)
 
 
 def _get_browser_language(req, lang_list):
-    for lang in req.headers.get("Accept-Language", "en").split(","):
-        if ';' in lang:
-            lang = lang.split(';')[0]
-        if '-' in lang:
-            lang_parts = lang.split('-')
-            lang = "{}-{}".format(lang_parts[0], lang_parts[-1].upper())
-        locale = match_locale(lang, lang_list, fallback=None)
-        if locale is not None:
-            return locale
-    return 'en'
+    client = ClientPref.from_http_request(req)
+    locale = match_locale(client.locale_tag, lang_list, fallback='en')
+    return locale
 
 
 def _get_locale_rfc5646(locale):
@@ -512,7 +506,10 @@ def pre_request():
     request.timings = []  # pylint: disable=assigning-non-slot
     request.errors = []  # pylint: disable=assigning-non-slot
 
-    preferences = Preferences(themes, list(categories.keys()), engines, plugins)  # pylint: disable=redefined-outer-name
+    client_pref = ClientPref.from_http_request(request)
+    # pylint: disable=redefined-outer-name
+    preferences = Preferences(themes, list(categories.keys()), engines, plugins, client_pref)
+
     user_agent = request.headers.get('User-Agent', '').lower()
     if 'webkit' in user_agent and 'android' in user_agent:
         preferences.key_value_settings['method'].value = 'GET'
