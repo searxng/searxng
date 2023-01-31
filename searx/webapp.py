@@ -84,6 +84,7 @@ from searx.webutils import (
 from searx.webadapter import (
     get_search_query_from_webapp,
     get_selected_categories,
+    parse_lang,
 )
 from searx.utils import (
     html_to_text,
@@ -440,11 +441,7 @@ def render(template_name: str, **kwargs):
         kwargs['rtl'] = True
 
     if 'current_language' not in kwargs:
-        _locale = request.preferences.get_value('language')
-        if _locale in ('auto', 'all'):
-            kwargs['current_language'] = _locale
-        else:
-            kwargs['current_language'] = match_locale(_locale, settings['search']['languages'])
+        kwargs['current_language'] = parse_lang(request.preferences, {}, RawTextQuery('', []))
 
     # values from settings
     kwargs['search_formats'] = [x for x in settings['search']['formats'] if x != 'html']
@@ -678,7 +675,9 @@ def search():
     raw_text_query = None
     result_container = None
     try:
-        search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
+        search_query, raw_text_query, _, _, selected_locale = get_search_query_from_webapp(
+            request.preferences, request.form
+        )
         # search = Search(search_query) #  without plugins
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
 
@@ -809,13 +808,6 @@ def search():
         )
     )
 
-    if search_query.lang in ('auto', 'all'):
-        current_language = search_query.lang
-    else:
-        current_language = match_locale(
-            search_query.lang, settings['search']['languages'], fallback=request.preferences.get_value("language")
-        )
-
     # search_query.lang contains the user choice (all, auto, en, ...)
     # when the user choice is "auto", search.search_query.lang contains the detected language
     # otherwise it is equals to search_query.lang
@@ -838,7 +830,7 @@ def search():
             result_container.unresponsive_engines
         ),
         current_locale = request.preferences.get_value("locale"),
-        current_language = current_language,
+        current_language = selected_locale,
         search_language = match_locale(
             search.search_query.lang,
             settings['search']['languages'],

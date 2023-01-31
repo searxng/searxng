@@ -22,7 +22,6 @@ from searx.network import initialize as initialize_network, check_network_config
 from searx.metrics import initialize as initialize_metrics, counter_inc, histogram_observe_time
 from searx.search.processors import PROCESSORS, initialize as initialize_processors
 from searx.search.checker import initialize as initialize_checker
-from searx.utils import detect_language
 
 
 logger = logger.getChild('search')
@@ -40,57 +39,19 @@ def initialize(settings_engines=None, enable_checker=False, check_network=False,
         initialize_checker()
 
 
-def replace_auto_language(search_query: SearchQuery):
-    """
-    Do nothing except if `search_query.lang` is "auto".
-    In this case:
-    * the value "auto" is replaced by the detected language of the query.
-      The default value is "all" when no language is detected.
-    * `search_query.locale` is updated accordingly
-
-    Use :py:obj:`searx.utils.detect_language` with `only_search_languages=True` to keep
-    only languages supported by the engines.
-    """
-    if search_query.lang != 'auto':
-        return
-
-    detected_lang = detect_language(search_query.query, threshold=0.3, only_search_languages=True)
-    if detected_lang is None:
-        # fallback to 'all' if no language has been detected
-        search_query.lang = 'all'
-        search_query.locale = None
-        return
-    search_query.lang = detected_lang
-    try:
-        search_query.locale = babel.Locale.parse(search_query.lang)
-    except babel.core.UnknownLocaleError:
-        search_query.locale = None
-
-
 class Search:
     """Search information container"""
 
     __slots__ = "search_query", "result_container", "start_time", "actual_timeout"
 
     def __init__(self, search_query: SearchQuery):
-        """Initialize the Search
-
-        search_query is copied
-        """
+        """Initialize the Search"""
         # init vars
         super().__init__()
+        self.search_query = search_query
         self.result_container = ResultContainer()
         self.start_time = None
         self.actual_timeout = None
-        self.search_query = copy(search_query)
-        self.update_search_query(self.search_query)
-
-    def update_search_query(self, search_query: SearchQuery):
-        """Update search_query.
-
-        call replace_auto_language to replace the "auto" language
-        """
-        replace_auto_language(search_query)
 
     def search_external_bang(self):
         """
