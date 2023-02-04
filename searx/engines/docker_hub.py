@@ -25,7 +25,6 @@ search_url = base_url + "api/content/v1/products/search?{query}&type=image&page_
 
 
 def request(query, params):
-
     params['url'] = search_url.format(query=urlencode(dict(q=query, page=params["pageno"])))
     params["headers"]["Search-Version"] = "v3"
 

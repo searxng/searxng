@@ -60,7 +60,6 @@ sc_code = ''
 
 
 def raise_captcha(resp):
-
     if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
         raise SearxEngineCaptchaException()
 
@@ -104,7 +103,6 @@ def get_sc_code(headers):
 
 # do search-request
 def request(query, params):
-
     # pylint: disable=line-too-long
     # The format string from Startpage's FFox add-on [1]::
     #

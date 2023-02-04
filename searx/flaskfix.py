@@ -33,14 +33,12 @@ class ReverseProxyPathFix:
     # pylint: disable=too-few-public-methods
 
     def __init__(self, wsgi_app):
-
         self.wsgi_app = wsgi_app
         self.script_name = None
         self.scheme = None
         self.server = None
 
         if settings['server']['base_url']:
-
             # If base_url is specified, then these values from are given
             # preference over any Flask's generics.
 

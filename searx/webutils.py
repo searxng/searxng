@@ -157,7 +157,6 @@ def regex_highlight_cjk(word: str) -> str:
 
 
 def highlight_content(content, query):
-
     if not content:
         return None
 

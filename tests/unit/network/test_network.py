@@ -122,7 +122,6 @@ class TestNetwork(SearxTestCase):
 
 
 class TestNetworkRequestRetries(SearxTestCase):
-
     TEXT = 'Lorem Ipsum'
 
     @classmethod
@@ -195,7 +194,6 @@ class TestNetworkRequestRetries(SearxTestCase):
 
 
 class TestNetworkStreamRetries(SearxTestCase):
-
     TEXT = 'Lorem Ipsum'
 
     @classmethod

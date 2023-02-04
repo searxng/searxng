@@ -32,7 +32,6 @@ TEST_DB = {
 
 
 class TestGetNode(SearxTestCase):
-
     DB = {
         'trie': {
             'exam': {

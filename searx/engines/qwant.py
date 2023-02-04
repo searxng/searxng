@@ -149,7 +149,6 @@ def response(resp):
         return []
 
     for row in mainline:
-
         mainline_type = row.get('type', 'web')
         if mainline_type != qwant_categ:
             continue
@@ -160,7 +159,6 @@ def response(resp):
 
         mainline_items = row.get('items', [])
         for item in mainline_items:
-
             title = item.get('title', None)
             res_url = item.get('url', None)
 
@@ -175,7 +173,6 @@ def response(resp):
                 )
 
             elif mainline_type == 'news':
-
                 pub_date = item['date']
                 if pub_date is not None:
                     pub_date = datetime.fromtimestamp(pub_date)
@@ -244,7 +241,6 @@ def response(resp):
 
 
 def _fetch_supported_languages(resp):
-
     text = resp.text
     text = text[text.find('INITIAL_PROPS') :]
     text = text[text.find('{') : text.find('</script>')]

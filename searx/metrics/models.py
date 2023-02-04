@@ -12,7 +12,6 @@ logger = logger.getChild('searx.metrics')
 
 
 class Histogram:
-
     _slots__ = '_lock', '_size', '_sum', '_quartiles', '_count', '_width'
 
     def __init__(self, width=10, size=200):
@@ -101,7 +100,6 @@ class Histogram:
 
 
 class HistogramStorage:
-
     __slots__ = 'measures', 'histogram_class'
 
     def __init__(self, histogram_class=Histogram):
@@ -127,7 +125,6 @@ class HistogramStorage:
 
 
 class CounterStorage:
-
     __slots__ = 'counters', 'lock'
 
     def __init__(self):

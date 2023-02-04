@@ -32,7 +32,6 @@ search_string = 'search?{query}&channel=image&ps=50&pn={page}&region={lang}&ss_m
 
 
 def request(query, params):
-
     search_path = search_string.format(
         query=urlencode({'query': query}),
         page=params['pageno'],

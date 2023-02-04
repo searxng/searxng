@@ -85,7 +85,6 @@ def response(resp):
 
     # parse results
     for result in search_res.get('collection', []):
-
         if result['kind'] in ('track', 'playlist'):
             uri = quote_plus(result['uri'])
             res = {

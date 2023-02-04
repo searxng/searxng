@@ -58,7 +58,6 @@ def get_css(cssclass, style):
 
 
 def main():
-
     fname = 'static/themes/simple/src/generated/pygments.less'
     print("update: %s" % fname)
     with open(get_output_filename(fname), 'w') as f:

@@ -39,7 +39,6 @@ search_categories = {"nm": "name", "tt": "title", "kw": "keyword", "co": "compan
 
 
 def request(query, params):
-
     query = query.replace(" ", "_").lower()
     params['url'] = suggestion_url.format(letter=query[0], query=query)
 
@@ -47,12 +46,10 @@ def request(query, params):
 
 
 def response(resp):
-
     suggestions = json.loads(resp.text)
     results = []
 
     for entry in suggestions.get('d', []):
-
         # https://developer.imdb.com/documentation/key-concepts#imdb-ids
         entry_id = entry['id']
         categ = search_categories.get(entry_id[:2])

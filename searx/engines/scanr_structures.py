@@ -28,7 +28,6 @@ search_url = url + 'api/structures/search'
 
 # do search-request
 def request(query, params):
-
     params['url'] = search_url
     params['method'] = 'POST'
     params['headers']['Content-type'] = "application/json"

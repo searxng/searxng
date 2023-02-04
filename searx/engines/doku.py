@@ -37,7 +37,6 @@ search_url = (
 
 # do search-request
 def request(query, params):
-
     params['url'] = base_url + search_url.format(query=urlencode({'id': query}))
 
     return params

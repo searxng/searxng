@@ -129,7 +129,6 @@ def join_language_lists(engines_languages):
     language_list = {}
     for engine_name in engines_languages:
         for lang_code in engines_languages[engine_name]:
-
             # apply custom fixes if necessary
             if lang_code in getattr(engines[engine_name], 'language_aliases', {}).values():
                 lang_code = next(
@@ -275,7 +274,6 @@ def write_languages_file(languages):
     language_codes = []
 
     for code in sorted(languages):
-
         name = languages[code]['name']
         if name is None:
             print("ERROR: languages['%s'] --> %s" % (code, languages[code]))

@@ -100,7 +100,6 @@ def response(resp):
             image = subpod.xpath(image_xpath)
 
             if content and pod_id not in image_pods:
-
                 if pod_is_result or not result_content:
                     if pod_id != "Input":
                         result_content = "%s: %s" % (pod_title, content)

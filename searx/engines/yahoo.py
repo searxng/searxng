@@ -69,7 +69,6 @@ lang2domain = {
 
 
 def _get_language(params):
-
     lang = language_aliases.get(params['language'])
     if lang is None:
         lang = match_language(params['language'], supported_languages, language_aliases)

@@ -246,7 +246,6 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
     # engine does support the searxng_lang in this other territory.
 
     if locale.language:
-
         searxng_lang = locale.language
         if locale.script:
             searxng_lang += '_' + locale.script

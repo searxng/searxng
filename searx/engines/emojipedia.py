@@ -48,7 +48,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, "//ol[@class='search-results']/li"):
-
         extracted_desc = extract_text(eval_xpath_getindex(result, './/p', 0))
 
         if 'No results found.' in extracted_desc:

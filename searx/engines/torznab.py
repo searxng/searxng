@@ -42,7 +42,6 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
 
 
 def request(query, params):
-
     search_url = base_url + '?t=search&q={search_query}'
     if len(api_key) > 0:
         search_url += '&apikey={api_key}'

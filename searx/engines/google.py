@@ -220,7 +220,6 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#languageCollections
 
     if _any_language and supported_any_language:
-
         # interpretation is left up to Google (based on whoogle)
         #
         # - add parameter ``source=lnt``
@@ -230,7 +229,6 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
         ret_val['params']['source'] = 'lnt'
 
     else:
-
         # restricts search results to documents written in a particular
         # language.
         ret_val['params']['lr'] = "lang_" + lang_list.get(lang_country, language)
@@ -323,7 +321,6 @@ def response(resp):
     # parse results
 
     for result in eval_xpath_list(dom, results_xpath):
-
         # google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
             logger.debug("ignoring <g-section-with-header>")

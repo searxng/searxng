@@ -31,7 +31,6 @@ pdbe_preview_url = 'https://www.ebi.ac.uk/pdbe/static/entry/{pdb_id}_deposited_c
 
 
 def request(query, params):
-
     params['url'] = pdbe_solr_url
     params['method'] = 'POST'
     params['data'] = {'q': query, 'wt': "json"}  # request response in parsable format
@@ -66,21 +65,20 @@ def construct_body(result):
                 year=result['release_year'],
             )
         img_src = pdbe_preview_url.format(pdb_id=result['pdb_id'])
-    except (KeyError):
+    except KeyError:
         content = None
         img_src = None
 
     # construct url for preview image
     try:
         img_src = pdbe_preview_url.format(pdb_id=result['pdb_id'])
-    except (KeyError):
+    except KeyError:
         img_src = None
 
     return [title, content, img_src]
 
 
 def response(resp):
-
     results = []
     json = loads(resp.text)['response']['docs']
 

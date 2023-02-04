@@ -41,7 +41,6 @@ extra_param_expiration_delay = 3000
 
 
 def fetch_extra_param(query_args, headers):
-
     # example:
     #
     # var uxrl='/search?c=main&qlangcountry=en-us&q=south&s=10&rand=1590740241635&n';

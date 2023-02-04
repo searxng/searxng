@@ -29,7 +29,6 @@ search_string = '{query}?page={page}&pageSize={nb_per_page}&apiKey={apikey}'
 
 
 def request(query, params):
-
     if api_key == 'unset':
         raise SearxEngineAPIException('missing CORE API key')
 

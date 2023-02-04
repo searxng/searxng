@@ -45,7 +45,6 @@ def _get_offset_from_pageno(pageno):
 
 
 def request(query, params):
-
     offset = _get_offset_from_pageno(params.get('pageno', 1))
 
     # logger.debug("params['pageno'] --> %s", params.get('pageno'))
@@ -86,7 +85,6 @@ def response(resp):
     url_to_resolve_index = []
     i = 0
     for result in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
-
         link = eval_xpath_getindex(result, './/h2/a', 0, None)
         if link is None:
             continue
@@ -138,7 +136,6 @@ def response(resp):
     try:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
-
             # Remove the part "from-to" for paginated request ...
             result_len_container = result_len_container[result_len_container.find("-") * 2 + 2 :]
 
@@ -159,14 +156,12 @@ def response(resp):
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
-
     lang_tags = set()
 
     dom = html.fromstring(resp.text)
     lang_links = eval_xpath(dom, '//div[@id="language-section"]//li')
 
     for _li in lang_links:
-
         href = eval_xpath(_li, './/@href')[0]
         (_scheme, _netloc, _path, _params, query, _fragment) = urlparse(href)
         query = parse_qs(query, keep_blank_values=True)

@@ -151,7 +151,6 @@ def response(resp):  # pylint: disable=too-many-locals
 
     # parse results
     for result in eval_xpath_list(dom, '//div[@data-cid]'):
-
         title = extract_text(eval_xpath(result, './/h3[1]//a'))
 
         if not title:

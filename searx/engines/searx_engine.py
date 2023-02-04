@@ -45,7 +45,6 @@ def request(query, params):
 
 # get response from search-request
 def response(resp):
-
     response_json = loads(resp.text)
     results = response_json['results']
 

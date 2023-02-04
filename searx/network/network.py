@@ -37,7 +37,6 @@ ADDRESS_MAPPING = {'ipv4': '0.0.0.0', 'ipv6': '::'}
 
 
 class Network:
-
     __slots__ = (
         'enable_http',
         'verify',
@@ -76,7 +75,6 @@ class Network:
         max_redirects=30,
         logger_name=None,
     ):
-
         self.enable_http = enable_http
         self.verify = verify
         self.enable_http2 = enable_http2

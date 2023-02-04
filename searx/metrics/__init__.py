@@ -179,7 +179,6 @@ def get_engines_stats(engine_name_list):
     max_time_total = max_result_count = None
 
     for engine_name in engine_name_list:
-
         sent_count = counter('engine', engine_name, 'search', 'count', 'sent')
         if sent_count == 0:
             continue
@@ -218,7 +217,6 @@ def get_engines_stats(engine_name_list):
         time_http_p80 = time_http_p95 = 0
 
         if time_http is not None:
-
             time_http_p80 = histogram('engine', engine_name, 'time', 'http').percentage(80)
             time_http_p95 = histogram('engine', engine_name, 'time', 'http').percentage(95)
 
@@ -227,7 +225,6 @@ def get_engines_stats(engine_name_list):
             stats['http_p95'] = round(time_http_p95, 1)
 
         if time_total is not None:
-
             time_total_p80 = histogram('engine', engine_name, 'time', 'total').percentage(80)
             time_total_p95 = histogram('engine', engine_name, 'time', 'total').percentage(95)
 

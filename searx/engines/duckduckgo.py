@@ -49,6 +49,7 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 url = 'https://lite.duckduckgo.com/lite/'
 url_ping = 'https://duckduckgo.com/t/sl_l'
 
+
 # match query's language to a region code that duckduckgo will accept
 def get_region_code(lang, lang_list=None):
     if lang == 'all':
@@ -62,7 +63,6 @@ def get_region_code(lang, lang_list=None):
 
 
 def request(query, params):
-
     params['url'] = url
     params['method'] = 'POST'
 
@@ -118,7 +118,6 @@ def request(query, params):
 
 # get response from search-request
 def response(resp):
-
     headers_ping = dict_subset(resp.request.headers, ['User-Agent', 'Accept-Encoding', 'Accept', 'Cookie'])
     get(url_ping, headers=headers_ping)
 
@@ -143,7 +142,6 @@ def response(resp):
     offset = 0
 
     while len_tr_rows >= offset + 4:
-
         # assemble table rows we need to scrap
         tr_title = tr_rows[offset]
         tr_content = tr_rows[offset + 1]
@@ -174,7 +172,6 @@ def response(resp):
 
 # get supported languages from their site
 def _fetch_supported_languages(resp):
-
     # response is a js file with regions as an embedded object
     response_page = resp.text
     response_page = response_page[response_page.find('regions:{') + 8 :]

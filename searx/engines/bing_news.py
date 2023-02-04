@@ -90,7 +90,6 @@ def _get_url(query, language, offset, time_range):
 
 
 def request(query, params):
-
     if params['time_range'] and params['time_range'] not in time_range_dict:
         return params
 
@@ -105,7 +104,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     rss = etree.fromstring(resp.content)
     namespaces = rss.nsmap

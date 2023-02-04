@@ -54,7 +54,6 @@ def search(query, params):
     query_to_run = query_str + ' LIMIT :limit OFFSET :offset'
 
     with sqlite_cursor() as cur:
-
         cur.execute(query_to_run, query_params)
         col_names = [cn[0] for cn in cur.description]
 

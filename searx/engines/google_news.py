@@ -119,7 +119,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, '//div[@class="xrnccd"]'):
-
         # The first <a> tag in the <article> contains the link to the
         # article The href attribute of the <a> is a google internal link,
         # we can't use.  The real link is hidden in the jslog attribute:

@@ -14,7 +14,6 @@ try:
     from functools import cached_property  # type: ignore
 
 except ImportError:
-
     # cache_property has been added in py3.8 [1]
     #
     # To support cache_property in py3.7 the implementation from 3.8 has been

@@ -228,7 +228,6 @@ class TestExternalBangParser(SearxTestCase):
 
 
 class TestBang(SearxTestCase):
-
     SPECIFIC_BANGS = ['!dummy_engine', '!du', '!general']
     THE_QUERY = 'the query'
 

@@ -33,7 +33,6 @@ IMG_SRC_FIXES = {
 
 
 def request(query, params):
-
     search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
 
     params['url'] = base_url + search_path

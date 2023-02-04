@@ -522,7 +522,6 @@ class WDAmountAttribute(WDAttribute):
 
 
 class WDArticle(WDAttribute):
-
     __slots__ = 'language', 'kwargs'
 
     def __init__(self, language, kwargs=None):
@@ -568,7 +567,6 @@ class WDLabelAttribute(WDAttribute):
 
 
 class WDURLAttribute(WDAttribute):
-
     HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
     __slots__ = 'url_id', 'kwargs'
@@ -623,7 +621,6 @@ class WDGeoAttribute(WDAttribute):
 
 
 class WDImageAttribute(WDURLAttribute):
-
     __slots__ = ('priority',)
 
     def __init__(self, name, url_id=None, priority=100):

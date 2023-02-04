@@ -150,7 +150,6 @@ def _search_query_diff(
 
 
 class TestResults:
-
     __slots__ = 'errors', 'logs', 'languages'
 
     def __init__(self):
@@ -182,7 +181,6 @@ class TestResults:
 
 
 class ResultContainerTests:
-
     __slots__ = 'test_name', 'search_query', 'result_container', 'languages', 'stop_test', 'test_results'
 
     def __init__(
@@ -320,7 +318,6 @@ class ResultContainerTests:
 
 
 class CheckerTests:
-
     __slots__ = 'test_results', 'test_name', 'result_container_tests_list'
 
     def __init__(
@@ -352,7 +349,6 @@ class CheckerTests:
 
 
 class Checker:
-
     __slots__ = 'processor', 'tests', 'test_results'
 
     def __init__(self, processor: EngineProcessor):

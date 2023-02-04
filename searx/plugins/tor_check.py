@@ -45,12 +45,10 @@ reg = re.compile(r"(?<=ExitAddress )\S+")
 
 
 def post_search(request, search):
-
     if search.search_query.pageno > 1:
         return True
 
     if search.search_query.query.lower() == "tor-check":
-
         # Request the list of tor exit nodes.
         try:
             resp = get("https://check.torproject.org/exit-addresses")

@@ -17,7 +17,6 @@ errors_per_engines = {}
 
 
 class ErrorContext:
-
     __slots__ = (
         'filename',
         'function',

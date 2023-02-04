@@ -12,7 +12,6 @@ from searx.webutils import VALID_LANGUAGE_CODE
 
 
 class QueryPartParser(ABC):
-
     __slots__ = "raw_text_query", "enable_autocomplete"
 
     @staticmethod

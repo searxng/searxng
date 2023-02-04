@@ -80,7 +80,7 @@ def response(resp):
     for src in definitions:
         infobox += f"<div><small>{src[0]}</small>"
         infobox += "<ul>"
-        for (def_text, sub_def) in src[1]:
+        for def_text, sub_def in src[1]:
             infobox += f"<li>{def_text}</li>"
             if sub_def:
                 infobox += "<ol>"

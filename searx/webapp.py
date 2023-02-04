@@ -268,7 +268,6 @@ def code_highlighter(codelines, language=None):
 
         # new codeblock is detected
         if last_line is not None and last_line + 1 != line:
-
             # highlight last codepart
             formatter = HtmlFormatter(linenos='inline', linenostart=line_code_start, cssclass="code-highlight")
             html_code = html_code + highlight(tmp_code, lexer, formatter)
@@ -334,7 +333,6 @@ def morty_proxify(url: str):
 
 
 def image_proxify(url: str):
-
     if url.startswith('//'):
         url = 'https:' + url
 
@@ -405,7 +403,6 @@ def get_client_settings():
 
 
 def render(template_name: str, **kwargs):
-
     kwargs['client_settings'] = str(
         base64.b64encode(
             bytes(
@@ -896,7 +893,6 @@ def autocompleter():
     # normal autocompletion results only appear if no inner results returned
     # and there is a query part
     if len(raw_text_query.autocomplete_list) == 0 and len(sug_prefix) > 0:
-
         # get language from cookie
         language = request.preferences.get_value('language')
         if not language or language == 'all':

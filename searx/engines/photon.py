@@ -53,7 +53,6 @@ def response(resp):
 
     # parse results
     for r in json.get('features', {}):
-
         properties = r.get('properties')
 
         if not properties:

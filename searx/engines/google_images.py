@@ -93,7 +93,6 @@ def response(resp):
     json_data = loads(resp.text[json_start:])
 
     for item in json_data["ischj"]["metadata"]:
-
         result_item = {
             'url': item["result"]["referrer_url"],
             'title': item["result"]["page_title"],

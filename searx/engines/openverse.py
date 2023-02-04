@@ -28,7 +28,6 @@ search_string = '?page={page}&page_size={nb_per_page}&format=json&{query}'
 
 
 def request(query, params):
-
     search_path = search_string.format(query=urlencode({'q': query}), nb_per_page=nb_per_page, page=params['pageno'])
 
     params['url'] = base_url + search_path

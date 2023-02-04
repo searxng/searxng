@@ -34,7 +34,6 @@ base_url = 'https://www.deviantart.com'
 
 
 def request(query, params):
-
     # https://www.deviantart.com/search/deviations?page=5&q=foo
 
     query = {
@@ -50,14 +49,12 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
 
     dom = html.fromstring(resp.text)
 
     for row in dom.xpath('//div[contains(@data-hook, "content_row")]'):
         for result in row.xpath('./div'):
-
             a_tag = result.xpath('.//a[@data-hook="deviation_link"]')[0]
             noscript_tag = a_tag.xpath('.//noscript')
 

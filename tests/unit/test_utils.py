@@ -154,7 +154,6 @@ class TestHTMLTextExtractor(SearxTestCase):
 
 
 class TestXPathUtils(SearxTestCase):
-
     TEST_DOC = """<ul>
         <li>Text in <b>bold</b> and <i>italic</i> </li>
         <li>Another <b>text</b> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="></li>

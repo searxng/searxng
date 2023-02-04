@@ -77,7 +77,6 @@ def init(_engine_settings):
 
 
 def request(query, params):
-
     if not query:
         return False
 
@@ -127,7 +126,6 @@ def response(resp):
 
     # parse results
     for res in search_res.get('list', []):
-
         title = res['title']
         url = res['url']
 

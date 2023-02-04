@@ -29,6 +29,7 @@ api_client_secret = None
 url = 'https://api.spotify.com/'
 search_url = url + 'v1/search?{query}&type=track&offset={offset}'
 
+
 # do search-request
 def request(query, params):
     offset = (params['pageno'] - 1) * 20

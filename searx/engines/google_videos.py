@@ -147,7 +147,6 @@ def response(resp):
 
     # parse results
     for result in eval_xpath_list(dom, '//div[contains(@class, "g ")]'):
-
         # ignore google *sections*
         if extract_text(eval_xpath(result, g_section_with_header)):
             logger.debug("ignoring <g-section-with-header>")
