@@ -658,8 +658,8 @@ def search():
     if output_format not in OUTPUT_FORMATS:
         output_format = 'html'
 
-    if output_format not in settings['search']['formats']:
-        flask.abort(403)
+    # if output_format not in settings['search']['formats']:
+    #     flask.abort(403)
 
     # check if there is query (not None and not an empty string)
     if not request.form.get('q'):
