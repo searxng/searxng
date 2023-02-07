@@ -89,7 +89,6 @@ from searx.utils import (
     html_to_text,
     gen_useragent,
     dict_subset,
-    match_language,
 )
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
@@ -117,6 +116,7 @@ from searx.locales import (
     RTL_LOCALES,
     localeselector,
     locales_initialize,
+    match_locale,
 )
 
 # renaming names from searx imports ...
@@ -227,7 +227,7 @@ def _get_browser_language(req, lang_list):
         if '-' in lang:
             lang_parts = lang.split('-')
             lang = "{}-{}".format(lang_parts[0], lang_parts[-1].upper())
-        locale = match_language(lang, lang_list, fallback=None)
+        locale = match_locale(lang, lang_list, fallback=None)
         if locale is not None:
             return locale
     return 'en'
@@ -407,7 +407,7 @@ def get_client_settings():
 
 
 def render(template_name: str, **kwargs):
-
+    # pylint: disable=too-many-statements
     kwargs['client_settings'] = str(
         base64.b64encode(
             bytes(
@@ -445,10 +445,13 @@ def render(template_name: str, **kwargs):
 
     if locale in RTL_LOCALES and 'rtl' not in kwargs:
         kwargs['rtl'] = True
+
     if 'current_language' not in kwargs:
-        kwargs['current_language'] = match_language(
-            request.preferences.get_value('language'), settings['search']['languages']
-        )
+        _locale = request.preferences.get_value('language')
+        if _locale in ('auto', 'all'):
+            kwargs['current_language'] = _locale
+        else:
+            kwargs['current_language'] = match_locale(_locale, settings['search']['languages'])
 
     # values from settings
     kwargs['search_formats'] = [x for x in settings['search']['formats'] if x != 'html']
@@ -810,6 +813,13 @@ def search():
         )
     )
 
+    if search_query.lang in ('auto', 'all'):
+        current_language = search_query.lang
+    else:
+        current_language = match_locale(
+            search_query.lang, settings['search']['languages'], fallback=request.preferences.get_value("language")
+        )
+
     # search_query.lang contains the user choice (all, auto, en, ...)
     # when the user choice is "auto", search.search_query.lang contains the detected language
     # otherwise it is equals to search_query.lang
@@ -832,12 +842,8 @@ def search():
             result_container.unresponsive_engines
         ),
         current_locale = request.preferences.get_value("locale"),
-        current_language = match_language(
-            search_query.lang,
-            settings['search']['languages'],
-            fallback=request.preferences.get_value("language")
-        ),
-        search_language = match_language(
+        current_language = current_language,
+        search_language = match_locale(
             search.search_query.lang,
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")

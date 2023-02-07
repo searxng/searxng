@@ -18,8 +18,6 @@ from urllib.parse import urljoin, urlparse
 
 from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
-from babel.core import get_global
-
 
 from searx import settings
 from searx.data import USER_AGENTS, data_dir
@@ -363,92 +361,6 @@ def is_valid_lang(lang) -> Optional[Tuple[bool, str, str]]:
         if l[1].lower() == lang or l[3].lower() == lang:
             return (True, l[0][:2], l[3].lower())
     return None
-
-
-def _get_lang_to_lc_dict(lang_list: List[str]) -> Dict[str, str]:
-    key = str(lang_list)
-    value = _LANG_TO_LC_CACHE.get(key, None)
-    if value is None:
-        value = {}
-        for lang in lang_list:
-            value.setdefault(lang.split('-')[0], lang)
-        _LANG_TO_LC_CACHE[key] = value
-    return value
-
-
-# babel's get_global contains all sorts of miscellaneous locale and territory related data
-# see get_global in: https://github.com/python-babel/babel/blob/master/babel/core.py
-def _get_from_babel(lang_code: str, key):
-    match = get_global(key).get(lang_code.replace('-', '_'))
-    # for some keys, such as territory_aliases, match may be a list
-    if isinstance(match, str):
-        return match.replace('_', '-')
-    return match
-
-
-def _match_language(lang_code: str, lang_list=[], custom_aliases={}) -> Optional[str]:  # pylint: disable=W0102
-    """auxiliary function to match lang_code in lang_list"""
-    # replace language code with a custom alias if necessary
-    if lang_code in custom_aliases:
-        lang_code = custom_aliases[lang_code]
-
-    if lang_code in lang_list:
-        return lang_code
-
-    # try to get the most likely country for this language
-    subtags = _get_from_babel(lang_code, 'likely_subtags')
-    if subtags:
-        if subtags in lang_list:
-            return subtags
-        subtag_parts = subtags.split('-')
-        new_code = subtag_parts[0] + '-' + subtag_parts[-1]
-        if new_code in custom_aliases:
-            new_code = custom_aliases[new_code]
-        if new_code in lang_list:
-            return new_code
-
-    # try to get the any supported country for this language
-    return _get_lang_to_lc_dict(lang_list).get(lang_code)
-
-
-def match_language(  # pylint: disable=W0102
-    locale_code, lang_list=[], custom_aliases={}, fallback: Optional[str] = 'en-US'
-) -> Optional[str]:
-    """get the language code from lang_list that best matches locale_code"""
-    # try to get language from given locale_code
-    language = _match_language(locale_code, lang_list, custom_aliases)
-    if language:
-        return language
-
-    locale_parts = locale_code.split('-')
-    lang_code = locale_parts[0]
-
-    # if locale_code has script, try matching without it
-    if len(locale_parts) > 2:
-        language = _match_language(lang_code + '-' + locale_parts[-1], lang_list, custom_aliases)
-        if language:
-            return language
-
-    # try to get language using an equivalent country code
-    if len(locale_parts) > 1:
-        country_alias = _get_from_babel(locale_parts[-1], 'territory_aliases')
-        if country_alias:
-            language = _match_language(lang_code + '-' + country_alias[0], lang_list, custom_aliases)
-            if language:
-                return language
-
-    # try to get language using an equivalent language code
-    alias = _get_from_babel(lang_code, 'language_aliases')
-    if alias:
-        language = _match_language(alias, lang_list, custom_aliases)
-        if language:
-            return language
-
-    if lang_code != locale_code:
-        # try to get language from given language without giving the country
-        language = _match_language(lang_code, lang_list, custom_aliases)
-
-    return language or fallback
 
 
 def load_module(filename: str, module_dir: str) -> types.ModuleType:
