@@ -817,7 +817,7 @@ def search():
         q=request.form['q'],
         selected_categories = search_query.categories,
         pageno = search_query.pageno,
-        time_range = search_query.time_range,
+        time_range = search_query.time_range or '',
         number_of_results = format_decimal(number_of_results),
         suggestions = suggestion_urls,
         answers = result_container.answers,
