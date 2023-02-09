@@ -13,7 +13,7 @@ import json
 import re
 from os.path import join
 from urllib.parse import urlparse, urljoin
-from distutils.version import LooseVersion  # pylint: disable=deprecated-module
+from packaging.version import parse
 
 import requests
 from lxml import html
@@ -51,7 +51,7 @@ def fetch_firefox_versions():
         if path.startswith(RELEASE_PATH):
             version = path[len(RELEASE_PATH) : -1]
             if NORMAL_REGEX.match(version):
-                versions.append(LooseVersion(version))
+                versions.append(parse(version))
 
     list.sort(versions, reverse=True)
     return versions
@@ -61,11 +61,11 @@ def fetch_firefox_last_versions():
     versions = fetch_firefox_versions()
 
     result = []
-    major_last = versions[0].version[0]
+    major_last = versions[0].major
     major_list = (major_last, major_last - 1)
     for version in versions:
-        major_current = version.version[0]
-        minor_current = version.version[1]
+        major_current = version.major
+        minor_current = version.minor
         if major_current in major_list:
             user_agent_version = f'{major_current}.{minor_current}'
             if user_agent_version not in result:
