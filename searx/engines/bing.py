@@ -119,6 +119,8 @@ def response(resp):
                 url_to_resolve.append(url.replace('&ntb=1', '&ntb=F'))
                 url_to_resolve_index.append(i)
                 url = None  # remove the result if the HTTP Bing redirect raise an exception
+        elif url.startswith('/rebates/welcome?'):
+            url = parse_qs(urlparse(url).query)["url"][0]
 
         # append result
         results.append({'url': url, 'title': title, 'content': content})
