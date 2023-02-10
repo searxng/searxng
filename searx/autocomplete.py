@@ -3,6 +3,7 @@
 """This module implements functions needed for the autocompleter.
 
 """
+# pylint: disable=use-dict-literal
 
 from json import loads
 from urllib.parse import urlencode

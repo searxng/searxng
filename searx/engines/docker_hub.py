@@ -3,6 +3,7 @@
 """Docker Hub (IT)
 
 """
+# pylint: disable=use-dict-literal
 
 from json import loads
 from urllib.parse import urlencode

@@ -4,6 +4,7 @@
 """Processores for engine-type: ``online``
 
 """
+# pylint: disable=use-dict-literal
 
 from timeit import default_timer
 import asyncio
