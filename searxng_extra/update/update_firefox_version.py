@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
 """Fetch firefox useragent signatures
 
 Output file: :origin:`searx/data/useragents.json` (:origin:`CI Update data ...
 <.github/workflows/data-update.yml>`).
 
 """
+# pylint: disable=use-dict-literal
 
 import json
 import re
@@ -40,6 +40,7 @@ useragents = {
 def fetch_firefox_versions():
     resp = requests.get(URL, timeout=2.0)
     if resp.status_code != 200:
+        # pylint: disable=broad-exception-raised
         raise Exception("Error fetching firefox versions, HTTP code " + resp.status_code)
     dom = html.fromstring(resp.text)
     versions = []

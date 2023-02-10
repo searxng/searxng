@@ -5,6 +5,8 @@
 """WebbApp
 
 """
+# pylint: disable=use-dict-literal
+
 import hashlib
 import hmac
 import json
