@@ -7,7 +7,7 @@ from datetime import datetime
 from urllib.parse import ParseResult
 
 from typing import List, Dict, Set
-from typing_extensions import TypedDict, NotRequired, Required, Literal
+from typing_extensions import TypedDict, NotRequired, Required
 
 
 __all__ = [
@@ -21,6 +21,10 @@ __all__ = [
     'InfoboxImage',
     'InfoboxAttribute',
     'InfoboxRelatedTopic',
+    'Map',
+    'Paper',
+    'Video',
+    'Product',
 ]
 
 
@@ -70,6 +74,10 @@ class UrlResult(MainResult):
     content: NotRequired[str]
     """Content of the result"""
 
+
+class Default(UrlResult):
+    """Default result"""
+
     iframe_src: NotRequired[str]
     """URL of an iframe to add to the result."""
 
@@ -100,10 +108,9 @@ class KeyValueResult(MainResult):
 
     The template field must be "key-value.html", all other values are
     displayed.
-    """
 
-    template: Literal["key-value.html"]
-    """template must be equal to `key-value.html`"""
+    template must be equal to `key-value.html`
+    """
 
 
 class Answer(Result):
@@ -219,3 +226,38 @@ class Infobox(Result):
 
     relatedTopics: List[InfoboxRelatedTopic]
     """A list of dictionaries with related topics shown in the infobox"""
+
+
+class Torrent(UrlResult):
+    """Torrent result
+
+    The template key has to be "torrent.html"
+    """
+
+
+class Map(UrlResult):
+    """Map result
+
+    The template key has to be "map.html"
+    """
+
+
+class Video(UrlResult):
+    """Video result
+
+    The template key has to be "videos.html"
+    """
+
+
+class Product(UrlResult):
+    """Product from a shop result
+
+    The template key has to be "product.html"
+    """
+
+
+class Paper(UrlResult):
+    """Paper from a publication result
+
+    the template key must be "paper.html"
+    """
