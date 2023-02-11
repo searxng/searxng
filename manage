@@ -97,7 +97,8 @@ redis:
   install   : create user (${REDIS_USER}) and install systemd service (${REDIS_SERVICE_NAME})
   help      : show more redis commands
 node.:
-  env       : download & install npm dependencies locally
+  env       : download & install SearXNG's npm dependencies locally
+  env.dev   : download & install developer and CI tools
   clean     : drop locally npm installations
 py.:
   build     : Build python packages at ./${PYDIST}
@@ -563,16 +564,15 @@ nodejs.ensure() {
 node.env() {
     nodejs.ensure
     (   set -e
-
-        build_msg INSTALL "searx/static/themes/simple/package.json"
+        build_msg INSTALL "./searx/static/themes/simple/package.json"
         npm --prefix searx/static/themes/simple install
     )
     dump_return $?
 }
 
-node.env.devtools() {
+node.env.dev() {
     nodejs.ensure
-    build_msg INSTALL "package.json: developer and CI tools"
+    build_msg INSTALL "./package.json: developer and CI tools"
     npm install
 }
 
@@ -584,6 +584,10 @@ node.clean() {
     build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
         npm --prefix searx/static/themes/simple run clean
+    )
+    build_msg CLEAN "locally installed developer and CI tools"
+    (   set -e
+        npm --prefix . run clean
     )
     dump_return $?
 }
@@ -702,7 +706,7 @@ test.pylint() {
 
 test.pyright() {
     build_msg TEST "[pyright] static type check of python sources"
-    node.env.devtools
+    node.env.dev
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
     build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
