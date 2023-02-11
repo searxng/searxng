@@ -1,7 +1,13 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pyright: basic
+# lint: pylint
+"""Type definitions of the result items from engines."""
+
+from datetime import datetime
+from urllib.parse import ParseResult
+
 from typing import List, Dict, Set
 from typing_extensions import TypedDict, NotRequired, Required, Literal
-from urllib.parse import ParseResult
-from datetime import datetime
 
 
 __all__ = [
@@ -152,6 +158,8 @@ class InfoboxUrl(TypedDict):
 
 
 class InfoboxImage(TypedDict):
+    """Image in a infobox"""
+
     src: str
     """URL of the image"""
 
