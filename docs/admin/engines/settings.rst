@@ -657,8 +657,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 ``engines:``
   With ``use_default_settings: true``, each settings can be override in a
   similar way, the ``engines`` section is merged according to the engine
-  ``name``.  In this example, SearXNG will load all the engine and the arch linux
-  wiki engine has a :ref:`token <private engines>`:
+  ``name``.  In this example, SearXNG will load all the default engines, will 
+  enable the ``bing`` engine and define a :ref:`token <private engines>` for
+  the arch linux engine:
 
   .. code-block:: yaml
 
@@ -668,6 +669,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
     engines:
       - name: arch linux wiki
         tokens: ['$ecretValue']
+      - name: bing
+        disabled: false
+
 
 ``engines:`` / ``remove:``
   It is possible to remove some engines from the default settings. The following
