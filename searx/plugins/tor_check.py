@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""A plugin to check if the ip address of the request is a TOR exit node if the
+"""A plugin to check if the ip address of the request is a Tor exit-node if the
 user searches for ``tor-check``.  It fetches the tor exit node list from
 https://check.torproject.org/exit-addresses and parses all the IPs into a list,
 then checks if the user's IP address is in it.
@@ -26,8 +26,8 @@ name = gettext("Tor check plugin")
 '''Translated name of the plugin'''
 
 description = gettext(
-    "This plugin checks if the address of the request is a TOR exit node, and"
-    " informs the user if it is, like check.torproject.org but from searxng."
+    "This plugin checks if the address of the request is a Tor exit-node, and"
+    " informs the user if it is; like check.torproject.org, but from SearXNG."
 )
 '''Translated description of the plugin.'''
 
@@ -60,7 +60,8 @@ def post_search(request, search):
             # No answer, return error
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "The TOR exit node list (https://check.torproject.org/exit-addresses) is unreachable."
+                    "The could not download the list of Tor exit-nodes"
+                    " from https://check.torproject.org/exit-addresses."
                 )
             }
             return True
@@ -75,13 +76,17 @@ def post_search(request, search):
         if ip_address in node_list:
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "You are using TOR. Your IP address seems to be: {ip_address}.".format(ip_address=ip_address)
+                    "You are using Tor. It looks like you have this external IP address: {ip_address}.".format(
+                        ip_address=ip_address
+                    )
                 )
             }
         else:
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "You are not using TOR. Your IP address seems to be: {ip_address}.".format(ip_address=ip_address)
+                    "You are not using Tor. You have this external IP address: {ip_address}.".format(
+                        ip_address=ip_address
+                    )
                 )
             }
 
