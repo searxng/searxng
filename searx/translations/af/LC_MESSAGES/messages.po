@@ -10,17 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"POT-Creation-Date: 2023-02-14 18:10+0000\n"
 "PO-Revision-Date: 2023-02-14 09:56+0000\n"
 "Last-Translator: jestie <jestie@gmail.com>\n"
-"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
-"searxng/af/>\n"
 "Language: af\n"
+"Language-Team: Afrikaans "
+"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -200,40 +199,40 @@ msgstr "toegang geweier"
 msgid "server API error"
 msgstr "bediener API fout"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Geen item gevind"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Bron"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Fout met die laai van die volgende bladsy"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige opstellings, redigeer asb jou voorkeure"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Ongeldige opstellings"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "soekfout"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Opgehef"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minute terug"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ure, {minutes} minute terug"
 
@@ -316,11 +315,11 @@ msgstr "aand"
 msgid "Night"
 msgstr "Nag"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr "Outo-bespeur soektog taal"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr "Spoor die navraagsoektaal outomaties op en skakel daaroor oor."
 
@@ -384,28 +383,25 @@ msgstr "Tor toets inprop"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Hierdie inprop toepassing kontroleer of die adres van die versoek 'n TOR "
-"uitgang nodus is en stel die gebruiker in kennis indien wel, soos "
-"check.torproject.org maar vanaf searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"The could not download the list of Tor exit-nodes from "
+"https://check.torproject.org/exit-addresses."
 msgstr ""
-"Die TOR uitgang nodus lys (https://check.torproject.org/exit-addresses) "
-"is nie bereikbaar nie."
 
-#: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Jy gebruik tans TOR. Jou IP adres lyk na : {ip_address}."
+#: searx/plugins/tor_check.py:79
+msgid ""
+"You are using Tor. It looks like you have this external IP address: "
+"{ip_address}."
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Jy gebruik nie tans TOR nie. Jou IP adres lyk na: {ip_address}."
+#: searx/plugins/tor_check.py:87
+msgid "You are not using Tor. You have this external IP address: {ip_address}."
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1229,3 +1225,32 @@ msgstr ""
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\"> leer meer oor versoek"
 #~ " metodes</a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Hierdie inprop toepassing kontroleer of "
+#~ "die adres van die versoek 'n TOR"
+#~ " uitgang nodus is en stel die "
+#~ "gebruiker in kennis indien wel, soos "
+#~ "check.torproject.org maar vanaf searxng."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "Die TOR uitgang nodus lys "
+#~ "(https://check.torproject.org/exit-addresses) is nie"
+#~ " bereikbaar nie."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Jy gebruik tans TOR. Jou IP adres lyk na : {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Jy gebruik nie tans TOR nie. Jou IP adres lyk na: {ip_address}."
+
