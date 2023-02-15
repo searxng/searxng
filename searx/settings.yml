@@ -1874,13 +1874,15 @@ engines:
     engine: xpath
     paging: true
     search_url: https://petalsearch.com/search?query={query}&pn={pageno}
-    results_xpath: //div[@class="webpage-content"]/div[@class="title-cont"]/a
-    url_xpath: ./@href
-    title_xpath: .
-    content_xpath: ../../div[@class="webpage-text"]
-    suggestion_xpath: //div[@class="related-search-items"]/a
+    url_xpath: //div[@class='card-source']
+    title_xpath: //div[@class='title-name']
+    content_xpath: //div[@class='webpage-text']
     first_page_num: 1
     disabled: true
+    headers:
+      User-Agent: Mozilla/5.0 (Linux; Android 7.0;) \
+        AppleWebKit/537.36 (KHTML, like Gecko) \
+        Mobile Safari/537.36 (compatible; PetalBot;+https://webmaster.petalsearch.com/site/petalbot)
     about:
       website: https://petalsearch.com/
       wikidata_id: Q104399280
@@ -1893,26 +1895,6 @@ engines:
     shortcut: ptsi
     disabled: true
     timeout: 3.0
-
-  - name: petalsearch news
-    shortcut: ptsn
-    categories: news
-    engine: xpath
-    paging: true
-    search_url: https://petalsearch.com/search?channel=news&query={query}&pn={pageno}
-    results_xpath: //div[@class="news-container"]/div/div/div/a
-    url_xpath: ./@href
-    title_xpath: ./div
-    content_xpath: ../div[@class="news-text"]
-    thumbnail_xpath: ../../../../img/@src
-    first_page_num: 1
-    disabled: true
-    about:
-      website: https://petalsearch.com/
-      wikidata_id: Q104399280
-      use_official_api: false
-      require_api_key: false
-      results: HTML
 
   - name: lib.rs
     shortcut: lrs
