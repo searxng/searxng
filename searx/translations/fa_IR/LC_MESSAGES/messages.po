@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-14 18:10+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2023-01-13 07:14+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: fa_IR\n"
@@ -390,18 +390,18 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The could not download the list of Tor exit-nodes from "
-"https://check.torproject.org/exit-addresses."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
 
-#: searx/plugins/tor_check.py:79
+#: searx/plugins/tor_check.py:78
 msgid ""
-"You are using Tor. It looks like you have this external IP address: "
-"{ip_address}."
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
 msgstr ""
 
-#: searx/plugins/tor_check.py:87
-msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
@@ -1519,4 +1519,19 @@ msgstr "پنهان‌سازی ویدئو"
 #~ "شما از TOR استفاده نمی کنید. به"
 #~ " نظر می رسد آدرس IP شما این "
 #~ "است: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
 

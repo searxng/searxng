@@ -8,19 +8,18 @@
 # ghose <correo@xmgz.eu>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-14 18:10+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2023-02-17 06:19+0000\n"
 "Last-Translator: ghose <correo@xmgz.eu>\n"
-"Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
-"searxng/gl/>\n"
 "Language: gl\n"
+"Language-Team: Galician "
+"<https://translate.codeberg.org/projects/searxng/searxng/gl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -387,26 +386,24 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "Este complemento comproba se o enderezo da solicitude é un nodo-saída de "
-"Tor, e informate de se o é; como check.torproject.org, pero desde SearXNG."
+"Tor, e informate de se o é; como check.torproject.org, pero desde "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The could not download the list of Tor exit-nodes from "
-"https://check.torproject.org/exit-addresses."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Non se puido descargar a lista de nodos de saída a Tor desde https://check."
-"torproject.org/exit-addresses."
 
-#: searx/plugins/tor_check.py:79
+#: searx/plugins/tor_check.py:78
 msgid ""
-"You are using Tor. It looks like you have this external IP address: "
-"{ip_address}."
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
 msgstr ""
-"Estás a usar Tor. Este semella ser o teu enderezo IP externo: {ip_address}."
 
-#: searx/plugins/tor_check.py:87
-msgid "You are not using Tor. You have this external IP address: {ip_address}."
-msgstr "Non estás a usar Tor. Tes este enderezo IP externo: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1528,3 +1525,25 @@ msgstr "agochar vídeo"
 
 #~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
 #~ msgstr "Non estás a usar TOR. O teu enderezo IP semella ser: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+#~ "Non se puido descargar a lista de"
+#~ " nodos de saída a Tor desde "
+#~ "https://check.torproject.org/exit-addresses."
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+#~ "Estás a usar Tor. Este semella ser"
+#~ " o teu enderezo IP externo: "
+#~ "{ip_address}."
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr "Non estás a usar Tor. Tes este enderezo IP externo: {ip_address}."
+
