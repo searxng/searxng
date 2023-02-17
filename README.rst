@@ -12,9 +12,9 @@
 
 Privacy-respecting, hackable `metasearch engine`_
 
-If you are looking for running instances, ready to use, then visit searx.space_.
-Otherwise jump to the user_, admin_ and developer_ handbooks you will find on
-our homepage_.
+Searx.space_ lists ready-to-use running instances.
+
+A user_, admin_ and developer_ handbook is available on the homepage_.
 
 |SearXNG install|
 |SearXNG homepage|
@@ -66,20 +66,19 @@ our homepage_.
 Contact
 =======
 
-Come join us if you have questions or just want to chat about SearXNG.
-
-Matrix
-  `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
+Ask questions or just chat about SearXNG on
 
 IRC
   `#searxng on libera.chat <https://web.libera.chat/?channel=#searxng>`_
   which is bridged to Matrix.
 
+Matrix
+  `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
 
 Differences to searx
 ====================
 
-SearXNG is a fork of `searx`_.  Here are some of the changes:
+SearXNG is a fork of `searx`_, with notable changes:
 
 .. _searx: https://github.com/searx/searx
 
@@ -87,49 +86,48 @@ SearXNG is a fork of `searx`_.  Here are some of the changes:
 User experience
 ---------------
 
-- Huge update of the simple theme:
+- Reworked (and still simple) theme:
 
-  * usable on desktop, tablet and mobile
-  * light and dark versions (you can choose in the preferences)
-  * support right-to-left languages
-  * `see the screenshots <https://dev.searxng.org/screenshots.html>`_
+  * Usable on desktop, tablet and mobile.
+  * Light and dark versions (available in the preferences).
+  * Right-to-left language support.
+  * `Screenshots <https://dev.searxng.org/screenshots.html>`_
 
-- the translations are up to date, you can contribute on `Weblate`_
-- the preferences page has been updated:
+- The translations are up to date, you can contribute on `Weblate`_
+- The preferences page has been updated:
 
-  * you can see which engines are reliable or not
-  * engines are grouped inside each tab
-  * each engine has a description
+  * Browse which engines are reliable or not.
+  * Engines are grouped inside each tab.
+  * Each engine has a description.
 
-- thanks to the anonymous metrics, it is easier to report a bug of an engine and
-  thus engines get fixed more quickly
+- Thanks to the anonymous metrics, it is easier to report malfunctioning engines,
+  so they get fixed quicker
 
-  - if you don't want any metrics to be recorded, you can `disable them on the server
-    <https://docs.searxng.org/admin/engines/settings.html#general>`_
+  - `Turn off metrics on the server
+    <https://docs.searxng.org/admin/engines/settings.html#general>`_ if you don't want them recorded.
 
-- administrator can `block and/or replace the URLs in the search results
+- Administrators can `block and/or replace the URLs in the search results
   <https://github.com/searxng/searxng/blob/5c1c0817c3996c5670a545d05831d234d21e6217/searx/settings.yml#L191-L199>`_
 
 
 Setup
 -----
 
-- you don't need `Morty`_ to proxy the images even on a public instance
-- you don't need `Filtron`_ to block bots, we implemented the builtin `limiter`_
-- you get a well maintained `Docker image`_, now also built for ARM64 and ARM/v7 architectures
-- alternatively we have up to date installation scripts
+- No need for `Morty`_ to proxy images, even on a public instance.
+- No need for `Filtron`_ to block bots, as there is now a built-in `limiter`_.
+- A well maintained `Docker image`_, now also built for ARM64 and ARM/v7 architectures.
+  (Alternatively there are up to date installation scripts.)
 
 .. _Docker image: https://github.com/searxng/searxng-docker
 
 
-Contributing is easier
-----------------------
+Contributing
+------------
 
-- readable debug log
-- contributions to the themes are made easier, check out our `Development
-  Quickstart`_ guide
-- a lot of code cleanup and bug fixes
-- the dependencies are up to date
+- Readable debug log.
+- Contributing is easier, thanks to the `Development Quickstart`_ guide.
+- A lot of code cleanup and bugfixes.
+- Up to date list dependencies.
 
 .. _Morty: https://github.com/asciimoo/morty
 .. _Filtron: https://github.com/searxng/filtron
@@ -141,15 +139,16 @@ Contributing is easier
 Translations
 ============
 
-We need translators, suggestions are welcome at
-https://translate.codeberg.org/projects/searxng/searxng/
+Help translate SearXNG at `Weblate`_
 
 .. figure:: https://translate.codeberg.org/widgets/searxng/-/multi-auto.svg
    :target: https://translate.codeberg.org/projects/searxng/
 
 
-Make a donation
-===============
+Donations
+=========
 
-You can support the SearXNG project by clicking on the donation page:
+Support the SearXNG project by clicking the donation page:
 https://docs.searxng.org/donate.html
+
+Thank you :)
