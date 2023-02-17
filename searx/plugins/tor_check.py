@@ -60,8 +60,7 @@ def post_search(request, search):
             # No answer, return error
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "The could not download the list of Tor exit-nodes"
-                    " from https://check.torproject.org/exit-addresses."
+                    "Could not download the list of Tor exit-nodes from: https://check.torproject.org/exit-addresses"
                 )
             }
             return True
@@ -76,7 +75,7 @@ def post_search(request, search):
         if ip_address in node_list:
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "You are using Tor. It looks like you have this external IP address: {ip_address}.".format(
+                    "You are using Tor and it looks like you have this external IP address: {ip_address}".format(
                         ip_address=ip_address
                     )
                 )
@@ -84,7 +83,7 @@ def post_search(request, search):
         else:
             search.result_container.answers["tor"] = {
                 "answer": gettext(
-                    "You are not using Tor. You have this external IP address: {ip_address}.".format(
+                    "You are not using Tor and you have this external IP address: {ip_address}".format(
                         ip_address=ip_address
                     )
                 )
