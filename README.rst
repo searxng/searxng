@@ -59,8 +59,8 @@ our homepage_.
 .. |commits| image:: https://img.shields.io/github/commit-activity/y/searxng/searxng?color=yellow&label=commits
    :target: https://github.com/searxng/searxng/commits/master
 
-.. |weblate| image:: https://translate.codeberg.org/widgets/searxng/-/searxng/svg-badge.svg
-   :target: https://translate.codeberg.org/projects/searxng/
+.. |weblate| image:: https://hosted.weblate.org/widgets/searxng/-/searxng/svg-badge.svg
+   :target: https://hosted.weblate.org/projects/searxng/
 
 
 Contact
@@ -134,7 +134,7 @@ Contributing is easier
 .. _Morty: https://github.com/asciimoo/morty
 .. _Filtron: https://github.com/searxng/filtron
 .. _limiter: https://docs.searxng.org/src/searx.plugins.limiter.html
-.. _Weblate: https://translate.codeberg.org/projects/searxng/searxng/
+.. _Weblate: https://hosted.weblate.org/projects/searxng/searxng/
 .. _Development Quickstart: https://docs.searxng.org/dev/quickstart.html
 
 
@@ -142,10 +142,10 @@ Translations
 ============
 
 We need translators, suggestions are welcome at
-https://translate.codeberg.org/projects/searxng/searxng/
+https://hosted.weblate.org/projects/searxng/searxng/
 
-.. figure:: https://translate.codeberg.org/widgets/searxng/-/multi-auto.svg
-   :target: https://translate.codeberg.org/projects/searxng/
+.. figure:: https://hosted.weblate.org/widgets/searxng/-/multi-auto.svg
+   :target: https://hosted.weblate.org/projects/searxng/
 
 
 Make a donation
