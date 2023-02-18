@@ -203,12 +203,12 @@ Global Settings
 .. code:: yaml
 
    server:
-       base_url: false                # set custom base_url (or false)
+       base_url: http://example.org/location  # change this!
        port: 8888
-       bind_address: "127.0.0.1"      # address to listen on
-       secret_key: "ultrasecretkey"   # change this!
+       bind_address: "127.0.0.1"
+       secret_key: "ultrasecretkey"           # change this!
        limiter: false
-       image_proxy: false             # proxying image results through SearXNG
+       image_proxy: false
        default_http_headers:
          X-Content-Type-Options : nosniff
          X-XSS-Protection : 1; mode=block
@@ -216,20 +216,18 @@ Global Settings
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
 
-.. sidebar::  buildenv
 
-   Changing a value tagged by :ref:`buildenv <make buildenv>`, needs to
-   rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
-
-``base_url`` : :ref:`buildenv SEARXNG_URL <make buildenv>`
+``base_url`` : ``$SEARXNG_URL`` :ref:`buildenv <make buildenv>`
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
-``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARXNG_BIND_ADDRESS <make buildenv>`
+``port`` & ``bind_address``: ``$SEARXNG_PORT`` & ``$SEARXNG_BIND_ADDRESS`` :ref:`buildenv <make buildenv>`
   Port number and *bind address* of the SearXNG web application if you run it
-  directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
-  Apache or Nginx.
+  directly using ``python searx/webapp.py``.  Doesn't apply to a SearXNG
+  services running behind a proxy and using socket communications.  If you
+  change the value, don't forget to rebuild instance's environment
+  (:ref:`utils/brand.env <make buildenv>`)
 
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.

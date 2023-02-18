@@ -11,11 +11,16 @@ search:
   autocomplete: 'duckduckgo'
 
 server:
+  # Is overwritten by ${SEARXNG_SECRET}
   secret_key: "ultrasecretkey"
   limiter: true
   image_proxy: true
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${SEARXNG_URL}.
+  # base_url: http://example.com/location
 
 redis:
+  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
   url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
 
 ui:

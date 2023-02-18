@@ -1,3 +1,5 @@
+.. _searxng maintenance:
+
 ===================
 SearXNG maintenance
 ===================
