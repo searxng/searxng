@@ -709,7 +709,7 @@ def search():
             if 'url' not in res: continue
             if 'content' not in res: continue
             if res['content'] == '': continue
-            new_url = 'https://url'+str(len(url_pair))
+            new_url = 'https://url'+str(len(url_pair)+1)
             url_pair[new_url] = res['url']
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             if len(prompt)+len(tmp_prompt)<=1500:
