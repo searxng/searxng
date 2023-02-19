@@ -10,22 +10,22 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Masterix <masterix@duck.com>, 2022.
 # LagManCZ <lagmen@post.cz>, 2022.
+# zenobit <zen@osowoso.xyz>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
-"PO-Revision-Date: 2022-12-23 07:14+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Czech <https://weblate.bubu1.eu/projects/searxng/searxng/cs/>"
-"\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
+"PO-Revision-Date: 2023-02-12 09:56+0000\n"
+"Last-Translator: zenobit <zen@osowoso.xyz>\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -205,40 +205,40 @@ msgstr "přístup odepřen"
 msgid "server API error"
 msgstr "chyba API serveru"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Nic nenalezeno"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "zdroj"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Neplatné nastavení"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "chyba vyhledávání"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Pozastaveno"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "před {minutes} minutami"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "před {hours} hodinami, {minutes} minutami"
 
@@ -320,11 +320,11 @@ msgstr "Večer"
 msgid "Night"
 msgstr "Noc"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr "Automaticky rozpoznaný jazyk vyhledávání"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr "Automaticky detekuj jazyk vyhledávaného dotazu a přepni se do něj."
 
@@ -386,27 +386,25 @@ msgstr "Plugin kontroly TORu"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Tento plugin kontroluje, jestli adresa požadavku je výstupní uzel TORu, a"
-" infromuje uživatele pokud je, jako check.torproject.org ale od searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Seznam výstupních uzlů TOR (https://check.torproject.org/exit-addresses) "
-"je nedostupný."
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Používáte TOR. Zdá se, že vaše IP adresa je: {ip_address}."
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Nepoužíváte TOR. Zdá se, že vaše IP adresa je: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -979,7 +977,7 @@ msgstr "vyhledat"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Aktuálně nejsou k dispozici žádná data."
+msgstr "Aktuálně nejsou k dispozici žádná data. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1502,3 +1500,46 @@ msgstr "skrýt video"
 #~ " o dotazovacích metodách <a "
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">viz Wikipedie</a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Tento plugin kontroluje, jestli adresa "
+#~ "požadavku je výstupní uzel TORu, a "
+#~ "infromuje uživatele pokud je, jako "
+#~ "check.torproject.org ale od searxng."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "Seznam výstupních uzlů TOR "
+#~ "(https://check.torproject.org/exit-addresses) je "
+#~ "nedostupný."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Používáte TOR. Zdá se, že vaše IP adresa je: {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Nepoužíváte TOR. Zdá se, že vaše IP adresa je: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+

@@ -10,20 +10,19 @@
 # Nik Drešar <nik.dresar@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2023-01-13 07:14+0000\n"
 "Last-Translator: Nik Drešar <nik.dresar@gmail.com>\n"
-"Language-Team: Slovenian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"sl/>\n"
 "Language: sl\n"
+"Language-Team: Slovenian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/sl/>\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 "
+"|| n%100==4 ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -203,40 +202,40 @@ msgstr "dostop zavrnjen"
 msgid "server API error"
 msgstr "napaka API strežnika"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Ni zadetkov"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Vir"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Napaka pri nalaganju naslednje strani"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neveljavne nastavitve. Prosimo, preverite vašo konfiguracijo"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "napaka pri iskanju"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Prekinjeno"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut nazaj"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} urami in {minutes} minut"
 
@@ -318,11 +317,11 @@ msgstr "Večer"
 msgid "Night"
 msgstr "Noč"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr "Samodejno zaznavanje jezika iskanja"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr "Samodejno zazna jezik iskanja poizvedbe in preklopi nanj."
 
@@ -386,28 +385,25 @@ msgstr "Preveri Tor vtičnik"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Ta vtičnik preveri, če je naslov poizvedbe izhodni prikluček TOR in "
-"informira uporabnika o njem, kot naprimer check.torproject.org ampak "
-"preko searxng-ja."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Seznam izhodnih priključkov TOR (https://check.torproject.org/exit-"
-"addresses) je nedosegljiv."
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Uporabljaš TOR. Tvoj IP naslov naj bi bil: {ip_address}."
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Ne uporabljaš TOR-a. Tvoj IP naslov naj bi bil: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -721,9 +717,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Spremenite način oddaje obrazcev, <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">izvedite več "
-"o metodah zahtevka</a>"
+"Spremenite način oddaje obrazcev, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">izvedite več o metodah zahtevka</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -768,8 +764,8 @@ msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
-"Ta zavihek se ne prikaže pri rezultatih iskanja, lahko pa iščete iskalnike, "
-"navedene tukaj, prek bangs."
+"Ta zavihek se ne prikaže pri rezultatih iskanja, lahko pa iščete "
+"iskalnike, navedene tukaj, prek bangs."
 
 #: searx/templates/simple/preferences.html:307
 #: searx/templates/simple/preferences.html:358
@@ -845,8 +841,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"To je seznam piškotkov in njihovih vrednosti, ki jih SearXNG shranjuje v vaš "
-"računalnik."
+"To je seznam piškotkov in njihovih vrednosti, ki jih SearXNG shranjuje v "
+"vaš računalnik."
 
 #: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
@@ -1497,3 +1493,47 @@ msgstr "skrij video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">, več o metodah za "
 #~ "zahtevke </a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Ta vtičnik preveri, če je naslov "
+#~ "poizvedbe izhodni prikluček TOR in "
+#~ "informira uporabnika o njem, kot "
+#~ "naprimer check.torproject.org ampak preko "
+#~ "searxng-ja."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "Seznam izhodnih priključkov TOR "
+#~ "(https://check.torproject.org/exit-addresses) je "
+#~ "nedosegljiv."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Uporabljaš TOR. Tvoj IP naslov naj bi bil: {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Ne uporabljaš TOR-a. Tvoj IP naslov naj bi bil: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+

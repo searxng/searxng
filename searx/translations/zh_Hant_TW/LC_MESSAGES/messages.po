@@ -14,19 +14,18 @@
 # Grey <elohim@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2022-12-23 07:14+0000\n"
 "Last-Translator: Grey <elohim@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://weblate.bubu1.eu/projects/"
-"searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
+"Language-Team: Chinese (Traditional) "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -206,40 +205,40 @@ msgstr "拒絕訪問"
 msgid "server API error"
 msgstr "服務器 API 錯誤"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "搜尋錯誤"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "暫停服務"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分鐘前"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
@@ -316,11 +315,11 @@ msgstr "傍晚"
 msgid "Night"
 msgstr "夜晚"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr "自動偵測搜尋語言"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr "由搜尋字串自動偵測語言，並作為搜尋語言來使用。"
 
@@ -376,23 +375,25 @@ msgstr "Tor 網路檢測"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
-msgstr "這會檢查 IP 是否 Tor 出口節點，並通知用戶。類近於 check.torproject.org。"
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
+msgstr ""
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
-msgstr "無法獲取 Tor 出口節點列表 (https://check.torproject.org/exit-addresses)。"
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
+msgstr ""
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "目前您正在使用 Tor，IP 地址： {ip_address}。"
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "目前您沒有使用 Tor，IP 地址：{ip_address}。"
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1451,3 +1452,39 @@ msgstr "隱藏影片"
 #~ msgstr ""
 #~ "變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\""
 #~ " rel=\"external\">看看更多關於請求方法的介紹</a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr "這會檢查 IP 是否 Tor 出口節點，並通知用戶。類近於 check.torproject.org。"
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr "無法獲取 Tor 出口節點列表 (https://check.torproject.org/exit-addresses)。"
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "目前您正在使用 Tor，IP 地址： {ip_address}。"
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "目前您沒有使用 Tor，IP 地址：{ip_address}。"
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+

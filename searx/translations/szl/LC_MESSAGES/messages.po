@@ -7,18 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2022-12-30 07:14+0000\n"
 "Last-Translator: gkkulik <gregorykkulik@gmail.com>\n"
-"Language-Team: Silesian <https://weblate.bubu1.eu/projects/searxng/searxng/"
-"szl/>\n"
 "Language: szl\n"
+"Language-Team: Silesian "
+"<https://weblate.bubu1.eu/projects/searxng/searxng/szl/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14.1\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -198,40 +195,40 @@ msgstr "dostymp ôdkozany"
 msgid "server API error"
 msgstr "feler serwera API"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Żodyn elymynt niy znojdziōny"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Zdrzōdło"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Strzimane"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) tymu"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
 
@@ -314,11 +311,11 @@ msgstr "Wieczōr"
 msgid "Night"
 msgstr "Noc"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr "Autowykrywanie jynzyka wyszukowanio"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr "Autōmatycznie wykrywo jynzyk zapytanio i szaltruje na niego."
 
@@ -382,27 +379,25 @@ msgstr "Przidowek sprawdzanio necu Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Tyn przidowek sprawdzo, jeźli adresa ôd żōndanio to je wynzoł wyjścio TOR i "
-"informuje używocza, jeźli tak je. To jak check.torproject.org ino ôd searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Wykoz wynzłōw wyjścio TOR (https://check.torproject.org/exit-addresses) niy "
-"ôdpowiado."
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Niy używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -516,8 +511,7 @@ msgstr "Sprawdź teroźne felery ôd tego motoru na GitHubie"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
-"Potwiyrdzōm, że niy ma teroźnego feleru, co by sie tykoł mojigo problymu"
+msgstr "Potwiyrdzōm, że niy ma teroźnego feleru, co by sie tykoł mojigo problymu"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -719,9 +713,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Zmiyń to, jak sōm wysyłane formulary, <a href=\"http://en.wikipedia.org/wiki/"
-"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">przewiydz sie "
-"wiyncyj ô metodach żōndań</a>"
+"Zmiyń to, jak sōm wysyłane formulary, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">przewiydz sie wiyncyj ô metodach żōndań</a>"
 
 #: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
@@ -1259,3 +1253,47 @@ msgstr "skryj wideo"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">przewiydz sie wiyncyj ô "
 #~ "metodach HTTP</a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Tyn przidowek sprawdzo, jeźli adresa ôd"
+#~ " żōndanio to je wynzoł wyjścio TOR"
+#~ " i informuje używocza, jeźli tak je."
+#~ " To jak check.torproject.org ino ôd "
+#~ "searxng."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "Wykoz wynzłōw wyjścio TOR "
+#~ "(https://check.torproject.org/exit-addresses) niy "
+#~ "ôdpowiado."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Niy używosz TOR. Twoja adresa IP wyglōndo na: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+
