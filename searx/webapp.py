@@ -746,6 +746,7 @@ def search():
                 gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 for urls in url_pair.keys():
                     gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
+                    gpt = gpt.replace("#fn:url"+urls.replace("https://url",""),url_pair[urls])
                 gptbox = {
                     'infobox': 'GPT3',
                     'id': 'gpt'+str(len(prompt)),
