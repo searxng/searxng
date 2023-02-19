@@ -14,20 +14,22 @@
 # Thomas Pointhuber, 2015-2016
 # tents <remendne@pentrens.jp>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# tentsbet <remendne@pentrens.jp>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-17 12:20+0000\n"
-"PO-Revision-Date: 2022-12-18 19:54+0000\n"
-"Last-Translator: tents <remendne@pentrens.jp>\n"
+"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"Last-Translator: tentsbet <remendne@pentrens.jp>\n"
+"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
+"searxng/ja/>\n"
 "Language: ja\n"
-"Language-Team: Japanese "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ja/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -379,23 +381,26 @@ msgstr "Tor 確認プラグイン"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr ""
+msgstr "このプラグインではcheck.torprogject.orgのようにTor "
+"出口ノードのIPアドレスをSearXNGからチェックする。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr ""
+msgstr "「https://check.torproject.org/exit-addresses」からTor "
+"出口ノードの一覧をダウンロードできません"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "あなたの利用しているTorの外部IPアドレスは次のようになっている : {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "あなたはTorを利用しておらず外部IPアドレスは次のようになっている : "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1499,4 +1504,3 @@ msgstr "動画を隠す"
 
 #~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
 #~ msgstr ""
-
