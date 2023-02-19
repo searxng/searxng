@@ -716,9 +716,9 @@ def search():
             gpt = ""
             gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             gpt_headers = {
-                "Authorization": "Bearer "+os.environ['gptkey'],
+                "Authorization": "Bearer "+os.environ['GPTKEY'],
                 "Content-Type": "application/json",
-                "OpenAI-Organization": os.environ['gptorg']
+                "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
                 "prompt": prompt,
@@ -736,7 +736,7 @@ def search():
             gpt_response = requests.post(url, headers=gpt_headers, data=json.dumps(gpt_data))
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
-            gpt = gpt_json['choices'][0]['text']
+                gpt = gpt_json['choices'][0]['text']
             for urls in url_pair:
                 gpt.replace(urls.key,urls[urls.key])
             if gpt and gpt!="":

@@ -14,6 +14,8 @@ ENV INSTANCE_NAME=searxng \
     BASE_URL= \
     MORTY_KEY= \
     MORTY_URL= \
+    GPTKEY= \
+    GPTORG= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
 
