@@ -19,7 +19,7 @@
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 # eownerdead <wlpx0yii@anonaddy.me>, 2024.
 # syobon <syobon@syobon.net>, 2024.
-# tentsbet <tentsbet@users.noreply.translate.codeberg.org>, 2024.
+# tentsbet <tentsbet@users.noreply.translate.codeberg.org>, 2024, 2025.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
@@ -28,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-06 15:28+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: Anonymous <anonymous@users.noreply.translate.codeberg.org>\n"
+"Last-Translator: tentsbet <tentsbet@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
 "searxng/ja/>\n"
 "Language: ja\n"
@@ -593,13 +593,15 @@ msgstr "Tor 確認プラグイン"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr "このプラグインではcheck.torprogject.orgのようにTor 出口ノードのIPアドレスをSearXNGからチェックする。"
+msgstr "このプラグインではcheck.torprogject.orgのようにTor "
+"出口ノードのIPアドレスをSearXNGからチェックする。"
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr "「https://check.torproject.org/exit-addresses」からTor 出口ノードの一覧をダウンロードできません"
+msgstr "「https://check.torproject.org/exit-addresses」からTor "
+"出口ノードの一覧をダウンロードできません"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -609,7 +611,8 @@ msgstr "あなたの利用しているTorの外部IPアドレスは次のよう�
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "あなたはTorを利用しておらず外部IPアドレスは次のようになっている : {ip_address}"
+msgstr "あなたはTorを利用しておらず外部IPアドレスは次のようになっている : "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -1255,7 +1258,9 @@ msgstr "Vim風"
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
-msgstr "(Javascriptが必要)ショートカットキーで検索の結果を得ることができます。「h」キーを押して、主な使い方や検索結果の方法を知ることができます。"
+msgstr ""
+"(Javascriptが必要)ショートカットキーで検索の結果を得ることができます。「h」キ"
+"ーを押して、主な使い方や検索結果の方法を知ることができます。"
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1320,7 +1325,8 @@ msgstr "カテゴリ選択したら検索を実行"
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
-msgstr "カテゴリが選択されている場合はすぐに検索を行います。複数のカテゴリが選択されている場合は無効です"
+msgstr "カテゴリが選択されている場合はすぐに検索を行います。複数のカテゴリが選択され"
+"ている場合は無効です"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
