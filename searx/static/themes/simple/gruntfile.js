@@ -146,7 +146,7 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.svg': '<%= _brand %>/searxng.svg',
+          'img/logo.svg': '<%= _brand %>/logo.svg',
           'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
         }
       },
@@ -163,7 +163,7 @@ module.exports = function (grunt) {
       favicon: {
         files: {
           'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.png': '<%= _brand %>/searxng.svg',
+          'img/logo.png': '<%= _brand %>/logo.svg',
         }
       }
     },
