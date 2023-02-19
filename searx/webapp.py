@@ -709,7 +709,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
             url_pair[new_url] = res['url']
-            tmp_prompt = url_pair +'\n'+ res['url']['title'] +'\n'+  res['url']['content']
+            tmp_prompt = new_url +'\n'+ res['url']['title'] +'\n'+  res['url']['content']
             if len(prompt)+len(tmp_prompt)<=1500:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
