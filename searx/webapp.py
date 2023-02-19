@@ -741,7 +741,9 @@ def search():
             for urls in url_pair.keys():
                 gpt = gpt.replace(urls,url_pair[urls])
             if gpt and gpt!="":
-                gpt =  markdown.markdown( re.sub( r'\[(\d+)\](?=[^\^])', r'[^\\1]', gpt) , extensions=['footnotes'])
+                for i in range(1,10)
+                    gpt.replace("["+i+"]","[^"+i+"]")
+                gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 for urls in url_pair.keys():
                     gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
                 gptbox = {
