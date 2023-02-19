@@ -742,7 +742,7 @@ def search():
                 gpt = gpt.replace(urls,url_pair[urls])
             if gpt and gpt!="":
                 for i in range(1,10):
-                    gpt.replace("["+str(i)+"]","[^"+str(i)+"]")
+                    gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 for urls in url_pair.keys():
                     gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
