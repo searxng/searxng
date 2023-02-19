@@ -15,6 +15,7 @@ import sys
 import base64
 import requests
 import markdown
+import re
 
 from timeit import default_timer
 from html import escape
