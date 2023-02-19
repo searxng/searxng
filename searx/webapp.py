@@ -712,6 +712,7 @@ def search():
             tmp_prompt = new_url +'\n'+ res['title'] +'\n'+  res['content']
             if len(prompt)+len(tmp_prompt)<=1500:
                 prompt += tmp_prompt +'\n'
+        print("prompt:"+prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，用简体中文分条总结简报，在文中用markdown脚注指向内容来源链接：")
         if prompt != "":
             gpt = ""
             gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
@@ -732,7 +733,7 @@ def search():
                 "logprobs": 0,
                 "stream": False
             }
-
+            print(gpt_response)
             gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
