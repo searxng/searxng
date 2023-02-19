@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import base64
+import requests
 
 from timeit import default_timer
 from html import escape
@@ -697,6 +698,55 @@ def search():
     number_of_results = result_container.results_number()
     if number_of_results < result_container.results_length():
         number_of_results = 0
+
+    # OPENAI GPT
+    if number_of_results != 0:
+        url_pair = {}
+        prompt = ""
+        for res in results:
+            if 'url' not in res: continue
+            if 'content' not in res: continue
+            if res['content'] == '': continue
+            new_url = 'https://url'+str(len(url_pair))
+            url_pair[new_url] = res['url']
+            tmp_prompt = url_pair +'\n'+ res['url']['title'] +'\n'+  res['url']['content']
+            if len(prompt)+len(tmp_prompt)<=1500:
+                prompt += tmp_prompt +'\n'
+        if prompt != "":
+            gpt = ""
+            gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+            gpt_headers = {
+                "Authorization": "Bearer "+os.environ['gptkey'],
+                "Content-Type": "application/json",
+                "OpenAI-Organization": os.environ['gptorg']
+            }
+            gpt_data = {
+                "prompt": prompt,
+                "max_tokens": 1024,
+                "temperature": 0.7,
+                "top_p": 1,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+                "best_of": 1,
+                "echo": False,
+                "logprobs": 0,
+                "stream": False
+            }
+
+            gpt_response = requests.post(url, headers=gpt_headers, data=json.dumps(gpt_data))
+            gpt_json = gpt_response.json()
+            if 'choices' in gpt_json:
+            gpt = gpt_json['choices'][0]['text']
+            for urls in url_pair:
+                gpt.replace(urls.key,urls[urls.key])
+            if gpt and gpt!="":
+                gptbox = {
+                    'infobox': 'New Search',
+                    'id': 'gpt'+str(len(prompt)),
+                    'content': gpt,
+                }
+                result_container.infoboxes.append(gptbox)
+
 
     # checkin for a external bang
     if result_container.redirect_url:
