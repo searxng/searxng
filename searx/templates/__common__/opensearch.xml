@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>{{ instance_name }}</ShortName>
+  <Description>a privacy-respecting, hackable metasearch engine</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image>{{ url_for('static', filename='img/favicon.png', _external=True) }}</Image>
+  <LongName>searx metasearch</LongName>
+  {% if opensearch_method == 'get' %}
+    <Url rel="results" type="text/html" method="get" template="{{ url_for('search', _external=True) }}?q={searchTerms}"/>
+  {% else %}
+    <Url rel="results" type="text/html" method="post" template="{{ url_for('search', _external=True) }}">
+        <Param name="q" value="{searchTerms}" />
+    </Url>
+  {% endif %}
+  {% if autocomplete %}
+    <Url rel="suggestions" type="application/x-suggestions+json" template="{{ url_for('autocompleter', _external=True) }}?q={searchTerms}"/>
+  {% endif %}
+
+  <Url type="application/opensearchdescription+xml"
+      rel="self"
+      template="{{ opensearch_url }}" />
+</OpenSearchDescription>

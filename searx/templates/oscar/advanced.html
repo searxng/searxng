@@ -1,0 +1,17 @@
+<input type="checkbox" name="advanced_search" class="visually-hidden" id="check-advanced" {% if advanced_search %} checked="checked"{% endif %}>
+<label for="check-advanced">{{- "" -}}
+    <span class="glyphicon glyphicon-cog"></span>
+    {{- _('Advanced settings') -}}
+</label>
+<div id="advanced-search-container">
+  {% include 'oscar/categories.html' %}
+
+  <div class="row">
+    <div class="col-xs-6">
+      {%- include 'oscar/time-range.html' -%}
+    </div>
+    <div class="col-xs-6">
+      {%- include 'oscar/languages.html' -%}
+    </div>
+  </div>
+</div>

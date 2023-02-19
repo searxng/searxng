@@ -1,0 +1,17 @@
+{% from 'oscar/macros.html' import icon %}
+{% if unresponsive_engines %}
+<div class="alert alert-danger fade in" role="alert">
+    <p><strong class="lead">{{ icon('remove-sign') }} {{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results.') }}</p>
+    <p>
+        {% for engine_name, error_type in unresponsive_engines %}
+        {{ engine_name }} ({{ error_type }}){% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p><small>{{ _('Please, try again later or find another searx instance.') }} (<a href="{{ brand.PUBLIC_INSTANCES }}">{{ _('Public instances') }}</a>)</small></p>
+</div>
+{% else %}
+<div class="alert alert-info fade in" role="alert">
+    <strong class="lead">{{ icon('info-sign') }} {{ _('Sorry!') }}</strong>
+    {{ _('we didn\'t find any results. Please use another query or search in more categories.') }}
+</div>
+{% endif %}

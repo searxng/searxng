@@ -1,0 +1,76 @@
+{% from 'oscar/macros.html' import result_header, result_sub_header, result_footer, result_footer_rtl, icon %}
+
+{{- result_header(result, favicons, loop.index) -}}
+{{- result_sub_header(result, loop.index) -}}
+
+<div class="container-fluid">
+
+    <div class="row">
+        {%- if result.img_src -%}<img src="{{ image_proxify(result.img_src) }}" title="{{ result.title|striptags }}" class="img-thumbnail">{%- endif -%}
+
+        {%- if result.type_icon or result.type -%}
+        <p class="result-content">
+            {%- if result.type_icon -%}
+                <img src="{{ image_proxify(result.type_icon) }}" title="{{ result.type|striptags }}" class="img-type">
+            {%- endif -%}
+            {{ result.type if result.type is not none else '' }}
+        </p>
+        {%- endif -%}
+
+        {%- if result.content %}<p class="result-content">{{ result.content|safe }}</p>{% endif -%}
+
+        <table class="result-content result-map-details">
+            {%- if result.address -%}
+            <tr>
+                <th scope="row">
+                    {{ result.address_label or _('address') }}
+                </th>
+                <td class="result-content result-adress" itemscope itemtype="http://schema.org/PostalAddress">
+                {%- if result.address.name -%}
+                    <strong itemprop="name" class="hidden">{{ result.address.name }}</strong>
+                {%- endif -%}
+                {%- if result.address.road -%}
+                    <span itemprop="streetAddress">
+                        {%- if result.address.house_number %}{{ result.address.house_number }}, {% endif -%}
+                        {{- result.address.road -}}
+                    </span><br/>
+                {%- endif -%}
+                {%- if result.address.locality -%}
+                    <span itemprop="addressLocality">{{ result.address.locality }}</span>
+                    {%- if result.address.postcode %}, <span itemprop="postalCode">{{ result.address.postcode }}</span>{% endif -%}
+                    <br/>
+                {%- endif -%}
+                {%- if result.address.country -%}
+                    <span itemprop="addressCountry">{{ result.address.country }}</span>
+                {%- endif -%}
+                </td>
+            </tr>
+            {%- endif %}
+            {%- for info in result.data -%}
+            <tr><th scope="row">{{ info.label }}</th><td>{{ info.value|safe }}</td></tr>
+            {%- endfor -%}
+            {%- for link in result.links -%}
+            <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td></tr>
+            {%- endfor -%}
+        </table>
+
+        <p class="result-content">
+            {%- if (result.latitude and result.longitude) or result.boundingbox -%}
+                <span><a class="text-info btn-collapse collapsed searx_init_map cursor-pointer disabled_if_nojs" data-toggle="collapse" data-target="#result-map-{{ index }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %} data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}">{{ icon('globe') }} {{ _('show map') }}</a></span>
+            {%- endif -%}
+        </p>
+
+    </div>
+
+{%- if (result.latitude and result.longitude) or result.boundingbox -%}
+    <div class="collapse" id="result-map-{{ index }}">
+        <div style="height:300px; width:100%; margin: 10px 0;" id="osm-map-{{ index }}"></div>
+    </div>
+{%- endif -%}
+
+</div>
+{%- if rtl -%}
+{{- result_footer_rtl(result, loop.index) -}}
+{% else %}
+{{- result_footer(result, loop.index) -}}
+{%- endif -%}

@@ -1,0 +1,10 @@
+{% from 'oscar/macros.html' import custom_select_class %}
+<label class="visually-hidden" for="language">{{ _('Language') }}</label>
+<select class="language form-control {{ custom_select_class(rtl) }}" id="language" name="language" accesskey="l">
+  <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
+{%- for lang_id,lang_name,country_name,english_name in language_codes | sort(attribute=1) -%}
+  <option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>
+    {{- lang_name }} {% if country_name %}({{ country_name }}) {% endif %}- {{ lang_id -}}
+  </option>
+{%- endfor -%}
+</select>

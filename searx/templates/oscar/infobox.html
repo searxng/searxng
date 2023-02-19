@@ -1,0 +1,49 @@
+{% from 'oscar/macros.html' import result_link with context %}
+<div class="panel panel-default infobox">
+    <div class="panel-heading">{{- "" -}}
+        <div class="infobox_part">
+            <div class="{% if not rtl %}pull-right{% endif %}">
+            {% for engine in infobox.engines %}
+                <span class="label label-default">{{ engine }}</span>
+            {% endfor %}
+            </div>
+            <h4 class="panel-title"><bdi>{{ infobox.infobox }}</bdi></h4>{{- "" -}}
+            {% for u in infobox.urls %}{% if u.official %} <a class="header_url" href="{{ u.url }}">{{ u.url }}</a>{% endif %}{% endfor %}
+        </div>
+    </div>
+    <input type="checkbox" class="infobox_checkbox" id="expand_infobox_{{ infobox.engine }}" hidden>
+    <div class="panel-body infobox_body">
+        {% if infobox.img_src %}<img class="img-responsive center-block infobox_part" src="{{ image_proxify(infobox.img_src) }}" />{% endif %}
+
+        {% if infobox.content %}<bdi><p class="infobox_part">{{ infobox.content | safe }}</p></bdi>{% endif %}
+
+        {% if infobox.attributes -%}
+        <table class="table table-striped infobox_part">
+            {% for attribute in infobox.attributes -%}
+            <tr>{{- "" -}}
+                <td><bdi>{{ attribute.label }}</bdi></td>
+                {%- if attribute.image -%}
+                <td><img class="img-responsive" src="{{ image_proxify(attribute.image.src) }}" alt="{{ attribute.image.alt }}" /></td>
+                {%- else -%}
+                <td><bdi>{{ attribute.value }}</bdi></td>
+                {%- endif -%}
+            </tr>
+            {% endfor -%}
+        </table>
+        {% endif %}
+
+        {% if infobox.urls -%}
+        <div class="infobox_part">{{- "\n" -}}
+            <bdi>
+            {%- for url in infobox.urls -%}
+            <p class="btn btn-default btn-xs">{{ result_link(url.url, url.title) }}</p>
+            {% endfor -%}
+            </bdi>{{- "" -}}
+        </div>
+        {% endif %}
+    </div>
+    <label for="expand_infobox_{{ infobox.engine }}" class="infobox_toggle panel-footer">
+        <span class="infobox_label_down glyphicon glyphicon-chevron-down"></span>
+        <span class="infobox_label_up glyphicon glyphicon-chevron-up"></span>
+    </label>
+</div>

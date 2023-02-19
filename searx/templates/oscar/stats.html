@@ -1,0 +1,33 @@
+{% extends "oscar/base.html" %}
+{% block title %}{{ _('stats') }} - {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1>{{ _('Engine stats') }}</h1>
+    <div class="row">
+        {% for stat_name,stat_category in stats %}
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <h3>{{ stat_name }}</h3>
+            <div class="container-fluid">
+                {% for engine in stat_category %}
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">{{ engine.name }}</div>
+                    <div class="col-sm-8 col-md-8">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ '%i'|format(engine.avg) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ engine.percentage }}%;">
+                                {{ '%.02f'|format(engine.avg) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% if not stat_category %}
+                <div class="col-sm-12 col-md-12">
+                    {% include 'oscar/messages/no_data_available.html' %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

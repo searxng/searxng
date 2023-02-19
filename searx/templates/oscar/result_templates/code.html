@@ -1,0 +1,18 @@
+{% from 'oscar/macros.html' import result_header, result_sub_header, result_footer, result_footer_rtl, icon with context%}
+
+{{ result_header(result, favicons) }}
+{{ result_sub_header(result) }}
+
+{% if result.content %}<p class="result-content">{{ result.content|safe }}</p>{% endif %}
+
+{% if result.repository %}<p class="result-content">{{ icon('file') }} <a href="{{ result.repository }}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} aria-labelledby="result-{{loop.index}}">{{ result.repository }}</a></p>{% endif %}
+
+<div dir="ltr">
+{{ result.codelines|code_highlighter(result.code_language)|safe }}
+</div>
+
+{% if rtl %}
+{{ result_footer_rtl(result) }}
+{% else %}
+{{ result_footer(result) }}
+{% endif %}

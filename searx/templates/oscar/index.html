@@ -1,0 +1,21 @@
+{% extends "oscar/base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">{{- "" -}}
+        <div class="text-center col-sm-12 col-md-12">
+            {%- if cookies['oscar-style'] == 'pointhi' -%}
+                <h1 class="text-hide center-block"><img class="center-block img-responsive" src="{{ url_for('static', filename='img/searx_logo.png') }}" alt="searx logo"/>searx</h1>
+            {%- else -%}
+                <div class="text-hide center-block" id="main-logo">{{- "" -}}
+                    <img class="center-block img-responsive" src="{{ url_for('static', filename='img/logo_searx_a.png') }}" alt="searx logo" />searx{{- "" -}}
+                </div>
+            {%- endif -%}
+        </div>{{- "" -}}
+    </div>
+    <div class="row">
+        <div class="text-center col-sm-12 col-md-12">
+            {% include 'oscar/search_full.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

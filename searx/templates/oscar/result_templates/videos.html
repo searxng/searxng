@@ -1,0 +1,29 @@
+{% from 'oscar/macros.html' import result_header, result_sub_header, result_footer, result_footer_rtl, icon %}
+
+{{- result_header(result, favicons, loop.index) -}}
+{{- result_sub_header(result, loop.index) -}}
+
+{%- if result.embedded -%}
+    <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer media-loader disabled_if_nojs" data-toggle="collapse" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}" aria-labelledby="result-{{loop.index}}">{{ icon('film') }} {{ _('show video') }}</a></small>
+{%- endif -%}
+
+{%- if result.embedded -%}
+<div id="result-video-{{ index }}" class="collapse">
+   {{- result.embedded|safe -}}
+</div>
+{%- endif -%}
+
+<div class="container-fluid">{{- "" -}}
+    <div class="row">{{- "" -}}
+        <a href="{{ result.url }}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}><img class="thumbnail col-xs-6 col-sm-4 col-md-4 result-content" src="{{ image_proxify(result.thumbnail) }}" aria-labelledby="result-{{loop.index}}" /></a>
+        {%- if result.author %}<p class="col-xs-12 col-sm-8 col-md-8 result-content"><b>{{ _('Author') }}</b>: {{ result.author }}</p>{% endif -%}
+        {%- if result.length %}<p class="col-xs-12 col-sm-8 col-md-8 result-content"><b>{{ _('Length') }}</b>: {{ result.length }}</p>{% endif -%}
+        {%- if result.content %}<p class="col-xs-12 col-sm-8 col-md-8 result-content">{{ result.content|safe }}</p>{% endif -%}
+    </div>{{- "" -}}
+</div>
+
+{%- if rtl -%}
+{{ result_footer_rtl(result, loop.index) }}
+{%- else -%}
+{{ result_footer(result, loop.index) }}
+{%- endif -%}

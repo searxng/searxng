@@ -1,0 +1,9 @@
+<div class="searx-navbar">{{- "" -}}
+    <span class="instance {% if rtl %}pull-right{% else %}pull-left{% endif%}">{{- "" -}}
+        <a href="{{ url_for('index') }}">{{ instance_name }}</a>{{- "" -}}
+    </span>{{- "" -}}
+    <span class="{% if rtl %}pull-left{% else %}pull-right{% endif %}">{{- "" -}}
+        <a href="{{ url_for('about') }}">{{ _('about') }}</a>{{- "" -}}
+        <a href="{{ url_for('preferences') }}">{{ _('preferences') }}</a>{{- "" -}}
+    </span>{{- "" -}}
+</div>

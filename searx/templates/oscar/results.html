@@ -1,0 +1,187 @@
+{% extends "oscar/base.html" %}
+{% macro search_form_attrs(pageno) -%}
+    {%- for category in selected_categories -%}<input type="hidden" name="category_{{ category }}" value="1"/>{%- endfor -%}
+    <input type="hidden" name="q" value="{{ q|e }}" />{{- "" -}}
+    <input type="hidden" name="pageno" value="{{ pageno }}" />{{- "" -}}
+    <input type="hidden" name="time_range" value="{{ time_range }}" />{{- "" -}}
+    <input type="hidden" name="language" value="{{ current_language }}" />{{- "" -}}
+    {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" />{% endif -%}
+{%- endmacro %}
+{% macro engine_data_form(engine_data) -%}
+    {% for engine_name, kv_data in engine_data.items() %}
+        {% for k, v in kv_data.items() %}
+            <input type="hidden" name="engine_data-{{ engine_name }}-{{ k|e }}" value="{{ v|e }}" />
+        {% endfor %}
+    {% endfor %}
+{%- endmacro %}
+{%- macro search_url() %}{{ url_for('search', _external=True) }}?q={{ q|urlencode }}{% if selected_categories %}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}{% endif %}{% if pageno > 1 %}&amp;pageno={{ pageno }}{% endif %}{% if time_range %}&amp;time_range={{ time_range }}{% endif %}{% if current_language != 'all' %}&amp;language={{ current_language }}{% endif %}{% endmacro -%}
+
+{% block title %}{{ q|e }} - {% endblock %}
+{% block meta %}{{"    "}}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ search_url() }}&amp;format=rss">{% endblock %}
+{% block content %}
+    {% include 'oscar/search.html' %}
+
+    <div class="row">
+        <div class="col-sm-4 col-sm-push-8" id="sidebar_results">
+            {% if number_of_results != '0' -%}
+                <p><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
+            {%- endif %}
+
+            {% if unresponsive_engines and results|length >= 1 -%}
+            <div class="alert alert-danger fade in" role="alert">
+                <p>{{ _('Engines cannot retrieve results') }}:</p>
+                {%- for engine_name, error_type in unresponsive_engines -%}
+                {{- engine_name }} ({{ error_type }}){% if not loop.last %}, {% endif %}{{- "" -}}
+                {%- endfor -%}
+            </div>
+            {%- endif %}
+
+            {% if infoboxes -%}
+                {% for infobox in infoboxes %}
+                    {% include 'oscar/infobox.html' %}{{- "\n\n" -}}
+                {% endfor %}
+            {%- endif %}
+
+            {% if suggestions %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ _('Suggestions') }}</h4>
+                </div>
+                <div class="panel-body">
+                    {% for suggestion in suggestions %}
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation" class="form-inline pull-{% if rtl %}right{% else %}left{% endif %} suggestion_item">
+                        {% if current_language != 'all' %}
+                        <input type="hidden" name="language" value="{{ current_language }}">
+                        {% endif %}
+                        {% if time_range %}
+                        <input type="hidden" name="time_range" value="{{ time_range }}">
+                        {% endif %}
+                        <input type="hidden" name="q" value="{{ suggestion.url }}">
+                        <button type="submit" class="btn btn-default btn-xs">{{ suggestion.title }}</button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+            {%- endif %}
+
+            <div class="panel panel-default hidden-xs">
+                <div class="panel-heading">{{- "" -}}
+                    <h4 class="panel-title">{{ _('Links') }}</h4>{{- "" -}}
+                </div>
+                <div class="panel-body">
+                    <form role="form">{{- "" -}}
+                        <div class="form-group">{{- "" -}}
+                            <label for="search_url">{{ _('Search URL') }}</label>{{- "" -}}
+                            <input id="search_url" type="url" class="form-control select-all-on-click cursor-text" name="search_url" value="{{ search_url() }}" readonly>{{- "" -}}
+                        </div>{{- "" -}}
+                    </form>
+                    <label>{{ _('Download results') }}</label>
+                    <div class="clearfix"></div>
+                    {% for output_type in ('csv', 'json', 'rss') %}
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="form-inline pull-{% if rtl %}right{% else %}left{% endif %} result_download">
+                        {{- search_form_attrs(pageno) -}}
+                        <input type="hidden" name="format" value="{{ output_type }}">{{- "" -}}
+                        <button type="submit" class="btn btn-default">{{ output_type }}</button>{{- "" -}}
+                    </form>
+                    {% endfor %}
+                    <div class="clearfix"></div>
+                    <br /><label><a href="{{ search_url() }}&amp;format=rss">{{ _('RSS subscription') }}</a></label>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div><!-- /#sidebar_results -->
+
+        <div class="col-sm-8 col-sm-pull-4" id="main_results">
+            <h1 class="sr-only">{{ _('Search results') }}</h1>
+
+            {% if corrections -%}
+            <div class="result">
+                <div class="clearfix">
+                    <span class="result_header text-muted form-inline pull-left suggestion_item">{{ _('Try searching for:') }}</span>
+                    {% for correction in corrections -%}
+                        <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation" class="form-inline pull-left suggestion_item">{{- "" -}}
+                            {% if current_language != 'all' %}
+                            <input type="hidden" name="language" value="{{ current_language }}">
+                            {% endif %}
+                            {% if time_range %}
+                            <input type="hidden" name="time_range" value="{{ time_range }}">
+                            {% endif %}
+                            <input type="hidden" name="q" value="{{ correction.url }}">{{- "" -}}
+                            <button type="submit" class="btn btn-default btn-xs">{{ correction.title }}</button>{{- "" -}}
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+            {%- endif %}
+
+            {% if answers -%}
+            {%- for answer in answers.values() %}
+            <div class="result well">
+              {% if answer.url %}
+                <a href="{{ answer.url }}">{{ answer.answer }}</a>
+              {% else %}
+                <span>{{ answer.answer }}</span>
+              {% endif %}
+            </div>
+            {%- endfor %}
+            {%- endif %}
+
+            {% for result in results -%}
+            <div class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
+                {%- set index = loop.index -%}
+                {%- if result.template -%}
+                    {% include get_result_template('oscar', result['template']) %}
+                {%- else -%}
+                    {% include 'oscar/result_templates/default.html' %}
+                {%- endif -%}
+            </div>
+            {% endfor %}
+
+            {% if not results and not answers -%}
+                {% include 'oscar/messages/no_results.html' %}
+            {% endif %}
+
+            <div class="clearfix"></div>
+
+            {% if paging -%}
+            {% if rtl %}
+            <div id="pagination">
+                <div class="pull-left">{{- "" -}}
+                  <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pull-left">
+                        {{- search_form_attrs(pageno+1) -}}
+                        {{- engine_data_form(engine_data) -}}
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span> {{ _('next page') }}</button>{{- "" -}}
+                    </form>{{- "" -}}
+                </div>
+                <div class="pull-right">{{- "" -}}
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}"  class="pull-left">
+                        {{- search_form_attrs(pageno-1) -}}
+                        {{- engine_data_form(engine_data) -}}
+                        <button type="submit" class="btn btn-default" {% if pageno == 1 %}disabled{% endif %}><span class="glyphicon glyphicon-forward"></span> {{ _('previous page') }}</button>{{- "" -}}
+                    </form>{{- "" -}}
+                </div>
+            </div><!-- /#pagination -->
+            <div class="clearfix"></div>
+            {% else %}
+            <div id="pagination">
+                <div class="pull-left">{{- "" -}}
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pull-left">
+                        {{- search_form_attrs(pageno-1) -}}
+                        {{- engine_data_form(engine_data) -}}
+                        <button type="submit" class="btn btn-default" {% if pageno == 1 %}disabled{% endif %}><span class="glyphicon glyphicon-backward"></span> {{ _('previous page') }}</button>{{- "" -}}
+                    </form>{{- "" -}}
+                </div>
+                <div class="pull-right">{{- "" -}}
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}"  class="pull-left">
+                        {{- search_form_attrs(pageno+1) -}}
+                        {{- engine_data_form(engine_data) -}}
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-forward"></span> {{ _('next page') }}</button>{{- "" -}}
+                    </form>{{- "" -}}
+                </div>
+            </div><!-- /#pagination -->
+            <div class="clearfix"></div>
+            {% endif %}
+            {% endif %}
+        </div><!-- /#main_results -->
+    </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% from 'oscar/macros.html' import result_header, result_sub_header, result_footer_nocache, result_footer_nocache_rtl, icon with context %}
+
+{{- result_header(result, favicons) -}}
+{{- result_sub_header(result) -}}
+
+{%- if result.embedded -%}
+    <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer media-loader disabled_if_nojs" data-toggle="collapse" data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}" data-btn-text-not-collapsed="{{ _('hide media') }}">
+    {%- if result.mtype == 'audio' %}{{ icon('music') -}}
+    {%- elif result.mtype == 'video' %} {{ icon('film') -}}
+    {%- endif %} {{ _('show media') }}</a></small>
+{%- endif -%}
+
+{%- if result.embedded -%}
+<div id="result-media-{{ index }}" class="collapse">
+   {{- result.embedded|safe -}}
+</div>
+{%- endif -%}
+
+{%- if result.abstract %}<p class="result-content result-abstract">{{ result.abstract|safe }}</p>{% endif -%}
+
+{%- if result.img_src -%}
+<div class="container-fluid">
+    <div class="row">
+<img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" style="width: auto; max-height: 60px; min-height: 60px;" class="col-xs-2 col-sm-4 col-md-4 result-content">
+{%- if result.content %}<p class="result-content col-xs-8 col-sm-8 col-md-8">{{ result.content|safe }}</p>{% endif -%}
+    </div>
+</div>
+{%- else -%}
+{%- if result.content %}<p class="result-content">{{ result.content|safe }}</p>{% endif -%}
+{%- endif -%}
+
+<table class="result-metadata result-content">
+{%- if result.author %}<tr><td>{{ _('Author') }}</td><td>{{ result.author|safe }}</td></tr>{% endif -%}
+
+{%- if result.filename %}<tr><td>{{ _('Filename') }}</td><td>{{ result.filename|safe }}</td></tr>{% endif -%}
+
+{%- if result.size %}<tr><td>{{ _('Filesize') }}</td><td>
+        {%- if result.size < 1024 %}{{ result.size }} {{ _('Bytes') -}}
+        {%- elif result.size < 1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024) }} {{ _('kiB') -}}
+        {%- elif result.size < 1024*1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024/1024) }} {{ _('MiB') -}}
+        {%- elif result.size < 1024*1024*1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024/1024/1024) }} {{ _('GiB') -}}
+        {%- else %}{{ '{0:0.2f}'.format(result.size/1024/1024/1024/1024) }} {{ _('TiB') }}{% endif -%}
+    </td></tr>
+{%- endif -%}
+
+{%- if result.time %}<tr><td>{{ _('Date') }}</td><td>{{ result.time|safe }}</td></tr>{% endif -%}
+
+{%- if result.mtype %}<tr><td>{{ _('Type') }}</td><td>{{ result.mtype|safe }}/{{ result.subtype|safe }}</td></tr>{% endif -%}
+</table>
+
+{%- if rtl -%}
+{{ result_footer_nocache_rtl(result) }}
+{%- else -%}
+{{ result_footer_nocache(result) }}
+{%- endif -%}

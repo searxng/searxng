@@ -1,0 +1,9 @@
+{% extends "oscar/base.html" %}
+{% block content %}
+<div class="text-center">
+    <h1>{{ _('Page not found') }}</h1>
+    {% autoescape false %}
+    <p>{{ _('Go to %(search_page)s.', search_page='<a href="{}">{}</a>'.format(url_for('index'), _('search page'))) }}</p>
+    {% endautoescape %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% from 'oscar/macros.html' import icon %}
+
+<form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" id="search_form" role="search">
+    {% if rtl %}
+    <div class="input-group">
+    {% else %}
+    <div class="input-group col-md-8 col-md-offset-2">
+    {% endif %}
+        <input type="search" autofocus name="q" class="form-control input-lg autofocus" id="q" placeholder="{{ _('Search for...') }}" aria-label="{{ _('Search for...') }}" autocomplete="off" value="{{ q }}" accesskey="s">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default input-lg" aria-label="{{ _('Start search') }}"><span class="hide_if_nojs">{{ icon('search') }}</span><span class="hidden active_if_nojs">{{ _('Start search') }}</span></button>
+            <button type="reset" class="btn btn-default input-lg" aria-label="{{ _('Clear search') }}"><span class="hide_if_nojs">{{ icon('remove') }}</span><span class="hidden active_if_nojs">{{ _('Clear') }}</span></button>
+        </span>
+    </div>
+    <div class="col-md-8 col-md-offset-2  advanced">
+        {% include 'oscar/advanced.html' %}
+    </div>
+
+</form><!-- / #search_form_full -->
