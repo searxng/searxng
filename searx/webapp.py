@@ -737,8 +737,8 @@ def search():
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
-            for urls in url_pair:
-                gpt.replace(urls.key,urls[urls.key])
+            for urls in url_pair.keys():
+                gpt.replace(urls,url_pair[urls])
             if gpt and gpt!="":
                 gptbox = {
                     'infobox': 'New Search',
