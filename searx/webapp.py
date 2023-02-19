@@ -723,7 +723,7 @@ def search():
                 "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
-                "prompt": prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，用简体中文分条总结简报，在文中用markdown脚注指向内容来源链接：",
+                "prompt": prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
                 "max_tokens": 1024,
                 "temperature": 0.7,
                 "top_p": 1,
@@ -741,7 +741,7 @@ def search():
             for urls in url_pair.keys():
                 gpt = gpt.replace(urls,url_pair[urls])
             if gpt and gpt!="":
-                for i in range(1,10):
+                for i in range(1,16):
                     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 for urls in url_pair.keys():
