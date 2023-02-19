@@ -19,20 +19,22 @@
 # Thomas Pointhuber, 2016-2017
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Peter Martin <weblate@pe7er.com>, 2022.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-17 12:20+0000\n"
-"PO-Revision-Date: 2022-12-30 07:14+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: German <https://translate.codeberg.org/projects/searxng/"
+"searxng/de/>\n"
 "Language: de\n"
-"Language-Team: German "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/de/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -400,22 +402,31 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Dieses Plugin prüft, ob die Adresse der Anfrage ein Tor-Exit-Node ist, und "
+"informiert den Benutzer, wenn dies der Fall ist; wie check.torproject.org, "
+"aber von SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Die Liste der Tor-Exit-Nodes konnte nicht heruntergeladen werden von: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Du benutzt Tor und es sieht so aus, als hättest du diese externe IP-Adresse: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Du benutzt Tor und es sieht so aus, als hättest du diese externe IP-Adresse: "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1570,4 +1581,3 @@ msgstr "Video verstecken"
 
 #~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
 #~ msgstr ""
-
