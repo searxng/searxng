@@ -721,7 +721,7 @@ def search():
                 "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
-                "prompt": prompt,
+                "prompt": prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，用简体中文分条总结简报，在文中用markdown脚注指向内容来源链接：",
                 "max_tokens": 1024,
                 "temperature": 0.7,
                 "top_p": 1,
