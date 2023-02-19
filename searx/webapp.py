@@ -741,10 +741,13 @@ def search():
             for urls in url_pair.keys():
                 gpt = gpt.replace(urls,url_pair[urls])
             if gpt and gpt!="":
+                gpt =  markdown.markdown( re.sub( r'\[(\d+)\](?=[^\^])', r'[^\\1]', gpt) , extensions=['footnotes'])
+                for urls in url_pair.keys():
+                    gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
                 gptbox = {
                     'infobox': 'GPT3',
                     'id': 'gpt'+str(len(prompt)),
-                    'content': markdown.markdown( re.sub( r'\[(\d+)\](?=[^\^])', r'[^\\1]', gpt), extensions=['footnotes']),
+                    'content': gpt,
                 }
                 result_container.infoboxes.append(gptbox)
 
