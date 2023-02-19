@@ -733,7 +733,7 @@ def search():
                 "stream": False
             }
 
-            gpt_response = requests.post(url, headers=gpt_headers, data=json.dumps(gpt_data))
+            gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
