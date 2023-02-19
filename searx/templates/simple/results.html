@@ -85,13 +85,13 @@
         </div>
         {% endif %}
 
-        {% if method == 'POST' %}
+        <!-- {% if method == 'POST' %}
         <div id="search_url" role="complementary" aria-labelledby="search_url-title">
             <h4 class="title" id="search_url-title">{{ _('Search URL') }} :</h4>
             <div class="selectable_url"><pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}{% if pageno > 1 %}&amp;pageno={{ pageno }}{% endif %}{% if selected_categories %}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}{% endif %}{% if timeout_limit %}&amp;timeout_limit={{ timeout_limit|urlencode }}{% endif %}</pre></div>
         </div>
-        {% endif %}
-        <div id="apis" role="complementary" aria-labelledby="apis-title">
+        {% endif %} -->
+        <!-- <div id="apis" role="complementary" aria-labelledby="apis-title">
           {% if search_formats %}
           <h4 class="title" id="apis-title">{{ _('Download results') }}</h4>
           {% for output_type in search_formats %}
@@ -112,7 +112,7 @@
 	  </div>
           {% endfor %}
           {% endif %}
-        </div>
+        </div> -->
     </div>
 
     {% if corrections %}
