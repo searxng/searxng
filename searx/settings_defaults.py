@@ -9,6 +9,7 @@ import numbers
 import errno
 import os
 import logging
+from base64 import b64decode
 from os.path import dirname, abspath
 
 from searx.languages import language_codes as languages
@@ -40,16 +41,6 @@ STR_TO_BOOL = {
     'on': True,
 }
 _UNDEFINED = object()
-
-# compatibility
-SEARX_ENVIRON_VARIABLES = {
-    'SEARX_DISABLE_ETC_SETTINGS': 'SEARXNG_DISABLE_ETC_SETTINGS',
-    'SEARX_SETTINGS_PATH': 'SEARXNG_SETTINGS_PATH',
-    'SEARX_DEBUG': 'SEARXNG_DEBUG',
-    'SEARX_PORT': 'SEARXNG_PORT',
-    'SEARX_BIND_ADDRESS': 'SEARXNG_BIND_ADDRESS',
-    'SEARX_SECRET': 'SEARXNG_SECRET',
-}
 
 
 class SettingsValue:
@@ -117,6 +108,15 @@ class SettingsDirectoryValue(SettingsValue):
         return super().__call__(value)
 
 
+class SettingsBytesValue(SettingsValue):
+    """str are base64 decoded"""
+
+    def __call__(self, value: typing.Any) -> typing.Any:
+        if isinstance(value, str):
+            value = b64decode(value)
+        return super().__call__(value)
+
+
 def apply_schema(settings, schema, path_list):
     error = False
     for key, value in schema.items():
@@ -140,23 +140,34 @@ SCHEMA = {
     'general': {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
         'instance_name': SettingsValue(str, 'SearXNG'),
+        'privacypolicy_url': SettingsValue((None, False, str), None),
         'contact_url': SettingsValue((None, False, str), None),
+        'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),
         'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
         'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
         'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
-        'public_instances': SettingsValue(str, 'https://searx.space'),
+        'public_instances': SettingsValue((False, str), 'https://searx.space'),
         'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
     },
     'search': {
         'safe_search': SettingsValue((0, 1, 2), 0),
         'autocomplete': SettingsValue(str, ''),
+        'autocomplete_min': SettingsValue(int, 4),
         'default_lang': SettingsValue(tuple(LANGUAGE_CODES + ['']), ''),
         'languages': SettingSublistValue(LANGUAGE_CODES, LANGUAGE_CODES),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),
         'max_ban_time_on_fail': SettingsValue(numbers.Real, 120),
+        'suspended_times': {
+            'SearxEngineAccessDenied': SettingsValue(numbers.Real, 86400),
+            'SearxEngineCaptcha': SettingsValue(numbers.Real, 86400),
+            'SearxEngineTooManyRequests': SettingsValue(numbers.Real, 3600),
+            'cf_SearxEngineCaptcha': SettingsValue(numbers.Real, 1296000),
+            'cf_SearxEngineAccessDenied': SettingsValue(numbers.Real, 86400),
+            'recaptcha_SearxEngineCaptcha': SettingsValue(numbers.Real, 604800),
+        },
         'formats': SettingsValue(list, OUTPUT_FORMATS),
     },
     'server': {
@@ -171,7 +182,7 @@ SCHEMA = {
         'default_http_headers': SettingsValue(dict, {}),
     },
     'redis': {
-        'url': SettingsValue(str, 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'),
+        'url': SettingsValue((None, False, str), False, 'SEARXNG_REDIS_URL'),
     },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),
@@ -182,10 +193,12 @@ SCHEMA = {
         'theme_args': {
             'simple_style': SettingsValue(SIMPLE_STYLE, 'auto'),
         },
+        'center_alignment': SettingsValue(bool, False),
         'results_on_new_tab': SettingsValue(bool, False),
         'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),
         'infinite_scroll': SettingsValue(bool, False),
+        'cache_url': SettingsValue(str, 'https://web.archive.org/web/'),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
@@ -194,6 +207,7 @@ SCHEMA = {
         'useragent_suffix': SettingsValue(str, ''),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
         'enable_http2': SettingsValue(bool, True),
+        'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
         # Magic number kept from previous code
         'pool_connections': SettingsValue(int, 100),
@@ -211,10 +225,16 @@ SCHEMA = {
         'extra_proxy_timeout': SettingsValue(int, 0),
         'networks': {},
     },
+    'result_proxy': {
+        'url': SettingsValue((None, str), None),
+        'key': SettingsBytesValue((None, bytes), None),
+        'proxify_results': SettingsValue(bool, False),
+    },
     'plugins': SettingsValue(list, []),
     'enabled_plugins': SettingsValue((None, list), None),
     'checker': {
-        'off_when_debug': SettingsValue(bool, True),
+        'off_when_debug': SettingsValue(bool, True, None),
+        'scheduling': SettingsValue((None, dict), None, None),
     },
     'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
@@ -223,11 +243,5 @@ SCHEMA = {
 
 
 def settings_set_defaults(settings):
-    # compatibility with searx variables
-    for searx, searxng in SEARX_ENVIRON_VARIABLES.items():
-        if searx in os.environ and searxng not in os.environ:
-            os.environ[searxng] = os.environ[searx]
-            logger.warning('%s uses value from %s', searxng, searx)
-
     apply_schema(settings, SCHEMA, [])
     return settings

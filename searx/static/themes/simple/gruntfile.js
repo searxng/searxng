@@ -44,7 +44,6 @@ module.exports = function (grunt) {
         'svg4web.svgo.js',
         'src/js/main/*.js',
         'src/js/head/*.js',
-        '../__common__/js/*.js'
       ],
     },
     stylelint: {
@@ -146,7 +145,7 @@ module.exports = function (grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '<%= _templates %>/__common__/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
+          '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
           'img/searxng.svg': '<%= _brand %>/searxng.svg',
           'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
         }
@@ -190,6 +189,8 @@ module.exports = function (grunt) {
           'school-outline': 'node_modules/ionicons/dist/svg/school-outline.svg',
           'file-tray-full-outline': 'node_modules/ionicons/dist/svg/file-tray-full-outline.svg',
           'people-outline': 'node_modules/ionicons/dist/svg/people-outline.svg',
+          'heart-outline': 'node_modules/ionicons/dist/svg/heart-outline.svg',
+          'information-circle-outline': 'src/svg/information-circle-outline.svg',
         },
         dest: '../../../templates/simple/icons.html',
       },

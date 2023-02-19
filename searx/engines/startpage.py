@@ -62,8 +62,7 @@ sc_code = ''
 def raise_captcha(resp):
 
     if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
-        # suspend CAPTCHA for 7 days
-        raise SearxEngineCaptchaException(suspended_time=7 * 24 * 3600)
+        raise SearxEngineCaptchaException()
 
 
 def get_sc_code(headers):
@@ -89,15 +88,14 @@ def get_sc_code(headers):
         dom = html.fromstring(resp.text)
 
         try:
-            # href --> '/?sc=adrKJMgF8xwp20'
-            href = eval_xpath(dom, '//a[@class="footer-home__logo"]')[0].get('href')
+            # <input type="hidden" name="sc" value="...">
+            sc_code = eval_xpath(dom, '//input[@name="sc"]/@value')[0]
         except IndexError as exc:
             # suspend startpage API --> https://github.com/searxng/searxng/pull/695
             raise SearxEngineResponseException(
                 suspended_time=7 * 24 * 3600, message="PR-695: query new sc time-stamp failed!"
             ) from exc
 
-        sc_code = href[5:]
         sc_code_ts = time()
         logger.debug("new value is: %s", sc_code)
 
@@ -209,7 +207,7 @@ def _fetch_supported_languages(resp):
     # native name, the English name of the writing script used by the language,
     # or occasionally something else entirely.
 
-    # this cases are so special they need to be hardcoded, a couple of them are mispellings
+    # this cases are so special they need to be hardcoded, a couple of them are misspellings
     language_names = {
         'english_uk': 'en-GB',
         'fantizhengwen': ['zh-TW', 'zh-HK'],

@@ -77,13 +77,11 @@ class InfoPage:
         .. _markdown-it-py: https://github.com/executablebooks/markdown-it-py
 
         """
-        return MarkdownIt(
-            "commonmark", {"typographer": True}
-        ).enable(
-            ["replacements", "smartquotes"]
-        ).render(self.content)
+        return (
+            MarkdownIt("commonmark", {"typographer": True}).enable(["replacements", "smartquotes"]).render(self.content)
+        )
 
-    def get_ctx(self):  # pylint: disable=no-self-use
+    def get_ctx(self):
         """Jinja context to render :py:obj:`InfoPage.content`"""
 
         def _md_link(name, url):
@@ -136,6 +134,7 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
         self.toc: typing.List[str] = [
             'search-syntax',
             'about',
+            'donate',
         ]
         """list of articles in the online documentation"""
 
@@ -158,10 +157,9 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
             return None
 
         cache_key = (pagename, locale)
-        page = self.CACHE.get(cache_key)
 
-        if page is not None:
-            return page
+        if cache_key in self.CACHE:
+            return self.CACHE[cache_key]
 
         # not yet instantiated
 
@@ -184,4 +182,6 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
             if fallback_to_default and page is None:
                 page_locale = self.locale_default
                 page = self.get_page(page_name, self.locale_default)
-            yield page_name, page_locale, page
+            if page is not None:
+                # page is None if the page was deleted by the administrator
+                yield page_name, page_locale, page

@@ -198,10 +198,10 @@ class BangParser(QueryPartParser):
             self.raw_text_query.enginerefs.append(EngineRef(value, 'none'))
             return True
 
-        # check if prefix is equal with categorie name
+        # check if prefix is equal with category name
         if value in categories:
             # using all engines for that search, which
-            # are declared under that categorie name
+            # are declared under that category name
             self.raw_text_query.enginerefs.extend(
                 EngineRef(engine.name, value)
                 for engine in categories[value]
@@ -219,7 +219,7 @@ class BangParser(QueryPartParser):
                     self._add_autocomplete(first_char + suggestion)
             return
 
-        # check if query starts with categorie name
+        # check if query starts with category name
         for category in categories:
             if category.startswith(value):
                 self._add_autocomplete(first_char + category.replace(' ', '_'))
@@ -311,7 +311,7 @@ class RawTextQuery:
 
     def getFullQuery(self):
         """
-        get full querry including whitespaces
+        get full query including whitespaces
         """
         return '{0} {1}'.format(' '.join(self.query_parts), self.getQuery()).strip()
 

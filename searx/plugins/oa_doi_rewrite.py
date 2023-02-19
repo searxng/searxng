@@ -42,4 +42,6 @@ def on_result(request, search, result):
                 doi = doi[: -len(suffix)]
         result['url'] = get_doi_resolver(request.preferences) + doi
         result['parsed_url'] = urlparse(result['url'])
+        if 'doi' not in result:
+            result['doi'] = doi
     return True

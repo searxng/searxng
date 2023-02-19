@@ -3,7 +3,7 @@
 """
  Gigablast (Web)
 """
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name, use-dict-literal
 
 import re
 from time import time

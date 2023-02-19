@@ -47,7 +47,7 @@ Engine File
    argument                type        information
    ======================= =========== ========================================================
    categories              list        pages, in which the engine is working
-   paging                  boolean     support multible pages
+   paging                  boolean     support multiple pages
    time_range_support      boolean     support search time range
    engine_type             str         - ``online`` :ref:`[ref] <demo online engine>` by
                                          default, other possibles values are:
@@ -66,11 +66,11 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
 .. table:: Common options in the engine setup (``settings.yml``)
    :width: 100%
 
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
    argument                type        information
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
    name                    string      name of search-engine
-   engine                  string      name of searx-engine (filename without ``.py``)
+   engine                  string      name of searxng-engine (file name without ``.py``)
    enable_http             bool        enable HTTP (by default only HTTPS is enabled).
    shortcut                string      shortcut of search-engine
    timeout                 string      specific timeout for search-engine
@@ -78,7 +78,7 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
    proxies                 dict        set proxies for a specific engine
                                        (e.g. ``proxies : {http: socks5://proxy:port,
                                        https: socks5://proxy:port}``)
-   ======================= =========== ===============================================
+   ======================= =========== ==================================================
 
 .. _engine overrides:
 
@@ -311,3 +311,92 @@ the parameter ``template`` must be set to the desired type.
    address.postcode          postcode of object
    address.country           country of object
    ========================= =====================================================
+
+.. _BibTeX format: https://www.bibtex.com/g/bibtex-format/
+.. _BibTeX field types: https://en.wikipedia.org/wiki/BibTeX#Field_types
+
+.. list-table:: Parameter of the **paper** media type /
+                see `BibTeX field types`_ and `BibTeX format`_
+   :header-rows: 2
+   :width: 100%
+
+   * - result-parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``paper.html``
+
+   * - title
+     - :py:class:`str`
+     - title of the result
+
+   * - content
+     - :py:class:`str`
+     - abstract
+
+   * - comments
+     - :py:class:`str`
+     - free text display in italic below the content
+
+   * - tags
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - free tag list
+
+   * - publishedDate
+     - :py:class:`datetime <datetime.datetime>`
+     - last publication date
+
+   * - type
+     - :py:class:`str`
+     - short description of medium type, e.g. *book*, *pdf* or *html* ...
+
+   * - authors
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - list of authors of the work (authors with a "s")
+
+   * - editor
+     - :py:class:`str`
+     - list of editors of a book
+
+   * - publisher
+     - :py:class:`str`
+     - name of the publisher
+
+   * - journal
+     - :py:class:`str`
+     - name of the journal or magazine the article was
+       published in
+
+   * - volume
+     - :py:class:`str`
+     - volume number
+
+   * - pages
+     - :py:class:`str`
+     - page range where the article is
+
+   * - number
+     - :py:class:`str`
+     - number of the report or the issue number for a journal article
+
+   * - doi
+     - :py:class:`str`
+     - DOI number (like ``10.1038/d41586-018-07848-2``)
+
+   * - issn
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - ISSN number like ``1476-4687``
+
+   * - isbn
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - ISBN number like ``9780201896831``
+
+   * - pdf_url
+     - :py:class:`str`
+     - URL to the full article, the PDF version
+
+   * - html_url
+     - :py:class:`str`
+     - URL to full article, HTML version

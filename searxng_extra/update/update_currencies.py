@@ -19,13 +19,14 @@ import json
 from os.path import join
 
 from searx import searx_dir
-from searx.locales import LOCALE_NAMES
+from searx.locales import LOCALE_NAMES, locales_initialize
 from searx.engines import wikidata, set_loggers
 
 set_loggers(wikidata, 'wikidata')
+locales_initialize()
 
 # ORDER BY (with all the query fields) is important to keep a deterministic result order
-# so multiple invokation of this script doesn't change currencies.json
+# so multiple invocation of this script doesn't change currencies.json
 SARQL_REQUEST = """
 SELECT DISTINCT ?iso4217 ?unit ?unicode ?label ?alias WHERE {
   ?item wdt:P498 ?iso4217; rdfs:label ?label.
@@ -41,7 +42,7 @@ ORDER BY ?iso4217 ?unit ?unicode ?label ?alias
 """
 
 # ORDER BY (with all the query fields) is important to keep a deterministic result order
-# so multiple invokation of this script doesn't change currencies.json
+# so multiple invocation of this script doesn't change currencies.json
 SPARQL_WIKIPEDIA_NAMES_REQUEST = """
 SELECT DISTINCT ?iso4217 ?article_name WHERE {
   ?item wdt:P498 ?iso4217 .

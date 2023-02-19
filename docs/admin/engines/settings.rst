@@ -70,13 +70,25 @@ Global Settings
 .. code:: yaml
 
    general:
-     debug: false               # Debug mode, only for development
-     instance_name:  "SearXNG"  # displayed name
-     contact_url: false         # mailto:contact@example.com
+     debug: false
+     instance_name:  "SearXNG"
+     privacypolicy_url: false
+     donation_url: https://docs.searxng.org/donate.html
+     contact_url: false
+     enable_metrics: true
 
 ``debug`` : ``$SEARXNG_DEBUG``
   Allow a more detailed log if you run SearXNG directly. Display *detailed* error
   messages in the browser too, so this must be deactivated in production.
+
+``donation_url`` :
+  At default the donation link points to the `SearXNG project
+  <https://docs.searxng.org/donate.html>`_.  Set value to ``true`` to use your
+  own donation page written in the :ref:`searx/info/en/donate.md
+  <searx.infopage>` and use ``false`` to disable the donation link altogether.
+
+``privacypolicy_url``:
+  Link to privacy policy.
 
 ``contact_url``:
   Contact ``mailto:`` address or WEB form.
@@ -98,6 +110,13 @@ Global Settings
      default_lang: ""
      ban_time_on_fail: 5
      max_ban_time_on_fail: 120
+     suspended_times:
+       SearxEngineAccessDenied: 86400
+       SearxEngineCaptcha: 86400
+       SearxEngineTooManyRequests: 3600
+       cf_SearxEngineCaptcha: 1296000
+       cf_SearxEngineAccessDenied: 86400
+       recaptcha_SearxEngineCaptcha: 604800
      formats:
        - html
 
@@ -147,6 +166,25 @@ Global Settings
 ``max_ban_time_on_fail``:
   Max ban time in seconds after engine errors.
 
+``suspended_times``:
+  Engine suspension time after error (in seconds; set to 0 to disable)
+
+  ``SearxEngineAccessDenied``: 86400
+    For error "Access denied" and "HTTP error [402, 403]"
+
+  ``SearxEngineCaptcha``: 86400
+    For error "CAPTCHA"
+
+  ``SearxEngineTooManyRequests``: 3600
+    For error "Too many request" and "HTTP error 429"
+
+  Cloudflare CAPTCHA:
+     - ``cf_SearxEngineCaptcha``: 1296000
+     - ``cf_SearxEngineAccessDenied``: 86400
+
+  Google CAPTCHA:
+    - ``recaptcha_SearxEngineCaptcha``: 604800
+
 ``formats``:
   Result formats available from web, remove format to deny access (use lower
   case).
@@ -155,6 +193,7 @@ Global Settings
   - ``csv``
   - ``json``
   - ``rss``
+
 
 .. _settings server:
 
@@ -195,9 +234,13 @@ Global Settings
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
+.. _limiter:
+
 ``limiter`` :
   Rate limit the number of request on the instance, block some bots.  The
   :ref:`limiter plugin` requires a :ref:`settings redis` database.
+
+.. _image_proxy:
 
 ``image_proxy`` :
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
@@ -213,14 +256,26 @@ Global Settings
 ``ui:``
 -------
 
+.. _cache busting:
+   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#caching_static_assets_with_cache_busting
+
 .. code:: yaml
 
    ui:
+     static_use_hash: false
      default_locale: ""
      query_in_title: false
+     infinite_scroll: false
+     center_alignment: false
+     cache_url: https://web.archive.org/web/
      default_theme: simple
      theme_args:
        simple_style: auto
+
+.. _static_use_hash:
+
+``static_use_hash`` :
+  Enables `cache busting`_ of static files.
 
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the
@@ -228,15 +283,32 @@ Global Settings
   specific instance of searx, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
+``query_in_title`` :
+  When true, the result page's titles contains the query it decreases the
+  privacy, since the browser can records the page titles.
+
+``infinite_scroll``:
+  When true, automatically loads the next page when scrolling to bottom of the current page.
+
+``center_alignment`` : default ``false``
+  When enabled, the results are centered instead of being in the left (or RTL)
+  side of the screen.  This setting only affects the *desktop layout*
+  (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
+
+.. cache_url:
+
+``cache_url`` : ``https://web.archive.org/web/``
+  URL prefix of the internet archive or cache, don't forgett trailing slash (if
+  needed).  The default is https://web.archive.org/web/ alternatives are:
+
+  - https://webcache.googleusercontent.com/search?q=cache:
+  - https://archive.today/
+
 ``default_theme`` :
   Name of the theme you want to use by default on your SearXNG instance.
 
 ``theme_args.simple_style``:
   Style of simple theme: ``auto``, ``light``, ``dark``
-
-``query_in_title`` :
-  When true, the result page's titles contains the query it decreases the
-  privacy, since the browser can records the page titles.
 
 ``results_on_new_tab``:
   Open result links in a new tab by default.
@@ -249,7 +321,7 @@ Global Settings
 
 .. _Redis.from_url(url): https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
 
-A redis DB can be connected by an URL, in :py:obj:`searx.shared.redisdb` you
+A redis DB can be connected by an URL, in :py:obj:`searx.redisdb` you
 will find a description to test your redis connection in SerXNG.  When using
 sockets, don't forget to check the access rights on the socket::
 
@@ -269,19 +341,20 @@ developer) account needs to be added to the *searxng-redis* group.
 
 .. admonition:: Tip for developers
 
-   To set up a local redis instance using sockets simply use::
-
-     $ ./manage redis.build
-     $ sudo -H ./manage redis.install
-     $ sudo -H ./manage redis.addgrp "${USER}"
-     # don't forget to logout & login to get member of group
-
-   The YAML setting for such a redis instance is:
+   To set up a local redis instance, first set the socket path of the Redis DB
+   in your YAML setting:
 
    .. code:: yaml
 
       redis:
         url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+
+   Then use the following commands to install the redis instance ::
+
+     $ ./manage redis.build
+     $ sudo -H ./manage redis.install
+     $ sudo -H ./manage redis.addgrp "${USER}"
+     # don't forget to logout & login to get member of group
 
 
 .. _settings outgoing:
@@ -296,24 +369,33 @@ Communication with search engines.
    outgoing:
      request_timeout: 2.0       # default timeout in seconds, can be override by engine
      max_request_timeout: 10.0  # the maximum timeout in seconds
-     useragent_suffix: ""       # informations like an email address to the administrator
+     useragent_suffix: ""       # information like an email address to the administrator
      pool_connections: 100      # Maximum number of allowable connections, or null
                                 # for no limits. The default is 100.
      pool_maxsize: 10           # Number of allowable keep-alive connections, or null
                                 # to always allow. The default is 10.
      enable_http2: true         # See https://www.python-httpx.org/http2/
-     # uncomment below section if you want to use a proxy
-     # proxies:
-     #   all://:
-     #     - http://proxy1:8080
-     #     - http://proxy2:8080
-     # uncomment below section only if you have more than one network interface
-     # which can be the source of outgoing search requests
-     # source_ips:
-     #   - 1.1.1.1
-     #   - 1.1.1.2
-     #   - fe80::/126
-
+     # uncomment below section if you want to use a custom server certificate
+     # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+     # and https://www.python-httpx.org/compatibility/#ssl-configuration
+     #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
+     #
+     # uncomment below section if you want to use a proxyq see: SOCKS proxies
+     #   https://2.python-requests.org/en/latest/user/advanced/#proxies
+     # are also supported: see
+     #   https://2.python-requests.org/en/latest/user/advanced/#socks
+     #
+     #  proxies:
+     #    all://:
+     #      - http://proxy1:8080
+     #      - http://proxy2:8080
+     #
+     #  using_tor_proxy: true
+     #
+     # Extra seconds to add in order to account for the time taken by the proxy
+     #
+     #  extra_proxy_timeout: 10.0
+     #
 
 ``request_timeout`` :
   Global timeout of the requests made to others engines in seconds.  A bigger
@@ -363,6 +445,17 @@ Communication with search engines.
 ``enable_http2`` :
   Enable by default. Set to ``false`` to disable HTTP/2.
 
+.. _httpx verification defaults: https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+.. _httpx ssl configuration: https://www.python-httpx.org/compatibility/#ssl-configuration
+
+``verify``: : ``$SSL_CERT_FILE``, ``$SSL_CERT_DIR``
+  Allow to specify a path to certificate.
+  see `httpx verification defaults`_.
+
+  In addition to ``verify``, SearXNG supports the ``$SSL_CERT_FILE`` (for a file) and
+  ``$SSL_CERT_DIR`` (for a directory) OpenSSL variables.  
+  see `httpx ssl configuration`_.
+
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
 
@@ -405,6 +498,7 @@ engine is shown.  Most of the options have a default value or even are optional.
      engine: example
      shortcut: demo
      base_url: 'https://{language}.example.com/'
+     send_accept_language_header: false
      categories: general
      timeout: 3.0
      api_key: 'apikey'
@@ -452,6 +546,13 @@ engine is shown.  Most of the options have a default value or even are optional.
   Part of the URL that should be stable across every request.  Can be useful to
   use multiple sites using only one engine, or updating the site URL without
   touching at the code.
+
+``send_accept_language_header`` :
+  Several engines that support languages (or regions) deal with the HTTP header
+  ``Accept-Language`` to build a response that fits to the locale.  When this
+  option is activated, the language (locale) that is selected by the user is used
+  to build and send a ``Accept-Language`` header in the request to the origin
+  search engine.
 
 ``categories`` : optional
   Define in which categories this engine will be active.  Most of the time, it is
@@ -556,8 +657,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 ``engines:``
   With ``use_default_settings: true``, each settings can be override in a
   similar way, the ``engines`` section is merged according to the engine
-  ``name``.  In this example, SearXNG will load all the engine and the arch linux
-  wiki engine has a :ref:`token <private engines>`:
+  ``name``.  In this example, SearXNG will load all the default engines, will 
+  enable the ``bing`` engine and define a :ref:`token <private engines>` for
+  the arch linux engine:
 
   .. code-block:: yaml
 
@@ -567,6 +669,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
     engines:
       - name: arch linux wiki
         tokens: ['$ecretValue']
+      - name: bing
+        disabled: false
+
 
 ``engines:`` / ``remove:``
   It is possible to remove some engines from the default settings. The following

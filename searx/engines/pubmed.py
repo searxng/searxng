@@ -3,11 +3,15 @@
  PubMed (Scholar publications)
 """
 
-from flask_babel import gettext
 from lxml import etree
 from datetime import datetime
 from urllib.parse import urlencode
 from searx.network import get
+from searx.utils import (
+    eval_xpath_getindex,
+    eval_xpath_list,
+    extract_text,
+)
 
 # about
 about = {
@@ -22,7 +26,7 @@ about = {
     "results": 'XML',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 
 base_url = (
     'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi' + '?db=pubmed&{query}&retstart={offset}&retmax={hits}'
@@ -63,46 +67,61 @@ def response(resp):
 
     retrieve_url_encoded = pubmed_retrieve_api_url.format(**retrieve_notice_args)
 
-    search_results_xml = get(retrieve_url_encoded).content
-    search_results = etree.XML(search_results_xml).xpath('//PubmedArticleSet/PubmedArticle/MedlineCitation')
+    search_results_response = get(retrieve_url_encoded).content
+    search_results = etree.XML(search_results_response)
+    for entry in eval_xpath_list(search_results, '//PubmedArticle'):
+        medline = eval_xpath_getindex(entry, './MedlineCitation', 0)
 
-    for entry in search_results:
-        title = entry.xpath('.//Article/ArticleTitle')[0].text
-
-        pmid = entry.xpath('.//PMID')[0].text
+        title = eval_xpath_getindex(medline, './/Article/ArticleTitle', 0).text
+        pmid = eval_xpath_getindex(medline, './/PMID', 0).text
         url = pubmed_url + pmid
+        content = extract_text(
+            eval_xpath_getindex(medline, './/Abstract/AbstractText//text()', 0, default=None), allow_none=True
+        )
+        doi = extract_text(
+            eval_xpath_getindex(medline, './/ELocationID[@EIdType="doi"]/text()', 0, default=None), allow_none=True
+        )
+        journal = extract_text(
+            eval_xpath_getindex(medline, './Article/Journal/Title/text()', 0, default=None), allow_none=True
+        )
+        issn = extract_text(
+            eval_xpath_getindex(medline, './Article/Journal/ISSN/text()', 0, default=None), allow_none=True
+        )
+        authors = []
+        for author in eval_xpath_list(medline, './Article/AuthorList/Author'):
+            f = eval_xpath_getindex(author, './ForeName', 0, default=None)
+            l = eval_xpath_getindex(author, './LastName', 0, default=None)
+            f = '' if f is None else f.text
+            l = '' if l is None else l.text
+            authors.append((f + ' ' + l).strip())
 
-        try:
-            content = entry.xpath('.//Abstract/AbstractText')[0].text
-        except:
-            content = gettext('No abstract is available for this publication.')
+        res_dict = {
+            'template': 'paper.html',
+            'url': url,
+            'title': title,
+            'content': content,
+            'journal': journal,
+            'issn': [issn],
+            'authors': authors,
+            'doi': doi,
+        }
 
-        #  If a doi is available, add it to the snipppet
-        try:
-            doi = entry.xpath('.//ELocationID[@EIdType="doi"]')[0].text
-            content = 'DOI: {doi} Abstract: {content}'.format(doi=doi, content=content)
-        except:
-            pass
-
-        if len(content) > 300:
-            content = content[0:300] + "..."
-        # TODO: center snippet on query term
-
-        res_dict = {'url': url, 'title': title, 'content': content}
-
-        try:
-            publishedDate = datetime.strptime(
-                entry.xpath('.//DateCreated/Year')[0].text
-                + '-'
-                + entry.xpath('.//DateCreated/Month')[0].text
-                + '-'
-                + entry.xpath('.//DateCreated/Day')[0].text,
-                '%Y-%m-%d',
-            )
-            res_dict['publishedDate'] = publishedDate
-        except:
-            pass
+        accepted_date = eval_xpath_getindex(
+            entry, './PubmedData/History//PubMedPubDate[@PubStatus="accepted"]', 0, default=None
+        )
+        if accepted_date is not None:
+            year = eval_xpath_getindex(accepted_date, './Year', 0)
+            month = eval_xpath_getindex(accepted_date, './Month', 0)
+            day = eval_xpath_getindex(accepted_date, './Day', 0)
+            try:
+                publishedDate = datetime.strptime(
+                    year.text + '-' + month.text + '-' + day.text,
+                    '%Y-%m-%d',
+                )
+                res_dict['publishedDate'] = publishedDate
+            except Exception as e:
+                print(e)
 
         results.append(res_dict)
 
-        return results
+    return results

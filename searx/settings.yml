@@ -1,8 +1,17 @@
 general:
-  debug: false              # Debug mode, only for development
-  instance_name: "SearXNG"  # displayed name
-  contact_url: false        # mailto:contact@example.com
-  enable_metrics: true      # record stats
+  # Debug mode, only for development
+  debug: false
+  # displayed name
+  instance_name: "SearXNG"
+  # For example: https://example.com/privacy
+  privacypolicy_url: false
+  # use true to use your own donation page written in searx/info/en/donate.md
+  # use false to disable the donation link
+  donation_url: https://docs.searxng.org/donate.html
+  # mailto:contact@example.com
+  contact_url: false
+  # record stats
+  enable_metrics: true
 
 brand:
   new_issue_url: https://github.com/searxng/searxng/issues/new
@@ -14,10 +23,12 @@ brand:
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
-  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google",
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex",
   # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
   autocomplete: ""
+  # minimun characters to type before autocompleter starts
+  autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
   default_lang: ""
@@ -34,6 +45,20 @@ search:
   ban_time_on_fail: 5
   # max ban time in seconds after engine errors
   max_ban_time_on_fail: 120
+  suspended_times:
+    # Engine suspension time after error (in seconds; set to 0 to disable)
+    # For error "Access denied" and "HTTP error [402, 403]"
+    SearxEngineAccessDenied: 86400
+    # For error "CAPTCHA"
+    SearxEngineCaptcha: 86400
+    # For error "Too many request" and "HTTP error 429"
+    SearxEngineTooManyRequests: 3600
+    # Cloudflare CAPTCHA
+    cf_SearxEngineCaptcha: 1296000
+    cf_SearxEngineAccessDenied: 86400
+    # ReCAPTCHA
+    recaptcha_SearxEngineCaptcha: 604800
+
   # remove format to deny access, use lower case.
   # formats: [html, csv, json, rss]
   formats:
@@ -41,7 +66,7 @@ search:
 
 server:
   # If you change port, bind_address or base_url don't forget to rebuild
-  # instance's enviroment (make buildenv)
+  # instance's environment (make buildenv)
   port: 8888
   bind_address: "127.0.0.1"
   base_url: false  # Possible values: false or "https://example.org/location".
@@ -67,7 +92,7 @@ server:
 
 redis:
   # https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
-  url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+  url: false
 
 ui:
   # Custom static path - leave it blank if you didn't change
@@ -78,8 +103,14 @@ ui:
   # query_in_title: When true, the result page's titles contains the query
   # it decreases the privacy, since the browser can records the page titles.
   query_in_title: false
+  # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
+  infinite_scroll: false
   # ui theme
   default_theme: simple
+  # center the results ?
+  center_alignment: false
+  # URL prefix of the internet archive, don't forgett trailing slash (if needed).
+  # cache_url: "https://webcache.googleusercontent.com/search?q=cache:"
   # Default interface locale - leave blank to detect from browser information or
   # use codes from the 'locales' config section
   default_locale: ""
@@ -106,6 +137,7 @@ ui:
 #
 # result_proxy:
 #   url: http://127.0.0.1:3000/
+#   # the key is a base64 encoded string, the YAML !!binary prefix is optional
 #   key: !!binary "your_morty_proxy_key"
 #   # [true|false] enable the "proxy" button next to each result
 #   proxify_results: true
@@ -117,7 +149,7 @@ outgoing:
   request_timeout: 3.0
   # the maximum timeout in seconds
   # max_request_timeout: 10.0
-  # suffix of searx_useragent, could contain informations like an email address
+  # suffix of searx_useragent, could contain information like an email address
   # to the administrator
   useragent_suffix: ""
   # The maximum number of concurrent connections that may be established.
@@ -127,6 +159,11 @@ outgoing:
   pool_maxsize: 20
   # See https://www.python-httpx.org/http2/
   enable_http2: true
+  # uncomment below section if you want to use a custom server certificate
+  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
+  #
   # uncomment below section if you want to use a proxyq see: SOCKS proxies
   #   https://2.python-requests.org/en/latest/user/advanced/#proxies
   # are also supported: see
@@ -165,13 +202,18 @@ outgoing:
 #   # these plugins are enabled if nothing is configured ..
 #   - 'Hash plugin'
 #   - 'Search on category select'
-#   - 'Self Informations'
+#   - 'Self Information'
 #   - 'Tracker URL remover'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
 #   - 'Hostname replace'  # see hostname_replace configuration below
 #   - 'Open Access DOI rewrite'
 #   - 'Vim-like hotkeys'
+#   - 'Tor check plugin'
+#   # Read the docs before activate: auto-detection of the language could be
+#   # detrimental to users expectations / users can activate the plugin in the
+#   # preferences if they want.
+#   - 'Autodetect search language'
 
 # Configuration of the "Hostname replace" plugin:
 #
@@ -194,7 +236,7 @@ checker:
 
   # to activate the scheduler:
   # * uncomment "scheduling" section
-  # * add "cache2 = name=searxcache,items=2000,blocks=2000,blocksize=4096,bitmap=1"
+  # * add "cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1"
   #   to your uwsgi.ini
 
   # scheduling:
@@ -246,10 +288,20 @@ categories_as_tabs:
   social media:
 
 engines:
+  - name: 9gag
+    engine: 9gag
+    shortcut: 9g
+    disabled: true
+
   - name: apk mirror
     engine: apkmirror
     timeout: 4.0
     shortcut: apkm
+    disabled: true
+
+  - name: apple app store
+    engine: apple_app_store
+    shortcut: aps
     disabled: true
 
   # Requires Tor
@@ -290,7 +342,6 @@ engines:
   - name: arxiv
     engine: arxiv
     shortcut: arx
-    categories: science
     timeout: 4.0
 
   # tmp suspended:  dh key too small
@@ -311,6 +362,7 @@ engines:
   - name: bing
     engine: bing
     shortcut: bi
+    disabled: true
 
   - name: bing images
     engine: bing_images
@@ -381,23 +433,49 @@ engines:
   #   api_key: 'unset'
 
   - name: crossref
-    engine: json_engine
-    paging: true
-    search_url: https://search.crossref.org/dois?q={query}&page={pageno}
-    url_query: doi
-    title_query: title
-    title_html_to_text: true
-    content_query: fullCitation
-    content_html_to_text: true
-    categories: science
+    engine: crossref
     shortcut: cr
+    timeout: 30
+    disabled: true
+
+  - name: yep
+    engine: json_engine
+    shortcut: yep
+    categories: general
+    disabled: true
+    paging: false
+    content_html_to_text: true
+    title_html_to_text: true
+    search_url: https://api.yep.com/fs/1/?type=web&q={query}&no_correct=false&limit=100
+    results_query: 1/results
+    title_query: title
+    url_query: url
+    content_query: snippet
     about:
-      website: https://www.crossref.org/
-      wikidata_id: Q5188229
-      official_api_documentation: https://github.com/CrossRef/rest-api-doc
+      website: https://yep.com
       use_official_api: false
       require_api_key: false
       results: JSON
+
+  - name: curlie
+    engine: xpath
+    shortcut: cl
+    categories: general
+    disabled: true
+    paging: true
+    lang_all: ''
+    search_url: https://curlie.org/search?q={query}&lang={lang}&start={pageno}&stime=92452189
+    page_size: 20
+    results_xpath: //div[@id="site-list-content"]/div[@class="site-item"]
+    url_xpath: ./div[@class="title-and-desc"]/a/@href
+    title_xpath: ./div[@class="title-and-desc"]/a/div
+    content_xpath: ./div[@class="title-and-desc"]/div[@class="site-descr"]
+    about:
+      website: https://curlie.org/
+      wikidata_id: Q60715723
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
   - name: currency
     engine: currency_convert
@@ -477,7 +555,6 @@ engines:
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
-    disabled: true
 
   - name: duckduckgo images
     engine: duckduckgo_images
@@ -485,10 +562,28 @@ engines:
     timeout: 3.0
     disabled: true
 
+  - name: duckduckgo weather
+    engine: duckduckgo_weather
+    shortcut: ddw
+    disabled: true
+
+  - name: apple maps
+    engine: apple_maps
+    shortcut: apm
+    disabled: true
+    timeout: 5.0
+
+  - name: emojipedia
+    engine: emojipedia
+    timeout: 4.0
+    shortcut: em
+    disabled: true
+
   - name: tineye
     engine: tineye
     shortcut: tin
     timeout: 9.0
+    disabled: true
 
   - name: etymonline
     engine: xpath
@@ -676,26 +771,13 @@ engines:
     shortcut: gos
 
   - name: google play apps
-    engine: xpath
-    search_url: https://play.google.com/store/search?q={query}&c=apps
-    results_xpath: '//div[@class="ImZGtf mpg5gc"]'
-    title_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a'
-    url_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a/@href'
-    content_xpath: './/div[@class="RZEgze"]//a[@class="mnKHRc"]'
-    thumbnail_xpath: './/div[@class="uzcko"]/div/span[1]//img/@data-src'
-    categories: [files, apps]
+    engine: google_play_apps
     shortcut: gpa
     disabled: true
-    about:
-      website: https://play.google.com/
-      wikidata_id: Q79576
-      official_api_documentation:
-      use_official_api: false
-      require_api_key: false
-      results: HTML
 
   - name: google play movies
     engine: xpath
+    send_accept_language_header: true
     search_url: https://play.google.com/store/search?q={query}&c=movies
     results_xpath: '//div[@class="ImZGtf mpg5gc"]'
     title_xpath: './/div[@class="RZEgze"]//div[@class="kCSSQe"]//a'
@@ -827,21 +909,30 @@ engines:
       require_api_key: false
       results: HTML
 
-  - name: z-library
-    engine: zlibrary
-    shortcut: zlib
-    categories: files
-    timeout: 3.0
-    # choose base_url, otherwise engine will do it at initialization time
-    # base_url: https://b-ok.cc
-    # base_url: https://de1lib.org
-    # base_url: https://booksc.eu   # does not have cover preview
-    # base_url: https://booksc.org  # does not have cover preview
+  # Disabling zlibrary due to z-lib.org domain seizure
+  # https://github.com/searxng/searxng/pull/1937
+  #
+  # - name: z-library
+  #   engine: zlibrary
+  #   shortcut: zlib
+  #   categories: files
+  #   timeout: 3.0
+  #   # choose base_url, otherwise engine will do it at initialization time
+  #   # base_url: https://b-ok.cc
+  #   # base_url: https://de1lib.org
+  #   # base_url: https://booksc.eu   # does not have cover preview
+  #   # base_url: https://booksc.org  # does not have cover preview
 
   - name: library of congress
     engine: loc
     shortcut: loc
     categories: images
+
+  - name: lingva
+    engine: lingva
+    shortcut: lv
+    # set lingva instance in url, by default it will use the official instance
+    # url: https://lingva.ml
 
   - name: lobste.rs
     engine: xpath
@@ -880,6 +971,12 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
+
+  - name: metacpan
+    engine: metacpan
+    shortcut: cpan
+    disabled: true
+    number_of_results: 20
 
   # - name: meilisearch
   #   engine: meilisearch
@@ -958,7 +1055,7 @@ engines:
     title_query: metadata/oaf:entity/oaf:result/title/$
     content_query: metadata/oaf:entity/oaf:result/description/$
     content_html_to_text: true
-    categories: science
+    categories: "science"
     shortcut: oad
     timeout: 5.0
     about:
@@ -1065,10 +1162,29 @@ engines:
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
 
+  - name: pub.dev
+    engine: xpath
+    shortcut: pd
+    search_url: https://pub.dev/packages?q={query}&page={pageno}
+    paging: true
+    results_xpath: /html/body/main/div/div[@class="search-results"]/div[@class="packages"]/div
+    url_xpath: ./div/h3/a/@href
+    title_xpath: ./div/h3/a
+    content_xpath: ./p[@class="packages-description"]
+    categories: [packages, it]
+    timeout: 3.0
+    disabled: true
+    first_page_num: 1
+    about:
+      website: https://pub.dev/
+      official_api_documentation: https://pub.dev/help/api
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: pubmed
     engine: pubmed
     shortcut: pub
-    categories: science
     timeout: 3.0
 
   - name: pypi
@@ -1092,6 +1208,7 @@ engines:
       results: HTML
 
   - name: qwant
+    qwant_categ: web
     engine: qwant
     shortcut: qw
     categories: [general, web]
@@ -1100,6 +1217,7 @@ engines:
       rosebud: *test_rosebud
 
   - name: qwant news
+    qwant_categ: news
     engine: qwant
     shortcut: qwn
     categories: news
@@ -1107,6 +1225,7 @@ engines:
     network: qwant
 
   - name: qwant images
+    qwant_categ: images
     engine: qwant
     shortcut: qwi
     categories: [images, web]
@@ -1114,6 +1233,7 @@ engines:
     network: qwant
 
   - name: qwant videos
+    qwant_categ: videos
     engine: qwant
     shortcut: qwv
     categories: [videos, web]
@@ -1212,7 +1332,6 @@ engines:
     engine: semantic_scholar
     disabled: true
     shortcut: se
-    categories: science
 
   # Spotify needs API credentials
   # - name: spotify
@@ -1238,8 +1357,7 @@ engines:
   #   # working API key, for test & debug: "a69685087d07eca9f13db62f65b8f601"
   #   api_key: 'unset'
   #   shortcut: springer
-  #   categories: science
-  #   timeout: 6.0
+  #   timeout: 15.0
 
   - name: startpage
     engine: startpage
@@ -1315,6 +1433,11 @@ engines:
   #     - 2000
   #     - 5000
 
+  - name: twitter
+    shortcut: tw
+    engine: twitter
+    disabled: true
+
   # maybe in a fun category
   #  - name: uncyclopedia
   #    engine: mediawiki
@@ -1365,7 +1488,8 @@ engines:
 
   - name: wiby
     engine: json_engine
-    search_url: https://wiby.me/json/?q={query}
+    paging: true
+    search_url: https://wiby.me/json/?q={query}&p={pageno}
     url_query: URL
     title_query: Title
     content_query: Snippet
@@ -1374,6 +1498,46 @@ engines:
     disabled: true
     about:
       website: https://wiby.me/
+
+  - name: marginalia
+    engine: json_engine
+    shortcut: mar
+    categories: general
+    paging: false
+    # index: {"0": "popular", "1": "blogs", "2": "big_sites",
+    # "3": "default", "4": experimental"}
+    search_url: https://api.marginalia.nu/public/search/{query}?index=4&count=20
+    results_query: results
+    url_query: url
+    title_query: title
+    content_query: description
+    timeout: 1.5
+    disabled: true
+    about:
+      website: https://www.marginalia.nu/
+      official_api_documentation: https://api.marginalia.nu/
+      use_official_api: true
+      require_api_key: true
+      results: JSON
+
+  - name: alexandria
+    engine: json_engine
+    shortcut: alx
+    categories: general
+    paging: true
+    search_url: https://api.alexandria.org/?a=1&q={query}&p={pageno}
+    results_query: results
+    title_query: title
+    url_query: url
+    content_query: snippet
+    timeout: 1.5
+    disabled: true
+    about:
+      website: https://alexandria.org/
+      official_api_documentation: https://github.com/alexandria-org/alexandria-api/raw/master/README.md
+      use_official_api: true
+      require_api_key: false
+      results: JSON
 
   - name: wikibooks
     engine: mediawiki
@@ -1512,17 +1676,26 @@ engines:
     engine: seznam
     disabled: true
 
+  # - name: deepl
+  #   engine: deepl
+  #   shortcut: dpl
+  #   # You can use the engine using the official stable API, but you need an API key
+  #   # See: https://www.deepl.com/pro-api?cta=header-pro-api
+  #   api_key: ''  # required!
+  #   timeout: 5.0
+  #   disabled: true
+
   - name: mojeek
     shortcut: mjk
     engine: xpath
     paging: true
     categories: [general, web]
-    search_url: https://www.mojeek.com/search?q={query}&s={pageno}
-    results_xpath: /html/body//div[@class="results"]/ul[@class="results-standard"]/li
-    url_xpath: ./h2/a/@href
-    title_xpath: ./h2
-    content_xpath: ./p[@class="s"]
-    suggestion_xpath: /html/body//div[@class="top-info"]/p[@class="top-info spell"]/a
+    search_url: https://www.mojeek.com/search?q={query}&s={pageno}&lang={lang}&lb={lang}
+    results_xpath: //ul[@class="results-standard"]/li/a[@class="ob"]
+    url_xpath: ./@href
+    title_xpath: ../h2/a
+    content_xpath: ..//p[@class="s"]
+    suggestion_xpath: //div[@class="top-info"]/p[@class="top-info spell"]/em/a
     first_page_num: 0
     page_size: 10
     disabled: true
@@ -1595,7 +1768,7 @@ engines:
   # - name: yacy
   #   engine: yacy
   #   shortcut: ya
-  #   base_url: 'http://localhost:8090
+  #   base_url: http://localhost:8090
   # required if you aren't using HTTPS for your local yacy instance'
   #   enable_http: true
   #   number_of_results: 5
@@ -1627,6 +1800,7 @@ engines:
     url_xpath: //div[@class="upper-synonyms"]/a/@href
     content_xpath: //div[@class="synonyms-list-group"]
     title_xpath: //div[@class="upper-synonyms"]/a
+    no_result_for_http_status: [404]
     about:
       website: https://www.woxikon.de/
       wikidata_id:  # No Wikidata ID
@@ -1635,7 +1809,7 @@ engines:
       results: HTML
       language: de
 
-  - name: słownik języka polskiego
+  - name: sjp.pwn
     engine: sjp
     shortcut: sjp
     base_url: https://sjp.pwn.pl/
@@ -1662,23 +1836,122 @@ engines:
       results: HTML
       language: fr
 
+  - name: wttr.in
+    engine: wttr
+    shortcut: wttr
+    timeout: 9.0
+
   - name: brave
     shortcut: brave
     engine: xpath
     paging: true
+    time_range_support: true
     first_page_num: 0
-    search_url: https://search.brave.com/search?q={query}&offset={pageno}&spellcheck=1
-    url_xpath: //div[@class="snippet fdb"]/a/@href
+    time_range_url: "&tf={time_range_val}"
+    search_url: https://search.brave.com/search?q={query}&offset={pageno}&spellcheck=1{time_range}
+    url_xpath: //a[@class="result-header"]/@href
     title_xpath: //span[@class="snippet-title"]
     content_xpath: //p[1][@class="snippet-description"]
     suggestion_xpath: //div[@class="text-gray h6"]/a
+    time_range_map:
+      day: 'pd'
+      week: 'pw'
+      month: 'pm'
+      year: 'py'
     categories: [general, web]
+    disabled: true
+    headers:
+      Accept-Encoding: gzip, deflate
     about:
       website: https://brave.com/search/
       wikidata_id: Q107355971
       use_official_api: false
       require_api_key: false
       results: HTML
+
+  - name: petalsearch
+    shortcut: pts
+    engine: xpath
+    paging: true
+    search_url: https://petalsearch.com/search?query={query}&pn={pageno}
+    url_xpath: //div[@class='card-source']
+    title_xpath: //div[@class='title-name']
+    content_xpath: //div[@class='webpage-text']
+    first_page_num: 1
+    disabled: true
+    headers:
+      User-Agent: Mozilla/5.0 (Linux; Android 7.0;) \
+        AppleWebKit/537.36 (KHTML, like Gecko) \
+        Mobile Safari/537.36 (compatible; PetalBot;+https://webmaster.petalsearch.com/site/petalbot)
+    about:
+      website: https://petalsearch.com/
+      wikidata_id: Q104399280
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
+  - name: petalsearch images
+    engine: petal_images
+    shortcut: ptsi
+    disabled: true
+    timeout: 3.0
+
+  - name: lib.rs
+    shortcut: lrs
+    engine: xpath
+    search_url: https://lib.rs/search?q={query}
+    results_xpath: /html/body/main/div/ol/li/a
+    url_xpath: ./@href
+    title_xpath: ./div[@class="h"]/h4
+    content_xpath: ./div[@class="h"]/p
+    categories: [it, packages]
+    disabled: true
+    about:
+      website: https://lib.rs
+      wikidata_id: Q113486010
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
+  - name: sourcehut
+    shortcut: srht
+    engine: xpath
+    paging: true
+    search_url: https://sr.ht/projects?page={pageno}&search={query}
+    results_xpath: (//div[@class="event-list"])[1]/div[@class="event"]
+    url_xpath: ./h4/a[2]/@href
+    title_xpath: ./h4/a[2]
+    content_xpath: ./p
+    first_page_num: 1
+    categories: [it, repos]
+    disabled: true
+    about:
+      website: https://sr.ht
+      wikidata_id: Q78514485
+      official_api_documentation: https://man.sr.ht/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
+  - name: goo
+    shortcut: goo
+    engine: xpath
+    paging: true
+    search_url: https://search.goo.ne.jp/web.jsp?MT={query}&FR={pageno}0
+    url_xpath: //div[@class="result"]/p[@class='title fsL1']/a/@href
+    title_xpath: //div[@class="result"]/p[@class='title fsL1']/a
+    content_xpath: //p[contains(@class,'url fsM')]/following-sibling::p
+    first_page_num: 0
+    categories: [general, web]
+    disabled: true
+    timeout: 4.0
+    about:
+      website: https://search.goo.ne.jp
+      wikidata_id: Q249044
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+      language: ja
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
@@ -1763,10 +2036,7 @@ doi_resolvers:
   doi.org: 'https://doi.org/'
   doai.io: 'https://dissem.in/'
   sci-hub.se: 'https://sci-hub.se/'
-  sci-hub.do: 'https://sci-hub.do/'
-  scihubtw.tw: 'https://scihubtw.tw/'
   sci-hub.st: 'https://sci-hub.st/'
-  sci-hub.bar: 'https://sci-hub.bar/'
-  sci-hub.it.nf: 'https://sci-hub.it.nf/'
+  sci-hub.ru: 'https://sci-hub.ru/'
 
 default_doi_resolver: 'oadoi.org'

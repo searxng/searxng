@@ -27,6 +27,8 @@ about = {
     "results": 'JSON',
 }
 
+send_accept_language_header = True
+
 URL = 'https://api.duckduckgo.com/' + '?{query}&format=json&pretty=0&no_redirect=1&d=1'
 
 WIKIDATA_PREFIX = ['http://www.wikidata.org/entity/', 'https://www.wikidata.org/entity/']
@@ -62,7 +64,6 @@ def request(query, params):
     params['url'] = URL.format(query=urlencode({'q': query}))
     language = match_language(params['language'], supported_languages, language_aliases)
     language = language.split('-')[0]
-    params['headers']['Accept-Language'] = language
     return params
 
 
@@ -78,7 +79,7 @@ def response(resp):
     # * book / performing art / film / television  / media franchise / concert tour / playwright
     # * prepared food
     # * website / software / os / programming language / file format / software engineer
-    # * compagny
+    # * company
 
     content = ''
     heading = search_res.get('Heading', '')

@@ -22,16 +22,16 @@ class TestLoad(SearxTestCase):
         with self.assertRaises(SearxSettingsException):
             settings_loader.load_yaml(join(test_dir, '/settings/empty_settings.yml'))
 
-    def test_check_settings_yml(self):
-        self.assertIsNone(settings_loader.check_settings_yml('/dev/zero'))
+    def test_existing_filename_or_none(self):
+        self.assertIsNone(settings_loader.existing_filename_or_none('/dev/zero'))
 
         bad_settings_path = join(test_dir, 'settings/syntaxerror_settings.yml')
-        self.assertEqual(settings_loader.check_settings_yml(bad_settings_path), bad_settings_path)
+        self.assertEqual(settings_loader.existing_filename_or_none(bad_settings_path), bad_settings_path)
 
 
 class TestDefaultSettings(SearxTestCase):
     def test_load(self):
-        settings, msg = settings_loader.load_settings(load_user_setttings=False)
+        settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
         self.assertFalse(settings['general']['debug'])
         self.assertTrue(isinstance(settings['general']['instance_name'], str))

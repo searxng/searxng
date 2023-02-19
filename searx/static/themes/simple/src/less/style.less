@@ -6,9 +6,6 @@
 
 // stylelint-disable no-descending-specificity
 
-@import "../../__common__/less/new_issue.less";
-@import "../../__common__/less/stats.less";
-@import "../../__common__/less/result_templates.less";
 @import (inline) "../../node_modules/normalize.css/normalize.css";
 @import "definitions.less";
 @import "mixins.less";
@@ -19,6 +16,9 @@
 @import "animations.less";
 @import "embedded.less";
 @import "info.less";
+@import "new_issue.less";
+@import "stats.less";
+@import "result_templates.less";
 
 // for index.html template
 @import "index.less";
@@ -28,6 +28,9 @@
 
 // Search-Field
 @import "search.less";
+
+// to center the results
+@import "style-center.less";
 
 // ion-icon
 .ion-icon {
@@ -262,9 +265,16 @@ article[data-vim-selected].category-social {
 
   .published_date,
   .result_length,
-  .result_author {
+  .result_author,
+  .result_shipping,
+  .result_source_country {
     font-size: 0.8em;
     color: var(--color-result-publishdate-font);
+  }
+
+  .result_price {
+    font-size: 1.2em;
+    color: var(--color-result-description-highlight-font);
   }
 
   img {
@@ -292,6 +302,49 @@ article[data-vim-selected].category-social {
   }
 }
 
+.result-paper {
+  .attributes {
+    display: table;
+    border-spacing: 0.125rem;
+
+    div {
+      display: table-row;
+
+      span {
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+        display: table-cell;
+
+        time {
+          font-size: 0.9rem;
+        }
+      }
+
+      span:first-child {
+        color: var(--color-base-font);
+        min-width: 10rem;
+      }
+
+      span:nth-child(2) {
+        color: var(--color-result-publishdate-font);
+      }
+    }
+  }
+
+  .content {
+    margin-top: 0.25rem;
+  }
+
+  .comments {
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0 0;
+    padding: 0;
+    word-wrap: break-word;
+    line-height: 1.24;
+    font-style: italic;
+  }
+}
+
 .template_group_images {
   display: flex;
   flex-wrap: wrap;
@@ -309,7 +362,7 @@ article[data-vim-selected].category-social {
 .category-files,
 .category-social {
   border: 1px solid var(--color-result-border);
-  margin: 1rem 0;
+  margin: 0 @results-tablet-offset 1rem @results-tablet-offset !important;
   .rounded-corners;
 }
 
@@ -350,6 +403,9 @@ article[data-vim-selected].category-social {
 
 .engines {
   .ltr-float-right();
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   color: var(--color-result-engines-font);
 
   span {
@@ -453,7 +509,7 @@ article[data-vim-selected].category-social {
   margin-bottom: 0;
   .ltr-margin-left(@results-offset);
   display: grid;
-  grid-template-columns: @results-width 25rem;
+  grid-template-columns: @results-width @results-sidebar-width;
   grid-template-rows: min-content min-content 1fr min-content;
   gap: 0 @results-gap;
   grid-template-areas:
@@ -476,7 +532,7 @@ article[data-vim-selected].category-social {
 #suggestions {
   .wrapper {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column;
     justify-content: flex-end;
 
     form {
@@ -496,6 +552,10 @@ article[data-vim-selected].category-social {
     background: transparent;
     color: var(--color-result-search-url-font);
     cursor: pointer;
+    width: calc(100%);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: left;
   }
 
   input[type="submit"],
@@ -538,7 +598,6 @@ article[data-vim-selected].category-social {
 
 #answers {
   grid-area: answers;
-  border: 1px solid var(--color-answer-border);
   background: var(--color-answer-background);
   padding: @result-padding;
   margin: 1rem 0;
@@ -585,24 +644,29 @@ article[data-vim-selected].category-social {
       padding: 0;
     }
 
-    dl {
-      margin: 0.5em 0;
-    }
-
     dt {
-      display: inline;
-      margin-top: 0.5em;
-      .ltr-margin-right(0.25em);
-      margin-bottom: 0.5em;
-      .ltr-margin-left(0);
-      padding: 0;
       font-weight: bold;
     }
 
-    dd {
-      display: inline;
-      margin: 0.5em 0;
-      padding: 0;
+    .attributes {
+      dl {
+        margin: 0.5em 0;
+      }
+
+      dt {
+        display: inline;
+        margin-top: 0.5em;
+        .ltr-margin-right(0.25em);
+        margin-bottom: 0.5em;
+        .ltr-margin-left(0);
+        padding: 0;
+      }
+
+      dd {
+        display: inline;
+        margin: 0.5em 0;
+        padding: 0;
+      }
     }
 
     input {
@@ -630,16 +694,30 @@ article[data-vim-selected].category-social {
   }
 }
 
-#linkto_preferences {
+#links_on_top {
   position: absolute;
   .ltr-right(1.8rem);
+  .ltr-text-align-right();
   top: 2.2rem;
   padding: 0;
   border: 0;
-  display: block;
-  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
   color: var(--color-search-font);
 
+  a {
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
+
+    svg {
+      font-size: 1.2em;
+      .ltr-margin-right(0.125em);
+    }
+  }
+
+  a,
   a:link *,
   a:hover *,
   a:visited *,
@@ -654,6 +732,26 @@ article[data-vim-selected].category-social {
   br {
     clear: both;
   }
+}
+
+.numbered_pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.page_number {
+  background: transparent !important;
+  color: var(--color-result-link-font) !important;
+  text-decoration: underline;
+}
+
+.page_number_current {
+  background: transparent;
+  color: var(--color-result-link-visited-font);
+  border: none;
 }
 
 #apis {
@@ -692,7 +790,17 @@ article[data-vim-selected].category-social {
   opacity: 1;
 }
 
-@media screen and (max-width: @tablet) {
+/*
+  tablet layout
+*/
+
+.results-tablet() {
+  #links_on_top {
+    span {
+      display: none;
+    }
+  }
+
   .page_with_header {
     margin: 2rem 0.5rem;
     width: auto;
@@ -717,7 +825,7 @@ article[data-vim-selected].category-social {
   }
 
   #sidebar {
-    margin-bottom: @results-margin;
+    margin: 0 @results-tablet-offset @results-margin @results-tablet-offset;
     padding: 0;
     float: none;
     border: none;
@@ -753,6 +861,9 @@ article[data-vim-selected].category-social {
 
     .engines {
       .ltr-float-right();
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       padding: 0 0 3px 0;
     }
   }
@@ -793,6 +904,36 @@ article[data-vim-selected].category-social {
   }
 }
 
+@media screen and (max-width: calc(@tablet - 0.5px)) {
+  #links_on_top {
+    span {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 52rem) {
+  body.results_endpoint {
+    #links_on_top {
+      .link_on_top_about,
+      .link_on_top_donate {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: @phone) and (max-width: @tablet) {
+  // when .center-aligment-yes, see style-center.less
+  // the media query includes "min-width: @phone"
+  // because the phone layout includes the tablet layout unconditionally.
+  .center-aligment-no {
+    .results-tablet();
+  }
+}
+
+/* Misc */
+
 #main_results div#results.only_template_images {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
@@ -831,18 +972,29 @@ article[data-vim-selected].category-social {
   }
 }
 
+/*
+  phone layout
+*/
+
 @media screen and (max-width: @phone) {
-  #main_results div#results {
-    grid-template-columns: 100%;
-    margin: 2rem @results-tablet-offset 0 @results-tablet-offset;
+  // based on the tablet layout
+  .results-tablet();
+
+  html {
+    background-color: var(--color-base-background-mobile);
   }
 
-  #linkto_preferences {
+  #main_results div#results {
+    grid-template-columns: 100%;
+    margin: 1rem 0 0 0;
+  }
+
+  #links_on_top {
     top: 0.8rem;
     .ltr-right(0.7rem);
   }
 
-  #main_index #linkto_preferences {
+  #main_index #links_on_top {
     top: 0.5rem;
     .ltr-right(0.5rem);
   }
@@ -862,16 +1014,51 @@ article[data-vim-selected].category-social {
   }
 
   .result {
-    border: 1px solid var(--color-result-border);
+    background: var(--color-result-background);
     margin: 1rem 0;
-    .rounded-corners;
   }
 
   .result-images {
     margin: 0;
     height: @results-image-row-height-phone;
+    background: var(--color-base-background-mobile);
+  }
+
+  .infobox {
+    border: none !important;
+    background-color: var(--color-sidebar-background);
+  }
+
+  .numbered_pagination {
+    display: none;
+  }
+
+  .result-paper {
+    .attributes {
+      display: block;
+
+      div {
+        display: block;
+
+        span {
+          display: inline;
+        }
+
+        span:first-child {
+          font-weight: bold;
+        }
+
+        span:nth-child(2) {
+          .ltr-margin-left(0.5rem);
+        }
+      }
+    }
   }
 }
+
+/*
+  small-phone layout
+*/
 
 @media screen and (max-width: @small-phone) {
   .result-videos {

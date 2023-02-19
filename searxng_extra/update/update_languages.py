@@ -29,7 +29,7 @@ engines_languages_file = Path(searx_dir) / 'data' / 'engines_languages.json'
 languages_file = Path(searx_dir) / 'languages.py'
 
 
-# Fetchs supported languages for each engine and writes json file with those.
+# Fetches supported languages for each engine and writes json file with those.
 def fetch_supported_languages():
     set_timeout_for_thread(10.0)
 

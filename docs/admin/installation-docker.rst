@@ -1,37 +1,60 @@
-
 .. _installation docker:
 
-===================
-Docker installation
-===================
+================
+Docker Container
+================
 
 .. _ENTRYPOINT: https://docs.docker.com/engine/reference/builder/#entrypoint
+.. _searxng/searxng @dockerhub: https://hub.docker.com/r/searxng/searxng
 .. _searxng-docker: https://github.com/searxng/searxng-docker
-.. _[filtron]: https://hub.docker.com/r/dalf/filtron
-.. _[morty]: https://hub.docker.com/r/dalf/morty
 .. _[caddy]: https://hub.docker.com/_/caddy
+.. _Redis: https://redis.io/
+
+----
 
 .. sidebar:: info
 
+   - `searxng/searxng @dockerhub`_
    - :origin:`Dockerfile`
-   - `searxng/searxng @dockerhub <https://hub.docker.com/r/searxng/searxng>`_
    - `Docker overview <https://docs.docker.com/get-started/overview>`_
-   - `Docker Cheat Sheet <https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf>`_
-   - `Alpine Linux <https://alpinelinux.org>`_ `(wiki) <https://en.wikipedia.org/wiki/Alpine_Linux>`__ `apt packages <https://pkgs.alpinelinux.org/packages>`_
+   - `Docker Cheat Sheet <https://docs.docker.com/get-started/docker_cheatsheet.pdf>`_
+   - `Alpine Linux <https://alpinelinux.org>`_
+     `(wiki) <https://en.wikipedia.org/wiki/Alpine_Linux>`__
+     `apt packages <https://pkgs.alpinelinux.org/packages>`_
    - Alpine's ``/bin/sh`` is :man:`dash`
 
-.. tip::
+**If you intend to create a public instance using Docker, use our well maintained
+docker container**
 
-   If you intend to create a public instance using Docker, use our well
-   maintained searxng-docker_ image which includes
+- `searxng/searxng @dockerhub`_.
 
-   - :ref:`protection <searxng filtron>` `[filtron]`_,
-   - a :ref:`result proxy <searxng morty>` `[morty]`_ and
-   - a HTTPS reverse proxy `[caddy]`_.
+.. sidebar:: hint
 
-Make sure you have `installed Docker <https://docs.docker.com/get-docker/>`_ and
-on Linux, don't forget to add your user to the docker group (log out and log
-back in so that your group membership is re-evaluated):
+   The rest of this article is of interest only to those who want to create and
+   maintain their own Docker images.
+
+The sources are hosted at searxng-docker_ and the container includes:
+
+- a HTTPS reverse proxy `[caddy]`_ and
+- a Redis_ DB
+
+The `default SearXNG setup <https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml>`_
+of this container:
+
+- enables :ref:`limiter <limiter>` to protect against bots
+- enables :ref:`image proxy <image_proxy>` for better privacy
+- enables :ref:`cache busting <static_use_hash>` to save bandwith
+
+----
+
+
+Get Docker
+==========
+
+If you plan to build and maintain a docker image by yourself, make sure you have
+`Docker installed <https://docs.docker.com/get-docker/>`_. On Linux don't
+forget to add your user to the docker group (log out and log back in so that
+your group membership is re-evaluated):
 
 .. code:: sh
 

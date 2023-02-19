@@ -14,7 +14,6 @@ ignores some parameters from the common :ref:`google API`:
 # pylint: disable=invalid-name
 
 import binascii
-from datetime import datetime
 import re
 from urllib.parse import urlencode
 from base64 import b64decode
@@ -71,13 +70,13 @@ time_range_support = True
 #
 #  safesearch : results are identitical for safesearch=0 and safesearch=2
 safesearch = False
+send_accept_language_header = True
 
 
 def request(query, params):
     """Google-News search request"""
 
     lang_info = get_lang_info(params, supported_languages, language_aliases, False)
-    logger.debug("HTTP header Accept-Language --> %s", lang_info['headers']['Accept-Language'])
 
     # google news has only one domain
     lang_info['subdomain'] = 'news.google.com'
@@ -98,22 +97,14 @@ def request(query, params):
         + lang_info['subdomain']
         + '/search'
         + "?"
-        + urlencode(
-            {
-                'q': query,
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'gl': lang_info['country'],
-            }
-        )
+        + urlencode({'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'gl': lang_info['country']})
         + ('&ceid=%s' % ceid)
     )  # ceid includes a ':' character which must not be urlencoded
     params['url'] = query_url
 
+    params['cookies']['CONSENT'] = "YES+"
     params['headers'].update(lang_info['headers'])
     params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-    params['headers']['Cookie'] = "CONSENT=YES+cb.%s-14-p0.en+F+941;" % datetime.now().strftime("%Y%m%d")
 
     return params
 
@@ -150,7 +141,7 @@ def response(resp):
                 padding = (4 - (len(jslog) % 4)) * "="
                 jslog = b64decode(jslog + padding)
             except binascii.Error:
-                # URL cant be read, skip this result
+                # URL can't be read, skip this result
                 continue
 
             # now we have : b'[null, ... null,"https://www.cnn.com/.../index.html"]'
@@ -159,24 +150,12 @@ def response(resp):
         # the first <h3> tag in the <article> contains the title of the link
         title = extract_text(eval_xpath(result, './article/h3[1]'))
 
-        # the first <div> tag in the <article> contains the content of the link
-        content = extract_text(eval_xpath(result, './article/div[1]'))
+        # The pub_date is mostly a string like 'yesertday', not a real
+        # timezone date or time.  Therefore we can't use publishedDate.
+        pub_date = extract_text(eval_xpath(result, './article/div[1]/div[1]/time'))
+        pub_origin = extract_text(eval_xpath(result, './article/div[1]/div[1]/a'))
 
-        # the second <div> tag contains origin publisher and the publishing date
-
-        pub_date = extract_text(eval_xpath(result, './article/div[2]//time'))
-        pub_origin = extract_text(eval_xpath(result, './article/div[2]//a'))
-
-        pub_info = []
-        if pub_origin:
-            pub_info.append(pub_origin)
-        if pub_date:
-            # The pub_date is mostly a string like 'yesertday', not a real
-            # timezone date or time.  Therefore we can't use publishedDate.
-            pub_info.append(pub_date)
-        pub_info = ', '.join(pub_info)
-        if pub_info:
-            content = pub_info + ': ' + content
+        content = ' / '.join([x for x in [pub_origin, pub_date] if x])
 
         # The image URL is located in a preceding sibling <img> tag, e.g.:
         # "https://lh3.googleusercontent.com/DjhQh7DMszk.....z=-p-h100-w100"

@@ -70,7 +70,7 @@ def response(resp):
         elif properties.get('osm_type') == 'R':
             osm_type = 'relation'
         else:
-            # continue if invalide osm-type
+            # continue if invalid osm-type
             continue
 
         url = result_base_url.format(osm_type=osm_type, osm_id=properties.get('osm_id'))

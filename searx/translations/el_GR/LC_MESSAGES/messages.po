@@ -5,12 +5,15 @@
 # Translators:
 # xinomilo <dimitris@stinpriza.org>, 2017-2018
 # xinomilo <dimitris@stinpriza.org>, 2015
+# Markus Heiser <markus.heiser@darmarit.de>, 2022, 2023.
+# Constantine Giannopoulos <K.Giannopoulos@acg.edu>, 2022.
+# Alexandre Flament <alex@al-f.net>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-20 07:34+0000\n"
-"PO-Revision-Date: 2022-04-22 07:18+0000\n"
+"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"PO-Revision-Date: 2023-01-06 07:14+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language-Team: Greek <https://weblate.bubu1.eu/projects/searxng/searxng/el/>"
 "\n"
@@ -19,8 +22,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11.2\n"
-"Generated-By: Babel 2.9.1\n"
+"X-Generator: Weblate 4.14.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
 #: searx/searxng.msg
@@ -65,7 +68,7 @@ msgstr "Βίντεο"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "αυτό"
+msgstr "Πληροφορική"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -80,7 +83,7 @@ msgstr "χάρτης"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "κρεμμύδια"
+msgstr "Σελίδες .onion (tor)"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -115,17 +118,22 @@ msgstr "ερωταπαντήσεις"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr "Αποθηκευτήρια"
+msgstr "αποθετήρια"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr "Βίκιπαίδιες λογισμικού"
+msgstr "Wiki λογισμικού"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
 msgstr "Ιστός"
+
+#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
+#: searx/searxng.msg
+msgid "scientific publications"
+msgstr "Επιστημονικά δημοσιεύματα"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -135,97 +143,101 @@ msgstr "Αυτόματα"
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr "φως"
+msgstr "φωτεινό"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
-msgstr "σκούρο"
+msgstr "σκοτεινό"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:165
 msgid "timeout"
 msgstr "Λήξη χρόνου"
 
-#: searx/webapp.py:170
+#: searx/webapp.py:166
 msgid "parsing error"
 msgstr "σφάλμα ανάλυσης"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:167
 msgid "HTTP protocol error"
-msgstr "Σφάλμα προτοκόλου HTTP"
+msgstr "Σφάλμα πρωτοκόλλου HTTP"
 
-#: searx/webapp.py:172
+#: searx/webapp.py:168
 msgid "network error"
 msgstr "Σφάλμα δικτύου"
 
-#: searx/webapp.py:174
-msgid "unexpected crash"
-msgstr "Απροσδόκητη κατάρευση"
+#: searx/webapp.py:169
+msgid "SSL error: certificate validation has failed"
+msgstr "Σφάλμα SSL: η επικύρωση του πιστοποιητικού απέτυχε"
 
-#: searx/webapp.py:181
+#: searx/webapp.py:171
+msgid "unexpected crash"
+msgstr "Απροσδόκητο σφάλμα"
+
+#: searx/webapp.py:178
 msgid "HTTP error"
 msgstr "Σφάλμα HTTP"
 
-#: searx/webapp.py:182
+#: searx/webapp.py:179
 msgid "HTTP connection error"
 msgstr "Σφάλμα σύνδεσης HTTP"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:185
 msgid "proxy error"
-msgstr "Σφάλμα διακομιστή"
+msgstr "Σφάλμα διακομιστή μεσολάβησης"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:186
 msgid "CAPTCHA"
-msgstr "Απέδειξε πως είσαι άνθρωπος"
+msgstr "CAPTCHA"
 
-#: searx/webapp.py:190
+#: searx/webapp.py:187
 msgid "too many requests"
 msgstr "υπέρβαση ορίου αιτημάτων"
 
-#: searx/webapp.py:191
+#: searx/webapp.py:188
 msgid "access denied"
 msgstr "Άρνηση πρόσβασης"
 
-#: searx/webapp.py:192
+#: searx/webapp.py:189
 msgid "server API error"
 msgstr "Σφάλμα API διακομιστή"
 
-#: searx/webapp.py:410
+#: searx/webapp.py:366
 msgid "No item found"
 msgstr "Δεν βρέθηκαν αντικείμενα"
 
-#: searx/engines/qwant.py:212
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:412
+#: searx/engines/qwant.py:217
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
 msgid "Source"
 msgstr "Πηγή"
 
-#: searx/webapp.py:414
+#: searx/webapp.py:370
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:526 searx/webapp.py:967
+#: searx/webapp.py:522 searx/webapp.py:954
 msgid "Invalid settings, please edit your preferences"
-msgstr "Άκυρες-εσφαλμένες ρυθμίσεις,παρακαλώ ελέγξτε τις  προτιμήσεις σας"
+msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
-#: searx/webapp.py:542
+#: searx/webapp.py:538
 msgid "Invalid settings"
-msgstr "Άκυρες-εσφαλμένες ρυθμίσεις"
+msgstr "Μη έγκυρες ρυθμίσεις"
 
-#: searx/webapp.py:618 searx/webapp.py:694
+#: searx/webapp.py:615 searx/webapp.py:691
 msgid "search error"
-msgstr "λάθος αναζήτησης"
+msgstr "σφάλμα αναζήτησης"
 
-#: searx/webapp.py:740
+#: searx/webapp.py:853
+msgid "Suspended"
+msgstr "Σε αναστολή"
+
+#: searx/webutils.py:161
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} λεπτά πριν"
 
-#: searx/webapp.py:742
+#: searx/webutils.py:162
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "{ώρες} ώρα(-ες), {λεπτά} λεπτό(-ά) πριν"
-
-#: searx/webapp.py:871
-msgid "Suspended"
-msgstr "Σε αναστολή"
+msgstr "{hours} ώρα(-ες), {minutes} λεπτό(-ά) πριν"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
@@ -241,53 +253,108 @@ msgstr "Λειτουργίες στατιστικής"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr "Υπολογισμός {συναρτήσεις} των παραμέτρων"
+msgstr "Υπολογισμός {functions} των παραμέτρων"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:160
 msgid "Get directions"
-msgstr "Πάρε οδηγίες"
+msgstr "Πάρτε οδηγίες"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr "{τίτλος} (ΠΑΡΩΧΗΜΕΝΟΣ)"
+msgstr "{title} (ΠΑΡΩΧΗΜΕΝΟΣ)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr "Αυτή η καταχώριση έχει ανασταλλεί από"
+msgstr "Αυτή η καταχώριση έχει αντικατασταθεί από"
 
-#: searx/engines/pubmed.py:78
-msgid "No abstract is available for this publication."
-msgstr "Δεν υπάρχει διαθέσιμη σύνοψη για αυτήν την έκδοση."
-
-#: searx/engines/qwant.py:214
+#: searx/engines/qwant.py:219
 msgid "Channel"
 msgstr "Κανάλι"
 
+#: searx/engines/semantic_scholar.py:81
+msgid ""
+"{numCitations} citations from the year {firstCitationVelocityYear} to "
+"{lastCitationVelocityYear}"
+msgstr ""
+"{numCitations} αναφορές απο τα έτη {firstCitationVelocityYear} εώς "
+"{lastCitationVelocityYear}"
+
+#: searx/engines/tineye.py:40
+msgid ""
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
+msgstr ""
+"Αποτυχία ανάγνωσης του συνδέσμου της εικόνας. Αυτό μπορεί να οφείλεται σε"
+" μη υποστηριζόμενη μορφή αρχείου. Το TinEye υποστηρίζει μόνο εικόνες που "
+"είναι JPEG, PNG, GIF, BMP, TIFF ή WebP."
+
+#: searx/engines/tineye.py:46
+msgid ""
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
+msgstr ""
+"Η εικόνα είναι πολύ απλή για να βρεθούν αντιστοιχίες. Το TinEye απαιτεί "
+"ένα στοιχειώδης επίπεδο λεπτομέρειας για τον επιτυχή εντοπισμό "
+"αντιστοιχιών."
+
+#: searx/engines/tineye.py:52
+msgid "The image could not be downloaded."
+msgstr "Αποτυχία μεταφόρτωσης εικόνας."
+
+#: searx/engines/wttr.py:101
+msgid "Morning"
+msgstr "Πρωί"
+
+#: searx/engines/wttr.py:101
+msgid "Noon"
+msgstr "Μεσημέρι"
+
+#: searx/engines/wttr.py:101
+msgid "Evening"
+msgstr "Βράδι"
+
+#: searx/engines/wttr.py:101
+msgid "Night"
+msgstr "Βράδι"
+
+#: searx/plugins/autodetect_search_language.py:79
+msgid "Autodetect search language"
+msgstr ""
+
+#: searx/plugins/autodetect_search_language.py:80
+msgid "Automatically detect the query search language and switch to it."
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr "Μετατρέπει κείμενο σε διαφορετικές επιτομές κατακερματισμού."
+msgstr "Μετατρέπει κείμενο σε διαφορετικές συναρτήσεις κατατεμαχισμού."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "επιτομή κατακερματισμού"
+msgstr "συνάρτηση κατατεμαχισμού"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Αντικατάσταση hostname"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Αντικατάσταση hostname των αποτελεσμάτων ή αφαίρεση των αποτελεσμάτων με "
+"βάση το hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Αντικατάσταση με DOI ανοιχτής πρόσβασης"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"Αποφυγή τοίχων πληρωμής με ανακατεύθυνση σε ανοικτές εκδόσεις των "
+"δημοσιεύσεων όταν είναι διαθέσιμες"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -302,8 +369,8 @@ msgstr ""
 "διαλέξετε πολλαπλές κατηγορίες. (απαιτείται JavaScript)"
 
 #: searx/plugins/self_info.py:20
-msgid "Self Informations"
-msgstr ""
+msgid "Self Information"
+msgstr "Αυτοπληροφορίες"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -313,812 +380,728 @@ msgstr ""
 "Προβολή της IP διεύθυνσης αν η αναζήτηση είναι \"ip\" και το user agent "
 "αν η αναζήτηση περιέχει \"user agent\"."
 
+#: searx/plugins/tor_check.py:25
+msgid "Tor check plugin"
+msgstr "Πρόσθετο ελέγχου Tor"
+
+#: searx/plugins/tor_check.py:28
+msgid ""
+"This plugin checks if the address of the request is a TOR exit node, and "
+"informs the user if it is, like check.torproject.org but from searxng."
+msgstr ""
+"Αυτό το πρόσθετο ελέγχει αν η διεύθυνση της αίτησης είναι ένας κόμβος "
+"εξόδου TOR και ενημερώνει τον χρήστη αν είναι, όπως το "
+"check.torproject.org αλλά από το searxng."
+
+#: searx/plugins/tor_check.py:62
+msgid ""
+"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
+"unreachable."
+msgstr ""
+"Η λίστα κόμβων εξόδου TOR (https://check.torproject.org/exit-addresses) "
+"δεν είναι διαθέσιμη."
+
+#: searx/plugins/tor_check.py:78
+msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+msgstr "Χρησιμοποιείτε το TOR. Η διεύθυνση IP σας είναι: {ip_address}."
+
+#: searx/plugins/tor_check.py:84
+msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgstr "Δεν χρησιμοποιείτε το TOR. Η διεύθυνση IP σας είναι: {ip_address}."
+
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr ""
+msgstr "Αφαίρεση ιχνηλατών από συνδέσμους"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
+msgstr "Αφαίρεση ιχνηλατών από τους επιστρεφόμενους συνδέσμους"
 
 #: searx/plugins/vim_hotkeys.py:3
 msgid "Vim-like hotkeys"
-msgstr ""
+msgstr "Πλήκτρα συντόμευσης τύπου Vim"
 
 #: searx/plugins/vim_hotkeys.py:4
 msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
+"Πλοήγηση στα αποτελέσματα αναζήτησης με πλήκτρα συντόμευσης τύπου Vim "
+"(απαιτείται JavaScript). Πατήστε το πλήκτρο \"h\" στην κύρια σελίδα ή στη"
+" σελίδα αποτελεσμάτων για να λάβετε βοήθεια."
 
-#: searx/templates/oscar/404.html:4 searx/templates/simple/404.html:4
+#: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Η σελίδα δεν βρέθηκε"
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr ""
+msgstr "Μετάβαση στο %(search_page)s."
 
-#: searx/templates/oscar/404.html:6 searx/templates/simple/404.html:6
+#: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "σελίδα αναζήτησης"
 
-#: searx/templates/oscar/advanced.html:4
-msgid "Advanced settings"
-msgstr "Ρυθμίσεις για προχωρημένους"
+#: searx/templates/simple/base.html:46
+msgid "About"
+msgstr "Σχετικά με το SearXNG"
 
-#: searx/templates/oscar/base.html:55
-#: searx/templates/oscar/messages/first_time.html:4
-#: searx/templates/oscar/messages/save_settings_successfull.html:5
-#: searx/templates/oscar/messages/unknow_error.html:5
-#, fuzzy
-msgid "Close"
-msgstr "Κλείσιμο"
+#: searx/templates/simple/base.html:50
+msgid "Donate"
+msgstr "Κάνε δωρεά"
 
-#: searx/templates/oscar/base.html:57
-#: searx/templates/oscar/messages/no_results.html:4
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Λάθος!"
+#: searx/templates/simple/base.html:54
+#: searx/templates/simple/preferences.html:99
+msgid "Preferences"
+msgstr "Προτιμήσεις"
 
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
-msgstr ""
+msgstr "Με την υποστήριξη του"
 
-#: searx/templates/oscar/base.html:85 searx/templates/simple/base.html:61
-#, fuzzy
-msgid "a privacy-respecting, hackable metasearch engine"
-msgstr "Μια χακέψιμη μεταμηχανή αναζήτησης , που σέβεται  την ιδιωτικότητα"
+#: searx/templates/simple/base.html:64
+msgid "a privacy-respecting, open metasearch engine"
+msgstr "μια ανοικτή μηχανή μετα-αναζήτησης που σέβεται την ιδιωτικότητα"
 
-#: searx/templates/oscar/base.html:86 searx/templates/simple/base.html:62
+#: searx/templates/simple/base.html:65
 msgid "Source code"
 msgstr "Πηγαίος κώδικας"
 
-#: searx/templates/oscar/base.html:87 searx/templates/simple/base.html:63
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
-msgstr ""
+msgstr "Παρακολούθηση ζητημάτων"
 
-#: searx/templates/oscar/base.html:88 searx/templates/oscar/stats.html:18
-#: searx/templates/simple/base.html:64 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Στατιστικά μηχανής"
 
-#: searx/templates/oscar/base.html:89
-#: searx/templates/oscar/messages/no_results.html:13
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Δημόσιες εκφάνσεις"
 
-#: searx/templates/oscar/base.html:90 searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:72
+msgid "Privacy policy"
+msgstr "Πολιτική απορρήτου"
+
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Επικοινωνήστε με τον συντηρητή αυτής της σελίδας"
 
-#: searx/templates/oscar/languages.html:2
-msgid "Language"
-msgstr "Γλώσσα"
+#: searx/templates/simple/categories.html:24
+msgid "Click on the magnifier to perform search"
+msgstr "Κάντε κλικ στο μεγεθυντικό φακό για να πραγματοποιήσετε αναζήτηση"
 
-#: searx/templates/oscar/languages.html:4
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:118
-msgid "Default language"
-msgstr "Προεπιλεγμένη γλώσσα"
+#: searx/templates/simple/macros.html:36
+msgid "Length"
+msgstr "Μήκος"
 
-#: searx/templates/oscar/macros.html:23
-#: searx/templates/simple/result_templates/torrent.html:6
-msgid "magnet link"
-msgstr "Σύνδεσμος magnet"
+#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/paper.html:6
+msgid "Author"
+msgstr "Συγγραφέας"
 
-#: searx/templates/oscar/macros.html:24
-#: searx/templates/simple/result_templates/torrent.html:7
-msgid "torrent file"
-msgstr "Αρχείο torrent"
-
-#: searx/templates/oscar/macros.html:37 searx/templates/oscar/macros.html:39
-#: searx/templates/oscar/macros.html:73 searx/templates/oscar/macros.html:75
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:45
 msgid "cached"
-msgstr ""
+msgstr "προσωρινά αποθηκευμένο"
 
-#: searx/templates/oscar/macros.html:43 searx/templates/oscar/macros.html:59
-#: searx/templates/oscar/macros.html:79 searx/templates/oscar/macros.html:93
-#: searx/templates/simple/macros.html:43
-#, fuzzy
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "Διαμεσολαβημένα"
 
-#: searx/templates/oscar/macros.html:133
-#: searx/templates/oscar/preferences.html:344
-#: searx/templates/oscar/preferences.html:362
-#: searx/templates/oscar/preferences.html:425
-#: searx/templates/simple/preferences.html:297
-#: searx/templates/simple/preferences.html:348
-msgid "Allow"
-msgstr "Επέτρεψε"
+#: searx/templates/simple/new_issue.html:64
+msgid "Start submiting a new issue on GitHub"
+msgstr "Ξεκινήστε την υποβολή ενός νέου ζητήματος στο GitHub"
 
-#: searx/templates/oscar/macros.html:139
-msgid "broken"
-msgstr "Κατεστραμένο"
+#: searx/templates/simple/new_issue.html:66
+msgid "Please check for existing bugs about this engine on GitHub"
+msgstr ""
+"Παρακαλούμε ελέγξτε για υπάρχοντα σφάλματα σχετικά με αυτή τη μηχανή στο "
+"GitHub"
 
-#: searx/templates/oscar/macros.html:141
-msgid "supported"
-msgstr "Υποστηρίζεται"
+#: searx/templates/simple/new_issue.html:69
+msgid "I confirm there is no existing bug about the issue I encounter"
+msgstr ""
+"Επιβεβαιώνω ότι δεν υπάρχει υπάρχον σφάλμα σχετικά με το πρόβλημα που "
+"αντιμετωπίζω"
 
-#: searx/templates/oscar/macros.html:143
-msgid "not supported"
-msgstr "Δεν υποστηρίζεται"
+#: searx/templates/simple/new_issue.html:71
+msgid "If this is a public instance, please specify the URL in the bug report"
+msgstr ""
+"Εάν πρόκειται για μια δημόσια σελίδα (SearXNG instance), παρακαλούμε "
+"αναφέρετε τη διεύθυνση URL στην αναφορά σφάλματος"
 
-#: searx/templates/oscar/navbar.html:6
-msgid "about"
-msgstr "Σχετικά"
+#: searx/templates/simple/new_issue.html:72
+msgid "Submit a new issue on Github including the above information"
+msgstr "Υποβολή νέου ζητήματος στο Github με τις παραπάνω πληροφορίες"
 
-#: searx/templates/oscar/navbar.html:7
-#: searx/templates/oscar/preferences.html:90
-#: searx/templates/simple/base.html:52
-msgid "preferences"
-msgstr "Προτιμήσεις"
-
-#: searx/templates/oscar/preferences.html:12
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
 msgstr "Όχι HTTPS"
 
-#: searx/templates/oscar/preferences.html:14
-#: searx/templates/oscar/results.html:27 searx/templates/simple/results.html:39
-msgid "Number of results"
-msgstr "Αριθμός αποτελεσμάτων"
-
-#: searx/templates/oscar/preferences.html:14
-msgid "Avg."
-msgstr ""
-
-#: searx/templates/oscar/messages/no_results.html:8
-#: searx/templates/oscar/preferences.html:17
-#: searx/templates/oscar/preferences.html:18
-#: searx/templates/oscar/results.html:36
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
 #: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Προβολή αρχείων καταγραφής σφαλμάτων και υποβολή αναφοράς σφάλματος"
 
-#: searx/templates/oscar/preferences.html:38
-#: searx/templates/oscar/stats.html:70
 #: searx/templates/simple/preferences.html:53
-#: searx/templates/simple/stats.html:67
+#: searx/templates/simple/stats.html:64
 msgid "Median"
-msgstr ""
+msgstr "Διάμεσος"
 
-#: searx/templates/oscar/preferences.html:39
-#: searx/templates/oscar/stats.html:76
 #: searx/templates/simple/preferences.html:54
-#: searx/templates/simple/stats.html:73
+#: searx/templates/simple/stats.html:70
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
-#: searx/templates/oscar/preferences.html:40
-#: searx/templates/oscar/stats.html:82
 #: searx/templates/simple/preferences.html:55
-#: searx/templates/simple/stats.html:79
+#: searx/templates/simple/stats.html:76
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
-#: searx/templates/oscar/preferences.html:68
 #: searx/templates/simple/preferences.html:83
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Αποτυχημένες δοκιμές ελεγκτή: "
 
-#: searx/templates/oscar/preferences.html:96
-#: searx/templates/simple/preferences.html:99
-msgid "Preferences"
-msgstr "Προτιμήσεις"
+#: searx/templates/simple/preferences.html:85
+msgid "Errors:"
+msgstr "Σφάλματα:"
 
-#: searx/templates/oscar/preferences.html:101
-#: searx/templates/oscar/preferences.html:111
 #: searx/templates/simple/preferences.html:105
 msgid "General"
 msgstr "Γενικά"
 
-#: searx/templates/oscar/preferences.html:102
-#: searx/templates/oscar/preferences.html:193
-msgid "User Interface"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:103
-#: searx/templates/oscar/preferences.html:268
-#: searx/templates/simple/preferences.html:244
-msgid "Privacy"
-msgstr "Ιδιωτικότητα"
-
-#: searx/templates/oscar/preferences.html:104
-#: searx/templates/oscar/preferences.html:318
-#: searx/templates/simple/preferences.html:284
-msgid "Engines"
-msgstr "Μηχανές"
-
-#: searx/templates/oscar/preferences.html:105
-#: searx/templates/simple/preferences.html:343
-msgid "Special Queries"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:106
-#: searx/templates/oscar/preferences.html:465
-#: searx/templates/simple/preferences.html:383
-msgid "Cookies"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:123
-#: searx/templates/oscar/preferences.html:125
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
 msgstr "Προεπιλεγμένες κατηγορίες"
 
-#: searx/templates/oscar/preferences.html:133
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences.html:115
 msgid "Search language"
 msgstr "Γλώσσα αναζήτησης"
 
-#: searx/templates/oscar/preferences.html:134
+#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/preferences.html:118
+msgid "Default language"
+msgstr "Προεπιλεγμένη γλώσσα"
+
 #: searx/templates/simple/preferences.html:124
 msgid "What language do you prefer for search?"
 msgstr "Τι γλώσσα προτιμάτε για αναζήτηση;"
 
-#: searx/templates/oscar/preferences.html:141
-#: searx/templates/oscar/preferences.html:348
-#: searx/templates/oscar/preferences.html:358
+#: searx/templates/simple/preferences.html:129
+msgid "Autocomplete"
+msgstr "Αυτόματη συμπλήρωση"
+
+#: searx/templates/simple/preferences.html:138
+msgid "Find stuff as you type"
+msgstr "Εύρεση όρων κατά την πληκτρολόγηση"
+
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:301
+#: searx/templates/simple/preferences.html:311
 msgid "SafeSearch"
 msgstr "Ασφαλής Αναζήτηση"
 
-#: searx/templates/oscar/preferences.html:142
-#: searx/templates/simple/preferences.html:151
-msgid "Filter content"
-msgstr "Φιλτράρισμα περιεχομένου"
-
-#: searx/templates/oscar/preferences.html:145
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:146
 msgid "Strict"
-msgstr ""
+msgstr "Αυστηρό"
 
-#: searx/templates/oscar/preferences.html:146
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:147
 msgid "Moderate"
-msgstr ""
+msgstr "Μέτριο"
 
-#: searx/templates/oscar/preferences.html:147
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:148
 msgid "None"
 msgstr "Κανένα"
 
-#: searx/templates/oscar/preferences.html:153
-#: searx/templates/simple/preferences.html:129
-msgid "Autocomplete"
-msgstr "Αυτόματη συμπλήρωση"
+#: searx/templates/simple/preferences.html:151
+msgid "Filter content"
+msgstr "Φιλτράρισμα περιεχομένου"
 
-#: searx/templates/oscar/preferences.html:154
-#: searx/templates/simple/preferences.html:138
-msgid "Find stuff as you type"
-msgstr "Εύρεση όρων κατά την πληκτρολόγηση"
-
-#: searx/templates/oscar/preferences.html:168
 #: searx/templates/simple/preferences.html:157
 msgid "Open Access DOI resolver"
-msgstr ""
+msgstr "Επιλυτής DOI ανοικτής πρόσβασης"
 
-#: searx/templates/oscar/preferences.html:169
 #: searx/templates/simple/preferences.html:167
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr ""
+"Ανακατεύθυνση σε εκδόσεις ανοικτής πρόσβασης των δημοσιεύσεων όταν είναι "
+"διαθέσιμες (απαιτείται πρόσθετο)"
 
-#: searx/templates/oscar/preferences.html:183
 #: searx/templates/simple/preferences.html:171
 msgid "Engine tokens"
-msgstr ""
+msgstr "Tokens μηχανών αναζήτησης"
 
-#: searx/templates/oscar/preferences.html:184
 #: searx/templates/simple/preferences.html:175
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Tokens πρόσβασης για ιδιωτικές μηχανές"
 
-#: searx/templates/oscar/preferences.html:198
+#: searx/templates/simple/preferences.html:179
+msgid "User interface"
+msgstr "Διεπαφή χρήστη"
+
 #: searx/templates/simple/preferences.html:182
 msgid "Interface language"
-msgstr ""
+msgstr "Γλώσσα διεπαφής"
 
-#: searx/templates/oscar/preferences.html:199
 #: searx/templates/simple/preferences.html:190
 msgid "Change the language of the layout"
-msgstr ""
+msgstr "Αλλαγή γλώσσας της διάταξης"
 
-#: searx/templates/oscar/preferences.html:210
 #: searx/templates/simple/preferences.html:195
 msgid "Theme"
-msgstr ""
+msgstr "Θέμα"
 
-#: searx/templates/oscar/preferences.html:211
 #: searx/templates/simple/preferences.html:203
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Τροποποίηση διάταξης του SearXNG"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Choose style for this theme"
-msgstr ""
+#: searx/templates/simple/preferences.html:206
+msgid "Theme style"
+msgstr "Στυλ θέματος"
 
-#: searx/templates/oscar/preferences.html:222
-#: searx/templates/oscar/preferences.html:228
-msgid "Style"
+#: searx/templates/simple/preferences.html:214
+msgid "Choose auto to follow your browser settings"
 msgstr ""
+"Επιλέξτε αυτόματο για να τηρήσετε τις ρυθμίσεις του προγράμματος "
+"περιήγησης"
 
-#: searx/templates/oscar/preferences.html:231
-msgid "Show advanced settings"
-msgstr ""
+#: searx/templates/simple/preferences.html:217
+msgid "Center Alignment"
+msgstr "Κεντρική ευθυγράμμιση"
 
-#: searx/templates/oscar/preferences.html:232
-msgid "Show advanced settings panel in the home page by default"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:235
-#: searx/templates/oscar/preferences.html:245
-#: searx/templates/oscar/preferences.html:256
-#: searx/templates/simple/preferences.html:222
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:232
+#: searx/templates/simple/preferences.html:244
 msgid "On"
 msgstr "Ενεργό"
 
-#: searx/templates/oscar/preferences.html:236
-#: searx/templates/oscar/preferences.html:246
-#: searx/templates/oscar/preferences.html:257
-#: searx/templates/simple/preferences.html:223
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:221
+#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:245
 msgid "Off"
 msgstr "Ανενεργό"
 
-#: searx/templates/oscar/preferences.html:241
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:224
+msgid "Displays results in the center of the page (Oscar layout)."
+msgstr "Εμφάνιση αποτελεσμάτων στο κέντρο της σελίδας (διάταξη Oscar)."
+
+#: searx/templates/simple/preferences.html:229
 msgid "Results on new tabs"
 msgstr "Αποτελέσματα σε νέες καρτέλες"
 
-#: searx/templates/oscar/preferences.html:242
-#: searx/templates/simple/preferences.html:226
+#: searx/templates/simple/preferences.html:236
 msgid "Open result links on new browser tabs"
 msgstr "Άνοιξε τους συνδέσμους των αποτελεσμάτων σε νέα καρτέλα περιηγητή"
 
-#: searx/templates/oscar/preferences.html:252
-#: searx/templates/simple/preferences.html:231
+#: searx/templates/simple/preferences.html:241
 msgid "Infinite scroll"
-msgstr ""
+msgstr "Άπειρη κύλιση"
 
-#: searx/templates/oscar/preferences.html:253
-#: searx/templates/simple/preferences.html:238
+#: searx/templates/simple/preferences.html:248
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
+"Αυτόματη φόρτωση της επόμενης σελίδας κατά την κύλιση στο κάτω μέρος της "
+"τρέχουσας σελίδας"
 
-#: searx/templates/oscar/preferences.html:273
-#: searx/templates/simple/preferences.html:247
-msgid "HTTP Method"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:274
 #: searx/templates/simple/preferences.html:254
+msgid "Privacy"
+msgstr "Ιδιωτικότητα"
+
+#: searx/templates/simple/preferences.html:257
+msgid "HTTP Method"
+msgstr "Μέθοδος HTTP"
+
+#: searx/templates/simple/preferences.html:264
 msgid ""
-"Change how forms are submited, <a "
+"Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Αλλαγή του τρόπου υποβολής φορμών, <a "
+"href=\"https://el.wikipedia.org/wiki/%CE%A0%CF%81%CF%89%CF%84%CF%8C%CE%BA%CE%BF%CE%BB%CE%BB%CE%BF_%CE%9C%CE%B5%CF%84%CE%B1%CF%86%CE%BF%CF%81%CE%AC%CF%82_%CE%A5%CF%80%CE%B5%CF%81%CE%BA%CE%B5%CE%B9%CE%BC%CE%AD%CE%BD%CE%BF%CF%85#%CE%9C%CE%AD%CE%B8%CE%BF%CE%B4%CE%BF%CE%B9_%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82_%CF%84%CE%BF%CF%85_HTTP\""
+" rel=\"external\">μάθετε περισσότερα για τις μεθόδους αίτησης</a>"
 
-#: searx/templates/oscar/preferences.html:284
-#: searx/templates/simple/preferences.html:259
+#: searx/templates/simple/preferences.html:269
 msgid "Image proxy"
-msgstr ""
+msgstr "Διακομιστής μεσολάβησης εικόνων"
 
-#: searx/templates/oscar/preferences.html:285
-#: searx/templates/simple/preferences.html:266
-msgid "Proxying image results through SearXNG"
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:288
-#: searx/templates/oscar/preferences.html:299
-#: searx/templates/simple/preferences.html:262
-#: searx/templates/simple/preferences.html:274
+#: searx/templates/simple/preferences.html:272
+#: searx/templates/simple/preferences.html:284
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
-#: searx/templates/oscar/preferences.html:289
-#: searx/templates/oscar/preferences.html:300
-#: searx/templates/simple/preferences.html:263
-#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:273
+#: searx/templates/simple/preferences.html:285
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: searx/templates/oscar/preferences.html:295
-#: searx/templates/simple/preferences.html:271
-msgid "Query in the page's title"
-msgstr ""
+#: searx/templates/simple/preferences.html:276
+msgid "Proxying image results through SearXNG"
+msgstr "Διαμεσολάβιση φόρτωσης αποτελεσμάτων εικόνων μέσω του SearXNG"
 
-#: searx/templates/oscar/preferences.html:296
-#: searx/templates/simple/preferences.html:278
+#: searx/templates/simple/preferences.html:281
+msgid "Query in the page's title"
+msgstr "Ερώτημα στον τίτλο της σελίδας"
+
+#: searx/templates/simple/preferences.html:288
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Όταν ενεργό, ο τίτλος της σελίδας αποτελεσμάτων περιέχει το ερώτημά σας. "
+"Το πρόγραμμα περιήγησής σας μπορεί να καταγράψει αυτόν τον τίτλο"
 
-#: searx/templates/oscar/preferences.html:326
-msgid "Allow all"
-msgstr ""
+#: searx/templates/simple/preferences.html:294
+msgid "Engines"
+msgstr "Μηχανές"
 
-#: searx/templates/oscar/preferences.html:327
-msgid "Disable all"
-msgstr ""
+#: searx/templates/simple/preferences.html:295
+msgid "Currently used search engines"
+msgstr "Μηχανές αναζήτησης που χρησιμοποιούνται"
 
-#: searx/templates/oscar/preferences.html:336
-#: searx/templates/simple/preferences.html:292
+#: searx/templates/simple/preferences.html:302
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
+"Αυτή η καρτέλα δεν εμφανίζεται για τα αποτελέσματα αναζήτησης, αλλά "
+"μπορείτε να αναζητήσετε τις μηχανές που παρατίθενται εδώ μέσω bangs."
 
-#: searx/templates/oscar/preferences.html:345
-#: searx/templates/oscar/preferences.html:361
-#: searx/templates/oscar/stats.html:29
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:307
+#: searx/templates/simple/preferences.html:358
+msgid "Allow"
+msgstr "Επέτρεψε"
+
+#: searx/templates/simple/preferences.html:308
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Όνομα μηχανής"
 
-#: searx/templates/oscar/preferences.html:346
-#: searx/templates/oscar/preferences.html:360
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:309
 msgid "Shortcut"
 msgstr "Συντόμευση"
 
-#: searx/templates/oscar/preferences.html:347
-#: searx/templates/oscar/preferences.html:359
-msgid "Selected language"
-msgstr "Επιλεγμένη γλώσσα"
+#: searx/templates/simple/preferences.html:310
+msgid "Supports selected language"
+msgstr "Υποστηρίζει την επιλεγμένη γλώσσα"
 
-#: searx/templates/oscar/preferences.html:349
-#: searx/templates/oscar/preferences.html:357
-#: searx/templates/oscar/time-range.html:2
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:312
 msgid "Time range"
-msgstr ""
+msgstr "Εύρος χρόνου"
 
-#: searx/templates/oscar/preferences.html:350
-#: searx/templates/oscar/preferences.html:356
-#: searx/templates/oscar/stats.html:32
-#: searx/templates/simple/preferences.html:303
+#: searx/templates/simple/preferences.html:313
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Χρόνος απόκρισης"
 
-#: searx/templates/oscar/preferences.html:351
-#: searx/templates/oscar/preferences.html:355
-#: searx/templates/simple/preferences.html:304
+#: searx/templates/simple/preferences.html:314
 msgid "Max time"
-msgstr ""
+msgstr "Μέγιστος χρόνος"
 
-#: searx/templates/oscar/preferences.html:352
-#: searx/templates/oscar/preferences.html:354
-#: searx/templates/oscar/stats.html:33
-#: searx/templates/simple/preferences.html:305
+#: searx/templates/simple/preferences.html:315
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Αξιοπιστία"
 
-#: searx/templates/oscar/preferences.html:419
-msgid "Query"
-msgstr ""
+#: searx/templates/simple/preferences.html:353
+msgid "Special Queries"
+msgstr "Ειδικά Ερωτήματα"
 
-#: searx/templates/oscar/preferences.html:426
-#: searx/templates/simple/preferences.html:349
+#: searx/templates/simple/preferences.html:359
 msgid "Keywords"
 msgstr "Λέξεις κλειδιά"
 
-#: searx/templates/oscar/preferences.html:427
-#: searx/templates/simple/preferences.html:350
+#: searx/templates/simple/preferences.html:360
 msgid "Name"
 msgstr "Όνομα"
 
-#: searx/templates/oscar/preferences.html:428
-#: searx/templates/simple/preferences.html:351
+#: searx/templates/simple/preferences.html:361
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: searx/templates/oscar/preferences.html:429
-#: searx/templates/simple/preferences.html:352
+#: searx/templates/simple/preferences.html:362
 msgid "Examples"
 msgstr "Παραδείγματα"
 
-#: searx/templates/oscar/preferences.html:434
-#: searx/templates/simple/preferences.html:355
+#: searx/templates/simple/preferences.html:365
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Αυτός είναι ο κατάλογος των ενοτήτων άμεσης απάντησης του SearXNG."
 
-#: searx/templates/oscar/preferences.html:447
-#: searx/templates/simple/preferences.html:366
+#: searx/templates/simple/preferences.html:376
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Αυτός είναι ο κατάλογος των πρόσθετων."
 
-#: searx/templates/oscar/preferences.html:468
-#: searx/templates/simple/preferences.html:385
+#: searx/templates/simple/preferences.html:393
+msgid "Cookies"
+msgstr "Cookies"
+
+#: searx/templates/simple/preferences.html:395
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Αυτός είναι ο κατάλογος των cookies και των τιμών τους που αποθηκεύει η "
+"SearXNG στον υπολογιστή σας."
 
-#: searx/templates/oscar/preferences.html:469
-#: searx/templates/simple/preferences.html:386
+#: searx/templates/simple/preferences.html:396
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Με αυτόν τον κατάλογο, μπορείτε να αξιολογήσετε τη διαφάνεια του SearXNG."
 
-#: searx/templates/oscar/preferences.html:474
-#: searx/templates/simple/preferences.html:391
+#: searx/templates/simple/preferences.html:401
 msgid "Cookie name"
-msgstr ""
+msgstr "Όνομα cookie"
 
-#: searx/templates/oscar/preferences.html:475
-#: searx/templates/simple/preferences.html:392
+#: searx/templates/simple/preferences.html:402
 msgid "Value"
 msgstr "Τιμή"
 
-#: searx/templates/oscar/preferences.html:492
-#: searx/templates/simple/preferences.html:413
-msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:493
-#: searx/templates/simple/preferences.html:415
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr ""
-
-#: searx/templates/oscar/preferences.html:497
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:414
 msgid "Search URL of the currently saved preferences"
-msgstr ""
+msgstr "Σύνδεσμος αναζήτησης των αποθηκευμένων προτιμήσεων"
 
-#: searx/templates/oscar/preferences.html:498
-#: searx/templates/simple/preferences.html:408
+#: searx/templates/simple/preferences.html:418
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
+"Σημείωση: ο καθορισμός προσαρμοσμένων ρυθμίσεων στη διεύθυνση URL "
+"αναζήτησης μπορεί να μειώσει την ιδιωτικότητα διαρρέοντας δεδομένα στους "
+"ιστότοπους των αποτελεσμάτων που εσείς κάνετε κλίκ."
 
-#: searx/templates/oscar/preferences.html:503
-msgid "save"
-msgstr "αποθήκευση"
-
-#: searx/templates/oscar/preferences.html:504
-msgid "back"
-msgstr "πίσω"
-
-#: searx/templates/oscar/preferences.html:505
 #: searx/templates/simple/preferences.html:419
+msgid "URL to restore your preferences in another browser"
+msgstr "Σύνδεσμος για επαναφορά προτιμήσεων σε διαφορετικό περιηγητή"
+
+#: searx/templates/simple/preferences.html:423
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+"Ο καθορισμός προσαρμοσμένων ρυθμίσεων στον σύνδεσμο προτιμήσεων μπορεί να"
+" χρησιμοποιηθεί για το συγχρονισμό των προτιμήσεων σας σε όλες τις "
+"συσκευές."
+
+#: searx/templates/simple/preferences.html:428
+msgid ""
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
+msgstr ""
+"Αυτές οι ρυθμίσεις αποθηκεύονται στα cookies σας, με αυτόν τον τρόπο δεν "
+"χρειάζεται να αποθηκέυονται στους δικούς μας διακομιστές."
+
+#: searx/templates/simple/preferences.html:430
+msgid ""
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
+msgstr ""
+"Αυτά τα cookies υπάρχουν αποκλειστικά για την εξυπηρέτησή σας, δεν τα "
+"χρησιμοποιούμε για να σας παρακολουθούμε."
+
+#: searx/templates/simple/preferences.html:433
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: searx/templates/simple/preferences.html:434
 msgid "Reset defaults"
 msgstr "Επαναφορά προεπιλογών"
 
-#: searx/templates/oscar/results.html:32 searx/templates/simple/results.html:46
+#: searx/templates/simple/preferences.html:435
+msgid "Back"
+msgstr "Πίσω"
+
+#: searx/templates/simple/results.html:23
+msgid "Answers"
+msgstr "Απαντήσεις"
+
+#: searx/templates/simple/results.html:39
+msgid "Number of results"
+msgstr "Αριθμός αποτελεσμάτων"
+
+#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/results.html:46
+msgid "Error!"
+msgstr "Λάθος!"
+
+#: searx/templates/simple/results.html:46
 msgid "Engines cannot retrieve results"
 msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
 
-#: searx/templates/oscar/results.html:53 searx/templates/simple/results.html:68
+#: searx/templates/simple/results.html:68
 msgid "Suggestions"
 msgstr "Προτάσεις"
 
-#: searx/templates/oscar/results.html:74
-msgid "Links"
-msgstr "Σύνδεσμοι"
-
-#: searx/templates/oscar/results.html:79 searx/templates/simple/results.html:86
+#: searx/templates/simple/results.html:90
 msgid "Search URL"
 msgstr "Σύνδεσμος αναζήτησης"
 
-#: searx/templates/oscar/results.html:84 searx/templates/simple/results.html:91
+#: searx/templates/simple/results.html:96
 msgid "Download results"
-msgstr ""
+msgstr "Λήψη αποτελεσμάτων"
 
-#: searx/templates/oscar/results.html:95
-msgid "RSS subscription"
-msgstr ""
-
-#: searx/templates/oscar/results.html:104
-msgid "Search results"
-msgstr "Αποτελέσματα αναζήτησης"
-
-#: searx/templates/oscar/results.html:109
-#: searx/templates/simple/results.html:115
+#: searx/templates/simple/results.html:120
 msgid "Try searching for:"
 msgstr "Δοκιμάστε αναζήτηση για:"
 
-#: searx/templates/oscar/results.html:162
-#: searx/templates/oscar/results.html:187
-msgid "next page"
-msgstr "επόμενη σελίδα"
+#: searx/templates/simple/results.html:152
+msgid "Back to top"
+msgstr "Επιστροφή στην κορυφή"
 
-#: searx/templates/oscar/results.html:169
-#: searx/templates/oscar/results.html:180
-msgid "previous page"
-msgstr "προηγούμενη σελίδα"
+#: searx/templates/simple/results.html:170
+msgid "Previous page"
+msgstr "Προηγούμενη σελίδα"
 
-#: searx/templates/oscar/search.html:6 searx/templates/oscar/search_full.html:9
-#: searx/templates/simple/search.html:8
-#: searx/templates/simple/simple_search.html:4
+#: searx/templates/simple/results.html:187
+msgid "Next page"
+msgstr "Επόμενη σελίδα"
+
+#: searx/templates/simple/search.html:3
+msgid "Display the front page"
+msgstr "Εμφάνιση της αρχικής σελίδας"
+
+#: searx/templates/simple/search.html:9
+#: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
 msgstr "Αναζήτηση για..."
 
-#: searx/templates/oscar/search.html:8
-#: searx/templates/oscar/search_full.html:11
-msgid "Start search"
-msgstr "Έναρξη αναζήτησης"
+#: searx/templates/simple/search.html:10
+#: searx/templates/simple/simple_search.html:6
+msgid "clear"
+msgstr "καθαρισμός"
 
-#: searx/templates/oscar/search.html:9
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear search"
-msgstr ""
+#: searx/templates/simple/search.html:11
+#: searx/templates/simple/simple_search.html:7
+msgid "search"
+msgstr "αναζήτηση"
 
-#: searx/templates/oscar/search_full.html:12
-msgid "Clear"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:4
-msgid "stats"
-msgstr "στατιστικά"
-
-#: searx/templates/oscar/stats.html:30 searx/templates/simple/stats.html:26
-msgid "Scores"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:31 searx/templates/simple/stats.html:27
-msgid "Result count"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:42 searx/templates/simple/stats.html:38
-msgid "Scores per result"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:65 searx/templates/simple/stats.html:62
-msgid "Total"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:66 searx/templates/simple/stats.html:63
-msgid "HTTP"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:67 searx/templates/simple/stats.html:64
-msgid "Processing"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Warnings"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:106 searx/templates/simple/stats.html:102
-msgid "Errors and exceptions"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:112 searx/templates/simple/stats.html:108
-msgid "Exception"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:114 searx/templates/simple/stats.html:110
-msgid "Message"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:116 searx/templates/simple/stats.html:112
-msgid "Percentage"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:118 searx/templates/simple/stats.html:114
-msgid "Parameter"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:35
-#: searx/templates/oscar/stats.html:126 searx/templates/simple/stats.html:122
-msgid "Filename"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:127 searx/templates/simple/stats.html:123
-msgid "Function"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:128 searx/templates/simple/stats.html:124
-msgid "Code"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:135 searx/templates/simple/stats.html:131
-msgid "Checker"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:138 searx/templates/simple/stats.html:134
-msgid "Failed test"
-msgstr ""
-
-#: searx/templates/oscar/stats.html:139 searx/templates/simple/stats.html:135
-msgid "Comment(s)"
-msgstr ""
-
-#: searx/templates/oscar/time-range.html:5
-#: searx/templates/simple/filters/time_range.html:3
-msgid "Anytime"
-msgstr "Οποιαδήποτε στιγμή"
-
-#: searx/templates/oscar/time-range.html:8
-#: searx/templates/simple/filters/time_range.html:6
-msgid "Last day"
-msgstr "Τελευταία μέρα"
-
-#: searx/templates/oscar/time-range.html:11
-#: searx/templates/simple/filters/time_range.html:9
-msgid "Last week"
-msgstr "Τελευταία βδομάδα"
-
-#: searx/templates/oscar/time-range.html:14
-#: searx/templates/simple/filters/time_range.html:12
-msgid "Last month"
-msgstr "Τελευταίος μήνας"
-
-#: searx/templates/oscar/time-range.html:17
-#: searx/templates/simple/filters/time_range.html:15
-msgid "Last year"
-msgstr "Τελευταίο έτος"
-
-#: searx/templates/oscar/messages/first_time.html:6
-#: searx/templates/oscar/messages/no_data_available.html:3
-msgid "Heads up!"
-msgstr ""
-
-#: searx/templates/oscar/messages/first_time.html:7
-msgid "It look like you are using SearXNG first time."
-msgstr ""
-
-#: searx/templates/oscar/messages/no_cookies.html:3
-msgid "Information!"
-msgstr "Πληροφορίες!"
-
-#: searx/templates/oscar/messages/no_cookies.html:4
-msgid "currently, there are no cookies defined."
-msgstr ""
-
-#: searx/templates/oscar/messages/no_data_available.html:4
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
 msgstr "Δεν υπάρχουν διαθέσιμα δεδομένα."
 
-#: searx/templates/oscar/messages/no_results.html:4
+#: searx/templates/simple/stats.html:26
+msgid "Scores"
+msgstr "Βαθμολογίες"
+
+#: searx/templates/simple/stats.html:27
+msgid "Result count"
+msgstr "Αριθμός αποτελεσμάτων"
+
+#: searx/templates/simple/stats.html:59
+msgid "Total"
+msgstr "Σύνολο"
+
+#: searx/templates/simple/stats.html:60
+msgid "HTTP"
+msgstr "HTTP"
+
+#: searx/templates/simple/stats.html:61
+msgid "Processing"
+msgstr "Επεξεργασία"
+
+#: searx/templates/simple/stats.html:99
+msgid "Warnings"
+msgstr "Προειδοποιήσεις"
+
+#: searx/templates/simple/stats.html:99
+msgid "Errors and exceptions"
+msgstr "Σφάλματα και εξαιρέσεις"
+
+#: searx/templates/simple/stats.html:105
+msgid "Exception"
+msgstr "Εξαίρεση"
+
+#: searx/templates/simple/stats.html:107
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: searx/templates/simple/stats.html:109
+msgid "Percentage"
+msgstr "Ποσοστό"
+
+#: searx/templates/simple/stats.html:111
+msgid "Parameter"
+msgstr "Παράμετρος"
+
+#: searx/templates/simple/stats.html:119
+msgid "Filename"
+msgstr "Όνομα αρχείου"
+
+#: searx/templates/simple/stats.html:120
+msgid "Function"
+msgstr "Συνάρτηση"
+
+#: searx/templates/simple/stats.html:121
+msgid "Code"
+msgstr "Κώδικας"
+
+#: searx/templates/simple/stats.html:128
+msgid "Checker"
+msgstr "Ελεγκτής"
+
+#: searx/templates/simple/stats.html:131
+msgid "Failed test"
+msgstr "Αποτυχημένη δοκιμή"
+
+#: searx/templates/simple/stats.html:132
+msgid "Comment(s)"
+msgstr "Σχόλιο(α)"
+
+#: searx/templates/simple/filters/time_range.html:3
+msgid "Anytime"
+msgstr "Οποιαδήποτε στιγμή"
+
+#: searx/templates/simple/filters/time_range.html:6
+msgid "Last day"
+msgstr "Τελευταία μέρα"
+
+#: searx/templates/simple/filters/time_range.html:9
+msgid "Last week"
+msgstr "Τελευταία βδομάδα"
+
+#: searx/templates/simple/filters/time_range.html:12
+msgid "Last month"
+msgstr "Τελευταίος μήνας"
+
+#: searx/templates/simple/filters/time_range.html:15
+msgid "Last year"
+msgstr "Τελευταίο έτος"
+
+#: searx/templates/simple/messages/no_cookies.html:3
+msgid "Information!"
+msgstr "Πληροφορίες!"
+
+#: searx/templates/simple/messages/no_cookies.html:4
+msgid "currently, there are no cookies defined."
+msgstr "προς το παρόν, δεν έχουν οριστεί cookies."
+
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
 msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα."
 
-#: searx/templates/oscar/messages/no_results.html:13
 #: searx/templates/simple/messages/no_results.html:15
 msgid "Please, try again later or find another SearXNG instance."
 msgstr ""
+"Παρακαλώ, προσπαθήστε ξανά αργότερα ή βρείτε ένα άλλο instance του "
+"SearXNG."
 
-#: searx/templates/oscar/messages/no_results.html:17
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
 msgstr "Συγνώμη!"
 
-#: searx/templates/oscar/messages/no_results.html:18
 #: searx/templates/simple/messages/no_results.html:21
 msgid ""
 "we didn't find any results. Please use another query or search in more "
@@ -1127,216 +1110,138 @@ msgstr ""
 "δε βρέθηκαν αποτελέσματα. Παρακαλούμε χρησιμοποιήστε άλλη αναζήτηση ή "
 "ψάξτε σε περισσότερες κατηγορίες."
 
-#: searx/templates/oscar/messages/save_settings_successfull.html:7
-msgid "Well done!"
-msgstr "Πολύ καλά!"
-
-#: searx/templates/oscar/messages/save_settings_successfull.html:8
-msgid "Settings saved successfully."
-msgstr "Οι ρυθμίσεις αποθηκεύτηκαν επιτυχώς."
-
-#: searx/templates/oscar/messages/unknow_error.html:7
-msgid "Oh snap!"
-msgstr "Φτου!"
-
-#: searx/templates/oscar/messages/unknow_error.html:8
-msgid "Something went wrong."
-msgstr "Κάτι πήγε στραβά."
-
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
-#: searx/templates/oscar/result_templates/files.html:10
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
 msgstr "προβολή πολυμέσων"
 
-#: searx/templates/oscar/result_templates/default.html:7
-#: searx/templates/oscar/result_templates/files.html:7
 #: searx/templates/simple/result_templates/default.html:6
 msgid "hide media"
 msgstr "απόκρυψη πολυμέσων"
 
-#: searx/templates/oscar/result_templates/files.html:33
-#: searx/templates/oscar/result_templates/videos.html:19
+#: searx/templates/simple/result_templates/default.html:14
+#: searx/templates/simple/result_templates/videos.html:14
+msgid "This site did not provide any description."
+msgstr "Αυτός ο ιστότοπος δεν παρείχε καμία περιγραφή."
+
+#: searx/templates/simple/result_templates/images.html:19
+msgid "Format"
+msgstr "Μορφή"
+
 #: searx/templates/simple/result_templates/images.html:21
-msgid "Author"
-msgstr ""
+msgid "Engine"
+msgstr "Μηχανή"
 
-#: searx/templates/oscar/result_templates/files.html:37
-#: searx/templates/oscar/result_templates/torrent.html:7
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Μέγεθος αρχείου"
-
-#: searx/templates/oscar/result_templates/files.html:38
-#: searx/templates/oscar/result_templates/torrent.html:9
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:39
-#: searx/templates/oscar/result_templates/torrent.html:10
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:40
-#: searx/templates/oscar/result_templates/torrent.html:11
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:41
-#: searx/templates/oscar/result_templates/torrent.html:12
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:42
-#: searx/templates/oscar/result_templates/torrent.html:13
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:46
-msgid "Date"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/files.html:48
-msgid "Type"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/images.html:27
-msgid "Get image"
-msgstr ""
-
-#: searx/templates/oscar/result_templates/images.html:30
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
 msgstr "Προβολή πηγής"
 
-#: searx/templates/oscar/result_templates/map.html:26
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "διεύθυνση"
 
-#: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
 msgid "show map"
 msgstr "προβολή χάρτη"
 
-#: searx/templates/oscar/result_templates/map.html:59
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "απόκρυψη χάρτη"
 
-#: searx/templates/oscar/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/paper.html:5
+msgid "Published date"
+msgstr "Ημερομηνία δημοσίευσης"
+
+#: searx/templates/simple/result_templates/paper.html:9
+msgid "Journal"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:22
+msgid "Editor"
+msgstr "Συντάκτης"
+
+#: searx/templates/simple/result_templates/paper.html:23
+msgid "Publisher"
+msgstr "Εκδότης"
+
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Τύπος"
+
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Σημάνσεις"
+
+#: searx/templates/simple/result_templates/paper.html:26
+msgid "DOI"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:27
+msgid "ISSN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:28
+msgid "ISBN"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:33
+msgid "PDF"
+msgstr ""
+
+#: searx/templates/simple/result_templates/paper.html:34
+msgid "HTML"
+msgstr ""
+
+#: searx/templates/simple/result_templates/torrent.html:6
+msgid "magnet link"
+msgstr "Σύνδεσμος magnet"
+
+#: searx/templates/simple/result_templates/torrent.html:7
+msgid "torrent file"
+msgstr "Αρχείο torrent"
+
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr ""
+msgstr "Seeder"
 
-#: searx/templates/oscar/result_templates/torrent.html:6
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr ""
+msgstr "Leecher"
 
-#: searx/templates/oscar/result_templates/torrent.html:15
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Μέγεθος αρχείου"
+
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Bytes"
+
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "kiB"
+
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
 msgstr "Αριθμός Αρχείων"
 
-#: searx/templates/oscar/result_templates/videos.html:7
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "show video"
 msgstr "προβολή βίντεο"
 
-#: searx/templates/oscar/result_templates/videos.html:7
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "hide video"
 msgstr "απόκρυψη βίντεο"
-
-#: searx/templates/oscar/result_templates/videos.html:20
-msgid "Length"
-msgstr ""
-
-#: searx/templates/simple/categories.html:24
-msgid "Click on the magnifier to perform search"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:85
-msgid "Errors:"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:179
-msgid "User interface"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:206
-msgid "Theme style"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:214
-msgid "Choose auto to follow your browser settings"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:285
-msgid "Currently used search engines"
-msgstr "Μηχανές αναζήτησης που χρησιμοποιούνται"
-
-#: searx/templates/simple/preferences.html:300
-msgid "Supports selected language"
-msgstr "Υποστηρίζει την επιλεγμένη γλώσσα"
-
-#: searx/templates/simple/preferences.html:418
-msgid "Save"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:420
-msgid "Back"
-msgstr ""
-
-#: searx/templates/simple/results.html:23
-msgid "Answers"
-msgstr "Απαντήσεις"
-
-#: searx/templates/simple/results.html:144
-msgid "Back to top"
-msgstr ""
-
-#: searx/templates/simple/results.html:162
-msgid "Previous page"
-msgstr ""
-
-#: searx/templates/simple/results.html:179
-msgid "Next page"
-msgstr ""
-
-#: searx/templates/simple/search.html:3
-msgid "Display the front page"
-msgstr ""
-
-#: searx/templates/simple/search.html:9
-#: searx/templates/simple/simple_search.html:5
-msgid "clear"
-msgstr ""
-
-#: searx/templates/simple/search.html:10
-#: searx/templates/simple/simple_search.html:6
-msgid "search"
-msgstr ""
-
-#: searx/templates/simple/result_templates/default.html:14
-#: searx/templates/simple/result_templates/videos.html:14
-msgid "This site did not provide any description."
-msgstr ""
-
-#: searx/templates/simple/result_templates/images.html:22
-msgid "Format"
-msgstr ""
-
-#: searx/templates/simple/result_templates/images.html:24
-msgid "Engine"
-msgstr ""
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Χρόνος μηχανής (δευτ)"
@@ -1456,3 +1361,147 @@ msgstr ""
 #~ "search results but you can search "
 #~ "the engines listed here via bangs."
 #~ msgstr ""
+
+#~ msgid "Advanced settings"
+#~ msgstr "Ρυθμίσεις για προχωρημένους"
+
+#~ msgid "Close"
+#~ msgstr "Κλείσιμο"
+
+#~ msgid "Language"
+#~ msgstr "Γλώσσα"
+
+#~ msgid "broken"
+#~ msgstr "Κατεστραμένο"
+
+#~ msgid "supported"
+#~ msgstr "Υποστηρίζεται"
+
+#~ msgid "not supported"
+#~ msgstr "Δεν υποστηρίζεται"
+
+#~ msgid "about"
+#~ msgstr "Σχετικά"
+
+#~ msgid "Avg."
+#~ msgstr ""
+
+#~ msgid "User Interface"
+#~ msgstr ""
+
+#~ msgid "Choose style for this theme"
+#~ msgstr ""
+
+#~ msgid "Style"
+#~ msgstr ""
+
+#~ msgid "Show advanced settings"
+#~ msgstr ""
+
+#~ msgid "Show advanced settings panel in the home page by default"
+#~ msgstr ""
+
+#~ msgid "Allow all"
+#~ msgstr ""
+
+#~ msgid "Disable all"
+#~ msgstr ""
+
+#~ msgid "Selected language"
+#~ msgstr "Επιλεγμένη γλώσσα"
+
+#~ msgid "Query"
+#~ msgstr ""
+
+#~ msgid "save"
+#~ msgstr "αποθήκευση"
+
+#~ msgid "back"
+#~ msgstr "πίσω"
+
+#~ msgid "Links"
+#~ msgstr "Σύνδεσμοι"
+
+#~ msgid "RSS subscription"
+#~ msgstr ""
+
+#~ msgid "Search results"
+#~ msgstr "Αποτελέσματα αναζήτησης"
+
+#~ msgid "next page"
+#~ msgstr "επόμενη σελίδα"
+
+#~ msgid "previous page"
+#~ msgstr "προηγούμενη σελίδα"
+
+#~ msgid "Start search"
+#~ msgstr "Έναρξη αναζήτησης"
+
+#~ msgid "Clear search"
+#~ msgstr ""
+
+#~ msgid "Clear"
+#~ msgstr ""
+
+#~ msgid "stats"
+#~ msgstr "στατιστικά"
+
+#~ msgid "Heads up!"
+#~ msgstr ""
+
+#~ msgid "It look like you are using SearXNG first time."
+#~ msgstr ""
+
+#~ msgid "Well done!"
+#~ msgstr "Πολύ καλά!"
+
+#~ msgid "Settings saved successfully."
+#~ msgstr "Οι ρυθμίσεις αποθηκεύτηκαν επιτυχώς."
+
+#~ msgid "Oh snap!"
+#~ msgstr "Φτου!"
+
+#~ msgid "Something went wrong."
+#~ msgstr "Κάτι πήγε στραβά."
+
+#~ msgid "Date"
+#~ msgstr ""
+
+#~ msgid "Type"
+#~ msgstr ""
+
+#~ msgid "Get image"
+#~ msgstr ""
+
+#~ msgid "Center Alignment"
+#~ msgstr ""
+
+#~ msgid "Displays results in the center of the page (Oscar layout)."
+#~ msgstr ""
+
+#~ msgid "preferences"
+#~ msgstr "Προτιμήσεις"
+
+#~ msgid "Scores per result"
+#~ msgstr ""
+
+#~ msgid "a privacy-respecting, hackable metasearch engine"
+#~ msgstr "Μια χακέψιμη μεταμηχανή αναζήτησης , που σέβεται την ιδιωτικότητα"
+
+#~ msgid "No abstract is available for this publication."
+#~ msgstr "Δεν υπάρχει διαθέσιμη σύνοψη για αυτήν την έκδοση."
+
+#~ msgid "Self Informations"
+#~ msgstr "Αυτοπληροφορίες"
+
+#~ msgid ""
+#~ "Change how forms are submited, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
+#~ "Αλλαγή του τρόπου υποβολής φορμών, <a"
+#~ " "
+#~ "href=\"https://el.wikipedia.org/wiki/%CE%A0%CF%81%CF%89%CF%84%CF%8C%CE%BA%CE%BF%CE%BB%CE%BB%CE%BF_%CE%9C%CE%B5%CF%84%CE%B1%CF%86%CE%BF%CF%81%CE%AC%CF%82_%CE%A5%CF%80%CE%B5%CF%81%CE%BA%CE%B5%CE%B9%CE%BC%CE%AD%CE%BD%CE%BF%CF%85#%CE%9C%CE%AD%CE%B8%CE%BF%CE%B4%CE%BF%CE%B9_%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82_%CF%84%CE%BF%CF%85_HTTP\""
+#~ " rel=\"external\">μάθετε περισσότερα για τις "
+#~ "μεθόδους αίτησης</a>"

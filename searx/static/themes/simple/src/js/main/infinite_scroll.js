@@ -62,7 +62,7 @@ searxng.ready(function () {
       function (err) {
         console.log(err);
         var e = d.createElement('div');
-        e.textContent = searxng.translations.error_loading_next_page;
+        e.textContent = searxng.settings.translations.error_loading_next_page;
         e.classList.add('dialog-error');
         e.setAttribute('role', 'alert');
         replaceChildrenWith(d.querySelector('#pagination'), [ e ]);
@@ -70,7 +70,7 @@ searxng.ready(function () {
     )
   }
 
-  if (searxng.infinite_scroll && searxng.infinite_scroll_supported) {
+  if (searxng.settings.infinite_scroll && searxng.infinite_scroll_supported) {
     const intersectionObserveOptions = {
       rootMargin: "20rem",
     };

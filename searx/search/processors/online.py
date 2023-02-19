@@ -4,9 +4,11 @@
 """Processores for engine-type: ``online``
 
 """
+# pylint: disable=use-dict-literal
 
 from timeit import default_timer
 import asyncio
+import ssl
 import httpx
 
 import searx.network
@@ -29,7 +31,6 @@ def default_request_params():
         'data': {},
         'url': '',
         'cookies': {},
-        'verify': True,
         'auth': None
         # fmt: on
     }
@@ -60,14 +61,31 @@ class OnlineProcessor(EngineProcessor):
         # add an user agent
         params['headers']['User-Agent'] = gen_useragent()
 
+        # add Accept-Language header
+        if self.engine.send_accept_language_header and search_query.locale:
+            ac_lang = search_query.locale.language
+            if search_query.locale.territory:
+                ac_lang = "%s-%s,%s;q=0.9,*;q=0.5" % (
+                    search_query.locale.language,
+                    search_query.locale.territory,
+                    search_query.locale.language,
+                )
+            params['headers']['Accept-Language'] = ac_lang
+
         return params
 
     def _send_http_request(self, params):
         # create dictionary which contain all
-        # informations about the request
-        request_args = dict(
-            headers=params['headers'], cookies=params['cookies'], verify=params['verify'], auth=params['auth']
-        )
+        # information about the request
+        request_args = dict(headers=params['headers'], cookies=params['cookies'], auth=params['auth'])
+
+        # verify
+        # if not None, it overrides the verify value defined in the network.
+        # use False to accept any server certificate
+        # use a path to file to specify a server certificate
+        verify = params.get('verify')
+        if verify is not None:
+            request_args['verify'] = params['verify']
 
         # max_redirects
         max_redirects = params.get('max_redirects')
@@ -142,6 +160,10 @@ class OnlineProcessor(EngineProcessor):
             # send requests and parse the results
             search_results = self._search_basic(query, params)
             self.extend_container(result_container, start_time, search_results)
+        except ssl.SSLError as e:
+            # requests timeout (connect or read)
+            self.handle_exception(result_container, e, suspend=True)
+            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine_name).verify))
         except (httpx.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
@@ -162,6 +184,11 @@ class OnlineProcessor(EngineProcessor):
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('CAPTCHA')
         except SearxEngineTooManyRequestsException as e:
+            if "google" in self.engine_name:
+                self.logger.warn(
+                    "Set to 'true' the use_mobile_ui parameter in the 'engines:'"
+                    " section of your settings.yml file if google is blocked for you."
+                )
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('Too many requests')
         except SearxEngineAccessDeniedException as e:

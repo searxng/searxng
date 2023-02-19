@@ -30,7 +30,13 @@ GECKODRIVER_VERSION="v0.30.0"
 export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py37" "--line-length" "120" "--skip-string-normalization")
-BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" "searxng.msg" "searx" "searxng_extra" "tests")
+BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
+
+_dev_redis_sock="/usr/local/searxng-redis/run/redis.sock"
+# set SEARXNG_REDIS_URL if it is not defined and "{_dev_redis_sock}" exists.
+if [ -S "${_dev_redis_sock}" ] && [ -z "${SEARXNG_REDIS_URL}" ]; then
+    export SEARXNG_REDIS_URL="unix://${_dev_redis_sock}?db=0"
+fi
 
 pylint.FILES() {
 
@@ -65,6 +71,8 @@ help() {
     cat <<EOF
 buildenv:
   rebuild ./utils/brand.env
+webapp.:
+  run       : run developer instance
 weblate.:
   push.translations: push translation changes from SearXNG to Weblate's counterpart
   to.translations: Update 'translations' branch with last additions from Weblate.
@@ -89,7 +97,8 @@ redis:
   install   : create user (${REDIS_USER}) and install systemd service (${REDIS_SERVICE_NAME})
   help      : show more redis commands
 node.:
-  env       : download & install npm dependencies locally
+  env       : download & install SearXNG's npm dependencies locally
+  env.dev   : download & install developer and CI tools
   clean     : drop locally npm installations
 py.:
   build     : Build python packages at ./${PYDIST}
@@ -121,6 +130,10 @@ pygments.:
 EOF
     go.help
     static_help
+    cat <<EOF
+environment ...
+  SEARXNG_REDIS_URL : ${SEARXNG_REDIS_URL}
+EOF
 }
 
 
@@ -178,11 +191,11 @@ weblate.translations.worktree() {
     # 'translations' from Weblate's counterpart (weblate) of the SearXNG
     # (origin).
     #
-    #     remote weblate https://weblate.bubu1.eu/git/searxng/searxng/
+    #     remote weblate https://translate.codeberg.org/git/searxng/searxng/
 
     (   set -e
         if ! git remote get-url weblate 2> /dev/null; then
-            git remote add weblate https://weblate.bubu1.eu/git/searxng/searxng/
+            git remote add weblate https://translate.codeberg.org/git/searxng/searxng/
         fi
         if [ -d "${TRANSLATIONS_WORKTREE}" ]; then
             pushd .
@@ -416,9 +429,7 @@ docs.prebuild() {
         set -e
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searx.sh doc   | cat > "${DOCS_BUILD}/includes/searx.rst"
-        ./utils/filtron.sh doc | cat > "${DOCS_BUILD}/includes/filtron.rst"
-        ./utils/morty.sh doc   | cat > "${DOCS_BUILD}/includes/morty.rst"
+        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
         pyenv.cmd searxng_extra/docs_prebuild
     )
     dump_return $?
@@ -468,7 +479,7 @@ docker.build() {
         eval "$(python -m searx.version)"
 
         # Get the last git commit id
-        VERSION_GITCOMMIT=$(echo "$VERSION_STRING" | cut -d- -f3)
+        VERSION_GITCOMMIT=$(echo "$VERSION_TAG" | cut -d+ -f2)
         build_msg DOCKER "Last commit : $VERSION_GITCOMMIT"
 
         # define the docker image name
@@ -490,6 +501,7 @@ docker.build() {
         docker $BUILD \
          --build-arg BASE_IMAGE="${DEPENDENCIES_IMAGE_NAME}" \
          --build-arg GIT_URL="${GIT_URL}" \
+         --build-arg SEARXNG_DOCKER_TAG="${DOCKER_TAG}" \
          --build-arg SEARXNG_GIT_VERSION="${VERSION_STRING}" \
          --build-arg VERSION_GITCOMMIT="${VERSION_GITCOMMIT}" \
          --build-arg LABEL_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
@@ -497,11 +509,11 @@ docker.build() {
          --build-arg LABEL_VCS_URL="${GIT_URL}" \
          --build-arg TIMESTAMP_SETTINGS="$(git log -1 --format="%cd" --date=unix -- searx/settings.yml)" \
          --build-arg TIMESTAMP_UWSGI="$(git log -1 --format="%cd" --date=unix -- dockerfiles/uwsgi.ini)" \
-         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${VERSION_STRING}" .
+         -t "${SEARXNG_IMAGE_NAME}:latest" -t "${SEARXNG_IMAGE_NAME}:${DOCKER_TAG}" .
 
         if [ "$1" = "push" ]; then
 	        docker push "${SEARXNG_IMAGE_NAME}:latest"
-	        docker push "${SEARXNG_IMAGE_NAME}:${SEARXNG_GIT_VERSION}"
+	        docker push "${SEARXNG_IMAGE_NAME}:${DOCKER_TAG}"
 	    fi
     )
     dump_return $?
@@ -552,16 +564,15 @@ nodejs.ensure() {
 node.env() {
     nodejs.ensure
     (   set -e
-
-        build_msg INSTALL "searx/static/themes/simple/package.json"
+        build_msg INSTALL "./searx/static/themes/simple/package.json"
         npm --prefix searx/static/themes/simple install
     )
     dump_return $?
 }
 
-node.env.devtools() {
+node.env.dev() {
     nodejs.ensure
-    build_msg INSTALL "package.json: developer and CI tools"
+    build_msg INSTALL "./package.json: developer and CI tools"
     npm install
 }
 
@@ -573,6 +584,10 @@ node.clean() {
     build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
         npm --prefix searx/static/themes/simple run clean
+    )
+    build_msg CLEAN "locally installed developer and CI tools"
+    (   set -e
+        npm --prefix . run clean
     )
     dump_return $?
 }
@@ -661,7 +676,8 @@ format.python() {
 
 test.yamllint() {
     build_msg TEST "[yamllint] \$YAMLLINT_FILES"
-    pyenv.cmd yamllint --format parsable "${YAMLLINT_FILES[@]}"
+    pyenv.cmd yamllint --strict --format parsable "${YAMLLINT_FILES[@]}"
+    dump_return $?
 }
 
 test.pylint() {
@@ -690,7 +706,7 @@ test.pylint() {
 
 test.pyright() {
     build_msg TEST "[pyright] static type check of python sources"
-    node.env.devtools
+    node.env.dev
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
     build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
@@ -699,7 +715,8 @@ test.pyright() {
         | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
         | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
         | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined'
+        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' \
+        | grep -v '/engines/.*.py.* - warning: "categories" is not defined'
     dump_return $?
 }
 

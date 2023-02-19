@@ -5,7 +5,7 @@
 """
 
 import re
-from pymongo import MongoClient  # pylint: disable=import-error
+from pymongo import MongoClient  # pyright: ignore # pylint: disable=import-error
 
 engine_type = 'offline'
 

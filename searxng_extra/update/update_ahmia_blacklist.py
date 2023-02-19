@@ -9,6 +9,7 @@ Output file: :origin:`searx/data/ahmia_blacklist.txt` (:origin:`CI Update data
 .. _Ahmia's blacklist: https://ahmia.fi/blacklist/
 
 """
+# pylint: disable=use-dict-literal
 
 from os.path import join
 
@@ -21,6 +22,7 @@ URL = 'https://ahmia.fi/blacklist/banned/'
 def fetch_ahmia_blacklist():
     resp = requests.get(URL, timeout=3.0)
     if resp.status_code != 200:
+        # pylint: disable=broad-exception-raised
         raise Exception("Error fetching Ahmia blacklist, HTTP code " + resp.status_code)
     return resp.text.split()
 

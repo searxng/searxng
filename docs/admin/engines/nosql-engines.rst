@@ -25,7 +25,7 @@ place the templates at::
 
   searx/templates/{theme_name}/result_templates/{template_name}
 
-Futhermore, if you do not wish to expose these engines on a public instance, you
+Furthermore, if you do not wish to expose these engines on a public instance, you
 can still add them and limit the access by setting ``tokens`` as described in
 section :ref:`private engines`.
 
@@ -42,11 +42,11 @@ Extra Dependencies
 
 For using :ref:`engine redis_server` or :ref:`engine mongodb` you need to
 install additional packages in Python's Virtual Environment of your SearXNG
-instance.  To switch into the environment (:ref:`searx-src`) you can use
-:ref:`searx.sh`::
+instance.  To switch into the environment (:ref:`searxng-src`) you can use
+:ref:`searxng.sh`::
 
-  $ sudo utils/searx.sh shell
-  (searx-pyenv)$ pip install ...
+  $ sudo utils/searxng.sh instance cmd bash
+  (searxng-pyenv)$ pip install ...
 
 
 .. _engine redis_server:

@@ -19,6 +19,9 @@ about = {
     "results": 'JSON',
 }
 
+
+send_accept_language_header = True
+
 # search-url
 search_url = 'https://{language}.wikipedia.org/api/rest_v1/page/summary/{title}'
 supported_languages_url = 'https://meta.wikimedia.org/wiki/List_of_Wikipedias'
@@ -40,9 +43,6 @@ def request(query, params):
 
     language = url_lang(params['language'])
     params['url'] = search_url.format(title=quote(query), language=language)
-
-    if params['language'].lower() in language_variants.get(language, []):
-        params['headers']['Accept-Language'] = params['language'].lower()
 
     params['headers']['User-Agent'] = searx_useragent()
     params['raise_for_httperror'] = False
@@ -106,9 +106,9 @@ def _fetch_supported_languages(resp):
         for tr in trs:
             td = tr.xpath('./td')
             code = td[3].xpath('./a')[0].text
-            name = td[2].xpath('./a')[0].text
+            name = td[1].xpath('./a')[0].text
             english_name = td[1].xpath('./a')[0].text
-            articles = int(td[4].xpath('./a/b')[0].text.replace(',', ''))
+            articles = int(td[4].xpath('./a')[0].text.replace(',', ''))
             # exclude languages with too few articles
             if articles >= 100:
                 supported_languages[code] = {"name": name, "english_name": english_name}

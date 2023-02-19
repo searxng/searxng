@@ -3,9 +3,10 @@
  ArXiV (Scientific preprints)
 """
 
-from lxml import html
+from lxml import etree
+from lxml.etree import XPath
 from datetime import datetime
-from searx.utils import eval_xpath_list, eval_xpath_getindex
+from searx.utils import eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
 about = {
@@ -17,7 +18,7 @@ about = {
     "results": 'XML-RSS',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 
 base_url = (
@@ -26,6 +27,23 @@ base_url = (
 
 # engine dependent config
 number_of_results = 10
+
+# xpaths
+arxiv_namespaces = {
+    "atom": "http://www.w3.org/2005/Atom",
+    "arxiv": "http://arxiv.org/schemas/atom",
+}
+xpath_entry = XPath('//atom:entry', namespaces=arxiv_namespaces)
+xpath_title = XPath('.//atom:title', namespaces=arxiv_namespaces)
+xpath_id = XPath('.//atom:id', namespaces=arxiv_namespaces)
+xpath_summary = XPath('.//atom:summary', namespaces=arxiv_namespaces)
+xpath_author_name = XPath('.//atom:author/atom:name', namespaces=arxiv_namespaces)
+xpath_doi = XPath('.//arxiv:doi', namespaces=arxiv_namespaces)
+xpath_pdf = XPath('.//atom:link[@title="pdf"]', namespaces=arxiv_namespaces)
+xpath_published = XPath('.//atom:published', namespaces=arxiv_namespaces)
+xpath_journal = XPath('.//arxiv:journal_ref', namespaces=arxiv_namespaces)
+xpath_category = XPath('.//atom:category/@term', namespaces=arxiv_namespaces)
+xpath_comment = XPath('./arxiv:comment', namespaces=arxiv_namespaces)
 
 
 def request(query, params):
@@ -41,30 +59,50 @@ def request(query, params):
 
 def response(resp):
     results = []
+    dom = etree.fromstring(resp.content)
+    for entry in eval_xpath_list(dom, xpath_entry):
+        title = eval_xpath_getindex(entry, xpath_title, 0).text
 
-    dom = html.fromstring(resp.content)
+        url = eval_xpath_getindex(entry, xpath_id, 0).text
+        abstract = eval_xpath_getindex(entry, xpath_summary, 0).text
 
-    for entry in eval_xpath_list(dom, '//entry'):
-        title = eval_xpath_getindex(entry, './/title', 0).text
+        authors = [author.text for author in eval_xpath_list(entry, xpath_author_name)]
 
-        url = eval_xpath_getindex(entry, './/id', 0).text
+        #  doi
+        doi_element = eval_xpath_getindex(entry, xpath_doi, 0, default=None)
+        doi = None if doi_element is None else doi_element.text
 
-        content_string = '{doi_content}{abstract_content}'
+        # pdf
+        pdf_element = eval_xpath_getindex(entry, xpath_pdf, 0, default=None)
+        pdf_url = None if pdf_element is None else pdf_element.attrib.get('href')
 
-        abstract = eval_xpath_getindex(entry, './/summary', 0).text
+        # journal
+        journal_element = eval_xpath_getindex(entry, xpath_journal, 0, default=None)
+        journal = None if journal_element is None else journal_element.text
 
-        #  If a doi is available, add it to the snipppet
-        doi_element = eval_xpath_getindex(entry, './/link[@title="doi"]', 0, default=None)
-        doi_content = doi_element.text if doi_element is not None else ''
-        content = content_string.format(doi_content=doi_content, abstract_content=abstract)
+        # tags
+        tag_elements = eval_xpath(entry, xpath_category)
+        tags = [str(tag) for tag in tag_elements]
 
-        if len(content) > 300:
-            content = content[0:300] + "..."
-        # TODO: center snippet on query term
+        # comments
+        comments_elements = eval_xpath_getindex(entry, xpath_comment, 0, default=None)
+        comments = None if comments_elements is None else comments_elements.text
 
-        publishedDate = datetime.strptime(eval_xpath_getindex(entry, './/published', 0).text, '%Y-%m-%dT%H:%M:%SZ')
+        publishedDate = datetime.strptime(eval_xpath_getindex(entry, xpath_published, 0).text, '%Y-%m-%dT%H:%M:%SZ')
 
-        res_dict = {'url': url, 'title': title, 'publishedDate': publishedDate, 'content': content}
+        res_dict = {
+            'template': 'paper.html',
+            'url': url,
+            'title': title,
+            'publishedDate': publishedDate,
+            'content': abstract,
+            'doi': doi,
+            'authors': authors,
+            'journal': journal,
+            'tags': tags,
+            'comments': comments,
+            'pdf_url': pdf_url,
+        }
 
         results.append(res_dict)
 

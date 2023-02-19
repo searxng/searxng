@@ -1,26 +1,28 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 # pylint: disable=missing-module-docstring
-# pyright: strict
+# pyright: basic
 
 import json
-import random
 import time
 import threading
 import os
 import signal
-from typing import Dict, Union, List, Any, Tuple
+from typing import Dict, Union, List, Any, Tuple, Optional
 from typing_extensions import TypedDict, Literal
 
+import redis.exceptions
+
 from searx import logger, settings, searx_debug
+from searx.redisdb import client as get_redis_client
 from searx.exceptions import SearxSettingsException
 from searx.search.processors import PROCESSORS
 from searx.search.checker import Checker
-from searx.shared import schedule, storage
+from searx.search.checker.scheduler import scheduler_function
 
 
-CHECKER_RESULT = 'CHECKER_RESULT'
-running = threading.Lock()
+REDIS_RESULT_KEY = 'SearXNG_checker_result'
+REDIS_LOCK_KEY = 'SearXNG_checker_lock'
 
 
 CheckerResult = Union['CheckerOk', 'CheckerErr', 'CheckerOther']
@@ -77,20 +79,24 @@ def _get_interval(every: Any, error_msg: str) -> Tuple[int, int]:
     return (every[0], every[1])
 
 
-def _get_every():
-    every = settings.get('checker', {}).get('scheduling', {}).get('every', (300, 1800))
-    return _get_interval(every, 'checker.scheduling.every is not a int or list')
-
-
 def get_result() -> CheckerResult:
-    serialized_result = storage.get_str(CHECKER_RESULT)
-    if serialized_result is not None:
-        return json.loads(serialized_result)
-    return {'status': 'unknown'}
+    client = get_redis_client()
+    if client is None:
+        # without Redis, the checker is disabled
+        return {'status': 'disabled'}
+    serialized_result: Optional[bytes] = client.get(REDIS_RESULT_KEY)
+    if serialized_result is None:
+        # the Redis key does not exist
+        return {'status': 'unknown'}
+    return json.loads(serialized_result)
 
 
 def _set_result(result: CheckerResult):
-    storage.set_str(CHECKER_RESULT, json.dumps(result))
+    client = get_redis_client()
+    if client is None:
+        # without Redis, the function does nothing
+        return
+    client.set(REDIS_RESULT_KEY, json.dumps(result))
 
 
 def _timestamp():
@@ -98,41 +104,29 @@ def _timestamp():
 
 
 def run():
-    if not running.acquire(blocking=False):  # pylint: disable=consider-using-with
-        return
     try:
-        logger.info('Starting checker')
-        result: CheckerOk = {'status': 'ok', 'engines': {}, 'timestamp': _timestamp()}
-        for name, processor in PROCESSORS.items():
-            logger.debug('Checking %s engine', name)
-            checker = Checker(processor)
-            checker.run()
-            if checker.test_results.succesfull:
-                result['engines'][name] = {'success': True}
-            else:
-                result['engines'][name] = {'success': False, 'errors': checker.test_results.errors}
+        # use a Redis lock to make sure there is no checker running at the same time
+        # (this should not happen, this is a safety measure)
+        with get_redis_client().lock(REDIS_LOCK_KEY, blocking_timeout=60, timeout=3600):
+            logger.info('Starting checker')
+            result: CheckerOk = {'status': 'ok', 'engines': {}, 'timestamp': _timestamp()}
+            for name, processor in PROCESSORS.items():
+                logger.debug('Checking %s engine', name)
+                checker = Checker(processor)
+                checker.run()
+                if checker.test_results.successful:
+                    result['engines'][name] = {'success': True}
+                else:
+                    result['engines'][name] = {'success': False, 'errors': checker.test_results.errors}
 
-        _set_result(result)
-        logger.info('Check done')
+            _set_result(result)
+            logger.info('Check done')
+    except redis.exceptions.LockError:
+        _set_result({'status': 'error', 'timestamp': _timestamp()})
+        logger.exception('Error while running the checker')
     except Exception:  # pylint: disable=broad-except
         _set_result({'status': 'error', 'timestamp': _timestamp()})
         logger.exception('Error while running the checker')
-    finally:
-        running.release()
-
-
-def _run_with_delay():
-    every = _get_every()
-    delay = random.randint(0, every[1] - every[0])
-    logger.debug('Start checker in %i seconds', delay)
-    time.sleep(delay)
-    run()
-
-
-def _start_scheduling():
-    every = _get_every()
-    if schedule(every[0], _run_with_delay):
-        run()
 
 
 def _signal_handler(_signum: int, _frame: Any):
@@ -147,27 +141,31 @@ def initialize():
         logger.info('Send SIGUSR1 signal to pid %i to start the checker', os.getpid())
         signal.signal(signal.SIGUSR1, _signal_handler)
 
-    # disabled by default
-    _set_result({'status': 'disabled'})
-
     # special case when debug is activate
-    if searx_debug and settings.get('checker', {}).get('off_when_debug', True):
+    if searx_debug and settings['checker']['off_when_debug']:
         logger.info('debug mode: checker is disabled')
         return
 
     # check value of checker.scheduling.every now
-    scheduling = settings.get('checker', {}).get('scheduling', None)
+    scheduling = settings['checker']['scheduling']
     if scheduling is None or not scheduling:
         logger.info('Checker scheduler is disabled')
         return
 
-    #
-    _set_result({'status': 'unknown'})
+    # make sure there is a Redis connection
+    if get_redis_client() is None:
+        logger.error('The checker requires Redis')
+        return
 
-    start_after = scheduling.get('start_after', (300, 1800))
-    start_after = _get_interval(start_after, 'checker.scheduling.start_after is not a int or list')
-    delay = random.randint(start_after[0], start_after[1])
-    logger.info('Start checker in %i seconds', delay)
-    t = threading.Timer(delay, _start_scheduling)
+    # start the background scheduler
+    every_range = _get_interval(scheduling.get('every', (300, 1800)), 'checker.scheduling.every is not a int or list')
+    start_after_range = _get_interval(
+        scheduling.get('start_after', (300, 1800)), 'checker.scheduling.start_after is not a int or list'
+    )
+    t = threading.Thread(
+        target=scheduler_function,
+        args=(start_after_range[0], start_after_range[1], every_range[0], every_range[1], run),
+        name='checker_scheduler',
+    )
     t.daemon = True
     t.start()

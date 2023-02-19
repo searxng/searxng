@@ -19,7 +19,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 nb_per_page = 10
 api_key = 'unset'
@@ -41,32 +41,32 @@ def response(resp):
     json_data = loads(resp.text)
 
     for record in json_data['records']:
-        content = record['abstract'][0:500]
-        if len(record['abstract']) > len(content):
-            content += "..."
         published = datetime.strptime(record['publicationDate'], '%Y-%m-%d')
-
-        metadata = [
-            record[x]
-            for x in [
-                'publicationName',
-                'identifier',
-                'contentType',
-            ]
-            if record.get(x) is not None
-        ]
-
-        metadata = ' / '.join(metadata)
-        if record.get('startingPage') and record.get('endingPage') is not None:
-            metadata += " (%(startingPage)s-%(endingPage)s)" % record
-
+        authors = [" ".join(author['creator'].split(', ')[::-1]) for author in record['creators']]
+        tags = record.get('genre')
+        if isinstance(tags, str):
+            tags = [tags]
         results.append(
             {
-                'title': record['title'],
+                'template': 'paper.html',
                 'url': record['url'][0]['value'].replace('http://', 'https://', 1),
-                'content': content,
+                'title': record['title'],
+                'content': record['abstract'],
+                'comments': record['publicationName'],
+                'tags': tags,
                 'publishedDate': published,
-                'metadata': metadata,
+                'type': record.get('contentType'),
+                'authors': authors,
+                # 'editor': '',
+                'publisher': record.get('publisher'),
+                'journal': record.get('publicationName'),
+                'volume': record.get('volume') or None,
+                'pages': '-'.join([x for x in [record.get('startingPage'), record.get('endingPage')] if x]),
+                'number': record.get('number') or None,
+                'doi': record.get('doi'),
+                'issn': [x for x in [record.get('issn')] if x],
+                'isbn': [x for x in [record.get('isbn')] if x],
+                # 'pdf_url' : ''
             }
         )
     return results

@@ -10,12 +10,10 @@ from timeit import default_timer
 from urllib.parse import urlparse
 
 import re
-from langdetect import detect_langs
-from langdetect.lang_detect_exception import LangDetectException
 import httpx
 
 from searx import network, logger
-from searx.utils import gen_useragent
+from searx.utils import gen_useragent, detect_language
 from searx.results import ResultContainer
 from searx.search.models import SearchQuery, EngineRef
 from searx.search.processors import EngineProcessor
@@ -174,7 +172,7 @@ class TestResults:
         self.languages.add(language)
 
     @property
-    def succesfull(self):
+    def successful(self):
         return len(self.errors) == 0
 
     def __iter__(self):
@@ -208,14 +206,10 @@ class ResultContainerTests:
         self.test_results.add_error(self.test_name, message, *args, '(' + sqstr + ')')
 
     def _add_language(self, text: str) -> typing.Optional[str]:
-        try:
-            r = detect_langs(str(text))  # pylint: disable=E1101
-        except LangDetectException:
-            return None
-
-        if len(r) > 0 and r[0].prob > 0.95:
-            self.languages.add(r[0].lang)
-            self.test_results.add_language(r[0].lang)
+        langStr = detect_language(text)
+        if langStr:
+            self.languages.add(langStr)
+            self.test_results.add_language(langStr)
         return None
 
     def _check_result(self, result):
@@ -317,7 +311,7 @@ class ResultContainerTests:
             self._record_error('No result')
 
     def one_title_contains(self, title: str):
-        """Check one of the title contains `title` (case insensitive comparaison)"""
+        """Check one of the title contains `title` (case insensitive comparison)"""
         title = title.lower()
         for result in self.result_container.get_ordered_results():
             if title in result['title'].lower():

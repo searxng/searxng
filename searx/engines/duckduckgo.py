@@ -18,7 +18,7 @@ from searx.network import get
 
 # about
 about = {
-    "website": 'https://lite.duckduckgo.com/lite',
+    "website": 'https://lite.duckduckgo.com/lite/',
     "wikidata_id": 'Q12805',
     "official_api_documentation": 'https://duckduckgo.com/api',
     "use_official_api": False,
@@ -31,6 +31,7 @@ categories = ['general', 'web']
 paging = True
 supported_languages_url = 'https://duckduckgo.com/util/u588.js'
 time_range_support = True
+send_accept_language_header = True
 
 language_aliases = {
     'ar-SA': 'ar-XA',
@@ -45,7 +46,7 @@ language_aliases = {
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # search-url
-url = 'https://lite.duckduckgo.com/lite'
+url = 'https://lite.duckduckgo.com/lite/'
 url_ping = 'https://duckduckgo.com/t/sl_l'
 
 # match query's language to a region code that duckduckgo will accept
@@ -72,6 +73,7 @@ def request(query, params):
     # link again and again ..
 
     params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+    params['headers']['Referer'] = 'https://google.com/'
 
     # initial page does not have an offset
     if params['pageno'] == 2:

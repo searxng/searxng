@@ -1,3 +1,4 @@
+from searx.locales import locales_initialize
 from searx.preferences import (
     EnumStringSetting,
     MapSetting,
@@ -7,6 +8,8 @@ from searx.preferences import (
     ValidationException,
 )
 from tests import SearxTestCase
+
+locales_initialize()
 
 
 class PluginStub:

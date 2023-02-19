@@ -44,6 +44,7 @@ ENGINE_DEFAULT_ARGS = {
     "enable_http": False,
     "using_tor_proxy": False,
     "display_error_messages": True,
+    "send_accept_language_header": False,
     "tokens": [],
     "about": {},
 }
@@ -80,6 +81,7 @@ engine_shortcuts = {}
 
     engine_shortcuts[engine.shortcut] = engine.name
 
+:meta hide-value:
 """
 
 
@@ -104,8 +106,12 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
     - required attribute is not set :py:func:`is_missing_required_attributes`
 
     """
+    # pylint: disable=too-many-return-statements
 
-    engine_name = engine_data['name']
+    engine_name = engine_data.get('name')
+    if engine_name is None:
+        logger.error('An engine does not have a "name" field')
+        return None
     if '_' in engine_name:
         logger.error('Engine name contains underscore: "{}"'.format(engine_name))
         return None
@@ -116,7 +122,10 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
         engine_data['name'] = engine_name
 
     # load_module
-    engine_module = engine_data['engine']
+    engine_module = engine_data.get('engine')
+    if engine_module is None:
+        logger.error('The "engine" field is missing for the engine named "{}"'.format(engine_name))
+        return None
     try:
         engine = load_module(engine_module + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
@@ -149,7 +158,11 @@ def set_loggers(engine, engine_name):
     engine.logger = logger.getChild(engine_name)
     # the engine may have load some other engines
     # may sure the logger is initialized
-    for module_name, module in sys.modules.items():
+    # use sys.modules.copy() to avoid "RuntimeError: dictionary changed size during iteration"
+    # see https://github.com/python/cpython/issues/89516
+    # and https://docs.python.org/3.10/library/sys.html#sys.modules
+    modules = sys.modules.copy()
+    for module_name, module in modules.items():
         if (
             module_name.startswith("searx.engines")
             and module_name != "searx.engines.__init__"
@@ -269,12 +282,12 @@ def is_engine_active(engine: Engine):
 
 def register_engine(engine: Engine):
     if engine.name in engines:
-        logger.error('Engine config error: ambigious name: {0}'.format(engine.name))
+        logger.error('Engine config error: ambiguous name: {0}'.format(engine.name))
         sys.exit(1)
     engines[engine.name] = engine
 
     if engine.shortcut in engine_shortcuts:
-        logger.error('Engine config error: ambigious shortcut: {0}'.format(engine.shortcut))
+        logger.error('Engine config error: ambiguous shortcut: {0}'.format(engine.shortcut))
         sys.exit(1)
     engine_shortcuts[engine.shortcut] = engine.name
 

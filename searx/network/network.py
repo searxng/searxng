@@ -13,6 +13,7 @@ import httpx
 
 from searx import logger, searx_debug
 from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
+from .raise_for_httperror import raise_for_httperror
 
 
 logger = logger.getChild('network')
@@ -172,7 +173,7 @@ class Network:
             ):
                 continue
             return False
-        response = await client.get("https://check.torproject.org/api/ip", timeout=10)
+        response = await client.get("https://check.torproject.org/api/ip", timeout=60)
         if not response.json()["IsTor"]:
             result = False
         Network._TOR_CHECK_RESULT[proxies] = result
@@ -226,6 +227,27 @@ class Network:
             kwargs['follow_redirects'] = kwargs.pop('allow_redirects')
         return kwargs_clients
 
+    @staticmethod
+    def extract_do_raise_for_httperror(kwargs):
+        do_raise_for_httperror = True
+        if 'raise_for_httperror' in kwargs:
+            do_raise_for_httperror = kwargs['raise_for_httperror']
+            del kwargs['raise_for_httperror']
+        return do_raise_for_httperror
+
+    @staticmethod
+    def patch_response(response, do_raise_for_httperror):
+        if isinstance(response, httpx.Response):
+            # requests compatibility (response is not streamed)
+            # see also https://www.python-httpx.org/compatibility/#checking-for-4xx5xx-responses
+            response.ok = not response.is_error
+
+            # raise an exception
+            if do_raise_for_httperror:
+                raise_for_httperror(response)
+
+        return response
+
     def is_valid_response(self, response):
         # pylint: disable=too-many-boolean-expressions
         if (
@@ -239,6 +261,7 @@ class Network:
     async def call_client(self, stream, method, url, **kwargs):
         retries = self.retries
         was_disconnected = False
+        do_raise_for_httperror = Network.extract_do_raise_for_httperror(kwargs)
         kwargs_clients = Network.extract_kwargs_clients(kwargs)
         while retries >= 0:  # pragma: no cover
             client = await self.get_client(**kwargs_clients)
@@ -248,7 +271,7 @@ class Network:
                 else:
                     response = await client.request(method, url, **kwargs)
                 if self.is_valid_response(response) or retries <= 0:
-                    return response
+                    return Network.patch_response(response, do_raise_for_httperror)
             except httpx.RemoteProtocolError as e:
                 if not was_disconnected:
                     # the server has closed the connection:
@@ -311,7 +334,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
     # see https://github.com/encode/httpx/blob/e05a5372eb6172287458b37447c30f650047e1b8/httpx/_transports/default.py#L108-L121  # pylint: disable=line-too-long
     default_params = {
         'enable_http': False,
-        'verify': True,
+        'verify': settings_outgoing['verify'],
         'enable_http2': settings_outgoing['enable_http2'],
         'max_connections': settings_outgoing['pool_connections'],
         'max_keepalive_connections': settings_outgoing['pool_maxsize'],

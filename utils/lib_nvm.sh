@@ -20,13 +20,14 @@ NVM_LOCAL_FOLDER=.nvm
 [[ -z "${NVM_GIT_URL}" ]] &&  NVM_GIT_URL="https://github.com/nvm-sh/nvm.git"
 [[ -z "${NVM_MIN_NODE_VER}" ]] && NVM_MIN_NODE_VER="16.13.0"
 
-# initalize nvm environment
+# initialize nvm environment
 # -------------------------
 
 nvm.env() {
     source "${NVM_DIR}/nvm.sh"
     source "${NVM_DIR}/bash_completion"
     [ "$VERBOSE" = "1" ] && info_msg "sourced NVM environment from ${NVM_DIR}"
+    return 0
 }
 
 nvm.is_installed() {
@@ -102,11 +103,15 @@ EOF
 nvm.install() {
     local NVM_VERSION_TAG
     info_msg "install (update) NVM at ${NVM_DIR}"
-    if [[ -d "${NVM_DIR}" ]] ; then
+    if nvm.is_installed; then
         info_msg "already cloned at: ${NVM_DIR}"
         pushd "${NVM_DIR}" &> /dev/null
         git fetch --all | prefix_stdout "  ${_Yellow}||${_creset} "
     else
+        # delete any leftovers from previos installations
+        if nvm.is_local; then
+            rm -rf "${NVM_DIR}"
+        fi
         info_msg "clone: ${NVM_GIT_URL}"
         git clone "${NVM_GIT_URL}" "${NVM_DIR}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
         pushd "${NVM_DIR}" &> /dev/null

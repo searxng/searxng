@@ -33,17 +33,26 @@ Example plugin
 External plugins
 ================
 
-External plugins are standard python modules implementing all the requirements of the standard plugins.
-Plugins can be enabled by adding them to :ref:`settings.yml`'s ``plugins`` section.
-Example external plugin can be found `here <https://github.com/asciimoo/searx_external_plugin_example>`_.
+SearXNG supports *external plugins* / there is no need to install one, SearXNG
+runs out of the box.  But to demonstrate; in the example below we install the
+SearXNG plugins from *The Green Web Foundation* `[ref]
+<https://www.thegreenwebfoundation.org/news/searching-the-green-web-with-searx/>`__:
 
-Register your plugin
-====================
+.. code:: bash
 
-To enable your plugin register your plugin in
-searx > plugin > __init__.py.
-And at the bottom of the file add your plugin like.
-``plugins.register(name_of_python_file)``
+   $ sudo utils/searxng.sh instance cmd bash
+   (searxng-pyenv)$ pip install git+https://github.com/return42/tgwf-searx-plugins
+
+In the :ref:`settings.yml` activate the ``plugins:`` section and add module
+``only_show_green_results`` from ``tgwf-searx-plugins``.
+
+.. code:: yaml
+
+   plugins:
+     ...
+     - only_show_green_results
+     ...
+
 
 Plugin entry points
 ===================

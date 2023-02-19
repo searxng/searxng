@@ -6,6 +6,7 @@ import os
 import shlex
 import subprocess
 import logging
+import importlib
 
 # fallback values
 # if there is searx.version_frozen module, and it is not possible to get the git tag
@@ -58,26 +59,34 @@ def get_git_url_and_branch():
 
 
 def get_git_version():
-    git_commit_date_hash = subprocess_run(r"git show -s --format='%cs-%h'").replace("-", ".", 2)
+    git_commit_date_hash = subprocess_run(r"git show -s --date='format:%-Y.%-m.%-d' --format='%cd+%h'")
     tag_version = git_version = git_commit_date_hash
 
-    # add "-dirty" suffix if there are uncommited changes except searx/settings.yml
+    # add "+dirty" suffix if there are uncommited changes except searx/settings.yml
     try:
         subprocess_run("git diff --quiet -- . ':!searx/settings.yml' ':!utils/brand.env'")
     except subprocess.CalledProcessError as e:
         if e.returncode == 1:
-            git_version += "-dirty"
+            git_version += "+dirty"
         else:
             logger.warning('"%s" returns an unexpected return code %i', e.returncode, e.cmd)
-    return git_version, tag_version
+    docker_tag = git_version.replace("+", "-")
+    return git_version, tag_version, docker_tag
 
 
 try:
-    from searx.version_frozen import VERSION_STRING, VERSION_TAG, GIT_URL, GIT_BRANCH
+    vf = importlib.import_module('searx.version_frozen')
+    VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = (
+        vf.VERSION_STRING,
+        vf.VERSION_TAG,
+        vf.DOCKER_TAG,
+        vf.GIT_URL,
+        vf.GIT_BRANCH,
+    )
 except ImportError:
     try:
         try:
-            VERSION_STRING, VERSION_TAG = get_git_version()
+            VERSION_STRING, VERSION_TAG, DOCKER_TAG = get_git_version()
         except subprocess.CalledProcessError as ex:
             logger.error("Error while getting the version: %s", ex.stderr)
         try:
@@ -100,6 +109,7 @@ if __name__ == "__main__":
 
 VERSION_STRING = "{VERSION_STRING}"
 VERSION_TAG = "{VERSION_TAG}"
+DOCKER_TAG = "{DOCKER_TAG}"
 GIT_URL = "{GIT_URL}"
 GIT_BRANCH = "{GIT_BRANCH}"
 """
@@ -112,6 +122,7 @@ GIT_BRANCH = "{GIT_BRANCH}"
         shell_code = f"""
 VERSION_STRING="{VERSION_STRING}"
 VERSION_TAG="{VERSION_TAG}"
+DOCKER_TAG="{DOCKER_TAG}"
 GIT_URL="{GIT_URL}"
 GIT_BRANCH="{GIT_BRANCH}"
 """

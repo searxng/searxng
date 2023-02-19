@@ -1,5 +1,5 @@
 {% from 'simple/icons.html' import icon_big %}
-{% from '__common__/new_issue.html' import new_issue with context %}
+{% from 'simple/new_issue.html' import new_issue with context %}
 
 {% extends "simple/page_with_header.html" %}
 
@@ -33,10 +33,7 @@
         <td class="engine-name"><a href="{{ url_for('stats', engine=engine_stat.name|e) }}">{{ engine_stat.name }}</a></td>
         <td class="engine-score">
             {% if engine_stat.score %}
-            <span aria-labelledby="{{engine_stat.name}}_score" >{{ engine_stat.score|round(1) }}</span>
-            <div class="engine-tooltip" role="tooltip" id="{{engine_stat.name}}_score">{{- "" -}}
-                <p>{{ _('Scores per result') }}: {{ engine_stat.score_per_result | round(3) }}</p>
-            </div>
+            <span>{{ engine_stat.score_per_result|round(1) }}</span>
             {% endif %}
         </td>
         <td class="engine-result-count">
@@ -91,15 +88,15 @@
 </table>
 {% endif %}
 
-<div>
-    {% if selected_engine_name %}
+{% if selected_engine_name %}
+    <div class="engine-errors">
         {% for secondary in [False, True] %}
             {% set ns = namespace(first=true) %}
             {% for error in engine_reliabilities[selected_engine_name].errors %}
                 {% if secondary == error.secondary %}
                     {% if ns.first %}
                         {% set ns.first = false %}
-                        <h3>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h3>
+                        <h2>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h2>
                     {% endif %}
                     <table class="engine-error">
                         <tbody>
@@ -145,7 +142,7 @@
             </table>
         {% endif %}
         {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
-    {% endif %}
-</div>
+    </div>
+{% endif %}
 
 {% endblock %}

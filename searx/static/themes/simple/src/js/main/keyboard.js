@@ -34,7 +34,7 @@ searxng.ready(function () {
 
   searxng.on('.result', 'click', function (e) {
     if (!isElementInDetail(e.target)) {
-      highlightResult(this)(true);
+      highlightResult(this)(true, true);
       let resultElement = getResultElement(e.target);
       if (isImageResult(resultElement)) {
         e.preventDefault();
@@ -154,7 +154,7 @@ searxng.ready(function () {
     }
   };
 
-  if (searxng.hotkeys) {
+  if (searxng.settings.hotkeys) {
     searxng.on(document, "keydown", function (e) {
       // check for modifiers so we don't break browser's hotkeys
       if (Object.prototype.hasOwnProperty.call(vimKeys, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
@@ -172,7 +172,7 @@ searxng.ready(function () {
   }
 
   function highlightResult (which) {
-    return function (noScroll) {
+    return function (noScroll, keepFocus) {
       var current = document.querySelector('.result[data-vim-selected]'),
         effectiveWhich = which;
       if (current === null) {
@@ -233,9 +233,11 @@ searxng.ready(function () {
       if (next) {
         current.removeAttribute('data-vim-selected');
         next.setAttribute('data-vim-selected', 'true');
-        var link = next.querySelector('h3 a') || next.querySelector('a');
-        if (link !== null) {
-          link.focus();
+        if (!keepFocus) {
+          var link = next.querySelector('h3 a') || next.querySelector('a');
+          if (link !== null) {
+            link.focus();
+          }
         }
         if (!noScroll) {
           scrollPageToSelected();
@@ -317,7 +319,12 @@ searxng.ready(function () {
 
   function searchInputFocus () {
     window.scrollTo(0, 0);
-    document.querySelector('#q').focus();
+    var q = document.querySelector('#q');
+    q.focus();
+    if (q.setSelectionRange) {
+      var len = q.value.length;
+      q.setSelectionRange(len, len);
+    }
   }
 
   function openResult (newTab) {

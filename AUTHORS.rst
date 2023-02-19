@@ -163,3 +163,9 @@ features or generally made searx better:
 - @xenrox
 - @OliveiraHermogenes
 - Paul Alcock @Guilvareux
+- Sam A. `<https://samsapti.dev>`_
+- @XavierHorwood
+- Ahmad Alkadri `<https://github.com/ahmad-alkadri>`_
+- Milad Laly @Milad-Laly
+- @llmII
+- @blob42 `<https://blob42.xyz>`_

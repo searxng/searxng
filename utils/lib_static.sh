@@ -8,7 +8,7 @@ STATIC_BUILT_PATHS=(
     'searx/static/themes/simple/js'
     'searx/static/themes/simple/src/generated/pygments.less'
     'searx/static/themes/simple/img'
-    'searx/templates/__common__/searxng-wordmark.min.svg'
+    'searx/templates/simple/searxng-wordmark.min.svg'
     'searx/templates/simple/icons.html'
 )
 

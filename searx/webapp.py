@@ -5,18 +5,20 @@
 """WebbApp
 
 """
+# pylint: disable=use-dict-literal
+
 import hashlib
 import hmac
 import json
 import os
 import sys
+import base64
 
-from datetime import datetime, timedelta
 from timeit import default_timer
 from html import escape
 from io import StringIO
 import typing
-from typing import List, Dict, Iterable, Optional
+from typing import List, Dict, Iterable
 
 import urllib
 import urllib.parse
@@ -39,15 +41,11 @@ from flask import (
     send_from_directory,
 )
 from flask.wrappers import Response
-from flask.ctx import has_request_context
 from flask.json import jsonify
 
-from babel.support import Translations
-import flask_babel
 from flask_babel import (
     Babel,
     gettext,
-    format_date,
     format_decimal,
 )
 
@@ -81,6 +79,7 @@ from searx.webutils import (
     is_hmac_of,
     is_flask_run_cmdline,
     group_engines_in_tab,
+    searxng_l10n_timespan,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -113,11 +112,17 @@ from searx.metrics import (
 )
 from searx.flaskfix import patch_application
 
-# renaming names from searx imports ...
+from searx.locales import (
+    LOCALE_NAMES,
+    RTL_LOCALES,
+    localeselector,
+    locales_initialize,
+)
 
+# renaming names from searx imports ...
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx.languages import language_codes as languages
-from searx.locales import LOCALE_NAMES, RTL_LOCALES
+from searx.redisdb import initialize as redis_initialize
 from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
@@ -139,21 +144,14 @@ default_theme = settings['ui']['default_theme']
 templates_path = settings['ui']['templates_path']
 themes = get_themes(templates_path)
 result_templates = get_result_templates(templates_path)
-global_favicons = []
-for indice, theme in enumerate(themes):
-    global_favicons.append([])
-    theme_img_path = os.path.join(settings['ui']['static_path'], 'themes', theme, 'img', 'icons')
-    for (dirpath, dirnames, filenames) in os.walk(theme_img_path):
-        global_favicons[indice].extend(filenames)
 
 STATS_SORT_PARAMETERS = {
     'name': (False, 'name', ''),
-    'score': (True, 'score', 0),
+    'score': (True, 'score_per_result', 0),
     'result_count': (True, 'result_count', 0),
     'time': (False, 'total', 0),
     'reliability': (False, 'reliability', 100),
 }
-_INFO_PAGES = infopage.InfoPageSet()
 
 # Flask app
 app = Flask(__name__, static_folder=settings['ui']['static_path'], template_folder=templates_path)
@@ -164,12 +162,11 @@ app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-mem
 app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
 
-babel = Babel(app)
-
 timeout_text = gettext('timeout')
 parsing_error_text = gettext('parsing error')
 http_protocol_error_text = gettext('HTTP protocol error')
 network_error_text = gettext('network error')
+ssl_cert_error_text = gettext("SSL error: certificate validation has failed")
 exception_classname_to_text = {
     None: gettext('unexpected crash'),
     'timeout': timeout_text,
@@ -194,11 +191,9 @@ exception_classname_to_text = {
     'KeyError': parsing_error_text,
     'json.decoder.JSONDecodeError': parsing_error_text,
     'lxml.etree.ParserError': parsing_error_text,
+    'ssl.SSLCertVerificationError': ssl_cert_error_text,  # for Python > 3.7
+    'ssl.CertificateError': ssl_cert_error_text,  # for Python 3.7
 }
-
-
-# monkey patch for flask_babel.get_translations
-_flask_babel_get_translations = flask_babel.get_translations
 
 
 class ExtendedRequest(flask.Request):
@@ -216,36 +211,13 @@ class ExtendedRequest(flask.Request):
 request = typing.cast(ExtendedRequest, flask.request)
 
 
-def _get_translations():
-    if has_request_context() and request.form.get('use-translation') == 'oc':
-        babel_ext = flask_babel.current_app.extensions['babel']
-        return Translations.load(next(babel_ext.translation_directories), 'oc')
-    return _flask_babel_get_translations()
-
-
-flask_babel.get_translations = _get_translations
-
-
-@babel.localeselector
 def get_locale():
-    locale = 'en'
-
-    if has_request_context():
-        value = request.preferences.get_value('locale')
-        if value:
-            locale = value
-
-    if locale == 'oc':
-        request.form['use-translation'] = 'oc'
-        locale = 'fr_FR'
-    if locale == '':
-        # if there is an error loading the preferences
-        # the locale is going to be ''
-        locale = 'en'
-    # babel uses underscore instead of hyphen.
-    locale = locale.replace('-', '_')
+    locale = localeselector()
     logger.debug("%s uses locale `%s`", urllib.parse.quote(request.url), locale)
     return locale
+
+
+babel = Babel(app, locale_selector=get_locale)
 
 
 def _get_browser_language(req, lang_list):
@@ -278,7 +250,7 @@ def code_highlighter(codelines, language=None):
         language = 'text'
 
     try:
-        # find lexer by programing language
+        # find lexer by programming language
         lexer = get_lexer_by_name(language, stripall=True)
 
     except Exception as e:  # pylint: disable=broad-except
@@ -320,24 +292,6 @@ def code_highlighter(codelines, language=None):
     return html_code
 
 
-def get_current_theme_name(override: Optional[str] = None) -> str:
-    """Returns theme name.
-
-    Checks in this order:
-    1. override
-    2. cookies
-    3. settings"""
-
-    if override and (override in themes or override == '__common__'):
-        return override
-    theme_name = request.args.get('theme', request.preferences.get_value('theme'))
-
-    if theme_name and theme_name in themes:
-        return theme_name
-
-    return default_theme
-
-
 def get_result_template(theme_name: str, template_name: str):
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
@@ -345,13 +299,13 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
-def custom_url_for(endpoint: str, override_theme: Optional[str] = None, **values):
+def custom_url_for(endpoint: str, **values):
     suffix = ""
     if endpoint == 'static' and values.get('filename'):
         file_hash = static_files.get(values['filename'])
         if not file_hash:
             # try file in the current theme
-            theme_name = get_current_theme_name(override=override_theme)
+            theme_name = request.preferences.get_value('theme')
             filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
             file_hash = static_files.get(filename_with_theme)
             if file_hash:
@@ -366,16 +320,16 @@ def custom_url_for(endpoint: str, override_theme: Optional[str] = None, **values
     return url_for(endpoint, **values) + suffix
 
 
-def proxify(url: str):
+def morty_proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
-    if not settings.get('result_proxy'):
+    if not settings['result_proxy']['url']:
         return url
 
     url_params = dict(mortyurl=url)
 
-    if settings['result_proxy'].get('key'):
+    if settings['result_proxy']['key']:
         url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
 
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
@@ -400,8 +354,8 @@ def image_proxify(url: str):
             return url
         return None
 
-    if settings.get('result_proxy'):
-        return proxify(url)
+    if settings['result_proxy']['url']:
+        return morty_proxify(url)
 
     h = new_hmac(settings['server']['secret_key'], url.encode())
 
@@ -438,7 +392,32 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
-def render(template_name: str, override_theme: str = None, **kwargs):
+def get_client_settings():
+    req_pref = request.preferences
+    return {
+        'autocomplete_provider': req_pref.get_value('autocomplete'),
+        'autocomplete_min': get_setting('search.autocomplete_min'),
+        'http_method': req_pref.get_value('method'),
+        'infinite_scroll': req_pref.get_value('infinite_scroll'),
+        'translations': get_translations(),
+        'search_on_category_select': req_pref.plugins.choices['searx.plugins.search_on_category_select'],
+        'hotkeys': req_pref.plugins.choices['searx.plugins.vim_hotkeys'],
+        'theme_static_path': custom_url_for('static', filename='themes/simple'),
+    }
+
+
+def render(template_name: str, **kwargs):
+
+    kwargs['client_settings'] = str(
+        base64.b64encode(
+            bytes(
+                json.dumps(get_client_settings()),
+                encoding='utf-8',
+            )
+        ),
+        encoding='utf-8',
+    )
+
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
@@ -446,21 +425,20 @@ def render(template_name: str, override_theme: str = None, **kwargs):
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
-    kwargs['method'] = request.preferences.get_value('method')
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
     kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-    kwargs['theme'] = get_current_theme_name(override=override_theme)
+    kwargs['theme'] = request.preferences.get_value('theme')
+    kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = _get_enable_categories(categories.keys())
     kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
 
     # i18n
     kwargs['language_codes'] = [l for l in languages if l[0] in settings['search']['languages']]
-    kwargs['translations'] = json.dumps(get_translations(), separators=(',', ':'))
 
     locale = request.preferences.get_value('locale')
     kwargs['locale_rfc5646'] = _get_locale_rfc5646(locale)
@@ -477,17 +455,33 @@ def render(template_name: str, override_theme: str = None, **kwargs):
     kwargs['instance_name'] = get_setting('general.instance_name')
     kwargs['searx_version'] = VERSION_STRING
     kwargs['searx_git_url'] = GIT_URL
+    kwargs['enable_metrics'] = get_setting('general.enable_metrics')
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
+
+    # values from settings: donation_url
+    donation_url = get_setting('general.donation_url')
+    if donation_url is True:
+        donation_url = custom_url_for('info', pagename='donate')
+    kwargs['donation_url'] = donation_url
 
     # helpers to create links to other pages
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
-    kwargs['proxify'] = proxify if settings.get('result_proxy', {}).get('url') else None
-    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', True)
+    kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
+    kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
+    kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
+    kwargs['doi_resolver'] = get_doi_resolver(request.preferences)
     kwargs['opensearch_url'] = (
-        url_for('opensearch') + '?' + urlencode({'method': kwargs['method'], 'autocomplete': kwargs['autocomplete']})
+        url_for('opensearch')
+        + '?'
+        + urlencode(
+            {
+                'method': request.preferences.get_value('method'),
+                'autocomplete': request.preferences.get_value('autocomplete'),
+            }
+        )
     )
 
     # scripts from plugins
@@ -550,12 +544,14 @@ def pre_request():
     if not preferences.get_value("language"):
         language = _get_browser_language(request, settings['search']['languages'])
         preferences.parse_dict({"language": language})
+        logger.debug('set language %s (from browser)', preferences.get_value("language"))
 
     # locale is defined neither in settings nor in preferences
     # use browser headers
     if not preferences.get_value("locale"):
         locale = _get_browser_language(request, LOCALE_NAMES.keys())
         preferences.parse_dict({"locale": locale})
+        logger.debug('set locale %s (from browser)', preferences.get_value("locale"))
 
     # request.user_plugins
     request.user_plugins = []  # pylint: disable=assigning-non-slot
@@ -614,7 +610,6 @@ def index_error(output_format: str, error_message: str):
             q=request.form['q'] if 'q' in request.form else '',
             number_of_results=0,
             error_message=error_message,
-            override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
 
@@ -729,25 +724,13 @@ def search():
         if 'url' in result:
             result['pretty_url'] = prettify_url(result['url'])
 
-        # TODO, check if timezone is calculated right  # pylint: disable=fixme
         if result.get('publishedDate'):  # do not try to get a date from an empty string or a None type
             try:  # test if publishedDate >= 1900 (datetime module bug)
                 result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
             except ValueError:
                 result['publishedDate'] = None
             else:
-                if result['publishedDate'].replace(tzinfo=None) >= datetime.now() - timedelta(days=1):
-                    timedifference = datetime.now() - result['publishedDate'].replace(tzinfo=None)
-                    minutes = int((timedifference.seconds / 60) % 60)
-                    hours = int(timedifference.seconds / 60 / 60)
-                    if hours == 0:
-                        result['publishedDate'] = gettext('{minutes} minute(s) ago').format(minutes=minutes)
-                    else:
-                        result['publishedDate'] = gettext('{hours} hour(s), {minutes} minute(s) ago').format(
-                            hours=hours, minutes=minutes
-                        )
-                else:
-                    result['publishedDate'] = format_date(result['publishedDate'])
+                result['publishedDate'] = searxng_l10n_timespan(result['publishedDate'])
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
@@ -807,7 +790,6 @@ def search():
             suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=number_of_results,
-            override_theme='__common__',
         )
         return Response(response_rss, mimetype='text/xml')
 
@@ -835,7 +817,7 @@ def search():
         q=request.form['q'],
         selected_categories = search_query.categories,
         pageno = search_query.pageno,
-        time_range = search_query.time_range,
+        time_range = search_query.time_range or '',
         number_of_results = format_decimal(number_of_results),
         suggestions = suggestion_urls,
         answers = result_container.answers,
@@ -852,8 +834,6 @@ def search():
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),
-        theme = get_current_theme_name(),
-        favicons = global_favicons[themes.index(get_current_theme_name())],
         timeout_limit = request.form.get('timeout_limit', None)
         # fmt: on
     )
@@ -931,7 +911,8 @@ def autocompleter():
         for result in raw_results:
             # attention: this loop will change raw_text_query object and this is
             # the reason why the sug_prefix was stored before (see above)
-            results.append(raw_text_query.changeQuery(result).getFullQuery())
+            if result != sug_prefix:
+                results.append(raw_text_query.changeQuery(result).getFullQuery())
 
     if len(raw_text_query.autocomplete_list) > 0:
         for autocomplete_text in raw_text_query.autocomplete_list:
@@ -950,8 +931,7 @@ def autocompleter():
         suggestions = json.dumps([sug_prefix, results])
         mimetype = 'application/x-suggestions+json'
 
-    if get_current_theme_name() == 'simple':
-        suggestions = escape(suggestions, False)
+    suggestions = escape(suggestions, False)
     return Response(suggestions, mimetype=mimetype)
 
 
@@ -961,6 +941,11 @@ def preferences():
 
     # pylint: disable=too-many-locals, too-many-return-statements, too-many-branches
     # pylint: disable=too-many-statements
+
+    # save preferences using the link the /preferences?preferences=...&save=1
+    if request.args.get('save') == '1':
+        resp = make_response(redirect(url_for('index', _external=True)))
+        return request.preferences.save(resp)
 
     # save preferences
     if request.method == 'POST':
@@ -1034,6 +1019,7 @@ def preferences():
             # even if there is no exception
             reliablity = 0
         else:
+            # pylint: disable=consider-using-generator
             reliablity = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
 
         reliabilities[e.name] = {
@@ -1098,7 +1084,6 @@ def preferences():
         doi_resolvers = settings['doi_resolvers'],
         current_doi_resolver = get_doi_resolver(request.preferences),
         allowed_plugins = allowed_plugins,
-        theme = get_current_theme_name(),
         preferences_url_params = request.preferences.get_as_url_params(),
         locked_preferences = settings['preferences']['lock'],
         preferences = True
@@ -1150,7 +1135,9 @@ def image_proxy():
                 return '', resp.status_code
             return '', 400
 
-        if not resp.headers.get('Content-Type', '').startswith('image/'):
+        if not resp.headers.get('Content-Type', '').startswith('image/') and not resp.headers.get(
+            'Content-Type', ''
+        ).startswith('binary/octet-stream'):
             logger.debug('image-proxy: wrong content-type: %s', resp.headers.get('Content-Type', ''))
             return '', 400
 
@@ -1291,25 +1278,26 @@ Disallow: /*?*q=*
 
 @app.route('/opensearch.xml', methods=['GET'])
 def opensearch():
-    method = 'post'
-
-    if request.preferences.get_value('method') == 'GET':
-        method = 'get'
+    method = request.preferences.get_value('method')
+    autocomplete = request.preferences.get_value('autocomplete')
 
     # chrome/chromium only supports HTTP GET....
     if request.headers.get('User-Agent', '').lower().find('webkit') >= 0:
-        method = 'get'
+        method = 'GET'
 
-    ret = render('opensearch.xml', opensearch_method=method, override_theme='__common__')
+    if method not in ('POST', 'GET'):
+        method = 'POST'
 
+    ret = render('opensearch.xml', opensearch_method=method, autocomplete=autocomplete)
     resp = Response(response=ret, status=200, mimetype="application/opensearchdescription+xml")
     return resp
 
 
 @app.route('/favicon.ico')
 def favicon():
+    theme = request.preferences.get_value("theme")
     return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', get_current_theme_name(), 'img'),
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
         'favicon.png',
         mimetype='image/vnd.microsoft.icon',
     )
@@ -1367,6 +1355,7 @@ def config():
             'default_theme': settings['ui']['default_theme'],
             'version': VERSION_STRING,
             'brand': {
+                'PRIVACYPOLICY_URL': get_setting('general.privacypolicy_url'),
                 'CONTACT_URL': get_setting('general.contact_url'),
                 'GIT_URL': GIT_URL,
                 'GIT_BRANCH': GIT_BRANCH,
@@ -1396,6 +1385,9 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 
 # initialize the engines except on the first run of the werkzeug server.
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
+    locales_initialize()
+    _INFO_PAGES = infopage.InfoPageSet()
+    redis_initialize()
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
 

@@ -4,7 +4,6 @@
 
 """
 
-from json import loads
 from datetime import datetime
 from urllib.parse import urlencode
 
@@ -19,7 +18,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['science']
+categories = ['science', 'scientific publications']
 paging = True
 nb_per_page = 10
 
@@ -42,39 +41,75 @@ def request(query, params):
     )
     params['url'] = base_url + search_path
 
-    logger.debug("query_url --> %s", params['url'])
     return params
 
 
 def response(resp):
     results = []
-    json_data = loads(resp.text)
+    json_data = resp.json()
 
     for result in json_data['data']:
-
         source = result['_source']
+        url = None
+        if source.get('urls'):
+            url = source['urls'][0].replace('http://', 'https://', 1)
+
+        if url is None and source.get('doi'):
+            # use the DOI reference
+            url = 'https://doi.org/' + source['doi']
+
+        if url is None and source.get('downloadUrl'):
+            # use the downloadUrl
+            url = source['downloadUrl']
+
+        if url is None and source.get('identifiers'):
+            # try to find an ark id, see
+            # https://www.wikidata.org/wiki/Property:P8091
+            # and https://en.wikipedia.org/wiki/Archival_Resource_Key
+            arkids = [
+                identifier[5:]  # 5 is the length of "ark:/"
+                for identifier in source.get('identifiers')
+                if isinstance(identifier, str) and identifier.startswith('ark:/')
+            ]
+            if len(arkids) > 0:
+                url = 'https://n2t.net/' + arkids[0]
+
+        if url is None:
+            continue
+
+        publishedDate = None
         time = source['publishedDate'] or source['depositedDate']
         if time:
-            date = datetime.fromtimestamp(time / 1000)
-        else:
-            date = None
+            publishedDate = datetime.fromtimestamp(time / 1000)
 
-        metadata = []
-        if source['publisher'] and len(source['publisher']) > 3:
-            metadata.append(source['publisher'])
-        if source['topics']:
-            metadata.append(source['topics'][0])
-        if source['doi']:
-            metadata.append(source['doi'])
-        metadata = ' / '.join(metadata)
+        # sometimes the 'title' is None / filter None values
+        journals = [j['title'] for j in (source.get('journals') or []) if j['title']]
+
+        publisher = source['publisher']
+        if publisher:
+            publisher = source['publisher'].strip("'")
 
         results.append(
             {
-                'url': source['urls'][0].replace('http://', 'https://', 1),
+                'template': 'paper.html',
                 'title': source['title'],
-                'content': source['description'],
-                'publishedDate': date,
-                'metadata': metadata,
+                'url': url,
+                'content': source['description'] or '',
+                # 'comments': '',
+                'tags': source['topics'],
+                'publishedDate': publishedDate,
+                'type': (source['types'] or [None])[0],
+                'authors': source['authors'],
+                'editor': ', '.join(source['contributors'] or []),
+                'publisher': publisher,
+                'journal': ', '.join(journals),
+                # 'volume': '',
+                # 'pages' : '',
+                # 'number': '',
+                'doi': source['doi'],
+                'issn': [x for x in [source.get('issn')] if x],
+                'isbn': [x for x in [source.get('isbn')] if x],  # exists in the rawRecordXml
+                'pdf_url': source.get('repositoryDocument', {}).get('pdfOrigin'),
             }
         )
 

@@ -7,10 +7,13 @@ import hmac
 import re
 import inspect
 import itertools
+from datetime import datetime, timedelta
 from typing import Iterable, List, Tuple, Dict
 
 from io import StringIO
 from codecs import getincrementalencoder
+
+from flask_babel import gettext, format_date
 
 from searx import logger, settings
 from searx.engines import Engine, OTHER_CATEGORY
@@ -39,7 +42,7 @@ class UnicodeWriter:
         # Fetch UTF-8 output from the queue ...
         data = self.queue.getvalue()
         data = data.strip('\x00')
-        # ... and reencode it into the target encoding
+        # ... and re-encode it into the target encoding
         data = self.encoder.encode(data)
         # write to the target stream
         self.stream.write(data.decode())
@@ -53,10 +56,7 @@ class UnicodeWriter:
 
 def get_themes(templates_path):
     """Returns available themes list."""
-    themes = os.listdir(templates_path)
-    if '__common__' in themes:
-        themes.remove('__common__')
-    return themes
+    return os.listdir(templates_path)
 
 
 def get_hash_for_file(file: pathlib.Path) -> str:
@@ -113,32 +113,91 @@ def prettify_url(url, max_length=74):
         return url
 
 
+def contains_cjko(s: str) -> bool:
+    """This function check whether or not a string contains Chinese, Japanese,
+    or Korean characters. It employs regex and uses the u escape sequence to
+    match any character in a set of Unicode ranges.
+
+    Args:
+        s (str): string to be checked.
+
+    Returns:
+        bool: True if the input s contains the characters and False otherwise.
+    """
+    unicode_ranges = (
+        '\u4e00-\u9fff'  # Chinese characters
+        '\u3040-\u309f'  # Japanese hiragana
+        '\u30a0-\u30ff'  # Japanese katakana
+        '\u4e00-\u9faf'  # Japanese kanji
+        '\uac00-\ud7af'  # Korean hangul syllables
+        '\u1100-\u11ff'  # Korean hangul jamo
+    )
+    return bool(re.search(fr'[{unicode_ranges}]', s))
+
+
+def regex_highlight_cjk(word: str) -> str:
+    """Generate the regex pattern to match for a given word according
+    to whether or not the word contains CJK characters or not.
+    If the word is and/or contains CJK character, the regex pattern
+    will match standalone word by taking into account the presence
+    of whitespace before and after it; if not, it will match any presence
+    of the word throughout the text, ignoring the whitespace.
+
+    Args:
+        word (str): the word to be matched with regex pattern.
+
+    Returns:
+        str: the regex pattern for the word.
+    """
+    rword = re.escape(word)
+    if contains_cjko(rword):
+        return fr'({rword})'
+    else:
+        return fr'\b({rword})(?!\w)'
+
+
 def highlight_content(content, query):
 
     if not content:
         return None
+
     # ignoring html contents
     # TODO better html content detection
     if content.find('<') != -1:
         return content
 
-    if content.lower().find(query.lower()) > -1:
-        query_regex = '({0})'.format(re.escape(query))
-        content = re.sub(query_regex, '<span class="highlight">\\1</span>', content, flags=re.I | re.U)
-    else:
-        regex_parts = []
-        for chunk in query.split():
-            chunk = chunk.replace('"', '')
-            if len(chunk) == 0:
-                continue
-            elif len(chunk) == 1:
-                regex_parts.append('\\W+{0}\\W+'.format(re.escape(chunk)))
-            else:
-                regex_parts.append('{0}'.format(re.escape(chunk)))
-        query_regex = '({0})'.format('|'.join(regex_parts))
-        content = re.sub(query_regex, '<span class="highlight">\\1</span>', content, flags=re.I | re.U)
-
+    querysplit = query.split()
+    queries = []
+    for qs in querysplit:
+        qs = qs.replace("'", "").replace('"', '').replace(" ", "")
+        if len(qs) > 0:
+            queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
+    if len(queries) > 0:
+        for q in set(queries):
+            content = re.sub(regex_highlight_cjk(q), f'<span class="highlight">{q}</span>', content)
     return content
+
+
+def searxng_l10n_timespan(dt: datetime) -> str:  # pylint: disable=invalid-name
+    """Returns a human-readable and translated string indicating how long ago
+    a date was in the past / the time span of the date to the present.
+
+    On January 1st, midnight, the returned string only indicates how many years
+    ago the date was.
+    """
+    # TODO, check if timezone is calculated right  # pylint: disable=fixme
+    d = dt.date()
+    t = dt.time()
+    if d.month == 1 and d.day == 1 and t.hour == 0 and t.minute == 0 and t.second == 0:
+        return str(d.year)
+    if dt.replace(tzinfo=None) >= datetime.now() - timedelta(days=1):
+        timedifference = datetime.now() - dt.replace(tzinfo=None)
+        minutes = int((timedifference.seconds / 60) % 60)
+        hours = int(timedifference.seconds / 60 / 60)
+        if hours == 0:
+            return gettext('{minutes} minute(s) ago').format(minutes=minutes)
+        return gettext('{hours} hour(s), {minutes} minute(s) ago').format(hours=hours, minutes=minutes)
+    return format_date(dt)
 
 
 def is_flask_run_cmdline():

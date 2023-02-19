@@ -3,6 +3,7 @@
 """This module implements functions needed for the autocompleter.
 
 """
+# pylint: disable=use-dict-literal
 
 from json import loads
 from urllib.parse import urlencode
@@ -89,17 +90,24 @@ def seznam(query, _lang):
     # seznam search autocompleter
     url = 'https://suggest.seznam.cz/fulltext/cs?{query}'
 
-    resp = get(url.format(query=urlencode(
-        {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
-    )))
+    resp = get(
+        url.format(
+            query=urlencode(
+                {'phrase': query, 'cursorPosition': len(query), 'format': 'json-2', 'highlight': '1', 'count': '6'}
+            )
+        )
+    )
 
     if not resp.ok:
         return []
 
     data = resp.json()
-    return [''.join(
-        [part.get('text', '') for part in item.get('text', [])]
-    ) for item in data.get('result', []) if item.get('itemType', None) == 'ItemType.TEXT']
+    return [
+        ''.join([part.get('text', '') for part in item.get('text', [])])
+        for item in data.get('result', [])
+        if item.get('itemType', None) == 'ItemType.TEXT'
+    ]
+
 
 def startpage(query, lang):
     # startpage autocompleter
@@ -145,6 +153,16 @@ def wikipedia(query, lang):
     return []
 
 
+def yandex(query, _lang):
+    # yandex autocompleter
+    url = "https://suggest.yandex.com/suggest-ff.cgi?{0}"
+
+    resp = loads(get(url.format(urlencode(dict(part=query)))).text)
+    if len(resp) > 1:
+        return resp[1]
+    return []
+
+
 backends = {
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
@@ -155,6 +173,7 @@ backends = {
     'qwant': qwant,
     'wikipedia': wikipedia,
     'brave': brave,
+    'yandex': yandex,
 }
 
 

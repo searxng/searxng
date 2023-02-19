@@ -61,6 +61,12 @@ echo "SearXNG version ${SEARXNG_VERSION}"
 # helpers to update the configuration files
 patch_uwsgi_settings() {
     CONF="$1"
+
+    # update uwsg.ini
+    sed -i \
+        -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
+        -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
+        "${CONF}"
 }
 
 patch_searxng_settings() {
@@ -106,7 +112,7 @@ update_conf() {
             # There is a new version
             if [ "$FORCE_CONF_UPDATE" -ne 0 ]; then
                 # Replace the current configuration
-                printf '⚠️  Automaticaly update %s to the new version\n' "${CONF}"
+                printf '⚠️  Automatically update %s to the new version\n' "${CONF}"
                 if [ ! -f "${OLD_CONF}" ]; then
                     printf 'The previous configuration is saved to %s\n' "${OLD_CONF}"
                     mv "${CONF}" "${OLD_CONF}"
