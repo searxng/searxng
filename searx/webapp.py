@@ -744,7 +744,7 @@ def search():
                 gptbox = {
                     'infobox': 'GPT3',
                     'id': 'gpt'+str(len(prompt)),
-                    'content': markdown.markdown(gpt,extensions=['footnotes']),
+                    'content': markdown.markdown( re.sub( r'\[(\d+)\](?=[^\^])', r'[^\\1]', gpt), extensions=['footnotes']),
                 }
                 result_container.infoboxes.append(gptbox)
 
