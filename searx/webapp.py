@@ -14,6 +14,7 @@ import os
 import sys
 import base64
 import requests
+import markdown
 
 from timeit import default_timer
 from html import escape
@@ -742,7 +743,7 @@ def search():
                 gptbox = {
                     'infobox': 'GPT3',
                     'id': 'gpt'+str(len(prompt)),
-                    'content': gpt,
+                    'content': markdown.markdown(re.sub(r'\[\d+\]', r'[^\g<0>]', gpt),extensions=['footnotes']),
                 }
                 result_container.infoboxes.append(gptbox)
 
