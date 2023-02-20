@@ -756,7 +756,7 @@ def search():
                 "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
-                "prompt": "你是名叫Search的搜索机器人\n"+prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用多个emoji和简体中文，分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                "prompt": "你是名叫Search的搜索机器人\n"+prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
                 "max_tokens": 1000,
                 "temperature": 0.7,
                 "top_p": 1,
