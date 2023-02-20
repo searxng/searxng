@@ -694,8 +694,8 @@ def search():
                 prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
                 if "今年" in prompt or "今天" in prompt:
                     now = datetime.datetime.now()
-                    prompt = prompt.replace("今年"，now.strftime('%Y年'))
-                    prompt = prompt.replace("今天"，now.strftime('%Y年%m月%d日'))
+                    prompt = prompt.replace("今年",now.strftime('%Y年'))
+                    prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
                 gpt = ""
                 gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
                 gpt_headers = {
