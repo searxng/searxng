@@ -810,6 +810,9 @@ def search():
         )
     )
 
+    # search_query.lang contains the user choice (all, auto, en, ...)
+    # when the user choice is "auto", search.search_query.lang contains the detected language
+    # otherwise it is equals to search_query.lang
     return render(
         # fmt: off
         'results.html',
@@ -831,6 +834,11 @@ def search():
         current_locale = request.preferences.get_value("locale"),
         current_language = match_language(
             search_query.lang,
+            settings['search']['languages'],
+            fallback=request.preferences.get_value("language")
+        ),
+        search_language = match_language(
+            search.search_query.lang,
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),

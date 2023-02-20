@@ -53,6 +53,9 @@ _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 _FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None
 """fasttext model to predict laguage of a search term"""
 
+SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in language_codes])
+"""Languages supported by most searxng engines (:py:obj:`searx.languages.language_codes`)."""
+
 
 class _NotSetClass:  # pylint: disable=too-few-public-methods
     """Internal class for this module, do not create instance of this class.
@@ -637,11 +640,72 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":
     return _FASTTEXT_MODEL
 
 
-def detect_language(text: str, threshold: float = 0.3, min_probability: float = 0.5) -> Optional[str]:
-    """https://fasttext.cc/docs/en/language-identification.html"""
+def detect_language(text: str, threshold: float = 0.3, only_search_languages: bool = False) -> Optional[str]:
+    """Detect the language of the ``text`` parameter.
+
+    :param str text: The string whose language is to be detected.
+
+    :param float threshold: Threshold filters the returned labels by a threshold
+        on probability.  A choice of 0.3 will return labels with at least 0.3
+        probability.
+
+    :param bool only_search_languages: If ``True``, returns only supported
+        SearXNG search languages.  see :py:obj:`searx.languages`
+
+    :rtype: str, None
+    :returns:
+        The detected language code or ``None``. See below.
+
+    :raises ValueError: If ``text`` is not a string.
+
+    The language detection is done by using `a fork`_ of the fastText_ library
+    (`python fasttext`_). fastText_ distributes the `language identification
+    model`_, for reference:
+
+    - `FastText.zip: Compressing text classification models`_
+    - `Bag of Tricks for Efficient Text Classification`_
+
+    The `language identification model`_ support the language codes
+    (ISO-639-3)::
+
+        af als am an ar arz as ast av az azb ba bar bcl be bg bh bn bo bpy br bs
+        bxr ca cbk ce ceb ckb co cs cv cy da de diq dsb dty dv el eml en eo es
+        et eu fa fi fr frr fy ga gd gl gn gom gu gv he hi hif hr hsb ht hu hy ia
+        id ie ilo io is it ja jbo jv ka kk km kn ko krc ku kv kw ky la lb lez li
+        lmo lo lrc lt lv mai mg mhr min mk ml mn mr mrj ms mt mwl my myv mzn nah
+        nap nds ne new nl nn no oc or os pa pam pfl pl pms pnb ps pt qu rm ro ru
+        rue sa sah sc scn sco sd sh si sk sl so sq sr su sv sw ta te tg th tk tl
+        tr tt tyv ug uk ur uz vec vep vi vls vo wa war wuu xal xmf yi yo yue zh
+
+    By using ``only_search_languages=True`` the `language identification model`_
+    is harmonized with the SearXNG's language (locale) model.  General
+    conditions of SearXNG's locale model are:
+
+    a. SearXNG's locale of a query is passed to the
+       :py:obj:`searx.locales.get_engine_locale` to get a language and/or region
+       code that is used by an engine.
+
+    b. Most of SearXNG's engines do not support all the languages from `language
+       identification model`_ and there is also a discrepancy in the ISO-639-3
+       (fastext) and ISO-639-2 (SearXNG)handling.  Further more, in SearXNG the
+       locales like ``zh-TH`` (``zh-CN``) are mapped to ``zh_Hant``
+       (``zh_Hans``) while the `language identification model`_ reduce both to
+       ``zh``.
+
+    .. _a fork: https://github.com/searxng/fasttext-predict
+    .. _fastText: https://fasttext.cc/
+    .. _python fasttext: https://pypi.org/project/fasttext/
+    .. _language identification model: https://fasttext.cc/docs/en/language-identification.html
+    .. _Bag of Tricks for Efficient Text Classification: https://arxiv.org/abs/1607.01759
+    .. _`FastText.zip: Compressing text classification models`: https://arxiv.org/abs/1612.03651
+
+    """
     if not isinstance(text, str):
         raise ValueError('text must a str')
     r = _get_fasttext_model().predict(text.replace('\n', ' '), k=1, threshold=threshold)
-    if isinstance(r, tuple) and len(r) == 2 and len(r[0]) > 0 and len(r[1]) > 0 and r[1][0] > min_probability:
-        return r[0][0].split('__label__')[1]
+    if isinstance(r, tuple) and len(r) == 2 and len(r[0]) > 0 and len(r[1]) > 0:
+        language = r[0][0].split('__label__')[1]
+        if only_search_languages and language not in SEARCH_LANGUAGE_CODES:
+            return None
+        return language
     return None
