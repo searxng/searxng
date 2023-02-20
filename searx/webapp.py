@@ -700,7 +700,7 @@ def search():
                 }
                 gpt_data = {
                     "prompt": prompt,
-                    "max_tokens": 1000,
+                    "max_tokens": 256,
                     "temperature": 0.7,
                     "top_p": 1,
                     "frequency_penalty": 0,
@@ -762,7 +762,7 @@ def search():
             if original_search_query != search_query.query:
                 gpt_data = {
                     "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结问题的答案，在文中用markdown脚注指对应内容来源链接：",
-                    "max_tokens": 256,
+                    "max_tokens": 1000,
                     "temperature": 0.7,
                     "top_p": 1,
                     "frequency_penalty": 0,
