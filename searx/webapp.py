@@ -711,8 +711,11 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair)+1)
             url_pair[new_url] = res['url']
+            res['content'] = res['content'].replace("Translate Tweet. ","")
+            res['content'] = res['content'].replace("Learn more ","")
+            
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            if len(prompt)+len(tmp_prompt)<=1500:
+            if len(prompt)+len(tmp_prompt)<2000:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -723,8 +726,8 @@ def search():
                 "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
-                "prompt": prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
-                "max_tokens": 1024,
+                "prompt": prompt+"\n以上是搜索引擎对关键词 " + search_query.query + " 的结果，以搜索机器人(名字是Search)的口吻，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                "max_tokens": 2000,
                 "temperature": 0.7,
                 "top_p": 1,
                 "frequency_penalty": 0,
@@ -740,13 +743,40 @@ def search():
                 gpt = gpt_json['choices'][0]['text']
             for urls in url_pair.keys():
                 gpt = gpt.replace(urls,url_pair[urls])
+            rgpt = gpt
             if gpt and gpt!="":
                 for i in range(1,16):
                     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
+                rgpt = gpt
                 gpt =  markdown.markdown( gpt , extensions=['footnotes'])
+                
                 for urls in url_pair.keys():
                     gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
                     gpt = gpt.replace("#fn:url"+urls.replace("https://url",""),url_pair[urls])
+                gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
+                gpt = gpt + '''<style>
+                a.footnote-ref{
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    font-weight: 600;
+                    vertical-align: top;
+                    top: 5px;
+                    margin: 2px 2px 2px;
+                    min-width: 14px;
+                    height: 14px;
+                    border-radius: 3px;
+                    color: rgb(18, 59, 182);
+                    background: rgb(209, 219, 250);
+                    outline: transparent solid 1px;
+                }
+                </style>
+                '''
+                for i in range(1, 16):
+                    rgpt = rgpt.replace(f"[{i}]", "")
+                    rgpt = rgpt.replace(f"[^{i}]", "")
                 gptbox = {
                     'infobox': 'GPT3',
                     'id': 'gpt'+str(len(prompt)),
