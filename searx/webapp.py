@@ -686,7 +686,7 @@ def search():
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
         original_search_query = search_query.query
-        if "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query or len(search_query.query)>25:
+        if "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query or len(search_query.query)>25:
             if len(search_query.query)>10:
                 prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
                 gpt = ""
@@ -760,7 +760,7 @@ def search():
             if original_search_query != search_query.query:
                 gpt_data = {
                     "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结问题的答案，在文中用markdown脚注指对应内容来源链接：",
-                    "max_tokens": 1000,
+                    "max_tokens": 256,
                     "temperature": 0.7,
                     "top_p": 1,
                     "frequency_penalty": 0,
@@ -794,7 +794,7 @@ def search():
 
             if gpt and gpt!="":
                 if original_search_query != search_query.query:
-                    gpt = "Search为您搜索：" + search_query.query + "\n\n"
+                    gpt = "Search 为您搜索：" + search_query.query + "\n\n"
                 for i in range(1,16):
                     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 rgpt = gpt
