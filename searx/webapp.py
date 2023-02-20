@@ -16,6 +16,7 @@ import base64
 import requests
 import markdown
 import re
+import datetime
 
 from timeit import default_timer
 from html import escape
@@ -691,6 +692,10 @@ def search():
                 search_query.query = search_query.query.replace("谁是","")
             if len(search_query.query)>10 and not "谁是" in search_query.query:
                 prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
+                if "今年" in prompt or "今天" in prompt:
+                    now = datetime.datetime.now()
+                    prompt.replace("今年"，now.strftime('%Y年'))
+                    prompt.replace("今天"，now.strftime('%Y年%m月%d日'))
                 gpt = ""
                 gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
                 gpt_headers = {
@@ -744,6 +749,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair)+1)
             url_pair[new_url] = res['url']
+            res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
             res['content'] = res['content'].replace("Translate Tweet.","")
