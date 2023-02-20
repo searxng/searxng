@@ -681,9 +681,11 @@ def search():
     search_query = None
     raw_text_query = None
     result_container = None
+    original_search_query = ""
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
+        original_search_query = search_query.query
         if "什么是" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or len(search_query.query)>25:
             if len(search_query.query)>10:
                 prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
@@ -755,22 +757,37 @@ def search():
                 "Content-Type": "application/json",
                 "OpenAI-Organization": os.environ['GPTORG']
             }
-            gpt_data = {
-                "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
-                "max_tokens": 1000,
-                "temperature": 0.7,
-                "top_p": 1,
-                "frequency_penalty": 0,
-                "presence_penalty": 0,
-                "best_of": 1,
-                "echo": False,
-                "logprobs": 0,
-                "stream": False
-            }
+            if original_search_query != search_query.query:
+                gpt_data = {
+                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结问题的答案，在文中用markdown脚注指对应内容来源链接：",
+                    "max_tokens": 1000,
+                    "temperature": 0.7,
+                    "top_p": 1,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0,
+                    "best_of": 1,
+                    "echo": False,
+                    "logprobs": 0,
+                    "stream": False
+                }
+            else:
+                gpt_data = {
+                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                    "max_tokens": 1000,
+                    "temperature": 0.7,
+                    "top_p": 1,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0,
+                    "best_of": 1,
+                    "echo": False,
+                    "logprobs": 0,
+                    "stream": False
+                }
             gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
+            gpt = gpt.replace("简报：","").replace("简报:","")
             for urls in url_pair.keys():
                 gpt = gpt.replace(urls,url_pair[urls])
             rgpt = gpt
