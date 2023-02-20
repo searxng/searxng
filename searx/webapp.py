@@ -719,7 +719,10 @@ def search():
                 gpt_json = gpt_response.json()
                 if 'choices' in gpt_json:
                     gpt = gpt_json['choices'][0]['text']
-                gpt = gpt.replace("\n","").replace("\"","").replace("\'","")
+                for word in gpt.split('\n'):
+                    if word != "":
+                        gpt = word
+                        break
                 if gpt!="":
                     search_query.query = gpt
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
