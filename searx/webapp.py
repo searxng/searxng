@@ -743,107 +743,107 @@ def search():
         number_of_results = 0
 
     # OPENAI GPT
-    if number_of_results != 0:
-        url_pair = {}
-        prompt = ""
-        for res in results:
-            if 'url' not in res: continue
-            if 'content' not in res: continue
-            if res['content'] == '': continue
-            new_url = 'https://url'+str(len(url_pair)+1)
-            url_pair[new_url] = res['url']
-            res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
-            res['content'] = res['content'].replace("Translate Tweet. ","")
-            res['content'] = res['content'].replace("Learn more ","")
-            res['content'] = res['content'].replace("Translate Tweet.","")
-            res['content'] = res['content'].replace("Learn more.","")            
-            tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            if len(prompt)+len(tmp_prompt)<3000:
-                prompt += tmp_prompt +'\n'
-        if prompt != "":
-            gpt = ""
-            gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-            gpt_headers = {
-                "Authorization": "Bearer "+os.environ['GPTKEY'],
-                "Content-Type": "application/json",
-                "OpenAI-Organization": os.environ['GPTORG']
+    url_pair = {}
+    prompt = ""
+    for res in results:
+        if 'url' not in res: continue
+        if 'content' not in res: continue
+        if 'title' not in res: continue
+        if res['content'] == '': continue
+        new_url = 'https://url'+str(len(url_pair)+1)
+        url_pair[new_url] = res['url']
+        res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
+        res['content'] = res['content'].replace("Translate Tweet. ","")
+        res['content'] = res['content'].replace("Learn more ","")
+        res['content'] = res['content'].replace("Translate Tweet.","")
+        res['content'] = res['content'].replace("Learn more.","")            
+        tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
+        if len(prompt)+len(tmp_prompt)<3000:
+            prompt += tmp_prompt +'\n'
+    if prompt != "":
+        gpt = ""
+        gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+        gpt_headers = {
+            "Authorization": "Bearer "+os.environ['GPTKEY'],
+            "Content-Type": "application/json",
+            "OpenAI-Organization": os.environ['GPTORG']
+        }
+        if original_search_query != search_query.query:
+            gpt_data = {
+                "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                "max_tokens": 1000,
+                "temperature": 0.7,
+                "top_p": 1,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+                "best_of": 1,
+                "echo": False,
+                "logprobs": 0,
+                "stream": False
             }
-            if original_search_query != search_query.query:
-                gpt_data = {
-                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结问题的答案，在文中用markdown脚注指对应内容来源链接：",
-                    "max_tokens": 1000,
-                    "temperature": 0.7,
-                    "top_p": 1,
-                    "frequency_penalty": 0,
-                    "presence_penalty": 0,
-                    "best_of": 1,
-                    "echo": False,
-                    "logprobs": 0,
-                    "stream": False
-                }
-            else:
-                gpt_data = {
-                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
-                    "max_tokens": 1000,
-                    "temperature": 0.7,
-                    "top_p": 1,
-                    "frequency_penalty": 0,
-                    "presence_penalty": 0,
-                    "best_of": 1,
-                    "echo": False,
-                    "logprobs": 0,
-                    "stream": False
-                }
-            gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
-            gpt_json = gpt_response.json()
-            if 'choices' in gpt_json:
-                gpt = gpt_json['choices'][0]['text']
-            gpt = gpt.replace("简报：","").replace("简报:","")
-            for urls in url_pair.keys():
-                gpt = gpt.replace(urls,url_pair[urls])
-            rgpt = gpt
+        else:
+            gpt_data = {
+                "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                "max_tokens": 1000,
+                "temperature": 0.7,
+                "top_p": 1,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+                "best_of": 1,
+                "echo": False,
+                "logprobs": 0,
+                "stream": False
+            }
+        gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
+        gpt_json = gpt_response.json()
+        if 'choices' in gpt_json:
+            gpt = gpt_json['choices'][0]['text']
+        gpt = gpt.replace("简报：","").replace("简报:","")
+        for urls in url_pair.keys():
+            gpt = gpt.replace(urls,url_pair[urls])
+        rgpt = gpt
 
-            if gpt and gpt!="":
-                if original_search_query != search_query.query:
-                    gpt = "Search 为您搜索：" + search_query.query + "\n\n" + gpt
-                for i in range(1,16):
-                    gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
-                rgpt = gpt
-                gpt =  markdown.markdown( gpt , extensions=['footnotes'])
-                
-                for urls in url_pair.keys():
-                    gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
-                    gpt = gpt.replace("#fn:url"+urls.replace("https://url",""),url_pair[urls])
-                gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
-                gpt = gpt + '''<style>
-                a.footnote-ref{
-                    position: relative;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 10px;
-                    font-weight: 600;
-                    vertical-align: top;
-                    top: 5px;
-                    margin: 2px 2px 2px;
-                    min-width: 14px;
-                    height: 14px;
-                    border-radius: 3px;
-                    color: rgb(18, 59, 182);
-                    background: rgb(209, 219, 250);
-                    outline: transparent solid 1px;
-                }
-                </style>
-                '''
-                for i in range(1, 16):
-                    rgpt = rgpt.replace(f"[{i}]", "")
-                    rgpt = rgpt.replace(f"[^{i}]", "")
-                gptbox = {
-                    'infobox': 'GPT3',
-                    'id': 'gpt'+str(len(prompt)),
-                    'content': gpt,
-                }
-                result_container.infoboxes.append(gptbox)
+        if gpt and gpt!="":
+            if original_search_query != search_query.query:
+                gpt = "Search 为您搜索：" + search_query.query + "\n\n" + gpt
+            for i in range(1,16):
+                gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
+            rgpt = gpt
+            gpt =  markdown.markdown( gpt , extensions=['footnotes'])
+            
+            for urls in url_pair.keys():
+                gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
+                gpt = gpt.replace("#fn:url"+urls.replace("https://url",""),url_pair[urls])
+            gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
+            gpt = gpt + '''<style>
+            a.footnote-ref{
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10px;
+                font-weight: 600;
+                vertical-align: top;
+                top: 5px;
+                margin: 2px 2px 2px;
+                min-width: 14px;
+                height: 14px;
+                border-radius: 3px;
+                color: rgb(18, 59, 182);
+                background: rgb(209, 219, 250);
+                outline: transparent solid 1px;
+            }
+            </style>
+            '''
+            for i in range(1, 16):
+                rgpt = rgpt.replace(f"[{i}]", "")
+                rgpt = rgpt.replace(f"[^{i}]", "")
+            gptbox = {
+                'infobox': 'GPT3',
+                'id': 'gpt'+str(len(prompt)),
+                'content': gpt,
+            }
+            result_container.infoboxes.append(gptbox)
 
 
     # checkin for a external bang
