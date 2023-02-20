@@ -721,7 +721,7 @@ def search():
                     gpt = gpt_json['choices'][0]['text']
                 for word in gpt.split('\n'):
                     if word != "":
-                        gpt = word
+                        gpt = word.replace("\"","").replace("\'","").replace("“","").replace("”","").replace("‘","").replace("’","")
                         break
                 if gpt!="":
                     search_query.query = gpt
