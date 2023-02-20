@@ -713,7 +713,8 @@ def search():
             url_pair[new_url] = res['url']
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
-            
+            res['content'] = res['content'].replace("Translate Tweet.","")
+            res['content'] = res['content'].replace("Learn more.","")            
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             if len(prompt)+len(tmp_prompt)<3000:
                 prompt += tmp_prompt +'\n'
@@ -726,7 +727,7 @@ def search():
                 "OpenAI-Organization": os.environ['GPTORG']
             }
             gpt_data = {
-                "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，多用emoji，在文中用markdown脚注指对应内容来源链接：",
+                "prompt": "你是名叫Search的搜索机器人\n"prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，多用emoji，在文中用markdown脚注指对应内容来源链接：",
                 "max_tokens": 1000,
                 "temperature": 0.7,
                 "top_p": 1,
