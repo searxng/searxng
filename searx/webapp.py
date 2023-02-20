@@ -762,7 +762,7 @@ def search():
             res['content'] = res['content'].replace("Translate Tweet.","")
             res['content'] = res['content'].replace("Learn more.","")            
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            if len(prompt)+len(tmp_prompt)<3000:
+            if len(prompt)+len(tmp_prompt)<2800:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
