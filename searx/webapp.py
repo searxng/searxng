@@ -684,8 +684,8 @@ def search():
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
-        if "什么是" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or len(search_query.query>25):
-            if len(search_query.query>10):
+        if "什么是" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or len(search_query.query)>25:
+            if len(search_query.query)>10:
                 prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
                 gpt = ""
                 gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
