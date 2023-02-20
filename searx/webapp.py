@@ -796,7 +796,7 @@ def search():
 
             if gpt and gpt!="":
                 if original_search_query != search_query.query:
-                    gpt = "Search 为您搜索：" + search_query.query + "\n\n"
+                    gpt = "Search 为您搜索：" + search_query.query + "\n\n" + gpt
                 for i in range(1,16):
                     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 rgpt = gpt
