@@ -984,7 +984,13 @@ function replaceUrlWithFootnote(text) {
 }
 function beautify(text)
 {
-  new_text = replaceUrlWithFootnote(text.replaceAll("（","(").replaceAll("）",")"))
+new_text=text
+for(let i=prompt.url_pair.length;i>=0;--i)
+{
+    new_text = new_text.replaceAll("(url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(链接"+String(i),"(https://url"+String(i) )
+}
+  new_text = replaceUrlWithFootnote(new_text.replaceAll("（","(").replaceAll("）",")"))
 
     for(let i=prompt.url_pair.length;i>=0;--i)
     {
