@@ -831,7 +831,7 @@ def search():
                     outline: transparent solid 1px;
                 }
                 </style>
-                <script src="/static/themes/simple/img/searxng.png"></script>
+                <script src="/static/themes/simple/markdown.js"></script>
                 <script>
 function replaceUrlWithFootnote(text) {
   // 匹配括号内的 URL
