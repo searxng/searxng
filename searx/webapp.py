@@ -754,7 +754,7 @@ def search():
             if 'content' not in res: continue
             if 'title' not in res: continue
             if res['content'] == '': continue
-            new_url = 'https://url'+str(len(url_pair)+1)
+            new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("Translate Tweet. ","")
