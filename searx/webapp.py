@@ -872,9 +872,10 @@ def search():
                 <script>
 
 var word_last="";
-
+var lock_chat=0;
 function send_chat()
 {
+  if(lock_chat!=0) return;
   const knowledge = document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '');
   let word = document.querySelector("#chat_input").value;
   if(word.length==0 || word.length > 140) return;
@@ -899,6 +900,7 @@ function send_chat()
 chatTextRaw = "提问：" + word + "\n回答：";
 text_offset = -1;
 const prev_chat = document.getElementById('chat').innerHTML;
+lock_chat=1
   fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
       .then((response) => {
         const reader = response.body.getReader();
@@ -911,6 +913,7 @@ const prev_chat = document.getElementById('chat').innerHTML;
             if(result == "[DONE]")
             {
                 word_last += chatTextRaw
+                lock_chat=0
                 document.querySelector("#chat_input").value="";
                 return;
             }
