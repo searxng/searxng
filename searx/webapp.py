@@ -799,7 +799,7 @@ def search():
                     "stream": False
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
-            gpt =  '<div id="prompt">' + gpt + '</div>'
+            gpt = '<div id="chat"></div>' '<div id="prompt" style="display:none">' + gpt + '</div>'
             # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             # gpt_json = gpt_response.json()
             # if 'choices' in gpt_json:
