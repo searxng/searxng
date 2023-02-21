@@ -799,7 +799,7 @@ def search():
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
-            gpt = '<div id="chat"></div>' '<div id="prompt" style="display:none">' + gpt
+            gpt = '<div id="chat"></div>' + gpt
             gpt = gpt + r'''<div id="chat_continue" style="display:none">
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
@@ -838,7 +838,7 @@ def search():
 }
 </style>
 '''
-            gpt = gpt + '</div>'
+            gpt = gpt + '<div id="prompt" style="display:none">' + '</div>' 
             # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             # gpt_json = gpt_response.json()
             # if 'choices' in gpt_json:
