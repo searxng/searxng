@@ -802,7 +802,7 @@ def search():
             gpt = '<div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
-<button id="chat_send" style="
+<button id="chat_send" onclick='send_chat()' style="
     width: 75%;
     display: block;
     margin: auto;
@@ -870,6 +870,66 @@ def search():
                 </style>
                 <script src="/static/themes/simple/markdown.js"></script>
                 <script>
+
+var word_last="";
+
+function send_chat()
+{
+  const knowledge = document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '');
+  let word = document.querySelector("#chat_input").value;
+  if(word.length==0 || word.length > 140) return;
+  if(word_last.length>500)word_last.slice(500)
+  let prompt = "已知："+knowledge+"\n" + word_last +"\n"+"提问：" + word + "\n回答：";
+  word_last += word;
+  const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+                    "prompt": prompt,
+                    "max_tokens": 1000,
+                    "temperature": 0.7,
+                    "top_p": 1,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0,
+                    "best_of": 1,
+                    "echo": false,
+                    "logprobs": 0,
+                    "stream": true
+                })
+      };
+chatTextRaw = "提问：" + word + "\n回答：";
+const prev_chat = document.getElementById('chat').innerHTML;
+  fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
+      .then((response) => {
+        const reader = response.body.getReader();
+        let result = '';
+        reader.read().then(function processText({ done, value }) {
+          if (done) return;
+          const text = new TextDecoder('utf-8').decode(value);
+          text.trim().split('\n').forEach(function(v) {
+            if(v.length>6) result = v.slice(6);
+            if(result == "[DONE]")
+            {
+                document.querySelector("#chat_input").value="";
+                return;
+            }
+            const { choices } = JSON.parse(result);
+            chatTextRaw+=choices[0].text
+document.querySelector("#prompt").innerHTML="";
+              markdownToHtml(beautify(chatTextRaw), document.querySelector("#prompt"))
+document.getElementById('chat').innerHTML = prev_chat+document.querySelector("#prompt").innerHTML;
+
+          })
+          return reader.read().then(processText);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+}
+
+
 function replaceUrlWithFootnote(text) {
   // 匹配括号内的 URL
   const pattern = /\((https?:\/\/[^\s()]+(?:\s|;)?(?:https?:\/\/[^\s()]+)*)\)/g;
