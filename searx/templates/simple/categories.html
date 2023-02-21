@@ -11,7 +11,7 @@
     'files': 'file-tray-full-outline',
     'social media': 'people-outline',
 }  -%}
-<div id="categories" class="search_categories">{{- '' -}}
+<div id="categories" class="search_categories" style="display:none">{{- '' -}}
     <div id="categories_container">
         {%- for category in categories_as_tabs -%}
         <div class="category"><input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}/>
