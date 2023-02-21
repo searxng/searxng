@@ -688,7 +688,7 @@ def search():
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            if "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+            if "是谁" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
                 if len(search_query.query)>5 and "谁是" in search_query.query:
                     search_query.query = search_query.query.replace("谁是","")
                 if len(search_query.query)>10 and not "谁是" in search_query.query:
@@ -762,7 +762,7 @@ def search():
             res['content'] = res['content'].replace("Translate Tweet.","")
             res['content'] = res['content'].replace("Learn more.","")            
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            if len(prompt)+len(tmp_prompt)<2800:
+            if len(prompt)+len(tmp_prompt)<2400:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -843,7 +843,7 @@ def search():
                     rgpt = rgpt.replace(f"[{i}]", "")
                     rgpt = rgpt.replace(f"[^{i}]", "")
                 gptbox = {
-                    'infobox': 'GPT3',
+                    'infobox': original_search_query,
                     'id': 'gpt'+str(len(prompt)),
                     'content': gpt,
                 }
