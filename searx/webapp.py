@@ -799,7 +799,46 @@ def search():
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
-            gpt = '<div id="chat"></div>' '<div id="prompt" style="display:none">' + gpt + '</div>'
+            gpt = '<div id="chat"></div>' '<div id="prompt" style="display:none">' + gpt
+            gpt = gpt + r'''<div id="chat_continue" style="display:none">
+<hr>
+<textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
+<button id="chat_send" style="
+    width: 75%;
+    display: block;
+    margin: auto;
+    margin-top: .8em;
+    border-radius: .8rem;
+    height: 2em;
+    background: linear-gradient(81.62deg,#2870ea 8.72%,#1b4aef 85.01%);
+    color: #fff;
+    border: 2px solid transparent;
+">发送</button>
+</div>
+<style>
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.3);
+    box-shadow: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(17, 16, 16, 0.13);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9);
+    box-shadow: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(211, 173, 209, 0.4);
+}
+</style>
+'''
+            gpt = gpt + '</div>'
             # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             # gpt_json = gpt_response.json()
             # if 'choices' in gpt_json:
@@ -906,7 +945,11 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
           const text = new TextDecoder('utf-8').decode(value);
           text.trim().split('\n').forEach(function(v) {
             if(v.length>6) result = v.slice(6);
-            if(result == "[DONE]") return;
+            if(result == "[DONE]")
+            {
+                document.getElementById('chat_continue').style.display="";
+                return;
+            }
             const { choices } = JSON.parse(result);
             chatTextRaw+=choices[0].text
             
@@ -919,6 +962,7 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
       .catch((error) => {
         console.error('Error:', error);
       });
+
 </script>
                 '''
                 # for i in range(1,16):
