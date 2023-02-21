@@ -880,7 +880,6 @@ function send_chat()
   if(word.length==0 || word.length > 140) return;
   if(word_last.length>500)word_last.slice(500)
   let prompt = "已知："+knowledge+"\n" + word_last +"\n"+"提问：" + word + "\n回答：";
-  word_last += word;
   const options = {
         method: "POST",
         headers: headers,
@@ -911,12 +910,14 @@ const prev_chat = document.getElementById('chat').innerHTML;
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
             {
+                word_last += chatTextRaw
                 document.querySelector("#chat_input").value="";
                 return;
             }
             const { choices } = JSON.parse(result);
             if(choices[0].logprobes.text_offset[0] > text_offset)
             {
+                
                 chatTextRaw+=choices[0].text
                 text_offset = choices[0].logprobes.text_offset[choices[0].logprobes.text_offset.length - 1]
             }
