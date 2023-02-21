@@ -898,6 +898,7 @@ function send_chat()
                 })
       };
 chatTextRaw = "提问：" + word + "\n回答：";
+text_offset = -1;
 const prev_chat = document.getElementById('chat').innerHTML;
   fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
       .then((response) => {
@@ -914,8 +915,13 @@ const prev_chat = document.getElementById('chat').innerHTML;
                 return;
             }
             const { choices } = JSON.parse(result);
-            chatTextRaw+=choices[0].text
-document.querySelector("#prompt").innerHTML="";
+            if(choices[0].logprobes.text_offset[0] > text_offset)
+            {
+                chatTextRaw+=choices[0].text
+                text_offset = choices[0].logprobes.text_offset[choices[0].logprobes.text_offset.length - 1]
+            }
+            
+            document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTextRaw), document.querySelector("#prompt"))
 document.getElementById('chat').innerHTML = prev_chat+document.querySelector("#prompt").innerHTML;
 
@@ -983,6 +989,7 @@ function beautify(text)
   return new_text;
 }
 let chatTextRaw =""
+let text_offset = -1;
 let prompt = JSON.parse(document.querySelector("#prompt").textContent);
 
       const headers = {
@@ -1009,8 +1016,11 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                 return;
             }
             const { choices } = JSON.parse(result);
-            chatTextRaw+=choices[0].text
-            
+            if(choices[0].logprobes.text_offset[0] > text_offset)
+            {
+                chatTextRaw+=choices[0].text
+                text_offset = choices[0].logprobes.text_offset[choices[0].logprobes.text_offset.length - 1]
+            }            
             markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
 
           })
