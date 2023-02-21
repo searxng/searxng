@@ -915,11 +915,11 @@ const prev_chat = document.getElementById('chat').innerHTML;
                 return;
             }
             const { choices } = JSON.parse(result);
-            if(choices[0].logprobes.text_offset[0] > text_offset)
+            if(choices[0].logprobs.text_offset[0] > text_offset)
             {
                 
                 chatTextRaw+=choices[0].text
-                text_offset = choices[0].logprobes.text_offset[choices[0].logprobes.text_offset.length - 1]
+                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
             }
             
             document.querySelector("#prompt").innerHTML="";
@@ -1017,10 +1017,10 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                 return;
             }
             const { choices } = JSON.parse(result);
-            if(choices[0].logprobes.text_offset[0] > text_offset)
+            if(choices[0].logprobs.text_offset[0] > text_offset)
             {
                 chatTextRaw+=choices[0].text
-                text_offset = choices[0].logprobes.text_offset[choices[0].logprobes.text_offset.length - 1]
+                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
             }            
             markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
 
