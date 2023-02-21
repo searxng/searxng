@@ -876,7 +876,7 @@ var lock_chat=0;
 function send_chat()
 {
   if(lock_chat!=0) return;
-  const knowledge = document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '');
+  const knowledge = document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(word.length==0 || word.length > 140) return;
   if(word_last.length>500)word_last.slice(500)
