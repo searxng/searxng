@@ -774,7 +774,7 @@ def search():
             }
             if original_search_query != search_query.query:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接：",
                     "max_tokens": 1000,
                     "temperature": 0.7,
                     "top_p": 1,
@@ -787,7 +787,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用markdown脚注指对应内容来源链接：",
+                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接：",
                     "max_tokens": 1000,
                     "temperature": 0.7,
                     "top_p": 1,
@@ -813,7 +813,7 @@ def search():
                 for i in range(1,16):
                     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 rgpt = gpt
-                gpt =  markdown.markdown( gpt , extensions=['footnotes'])
+                # gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 
                 for urls in url_pair.keys():
                     gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
