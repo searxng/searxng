@@ -747,7 +747,7 @@ def search():
 
     # OPENAI GPT
     try:
-        url_pair = {}
+        url_pair = []
         prompt = ""
         for res in results:
             if 'url' not in res: continue
@@ -755,7 +755,7 @@ def search():
             if 'title' not in res: continue
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair)+1)
-            url_pair[new_url] = res['url']
+            url_pair.append(res['url'])
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
@@ -803,8 +803,8 @@ def search():
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
             gpt = gpt.replace("简报：","").replace("简报:","")
-            for urls in url_pair.keys():
-                gpt = gpt.replace(urls,url_pair[urls])
+            for i in range(len(url_pair)-1,-1,-1):
+                gpt = gpt.replace("https://url"+str(i),url_pair[i])
             rgpt = gpt
 
             if gpt and gpt!="":
@@ -815,9 +815,9 @@ def search():
                 rgpt = gpt
                 # gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 
-                for urls in url_pair.keys():
-                    gpt = gpt.replace("#fn:"+urls.replace("https://url",""),url_pair[urls])
-                    gpt = gpt.replace("#fn:url"+urls.replace("https://url",""),url_pair[urls])
+                for i in range(len(url_pair)-1,-1,-1):
+                    gpt = gpt.replace("#fn:"+str(i),url_pair[i])
+                    gpt = gpt.replace("#fn:url"+str(i),url_pair[i])
                 gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
                 gpt = gpt + '''<style>
                 a.footnote-ref{
