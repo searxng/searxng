@@ -798,50 +798,52 @@ def search():
                     "logprobs": 0,
                     "stream": False
                 }
-            gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
-            gpt_json = gpt_response.json()
-            if 'choices' in gpt_json:
-                gpt = gpt_json['choices'][0]['text']
-            gpt = gpt.replace("简报：","").replace("简报:","")
-            for i in range(len(url_pair)-1,-1,-1):
-                gpt = gpt.replace("https://url"+str(i),url_pair[i])
-            rgpt = gpt
+            gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
+            gpt =  '<div id="prompt">' + gpt + '</div>'
+            # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
+            # gpt_json = gpt_response.json()
+            # if 'choices' in gpt_json:
+            #     gpt = gpt_json['choices'][0]['text']
+            # gpt = gpt.replace("简报：","").replace("简报:","")
+            # for i in range(len(url_pair)-1,-1,-1):
+            #     gpt = gpt.replace("https://url"+str(i),url_pair[i])
+            # rgpt = gpt
 
             if gpt and gpt!="":
                 if original_search_query != search_query.query:
                     gpt = "Search 为您搜索：" + search_query.query + "\n\n" + gpt
-                for i in range(1,16):
-                    gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
-                rgpt = gpt
+                # for i in range(1,16):
+                #     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
+                # rgpt = gpt
                 # gpt =  markdown.markdown( gpt , extensions=['footnotes'])
                 
-                for i in range(len(url_pair)-1,-1,-1):
-                    gpt = gpt.replace("#fn:"+str(i),url_pair[i])
-                    gpt = gpt.replace("#fn:url"+str(i),url_pair[i])
-                gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
-                gpt = gpt + '''<style>
-                a.footnote-ref{
-                    position: relative;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 10px;
-                    font-weight: 600;
-                    vertical-align: top;
-                    top: 5px;
-                    margin: 2px 2px 2px;
-                    min-width: 14px;
-                    height: 14px;
-                    border-radius: 3px;
-                    color: rgb(18, 59, 182);
-                    background: rgb(209, 219, 250);
-                    outline: transparent solid 1px;
-                }
-                </style>
-                '''
-                for i in range(1, 16):
-                    rgpt = rgpt.replace(f"[{i}]", "")
-                    rgpt = rgpt.replace(f"[^{i}]", "")
+                # for i in range(len(url_pair)-1,-1,-1):
+                #     gpt = gpt.replace("#fn:"+str(i),url_pair[i])
+                #     gpt = gpt.replace("#fn:url"+str(i),url_pair[i])
+                # gpt = re.sub(r'<div class="footnote">(.*?)</div>', '', gpt, flags=re.DOTALL)
+                # gpt = gpt + '''<style>
+                # a.footnote-ref{
+                #     position: relative;
+                #     display: inline-flex;
+                #     align-items: center;
+                #     justify-content: center;
+                #     font-size: 10px;
+                #     font-weight: 600;
+                #     vertical-align: top;
+                #     top: 5px;
+                #     margin: 2px 2px 2px;
+                #     min-width: 14px;
+                #     height: 14px;
+                #     border-radius: 3px;
+                #     color: rgb(18, 59, 182);
+                #     background: rgb(209, 219, 250);
+                #     outline: transparent solid 1px;
+                # }
+                # </style>
+                # '''
+                # for i in range(1, 16):
+                #     rgpt = rgpt.replace(f"[{i}]", "")
+                #     rgpt = rgpt.replace(f"[^{i}]", "")
                 gptbox = {
                     'infobox': original_search_query,
                     'id': 'gpt'+str(len(prompt)),
