@@ -783,7 +783,7 @@ def search():
                     "best_of": 1,
                     "echo": False,
                     "logprobs": 0,
-                    "stream": False
+                    "stream": True
                 }
             else:
                 gpt_data = {
@@ -796,7 +796,7 @@ def search():
                     "best_of": 1,
                     "echo": False,
                     "logprobs": 0,
-                    "stream": False
+                    "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
             gpt = '<div id="chat"></div>' '<div id="prompt" style="display:none">' + gpt + '</div>'
@@ -812,6 +812,115 @@ def search():
             if gpt and gpt!="":
                 if original_search_query != search_query.query:
                     gpt = "Search 为您搜索：" + search_query.query + "\n\n" + gpt
+                gpt = gpt + r'''<style>
+                a.footnote {
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    font-weight: 600;
+                    vertical-align: top;
+                    top: 0px;
+                    margin: 1px 1px;
+                    min-width: 14px;
+                    height: 14px;
+                    border-radius: 3px;
+                    color: rgb(18, 59, 182);
+                    background: rgb(209, 219, 250);
+                    outline: transparent solid 1px;
+                }
+                </style>
+                <script src="/static/themes/simple/img/searxng.png"></script>
+                <script>
+function replaceUrlWithFootnote(text) {
+  // 匹配括号内的 URL
+  const pattern = /\((https?:\/\/[^\s()]+(?:\s|;)?(?:https?:\/\/[^\s()]+)*)\)/g;
+  
+  // 记录已经替换过的链接，避免重复替换
+  const replacedUrls = new Set();
+  
+  // 替换函数
+  const replaceFunc = (match, urlGroup) => {
+    // 如果已经替换过该链接，则不再重复替换
+    if (replacedUrls.has(urlGroup)) {
+      return match;
+    }
+    
+    // 将多个链接以分号或逗号分割的情况，拆分成单个链接
+
+    const urls = urlGroup.split(/[;,；、，]/);
+    const footnoteText = urls.map((url) => `[${url}]`).join(" ");
+    const footnoteLink = urls.map((url) => `[${url}]`).join("\n");
+    
+    // 记录已经替换的链接
+    urls.forEach((url) => replacedUrls.add(url));
+    
+    // 返回脚注格式的替换文本
+    res = " "
+    for (var i=replacedUrls.size - urls.length + 1;i<=replacedUrls.size;++i)
+        res += `[^${i}] `
+    return res;
+  };
+  // 执行替换
+  let footnoteIndex = 1;
+  let replacedText = text.replace(pattern, replaceFunc);
+  while (replacedUrls.size > 0) {
+    const footnoteText = `[${footnoteIndex++}]: ${replacedUrls.values().next().value}`;
+    const footnoteLink = `[^${footnoteIndex - 1}]: ${replacedUrls.values().next().value}`;
+    // replacedText = `${replacedText}\n\n${footnoteText}`;
+    replacedText = `${replacedText}\n\n${footnoteLink}`;
+    replacedUrls.delete(replacedUrls.values().next().value);
+  }
+  // 返回替换后的文本
+  return replacedText;
+}
+function beautify(text)
+{
+  new_text = replaceUrlWithFootnote(text.replaceAll("（","(").replaceAll("）",")"))
+
+    for(let i=prompt.url_pair.length;i>=0;--i)
+    {
+      new_text = new_text.replace("https://url"+String(i),prompt.url_pair[i])
+    }
+  return new_text;
+}
+let chatTextRaw =""
+let prompt = JSON.parse(document.querySelector("#prompt").textContent);
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
+      };
+      const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(prompt.data)
+      };
+      fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
+      .then((response) => {
+        const reader = response.body.getReader();
+        let result = '';
+        reader.read().then(function processText({ done, value }) {
+          if (done) return;
+          const text = new TextDecoder('utf-8').decode(value);
+          text.trim().split('\n').forEach(function(v) {
+            if(v.length>6) result = v.slice(6);
+            if(result == "[DONE]") return;
+            const { choices } = JSON.parse(result);
+            chatTextRaw+=choices[0].text
+            
+            markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
+
+          })
+          return reader.read().then(processText);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+</script>
+                '''
                 # for i in range(1,16):
                 #     gpt = gpt.replace("["+str(i)+"] http","[^"+str(i)+"]: http").replace("["+str(i)+"]http","[^"+str(i)+"]: http").replace("["+str(i)+"]","[^"+str(i)+"]")
                 # rgpt = gpt
