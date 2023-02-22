@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from copy import copy
+
 import searx.search
 from searx.search import SearchQuery, EngineRef
 from searx import settings
@@ -33,6 +35,11 @@ class SearchQueryTestCase(SearxTestCase):
         t = SearchQuery('test', [EngineRef('google', 'general')], 'all', 0, 1, None, None, None)
         self.assertEqual(s, s)
         self.assertNotEqual(s, t)
+
+    def test_copy(self):
+        s = SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, None, None, None)
+        t = copy(s)
+        self.assertEqual(s, t)
 
 
 class SearchTestCase(SearxTestCase):

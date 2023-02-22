@@ -1,5 +1,5 @@
 general:
-  # Debug mode, only for development
+  # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
   # displayed name
   instance_name: "SearXNG"
@@ -66,16 +66,19 @@ search:
 
 server:
   # If you change port, bind_address or base_url don't forget to rebuild
-  # instance's environment (make buildenv)
+  # instance's environment (make buildenv). Is overwritten by ${SEARXNG_PORT}
+  # and ${SEARXNG_BIND_ADDRESS}
   port: 8888
   bind_address: "127.0.0.1"
-  base_url: false  # Possible values: false or "https://example.org/location".
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${SEARXNG_URL}.
+  base_url: false  # "http://example.com/location"
   limiter: false  # rate limit the number of request on the instance, block some bots
 
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey"  # change this!
+  secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
   # Proxying image results through searx
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -91,6 +94,7 @@ server:
     Referrer-Policy: no-referrer
 
 redis:
+  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
   # https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
   url: false
 
