@@ -17,20 +17,22 @@
 # tjvfxtiwdr <tjvfxtiwdr@daimashili.com>, 2022.
 # a <a@daimashili.com>, 2022.
 # YaoSiQian <2229561981@qq.com>, 2022.
+# yfdyh000 <yfdyh000@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2022-12-18 19:54+0000\n"
-"Last-Translator: YaoSiQian <2229561981@qq.com>\n"
+"PO-Revision-Date: 2023-02-24 07:07+0000\n"
+"Last-Translator: yfdyh000 <yfdyh000@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
+"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -372,23 +374,25 @@ msgstr "Tor 网络检测插件"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr ""
+msgstr "此插件检查地址是否为 Tor 出口节点并给出结果，是由 SearXNG 提供的类似 "
+"check.torproject.org 的服务。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr ""
+msgstr "未能从如下地址下载 Tor 出口节点的名单: https://check.torproject.org/exit-"
+"addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "您似乎在使用 Tor，您的外部 IP 地址为: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "您并未使用 Tor，您的外部 IP 地址为: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -564,7 +568,7 @@ msgstr "默认语言"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "自动检测"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -572,7 +576,7 @@ msgstr "您偏好搜索哪种语言？"
 
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
+msgstr "选择自动检测可使 SearXNG 检测您的检索关键词的语言。"
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -1503,4 +1507,3 @@ msgstr "隐藏视频"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "自动检测查询搜索语言并切换到它。"
-
