@@ -706,7 +706,7 @@ def search():
                     gpt_data = {
                         "prompt": prompt,
                         "max_tokens": 256,
-                        "temperature": 0.7,
+                        "temperature": 0.2,
                         "top_p": 1,
                         "frequency_penalty": 0,
                         "presence_penalty": 0,
@@ -889,7 +889,7 @@ function send_chat()
                     "temperature": 0.5,
                     "top_p": 1,
                     "frequency_penalty": 0,
-                    "presence_penalty": 0,
+                    "presence_penalty": 1,
                     "best_of": 1,
                     "echo": false,
                     "logprobs": 0,
