@@ -17,7 +17,6 @@ import requests
 import markdown
 import re
 import datetime
-from transformers import GPT2TokenizerFast
 
 from timeit import default_timer
 from html import escape
@@ -769,8 +768,10 @@ def search():
             res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
              
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
-            if len( tokenizer(prompt + tmp_prompt +'\n' + "\n以上是问题 " + original_search_query + " 的搜索结果，删除与问题相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：")['input_ids'] )<2990:
+            
+            if original_search_query == search_query.query and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <2500:
+                prompt += tmp_prompt +'\n'
+            if len( prompt + tmp_prompt +'\n' + "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <2500:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -782,7 +783,7 @@ def search():
             }
             if original_search_query != search_query.query:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，删除与问题相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：",
+                    "prompt": prompt+"\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -795,7 +796,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，删除与关键词相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：",
+                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -844,7 +845,7 @@ def search():
     background: rgba(211, 173, 209, 0.4);
 }
 </style>
-''' + '<div id="prompt" style="display:none">'  + gpt + '</div>' 
+''' + '<div id="prompt" style="display:none">'  + str(base64.b64encode(gpt.encode("utf-8"))) + '</div>' 
             # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             # gpt_json = gpt_response.json()
             # if 'choices' in gpt_json:
@@ -1013,7 +1014,7 @@ const headers = {
 "Content-Type": "application/json",
 Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
 };
-let prompt = JSON.parse(document.querySelector("#prompt").textContent);
+let prompt = JSON.parse(atob(document.querySelector("#prompt").textContent));
 
 chatTextRawIntro = "";
 text_offset = -1;
