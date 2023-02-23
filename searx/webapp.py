@@ -821,10 +821,26 @@ def search():
     background: linear-gradient(81.62deg, #2870ea 8.72%, #1b4aef 85.01%);
     color: #fff;
     border: none;
+    cursor: pointer;
 ">发送</button>
 </div>
 <style>
-
+.chat_answer {
+    cursor: pointer;
+    line-height: 1.5em;
+    margin: 0.5em 3em 0.5em 0;
+    padding: 8px 12px;
+    color: white;
+    background: rgba(27,74,239,0.7);
+}
+.chat_question {
+    cursor: pointer;
+    line-height: 1.5em;
+    margin: 0.5em 0 0.5em 3em;
+    padding: 8px 12px;
+    color: black;
+    background: rgba(245, 245, 245, 0.7);
+}
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -906,7 +922,13 @@ function send_chat()
                     "stream": true
                 })
       };
+
+word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
+document.querySelector("#prompt").innerHTML="";
+markdownToHtml(beautify(word), document.querySelector("#prompt"))
+prev_chat = prev_chat+<div class="chat_question">document.querySelector("#prompt").innerHTML+"</div>";
 chatTextRaw = "提问：" + word + "\n回答：";
+chatTemp = ""
 text_offset = -1;
 const prev_chat = document.getElementById('chat').innerHTML;
 lock_chat=1
@@ -921,7 +943,7 @@ lock_chat=1
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
             {
-                word_last += chatTextRaw
+                word_last += chatTextRaw + chatTemp
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
                 return;
@@ -930,13 +952,14 @@ lock_chat=1
             if(choices[0].logprobs.text_offset[0] > text_offset)
             {
                 
-                chatTextRaw+=choices[0].text
+                chatTemp+=choices[0].text
                 text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
             }
-            
-            document.querySelector("#prompt").innerHTML="";
-              markdownToHtml(beautify(chatTextRaw), document.querySelector("#prompt"))
-document.getElementById('chat').innerHTML = prev_chat+document.querySelector("#prompt").innerHTML;
+              chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
+              document.querySelector("#prompt").innerHTML="";
+              markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
+              
+              document.getElementById('chat').innerHTML = prev_chat+<div class="chat_answer">document.querySelector("#prompt").innerHTML+"</div>";
 
           })
           return reader.read().then(processText);
