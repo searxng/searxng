@@ -814,7 +814,7 @@ def search():
     margin-top: .8em;
     border-radius: .8rem;
     height: 2em;
-    background: linear-gradient(81.62deg,#2870ea 8.72%,#1b4aef 85.01%);
+    background: linear-gradient(81.62deg, #2870ea 8.72%, #1b4aef 85.01%);
     color: #fff;
     border: 2px solid transparent;
 ">发送</button>
