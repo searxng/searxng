@@ -137,7 +137,7 @@
     </div>
     {% endif %}
 
-    <div id="urls" role="main" style="display:none">
+    <div id="urls" role="main">
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
