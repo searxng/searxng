@@ -1006,6 +1006,10 @@ for(let i=prompt.url_pair.length;i>=0;--i)
 }
 let chatTextRaw =""
 let text_offset = -1;
+const headers = {
+"Content-Type": "application/json",
+Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
+};
 let prompt = JSON.parse(document.querySelector("#prompt").textContent);
 
                 chatTextRawIntro = "";
@@ -1056,10 +1060,6 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                 });
       
       text_offset = -1;
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
-      };
       const options = {
         method: "POST",
         headers: headers,
