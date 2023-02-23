@@ -40,7 +40,7 @@
         {%- endif %}
 
         {% if unresponsive_engines and results|length >= 1 %}
-	<div class="dialog-error" role="alert">
+	<!-- <div class="dialog-error" role="alert">
     {{ icon_big('warning') }}
     <div>
 	    <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results') }}:</p>
@@ -52,7 +52,7 @@
       </p>
       {% endfor %}
     </div>
-	</div>
+	</div> -->
 	{% endif %}
 
         {% if infoboxes %}
