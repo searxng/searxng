@@ -809,6 +809,7 @@ def search():
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
             gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
+<div id="chat_more"></div>
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
 <button id="chat_send" onclick='send_chat()' style="
