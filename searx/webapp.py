@@ -1131,7 +1131,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                         fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
                         .then(response => response.json())
                         .then(data => {
-                            data.forEach(item => {
+                            JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
                                document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_chat(this)">'+ String(item) +'</button>'
                             });
                         })
