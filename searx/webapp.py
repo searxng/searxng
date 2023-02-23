@@ -1018,7 +1018,7 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                     method: "POST",
                     headers: headers,
                     body: JSON.stringify({
-                        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“我正在规划我的9月份的周年纪念日旅行。能帮忙推荐一些距伦敦希思罗机场航程不超过3小时的去处吗？”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
+                        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + search_query.query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
                         "max_tokens": 256,
                         "temperature": 0,
                         "top_p": 1,
@@ -1082,7 +1082,7 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                     method: "POST",
                     headers: headers,
                     body: JSON.stringify({
-                        "prompt": "围绕关键词 椎名晴樹，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                        "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
                         "max_tokens": 1500,
                         "temperature": 0.7,
                         "top_p": 1,
