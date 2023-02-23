@@ -820,7 +820,7 @@ def search():
     height: 2em;
     background: linear-gradient(81.62deg, #2870ea 8.72%, #1b4aef 85.01%);
     color: #fff;
-    border: 2px solid transparent;
+    border: none;
 ">发送</button>
 </div>
 <style>
