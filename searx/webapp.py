@@ -916,6 +916,87 @@ button.btn_more {
 
 var word_last="";
 var lock_chat=1;
+
+
+function send_webchat(elem)
+{
+  if(lock_chat!=0) return;
+  lock_chat = 1;
+  knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") 
+  if(knowledge.length>400)knowledge.slice(400)
+  knowledge += "\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
+  let word = document.querySelector("#chat_input").value;
+  if(elem){word = elem.textContent;elem.remove()}
+  if(word.length==0 || word.length > 140) return;
+  fetch('https://search.kg/search?q='+encodeURIComponent(word)+'&language=zh-CN&time_range=&safesearch=0&categories=general&format=json')
+  .then(response => response.json())
+  .then(data => {
+    prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
+    prompt.data.max_tokens -= parseInt(knowledge.length*1.2) 
+    prompt.data.prompt = knowledge + prompt.data.prompt
+    optionsweb = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(prompt.data)
+      };
+
+
+document.querySelector("#prompt").innerHTML="";
+markdownToHtml(beautify(word), document.querySelector("#prompt"))
+chatTextRaw = "提问：" + word + "\n回答：";
+chatTemp = ""
+text_offset = -1;
+prev_chat = document.getElementById('chat').innerHTML;
+prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
+
+
+  fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsweb)
+      .then((response) => {
+        const reader = response.body.getReader();
+        let result = '';
+        reader.read().then(function processText({ done, value }) {
+          if (done) return;
+          const text = new TextDecoder('utf-8').decode(value);
+          text.trim().split('\n').forEach(function(v) {
+            if(v.length>6) result = v.slice(6);
+            if(result == "[DONE]")
+            {
+                word_last += chatTextRaw + chatTemp
+                lock_chat=0
+                document.querySelector("#chat_input").value="";
+                return;
+            }
+            const { choices } = JSON.parse(result);
+            if(choices[0].logprobs.text_offset[0] > text_offset)
+            {
+                
+                chatTemp+=choices[0].text
+                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+            }
+              chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
+              document.querySelector("#prompt").innerHTML="";
+              markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
+              
+              document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
+
+          })
+          return reader.read().then(processText);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+  })
+
+
+
+
+
+}
+
+
 function send_chat(elem)
 {
   if(lock_chat!=0) return;
@@ -1134,7 +1215,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                         .then(response => response.json())
                         .then(data => {
                             JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
-                               document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_chat(this)">'+ String(item) +'</button>'
+                               document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_webchat(this)">'+ String(item) +'</button>'
                             });
                         })
                         .catch(error => console.error(error));
