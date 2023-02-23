@@ -809,7 +809,7 @@ def search():
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
             gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
-<div id="chat_more"></div>
+<div id="chat_more" style="display:none"></div>
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
 <button id="chat_send" onclick='send_chat()' style="
@@ -991,6 +991,8 @@ lock_chat=1
 }
 
 
+
+
 function replaceUrlWithFootnote(text) {
   // 匹配括号内的 URL
   const pattern = /\((https?:\/\/[^\s()]+(?:\s|;)?(?:https?:\/\/[^\s()]+)*)\)/g;
@@ -1109,6 +1111,32 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                     if(v.length>6) result = v.slice(6);
                     if(result == "[DONE]")
                     {
+                        const optionsMore = {
+                            method: "POST",
+                            headers: headers,
+                            body: JSON.stringify({
+                                "prompt":  document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n" + "以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，用json数组格式：",
+                                "max_tokens": 1500,
+                                "temperature": 0.7,
+                                "top_p": 1,
+                                "frequency_penalty": 0,
+                                "presence_penalty": 2,
+                                "best_of": 1,
+                                "echo": false,
+                                "logprobs": 0,
+                                "stream": false
+                            })
+                        };
+                        document.querySelector("#chat_more").innerHTML = ""
+                        fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(item => {
+                               document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_chat(this)">'+ String(item) +'</button>'
+                            });
+                        })
+                        .catch(error => console.error(error));
+
                         chatTextRawPlusComment = chatTextRaw+"\n\n";
                         text_offset = -1;
                         const optionsPlus = {
@@ -1140,33 +1168,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                                 {
                                     lock_chat = 0;
                                     document.getElementById('chat_continue').style.display="";
-                        const optionsMore = {
-                            method: "POST",
-                            headers: headers,
-                            body: JSON.stringify({
-                                "prompt":  document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n" + "以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，用json数组格式：",
-                                "max_tokens": 1500,
-                                "temperature": 0.7,
-                                "top_p": 1,
-                                "frequency_penalty": 0,
-                                "presence_penalty": 2,
-                                "best_of": 1,
-                                "echo": false,
-                                "logprobs": 0,
-                                "stream": true
-                            })
-                        };
-                        document.querySelector("#chat_more").innerHTML = ""
-                        fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
-                        .then(response => response.json())
-                        .then(data => {
-                            data.forEach(item => {
-                               document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_chat(this)">'+ String(item) +'</button>'
-                            });
-                        })
-                        .catch(error => console.error(error));
-
-
+                                    document.getElementById('chat_more').style.display="";
                                     return;
                                 }
                                 const { choices } = JSON.parse(result);
