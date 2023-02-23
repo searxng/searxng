@@ -804,7 +804,7 @@ def search():
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
-            gpt = '<div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
+            gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
 <button id="chat_send" onclick='send_chat()' style="
@@ -877,7 +877,7 @@ def search():
                 <script>
 
 var word_last="";
-var lock_chat=0;
+var lock_chat=1;
 function send_chat()
 {
   if(lock_chat!=0) return;
@@ -1008,6 +1008,54 @@ let chatTextRaw =""
 let text_offset = -1;
 let prompt = JSON.parse(document.querySelector("#prompt").textContent);
 
+                chatTextRawIntro = "";
+                text_offset = -1;
+                const optionsIntro = {
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify({
+                        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“我正在规划我的9月份的周年纪念日旅行。能帮忙推荐一些距伦敦希思罗机场航程不超过3小时的去处吗？”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
+                        "max_tokens": 256,
+                        "temperature": 0,
+                        "top_p": 1,
+                        "frequency_penalty": 0,
+                        "presence_penalty": 2,
+                        "best_of": 1,
+                        "echo": false,
+                        "logprobs": 0,
+                        "stream": true
+                    })
+                };
+                fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsIntro)
+                .then((responseIntro) => {
+                    const readerIntro = responseIntro.body.getReader();
+                    let result = '';
+                    readerIntro.read().then(function processText({ done, value }) {
+                    if (done) return;
+                    const textIntro = new TextDecoder('utf-8').decode(value);
+                    textIntro.trim().split('\n').forEach(function(v) {
+                        if(v.length>6) result = v.slice(6);
+                        if(result == "[DONE]")
+                        {
+                            return;
+                        }
+                        const { choices } = JSON.parse(result);
+                        if(choices[0].logprobs.text_offset[0] > text_offset)
+                        {
+                            chatTextRawIntro+=choices[0].text
+                            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                        }            
+                        markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
+
+                    })
+                    return readerIntro.read().then(processText);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+      
+      text_offset = -1;
       const headers = {
         "Content-Type": "application/json",
         Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
@@ -1057,6 +1105,7 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                         if(v.length>6) result = v.slice(6);
                         if(result == "[DONE]")
                         {
+                            lock_chat = 0;
                             document.getElementById('chat_continue').style.display="";
                             return;
                         }
@@ -1075,7 +1124,7 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-                document.getElementById('chat_continue').style.display="";
+                # document.getElementById('chat_continue').style.display="";
                 return;
             }
             const { choices } = JSON.parse(result);
