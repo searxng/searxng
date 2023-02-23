@@ -1069,7 +1069,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             method: "POST",
                             headers: headers,
                             body: JSON.stringify({
-                                "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                                "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
