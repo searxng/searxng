@@ -760,6 +760,7 @@ def search():
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
             res['content'] = res['content'].replace("Translate Tweet.","")
+            res['content'] = res['content'].replace("Retweeted.","Reposted.")     
             res['content'] = res['content'].replace("Learn more.","")     
             res['content'] = res['content'].replace("Show replies.","")      
             res['content'] = res['content'].replace("See new Tweets. ","")       
