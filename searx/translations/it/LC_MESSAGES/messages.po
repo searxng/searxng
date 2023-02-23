@@ -22,18 +22,19 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"PO-Revision-Date: 2023-02-24 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
+"searxng/it/>\n"
 "Language: it\n"
-"Language-Team: Italian "
-"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -393,22 +394,27 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Questo plugin controlla se l'indirizzo richiesto è un nodo di uscita di Tor "
+"e informa l'utente se lo è; come check.torproject.org, ma da SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Non ho potuto scaricare la lista dei nodi di uscita di Tor da: https://check."
+"torproject.org?exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Stai usando Tor e sembra che tu abbia il seguente indirizzo IP: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Non stai usando Tor e il tuo indirizzo IP esterno è: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1568,4 +1574,3 @@ msgstr "nascondi video"
 #~ "Rileva automaticamente la lingua di "
 #~ "ricerca della query e passa ad "
 #~ "essa."
-
