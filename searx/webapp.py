@@ -688,7 +688,7 @@ def search():
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            if "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+            if "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
                 if len(search_query.query)>5 and "谁是" in search_query.query:
                     search_query.query = search_query.query.replace("谁是","")
                 if len(search_query.query)>10 and not "谁是" in search_query.query:
@@ -926,7 +926,7 @@ function send_chat()
 word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
-prev_chat = prev_chat+<div class="chat_question">document.querySelector("#prompt").innerHTML+"</div>";
+prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -959,7 +959,7 @@ lock_chat=1
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
               
-              document.getElementById('chat').innerHTML = prev_chat+<div class="chat_answer">document.querySelector("#prompt").innerHTML+"</div>";
+              document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
           return reader.read().then(processText);
