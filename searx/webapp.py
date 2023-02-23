@@ -1124,7 +1124,6 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-                # document.getElementById('chat_continue').style.display="";
                 return;
             }
             const { choices } = JSON.parse(result);
