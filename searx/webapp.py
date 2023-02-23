@@ -844,8 +844,8 @@ def search():
 }
 
 button.btn_more {
-    height: 30px;
-    min-width: max-content;
+    min-height: 30px;
+    text-align: left;
     background: rgb(209, 219, 250);
     border-radius: 8px;
     overflow: hidden;
@@ -1116,7 +1116,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             method: "POST",
                             headers: headers,
                             body: JSON.stringify({
-                                "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + "以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，json数组格式["q1","q2","q3","q4"]：",
+                                "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，json数组格式["q1","q2","q3","q4"]：',
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
