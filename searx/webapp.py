@@ -919,7 +919,7 @@ var lock_chat=1;
 function send_chat(elem)
 {
   if(lock_chat!=0) return;
-  const knowledge = document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
+  const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent}
   if(word.length==0 || word.length > 140) return;
@@ -1115,7 +1115,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             method: "POST",
                             headers: headers,
                             body: JSON.stringify({
-                                "prompt":  document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n" + "以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，用json数组格式：",
+                                "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + "以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的问题，用json数组格式：",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
@@ -1143,7 +1143,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             method: "POST",
                             headers: headers,
                             body: JSON.stringify({
-                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
