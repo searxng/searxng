@@ -845,7 +845,7 @@ def search():
     background: rgba(211, 173, 209, 0.4);
 }
 </style>
-''' + '<div id="prompt" style="display:none">'  + str(base64.b64encode(gpt.encode("utf-8"))) + '</div>' 
+''' + '<div id="prompt" style="display:none">'  + (base64.b64encode(gpt.encode("utf-8")).decode('UTF-8') )  + '</div>' 
             # gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             # gpt_json = gpt_response.json()
             # if 'choices' in gpt_json:
