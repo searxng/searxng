@@ -5,20 +5,22 @@
 # Translators:
 # dd721411 <dd721411@gmail.com>, 2018
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# nam000 <nam000gl@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
-"PO-Revision-Date: 2022-12-12 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
+"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"Last-Translator: nam000 <nam000gl@gmail.com>\n"
+"Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
+"searxng/vi/>\n"
 "Language: vi\n"
-"Language-Team: Vietnamese "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/vi/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -198,40 +200,40 @@ msgstr "Truy cập bị từ chối"
 msgid "server API error"
 msgstr "Lỗi máy chủ API"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Nguồn"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Không thể tải trang kế tiếp"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "Cài đặt không hợp lệ, xin xem lại tuỳ chỉnh"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Cài đặt không hợp lệ"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "lỗi tìm kiếm"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "Treo/gián đoạn/chặn"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} phút() trước"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} giờ, {minutes} phút trước"
 
@@ -311,13 +313,14 @@ msgstr "Buổi chiều"
 msgid "Night"
 msgstr "Buổi tối"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
-msgstr ""
+msgstr "Tự động phát hiện ngôn ngữ tìm kiếm"
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
+#, fuzzy
 msgid "Automatically detect the query search language and switch to it."
-msgstr ""
+msgstr "Tự động phát hiện ngôn ngữ tìm kiếm và chuyển sang ngôn ngữ đó."
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -375,28 +378,25 @@ msgstr "Kiểm tra Tor plugin"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Plugin này kiểm tra nếu một địa chỉ được yêu cầu có phải là một TOR exit "
-"node hay không, và thông báo lại cho người dùng. Giống như "
-"check.torproject.org nhưng từ SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Danh sách TOR exit node (https://check.torproject.org/exit-addresses) "
-"không thể được tiếp cận."
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Bạn đang dùng TOR. Địa chỉ IP của bạn có thể là: {ip_address}."
-
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
 msgstr ""
+
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr "Bạn hiện không sử dụng Tor và đây là địa chỉ IP của bạn: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -433,12 +433,13 @@ msgid "search page"
 msgstr "tìm kiếm trang"
 
 #: searx/templates/simple/base.html:46
+#, fuzzy
 msgid "About"
-msgstr ""
+msgstr "Về chúng tôi"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
-msgstr ""
+msgstr "Ủng hộ"
 
 #: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
@@ -1480,3 +1481,46 @@ msgstr "ẩn phim"
 #~ " rel=\"external\">tìm hiểu thêm về các "
 #~ "phương thức tìm kiếm</a>"
 
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Plugin này kiểm tra nếu một địa"
+#~ " chỉ được yêu cầu có phải là"
+#~ " một TOR exit node hay không, "
+#~ "và thông báo lại cho người dùng."
+#~ " Giống như check.torproject.org nhưng từ"
+#~ " SearXNG."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "Danh sách TOR exit node "
+#~ "(https://check.torproject.org/exit-addresses) không "
+#~ "thể được tiếp cận."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Bạn đang dùng TOR. Địa chỉ IP của bạn có thể là: {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""

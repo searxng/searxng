@@ -91,6 +91,17 @@ class TestLanguageParser(SearxTestCase):
         self.assertIn('all', query.languages)
         self.assertFalse(query.specific)
 
+    def test_auto_language_code(self):
+        language = 'auto'
+        query_text = 'una consulta'
+        full_query = ':' + language + ' ' + query_text
+        query = RawTextQuery(full_query, [])
+
+        self.assertEqual(query.getFullQuery(), full_query)
+        self.assertEqual(len(query.query_parts), 1)
+        self.assertIn('auto', query.languages)
+        self.assertFalse(query.specific)
+
     def test_invalid_language_code(self):
         language = 'not_a_language'
         query_text = 'the query'

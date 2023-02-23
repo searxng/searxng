@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
+"POT-Creation-Date: 2023-02-17 12:20+0000\n"
 "PO-Revision-Date: 2022-11-25 07:16+0000\n"
 "Last-Translator: MSI Shafik <shafik.te@gmail.com>\n"
 "Language: bn\n"
@@ -199,40 +199,40 @@ msgstr "অ্যাক্সেস অমান্য"
 msgid "server API error"
 msgstr "সার্ভার এপিআই ত্রুটি"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "উৎস"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করার সময় ত্রুটি৷."
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:956
 msgid "Invalid settings, please edit your preferences"
 msgstr "অবৈধ সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন৷"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "অবৈধ সেটিংস"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "অনুসন্ধানের ত্রুটি"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:855
 msgid "Suspended"
 msgstr "স্থগিত"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} মিনিট আগে"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ঘণ্টা, {minutes} মিনিট আগে"
 
@@ -314,11 +314,11 @@ msgstr "রাত"
 msgid "Night"
 msgstr "রাত"
 
-#: searx/plugins/autodetect_search_language.py:79
+#: searx/plugins/autodetect_search_language.py:74
 msgid "Autodetect search language"
 msgstr ""
 
-#: searx/plugins/autodetect_search_language.py:80
+#: searx/plugins/autodetect_search_language.py:75
 msgid "Automatically detect the query search language and switch to it."
 msgstr ""
 
@@ -380,28 +380,25 @@ msgstr "টর চেক প্লাগইন"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"এই প্লাগইনটি চেক করে যে অনুরোধের ঠিকানাটি একটি TOR প্রস্থান নোড কিনা এবং "
-"ব্যবহারকারীকে জানিয়ে দেয় যে এটি কিনা, যেমন check.torproject.org কিন্তু "
-"searxng থেকে।"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"TOR প্রস্থান নোড তালিকা (https://check.torproject.org/exit-addresses) "
-"পৌঁছানো যায় না।"
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "আপনি TOR ব্যবহার করছেন। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "আপনি TOR ব্যবহার করছেন না। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -1233,5 +1230,50 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "এই প্লাগইনটি চেক করে যে অনুরোধের "
+#~ "ঠিকানাটি একটি TOR প্রস্থান নোড কিনা "
+#~ "এবং ব্যবহারকারীকে জানিয়ে দেয় যে এটি"
+#~ " কিনা, যেমন check.torproject.org কিন্তু "
+#~ "searxng থেকে।"
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "TOR প্রস্থান নোড তালিকা "
+#~ "(https://check.torproject.org/exit-addresses) পৌঁছানো "
+#~ "যায় না।"
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "আপনি TOR ব্যবহার করছেন। আপনার আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr ""
+#~ "আপনি TOR ব্যবহার করছেন না। আপনার "
+#~ "আইপি ঠিকানা বলে মনে হচ্ছে: {ip_address}।"
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
 #~ msgstr ""
 
