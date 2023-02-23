@@ -1012,135 +1012,152 @@ Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
 };
 let prompt = JSON.parse(document.querySelector("#prompt").textContent);
 
-                chatTextRawIntro = "";
-                text_offset = -1;
-                const optionsIntro = {
-                    method: "POST",
-                    headers: headers,
-                    body: JSON.stringify({
-                        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + search_query.query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
-                        "max_tokens": 256,
-                        "temperature": 0,
-                        "top_p": 1,
-                        "frequency_penalty": 0,
-                        "presence_penalty": 2,
-                        "best_of": 1,
-                        "echo": false,
-                        "logprobs": 0,
-                        "stream": true
-                    })
-                };
-                fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsIntro)
-                .then((responseIntro) => {
-                    const readerIntro = responseIntro.body.getReader();
-                    let result = '';
-                    readerIntro.read().then(function processText({ done, value }) {
-                    if (done) return;
-                    const textIntro = new TextDecoder('utf-8').decode(value);
-                    textIntro.trim().split('\n').forEach(function(v) {
-                        if(v.length>6) result = v.slice(6);
-                        if(result == "[DONE]")
-                        {
-                            return;
-                        }
-                        const { choices } = JSON.parse(result);
-                        if(choices[0].logprobs.text_offset[0] > text_offset)
-                        {
-                            chatTextRawIntro+=choices[0].text
-                            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
-                        }            
-                        markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
+chatTextRawIntro = "";
+text_offset = -1;
+const optionsIntro = {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({
+        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + search_query.query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
+        "max_tokens": 256,
+        "temperature": 0,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 2,
+        "best_of": 1,
+        "echo": false,
+        "logprobs": 0,
+        "stream": true
+    })
+};
+fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsIntro)
+.then((responseIntro) => {
+    const readerIntro = responseIntro.body.getReader();
+    let result = '';
+    readerIntro.read().then(function processText({ done, value }) {
+    if (done) return;
+    const textIntro = new TextDecoder('utf-8').decode(value);
+    textIntro.trim().split('\n').forEach(function(v) {
+        if(v.length>6) result = v.slice(6);
+        if(result == "[DONE]")
+        {
 
-                    })
-                    return readerIntro.read().then(processText);
-                    });
+
+
+
+
+            text_offset = -1;
+            const options = {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(prompt.data)
+            };
+            fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
+            .then((response) => {
+                const reader = response.body.getReader();
+                let result = '';
+                reader.read().then(function processText({ done, value }) {
+                if (done) return;
+                const text = new TextDecoder('utf-8').decode(value);
+                text.trim().split('\n').forEach(function(v) {
+                    if(v.length>6) result = v.slice(6);
+                    if(result == "[DONE]")
+                    {
+                        chatTextRawPlusComment = chatTextRaw+"\n\n";
+                        text_offset = -1;
+                        const optionsPlus = {
+                            method: "POST",
+                            headers: headers,
+                            body: JSON.stringify({
+                                "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                                "max_tokens": 1500,
+                                "temperature": 0.7,
+                                "top_p": 1,
+                                "frequency_penalty": 0,
+                                "presence_penalty": 2,
+                                "best_of": 1,
+                                "echo": false,
+                                "logprobs": 0,
+                                "stream": true
+                            })
+                        };
+                        fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
+                        .then((responsePlusComment) => {
+                            const readerPlusComment = responsePlusComment.body.getReader();
+                            let result = '';
+                            readerPlusComment.read().then(function processText({ done, value }) {
+                            if (done) return;
+                            const textPlusComment = new TextDecoder('utf-8').decode(value);
+                            textPlusComment.trim().split('\n').forEach(function(v) {
+                                if(v.length>6) result = v.slice(6);
+                                if(result == "[DONE]")
+                                {
+                                    lock_chat = 0;
+                                    document.getElementById('chat_continue').style.display="";
+                                    return;
+                                }
+                                const { choices } = JSON.parse(result);
+                                if(choices[0].logprobs.text_offset[0] > text_offset)
+                                {
+                                    chatTextRawPlusComment+=choices[0].text
+                                    text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                                }            
+                                markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
+
+                            })
+                            return readerPlusComment.read().then(processText);
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                        return;
+                    }
+                    const { choices } = JSON.parse(result);
+                    if(choices[0].logprobs.text_offset[0] > text_offset)
+                    {
+                        chatTextRaw+=choices[0].text
+                        text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                    }            
+                    markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
+
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
+                return reader.read().then(processText);
                 });
-      
-      text_offset = -1;
-      const options = {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(prompt.data)
-      };
-      fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
-      .then((response) => {
-        const reader = response.body.getReader();
-        let result = '';
-        reader.read().then(function processText({ done, value }) {
-          if (done) return;
-          const text = new TextDecoder('utf-8').decode(value);
-          text.trim().split('\n').forEach(function(v) {
-            if(v.length>6) result = v.slice(6);
-            if(result == "[DONE]")
-            {
-                chatTextRawPlusComment = chatTextRaw+"\n";
-                text_offset = -1;
-                const optionsPlus = {
-                    method: "POST",
-                    headers: headers,
-                    body: JSON.stringify({
-                        "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
-                        "max_tokens": 1500,
-                        "temperature": 0.7,
-                        "top_p": 1,
-                        "frequency_penalty": 0,
-                        "presence_penalty": 2,
-                        "best_of": 1,
-                        "echo": false,
-                        "logprobs": 0,
-                        "stream": true
-                    })
-                };
-                fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
-                .then((responsePlusComment) => {
-                    const readerPlusComment = responsePlusComment.body.getReader();
-                    let result = '';
-                    readerPlusComment.read().then(function processText({ done, value }) {
-                    if (done) return;
-                    const textPlusComment = new TextDecoder('utf-8').decode(value);
-                    textPlusComment.trim().split('\n').forEach(function(v) {
-                        if(v.length>6) result = v.slice(6);
-                        if(result == "[DONE]")
-                        {
-                            lock_chat = 0;
-                            document.getElementById('chat_continue').style.display="";
-                            return;
-                        }
-                        const { choices } = JSON.parse(result);
-                        if(choices[0].logprobs.text_offset[0] > text_offset)
-                        {
-                            chatTextRawPlusComment+=choices[0].text
-                            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
-                        }            
-                        markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
-                    })
-                    return readerPlusComment.read().then(processText);
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-                return;
-            }
-            const { choices } = JSON.parse(result);
-            if(choices[0].logprobs.text_offset[0] > text_offset)
-            {
-                chatTextRaw+=choices[0].text
-                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
-            }            
-            markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
 
-          })
-          return reader.read().then(processText);
-        });
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+
+
+
+
+
+
+
+
+
+            return;
+        }
+        const { choices } = JSON.parse(result);
+        if(choices[0].logprobs.text_offset[0] > text_offset)
+        {
+            chatTextRawIntro+=choices[0].text
+            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+        }            
+        markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
+
+    })
+    return readerIntro.read().then(processText);
+    });
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+
+
 
 </script>
                 '''
