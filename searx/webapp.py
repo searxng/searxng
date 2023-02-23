@@ -17,6 +17,7 @@ import requests
 import markdown
 import re
 import datetime
+import tiktoken
 
 from timeit import default_timer
 from html import escape
@@ -767,7 +768,7 @@ def search():
             res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
              
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            if len(prompt)+len(tmp_prompt)<2300:
+            if len( tiktoken.get_encoding("gpt2").encode(prompt + tmp_prompt +'\n' + "\n以上是问题 " + original_search_query + " 的搜索结果，删除与问题相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：") )<2990:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
