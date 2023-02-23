@@ -945,11 +945,12 @@ function send_chat(elem)
 word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
-prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
-const prev_chat = document.getElementById('chat').innerHTML;
+prev_chat = document.getElementById('chat').innerHTML;
+prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
+
 lock_chat=1
   fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
       .then((response) => {
