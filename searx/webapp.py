@@ -926,7 +926,7 @@ function send_webchat(elem)
   if(knowledge.length>400)knowledge.slice(400)
   knowledge += "\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
-  if(elem){word = elem.textContent;elem.remove()}
+  if(elem){word = elem.textContent;elem.remove(); chatmore();}
   if(word.length==0 || word.length > 140) return;
   fetch('https://search.kg/search?q='+encodeURIComponent(word)+'&language=zh-CN&time_range=&safesearch=0&categories=general&format=json')
   .then(response => response.json())
@@ -1135,6 +1135,40 @@ for(let i=prompt.url_pair.length;i>=0;--i)
     }
   return new_text;
 }
+
+function chatmore()
+{
+    if(document.querySelector("#chat_more").innerHTML != "") return
+    fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
+    .then(response => response.json())
+    .then(data => {
+        JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
+            document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_webchat(this)">'+ String(item) +'</button>'
+        });
+    })
+    .catch(error => console.error(error));
+
+    chatTextRawPlusComment = chatTextRaw+"\n\n";
+    text_offset = -1;
+    const optionsPlus = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
+            "max_tokens": 1500,
+            "temperature": 0.7,
+            "top_p": 1,
+            "frequency_penalty": 0,
+            "presence_penalty": 2,
+            "best_of": 1,
+            "echo": false,
+            "logprobs": 0,
+            "stream": true
+        })
+    };
+}
+
+
 let chatTextRaw =""
 let text_offset = -1;
 const headers = {
@@ -1211,33 +1245,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             })
                         };
                         document.querySelector("#chat_more").innerHTML = ""
-                        fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
-                        .then(response => response.json())
-                        .then(data => {
-                            JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
-                               document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_webchat(this)">'+ String(item) +'</button>'
-                            });
-                        })
-                        .catch(error => console.error(error));
-
-                        chatTextRawPlusComment = chatTextRaw+"\n\n";
-                        text_offset = -1;
-                        const optionsPlus = {
-                            method: "POST",
-                            headers: headers,
-                            body: JSON.stringify({
-                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
-                                "max_tokens": 1500,
-                                "temperature": 0.7,
-                                "top_p": 1,
-                                "frequency_penalty": 0,
-                                "presence_penalty": 2,
-                                "best_of": 1,
-                                "echo": false,
-                                "logprobs": 0,
-                                "stream": true
-                            })
-                        };
+                        chatmore()
                         fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
                         .then((responsePlusComment) => {
                             const readerPlusComment = responsePlusComment.body.getReader();
