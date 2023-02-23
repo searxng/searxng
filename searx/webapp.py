@@ -1018,7 +1018,7 @@ const optionsIntro = {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
-        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + search_query.query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
+        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + original_search_query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语：\n",
         "max_tokens": 256,
         "temperature": 0,
         "top_p": 1,
@@ -1069,7 +1069,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                             method: "POST",
                             headers: headers,
                             body: JSON.stringify({
-                                "prompt": "围绕关键词 ''' + search_query.query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
