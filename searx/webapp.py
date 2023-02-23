@@ -759,7 +759,13 @@ def search():
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
             res['content'] = res['content'].replace("Translate Tweet.","")
-            res['content'] = res['content'].replace("Learn more.","")            
+            res['content'] = res['content'].replace("Learn more.","")     
+            res['content'] = res['content'].replace("Show replies.","")      
+            res['content'] = res['content'].replace("See new Tweets. ","")       
+            res['content'] = res['content'].replace("You're unable to view this Tweet because this account owner limits who can view their Tweets.","Private Tweet.")      
+            res['content'] = res['content'].replace("Twitter for Android · ","") 
+            res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
+             
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             if len(prompt)+len(tmp_prompt)<2300:
                 prompt += tmp_prompt +'\n'
@@ -1022,6 +1028,53 @@ let prompt = JSON.parse(document.querySelector("#prompt").textContent);
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
             {
+                chatTextRawPlusComment = chatTextRaw+"\n";
+                text_offset = -1;
+                const optionsPlus = {
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify({
+                        "prompt": "围绕关键词 椎名晴樹，结合你的知识总结归纳发表评论，不得重复提及已有内容：\n" + document.querySelector("#chat > p").innerHTML.replace(/<.*?>.*?<\/.*?>/g, '') +"\n",
+                        "max_tokens": 1500,
+                        "temperature": 0.7,
+                        "top_p": 1,
+                        "frequency_penalty": 0,
+                        "presence_penalty": 2,
+                        "best_of": 1,
+                        "echo": false,
+                        "logprobs": 0,
+                        "stream": true
+                    })
+                };
+                fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
+                .then((responsePlusComment) => {
+                    const readerPlusComment = responsePlusComment.body.getReader();
+                    let result = '';
+                    readerPlusComment.read().then(function processText({ done, value }) {
+                    if (done) return;
+                    const textPlusComment = new TextDecoder('utf-8').decode(value);
+                    textPlusComment.trim().split('\n').forEach(function(v) {
+                        if(v.length>6) result = v.slice(6);
+                        if(result == "[DONE]")
+                        {
+                            document.getElementById('chat_continue').style.display="";
+                            return;
+                        }
+                        const { choices } = JSON.parse(result);
+                        if(choices[0].logprobs.text_offset[0] > text_offset)
+                        {
+                            chatTextRawPlusComment+=choices[0].text
+                            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                        }            
+                        markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
+
+                    })
+                    return readerPlusComment.read().then(processText);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
                 document.getElementById('chat_continue').style.display="";
                 return;
             }
