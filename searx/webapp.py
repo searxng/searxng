@@ -779,7 +779,7 @@ def search():
             }
             if original_search_query != search_query.query:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，删除与问题相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接：",
+                    "prompt": prompt+"\n以上是问题 " + original_search_query + " 的搜索结果，删除与问题相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：",
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -792,7 +792,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，删除与关键词相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接：",
+                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，删除与关键词相关度低的内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，不要把链接都放在最后。结果：",
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
