@@ -914,8 +914,8 @@ button.btn_more {
                 </style>
                 <script src="/static/themes/simple/markdown.js"></script>
                 <script>
-const original_search_query = ''' + original_search_query + r'''
-const search_queryquery = ''' + search_query.query + r'''
+const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
+const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
 //rsa 
 function stringToArrayBuffer(str){
     if(!str) return;
