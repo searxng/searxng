@@ -935,7 +935,7 @@ function send_webchat(elem)
     optionsweb = {
         method: "POST",
         headers: headers,
-        body: JSON.stringify(prompt.data)
+        body: btoa(JSON.stringify(prompt.data))
       };
 
 
@@ -1008,7 +1008,7 @@ function send_chat(elem)
   const options = {
         method: "POST",
         headers: headers,
-        body: JSON.stringify({
+        body: btoa( JSON.stringify({
                     "prompt": prompt,
                     "max_tokens": 1000,
                     "temperature": 0.9,
@@ -1019,7 +1019,7 @@ function send_chat(elem)
                     "echo": false,
                     "logprobs": 0,
                     "stream": true
-                })
+                }) )
       };
 
 word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
@@ -1140,7 +1140,7 @@ function chatmore()
     const optionsMore = {
         method: "POST",
         headers: headers,
-        body: JSON.stringify({
+        body: btoa( JSON.stringify({
             "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]：',
             "max_tokens": 1500,
             "temperature": 0.7,
@@ -1151,7 +1151,7 @@ function chatmore()
             "echo": false,
             "logprobs": 0,
             "stream": false
-        })
+        }) )
     };
     if(document.querySelector("#chat_more").innerHTML != "") return
     fetch("https://search.kg/completions", optionsMore)
@@ -1181,7 +1181,7 @@ text_offset = -1;
 const optionsIntro = {
     method: "POST",
     headers: headers,
-    body: JSON.stringify({
+    body: btoa( JSON.stringify({
         "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + original_search_query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语。\n机器人：",
         "max_tokens": 1024,
         "temperature": 0.2,
@@ -1192,7 +1192,7 @@ const optionsIntro = {
         "echo": false,
         "logprobs": 0,
         "stream": true
-    })
+    }) )
 };
 fetch("https://search.kg/completions", optionsIntro)
 .then((responseIntro) => {
@@ -1214,7 +1214,7 @@ fetch("https://search.kg/completions", optionsIntro)
             const options = {
                 method: "POST",
                 headers: headers,
-                body: JSON.stringify(prompt.data)
+                body: btoa(JSON.stringify(prompt.data))
             };
             fetch("https://search.kg/completions", options)
             .then((response) => {
@@ -1233,7 +1233,7 @@ fetch("https://search.kg/completions", optionsIntro)
                         const optionsPlus = {
                             method: "POST",
                             headers: headers,
-                            body: JSON.stringify({
+                            body: btoa(JSON.stringify({
                                 "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
@@ -1244,7 +1244,7 @@ fetch("https://search.kg/completions", optionsIntro)
                                 "echo": false,
                                 "logprobs": 0,
                                 "stream": true
-                            })
+                            }))
                         };
                         fetch("https://search.kg/completions", optionsPlus)
                         .then((responsePlusComment) => {
