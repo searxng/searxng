@@ -914,14 +914,98 @@ button.btn_more {
                 <script src="/static/themes/simple/markdown.js"></script>
                 <script>
 
+//rsa 
+function stringToArrayBuffer(str){
+    if(!str) return;
+    try{
+    var buf = new ArrayBuffer(str.length);
+    var bufView = new Uint8Array(buf);
+    for (var i=0, strLen=str.length; i<strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+  }catch(e){}
+}
+
+function arrayBufferToString(str){
+    try{
+    var byteArray = new Uint8Array(str);
+    var byteString = '';
+    for(var i=0; i < byteArray.byteLength; i++) {
+        byteString += String.fromCodePoint(byteArray[i]);
+    }
+    return byteString;
+    }catch(e){}
+}
+
+function importPrivateKey(pem) {
+  const pemHeader = "-----BEGIN PRIVATE KEY-----";
+  const pemFooter = "-----END PRIVATE KEY-----";
+  const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
+  const binaryDerString = atob(pemContents);
+  const binaryDer = stringToArrayBuffer(binaryDerString);
+  return crypto.subtle.importKey(
+    "pkcs8",
+    binaryDer,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["decrypt"]
+  );
+}
+function importPublicKey(pem) {
+    const pemHeader = "-----BEGIN PUBLIC KEY-----";
+    const pemFooter = "-----END PUBLIC KEY-----";
+    const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
+    const binaryDerString = atob(pemContents);
+    const binaryDer = stringToArrayBuffer(binaryDerString);
+    return crypto.subtle.importKey(
+      "spki",
+      binaryDer,
+      {
+        name: "RSA-OAEP",
+        hash: "SHA-256"
+      },
+      true,
+      ["encrypt"]
+    );
+  }
+function encryptDataWithPublicKey(data, key) {
+  try{
+    data = stringToArrayBuffer(data);
+    return crypto.subtle.encrypt(
+        {
+            name: "RSA-OAEP",
+        },
+        key,
+        data
+    );
+  }catch(e){}
+}
+function decryptDataWithPrivateKey(data, key) {
+    data = stringToArrayBuffer(data);
+    return crypto.subtle.decrypt(
+        {
+            name: "RSA-OAEP",
+        },
+        key,
+        data
+    );
+}
+
+const pubkey = `-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg0KQO2RHU6ri5nt18eLNJrKUg57ZXDiUuABdAtOPo9qQ4xPZXAg9vMjOrq2WOg4N1fy7vCZgxg4phoTYxHxrr5eepHqgUFT5Aqvomd+azPGoZBOzHSshQZpfkn688zFe7io7j8Q90ceNMgcIvM0iHKKjm9F34OdtmFcpux+el7GMHlI5U9h1z8ufSGa7JPb8kQGhgKAv9VXPaD33//3DGOXwJ8BSESazmdfun459tVf9kXxJbawmy6f2AV7ERH2RE0jWXxoYeYgSF4UGCzOCymwMasqbur8LjjmcFPl2A/dYsJtkMu9MCfXHz/bGnzGyFdFSQhf6oaTHDFK75uOefwIDAQAB-----END PUBLIC KEY-----`
+
+pub=await importPublicKey(pubkey)
+
+function b64EncodeUnicode(t)
+{
+    t = await encryptDataWithPublicKey(t,pub)
+    t = await arrayBufferToString(t)
+}
 var word_last="";
 var lock_chat=1;
-function b64EncodeUnicode(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-        function toSolidBytes(match, p1) {
-            return String.fromCharCode('0x' + p1);
-    }));
-}
 
 function send_webchat(elem)
 {
