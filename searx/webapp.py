@@ -915,6 +915,15 @@ button.btn_more {
                     outline: transparent solid 1px;
                 }
                 </style>
+
+
+<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+<script>
+  // VConsole 会自动挂载到 `window.VConsole`
+  var vConsole = new window.VConsole();
+</script>
+
+
                 <script src="/static/themes/simple/markdown.js"></script>
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
