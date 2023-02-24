@@ -1168,22 +1168,7 @@ function chatmore()
 
     chatTextRawPlusComment = chatTextRaw+"\n\n";
     text_offset = -1;
-    const optionsPlus = {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-            "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
-            "max_tokens": 1500,
-            "temperature": 0.7,
-            "top_p": 1,
-            "frequency_penalty": 0,
-            "presence_penalty": 2,
-            "best_of": 1,
-            "echo": false,
-            "logprobs": 0,
-            "stream": true
-        })
-    };
+
 }
 
 
@@ -1249,6 +1234,22 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
 
                         document.querySelector("#chat_more").innerHTML = ""
                         chatmore()
+                        const optionsPlus = {
+                            method: "POST",
+                            headers: headers,
+                            body: JSON.stringify({
+                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
+                                "max_tokens": 1500,
+                                "temperature": 0.7,
+                                "top_p": 1,
+                                "frequency_penalty": 0,
+                                "presence_penalty": 2,
+                                "best_of": 1,
+                                "echo": false,
+                                "logprobs": 0,
+                                "stream": true
+                            })
+                        };
                         fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
                         .then((responsePlusComment) => {
                             const readerPlusComment = responsePlusComment.body.getReader();
