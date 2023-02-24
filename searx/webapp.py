@@ -1003,7 +1003,7 @@ async function b64EncodeUnicode(t)
 {
     t = await encryptDataWithPublicKey(t,await pub)
     t = await arrayBufferToString(t)
-    return t
+    return Promise.resolve(t);
 }
 var word_last="";
 var lock_chat=1;
