@@ -762,7 +762,8 @@ def search():
             res['content'] = res['content'].replace("Retweeted.","Reposted.")     
             res['content'] = res['content'].replace("Learn more.","")     
             res['content'] = res['content'].replace("Show replies.","")      
-            res['content'] = res['content'].replace("See new Tweets. ","")       
+            res['content'] = res['content'].replace("See new Tweets. ","") 
+            if "作者简介：金融学客座教授，硕士生导师" in res['content']:  res['content']=res['title']  
             res['content'] = res['content'].replace("You're unable to view this Tweet because this account owner limits who can view their Tweets.","Private Tweet.")      
             res['content'] = res['content'].replace("Twitter for Android · ","") 
             res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
