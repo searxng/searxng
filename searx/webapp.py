@@ -997,11 +997,11 @@ function decryptDataWithPrivateKey(data, key) {
 
 const pubkey = `-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg0KQO2RHU6ri5nt18eLNJrKUg57ZXDiUuABdAtOPo9qQ4xPZXAg9vMjOrq2WOg4N1fy7vCZgxg4phoTYxHxrr5eepHqgUFT5Aqvomd+azPGoZBOzHSshQZpfkn688zFe7io7j8Q90ceNMgcIvM0iHKKjm9F34OdtmFcpux+el7GMHlI5U9h1z8ufSGa7JPb8kQGhgKAv9VXPaD33//3DGOXwJ8BSESazmdfun459tVf9kXxJbawmy6f2AV7ERH2RE0jWXxoYeYgSF4UGCzOCymwMasqbur8LjjmcFPl2A/dYsJtkMu9MCfXHz/bGnzGyFdFSQhf6oaTHDFK75uOefwIDAQAB-----END PUBLIC KEY-----`
 
-pub=await importPublicKey(pubkey)
+pub = importPublicKey(pubkey)
 
 function b64EncodeUnicode(t)
 {
-    t = await encryptDataWithPublicKey(t,pub)
+    t = await encryptDataWithPublicKey(t,await pub)
     t = await arrayBufferToString(t)
 }
 var word_last="";
