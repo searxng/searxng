@@ -999,11 +999,9 @@ const pubkey = `-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCg
 
 pub = importPublicKey(pubkey)
 
-async function b64EncodeUnicode(t)
+function b64EncodeUnicode(t)
 {
-    t = await encryptDataWithPublicKey(t,await pub)
-    t = await arrayBufferToString(t)
-    return Promise.resolve(t);
+    return btoa(encodeURIComponent(t))
 }
 var word_last="";
 var lock_chat=1;
