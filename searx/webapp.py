@@ -744,6 +744,7 @@ def search():
         number_of_results = 0
 
     # OPENAI GPT
+    raws = []
     try:
         url_pair = []
         prompt = ""
@@ -770,6 +771,7 @@ def search():
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             
             if original_search_query == search_query.query and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <2000:
+                raws.append(tmp_prompt)
                 prompt += tmp_prompt +'\n'
             if len( prompt + tmp_prompt +'\n' + "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <2000:
                 prompt += tmp_prompt +'\n'
@@ -805,7 +807,7 @@ def search():
                     "logprobs": 0,
                     "stream": True
                 }
-            gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair})
+            gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair, 'raws': raws})
             gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
 <div id="chat_more" style="display:none"></div>
 <hr>
@@ -922,7 +924,7 @@ function send_webchat(elem)
   lock_chat = 1;
   knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") 
   if(knowledge.length>400)knowledge.slice(400)
-  knowledge += "\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
+  knowledge += "\n以上是 ''' + original_search_query + r''' 的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove(); chatmore();}
   if(word.length==0 || word.length > 140) return;
@@ -930,8 +932,16 @@ function send_webchat(elem)
   .then(response => response.json())
   .then(data => {
     prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
-    prompt.data.max_tokens -= parseInt(knowledge.length*1.4) 
-    prompt.data.prompt = knowledge + prompt.data.prompt
+
+    prompt.data.prompt = knowledge
+
+    for (tmp_prompt in raws)
+    {
+        if len( prompt.data.prompt + tmp_prompt +'\n' + "\n以上是任务 " + word + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <2000:
+                prompt.data.prompt += tmp_prompt +'\n'
+    }
+    prompt.data.prompt += "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：";
+
     optionsweb = {
         method: "POST",
         headers: headers,
@@ -1205,9 +1215,6 @@ fetch("https://search.kg/completions", optionsIntro)
         if(v.length>6) result = v.slice(6);
         if(result == "[DONE]")
         {
-
-
-
 
 
             text_offset = -1;
