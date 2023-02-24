@@ -702,6 +702,7 @@ def search():
                     gpt = ""
                     gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
                     gpt_headers = {
+                        "Authorization": "Bearer "+os.environ['GPTKEY'],
                         "Content-Type": "application/json",    
                     }
                     gpt_data = {
