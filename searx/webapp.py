@@ -1070,8 +1070,8 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
             let choices;
             try
             {
-                try{choice=JSON.parse(half+result)['choices'];half = '';}
-                catch(e){choice=JSON.parse(result)['choices'];half = '';}
+                try{choices=JSON.parse(half+result)['choices'];half = '';}
+                catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
             if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
             {
@@ -1160,8 +1160,8 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
             let choices;
             try
             {
-                try{choice=JSON.parse(half+result)['choices'];half = '';}
-                catch(e){choice=JSON.parse(result)['choices'];half = '';}
+                try{choices=JSON.parse(half+result)['choices'];half = '';}
+                catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
             if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
             {
@@ -1379,8 +1379,8 @@ fetch("https://search.kg/completions", optionsIntro)
                                 let choices;
                                 try
                                 {
-                                    try{choice=JSON.parse(half+result)['choices'];half = '';}
-                                    catch(e){choice=JSON.parse(result)['choices'];half = '';}
+                                    try{choices=JSON.parse(half+result)['choices'];half = '';}
+                                    catch(e){choices=JSON.parse(result)['choices'];half = '';}
                                 }catch(e){half+=result}
                                 if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
                                 {
@@ -1402,8 +1402,8 @@ fetch("https://search.kg/completions", optionsIntro)
                     let choices;
                     try
                     {
-                        try{choice=JSON.parse(half+result)['choices'];half = '';}
-                        catch(e){choice=JSON.parse(result)['choices'];half = '';}
+                        try{choices=JSON.parse(half+result)['choices'];half = '';}
+                        catch(e){choices=JSON.parse(result)['choices'];half = '';}
                     }catch(e){half+=result}
                     if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
                     {
@@ -1435,8 +1435,8 @@ fetch("https://search.kg/completions", optionsIntro)
         let choices;
         try
         {
-            try{choice=JSON.parse(half+result)['choices'];half = '';}
-            catch(e){choice=JSON.parse(result)['choices'];half = '';}
+            try{choices=JSON.parse(half+result)['choices'];half = '';}
+            catch(e){choices=JSON.parse(result)['choices'];half = '';}
         }catch(e){half+=result}
         if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
         {
