@@ -39,12 +39,14 @@ _ECMA_UNESCAPE4_RE = re.compile(r'%u([0-9a-fA-F]{4})', re.UNICODE)
 _ECMA_UNESCAPE2_RE = re.compile(r'%([0-9a-fA-F]{2})', re.UNICODE)
 
 _STORAGE_UNIT_VALUE: Dict[str, int] = {
-    'TB': 1024 * 1024 * 1024 * 1024,
-    'GB': 1024 * 1024 * 1024,
-    'MB': 1024 * 1024,
-    'TiB': 1000 * 1000 * 1000 * 1000,
-    'MiB': 1000 * 1000,
-    'KiB': 1000,
+    'TB': 1000 * 1000 * 1000 * 1000,
+    'GB': 1000 * 1000 * 1000,
+    'MB': 1000 * 1000,
+    'kB': 1000,
+    'TiB': 1024 * 1024 * 1024 * 1024,
+    'GiB': 1024 * 1024 * 1024,
+    'MiB': 1024 * 1024,
+    'KiB': 1024,
 }
 
 _XPATH_CACHE: Dict[str, XPath] = {}
