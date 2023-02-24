@@ -1138,6 +1138,23 @@ for(let i=prompt.url_pair.length;i>=0;--i)
 
 function chatmore()
 {
+
+    const optionsMore = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]：',
+            "max_tokens": 1500,
+            "temperature": 0.7,
+            "top_p": 1,
+            "frequency_penalty": 0,
+            "presence_penalty": 2,
+            "best_of": 1,
+            "echo": false,
+            "logprobs": 0,
+            "stream": false
+        })
+    };
     if(document.querySelector("#chat_more").innerHTML != "") return
     fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
     .then(response => response.json())
@@ -1228,22 +1245,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                     if(v.length>6) result = v.slice(6);
                     if(result == "[DONE]")
                     {
-                        const optionsMore = {
-                            method: "POST",
-                            headers: headers,
-                            body: JSON.stringify({
-                                "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]：',
-                                "max_tokens": 1500,
-                                "temperature": 0.7,
-                                "top_p": 1,
-                                "frequency_penalty": 0,
-                                "presence_penalty": 2,
-                                "best_of": 1,
-                                "echo": false,
-                                "logprobs": 0,
-                                "stream": false
-                            })
-                        };
+
                         document.querySelector("#chat_more").innerHTML = ""
                         chatmore()
                         fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
