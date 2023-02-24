@@ -1054,6 +1054,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
       .then((response) => {
         const reader = response.body.getReader();
         let result = '';
+        let half="";
         reader.read().then(function processText({ done, value }) {
           if (done) return;
           const text = new TextDecoder('utf-8').decode(value);
@@ -1066,8 +1067,13 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 document.querySelector("#chat_input").value="";
                 return;
             }
-            const { choices } = JSON.parse(result);
-            if(choices[0].logprobs.text_offset[0] > text_offset)
+            let choices;
+            try
+            {
+                try{JSON.parse(half+result)['choices'];half = '';}
+                catch(e){JSON.parse(result)['choices'];half = '';}
+            }catch(e){half+=result}
+            if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
             {
                 
                 chatTemp+=choices[0].text
@@ -1138,6 +1144,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
       .then((response) => {
         const reader = response.body.getReader();
         let result = '';
+        let half = '';
         reader.read().then(function processText({ done, value }) {
           if (done) return;
           const text = new TextDecoder('utf-8').decode(value);
@@ -1150,8 +1157,13 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 document.querySelector("#chat_input").value="";
                 return;
             }
-            const { choices } = JSON.parse(result);
-            if(choices[0].logprobs.text_offset[0] > text_offset)
+            let choices;
+            try
+            {
+                try{JSON.parse(half+result)['choices'];half = '';}
+                catch(e){JSON.parse(result)['choices'];half = '';}
+            }catch(e){half+=result}
+            if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
             {
                 
                 chatTemp+=choices[0].text
@@ -1300,6 +1312,7 @@ fetch("https://search.kg/completions", optionsIntro)
 .then((responseIntro) => {
     const readerIntro = responseIntro.body.getReader();
     let result = '';
+    let half = "";
     readerIntro.read().then(function processText({ done, value }) {
     if (done) return;
     const textIntro = new TextDecoder('utf-8').decode(value);
@@ -1319,6 +1332,7 @@ fetch("https://search.kg/completions", optionsIntro)
             .then((response) => {
                 const reader = response.body.getReader();
                 let result = '';
+                let half = "";
                 reader.read().then(function processText({ done, value }) {
                 if (done) return;
                 const text = new TextDecoder('utf-8').decode(value);
@@ -1349,6 +1363,7 @@ fetch("https://search.kg/completions", optionsIntro)
                         .then((responsePlusComment) => {
                             const readerPlusComment = responsePlusComment.body.getReader();
                             let result = '';
+                            let half="";
                             readerPlusComment.read().then(function processText({ done, value }) {
                             if (done) return;
                             const textPlusComment = new TextDecoder('utf-8').decode(value);
@@ -1361,8 +1376,13 @@ fetch("https://search.kg/completions", optionsIntro)
                                     document.getElementById('chat_more').style.display="";
                                     return;
                                 }
-                                const { choices } = JSON.parse(result);
-                                if(choices[0].logprobs.text_offset[0] > text_offset)
+                                let choices;
+                                try
+                                {
+                                    try{JSON.parse(half+result)['choices'];half = '';}
+                                    catch(e){JSON.parse(result)['choices'];half = '';}
+                                }catch(e){half+=result}
+                                if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
                                 {
                                     chatTextRawPlusComment+=choices[0].text
                                     text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
@@ -1379,8 +1399,13 @@ fetch("https://search.kg/completions", optionsIntro)
                         });
                         return;
                     }
-                    const { choices } = JSON.parse(result);
-                    if(choices[0].logprobs.text_offset[0] > text_offset)
+                    let choices;
+                    try
+                    {
+                        try{JSON.parse(half+result)['choices'];half = '';}
+                        catch(e){JSON.parse(result)['choices'];half = '';}
+                    }catch(e){half+=result}
+                    if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
                     {
                         chatTextRaw+=choices[0].text
                         text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
@@ -1407,8 +1432,13 @@ fetch("https://search.kg/completions", optionsIntro)
 
             return;
         }
-        const { choices } = JSON.parse(result);
-        if(choices[0].logprobs.text_offset[0] > text_offset)
+        let choices;
+        try
+        {
+            try{JSON.parse(half+result)['choices'];half = '';}
+            catch(e){JSON.parse(result)['choices'];half = '';}
+        }catch(e){half+=result}
+        if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
         {
             chatTextRawIntro+=choices[0].text
             text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
