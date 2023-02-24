@@ -1035,7 +1035,8 @@ function send_webchat(elem)
     prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
 
     prompt.data.prompt = knowledge
-
+    prompt.data.presence_penalty=1
+    prompt.data.temperature= 0.9
     for (tmp_prompt in prompt.raws)
     {
         if (( prompt.data.prompt + tmp_prompt +'\n' + "\n以上是任务 " + word + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：").length <1800)
