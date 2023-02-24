@@ -756,6 +756,7 @@ def search():
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
+            res['content'] = res['content'].replaceAll("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
             res['content'] = res['content'].replace("Translate Tweet.","")
@@ -770,10 +771,10 @@ def search():
              
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             
-            if original_search_query == search_query.query and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <2000:
+            if original_search_query == search_query.query and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <1800:
                 raws.append(tmp_prompt)
                 prompt += tmp_prompt +'\n'
-            if len( prompt + tmp_prompt +'\n' + "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <2000:
+            if len( prompt + tmp_prompt +'\n' + "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <1800:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -1025,7 +1026,7 @@ function send_webchat(elem)
 
     for (tmp_prompt in raws)
     {
-        if (( prompt.data.prompt + tmp_prompt +'\n' + "\n以上是任务 " + word + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：").length <2000)
+        if (( prompt.data.prompt + tmp_prompt +'\n' + "\n以上是任务 " + word + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：").length <1800)
             prompt.data.prompt += tmp_prompt +'\n'
     }
     prompt.data.prompt += "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：";
