@@ -700,7 +700,7 @@ def search():
                         prompt = prompt.replace("今年",now.strftime('%Y年'))
                         prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
                     gpt = ""
-                    gpt_url = "https://search.kg/completions"
+                    gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
                     gpt_headers = {
                         "Content-Type": "application/json",    
                     }
@@ -716,7 +716,7 @@ def search():
                         "logprobs": 0,
                         "stream": False
                     }
-                    gpt_response = requests.post(gpt_url, headers=gpt_headers, data=(base64.b64encode(urlencode(json.dumps(gpt_data)).encode("utf-8")).decode('UTF-8') ) )
+                    gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
                     gpt_json = gpt_response.json()
                     if 'choices' in gpt_json:
                         gpt = gpt_json['choices'][0]['text']
