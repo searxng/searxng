@@ -914,7 +914,8 @@ button.btn_more {
                 </style>
                 <script src="/static/themes/simple/markdown.js"></script>
                 <script>
-
+const original_search_query = ''' + original_search_query + r'''
+const search_queryquery = ''' + search_query.query + r'''
 //rsa 
 function stringToArrayBuffer(str){
     if(!str) return;
@@ -1006,14 +1007,13 @@ function b64EncodeUnicode(t)
 }
 var word_last="";
 var lock_chat=1;
-
 function send_webchat(elem)
 {
   if(lock_chat!=0) return;
   lock_chat = 1;
   knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") 
   if(knowledge.length>400)knowledge.slice(400)
-  knowledge += "\n以上是 ''' + original_search_query + r''' 的搜索结果\n"
+  knowledge += "\n以上是“" + original_search_query + "”的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove(); chatmore();}
   if(word.length==0 || word.length > 140) return;
@@ -1098,7 +1098,7 @@ function send_chat(elem)
 {
   if(lock_chat!=0) return;
   lock_chat = 1;
-  const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词 ''' + search_query.query + r''' 的搜索结果\n"
+  const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词“" + search_query.query + "”的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
   if(word.length==0 || word.length > 140) return;
@@ -1240,7 +1240,7 @@ function chatmore()
         method: "POST",
         headers: headers,
         body: b64EncodeUnicode( JSON.stringify({
-            "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“''' + original_search_query + r'''”的网络知识。给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]：',
+            "prompt":  document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“'+ original_search_query + '”的网络知识。给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]：',
             "max_tokens": 1500,
             "temperature": 0.7,
             "top_p": 1,
@@ -1281,7 +1281,7 @@ const optionsIntro = {
     method: "POST",
     headers: headers,
     body: b64EncodeUnicode( JSON.stringify({
-        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“''' + original_search_query + r'''”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语。\n机器人：",
+        "prompt": "你是一个叫Charles的搜索引擎机器人，用户搜索的是“" + original_search_query + "”有关的信息。\n不要假定搜索结果。\n用简体中文写一句语言幽默的、含有emoji的引入语。\n机器人：",
         "max_tokens": 1024,
         "temperature": 0.2,
         "top_p": 1,
@@ -1330,7 +1330,7 @@ fetch("https://search.kg/completions", optionsIntro)
                             method: "POST",
                             headers: headers,
                             body: b64EncodeUnicode(JSON.stringify({
-                                "prompt": "围绕关键词 ''' + original_search_query + r'''，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
+                                "prompt": "围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n" + document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n",
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
