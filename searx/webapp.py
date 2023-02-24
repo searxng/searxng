@@ -999,7 +999,7 @@ const pubkey = `-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCg
 
 pub = importPublicKey(pubkey)
 
-function b64EncodeUnicode(t)
+async function b64EncodeUnicode(t)
 {
     t = await encryptDataWithPublicKey(t,await pub)
     t = await arrayBufferToString(t)
