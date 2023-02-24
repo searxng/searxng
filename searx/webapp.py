@@ -756,7 +756,7 @@ def search():
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
-            res['content'] = res['content'].replaceAll("  "," ")
+            res['content'] = res['content'].replace("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
             res['content'] = res['content'].replace("Learn more ","")
             res['content'] = res['content'].replace("Translate Tweet.","")
