@@ -698,9 +698,8 @@ def search():
                         prompt = prompt.replace("今年",now.strftime('%Y年'))
                         prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
                     gpt = ""
-                    gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+                    gpt_url = "https://search.kg/completions"
                     gpt_headers = {
-                        "Authorization": "Bearer "+os.environ['GPTKEY'],
                         "Content-Type": "application/json",    
                     }
                     gpt_data = {
@@ -776,11 +775,9 @@ def search():
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
-            gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+            gpt_url = "https://search.kg/completions"
             gpt_headers = {
-                "Authorization": "Bearer "+os.environ['GPTKEY'],
                 "Content-Type": "application/json",
-                "OpenAI-Organization": os.environ['GPTORG']
             }
             if original_search_query != search_query.query:
                 gpt_data = {
@@ -951,7 +948,7 @@ prev_chat = document.getElementById('chat').innerHTML;
 prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 
 
-  fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsweb)
+  fetch("https://search.kg/completions", optionsweb)
       .then((response) => {
         const reader = response.body.getReader();
         let result = '';
@@ -1035,7 +1032,7 @@ prev_chat = document.getElementById('chat').innerHTML;
 prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 
 
-  fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
+  fetch("https://search.kg/completions", options)
       .then((response) => {
         const reader = response.body.getReader();
         let result = '';
@@ -1157,7 +1154,7 @@ function chatmore()
         })
     };
     if(document.querySelector("#chat_more").innerHTML != "") return
-    fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsMore)
+    fetch("https://search.kg/completions", optionsMore)
     .then(response => response.json())
     .then(data => {
         JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
@@ -1176,7 +1173,6 @@ let chatTextRaw =""
 let text_offset = -1;
 const headers = {
 "Content-Type": "application/json",
-Authorization:  "Bearer '''+ os.environ['GPTKEY'] + r'''",
 };
 let prompt = JSON.parse(atob(document.querySelector("#prompt").textContent));
 
@@ -1198,7 +1194,7 @@ const optionsIntro = {
         "stream": true
     })
 };
-fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsIntro)
+fetch("https://search.kg/completions", optionsIntro)
 .then((responseIntro) => {
     const readerIntro = responseIntro.body.getReader();
     let result = '';
@@ -1220,7 +1216,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                 headers: headers,
                 body: JSON.stringify(prompt.data)
             };
-            fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", options)
+            fetch("https://search.kg/completions", options)
             .then((response) => {
                 const reader = response.body.getReader();
                 let result = '';
@@ -1250,7 +1246,7 @@ fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsI
                                 "stream": true
                             })
                         };
-                        fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", optionsPlus)
+                        fetch("https://search.kg/completions", optionsPlus)
                         .then((responsePlusComment) => {
                             const readerPlusComment = responsePlusComment.body.getReader();
                             let result = '';
