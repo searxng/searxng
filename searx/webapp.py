@@ -1107,7 +1107,7 @@ function send_chat(elem)
 {
   if(lock_chat!=0) return;
   lock_chat = 1;
-  const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词“" + search_query.query + "”的搜索结果\n"
+  const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词“" + search_queryquery + "”的搜索结果\n"
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
   if(word.length==0 || word.length > 140) return;
