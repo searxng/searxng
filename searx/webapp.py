@@ -688,10 +688,12 @@ def search():
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            if "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+            if "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
                 if len(search_query.query)>5 and "谁是" in search_query.query:
                     search_query.query = search_query.query.replace("谁是","")
-                if len(search_query.query)>10 and not "谁是" in search_query.query:
+                if len(search_query.query)>5 and "是谁" in search_query.query:
+                    search_query.query = search_query.query.replace("是谁","")
+                if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
                     prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
                     if "今年" in prompt or "今天" in prompt:
                         now = datetime.datetime.now()
@@ -714,7 +716,7 @@ def search():
                         "logprobs": 0,
                         "stream": False
                     }
-                    gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
+                    gpt_response = requests.post(gpt_url, headers=gpt_headers, data=(base64.b64encode(urlencode(json.dumps(gpt_data)).encode("utf-8")).decode('UTF-8') ) )
                     gpt_json = gpt_response.json()
                     if 'choices' in gpt_json:
                         gpt = gpt_json['choices'][0]['text']
