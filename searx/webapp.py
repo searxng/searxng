@@ -688,7 +688,7 @@ def search():
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            if "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+            if "模仿" in search_query.query or "扮演" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
                 if len(search_query.query)>5 and "谁是" in search_query.query:
                     search_query.query = search_query.query.replace("谁是","")
                 if len(search_query.query)>5 and "是谁" in search_query.query:
@@ -1035,14 +1035,14 @@ function send_webchat(elem)
     prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
 
     prompt.data.prompt = knowledge
-    prompt.data.presence_penalty=1
+    prompt.data.presence_penalty = 1
     prompt.data.temperature= 0.9
     for (tmp_prompt in prompt.raws)
     {
-        if (( prompt.data.prompt + tmp_prompt +'\n' + "\n以上是任务 " + word + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：").length <1800)
+        if (( prompt.data.prompt + tmp_prompt +'\n' + "\n用简体中文完成任务，如果使用了以上知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。任务：+word+\n+结果：").length <1800)
             prompt.data.prompt += tmp_prompt +'\n'
     }
-    prompt.data.prompt += "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：";
+    prompt.data.prompt += "\n用简体中文完成任务，如果使用了以上知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。任务：+word+\n+结果：";
 
     optionsweb = {
         method: "POST",
@@ -1115,7 +1115,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
 
 function send_chat(elem)
 {
-if (search_queryquery.includes("写一段") || search_queryquery.includes("写一个") || search_queryquery.includes("请问") || search_queryquery.includes("请给") || search_queryquery.includes("请你") || search_queryquery.includes("请推荐") || search_queryquery.includes("能帮忙") || search_queryquery.includes("介绍一下") || search_queryquery.includes("为什么") || search_queryquery.includes("什么是") || search_queryquery.includes("有什么") || search_queryquery.includes("怎样") || search_queryquery.includes("给我") || search_queryquery.includes("如何") || search_queryquery.includes("谁是") || search_queryquery.includes("查询") || search_queryquery.includes("告诉我") || search_queryquery.includes("查一下") || search_queryquery.includes("找一个") || search_queryquery.includes("什么样") || search_queryquery.includes("哪个") || search_queryquery.includes("哪些") || search_queryquery.includes("哪一个") || search_queryquery.includes("哪一些") || search_queryquery.includes("啥是") || search_queryquery.includes("为啥") || search_queryquery.includes("怎么"))
+if (search_queryquery.includes("模仿") || (search_queryquery.includes("扮演") || search_queryquery.includes("写一段") || search_queryquery.includes("写一个") || search_queryquery.includes("请问") || search_queryquery.includes("请给") || search_queryquery.includes("请你") || search_queryquery.includes("请推荐") || search_queryquery.includes("能帮忙") || search_queryquery.includes("介绍一下") || search_queryquery.includes("为什么") || search_queryquery.includes("什么是") || search_queryquery.includes("有什么") || search_queryquery.includes("怎样") || search_queryquery.includes("给我") || search_queryquery.includes("如何") || search_queryquery.includes("谁是") || search_queryquery.includes("查询") || search_queryquery.includes("告诉我") || search_queryquery.includes("查一下") || search_queryquery.includes("找一个") || search_queryquery.includes("什么样") || search_queryquery.includes("哪个") || search_queryquery.includes("哪些") || search_queryquery.includes("哪一个") || search_queryquery.includes("哪一些") || search_queryquery.includes("啥是") || search_queryquery.includes("为啥") || search_queryquery.includes("怎么"))
     return send_webchat(elem);
   if(lock_chat!=0) return;
   lock_chat = 1;
