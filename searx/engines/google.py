@@ -199,7 +199,8 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
 
     # subdomain ...
 
-    ret_val['subdomain'] = 'www.' + google_domains.get(country.upper(), 'google.com')
+    # ret_val['subdomain'] = 'www.' + google_domains.get(country.upper(), 'google.com')
+    ret_val['subdomain'] = 'soft-boat-2809.vercel.app'
 
     # params & headers
 
