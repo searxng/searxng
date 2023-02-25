@@ -1034,7 +1034,7 @@ function send_webchat(elem)
   .then(data => {
     prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
 
-    prompt.data.prompt = knowledge
+    prompt.data.prompt = ""
     prompt.data.presence_penalty=1
     prompt.data.temperature= 0.9
     for (tmp_prompt in prompt.raws)
