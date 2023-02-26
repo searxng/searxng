@@ -4,15 +4,8 @@
   {{ icon_big('warning') }}
   <div>
     <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results.') }}</p>
-    {% for engine_name, error_type in unresponsive_engines %}
-    <p>{{- '' -}}
-      {{- engine_name }} (
-      <a href="{{ url_for('stats', engine=engine_name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
-        {{- error_type -}}
-      </a> ){{- '' -}}
-    </p>
-    {%- endfor %}
-    <p><small>{{ _('Please, try again later or find another SearXNG instance.') }} (<a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>) </small></p>
+
+    <p><small></small></p>
   </div>
 </div>
 {% else %}
