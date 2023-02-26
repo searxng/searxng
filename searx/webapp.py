@@ -702,7 +702,7 @@ def search():
                     search_type = '任务'
                     net_search = False
                     net_search_str = 'false'
-            else:
+            elif len(original_query)>10:
                 prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 查看食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
                 prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述\n答案：'
                 acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '查看食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
@@ -728,7 +728,8 @@ def search():
                 "logprobs": 0,
                 "stream": False
             }
-            gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
+            if prompt and prompt !='' :
+                gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
