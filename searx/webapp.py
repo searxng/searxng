@@ -594,7 +594,7 @@ def post_request(response: flask.Response):
             if t.load
         ]
         timings_all = timings_all + timings_total + timings_load
-    response.headers.add('Server-Timing', ', '.join(timings_all))
+    # response.headers.add('Server-Timing', ', '.join(timings_all))
     return response
 
 
