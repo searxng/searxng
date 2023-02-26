@@ -740,7 +740,7 @@ def search():
                 if gpt!="":
                     search_query.query = gpt
                     if 'Google' not in original_search_query and 'google' not in original_search_query and '谷歌' not in original_search_query and ('Google' in search_query.query or 'google' in search_query.query or '谷歌' in search_query.query):
-                        search_query.query.replace("Google","").replace("google","").replace("谷歌","")
+                        search_query.query=search_query.query.replace("Google","").replace("google","").replace("谷歌","")
             else:
                 gpt_judge = []
                 for tmpj in gpt.split():
