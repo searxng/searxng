@@ -1016,6 +1016,20 @@ function b64EncodeUnicode(t)
 }
 var word_last="";
 var lock_chat=1;
+function wait(delay){
+    return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+function fetchRetry(url, tries, fetchOptions = {}) {
+    function onError(err){
+        triesLeft = tries - 1;
+        if(!triesLeft){
+            throw err;
+        }
+        return wait(500).then(() => fetchRetry(url, triesLeft, fetchOptions));
+    }
+    return fetch(url,fetchOptions).catch(onError);
+}
 function send_webchat(elem)
 {
   if(lock_chat!=0) return;
@@ -1026,7 +1040,7 @@ function send_webchat(elem)
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove(); chatmore();}
   if(word.length==0 || word.length > 140) return;
-  fetch('https://search.kg/search?q='+encodeURIComponent(word)+'&language=zh-CN&time_range=&safesearch=0&categories=general&format=json')
+  fetchRetry('https://search.kg/search?q='+encodeURIComponent(word)+'&language=zh-CN&time_range=&safesearch=0&categories=general&format=json',3)
   .then(response => response.json())
   .then(data => {
     prompt = JSON.parse(atob( (/<div id="prompt" style="display:none">(.*?)<\/div>/).exec(data.infoboxes[0].content)[1] )  )
