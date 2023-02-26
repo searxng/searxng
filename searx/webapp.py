@@ -1024,14 +1024,14 @@ const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
 
     if output_format == 'json':
         x = {
-            'query': search_query.query,
-            'number_of_results': number_of_results,
-            'results': results,
-            'answers': list(result_container.answers),
-            'corrections': list(result_container.corrections),
+            # 'query': search_query.query,
+            # 'number_of_results': number_of_results,
+            # 'results': results,
+            # 'answers': list(result_container.answers),
+            # 'corrections': list(result_container.corrections),
             'infoboxes': result_container.infoboxes,
-            'suggestions': list(result_container.suggestions),
-            'unresponsive_engines': __get_translated_errors(result_container.unresponsive_engines),
+            # 'suggestions': list(result_container.suggestions),
+            # 'unresponsive_engines': __get_translated_errors(result_container.unresponsive_engines),
         }
         response = json.dumps(x, default=lambda item: list(item) if isinstance(item, set) else item)
         return Response(response, mimetype='application/json')
