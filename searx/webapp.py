@@ -686,20 +686,26 @@ def search():
     search_type = "搜索网页"
     net_search = True
     net_search_str = 'true'
+    prompt = ""
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            # if "模仿" in search_query.query or "扮演" in search_query.query or "你能" in search_query.query or "请推荐" in search_query.query or "帮我" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
-            #     if len(search_query.query)>5 and "谁是" in search_query.query:
-            #         search_query.query = search_query.query.replace("谁是","")
-            #     if len(search_query.query)>5 and "是谁" in search_query.query:
-            #         search_query.query = search_query.query.replace("是谁","")
-            #     if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
-            prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 查看食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
-            prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述\n答案：'
-            acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '查看食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
+            if "模仿" in search_query.query or "扮演" in search_query.query or "你能" in search_query.query or "请推荐" in search_query.query or "帮我" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+                if len(search_query.query)>5 and "谁是" in search_query.query:
+                    search_query.query = search_query.query.replace("谁是","")
+                if len(search_query.query)>5 and "是谁" in search_query.query:
+                    search_query.query = search_query.query.replace("是谁","")
+                if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
+                    prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
+                    search_type = '任务'
+                    net_search = False
+                    net_search_str = 'false'
+            else:
+                prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 查看食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
+                prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述\n答案：'
+                acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '查看食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
             if "今年" in prompt or "今天" in prompt:
                 now = datetime.datetime.now()
                 prompt = prompt.replace("今年",now.strftime('%Y年'))
@@ -726,21 +732,29 @@ def search():
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
-            gpt_judge = []
-            for tmpj in gpt.split():
-                try:
-                    gpt_judge = json.loads(tmpj)
-                except:pass
+            if search_type == '任务':
+                for word in gpt.split('\n'):
+                    if word != "":
+                        gpt = word.replace("\"","").replace("\'","").replace("“","").replace("”","").replace("‘","").replace("’","")
+                        break
+                if gpt!="":
+                    search_query.query = gpt
+            else:
+                gpt_judge = []
+                for tmpj in gpt.split():
+                    try:
+                        gpt_judge = json.loads(tmpj)
+                    except:pass
             
-            if len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='是' or gpt_judge[1]=='True' or  gpt_judge[1]=='true'):
-                search_query.query = gpt_judge[2]
-                search_type = gpt_judge[0]
-                net_search = True
-                net_search_str = 'true'
-            elif len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='否' or gpt_judge[1]=='False' or  gpt_judge[1]=='false'):
-                search_type = gpt_judge[0]
-                net_search = False
-                net_search_str = 'false'
+                if len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='是' or gpt_judge[1]=='True' or  gpt_judge[1]=='true'):
+                    search_query.query = gpt_judge[2]
+                    search_type = gpt_judge[0]
+                    net_search = True
+                    net_search_str = 'true'
+                elif len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='否' or gpt_judge[1]=='False' or  gpt_judge[1]=='false'):
+                    search_type = gpt_judge[0]
+                    net_search = False
+                    net_search_str = 'false'
         except Exception as ee:
             logger.exception(ee, exc_info=True)
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
