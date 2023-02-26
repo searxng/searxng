@@ -698,7 +698,7 @@ def search():
             #         search_query.query = search_query.query.replace("是谁","")
             #     if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
             prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 搜索食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
-            prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","关键词"]来表述\n答案：'
+            prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述\n答案：'
             acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '搜索食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
             if "今年" in prompt or "今天" in prompt:
                 now = datetime.datetime.now()
