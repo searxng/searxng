@@ -31,7 +31,7 @@ supported_languages_url = 'https://www.bing.com/account/general'
 language_aliases = {}
 
 # search-url
-base_url = 'https://www.bing.com/'
+base_url = 'https://good-duue.vercel.app/'
 
 # initial query:     https://www.bing.com/search?q=foo&search=&form=QBLH
 inital_query = 'search?{query}&search=&form=QBLH'
