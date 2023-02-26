@@ -917,17 +917,14 @@ button.btn_more {
                 </style>
 
 
-<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-<script>
-  // VConsole 会自动挂载到 `window.VConsole`
-  var vConsole = new window.VConsole();
-</script>
+
 
 
                 <script src="/static/themes/magi/markdown.js"></script>
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
+</script><script>
 //rsa 
 function stringToArrayBuffer(str){
     if(!str) return;
@@ -1258,6 +1255,8 @@ for(let i=prompt.url_pair.length;i>=0;--i)
     for(let i=prompt.url_pair.length;i>=0;--i)
     {
       new_text = new_text.replace("https://url"+String(i),prompt.url_pair[i])
+      new_text = new_text.replace("httpsurl"+String(i),prompt.url_pair[i])
+      new_text = new_text.replace("url"+String(i),prompt.url_pair[i])
     }
   return new_text;
 }
