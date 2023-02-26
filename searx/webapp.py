@@ -726,6 +726,7 @@ def search():
             gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
                 gpt = gpt_json['choices'][0]['text']
+            gpt = gpt.replace("查看食谱","搜索食谱")
             gpt_judge = []
             for tmpj in gpt.split():
                 try:
