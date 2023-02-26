@@ -4,7 +4,19 @@
   {{ icon_big('warning') }}
   <div>
     <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results.') }}</p>
-
+    <p><b>此页面将在 <span id="countdown">15</span> 秒后重试，请勿关闭浏览器。</b></p>
+    <script>
+      let timeLeft = 15;
+      const countdownEl = document.getElementById("countdown");
+      setInterval(() => {
+        timeLeft--;
+        if (timeLeft >= 0) {
+          countdownEl.innerText = timeLeft;
+        } else {
+          window.location.reload(true);
+        }
+      }, 1000);
+    </script>
   </div>
 </div>
 {% else %}
