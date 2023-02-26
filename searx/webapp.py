@@ -799,7 +799,7 @@ def search():
             gpt_headers = {
                 "Content-Type": "application/json",
             }
-            if '搜索' in search_type:
+            if '搜索' not in search_type:
                 gpt_data = {
                     "prompt": prompt+"\n以上是 " + original_search_query + " 的网络知识。用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
                     "max_tokens": 1000,
