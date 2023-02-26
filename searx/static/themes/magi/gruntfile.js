@@ -132,7 +132,7 @@ module.exports = function (grunt) {
           },
           {
             src: ['src/less/style-rtl.less'],
-            dest: 'css/searxng-rtl.min.css',
+            dest: 'css/magi-rtl.min.css',
             nonull: true,
             filter: file_exists,
           },

@@ -13,9 +13,9 @@
   <title>{% block title %}{% endblock %}{{ instance_name }}</title>
   {% block meta %}{% endblock %}
   {% if rtl %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/magi-rtl.min.css') }}" type="text/css" media="screen" />
   {% else %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/magi.min.css') }}" type="text/css" media="screen" />
   {% endif %}
   {% block styles %}{% endblock %}
   <!--[if gte IE 9]>-->
