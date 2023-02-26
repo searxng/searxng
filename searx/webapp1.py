@@ -683,50 +683,64 @@ def search():
     raw_text_query = None
     result_container = None
     original_search_query = ""
+    search_type = "搜索网页"
+    net_search = True
+    net_search_str = 'true'
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
         try:
             original_search_query = search_query.query
-            if "模仿" in search_query.query or "扮演" in search_query.query or "你能" in search_query.query or "请推荐" in search_query.query or "帮我" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
-                if len(search_query.query)>5 and "谁是" in search_query.query:
-                    search_query.query = search_query.query.replace("谁是","")
-                if len(search_query.query)>5 and "是谁" in search_query.query:
-                    search_query.query = search_query.query.replace("是谁","")
-                if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
-                    prompt = search_query.query + "\n对以上问题生成一个Google搜索词：\n"
-                    if "今年" in prompt or "今天" in prompt:
-                        now = datetime.datetime.now()
-                        prompt = prompt.replace("今年",now.strftime('%Y年'))
-                        prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
-                    gpt = ""
-                    gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-                    gpt_headers = {
-                        "Authorization": "Bearer "+os.environ['GPTKEY'],
-                        "Content-Type": "application/json",    
-                    }
-                    gpt_data = {
-                        "prompt": prompt,
-                        "max_tokens": 256,
-                        "temperature": 0.9,
-                        "top_p": 1,
-                        "frequency_penalty": 0,
-                        "presence_penalty": 0,
-                        "best_of": 1,
-                        "echo": False,
-                        "logprobs": 0,
-                        "stream": False
-                    }
-                    gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
-                    gpt_json = gpt_response.json()
-                    if 'choices' in gpt_json:
-                        gpt = gpt_json['choices'][0]['text']
-                    for word in gpt.split('\n'):
-                        if word != "":
-                            gpt = word.replace("\"","").replace("\'","").replace("“","").replace("”","").replace("‘","").replace("’","")
-                            break
-                    if gpt!="":
-                        search_query.query = gpt
+            # if "模仿" in search_query.query or "扮演" in search_query.query or "你能" in search_query.query or "请推荐" in search_query.query or "帮我" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
+            #     if len(search_query.query)>5 and "谁是" in search_query.query:
+            #         search_query.query = search_query.query.replace("谁是","")
+            #     if len(search_query.query)>5 and "是谁" in search_query.query:
+            #         search_query.query = search_query.query.replace("是谁","")
+            #     if len(search_query.query)>5 and not "谁是" in search_query.query and not "是谁" in search_query.query:
+            prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 搜索食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
+            prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","关键词"]来表述\n答案：'
+            acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '搜索食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
+            if "今年" in prompt or "今天" in prompt:
+                now = datetime.datetime.now()
+                prompt = prompt.replace("今年",now.strftime('%Y年'))
+                prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
+            gpt = ""
+            gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+            gpt_headers = {
+                "Authorization": "Bearer "+os.environ['GPTKEY'],
+                "Content-Type": "application/json",    
+            }
+            gpt_data = {
+                "prompt": prompt,
+                "max_tokens": 256,
+                "temperature": 0.9,
+                "top_p": 1,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+                "best_of": 1,
+                "echo": False,
+                "logprobs": 0,
+                "stream": False
+            }
+            gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
+            gpt_json = gpt_response.json()
+            if 'choices' in gpt_json:
+                gpt = gpt_json['choices'][0]['text']
+            gpt_judge = []
+            for tmpj in gpt.split():
+                try:
+                    gpt_judge = json.load(tmpj)
+                except:pass
+            
+            if len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='是' or gpt_judge[1]=='True' or  gpt_judge[1]=='true'):
+                search_query.query = gpt_judge[2]
+                search_type = gpt_judge[0]
+                net_search = True
+                net_search_str = 'true'
+            elif len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='否' or gpt_judge[1]=='False' or  gpt_judge[1]=='false'):
+                search_type = gpt_judge[0]
+                net_search = False
+                net_search_str = 'false'
         except Exception as ee:
             logger.exception(ee, exc_info=True)
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
@@ -774,10 +788,10 @@ def search():
              
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
             
-            if original_search_query == search_query.query and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <1600:
+            if '搜索' in search_type and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：" ) <1600:
                 raws.append(tmp_prompt)
                 prompt += tmp_prompt +'\n'
-            if len( prompt + tmp_prompt +'\n' + "\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <1600:
+            elif len( prompt + tmp_prompt +'\n' + "\n以上是 " + original_search_query + " 的网络知识。用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：") <1600:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -785,9 +799,9 @@ def search():
             gpt_headers = {
                 "Content-Type": "application/json",
             }
-            if original_search_query != search_query.query:
+            if '搜索' in search_type:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是任务 " + original_search_query + " 的网络知识。用简体中文完成任务，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
+                    "prompt": prompt+"\n以上是 " + original_search_query + " 的网络知识。用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -924,6 +938,8 @@ button.btn_more {
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
+const search_type = "''' + search_type + r'''"
+const net_search =  "''' + net_search_str + r'''"
 </script><script>
 //rsa 
 function stringToArrayBuffer(str){
