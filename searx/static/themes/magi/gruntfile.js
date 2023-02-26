@@ -126,7 +126,7 @@ module.exports = function (grunt) {
         files: [
           {
             src: ['src/less/style-ltr.less'],
-            dest: 'css/searxng.min.css',
+            dest: 'css/magi.min.css',
             nonull: true,
             filter: file_exists,
           },
