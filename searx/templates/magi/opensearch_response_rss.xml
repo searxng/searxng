@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Searx search: {{ q|e }}</title>
+    <link>{{ url_for('search', _external=True) }}?q={{ q|e }}</link>
+    <description>Search results for "{{ q|e }}" - searx</description>
+    <opensearch:totalResults>{{ number_of_results }}</opensearch:totalResults>
+    <opensearch:startIndex>1</opensearch:startIndex>
+    <opensearch:itemsPerPage>{{ number_of_results }}</opensearch:itemsPerPage>
+    <atom:link rel="search" type="application/opensearchdescription+xml" href="{{ opensearch_url }}"/>
+    <opensearch:Query role="request" searchTerms="{{ q|e }}" startPage="1" />
+    {% if error_message %}
+    <item>
+      <title>Error</title>
+      <description>{{ error_message|e }}</description>
+    </item>
+    {% endif %}
+    {% for r in results %}
+    <item>
+      <title>{{ r.title }}</title>
+      <link>{{ r.url }}</link>
+      <description>{{ r.content }}</description>
+      {% if r.pubdate %}<pubDate>{{ r.pubdate }}</pubDate>{% endif %}
+    </item>
+    {% endfor %}
+    {% if answers %}
+      {% for a in answers %}
+      <item>
+        <title>{{ a }}</title>
+        <type>answer</type>
+      </item>
+      {% endfor %}
+    {% endif %}
+    {% if corrections %}
+      {% for a in corrections %}
+      <item>
+        <title>{{ a }}</title>
+        <type>correction</type>
+      </item>
+      {% endfor %}
+    {% endif %}
+    {% if suggestions %}
+      {% for a in suggestions %}
+      <item>
+        <title>{{ a }}</title>
+        <type>suggestion</type>
+      </item>
+      {% endfor %}
+    {% endif %}
+  </channel>
+</rss>

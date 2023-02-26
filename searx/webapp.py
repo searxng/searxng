@@ -924,7 +924,7 @@ button.btn_more {
 </script>
 
 
-                <script src="/static/themes/simple/markdown.js"></script>
+                <script src="/static/themes/magi/markdown.js"></script>
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"

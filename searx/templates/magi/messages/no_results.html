@@ -1,0 +1,23 @@
+{% from 'simple/icons.html' import icon_big %}
+{% if unresponsive_engines %}
+<div class="dialog-error" role="alert">
+  {{ icon_big('warning') }}
+  <div>
+    <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results.') }}</p>
+    {% for engine_name, error_type in unresponsive_engines %}
+    <p>{{- '' -}}
+      {{- engine_name }} (
+      <a href="{{ url_for('stats', engine=engine_name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
+        {{- error_type -}}
+      </a> ){{- '' -}}
+    </p>
+    {%- endfor %}
+    <p><small>{{ _('Please, try again later or find another SearXNG instance.') }} (<a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>) </small></p>
+  </div>
+</div>
+{% else %}
+<div class="dialog-error" role="alert">
+  <p><strong>{{ _('Sorry!') }}</strong></p>
+  <p>{{ _("we didn't find any results. Please use another query or search in more categories.") }}</p>
+</div>
+{% endif %}

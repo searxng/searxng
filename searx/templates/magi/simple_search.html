@@ -1,0 +1,19 @@
+<form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
+  <div id="search_header">
+    <div id="search_view">
+      <div class="search_box">
+        <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+        <button id="clear_search" type="reset" aria-label="{{ _('clear') }}"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+        <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+      </div>
+    </div>
+  </div>
+  {% for category in selected_categories %}
+  <input type="hidden" name="category_{{ category }}" value="1" >
+  {% endfor %}
+  <input type="hidden" name="language" value="{{ current_language }}" >
+  <input type="hidden" name="time_range" value="{{ time_range }}" >
+  <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+  <input type="hidden" name="theme" value="{{ theme }}" >
+  {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+</form>

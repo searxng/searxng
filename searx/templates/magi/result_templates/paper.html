@@ -1,0 +1,38 @@
+{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
+
+{{ result_header(result, favicons, image_proxify) -}}
+<div class="attributes">
+  {%- if result.publishedDate %}<div class="result_publishedDate"><span>{{ _("Published date") }}:</span><span><time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time></span></div>{% endif -%}
+  {%- if result.authors %}<div class="result_authors"><span>{{ _("Author") }}:</span><span>{{ result.authors | join(", ") }}</span></div>{% endif -%}
+  {%- if result.journal -%}
+    <div class="result_journal">
+      <span>{{- _("Journal") }}:</span><span>{{ result.journal -}}
+      {%- if result.volume -%}
+        &nbsp;{{- result.volume -}}
+        {%- if result.number -%}
+          .{{- result.number -}}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if result.pages -%}
+        &nbsp;{{- result.pages -}}
+      {%- endif -%}
+      </span>
+    </div>
+  {%- endif %}
+  {%- if result.editor %}<div class="result_editor"><span>{{ _("Editor") }}:</span><span>{{ result.editor }}</span></div>{% endif -%}
+  {%- if result.publisher %}<div class="result_publisher"><span>{{ _("Publisher") }}:</span><span>{{ result.publisher }}</span></div>{% endif -%}
+  {%- if result.type %}<div class="result_type"><span>{{ _("Type") }}:</span><span>{{ result.type }}</span></div>{% endif -%}
+  {%- if result.tags %}<div class="result_tags"><span>{{ _("Tags") }}:</span><span>{{ result.tags | join(", ")}}</span></div>{%- endif -%}
+  {%- if result.doi %}<div class="result_doi"><span>{{ _("DOI") }}:</span><span>{{ result_link(doi_resolver + result.doi, result.doi) }}</span></div>{% endif -%}
+  {%- if result.issn %}<div class="result_issn"><span>{{ _("ISSN") }}:</span><span>{{ result.issn | join(", ") }}</span></div>{% endif -%}
+  {%- if result.isbn %}<div class="result_isbn"><span>{{ _("ISBN") }}:</span><span>{{ result.isbn | join(", ") }}</span></div>{% endif -%}
+</div>
+{%- if result.content -%}<p class="content">{{- result.content | safe -}}</p>{%- endif -%}
+{%- if result.comments -%}<p class="comments">{{- result.comments -}}</p>{%- endif -%}
+<p class="altlink">
+  {%- if result.pdf_url -%}{{ result_link(result.pdf_url, _('PDF')) }}{%- endif -%}
+  {%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
+  {%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif -%}
+</p>
+{{- result_sub_footer(result, proxify) -}}
+{{- result_footer(result) }}
