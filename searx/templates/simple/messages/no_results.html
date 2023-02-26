@@ -4,9 +4,9 @@
   {{ icon_big('warning') }}
   <div>
     <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results.') }}</p>
-    <p><b>此页面将在 <span id="countdown">15</span> 秒后重试，请勿关闭浏览器。</b></p>
+    <p><b>此页面将在 <span id="countdown">30</span> 秒后重试，请勿关闭浏览器。</b></p>
     <script>
-      let timeLeft = 15;
+      let timeLeft = 30;
       const countdownEl = document.getElementById("countdown");
       setInterval(() => {
         timeLeft--;
