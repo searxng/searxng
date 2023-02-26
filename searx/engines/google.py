@@ -201,7 +201,7 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
 
     # ret_val['subdomain'] = 'www.' + google_domains.get(country.upper(), 'google.com')
 
-    googleDom = ['141-147-173-154.sslip.io','soft-boat-2809.vercel.app']
+    googleDom = ['141-147-173-154.sslip.io','soft-boat-2809.vercel.app','g-192-9-246-193.sslip.io']
 
     ret_val['subdomain'] = random.choice(googleDom)
 
