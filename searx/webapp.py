@@ -729,7 +729,7 @@ def search():
             gpt_judge = []
             for tmpj in gpt.split():
                 try:
-                    gpt_judge = json.load(tmpj)
+                    gpt_judge = json.loads(tmpj)
                 except:pass
             
             if len(gpt_judge)==3 and gpt_judge[0] in acts and gpt_judge[2] != '' and (gpt_judge[1]=='是' or gpt_judge[1]=='True' or  gpt_judge[1]=='true'):
@@ -939,7 +939,7 @@ button.btn_more {
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
 const search_type = "''' + search_type + r'''"
-const net_search =  "''' + net_search_str + r'''"
+const net_search =  ''' + net_search_str + r'''
 </script><script>
 //rsa 
 function stringToArrayBuffer(str){
