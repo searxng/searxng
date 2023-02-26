@@ -1,0 +1,118 @@
+/*
+--center-page-width overrides the less variable @results-width when the results are centered
+see the CSS rules for #results in style.less ( grid-template-columns and gap).
+
+In this file, the --center-page-width values comes from the Oscar theme (Bootstrap 3).
+
+All rules starts with ".center-aligment-yes #main_results" to be enabled only
+on the /search URL and when the "center alignment" preference is enabled.
+*/
+
+@media screen and (min-width: @phone) {
+  .center-aligment-yes #main_results {
+    --center-page-width: 48rem;
+  }
+}
+
+@media screen and (min-width: 62rem) {
+  .center-aligment-yes #main_results {
+    --center-page-width: 60rem;
+  }
+}
+
+@media screen and (min-width: @tablet) {
+  .center-aligment-yes #main_results {
+    --center-page-width: 73rem;
+  }
+}
+
+@media screen and (min-width: @phone) and (max-width: @tablet) {
+  // any change must be reset in @media screen and (min-width: @tablet) { ... }
+  .center-aligment-yes #main_results {
+    #results {
+      grid-template-columns: 60% calc(40% - @results-gap);
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    #urls {
+      .ltr-margin-left(3rem);
+    }
+
+    #sidebar {
+      .ltr-margin-right(1rem);
+    }
+
+    #backToTop {
+      .ltr-left(calc(60% + 1rem));
+    }
+  }
+}
+
+@media screen and (min-width: @tablet) {
+  .center-aligment-yes #main_results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    #search {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #search_header {
+      grid-template-columns: calc(50% - 4.5rem - var(--center-page-width) / 2) 3rem var(--center-page-width);
+      grid-template-areas: "na logo search" "na spacer categories";
+      column-gap: 1.2rem;  // from search.less
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .search_filters {
+      .ltr-margin-left(0.5rem);
+      width: var(--center-page-width);
+    }
+
+    #results {
+      // from style.less (when screen width = @tablet, reset layout from tablet)
+      .ltr-margin-right(2rem);
+      .ltr-margin-left(@results-offset);
+      //
+
+      &.only_template_images,
+      &.image-detail-open {
+        // * grid-template-columns and .ltr-margin-left are set in style.less
+        // * With .image-detail-open.only_template_images, the width is set in detail.less
+        // * #results is going to be centered because of the #main_results rules,
+        //   align-self aligns the results on the left or right according to the language.
+        align-self: flex-start;
+      }
+
+      &:not(.only_template_images):not(.image-detail-open) {
+        // the gap is set in style.less
+        .ltr-margin-left(1.5rem);
+        grid-template-columns: calc(var(--center-page-width) - @results-gap - @results-sidebar-width) @results-sidebar-width;
+
+        #backToTop {
+          .ltr-left(calc(50% - @results-sidebar-width - @results-gap + 1rem + var(--center-page-width) / 2));
+        }
+      }
+
+      .result .content {
+        max-width: inherit;
+      }
+    }
+
+    // from style.less (when screen width = @tablet, reset layout from tablet)
+    #urls {
+      .ltr-margin-left(0);
+    }
+
+    #sidebar {
+      .ltr-margin-right(0);
+    }
+  }
+}
