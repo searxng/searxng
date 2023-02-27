@@ -876,8 +876,8 @@ def search():
             document.addEventListener('mousemove', move)
  
             function move(e) {
-                modal.style.left = e.targetTouches[0].pageX - x + 'px';
-                modal.style.top = e.targetTouches[0].pageY - y + 'px';
+                modal.style.left = e.pageX - x + 'px';
+                modal.style.top = e.pageY - y + 'px';
             }
             // (3) 鼠标弹起，就让鼠标移动事件移除
             document.addEventListener('mouseup', function () {
@@ -885,8 +885,8 @@ def search():
             })
         })
         title.addEventListener('touchstart', function (e) {
-            var x = e.pageX - modal.offsetLeft;
-            var y = e.pageY - modal.offsetTop;
+            var x = e.targetTouches[0].pageX - modal.offsetLeft;
+            var y = e.targetTouches[0].pageY - modal.offsetTop;
             // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
             document.addEventListener('touchmove ', move)
             function move(e) {  
@@ -1158,11 +1158,13 @@ function proxify()
         for(let i=prompt.url_proxy.length;i>=0;--i)
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
+            {
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {
-            modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
-            });
-            document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
+                modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
+                });
+                document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
+            }
         }
         
     }catch(e){}
