@@ -1306,7 +1306,7 @@ for(let i=prompt.url_pair.length;i>=0;--i)
       new_text = new_text.replace("httpsurl"+String(i),prompt.url_pair[i])
       new_text = new_text.replace("url"+String(i),prompt.url_pair[i])
     }
-  new_text = new_text.replace(/(https?:\/\/(?!url\d)\S+)/g, '');
+
   new_text = new_text.replaceAll('(链接)', '');
   new_text = new_text.replaceAll('[]', '');
   new_text = new_text.replaceAll('((', '(');
