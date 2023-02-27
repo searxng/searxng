@@ -1139,7 +1139,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-              
+              proxify()
               document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
@@ -1322,7 +1322,8 @@ function proxify()
 {
     try{
         for(let i=prompt.url_proxy.length;i>=0;--i)
-            document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
+            if(document.querySelector("#fnref\\:"+String(i)))
+                document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
 
     }catch(e){}
 
