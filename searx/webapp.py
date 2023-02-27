@@ -790,7 +790,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
-            url_proxy.append(morty_proxify(res['url']))
+            url_proxy.append(morty_proxify(res['url'].replace("(www\.)?(mobile\.)?twitter\.com","nitter.net")))
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
