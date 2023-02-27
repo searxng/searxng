@@ -1158,12 +1158,11 @@ function proxify()
         for(let i=prompt.url_proxy.length;i>=0;--i)
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
-                link_tmp = document.querySelector("#fnref\\:"+String(i+1))
-                link_tmp.removeAttribute('href')
-                link_tmp.removeAttribute('id')
-                link_tmp.addEventListener('click', function () {
+                document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
+                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {
             modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
             });
+            document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
         }
         
     }catch(e){}
