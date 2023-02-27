@@ -1283,6 +1283,7 @@ function send_webchat(elem)
 
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
+proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1376,6 +1377,7 @@ function send_chat(elem)
 word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
+proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1415,7 +1417,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-              
+              proxify()
               document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
@@ -1506,12 +1508,12 @@ function proxify()
     try{
         for(let i=prompt.url_proxy.length;i>=0;--i)
         {
-            if(document.querySelector("#fnref\\:"+String(i)))
-                link_tmp = document.querySelector("#fnref\\:"+String(i))
+            if(document.querySelector("#fnref\\:"+String(i+1)))
+                link_tmp = document.querySelector("#fnref\\:"+String(i+1))
                 link_tmp.removeAttribute('href')
                 link_tmp.removeAttribute('id')
                 link_tmp.addEventListener('click', function () {
-            modal.style.display = 'block'; modal_open(prompt.url_proxy[i])
+            modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
             });
         }
         
@@ -1724,7 +1726,7 @@ fetch("https://search.kg/completions", optionsIntro)
             text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
         }            
         markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
-
+        
     })
     return readerIntro.read().then(processText);
     });
