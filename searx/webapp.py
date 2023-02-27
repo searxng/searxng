@@ -1100,7 +1100,6 @@ function send_webchat(elem)
 
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
-proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1321,8 +1320,11 @@ for(let i=prompt.url_pair.length;i>=0;--i)
 
 function proxify()
 {
-    for(let i=prompt.url_proxy.length;i>=0;--i)
-        document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
+    try{
+        for(let i=prompt.url_proxy.length;i>=0;--i)
+            document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
+
+    }catch(e){}
 
 }
 
