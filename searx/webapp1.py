@@ -845,7 +845,190 @@ def search():
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair,  'url_proxy':url_proxy, 'raws': raws})
-            gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
+            gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''
+<div id="modal" class="modal">
+    <div id="modal-title" class="modal-title">网页速览<span>
+        <a id="closebtn" href="javascript:void(0);" class="close-modal closebtn"></a></span>
+    </div>
+    <div class="modal-input-content">
+        
+        <div id="iframe-wrapper">
+            <iframe ></iframe>
+        </div>
+    </div>
+</div>
+    <script>
+        // 1. 获取元素
+        var modal = document.querySelector('.modal');
+        var closeBtn = document.querySelector('#closebtn');
+        var title = document.querySelector('#modal-title');
+        // 2. 点击弹出层这个链接 link  让mask 和modal 显示出来
+        // 3. 点击 closeBtn 就隐藏 mask 和 modal 
+        closeBtn.addEventListener('click', function () {
+            modal.style.display = 'none';
+        })
+        // 4. 开始拖拽
+        // (1) 当我们鼠标按下， 就获得鼠标在盒子内的坐标
+        title.addEventListener('mousedown', function (e) {
+            var x = e.pageX - modal.offsetLeft;
+            var y = e.pageY - modal.offsetTop;
+            // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
+            document.addEventListener('mousemove', move)
+ 
+            function move(e) {
+                modal.style.left = e.pageX - x + 'px';
+                modal.style.top = e.pageY - y + 'px';
+            }
+            // (3) 鼠标弹起，就让鼠标移动事件移除
+            document.addEventListener('mouseup', function () {
+                document.removeEventListener('mousemove', move);
+            })
+        })
+        title.addEventListener('touchstart', function (e) {
+            var x = e.touches[0].pageX - modal.offsetLeft;
+            var y = e.touches[0].pageY - modal.offsetTop;
+            // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
+            document.addEventListener('touchmove ', move)
+            function move(e) {
+                modal.style.left = e.touches[0].pageX - x + 'px';
+                modal.style.top = e.touches[0].pageY - y + 'px';
+            }
+            // (3) 鼠标弹起，就让鼠标移动事件移除
+            document.addEventListener('touchend', function () {
+                document.removeEventListener('touchmove ', move);
+            })
+        })
+    </script>            
+    <style>
+        .modal-header {
+            width: 100%;
+            text-align: center;
+            height: 30px;
+            font-size: 24px;
+            line-height: 30px;
+        }
+ 
+        .modal {
+            display: none;
+            width: 648px;
+            position: fixed;
+            left: 32%;
+            top: 50%;
+            background: var(--color-search-background);
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+ 
+        .modal-title {
+            width: 100%;
+            margin: 10px 0px 0px 0px;
+            text-align: center;
+            line-height: 40px;
+            height: 40px;
+            font-size: 18px;
+            position: relative;
+            cursor: move;
+        }
+ 
+        .modal-button {
+            width: 50%;
+            margin: 30px auto 0px auto;
+            line-height: 40px;
+            font-size: 14px;
+            border: #ebebeb 1px solid;
+            text-align: center;
+        }
+ 
+        .modal a {
+            text-decoration: none;
+            color: #000000;
+        }
+ 
+        .modal-button a {
+            display: block;
+        }
+ 
+        .modal-input input.list-input {
+            float: left;
+            line-height: 35px;
+            height: 35px;
+            width: 350px;
+            border: #ebebeb 1px solid;
+            text-indent: 5px;
+        }
+ 
+        .modal-input {
+            overflow: hidden;
+            margin: 0px 0px 20px 0px;
+        }
+ 
+        .modal-input label {
+            float: left;
+            width: 90px;
+            padding-right: 10px;
+            text-align: right;
+            line-height: 35px;
+            height: 35px;
+            font-size: 14px;
+        }
+ 
+        .modal-title span {
+            position: absolute;
+            right: 0px;
+            top: -15px;
+        }
+
+        #iframe-wrapper {
+            width: 100%;
+            height: 500px; /* 父元素高度 */
+            position: relative;
+            overflow: hidden; /* 防止滚动条溢出 */
+        }
+        #iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none; /* 去掉边框 */
+            overflow: auto; /* 显示滚动条 */
+        }
+        .closebtn{
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .closebtn::before, .closebtn::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 20px;
+            top: 12px;
+            right: 2px;
+            background: #999;
+            cursor: pointer;
+        }
+        .closebtn::before {
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .closebtn::after {
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+    </style>            
+            
+            <div id="chat_continue" style="display:none">
 <div id="chat_more" style="display:none"></div>
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
@@ -1323,11 +1506,20 @@ function proxify()
     try{
         for(let i=prompt.url_proxy.length;i>=0;--i)
             if(document.querySelector("#fnref\\:"+String(i)))
-                document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
-
+                delete document.querySelector("#fnref\\:"+String(i)).href
+                document.querySelector("#fnref\\:"+String(i)).addEventListener('click', function () {
+            modal.style.display = 'block'; modal_open(prompt.url_proxy[i])
+        })
     }catch(e){}
 
 }
+
+function modal_open(url)
+{
+    modal.style.display = 'block';
+    document.querySelector("#iframe-wrapper > iframe").src = url;
+}
+
 
 function chatmore()
 {
@@ -1470,6 +1662,7 @@ fetch("https://search.kg/completions", optionsIntro)
 
                                 }            
                                 markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
+                                proxify()
 
                             })
                             return readerPlusComment.read().then(processText);
