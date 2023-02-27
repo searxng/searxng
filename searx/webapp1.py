@@ -1160,9 +1160,9 @@ function proxify()
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
             {
-                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {modal_open(prompt.url_proxy[document.querySelector("#fnref\\:"+String(i+1)).href]);    modal.style.display = 'block'; });
+                let tmp_url = document.querySelector("#fnref\\:"+String(i+1)).href
+                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {modal_open(prompt.url_proxy[tmp_url]);    modal.style.display = 'block'; });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
-                
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
         }
