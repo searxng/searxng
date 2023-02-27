@@ -781,7 +781,7 @@ def search():
     raws = []
     try:
         url_pair = []
-        url_proxy = []
+        url_proxy = {}
         prompt = ""
         for res in results:
             if 'url' not in res: continue
@@ -790,7 +790,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
-            url_proxy.append(morty_proxify(res['url'].replace("://mobile.twitter.com","://nitter.net").replace("://mobile.twitter.com","://nitter.net").replace("://twitter.com","://nitter.net")))
+            url_proxy[res['url']] = (morty_proxify(res['url'].replace("://mobile.twitter.com","://nitter.net").replace("://mobile.twitter.com","://nitter.net").replace("://twitter.com","://nitter.net")))
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
@@ -1159,10 +1159,10 @@ function proxify()
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
             {
+                modal.style.display = 'block'; modal_open(prompt.url_proxy[document.querySelector("#fnref\\:"+String(i+1)).href])
+                });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {
-                modal.style.display = 'block'; modal_open(prompt.url_proxy[i])
-                });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
         }
