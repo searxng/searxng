@@ -1156,7 +1156,7 @@ const net_search =  ''' + net_search_str + r'''
 function proxify()
 {
     try{
-        for(let i=prompt.url_proxy.length;i>=0;--i)
+        for(let i=Object.keys(prompt.url_proxy).length;i>=0;--i)
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
             {
