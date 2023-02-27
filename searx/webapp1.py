@@ -1290,7 +1290,7 @@ function replaceUrlWithFootnote(text) {
 }
 function beautify(text)
 {
-    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replaceAll("链接:","").replaceAll("链接：","")
+    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replaceAll("链接:","").replaceAll("链接：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '');
 for(let i=prompt.url_pair.length;i>=0;--i)
 {
     new_text = new_text.replaceAll("(url"+String(i),"(https://url"+String(i) )
