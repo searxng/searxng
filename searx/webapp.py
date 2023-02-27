@@ -892,6 +892,7 @@ def search():
             function move(e) {  
                 modal.style.left = e.targetTouches[0].pageX - x + 'px';
                 modal.style.top = e.targetTouches[0].pageY - y + 'px';
+                e.preventDefault(); 
             }
             // (3) 鼠标弹起，就让鼠标移动事件移除
             document.addEventListener('touchend', function () {
@@ -1159,10 +1160,9 @@ function proxify()
         {
             if(document.querySelector("#fnref\\:"+String(i+1)))
             {
-                modal.style.display = 'block'; modal_open(prompt.url_proxy[document.querySelector("#fnref\\:"+String(i+1)).href])
-                });
+                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {modal_open(prompt.url_proxy[document.querySelector("#fnref\\:"+String(i+1)).href]);    modal.style.display = 'block'; });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
-                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {
+                
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
         }
