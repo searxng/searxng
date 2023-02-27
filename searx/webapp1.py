@@ -1161,7 +1161,7 @@ function proxify()
             {
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {
-                modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
+                modal.style.display = 'block'; modal_open(prompt.url_proxy[i])
                 });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
