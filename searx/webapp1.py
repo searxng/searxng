@@ -914,7 +914,7 @@ def search():
             position: fixed;
             left: 32%;
             top: 50%;
-            background: var(--color-search-background);
+            background: var(--color-header-background);
             z-index: 9999;
             transform: translate(-50%, -50%);
         }
