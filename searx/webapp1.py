@@ -781,6 +781,7 @@ def search():
     raws = []
     try:
         url_pair = []
+        url_proxy = []
         prompt = ""
         for res in results:
             if 'url' not in res: continue
@@ -789,6 +790,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
+            url_proxy.append(morty_proxify(res['url']))
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
@@ -842,7 +844,7 @@ def search():
                     "logprobs": 0,
                     "stream": True
                 }
-            gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair, 'raws': raws})
+            gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair,  'url_proxy':url_proxy, 'raws': raws})
             gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''<div id="chat_continue" style="display:none">
 <div id="chat_more" style="display:none"></div>
 <hr>
@@ -1308,10 +1310,18 @@ for(let i=prompt.url_pair.length;i>=0;--i)
     }
 
   new_text = new_text.replaceAll('(链接)', '');
+  new_text = new_text.replaceAll('[链接]', '');
+  new_text = new_text.replaceAll('(链接', '');
   new_text = new_text.replaceAll('[]', '');
   new_text = new_text.replaceAll('((', '(');
   new_text = new_text.replaceAll('))', ')');
   return new_text;
+}
+
+function proxify()
+{
+    for(let i=prompt.url_proxy.length;i>=0;--i)
+        document.querySelector("#fnref\\:"+String(i)).href = url_proxy[i];
 }
 
 function chatmore()
