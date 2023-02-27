@@ -1151,6 +1151,31 @@ const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
 const search_type = "''' + search_type + r'''"
 const net_search =  ''' + net_search_str + r'''
 </script><script>
+
+function proxify()
+{
+    try{
+        for(let i=prompt.url_proxy.length;i>=0;--i)
+        {
+            if(document.querySelector("#fnref\\:"+String(i+1)))
+                link_tmp = document.querySelector("#fnref\\:"+String(i+1))
+                link_tmp.removeAttribute('href')
+                link_tmp.removeAttribute('id')
+                link_tmp.addEventListener('click', function () {
+            modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
+            });
+        }
+        
+    }catch(e){}
+
+}
+
+function modal_open(url)
+{
+    modal.style.display = 'block';
+    document.querySelector("#iframe-wrapper > iframe").src = url;
+}
+
 //rsa 
 function stringToArrayBuffer(str){
     if(!str) return;
@@ -1511,29 +1536,7 @@ for(let i=prompt.url_pair.length;i>=0;--i)
   return new_text;
 }
 
-function proxify()
-{
-    try{
-        for(let i=prompt.url_proxy.length;i>=0;--i)
-        {
-            if(document.querySelector("#fnref\\:"+String(i+1)))
-                link_tmp = document.querySelector("#fnref\\:"+String(i+1))
-                link_tmp.removeAttribute('href')
-                link_tmp.removeAttribute('id')
-                link_tmp.addEventListener('click', function () {
-            modal.style.display = 'block'; modal_open(prompt.url_proxy[i+2])
-            });
-        }
-        
-    }catch(e){}
 
-}
-
-function modal_open(url)
-{
-    modal.style.display = 'block';
-    document.querySelector("#iframe-wrapper > iframe").src = url;
-}
 
 
 function chatmore()
