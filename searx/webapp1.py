@@ -1100,6 +1100,7 @@ function send_webchat(elem)
 
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
+proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1321,7 +1322,8 @@ for(let i=prompt.url_pair.length;i>=0;--i)
 function proxify()
 {
     for(let i=prompt.url_proxy.length;i>=0;--i)
-        document.querySelector("#fnref\\:"+String(i)).href = url_proxy[i];
+        document.querySelector("#fnref\\:"+String(i)).href = prompt.url_proxy[i]
+
 }
 
 function chatmore()
@@ -1487,6 +1489,7 @@ fetch("https://search.kg/completions", optionsIntro)
                         text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
                     }            
                     markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
+                    proxify()
 
                 })
                 return reader.read().then(processText);
