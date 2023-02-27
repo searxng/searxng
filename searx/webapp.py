@@ -1505,11 +1505,16 @@ function proxify()
 {
     try{
         for(let i=prompt.url_proxy.length;i>=0;--i)
+        {
             if(document.querySelector("#fnref\\:"+String(i)))
-                delete document.querySelector("#fnref\\:"+String(i)).href
-                document.querySelector("#fnref\\:"+String(i)).addEventListener('click', function () {
+                link_tmp = document.querySelector("#fnref\\:"+String(i))
+                link_tmp.removeAttribute('href')
+                link_tmp.removeAttribute('id')
+                link_tmp.addEventListener('click', function () {
             modal.style.display = 'block'; modal_open(prompt.url_proxy[i])
-        })
+            });
+        }
+        
     }catch(e){}
 
 }
