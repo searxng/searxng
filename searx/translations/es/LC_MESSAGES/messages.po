@@ -24,13 +24,14 @@
 # Peter Martin <weblate@pe7er.com>, 2022.
 # zDylant <dylantfcs@gmail.com>, 2022.
 # mester <oscarodriguez56@gmail.com>, 2023.
+# gallegonovato <fran-carro@hotmail.es>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-22 08:08+0000\n"
-"Last-Translator: mester <oscarodriguez56@gmail.com>\n"
+"PO-Revision-Date: 2023-02-28 22:04+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
 "searxng/es/>\n"
 "Language: es\n"
@@ -415,10 +416,11 @@ msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Estás usando Tor y parece que tienes esta dirección IP externa: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "No estás usando Tor y tienes esta dirección IP externa: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -599,7 +601,7 @@ msgstr "Idioma por defecto"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Detección automática"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -608,6 +610,8 @@ msgstr "¿Qué idioma prefieres para la búsqueda?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Seleccione Detección automática para que SearXNG detecte el idioma de su "
+"consulta."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
