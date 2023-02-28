@@ -1,0 +1,121 @@
+function eleparse(doc)
+{
+    // 获取页面元素
+const elements = doc.querySelectorAll("*");
+
+// 定义位置常量
+const POSITION = {
+  TOP_LEFT: "左上",
+  TOP_MIDDLE: "上中",
+  TOP_RIGHT: "右上",
+  MIDDLE_LEFT: "左中",
+  CENTER: "中间",
+  MIDDLE_RIGHT: "右中",
+  BOTTOM_LEFT: "左下",
+  BOTTOM_MIDDLE: "下中",
+  BOTTOM_RIGHT: "右下",
+};
+
+// 定义颜色名称映射表
+const COLOR_NAMES = {
+  "#000000": "黑色",
+  "#ffffff": "白色",
+  "#ff0000": "红色",
+  "#00ff00": "绿色",
+  "#0000ff": "蓝色",
+  // 可以添加更多颜色
+};
+
+// 创建描述文本
+let description=[];
+let seen = [];
+let dismiss = ['up vote', 'down vote', 'dismiss', 'github license', 'npm version', 'circleci', 'site']
+for (let i = 0; i < elements.length; i++) {
+  const element = elements[i];
+  let elementDescription = "";
+  
+  // 判断元素是否可见
+  if (element.offsetWidth > 0 || element.offsetHeight > 0) {
+
+    // 获取元素类型
+    let elementType = element.tagName.toLowerCase();
+    if (elementType === "input" && (element.type === "search" || (element.getAttribute('aria-label') && element.getAttribute('aria-label').toLowerCase().indexOf("search") !== -1))) {
+        elementType = "搜索框";
+    } else if (elementType === "input" || elementType === "select" || elementType === "textarea") {
+      elementType = "输入框";
+    } else if (elementType.indexOf("button") !== -1 || element.id.indexOf("button") !== -1) {
+      elementType = "按钮";
+    } else if (elementType === "img") {
+      elementType = "图片";
+    } else if (elementType === "form") {
+      elementType = "表单";
+    } else if (elementType === "pre" || elementType === "code") {
+      elementType = "代码块";
+    }
+    else {
+      elementType = null;
+    }
+
+    // 如果是可识别的元素类型，则生成元素描述
+    if (elementType && (elementType == "代码块" || element.title||element.alt||element.getAttribute('aria-label'))){
+      elementDescription += elementType;
+      if (element.title) {
+        if(element.title.includes('avatar') || dismiss.includes((element.title.toLowerCase()))) continue;
+        elementDescription += `:“${element.title}”`;
+      }
+      else if (element.alt||element.getAttribute('aria-label')) {
+        if(seen.includes(element.alt||element.getAttribute('aria-label'))) continue;
+        if((element.alt||element.getAttribute('aria-label')).includes('avatar') || dismiss.includes((element.alt||element.getAttribute('aria-label')).toLowerCase())) continue;
+        elementDescription += `:“${element.alt||element.getAttribute('aria-label')}”`;
+        seen.push(element.alt||element.getAttribute('aria-label'))
+      }
+      if ((element.style.color||window.getComputedStyle(element).backgroundColor||window.getComputedStyle(element).color) && (`${element.style.color||window.getComputedStyle(element).backgroundColor||window.getComputedStyle(element).color}`.indexOf( "255, 255, 255") == -1 ) && (`${element.style.color||window.getComputedStyle(element).backgroundColor||window.getComputedStyle(element).color}`.indexOf( "0, 0, 0") == -1  ) ) {
+        elementDescription += `，颜色:${element.style.color||window.getComputedStyle(element).backgroundColor||window.getComputedStyle(element).color}`;
+      }
+      const elementPosition = getElementPosition(element);
+      elementDescription += `，位于${elementPosition}`;
+    //   if (element.offsetWidth && element.offsetHeight) {
+    //     elementDescription += `，大小为${element.offsetWidth}像素 x ${element.offsetHeight}像素`;
+    //   }
+    }
+  }
+  if(elementDescription&&elementDescription!='')
+    description.push(elementDescription);
+}
+return (unique(description));
+}
+
+function unique (arr) {
+    return Array.from(new Set(arr))
+  }
+
+// 输出描述文本
+
+
+/**
+ * 获取元素相对位置
+ */
+function getElementPosition(element) {
+  const rect = element.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  let position = "";
+
+  if (x < window.innerWidth / 3) {
+    position += "左";
+  } else if (x > window.innerWidth * 2 / 3) {
+    position += "右";
+} else {
+position += "中";
+}
+
+if (y < window.innerHeight / 3) {
+position += "上";
+} else if (y > window.innerHeight * 2 / 3) {
+position += "下";
+} else {
+position += "中";
+}
+
+return position;
+}
