@@ -854,6 +854,7 @@ def search():
         
         <div id="iframe-wrapper">
             <iframe ></iframe>
+            <div id='readability-reader'></div>
         </div>
     </div>
 </div>
@@ -866,6 +867,9 @@ def search():
         // 3. 点击 closeBtn 就隐藏 mask 和 modal 
         closeBtn.addEventListener('click', function () {
             modal.style.display = 'none';
+            document.querySelector("#readability-reader").innerHTML = '';
+            try{iframe.removeAttribute('src');}catch(e){}
+
         })
         // 4. 开始拖拽
         // (1) 当我们鼠标按下， 就获得鼠标在盒子内的坐标
@@ -1144,7 +1148,7 @@ button.btn_more {
 
 
 
-
+                <script src="/static/themes/magi/Readability-readerable.js"></script>
                 <script src="/static/themes/magi/Readability.js"></script>
                 <script src="/static/themes/magi/markdown.js"></script>
                 <script>
@@ -1192,7 +1196,8 @@ function modal_open(url)
     () => {
         if (isProbablyReaderable(iframe.contentDocument)) {
             let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
-            iframe.contentDocument.documentElement.innerHTML = article.content
+            iframe.removeAttribute('src')
+            document.querySelector("#readability-reader").innerHTML = article.content
         }
     },
     error => {
