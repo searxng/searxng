@@ -654,7 +654,7 @@ def health():
 @app.route('/textrank', methods=['POST'])
 def textrank():
     res = []
-    text = request.form.get('text')
+    text = request.json['text']
     tr4s = TextRank4Sentence()
     tr4s.analyze(text=text, lower=True, source = 'all_filters')
     for item in tr4s.get_key_sentences(num=15):
