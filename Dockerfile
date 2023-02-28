@@ -35,6 +35,7 @@ RUN apk add --no-cache -t build-dependencies \
     tar \
     git \
  && apk add --no-cache \
+    curl \
     ca-certificates \
     su-exec \
     python3 \
