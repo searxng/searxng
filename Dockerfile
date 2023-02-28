@@ -22,7 +22,7 @@ WORKDIR /usr/local/searxng
 
 COPY requirements.txt ./requirements.txt
 
-RUN apt-get update && apt-get install -y gcc curl && curl https://sh.rustup.rs -sSf | sh -s -- -y && apt-get install --reinstall libc6-dev -y && pip3 install --no-cache -r requirements.txt \
+RUN apt-get update && apt-get install -y git gcc curl && curl https://sh.rustup.rs -sSf | sh -s -- -y && apt-get install --reinstall libc6-dev -y && pip3 install --no-cache -r requirements.txt \
  && rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
