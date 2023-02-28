@@ -13,20 +13,22 @@
 # Sweder doc <swederdvl@gmail.com>, 2022.
 # Peter Martin <weblate@pe7er.com>, 2022.
 # Max Westen <max@maxwesten.nl>, 2023.
+# gjveld <gjveld@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-01-20 07:15+0000\n"
-"Last-Translator: Max Westen <max@maxwesten.nl>\n"
+"PO-Revision-Date: 2023-02-28 22:04+0000\n"
+"Last-Translator: gjveld <gjveld@gmail.com>\n"
+"Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
+"searxng/nl/>\n"
 "Language: nl\n"
-"Language-Team: Dutch "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/nl/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -384,22 +386,30 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Deze plug-in controleert of het adres van het verzoek een Tor exit-node is "
+"en informeert de gebruiker als dit zo is; net als bij check.torproject.org, "
+"maar dan van SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Kan de lijst met Tor exit-nodes niet downloaden van: https://check.torproject"
+".org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Je gebruikt Tor en het lijkt er op dat dit je externe IP adres is: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Je maakt geen gebruik van Tor en dit is je externe IP adres: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -582,7 +592,7 @@ msgstr "Standaardtaal"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automatisch herkennen"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -591,6 +601,8 @@ msgstr "Welke taal wil je gebruiken voor het zoeken?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Kies Automatisch herkennen om SearXNG de taal van uw zoekopdracht te laten "
+"herkennen."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -986,7 +998,7 @@ msgstr "zoeken"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Er zijn momenteel geen gegevens beschikbaar."
+msgstr "Er zijn momenteel geen gegevens beschikbaar. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1558,4 +1570,3 @@ msgstr "verberg video"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
-
