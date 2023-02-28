@@ -17,6 +17,7 @@ import requests
 import markdown
 import re
 import datetime
+from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
 from timeit import default_timer
 from html import escape
@@ -649,6 +650,16 @@ def index():
 def health():
     return Response('OK', mimetype='text/plain')
 
+
+@app.route('/textrank', methods=['POST'])
+def textrank():
+    res = []
+    text = request.form.get('text')
+    tr4s = TextRank4Sentence()
+    tr4s.analyze(text=text, lower=True, source = 'all_filters')
+    for item in tr4s.get_key_sentences(num=15):
+        res.append(item.sentence)
+    return Response(json.dumps(res), mimetype='application/json')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
