@@ -5,6 +5,7 @@ EXPOSE 8080
 VOLUME /etc/searxng
 
 RUN addgroup --gid 977 searxng && \
+    mkdir -p /usr/local/searxng && \
     adduser -uid 977 --disabled-password --home /usr/local/searxng --shell /bin/sh --ingroup searxng searxng
 
 ENV INSTANCE_NAME=searxng \
