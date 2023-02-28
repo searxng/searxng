@@ -1,12 +1,5 @@
 FROM python:3.11-slim-bullseye as builder
 
-# Tiktoken requires Rust toolchain, so build it in a separate stage
-RUN apt-get update && apt-get install -y gcc curl gfortran
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && apt-get install --reinstall libc6-dev -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-RUN pip install --upgrade pip && pip install tiktoken scipy numpy
-
-FROM python:3.11-alpine
 ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
@@ -26,40 +19,14 @@ ENV INSTANCE_NAME=searxng \
     GPTKEY= \
     GPTORG= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
-    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
+    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
+    PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /usr/local/searxng
 
 COPY requirements.txt ./requirements.txt
 
-COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
-
-RUN apk add --no-cache -t build-dependencies \
-    build-base \
-    py3-setuptools \
-    python3-dev \
-    libffi-dev \
-    libxslt-dev \
-    libxml2-dev \
-    openssl-dev \
-    tar \
-    git \
- && apk add --no-cache \
-    ca-certificates \
-    su-exec \
-    python3 \
-    py3-pip \
-    libxml2 \
-    libxslt \
-    openssl \
-    tini \
-    uwsgi \
-    uwsgi-python3 \
-    brotli \
-    py3-scipy \
-    py3-numpy \
- && pip3 install --no-cache -r requirements.txt \
- && apk del build-dependencies \
+RUN apt-get update && apt-get install -y gcc curl && curl https://sh.rustup.rs -sSf | sh -s -- -y && apt-get install --reinstall libc6-dev -y && pip3 install --no-cache -r requirements.txt \
  && rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
