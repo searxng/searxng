@@ -34,10 +34,10 @@ ARG VERSION_GITCOMMIT=unknown
 
 RUN su searxng -c "/usr/local/bin/python -m compileall -q searx" \
  && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
- && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
- && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
-    -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
-    -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
+ && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini
+#  && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
+#     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
+#     -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
 
 # Keep these arguments at the end to prevent redundant layer rebuilds
 ARG LABEL_DATE=
