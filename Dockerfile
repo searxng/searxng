@@ -17,9 +17,8 @@ ENV INSTANCE_NAME=searxng \
     GPTKEY= \
     GPTORG= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
-    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
-    PATH="/root/.cargo/bin:${PATH}"
-
+    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
+    
 WORKDIR /usr/local/searxng
 
 COPY requirements.txt ./requirements.txt
@@ -35,7 +34,6 @@ RUN apk add --no-cache -t build-dependencies \
     tar \
  && apk add --no-cache \
     git \
-    curl \
     ca-certificates \
     su-exec \
     python3 \
@@ -49,7 +47,6 @@ RUN apk add --no-cache -t build-dependencies \
     brotli \
     py3-scipy \
     py3-numpy \
- && curl https://sh.rustup.rs -sSf | sh -s -- -y \
  && pip3 install --no-cache -r requirements.txt \
  && apk del build-dependencies \
  && rm -rf /root/.cache
