@@ -1,4 +1,4 @@
-FROM python:3.11-alpine3.17
+FROM alpine3.17
 ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
@@ -47,6 +47,8 @@ RUN apk add --no-cache -t build-dependencies \
     uwsgi \
     uwsgi-python3 \
     brotli \
+    py3-scipy \
+    py3-numpy \
  && curl https://sh.rustup.rs -sSf | sh -s -- -y \
  && pip3 install --no-cache -r requirements.txt \
  && apk del build-dependencies \
