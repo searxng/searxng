@@ -33,8 +33,8 @@ RUN apk add --no-cache -t build-dependencies \
     libxml2-dev \
     openssl-dev \
     tar \
-    git \
  && apk add --no-cache \
+    git \
     curl \
     ca-certificates \
     su-exec \
