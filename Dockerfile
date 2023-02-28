@@ -4,12 +4,8 @@ ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.
 EXPOSE 8080
 VOLUME /etc/searxng
 
-ARG SEARXNG_GID=977
-ARG SEARXNG_UID=977
-
-
-RUN addgroup -g ${SEARXNG_GID} searxng && \
-    adduser -u ${SEARXNG_UID} -D -h /usr/local/searxng -s /bin/sh -G searxng searxng
+RUN addgroup --gid 977 searxng && \
+    adduser -uid 977 --disabled-password --home /usr/local/searxng --shell /bin/sh --ingroup searxng searxng
 
 ENV INSTANCE_NAME=searxng \
     AUTOCOMPLETE= \
