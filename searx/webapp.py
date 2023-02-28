@@ -1183,7 +1183,7 @@ function proxify()
 function modal_open(url)
 {
     modal.style.display = 'block';
-    document.querySelector("#readability-reader").innerHTML = article.content
+    document.querySelector("#readability-reader").innerHTML = '';
     var iframePromise = new Promise((resolve, reject) => {
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
