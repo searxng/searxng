@@ -1,12 +1,13 @@
-FROM python:3.11-slim-bullseye as builder
-
+FROM python:3.11-alpine3.17
 ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
 
-RUN addgroup --gid 977 searxng && \
-    mkdir -p /usr/local/searxng && \
-    adduser -uid 977 --disabled-password --home /usr/local/searxng --shell /bin/sh --ingroup searxng searxng
+ARG SEARXNG_GID=977
+ARG SEARXNG_UID=977
+
+RUN addgroup -g ${SEARXNG_GID} searxng && \
+    adduser -u ${SEARXNG_UID} -D -h /usr/local/searxng -s /bin/sh -G searxng searxng
 
 ENV INSTANCE_NAME=searxng \
     AUTOCOMPLETE= \
@@ -16,14 +17,36 @@ ENV INSTANCE_NAME=searxng \
     GPTKEY= \
     GPTORG= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
-    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
-    PATH="/root/.cargo/bin:${PATH}"
+    UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini
 
 WORKDIR /usr/local/searxng
 
 COPY requirements.txt ./requirements.txt
 
-RUN apt-get update && apt-get install -y git gcc curl && curl https://sh.rustup.rs -sSf | sh -s -- -y && apt-get install --reinstall libc6-dev -y && pip3 install --no-cache -r requirements.txt \
+RUN apk add --no-cache -t build-dependencies \
+    build-base \
+    py3-setuptools \
+    python3-dev \
+    libffi-dev \
+    libxslt-dev \
+    libxml2-dev \
+    openssl-dev \
+    tar \
+    git \
+ && apk add --no-cache \
+    ca-certificates \
+    su-exec \
+    python3 \
+    py3-pip \
+    libxml2 \
+    libxslt \
+    openssl \
+    tini \
+    uwsgi \
+    uwsgi-python3 \
+    brotli \
+ && pip3 install --no-cache -r requirements.txt \
+ && apk del build-dependencies \
  && rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
@@ -33,12 +56,12 @@ ARG TIMESTAMP_SETTINGS=0
 ARG TIMESTAMP_UWSGI=0
 ARG VERSION_GITCOMMIT=unknown
 
-RUN su searxng -c "/usr/local/bin/python -m compileall -q searx" \
+RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
  && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
- && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini
-#  && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
-#     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
-#     -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
+ && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
+ && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
+    -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
+    -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
 
 # Keep these arguments at the end to prevent redundant layer rebuilds
 ARG LABEL_DATE=
