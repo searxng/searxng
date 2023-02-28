@@ -1277,7 +1277,7 @@ for (let i = 0; i < elements.length; i++) {
     if (elementType && (elementType == "代码块" || element.title||element.alt||element.getAttribute('aria-label'))){
       elementDescription += elementType;
       if (element.title) {
-        if(element.title.includes('avatar') || dismiss.includes((element.title.toLowerCase()))) continue;
+        if(element.title.indexOf('avatar') != -1 || dismiss.includes((element.title.toLowerCase()))) continue;
         elementDescription += `:“${element.title}”`;
       }
       else if (element.alt||element.getAttribute('aria-label')) {
