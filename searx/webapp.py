@@ -952,11 +952,6 @@ def search():
             text-align: center;
         }
  
-        .modal a {
-            text-decoration: none;
-            color: #000000;
-        }
- 
         .modal-button a {
             display: block;
         }
@@ -1006,6 +1001,15 @@ def search():
             border: none; /* 去掉边框 */
             overflow: auto; /* 显示滚动条 */
         }
+        #iframe-wrapper div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none; /* 去掉边框 */
+            overflow: auto; /* 显示滚动条 */
+        }        
         .closebtn{
             width: 25px;
             height: 25px;
@@ -1179,6 +1183,7 @@ function proxify()
 function modal_open(url)
 {
     modal.style.display = 'block';
+    document.querySelector("#readability-reader").innerHTML = article.content
     var iframePromise = new Promise((resolve, reject) => {
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
@@ -1194,6 +1199,7 @@ function modal_open(url)
     });
     iframePromise.then(
     () => {
+        var iframe = document.querySelector("#iframe-wrapper > iframe");
         if (isProbablyReaderable(iframe.contentDocument)) {
             let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
             iframe.removeAttribute('src')
