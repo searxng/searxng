@@ -1145,6 +1145,7 @@ button.btn_more {
 
 
 
+                <script src="/static/themes/magi/Readability.js"></script>
                 <script src="/static/themes/magi/markdown.js"></script>
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
@@ -1174,7 +1175,30 @@ function proxify()
 function modal_open(url)
 {
     modal.style.display = 'block';
-    document.querySelector("#iframe-wrapper > iframe").src = url;
+    var iframePromise = new Promise((resolve, reject) => {
+    var iframe = document.querySelector("#iframe-wrapper > iframe");
+    iframe.src = url;
+    if (iframe.attachEvent) {
+        iframe.attachEvent("onload", function() {
+        resolve("success");
+        });
+    } else {
+        iframe.onload = function() {
+        resolve("success");
+        };
+    }
+    });
+    iframePromise.then(
+    () => {
+        if (isProbablyReaderable(iframe.contentDocument)) {
+            let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
+            iframe.contentDocument.documentElement.innerHTML = article.content
+        }
+    },
+    error => {
+        console.log(error);
+    }
+    );
 }
 
 //rsa 
