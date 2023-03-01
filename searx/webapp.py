@@ -798,6 +798,16 @@ def search():
         url_pair = []
         url_proxy = {}
         prompt = ""
+        if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN':
+            for res in results:
+                try:
+                    if gfw.exists(res['title']):
+                        results.remove(res)
+                        # return index_error(output_format, gettext('No item found')), 500
+                    if gfw.exists(res['content']):
+                        # return index_error(output_format, gettext('No item found')), 500
+                        results.remove(res)
+                except:pass
         for res in results:
             if 'url' not in res: continue
             if 'title' not in res: continue

@@ -784,7 +784,7 @@ def search():
         return index_error(output_format, e.message), 400
     except Exception as e:  # pylint: disable=broad-except
         logger.exception(e, exc_info=True)
-        return index_error(output_format, gettext('search error')), 500
+        return index_error(output_format, gettext('No item found')), 500
 
     # results
     results = result_container.get_ordered_results()
@@ -798,14 +798,22 @@ def search():
         url_pair = []
         url_proxy = {}
         prompt = ""
+        if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN':
+            for res in results:
+                try:
+                    if gfw.exists(res['title']):
+                        results.remove(res)
+                        # return index_error(output_format, gettext('No item found')), 500
+                    if gfw.exists(res['content']):
+                        # return index_error(output_format, gettext('No item found')), 500
+                        results.remove(res)
+                except:pass
         for res in results:
             if 'url' not in res: continue
             if 'title' not in res: continue
-            if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.exists(res['title']):
-                return index_error(output_format, 'No query'), 400
+            
             if 'content' not in res: continue
-            if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.exists(res['content']):
-                return index_error(output_format, 'No query'), 400
+
 
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
