@@ -1191,6 +1191,7 @@ function proxify()
 }
 function modal_open(url, num)
 {
+    prev_chat = document.getElementById('chat').innerHTML;
     document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";
     modal.style.display = 'block';
     document.querySelector("#readability-reader").innerHTML = '';
