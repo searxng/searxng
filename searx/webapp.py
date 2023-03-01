@@ -952,7 +952,7 @@ def search():
             left: 32%;
             top: 50%;
             background: var(--color-header-background);
-            z-index: 9999;
+            z-index: 10001;
             transform: translate(-50%, -50%);
         }
  
