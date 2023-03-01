@@ -1219,7 +1219,7 @@ function modal_open(url)
         optkeytext = {
             method: "POST",
             headers: headers,
-            body: JSON.stringify({'text':article.content})
+            body: JSON.stringify({'text':article.textContent})
         };
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
