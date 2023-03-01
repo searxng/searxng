@@ -437,6 +437,7 @@ def render(template_name: str, **kwargs):
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
     kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
+    if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN': kwargs['safesearch'] = '1'
     kwargs['theme'] = request.preferences.get_value('theme')
     kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
