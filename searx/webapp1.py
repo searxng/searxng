@@ -1224,25 +1224,25 @@ function modal_open(url)
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
         .then(data => {
-            keytextres = data;
+            keytextres = unique(data);
             console.log(keytextres)
+            promptWeb = '网页标题：'+ article.title +'\n'+'网页布局：\n'
+            for (el in modalele)
+            {
+                if((promptWeb + modalele[el] + '\n').length <400)
+                    promptWeb = promptWeb + modalele[el] + '\n';  
+            }
+            promptWeb = promptWeb +'网页内容：\n'
+            keySentencesCount = 0;
+            for (st in keytextres)
+            {
+                if((promptWeb + keytextres[st] + '\n').length <1200)
+                    promptWeb = promptWeb + keytextres[st] + '\n';  
+                keySentencesCount = keySentencesCount+1;
+            }
+            console.log(promptWeb)
         })
-        promptWeb = '网页标题：'+ article.title +'\n'
 
-        for (el in modalele)
-        {
-            if((promptWeb + modalele[el] + '\n').length <400)
-                promptWeb = promptWeb + modalele[el] + '\n';  
-        }
-        '网页布局：\n'+ modalele.slice(400) +'\n' +'网页内容：\n'
-        keySentencesCount = 0;
-        for (st in keytextres)
-        {
-            if((promptWeb + keytextres[st] + '\n').length <1200)
-                promptWeb = promptWeb + keytextres[st] + '\n';  
-            keySentencesCount = keySentencesCount+1;
-        }
-        console.log(promptWeb)
 
     },
     error => {
