@@ -1190,7 +1190,7 @@ function proxify()
             {
                 let tmp_url = document.querySelector("#fnref\\:"+String(i+1)).href
                 if(!tmp_url||!prompt.url_proxy[tmp_url]) continue;
-                document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {modal_open(prompt.url_proxy[tmp_url],i+1);    modal.style.display = 'block'; });
+                document.querySelector("#fnref\\:"+String(i+1)).onclick = 'modal_open('+prompt.url_proxy[tmp_url]+','+String(i+1)+')';
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
@@ -1819,8 +1819,7 @@ for(let i=prompt.url_pair.length;i>=0;--i)
       new_text = new_text.replace("url"+String(i),prompt.url_pair[i])
     }
 
-  new_text = new_text.replaceAll('(链接)', '');
-  new_text = new_text.replaceAll('[链接]', '');
+
   new_text = new_text.replaceAll('[]', '');
   new_text = new_text.replaceAll('((', '(');
   new_text = new_text.replaceAll('))', ')');
