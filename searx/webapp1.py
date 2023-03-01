@@ -1755,7 +1755,7 @@ function send_modalchat(elem)
     })
     for (st in fulltext)
     {
-        if(keytextres.(fulltext[st])==-1)
+        if(keytextres.indexOf(fulltext[st])==-1)
             keytextres.unshift(fulltext[st])
     }
     keySentencesCount = 0;
