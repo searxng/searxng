@@ -1227,7 +1227,14 @@ function modal_open(url)
             keytextres = data;
             console.log(keytextres)
         })
-        promptWeb = '网页标题：'+ article.title +'\n'+  '网页布局：'+ modalele.slice(400) +'\n' +'网页内容：'
+        promptWeb = '网页标题：'+ article.title +'\n'
+
+        for (el in modalele)
+        {
+            if((promptWeb + el + '\n').length <400)
+                promptWeb = promptWeb + el + '\n';  
+        }
+        '网页布局：\n'+ modalele.slice(400) +'\n' +'网页内容：\n'
         keySentencesCount = 0;
         for (sentence in keytextres)
         {
