@@ -1948,7 +1948,7 @@ class DFAFilter():
         self.delimit = '\x00'
 
     def add(self, keyword):
-        if not isinstance(keyword, unicode):
+        if not isinstance(keyword, str):
             keyword = keyword.decode('utf-8')
         keyword = keyword.lower()
         chars = keyword.strip()
@@ -1976,7 +1976,7 @@ class DFAFilter():
                 self.add(keyword.strip())
 
     def filter(self, message, repl="*"):
-        if not isinstance(message, unicode):
+        if not isinstance(message, str):
             message = message.decode('utf-8')
         message = message.lower()
         ret = []
