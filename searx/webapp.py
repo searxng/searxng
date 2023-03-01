@@ -999,9 +999,9 @@ def search():
         }
         #chat_talk {
             width: 100%;
-            height: 30vh;
+            max-height: 30vh;
             position: relative;
-            overflow: scroll;
+            overflow: hidden;
         }
         #iframe-wrapper {
             width: 100%;
@@ -1188,6 +1188,7 @@ function proxify()
             if(document.querySelector("#fnref\\:"+String(i+1)))
             {
                 let tmp_url = document.querySelector("#fnref\\:"+String(i+1)).href
+                if(!tmp_url||!prompt.url_proxy[tmp_url]) continue;
                 document.querySelector("#fnref\\:"+String(i+1)).addEventListener('click', function () {modal_open(prompt.url_proxy[tmp_url],i+1);    modal.style.display = 'block'; });
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
@@ -1823,7 +1824,6 @@ for(let i=prompt.url_pair.length;i>=0;--i)
 
   new_text = new_text.replaceAll('(链接)', '');
   new_text = new_text.replaceAll('[链接]', '');
-  new_text = new_text.replaceAll('(链接', '');
   new_text = new_text.replaceAll('[]', '');
   new_text = new_text.replaceAll('((', '(');
   new_text = new_text.replaceAll('))', ')');
