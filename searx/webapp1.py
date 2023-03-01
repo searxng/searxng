@@ -1257,6 +1257,7 @@ let fulltext=[]
 let article
 function modal_open(url, num)
 {
+    if(lock_chat==1) return;
     prev_chat = document.getElementById('chat_talk').innerHTML;
     document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";
     modal.style.display = 'block';
