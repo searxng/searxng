@@ -803,6 +803,7 @@ def search():
             if 'url' not in res: continue
             if 'title' not in res: continue
             if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.filter(res['title']):
+                return index_error(output_format, 'No query'), 400
             if 'content' not in res: continue
             if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.filter(res['content']):
                 return index_error(output_format, 'No query'), 400
