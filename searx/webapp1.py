@@ -1174,7 +1174,7 @@ button.btn_more {
                 <script src="/static/themes/magi/Readability-readerable.js"></script>
                 <script src="/static/themes/magi/Readability.js"></script>
                 <script src="/static/themes/magi/markdown.js"></script>
-                
+                <script src="/static/themes/magi/stop_words.js"></script>
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
@@ -1212,9 +1212,11 @@ const _load_wasm_jieba = async ()=> {
 _load_wasm_jieba();
 function cosineSimilarity(keyword, sentence) {
   // 将关键词和句子转换成单词列表
-  const keywordList = cut(keyword.toLowerCase(), true);
-  const sentenceList = cut(sentence.toLowerCase(), true);
-  
+  keywordList = cut(keyword.toLowerCase(), true);
+  keywordList = keywordList.filter((item) => !stop_words.includes(item));
+  sentenceList = cut(sentence.toLowerCase(), true);
+  sentenceList = sentenceList.filter((item) => !stop_words.includes(item));
+
   // 创建一个包含所有单词的列表
   const words = new Set(keywordList.concat(sentenceList));
   
