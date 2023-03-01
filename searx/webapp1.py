@@ -997,10 +997,15 @@ def search():
             right: 0px;
             top: -15px;
         }
-
+        #chat_talk {
+            width: 100%;
+            height: 30vh;
+            position: relative;
+            overflow: scroll;
+        }
         #iframe-wrapper {
             width: 100%;
-            height: 500px; /* 父元素高度 */
+            height: 40vh;
             position: relative;
             overflow: hidden; /* 防止滚动条溢出 */
         }
