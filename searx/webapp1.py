@@ -907,7 +907,6 @@ def search():
             function move(e) {  
                 modal.style.left = e.targetTouches[0].pageX - x + 'px';
                 modal.style.top = e.targetTouches[0].pageY - y + 'px';
-                e.preventDefault(); 
             }
             // (3) 鼠标弹起，就让鼠标移动事件移除
             document.addEventListener('touchend', function () {
