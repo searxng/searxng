@@ -1762,7 +1762,7 @@ function send_modalchat(elem)
             return 1
         }
     })
-    for (st in fulltext)
+    for (let st=0;st< Math.min(3,fulltext.length);++st)
     {
         if(keytextres.indexOf(fulltext[st])==-1)
             keytextres.unshift(fulltext[st])
