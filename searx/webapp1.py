@@ -1751,7 +1751,7 @@ function send_modalchat(elem)
     prompt = prompt +'网页内容：\n'
 
     fulltext.sort((a, b) => {
-        if (a.cosineSimilarity(word,a) < b.cosineSimilarity(word,b)) {
+        if (cosineSimilarity(word,a) < cosineSimilarity(word,b)) {
             return -1
         } else {
             return 1
