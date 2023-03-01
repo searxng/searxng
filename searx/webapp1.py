@@ -1786,7 +1786,7 @@ function send_modalchat(elem)
                     "temperature": 0.9,
                     "top_p": 1,
                     "frequency_penalty": 0,
-                    "presence_penalty": 1,
+                    "presence_penalty": 0,
                     "best_of": 1,
                     "echo": false,
                     "logprobs": 0,
