@@ -18,7 +18,7 @@ import markdown
 import re
 import datetime
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
-from collections import defaultdict
+import pycorrector
 
 from timeit import default_timer
 from html import escape
@@ -2993,7 +2993,7 @@ class DFA:
         self.ban_words_list = list()
         self.ban_words_dict = dict()
         if not path:
-            self.path = 'keyword'
+            self.path = 'keywords'
         else:
             self.path = path
         self.get_words()
