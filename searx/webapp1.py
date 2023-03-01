@@ -886,7 +886,7 @@ def search():
         })
         // 4. 开始拖拽
         // (1) 当我们鼠标按下， 就获得鼠标在盒子内的坐标
-        title.addEventListener('mousedown', function (e) {
+        modal.addEventListener('mousedown', function (e) {
             var x = e.pageX - modal.offsetLeft;
             var y = e.pageY - modal.offsetTop;
             // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
@@ -901,7 +901,7 @@ def search():
                 document.removeEventListener('mousemove', move);
             })
         })
-        title.addEventListener('touchstart', function (e) {
+        modal.addEventListener('touchstart', function (e) {
             var x = e.targetTouches[0].pageX - modal.offsetLeft;
             var y = e.targetTouches[0].pageY - modal.offsetTop;
             // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
@@ -1001,7 +1001,8 @@ def search():
             width: 100%;
             max-height: 30vh;
             position: relative;
-            overflow: hidden;
+            overflow: scroll;
+            padding-top: 1em;
         }
         #iframe-wrapper {
             width: 100%;
@@ -1295,6 +1296,7 @@ function modal_open(url, num)
                         {
                             word_last += chatTextRaw + chatTemp
                             lock_chat=0
+                            proxify()
                             return;
                         }
                         let choices;
@@ -1312,7 +1314,6 @@ function modal_open(url, num)
                         chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
                         document.querySelector("#prompt").innerHTML="";
                         markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-                        proxify()
                         document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
                     })
@@ -1611,7 +1612,6 @@ function send_webchat(elem)
 
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
-proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1634,6 +1634,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 word_last += chatTextRaw + chatTemp
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
+                proxify()
                 return;
             }
             let choices;
@@ -1651,7 +1652,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-              proxify()
+              
               document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
@@ -1705,7 +1706,6 @@ function send_chat(elem)
 word=word.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
 document.querySelector("#prompt").innerHTML="";
 markdownToHtml(beautify(word), document.querySelector("#prompt"))
-proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
@@ -1728,6 +1728,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 word_last += chatTextRaw + chatTemp
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
+                proxify()
                 return;
             }
             let choices;
@@ -1745,7 +1746,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-              proxify()
+              
               document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
@@ -1959,6 +1960,7 @@ fetch("https://search.kg/completions", optionsIntro)
                                     lock_chat = 0;
                                     document.getElementById('chat_continue').style.display="";
                                     document.getElementById('chat_more').style.display="";
+                                    proxify()
                                     return;
                                 }
                                 let choices;
@@ -1974,7 +1976,7 @@ fetch("https://search.kg/completions", optionsIntro)
 
                                 }            
                                 markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
-                                proxify()
+                                
 
                             })
                             return readerPlusComment.read().then(processText);
@@ -1997,7 +1999,7 @@ fetch("https://search.kg/completions", optionsIntro)
                         text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
                     }            
                     markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
-                    proxify()
+                    
 
                 })
                 return reader.read().then(processText);
