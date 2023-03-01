@@ -1291,6 +1291,11 @@ function modal_open(url, num)
         fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
         const delimiter = /[?!;\?\n。；！………]/g
         fulltext = fulltext.split(delimiter);
+        fulltext = fulltext.filter((item) => {
+        // 使用正则表达式匹配仅由数字、逗号和空格组成的字符串
+        const regex = /^[0-9,\s]+$/;
+        return !regex.test(item);
+        });
         fulltext = fulltext.filter(function(item) {
         return item && item.trim(); // 去掉空值和空格
         });
