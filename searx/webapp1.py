@@ -1252,6 +1252,7 @@ function cosineSimilarity(keyword, sentence) {
 let modalele = []
 let keytextres = []
 let fulltext=[]
+let article
 function modal_open(url, num)
 {
     prev_chat = document.getElementById('chat_talk').innerHTML;
@@ -1281,8 +1282,8 @@ function modal_open(url, num)
 
 
         var iframe = document.querySelector("#iframe-wrapper > iframe");
-        let modalele = eleparse(iframe.contentDocument);
-        let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
+        modalele = eleparse(iframe.contentDocument);
+        article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         fulltext = article.textContent;
         fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
         const delimiter = /[?!;\?\n。；！………]/g
