@@ -3185,11 +3185,9 @@ class DFA:
             start += 1
 
         return False
-gfw = DFA()
+gfw = DFA(path="keyword")
 def run():
     logger.debug('starting webserver on %s:%s', settings['server']['bind_address'], settings['server']['port'])
-
-    gfw.parse("keywords")
     app.run(
         debug=searx_debug,
         use_debugger=searx_debug,
