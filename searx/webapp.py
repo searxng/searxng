@@ -856,13 +856,12 @@ def search():
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair,  'url_proxy':url_proxy, 'raws': raws})
-            gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''
-<div id="chat_talk"></div>
+            gpt = '<div id="chat_section"><div id="chat_intro"></div><div id="chat"></div>' + r'''
 <div id="modal" class="modal">
     <div id="modal-title" class="modal-title">网页速览<span>
         <a id="closebtn" href="javascript:void(0);" class="close-modal closebtn"></a></span>
     </div>
-    <div class="modal-input-content">
+    <div class="modal-input-content" id="modal-input-content">
         
         <div id="iframe-wrapper">
             <iframe ></iframe>
@@ -879,6 +878,8 @@ def search():
         // 3. 点击 closeBtn 就隐藏 mask 和 modal 
         closeBtn.addEventListener('click', function () {
             modal.style.display = 'none';
+            document.querySelector("#chat_section").appendChild(document.querySelector("#chat_talk"))
+            document.querySelector("#chat_section").appendChild(document.querySelector("#chat_continue"))
             document.querySelector("#readability-reader").innerHTML = '';
             try{iframe.removeAttribute('src');}catch(e){}
 
@@ -1055,8 +1056,8 @@ def search():
             transform: rotate(-45deg);
         }
     </style>            
-            
-            <div id="chat_continue" style="display:none">
+<div id="chat_talk"></div>
+<div id="chat_continue" style="display:none">
 <div id="chat_more" style="display:none"></div>
 <hr>
 <textarea id="chat_input" style="margin: auto;display: block;background: rgb(209 219 250 / 30%);outline: 0px;color: var(--color-search-font);font-size: 1.2rem;border-radius: 3px;border: none;height: 3em;resize: vertical;width: 75%;"></textarea>
@@ -1072,6 +1073,7 @@ def search():
     border: none;
     cursor: pointer;
 ">发送</button>
+</div>
 </div>
 <style>
 .chat_answer {
@@ -1213,6 +1215,11 @@ function modal_open(url, num)
     iframePromise.then(
     () => {
 
+        
+        document.querySelector("#modal-input-content").appendChild(document.querySelector("#chat_talk"))
+        document.querySelector("#modal-input-content").appendChild(document.querySelector("#chat_continue"))
+
+
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         let modalele = eleparse(iframe.contentDocument);
         let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
@@ -1266,7 +1273,7 @@ function modal_open(url, num)
 
             chatTemp = ""
             text_offset = -1;
-            prev_chat = document.getElementById('chat').innerHTML;
+            prev_chat = document.getElementById('chat_talk').innerHTML;
 
             fetch("https://search.kg/completions", options)
                 .then((response) => {
