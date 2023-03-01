@@ -799,7 +799,6 @@ def search():
         url_proxy = {}
         prompt = ""
         for res in results:
-            results.remove(res)
             if 'url' not in res: continue
             if 'title' not in res: continue
             if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.filter(res['title']):
