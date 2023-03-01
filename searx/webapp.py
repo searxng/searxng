@@ -1946,7 +1946,7 @@ class DFA:
         self.ban_words_list = list()
         self.ban_words_dict = dict()
         if not path:
-            self.path = 'Data/Danger.form'
+            self.path = 'keyword'
         else:
             self.path = path
         self.get_words()
@@ -2138,7 +2138,7 @@ class DFA:
             start += 1
 
         return False
-gfw = DFA(path="keyword")
+gfw = DFA()
 def run():
     logger.debug('starting webserver on %s:%s', settings['server']['bind_address'], settings['server']['port'])
 
