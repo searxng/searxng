@@ -857,6 +857,7 @@ def search():
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair,  'url_proxy':url_proxy, 'raws': raws})
             gpt = '<div id="chat_intro"></div><div id="chat"></div>' + r'''
+<div id="chat_talk"></div>
 <div id="modal" class="modal">
     <div id="modal-title" class="modal-title">网页速览<span>
         <a id="closebtn" href="javascript:void(0);" class="close-modal closebtn"></a></span>
@@ -865,7 +866,7 @@ def search():
         
         <div id="iframe-wrapper">
             <iframe ></iframe>
-            # <div id='readability-reader'></div>
+            <div id='readability-reader' style='display:none'></div>
         </div>
     </div>
 </div>
@@ -1191,8 +1192,8 @@ function proxify()
 }
 function modal_open(url, num)
 {
-    prev_chat = document.getElementById('chat').innerHTML;
-    document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";
+    prev_chat = document.getElementById('chat_talk').innerHTML;
+    document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";
     modal.style.display = 'block';
     document.querySelector("#readability-reader").innerHTML = '';
     var iframePromise = new Promise((resolve, reject) => {
@@ -1266,7 +1267,6 @@ function modal_open(url, num)
             chatTemp = ""
             text_offset = -1;
             prev_chat = document.getElementById('chat').innerHTML;
-            prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 
             fetch("https://search.kg/completions", options)
                 .then((response) => {
@@ -1300,7 +1300,7 @@ function modal_open(url, num)
                         document.querySelector("#prompt").innerHTML="";
                         markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
                         proxify()
-                        document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
+                        document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
                     })
                     return reader.read().then(processText);
@@ -1602,7 +1602,7 @@ proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
-prev_chat = document.getElementById('chat').innerHTML;
+prev_chat = document.getElementById('chat_talk').innerHTML;
 prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 
 
@@ -1639,7 +1639,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
               proxify()
-              document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
+              document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
           return reader.read().then(processText);
@@ -1696,7 +1696,7 @@ proxify()
 chatTextRaw = "提问：" + word + "\n回答：";
 chatTemp = ""
 text_offset = -1;
-prev_chat = document.getElementById('chat').innerHTML;
+prev_chat = document.getElementById('chat_talk').innerHTML;
 prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#prompt").innerHTML+"</div>";
 
 
@@ -1733,7 +1733,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
               document.querySelector("#prompt").innerHTML="";
               markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
               proxify()
-              document.getElementById('chat').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
+              document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
 
           })
           return reader.read().then(processText);
