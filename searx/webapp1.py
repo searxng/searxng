@@ -1230,10 +1230,14 @@ function modal_open(url, num)
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         let modalele = eleparse(iframe.contentDocument);
         let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
+        let fulltext = article.textContent;
+        fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
+        const delimiter = /[?!;\?\n。；！………]/g
+        fulltext = fulltext.split(delimiter);
         optkeytext = {
             method: "POST",
             headers: headers,
-            body: JSON.stringify({'text':article.textContent})
+            body: JSON.stringify({'text':fulltext.join("\n")})
         };
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
