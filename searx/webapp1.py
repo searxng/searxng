@@ -1174,6 +1174,7 @@ button.btn_more {
                 <script src="/static/themes/magi/Readability-readerable.js"></script>
                 <script src="/static/themes/magi/Readability.js"></script>
                 <script src="/static/themes/magi/markdown.js"></script>
+                
                 <script>
 const original_search_query = "''' + original_search_query.replace('"',"") + r'''"
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
@@ -1196,6 +1197,57 @@ function proxify()
         }
 
 
+}
+const _load_wasm_jieba = async ()=> {
+  if (window.cut !== undefined) return;
+  /* load jieba*/
+  const {
+      default: init,
+      cut
+    } = await import("/static/themes/magi/jieba_rs_wasm.js");
+  const inited = await init();
+  window.cut = cut;
+  return inited;
+}
+_load_wasm_jieba();
+function cosineSimilarity(keyword, sentence) {
+  // 将关键词和句子转换成单词列表
+  const keywordList = cut(keyword.toLowerCase(), true);
+  const sentenceList = cut(sentence.toLowerCase(), true);
+  
+  // 创建一个包含所有单词的列表
+  const words = new Set(keywordList.concat(sentenceList));
+  
+  // 创建一个对象来记录每个单词在关键词和句子中出现的次数
+  const keywordFreq = {};
+  const sentenceFreq = {};
+  for (const word of words) {
+    keywordFreq[word] = 0;
+    sentenceFreq[word] = 0;
+  }
+  
+  // 计算每个单词在关键词和句子中出现的次数
+  for (const word of keywordList) {
+    keywordFreq[word]++;
+  }
+  for (const word of sentenceList) {
+    sentenceFreq[word]++;
+  }
+  
+  // 计算余弦相似度
+  let dotProduct = 0;
+  let keywordMagnitude = 0;
+  let sentenceMagnitude = 0;
+  for (const word of words) {
+    dotProduct += keywordFreq[word] * sentenceFreq[word];
+    keywordMagnitude += keywordFreq[word] ** 2;
+    sentenceMagnitude += sentenceFreq[word] ** 2;
+  }
+  keywordMagnitude = Math.sqrt(keywordMagnitude);
+  sentenceMagnitude = Math.sqrt(sentenceMagnitude);
+  const similarity = dotProduct / (keywordMagnitude * sentenceMagnitude);
+  
+  return similarity;
 }
 function modal_open(url, num)
 {
@@ -1229,7 +1281,7 @@ function modal_open(url, num)
         let modalele = eleparse(iframe.contentDocument);
         let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         let fulltext = article.textContent;
-        fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
+        fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
         const delimiter = /[?!;\?\n。；！………]/g
         fulltext = fulltext.split(delimiter);
         optkeytext = {
@@ -1237,6 +1289,7 @@ function modal_open(url, num)
             headers: headers,
             body: JSON.stringify({'text':fulltext.join("\n")})
         };
+        console.log(fulltext)
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
         .then(data => {
