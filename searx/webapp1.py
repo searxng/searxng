@@ -651,8 +651,8 @@ def health():
     return Response('OK', mimetype='text/plain')
 
 
-@app.route('/textrank', methods=['POST'])
-def textrank():
+@app.route('/keytext', methods=['POST'])
+def keytext():
     res = []
     text = request.json['text']
     tr4s = TextRank4Sentence()
@@ -1207,18 +1207,35 @@ function modal_open(url)
         };
     }
     });
+    keytextres = ''
     iframePromise.then(
     () => {
-    
+
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         let modalele = eleparse(iframe.contentDocument);
         let article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         console.log(modalele)
         console.log(article)
-        if (isProbablyReaderable(iframe.contentDocument)) {
-            iframe.removeAttribute('src')
-            document.querySelector("#readability-reader").innerHTML = article.content
+        optkeytext = {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({'text':article.content})
+        };
+        fetchRetry('https://search.kg/keytext',3,optkeytext)
+        .then(response => response.json())
+        .then(data => {
+            keytextres = JSON.parse(data);
+            console.log(keytextres)
+        })
+        promptWeb = '网页布局：'+ modalele.slice(400) +'\n' +'网页内容：'
+        for (sentence in keytextres)
+        {
+            if((promptWeb + sentence + '\n').length <1200)
+                promptWeb = promptWeb + sentence + '\n';  
+            
         }
+        console.log(promptWeb)
+
     },
     error => {
         console.log(error);
