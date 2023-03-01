@@ -1224,15 +1224,16 @@ function modal_open(url)
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
         .then(data => {
-            keytextres = JSON.parse(data);
+            keytextres = data;
             console.log(keytextres)
         })
-        promptWeb = '网页布局：'+ modalele.slice(400) +'\n' +'网页内容：'
+        promptWeb = '网页标题：'+ article.title +'\n'+  '网页布局：'+ modalele.slice(400) +'\n' +'网页内容：'
+        keySentencesCount = 0;
         for (sentence in keytextres)
         {
             if((promptWeb + sentence + '\n').length <1200)
                 promptWeb = promptWeb + sentence + '\n';  
-            
+            keySentencesCount = keySentencesCount+1;
         }
         console.log(promptWeb)
 
