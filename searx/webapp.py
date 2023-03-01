@@ -1231,15 +1231,15 @@ function modal_open(url)
 
         for (el in modalele)
         {
-            if((promptWeb + el + '\n').length <400)
-                promptWeb = promptWeb + el + '\n';  
+            if((promptWeb + modalele[el] + '\n').length <400)
+                promptWeb = promptWeb + modalele[el] + '\n';  
         }
         '网页布局：\n'+ modalele.slice(400) +'\n' +'网页内容：\n'
         keySentencesCount = 0;
-        for (sentence in keytextres)
+        for (st in keytextres)
         {
-            if((promptWeb + sentence + '\n').length <1200)
-                promptWeb = promptWeb + sentence + '\n';  
+            if((promptWeb + keytextres[st] + '\n').length <1200)
+                promptWeb = promptWeb + keytextres[st] + '\n';  
             keySentencesCount = keySentencesCount+1;
         }
         console.log(promptWeb)
