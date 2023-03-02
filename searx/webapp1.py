@@ -2029,6 +2029,9 @@ for(let i=prompt.url_pair.length;i>=0;--i)
     new_text = new_text.replaceAll("(网址url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(网址https://url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(网址"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源链接url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源链接https://url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源链接"+String(i),"(https://url"+String(i) )
 }
   new_text = replaceUrlWithFootnote(new_text)
 
