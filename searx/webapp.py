@@ -738,9 +738,6 @@ def search():
                 "top_p": 1,
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
-                "best_of": 1,
-                "echo": False,
-                "logprobs": 0,
                 "stream": False
             }
             gpt_json={}
@@ -849,28 +846,22 @@ def search():
             }
             if '搜索' not in search_type:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是 " + original_search_query + " 的网络知识。用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
+                    "message": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
                     "frequency_penalty": 0,
                     "presence_penalty": 0,
-                    "best_of": 1,
-                    "echo": False,
-                    "logprobs": 0,
                     "stream": True
                 }
             else:
                 gpt_data = {
-                    "prompt": prompt+"\n以上是关键词 " + search_query.query + " 的搜索结果，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后。结果：",
+                    "message": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"用简体中文完成"+ search_type +"，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
                     "frequency_penalty": 0,
                     "presence_penalty": 0,
-                    "best_of": 1,
-                    "echo": False,
-                    "logprobs": 0,
                     "stream": True
                 }
             gpt = json.dumps({'data':gpt_data, 'url_pair':url_pair,  'url_proxy':url_proxy, 'raws': raws})
@@ -1355,9 +1346,6 @@ function modal_open(url, num)
                                 "top_p": 1,
                                 "frequency_penalty": 0,
                                 "presence_penalty": 0,
-                                "best_of": 1,
-                                "echo": false,
-                                "logprobs": 0,
                                 "stream": true
                             }) )
                 };
@@ -1808,9 +1796,6 @@ function send_modalchat(elem)
                     "top_p": 1,
                     "frequency_penalty": 0,
                     "presence_penalty": 0,
-                    "best_of": 1,
-                    "echo": false,
-                    "logprobs": 0,
                     "stream": true
                 }) )
       };
@@ -1899,9 +1884,6 @@ function send_chat(elem)
                     "top_p": 1,
                     "frequency_penalty": 0,
                     "presence_penalty": 1,
-                    "best_of": 1,
-                    "echo": false,
-                    "logprobs": 0,
                     "stream": true
                 }) )
       };
@@ -2048,9 +2030,6 @@ function chatmore()
             "top_p": 1,
             "frequency_penalty": 0,
             "presence_penalty": 2,
-            "best_of": 1,
-            "echo": false,
-            "logprobs": 0,
             "stream": false
         }) )
     };
@@ -2089,9 +2068,6 @@ const optionsIntro = {
         "top_p": 1,
         "frequency_penalty": 0,
         "presence_penalty": 0.5,
-        "best_of": 1,
-        "echo": false,
-        "logprobs": 0,
         "stream": true
     }) )
 };
@@ -2140,9 +2116,6 @@ fetch("https://search.kg/completions", optionsIntro)
                                 "top_p": 1,
                                 "frequency_penalty": 0,
                                 "presence_penalty": 2,
-                                "best_of": 1,
-                                "echo": false,
-                                "logprobs": 0,
                                 "stream": true
                             }))
                         };
