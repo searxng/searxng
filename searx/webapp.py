@@ -2058,7 +2058,7 @@ function chatmore()
     fetch("https://search.kg/completions", optionsMore)
     .then(response => response.json())
     .then(data => {
-        JSON.parse(data.choices[0].text.replaceAll("\n","")).forEach(item => {
+        JSON.parse(data.choices[0].message.content.replaceAll("\n","")).forEach(item => {
             document.querySelector("#chat_more").innerHTML += '<button class="btn_more" onclick="send_webchat(this)">'+ String(item) +'</button>'
         });
     })
