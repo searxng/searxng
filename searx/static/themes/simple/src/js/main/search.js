@@ -14,6 +14,13 @@
     }
   }
 
+  function autocomplete_onclick(e, suggestion, params) {
+    
+    params._Select(suggestion);
+    if(!e.ctrlKey){
+      submitIfQuery();
+    }
+  }
   function createClearButton (qinput) {
     var cs = document.getElementById('clear_search');
     var updateClearButton = function () {
@@ -59,8 +66,8 @@
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function (li) {
               if (li.getAttribute("class") != "locked") {
-                li.onmousedown = function () {
-                  params._Select(li);
+                li.onmousedown = function (e) {
+                  autocomplete_onclick(e, li, params);
                 };
               }
             });
@@ -74,17 +81,14 @@
         See HTML specifications:
         * HTML5: https://url.spec.whatwg.org/#concept-urlencoded-serializer
         * HTML4: https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
-
         autocomplete.js does not URL encode the name and values:
         https://github.com/autocompletejs/autocomplete.js/blob/87069524f3b95e68f1b54d8976868e0eac1b2c83/src/autocomplete.ts#L665
-
         The monkey patch overrides the compiled version of the ajax function.
         See https://github.com/autocompletejs/autocomplete.js/blob/87069524f3b95e68f1b54d8976868e0eac1b2c83/dist/autocomplete.js#L143-L158
         The patch changes only the line 156 from
           params.Request.send(params._QueryArg() + "=" + params._Pre());
         to
           params.Request.send(encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(params._Pre()));
-
         Related to:
         * https://github.com/autocompletejs/autocomplete.js/issues/78
         * https://github.com/searxng/searxng/issues/1695
