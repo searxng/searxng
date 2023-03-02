@@ -2134,7 +2134,7 @@ fetch("https://search.kg/completions", optionsIntro)
                             body: b64EncodeUnicode(JSON.stringify({
                                 "messages": [{'role':'assistant','content':document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n"} , {'role':'user','content':"围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n"}],
                                 "max_tokens": 1500,
-                                "temperature": 0.7,
+                                "temperature": 0.5,
                                 "top_p": 1,
                                 "frequency_penalty": 0,
                                 "presence_penalty": 2,
