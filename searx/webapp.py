@@ -1762,7 +1762,7 @@ function send_modalchat(elem)
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
   if(word.length==0 || word.length > 140) return;
-  word_last.trimArray(500)
+  trimArray(word_last,500)
 
   if(lock_chat!=0) return;
   lock_chat = 1;
@@ -1882,7 +1882,7 @@ function send_chat(elem)
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
   if(word.length==0 || word.length > 140) return;
-  word_last.trimArray(500)
+  trimArray(word_last,500)
   if  (word.includes("你能") || word.includes("讲讲") || word.includes("扮演") || word.includes("模仿") || word.includes("请推荐") || word.includes("帮我") || word.includes("写一段") || word.includes("写一个") || word.includes("请问") || word.includes("请给") || word.includes("请你") || word.includes("请推荐") || word.includes("能帮忙") || word.includes("介绍一下") || word.includes("为什么") || word.includes("什么是") || word.includes("有什么") || word.includes("怎样") || word.includes("给我") || word.includes("如何") || word.includes("谁是") || word.includes("查询") || word.includes("告诉我") || word.includes("查一下") || word.includes("找一个") || word.includes("什么样") || word.includes("哪个") || word.includes("哪些") || word.includes("哪一个") || word.includes("哪一些") || word.includes("啥是") || word.includes("为啥") || word.includes("怎么"))
     return send_webchat(elem);
 
