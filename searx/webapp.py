@@ -846,7 +846,7 @@ def search():
             }
             if '搜索' not in search_type:
                 gpt_data = {
-                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"完成"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接"}] ,
+                    "messages": [{'role':'system','content':'如果使用了网络知识，在文中用(网址)标注对应内容来源链接'},{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':original_search_query}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -856,7 +856,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"完成"+ search_type +"，总结简报，在文中用(网址)标注对应内容来源链接"}] ,
+                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"总结简报，在文中用(网址)标注对应内容来源链接"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
