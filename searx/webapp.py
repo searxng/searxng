@@ -832,9 +832,8 @@ def search():
             res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
              
             tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            
+            raws.append(tmp_prompt)
             if '搜索' in search_type and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，用简体中文总结简报，在文中用(网址)标注对应内容来源链接。结果：" ) <1600:
-                raws.append(tmp_prompt)
                 prompt += tmp_prompt +'\n'
             elif len( prompt + tmp_prompt +'\n' + "\n以上是 " + original_search_query + " 的网络知识。"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接。结果：") <1600:
                 prompt += tmp_prompt +'\n'
