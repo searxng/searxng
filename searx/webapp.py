@@ -2062,7 +2062,7 @@ const optionsIntro = {
     method: "POST",
     headers: headers,
     body: b64EncodeUnicode( JSON.stringify({
-        "messages": JSON.stringify([{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}]),
+        "messages": [{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}],
         "max_tokens": 1024,
         "temperature": 0.2,
         "top_p": 1,
@@ -2110,7 +2110,7 @@ fetch("https://search.kg/completions", optionsIntro)
                             method: "POST",
                             headers: headers,
                             body: b64EncodeUnicode(JSON.stringify({
-                                "messages": JSON.stringify([{'role':'assistant','content':document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n"} , {'role':'user','content':"围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n"}]),
+                                "messages": [{'role':'assistant','content':document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n"} , {'role':'user','content':"围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n"}],
                                 "max_tokens": 1500,
                                 "temperature": 0.7,
                                 "top_p": 1,
