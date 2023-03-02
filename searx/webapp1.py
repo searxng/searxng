@@ -1202,7 +1202,8 @@ function proxify()
             {
                 let tmp_url = document.querySelector("#fnref\\:"+String(i+1)).href
                 if(!tmp_url||!prompt.url_proxy[tmp_url]) continue;
-                document.querySelector("#fnref\\:"+String(i+1)).onclick = function() { modal_open(prompt.url_proxy[tmp_url],i+1) };
+                const nowurl = modal_open(prompt.url_proxy[tmp_url]
+                document.querySelector("#fnref\\:"+String(i+1)).onclick = function() { modal_open(nowurl,i+1) };
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('href')
                 document.querySelector("#fnref\\:"+String(i+1)).removeAttribute('id')
             }
