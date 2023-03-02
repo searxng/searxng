@@ -1389,11 +1389,9 @@ function modal_open(url, num)
                             try{choices=JSON.parse(half+result)['choices'];half = '';}
                             catch(e){choices=JSON.parse(result)['choices'];half = '';}
                         }catch(e){half+=result}
-                        if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+                        if(choices && choices.length>0)
                         {
-                            
-                            chatTemp+=choices[0].text
-                            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                            chatTemp+=choices[0].message.content
                         }
                         chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
                         document.querySelector("#prompt").innerHTML="";
@@ -1727,11 +1725,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+            if(choices && choices.length>0)
             {
                 
-                chatTemp+=choices[0].text
-                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                chatTemp+=choices[0].message.content
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -1852,11 +1849,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+            if(choices && choices.length>0)
             {
                 
-                chatTemp+=choices[0].text
-                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                chatTemp+=choices[0].message.content
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -1944,11 +1940,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+            if(choices && choices.length>0)
             {
                 
-                chatTemp+=choices[0].text
-                text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                chatTemp+=choices[0].message.content
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -2175,10 +2170,9 @@ fetch("https://search.kg/completions", optionsIntro)
                                     try{choices=JSON.parse(half+result)['choices'];half = '';}
                                     catch(e){choices=JSON.parse(result)['choices'];half = '';}
                                 }catch(e){half+=result}
-                                if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+                                if(choices && choices.length>0)
                                 {
-                                    chatTextRawPlusComment+=choices[0].text
-                                    text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                                    chatTextRawPlusComment+=choices[0].message.content
 
                                 }            
                                 markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
@@ -2199,10 +2193,9 @@ fetch("https://search.kg/completions", optionsIntro)
                         try{choices=JSON.parse(half+result)['choices'];half = '';}
                         catch(e){choices=JSON.parse(result)['choices'];half = '';}
                     }catch(e){half+=result}
-                    if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+                    if(choices && choices.length>0)
                     {
-                        chatTextRaw+=choices[0].text
-                        text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+                        chatTextRaw+=choices[0].message.content
                     }            
                     markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
                     
@@ -2233,10 +2226,9 @@ fetch("https://search.kg/completions", optionsIntro)
             try{choices=JSON.parse(half+result)['choices'];half = '';}
             catch(e){choices=JSON.parse(result)['choices'];half = '';}
         }catch(e){half+=result}
-        if(choices && choices.length>0 && choices[0].logprobs.text_offset[0] > text_offset)
+        if(choices && choices.length>0)
         {
-            chatTextRawIntro+=choices[0].text
-            text_offset = choices[0].logprobs.text_offset[choices[0].logprobs.text_offset.length - 1]
+            chatTextRawIntro+=choices[0].message.content
         }            
         markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
         
