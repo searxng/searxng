@@ -3,12 +3,12 @@ gpt = ""
 prompt = "你好"
 gpt_url = "https://api.openai.com/v1/chat/completions"
 gpt_headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer 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",
     "Content-Type": "application/json",    
 }
 gpt_data = {
     "model": "gpt-3.5-turbo",
-    "messages": [{"user":prompt}],
+    "messages": [{"role":"user","content":prompt}],
     "max_tokens": 256,
     "temperature": 0.9,
     "top_p": 1,
