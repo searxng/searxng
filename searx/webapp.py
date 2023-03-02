@@ -1365,7 +1365,6 @@ function modal_open(url, num)
                         if(result == "[DONE]")
                         {
                             lock_chat=0
-                            proxify()
                             return;
                         }
                         let choices;
@@ -1702,7 +1701,6 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 word_last.push({'role':'assistant','content':chatTemp})
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
-                proxify()
                 return;
             }
             let choices;
@@ -1839,7 +1837,6 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 word_last.push({'role':'assistant','content':chatTemp})
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
-                proxify()
                 return;
             }
             let choices;
@@ -1930,7 +1927,6 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 word_last.push({'role':'assistant','content':chatTemp})
                 lock_chat=0
                 document.querySelector("#chat_input").value="";
-                proxify()
                 return;
             }
             let choices;
