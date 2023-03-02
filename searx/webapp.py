@@ -719,20 +719,21 @@ def search():
                     net_search_str = 'false'
             elif len(original_search_query)>10:
                 prompt = "任务：写诗 写故事 写代码 写论文摘要 模仿推特用户 生成搜索广告 回答问题 聊天话题 搜索网页 搜索视频 搜索地图 搜索新闻 查看食谱 搜索商品 写歌词 写论文 模仿名人 翻译语言 摘要文章 讲笑话 做数学题 搜索图片 播放音乐 查看天气\n1.判断是以上任务的哪一个2.判断是否需要联网回答3.给出搜索关键词\n"
-                prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述\n答案：'
+                prompt = prompt + "提问：" + search_query.query + '答案用json数组例如["写诗","否","详细关键词"]来表述'
                 acts =  ['写诗', '写故事', '写代码', '写论文摘要', '模仿推特用户', '生成搜索广告', '回答问题', '聊天话题', '搜索网页', '搜索视频', '搜索地图', '搜索新闻', '查看食谱', '搜索商品', '写歌词', '写论文', '模仿名人', '翻译语言', '摘要文章', '讲笑话', '做数学题', '搜索图片', '播放音乐', '查看天气']
             if "今年" in prompt or "今天" in prompt:
                 now = datetime.datetime.now()
                 prompt = prompt.replace("今年",now.strftime('%Y年'))
                 prompt = prompt.replace("今天",now.strftime('%Y年%m月%d日'))
             gpt = ""
-            gpt_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+            gpt_url = "https://api.openai.com/v1/chat/completions"
             gpt_headers = {
                 "Authorization": "Bearer "+os.environ['GPTKEY'],
                 "Content-Type": "application/json",    
             }
             gpt_data = {
-                "prompt": prompt,
+                "model": "gpt-3.5-turbo",
+                "message": {"user":prompt},
                 "max_tokens": 256,
                 "temperature": 0.9,
                 "top_p": 1,
@@ -745,7 +746,7 @@ def search():
                 gpt_response = requests.post(gpt_url, headers=gpt_headers, data=json.dumps(gpt_data))
                 gpt_json = gpt_response.json()
             if 'choices' in gpt_json:
-                gpt = gpt_json['choices'][0]['text']
+                gpt = gpt_json['choices'][0]['message']['content']
             if search_type == '任务':
                 for word in gpt.split('\n'):
                     if word != "":
