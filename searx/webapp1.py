@@ -846,7 +846,7 @@ def search():
             }
             if '搜索' not in search_type:
                 gpt_data = {
-                    "message": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
+                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"用简体中文完成"+ search_type +"，如果使用了网络知识，删除无关内容，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -856,7 +856,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "message": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"用简体中文完成"+ search_type +"，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
+                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"用简体中文完成"+ search_type +"，删除无关内容，用简体中文分条总结简报，在文中用(链接)标注对应内容来源链接，链接不要放在最后"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -2062,7 +2062,7 @@ const optionsIntro = {
     method: "POST",
     headers: headers,
     body: b64EncodeUnicode( JSON.stringify({
-        "message": JSON.stringify([{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}]),
+        "messages": JSON.stringify([{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}]),
         "max_tokens": 1024,
         "temperature": 0.2,
         "top_p": 1,
