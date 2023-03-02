@@ -733,7 +733,7 @@ def search():
             }
             gpt_data = {
                 "model": "gpt-3.5-turbo",
-                "messages": [{"user":prompt}],
+                "messages": [{"role":"user","content":prompt}],
                 "max_tokens": 256,
                 "temperature": 0.9,
                 "top_p": 1,
