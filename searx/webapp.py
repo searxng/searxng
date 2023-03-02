@@ -2045,7 +2045,7 @@ function chatmore()
         method: "POST",
         headers: headers,
         body: b64EncodeUnicode( JSON.stringify({
-            "messages":  [{'role':'assistant','content': document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“'+ original_search_query + '”的网络知识'}, {'role':'assistant','content':'给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]'}] ,
+            "messages":  [{'role':'assistant','content': document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“'+ original_search_query + '”的网络知识'}, {'role':'user','content':'给出需要更多网络知识才能回答的，不含代词的完整独立问题，json数组格式["q1","q2","q3","q4"]'}] ,
             "max_tokens": 1500,
             "temperature": 0.7,
             "top_p": 1,
