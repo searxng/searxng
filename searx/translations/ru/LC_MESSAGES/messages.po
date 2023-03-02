@@ -14,13 +14,14 @@
 # Surepusofu Arutemu <crexlight@gmail.com>, 2022.
 # No4vick <MineBor1@yandex.ru>, 2022.
 # BalkanMadman <zurabid2016@gmail.com>, 2023.
+# AHOHNMYC <lqwh2h2cwa@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-27 12:08+0000\n"
-"Last-Translator: BalkanMadman <zurabid2016@gmail.com>\n"
+"PO-Revision-Date: 2023-03-03 07:08+0000\n"
+"Last-Translator: AHOHNMYC <lqwh2h2cwa@protonmail.com>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ru/>\n"
 "Language: ru\n"
@@ -386,25 +387,23 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Этот плагин проверяет, принадлежит ли адрес этого запроса выходному узлу "
-"Tor, и, в таком случае, информирует пользователя; как check.torproject.org, "
-"но от SearXNG."
+"Этот плагин проверяет, принадлежит ли адрес запроса выходному узлу Tor и "
+"информирует пользователя если это так; как check.torproject.org, но от "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Не удалось загрузить список выходных узлов Tor по адресу: https://check."
+"Не удалось загрузить список выходных узлов Tor с адреса https://check."
 "torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
-"Вы используете Tor, и, похоже, у вас следующий публичный IP адрес: "
-"{ip_address}"
+msgstr "Вы не используете Tor. Ваш публичный IP-адрес: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -601,8 +600,7 @@ msgstr "Какой язык предпочтителен для поиска?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Выберите Авто-определение, для того чтобы SearXNG мог определять язык вашего "
-"запроса."
+"Выберите Авто-определение, чтобы SearXNG сам определял язык вашего запроса."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
