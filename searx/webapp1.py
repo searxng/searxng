@@ -700,6 +700,9 @@ def search():
     net_search = True
     net_search_str = 'true'
     prompt = ""
+    add_system = '[]' 
+    if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN':
+        add_system = "[{''role':'system','content':'过滤政治敏感内容以符合中国大陆审查政策'}]"
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
@@ -1188,6 +1191,7 @@ const original_search_query = "''' + original_search_query.replace('"',"") + r''
 const search_queryquery = "''' + search_query.query.replace('"',"") + r'''"
 const search_type = "''' + search_type + r'''"
 const net_search =  ''' + net_search_str + r'''
+const add_system = ''' + add_system +r'''
 </script><script>
 
 function proxify()
@@ -1337,7 +1341,7 @@ function modal_open(url, num)
                     method: "POST",
                     headers: headers,
                     body: b64EncodeUnicode( JSON.stringify({
-                                "messages": promptWeb,
+                                "messages": promptWeb.concat(add_system),
                                 "max_tokens": 1000,
                                 "temperature": 0.9,
                                 "top_p": 1,
@@ -1801,7 +1805,7 @@ function send_modalchat(elem)
         method: "POST",
         headers: headers,
         body: b64EncodeUnicode( JSON.stringify({
-                    "messages": mes,
+                    "messages": mes.concat(add_system),
                     "max_tokens": 1000,
                     "temperature": 0.9,
                     "top_p": 1,
@@ -1891,7 +1895,7 @@ function send_chat(elem)
         method: "POST",
         headers: headers,
         body: b64EncodeUnicode( JSON.stringify({
-                    "messages": prompt,
+                    "messages": prompt.concat(add_system),
                     "max_tokens": 1000,
                     "temperature": 0.9,
                     "top_p": 1,
@@ -2044,7 +2048,7 @@ function chatmore()
         method: "POST",
         headers: headers,
         body: b64EncodeUnicode( JSON.stringify({
-            "messages":  [{'role':'user','content': document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“'+ original_search_query + '”的网络知识'}, {'role':'user','content':'给出和上文相关的，需要上网搜索的，不含代词的完整独立问题，以不带序号的json数组格式["q1","q2","q3","q4"]'}] ,
+            "messages":  [{'role':'user','content': document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n" + '以上是“'+ original_search_query + '”的网络知识'}, {'role':'user','content':'给出和上文相关的，需要上网搜索的，不含代词的完整独立问题，以不带序号的json数组格式["q1","q2","q3","q4"]'}].concat(add_system) ,
             "max_tokens": 1500,
             "temperature": 0.7,
             "top_p": 1,
@@ -2083,7 +2087,7 @@ const optionsIntro = {
     method: "POST",
     headers: headers,
     body: b64EncodeUnicode( JSON.stringify({
-        "messages": [{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}],
+        "messages": [{'role':'system','content':"你是一个叫Charles的搜索引擎机器人。用户搜索的是“" + original_search_query + "”有关的信息。不要假定搜索结果。"},{'role':'user','content':'用简体中文写一句语言幽默的、含有emoji的引入语。'}].concat(add_system),
         "max_tokens": 1024,
         "temperature": 0.2,
         "top_p": 1,
@@ -2133,7 +2137,7 @@ fetch("https://search.kg/completions", optionsIntro)
                             method: "POST",
                             headers: headers,
                             body: b64EncodeUnicode(JSON.stringify({
-                                "messages": [{'role':'assistant','content':document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n"} , {'role':'user','content':"围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n"}],
+                                "messages": [{'role':'assistant','content':document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n"} , {'role':'user','content':"围绕关键词“" + original_search_query + "”，结合你的知识总结归纳发表评论，可以用emoji，不得重复提及已有内容：\n"}].concat(add_system),
                                 "max_tokens": 1500,
                                 "temperature": 0.5,
                                 "top_p": 1,
