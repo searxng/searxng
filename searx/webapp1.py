@@ -873,7 +873,7 @@ def search():
     <div class="modal-input-content" id="modal-input-content">
         
         <div id="iframe-wrapper">
-            <iframe ></iframe>
+            <iframe sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
             <div id='readability-reader' style='display:none'></div>
         </div>
     </div>
