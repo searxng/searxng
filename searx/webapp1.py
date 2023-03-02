@@ -702,7 +702,7 @@ def search():
     prompt = ""
     add_system = '[]' 
     if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN':
-        add_system = "[{''role':'system','content':'过滤政治敏感内容以符合中国大陆审查政策'}]"
+        add_system = "[{'role':'system','content':'过滤政治敏感内容以符合中国大陆审查政策'}]"
     try:
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
