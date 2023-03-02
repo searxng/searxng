@@ -911,13 +911,12 @@ def search():
             })
         })
         modal.addEventListener('touchstart', function (e) {
-            var x = e.targetTouches[0].pageX - modal.offsetLeft;
-            var y = e.targetTouches[0].pageY - modal.offsetTop;
-            // (2) 鼠标移动的时候，把鼠标在页面中的坐标，减去 鼠标在盒子内的坐标就是模态框的left和top值
-            document.addEventListener('touchmove ', move)
+            var x = e.touches[0].pageX - modal.offsetLeft;
+            var y = e.touches[0].pageY - modal.offsetTop;
+            document.addEventListener('touchmove', move)
             function move(e) {  
-                modal.style.left = e.targetTouches[0].pageX - x + 'px';
-                modal.style.top = e.targetTouches[0].pageY - y + 'px';
+                modal.style.left = e.touches[0].pageX - x + 'px';
+                modal.style.top = e.touches[0].pageY - y + 'px';
             }
             // (3) 鼠标弹起，就让鼠标移动事件移除
             document.addEventListener('touchend', function () {
