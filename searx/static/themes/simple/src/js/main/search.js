@@ -17,6 +17,7 @@
   function autocomplete_onclick(e, suggestion, params) {
     
     params._Select(suggestion);
+    // Ctrl + Click = Only place the suggestion in the search bar, no auto search.
     if(!e.ctrlKey){
       submitIfQuery();
     }
