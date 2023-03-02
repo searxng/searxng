@@ -836,7 +836,7 @@ def search():
             if '搜索' in search_type and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，用简体中文总结简报，在文中用(网址)标注对应内容来源链接。结果：" ) <1600:
                 raws.append(tmp_prompt)
                 prompt += tmp_prompt +'\n'
-            elif len( prompt + tmp_prompt +'\n' + "\n以上是 " + original_search_query + " 的网络知识。用简体中文完成"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接。结果：") <1600:
+            elif len( prompt + tmp_prompt +'\n' + "\n以上是 " + original_search_query + " 的网络知识。"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接。结果：") <1600:
                 prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
@@ -846,7 +846,7 @@ def search():
             }
             if '搜索' not in search_type:
                 gpt_data = {
-                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"用简体中文完成"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接"}] ,
+                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的网络知识"},{'role':'user','content':"完成"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -856,7 +856,7 @@ def search():
                 }
             else:
                 gpt_data = {
-                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"用简体中文完成"+ search_type +"，用简体中文总结简报，在文中用(网址)标注对应内容来源链接"}] ,
+                    "messages": [{'role':'assistant','content': prompt+"\n以上是 " + original_search_query + " 的搜索结果"},{'role':'user','content':"完成"+ search_type +"，总结简报，在文中用(网址)标注对应内容来源链接"}] ,
                     "max_tokens": 1000,
                     "temperature": 0.2,
                     "top_p": 1,
@@ -2008,13 +2008,16 @@ function replaceUrlWithFootnote(text) {
 }
 function beautify(text)
 {
-    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replaceAll("链接:","").replaceAll("链接：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '');
+    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replaceAll("链接:","").replaceAll("链接：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '').replaceAll("来源:","").replaceAll("来源：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '');
 for(let i=prompt.url_pair.length;i>=0;--i)
 {
     new_text = new_text.replaceAll("(url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(链接url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(链接https://url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(链接"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源https://url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(来源"+String(i),"(https://url"+String(i) )
 }
   new_text = replaceUrlWithFootnote(new_text)
 
