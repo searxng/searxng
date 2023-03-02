@@ -1377,9 +1377,9 @@ function modal_open(url, num)
                             try{choices=JSON.parse(half+result)['choices'];half = '';}
                             catch(e){choices=JSON.parse(result)['choices'];half = '';}
                         }catch(e){half+=result}
-                        if(choices && choices.length>0)
+                        if(choices && choices.length>0 && choices[0].content)
                         {
-                            chatTemp+=choices[0].message.content
+                            chatTemp+=choices[0].content
                         }
                         chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
                         document.querySelector("#prompt").innerHTML="";
@@ -1713,10 +1713,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0)
+            if(choices && choices.length>0 && choices[0].content)
             {
                 
-                chatTemp+=choices[0].message.content
+                chatTemp+=choices[0].content
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -1834,10 +1834,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0)
+            if(choices && choices.length>0 && choices[0].content)
             {
                 
-                chatTemp+=choices[0].message.content
+                chatTemp+=choices[0].content
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -1922,10 +1922,10 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
                 try{choices=JSON.parse(half+result)['choices'];half = '';}
                 catch(e){choices=JSON.parse(result)['choices'];half = '';}
             }catch(e){half+=result}
-            if(choices && choices.length>0)
+            if(choices && choices.length>0 && choices[0].content)
             {
                 
-                chatTemp+=choices[0].message.content
+                chatTemp+=choices[0].content 
             }
               chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
               document.querySelector("#prompt").innerHTML="";
@@ -2143,9 +2143,9 @@ fetch("https://search.kg/completions", optionsIntro)
                                     try{choices=JSON.parse(half+result)['choices'];half = '';}
                                     catch(e){choices=JSON.parse(result)['choices'];half = '';}
                                 }catch(e){half+=result}
-                                if(choices && choices.length>0)
+                                if(choices && choices.length>0 && choices[0].content)
                                 {
-                                    chatTextRawPlusComment+=choices[0].message.content
+                                    chatTextRawPlusComment+=choices[0].content
 
                                 }            
                                 markdownToHtml(beautify(chatTextRawPlusComment), document.getElementById('chat'));
@@ -2166,9 +2166,9 @@ fetch("https://search.kg/completions", optionsIntro)
                         try{choices=JSON.parse(half+result)['choices'];half = '';}
                         catch(e){choices=JSON.parse(result)['choices'];half = '';}
                     }catch(e){half+=result}
-                    if(choices && choices.length>0)
+                    if(choices && choices.length>0 && choices[0].content)
                     {
-                        chatTextRaw+=choices[0].message.content
+                        chatTextRaw+=choices[0].content
                     }            
                     markdownToHtml(beautify(chatTextRaw), document.getElementById('chat'));
                     
@@ -2199,9 +2199,9 @@ fetch("https://search.kg/completions", optionsIntro)
             try{choices=JSON.parse(half+result)['choices'];half = '';}
             catch(e){choices=JSON.parse(result)['choices'];half = '';}
         }catch(e){half+=result}
-        if(choices && choices.length>0)
+        if(choices && choices.length>0 && choices[0].content)
         {
-            chatTextRawIntro+=choices[0].message.content
+            chatTextRawIntro+=choices[0].content
         }            
         markdownToHtml(beautify(chatTextRawIntro+'\n'), document.getElementById('chat_intro'));
         
