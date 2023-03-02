@@ -199,7 +199,7 @@ SCHEMA = {
         'query_in_title': SettingsValue(bool, False),
         'infinite_scroll': SettingsValue(bool, False),
         'cache_url': SettingsValue(str, 'https://web.archive.org/web/'),
-        "search_on_autocomplete_click": SettingsValue(bool, True)
+        "search_on_autocomplete_click": SettingsValue(bool, True),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
