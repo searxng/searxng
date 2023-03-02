@@ -408,6 +408,17 @@ class Preferences:
                     'False': False
                 }
             ),
+            'search_on_autocomplete_click': MapSetting(
+                settings['ui']['search_on_autocomplete_click'],
+                locked=is_locked('search_on_autocomplete_click'),
+                map={
+                    '': settings['ui']['search_on_autocomplete_click'],
+                    '0': False,
+                    '1': True,
+                    'True': True,
+                    'False': False
+                }
+            ),
             # fmt: on
         }
 

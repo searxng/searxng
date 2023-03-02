@@ -399,6 +399,7 @@ def get_client_settings():
         'autocomplete_min': get_setting('search.autocomplete_min'),
         'http_method': req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
+        'search_on_autocomplete_click': req_pref.get_value('search_on_autocomplete_click'),
         'translations': get_translations(),
         'search_on_category_select': req_pref.plugins.choices['searx.plugins.search_on_category_select'],
         'hotkeys': req_pref.plugins.choices['searx.plugins.vim_hotkeys'],
@@ -427,6 +428,7 @@ def render(template_name: str, **kwargs):
     kwargs['preferences'] = request.preferences
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
     kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
+    kwargs['search_on_autocomplete_click'] = request.preferences.get_value('search_on_autocomplete_click')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')

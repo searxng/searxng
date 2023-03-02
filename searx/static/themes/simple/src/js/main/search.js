@@ -18,7 +18,7 @@
     
     params._Select(suggestion);
     // Ctrl + Click = Only place the suggestion in the search bar, no auto search.
-    if(!e.ctrlKey){
+    if(!e.ctrlKey && searxng.settings.search_on_autocomplete_click){
       submitIfQuery();
     }
   }

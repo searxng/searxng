@@ -251,6 +251,18 @@
       <div class="description">{{ _('Automatically load next page when scrolling to bottom of current page') }}</div>
     </fieldset>
     {% endif %}
+    {% if 'search_on_autocomplete_click' not in locked_preferences %}
+    <fieldset>
+      <legend>{{ _('Search on suggestion click') }}</legend>
+      <p class="value">
+        <select name='search_on_autocomplete_click'>
+          <option value="1" {% if search_on_autocomplete_click %}selected="selected"{% endif %}>{{ _('On') }}</option>
+          <option value="0" {% if not search_on_autocomplete_click %}selected="selected"{% endif %}>{{ _('Off')}}</option>
+        </select>
+      </p>
+      <div class="description">{{ _('Automatically search when an autocomplete suggestion is clicked') }}</div>
+    </fieldset>
+    {% endif %}
     {{ plugin_preferences('ui') }}
   {{ tab_footer() }}
 
