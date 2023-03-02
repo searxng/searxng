@@ -1771,10 +1771,10 @@ function send_modalchat(elem)
     let promptWebpage = '网页标题：'+ article.title +'\n'+'网页布局：\n'
     for (el in modalele)
     {
-        if((prompt + modalele[el] + '\n').length <900)
-            prompt = prompt + modalele[el] + '\n';  
+        if((promptWebpage + modalele[el] + '\n').length <900)
+            promptWebpage = promptWebpage + modalele[el] + '\n';  
     }
-    prompt = prompt +'网页内容：\n'
+    promptWebpage = promptWebpage +'网页内容：\n'
 
     fulltext.sort((a, b) => {
         if (cosineSimilarity(word,a) > cosineSimilarity(word,b)) {
@@ -1791,8 +1791,8 @@ function send_modalchat(elem)
     keySentencesCount = 0;
     for (st in keytextres)
     {
-        if((prompt + keytextres[st] + '\n').length <1500)
-            prompt = prompt + keytextres[st] + '\n';  
+        if((promptWebpage + keytextres[st] + '\n').length <1500)
+            promptWebpage = promptWebpage + keytextres[st] + '\n';  
         keySentencesCount = keySentencesCount+1;
     }
 
