@@ -1365,8 +1365,6 @@ function modal_open(url, num)
                         if(v.length>6) result = v.slice(6);
                         if(result == "[DONE]")
                         {
-                            word_last.push({'role':'user','content':word})
-                            word_last.push({'role':'assistant','content':chatTemp})
                             lock_chat=0
                             proxify()
                             return;
