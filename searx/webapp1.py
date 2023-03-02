@@ -704,7 +704,7 @@ def search():
         search_query, raw_text_query, _, _ = get_search_query_from_webapp(request.preferences, request.form)
         # search = Search(search_query) #  without plugins
         if request.environ['HTTP_CF_IPCOUNTRY'] == 'CN' and gfw.exists(search_query.query):
-            return index_error(output_format, 'No query'), 400
+            return render('404.html'), 404
         try:
             original_search_query = search_query.query
             if "模仿" in search_query.query or "扮演" in search_query.query or "你能" in search_query.query or "请推荐" in search_query.query or "帮我" in search_query.query or "写一段" in search_query.query or "写一个" in search_query.query or "请问" in search_query.query or "请给" in search_query.query or "请你" in search_query.query  or "请推荐" in search_query.query or "是谁" in search_query.query or "能帮忙" in search_query.query or "介绍一下" in search_query.query or "为什么" in search_query.query or "什么是" in search_query.query or "有什么" in search_query.query or "怎样" in search_query.query or "给我" in search_query.query or "如何" in search_query.query or "谁是" in search_query.query or "查询" in search_query.query or "告诉我" in search_query.query or "查一下" in search_query.query or "找一个" in search_query.query or "什么样" in search_query.query or "哪个" in search_query.query or "哪些" in search_query.query or "哪一个" in search_query.query or "哪一些" in search_query.query  or "啥是" in search_query.query or "为啥" in search_query.query or "怎么" in search_query.query:
@@ -733,7 +733,7 @@ def search():
             }
             gpt_data = {
                 "model": "gpt-3.5-turbo",
-                "message": {"user":prompt},
+                "messages": {"user":prompt},
                 "max_tokens": 256,
                 "temperature": 0.9,
                 "top_p": 1,
