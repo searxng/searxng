@@ -2035,6 +2035,7 @@ for(let i=prompt.url_pair.length;i>=0;--i)
   new_text = new_text.replaceAll('[]', '');
   new_text = new_text.replaceAll('((', '(');
   new_text = new_text.replaceAll('))', ')');
+  new_text = new_text.replaceAll('(\n', '\n');
   return new_text;
 }
 
