@@ -69,7 +69,7 @@ server:
   # instance's environment (make buildenv). Is overwritten by ${SEARXNG_PORT}
   # and ${SEARXNG_BIND_ADDRESS}
   port: 8888
-  bind_address: "127.0.0.1"
+  bind_address: "0.0.0.0"
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_URL}.
   base_url: false  # "http://example.com/location"
@@ -109,6 +109,7 @@ ui:
   query_in_title: false
   # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
   infinite_scroll: false
+  # search_on_autocomplete_click: When true, start a search when an autocomplete suggestion is clicked instead of simply filling the search bar with it.
   search_on_autocomplete_click: true
   # ui theme
   default_theme: simple
