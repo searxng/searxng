@@ -2008,7 +2008,7 @@ function replaceUrlWithFootnote(text) {
 }
 function beautify(text)
 {
-    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replaceAll("链接:","").replaceAll("链接：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '').replaceAll("来源:","").replaceAll("来源：","").replace(/(https?:\/\/(?!url\d)\S+)/g, '');
+    new_text=text.replaceAll("（","(").replaceAll("）",")").replaceAll(", ",",").replace(/(https?:\/\/(?!url\d)\S+)/g, '');
 for(let i=prompt.url_pair.length;i>=0;--i)
 {
     new_text = new_text.replaceAll("(url"+String(i),"(https://url"+String(i) )
@@ -2018,6 +2018,9 @@ for(let i=prompt.url_pair.length;i>=0;--i)
     new_text = new_text.replaceAll("(来源url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(来源https://url"+String(i),"(https://url"+String(i) )
     new_text = new_text.replaceAll("(来源"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(网址url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(网址https://url"+String(i),"(https://url"+String(i) )
+    new_text = new_text.replaceAll("(网址"+String(i),"(https://url"+String(i) )
 }
   new_text = replaceUrlWithFootnote(new_text)
 
