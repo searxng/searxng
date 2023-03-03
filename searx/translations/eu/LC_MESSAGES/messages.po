@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-17 12:20+0000\n"
+"POT-Creation-Date: 2023-02-20 11:22+0000\n"
 "PO-Revision-Date: 2023-01-13 07:14+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: eu\n"
@@ -215,7 +215,7 @@ msgstr "Iturria"
 msgid "Error loading the next page"
 msgstr "Errorea hurrengo orrialdea kargatzean"
 
-#: searx/webapp.py:524 searx/webapp.py:956
+#: searx/webapp.py:524 searx/webapp.py:964
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ezarpen ez baliodunak, mesedez editatu zure hobespenak"
 
@@ -227,7 +227,7 @@ msgstr "Ezarpen ez baliodunak"
 msgid "search error"
 msgstr "bilaketa akatsa"
 
-#: searx/webapp.py:855
+#: searx/webapp.py:863
 msgid "Suspended"
 msgstr ""
 
@@ -308,14 +308,6 @@ msgstr ""
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
-
-#: searx/plugins/autodetect_search_language.py:74
-msgid "Autodetect search language"
-msgstr ""
-
-#: searx/plugins/autodetect_search_language.py:75
-msgid "Automatically detect the query search language and switch to it."
 msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
@@ -570,15 +562,24 @@ msgstr "Bilaketaren hizkuntza"
 msgid "Default language"
 msgstr "Lehenetsitako hizkuntza"
 
-#: searx/templates/simple/preferences.html:124
+#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/preferences.html:119
+msgid "Auto-detect"
+msgstr ""
+
+#: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
 msgstr "Zein hizkuntzan egin nahi duzu bilaketa?"
 
-#: searx/templates/simple/preferences.html:129
+#: searx/templates/simple/preferences.html:126
+msgid "Choose Auto-detect to let SearXNG detect the language of your query."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
 msgstr "Osatze automatikoa"
 
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:141
 msgid "Find stuff as you type"
 msgstr "Gauzak aurkitu idatzi bitartean"
 
@@ -586,35 +587,35 @@ msgstr "Gauzak aurkitu idatzi bitartean"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:311
+#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:314
 msgid "SafeSearch"
 msgstr "Bilaketa segurua"
 
 #: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:149
 msgid "Strict"
 msgstr "Zorrotza"
 
 #: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/preferences.html:147
+#: searx/templates/simple/preferences.html:150
 msgid "Moderate"
 msgstr "Moderatua"
 
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:148
+#: searx/templates/simple/preferences.html:151
 msgid "None"
 msgstr "Bat ere ez"
 
-#: searx/templates/simple/preferences.html:151
+#: searx/templates/simple/preferences.html:154
 msgid "Filter content"
 msgstr "Edukia iragazi"
 
-#: searx/templates/simple/preferences.html:157
+#: searx/templates/simple/preferences.html:160
 msgid "Open Access DOI resolver"
 msgstr "Open Access DOI ebatzi"
 
-#: searx/templates/simple/preferences.html:167
+#: searx/templates/simple/preferences.html:170
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
@@ -622,229 +623,229 @@ msgstr ""
 "Argitalpenen sartze-askeko bertsioetara berbidali ahal denean (plugina "
 "behar du)"
 
-#: searx/templates/simple/preferences.html:171
+#: searx/templates/simple/preferences.html:174
 msgid "Engine tokens"
 msgstr "Bilatzaile token-ak"
 
-#: searx/templates/simple/preferences.html:175
+#: searx/templates/simple/preferences.html:178
 msgid "Access tokens for private engines"
 msgstr "Sarbide token-ak bilatzaile pribatuetarako"
 
-#: searx/templates/simple/preferences.html:179
+#: searx/templates/simple/preferences.html:182
 msgid "User interface"
 msgstr "Erabiltzailearen interfazea"
 
-#: searx/templates/simple/preferences.html:182
+#: searx/templates/simple/preferences.html:185
 msgid "Interface language"
 msgstr "Interfazearen hizkuntza"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:193
 msgid "Change the language of the layout"
 msgstr "Interfazearen hizkuntza aldatu"
 
-#: searx/templates/simple/preferences.html:195
+#: searx/templates/simple/preferences.html:198
 msgid "Theme"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:203
+#: searx/templates/simple/preferences.html:206
 msgid "Change SearXNG layout"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:206
+#: searx/templates/simple/preferences.html:209
 msgid "Theme style"
 msgstr "Estiloa"
 
-#: searx/templates/simple/preferences.html:214
+#: searx/templates/simple/preferences.html:217
 msgid "Choose auto to follow your browser settings"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Center Alignment"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:220
-#: searx/templates/simple/preferences.html:232
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:247
 msgid "On"
 msgstr "Piztuta"
 
-#: searx/templates/simple/preferences.html:221
-#: searx/templates/simple/preferences.html:233
-#: searx/templates/simple/preferences.html:245
+#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:248
 msgid "Off"
 msgstr "Itzalita"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:227
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:229
+#: searx/templates/simple/preferences.html:232
 msgid "Results on new tabs"
 msgstr "Emaitzak fitxa berrietan"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:239
 msgid "Open result links on new browser tabs"
 msgstr "Emaitzen estekak nabigatzailearen fitxa berrietan ireki"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:244
 msgid "Infinite scroll"
 msgstr "Korritze amaigabea"
 
-#: searx/templates/simple/preferences.html:248
+#: searx/templates/simple/preferences.html:251
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Hurrengo orria automatikoki kargatu uneko orriaren behekaldera "
 "mugitzerakoan"
 
-#: searx/templates/simple/preferences.html:254
+#: searx/templates/simple/preferences.html:257
 msgid "Privacy"
 msgstr "Pribatutasuna"
 
-#: searx/templates/simple/preferences.html:257
+#: searx/templates/simple/preferences.html:260
 msgid "HTTP Method"
 msgstr "HTTP metodoa"
 
-#: searx/templates/simple/preferences.html:264
+#: searx/templates/simple/preferences.html:267
 msgid ""
 "Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:269
+#: searx/templates/simple/preferences.html:272
 msgid "Image proxy"
 msgstr "Irudietarako proxya"
 
-#: searx/templates/simple/preferences.html:272
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:287
 msgid "Enabled"
 msgstr "Gaituta"
 
-#: searx/templates/simple/preferences.html:273
-#: searx/templates/simple/preferences.html:285
+#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:288
 msgid "Disabled"
 msgstr "Desgaituta"
 
-#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:279
 msgid "Proxying image results through SearXNG"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:281
+#: searx/templates/simple/preferences.html:284
 msgid "Query in the page's title"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:288
+#: searx/templates/simple/preferences.html:291
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:294
+#: searx/templates/simple/preferences.html:297
 msgid "Engines"
 msgstr "Bilatzaileak"
 
-#: searx/templates/simple/preferences.html:295
+#: searx/templates/simple/preferences.html:298
 msgid "Currently used search engines"
 msgstr "Erabiliak izaten ari diren bilatzaileak"
 
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:305
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:307
-#: searx/templates/simple/preferences.html:358
+#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:361
 msgid "Allow"
 msgstr "Baimendu"
 
-#: searx/templates/simple/preferences.html:308
+#: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Bilatzailearen izena"
 
-#: searx/templates/simple/preferences.html:309
+#: searx/templates/simple/preferences.html:312
 msgid "Shortcut"
 msgstr "Lasterbidea"
 
-#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
 msgstr "Hautatutako hizkuntza onartzen du"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:312
+#: searx/templates/simple/preferences.html:315
 msgid "Time range"
 msgstr "Denbora tartea"
 
-#: searx/templates/simple/preferences.html:313
+#: searx/templates/simple/preferences.html:316
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:314
+#: searx/templates/simple/preferences.html:317
 msgid "Max time"
 msgstr "Gehienezko denbora"
 
-#: searx/templates/simple/preferences.html:315
+#: searx/templates/simple/preferences.html:318
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:353
+#: searx/templates/simple/preferences.html:356
 msgid "Special Queries"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:359
+#: searx/templates/simple/preferences.html:362
 msgid "Keywords"
 msgstr "Gako-hitzak"
 
-#: searx/templates/simple/preferences.html:360
+#: searx/templates/simple/preferences.html:363
 msgid "Name"
 msgstr "Izena"
 
-#: searx/templates/simple/preferences.html:361
+#: searx/templates/simple/preferences.html:364
 msgid "Description"
 msgstr "Deskripzioa"
 
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:365
 msgid "Examples"
 msgstr "Adibideak"
 
-#: searx/templates/simple/preferences.html:365
+#: searx/templates/simple/preferences.html:368
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:376
+#: searx/templates/simple/preferences.html:379
 msgid "This is the list of plugins."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:393
+#: searx/templates/simple/preferences.html:396
 msgid "Cookies"
 msgstr "Cookieak"
 
-#: searx/templates/simple/preferences.html:395
+#: searx/templates/simple/preferences.html:398
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:396
+#: searx/templates/simple/preferences.html:399
 msgid "With that list, you can assess SearXNG transparency."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:401
+#: searx/templates/simple/preferences.html:404
 msgid "Cookie name"
 msgstr "Cookiearen izena"
 
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:405
 msgid "Value"
 msgstr "Balioa"
 
-#: searx/templates/simple/preferences.html:414
+#: searx/templates/simple/preferences.html:417
 msgid "Search URL of the currently saved preferences"
 msgstr "Une honetan gordetako hobespenen bilaketa URLa"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:421
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -852,17 +853,17 @@ msgstr ""
 "Oharra: bilaketa URLan ezarpen pertsonalizatuak zehazteak pribatutasuna "
 "txikiagotu dezake klikatutako erantzun guneetara datuak emanez."
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:422
 msgid "URL to restore your preferences in another browser"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:423
+#: searx/templates/simple/preferences.html:426
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:428
+#: searx/templates/simple/preferences.html:431
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -870,7 +871,7 @@ msgstr ""
 "Ezarpen hauek zure cookietan gordetzen dira, honek zuri buruzko "
 "informaziorik ez gordetzea baimentzen digu."
 
-#: searx/templates/simple/preferences.html:430
+#: searx/templates/simple/preferences.html:433
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -878,15 +879,15 @@ msgstr ""
 "Cookie hauek zure onurarako besterik ez dira, ez ditugu zure jarraipenik "
 "egiteko erabiltzen."
 
-#: searx/templates/simple/preferences.html:433
+#: searx/templates/simple/preferences.html:436
 msgid "Save"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:434
+#: searx/templates/simple/preferences.html:437
 msgid "Reset defaults"
 msgstr "Berrezarri lehenetsiak"
 
-#: searx/templates/simple/preferences.html:435
+#: searx/templates/simple/preferences.html:438
 msgid "Back"
 msgstr ""
 
@@ -1513,5 +1514,11 @@ msgstr "ezkutatu bideoa"
 #~ msgstr ""
 
 #~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+
+#~ msgid "Autodetect search language"
+#~ msgstr ""
+
+#~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
 

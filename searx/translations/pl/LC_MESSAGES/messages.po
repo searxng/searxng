@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-17 12:20+0000\n"
-"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"PO-Revision-Date: 2023-02-28 22:04+0000\n"
 "Last-Translator: ewm <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
 "searxng/pl/>\n"
@@ -217,7 +217,7 @@ msgstr "Źródło"
 msgid "Error loading the next page"
 msgstr "Błąd wczytywania następnej strony"
 
-#: searx/webapp.py:524 searx/webapp.py:956
+#: searx/webapp.py:524 searx/webapp.py:964
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nieprawidłowe ustawienia, proszę zmienić swoje preferencje"
 
@@ -229,7 +229,7 @@ msgstr "Nieprawidłowe ustawienia"
 msgid "search error"
 msgstr "błąd wyszukiwania"
 
-#: searx/webapp.py:855
+#: searx/webapp.py:863
 msgid "Suspended"
 msgstr "Zawieszone"
 
@@ -319,14 +319,6 @@ msgstr "Wieczór"
 msgid "Night"
 msgstr "Noc"
 
-#: searx/plugins/autodetect_search_language.py:74
-msgid "Autodetect search language"
-msgstr "Wykryj automatycznie język wyszukiwania"
-
-#: searx/plugins/autodetect_search_language.py:75
-msgid "Automatically detect the query search language and switch to it."
-msgstr "Automatycznie wykryj język wyszukiwania i przełącz się na niego."
-
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Konwertuje tekst na różne skróty hash."
@@ -388,24 +380,25 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Ten plugin sprawdza, czy adres wysyłający zapytanie jest węzłem wyjściowym "
-"sieci Tor, i powiadamia użytkownika jeśli jest, tak jak check.torproject.org "
-"ale z searxng."
+"Ten plugin sprawdza, czy adres wysyłający zapytanie jest węzłem "
+"wyjściowym sieci Tor, i powiadamia użytkownika jeśli jest, tak jak "
+"check.torproject.org ale z searxng."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nie można pobrać listy węzłów wyjściowych Tora z: https://check.torproject."
-"org/exit-addresses"
+"Nie można pobrać listy węzłów wyjściowych Tora z: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Używasz Tora i wygląda na to, że masz ten zewnętrzny adres IP: {ip_address}"
+"Używasz Tora i wygląda na to, że masz ten zewnętrzny adres IP: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -587,15 +580,26 @@ msgstr "Język wyszukiwania"
 msgid "Default language"
 msgstr "Domyślny język"
 
-#: searx/templates/simple/preferences.html:124
+#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/preferences.html:119
+msgid "Auto-detect"
+msgstr "Automatyczne wykrywanie"
+
+#: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
 msgstr "W jakim języku wolisz wyszukiwać?"
 
-#: searx/templates/simple/preferences.html:129
+#: searx/templates/simple/preferences.html:126
+msgid "Choose Auto-detect to let SearXNG detect the language of your query."
+msgstr ""
+"Wybierz automatyczne wykrywanie aby SearXNG wykrywał język twojego "
+"wyszukiwania."
+
+#: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
 msgstr "Autouzupełnienie"
 
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:141
 msgid "Find stuff as you type"
 msgstr "Szukaj podczas pisania"
 
@@ -603,35 +607,35 @@ msgstr "Szukaj podczas pisania"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:311
+#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:314
 msgid "SafeSearch"
 msgstr "Bezpieczne wyszukiwanie"
 
 #: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:149
 msgid "Strict"
 msgstr "Bezkompromisowe"
 
 #: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/preferences.html:147
+#: searx/templates/simple/preferences.html:150
 msgid "Moderate"
 msgstr "Umiarkowane"
 
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:148
+#: searx/templates/simple/preferences.html:151
 msgid "None"
 msgstr "Wyłączone"
 
-#: searx/templates/simple/preferences.html:151
+#: searx/templates/simple/preferences.html:154
 msgid "Filter content"
 msgstr "Filtruj treści"
 
-#: searx/templates/simple/preferences.html:157
+#: searx/templates/simple/preferences.html:160
 msgid "Open Access DOI resolver"
 msgstr "Podsystem DOI z otwartym dostępem"
 
-#: searx/templates/simple/preferences.html:167
+#: searx/templates/simple/preferences.html:170
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
@@ -639,89 +643,89 @@ msgstr ""
 "Przekierowanie do otwartych wersji publikacji, gdy są dostępne (wymagana "
 "wtyczka)"
 
-#: searx/templates/simple/preferences.html:171
+#: searx/templates/simple/preferences.html:174
 msgid "Engine tokens"
 msgstr "Tokeny wyszukiwarek"
 
-#: searx/templates/simple/preferences.html:175
+#: searx/templates/simple/preferences.html:178
 msgid "Access tokens for private engines"
 msgstr "Tokeny dostępu do prywatnych wyszukiwarek"
 
-#: searx/templates/simple/preferences.html:179
+#: searx/templates/simple/preferences.html:182
 msgid "User interface"
 msgstr "Interfejs użytkownika"
 
-#: searx/templates/simple/preferences.html:182
+#: searx/templates/simple/preferences.html:185
 msgid "Interface language"
 msgstr "Język interfejsu"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:193
 msgid "Change the language of the layout"
 msgstr "Zmień język układu"
 
-#: searx/templates/simple/preferences.html:195
+#: searx/templates/simple/preferences.html:198
 msgid "Theme"
 msgstr "Motyw"
 
-#: searx/templates/simple/preferences.html:203
+#: searx/templates/simple/preferences.html:206
 msgid "Change SearXNG layout"
 msgstr "Zmień wygląd SearXNG"
 
-#: searx/templates/simple/preferences.html:206
+#: searx/templates/simple/preferences.html:209
 msgid "Theme style"
 msgstr "Styl motywu"
 
-#: searx/templates/simple/preferences.html:214
+#: searx/templates/simple/preferences.html:217
 msgid "Choose auto to follow your browser settings"
 msgstr "Wybierz auto by używać ustawień twojej przeglądarki"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Center Alignment"
 msgstr "Wyśrodkowanie"
 
-#: searx/templates/simple/preferences.html:220
-#: searx/templates/simple/preferences.html:232
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:247
 msgid "On"
 msgstr "Włączone"
 
-#: searx/templates/simple/preferences.html:221
-#: searx/templates/simple/preferences.html:233
-#: searx/templates/simple/preferences.html:245
+#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:248
 msgid "Off"
 msgstr "Wyłączone"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:227
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Pokazuje wyniki na środku strony (układ Oscara)."
 
-#: searx/templates/simple/preferences.html:229
+#: searx/templates/simple/preferences.html:232
 msgid "Results on new tabs"
 msgstr "Wyniki w nowych kartach"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:239
 msgid "Open result links on new browser tabs"
 msgstr "Otwórz hiperłącza wyników w nowych kartach przeglądarki"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:244
 msgid "Infinite scroll"
 msgstr "Nieskończone przewijanie"
 
-#: searx/templates/simple/preferences.html:248
+#: searx/templates/simple/preferences.html:251
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Automatycznie ładuj następną stronę podczas przewijania do dolnej części "
 "bieżącej strony"
 
-#: searx/templates/simple/preferences.html:254
+#: searx/templates/simple/preferences.html:257
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: searx/templates/simple/preferences.html:257
+#: searx/templates/simple/preferences.html:260
 msgid "HTTP Method"
 msgstr "Metoda HTTP"
 
-#: searx/templates/simple/preferences.html:264
+#: searx/templates/simple/preferences.html:267
 msgid ""
 "Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
@@ -731,29 +735,29 @@ msgstr ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">więcej o sposobach wysyłania</a>"
 
-#: searx/templates/simple/preferences.html:269
+#: searx/templates/simple/preferences.html:272
 msgid "Image proxy"
 msgstr "Proxy zdjęć"
 
-#: searx/templates/simple/preferences.html:272
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:287
 msgid "Enabled"
 msgstr "Włączone"
 
-#: searx/templates/simple/preferences.html:273
-#: searx/templates/simple/preferences.html:285
+#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:288
 msgid "Disabled"
 msgstr "Wyłączone"
 
-#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:279
 msgid "Proxying image results through SearXNG"
 msgstr "Przepuść zdjęcia przez serwer SearXNG"
 
-#: searx/templates/simple/preferences.html:281
+#: searx/templates/simple/preferences.html:284
 msgid "Query in the page's title"
 msgstr "Wyszukiwanie w tytule strony"
 
-#: searx/templates/simple/preferences.html:288
+#: searx/templates/simple/preferences.html:291
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -761,15 +765,15 @@ msgstr ""
 "Gdy włączone, tytuł strony z wynikiem będzie zawierał twoje zapytanie. "
 "Twoja przeglądarka może widzieć ten tytuł"
 
-#: searx/templates/simple/preferences.html:294
+#: searx/templates/simple/preferences.html:297
 msgid "Engines"
 msgstr "Wyszukiwarki"
 
-#: searx/templates/simple/preferences.html:295
+#: searx/templates/simple/preferences.html:298
 msgid "Currently used search engines"
 msgstr "Obecnie używane wyszukiwarki"
 
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:305
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -777,76 +781,76 @@ msgstr ""
 "Wyszukiwarki z tej zakładki nie pokazują się w wynikach wyszukiwania, ale"
 " możesz ich używać przez bangs."
 
-#: searx/templates/simple/preferences.html:307
-#: searx/templates/simple/preferences.html:358
+#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:361
 msgid "Allow"
 msgstr "Pozwól"
 
-#: searx/templates/simple/preferences.html:308
+#: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Nazwa wyszukiwarki"
 
-#: searx/templates/simple/preferences.html:309
+#: searx/templates/simple/preferences.html:312
 msgid "Shortcut"
 msgstr "Skrót"
 
-#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
 msgstr "Obsługuje wybrany język"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:312
+#: searx/templates/simple/preferences.html:315
 msgid "Time range"
 msgstr "Zakres czasu"
 
-#: searx/templates/simple/preferences.html:313
+#: searx/templates/simple/preferences.html:316
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Czas odpowiedzi"
 
-#: searx/templates/simple/preferences.html:314
+#: searx/templates/simple/preferences.html:317
 msgid "Max time"
 msgstr "Maksymalny czas"
 
-#: searx/templates/simple/preferences.html:315
+#: searx/templates/simple/preferences.html:318
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Niezawodność"
 
-#: searx/templates/simple/preferences.html:353
+#: searx/templates/simple/preferences.html:356
 msgid "Special Queries"
 msgstr "Specialne Zapytania"
 
-#: searx/templates/simple/preferences.html:359
+#: searx/templates/simple/preferences.html:362
 msgid "Keywords"
 msgstr "Słowa kluczowe"
 
-#: searx/templates/simple/preferences.html:360
+#: searx/templates/simple/preferences.html:363
 msgid "Name"
 msgstr "Nazwa"
 
-#: searx/templates/simple/preferences.html:361
+#: searx/templates/simple/preferences.html:364
 msgid "Description"
 msgstr "Opis"
 
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:365
 msgid "Examples"
 msgstr "Przykłady"
 
-#: searx/templates/simple/preferences.html:365
+#: searx/templates/simple/preferences.html:368
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "To jest lista modułów \"natychmiastowych odpowiedzi\" SearXNG."
 
-#: searx/templates/simple/preferences.html:376
+#: searx/templates/simple/preferences.html:379
 msgid "This is the list of plugins."
 msgstr "To jest list wtyczek."
 
-#: searx/templates/simple/preferences.html:393
+#: searx/templates/simple/preferences.html:396
 msgid "Cookies"
 msgstr "Ciasteczka"
 
-#: searx/templates/simple/preferences.html:395
+#: searx/templates/simple/preferences.html:398
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
@@ -854,23 +858,23 @@ msgstr ""
 "To jest lista plików cookies i ich zawartości, które SearXNG przechowuje "
 "na twoim komputerze."
 
-#: searx/templates/simple/preferences.html:396
+#: searx/templates/simple/preferences.html:399
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Dzięki tej liście, możesz ocenić przejrzystość SearXNG."
 
-#: searx/templates/simple/preferences.html:401
+#: searx/templates/simple/preferences.html:404
 msgid "Cookie name"
 msgstr "Nazwa ciasteczka"
 
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:405
 msgid "Value"
 msgstr "Wartość"
 
-#: searx/templates/simple/preferences.html:414
+#: searx/templates/simple/preferences.html:417
 msgid "Search URL of the currently saved preferences"
 msgstr "Wyszukaj adres URL aktualnie zapisanych preferencji"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:421
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -879,11 +883,11 @@ msgstr ""
 "może zmniejszyć prywatność, przenosząc dane do klikniętych stron z "
 "wyników."
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:422
 msgid "URL to restore your preferences in another browser"
 msgstr "URL do przywrócenia twoich ustawień w innej przeglądarce"
 
-#: searx/templates/simple/preferences.html:423
+#: searx/templates/simple/preferences.html:426
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
@@ -891,7 +895,7 @@ msgstr ""
 "Określanie własnych ustawień w adresie URL preferencji może służyć do "
 "synchronizowania preferencji między urządzeniami."
 
-#: searx/templates/simple/preferences.html:428
+#: searx/templates/simple/preferences.html:431
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -899,7 +903,7 @@ msgstr ""
 "Ustawienia te są przechowywane w ciasteczkach, co pozwala nam nie "
 "przechowywać tych danych o Tobie."
 
-#: searx/templates/simple/preferences.html:430
+#: searx/templates/simple/preferences.html:433
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -907,15 +911,15 @@ msgstr ""
 "Te ciasteczka służą wyłącznie Twojej wygodzie, nie używamy tych "
 "ciasteczek do śledzenia Ciebie."
 
-#: searx/templates/simple/preferences.html:433
+#: searx/templates/simple/preferences.html:436
 msgid "Save"
 msgstr "Zapisz"
 
-#: searx/templates/simple/preferences.html:434
+#: searx/templates/simple/preferences.html:437
 msgid "Reset defaults"
 msgstr "Przywróć domyślne"
 
-#: searx/templates/simple/preferences.html:435
+#: searx/templates/simple/preferences.html:438
 msgid "Back"
 msgstr "Powrót"
 
@@ -1548,3 +1552,9 @@ msgstr "ukryj wideo"
 
 #~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
 #~ msgstr ""
+
+#~ msgid "Autodetect search language"
+#~ msgstr "Wykryj automatycznie język wyszukiwania"
+
+#~ msgid "Automatically detect the query search language and switch to it."
+#~ msgstr "Automatycznie wykryj język wyszukiwania i przełącz się na niego."
