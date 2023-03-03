@@ -1365,6 +1365,7 @@ function modal_open(url, num)
                     if (done) return;
                     const text = new TextDecoder('utf-8').decode(value);
                     text.trim().split('\n').forEach(function(v) {
+                    try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
                         result = ''
                         if(v.length>6) result = v.slice(6);
                         if(result == "[DONE]")
@@ -1698,6 +1699,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
           if (done) return;
           const text = new TextDecoder('utf-8').decode(value);
           text.trim().split('\n').forEach(function(v) {
+          try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
             result = ''
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
@@ -1834,6 +1836,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
           if (done) return;
           const text = new TextDecoder('utf-8').decode(value);
           text.trim().split('\n').forEach(function(v) {
+          try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
             result = ''
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
@@ -1924,6 +1927,7 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
           if (done) return;
           const text = new TextDecoder('utf-8').decode(value);
           text.trim().split('\n').forEach(function(v) {
+          try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
             result = ''
             if(v.length>6) result = v.slice(6);
             if(result == "[DONE]")
