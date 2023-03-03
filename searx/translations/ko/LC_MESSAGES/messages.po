@@ -5,20 +5,22 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Sangha Lee <totoriato@gmail.com>, 2022.
 # Soochaehwa <Soochaehwa@shwa.space>, 2022.
+# mystery-z <07juwonc@kakao.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2022-09-30 07:43+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-03-03 07:08+0000\n"
+"Last-Translator: mystery-z <07juwonc@kakao.com>\n"
+"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
+"searxng/ko/>\n"
 "Language: ko\n"
-"Language-Team: Korean "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ko/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -164,7 +166,7 @@ msgstr "네트워크 오류"
 
 #: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "SSL 에러: 인증서 무효"
 
 #: searx/webapp.py:171
 msgid "unexpected crash"
@@ -367,22 +369,26 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"이 플러그인은 요청의 주소가 토르 출구 노드 인지 확인하고 사용자에게 "
+"check.torproject.org와 같이 SearchXNG의 주소인지 알려줍니다."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"https://check.torproject.org/exit-addresses 에서 토르 출구 노드를 다운로드 "
+"받는데 실패하였습니다"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "Tor를 사용하고 있고 외부 IP 주소는 {ip_address} 입니다"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Tor를 사용하고 있지 않고 외부 IP 주소가 {ip_address}인 것 같습니다"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -560,7 +566,7 @@ msgstr "기본 언어"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "자동 감지"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -568,7 +574,7 @@ msgstr "어떤 언어로 검색하시겠습니까?"
 
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
+msgstr "SearXNG가 검색 언어를 자동감지 할 수 있도록 자동감지를 선택해 주세요."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -945,7 +951,7 @@ msgstr "검색"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "데이터가 존재하지 않습니다."
+msgstr "데이터가 존재하지 않습니다. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1379,4 +1385,3 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
-
