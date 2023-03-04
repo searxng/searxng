@@ -46,6 +46,7 @@ def request(query, params):
         until_str = until_date.strftime('%Y-%m-%d')
         query += ' since:' + until_str
     else:
+        today = datetime.today()
         until_date = today - timedelta(weeks=1)
         until_str = until_date.strftime('%Y-%m-%d')
         query += ' since:' + until_str
