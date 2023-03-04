@@ -55,12 +55,10 @@ def request(query, params):
     if offset == 1:
         search_string = inital_query
 
-    if params['language'] == 'all':
-        lang = 'EN'
-    else:
+    # Add language filter in query if specific language was given
+    if params['language'] != 'all':
         lang = match_language(params['language'], supported_languages, language_aliases)
-
-    query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
+        query = 'language:{} {}'.format(lang.split('-')[0].upper(), query)
 
     search_path = search_string.format(query=urlencode({'q': query}), offset=offset)
 
