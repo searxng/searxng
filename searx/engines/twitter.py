@@ -15,7 +15,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['social media']
+categories = ['general', 'web', 'social media']
 
 url = "https://api.twitter.com"
 search_url = (
@@ -48,16 +48,16 @@ def response(resp):
         text = tweet['full_text']
         display = tweet['display_text_range']
 
-        img_src = tweet.get('extended_entities', {}).get('media', [{}])[0].get('media_url_https')
-        if img_src:
-            img_src += "?name=thumb"
+        # img_src = tweet.get('extended_entities', {}).get('media', [{}])[0].get('media_url_https')
+        # if img_src:
+        #     img_src += "?name=thumb"
 
         results.append(
             {
                 'url': 'https://twitter.com/i/web/status/' + tweet['id_str'],
                 'title': (text[:40] + '...') if len(text) > 40 else text,
                 'content': text[display[0] : display[1]],
-                'img_src': img_src,
+                # 'img_src': img_src,
                 'publishedDate': datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y'),
             }
         )
@@ -68,7 +68,7 @@ def response(resp):
                 'title': user['name'],
                 'content': user['description'],
                 'url': 'https://twitter.com/' + user['screen_name'],
-                'img_src': user['profile_image_url_https'],
+                # 'img_src': user['profile_image_url_https'],
             }
         )
 
