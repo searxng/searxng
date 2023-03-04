@@ -845,12 +845,21 @@ def search():
             res['content'] = res['content'].replace("Twitter for Android · ","") 
             res['content'] = res['content'].replace("This Tweet was deleted by the Tweet author.","Deleted  Tweet.")
              
-            tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
-            raws.append(tmp_prompt)
+            if 'engine' in res and res['engine'] == 'wolframalpha_noapi':
+                tmp_prompt = '运算结果：'+  res['content'] +'\n\n'
+            else: tmp_prompt =  res['title'] +'\n'+  res['content'] + '\n' + new_url +'\n'
+            if 'engine' in res and res['engine'] == 'wolframalpha_noapi':
+                raws.insert(0,tmp_prompt)
+            else: raws.append(tmp_prompt)
             if '搜索' in search_type and len( prompt + tmp_prompt +'\n' + "\n以上是关键词 " + original_search_query + " 的搜索结果，用简体中文总结简报，在文中用(网址)标注对应内容来源链接。结果：" ) <1600:
-                prompt += tmp_prompt +'\n'
+                
+                if 'engine' in res and res['engine'] == 'wolframalpha_noapi':
+                    prompt = tmp_prompt + prompt + '\n'
+                else: prompt += tmp_prompt +'\n'
             elif len( prompt + tmp_prompt +'\n' + "\n以上是 " + original_search_query + " 的网络知识。"+ search_type +"，如果使用了网络知识，在文中用(网址)标注对应内容来源链接。结果：") <1600:
-                prompt += tmp_prompt +'\n'
+                if 'engine' in res and res['engine'] == 'wolframalpha_noapi':
+                    prompt = tmp_prompt + prompt + '\n'
+                else: prompt += tmp_prompt +'\n'
         if prompt != "":
             gpt = ""
             gpt_url = "https://search.kg/completions"
