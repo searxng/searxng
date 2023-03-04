@@ -114,18 +114,20 @@ def response(resp):
     if not result_chunks:
         return []
 
-    results.append(
-        {
-            'infobox': infobox_title,
-            'attributes': result_chunks,
-            'urls': [{'title': 'Wolfram|Alpha', 'url': resp.request.headers['Referer']}],
-        }
-    )
+    # results.append(
+    #     {
+    #         'infobox': infobox_title,
+    #         'attributes': result_chunks,
+    #         'urls': [{'title': 'WolframAlpha', 'url': resp.request.headers['Referer']}],
+    #     }
+    # )
+
+    results.append({'answer': result_chunks})
 
     results.append(
         {
             'url': resp.request.headers['Referer'],
-            'title': 'Wolfram|Alpha (' + infobox_title + ')',
+            'title': 'WolframAlpha (' + infobox_title + ')',
             'content': result_content,
         }
     )
