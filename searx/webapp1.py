@@ -811,6 +811,16 @@ def search():
                         results.remove(res)
                 except:pass
         for res in results:
+            if 'engine' in res and res['engine'] == 'twitter':
+                try:
+                    if gfw.exists(res['title']):
+                        results.remove(res)
+                        # return index_error(output_format, gettext('No item found')), 500
+                    if gfw.exists(res['content']):
+                        # return index_error(output_format, gettext('No item found')), 500
+                        results.remove(res)
+                    continue
+                except:pass
             if 'url' not in res: continue
             if 'title' not in res: continue
             
