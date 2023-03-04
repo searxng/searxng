@@ -16,6 +16,10 @@ about = {
 }
 
 categories = ['general', 'web', 'social media']
+time_range_support = True
+time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
+
+
 
 url = "https://api.twitter.com"
 search_url = (
@@ -24,6 +28,23 @@ search_url = (
 
 
 def request(query, params):
+
+    if params['time_range'] in time_range_dict:
+        # 计算截止时间
+        today = datetime.datetime.today()
+        if params['time_range'] == 'day':
+            until_date = today - datetime.timedelta(days=1)
+        elif params['time_range'] == 'week':
+            until_date = today - datetime.timedelta(weeks=1)
+        elif params['time_range'] == 'month':
+            until_date = today - datetime.timedelta(days=30)
+        elif params['time_range'] == 'year':
+            until_date = today - datetime.timedelta(days=365)
+    
+        # 将截止时间格式化为字符串
+        until_str = until_date.strftime('%Y-%m-%d')
+        query += ' since:' + until_str
+
     params['url'] = search_url.format(url=url, query=urlencode({'q': query}))
 
     params['headers'] = {
