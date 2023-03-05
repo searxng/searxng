@@ -1299,12 +1299,21 @@ function modal_open(url, num)
     var iframePromise = new Promise((resolve, reject) => {
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
-    if (iframe.attachEvent) {
-        iframe.attachEvent("pagesloaded", function() {
+    if (iframe.attachEvent&&num!='pdf') {
+        iframe.attachEvent("onload", function() {
         resolve("success");
         });
     } else {
-        iframe.pagesloaded = function() {
+        iframe.onload = function() {
+        resolve("success");
+        };
+    }
+if (iframe.attachEvent&&num=='pdf') {
+        iframe.attachEvent("textlayerrendered", function() {
+        resolve("success");
+        });
+    } else {
+        iframe.textlayerrendered = function() {
         resolve("success");
         };
     }
