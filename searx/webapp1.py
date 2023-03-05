@@ -1321,14 +1321,14 @@ function modal_open(url, num)
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         if(num=='pdf')
         {
-            new Promise((resolve, reject) => {
-                    const interval = setInterval(() => {
-                    if (iframe.contentWindow.PDFViewerApplication.pdfDocument !== null) {
-                        clearInterval(interval);
-                        resolve(1);
-                    }
-                    }, 1000); // 定期检查 numPages 是否不为 null，这里是每隔1秒检查一次
-                }).then( function foo(){
+            let startTime = Date.now();
+            let stopLoop = false;
+
+            while (!stopLoop && iframe.contentWindow.PDFViewerApplication.pdfDocument==null) {
+            if (Date.now() - startTime > 30000) { 
+                stopLoop = true;  
+                modalele = ['这是一个PDF文档,加载失败了']
+            }
             var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
             var numPages = pdf.numPages; //获取总页数
             var promises = []; //用来存放每一页的Promise对象
@@ -1485,7 +1485,7 @@ function modal_open(url, num)
                 sentencesContent += sentences[i][1];
               }
             article = {'textContent':sentencesContent,'title':iframe.contentWindow.PDFViewerApplication._title}
-            })
+            
         }
         else
         {
