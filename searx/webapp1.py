@@ -1325,7 +1325,7 @@ function modal_open(url, num)
             let stopLoop = false;
 
             while (!stopLoop && iframe.contentWindow.PDFViewerApplication.pdfDocument==null) {
-                if (Date.now() - startTime > 30000) {
+                if (Date.now() - startTime > 120000) {
                     stopLoop = true;
                 }
             }
