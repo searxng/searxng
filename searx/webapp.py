@@ -1485,6 +1485,7 @@ function modal_open(url, num)
                 sentencesContent += sentences[i][1];
               }
             article = {'textContent':sentencesContent,'title':iframe.contentWindow.PDFViewerApplication._title}
+            }
             
         }
         else
