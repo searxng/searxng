@@ -1303,17 +1303,16 @@ function modal_open(url, num)
         iframe.attachEvent("onload", function() {
         resolve("success");
         });
-    } else {
-        iframe.onload = function() {
-        resolve("success");
-        };
-    }
-if (iframe.attachEvent&&num=='pdf') {
+    } else if (iframe.attachEvent&&num=='pdf') {
         iframe.attachEvent("textlayerrendered", function() {
         resolve("success");
         });
-    } else {
+    } else if (num=='pdf'){
         iframe.textlayerrendered = function() {
+        resolve("success");
+        };
+    }else{
+        iframe.onload = function() {
         resolve("success");
         };
     }
