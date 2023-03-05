@@ -1300,11 +1300,11 @@ function modal_open(url, num)
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
     if (iframe.attachEvent) {
-        iframe.attachEvent("onload", function() {
+        iframe.attachEvent("pagesloaded", function() {
         resolve("success");
         });
     } else {
-        iframe.onload = function() {
+        iframe.pagesloaded = function() {
         resolve("success");
         };
     }
@@ -1321,14 +1321,6 @@ function modal_open(url, num)
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         if(num=='pdf')
         {
-            let startTime = Date.now();
-            let stopLoop = false;
-
-            while (!stopLoop && iframe.contentWindow.PDFViewerApplication.pdfDocument==null) {
-                if (Date.now() - startTime > 120000) {
-                    stopLoop = true;
-                }
-            }
             var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
             var numPages = pdf.numPages; //获取总页数
             var promises = []; //用来存放每一页的Promise对象
@@ -1480,7 +1472,6 @@ function modal_open(url, num)
             console.error(error); //处理错误情况
             });
             modalele = ['这是一个PDF文档']
-            if(stopLoop = true) modalele = ['这是一个PDF文档，但是加载失败了']
             sentencesContent = ''
             for (let i = 0; i < sentences.length; i++) {
                 sentencesContent += sentences[i][1];
