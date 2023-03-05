@@ -1291,7 +1291,8 @@ function modal_open(url, num)
 {
     if(lock_chat==1) return;
     prev_chat = document.getElementById('chat_talk').innerHTML;
-    document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";
+    if(num == 'pdf') {   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ PDF +'</a>'+"</div>";}
+    else{   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";}
     modal.style.display = 'block';
     document.querySelector("#readability-reader").innerHTML = '';
     var iframePromise = new Promise((resolve, reject) => {
@@ -1317,6 +1318,11 @@ function modal_open(url, num)
 
 
         var iframe = document.querySelector("#iframe-wrapper > iframe");
+        if(num=='pdf')
+        {
+            
+        }
+
         modalele = eleparse(iframe.contentDocument);
         article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         fulltext = article.textContent;
@@ -1902,6 +1908,17 @@ function send_chat(elem)
   }
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
+  regexpdf = /https?:\/\/\S+\.pdf(\?\S*)?/g
+  if(word.match(regexpdf))
+{
+    pdf_url = word.match(regexpdf)[0];
+    modal_open("/static/themes/magi/pdfjs/index.html","pdf")
+
+    
+}
+
+
+
   if(word.length==0 || word.length > 140) return;
   trimArray(word_last,500)
   if  (word.includes("你能") || word.includes("讲讲") || word.includes("扮演") || word.includes("模仿") || word.includes("请推荐") || word.includes("帮我") || word.includes("写一段") || word.includes("写一个") || word.includes("请问") || word.includes("请给") || word.includes("请你") || word.includes("请推荐") || word.includes("能帮忙") || word.includes("介绍一下") || word.includes("为什么") || word.includes("什么是") || word.includes("有什么") || word.includes("怎样") || word.includes("给我") || word.includes("如何") || word.includes("谁是") || word.includes("查询") || word.includes("告诉我") || word.includes("查一下") || word.includes("找一个") || word.includes("什么样") || word.includes("哪个") || word.includes("哪些") || word.includes("哪一个") || word.includes("哪一些") || word.includes("啥是") || word.includes("为啥") || word.includes("怎么"))
