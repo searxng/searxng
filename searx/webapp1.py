@@ -1287,6 +1287,7 @@ let modalele = []
 let keytextres = []
 let fulltext=[]
 let article
+let sentences=[]
 function modal_open(url, num)
 {
     if(lock_chat==1) return;
@@ -1320,11 +1321,169 @@ function modal_open(url, num)
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         if(num=='pdf')
         {
-            
+            var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
+            var numPages = pdf.numPages; //获取总页数
+            var promises = []; //用来存放每一页的Promise对象
+            sentences=[]
+            for (var i = 1; i <= numPages; i++) {
+            promises.push(pdf.getPage(i)); //将每一页的Promise对象放入数组
+            }
+            Promise.all(promises).then(function(pages) {
+            //pages是一个包含PDFPageProxy对象的数组
+            var promises = []; //用来存放每一页文字内容的Promise对象
+            var nums = []
+            for (var page of pages) {
+                pdf.view = page.getViewport({scale: 1})
+                promises.push(page.getTextContent()); //将每一页文字内容的Promise对象放入数组
+                nums.push([page.getViewport({scale: 1}),page._pageIndex+1])
+            }
+            return Promise.all([Promise.all(promises),nums]) //等待所有页面文字内容加载完成
+            }).then(
+            function(textContentsVar) {
+            for (var i=0;i< textContentsVar[0].length; ++i) {
+                var textContent = textContentsVar[0][i]
+                pdf.curpage = textContentsVar[1][i][1]
+                pdf.view = textContentsVar[1][i][0]
+                var items = textContent.items; //获取TextContentItem对象的数组
+
+                var sentence = ""; //用来存放当前句子的字符串
+                var position = ""; //用来存放当前位置描述的字符串
+                var line = ""; //用来存放当前行数描述的字符串
+
+                var yCoord = items[0].transform[5]; //获取第一个文本项的y坐标作为参考值
+                var xCoord = items[0].transform[4]; //获取第一个文本项的x坐标作为参考值
+
+                for (var item of items) {
+
+                //   console.log(item.str); //打印文本字符串
+                
+                //   if (item.transform[5] !== yCoord) { 
+                //     /*如果当前文本项与上一个文本项不在同一行，
+                //     则将当前句子、位置和行数推入相应数组，
+                //     并重置变量*/
+                //     sentences.push(sentence);
+                //     positions.push(position);
+                //     lines.push(line);
+
+                //     sentence = "";
+                //     position = "";
+                //     line = "";
+
+                //     yCoord = item.transform[5]; 
+                //   }
+
+                if (pdf.view.width / 3 < xCoord - item.transform[4] ) { 
+                    /*如果当前文本项比上一个文本项更靠左，
+                    则说明换列了，
+                    则将当前句子、位置和行数推入相应数组，
+                    并重置变量*/
+                    
+                    sentences.push([pdf.curpage,sentence,position,line]);
+
+                    sentence = "";
+                    position = "";
+                    
+                }
+
+                xCoord= item.transform[4]; 
+
+                sentence += item.str; /*将当前文本项添加到当前句子中*/
+
+                if (/[\.\?\!。，？！]$/.test(item.str)) { 
+                /*如果当前文本项以标点符号结尾，
+                则说明是完整句子，
+                则将当前句子、位置和行数推入相应数组，
+                并重置变量*/
+                
+                sentences.push([pdf.curpage,sentence,position,line]);
+
+                sentence= "";
+                position= "";
+                
+                }
+                if(pdf.view && pdf.view.width && pdf.view.height)
+                {
+
+                    if (item.transform[4] < pdf.view.width / 2) { 
+                        /*如果x坐标小于视图宽度三分之一，
+                        则说明在左侧区域*/
+                        position = "左"; //设置位置描述为左
+                    } else {
+                        /*如果x坐标大于视图宽度三分之二，
+                        则说明在右侧区域*/
+                        position = "右"; //设置位置描述为右
+                    }
+                    //  else {
+                    //   /*否则说明在中间区域*/
+                    //   position = "中"; //设置位置描述为中
+                    // }
+                
+                    if (item.transform[5] < pdf.view.height / 3) {
+                        /*如果y坐标小于视图高度三分之一，
+                        则说明在下方区域*/
+                        position += "下"; //添加位置描述下
+                    } else if (item.transform[5] > pdf.view.height * 2 / 3) {
+                        /*如果y坐标大于视图高度三分之二，
+                        则说明在上方区域*/
+                        position += "上"; //添加位置描述上
+                    } else {
+                        /*否则说明在中间区域*/
+                        position += "中"; //添加位置描述中
+                    }
+
+                }
+
+                line = Math.floor(item.transform[5] / item.height); 
+                /*根据y坐标和文本高度计算行数，
+                并向下取整*/
+
+            }}
+                sentences.sort((a, b) => {
+                    // 先比较 a
+                    if (a[0] < b[0]) {
+                    return -1;
+                    }
+                    
+                    if (a[0] > b[0]) {
+                    return 1;
+                    }
+                    
+                    if (a[2].length>1&& b[2].length>1 && a[2][0] < b[2][0]) {
+                    return -1;
+                    }
+
+                    if (a[2].length>1&& b[2].length>1 && a[2][0] > b[2][0]) {
+                    return 1;
+                    }
+                    // 如果 a 相等，则再比较 d
+                    if (a[3] < b[3]) {
+                    return -1;
+                    }
+                    
+                    if (a[3] > b[3]) {
+                    return 1;
+                    }
+                    
+                    // 如果 d 相等，则返回0
+                    return 0;
+                });
+
+            }).catch(function(error) {
+            console.error(error); //处理错误情况
+            });
+            modalele = ['这是一个PDF文档']
+            sentencesContent = ''
+            for (let i = 0; i < sentences.length; i++) {
+                sentencesContent += sentences[i][1];
+              }
+            article = {'textContent':sentencesContent,'title':iframe.contentWindow.PDFViewerApplication._title}
+        }
+        else
+        {
+            modalele = eleparse(iframe.contentDocument);
+            article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         }
 
-        modalele = eleparse(iframe.contentDocument);
-        article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
         fulltext = article.textContent;
         fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
         const delimiter = /[?!;\?\n。；！………]/g
@@ -1342,10 +1501,10 @@ function modal_open(url, num)
             headers: headers,
             body: JSON.stringify({'text':fulltext.join("\n")})
         };
-        console.log(fulltext)
         fetchRetry('https://search.kg/keytext',3,optkeytext)
         .then(response => response.json())
-        .then(data => {
+        .then(data => 
+        {
             keytextres = unique(data);
             
             promptWebpage = '网页标题：'+ article.title +'\n'+'网页布局：\n'
@@ -1424,19 +1583,9 @@ function modal_open(url, num)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         })
+        
+    
 
 
     },
@@ -1912,7 +2061,7 @@ function send_chat(elem)
   if(word.match(regexpdf))
 {
     pdf_url = word.match(regexpdf)[0];
-    modal_open("/static/themes/magi/pdfjs/index.html","pdf")
+    modal_open("/static/themes/magi/pdfjs/index.html?file=" + encodeURIComponent(pdf_url),"pdf")
 
     
 }
