@@ -1321,15 +1321,15 @@ function modal_open(url, num)
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         if(num=='pdf')
         {
-            var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
             new Promise((resolve, reject) => {
                     const interval = setInterval(() => {
-                    if (pdf.numPages) {
+                    if (iframe.contentWindow.PDFViewerApplication.pdfDocument !== null) {
                         clearInterval(interval);
-                        resolve(pdf.numPages);
+                        resolve(1);
                     }
                     }, 1000); // 定期检查 numPages 是否不为 null，这里是每隔1秒检查一次
                 }).then( function foo(){
+            var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
             var numPages = pdf.numPages; //获取总页数
             var promises = []; //用来存放每一页的Promise对象
             sentences=[]
