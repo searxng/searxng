@@ -1325,9 +1325,9 @@ function modal_open(url, num)
             let stopLoop = false;
 
             while (!stopLoop && iframe.contentWindow.PDFViewerApplication.pdfDocument==null) {
-            if (Date.now() - startTime > 30000) { 
-                stopLoop = true;  
-                modalele = ['这是一个PDF文档,加载失败了']
+                if (Date.now() - startTime > 30000) {
+                    stopLoop = true;
+                }
             }
             var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
             var numPages = pdf.numPages; //获取总页数
@@ -1480,13 +1480,12 @@ function modal_open(url, num)
             console.error(error); //处理错误情况
             });
             modalele = ['这是一个PDF文档']
+            if(stopLoop = true) modalele = ['这是一个PDF文档，但是加载失败了']
             sentencesContent = ''
             for (let i = 0; i < sentences.length; i++) {
                 sentencesContent += sentences[i][1];
               }
             article = {'textContent':sentencesContent,'title':iframe.contentWindow.PDFViewerApplication._title}
-            }
-            
         }
         else
         {
