@@ -1303,20 +1303,20 @@ function modal_open(url, num)
         iframe.attachEvent("onload", function() {
         resolve("success");
         });
-    } else if (iframe.attachEvent&&num=='pdf') {
-        iframe.attachEvent("textlayerrendered", function() {
-        resolve("success");
-        });
-    } else if (num=='pdf'){
-        iframe.textlayerrendered = function() {
-        resolve("success");
-        };
+    } else if (num=='pdf') {
+        iframe.contentDocument.addEventListener('pagesloaded', function (e) {
+            resolve("success");
+        }, true);
     }else{
         iframe.onload = function() {
         resolve("success");
         };
     }
     });
+
+
+
+
     keytextres = []
     iframePromise.then(
     () => {
