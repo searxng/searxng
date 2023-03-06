@@ -1492,7 +1492,7 @@ function modal_open(url, num)
                         sentencesContent += sentences[i][1];
                         }
                     article = {'textContent':sentencesContent,'title':iframe.contentWindow.PDFViewerApplication._title}
-
+                    resolve("success");
 
                 }).catch(function(error) {
                 console.error(error); //处理错误情况
@@ -1503,8 +1503,9 @@ function modal_open(url, num)
             {
                 modalele = eleparse(iframe.contentDocument);
                 article = new Readability(iframe.contentDocument.cloneNode(true)).parse();
+                resolve("success");
             }
-            resolve("success");
+            
         })
     }).then(
         () => {
