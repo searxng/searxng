@@ -1299,19 +1299,20 @@ function modal_open(url, num)
     var iframePromise = new Promise((resolve, reject) => {
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
-    if (iframe.attachEvent&&num!='pdf') {
-        iframe.attachEvent("onload", function() {
-        resolve("success");
-        });
-    } else if (num=='pdf') {
+    if (num=='pdf') {
         iframe.contentDocument.addEventListener("webviewerloaded", function() {
-        PDFViewerApplication.initializedPromise.then(function() {
-            PDFViewerApplication.eventBus.on("documentloaded", function(event) {
+        iframe.contentWindow.PDFViewerApplication.initializedPromise.then(function() {
+             iframe.contentWindow.PDFViewerApplication.eventBus.on("documentloaded", function(event) {
             resolve("success");
             });
         });
         });
-    }else{
+    }
+    else  if (iframe.attachEvent) {
+        iframe.attachEvent("onload", function() {
+        resolve("success");
+        });
+    } else{
         iframe.onload = function() {
         resolve("success");
         };
