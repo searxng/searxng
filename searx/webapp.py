@@ -1291,6 +1291,7 @@ let sentences=[]
 function modal_open(url, num)
 {
     if(lock_chat==1) return;
+    let article;
     prev_chat = document.getElementById('chat_talk').innerHTML;
     if(num == 'pdf') {   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ 'PDF' +'</a>'+"</div>";}
     else{   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";}
