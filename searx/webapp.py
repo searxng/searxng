@@ -1300,7 +1300,7 @@ function modal_open(url, num)
     var iframe = document.querySelector("#iframe-wrapper > iframe");
     iframe.src = url;
     if (num=='pdf') {
-        iframe.contentDocument.addEventListener("webviewerloaded", function() {
+        document.addEventListener.addEventListener("webviewerloaded", function() {
         iframe.contentWindow.PDFViewerApplication.initializedPromise.then(function() {
              iframe.contentWindow.PDFViewerApplication.eventBus.on("documentloaded", function(event) {
             console.log("pdf loaded")
