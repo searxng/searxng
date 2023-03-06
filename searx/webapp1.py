@@ -1964,7 +1964,7 @@ function trimArray(array,len) {
   }
 }
 
-function send_modalchat(elem)
+function send_modalchat(elem,word_en)
 {
   let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
@@ -1981,7 +1981,7 @@ function send_modalchat(elem)
         promptWebpage  = 'PDF标题：'+ article.title +'\n'
         promptWebpage = promptWebpage +'PDF内容：\n'
         sentences.sort((a, b) => {
-                if (cosineSimilarity(word,a[1]) > cosineSimilarity(word,b[1])) {
+                if (cosineSimilarity(word + ' ' + word_en,a[1]) > cosineSimilarity(word + ' ' + word_en,b[1])) {
                     return -1
                 } else {
                     return 1
@@ -2004,7 +2004,7 @@ function send_modalchat(elem)
             promptWebpage = promptWebpage +'网页内容：\n'
 
             fulltext.sort((a, b) => {
-                if (cosineSimilarity(word,a) > cosineSimilarity(word,b)) {
+                if (cosineSimilarity(word + ' ' + word_en,a) > cosineSimilarity(word + ' ' + word_en,b)) {
                     return -1
                 } else {
                     return 1
@@ -2101,14 +2101,21 @@ prev_chat = prev_chat+'<div class="chat_question">'+document.querySelector("#pro
 
 }
 
-
 function send_chat(elem)
 {
+  let word = document.querySelector("#chat_input").value;
+
   if(document.querySelector("#modal").style.display == 'block')
   {
-    return send_modalchat(elem);
+    let word_en
+    fetch("https://search.kg/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=en&q=" + word)
+    .then(res => res.json())
+    .then(json => {
+        send_modalchat(elem,json['sentences'][0]['trans']);
+    });
+    return;
+
   }
-  let word = document.querySelector("#chat_input").value;
   if(elem){word = elem.textContent;elem.remove()}
   regexpdf = /https?:\/\/\S+\.pdf(\?\S*)?/g
   if(word.match(regexpdf))
