@@ -1974,26 +1974,48 @@ function send_modalchat(elem)
   if(lock_chat!=0) return;
   lock_chat = 1;
   const knowledge = document.querySelector("#chat").innerHTML.replace(/<a.*?>.*?<\/a.*?>/g, '').replace(/<hr.*/gs, '').replace(/<[^>]+>/g,"").replace(/\n\n/g,"\n") +"\n以上是关键词“" + search_queryquery + "”的搜索结果\n"
-    
-    let promptWebpage = '网页标题：'+ article.title +'\n'+'网页布局：\n'
-    for (el in modalele)
-    {
-        if((promptWebpage + modalele[el] + '\n').length <900)
-            promptWebpage = promptWebpage + modalele[el] + '\n';  
-    }
-    promptWebpage = promptWebpage +'网页内容：\n'
 
-    fulltext.sort((a, b) => {
-        if (cosineSimilarity(word,a) > cosineSimilarity(word,b)) {
-            return -1
-        } else {
-            return 1
-        }
-    })
-    for (let st=0;st< Math.min(3,fulltext.length);++st)
+    let promptWebpage
+    if(document.querySelector("#iframe-wrapper > iframe").src.includes("pdfjs/index.html?file="))
     {
-        if(keytextres.indexOf(fulltext[st])==-1)
-            keytextres.unshift(fulltext[st])
+        promptWebpage  = 'PDF标题：'+ article.title +'\n'
+        promptWebpage = promptWebpage +'PDF内容：\n'
+        sentences.sort((a, b) => {
+                if (cosineSimilarity(word,a[1]) > cosineSimilarity(word,b[1])) {
+                    return -1
+                } else {
+                    return 1
+                }
+            })
+        for (let st=0;st< Math.min(6,sentences.length);++st)
+        {
+            if(keytextres.indexOf(sentences[st][1])==-1)
+                keytextres.unshift('第'+String(sentences[st][0])+'页'+sentences[st][2]+'第'+String(sentences[st][3])+'行：'+sentences[st][1]+'\n')
+        }
+    }
+    else
+    {
+            promptWebpage  = '网页标题：'+ article.title +'\n'+'网页布局：\n'
+            for (el in modalele)
+            {
+                if((promptWebpage + modalele[el] + '\n').length <900)
+                    promptWebpage = promptWebpage + modalele[el] + '\n';  
+            }
+            promptWebpage = promptWebpage +'网页内容：\n'
+
+            fulltext.sort((a, b) => {
+                if (cosineSimilarity(word,a) > cosineSimilarity(word,b)) {
+                    return -1
+                } else {
+                    return 1
+                }
+            })
+            for (let st=0;st< Math.min(4,fulltext.length);++st)
+            {
+                if(keytextres.indexOf(fulltext[st])==-1)
+                    keytextres.unshift(fulltext[st])
+            }
+
     }
     keySentencesCount = 0;
     for (st in keytextres)
