@@ -1303,6 +1303,7 @@ function modal_open(url, num)
         iframe.contentDocument.addEventListener("webviewerloaded", function() {
         iframe.contentWindow.PDFViewerApplication.initializedPromise.then(function() {
              iframe.contentWindow.PDFViewerApplication.eventBus.on("documentloaded", function(event) {
+            console.log("pdf loaded")
             resolve("success");
             });
         });
@@ -1310,10 +1311,12 @@ function modal_open(url, num)
     }
     else  if (iframe.attachEvent) {
         iframe.attachEvent("onload", function() {
+        console.log("page loaded")
         resolve("success");
         });
     } else{
         iframe.onload = function() {
+        console.log("page loaded")
         resolve("success");
         };
     }
