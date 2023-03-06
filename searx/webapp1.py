@@ -2078,7 +2078,7 @@ function send_chat(elem)
 {
     pdf_url = word.match(regexpdf)[0];
     modal_open("/static/themes/magi/pdfjs/index.html?file=" + encodeURIComponent(pdf_url),"pdf")
-
+    return;
     
 }
 
