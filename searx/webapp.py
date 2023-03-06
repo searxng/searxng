@@ -1291,7 +1291,7 @@ let sentences=[]
 function modal_open(url, num)
 {
     if(lock_chat==1) return;
-    let article;
+    
     prev_chat = document.getElementById('chat_talk').innerHTML;
     if(num == 'pdf') {   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ 'PDF' +'</a>'+"</div>";}
     else{   document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_question">'+'打开链接'+'<a class="footnote">'+ String(num) +'</a>'+"</div>";}
@@ -1507,113 +1507,117 @@ function modal_open(url, num)
                 resolve("success");
             }
             
-        })
-    }).then(
-        () => {
-        fulltext = article.textContent;
-        fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
-        const delimiter = /[?!;\?\n。；！………]/g
-        fulltext = fulltext.split(delimiter);
-        fulltext = fulltext.filter((item) => {
-        // 使用正则表达式匹配仅由数字、逗号和空格组成的字符串
-        const regex = /^[0-9,\s]+$/;
-        return !regex.test(item);
-        });
-        fulltext = fulltext.filter(function(item) {
-        return item && item.trim(); // 去掉空值和空格
-        });
-        optkeytext = {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({'text':fulltext.join("\n")})
-        };
-        fetchRetry('https://search.kg/keytext',3,optkeytext)
-        .then(response => response.json())
-        .then(data => 
-        {
-            keytextres = unique(data);
-            
-            promptWebpage = '网页标题：'+ article.title +'\n'+'网页布局：\n'
-            for (el in modalele)
+        }).then(
+            () => {
+            fulltext = article.textContent;
+            fulltext = fulltext.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
+            const delimiter = /[?!;\?\n。；！………]/g
+            fulltext = fulltext.split(delimiter);
+            fulltext = fulltext.filter((item) => {
+            // 使用正则表达式匹配仅由数字、逗号和空格组成的字符串
+            const regex = /^[0-9,\s]+$/;
+            return !regex.test(item);
+            });
+            fulltext = fulltext.filter(function(item) {
+            return item && item.trim(); // 去掉空值和空格
+            });
+            optkeytext = {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify({'text':fulltext.join("\n")})
+            };
+            fetchRetry('https://search.kg/keytext',3,optkeytext)
+            .then(response => response.json())
+            .then(data => 
             {
-                if((promptWebpage + modalele[el] + '\n').length <400)
-                    promptWebpage = promptWebpage + modalele[el] + '\n';  
-            }
-            promptWebpage = promptWebpage +'网页内容：\n'
-            keySentencesCount = 0;
-            for (st in keytextres)
-            {
-                if((promptWebpage + keytextres[st] + '\n').length <1200)
-                    promptWebpage = promptWebpage + keytextres[st] + '\n';  
-                keySentencesCount = keySentencesCount+1;
-            }
-            promptWeb = [{'role':'assistant','content':promptWebpage},{'role':'user','content':'总结网页内容，发表带emoji的评论'}]
-            const options = {
-                    method: "POST",
-                    headers: headers,
-                    body: b64EncodeUnicode( JSON.stringify({
-                                "messages": promptWeb.concat(add_system),
-                                "max_tokens": 1000,
-                                "temperature": 0.9,
-                                "top_p": 1,
-                                "frequency_penalty": 0,
-                                "presence_penalty": 0,
-                                "stream": true
-                            }) )
-                };
-
-            chatTemp = ""
-            text_offset = -1;
-            prev_chat = document.getElementById('chat_talk').innerHTML;
-
-            fetch("https://search.kg/completions", options)
-                .then((response) => {
-                    const reader = response.body.getReader();
-                    let result = '';
-                    let half = '';
-                    reader.read().then(function processText({ done, value }) {
-                    if (done) return;
-                    const text = new TextDecoder('utf-8').decode(value);
-                    text.trim().split('\n').forEach(function(v) {
-                    try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
-                        result = ''
-                        if(v.length>6) result = v.slice(6);
-                        if(result == "[DONE]")
-                        {
-                            lock_chat=0
-                            return;
-                        }
-                        let choices;
-                        try
-                        {
-                            try{choices=JSON.parse(half+result)['choices'];half = '';}
-                            catch(e){choices=JSON.parse(result)['choices'];half = '';}
-                        }catch(e){half+=result}
-                        if(choices && choices.length>0 && choices[0].delta.content)
-                        {
-                            chatTemp+=choices[0].delta.content
-                        }
-                        chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
-                        document.querySelector("#prompt").innerHTML="";
-                        markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
-                        document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
-
+                keytextres = unique(data);
+                
+                promptWebpage = '网页标题：'+ article.title +'\n'+'网页布局：\n'
+                for (el in modalele)
+                {
+                    if((promptWebpage + modalele[el] + '\n').length <400)
+                        promptWebpage = promptWebpage + modalele[el] + '\n';  
+                }
+                promptWebpage = promptWebpage +'网页内容：\n'
+                keySentencesCount = 0;
+                for (st in keytextres)
+                {
+                    if((promptWebpage + keytextres[st] + '\n').length <1200)
+                        promptWebpage = promptWebpage + keytextres[st] + '\n';  
+                    keySentencesCount = keySentencesCount+1;
+                }
+                promptWeb = [{'role':'assistant','content':promptWebpage},{'role':'user','content':'总结网页内容，发表带emoji的评论'}]
+                const options = {
+                        method: "POST",
+                        headers: headers,
+                        body: b64EncodeUnicode( JSON.stringify({
+                                    "messages": promptWeb.concat(add_system),
+                                    "max_tokens": 1000,
+                                    "temperature": 0.9,
+                                    "top_p": 1,
+                                    "frequency_penalty": 0,
+                                    "presence_penalty": 0,
+                                    "stream": true
+                                }) )
+                    };
+    
+                chatTemp = ""
+                text_offset = -1;
+                prev_chat = document.getElementById('chat_talk').innerHTML;
+    
+                fetch("https://search.kg/completions", options)
+                    .then((response) => {
+                        const reader = response.body.getReader();
+                        let result = '';
+                        let half = '';
+                        reader.read().then(function processText({ done, value }) {
+                        if (done) return;
+                        const text = new TextDecoder('utf-8').decode(value);
+                        text.trim().split('\n').forEach(function(v) {
+                        try{document.querySelector("#chat_talk").scrollTop = document.querySelector("#chat_talk").scrollHeight}catch(e){}
+                            result = ''
+                            if(v.length>6) result = v.slice(6);
+                            if(result == "[DONE]")
+                            {
+                                lock_chat=0
+                                return;
+                            }
+                            let choices;
+                            try
+                            {
+                                try{choices=JSON.parse(half+result)['choices'];half = '';}
+                                catch(e){choices=JSON.parse(result)['choices'];half = '';}
+                            }catch(e){half+=result}
+                            if(choices && choices.length>0 && choices[0].delta.content)
+                            {
+                                chatTemp+=choices[0].delta.content
+                            }
+                            chatTemp=chatTemp.replaceAll("\n\n","\n").replaceAll("\n\n","\n")
+                            document.querySelector("#prompt").innerHTML="";
+                            markdownToHtml(beautify(chatTemp), document.querySelector("#prompt"))
+                            document.getElementById('chat_talk').innerHTML = prev_chat+'<div class="chat_answer">'+document.querySelector("#prompt").innerHTML+"</div>";
+    
+                        })
+                        return reader.read().then(processText);
+                        });
                     })
-                    return reader.read().then(processText);
+                    .catch((error) => {
+                        console.error('Error:', error);
                     });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-
-
-
-
-        })
+    
+    
+    
+    
+            })
+            
         
     
-
-
+    
+        },
+        error => {
+            console.log(error);
+        }
+        );
     },
     error => {
         console.log(error);
