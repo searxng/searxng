@@ -1304,9 +1304,13 @@ function modal_open(url, num)
         resolve("success");
         });
     } else if (num=='pdf') {
-        iframe.contentDocument.addEventListener('pagesloaded', function (e) {
+        iframe.contentDocument.addEventListener("webviewerloaded", function() {
+        PDFViewerApplication.initializedPromise.then(function() {
+            PDFViewerApplication.eventBus.on("documentloaded", function(event) {
             resolve("success");
-        }, true);
+            });
+        });
+        });
     }else{
         iframe.onload = function() {
         resolve("success");
