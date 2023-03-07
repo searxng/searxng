@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-27 12:08+0000\n"
+"PO-Revision-Date: 2023-03-08 09:08+0000\n"
 "Last-Translator: BalkanMadman <zurabid2016@gmail.com>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
@@ -334,11 +334,11 @@ msgstr "Зміна імені сайту"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "Змінити ім'я хоста чи видалити результати на основі імені хоста"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Переадресація на Open Access DOI"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
@@ -362,7 +362,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Інформація"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -374,25 +374,30 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Плагін перевірки Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Цей плагін перевіряє, чи належить адреса запита вихідному вузлу Tor, і, якщо "
+"так, сповіщає користувача; як check.torproject.org, але від SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Не вдалося завантажити список вихідниз вузлів Tor з: https://check.torproject"
+".org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Ви використовуєте Tor і, здається, у вас наступна IP адреса: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -963,7 +968,7 @@ msgstr "шукати"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "В даний час немає доступних даних."
+msgstr "В даний час немає доступних даних. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
