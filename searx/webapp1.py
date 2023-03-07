@@ -682,7 +682,7 @@ def process_result(result):
     
     # 判断返回值是否为'null'，如果不是则更新title
     if response.text != 'null':
-        result['title'] += ' 此网站主人是:' +response.text
+        result['title'] += ' 网站备案主体:' +response.text
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
