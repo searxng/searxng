@@ -672,7 +672,7 @@ def process_result(result):
     # 发起GET请求访问API
     query_url=re.sub(r'https?://', '', result['url'])
     try:
-        response = requests.get(f'https://noisy-dust-b504.marduk.workers.dev/siteOwner?{query_url}', timeout=5)
+        response = requests.get(f'https://noisy-dust-b504.marduk.workers.dev/siteOwner?url={query_url}', timeout=5)
     except requests.exceptions.Timeout:
         print(f'Request timeout for {result["url"]}')
         return
