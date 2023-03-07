@@ -73,7 +73,7 @@ def response(resp):
         result['snippet'] = result['snippet'].replace("此条目介绍的作品或其衍生作品中有至少一项尚未完结。","").replace("萌娘百科不是新闻的搜集处。欢迎在情报相对明朗并确认资料来源准确性后编辑更新。","")
         result['snippet'] = result['snippet'].strip()
         # append result
-        results.append({'url': url, 'title': result['title'], 'content': result['snippet']})
+        results.append({'url': url, 'title': result['title'] + ' - 萌娘百科', 'content': result['snippet']})
 
     # return results
     return results

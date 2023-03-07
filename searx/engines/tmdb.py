@@ -21,7 +21,7 @@ def response(resp):
         for item in data:
 
             result = {
-                "title": item.get("name"),
+                "title": item.get("name") +  ' - TMDB',
                 "url": f"https://www.themoviedb.org/{item.get('media_type')}/{item.get('id')}",
                 "content": item.get("overview"),
             }
