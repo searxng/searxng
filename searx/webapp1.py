@@ -19,6 +19,7 @@ import re
 import datetime
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 import pycorrector
+import threading
 
 from timeit import default_timer
 from html import escape
@@ -663,6 +664,26 @@ def keytext():
         res.append(item.sentence)
     return Response(json.dumps(res), mimetype='application/json')
 
+def process_result(result):
+    url_pattern = re.compile(r'^(https?://)?([a-z0-9-]+\.)+[a-z0-9-]+\.[a-z]+/?$')
+    # 判断URL是否符合要求
+    if not url_pattern.match(result['url']):
+        return
+    # 发起GET请求访问API
+    query_url=re.sub(r'https?://', '', result['url'])
+    try:
+        response = requests.get(f'https://noisy-dust-b504.marduk.workers.dev/siteOwner?{query_url}', timeout=5)
+    except requests.exceptions.Timeout:
+        print(f'Request timeout for {result["url"]}')
+        return
+    except requests.exceptions.RequestException as e:
+        print(f'Request error for {result["url"]}: {e}')
+        return
+    
+    # 判断返回值是否为'null'，如果不是则更新title
+    if response.text != 'null':
+        result['title'] += ' 此网站主人是:' +response.text
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     """Search query in q and return results.
@@ -810,6 +831,15 @@ def search():
                         # return index_error(output_format, gettext('No item found')), 500
                         results.remove(res)
                 except:pass
+        threads = []
+        for result in results:
+            t = threading.Thread(target=process_result, args=(result,))
+            t.start()
+            threads.append(t)
+        
+        # 等待所有线程执行完毕
+        for t in threads:
+            t.join()
         for res in results:
             if 'engine' in res and res['engine'] == 'twitter':
                 try:
@@ -839,7 +869,7 @@ def search():
             res['content'] = res['content'].replace("Retweeted.","Reposted.")     
             res['content'] = res['content'].replace("Learn more.","")     
             res['content'] = res['content'].replace("Show replies.","")      
-            res['content'] = res['content'].replace("See new Tweets. ","")
+            res['content'] = res['content'].replace("See new Tweets. ","") 
             if "作者简介：金融学客座教授，硕士生导师" in res['content']:  res['content']=res['title']  
             res['content'] = res['content'].replace("You're unable to view this Tweet because this account owner limits who can view their Tweets.","Private Tweet.")      
             res['content'] = res['content'].replace("Twitter for Android · ","") 
