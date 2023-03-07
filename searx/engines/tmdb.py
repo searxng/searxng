@@ -1,10 +1,10 @@
 from json import loads
-from urllib.parse import urlencode
+import urllib.parse
 SEARCH_URL = "https://api.themoviedb.org/3/search/multi"
 API_KEY = "f6bd687ffa63cd282b6ff2c6877f2669"
 
 def request(query, params):
-    params["url"] = SEARCH_URL + "?api_key=" + API_KEY + "&query=" + urlencode(query)
+    params["url"] = SEARCH_URL + "?api_key=" + API_KEY + "&query=" + urllib.parse.quote(query)
     language = params.get("language")
     if language:
         params["url"] += "&language=" + language
