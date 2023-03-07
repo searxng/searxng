@@ -1,5 +1,6 @@
 from json import loads
 import urllib.parse
+import datetime
 SEARCH_URL = "https://api.themoviedb.org/3/search/multi"
 API_KEY = "f6bd687ffa63cd282b6ff2c6877f2669"
 
@@ -18,11 +19,13 @@ def response(resp):
     data = loads(resp.text)["results"]
     if data:
         for item in data:
+
             result = {
                 "title": item.get("name"),
                 "url": f"https://www.themoviedb.org/{item.get('media_type')}/{item.get('id')}",
                 "content": item.get("overview"),
-                "publishedDate": item.get("release_date") or item.get("first_air_date"),
             }
+            if item.get("release_date") or item.get("first_air_date"):
+                result['publishedDate'] = datetime.datetime.strptime(item.get("release_date") or item.get("first_air_date"), '%Y-%m-%d')
             results.append(result)
     return results
