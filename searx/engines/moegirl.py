@@ -6,6 +6,7 @@
 from json import loads
 from string import Formatter
 from urllib.parse import urlencode, quote
+import re
 
 # about
 about = {
