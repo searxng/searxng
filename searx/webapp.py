@@ -831,15 +831,15 @@ def search():
                         # return index_error(output_format, gettext('No item found')), 500
                         results.remove(res)
                 except:pass
-        threads = []
-        for result in results:
-            t = threading.Thread(target=process_result, args=(result,))
-            t.start()
-            threads.append(t)
+        # threads = []
+        # for result in results:
+        #     t = threading.Thread(target=process_result, args=(result,))
+        #     t.start()
+        #     threads.append(t)
         
-        # 等待所有线程执行完毕
-        for t in threads:
-            t.join()
+        # # 等待所有线程执行完毕
+        # for t in threads:
+        #     t.join()
         for res in results:
             if 'engine' in res and res['engine'] == 'twitter':
                 try:
