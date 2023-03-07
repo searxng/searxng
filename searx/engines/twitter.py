@@ -89,7 +89,7 @@ def response(resp):
                 'publishedDate': datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y'),
             }
         )
-        if len(results)>=5: break
+        if len(results)>=3: break
 
     # for user in json_res['users'].values():
     #     results.append(
