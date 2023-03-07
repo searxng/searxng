@@ -343,6 +343,10 @@ def response(resp):
             url = eval_xpath_getindex(result, href_xpath, 0, None)
             if url is None:
                 continue
+            if "moegirl.org.cn" in url:continue
+            if "moegirl.org.cn" in url:continue
+            if "google.cn" in url:continue
+            if "twitter.com" in url and "/status" in url: continue
             content = extract_text(eval_xpath_getindex(result, content_xpath, 0, default=None), allow_none=True)
             if content is None:
                 logger.debug('ignoring item from the result_xpath list: missing content of title "%s"', title)
