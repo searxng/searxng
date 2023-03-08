@@ -21,7 +21,7 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
-number_of_results = 2
+number_of_results = 1
 search_type = 'text'  # possible values: title, text, nearmatch
 
 # search-url
