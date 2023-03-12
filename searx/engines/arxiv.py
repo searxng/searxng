@@ -18,7 +18,7 @@ about = {
     "results": 'XML-RSS',
 }
 
-categories = ['science', 'scientific publications']
+categories = ['general', 'science', 'scientific publications']
 paging = True
 
 base_url = (
@@ -101,7 +101,7 @@ def response(resp):
             'journal': journal,
             'tags': tags,
             'comments': comments,
-            'pdf_url': pdf_url,
+            'pdf_url': pdf_url.replace("http://","https://"),
         }
 
         results.append(res_dict)
