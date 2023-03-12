@@ -1366,7 +1366,24 @@ function modal_open(url, num)
     iframePromise.then(
     () => {
 
-        
+
+const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+const links = iframeDoc.getElementsByTagName('a');
+
+for (let i = 0; i < links.length; i++) {
+  if(!links[i].href) continue;
+  links[i].addEventListener('click', function(event) {
+    if (window.lock_chat === 1) {
+      event.preventDefault();
+      alert('请耐心等待上一个会话结束');
+    }
+    else
+    {
+        modal_open(links[i].href, 'URL');
+    }
+  });
+}
+
         document.querySelector("#modal-input-content").appendChild(document.querySelector("#chat_talk"))
         document.querySelector("#modal-input-content").appendChild(document.querySelector("#chat_continue"))
 
