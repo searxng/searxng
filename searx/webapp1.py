@@ -1367,7 +1367,7 @@ function modal_open(url, num)
     () => {
 
 
-const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+const iframeDoc = iframe.contentWindow.document;
 const links = iframeDoc.getElementsByTagName('a');
 
 for (let i = 0; i < links.length; i++) {
