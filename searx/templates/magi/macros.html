@@ -41,10 +41,7 @@
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result, proxify) -%}
 <div class="engines">
-  <!-- {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %} -->
   <a onclick="modal_open(&quot;{{ proxify(result.url) }}&quot;),&quot;URL&quot;)">速览</a>
-
-  <!-- {{ result_link(cache_url + result.url, icon_small('ellipsis-vertical-outline') + _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(, icon('link') + _('proxied'), "proxyfied_link") }} {% endif %} -->
 </div>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}
