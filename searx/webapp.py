@@ -333,6 +333,8 @@ def morty_proxify(url: str):
 
     if not settings['result_proxy']['url']:
         return url
+    
+    url = url.replace("://mobile.twitter.com","://nitter.net").replace("://mobile.twitter.com","://nitter.net").replace("://twitter.com","://nitter.net")
 
     url_params = dict(mortyurl=url)
 
@@ -860,7 +862,7 @@ def search():
             if res['content'] == '': continue
             new_url = 'https://url'+str(len(url_pair))
             url_pair.append(res['url'])
-            url_proxy[res['url']] = (morty_proxify(res['url'].replace("://mobile.twitter.com","://nitter.net").replace("://mobile.twitter.com","://nitter.net").replace("://twitter.com","://nitter.net")))
+            url_proxy[res['url']] = (morty_proxify(res['url']))
             res['title'] = res['title'].replace("التغريدات مع الردود بواسطة","")
             res['content'] = res['content'].replace("  "," ")
             res['content'] = res['content'].replace("Translate Tweet. ","")
