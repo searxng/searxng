@@ -30,7 +30,7 @@
 {%- if result.content -%}<p class="content">{{- result.content | safe -}}</p>{%- endif -%}
 {%- if result.comments -%}<p class="comments">{{- result.comments -}}</p>{%- endif -%}
 <p class="altlink">
-  {%- if result.pdf_url -%}{{ result_link(result.pdf_url, _('PDF')) }}{%- endif -%}
+    {%- if result.pdf_url -%}<a onclick="modal_open(&quot;/static/themes/magi/pdfjs/index.html?file=&quot; + encodeURIComponent(&quot;{{ result.pdf_url }}&quot;),&quot;pdf&quot;)">PDF</a>{%- endif -%}
   {%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
   {%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif -%}
 </p>
