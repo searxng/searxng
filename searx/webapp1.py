@@ -1390,6 +1390,7 @@ for (let i = 0; i < links.length; i++) {
 
         var iframe = document.querySelector("#iframe-wrapper > iframe");
         new Promise((resolve, reject) => {
+        lock_chat = 1;
             if(num=='pdf')
             {
                 var pdf = iframe.contentWindow.PDFViewerApplication.pdfDocument;
@@ -1549,6 +1550,7 @@ for (let i = 0; i < links.length; i++) {
                     resolve("success");
 
                 }).catch(function(error) {
+                lock_chat = 0;
                 console.error(error); //处理错误情况
                 });
 
@@ -1655,6 +1657,7 @@ for (let i = 0; i < links.length; i++) {
                         });
                     })
                     .catch((error) => {
+                    lock_chat = 0;
                         console.error('Error:', error);
                     });
     
