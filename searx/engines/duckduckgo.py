@@ -74,6 +74,7 @@ def request(query, params):
 
     params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
     params['headers']['Referer'] = 'https://google.com/'
+    params['headers']['User-Agent'] = 'curl/7.81.0'
 
     # initial page does not have an offset
     if params['pageno'] == 2:
