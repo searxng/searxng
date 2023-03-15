@@ -43,7 +43,6 @@ def request(query, params):
 
 
 def response(resp):
-    # codespace test
     results = []
 
     dom = html.fromstring(resp.text)
