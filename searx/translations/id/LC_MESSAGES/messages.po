@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-01-22 11:59+0000\n"
+"PO-Revision-Date: 2023-03-16 10:25+0000\n"
 "Last-Translator: Linerly <linerly@protonmail.com>\n"
+"Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
+"searxng/id/>\n"
 "Language: id\n"
-"Language-Team: Indonesian "
-"<https://translate.codeberg.org/projects/searxng/searxng/id/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -374,22 +375,31 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Plugin ini memeriksa jika alamat permintaan adalah node keluar Tor, dan "
+"memberi tahu pengguna jika benar; seperti check.torproject.org, tetapi dari "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Tidak dapat mengunduh daftar node keluar Tor dari: https://check.torproject."
+"org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Anda sedang menggunakan Tor dan sepertinya Anda memiliki alamat IP eksternal "
+"berikut: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Anda sedang tidak menggunakan Tor dan Anda memiliki alamat IP eksternal "
+"berikut: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -570,7 +580,7 @@ msgstr "Bahasa bawaan"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Deteksi otomatis"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -579,6 +589,8 @@ msgstr "Bahasa apa yang Anda ingin pakai untuk pencarian?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Pilih Deteksi otomatis untuk memperbolehkan SearXNG mendeteksi bahasa kueri "
+"Anda."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -1432,4 +1444,3 @@ msgstr "sembunyikan video"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "Deteksi bahasa kueri pencarian dan ubah bahasanya secara otomatis."
-
