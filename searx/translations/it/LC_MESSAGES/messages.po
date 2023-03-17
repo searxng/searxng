@@ -20,12 +20,13 @@
 # Franco Longo <longofrancoale@gmail.com>, 2022.
 # VaiTon <eyadlorenzo@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# SonoAX <giovanniilgiovo@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-24 07:07+0000\n"
+"PO-Revision-Date: 2023-03-16 10:25+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
 "searxng/it/>\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -598,15 +599,17 @@ msgstr "Lingua predefinita"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Auto"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
-msgstr "Che lingua preferisci per la ricerca?"
+msgstr "Che lingua preferisci per eseguire la ricerca?"
 
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Scegli la funzione di Auto-rilevamento per far scegliere a SearXNG la lingua "
+"da usare nella tua ricerca."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -628,7 +631,7 @@ msgstr "Ricerca Sicura"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:149
 msgid "Strict"
-msgstr "Rigorosa"
+msgstr "Severa"
 
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:150
@@ -658,11 +661,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:174
 msgid "Engine tokens"
-msgstr "Gettoni del motore"
+msgstr "Tokens del motore"
 
 #: searx/templates/simple/preferences.html:178
 msgid "Access tokens for private engines"
-msgstr "Gettoni di accesso per motori privati"
+msgstr "Tokens di accesso per motori privati"
 
 #: searx/templates/simple/preferences.html:182
 msgid "User interface"
@@ -689,6 +692,7 @@ msgid "Theme style"
 msgstr "Stile tema"
 
 #: searx/templates/simple/preferences.html:217
+#, fuzzy
 msgid "Choose auto to follow your browser settings"
 msgstr "Seleziona automatico per seguire le impostazioni del tuo browser"
 
@@ -699,8 +703,9 @@ msgstr "Allinea al centro"
 #: searx/templates/simple/preferences.html:223
 #: searx/templates/simple/preferences.html:235
 #: searx/templates/simple/preferences.html:247
+#, fuzzy
 msgid "On"
-msgstr "On"
+msgstr "Attivo"
 
 #: searx/templates/simple/preferences.html:224
 #: searx/templates/simple/preferences.html:236
@@ -929,7 +934,7 @@ msgstr "Salva"
 
 #: searx/templates/simple/preferences.html:437
 msgid "Reset defaults"
-msgstr "Reimposta i valori iniziali"
+msgstr "Reimposta ai valori di default"
 
 #: searx/templates/simple/preferences.html:438
 msgid "Back"

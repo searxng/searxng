@@ -15,20 +15,22 @@
 # Cedrik Boudreau <cedrik@arweave.org>, 2022.
 # Peter Martin <weblate@pe7er.com>, 2022.
 # NoEnd-yt <isaac.landau2104@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-17 12:20+0000\n"
-"Last-Translator: NoEnd-yt <isaac.landau2104@gmail.com>\n"
+"PO-Revision-Date: 2023-03-06 08:08+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: French <https://translate.codeberg.org/projects/searxng/"
+"searxng/fr/>\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://translate.codeberg.org/projects/searxng/searxng/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -394,16 +396,19 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Erreur lors du téléchargement des noeuds de sortie Tor depuis : https://check"
+".torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Vous utilisez Tor et votre adresse IP externe semble être : {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Vous n'utilisez pas Tor et votre adresse IP externe est : {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -586,7 +591,7 @@ msgstr "Langue par défaut"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Détection automatique"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -595,6 +600,8 @@ msgstr "Dans quelle langue préférez-vous effectuer la recherche ?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Choisissez détection automatique pour laisser SearXNG détecter la langue de "
+"votre recherche."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -1572,4 +1579,3 @@ msgstr "cacher la vidéo"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "Détecter automatiquement la langue de la recherche et y passer."
-

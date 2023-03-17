@@ -8,13 +8,14 @@
 # Andrij Mizyk <andmizyk@gmail.com>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022, 2023.
 # BalkanMadman <zurabid2016@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-27 12:08+0000\n"
-"Last-Translator: BalkanMadman <zurabid2016@gmail.com>\n"
+"PO-Revision-Date: 2023-03-10 11:24+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
 "Language: uk\n"
@@ -25,7 +26,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -334,11 +335,11 @@ msgstr "Зміна імені сайту"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
+msgstr "Замінити ім'я хоста або видалити результати на основі імені хоста"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Переадресація на Open Access DOI"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
@@ -362,7 +363,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Інформація"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -374,25 +375,30 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Плагін перевірки Tor"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Цей плагін перевіряє, чи належить адреса запиту вихідному вузлу Tor і, якщо "
+"так, інформує користувача; як check.torproject.org, але від SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Не вдалось завантажити список вихідних вузлів Tor з: https://check.torproject"
+".org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Ви використовуєте Tor і, здається, у вас наступна IP адреса: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -963,7 +969,7 @@ msgstr "шукати"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "В даний час немає доступних даних."
+msgstr "В даний час немає доступних даних. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"

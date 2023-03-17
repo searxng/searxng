@@ -12,20 +12,22 @@
 # crazychicken1 <seymaomay1809@gmail.com>, 2022.
 # Kayra Uylar <k.uylar@outlook.com>, 2022.
 # emirhan <xemirhankoc@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-01-30 13:56+0000\n"
-"Last-Translator: emirhan <xemirhankoc@gmail.com>\n"
+"PO-Revision-Date: 2023-03-10 11:20+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Turkish <https://translate.codeberg.org/projects/searxng/"
+"searxng/tr/>\n"
 "Language: tr\n"
-"Language-Team: Turkish "
-"<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -279,6 +281,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{firstCitationVelocityYear} yılından {lastCitationVelocityYear} yılına kadar "
+"{numCitations} alıntı(lar)"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -381,22 +385,29 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Bu eklenti, isteğin adresinin bir Tor çıkış düğümü olup olmadığını kontrol "
+"eder ve varsa kullanıcıyı bilgilendirir; check.torproject.org gibi, ancak "
+"SearXNG'den."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Tor çıkış düğümlerinin listesi şu adresten indirilemedi: https://check."
+"torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Tor kullanıyorsunuz ve şu harici IP adresine sahip olduğunuz anlaşılıyor: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Tor kullanmıyorsunuz ve şu harici IP adresine sahipsiniz: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -579,7 +590,7 @@ msgstr "Varsayılan dil"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Özdevimli algılama"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -588,6 +599,8 @@ msgstr "Arama için hangi dili tercih edersiniz?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"SearXNG'nin sorgunuzun dilini algılamasına izin vermek için Özdevimli "
+"algıla'yı seçin."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -1549,4 +1562,3 @@ msgstr "görüntüyü gizle"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "Arama dilini otomatik algıla ve değiştir."
-
