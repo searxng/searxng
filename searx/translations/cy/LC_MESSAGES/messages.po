@@ -6,21 +6,23 @@
 # Cymrodor <aled@aledpowell.cymru>, 2019
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # CJ <charl.cj.monke@gmail.com>, 2022.
+# RhysJones <proladrhys123@outlook.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2022-09-28 07:29+0000\n"
-"Last-Translator: CJ <charl.cj.monke@gmail.com>\n"
+"PO-Revision-Date: 2023-03-15 15:37+0000\n"
+"Last-Translator: RhysJones <proladrhys123@outlook.com>\n"
+"Language-Team: Welsh <https://translate.codeberg.org/projects/searxng/"
+"searxng/cy/>\n"
 "Language: cy\n"
-"Language-Team: Welsh "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/cy/>\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n "
-"!= 11) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
+"11) ? 2 : 3;\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -91,7 +93,7 @@ msgstr "gwyddoniaeth"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr "apps"
+msgstr "apiau"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
@@ -116,7 +118,7 @@ msgstr "q&a"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr "repos"
+msgstr "Gorffwys"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
@@ -166,7 +168,7 @@ msgstr "gwall rhwydwaith"
 
 #: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "Gwall SSL: dilysu tystysgrif wedi methu"
 
 #: searx/webapp.py:171
 msgid "unexpected crash"
@@ -215,7 +217,7 @@ msgstr "Gwall wrth lwytho'r dudalen nesaf"
 
 #: searx/webapp.py:524 searx/webapp.py:964
 msgid "Invalid settings, please edit your preferences"
-msgstr "Gosodiadau annilys. Addasa dy ddewisiadau."
+msgstr "Gosodiadau annilys, golygu eich dewisiadau"
 
 #: searx/webapp.py:540
 msgid "Invalid settings"
@@ -227,7 +229,7 @@ msgstr "gwall chwilio"
 
 #: searx/webapp.py:863
 msgid "Suspended"
-msgstr ""
+msgstr "Atal"
 
 #: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
@@ -239,41 +241,43 @@ msgstr "{hours} awr, {minutes} munud yn ôl"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
-msgstr ""
+msgstr "Generadur gwerth ar hap"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr ""
+msgstr "Cynhyrchu gwahanol werthoedd ar hap"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
-msgstr ""
+msgstr "Swyddogaethau ystadegau"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr ""
+msgstr "Compute {functions} o'r dadleuon"
 
 #: searx/engines/openstreetmap.py:160
 msgid "Get directions"
-msgstr ""
+msgstr "Cael cyfarwyddiadau"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr ""
+msgstr "{title} (OBSOLETE)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr ""
+msgstr "Mae'r cofnod hwn wedi ei ddisodli gan"
 
 #: searx/engines/qwant.py:219
 msgid "Channel"
-msgstr ""
+msgstr "Sianel"
 
 #: searx/engines/semantic_scholar.py:81
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} dyfyniadau o'r flwyddyn {firstCitationVelocityYear} i "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -281,40 +285,45 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Allai ddim darllen yr url delwedd hwnnw. Gall hyn fod oherwydd fformat ffeil "
+"heb gymorth. Mae TinEye yn cefnogi delweddau yn unig sy'n JPEG, PNG, GIF, "
+"BMP, TIFF neu WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Mae'r ddelwedd yn rhy syml i ddod o hyd i gemau. Mae TinEye angen lefel "
+"sylfaenol o fanylion gweledol i adnabod gemau yn llwyddiannus."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "Doedd dim modd lawrlwytho'r ddelwedd."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Bore"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Canol Dydd"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Noswaith"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Nos"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Trosi llinynnau i wahanol dreuliadau hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "Digon o hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -1493,4 +1502,3 @@ msgstr "cuddio fideo"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
-
