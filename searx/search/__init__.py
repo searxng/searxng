@@ -54,7 +54,7 @@ def replace_auto_language(search_query: SearchQuery):
     if search_query.lang != 'auto':
         return
 
-    detected_lang = detect_language(search_query.query, threshold=0.0, only_search_languages=True)
+    detected_lang = detect_language(search_query.query, threshold=0.3, only_search_languages=True)
     if detected_lang is None:
         # fallback to 'all' if no language has been detected
         search_query.lang = 'all'
