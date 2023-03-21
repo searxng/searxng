@@ -78,7 +78,7 @@ Matrix
 Differences to searx
 ====================
 
-SearXNG is a fork of `searx`_, with notable changes:
+Fufusoup is a fork of SearXNG, which is a fork of `searx`_, with notable changes:
 
 .. _searx: https://github.com/searx/searx
 
