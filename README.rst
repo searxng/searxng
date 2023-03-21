@@ -2,10 +2,10 @@
 
 ----
 
-.. figure:: https://raw.githubusercontent.com/searxng/searxng/master/src/brand/searxng.svg
-   :target: https://docs.searxng.org/
-   :alt: SearXNG
-   :width: 100%
+.. figure:: searx/static/themes/simple/img/fufusoup-logo-blue-bg.png
+   :target: https://mkm.technology
+   :alt: Fufusoup
+   :width: 50%
    :align: center
 
 ----
