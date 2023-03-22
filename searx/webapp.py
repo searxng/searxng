@@ -352,7 +352,7 @@ def get_favicon_or_logo(imgtype: str):
                 del resp
                 del stream
             except httpx.HTTPError as e:
-                logger.debug(f'{imgtype}Exception while closing response', e)
+                logger.debug(f'{imgtype}: Exception while closing response', e)
 
         try:
             headers = dict_subset(resp.headers, {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'})
