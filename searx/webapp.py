@@ -317,9 +317,9 @@ def get_favicon_or_logo(imgtype: str):
     if "://" in path:
         resp_ok = False
         resp = None
-        # TODO: Make a a function for this used by both this function and the image proxy
+        # TODO: Make a a function for this used by both this function and the image proxy # pylint: disable=fixme
         # ASAP to avoid repeated code like this
-        # pylint: disable=fixme
+
         try:
             # Pull image from it
             request_headers = {
@@ -1377,12 +1377,12 @@ def opensearch():
 
 @app.route('/favicon.ico')
 def favicon():
-    return get_favicon_or_logo("favicon", request)
+    return get_favicon_or_logo("favicon")
 
 
 @app.route('/logo')
 def logo():
-    return get_favicon_or_logo("logo", request)
+    return get_favicon_or_logo("logo")
 
 
 @app.route('/clear_cookies')
