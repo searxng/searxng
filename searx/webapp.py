@@ -298,6 +298,31 @@ def get_result_template(theme_name: str, template_name: str):
         return themed_path
     return 'result_templates/' + template_name
 
+def get_favicon_or_logo(imgtype: str, request):
+	# This method returns a favicon or regular image depending on the imgtype parameter
+	# It is used to not repeat code for /favicon.ico and /logo
+	theme = request.preferences.get_value("theme")
+	path = os.path.expanduser(settings.get("brand").get(imgtype))
+	relpath = os.path.join(app.root_path, path)
+	mimetype = 'image/vnd.microsoft.icon' if imgtype == "favicon" else None
+	
+	if not os.path.isfile(path) and not os.path.isfile(relpath):
+		# If path doesn't exist neither relatively nor absolutely, fallback  to whatever is in the theme
+		return send_from_directory(
+			os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
+			'favicon.png' if imgtype == "favicon" else "searxng.png",
+			mimetype=mimetype,
+		)	
+	else:		
+		# Otherwise we're good to go, send whatever is specified.
+		filename = os.path.basename(path)
+		path = os.path.dirname(path)
+		# Works wih both relative and absolute. 
+		return send_from_directory(
+			path,
+			filename,
+			mimetype=mimetype
+		)
 
 def custom_url_for(endpoint: str, **values):
     suffix = ""
@@ -1303,12 +1328,12 @@ def opensearch():
 
 @app.route('/favicon.ico')
 def favicon():
-    theme = request.preferences.get_value("theme")
-    return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
-        'favicon.png',
-        mimetype='image/vnd.microsoft.icon',
-    )
+	return get_favicon_or_logo("favicon", request)
+	
+@app.route('/logo')
+def logo():		
+	return get_favicon_or_logo("logo", request)
+		
 
 
 @app.route('/clear_cookies')
