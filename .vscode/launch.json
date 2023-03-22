@@ -1,0 +1,23 @@
+{
+    // See https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SearXNG",
+            "type": "python",
+            "request": "launch",
+            "module": "searx.webapp",
+            "env": {
+                "FLASK_APP": "webapp",
+                "FLASK_DEBUG": "1",
+                "SEARXNG_DEBUG": "1",
+            },
+            "args": [
+                "run"
+            ],
+            "jinja": true,
+            "justMyCode": true,
+            "python": "${workspaceFolder}/local/py3/bin/python",
+        }
+    ]
+}
