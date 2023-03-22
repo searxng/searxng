@@ -298,6 +298,7 @@ def get_result_template(theme_name: str, template_name: str):
         return themed_path
     return 'result_templates/' + template_name
 
+
 def get_favicon_or_logo(imgtype: str, request):
 	# This method returns a favicon or regular image depending on the imgtype parameter
 	# It is used to not repeat code for /favicon.ico and /logo
@@ -316,12 +317,10 @@ def get_favicon_or_logo(imgtype: str, request):
 		)	
 	else:		
 		# Otherwise we're good to go, send whatever is specified.
-		filename = os.path.basename(path)
-		path = os.path.dirname(path)
 		# Works with both relative and absolute. 
 		return send_from_directory(
-			path,
-			filename,
+			os.path.dirname(path),
+			os.path.basename(path),
 			mimetype=mimetype
 		)
 
