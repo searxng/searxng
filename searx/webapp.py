@@ -332,8 +332,7 @@ def get_favicon_or_logo(imgtype: str):
             resp, stream = http_stream(method='GET', url=path, headers=request_headers, allow_redirects=True)
             if resp.status_code != 200:
                 logger.debug(f"{imgtype}: Bad status code %i", resp.status_code)
-                if resp.status_code >= 400:
-                    return fallback
+                return fallback
             resp_ok = True
         except httpx.HTTPError:
             logger.debug(f"{imgtype}: HTTP error")
