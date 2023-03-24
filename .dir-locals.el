@@ -3,18 +3,23 @@
 ;; Per-Directory Local Variables:
 ;;   https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html
 ;;
-;; .. hint::
+;; For full fledge developer tools install emacs packages:
 ;;
-;;    If you get ``*** EPC Error ***`` (even after a jedi:install-server) in
-;;    your emacs session, mostly you have jedi-mode enabled but the python
-;;    environment is missed.  The python environment has to be next to the
-;;    ``<repo>/.dir-locals.el`` in::
+;;    M-x package-install ...
 ;;
-;;       ./local/py3
+;;     magit gitconfig
+;;     nvm lsp-mode lsp-pyright lsp-eslint
+;;     pyvenv pylint pip-requirements
+;;     jinja2-mode
+;;     json-mode
+;;     company company-jedi company-quickhelp company-shell
+;;     realgud
+;;     sphinx-doc markdown-mode graphviz-dot-mode
+;;     apache-mode nginx-mode
 ;;
-;; To setup such an environment, build target::
+;; To setup a developer environment, build target::
 ;;
-;;     $ make pyenv.install
+;;     $ make node.env.dev pyenv.install
 ;;
 ;; Some buffer locals are referencing the project environment:
 ;;
@@ -29,26 +34,11 @@
 ;;         (setq python-shell-virtualenv-root "/path/to/env/")
 ;; - python-shell-interpreter                --> <repo>/local/py3/bin/python
 ;;
+;; Python development:
+;;
 ;; Jedi, flycheck & other python stuff should use the 'python-shell-interpreter'
 ;; from the local py3 environment.
 ;;
-;; For pyright support you need to install::
-;;
-;;    M-x package-install lsp-pyright
-;;
-;; Other useful jedi stuff you might add to your ~/.emacs::
-;;
-;;     (global-set-key [f6] 'flycheck-mode)
-;;     (add-hook 'python-mode-hook 'my:python-mode-hook)
-;;
-;;     (defun my:python-mode-hook ()
-;;       (add-to-list 'company-backends 'company-jedi)
-;;       (require 'jedi-core)
-;;       (jedi:setup)
-;;       (define-key python-mode-map (kbd "C-c C-d") 'jedi:show-doc)
-;;       (define-key python-mode-map (kbd "M-.")     'jedi:goto-definition)
-;;       (define-key python-mode-map (kbd "M-,")     'jedi:goto-definition-pop-marker)
-;;     )
 
 ((nil
   . ((fill-column . 80)
@@ -66,6 +56,12 @@
 
                ;; to get in use of NVM environment, install https://github.com/rejeep/nvm.el
                (setq-local nvm-dir (expand-file-name "./.nvm" prj-root))
+
+               ;; use nodejs from the (local) NVM environment (see nvm-dir)
+               (nvm-use-for-buffer)
+               (ignore-errors (require 'lsp))
+               (setq-local lsp-server-install-dir (car (cdr nvm-current-version)))
+               (setq-local lsp-enable-file-watchers nil)
 
                ;; use 'py3' environment as default
                (setq-local python-environment-default-root-name
@@ -100,22 +96,22 @@
 
  (js-mode
   . ((eval . (progn
-               ;; use nodejs from the (local) NVM environment (see nvm-dir)
-               (nvm-use-for-buffer)
+               (ignore-errors (require 'lsp-eslint))
                (setq-local js-indent-level 2)
                ;; flycheck should use the eslint checker from developer tools
                (setq-local flycheck-javascript-eslint-executable
                            (expand-file-name "node_modules/.bin/eslint" prj-root))
+               ;; (flycheck-mode)
 
-               (flycheck-mode)
+               (if (featurep 'lsp-eslint)
+                   (lsp))
                ))))
 
  (python-mode
   . ((eval . (progn
-               ;; use nodejs from the (local) NVM environment (see nvm-dir)
-               (nvm-use-for-buffer)
-               (if (featurep 'lsp-pyright)
-                   (lsp))
+               (ignore-errors (require 'jedi-core))
+               (ignore-errors (require 'lsp-pyright))
+               (ignore-errors (sphinx-doc-mode))
                (setq-local python-environment-virtualenv
                            (list (expand-file-name "bin/virtualenv" python-shell-virtualenv-root)
                                  ;;"--system-site-packages"
@@ -123,6 +119,9 @@
 
                (setq-local pylint-command
                            (expand-file-name "bin/pylint" python-shell-virtualenv-root))
+
+               (if (featurep 'lsp-pyright)
+                   (lsp))
 
                ;; pylint will find the '.pylintrc' file next to the CWD
                ;;   https://pylint.readthedocs.io/en/latest/user_guide/run.html#command-line-options

@@ -4,6 +4,7 @@
 
 import asyncio
 import logging
+import random
 from ssl import SSLContext
 import threading
 from typing import Any, Dict
@@ -28,10 +29,34 @@ LOOP = None
 SSLCONTEXTS: Dict[Any, SSLContext] = {}
 
 
+def shuffle_ciphers(ssl_context):
+    """Shuffle httpx's default ciphers of a SSL context randomly.
+
+    From `What Is TLS Fingerprint and How to Bypass It`_
+
+    > When implementing TLS fingerprinting, servers can't operate based on a
+    > locked-in whitelist database of fingerprints.  New fingerprints appear
+    > when web clients or TLS libraries release new versions. So, they have to
+    > live off a blocklist database instead.
+    > ...
+    > It's safe to leave the first three as is but shuffle the remaining ciphers
+    > and you can bypass the TLS fingerprint check.
+
+    .. _What Is TLS Fingerprint and How to Bypass It:
+       https://www.zenrows.com/blog/what-is-tls-fingerprint#how-to-bypass-tls-fingerprinting
+
+    """
+    c_list = httpx._config.DEFAULT_CIPHERS.split(':')  # pylint: disable=protected-access
+    sc_list, c_list = c_list[:3], c_list[3:]
+    random.shuffle(c_list)
+    ssl_context.set_ciphers(":".join(sc_list + c_list))
+
+
 def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
     key = (proxy_url, cert, verify, trust_env, http2)
     if key not in SSLCONTEXTS:
         SSLCONTEXTS[key] = httpx.create_ssl_context(cert, verify, trust_env, http2)
+    shuffle_ciphers(SSLCONTEXTS[key])
     return SSLCONTEXTS[key]
 
 

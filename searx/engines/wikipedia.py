@@ -106,9 +106,9 @@ def _fetch_supported_languages(resp):
         for tr in trs:
             td = tr.xpath('./td')
             code = td[3].xpath('./a')[0].text
-            name = td[2].xpath('./a')[0].text
+            name = td[1].xpath('./a')[0].text
             english_name = td[1].xpath('./a')[0].text
-            articles = int(td[4].xpath('./a/b')[0].text.replace(',', ''))
+            articles = int(td[4].xpath('./a')[0].text.replace(',', ''))
             # exclude languages with too few articles
             if articles >= 100:
                 supported_languages[code] = {"name": name, "english_name": english_name}

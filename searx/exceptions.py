@@ -1,29 +1,19 @@
-'''
-searx is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-searx is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with searx. If not, see < http://www.gnu.org/licenses/ >.
-
-(C) 2017- by Alexandre Flament, <alex@al-f.net>
-'''
-
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""Exception types raised by SearXNG modules.
+"""
 
 from typing import Optional, Union
 
 
 class SearxException(Exception):
-    pass
+    """Base SearXNG exception."""
 
 
 class SearxParameterException(SearxException):
+    """Raised when query miss a required paramater"""
+
     def __init__(self, name, value):
         if value == '' or value is None:
             message = 'Empty ' + name + ' parameter'
@@ -69,19 +59,38 @@ class SearxEngineAPIException(SearxEngineResponseException):
 class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """The website is blocking the access"""
 
-    def __init__(self, suspended_time=24 * 3600, message='Access denied'):
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineAccessDenied"
+    """This settings contains the default suspended time (default 86400 sec / 1
+    day)."""
+
+    def __init__(self, suspended_time: int = None, message: str = 'Access denied'):
+        """Generic exception to raise when an engine denies access to the results.
+
+        :param suspended_time: How long the engine is going to be suspended in
+            second. Defaults to None.
+        :type suspended_time: int, None
+        :param message: Internal message.  Defaults to ``Access denied``
+        :type message: str
+        """
+        suspended_time = suspended_time or self._get_default_suspended_time()
         super().__init__(message + ', suspended_time=' + str(suspended_time))
         self.suspended_time = suspended_time
         self.message = message
 
+    def _get_default_suspended_time(self):
+        from searx import get_setting  # pylint: disable=C0415
+
+        return get_setting(self.SUSPEND_TIME_SETTING)
+
 
 class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
-    """The website has returned a CAPTCHA
+    """The website has returned a CAPTCHA."""
 
-    By default, searx stops sending requests to this engine for 1 day.
-    """
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineCaptcha"
+    """This settings contains the default suspended time (default 86400 sec / 1
+    day)."""
 
-    def __init__(self, suspended_time=24 * 3600, message='CAPTCHA'):
+    def __init__(self, suspended_time=None, message='CAPTCHA'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
@@ -91,7 +100,11 @@ class SearxEngineTooManyRequestsException(SearxEngineAccessDeniedException):
     By default, searx stops sending requests to this engine for 1 hour.
     """
 
-    def __init__(self, suspended_time=3600, message='Too many request'):
+    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineTooManyRequests"
+    """This settings contains the default suspended time (default 3660 sec / 1
+    hour)."""
+
+    def __init__(self, suspended_time=None, message='Too many request'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 

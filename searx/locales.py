@@ -86,7 +86,7 @@ def get_translations():
         use_translation = flask.request.form.get('use-translation')
         if use_translation in ADDITIONAL_TRANSLATIONS:
             babel_ext = flask_babel.current_app.extensions['babel']
-            return Translations.load(next(babel_ext.translation_directories), use_translation)
+            return Translations.load(babel_ext.translation_directories[0], use_translation)
     return _flask_babel_get_translations()
 
 

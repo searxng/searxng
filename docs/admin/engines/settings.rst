@@ -110,6 +110,13 @@ Global Settings
      default_lang: ""
      ban_time_on_fail: 5
      max_ban_time_on_fail: 120
+     suspended_times:
+       SearxEngineAccessDenied: 86400
+       SearxEngineCaptcha: 86400
+       SearxEngineTooManyRequests: 3600
+       cf_SearxEngineCaptcha: 1296000
+       cf_SearxEngineAccessDenied: 86400
+       recaptcha_SearxEngineCaptcha: 604800
      formats:
        - html
 
@@ -159,6 +166,25 @@ Global Settings
 ``max_ban_time_on_fail``:
   Max ban time in seconds after engine errors.
 
+``suspended_times``:
+  Engine suspension time after error (in seconds; set to 0 to disable)
+
+  ``SearxEngineAccessDenied``: 86400
+    For error "Access denied" and "HTTP error [402, 403]"
+
+  ``SearxEngineCaptcha``: 86400
+    For error "CAPTCHA"
+
+  ``SearxEngineTooManyRequests``: 3600
+    For error "Too many request" and "HTTP error 429"
+
+  Cloudflare CAPTCHA:
+     - ``cf_SearxEngineCaptcha``: 1296000
+     - ``cf_SearxEngineAccessDenied``: 86400
+
+  Google CAPTCHA:
+    - ``recaptcha_SearxEngineCaptcha``: 604800
+
 ``formats``:
   Result formats available from web, remove format to deny access (use lower
   case).
@@ -168,6 +194,7 @@ Global Settings
   - ``json``
   - ``rss``
 
+
 .. _settings server:
 
 ``server:``
@@ -176,12 +203,12 @@ Global Settings
 .. code:: yaml
 
    server:
-       base_url: false                # set custom base_url (or false)
+       base_url: http://example.org/location  # change this!
        port: 8888
-       bind_address: "127.0.0.1"      # address to listen on
-       secret_key: "ultrasecretkey"   # change this!
+       bind_address: "127.0.0.1"
+       secret_key: "ultrasecretkey"           # change this!
        limiter: false
-       image_proxy: false             # proxying image results through SearXNG
+       image_proxy: false
        default_http_headers:
          X-Content-Type-Options : nosniff
          X-XSS-Protection : 1; mode=block
@@ -189,20 +216,18 @@ Global Settings
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
 
-.. sidebar::  buildenv
 
-   Changing a value tagged by :ref:`buildenv <make buildenv>`, needs to
-   rebuild instance's environment :ref:`utils/brand.env <make buildenv>`.
-
-``base_url`` : :ref:`buildenv SEARXNG_URL <make buildenv>`
+``base_url`` : ``$SEARXNG_URL`` :ref:`buildenv <make buildenv>`
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
   If you change the value, don't forget to rebuild instance's environment
   (:ref:`utils/brand.env <make buildenv>`)
 
-``port`` & ``bind_address``: :ref:`buildenv SEARXNG_PORT & SEARXNG_BIND_ADDRESS <make buildenv>`
+``port`` & ``bind_address``: ``$SEARXNG_PORT`` & ``$SEARXNG_BIND_ADDRESS`` :ref:`buildenv <make buildenv>`
   Port number and *bind address* of the SearXNG web application if you run it
-  directly using ``python searx/webapp.py``.  Doesn't apply to SearXNG running on
-  Apache or Nginx.
+  directly using ``python searx/webapp.py``.  Doesn't apply to a SearXNG
+  services running behind a proxy and using socket communications.  If you
+  change the value, don't forget to rebuild instance's environment
+  (:ref:`utils/brand.env <make buildenv>`)
 
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
@@ -630,8 +655,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
 ``engines:``
   With ``use_default_settings: true``, each settings can be override in a
   similar way, the ``engines`` section is merged according to the engine
-  ``name``.  In this example, SearXNG will load all the engine and the arch linux
-  wiki engine has a :ref:`token <private engines>`:
+  ``name``.  In this example, SearXNG will load all the default engines, will 
+  enable the ``bing`` engine and define a :ref:`token <private engines>` for
+  the arch linux engine:
 
   .. code-block:: yaml
 
@@ -641,6 +667,9 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
     engines:
       - name: arch linux wiki
         tokens: ['$ecretValue']
+      - name: bing
+        disabled: false
+
 
 ``engines:`` / ``remove:``
   It is possible to remove some engines from the default settings. The following

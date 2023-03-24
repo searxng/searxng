@@ -109,3 +109,16 @@ class SearchQuery:
                 self.external_bang,
             )
         )
+
+    def __copy__(self):
+        return SearchQuery(
+            self.query,
+            self.engineref_list,
+            self.lang,
+            self.safesearch,
+            self.pageno,
+            self.time_range,
+            self.timeout_limit,
+            self.external_bang,
+            self.engine_data,
+        )

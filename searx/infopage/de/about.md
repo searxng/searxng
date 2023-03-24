@@ -79,7 +79,7 @@ machen.  Je dezentraler das Internet ist, desto mehr Freiheit haben wir!
 [SearXNG Dokumentation]: {{get_setting('brand.docs_url')}}
 [searx]: https://github.com/searx/searx
 [Metasuchmaschine]: https://de.wikipedia.org/wiki/Metasuchmaschine
-[Weblate]: https://weblate.bubu1.eu/projects/searxng/
+[Weblate]: https://translate.codeberg.org/projects/searxng/
 [Seeks-Projekt]: https://beniz.github.io/seeks/
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
 [Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox

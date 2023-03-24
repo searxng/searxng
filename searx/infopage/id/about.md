@@ -74,7 +74,7 @@ terdesentralisasinya internet, lebih banyak kebebasan yang kita punya!
 [dokumentasi SearXNG]: {{get_setting('brand.docs_url')}}
 [searx]: https://github.com/searx/searx
 [mesin pencari meta]: https://id.wikipedia.org/wiki/Mesin_pencari_web#Mesin_Pencari_dan_Mesin_Pencari-meta
-[Weblate]: https://weblate.bubu1.eu/projects/searxng/
+[Weblate]: https://translate.codeberg.org/projects/searxng/
 [proyek Seeks]: https://beniz.github.io/seeks/
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
 [Firefox]: https://support.mozilla.org/id/kb/add-or-remove-search-engine-firefox

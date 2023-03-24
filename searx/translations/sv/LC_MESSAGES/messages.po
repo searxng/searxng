@@ -13,21 +13,22 @@
 # sebstrgg <sebastian@wollter.nu>, 2022.
 # mikni <mikni@proton.me>, 2022.
 # robert <robert.paegelow@gmail.com>, 2022.
+# tygyh <jonis9898@hotmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-12 07:18+0000\n"
-"PO-Revision-Date: 2022-12-30 07:14+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
-"Language-Team: Swedish <https://weblate.bubu1.eu/projects/searxng/searxng/sv/"
-">\n"
+"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"PO-Revision-Date: 2023-02-28 22:04+0000\n"
+"Last-Translator: tygyh <jonis9898@hotmail.com>\n"
+"Language-Team: Swedish <https://translate.codeberg.org/projects/searxng/"
+"searxng/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.15.2\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -207,40 +208,40 @@ msgstr "åtkomst nekad"
 msgid "server API error"
 msgstr "server API-fel"
 
-#: searx/webapp.py:366
+#: searx/webapp.py:368
 msgid "No item found"
 msgstr "Inga artiklar hittade"
 
 #: searx/engines/qwant.py:217
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:368
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Källa"
 
-#: searx/webapp.py:370
+#: searx/webapp.py:372
 msgid "Error loading the next page"
 msgstr "Kunde inte ladda nästa sida"
 
-#: searx/webapp.py:522 searx/webapp.py:954
+#: searx/webapp.py:524 searx/webapp.py:964
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
-#: searx/webapp.py:538
+#: searx/webapp.py:540
 msgid "Invalid settings"
 msgstr "Ogiltiga inställningar"
 
-#: searx/webapp.py:615 searx/webapp.py:691
+#: searx/webapp.py:617 searx/webapp.py:693
 msgid "search error"
 msgstr "sökfel"
 
-#: searx/webapp.py:853
+#: searx/webapp.py:863
 msgid "Suspended"
 msgstr "Avstängd"
 
-#: searx/webutils.py:161
+#: searx/webutils.py:198
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
-#: searx/webutils.py:162
+#: searx/webutils.py:199
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
 
@@ -323,14 +324,6 @@ msgstr "Kväll"
 msgid "Night"
 msgstr "Natt"
 
-#: searx/plugins/autodetect_search_language.py:79
-msgid "Autodetect search language"
-msgstr "Upptäck sökspråk automatiskt"
-
-#: searx/plugins/autodetect_search_language.py:80
-msgid "Automatically detect the query search language and switch to it."
-msgstr "Upptäck automatiskt webbsökningens språk och byt till det."
-
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
 msgstr "Konverterar strängar till olika hashvärden."
@@ -389,28 +382,32 @@ msgstr "Tor kontroll plugin"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
-"This plugin checks if the address of the request is a TOR exit node, and "
-"informs the user if it is, like check.torproject.org but from searxng."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Denna plugin kollar om IP-adressen av TOR-requesten är en TOR exit node, "
-"och informerar användaren om den är det, som till exempel "
-"check.torproject.org men från searxng."
+"Denna plugin kontrollerar om adressen för begäran är en Tor-utgångsnod, "
+"och informerar användaren om det är; som check.torproject.org, men från "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
-"The TOR exit node list (https://check.torproject.org/exit-addresses) is "
-"unreachable."
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"TOR exit node listan (https://check.torproject.org/exit-addresses) går "
-"inte at nås för tillfället."
+"Det gick inte att ladda ner listan över Tor-utgångsnoder från: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
-msgid "You are using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Du använder TOR. Din IP-adress verkar vara: {ip_address}."
+msgid ""
+"You are using Tor and it looks like you have this external IP address: "
+"{ip_address}"
+msgstr ""
+"Du använder Tor och det ser ut som att du har denna externa IP-adress: "
+"{ip_address}"
 
-#: searx/plugins/tor_check.py:84
-msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
-msgstr "Du använder inte TOR. Din IP-adress verkar vara: {ip_address}."
+#: searx/plugins/tor_check.py:86
+msgid "You are not using Tor and you have this external IP address: {ip_address}"
+msgstr "Du använder inte Tor och du har denna externa IP-adress: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -587,15 +584,26 @@ msgstr "Sökspråk"
 msgid "Default language"
 msgstr "Standardspråk"
 
-#: searx/templates/simple/preferences.html:124
+#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/preferences.html:119
+msgid "Auto-detect"
+msgstr "Upptäck automatiskt"
+
+#: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
 msgstr "Vilket språk föredrar du för att söka?"
 
-#: searx/templates/simple/preferences.html:129
+#: searx/templates/simple/preferences.html:126
+msgid "Choose Auto-detect to let SearXNG detect the language of your query."
+msgstr ""
+"Välj Upptäck automatiskt för att tillåta SearXNG att upptäcka språket för "
+"din fråga."
+
+#: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
 msgstr "Slutför automatiskt"
 
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:141
 msgid "Find stuff as you type"
 msgstr "Hitta saker medan du skriver"
 
@@ -603,35 +611,35 @@ msgstr "Hitta saker medan du skriver"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:143
-#: searx/templates/simple/preferences.html:311
+#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:314
 msgid "SafeSearch"
 msgstr "Säker sökning"
 
 #: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/preferences.html:146
+#: searx/templates/simple/preferences.html:149
 msgid "Strict"
 msgstr "Sträng"
 
 #: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/preferences.html:147
+#: searx/templates/simple/preferences.html:150
 msgid "Moderate"
 msgstr "Måttlig"
 
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:148
+#: searx/templates/simple/preferences.html:151
 msgid "None"
 msgstr "Inga"
 
-#: searx/templates/simple/preferences.html:151
+#: searx/templates/simple/preferences.html:154
 msgid "Filter content"
 msgstr "Filtrera innehåll"
 
-#: searx/templates/simple/preferences.html:157
+#: searx/templates/simple/preferences.html:160
 msgid "Open Access DOI resolver"
 msgstr "Open Access DOI-lösare"
 
-#: searx/templates/simple/preferences.html:167
+#: searx/templates/simple/preferences.html:170
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
@@ -639,116 +647,119 @@ msgstr ""
 "Omdirigera till öppna versioner av publikationer när de är tillgängliga "
 "(tillägg krävs)"
 
-#: searx/templates/simple/preferences.html:171
+#: searx/templates/simple/preferences.html:174
 msgid "Engine tokens"
 msgstr "Motortoken"
 
-#: searx/templates/simple/preferences.html:175
+#: searx/templates/simple/preferences.html:178
 msgid "Access tokens for private engines"
 msgstr "Åtkomsttoken för privata motorer"
 
-#: searx/templates/simple/preferences.html:179
+#: searx/templates/simple/preferences.html:182
 msgid "User interface"
 msgstr "Användargränssnitt"
 
-#: searx/templates/simple/preferences.html:182
+#: searx/templates/simple/preferences.html:185
 msgid "Interface language"
 msgstr "Gränssnittspråk"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:193
 msgid "Change the language of the layout"
 msgstr "Ändra språk för layouten"
 
-#: searx/templates/simple/preferences.html:195
+#: searx/templates/simple/preferences.html:198
 msgid "Theme"
 msgstr "Tema"
 
-#: searx/templates/simple/preferences.html:203
+#: searx/templates/simple/preferences.html:206
 msgid "Change SearXNG layout"
 msgstr "Ändra SearXNG-layout"
 
-#: searx/templates/simple/preferences.html:206
+#: searx/templates/simple/preferences.html:209
 msgid "Theme style"
 msgstr "Tema stil"
 
-#: searx/templates/simple/preferences.html:214
+#: searx/templates/simple/preferences.html:217
 msgid "Choose auto to follow your browser settings"
 msgstr "Välj auto för att använda webbläsarens inställningar"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Center Alignment"
 msgstr "Centrera"
 
-#: searx/templates/simple/preferences.html:220
-#: searx/templates/simple/preferences.html:232
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:247
 msgid "On"
 msgstr "På"
 
-#: searx/templates/simple/preferences.html:221
-#: searx/templates/simple/preferences.html:233
-#: searx/templates/simple/preferences.html:245
+#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:248
 msgid "Off"
 msgstr "Av"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:227
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Centrera resultat på sidan (Oscar layout)."
 
-#: searx/templates/simple/preferences.html:229
+#: searx/templates/simple/preferences.html:232
 msgid "Results on new tabs"
 msgstr "Resultat i nya flikar"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:239
 msgid "Open result links on new browser tabs"
 msgstr "Öppna resultat länkar i nya webbläsarflikar"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:244
 msgid "Infinite scroll"
 msgstr "Oändlig bläddring"
 
-#: searx/templates/simple/preferences.html:248
+#: searx/templates/simple/preferences.html:251
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "Ladda automatiskt nästa sida när du bläddrar till botten av aktuell sida"
 
-#: searx/templates/simple/preferences.html:254
+#: searx/templates/simple/preferences.html:257
 msgid "Privacy"
 msgstr "Sekretess"
 
-#: searx/templates/simple/preferences.html:257
+#: searx/templates/simple/preferences.html:260
 msgid "HTTP Method"
 msgstr "HTTP metod"
 
-#: searx/templates/simple/preferences.html:264
+#: searx/templates/simple/preferences.html:267
 msgid ""
 "Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
-msgstr "Ändra hur formulär skickas"
+msgstr ""
+"Ändra hur formulär skickas, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">läs mer om förfrågningsmetoder</a>"
 
-#: searx/templates/simple/preferences.html:269
+#: searx/templates/simple/preferences.html:272
 msgid "Image proxy"
 msgstr "Bildproxy"
 
-#: searx/templates/simple/preferences.html:272
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:275
+#: searx/templates/simple/preferences.html:287
 msgid "Enabled"
 msgstr "Aktiverad"
 
-#: searx/templates/simple/preferences.html:273
-#: searx/templates/simple/preferences.html:285
+#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:288
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:279
 msgid "Proxying image results through SearXNG"
 msgstr "Använder proxy för bildresultat via SearXNG"
 
-#: searx/templates/simple/preferences.html:281
+#: searx/templates/simple/preferences.html:284
 msgid "Query in the page's title"
 msgstr "Förfrågan i sidans titel"
 
-#: searx/templates/simple/preferences.html:288
+#: searx/templates/simple/preferences.html:291
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -756,15 +767,15 @@ msgstr ""
 "När det är aktiverat innehåller resultatsidans titel din fråga. Din "
 "webbläsare kan spara denna titel"
 
-#: searx/templates/simple/preferences.html:294
+#: searx/templates/simple/preferences.html:297
 msgid "Engines"
 msgstr "Sökmotorer"
 
-#: searx/templates/simple/preferences.html:295
+#: searx/templates/simple/preferences.html:298
 msgid "Currently used search engines"
 msgstr "För tillfället används sökmotorer"
 
-#: searx/templates/simple/preferences.html:302
+#: searx/templates/simple/preferences.html:305
 msgid ""
 "This tab does not show up for search results, but you can search the "
 "engines listed here via bangs."
@@ -772,76 +783,76 @@ msgstr ""
 "Den här fliken visas inte för sökresultat, men du kan söka på motorerna "
 "som listas här via bangs."
 
-#: searx/templates/simple/preferences.html:307
-#: searx/templates/simple/preferences.html:358
+#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:361
 msgid "Allow"
 msgstr "Tillåt"
 
-#: searx/templates/simple/preferences.html:308
+#: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Sökmotorns namn"
 
-#: searx/templates/simple/preferences.html:309
+#: searx/templates/simple/preferences.html:312
 msgid "Shortcut"
 msgstr "Genväg"
 
-#: searx/templates/simple/preferences.html:310
+#: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
 msgstr "Stöder valda språket"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:312
+#: searx/templates/simple/preferences.html:315
 msgid "Time range"
 msgstr "Tidsintervall"
 
-#: searx/templates/simple/preferences.html:313
+#: searx/templates/simple/preferences.html:316
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Svarstid"
 
-#: searx/templates/simple/preferences.html:314
+#: searx/templates/simple/preferences.html:317
 msgid "Max time"
 msgstr "Max tid"
 
-#: searx/templates/simple/preferences.html:315
+#: searx/templates/simple/preferences.html:318
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Pålitlighet"
 
-#: searx/templates/simple/preferences.html:353
+#: searx/templates/simple/preferences.html:356
 msgid "Special Queries"
 msgstr "Särskilda förfrågningar"
 
-#: searx/templates/simple/preferences.html:359
+#: searx/templates/simple/preferences.html:362
 msgid "Keywords"
 msgstr "Nyckelord"
 
-#: searx/templates/simple/preferences.html:360
+#: searx/templates/simple/preferences.html:363
 msgid "Name"
 msgstr "Namn"
 
-#: searx/templates/simple/preferences.html:361
+#: searx/templates/simple/preferences.html:364
 msgid "Description"
 msgstr "Beskrivning"
 
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:365
 msgid "Examples"
 msgstr "Exempel"
 
-#: searx/templates/simple/preferences.html:365
+#: searx/templates/simple/preferences.html:368
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Detta är listan med SearXNG:s direktsvarande moduler."
 
-#: searx/templates/simple/preferences.html:376
+#: searx/templates/simple/preferences.html:379
 msgid "This is the list of plugins."
 msgstr "Detta är listan med plugins."
 
-#: searx/templates/simple/preferences.html:393
+#: searx/templates/simple/preferences.html:396
 msgid "Cookies"
 msgstr "Kakor"
 
-#: searx/templates/simple/preferences.html:395
+#: searx/templates/simple/preferences.html:398
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
@@ -849,23 +860,23 @@ msgstr ""
 "Detta är listan med kakor och dess värden som SearXNG förvarar på din "
 "dator."
 
-#: searx/templates/simple/preferences.html:396
+#: searx/templates/simple/preferences.html:399
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "Med den listan kan du bedöma SearXNG-transparens."
 
-#: searx/templates/simple/preferences.html:401
+#: searx/templates/simple/preferences.html:404
 msgid "Cookie name"
 msgstr "Kaknamn"
 
-#: searx/templates/simple/preferences.html:402
+#: searx/templates/simple/preferences.html:405
 msgid "Value"
 msgstr "Värde"
 
-#: searx/templates/simple/preferences.html:414
+#: searx/templates/simple/preferences.html:417
 msgid "Search URL of the currently saved preferences"
 msgstr "Sökadressen för de för nuvarande sparade inställningarna"
 
-#: searx/templates/simple/preferences.html:418
+#: searx/templates/simple/preferences.html:421
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -873,11 +884,11 @@ msgstr ""
 "Obs: Att ange anpassade inställningar i sökadressen kan minska sekretess "
 "genom att läcka data till de klickade resultatwebbplatserna."
 
-#: searx/templates/simple/preferences.html:419
+#: searx/templates/simple/preferences.html:422
 msgid "URL to restore your preferences in another browser"
 msgstr "URL för att återställa dina inställningar i en annan webbläsare"
 
-#: searx/templates/simple/preferences.html:423
+#: searx/templates/simple/preferences.html:426
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
@@ -885,7 +896,7 @@ msgstr ""
 "Dina anpassade inställningar i inställningarnas URL kan användas för att "
 "synkronisera inställningar mellan olika enheter."
 
-#: searx/templates/simple/preferences.html:428
+#: searx/templates/simple/preferences.html:431
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -893,7 +904,7 @@ msgstr ""
 "Dessa inställningar lagras i dina kakor, vilket gör att vi inte lagrar "
 "data om dig."
 
-#: searx/templates/simple/preferences.html:430
+#: searx/templates/simple/preferences.html:433
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -901,15 +912,15 @@ msgstr ""
 "Dessa kakor tjänar din egen bekvämlighet, vi använder inte dessa kakor "
 "för att spåra dig."
 
-#: searx/templates/simple/preferences.html:433
+#: searx/templates/simple/preferences.html:436
 msgid "Save"
 msgstr "Spara"
 
-#: searx/templates/simple/preferences.html:434
+#: searx/templates/simple/preferences.html:437
 msgid "Reset defaults"
 msgstr "Återställ standardvärden"
 
-#: searx/templates/simple/preferences.html:435
+#: searx/templates/simple/preferences.html:438
 msgid "Back"
 msgstr "Tillbaka"
 
@@ -979,7 +990,7 @@ msgstr "sök"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Det finns för närvarande ingen data tillgänglig."
+msgstr "Det finns för närvarande ingen data tillgänglig. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1498,3 +1509,52 @@ msgstr "göm video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">lär dig mera om "
 #~ "förfrågningsmetoder</a>"
+
+#~ msgid ""
+#~ "This plugin checks if the address "
+#~ "of the request is a TOR exit "
+#~ "node, and informs the user if it"
+#~ " is, like check.torproject.org but from "
+#~ "searxng."
+#~ msgstr ""
+#~ "Denna plugin kollar om IP-adressen "
+#~ "av TOR-requesten är en TOR exit"
+#~ " node, och informerar användaren om "
+#~ "den är det, som till exempel "
+#~ "check.torproject.org men från searxng."
+
+#~ msgid ""
+#~ "The TOR exit node list "
+#~ "(https://check.torproject.org/exit-addresses) is "
+#~ "unreachable."
+#~ msgstr ""
+#~ "TOR exit node listan "
+#~ "(https://check.torproject.org/exit-addresses) går "
+#~ "inte at nås för tillfället."
+
+#~ msgid "You are using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Du använder TOR. Din IP-adress verkar vara: {ip_address}."
+
+#~ msgid "You are not using TOR. Your IP address seems to be: {ip_address}."
+#~ msgstr "Du använder inte TOR. Din IP-adress verkar vara: {ip_address}."
+
+#~ msgid ""
+#~ "The could not download the list of"
+#~ " Tor exit-nodes from "
+#~ "https://check.torproject.org/exit-addresses."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You are using Tor. It looks like"
+#~ " you have this external IP address:"
+#~ " {ip_address}."
+#~ msgstr ""
+
+#~ msgid "You are not using Tor. You have this external IP address: {ip_address}."
+#~ msgstr ""
+
+#~ msgid "Autodetect search language"
+#~ msgstr "Upptäck sökspråk automatiskt"
+
+#~ msgid "Automatically detect the query search language and switch to it."
+#~ msgstr "Upptäck automatiskt webbsökningens språk och byt till det."

@@ -104,7 +104,7 @@ class LanguageParser(QueryPartParser):
                     break
 
         # user may set a valid, yet not selectable language
-        if VALID_LANGUAGE_CODE.match(value):
+        if VALID_LANGUAGE_CODE.match(value) or value == 'auto':
             lang_parts = value.split('-')
             if len(lang_parts) > 1:
                 value = lang_parts[0].lower() + '-' + lang_parts[1].upper()

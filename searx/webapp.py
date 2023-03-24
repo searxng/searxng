@@ -5,6 +5,8 @@
 """WebbApp
 
 """
+# pylint: disable=use-dict-literal
+
 import hashlib
 import hmac
 import json
@@ -160,8 +162,6 @@ app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-mem
 app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
 
-babel = Babel(app)
-
 timeout_text = gettext('timeout')
 parsing_error_text = gettext('parsing error')
 http_protocol_error_text = gettext('HTTP protocol error')
@@ -211,11 +211,13 @@ class ExtendedRequest(flask.Request):
 request = typing.cast(ExtendedRequest, flask.request)
 
 
-@babel.localeselector
 def get_locale():
     locale = localeselector()
     logger.debug("%s uses locale `%s`", urllib.parse.quote(request.url), locale)
     return locale
+
+
+babel = Babel(app, locale_selector=get_locale)
 
 
 def _get_browser_language(req, lang_list):
@@ -808,6 +810,9 @@ def search():
         )
     )
 
+    # search_query.lang contains the user choice (all, auto, en, ...)
+    # when the user choice is "auto", search.search_query.lang contains the detected language
+    # otherwise it is equals to search_query.lang
     return render(
         # fmt: off
         'results.html',
@@ -815,7 +820,7 @@ def search():
         q=request.form['q'],
         selected_categories = search_query.categories,
         pageno = search_query.pageno,
-        time_range = search_query.time_range,
+        time_range = search_query.time_range or '',
         number_of_results = format_decimal(number_of_results),
         suggestions = suggestion_urls,
         answers = result_container.answers,
@@ -829,6 +834,11 @@ def search():
         current_locale = request.preferences.get_value("locale"),
         current_language = match_language(
             search_query.lang,
+            settings['search']['languages'],
+            fallback=request.preferences.get_value("language")
+        ),
+        search_language = match_language(
+            search.search_query.lang,
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),

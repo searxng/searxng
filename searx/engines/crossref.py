@@ -2,6 +2,7 @@
 # lint: pylint
 """Semantic Scholar (Science)
 """
+# pylint: disable=use-dict-literal
 
 from urllib.parse import urlencode
 from searx.utils import html_to_text

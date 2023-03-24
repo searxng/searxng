@@ -154,7 +154,7 @@ class SearchLanguageSetting(EnumStringSetting):
     """Available choices may change, so user's value may not be in choices anymore"""
 
     def _validate_selection(self, selection):
-        if selection != '' and not VALID_LANGUAGE_CODE.match(selection):
+        if selection != '' and selection != 'auto' and not VALID_LANGUAGE_CODE.match(selection):
             raise ValidationException('Invalid language code: "{0}"'.format(selection))
 
     def parse(self, data: str):
