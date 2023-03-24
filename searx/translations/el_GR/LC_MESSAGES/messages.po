@@ -8,20 +8,22 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022, 2023.
 # Constantine Giannopoulos <K.Giannopoulos@acg.edu>, 2022.
 # Alexandre Flament <alex@al-f.net>, 2022.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-01-06 07:14+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-03-24 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
+"searxng/el/>\n"
 "Language: el_GR\n"
-"Language-Team: Greek "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/el/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16.4\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -380,22 +382,31 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Αυτό το πρόσθετο ελέγχει εάν η διεύθυνση του χρήστη είναι διεύθυνση εξόδου "
+"του δικτύου Tor και ενημερώνει τον χρήστη εάν είναι έτσι. Όπως στο "
+"check.torproject.org, αλλά από το SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Δεν ήταν δυνατή η λήψη της λίστας διευθύνσεων εξόδου του δικτύου Tor από το: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Χρησιμοποιείτε το δίκτυο Tor και φαίνεται πως η εξωτερική σας διεύθυνση "
+"είναι η: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Δεν χρησιμοποιείτε το δίκτυο Tor. Η εξωτερική σας διεύθυνση είναι: "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -580,7 +591,7 @@ msgstr "Προεπιλεγμένη γλώσσα"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:119
 msgid "Auto-detect"
-msgstr ""
+msgstr "Αυτόματη αναγνώριση της γλώσσας"
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
@@ -589,6 +600,8 @@ msgstr "Τι γλώσσα προτιμάτε για αναζήτηση;"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Επιλέξτε αυτόματη αναγνώριση για να αφήσετε το SearXNG να αναγνωρίσει την "
+"γλώσσα του ερωτήματος σας αυτόματα."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -987,7 +1000,7 @@ msgstr "αναζήτηση"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Δεν υπάρχουν διαθέσιμα δεδομένα."
+msgstr "Δεν υπάρχουν διαθέσιμα δεδομένα. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1150,7 +1163,7 @@ msgstr "Ημερομηνία δημοσίευσης"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Περιοδικό"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
@@ -1170,23 +1183,23 @@ msgstr "Σημάνσεις"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1551,4 +1564,3 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
-

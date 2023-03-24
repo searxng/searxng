@@ -5,20 +5,22 @@
 # niele2 <arifshafie.K@gmail.com>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Zaid Aiman <zaidaiman@gmail.com>, 2022.
+# chenghui-lee <chlee9926@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2022-10-28 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-03-21 17:37+0000\n"
+"Last-Translator: chenghui-lee <chlee9926@gmail.com>\n"
+"Language-Team: Malay <https://translate.codeberg.org/projects/searxng/"
+"searxng/ms/>\n"
 "Language: ms\n"
-"Language-Team: Malay "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/ms/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.16.4\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -279,6 +281,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Tidak boleh mengakses pautan imeg. Ini boleh disebabkan oleh format file "
+"yang tidak disokong. TinEye hanya menyokong imeg yang dalam format JPEG, "
+"PNG, GIF, BMP, TIFF atau WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -351,13 +356,15 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Maklumat Diri"
 
 #: searx/plugins/self_info.py:21
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"Memaparkan IP anda jika pertanyaan ialah \"ip\" dan ejen pengguna anda jika "
+"pertanyaan mengandungi \"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -374,12 +381,16 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Tidak dapat memuat turun senarai nod keluar Tor dari: https://check."
+"torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Anda sedang menggunakan Tor dan nampaknya anda mempunyai alamat IP luaran "
+"ini: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -405,7 +416,7 @@ msgstr ""
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
-msgstr ""
+msgstr "Laman tidak dapat dijumpai"
 
 #: searx/templates/simple/404.html:6
 #, python-format
@@ -414,15 +425,15 @@ msgstr ""
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
-msgstr ""
+msgstr "Laman carian"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Tentang"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
-msgstr ""
+msgstr "Derma"
 
 #: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:99
@@ -439,7 +450,7 @@ msgstr ""
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
-msgstr ""
+msgstr "Kod sumber"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
@@ -447,7 +458,7 @@ msgstr ""
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr ""
+msgstr "Statistik enjin"
 
 #: searx/templates/simple/base.html:69
 #: searx/templates/simple/messages/no_results.html:15
@@ -506,7 +517,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "Tanpa HTTPS"
 
 #: searx/templates/simple/messages/no_results.html:10
 #: searx/templates/simple/preferences.html:31
@@ -540,7 +551,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:105
 msgid "General"
-msgstr ""
+msgstr "Umum"
 
 #: searx/templates/simple/preferences.html:108
 msgid "Default categories"
@@ -563,7 +574,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:126
 msgid "What language do you prefer for search?"
-msgstr ""
+msgstr "Bahasa apa yang anda suka untuk membuat carian?"
 
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
@@ -589,21 +600,21 @@ msgstr ""
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences.html:149
 msgid "Strict"
-msgstr ""
+msgstr "Ketat"
 
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences.html:150
 msgid "Moderate"
-msgstr ""
+msgstr "Sederhana"
 
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences.html:151
 msgid "None"
-msgstr ""
+msgstr "Tanpa"
 
 #: searx/templates/simple/preferences.html:154
 msgid "Filter content"
-msgstr ""
+msgstr "Tapis kandungan"
 
 #: searx/templates/simple/preferences.html:160
 msgid "Open Access DOI resolver"
@@ -617,11 +628,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:174
 msgid "Engine tokens"
-msgstr ""
+msgstr "Token enjin"
 
 #: searx/templates/simple/preferences.html:178
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Akses token untuk enjin persendirian"
 
 #: searx/templates/simple/preferences.html:182
 msgid "User interface"
@@ -637,7 +648,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:198
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: searx/templates/simple/preferences.html:206
 msgid "Change SearXNG layout"
@@ -645,7 +656,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:209
 msgid "Theme style"
-msgstr ""
+msgstr "Gaya tema"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Choose auto to follow your browser settings"
@@ -659,13 +670,13 @@ msgstr ""
 #: searx/templates/simple/preferences.html:235
 #: searx/templates/simple/preferences.html:247
 msgid "On"
-msgstr ""
+msgstr "Buka"
 
 #: searx/templates/simple/preferences.html:224
 #: searx/templates/simple/preferences.html:236
 #: searx/templates/simple/preferences.html:248
 msgid "Off"
-msgstr ""
+msgstr "Tutup"
 
 #: searx/templates/simple/preferences.html:227
 msgid "Displays results in the center of the page (Oscar layout)."
@@ -689,11 +700,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:257
 msgid "Privacy"
-msgstr ""
+msgstr "Privasi"
 
 #: searx/templates/simple/preferences.html:260
 msgid "HTTP Method"
-msgstr ""
+msgstr "Kaedah HTTP"
 
 #: searx/templates/simple/preferences.html:267
 msgid ""
@@ -701,10 +712,13 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Ubah cara borang diserahkan,<a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">ketahui lebih "
+"lanjut tentang kaedah permintaan</a>"
 
 #: searx/templates/simple/preferences.html:272
 msgid "Image proxy"
-msgstr ""
+msgstr "Proksi imej"
 
 #: searx/templates/simple/preferences.html:275
 #: searx/templates/simple/preferences.html:287
@@ -732,11 +746,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:297
 msgid "Engines"
-msgstr ""
+msgstr "Enjin-enjin"
 
 #: searx/templates/simple/preferences.html:298
 msgid "Currently used search engines"
-msgstr ""
+msgstr "Enjin carian yang digunakan pada masa ini"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
@@ -747,12 +761,12 @@ msgstr ""
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
 msgid "Allow"
-msgstr ""
+msgstr "Benarkan"
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr ""
+msgstr "Nama enjin"
 
 #: searx/templates/simple/preferences.html:312
 msgid "Shortcut"
@@ -770,36 +784,36 @@ msgstr ""
 #: searx/templates/simple/preferences.html:316
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Masa tindak balas"
 
 #: searx/templates/simple/preferences.html:317
 msgid "Max time"
-msgstr ""
+msgstr "Masa maksimum"
 
 #: searx/templates/simple/preferences.html:318
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Kebolehpercayaan"
 
 #: searx/templates/simple/preferences.html:356
 msgid "Special Queries"
-msgstr ""
+msgstr "Pertanyaan Khas"
 
 #: searx/templates/simple/preferences.html:362
 msgid "Keywords"
-msgstr ""
+msgstr "Kata kunci"
 
 #: searx/templates/simple/preferences.html:363
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #: searx/templates/simple/preferences.html:364
 msgid "Description"
-msgstr ""
+msgstr "Deskripsi"
 
 #: searx/templates/simple/preferences.html:365
 msgid "Examples"
-msgstr ""
+msgstr "Contoh-contoh"
 
 #: searx/templates/simple/preferences.html:368
 msgid "This is the list of SearXNG's instant answering modules."
@@ -820,8 +834,9 @@ msgid ""
 msgstr ""
 
 #: searx/templates/simple/preferences.html:399
+#, fuzzy
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Dengan senarai ini, anda boleh menilai ketelusan SearXNG."
 
 #: searx/templates/simple/preferences.html:404
 msgid "Cookie name"
@@ -829,7 +844,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:405
 msgid "Value"
-msgstr ""
+msgstr "Nilai"
 
 #: searx/templates/simple/preferences.html:417
 msgid "Search URL of the currently saved preferences"
@@ -843,7 +858,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:422
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL untuk memulihkan pilihan anda dalam pelayar lain"
 
 #: searx/templates/simple/preferences.html:426
 msgid ""
@@ -865,7 +880,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:436
 msgid "Save"
-msgstr ""
+msgstr "Simpan"
 
 #: searx/templates/simple/preferences.html:437
 msgid "Reset defaults"
@@ -873,7 +888,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:438
 msgid "Back"
-msgstr ""
+msgstr "Balik"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -881,7 +896,7 @@ msgstr ""
 
 #: searx/templates/simple/results.html:39
 msgid "Number of results"
-msgstr ""
+msgstr "Bilangan keputusan"
 
 #: searx/templates/simple/messages/no_results.html:6
 #: searx/templates/simple/results.html:46
@@ -894,7 +909,7 @@ msgstr ""
 
 #: searx/templates/simple/results.html:68
 msgid "Suggestions"
-msgstr ""
+msgstr "Cadangan"
 
 #: searx/templates/simple/results.html:90
 msgid "Search URL"
@@ -906,23 +921,23 @@ msgstr ""
 
 #: searx/templates/simple/results.html:120
 msgid "Try searching for:"
-msgstr ""
+msgstr "Cuba cari:"
 
 #: searx/templates/simple/results.html:152
 msgid "Back to top"
-msgstr ""
+msgstr "Balik ke atas"
 
 #: searx/templates/simple/results.html:170
 msgid "Previous page"
-msgstr ""
+msgstr "Halaman sebelumnya"
 
 #: searx/templates/simple/results.html:187
 msgid "Next page"
-msgstr ""
+msgstr "Halaman seterusnya"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Paparkan muka depan"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -941,7 +956,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr ""
+msgstr "Pada masa ini tiada data tersedia. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -953,19 +968,19 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
-msgstr ""
+msgstr "Jumlah"
 
 #: searx/templates/simple/stats.html:60
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:61
 msgid "Processing"
-msgstr ""
+msgstr "Sedang memproses"
 
 #: searx/templates/simple/stats.html:99
 msgid "Warnings"
-msgstr ""
+msgstr "Amaran"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
@@ -977,11 +992,11 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:107
 msgid "Message"
-msgstr ""
+msgstr "Mesej"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr ""
+msgstr "Peratus"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
@@ -989,15 +1004,15 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
-msgstr ""
+msgstr "Nama fail"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
-msgstr ""
+msgstr "Fungsi"
 
 #: searx/templates/simple/stats.html:121
 msgid "Code"
-msgstr ""
+msgstr "Kod"
 
 #: searx/templates/simple/stats.html:128
 msgid "Checker"
@@ -1009,31 +1024,31 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
-msgstr ""
+msgstr "Ulasan"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
-msgstr ""
+msgstr "Bila-bila masa"
 
 #: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
-msgstr ""
+msgstr "Dalam 24 jam"
 
 #: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
-msgstr ""
+msgstr "Dalam 1 minggu"
 
 #: searx/templates/simple/filters/time_range.html:12
 msgid "Last month"
-msgstr ""
+msgstr "Dalam 1 bulan"
 
 #: searx/templates/simple/filters/time_range.html:15
 msgid "Last year"
-msgstr ""
+msgstr "Dalam 1 tahun"
 
 #: searx/templates/simple/messages/no_cookies.html:3
 msgid "Information!"
-msgstr ""
+msgstr "Informasi!"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
@@ -1049,7 +1064,7 @@ msgstr ""
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Sorry!"
-msgstr ""
+msgstr "Harap maaf!"
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid ""
@@ -1059,24 +1074,24 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
-msgstr ""
+msgstr "tunjuk media"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "hide media"
-msgstr ""
+msgstr "sembunyikan media"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Laman web ini tidak memberikan sebarang diskripsi."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "Enjin"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
@@ -1084,19 +1099,19 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "alamat"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "show map"
-msgstr ""
+msgstr "tunjuk peta"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
-msgstr ""
+msgstr "sembunyikan peta"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Tarikh diterbitkan"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
@@ -1116,31 +1131,31 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
-msgstr ""
+msgstr "pautan magnet"
 
 #: searx/templates/simple/result_templates/torrent.html:7
 msgid "torrent file"
@@ -1156,7 +1171,7 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
-msgstr ""
+msgstr "Saiz fail"
 
 #: searx/templates/simple/result_templates/torrent.html:12
 msgid "Bytes"
@@ -1164,19 +1179,19 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/torrent.html:13
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 #: searx/templates/simple/result_templates/torrent.html:14
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 #: searx/templates/simple/result_templates/torrent.html:15
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 #: searx/templates/simple/result_templates/torrent.html:16
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
@@ -1249,4 +1264,3 @@ msgstr "sembunyikkan video"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
-
