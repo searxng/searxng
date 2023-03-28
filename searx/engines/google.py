@@ -59,13 +59,10 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-results_xpath = './/div[@data-sokoban-container]'
+results_xpath = './/div[contains(@jscontroller, "SC7lYd")]'
 title_xpath = './/a/h3[1]'
 href_xpath = './/a[h3]/@href'
-content_xpath = './/div[@data-content-feature]'
-
-# google *sections* are no usual *results*, we ignore them
-g_section_with_header = './g-section-with-header'
+content_xpath = './/div[@data-sncf]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
@@ -303,21 +300,18 @@ def request(query, params):
     return params
 
 
-# (function(){var s='data:image/jpeg;base64,/9j/4AAQ ...
-# ... DX/Ff5XSpSgdU32xSlKDJ//9k\x3d';var ii=['dimg_21'];_setImagesSrc(ii,s);})();
-RE_DATA_IMAGE = re.compile(r"'(data:image[^']*)'[^']*ii=\['([^']*)'\];_setImagesSrc")
+# =26;[3,"dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137"]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA
+# ...6T+9Nl4cnD+gr9OK8I56/tX3l86nWYw//2Q==26;
+RE_DATA_IMAGE = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*);')
 
 
 def _parse_data_images(dom):
     data_image_map = {}
-    for _script in eval_xpath_list(dom, "//script[@nonce]"):
-        script = _script.text
-        if not script:
-            continue
-        script = RE_DATA_IMAGE.search(script)
-        if not script:
-            continue
-        data_image_map[script.group(2)] = script.group(1).replace(r'\x3d', '=')
+    for img_id, data_image in RE_DATA_IMAGE.findall(dom.text_content()):
+        end_pos = data_image.rfind('=')
+        if end_pos > 0:
+            data_image = data_image[: end_pos + 1]
+        data_image_map[img_id] = data_image
     logger.debug('data:image objects --> %s', list(data_image_map.keys()))
     return data_image_map
 
@@ -331,11 +325,7 @@ def response(resp):
 
     # convert the text to dom
     dom = html.fromstring(resp.text)
-
-    data_image_map = {}
-    if '_fmt:html' in UI_ASYNC:
-        # in this format images are embedded by a bse64 encoded 'data:image'
-        data_image_map = _parse_data_images(dom)
+    data_image_map = _parse_data_images(dom)
 
     # results --> answer
     answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
@@ -349,11 +339,6 @@ def response(resp):
 
     for result in eval_xpath_list(dom, results_xpath):  # pylint: disable=too-many-nested-blocks
 
-        # google *sections*
-        if extract_text(eval_xpath(result, g_section_with_header)):
-            logger.debug("ignoring <g-section-with-header>")
-            continue
-
         try:
             title_tag = eval_xpath_getindex(result, title_xpath, 0, default=None)
             if title_tag is None:
@@ -361,33 +346,29 @@ def response(resp):
                 logger.debug('ignoring item from the result_xpath list: missing title')
                 continue
             title = extract_text(title_tag)
+
             url = eval_xpath_getindex(result, href_xpath, 0, None)
             if url is None:
+                logger.debug('ignoring item from the result_xpath list: missing url of title "%s"', title)
                 continue
 
-            content = []
-            img_list = []
-            for content_feature in eval_xpath(result, content_xpath):
-                val = content_feature.attrib['data-content-feature']
-                if val in ['1', '2']:
-                    txt = extract_text(content_feature, allow_none=True)
-                    if txt:
-                        content.append(txt)
-                elif '0' in val:
-                    img = content_feature.xpath('.//img/@src')
-                    if img:
-                        img = img[0]
-                        if img.startswith('data:image'):
-                            img_id = content_feature.xpath('.//img/@id')
-                            if img_id:
-                                img = data_image_map.get(img_id[0])
-                        img_list.append(img)
+            content_nodes = eval_xpath(result, content_xpath)
+            content = extract_text(content_nodes)
 
             if not content:
                 logger.debug('ignoring item from the result_xpath list: missing content of title "%s"', title)
                 continue
-            content = ' / '.join(content)
-            img_src = img_list[0] if img_list else None
+
+            img_src = content_nodes[0].xpath('.//img/@src')
+            if img_src:
+                img_src = img_src[0]
+                if img_src.startswith('data:image'):
+                    img_id = content_nodes[0].xpath('.//img/@id')
+                    if img_id:
+                        img_src = data_image_map.get(img_id[0])
+            else:
+                img_src = None
+
             results.append({'url': url, 'title': title, 'content': content, 'img_src': img_src})
 
         except Exception as e:  # pylint: disable=broad-except
