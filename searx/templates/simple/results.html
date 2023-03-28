@@ -1,3 +1,14 @@
+{% if chatgpt_api_key_var %}<script src="{{ url_for('static', filename='themes/simple/js/gpt.js') }}"></script>{% endif %}
+
+{% if chatgpt_api_key_var %}
+<div id="gptResults" role="complementary" aria-labelledby="gptResults-title">
+  <h4 class="title" id="gptResults-title">{{ _('GPT-3.5 Turbo Results') }} :</h4>
+  <div id="gptResultsContent">
+    <!-- GPT-3.5 Turbo results will be inserted here. -->
+  </div>
+</div>
+{% endif %}
+
 {% extends "simple/base.html" %}
 {% from 'simple/icons.html' import icon, icon_big, icon_small %}
 {% macro engine_data_form(engine_data) -%}
