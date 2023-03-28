@@ -1,3 +1,5 @@
+import os
+
 from searxng.utils import searxng_useragent
 import requests
 
@@ -9,7 +11,7 @@ language_support = False
 
 # ChatGPT API settings
 base_url = 'https://api.openai.com/v1/engines/davinci-codex/completions'
-chatgpt_api_key_var = 'chatgpt_api_key_var'
+chatgpt_api_key_var = os.environ.get('CHATGPT_API_KEY_VAR')
 headers = {
     'Content-Type': 'application/json',
     'Authorization': f'Bearer {chatgpt_api_key_var}'
