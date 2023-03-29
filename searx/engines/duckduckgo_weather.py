@@ -1,12 +1,28 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""DuckDuckGo Weather"""
+"""
+DuckDuckGo Weather
+~~~~~~~~~~~~~~~~~~
+"""
 
+from typing import TYPE_CHECKING
 from json import loads
 from urllib.parse import quote
 
 from datetime import datetime
 from flask_babel import gettext
+
+from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
+from searx.engines.duckduckgo import get_ddg_lang
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
+
 
 about = {
     "website": 'https://duckduckgo.com/',
@@ -17,9 +33,11 @@ about = {
     "results": "JSON",
 }
 
-categories = ["others"]
+send_accept_language_header = True
 
-url = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
+# engine dependent config
+categories = ["others"]
+URL = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
 
 
 def generate_condition_table(condition):
@@ -72,8 +90,17 @@ def generate_day_table(day):
 
 
 def request(query, params):
-    params["url"] = url.format(query=quote(query), lang=params['language'].split('-')[0])
 
+    eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
+    eng_lang = get_ddg_lang(traits, params['searxng_locale'])
+
+    # !ddw paris :es-AR --> {'ad': 'es_AR', 'ah': 'ar-es', 'l': 'ar-es'}
+    params['cookies']['ad'] = eng_lang
+    params['cookies']['ah'] = eng_region
+    params['cookies']['l'] = eng_region
+    logger.debug("cookies: %s", params['cookies'])
+
+    params["url"] = URL.format(query=quote(query), lang=eng_lang.split('_')[0])
     return params
 
 

@@ -13,7 +13,7 @@ from typing import Iterable, Dict, List
 import flask
 
 from searx import settings, autocomplete
-from searx.engines import Engine
+from searx.enginelib import Engine
 from searx.plugins import Plugin
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE

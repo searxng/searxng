@@ -1,8 +1,8 @@
-.. _load_engines:
+.. _searx.engines:
 
-============
-Load Engines
-============
+=================
+SearXNG's engines
+=================
 
 .. automodule:: searx.engines
   :members:

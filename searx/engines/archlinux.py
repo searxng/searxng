@@ -1,15 +1,32 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
 """
- Arch Linux Wiki
+Arch Linux Wiki
+~~~~~~~~~~~~~~~
 
- API: Mediawiki provides API, but Arch Wiki blocks access to it
+This implementation does not use a official API: Mediawiki provides API, but
+Arch Wiki blocks access to it.
+
 """
 
-from urllib.parse import urlencode, urljoin
-from lxml import html
+from typing import TYPE_CHECKING
+from urllib.parse import urlencode, urljoin, urlparse
+import lxml
+import babel
+
+from searx import network
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex
+from searx.enginelib.traits import EngineTraits
+from searx.locales import language_tag
 
-# about
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
+
+
 about = {
     "website": 'https://wiki.archlinux.org/',
     "wikidata_id": 'Q101445877',
@@ -22,125 +39,113 @@ about = {
 # engine dependent config
 categories = ['it', 'software wikis']
 paging = True
-base_url = 'https://wiki.archlinux.org'
-
-# xpath queries
-xpath_results = '//ul[@class="mw-search-results"]/li'
-xpath_link = './/div[@class="mw-search-result-heading"]/a'
+main_wiki = 'wiki.archlinux.org'
 
 
-# cut 'en' from 'en-US', 'de' from 'de-CH', and so on
-def locale_to_lang_code(locale):
-    if locale.find('-') >= 0:
-        locale = locale.split('-')[0]
-    return locale
-
-
-# wikis for some languages were moved off from the main site, we need to make
-# requests to correct URLs to be able to get results in those languages
-lang_urls = {
-    # fmt: off
-    'all': {
-        'base': 'https://wiki.archlinux.org',
-        'search': '/index.php?title=Special:Search&offset={offset}&{query}'
-    },
-    'de': {
-        'base': 'https://wiki.archlinux.de',
-        'search': '/index.php?title=Spezial:Suche&offset={offset}&{query}'
-    },
-    'fr': {
-        'base': 'https://wiki.archlinux.fr',
-        'search': '/index.php?title=Spécial:Recherche&offset={offset}&{query}'
-    },
-    'ja': {
-        'base': 'https://wiki.archlinuxjp.org',
-        'search': '/index.php?title=特別:検索&offset={offset}&{query}'
-    },
-    'ro': {
-        'base': 'http://wiki.archlinux.ro',
-        'search': '/index.php?title=Special:Căutare&offset={offset}&{query}'
-    },
-    'tr': {
-        'base': 'http://archtr.org/wiki',
-        'search': '/index.php?title=Özel:Ara&offset={offset}&{query}'
-    }
-    # fmt: on
-}
-
-
-# get base & search URLs for selected language
-def get_lang_urls(language):
-    if language in lang_urls:
-        return lang_urls[language]
-    return lang_urls['all']
-
-
-# Language names to build search requests for
-# those languages which are hosted on the main site.
-main_langs = {
-    'ar': 'العربية',
-    'bg': 'Български',
-    'cs': 'Česky',
-    'da': 'Dansk',
-    'el': 'Ελληνικά',
-    'es': 'Español',
-    'he': 'עברית',
-    'hr': 'Hrvatski',
-    'hu': 'Magyar',
-    'it': 'Italiano',
-    'ko': '한국어',
-    'lt': 'Lietuviškai',
-    'nl': 'Nederlands',
-    'pl': 'Polski',
-    'pt': 'Português',
-    'ru': 'Русский',
-    'sl': 'Slovenský',
-    'th': 'ไทย',
-    'uk': 'Українська',
-    'zh': '简体中文',
-}
-supported_languages = dict(lang_urls, **main_langs)
-
-
-# do search-request
 def request(query, params):
-    # translate the locale (e.g. 'en-US') to language code ('en')
-    language = locale_to_lang_code(params['language'])
 
-    # if our language is hosted on the main site, we need to add its name
-    # to the query in order to narrow the results to that language
-    if language in main_langs:
-        query += ' (' + main_langs[language] + ')'
-
-    # prepare the request parameters
-    query = urlencode({'search': query})
+    sxng_lang = params['searxng_locale'].split('-')[0]
+    netloc = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)
+    title = traits.custom['title'].get(sxng_lang, 'Special:Search')
+    base_url = 'https://' + netloc + '/index.php?'
     offset = (params['pageno'] - 1) * 20
 
-    # get request URLs for our language of choice
-    urls = get_lang_urls(language)
-    search_url = urls['base'] + urls['search']
+    if netloc == main_wiki:
+        eng_lang: str = traits.get_language(sxng_lang, 'English')
+        query += ' (' + eng_lang + ')'
+    elif netloc == 'wiki.archlinuxcn.org':
+        base_url = 'https://' + netloc + '/wzh/index.php?'
 
-    params['url'] = search_url.format(query=query, offset=offset)
+    args = {
+        'search': query,
+        'title': title,
+        'limit': 20,
+        'offset': offset,
+        'profile': 'default',
+    }
 
+    params['url'] = base_url + urlencode(args)
     return params
 
 
-# get response from search-request
 def response(resp):
-    # get the base URL for the language in which request was made
-    language = locale_to_lang_code(resp.search_params['language'])
-    base_url = get_lang_urls(language)['base']
 
     results = []
+    dom = lxml.html.fromstring(resp.text)
 
-    dom = html.fromstring(resp.text)
+    # get the base URL for the language in which request was made
+    sxng_lang = resp.search_params['searxng_locale'].split('-')[0]
+    netloc = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)
+    base_url = 'https://' + netloc + '/index.php?'
 
-    # parse results
-    for result in eval_xpath_list(dom, xpath_results):
-        link = eval_xpath_getindex(result, xpath_link, 0)
-        href = urljoin(base_url, link.attrib.get('href'))
-        title = extract_text(link)
-
-        results.append({'url': href, 'title': title})
+    for result in eval_xpath_list(dom, '//ul[@class="mw-search-results"]/li'):
+        link = eval_xpath_getindex(result, './/div[@class="mw-search-result-heading"]/a', 0)
+        content = extract_text(result.xpath('.//div[@class="searchresult"]'))
+        results.append(
+            {
+                'url': urljoin(base_url, link.get('href')),
+                'title': extract_text(link),
+                'content': content,
+            }
+        )
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages from Archlinix-Wiki.  The location of the Wiki address of a
+    language is mapped in a :py:obj:`custom field
+    <searx.enginelib.traits.EngineTraits.custom>` (``wiki_netloc``).  Depending
+    on the location, the ``title`` argument in the request is translated.
+
+    .. code:: python
+
+       "custom": {
+         "wiki_netloc": {
+           "de": "wiki.archlinux.de",
+            # ...
+           "zh": "wiki.archlinuxcn.org"
+         }
+         "title": {
+           "de": "Spezial:Suche",
+            # ...
+           "zh": "Special:\u641c\u7d22"
+         },
+       },
+
+    """
+
+    engine_traits.custom['wiki_netloc'] = {}
+    engine_traits.custom['title'] = {}
+
+    title_map = {
+        'de': 'Spezial:Suche',
+        'fa': 'ویژه:جستجو',
+        'ja': '特別:検索',
+        'zh': 'Special:搜索',
+    }
+
+    resp = network.get('https://wiki.archlinux.org/')
+    if not resp.ok:
+        print("ERROR: response from wiki.archlinix.org is not OK.")
+
+    dom = lxml.html.fromstring(resp.text)
+    for a in eval_xpath_list(dom, "//a[@class='interlanguage-link-target']"):
+
+        sxng_tag = language_tag(babel.Locale.parse(a.get('lang'), sep='-'))
+        # zh_Hans --> zh
+        sxng_tag = sxng_tag.split('_')[0]
+
+        netloc = urlparse(a.get('href')).netloc
+        if netloc != 'wiki.archlinux.org':
+            title = title_map.get(sxng_tag)
+            if not title:
+                print("ERROR: title tag from %s (%s) is unknown" % (netloc, sxng_tag))
+                continue
+            engine_traits.custom['wiki_netloc'][sxng_tag] = netloc
+            engine_traits.custom['title'][sxng_tag] = title
+
+        eng_tag = extract_text(eval_xpath_list(a, ".//span"))
+        engine_traits.languages[sxng_tag] = eng_tag
+
+    engine_traits.languages['en'] = 'English'

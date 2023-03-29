@@ -30,7 +30,10 @@ from .abstract import EngineProcessor
 
 logger = logger.getChild('search.processors')
 PROCESSORS: Dict[str, EngineProcessor] = {}
-"""Cache request processores, stored by *engine-name* (:py:func:`initialize`)"""
+"""Cache request processores, stored by *engine-name* (:py:func:`initialize`)
+
+:meta hide-value:
+"""
 
 
 def get_processor_class(engine_type):

@@ -20,9 +20,10 @@ class OnlineUrlSearchProcessor(OnlineProcessor):
     engine_type = 'online_url_search'
 
     def get_params(self, search_query, engine_category):
-        """Returns a set of *request params* or ``None`` if search query does not match
-        to at least one of :py:obj:`re_search_urls`.
+        """Returns a set of :ref:`request params <engine request online>` or ``None`` if
+        search query does not match to :py:obj:`re_search_urls`.
         """
+
         params = super().get_params(search_query, engine_category)
         if params is None:
             return None

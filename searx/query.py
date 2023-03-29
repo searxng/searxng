@@ -4,7 +4,7 @@ from abc import abstractmethod, ABC
 import re
 
 from searx import settings
-from searx.languages import language_codes
+from searx.sxng_locales import sxng_locales
 from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
 from searx.search import EngineRef
@@ -84,7 +84,7 @@ class LanguageParser(QueryPartParser):
         found = False
         # check if any language-code is equal with
         # declared language-codes
-        for lc in language_codes:
+        for lc in sxng_locales:
             lang_id, lang_name, country, english_name, _flag = map(str.lower, lc)
 
             # if correct language-code is found
@@ -125,7 +125,7 @@ class LanguageParser(QueryPartParser):
                     self.raw_text_query.autocomplete_list.append(lang)
             return
 
-        for lc in language_codes:
+        for lc in sxng_locales:
             if lc[0] not in settings['search']['languages']:
                 continue
             lang_id, lang_name, country, english_name, _flag = map(str.lower, lc)

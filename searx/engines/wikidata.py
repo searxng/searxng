@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Wikidata
+"""This module implements the Wikidata engine.  Some implementations are shared
+from :ref:`wikipedia engine`.
+
 """
 # pylint: disable=missing-class-docstring
 
+from typing import TYPE_CHECKING
 from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
@@ -13,12 +16,17 @@ from babel.dates import format_datetime, format_date, format_time, get_datetime_
 
 from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
-from searx.utils import match_language, searx_useragent, get_string_replaces_function
+from searx.utils import searx_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
-from searx.engines.wikipedia import (  # pylint: disable=unused-import
-    _fetch_supported_languages,
-    supported_languages_url,
-)
+from searx.engines.wikipedia import fetch_traits as _fetch_traits
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
 
 # about
 about = {
@@ -154,33 +162,35 @@ def send_wikidata_query(query, method='GET'):
 
 
 def request(query, params):
-    language = params['language'].split('-')[0]
-    if language == 'all':
-        language = 'en'
-    else:
-        language = match_language(params['language'], supported_languages, language_aliases).split('-')[0]
+
+    # wikidata does not support zh-classical (zh_Hans) / zh-TW, zh-HK and zh-CN
+    # mapped to zh
+    sxng_lang = params['searxng_locale'].split('-')[0]
+    language = traits.get_language(sxng_lang, 'en')
 
     query, attributes = get_query(query, language)
+    logger.debug("request --> language %s // len(attributes): %s", language, len(attributes))
 
     params['method'] = 'POST'
     params['url'] = SPARQL_ENDPOINT_URL
     params['data'] = {'query': query}
     params['headers'] = get_headers()
-
     params['language'] = language
     params['attributes'] = attributes
+
     return params
 
 
 def response(resp):
+
     results = []
     jsonresponse = loads(resp.content.decode())
 
-    language = resp.search_params['language'].lower()
+    language = resp.search_params['language']
     attributes = resp.search_params['attributes']
+    logger.debug("request --> language %s // len(attributes): %s", language, len(attributes))
 
     seen_entities = set()
-
     for result in jsonresponse.get('results', {}).get('bindings', []):
         attribute_result = {key: value['value'] for key, value in result.items()}
         entity_url = attribute_result['item']
@@ -756,3 +766,15 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
         lang = result['name']['xml:lang']
         entity_id = result['item']['value'].replace('http://www.wikidata.org/entity/', '')
         WIKIDATA_PROPERTIES[(entity_id, lang)] = name.capitalize()
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Use languages evaluated from :py:obj:`wikipedia.fetch_traits
+    <searx.engines.wikipedia.fetch_traits>` except zh-classical (zh_Hans) what
+    is not supported by wikidata."""
+
+    _fetch_traits(engine_traits)
+    # wikidata does not support zh-classical (zh_Hans)
+    engine_traits.languages.pop('zh_Hans')
+    # wikidata does not have net-locations for the languages
+    engine_traits.custom['wiki_netloc'] = {}

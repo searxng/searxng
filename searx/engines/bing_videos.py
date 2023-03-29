@@ -1,21 +1,30 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Bing (Videos)
-
+"""Bing-Videos: description see :py:obj:`searx.engines.bing`.
 """
+# pylint: disable=invalid-name
 
-from json import loads
+from typing import TYPE_CHECKING
+import uuid
+import json
 from urllib.parse import urlencode
 
 from lxml import html
 
-from searx.utils import match_language
-from searx.engines.bing import language_aliases
-
-from searx.engines.bing import (  # pylint: disable=unused-import
-    _fetch_supported_languages,
-    supported_languages_url,
+from searx.enginelib.traits import EngineTraits
+from searx.engines.bing import (
+    set_bing_cookies,
+    _fetch_traits,
 )
+from searx.engines.bing import send_accept_language_header  # pylint: disable=unused-import
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
+
 
 about = {
     "website": 'https://www.bing.com/videos',
@@ -26,65 +35,76 @@ about = {
     "results": 'HTML',
 }
 
+# engine dependent config
 categories = ['videos', 'web']
 paging = True
 safesearch = True
 time_range_support = True
-send_accept_language_header = True
-number_of_results = 28
 
-base_url = 'https://www.bing.com/'
-search_string = (
+base_url = 'https://www.bing.com/videos/asyncv2'
+"""Bing (Videos) async search URL."""
+
+bing_traits_url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-video-search/reference/market-codes'
+"""Bing (Video) search API description"""
+
+time_map = {
     # fmt: off
-    'videos/search'
-    '?{query}'
-    '&count={count}'
-    '&first={first}'
-    '&scope=video'
-    '&FORM=QBLH'
+    'day': 60 * 24,
+    'week': 60 * 24 * 7,
+    'month': 60 * 24 * 31,
+    'year': 60 * 24 * 365,
     # fmt: on
-)
-time_range_string = '&qft=+filterui:videoage-lt{interval}'
-time_range_dict = {'day': '1440', 'week': '10080', 'month': '43200', 'year': '525600'}
-
-# safesearch definitions
-safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}
+}
 
 
-# do search-request
 def request(query, params):
-    offset = ((params['pageno'] - 1) * number_of_results) + 1
+    """Assemble a Bing-Video request."""
 
-    search_path = search_string.format(query=urlencode({'q': query}), count=number_of_results, first=offset)
+    engine_region = traits.get_region(params['searxng_locale'], 'en-US')
+    engine_language = traits.get_language(params['searxng_locale'], 'en')
 
-    # safesearch cookie
-    params['cookies']['SRCHHPGUSR'] = 'ADLT=' + safesearch_types.get(params['safesearch'], 'DEMOTE')
+    SID = uuid.uuid1().hex.upper()
+    set_bing_cookies(params, engine_language, engine_region, SID)
 
-    # language cookie
-    language = match_language(params['language'], supported_languages, language_aliases).lower()
-    params['cookies']['_EDGE_S'] = 'mkt=' + language + '&F=1'
+    # build URL query
+    #
+    # example: https://www.bing.com/videos/asyncv2?q=foo&async=content&first=1&count=35
 
-    # query and paging
-    params['url'] = base_url + search_path
+    query_params = {
+        # fmt: off
+        'q': query,
+        'async' : 'content',
+        # to simplify the page count lets use the default of 35 images per page
+        'first' : (int(params.get('pageno', 1)) - 1) * 35 + 1,
+        'count' : 35,
+        # fmt: on
+    }
 
     # time range
-    if params['time_range'] in time_range_dict:
-        params['url'] += time_range_string.format(interval=time_range_dict[params['time_range']])
+    #
+    # example: one week (10080 minutes) '&qft= filterui:videoage-lt10080'  '&form=VRFLTR'
+
+    if params['time_range']:
+        query_params['form'] = 'VRFLTR'
+        query_params['qft'] = ' filterui:videoage-lt%s' % time_map[params['time_range']]
+
+    params['url'] = base_url + '?' + urlencode(query_params)
 
     return params
 
 
-# get response from search-request
 def response(resp):
+    """Get response from Bing-Video"""
     results = []
 
     dom = html.fromstring(resp.text)
 
-    for result in dom.xpath('//div[@class="dg_u"]/div[contains(@class, "mc_vtvc")]'):
-        metadata = loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
+    for result in dom.xpath('//div[@class="dg_u"]//div[contains(@id, "mc_vtvc_video")]'):
+        metadata = json.loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
         info = ' - '.join(result.xpath('.//div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
         content = '{0} - {1}'.format(metadata['du'], info)
-        thumbnail = '{0}th?id={1}'.format(base_url, metadata['thid'])
+        thumbnail = result.xpath('.//div[contains(@class, "mc_vtvc_th")]//img/@src')[0]
+
         results.append(
             {
                 'url': metadata['murl'],
@@ -96,3 +116,13 @@ def response(resp):
         )
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages and regions from Bing-Videos."""
+
+    xpath_market_codes = '//table[1]/tbody/tr/td[3]'
+    # xpath_country_codes = '//table[2]/tbody/tr/td[2]'
+    xpath_language_codes = '//table[3]/tbody/tr/td[2]'
+
+    _fetch_traits(engine_traits, bing_traits_url, xpath_language_codes, xpath_market_codes)
