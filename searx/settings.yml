@@ -674,6 +674,9 @@ engines:
     engine: gigablast
     shortcut: gb
     timeout: 4.0
+    # API key required, see https://gigablast.com/searchfeed.html
+    # gb_userid: unset
+    # gb_code: unknown
     disabled: true
     additional_tests:
       rosebud: *test_rosebud
