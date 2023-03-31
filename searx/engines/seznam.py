@@ -30,7 +30,8 @@ base_url = 'https://search.seznam.cz/'
 
 
 def request(query, params):
-    response_index = get(base_url, headers=params['headers'], raise_for_httperror=True)
+    response_index = get(
+        base_url, headers=params['headers'], raise_for_httperror=True)
     dom = html.fromstring(response_index.text)
 
     url_params = {
@@ -54,8 +55,9 @@ def response(resp):
     results = []
 
     dom = html.fromstring(resp.content.decode())
-    for result_element in eval_xpath_list(dom, '//div[@data-dot="results"]/div'):
-        result_data = eval_xpath_getindex(result_element, './/div[contains(@class, "bec586")]', 0, default=None)
+    for result_element in eval_xpath_list(dom, '//div[@id="searchpage-root"]//div[@class="Layout--left"]/div[@class="f2c528"]'):
+        result_data = eval_xpath_getindex(
+            result_element, './/div[@class="c8774a" or @class="e69e8d a11657"]', 0, default=None)
         if result_data is None:
             continue
         title_element = eval_xpath_getindex(result_element, './/h3/a', 0)
@@ -63,7 +65,7 @@ def response(resp):
             {
                 'url': title_element.get('href'),
                 'title': extract_text(title_element),
-                'content': extract_text(eval_xpath(result_data, './/div[@class="_3eded7"]')),
+                'content': extract_text(result_data),
             }
         )
 
