@@ -26,13 +26,17 @@ default_on = False
 preference_section = 'service'
 logger = logger.getChild('limiter')
 
-re_bot = re.compile(
+block_user_agent = re.compile(
     r'('
-    + r'[Cc][Uu][Rr][Ll]|[wW]get|Scrapy|splash|JavaFX|FeedFetcher|python-requests|Go-http-client|Java|Jakarta|okhttp'
+    + r'unknown'
+    + r'|[Cc][Uu][Rr][Ll]|[wW]get|Scrapy|splash|JavaFX|FeedFetcher|python-requests|Go-http-client|Java|Jakarta|okhttp'
     + r'|HttpClient|Jersey|Python|libwww-perl|Ruby|SynHttpClient|UniversalFeedParser|Googlebot|GoogleImageProxy'
     + r'|bingbot|Baiduspider|yacybot|YandexMobileBot|YandexBot|Yahoo! Slurp|MJ12bot|AhrefsBot|archive.org_bot|msnbot'
     + r'|MJ12bot|SeznamBot|linkdexbot|Netvibes|SMTBot|zgrab|James BOT|Sogou|Abonti|Pixray|Spinn3r|SemrushBot|Exabot'
     + r'|ZmEu|BLEXBot|bitlybot'
+    # when you block requests from Farside instances, your instance will
+    # disappear from https://farside.link/
+    # + r'|Farside'
     + r')'
 )
 
@@ -40,14 +44,15 @@ re_bot = re.compile(
 def is_accepted_request() -> bool:
     # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
-    user_agent = request.headers.get('User-Agent', '')
+    user_agent = request.headers.get('User-Agent', 'unknown')
     x_forwarded_for = request.headers.get('X-Forwarded-For', '')
 
-    if re_bot.match(user_agent):
-        logger.debug("BLOCK %s: detected bot", x_forwarded_for)
+    if block_user_agent.match(user_agent):
+        logger.debug("BLOCK %s: %s --> detected User-Agent: %s" % (x_forwarded_for, request.path, user_agent))
         return False
 
     if request.path == '/search':
+
         c_burst = incr_sliding_window(redis_client, 'IP limit, burst' + x_forwarded_for, 20)
         c_10min = incr_sliding_window(redis_client, 'IP limit, 10 minutes' + x_forwarded_for, 600)
         if c_burst > 15 or c_10min > 150:
