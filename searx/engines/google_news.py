@@ -150,7 +150,7 @@ def response(resp):
         href = href.split('?')[0]
         href = href.split('/')[-1]
         href = base64.urlsafe_b64decode(href + '====')
-        href = href[4:].split(b'\xd2')[0]
+        href = href[href.index(b'http') :].split(b'\xd2')[0]
         href = href.decode()
 
         title = extract_text(eval_xpath(result, './article/h3[1]'))
