@@ -27,10 +27,8 @@ The google news API ignores some parameters from the common :ref:`google API`:
 
 from typing import TYPE_CHECKING
 
-import binascii
-import re
 from urllib.parse import urlencode
-from base64 import b64decode
+import base64
 from lxml import html
 import babel
 
@@ -144,34 +142,17 @@ def response(resp):
 
     for result in eval_xpath_list(dom, '//div[@class="xrnccd"]'):
 
-        # The first <a> tag in the <article> contains the link to the
-        # article The href attribute of the <a> is a google internal link,
-        # we can't use.  The real link is hidden in the jslog attribute:
-        #
-        #   <a ...
-        #      jslog="95014; 4:https://www.cnn.com/.../index.html; track:click"
-        #      href="./articles/CAIiENu3nGS...?hl=en-US&amp;gl=US&amp;ceid=US%3Aen"
-        #      ... />
+        # The first <a> tag in the <article> contains the link to the article
+        # The href attribute of the <a> tag is a google internal link, we have
+        # to decode
 
-        jslog = eval_xpath_getindex(result, './article/a/@jslog', 0)
-        url = re.findall('http[^;]*', jslog)
-        if url:
-            url = url[0]
-        else:
-            # The real URL is base64 encoded in the json attribute:
-            # jslog="95014; 5:W251bGwsbnVsbCxudW...giXQ==; track:click"
-            jslog = jslog.split(";")[1].split(':')[1].strip()
-            try:
-                padding = (4 - (len(jslog) % 4)) * "="
-                jslog = b64decode(jslog + padding)
-            except binascii.Error:
-                # URL can't be read, skip this result
-                continue
+        href = eval_xpath_getindex(result, './article/a/@href', 0)
+        href = href.split('?')[0]
+        href = href.split('/')[-1]
+        href = base64.urlsafe_b64decode(href + '====')
+        href = href[4:].split(b'\xd2')[0]
+        href = href.decode()
 
-            # now we have : b'[null, ... null,"https://www.cnn.com/.../index.html"]'
-            url = re.findall('http[^;"]*', str(jslog))[0]
-
-        # the first <h3> tag in the <article> contains the title of the link
         title = extract_text(eval_xpath(result, './article/h3[1]'))
 
         # The pub_date is mostly a string like 'yesertday', not a real
@@ -189,7 +170,7 @@ def response(resp):
 
         results.append(
             {
-                'url': url,
+                'url': href,
                 'title': title,
                 'content': content,
                 'img_src': img_src,
