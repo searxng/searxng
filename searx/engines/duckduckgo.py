@@ -6,6 +6,7 @@ DuckDuckGo Lite
 """
 
 from typing import TYPE_CHECKING
+import re
 from urllib.parse import urlencode
 import json
 import babel
@@ -15,6 +16,7 @@ from searx import (
     network,
     locales,
     redislib,
+    external_bang,
 )
 from searx import redisdb
 from searx.utils import (
@@ -196,6 +198,17 @@ ddg_lang_map = {
 
 
 def request(query, params):
+
+    # quote ddg bangs
+    query_parts = []
+    # for val in re.split(r'(\s+)', query):
+    for val in re.split(r'(\s+)', query):
+        if not val.strip():
+            continue
+        if val.startswith('!') and external_bang.get_node(external_bang.EXTERNAL_BANGS, val[1:]):
+            val = f"'{val}'"
+        query_parts.append(val)
+    query = ' '.join(query_parts)
 
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     # eng_lang = get_ddg_lang(traits, params['searxng_locale'])
