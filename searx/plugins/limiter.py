@@ -47,6 +47,9 @@ def is_accepted_request() -> bool:
     user_agent = request.headers.get('User-Agent', 'unknown')
     x_forwarded_for = request.headers.get('X-Forwarded-For', '')
 
+    if request.path == '/healthz':
+        return True
+
     if block_user_agent.match(user_agent):
         logger.debug("BLOCK %s: %s --> detected User-Agent: %s" % (x_forwarded_for, request.path, user_agent))
         return False
