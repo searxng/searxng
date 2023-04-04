@@ -77,9 +77,9 @@ weblate.:
   push.translations: push translation changes from SearXNG to Weblate's counterpart
   to.translations: Update 'translations' branch with last additions from Weblate.
 data.:
-  all       : update searx/languages.py and ./data/*
-  languages : update searx/data/engines_languages.json & searx/languages.py
-  useragents: update searx/data/useragents.json with the most recent versions of Firefox.
+  all       : update searx/sxng_locales.py and searx/data/*
+  traits    : update searx/data/engine_traits.json & searx/sxng_locales.py
+  useragents: update searx/data/useragents.json with the most recent versions of Firefox
 docs.:
   html      : build HTML documentation
   live      : autobuild HTML documentation while editing
@@ -386,27 +386,33 @@ weblate.push.translations() {
 
 data.all() {
     (   set -e
+
         pyenv.activate
-        data.languages
+        data.traits
         data.useragents
-        data.osm_keys_tags
+
+        build_msg DATA "update searx/data/osm_keys_tags.json"
+        pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
         build_msg DATA "update searx/data/ahmia_blacklist.txt"
         python searxng_extra/update/update_ahmia_blacklist.py
         build_msg DATA "update searx/data/wikidata_units.json"
         python searxng_extra/update/update_wikidata_units.py
         build_msg DATA "update searx/data/currencies.json"
         python searxng_extra/update/update_currencies.py
+        build_msg DATA "update searx/data/external_bangs.json"
+        python searxng_extra/update/update_external_bangs.py
+        build_msg DATA "update searx/data/engine_descriptions.json"
+        python searxng_extra/update/update_engine_descriptions.py
     )
 }
 
 
-data.languages() {
+data.traits() {
     (   set -e
         pyenv.activate
-        build_msg ENGINES "fetch languages .."
-        python searxng_extra/update/update_languages.py
-        build_msg ENGINES "update update searx/languages.py"
-        build_msg DATA "update searx/data/engines_languages.json"
+        build_msg DATA "update searx/data/engine_traits.json"
+        python searxng_extra/update/update_engine_traits.py
+        build_msg ENGINES "update searx/sxng_locales.py"
     )
     dump_return $?
 }
@@ -414,12 +420,6 @@ data.languages() {
 data.useragents() {
     build_msg DATA "update searx/data/useragents.json"
     pyenv.cmd python searxng_extra/update/update_firefox_version.py
-    dump_return $?
-}
-
-data.osm_keys_tags() {
-    build_msg DATA "update searx/data/osm_keys_tags.json"
-    pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
     dump_return $?
 }
 
