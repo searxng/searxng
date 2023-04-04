@@ -387,7 +387,7 @@ article[data-vim-selected].category-social {
   overflow: hidden;
 }
 
-.result-videos .embedded-video iframe {
+.result-videos .embedded-video video {
   width: 100%;
   aspect-ratio: 16 / 9;
   padding: 10px 0 0 0;
@@ -396,7 +396,7 @@ article[data-vim-selected].category-social {
 @supports not (aspect-ratio: 1 / 1) {
   // support older browsers which do not have aspect-ratio
   // https://caniuse.com/?search=aspect-ratio
-  .result-videos .embedded-video iframe {
+  .result-videos .embedded-video video {
     height: calc(@results-width * 9 / 16);
   }
 }
