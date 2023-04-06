@@ -1,5 +1,7 @@
 {% set body_class = "page_with_header" %}
 {% extends "simple/base.html" %}
 {% block header %}
-<a href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static', filename='img/searxng.png') }}" alt="SearXNG"></a>
+<a href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static', filename='img/fufusoup-logo-blue-bg.png') }}" 
+    alt="SearXNG" style="height:4rem;border-radius:1rem;"> 
+    <span style="font-size:2.5rem;position:relative;top:-15px;left:7px;">Fufusoup</span></a>
 {% endblock %}

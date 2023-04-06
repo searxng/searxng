@@ -148,6 +148,9 @@ Help translate SearXNG at `Weblate`_
 Donations
 =========
 
+Support the Fufusoup project by clicking the donation page:
+https://www.buymeacoffee.com/mkmtechnology
+
 Support the SearXNG project by clicking the donation page:
 https://docs.searxng.org/donate.html
 

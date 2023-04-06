@@ -123,7 +123,7 @@
         </select>{{- '' -}}
       </p>
       <div class="description" id="desc_language">
-        {{- _('What language do you prefer for search?') }} {{ _('Choose Auto-detect to let SearXNG detect the language of your query.') -}}
+        {{- _('What language do you prefer for search?') }} {{ _('Choose Auto-detect to let Fufusoup detect the language of your query.') -}}
       </div>
     </fieldset>
     {% endif %}
@@ -203,7 +203,7 @@
           {%- endfor -%}
         </select>
       </p>
-      <div class="description">{{ _('Change SearXNG layout') }}</div>
+      <div class="description">{{ _('Change Fufusoup layout') }}</div>
     </fieldset>
     <fieldset>
       <legend id="pref_simple_style">{{ _('Theme style') }}</legend>
@@ -276,7 +276,7 @@
           <option value="0" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
         </select>
       </p>
-      <div class="description">{{ _('Proxying image results through SearXNG') }}</div>
+      <div class="description">{{ _('Proxying image results through Fufusoup') }}</div>
     </fieldset>
     {% endif %}
     {% if 'query_in_title' not in locked_preferences %}
@@ -365,7 +365,7 @@
         <th>{{ _('Examples') }}</th>
       </tr>
       <td></td>
-      <th scope="colgroup" colspan="4">{{ _("This is the list of SearXNG's instant answering modules.") }}</th>
+      <th scope="colgroup" colspan="4">{{ _("This is the list of Fufusoup's instant answering modules.") }}</th>
       {% for answerer in answerers %}
       <tr>
         <td></td>
@@ -395,8 +395,8 @@
 
   {{ tab_header('maintab', 'cookies', _('Cookies')) }}
      <p class="text-muted">{{- "" -}}
-        {{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />{{- "" -}}
-        {{- _('With that list, you can assess SearXNG transparency.') }}<br />{{- "" -}}
+        {{- _('This is the list of cookies and their values Fufusoup is storing on your computer.') }}<br />{{- "" -}}
+        {{- _('With that list, you can assess Fufusoup transparency.') }}<br />{{- "" -}}
      </p>
      {% if cookies %}
      <table class="cookies">

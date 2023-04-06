@@ -1,6 +1,6 @@
 # Search syntax
 
-SearXNG comes with a search syntax by with you can modify the categories,
+Fufusoup comes with a search syntax by with you can modify the categories,
 engines, languages and more.  See the {{link('preferences', 'preferences')}} for
 the list of engines, categories and languages.
 
@@ -35,7 +35,7 @@ To select language filter use a `:` prefix.  To give an example:
 
 ## `!!` external bangs
 
-SearXNG supports the external bangs from [DuckDuckGo].  To directly jump to a
+Fufusoup supports the external bangs from [DuckDuckGo].  To directly jump to a
 external search page use the `!!` prefix.  To give an example:
 
 - search Wikipedia by a custom language
@@ -43,7 +43,7 @@ external search page use the `!!` prefix.  To give an example:
   - {{search('!!wfr Wau Holland')}}
 
 Please note, your search will be performed directly in the external search
-engine, SearXNG cannot protect your privacy on this.
+engine, Fufusoup cannot protect your privacy on this.
 
 [DuckDuckGo]: https://duckduckgo.com/bang
 

@@ -1,4 +1,402 @@
 
+.result .content, .result .stat, #sidebar .infobox, #infoboxes .infobox .url a, #suggestions input[type=submit], p {
+    font-size: 1em;
+}
+
+footer p {
+    font-size: 95%;
+}
+
+small {
+    font-size: 90%;
+}
+
 .theme-light {
-    background-color: azure !important;
+    background-color: rgb(245, 245, 245) !important;
+}
+
+footer, #search_header {
+    background-color: transparent !important;
+}
+
+
+
+
+@media screen and (min-width: 50em) and (max-width: 79.75em) {
+    .center-aligment-no #links_on_top span {
+        display: inherit !important;
+    }
+}
+
+@media screen and (max-width: 50em) {
+    #links_on_top span {
+        display: inherit !important;
+    }
+}
+
+
+@media screen and (max-width: 50em) {
+    #main_index #links_on_top {
+        top: 1rem;
+        right: 1rem;
+    }
+}
+
+@media screen and (max-width: 79.75em) {
+    #main_index {
+        margin-top: 17em !important;
+    }
+}
+
+@media screen and (max-width: 50em) {
+    .search_box {
+        width: 40rem;
+        display: flex;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .search_box {
+        width: 35rem;
+        display: flex;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 34em) {
+    .search_box {
+        width: 30rem;
+        display: flex;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 29em) {
+    .search_box {
+        width: 95%;
+        display: flex;
+        margin: 0 auto;
+    }
+}
+
+
+@media screen and (min-width: 0em) and (max-width: 79.75em) {
+    #search_logo {
+        display: none !important;
+    }
+}
+
+.search_filters {
+    padding-left: 0.3rem;
+}
+
+
+#result_count {
+    padding-top: 0 !important;
+    padding-bottom: 1.1rem !important;
+    padding-left: 1.1rem;
+}
+
+#results {
+    margin-top: 0.2rem;
+    margin-right: 2rem;
+    margin-bottom: 0;
+    margin-left: 10rem;
+    display: grid;
+    grid-template-columns: 45rem 25rem;
+    grid-template-rows: min-content min-content 1fr min-content;
+    gap: 0 5rem;
+    grid-template-areas:
+        "corrections sidebar"
+        "answers sidebar"
+        "urls sidebar"
+        "pagination sidebar";
+}
+
+#pagination {
+    margin-top: 2rem;
+}
+
+@media screen and (min-width: 71em) and (max-width: 79.75em) {
+
+    .center-aligment-no #main_results div#results.only_template_default {
+        margin: inherit;
+        margin-left: 2.7rem;
+        margin-right: 1rem;
+        justify-content:flex-start;
+        display: grid;
+        grid-template-columns: 45rem 25rem;
+        grid-template-rows: min-content min-content 1fr min-content;
+        gap: 0 5rem;
+        grid-template-areas:
+            "corrections sidebar"
+            "answers sidebar"
+            "urls sidebar"
+            "pagination sidebar";
+    }
+
+}
+@media screen and (min-width: 65em) and (max-width: 71em) {
+
+    .center-aligment-no #main_results div#results.only_template_default {
+        margin: inherit;
+        margin-left: 2.7rem;
+        margin-right: 1rem;
+        justify-content:flex-start;
+        display: grid;
+        grid-template-columns: 41rem 25rem;
+        grid-template-rows: min-content min-content 1fr min-content;
+        gap: 0 5rem;
+        grid-template-areas:
+            "corrections sidebar"
+            "answers sidebar"
+            "urls sidebar"
+            "pagination sidebar";
+    }
+
+}
+@media screen and (min-width: 60em) and (max-width: 65em) {
+
+    .center-aligment-no #main_results div#results.only_template_default {
+        margin: inherit;
+        margin-left: 2.7rem;
+        margin-right: 1rem;
+        justify-content:flex-start;
+        display: grid;
+        grid-template-columns: 37rem 25rem;
+        grid-template-rows: min-content min-content 1fr min-content;
+        gap: 0 5rem;
+        grid-template-areas:
+            "corrections sidebar"
+            "answers sidebar"
+            "urls sidebar"
+            "pagination sidebar";
+    }
+
+}
+@media screen and (min-width: 50em) and (max-width: 60em) {
+
+    #main_results .link_on_top_about, #main_results .link_on_top_donate {
+        display: none !important;
+    }
+
+    .center-aligment-no #main_results div#results.only_template_default {
+        margin: 0 auto 0 auto;
+        padding-left: 3.8rem;
+        justify-content:stretch;
+        display: grid;
+        grid-template-columns: 45rem;
+        grid-template-rows: min-content min-content min-content 1fr min-content min-content;
+        gap: 0;
+        grid-template-areas:
+            "corrections"
+            "answers"
+            "sidebar"
+            "urls"
+            "pagination";
+    }
+
+    #results.only_template_default {
+        margin-top: 1rem;
+        margin-right: 0;
+        margin-bottom: 0;
+    }
+
+    .only_template_default .result {
+        padding-left: 0;
+    }
+
+    #result_count {
+        padding-top: 0 !important;
+        padding-bottom: 1rem !important;
+        padding-left: 0;
+    }
+
+    #infoboxes {
+        margin-top: 0.7rem !important;
+    }
+
+}
+@media screen and (max-width: 50em) {
+
+    #search_header {
+        padding-top: 0.5rem;
+    }
+
+    #main_results #search_view {
+        grid-area:initial;
+        padding-left: 1rem;
+    }
+
+    #main_results .search_box {
+        margin: 0;
+    }
+
+    #links_on_top a {
+        padding-top: 0.5rem;
+    }
+
+    #search_logo {
+        display: none;
+    }
+
+    .search_filters {
+        margin-left: 0.4rem;
+    }
+
+    #results {
+        margin-top: 0.2rem !important;
+    }
+
+    #result_count {
+        padding-top: 0 !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 0.9rem;
+    }
+
+    #infoboxes {
+        margin-top: 0.7rem !important;
+    }
+
+    #sidebar {
+        margin-bottom: 1rem;
+    }
+
+}
+@media screen and (max-width: 40em) {
+
+    #main_results .search_box {
+        width: 35rem;
+        margin: 0;
+    }
+}
+@media screen and (max-width: 35.5em) {
+
+    #main_results .search_box {
+        width: 32rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 32.5em) {
+
+    #main_results .search_box {
+        width: 29rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 30em) {
+
+    #main_results .search_box {
+        width: 27rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 28em) {
+
+    #main_results .search_box {
+        width: 25rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 26em) {
+
+    #main_results .search_box {
+        width: 23rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 24em) {
+
+    #main_results .search_box {
+        width: 21rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 22.5em) {
+
+    #main_results .search_box {
+        width: 19rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 21em) {
+
+    #main_results .search_box {
+        width: 17rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 19em) {
+
+    #main_results .search_box {
+        width: 16rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 18em) {
+
+    #main_results .search_box {
+        width: 14rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 17em) {
+
+    #main_results .search_box {
+        width: 13rem;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 16em) {
+
+    #main_results .search_box {
+        width: 12rem;
+        margin: 0;
+    }
+}
+
+
+#sidebar {
+    grid-area: sidebar;
+    word-wrap: break-word;
+    color: var(--color-sidebar-font);
+}
+
+
+@media screen and (min-width: 50em) and (max-width: 79.75em) {
+    .center-aligment-no #sidebar {
+        margin: initial !important;
+        padding: initial !important;
+        float: initial !important;
+        border: initial !important;
+        width: initial !important;
+    }
+}
+
+@media screen and (min-width: 49.99em) and (max-width: 49.99em) {
+    .center-aligment-no #sidebar {
+        margin: 0 0.5rem 0.125rem 0.5rem;
+        padding: 0;
+        float: none;
+        border: none;
+        width: auto;
+    }
+}
+
+
+
+.tabs {
+    
 }
