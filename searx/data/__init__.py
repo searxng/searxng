@@ -7,7 +7,7 @@
 """
 
 __all__ = [
-    'ENGINES_LANGUAGES',
+    'ENGINE_TRAITS',
     'CURRENCIES',
     'USER_AGENTS',
     'EXTERNAL_URLS',
@@ -42,7 +42,6 @@ def ahmia_blacklist_loader():
         return f.read().split()
 
 
-ENGINES_LANGUAGES = _load('engines_languages.json')
 CURRENCIES = _load('currencies.json')
 USER_AGENTS = _load('useragents.json')
 EXTERNAL_URLS = _load('external_urls.json')
@@ -50,3 +49,4 @@ WIKIDATA_UNITS = _load('wikidata_units.json')
 EXTERNAL_BANGS = _load('external_bangs.json')
 OSM_KEYS_TAGS = _load('osm_keys_tags.json')
 ENGINE_DESCRIPTIONS = _load('engine_descriptions.json')
+ENGINE_TRAITS = _load('engine_traits.json')

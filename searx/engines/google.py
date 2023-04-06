@@ -1,34 +1,39 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""This is the implementation of the google WEB engine.  Some of this
-implementations are shared by other engines:
+"""This is the implementation of the Google WEB engine.  Some of this
+implementations (manly the :py:obj:`get_google_info`) are shared by other
+engines:
 
 - :ref:`google images engine`
 - :ref:`google news engine`
 - :ref:`google videos engine`
-
-The google WEB engine itself has a special setup option:
-
-.. code:: yaml
-
-  - name: google
-    ...
-    use_mobile_ui: false
-
-``use_mobile_ui``: (default: ``false``)
-  Enables to use *mobile endpoint* to bypass the google blocking (see
-  :issue:`159`).  On the mobile UI of Google Search, the button :guilabel:`More
-  results` is not affected by Google rate limiting and we can still do requests
-  while actively blocked by the original Google search.  By activate
-  ``use_mobile_ui`` this behavior is simulated by adding the parameter
-  ``async=use_ac:true,_fmt:pc`` to the :py:func:`request`.
+- :ref:`google scholar engine`
+- :ref:`google autocomplete`
 
 """
 
+from typing import TYPE_CHECKING
+
+import re
 from urllib.parse import urlencode
 from lxml import html
-from searx.utils import match_language, extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
+import babel
+import babel.core
+import babel.languages
+
+from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
+from searx.locales import language_tag, region_tag, get_offical_locales
+from searx import network
 from searx.exceptions import SearxEngineCaptchaException
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
+
 
 # about
 about = {
@@ -45,64 +50,6 @@ categories = ['general', 'web']
 paging = True
 time_range_support = True
 safesearch = True
-send_accept_language_header = True
-use_mobile_ui = False
-supported_languages_url = 'https://www.google.com/preferences?#languages'
-
-# based on https://en.wikipedia.org/wiki/List_of_Google_domains and tests
-google_domains = {
-    'BG': 'google.bg',  # Bulgaria
-    'CZ': 'google.cz',  # Czech Republic
-    'DE': 'google.de',  # Germany
-    'DK': 'google.dk',  # Denmark
-    'AT': 'google.at',  # Austria
-    'CH': 'google.ch',  # Switzerland
-    'GR': 'google.gr',  # Greece
-    'AU': 'google.com.au',  # Australia
-    'CA': 'google.ca',  # Canada
-    'GB': 'google.co.uk',  # United Kingdom
-    'ID': 'google.co.id',  # Indonesia
-    'IE': 'google.ie',  # Ireland
-    'IN': 'google.co.in',  # India
-    'MY': 'google.com.my',  # Malaysia
-    'NZ': 'google.co.nz',  # New Zealand
-    'PH': 'google.com.ph',  # Philippines
-    'SG': 'google.com.sg',  # Singapore
-    'US': 'google.com',  # United States (google.us) redirects to .com
-    'ZA': 'google.co.za',  # South Africa
-    'AR': 'google.com.ar',  # Argentina
-    'CL': 'google.cl',  # Chile
-    'ES': 'google.es',  # Spain
-    'MX': 'google.com.mx',  # Mexico
-    'EE': 'google.ee',  # Estonia
-    'FI': 'google.fi',  # Finland
-    'BE': 'google.be',  # Belgium
-    'FR': 'google.fr',  # France
-    'IL': 'google.co.il',  # Israel
-    'HR': 'google.hr',  # Croatia
-    'HU': 'google.hu',  # Hungary
-    'IT': 'google.it',  # Italy
-    'JP': 'google.co.jp',  # Japan
-    'KR': 'google.co.kr',  # South Korea
-    'LT': 'google.lt',  # Lithuania
-    'LV': 'google.lv',  # Latvia
-    'NO': 'google.no',  # Norway
-    'NL': 'google.nl',  # Netherlands
-    'PL': 'google.pl',  # Poland
-    'BR': 'google.com.br',  # Brazil
-    'PT': 'google.pt',  # Portugal
-    'RO': 'google.ro',  # Romania
-    'RU': 'google.ru',  # Russia
-    'SK': 'google.sk',  # Slovakia
-    'SI': 'google.si',  # Slovenia
-    'SE': 'google.se',  # Sweden
-    'TH': 'google.co.th',  # Thailand
-    'TR': 'google.com.tr',  # Turkey
-    'UA': 'google.com.ua',  # Ukraine
-    'CN': 'google.com.hk',  # There is no google.cn, we use .com.hk for zh-CN
-    'HK': 'google.com.hk',  # Hong Kong
-    'TW': 'google.com.tw',  # Taiwan
-}
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
@@ -112,50 +59,50 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 # specific xpath variables
 # ------------------------
 
-results_xpath = './/div[@data-sokoban-container]'
+results_xpath = './/div[contains(@jscontroller, "SC7lYd")]'
 title_xpath = './/a/h3[1]'
 href_xpath = './/a[h3]/@href'
-content_xpath = './/div[@data-content-feature=1]'
-
-# google *sections* are no usual *results*, we ignore them
-g_section_with_header = './g-section-with-header'
-
+content_xpath = './/div[@data-sncf]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
 suggestion_xpath = '//div[contains(@class, "EIaa9b")]//a'
 
+# UI_ASYNC = 'use_ac:true,_fmt:html' # returns a HTTP 500 when user search for
+#                                    # celebrities like '!google natasha allegri'
+#                                    # or '!google chris evans'
+UI_ASYNC = 'use_ac:true,_fmt:prog'
+"""Format of the response from UI's async request."""
 
-def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
-    """Composing various language properties for the google engines.
+
+def get_google_info(params, eng_traits):
+    """Composing various (language) properties for the google engines (:ref:`google
+    API`).
 
     This function is called by the various google engines (:ref:`google web
     engine`, :ref:`google images engine`, :ref:`google news engine` and
     :ref:`google videos engine`).
 
-    :param dict param: request parameters of the engine
+    :param dict param: Request parameters of the engine.  At least
+        a ``searxng_locale`` key should be in the dictionary.
 
-    :param list lang_list: list of supported languages of the engine
-        :py:obj:`ENGINES_LANGUAGES[engine-name] <searx.data.ENGINES_LANGUAGES>`
-
-    :param dict lang_list: custom aliases for non standard language codes
-        (used when calling :py:func:`searx.utils.match_language`)
-
-    :param bool supported_any_language: When a language is not specified, the
-        language interpretation is left up to Google to decide how the search
-        results should be delivered.  This argument is ``True`` for the google
-        engine and ``False`` for the other engines (google-images, -news,
-        -scholar, -videos).
+    :param eng_traits: Engine's traits fetched from google preferences
+        (:py:obj:`searx.enginelib.traits.EngineTraits`)
 
     :rtype: dict
     :returns:
         Py-Dictionary with the key/value pairs:
 
         language:
-            Return value from :py:func:`searx.utils.match_language`
+            The language code that is used by google (e.g. ``lang_en`` or
+            ``lang_zh-TW``)
 
         country:
-            The country code (e.g. US, AT, CA, FR, DE ..)
+            The country code that is used by google (e.g. ``US`` or ``TW``)
+
+        locale:
+            A instance of :py:obj:`babel.core.Locale` build from the
+            ``searxng_locale`` value.
 
         subdomain:
             Google subdomain :py:obj:`google_domains` that fits to the country
@@ -165,52 +112,67 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
             Py-Dictionary with additional request arguments (can be passed to
             :py:func:`urllib.parse.urlencode`).
 
+            - ``hl`` parameter: specifies the interface language of user interface.
+            - ``lr`` parameter: restricts search results to documents written in
+              a particular language.
+            - ``cr`` parameter: restricts search results to documents
+              originating in a particular country.
+            - ``ie`` parameter: sets the character encoding scheme that should
+              be used to interpret the query string ('utf8').
+            - ``oe`` parameter: sets the character encoding scheme that should
+              be used to decode the XML result ('utf8').
+
         headers:
             Py-Dictionary with additional HTTP headers (can be passed to
             request's headers)
+
+            - ``Accept: '*/*``
+
     """
+
     ret_val = {
         'language': None,
         'country': None,
         'subdomain': None,
         'params': {},
         'headers': {},
+        'cookies': {},
+        'locale': None,
     }
 
-    # language ...
+    sxng_locale = params.get('searxng_locale', 'all')
+    try:
+        locale = babel.Locale.parse(sxng_locale, sep='-')
+    except babel.core.UnknownLocaleError:
+        locale = None
 
-    _lang = params['language']
-    _any_language = _lang.lower() == 'all'
-    if _any_language:
-        _lang = 'en-US'
-    language = match_language(_lang, lang_list, custom_aliases)
-    ret_val['language'] = language
+    eng_lang = eng_traits.get_language(sxng_locale, 'lang_en')
+    lang_code = eng_lang.split('_')[-1]  # lang_zh-TW --> zh-TW / lang_en --> en
+    country = eng_traits.get_region(sxng_locale, eng_traits.all_locale)
 
-    # country ...
+    # Test zh_hans & zh_hant --> in the topmost links in the result list of list
+    # TW and HK you should a find wiktionary.org zh_hant link.  In the result
+    # list of zh-CN should not be no hant link instead you should find
+    # zh.m.wikipedia.org/zh somewhere in the top.
 
-    _l = _lang.split('-')
-    if len(_l) == 2:
-        country = _l[1]
-    else:
-        country = _l[0].upper()
-        if country == 'EN':
-            country = 'US'
+    # '!go 日 :zh-TW' --> https://zh.m.wiktionary.org/zh-hant/%E6%97%A5
+    # '!go 日 :zh-CN' --> https://zh.m.wikipedia.org/zh/%E6%97%A5
+
+    ret_val['language'] = eng_lang
     ret_val['country'] = country
-
-    # subdomain ...
-
-    ret_val['subdomain'] = 'www.' + google_domains.get(country.upper(), 'google.com')
-
-    # params & headers
-
-    lang_country = '%s-%s' % (language, country)  # (en-US, en-EN, de-DE, de-AU, fr-FR ..)
+    ret_val['locale'] = locale
+    ret_val['subdomain'] = eng_traits.custom['supported_domains'].get(country.upper(), 'www.google.com')
 
     # hl parameter:
-    #   https://developers.google.com/custom-search/docs/xml_results#hlsp The
-    # Interface Language:
+    #   The hl parameter specifies the interface language (host language) of
+    #   your user interface. To improve the performance and the quality of your
+    #   search results, you are strongly encouraged to set this parameter
+    #   explicitly.
+    #   https://developers.google.com/custom-search/docs/xml_results#hlsp
+    # The Interface Language:
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#interfaceLanguages
 
-    ret_val['params']['hl'] = lang_list.get(lang_country, language)
+    ret_val['params']['hl'] = lang_code
 
     # lr parameter:
     #   The lr (language restrict) parameter restricts search results to
@@ -218,22 +180,72 @@ def get_lang_info(params, lang_list, custom_aliases, supported_any_language):
     #   https://developers.google.com/custom-search/docs/xml_results#lrsp
     #   Language Collection Values:
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#languageCollections
+    #
+    # To select 'all' languages an empty 'lr' value is used.
+    #
+    # Different to other google services, Google Schloar supports to select more
+    # than one language. The languages are seperated by a pipe '|' (logical OR).
+    # By example: &lr=lang_zh-TW%7Clang_de selects articles written in
+    # traditional chinese OR german language.
 
-    if _any_language and supported_any_language:
+    ret_val['params']['lr'] = eng_lang
+    if sxng_locale == 'all':
+        ret_val['params']['lr'] = ''
 
-        # interpretation is left up to Google (based on whoogle)
-        #
-        # - add parameter ``source=lnt``
-        # - don't use parameter ``lr``
-        # - don't add a ``Accept-Language`` HTTP header.
+    # cr parameter:
+    #   The cr parameter restricts search results to documents originating in a
+    #   particular country.
+    #   https://developers.google.com/custom-search/docs/xml_results#crsp
 
-        ret_val['params']['source'] = 'lnt'
+    ret_val['params']['cr'] = 'country' + country
+    if sxng_locale == 'all':
+        ret_val['params']['cr'] = ''
 
-    else:
+    # gl parameter: (mandatory by Geeogle News)
+    #   The gl parameter value is a two-letter country code. For WebSearch
+    #   results, the gl parameter boosts search results whose country of origin
+    #   matches the parameter value. See the Country Codes section for a list of
+    #   valid values.
+    #   Specifying a gl parameter value in WebSearch requests should improve the
+    #   relevance of results. This is particularly true for international
+    #   customers and, even more specifically, for customers in English-speaking
+    #   countries other than the United States.
+    #   https://developers.google.com/custom-search/docs/xml_results#glsp
 
-        # restricts search results to documents written in a particular
-        # language.
-        ret_val['params']['lr'] = "lang_" + lang_list.get(lang_country, language)
+    ret_val['params']['gl'] = country
+
+    # ie parameter:
+    #   The ie parameter sets the character encoding scheme that should be used
+    #   to interpret the query string. The default ie value is latin1.
+    #   https://developers.google.com/custom-search/docs/xml_results#iesp
+
+    ret_val['params']['ie'] = 'utf8'
+
+    # oe parameter:
+    #   The oe parameter sets the character encoding scheme that should be used
+    #   to decode the XML result. The default oe value is latin1.
+    #   https://developers.google.com/custom-search/docs/xml_results#oesp
+
+    ret_val['params']['oe'] = 'utf8'
+
+    # num parameter:
+    #   The num parameter identifies the number of search results to return.
+    #   The default num value is 10, and the maximum value is 20. If you request
+    #   more than 20 results, only 20 results will be returned.
+    #   https://developers.google.com/custom-search/docs/xml_results#numsp
+
+    # HINT: seems to have no effect (tested in google WEB & Images)
+    # ret_val['params']['num'] = 20
+
+    # HTTP headers
+
+    ret_val['headers']['Accept'] = '*/*'
+
+    # Cookies
+
+    # - https://github.com/searxng/searxng/pull/1679#issuecomment-1235432746
+    # - https://github.com/searxng/searxng/issues/1555
+    ret_val['cookies']['CONSENT'] = "YES+"
 
     return ret_val
 
@@ -245,33 +257,34 @@ def detect_google_sorry(resp):
 
 def request(query, params):
     """Google search request"""
-
+    # pylint: disable=line-too-long
     offset = (params['pageno'] - 1) * 10
-
-    lang_info = get_lang_info(params, supported_languages, language_aliases, True)
-
-    additional_parameters = {}
-    if use_mobile_ui:
-        additional_parameters = {
-            'asearch': 'arc',
-            'async': 'use_ac:true,_fmt:prog',
-        }
+    google_info = get_google_info(params, traits)
 
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
     query_url = (
         'https://'
-        + lang_info['subdomain']
+        + google_info['subdomain']
         + '/search'
         + "?"
         + urlencode(
             {
                 'q': query,
-                **lang_info['params'],
-                'ie': "utf8",
-                'oe': "utf8",
-                'start': offset,
+                **google_info['params'],
                 'filter': '0',
-                **additional_parameters,
+                'start': offset,
+                # 'vet': '12ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0QxK8CegQIARAC..i',
+                # 'ved': '2ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0Q_skCegQIARAG',
+                # 'cs' : 1,
+                # 'sa': 'N',
+                # 'yv': 3,
+                # 'prmd': 'vin',
+                # 'ei': 'GASaY6TxOcy_xc8PtYeY6AE',
+                # 'sa': 'N',
+                # 'sstk': 'AcOHfVkD7sWCSAheZi-0tx_09XDO55gTWY0JNq3_V26cNN-c8lfD45aZYPI8s_Bqp8s57AHz5pxchDtAGCA_cikAWSjy9kw3kgg'
+                # formally known as use_mobile_ui
+                'asearch': 'arc',
+                'async': UI_ASYNC,
             }
         )
     )
@@ -282,25 +295,38 @@ def request(query, params):
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
 
-    params['cookies']['CONSENT'] = "YES+"
-    params['headers'].update(lang_info['headers'])
-    if use_mobile_ui:
-        params['headers']['Accept'] = '*/*'
-    else:
-        params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-
+    params['cookies'] = google_info['cookies']
+    params['headers'].update(google_info['headers'])
     return params
+
+
+# =26;[3,"dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137"]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA
+# ...6T+9Nl4cnD+gr9OK8I56/tX3l86nWYw//2Q==26;
+RE_DATA_IMAGE = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*);')
+
+
+def _parse_data_images(dom):
+    data_image_map = {}
+    for img_id, data_image in RE_DATA_IMAGE.findall(dom.text_content()):
+        end_pos = data_image.rfind('=')
+        if end_pos > 0:
+            data_image = data_image[: end_pos + 1]
+        data_image_map[img_id] = data_image
+    logger.debug('data:image objects --> %s', list(data_image_map.keys()))
+    return data_image_map
 
 
 def response(resp):
     """Get response from google's search request"""
-
+    # pylint: disable=too-many-branches, too-many-statements
     detect_google_sorry(resp)
 
     results = []
 
     # convert the text to dom
     dom = html.fromstring(resp.text)
+    data_image_map = _parse_data_images(dom)
+
     # results --> answer
     answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
     if answer_list:
@@ -309,25 +335,9 @@ def response(resp):
     else:
         logger.debug("did not find 'answer'")
 
-        # results --> number_of_results
-        if not use_mobile_ui:
-            try:
-                _txt = eval_xpath_getindex(dom, '//div[@id="result-stats"]//text()', 0)
-                _digit = ''.join([n for n in _txt if n.isdigit()])
-                number_of_results = int(_digit)
-                results.append({'number_of_results': number_of_results})
-            except Exception as e:  # pylint: disable=broad-except
-                logger.debug("did not 'number_of_results'")
-                logger.error(e, exc_info=True)
-
     # parse results
 
-    for result in eval_xpath_list(dom, results_xpath):
-
-        # google *sections*
-        if extract_text(eval_xpath(result, g_section_with_header)):
-            logger.debug("ignoring <g-section-with-header>")
-            continue
+    for result in eval_xpath_list(dom, results_xpath):  # pylint: disable=too-many-nested-blocks
 
         try:
             title_tag = eval_xpath_getindex(result, title_xpath, 0, default=None)
@@ -336,16 +346,30 @@ def response(resp):
                 logger.debug('ignoring item from the result_xpath list: missing title')
                 continue
             title = extract_text(title_tag)
+
             url = eval_xpath_getindex(result, href_xpath, 0, None)
             if url is None:
+                logger.debug('ignoring item from the result_xpath list: missing url of title "%s"', title)
                 continue
-            content = extract_text(eval_xpath_getindex(result, content_xpath, 0, default=None), allow_none=True)
-            if content is None:
+
+            content_nodes = eval_xpath(result, content_xpath)
+            content = extract_text(content_nodes)
+
+            if not content:
                 logger.debug('ignoring item from the result_xpath list: missing content of title "%s"', title)
                 continue
 
-            logger.debug('add link to results: %s', title)
-            results.append({'url': url, 'title': title, 'content': content})
+            img_src = content_nodes[0].xpath('.//img/@src')
+            if img_src:
+                img_src = img_src[0]
+                if img_src.startswith('data:image'):
+                    img_id = content_nodes[0].xpath('.//img/@id')
+                    if img_id:
+                        img_src = data_image_map.get(img_id[0])
+            else:
+                img_src = None
+
+            results.append({'url': url, 'title': title, 'content': content, 'img_src': img_src})
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
@@ -361,15 +385,107 @@ def response(resp):
 
 
 # get supported languages from their site
-def _fetch_supported_languages(resp):
-    ret_val = {}
+
+
+skip_countries = [
+    # official language of google-country not in google-languages
+    'AL',  # Albanien (sq)
+    'AZ',  # Aserbaidschan  (az)
+    'BD',  # Bangladesch (bn)
+    'BN',  # Brunei Darussalam (ms)
+    'BT',  # Bhutan (dz)
+    'ET',  # Äthiopien (am)
+    'GE',  # Georgien (ka, os)
+    'GL',  # Grönland (kl)
+    'KH',  # Kambodscha (km)
+    'LA',  # Laos (lo)
+    'LK',  # Sri Lanka (si, ta)
+    'ME',  # Montenegro (sr)
+    'MK',  # Nordmazedonien (mk, sq)
+    'MM',  # Myanmar (my)
+    'MN',  # Mongolei (mn)
+    'MV',  # Malediven (dv) // dv_MV is unknown by babel
+    'MY',  # Malaysia (ms)
+    'NP',  # Nepal (ne)
+    'TJ',  # Tadschikistan (tg)
+    'TM',  # Turkmenistan (tk)
+    'UZ',  # Usbekistan (uz)
+]
+
+
+def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
+    """Fetch languages from Google."""
+    # pylint: disable=import-outside-toplevel, too-many-branches
+
+    engine_traits.custom['supported_domains'] = {}
+
+    resp = network.get('https://www.google.com/preferences')
+    if not resp.ok:
+        raise RuntimeError("Response from Google's preferences is not OK.")
+
     dom = html.fromstring(resp.text)
 
-    radio_buttons = eval_xpath_list(dom, '//*[@id="langSec"]//input[@name="lr"]')
+    # supported language codes
 
-    for x in radio_buttons:
-        name = x.get("data-name")
-        code = x.get("value").split('_')[-1]
-        ret_val[code] = {"name": name}
+    lang_map = {'no': 'nb'}
+    for x in eval_xpath_list(dom, '//*[@id="langSec"]//input[@name="lr"]'):
 
-    return ret_val
+        eng_lang = x.get("value").split('_')[-1]
+        try:
+            locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
+        except babel.UnknownLocaleError:
+            print("ERROR: %s -> %s is unknown by babel" % (x.get("data-name"), eng_lang))
+            continue
+        sxng_lang = language_tag(locale)
+
+        conflict = engine_traits.languages.get(sxng_lang)
+        if conflict:
+            if conflict != eng_lang:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_lang, conflict, eng_lang))
+            continue
+        engine_traits.languages[sxng_lang] = 'lang_' + eng_lang
+
+    # alias languages
+    engine_traits.languages['zh'] = 'lang_zh-CN'
+
+    # supported region codes
+
+    for x in eval_xpath_list(dom, '//*[@name="region"]/..//input[@name="region"]'):
+        eng_country = x.get("value")
+
+        if eng_country in skip_countries:
+            continue
+        if eng_country == 'ZZ':
+            engine_traits.all_locale = 'ZZ'
+            continue
+
+        sxng_locales = get_offical_locales(eng_country, engine_traits.languages.keys(), regional=True)
+
+        if not sxng_locales:
+            print("ERROR: can't map from google country %s (%s) to a babel region." % (x.get('data-name'), eng_country))
+            continue
+
+        for sxng_locale in sxng_locales:
+            engine_traits.regions[region_tag(sxng_locale)] = eng_country
+
+    # alias regions
+    engine_traits.regions['zh-CN'] = 'HK'
+
+    # supported domains
+
+    if add_domains:
+        resp = network.get('https://www.google.com/supported_domains')
+        if not resp.ok:
+            raise RuntimeError("Response from https://www.google.com/supported_domains is not OK.")
+
+        for domain in resp.text.split():
+            domain = domain.strip()
+            if not domain or domain in [
+                '.google.com',
+            ]:
+                continue
+            region = domain.split('.')[-1].upper()
+            engine_traits.custom['supported_domains'][region] = 'www' + domain
+            if region == 'HK':
+                # There is no google.cn, we use .com.hk for zh-CN
+                engine_traits.custom['supported_domains']['CN'] = 'www' + domain

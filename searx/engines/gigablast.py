@@ -39,6 +39,9 @@ extra_param_ts = 0
 # after how many seconds extra_param expire
 extra_param_expiration_delay = 3000
 
+gb_userid = ''
+gb_code = ''
+
 
 def fetch_extra_param(query_args, headers):
 
@@ -70,6 +73,10 @@ def fetch_extra_param(query_args, headers):
 # do search-request
 def request(query, params):  # pylint: disable=unused-argument
     query_args = dict(c='main', q=query, dr=1, showgoodimages=0)
+
+    if gb_userid and gb_code:
+        query_args['userid'] = gb_userid
+        query_args['code'] = gb_code
 
     if params['language'] and params['language'] != 'all':
         query_args['qlangcountry'] = params['language']

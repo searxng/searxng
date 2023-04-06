@@ -1,17 +1,35 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Dailymotion (Videos)
+# lint: pylint
+"""
+Dailymotion (Videos)
+~~~~~~~~~~~~~~~~~~~~
+
+.. _REST GET: https://developers.dailymotion.com/tools/
+.. _Global API Parameters: https://developers.dailymotion.com/api/#global-parameters
+.. _Video filters API: https://developers.dailymotion.com/api/#video-filters
+.. _Fields selection: https://developers.dailymotion.com/api/#fields-selection
 
 """
 
-from typing import Set
+from typing import TYPE_CHECKING
+
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 import time
 import babel
 
 from searx.exceptions import SearxEngineAPIException
-from searx.network import raise_for_httperror
+from searx import network
 from searx.utils import html_to_text
+from searx.locales import region_tag, language_tag
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
 
 # about
 about = {
@@ -37,11 +55,24 @@ time_delta_dict = {
 }
 
 safesearch = True
-safesearch_params = {2: '&is_created_for_kids=true', 1: '&is_created_for_kids=true', 0: ''}
+safesearch_params = {
+    2: {'is_created_for_kids': 'true'},
+    1: {'is_created_for_kids': 'true'},
+    0: {},
+}
+"""True if this video is "Created for Kids" / intends to target an audience
+under the age of 16 (``is_created_for_kids`` in `Video filters API`_ )
+"""
 
-# search-url
-# - https://developers.dailymotion.com/tools/
-# - https://www.dailymotion.com/doc/api/obj-video.html
+family_filter_map = {
+    2: 'true',
+    1: 'true',
+    0: 'false',
+}
+"""By default, the family filter is turned on. Setting this parameter to
+``false`` will stop filtering-out explicit content from searches and global
+contexts (``family_filter`` in `Global API Parameters`_ ).
+"""
 
 result_fields = [
     'allow_embed',
@@ -53,27 +84,21 @@ result_fields = [
     'thumbnail_360_url',
     'id',
 ]
-search_url = (
-    'https://api.dailymotion.com/videos?'
-    'fields={fields}&password_protected={password_protected}&private={private}&sort={sort}&limit={limit}'
-).format(
-    fields=','.join(result_fields),
-    password_protected='false',
-    private='false',
-    sort='relevance',
-    limit=number_of_results,
-)
+"""`Fields selection`_, by default, a few fields are returned. To request more
+specific fields, the ``fields`` parameter is used with the list of fields
+SearXNG needs in the response to build a video result list.
+"""
+
+search_url = 'https://api.dailymotion.com/videos?'
+"""URL to retrieve a list of videos.
+
+- `REST GET`_
+- `Global API Parameters`_
+- `Video filters API`_
+"""
+
 iframe_src = "https://www.dailymotion.com/embed/video/{video_id}"
-
-# The request query filters by 'languages' & 'country', therefore instead of
-# fetching only languages we need to fetch locales.
-supported_languages_url = 'https://api.dailymotion.com/locales'
-supported_languages_iso639: Set[str] = set()
-
-
-def init(_engine_settings):
-    global supported_languages_iso639
-    supported_languages_iso639 = set([language.split('_')[0] for language in supported_languages])
+"""URL template to embed video in SearXNG's result list."""
 
 
 def request(query, params):
@@ -81,34 +106,42 @@ def request(query, params):
     if not query:
         return False
 
-    language = params['language']
-    if language == 'all':
-        language = 'en-US'
-    locale = babel.Locale.parse(language, sep='-')
+    eng_region = traits.get_region(params['searxng_locale'], 'en_US')
+    eng_lang = traits.get_language(params['searxng_locale'], 'en')
 
-    language_iso639 = locale.language
-    if locale.language not in supported_languages_iso639:
-        language_iso639 = 'en'
-
-    query_args = {
+    args = {
         'search': query,
-        'languages': language_iso639,
+        'family_filter': family_filter_map.get(params['safesearch'], 'false'),
+        'thumbnail_ratio': 'original',  # original|widescreen|square
+        # https://developers.dailymotion.com/api/#video-filters
+        'languages': eng_lang,
         'page': params['pageno'],
+        'password_protected': 'false',
+        'private': 'false',
+        'sort': 'relevance',
+        'limit': number_of_results,
+        'fields': ','.join(result_fields),
     }
 
-    if locale.territory:
-        localization = locale.language + '_' + locale.territory
-        if localization in supported_languages:
-            query_args['country'] = locale.territory
+    args.update(safesearch_params.get(params['safesearch'], {}))
+
+    # Don't add localization and country arguments if the user does select a
+    # language (:de, :en, ..)
+
+    if len(params['searxng_locale'].split('-')) > 1:
+        # https://developers.dailymotion.com/api/#global-parameters
+        args['localization'] = eng_region
+        args['country'] = eng_region.split('_')[1]
+        # Insufficient rights for the `ams_country' parameter of route `GET /videos'
+        # 'ams_country': eng_region.split('_')[1],
 
     time_delta = time_delta_dict.get(params["time_range"])
     if time_delta:
         created_after = datetime.now() - time_delta
-        query_args['created_after'] = datetime.timestamp(created_after)
+        args['created_after'] = datetime.timestamp(created_after)
 
-    query_str = urlencode(query_args)
-    params['url'] = search_url + '&' + query_str + safesearch_params.get(params['safesearch'], '')
-    params['raise_for_httperror'] = False
+    query_str = urlencode(args)
+    params['url'] = search_url + query_str
 
     return params
 
@@ -123,7 +156,7 @@ def response(resp):
     if 'error' in search_res:
         raise SearxEngineAPIException(search_res['error'].get('message'))
 
-    raise_for_httperror(resp)
+    network.raise_for_httperror(resp)
 
     # parse results
     for res in search_res.get('list', []):
@@ -167,7 +200,53 @@ def response(resp):
     return results
 
 
-# get supported languages from their site
-def _fetch_supported_languages(resp):
-    response_json = resp.json()
-    return [item['locale'] for item in response_json['list']]
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch locales & languages from dailymotion.
+
+    Locales fetched from `api/locales <https://api.dailymotion.com/locales>`_.
+    There are duplications in the locale codes returned from Dailymotion which
+    can be ignored::
+
+      en_EN --> en_GB, en_US
+      ar_AA --> ar_EG, ar_AE, ar_SA
+
+    The language list `api/languages <https://api.dailymotion.com/languages>`_
+    contains over 7000 *languages* codes (see PR1071_).  We use only those
+    language codes that are used in the locales.
+
+    .. _PR1071: https://github.com/searxng/searxng/pull/1071
+
+    """
+
+    resp = network.get('https://api.dailymotion.com/locales')
+    if not resp.ok:
+        print("ERROR: response from dailymotion/locales is not OK.")
+
+    for item in resp.json()['list']:
+        eng_tag = item['locale']
+        if eng_tag in ('en_EN', 'ar_AA'):
+            continue
+        try:
+            sxng_tag = region_tag(babel.Locale.parse(eng_tag))
+        except babel.UnknownLocaleError:
+            print("ERROR: item unknown --> %s" % item)
+            continue
+
+        conflict = engine_traits.regions.get(sxng_tag)
+        if conflict:
+            if conflict != eng_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+            continue
+        engine_traits.regions[sxng_tag] = eng_tag
+
+    locale_lang_list = [x.split('_')[0] for x in engine_traits.regions.values()]
+
+    resp = network.get('https://api.dailymotion.com/languages')
+    if not resp.ok:
+        print("ERROR: response from dailymotion/languages is not OK.")
+
+    for item in resp.json()['list']:
+        eng_tag = item['code']
+        if eng_tag in locale_lang_list:
+            sxng_tag = language_tag(babel.Locale.parse(eng_tag))
+            engine_traits.languages[sxng_tag] = eng_tag

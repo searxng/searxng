@@ -4,11 +4,11 @@
 """Initialize :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`.
 """
 
-from typing import Set
+from typing import Set, Optional, List
 import os
 import pathlib
 
-from babel import Locale
+import babel
 from babel.support import Translations
 import babel.languages
 import babel.core
@@ -134,7 +134,7 @@ def locales_initialize(directory=None):
     flask_babel.get_translations = get_translations
 
     for tag, descr in ADDITIONAL_TRANSLATIONS.items():
-        locale = Locale.parse(LOCALE_BEST_MATCH[tag], sep='-')
+        locale = babel.Locale.parse(LOCALE_BEST_MATCH[tag], sep='-')
         LOCALE_NAMES[tag] = descr
         if locale.text_direction == 'rtl':
             RTL_LOCALES.add(tag)
@@ -142,7 +142,7 @@ def locales_initialize(directory=None):
     for tag in LOCALE_BEST_MATCH:
         descr = LOCALE_NAMES.get(tag)
         if not descr:
-            locale = Locale.parse(tag, sep='-')
+            locale = babel.Locale.parse(tag, sep='-')
             LOCALE_NAMES[tag] = get_locale_descr(locale, tag.replace('-', '_'))
             if locale.text_direction == 'rtl':
                 RTL_LOCALES.add(tag)
@@ -154,10 +154,75 @@ def locales_initialize(directory=None):
         tag = dirname.replace('_', '-')
         descr = LOCALE_NAMES.get(tag)
         if not descr:
-            locale = Locale.parse(dirname)
+            locale = babel.Locale.parse(dirname)
             LOCALE_NAMES[tag] = get_locale_descr(locale, dirname)
             if locale.text_direction == 'rtl':
                 RTL_LOCALES.add(tag)
+
+
+def region_tag(locale: babel.Locale) -> str:
+    """Returns SearXNG's region tag from the locale (e.g. zh-TW , en-US)."""
+    if not locale.territory:
+        raise ValueError('%s missed a territory')
+    return locale.language + '-' + locale.territory
+
+
+def language_tag(locale: babel.Locale) -> str:
+    """Returns SearXNG's language tag from the locale and if exits, the tag
+    includes the script name (e.g. en, zh_Hant).
+    """
+    sxng_lang = locale.language
+    if locale.script:
+        sxng_lang += '_' + locale.script
+    return sxng_lang
+
+
+def get_locale(locale_tag: str) -> Optional[babel.Locale]:
+    """Returns a :py:obj:`babel.Locale` object parsed from argument
+    ``locale_tag``"""
+    try:
+        locale = babel.Locale.parse(locale_tag, sep='-')
+        return locale
+
+    except babel.core.UnknownLocaleError:
+        return None
+
+
+def get_offical_locales(
+    territory: str, languages=None, regional: bool = False, de_facto: bool = True
+) -> Set[babel.Locale]:
+    """Returns a list of :py:obj:`babel.Locale` with languages from
+    :py:obj:`babel.languages.get_official_languages`.
+
+    :param territory: The territory (country or region) code.
+
+    :param languages: A list of language codes the languages from
+      :py:obj:`babel.languages.get_official_languages` should be in
+      (intersection).  If this argument is ``None``, all official languages in
+      this territory are used.
+
+    :param regional: If the regional flag is set, then languages which are
+      regionally official are also returned.
+
+    :param de_facto: If the de_facto flag is set to `False`, then languages
+      which are “de facto” official are not returned.
+
+    """
+    ret_val = set()
+    o_languages = babel.languages.get_official_languages(territory, regional=regional, de_facto=de_facto)
+
+    if languages:
+        languages = [l.lower() for l in languages]
+        o_languages = set(l for l in o_languages if l.lower() in languages)
+
+    for lang in o_languages:
+        try:
+            locale = babel.Locale.parse(lang + '_' + territory)
+            ret_val.add(locale)
+        except babel.UnknownLocaleError:
+            continue
+
+    return ret_val
 
 
 def get_engine_locale(searxng_locale, engine_locales, default=None):
@@ -177,6 +242,10 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
           ...
           'pl-PL'          : 'pl_PL',
           'pt-PT'          : 'pt_PT'
+          ..
+          'zh'             : 'zh'
+          'zh_Hans'        : 'zh'
+          'zh_Hant'        : 'zh-classical'
       }
 
     .. hint::
@@ -210,13 +279,13 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
       engine.
 
     """
-    # pylint: disable=too-many-branches
+    # pylint: disable=too-many-branches, too-many-return-statements
 
     engine_locale = engine_locales.get(searxng_locale)
 
     if engine_locale is not None:
-        # There was a 1:1 mapping (e.g. "fr-BE --> fr_BE" or "fr --> fr_FR"), no
-        # need to narrow language nor territory.
+        # There was a 1:1 mapping (e.g. a region "fr-BE --> fr_BE" or a language
+        # "zh --> zh"), no need to narrow language-script nor territory.
         return engine_locale
 
     try:
@@ -226,6 +295,12 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
             locale = babel.Locale.parse(searxng_locale.split('-')[0])
         except babel.core.UnknownLocaleError:
             return default
+
+    searxng_lang = language_tag(locale)
+    engine_locale = engine_locales.get(searxng_lang)
+    if engine_locale is not None:
+        # There was a 1:1 mapping (e.g. "zh-HK --> zh_Hant" or "zh-CN --> zh_Hans")
+        return engine_locale
 
     # SearXNG's selected locale is not supported by the engine ..
 
@@ -246,10 +321,6 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
     # engine does support the searxng_lang in this other territory.
 
     if locale.language:
-
-        searxng_lang = locale.language
-        if locale.script:
-            searxng_lang += '_' + locale.script
 
         terr_lang_dict = {}
         for territory, langs in babel.core.get_global("territory_languages").items():
@@ -303,3 +374,98 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
         engine_locale = default
 
     return default
+
+
+def match_locale(searxng_locale: str, locale_tag_list: List[str], fallback: Optional[str] = None) -> Optional[str]:
+    """Return tag from ``locale_tag_list`` that best fits to ``searxng_locale``.
+
+    :param str searxng_locale: SearXNG's internal representation of locale (de,
+        de-DE, fr-BE, zh, zh-CN, zh-TW ..).
+
+    :param list locale_tag_list: The list of locale tags to select from
+
+    :param str fallback: fallback locale tag (if unset --> ``None``)
+
+    The rules to find a match are implemented in :py:obj:`get_engine_locale`,
+    the ``engine_locales`` is build up by :py:obj:`build_engine_locales`.
+
+    .. hint::
+
+       The *SearXNG locale* string and the members of ``locale_tag_list`` has to
+       be known by babel!  The :py:obj:`ADDITIONAL_TRANSLATIONS` are used in the
+       UI and are not known by babel --> will be ignored.
+    """
+
+    # searxng_locale = 'es'
+    # locale_tag_list = ['es-AR', 'es-ES', 'es-MX']
+
+    if not searxng_locale:
+        return fallback
+
+    locale = get_locale(searxng_locale)
+    if locale is None:
+        return fallback
+
+    # normalize to a SearXNG locale that can be passed to get_engine_locale
+
+    searxng_locale = language_tag(locale)
+    if locale.territory:
+        searxng_locale = region_tag(locale)
+
+    # clean up locale_tag_list
+
+    tag_list = []
+    for tag in locale_tag_list:
+        if tag in ('all', 'auto') or tag in ADDITIONAL_TRANSLATIONS:
+            continue
+        tag_list.append(tag)
+
+    # emulate fetch_traits
+    engine_locales = build_engine_locales(tag_list)
+    return get_engine_locale(searxng_locale, engine_locales, default=fallback)
+
+
+def build_engine_locales(tag_list: List[str]):
+    """From a list of locale tags a dictionary is build that can be passed by
+    argument ``engine_locales`` to :py:obj:`get_engine_locale`.  This function
+    is mainly used by :py:obj:`match_locale` and is similar to what the
+    ``fetch_traits(..)`` function of engines do.
+
+    If there are territory codes in the ``tag_list`` that have a *script code*
+    additional keys are added to the returned dictionary.
+
+    .. code:: python
+
+       >>> import locales
+       >>> engine_locales = locales.build_engine_locales(['en', 'en-US', 'zh', 'zh-CN', 'zh-TW'])
+       >>> engine_locales
+       {
+           'en': 'en', 'en-US': 'en-US',
+           'zh': 'zh', 'zh-CN': 'zh-CN', 'zh_Hans': 'zh-CN',
+           'zh-TW': 'zh-TW', 'zh_Hant': 'zh-TW'
+       }
+       >>> get_engine_locale('zh-Hans', engine_locales)
+       'zh-CN'
+
+    This function is a good example to understand the language/region model
+    of SearXNG:
+
+      SearXNG only distinguishes between **search languages** and **search
+      regions**, by adding the *script-tags*, languages with *script-tags* can
+      be assigned to the **regions** that SearXNG supports.
+
+    """
+    engine_locales = {}
+
+    for tag in tag_list:
+        locale = get_locale(tag)
+        if locale is None:
+            logger.warn("build_engine_locales: skip locale tag %s / unknown by babel", tag)
+            continue
+        if locale.territory:
+            engine_locales[region_tag(locale)] = tag
+            if locale.script:
+                engine_locales[language_tag(locale)] = tag
+        else:
+            engine_locales[language_tag(locale)] = tag
+    return engine_locales

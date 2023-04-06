@@ -54,6 +54,7 @@ Engine File
                                        - ``offline`` :ref:`[ref] <offline engines>`
                                        - ``online_dictionary``
                                        - ``online_currency``
+                                       - ``online_url_search``
    ======================= =========== ========================================================
 
 .. _engine settings:
@@ -131,8 +132,10 @@ Passed Arguments (request)
 These arguments can be used to construct the search query.  Furthermore,
 parameters with default value can be redefined for special purposes.
 
+.. _engine request online:
 
-.. table:: If the ``engine_type`` is ``online``
+.. table:: If the ``engine_type`` is :py:obj:`online
+           <searx.search.processors.online.OnlineProcessor.get_params>`
    :width: 100%
 
    ====================== ============== ========================================================================
@@ -149,12 +152,16 @@ parameters with default value can be redefined for special purposes.
    safesearch             int            ``0``, between ``0`` and ``2`` (normal, moderate, strict)
    time_range             Optional[str]  ``None``, can be ``day``, ``week``, ``month``, ``year``
    pageno                 int            current pagenumber
-   language               str            specific language code like ``'en_US'``, or ``'all'`` if unspecified
+   searxng_locale         str            SearXNG's locale selected by user.  Specific language code like
+                                         ``'en'``, ``'en-US'``, or ``'all'`` if unspecified.
    ====================== ============== ========================================================================
 
 
-.. table:: If the ``engine_type`` is ``online_dictionary``, in addition to the
-           ``online`` arguments:
+.. _engine request online_dictionary:
+
+.. table:: If the ``engine_type`` is :py:obj:`online_dictionary
+           <searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params>`,
+           in addition to the :ref:`online <engine request online>` arguments:
    :width: 100%
 
    ====================== ============== ========================================================================
@@ -165,8 +172,11 @@ parameters with default value can be redefined for special purposes.
    query                  str            the text query without the languages
    ====================== ============== ========================================================================
 
-.. table:: If the ``engine_type`` is ``online_currency```, in addition to the
-           ``online`` arguments:
+.. _engine request online_currency:
+
+.. table:: If the ``engine_type`` is :py:obj:`online_currency
+           <searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params>`,
+           in addition to the :ref:`online <engine request online>` arguments:
    :width: 100%
 
    ====================== ============== ========================================================================
@@ -179,6 +189,26 @@ parameters with default value can be redefined for special purposes.
    to_name                str            currency name
    ====================== ============== ========================================================================
 
+.. _engine request online_url_search:
+
+.. table:: If the ``engine_type`` is :py:obj:`online_url_search
+           <searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params>`,
+           in addition to the :ref:`online <engine request online>` arguments:
+   :width: 100%
+
+   ====================== ============== ========================================================================
+   argument               type           default-value, information
+   ====================== ============== ========================================================================
+   search_url             dict           URLs from the search query:
+
+                                         .. code:: python
+
+                                            {
+                                              'http': str,
+                                              'ftp': str,
+                                              'data:image': str
+                                            }
+   ====================== ============== ========================================================================
 
 Specify Request
 ---------------
