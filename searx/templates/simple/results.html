@@ -19,6 +19,11 @@
 {% endif %}
 
 <div id="results" class="{{ only_template }}">
+
+    {% if number_of_results != '0' -%}
+      <div id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></div>
+    {%- endif %}
+
     {% if answers -%}
     <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
         {%- for answer in answers.values() -%}
@@ -34,10 +39,6 @@
     {%- endif %}
 
     <div id="sidebar">
-
-        {% if number_of_results != '0' -%}
-        <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
-        {%- endif %}
 
         {% if unresponsive_engines and results|length >= 1 %}
 	<div class="dialog-error" role="alert">

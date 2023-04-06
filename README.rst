@@ -2,10 +2,10 @@
 
 ----
 
-.. figure:: https://raw.githubusercontent.com/searxng/searxng/master/src/brand/searxng.svg
-   :target: https://docs.searxng.org/
-   :alt: SearXNG
-   :width: 100%
+.. figure:: searx/static/themes/simple/img/fufusoup-logo-blue-bg.png
+   :target: https://mkm.technology
+   :alt: Fufusoup
+   :width: 50%
    :align: center
 
 ----
@@ -78,7 +78,7 @@ Matrix
 Differences to searx
 ====================
 
-SearXNG is a fork of `searx`_, with notable changes:
+Fufusoup is a fork of SearXNG, which is a fork of `searx`_, with notable changes:
 
 .. _searx: https://github.com/searx/searx
 
@@ -147,6 +147,9 @@ Help translate SearXNG at `Weblate`_
 
 Donations
 =========
+
+Support the Fufusoup project by clicking the donation page:
+https://www.buymeacoffee.com/mkmtechnology
 
 Support the SearXNG project by clicking the donation page:
 https://docs.searxng.org/donate.html
