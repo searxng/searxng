@@ -1,19 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Google (Scholar)
+"""This is the implementation of the Google Scholar engine.
 
-For detailed description of the *REST-full* API see: `Query Parameter
-Definitions`_.
-
-.. _Query Parameter Definitions:
-   https://developers.google.com/custom-search/docs/xml_results#WebSearch_Query_Parameter_Definitions
+Compared to other Google services the Scholar engine has a simple GET REST-API
+and there does not exists `async` API.  Even though the API slightly vintage we
+can make use of the :ref:`google API` to assemble the arguments of the GET
+request.
 """
 
-# pylint: disable=invalid-name
+from typing import TYPE_CHECKING
+from typing import Optional
 
 from urllib.parse import urlencode
 from datetime import datetime
-from typing import Optional
 from lxml import html
 
 from searx.utils import (
@@ -23,19 +22,21 @@ from searx.utils import (
     extract_text,
 )
 
+from searx.exceptions import SearxEngineCaptchaException
+
+from searx.engines.google import fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import (
-    get_lang_info,
+    get_google_info,
     time_range_dict,
-    detect_google_sorry,
 )
+from searx.enginelib.traits import EngineTraits
 
-# pylint: disable=unused-import
-from searx.engines.google import (
-    supported_languages_url,
-    _fetch_supported_languages,
-)
+if TYPE_CHECKING:
+    import logging
 
-# pylint: enable=unused-import
+    logger: logging.Logger
+
+traits: EngineTraits
 
 # about
 about = {
@@ -51,53 +52,62 @@ about = {
 categories = ['science', 'scientific publications']
 paging = True
 language_support = True
-use_locale_domain = True
 time_range_support = True
 safesearch = False
 send_accept_language_header = True
 
 
-def time_range_url(params):
-    """Returns a URL query component for a google-Scholar time range based on
-    ``params['time_range']``.  Google-Scholar does only support ranges in years.
-    To have any effect, all the Searx ranges (*day*, *week*, *month*, *year*)
-    are mapped to *year*.  If no range is set, an empty string is returned.
-    Example::
+def time_range_args(params):
+    """Returns a dictionary with a time range arguments based on
+    ``params['time_range']``.
 
-        &as_ylo=2019
+    Google Scholar supports a detailed search by year.  Searching by *last
+    month* or *last week* (as offered by SearXNG) is uncommon for scientific
+    publications and is not supported by Google Scholar.
+
+    To limit the result list when the users selects a range, all the SearXNG
+    ranges (*day*, *week*, *month*, *year*) are mapped to *year*.  If no range
+    is set an empty dictionary of arguments is returned.  Example;  when
+    user selects a time range (current year minus one in 2022):
+
+    .. code:: python
+
+        { 'as_ylo' : 2021 }
+
     """
-    # as_ylo=2016&as_yhi=2019
-    ret_val = ''
+    ret_val = {}
     if params['time_range'] in time_range_dict:
-        ret_val = urlencode({'as_ylo': datetime.now().year - 1})
-    return '&' + ret_val
+        ret_val['as_ylo'] = datetime.now().year - 1
+    return ret_val
+
+
+def detect_google_captcha(dom):
+    """In case of CAPTCHA Google Scholar open its own *not a Robot* dialog and is
+    not redirected to ``sorry.google.com``.
+    """
+    if eval_xpath(dom, "//form[@id='gs_captcha_f']"):
+        raise SearxEngineCaptchaException()
 
 
 def request(query, params):
     """Google-Scholar search request"""
 
-    offset = (params['pageno'] - 1) * 10
-    lang_info = get_lang_info(params, supported_languages, language_aliases, False)
-
+    google_info = get_google_info(params, traits)
     # subdomain is: scholar.google.xy
-    lang_info['subdomain'] = lang_info['subdomain'].replace("www.", "scholar.")
+    google_info['subdomain'] = google_info['subdomain'].replace("www.", "scholar.")
 
-    query_url = (
-        'https://'
-        + lang_info['subdomain']
-        + '/scholar'
-        + "?"
-        + urlencode({'q': query, **lang_info['params'], 'ie': "utf8", 'oe': "utf8", 'start': offset})
-    )
+    args = {
+        'q': query,
+        **google_info['params'],
+        'start': (params['pageno'] - 1) * 10,
+        'as_sdt': '2007',  # include patents / to disable set '0,5'
+        'as_vis': '0',  # include citations / to disable set '1'
+    }
+    args.update(time_range_args(params))
 
-    query_url += time_range_url(params)
-    params['url'] = query_url
-
-    params['cookies']['CONSENT'] = "YES+"
-    params['headers'].update(lang_info['headers'])
-    params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-
-    # params['google_subdomain'] = subdomain
+    params['url'] = 'https://' + google_info['subdomain'] + '/scholar?' + urlencode(args)
+    params['cookies'] = google_info['cookies']
+    params['headers'].update(google_info['headers'])
     return params
 
 
@@ -138,19 +148,15 @@ def parse_gs_a(text: Optional[str]):
 
 
 def response(resp):  # pylint: disable=too-many-locals
-    """Get response from google's search request"""
+    """Parse response from Google Scholar"""
     results = []
-
-    detect_google_sorry(resp)
-
-    # which subdomain ?
-    # subdomain = resp.search_params.get('google_subdomain')
 
     # convert the text to dom
     dom = html.fromstring(resp.text)
+    detect_google_captcha(dom)
 
     # parse results
-    for result in eval_xpath_list(dom, '//div[@data-cid]'):
+    for result in eval_xpath_list(dom, '//div[@data-rp]'):
 
         title = extract_text(eval_xpath(result, './/h3[1]//a'))
 
@@ -158,7 +164,7 @@ def response(resp):  # pylint: disable=too-many-locals
             # this is a [ZITATION] block
             continue
 
-        pub_type = extract_text(eval_xpath(result, './/span[@class="gs_ct1"]'))
+        pub_type = extract_text(eval_xpath(result, './/span[@class="gs_ctg2"]'))
         if pub_type:
             pub_type = pub_type[1:-1].lower()
 

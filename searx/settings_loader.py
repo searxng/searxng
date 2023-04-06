@@ -74,6 +74,10 @@ def update_settings(default_settings, user_settings):
             else:
                 default_settings[k] = v
 
+    categories_as_tabs = user_settings.get('categories_as_tabs')
+    if categories_as_tabs:
+        default_settings['categories_as_tabs'] = categories_as_tabs
+
     # parse the engines
     remove_engines = None
     keep_only_engines = None

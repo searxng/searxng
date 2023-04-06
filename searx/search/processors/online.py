@@ -51,6 +51,9 @@ class OnlineProcessor(EngineProcessor):
         super().initialize()
 
     def get_params(self, search_query, engine_category):
+        """Returns a set of :ref:`request params <engine request online>` or ``None``
+        if request is not supported.
+        """
         params = super().get_params(search_query, engine_category)
         if params is None:
             return None
@@ -184,11 +187,6 @@ class OnlineProcessor(EngineProcessor):
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('CAPTCHA')
         except SearxEngineTooManyRequestsException as e:
-            if "google" in self.engine_name:
-                self.logger.warn(
-                    "Set to 'true' the use_mobile_ui parameter in the 'engines:'"
-                    " section of your settings.yml file if google is blocked for you."
-                )
             self.handle_exception(result_container, e, suspend=True)
             self.logger.exception('Too many requests')
         except SearxEngineAccessDeniedException as e:
@@ -223,7 +221,7 @@ class OnlineProcessor(EngineProcessor):
                 'test': ['unique_results'],
             }
 
-        if getattr(self.engine, 'supported_languages', []):
+        if getattr(self.engine, 'traits', False):
             tests['lang_fr'] = {
                 'matrix': {'query': 'paris', 'lang': 'fr'},
                 'result_container': ['not_empty', ('has_language', 'fr')],

@@ -1,0 +1,31 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ],
+      "remote.otherPortsAttributes": {
+        "protocol": "https"
+      },
+      "settings": {
+        "files.autoSave": "off",
+        "python.defaultInterpreterPath": "/workspaces/searxng/local/py3/bin/python3",
+        "python.formatting.blackPath": "/workspaces/searxng/local/py3/bin/black",
+        "python.linting.pylintPath": "/workspaces/searxng/local/py3/bin/pylint"
+      }
+    }
+  },
+  "forwardPorts": [8000, 8888],
+  "portsAttributes": {
+    "8000": {"label": "Sphinx documentation"},
+    "8888": {"label": "SearXNG"}
+  },
+  "postCreateCommand": "git pull && make install"
+}

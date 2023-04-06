@@ -1,12 +1,12 @@
 <select class="language" id="language" name="language" aria-label="{{ _('Search language') }}">{{- '' -}}
-	<option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }}</option>
+	<option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }} [all]</option>
 	<option value="auto" {% if current_language == 'auto' %}selected="selected"{% endif %}>
 		{{- _('Auto-detect') -}}
 		{%- if current_language == 'auto' %} ({{ search_language }}){%- endif -%}
 	</option>
-	{%- for lang_id,lang_name,country_name,english_name,flag in language_codes | sort(attribute=1) -%}
-	<option value="{{ lang_id }}" {% if lang_id == current_language %}selected="selected"{% endif %}>
-		{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %}({{ country_name }}) {% endif %}
+	{%- for sxng_tag,lang_name,country_name,english_name,flag in sxng_locales | sort(attribute=1) -%}
+	<option value="{{ sxng_tag }}" {% if sxng_tag == current_language %}selected="selected"{% endif %}>
+		{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %} - {{ country_name }} {% endif %} [{{sxng_tag}}]
 	</option>
 	{%- endfor -%}
 </select>

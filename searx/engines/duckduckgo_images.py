@@ -1,26 +1,30 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- DuckDuckGo (Images)
+DuckDuckGo Images
+~~~~~~~~~~~~~~~~~
 """
 
-from json import loads
+from typing import TYPE_CHECKING
 from urllib.parse import urlencode
-from searx.exceptions import SearxEngineAPIException
-from searx.engines.duckduckgo import get_region_code
-from searx.engines.duckduckgo import (  # pylint: disable=unused-import
-    _fetch_supported_languages,
-    supported_languages_url,
+
+from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
+from searx.engines.duckduckgo import (
+    get_ddg_lang,
+    get_vqd,
 )
-from searx.network import get
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
 
 # about
 about = {
     "website": 'https://duckduckgo.com/',
     "wikidata_id": 'Q12805',
-    "official_api_documentation": {
-        'url': 'https://duckduckgo.com/api',
-        'comment': 'but images are not supported',
-    },
     "use_official_api": False,
     "require_api_key": False,
     "results": 'JSON (site requires js to get images)',
@@ -32,70 +36,64 @@ paging = True
 safesearch = True
 send_accept_language_header = True
 
-# search-url
-images_url = 'https://duckduckgo.com/i.js?{query}&s={offset}&p={safesearch}&o=json&vqd={vqd}'
-site_url = 'https://duckduckgo.com/?{query}&iar=images&iax=1&ia=images'
+safesearch_cookies = {0: '-2', 1: None, 2: '1'}
+safesearch_args = {0: '1', 1: None, 2: '1'}
 
 
-# run query in site to get vqd number needed for requesting images
-# TODO: find a way to get this number without an extra request (is it a hash of the query?)
-def get_vqd(query, headers):
-    query_url = site_url.format(query=urlencode({'q': query}))
-    res = get(query_url, headers=headers)
-    content = res.text
-    if content.find('vqd=\'') == -1:
-        raise SearxEngineAPIException('Request failed')
-    vqd = content[content.find('vqd=\'') + 5 :]
-    vqd = vqd[: vqd.find('\'')]
-    return vqd
-
-
-# do search-request
 def request(query, params):
-    # to avoid running actual external requests when testing
-    if 'is_test' not in params:
-        vqd = get_vqd(query, params['headers'])
-    else:
-        vqd = '12345'
 
-    offset = (params['pageno'] - 1) * 50
+    eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
+    eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 
-    safesearch = params['safesearch'] - 1
+    args = {
+        'q': query,
+        'o': 'json',
+        # 'u': 'bing',
+        'l': eng_region,
+        'vqd': get_vqd(query, params["headers"]),
+    }
 
-    region_code = get_region_code(params['language'], lang_list=supported_languages)
-    if region_code:
-        params['url'] = images_url.format(
-            query=urlencode({'q': query, 'l': region_code}), offset=offset, safesearch=safesearch, vqd=vqd
-        )
-    else:
-        params['url'] = images_url.format(query=urlencode({'q': query}), offset=offset, safesearch=safesearch, vqd=vqd)
+    if params['pageno'] > 1:
+        args['s'] = (params['pageno'] - 1) * 100
+
+    params['cookies']['ad'] = eng_lang  # zh_CN
+    params['cookies']['ah'] = eng_region  # "us-en,de-de"
+    params['cookies']['l'] = eng_region  # "hk-tzh"
+    logger.debug("cookies: %s", params['cookies'])
+
+    safe_search = safesearch_cookies.get(params['safesearch'])
+    if safe_search is not None:
+        params['cookies']['p'] = safe_search  # "-2", "1"
+    safe_search = safesearch_args.get(params['safesearch'])
+    if safe_search is not None:
+        args['p'] = safe_search  # "-1", "1"
+
+    args = urlencode(args)
+    params['url'] = 'https://duckduckgo.com/i.js?{args}&f={f}'.format(args=args, f=',,,,,')
+
+    params['headers']['Accept'] = 'application/json, text/javascript, */*; q=0.01'
+    params['headers']['Referer'] = 'https://duckduckgo.com/'
+    params['headers']['X-Requested-With'] = 'XMLHttpRequest'
+    logger.debug("headers: %s", params['headers'])
 
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
+    res_json = resp.json()
 
-    content = resp.text
-    res_json = loads(content)
-
-    # parse results
     for result in res_json['results']:
-        title = result['title']
-        url = result['url']
-        thumbnail = result['thumbnail']
-        image = result['image']
-
-        # append result
         results.append(
             {
                 'template': 'images.html',
-                'title': title,
+                'title': result['title'],
                 'content': '',
-                'thumbnail_src': thumbnail,
-                'img_src': image,
-                'url': url,
+                'thumbnail_src': result['thumbnail'],
+                'img_src': result['image'],
+                'url': result['url'],
+                'img_format': '%s x %s' % (result['width'], result['height']),
+                'source': result['source'],
             }
         )
 

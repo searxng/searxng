@@ -145,6 +145,25 @@ Help translate SearXNG at `Weblate`_
    :target: https://translate.codeberg.org/projects/searxng/
 
 
+Codespaces
+==========
+
+You can contribute from your browser using `GitHub Codespaces`_:
+
+- Fork the repository
+- Click on the ``<> Code`` green button
+- Click on the ``Codespaces`` tab instead of ``Local``
+- Click on ``Create codespace on master``
+- VSCode is going to start in the browser
+- Wait for ``git pull && make install`` to appears and then to disapear
+- You have `120 hours per month`_ (see also your `list of existing Codespaces`_)
+- You can start SearXNG using ``make run`` in the terminal or by pressing ``Ctrl+Shift+B``.
+
+.. _GitHub Codespaces: https://docs.github.com/en/codespaces/overview
+.. _120 hours per month: https://github.com/settings/billing
+.. _list of existing Codespaces: https://github.com/codespaces
+
+
 Donations
 =========
 

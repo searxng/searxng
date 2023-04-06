@@ -674,6 +674,9 @@ engines:
     engine: gigablast
     shortcut: gb
     timeout: 4.0
+    # API key required, see https://gigablast.com/searchfeed.html
+    # gb_userid: unset
+    # gb_code: unknown
     disabled: true
     additional_tests:
       rosebud: *test_rosebud
@@ -731,21 +734,8 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    # see https://docs.searxng.org/src/searx.engines.google.html#module-searx.engines.google
-    use_mobile_ui: false
     # additional_tests:
     #   android: *test_android
-
-  # - name: google italian
-  #   engine: google
-  #   shortcut: goit
-  #   use_mobile_ui: false
-  #   language: it
-
-  # - name: google mobile ui
-  #   engine: google
-  #   shortcut: gomui
-  #   use_mobile_ui: true
 
   - name: google images
     engine: google_images
@@ -1758,9 +1748,8 @@ engines:
     engine: peertube
     shortcut: ptb
     paging: true
-    # https://instances.joinpeertube.org/instances
-    base_url: https://peertube.biz/
-    # base_url: https://tube.tardis.world/
+    # alternatives see: https://instances.joinpeertube.org/instances
+    # base_url: https://tube.4aem.com
     categories: videos
     disabled: true
     timeout: 6.0

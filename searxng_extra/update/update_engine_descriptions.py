@@ -18,8 +18,8 @@ from os.path import join
 from lxml.html import fromstring
 
 from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text, match_language
-from searx.locales import LOCALE_NAMES, locales_initialize
+from searx.utils import extract_text
+from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
 from searx.utils import gen_useragent, detect_language
 import searx.search
@@ -225,9 +225,9 @@ def fetch_website_description(engine_name, website):
             fetched_lang, desc = get_website_description(website, lang, WIKIPEDIA_LANGUAGES[lang])
             if fetched_lang is None or desc is None:
                 continue
-            matched_lang = match_language(fetched_lang, LANGUAGES, fallback=None)
+            matched_lang = match_locale(fetched_lang, LANGUAGES, fallback=None)
             if matched_lang is None:
-                fetched_wikipedia_lang = match_language(fetched_lang, WIKIPEDIA_LANGUAGES.values(), fallback=None)
+                fetched_wikipedia_lang = match_locale(fetched_lang, WIKIPEDIA_LANGUAGES.values(), fallback=None)
                 matched_lang = wikipedia_languages_r.get(fetched_wikipedia_lang)
             if matched_lang is not None:
                 update_description(engine_name, matched_lang, desc, website, replace=False)
