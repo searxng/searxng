@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2022-12-30 07:14+0000\n"
 "Last-Translator: gkkulik <gregorykkulik@gmail.com>\n"
 "Language: szl\n"
@@ -16,14 +16,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "inksze"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "inksze"
@@ -199,7 +199,7 @@ msgstr "feler serwera API"
 msgid "No item found"
 msgstr "Żodyn elymynt niy znojdziōny"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Zdrzōdło"
@@ -208,27 +208,27 @@ msgstr "Zdrzōdło"
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "Strzimane"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) tymu"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
 
@@ -260,7 +260,7 @@ msgstr "{title} (ZASTARZAŁE)"
 msgid "This entry has been superseded by"
 msgstr "Tyn wpis bōł zastōmpiōny ôd"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "Kanał"
 
@@ -758,11 +758,9 @@ msgstr "Teroźnie używane wyszukowarki"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Wyszukowarki z tyj zokłodki niy pokazujōm sie we wynikach wyszukowanio, "
-"ale możesz ich używać bez bangs."
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -775,8 +773,8 @@ msgid "Engine name"
 msgstr "Miano ôd wyszukowarki"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "Skrōt"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1303,4 +1301,19 @@ msgstr "skryj wideo"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "Autōmatycznie wykrywo jynzyk zapytanio i szaltruje na niego."
+
+#~ msgid "others"
+#~ msgstr "inksze"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "Wyszukowarki z tyj zokłodki niy "
+#~ "pokazujōm sie we wynikach wyszukowanio, "
+#~ "ale możesz ich używać bez bangs."
+
+#~ msgid "Shortcut"
+#~ msgstr "Skrōt"
 

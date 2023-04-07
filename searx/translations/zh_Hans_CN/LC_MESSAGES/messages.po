@@ -20,27 +20,26 @@
 # yfdyh000 <yfdyh000@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2023-02-24 07:07+0000\n"
 "Last-Translator: yfdyh000 <yfdyh000@gmail.com>\n"
-"Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
-"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15.2\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "其他"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "其他"
@@ -216,7 +215,7 @@ msgstr "服务器 API 错误"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "来源"
@@ -225,27 +224,27 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "搜索错误"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "暂停服务"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分钟前"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小时 {minutes} 分钟前"
 
@@ -277,7 +276,7 @@ msgstr "{title} (已过时)"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "频道"
 
@@ -374,15 +373,13 @@ msgstr "Tor 网络检测插件"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr "此插件检查地址是否为 Tor 出口节点并给出结果，是由 SearXNG 提供的类似 "
-"check.torproject.org 的服务。"
+msgstr "此插件检查地址是否为 Tor 出口节点并给出结果，是由 SearXNG 提供的类似 check.torproject.org 的服务。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr "未能从如下地址下载 Tor 出口节点的名单: https://check.torproject.org/exit-"
-"addresses"
+msgstr "未能从如下地址下载 Tor 出口节点的名单: https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -752,9 +749,9 @@ msgstr "目前使用的搜索引擎"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
-msgstr "这个标签页不会显示在搜索结果中，但您可以通过 ! 搜索这里列出的引擎。"
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
+msgstr ""
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -767,8 +764,8 @@ msgid "Engine name"
 msgstr "引擎名称"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "快捷键"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1507,3 +1504,16 @@ msgstr "隐藏视频"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "自动检测查询搜索语言并切换到它。"
+
+#~ msgid "others"
+#~ msgstr "其他"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr "这个标签页不会显示在搜索结果中，但您可以通过 ! 搜索这里列出的引擎。"
+
+#~ msgid "Shortcut"
+#~ msgstr "快捷键"
+

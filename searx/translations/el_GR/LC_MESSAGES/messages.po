@@ -11,27 +11,26 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2023-03-24 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
-"searxng/el/>\n"
 "Language: el_GR\n"
+"Language-Team: Greek "
+"<https://translate.codeberg.org/projects/searxng/searxng/el/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.4\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "άλλα"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "λοιπά"
@@ -207,7 +206,7 @@ msgstr "Σφάλμα API διακομιστή"
 msgid "No item found"
 msgstr "Δεν βρέθηκαν αντικείμενα"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Πηγή"
@@ -216,27 +215,27 @@ msgstr "Πηγή"
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "Μη έγκυρες ρυθμίσεις"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "σφάλμα αναζήτησης"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "Σε αναστολή"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} λεπτά πριν"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ώρα(-ες), {minutes} λεπτό(-ά) πριν"
 
@@ -268,7 +267,7 @@ msgstr "{title} (ΠΑΡΩΧΗΜΕΝΟΣ)"
 msgid "This entry has been superseded by"
 msgstr "Αυτή η καταχώριση έχει αντικατασταθεί από"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "Κανάλι"
 
@@ -382,17 +381,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Αυτό το πρόσθετο ελέγχει εάν η διεύθυνση του χρήστη είναι διεύθυνση εξόδου "
-"του δικτύου Tor και ενημερώνει τον χρήστη εάν είναι έτσι. Όπως στο "
-"check.torproject.org, αλλά από το SearXNG."
+"Αυτό το πρόσθετο ελέγχει εάν η διεύθυνση του χρήστη είναι διεύθυνση "
+"εξόδου του δικτύου Tor και ενημερώνει τον χρήστη εάν είναι έτσι. Όπως στο"
+" check.torproject.org, αλλά από το SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Δεν ήταν δυνατή η λήψη της λίστας διευθύνσεων εξόδου του δικτύου Tor από το: "
-"https://check.torproject.org/exit-addresses"
+"Δεν ήταν δυνατή η λήψη της λίστας διευθύνσεων εξόδου του δικτύου Tor από "
+"το: https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -600,8 +599,8 @@ msgstr "Τι γλώσσα προτιμάτε για αναζήτηση;"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Επιλέξτε αυτόματη αναγνώριση για να αφήσετε το SearXNG να αναγνωρίσει την "
-"γλώσσα του ερωτήματος σας αυτόματα."
+"Επιλέξτε αυτόματη αναγνώριση για να αφήσετε το SearXNG να αναγνωρίσει την"
+" γλώσσα του ερωτήματος σας αυτόματα."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -785,11 +784,9 @@ msgstr "Μηχανές αναζήτησης που χρησιμοποιούντ�
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Αυτή η καρτέλα δεν εμφανίζεται για τα αποτελέσματα αναζήτησης, αλλά "
-"μπορείτε να αναζητήσετε τις μηχανές που παρατίθενται εδώ μέσω bangs."
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -802,8 +799,8 @@ msgid "Engine name"
 msgstr "Όνομα μηχανής"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "Συντόμευση"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1564,3 +1561,20 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
+
+#~ msgid "others"
+#~ msgstr "άλλα"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "Αυτή η καρτέλα δεν εμφανίζεται για "
+#~ "τα αποτελέσματα αναζήτησης, αλλά μπορείτε "
+#~ "να αναζητήσετε τις μηχανές που "
+#~ "παρατίθενται εδώ μέσω bangs."
+
+#~ msgid "Shortcut"
+#~ msgstr "Συντόμευση"
+

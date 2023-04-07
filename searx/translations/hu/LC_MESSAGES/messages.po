@@ -13,27 +13,26 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2023-04-03 06:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Hungarian <https://translate.codeberg.org/projects/searxng/"
-"searxng/hu/>\n"
 "Language: hu\n"
+"Language-Team: Hungarian "
+"<https://translate.codeberg.org/projects/searxng/searxng/hu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.4\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "mások"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "más"
@@ -209,7 +208,7 @@ msgstr "szerver API hiba"
 msgid "No item found"
 msgstr "Nincs találat"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Forrás"
@@ -218,27 +217,27 @@ msgstr "Forrás"
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, kérlek módosítsd őket"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "Érvénytelen beállítások"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "keresési hiba"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "Felfüggesztve"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} perce"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} óra, {minutes} perce"
 
@@ -270,7 +269,7 @@ msgstr "{title} (elavult)"
 msgid "This entry has been superseded by"
 msgstr "Ezt a bejegyzést törölte"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "Csatorna"
 
@@ -383,9 +382,9 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Ez a beépülő modul ellenőrzi, hogy a kérés címe Tor kilépési csomópont-e, és "
-"értesíti a felhasználót, ha igen; mint a check.torproject.org, de a SearXNG-"
-"től."
+"Ez a beépülő modul ellenőrzi, hogy a kérés címe Tor kilépési csomópont-e,"
+" és értesíti a felhasználót, ha igen; mint a check.torproject.org, de a "
+"SearXNG-től."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -772,11 +771,9 @@ msgstr "Jelenleg használt keresőmotorok"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Ez az oldal nem jelenik meg a keresés eredményében, de te tudsz keresni "
-"keresőmotorokat a \"bangs\"-el."
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -789,8 +786,8 @@ msgid "Engine name"
 msgstr "Keresőmotor neve"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "Rövidítés"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1548,3 +1545,19 @@ msgstr "videó elrejtése"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
+
+#~ msgid "others"
+#~ msgstr "mások"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "Ez az oldal nem jelenik meg a "
+#~ "keresés eredményében, de te tudsz "
+#~ "keresni keresőmotorokat a \"bangs\"-el."
+
+#~ msgid "Shortcut"
+#~ msgstr "Rövidítés"
+

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2022-12-23 07:14+0000\n"
 "Last-Translator: Grey <elohim@gmail.com>\n"
 "Language: zh_Hant_TW\n"
@@ -26,14 +26,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "其他"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "其他"
@@ -209,7 +209,7 @@ msgstr "服務器 API 錯誤"
 msgid "No item found"
 msgstr "找不到項目"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "來源"
@@ -218,27 +218,27 @@ msgstr "來源"
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "搜尋錯誤"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "暫停服務"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分鐘前"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
@@ -270,7 +270,7 @@ msgstr "{title} (已過時)"
 msgid "This entry has been superseded by"
 msgstr "此條目已被取代"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "頻道"
 
@@ -744,9 +744,9 @@ msgstr "目前使用的搜尋引擎"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
-msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
+msgstr ""
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -759,8 +759,8 @@ msgid "Engine name"
 msgstr "引擎名稱"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "快捷鍵"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1494,4 +1494,16 @@ msgstr "隱藏影片"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "由搜尋字串自動偵測語言，並作為搜尋語言來使用。"
+
+#~ msgid "others"
+#~ msgstr "其他"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr "這個標籤頁不會顯示在搜索結果中，但您可以通過 ! 搜索這裡列出的引擎。"
+
+#~ msgid "Shortcut"
+#~ msgstr "快捷鍵"
 

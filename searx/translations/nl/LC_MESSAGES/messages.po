@@ -17,27 +17,26 @@
 # Vistaus <vistausss@fastmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2023-04-01 14:37+0000\n"
 "Last-Translator: Vistaus <vistausss@fastmail.com>\n"
-"Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
-"searxng/nl/>\n"
 "Language: nl\n"
+"Language-Team: Dutch "
+"<https://translate.codeberg.org/projects/searxng/searxng/nl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.4\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "overigen"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "overig"
@@ -213,7 +212,7 @@ msgstr "server-api-fout"
 msgid "No item found"
 msgstr "Er is geen resultaat gevonden"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Bron"
@@ -222,27 +221,27 @@ msgstr "Bron"
 msgid "Error loading the next page"
 msgstr "De volgende pagina kan niet worden geladen"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "De instellingen zijn ongeldig - werk ze bij"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "Ongeldige instellingen"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "zoekfout"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "Geschorst"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minu(u)t(en) geleden"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} uur, {minutes} minu(u)t(en) geleden"
 
@@ -274,7 +273,7 @@ msgstr "{title} (VEROUDERD)"
 msgid "This entry has been superseded by"
 msgstr "Dit object is overbodig gemaakt door"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -389,17 +388,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Deze plug-in controleert of het adres van het verzoek een Tor exit-node is "
-"en informeert de gebruiker als dit zo is; net als bij check.torproject.org, "
-"maar dan van SearXNG."
+"Deze plug-in controleert of het adres van het verzoek een Tor exit-node "
+"is en informeert de gebruiker als dit zo is; net als bij "
+"check.torproject.org, maar dan van SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Kan de lijst met Tor exit-nodes niet downloaden van: https://check.torproject"
-".org/exit-addresses"
+"Kan de lijst met Tor exit-nodes niet downloaden van: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -411,8 +410,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Je maakt geen gebruik van Tor en dit is je externe IP adres: {ip_address}"
+msgstr "Je maakt geen gebruik van Tor en dit is je externe IP adres: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -604,8 +602,8 @@ msgstr "Welke taal wil je gebruiken voor het zoeken?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Kies Automatisch herkennen om SearXNG de taal van uw zoekopdracht te laten "
-"herkennen."
+"Kies Automatisch herkennen om SearXNG de taal van uw zoekopdracht te "
+"laten herkennen."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -787,11 +785,9 @@ msgstr "Momenteel gebruikte zoekmachines"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Dit tabblad wordt niet weergegeven voor zoekresultaten, maar u kunt de "
-"hier genoemde zoekmachines doorzoeken via bangs."
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -804,8 +800,8 @@ msgid "Engine name"
 msgstr "Naam zoekmachine"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "Snelkoppeling"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1573,3 +1569,20 @@ msgstr "verberg video"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr ""
+
+#~ msgid "others"
+#~ msgstr "overigen"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "Dit tabblad wordt niet weergegeven voor"
+#~ " zoekresultaten, maar u kunt de hier"
+#~ " genoemde zoekmachines doorzoeken via "
+#~ "bangs."
+
+#~ msgid "Shortcut"
+#~ msgstr "Snelkoppeling"
+

@@ -8,25 +8,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-07 11:38+0000\n"
 "PO-Revision-Date: 2023-03-16 10:25+0000\n"
 "Last-Translator: Linerly <linerly@protonmail.com>\n"
-"Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
-"searxng/id/>\n"
 "Language: id\n"
+"Language-Team: Indonesian "
+"<https://translate.codeberg.org/projects/searxng/searxng/id/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.16.2\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "lain-lain"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "lainnya"
@@ -202,7 +201,7 @@ msgstr "kesalahan server API"
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "Sumber"
@@ -211,27 +210,27 @@ msgstr "Sumber"
 msgid "Error loading the next page"
 msgstr "Gagal memuat halaman berikutnya"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "kesalahan pencarian"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "Ditangguhkan"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} menit yang lalu"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} jam, {minutes} menit yang lalu"
 
@@ -263,7 +262,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Masukan ini telah digantikan oleh"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "Saluran"
 
@@ -376,24 +375,24 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "Plugin ini memeriksa jika alamat permintaan adalah node keluar Tor, dan "
-"memberi tahu pengguna jika benar; seperti check.torproject.org, tetapi dari "
-"SearXNG."
+"memberi tahu pengguna jika benar; seperti check.torproject.org, tetapi "
+"dari SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Tidak dapat mengunduh daftar node keluar Tor dari: https://check.torproject."
-"org/exit-addresses"
+"Tidak dapat mengunduh daftar node keluar Tor dari: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Anda sedang menggunakan Tor dan sepertinya Anda memiliki alamat IP eksternal "
-"berikut: {ip_address}"
+"Anda sedang menggunakan Tor dan sepertinya Anda memiliki alamat IP "
+"eksternal berikut: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -589,8 +588,8 @@ msgstr "Bahasa apa yang Anda ingin pakai untuk pencarian?"
 #: searx/templates/simple/preferences.html:126
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Pilih Deteksi otomatis untuk memperbolehkan SearXNG mendeteksi bahasa kueri "
-"Anda."
+"Pilih Deteksi otomatis untuk memperbolehkan SearXNG mendeteksi bahasa "
+"kueri Anda."
 
 #: searx/templates/simple/preferences.html:132
 msgid "Autocomplete"
@@ -772,11 +771,9 @@ msgstr "Mesin pencari yang saat ini digunakan"
 
 #: searx/templates/simple/preferences.html:305
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Tab ini tidak ditampilkan untuk hasil pencarian, tetapi Anda dapat "
-"mencari di mesin-mesin berikut ini melalui fitur bangs."
 
 #: searx/templates/simple/preferences.html:310
 #: searx/templates/simple/preferences.html:361
@@ -789,8 +786,8 @@ msgid "Engine name"
 msgstr "Nama mesin"
 
 #: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "Pintasan"
+msgid "!bang"
+msgstr ""
 
 #: searx/templates/simple/preferences.html:313
 msgid "Supports selected language"
@@ -1444,3 +1441,20 @@ msgstr "sembunyikan video"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "Deteksi bahasa kueri pencarian dan ubah bahasanya secara otomatis."
+
+#~ msgid "others"
+#~ msgstr "lain-lain"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "Tab ini tidak ditampilkan untuk hasil"
+#~ " pencarian, tetapi Anda dapat mencari "
+#~ "di mesin-mesin berikut ini melalui "
+#~ "fitur bangs."
+
+#~ msgid "Shortcut"
+#~ msgstr "Pintasan"
+
