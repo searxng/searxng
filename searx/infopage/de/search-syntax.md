@@ -30,7 +30,7 @@ nach dem Begriff **paris** gesucht.
 
 ## `:` Sprache auswählen
 
-Um einen Sprachfilter auszuwählen, verwenden Sie das Präfix`:`.  Um ein
+Um einen Sprachfilter auszuwählen, verwenden Sie das Präfix `:`.  Um ein
 einfaches Beispiel zu geben:
 
 - Wikipedia mit einer benutzerdefinierten Sprache durchsuchen
