@@ -45,7 +45,7 @@ ENGINE_DEFAULT_ARGS = {
     "about": {},
 }
 # set automatically when an engine does not have any tab category
-OTHER_CATEGORY = 'other'
+DEFAULT_CATEGORY = 'other'
 
 
 # Defaults for the namespace of an engine module, see :py:func:`load_engine`
@@ -132,7 +132,7 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
     set_loggers(engine, engine_name)
 
     if not any(cat in settings['categories_as_tabs'] for cat in engine.categories):
-        engine.categories.append(OTHER_CATEGORY)
+        engine.categories.append(DEFAULT_CATEGORY)
 
     return engine
 

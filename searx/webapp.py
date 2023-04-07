@@ -63,7 +63,7 @@ from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
 from searx.engines import (
-    OTHER_CATEGORY,
+    DEFAULT_CATEGORY,
     categories,
     engines,
     engine_shortcuts,
@@ -435,7 +435,7 @@ def render(template_name: str, **kwargs):
     kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = _get_enable_categories(categories.keys())
-    kwargs['OTHER_CATEGORY'] = OTHER_CATEGORY
+    kwargs['DEFAULT_CATEGORY'] = DEFAULT_CATEGORY
 
     # i18n
     kwargs['sxng_locales'] = [l for l in sxng_locales if l[0] in settings['search']['languages']]

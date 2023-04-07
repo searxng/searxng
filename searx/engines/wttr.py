@@ -15,7 +15,7 @@ about = {
     "results": "JSON",
 }
 
-categories = ["others"]
+categories = ["weather"]
 
 url = "https://wttr.in/{query}?format=j1&lang={lang}"
 

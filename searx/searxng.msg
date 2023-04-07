@@ -15,8 +15,8 @@ __all__ = [
 
 CONSTANT_NAMES = {
     # Constants defined in other modules
-    'DEFAULT_GROUP_NAME': webutils.DEFAULT_GROUP_NAME,
-    'OTHER_CATEGORY': engines.OTHER_CATEGORY,
+    'NO_SUBGROUPING': webutils.NO_SUBGROUPING,
+    'DEFAULT_CATEGORY': engines.DEFAULT_CATEGORY,
 }
 
 CATEGORY_NAMES = {

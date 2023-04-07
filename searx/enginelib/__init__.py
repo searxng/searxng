@@ -81,7 +81,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     # settings.yml
 
     categories: List[str]
-    """Tabs, in which the engine is working."""
+    """Specifies to which :ref:`engine categories` the engine should be added."""
 
     name: str
     """Name that will be used across SearXNG to define this engine.  In settings, on
