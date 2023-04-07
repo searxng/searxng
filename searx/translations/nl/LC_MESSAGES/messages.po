@@ -14,13 +14,14 @@
 # Peter Martin <weblate@pe7er.com>, 2022.
 # Max Westen <max@maxwesten.nl>, 2023.
 # gjveld <gjveld@gmail.com>, 2023.
+# Vistaus <vistausss@fastmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-02-20 11:22+0000\n"
-"PO-Revision-Date: 2023-02-28 22:04+0000\n"
-"Last-Translator: gjveld <gjveld@gmail.com>\n"
+"PO-Revision-Date: 2023-04-01 14:37+0000\n"
+"Last-Translator: Vistaus <vistausss@fastmail.com>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
 "searxng/nl/>\n"
 "Language: nl\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 4.16.4\n"
 "Generated-By: Babel 2.11.0\n"
 
 #. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
@@ -74,7 +75,7 @@ msgstr "video’s"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "IT"
+msgstr "it"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -89,7 +90,7 @@ msgstr "kaart"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "uien"
+msgstr "onions"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -99,7 +100,7 @@ msgstr "wetenschap"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr "Apps"
+msgstr "apps"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
@@ -119,17 +120,17 @@ msgstr "paketten"
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr "vraag&antwoord"
+msgstr "vraag en antwoord"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr "repos"
+msgstr "repo's"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr "software wikis"
+msgstr "softwarewikis"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -144,7 +145,7 @@ msgstr "wetenschapelijke publicaties"
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr "auto"
+msgstr "automatisch"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
@@ -162,11 +163,11 @@ msgstr "verlopen"
 
 #: searx/webapp.py:166
 msgid "parsing error"
-msgstr "fout bij ontleden"
+msgstr "verwerkingsfout"
 
 #: searx/webapp.py:167
 msgid "HTTP protocol error"
-msgstr "HTTP-protocolfout"
+msgstr "Http-protocolfout"
 
 #: searx/webapp.py:168
 msgid "network error"
@@ -174,31 +175,31 @@ msgstr "netwerkfout"
 
 #: searx/webapp.py:169
 msgid "SSL error: certificate validation has failed"
-msgstr "SSL-fout: certificaatvalidatie is mislukt"
+msgstr "Ssl-fout: de certificaatvalidatie is mislukt"
 
 #: searx/webapp.py:171
 msgid "unexpected crash"
-msgstr "onverwacht falen"
+msgstr "onverwachte crash"
 
 #: searx/webapp.py:178
 msgid "HTTP error"
-msgstr "HTTP-fout"
+msgstr "Http-fout"
 
 #: searx/webapp.py:179
 msgid "HTTP connection error"
-msgstr "HTTP-verbindingsfout"
+msgstr "Http-verbindingsfout"
 
 #: searx/webapp.py:185
 msgid "proxy error"
-msgstr "proxy-fout"
+msgstr "proxyfout"
 
 #: searx/webapp.py:186
 msgid "CAPTCHA"
-msgstr "CAPTCHA"
+msgstr "Captcha"
 
 #: searx/webapp.py:187
 msgid "too many requests"
-msgstr "te veel aanvragen"
+msgstr "teveel verzoeken"
 
 #: searx/webapp.py:188
 msgid "access denied"
@@ -206,11 +207,11 @@ msgstr "toegang geweigerd"
 
 #: searx/webapp.py:189
 msgid "server API error"
-msgstr "server-API-fout"
+msgstr "server-api-fout"
 
 #: searx/webapp.py:368
 msgid "No item found"
-msgstr "Geen resultaat gevonden"
+msgstr "Er is geen resultaat gevonden"
 
 #: searx/engines/qwant.py:217
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
@@ -219,11 +220,11 @@ msgstr "Bron"
 
 #: searx/webapp.py:372
 msgid "Error loading the next page"
-msgstr "Fout bij het laden van de volgende pagina"
+msgstr "De volgende pagina kan niet worden geladen"
 
 #: searx/webapp.py:524 searx/webapp.py:964
 msgid "Invalid settings, please edit your preferences"
-msgstr "Ongeldige instellingen, gelieve je voorkeuren bij te werken"
+msgstr "De instellingen zijn ongeldig - werk ze bij"
 
 #: searx/webapp.py:540
 msgid "Invalid settings"
@@ -247,7 +248,7 @@ msgstr "{hours} uur, {minutes} minu(u)t(en) geleden"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
-msgstr "Generator van willekeurige waarden"
+msgstr "Willekeurigewaardegenerator"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
@@ -259,7 +260,7 @@ msgstr "Statistische functies"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr "Bereken {functions} van de argumenten"
+msgstr "Bereken {functions} van de opties"
 
 #: searx/engines/openstreetmap.py:160
 msgid "Get directions"
@@ -281,7 +282,9 @@ msgstr "Kanaal"
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
-msgstr "citaties van dit jaar"
+msgstr ""
+"{numCitations} citaties van {firstCitationVelocityYear} tot "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
