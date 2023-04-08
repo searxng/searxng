@@ -198,12 +198,10 @@ def response(resp):
         url = link.attrib.get('href')
         title = extract_text(link)
 
-        # Make sure that the element is free of <a href> links and <span class='algoSlug_icon'>
         content = eval_xpath(result, '(.//p)[1]')
         for p in content:
+            # Make sure that the element is free of <a href> links
             for e in p.xpath('.//a'):
-                e.getparent().remove(e)
-            for e in p.xpath('.//span[@class="algoSlug_icon"]'):
                 e.getparent().remove(e)
         content = extract_text(content)
 
