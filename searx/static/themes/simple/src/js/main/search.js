@@ -65,6 +65,24 @@
               }
             });
           },
+          _Select: function (item) {
+            AutoComplete.defaults._Select.call(this, item);
+            var form = item.closest('form');
+            if (form) {
+              form.submit();
+            }
+          },
+          KeyboardMappings: Object.assign({}, AutoComplete.defaults.KeyboardMappings, {
+            "KeyUpAndDown_up": Object.assign({}, AutoComplete.defaults.KeyboardMappings.KeyUpAndDown_up, {
+              Callback: function (event) {
+                AutoComplete.defaults.KeyboardMappings.KeyUpAndDown_up.Callback.call(this, event);
+                var liActive = this.DOMResults.querySelector("li.active");
+                if (liActive) {
+                  AutoComplete.defaults._Select.call(this, liActive);
+                }
+              },
+            }),
+          }),
         }, "#" + qinput_id);
       }
 
