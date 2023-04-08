@@ -18,7 +18,7 @@ from os.path import join
 from lxml.html import fromstring
 
 from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text
+from searx.utils import extract_text, searx_useragent
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
 from searx.utils import gen_useragent, detect_language
@@ -28,8 +28,12 @@ import searx.network
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
 
+# you can run the query in https://query.wikidata.org
+# replace %IDS% by Wikidata entities separated by spaces with the prefix wd:
+# for example wd:Q182496 wd:Q1540899
+# replace %LANGUAGES_SPARQL% by languages
 SPARQL_WIKIPEDIA_ARTICLE = """
-SELECT DISTINCT ?item ?name
+SELECT DISTINCT ?item ?name ?article ?lang
 WHERE {
   hint:Query hint:optimizer "None".
   VALUES ?item { %IDS% }
@@ -40,6 +44,7 @@ WHERE {
   FILTER(?lang in (%LANGUAGES_SPARQL%)) .
   FILTER (!CONTAINS(?name, ':')) .
 }
+ORDER BY ?item ?lang
 """
 
 SPARQL_DESCRIPTION = """
@@ -69,10 +74,11 @@ SKIP_ENGINE_SOURCE = [
     # fmt: on
 ]
 
-LANGUAGES = LOCALE_NAMES.keys()
-WIKIPEDIA_LANGUAGES = {}  # {'<sxng-ui-lang>': '<wikipedia_language>'}
+WIKIPEDIA_LANGUAGES = {}
 LANGUAGES_SPARQL = ''
 IDS = None
+WIKIPEDIA_LANGUAGE_VARIANTS = {'zh_Hant': 'zh-tw'}
+
 
 descriptions = {}
 wd_to_engine_name = {}
@@ -102,16 +108,31 @@ def update_description(engine_name, lang, description, source, replace=True):
         descriptions[engine_name][lang] = [description, source]
 
 
-def get_wikipedia_summary(lang, pageid):
-    params = {'searxng_locale': lang.replace('_', '-'), 'headers': {}}
-    searx.engines.engines['wikipedia'].request(pageid, params)
+def get_wikipedia_summary(wikipedia_url, searxng_locale):
+    # get the REST API URL from the HTML URL
+
+    # Headers
+    headers = {'User-Agent': searx_useragent()}
+
+    if searxng_locale in WIKIPEDIA_LANGUAGE_VARIANTS:
+        headers['Accept-Language'] = WIKIPEDIA_LANGUAGE_VARIANTS.get(searxng_locale)
+
+    # URL path : from HTML URL to REST API URL
+    parsed_url = urlparse(wikipedia_url)
+    # remove the /wiki/ prefix
+    article_name = parsed_url.path.split('/wiki/')[1]
+    # article_name is already encoded but not the / which is required for the REST API call
+    encoded_article_name = article_name.replace('/', '%2F')
+    path = '/api/rest_v1/page/summary/' + encoded_article_name
+    wikipedia_rest_url = parsed_url._replace(path=path).geturl()
     try:
-        response = searx.network.get(params['url'], headers=params['headers'], timeout=10)
+        response = searx.network.get(wikipedia_rest_url, headers=headers, timeout=10)
         response.raise_for_status()
-        api_result = json.loads(response.text)
-        return api_result.get('extract')
-    except Exception:  # pylint: disable=broad-except
+    except Exception as e:  # pylint: disable=broad-except
+        print("     ", wikipedia_url, e)
         return None
+    api_result = json.loads(response.text)
+    return api_result.get('extract')
 
 
 def get_website_description(url, lang1, lang2=None):
@@ -159,7 +180,7 @@ def initialize():
     wikipedia_engine = searx.engines.engines['wikipedia']
 
     locale2lang = {'nl-BE': 'nl'}
-    for sxng_ui_lang in LANGUAGES:
+    for sxng_ui_lang in LOCALE_NAMES:
 
         sxng_ui_alias = locale2lang.get(sxng_ui_lang, sxng_ui_lang)
         wiki_lang = None
@@ -195,11 +216,14 @@ def fetch_wikidata_descriptions():
             wikidata_lang = binding['itemDescription']['xml:lang']
             desc = binding['itemDescription']['value']
             for engine_name in wd_to_engine_name[wikidata_id]:
-                for lang in LANGUAGES:
-                    if WIKIPEDIA_LANGUAGES[lang] != wikidata_lang:
+                for searxng_locale in LOCALE_NAMES:
+                    if WIKIPEDIA_LANGUAGES[searxng_locale] != wikidata_lang:
                         continue
-                    print(f"    engine: {engine_name} / wikidata_lang: {wikidata_lang} / len(desc): {len(desc)}")
-                    update_description(engine_name, lang, desc, 'wikidata')
+                    print(
+                        f"    engine: {engine_name:20} / wikidata_lang: {wikidata_lang:5}",
+                        f"/ len(wikidata_desc): {len(desc)}",
+                    )
+                    update_description(engine_name, searxng_locale, desc, 'wikidata')
 
 
 def fetch_wikipedia_descriptions():
@@ -211,16 +235,19 @@ def fetch_wikipedia_descriptions():
         for binding in result['results']['bindings']:
             wikidata_id = binding['item']['value'].replace('http://www.wikidata.org/entity/', '')
             wikidata_lang = binding['name']['xml:lang']
-            pageid = binding['name']['value']
+            wikipedia_url = binding['article']['value']  # for example the URL https://de.wikipedia.org/wiki/PubMed
             for engine_name in wd_to_engine_name[wikidata_id]:
-                for lang in LANGUAGES:
-                    if WIKIPEDIA_LANGUAGES[lang] != wikidata_lang:
+                for searxng_locale in LOCALE_NAMES:
+                    if WIKIPEDIA_LANGUAGES[searxng_locale] != wikidata_lang:
                         continue
-                    desc = get_wikipedia_summary(lang, pageid)
+                    desc = get_wikipedia_summary(wikipedia_url, searxng_locale)
                     if not desc:
                         continue
-                    print(f"    engine: {engine_name} / wikidata_lang: {wikidata_lang} / len(desc): {len(desc)}")
-                    update_description(engine_name, lang, desc, 'wikipedia')
+                    print(
+                        f"    engine: {engine_name:20} / wikidata_lang: {wikidata_lang:5}",
+                        f"/ len(wikipedia_desc): {len(desc)}",
+                    )
+                    update_description(engine_name, searxng_locale, desc, 'wikipedia')
 
 
 def normalize_url(url):
@@ -241,7 +268,7 @@ def fetch_website_description(engine_name, website):
     # to specify an order in where the most common languages are in front of the
     # language list ..
     languages = ['en', 'es', 'pt', 'ru', 'tr', 'fr']
-    languages = languages + [l for l in LANGUAGES if l not in languages]
+    languages = languages + [l for l in LOCALE_NAMES if l not in languages]
 
     previous_matched_lang = None
     previous_count = 0
@@ -279,7 +306,7 @@ def fetch_website_description(engine_name, website):
             f" / fetched lang: {fetched_lang:7} / len(desc): {len(desc)}"
         )
 
-        matched_lang = match_locale(fetched_lang, LANGUAGES, fallback=lang)
+        matched_lang = match_locale(fetched_lang, LOCALE_NAMES.keys(), fallback=lang)
         update_description(engine_name, matched_lang, desc, website, replace=False)
 
 
