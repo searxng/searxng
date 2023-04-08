@@ -242,4 +242,9 @@ def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[
     subgroups = itertools.groupby(sorted(engines, key=get_subgroup), get_subgroup)
     sorted_groups = sorted(((name, list(engines)) for name, engines in subgroups), key=group_sort_key)
 
-    return [(groupname, sorted(engines, key=engine_sort_key)) for groupname, engines in sorted_groups]
+    ret_val = []
+    for groupname, engines in sorted_groups:
+        group_bang = '!' + groupname.replace(' ', '_') if groupname != NO_SUBGROUPING else ''
+        ret_val.append((groupname, group_bang, sorted(engines, key=engine_sort_key)))
+
+    return ret_val
