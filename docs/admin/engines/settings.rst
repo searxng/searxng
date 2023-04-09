@@ -514,7 +514,7 @@ engine is shown.  Most of the options have a default value or even are optional.
      disabled: false
      language: en_US
      tokens: [ 'my-secret-token' ]
-     weigth: 1
+     weight: 1
      display_error_messages: true
      about:
         website: https://example.com
@@ -603,7 +603,7 @@ engine is shown.  Most of the options have a default value or even are optional.
   A list of secret tokens to make this engine *private*, more details see
   :ref:`private engines`.
 
-``weigth`` : default ``1``
+``weight`` : default ``1``
   Weighting of the results of this engine.
 
 ``display_error_messages`` : default ``true``
