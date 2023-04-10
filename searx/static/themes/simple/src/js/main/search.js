@@ -82,6 +82,21 @@
                 }
               },
             }),
+            "Tab": Object.assign({}, AutoComplete.defaults.KeyboardMappings.Enter, {
+              Conditions: [{
+                Is: 9,
+                Not: false
+              }],
+              Callback: function (event) {
+                if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
+                  var liActive = this.DOMResults.querySelector("li.active");
+                  if (liActive !== null) {
+                    AutoComplete.defaults._Select.call(this, liActive);
+                    event.preventDefault();
+                  }
+                }
+              },
+            })
           }),
         }, "#" + qinput_id);
       }
