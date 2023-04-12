@@ -1,6 +1,5 @@
 searxng is a fork from `searx <https://github.com/searx/searx>`_ and is
-maintained by Alexandre Flament (`@dalf <https://github.com/dalf>`_) and Markus
-Heiser (`@return42 <https://github.com/return42>`_)
+maintained by Markus Heiser (`@return42 <https://github.com/return42>`_)
 
 People who have submitted patches/translations, reported bugs, consulted
 features or generally made searx better:
