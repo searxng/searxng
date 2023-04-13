@@ -34,9 +34,9 @@ block_user_agent = re.compile(
     + r'|bingbot|Baiduspider|yacybot|YandexMobileBot|YandexBot|Yahoo! Slurp|MJ12bot|AhrefsBot|archive.org_bot|msnbot'
     + r'|MJ12bot|SeznamBot|linkdexbot|Netvibes|SMTBot|zgrab|James BOT|Sogou|Abonti|Pixray|Spinn3r|SemrushBot|Exabot'
     + r'|ZmEu|BLEXBot|bitlybot'
-    # when you block requests from Farside instances, your instance will
-    # disappear from https://farside.link/
-    # + r'|Farside'
+    # unmaintained Farside instances
+    + r'|'
+    + re.escape(r'Mozilla/5.0 (compatible; Farside/0.1.0; +https://farside.link)')
     + r')'
 )
 
