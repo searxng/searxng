@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 11:22+0000\n"
+"POT-Creation-Date: 2023-04-08 09:24+0000\n"
 "PO-Revision-Date: 2023-02-19 11:39+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: th\n"
@@ -18,14 +18,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
-#. CONSTANT_NAMES['DEFAULT_GROUP_NAME']
+#. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
-msgid "others"
-msgstr "ชื่ออื่นๆ"
+msgid "without further subgrouping"
+msgstr ""
 
-#. CONSTANT_NAMES['OTHER_CATEGORY']
+#. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
 msgstr "หมวดหมู่อื่นๆ"
@@ -201,7 +201,7 @@ msgstr "ข้อผิดพลาดจาก API ของเซิร์ฟ�
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:217
+#: searx/engines/qwant.py:218
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -210,27 +210,27 @@ msgstr "แหล่งที่มา"
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:524 searx/webapp.py:964
+#: searx/webapp.py:527 searx/webapp.py:965
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:540
+#: searx/webapp.py:543
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:617 searx/webapp.py:693
+#: searx/webapp.py:620 searx/webapp.py:696
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
-#: searx/webapp.py:863
+#: searx/webapp.py:869
 msgid "Suspended"
 msgstr "ถูกระงับ"
 
-#: searx/webutils.py:198
+#: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} นาทีก่อน"
 
-#: searx/webutils.py:199
+#: searx/webutils.py:206
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ชั่วโมง),{minutes} นาทีก่อน"
 
@@ -262,7 +262,7 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:219
+#: searx/engines/qwant.py:220
 msgid "Channel"
 msgstr "ช่อง"
 
@@ -429,7 +429,7 @@ msgid "Donate"
 msgstr "บริจาค"
 
 #: searx/templates/simple/base.html:54
-#: searx/templates/simple/preferences.html:99
+#: searx/templates/simple/preferences.html:100
 msgid "Preferences"
 msgstr "การตั้งค่า"
 
@@ -519,65 +519,73 @@ msgstr "ไม่มี HTTPS"
 msgid "View error logs and submit a bug report"
 msgstr "ดูบันทึกของข้อผิดพลาดและส่งรายงานข้อผิดพลาด"
 
-#: searx/templates/simple/preferences.html:53
+#: searx/templates/simple/preferences.html:35
+msgid "!bang for this engine"
+msgstr ""
+
+#: searx/templates/simple/preferences.html:36
+msgid "!bang for its categories"
+msgstr ""
+
+#: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "ค่าเฉลี่ย"
 
-#: searx/templates/simple/preferences.html:54
+#: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/simple/preferences.html:55
+#: searx/templates/simple/preferences.html:56
 #: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:83
+#: searx/templates/simple/preferences.html:84
 msgid "Failed checker test(s): "
 msgstr "ตัวตรวจสอบการทดสอบล้มเหลว: "
 
-#: searx/templates/simple/preferences.html:85
+#: searx/templates/simple/preferences.html:86
 msgid "Errors:"
 msgstr "ข้อผิดพลาด:"
 
-#: searx/templates/simple/preferences.html:105
+#: searx/templates/simple/preferences.html:106
 msgid "General"
 msgstr "ทั่วไป"
 
-#: searx/templates/simple/preferences.html:108
+#: searx/templates/simple/preferences.html:109
 msgid "Default categories"
 msgstr "หมวดหมู่เริ่มต้น"
 
 #: searx/templates/simple/filters/languages.html:1
-#: searx/templates/simple/preferences.html:115
+#: searx/templates/simple/preferences.html:116
 msgid "Search language"
 msgstr "ค้นหาภาษา"
 
 #: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:118
+#: searx/templates/simple/preferences.html:119
 msgid "Default language"
 msgstr "ภาษาเริ่มต้น"
 
 #: searx/templates/simple/filters/languages.html:4
-#: searx/templates/simple/preferences.html:119
+#: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:126
+#: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
 msgstr "คุณต้องการค้นหาภาษาใด?"
 
-#: searx/templates/simple/preferences.html:126
+#: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:132
+#: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
 msgstr "เติมข้อความอัตโนมัติ"
 
-#: searx/templates/simple/preferences.html:141
+#: searx/templates/simple/preferences.html:142
 msgid "Find stuff as you type"
 msgstr "ค้นหาสิ่งต่างๆในขณะพิมพ์"
 
@@ -585,150 +593,150 @@ msgstr "ค้นหาสิ่งต่างๆในขณะพิมพ์
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:146
-#: searx/templates/simple/preferences.html:314
+#: searx/templates/simple/preferences.html:147
+#: searx/templates/simple/preferences.html:315
 msgid "SafeSearch"
 msgstr "ค้นหาแบบปลอดภัย"
 
 #: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/preferences.html:149
+#: searx/templates/simple/preferences.html:150
 msgid "Strict"
 msgstr "เข้มงวด"
 
 #: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/preferences.html:150
+#: searx/templates/simple/preferences.html:151
 msgid "Moderate"
 msgstr "ปานกลาง"
 
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:151
+#: searx/templates/simple/preferences.html:152
 msgid "None"
 msgstr "ไม่มี"
 
-#: searx/templates/simple/preferences.html:154
+#: searx/templates/simple/preferences.html:155
 msgid "Filter content"
 msgstr "ตัวกรอกเนื้อหา"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:161
 msgid "Open Access DOI resolver"
 msgstr "เปิดการเข้าถึงตัวแก้ไข DOI"
 
-#: searx/templates/simple/preferences.html:170
+#: searx/templates/simple/preferences.html:171
 msgid ""
 "Redirect to open-access versions of publications when available (plugin "
 "required)"
 msgstr "เปลี่ยนเส้นทางไปยังรุ่นเอกสารที่เปิดให้เข้าถึงได้ (ต้องใช้ปลั๊กอิน)"
 
-#: searx/templates/simple/preferences.html:174
+#: searx/templates/simple/preferences.html:175
 msgid "Engine tokens"
 msgstr "โทเค็นของเครื่องมือ"
 
-#: searx/templates/simple/preferences.html:178
+#: searx/templates/simple/preferences.html:179
 msgid "Access tokens for private engines"
 msgstr "โทเคนการเข้าถึงของเครื่องมือส่วนตัว"
 
-#: searx/templates/simple/preferences.html:182
+#: searx/templates/simple/preferences.html:183
 msgid "User interface"
 msgstr "ส่วนต่อประสานกับผู้ใช้"
 
-#: searx/templates/simple/preferences.html:185
+#: searx/templates/simple/preferences.html:186
 msgid "Interface language"
 msgstr "ภาษาส่วนต่อประสาน"
 
-#: searx/templates/simple/preferences.html:193
+#: searx/templates/simple/preferences.html:194
 msgid "Change the language of the layout"
 msgstr "เปลี่ยนภาษาของเค้าโครง"
 
-#: searx/templates/simple/preferences.html:198
+#: searx/templates/simple/preferences.html:199
 msgid "Theme"
 msgstr "ธีม"
 
-#: searx/templates/simple/preferences.html:206
+#: searx/templates/simple/preferences.html:207
 msgid "Change SearXNG layout"
 msgstr "เปลี่ยนเค้าโครง เซียร์เอ็กซ์เอ็นจี"
 
-#: searx/templates/simple/preferences.html:209
+#: searx/templates/simple/preferences.html:210
 msgid "Theme style"
 msgstr "รูปแบบธีม"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:218
 msgid "Choose auto to follow your browser settings"
 msgstr "เลือกอัตโนมัติเพื่อติดตามการตั้งค่าของเบราว์เซอร์ของคุณ"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Center Alignment"
 msgstr "จัดตำแหน่งกึ่งกลาง"
-
-#: searx/templates/simple/preferences.html:223
-#: searx/templates/simple/preferences.html:235
-#: searx/templates/simple/preferences.html:247
-msgid "On"
-msgstr "เปิด"
 
 #: searx/templates/simple/preferences.html:224
 #: searx/templates/simple/preferences.html:236
 #: searx/templates/simple/preferences.html:248
+msgid "On"
+msgstr "เปิด"
+
+#: searx/templates/simple/preferences.html:225
+#: searx/templates/simple/preferences.html:237
+#: searx/templates/simple/preferences.html:249
 msgid "Off"
 msgstr "ปิด"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:228
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "แสดงผลตรงกลางหน้า (เค้าโครงออสการ์)"
 
-#: searx/templates/simple/preferences.html:232
+#: searx/templates/simple/preferences.html:233
 msgid "Results on new tabs"
 msgstr "ผลลัพธ์ในแท็บใหม่"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:240
 msgid "Open result links on new browser tabs"
 msgstr "เปิดลิงก์ผลลัพธ์ด้วยแท็บเบราว์เซอร์ใหม่"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:245
 msgid "Infinite scroll"
 msgstr "เลื่อนเมาส์แบบไม่มีที่สิ้นสุด"
 
-#: searx/templates/simple/preferences.html:251
+#: searx/templates/simple/preferences.html:252
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "โหลดหน้าถัดไปโดยอัตโนมัติเมื่อเลื่อนเมาส์ลงไปที่ด้านล่างของหน้าปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:257
+#: searx/templates/simple/preferences.html:258
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
-#: searx/templates/simple/preferences.html:260
+#: searx/templates/simple/preferences.html:261
 msgid "HTTP Method"
 msgstr "HTTP เมธอด"
 
-#: searx/templates/simple/preferences.html:267
+#: searx/templates/simple/preferences.html:268
 msgid ""
 "Change how forms are submitted, <a "
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:272
+#: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
 msgstr "พร็อกซีรูปภาพ"
 
-#: searx/templates/simple/preferences.html:275
-#: searx/templates/simple/preferences.html:287
+#: searx/templates/simple/preferences.html:276
+#: searx/templates/simple/preferences.html:288
 msgid "Enabled"
 msgstr "เปิดใช้งาน"
 
-#: searx/templates/simple/preferences.html:276
-#: searx/templates/simple/preferences.html:288
+#: searx/templates/simple/preferences.html:277
+#: searx/templates/simple/preferences.html:289
 msgid "Disabled"
 msgstr "ปิดใช้งาน"
 
-#: searx/templates/simple/preferences.html:279
+#: searx/templates/simple/preferences.html:280
 msgid "Proxying image results through SearXNG"
 msgstr "การแสดงพร็อกซี่ของภาพผ่าน เซียร์เอ็กซ์เอ็นจี"
 
-#: searx/templates/simple/preferences.html:284
+#: searx/templates/simple/preferences.html:285
 msgid "Query in the page's title"
 msgstr "คิวรีในชื่อหน้า"
 
-#: searx/templates/simple/preferences.html:291
+#: searx/templates/simple/preferences.html:292
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -736,114 +744,112 @@ msgstr ""
 "เมื่อเปิดใช้งานแล้ว ชื่อของหน้าผลลัพธ์จะมีข้อความคิวรีของคุณ "
 "เบราว์เซอร์ของคุณสามารถบันทึกชื่อของหน้านี้ได้"
 
-#: searx/templates/simple/preferences.html:297
+#: searx/templates/simple/preferences.html:298
 msgid "Engines"
 msgstr "เครื่องมือ"
 
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:299
 msgid "Currently used search engines"
 msgstr "เครื่องมือค้นหาที่ใช้อยู่ในปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:305
+#: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab does not show up for search results, but you can search the "
-"engines listed here via bangs."
+"This tab dues not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"แท็บนี้ไม่แสดงผลการค้นหา "
-"แต่คุณสามารถค้นหาเครื่องมือที่แสดงไว้ที่นี่ที่เรียบง่าย"
 
-#: searx/templates/simple/preferences.html:310
-#: searx/templates/simple/preferences.html:361
+#: searx/templates/simple/preferences.html:311
+#: searx/templates/simple/preferences.html:365
 msgid "Allow"
 msgstr "อนุญาต"
 
-#: searx/templates/simple/preferences.html:311
+#: searx/templates/simple/preferences.html:312
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "ชื่อเครื่องมือ"
 
-#: searx/templates/simple/preferences.html:312
-msgid "Shortcut"
-msgstr "ทางลัด"
-
 #: searx/templates/simple/preferences.html:313
+msgid "Bang"
+msgstr ""
+
+#: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
 msgstr "รองรับภาษาที่เลือกแล้ว"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:315
+#: searx/templates/simple/preferences.html:316
 msgid "Time range"
 msgstr "ช่วงเวลา"
 
-#: searx/templates/simple/preferences.html:316
+#: searx/templates/simple/preferences.html:317
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "เวลาตอบสนอง"
 
-#: searx/templates/simple/preferences.html:317
+#: searx/templates/simple/preferences.html:318
 msgid "Max time"
 msgstr "เวลาสูงสุด"
 
-#: searx/templates/simple/preferences.html:318
+#: searx/templates/simple/preferences.html:319
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "ความน่าเชื่อถือ"
 
-#: searx/templates/simple/preferences.html:356
+#: searx/templates/simple/preferences.html:360
 msgid "Special Queries"
 msgstr "การคิวรีพิเศษ"
 
-#: searx/templates/simple/preferences.html:362
+#: searx/templates/simple/preferences.html:366
 msgid "Keywords"
 msgstr "คำสำคัญ"
 
-#: searx/templates/simple/preferences.html:363
+#: searx/templates/simple/preferences.html:367
 msgid "Name"
 msgstr "ชื่อ"
 
-#: searx/templates/simple/preferences.html:364
+#: searx/templates/simple/preferences.html:368
 msgid "Description"
 msgstr "คำอธิบาย"
 
-#: searx/templates/simple/preferences.html:365
+#: searx/templates/simple/preferences.html:369
 msgid "Examples"
 msgstr "ตัวอย่าง"
 
-#: searx/templates/simple/preferences.html:368
+#: searx/templates/simple/preferences.html:372
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "นี่คือรายการโมดูลที่ตอบรับทันทีของเซียร์เอ็กซ์เอ็นจี"
 
-#: searx/templates/simple/preferences.html:379
+#: searx/templates/simple/preferences.html:383
 msgid "This is the list of plugins."
 msgstr "นี่คือรายการปลั๊กอิน"
 
-#: searx/templates/simple/preferences.html:396
+#: searx/templates/simple/preferences.html:400
 msgid "Cookies"
 msgstr "คุกกี้"
 
-#: searx/templates/simple/preferences.html:398
+#: searx/templates/simple/preferences.html:402
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr "นี่คือรายการคุกกี้และค่าของคุกกี้ที่เซียร์เอ็กซ์เอ็นจีจัดเก็บไว้ในคอมพิวเตอร์ของคุณ"
 
-#: searx/templates/simple/preferences.html:399
+#: searx/templates/simple/preferences.html:403
 msgid "With that list, you can assess SearXNG transparency."
 msgstr "ด้วยรายการดังกล่าว คุณสามารถประเมินความโปร่งใสของเซียร์เอ็กซ์เอ็นจีได้"
 
-#: searx/templates/simple/preferences.html:404
+#: searx/templates/simple/preferences.html:408
 msgid "Cookie name"
 msgstr "ชื่อคุกกี้"
 
-#: searx/templates/simple/preferences.html:405
+#: searx/templates/simple/preferences.html:409
 msgid "Value"
 msgstr "ค่า"
 
-#: searx/templates/simple/preferences.html:417
+#: searx/templates/simple/preferences.html:421
 msgid "Search URL of the currently saved preferences"
 msgstr "ค้นหา URL จากการตั้งค่าที่บันทึกไว้ในปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:421
+#: searx/templates/simple/preferences.html:425
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
@@ -851,11 +857,11 @@ msgstr ""
 "หมายเหตุ: การระบุการตั้งค่าแบบกำหนดเองใน URL "
 "การค้นหาสามารถลดความเป็นส่วนตัวได้โดยการทำให้ข้อมูลรั่วไหลไปยังไซต์ผลลัพธ์ที่คลิก"
 
-#: searx/templates/simple/preferences.html:422
+#: searx/templates/simple/preferences.html:426
 msgid "URL to restore your preferences in another browser"
 msgstr "URL เพื่อกู้คืนการตั้งค่าของคุณในเบราว์เซอร์อื่น"
 
-#: searx/templates/simple/preferences.html:426
+#: searx/templates/simple/preferences.html:430
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
@@ -863,7 +869,7 @@ msgstr ""
 "การระบุการตั้งค่าแบบกำหนดเองใน URL "
 "ค่ากำหนดสามารถใช้เพื่อซิงค์กับค่ากำหนดในอุปกรณ์ต่างๆได้"
 
-#: searx/templates/simple/preferences.html:431
+#: searx/templates/simple/preferences.html:435
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
@@ -871,7 +877,7 @@ msgstr ""
 "การตั้งค่าพวกนี้ถูกเก็บไว้ในคุกกี้ของคุณแล้ว "
 "ซึ่งช่วยให้เราไม่สามารถจัดเก็บข้อมูลนี้เกี่ยวกับคุณได้"
 
-#: searx/templates/simple/preferences.html:433
+#: searx/templates/simple/preferences.html:437
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
@@ -879,15 +885,15 @@ msgstr ""
 "คุกกี้พวกนี้ให้บริการเพื่อความสะดวกของคุณ "
 "เราไม่ใช้คุกกี้เหล่านี้เพื่อติดตามคุณ"
 
-#: searx/templates/simple/preferences.html:436
+#: searx/templates/simple/preferences.html:440
 msgid "Save"
 msgstr "บันทึก"
 
-#: searx/templates/simple/preferences.html:437
+#: searx/templates/simple/preferences.html:441
 msgid "Reset defaults"
 msgstr "รีเซ็ตค่าเริ่มต้น"
 
-#: searx/templates/simple/preferences.html:438
+#: searx/templates/simple/preferences.html:442
 msgid "Back"
 msgstr "กลับ"
 
@@ -1268,4 +1274,21 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Automatically detect the query search language and switch to it."
 #~ msgstr "ระบบจะตรวจจับภาษาที่ใช้ในการค้นหา และเปลี่ยนไปค้นหาในภาษานั้นอัตโนมัติ"
+
+#~ msgid "others"
+#~ msgstr "ชื่ออื่นๆ"
+
+#~ msgid ""
+#~ "This tab does not show up for "
+#~ "search results, but you can search "
+#~ "the engines listed here via bangs."
+#~ msgstr ""
+#~ "แท็บนี้ไม่แสดงผลการค้นหา "
+#~ "แต่คุณสามารถค้นหาเครื่องมือที่แสดงไว้ที่นี่ที่เรียบง่าย"
+
+#~ msgid "Shortcut"
+#~ msgstr "ทางลัด"
+
+#~ msgid "!bang"
+#~ msgstr ""
 
