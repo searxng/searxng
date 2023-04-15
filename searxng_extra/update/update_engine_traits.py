@@ -71,7 +71,7 @@ lang2emoji = {
     'bs': '\U0001F1E7\U0001F1E6',  # Bosnian / Bosnia & Herzegovina
     'jp': '\U0001F1EF\U0001F1F5',  # Japanese
     'ua': '\U0001F1FA\U0001F1E6',  # Ukrainian
-    'he': '\U0001F1EE\U0001F1F7',  # Hebrew
+    'he': '\U0001F1EE\U0001F1F1',  # Hebrew
 }
 
 
