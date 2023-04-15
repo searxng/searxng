@@ -75,6 +75,7 @@ class OnlineProcessor(EngineProcessor):
                 )
             params['headers']['Accept-Language'] = ac_lang
 
+        self.logger.debug('HTTP Accept-Language: %s', params['headers'].get('Accept-Language', ''))
         return params
 
     def _send_http_request(self, params):

@@ -13,7 +13,7 @@ used.
 from __future__ import annotations
 import json
 import dataclasses
-from typing import Dict, Union, Callable, Optional, TYPE_CHECKING
+from typing import Dict, Iterable, Union, Callable, Optional, TYPE_CHECKING
 from typing_extensions import Literal, Self
 
 from searx import locales
@@ -81,7 +81,7 @@ class EngineTraits:
     """Data type, default is 'traits_v1'.
     """
 
-    custom: Dict[str, Dict] = dataclasses.field(default_factory=dict)
+    custom: Dict[str, Union[Dict[str, Dict], Iterable[str]]] = dataclasses.field(default_factory=dict)
     """A place to store engine's custom traits, not related to the SearXNG core
 
     """

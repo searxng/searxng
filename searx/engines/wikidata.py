@@ -18,7 +18,10 @@ from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
 from searx.utils import searx_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
-from searx.engines.wikipedia import fetch_traits as _fetch_traits
+from searx.engines.wikipedia import (
+    fetch_wikimedia_traits,
+    get_wiki_params,
+)
 from searx.enginelib.traits import EngineTraits
 
 if TYPE_CHECKING:
@@ -165,17 +168,15 @@ def request(query, params):
 
     # wikidata does not support zh-classical (zh_Hans) / zh-TW, zh-HK and zh-CN
     # mapped to zh
-    sxng_lang = params['searxng_locale'].split('-')[0]
-    language = traits.get_language(sxng_lang, 'en')
-
-    query, attributes = get_query(query, language)
-    logger.debug("request --> language %s // len(attributes): %s", language, len(attributes))
+    eng_tag, _wiki_netloc = get_wiki_params(params['searxng_locale'], traits)
+    query, attributes = get_query(query, eng_tag)
+    logger.debug("request --> language %s // len(attributes): %s", eng_tag, len(attributes))
 
     params['method'] = 'POST'
     params['url'] = SPARQL_ENDPOINT_URL
     params['data'] = {'query': query}
     params['headers'] = get_headers()
-    params['language'] = language
+    params['language'] = eng_tag
     params['attributes'] = attributes
 
     return params
@@ -769,12 +770,16 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
 
 
 def fetch_traits(engine_traits: EngineTraits):
-    """Use languages evaluated from :py:obj:`wikipedia.fetch_traits
-    <searx.engines.wikipedia.fetch_traits>` except zh-classical (zh_Hans) what
-    is not supported by wikidata."""
+    """Uses languages evaluated from :py:obj:`wikipedia.fetch_wikimedia_traits
+    <searx.engines.wikipedia.fetch_wikimedia_traits>` and removes
 
-    _fetch_traits(engine_traits)
-    # wikidata does not support zh-classical (zh_Hans)
-    engine_traits.languages.pop('zh_Hans')
-    # wikidata does not have net-locations for the languages
+    - ``traits.custom['wiki_netloc']``: wikidata does not have net-locations for
+      the languages and the list of all
+
+    - ``traits.custom['WIKIPEDIA_LANGUAGES']``: not used in the wikipedia engine
+
+    """
+
+    fetch_wikimedia_traits(engine_traits)
     engine_traits.custom['wiki_netloc'] = {}
+    engine_traits.custom['WIKIPEDIA_LANGUAGES'] = []
