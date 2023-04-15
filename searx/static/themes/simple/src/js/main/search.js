@@ -72,6 +72,13 @@
               form.submit();
             }
           },
+          _MinChars: function () {
+            if (this.Input.value.indexOf('!') > -1) {
+              return 0;
+            } else {
+              return AutoComplete.defaults._MinChars.call(this);
+            }
+          },
           KeyboardMappings: Object.assign({}, AutoComplete.defaults.KeyboardMappings, {
             "KeyUpAndDown_up": Object.assign({}, AutoComplete.defaults.KeyboardMappings.KeyUpAndDown_up, {
               Callback: function (event) {
