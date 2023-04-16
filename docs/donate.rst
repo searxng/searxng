@@ -1,3 +1,5 @@
+.. _donate:
+
 Donate to searxng.org
 =====================
 

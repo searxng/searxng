@@ -7,9 +7,9 @@ User information
    :local:
    :backlinks: entry
 
+.. toctree::
+   :maxdepth: 2
 
-.. _search-syntax:
-
-.. include:: search-syntax.md
-   :parser: myst_parser.sphinx_
-
+   search-syntax
+   configured_engines
+   about

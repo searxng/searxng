@@ -10,10 +10,13 @@ Engines & Settings
    - :ref:`engine settings` & :ref:`engine file`
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    settings
-   configured_engines
+
+.. toctree::
+   :maxdepth: 1
+
    private-engines
    recoll
    sql-engines

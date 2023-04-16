@@ -2,10 +2,15 @@
 Why use a private instance?
 ===========================
 
-  *"Is it worth to run my own instance?"*
+.. sidebar:: Is it worth to run my own instance?
 
-\.\. is a common question among SearXNG users.  Before answering this question,
-see what options a SearXNG user has.
+  \.\. is a common question among SearXNG users.  Before answering this
+  question, see what options a SearXNG user has.
+
+.. contents:: Contents
+   :depth: 2
+   :local:
+   :backlinks: entry
 
 Public instances are open to everyone who has access to its URL.  Usually, these
 are operated by unknown parties (from the users' point of view).  Private
@@ -15,6 +20,8 @@ single user one which runs on the user's laptop.
 
 To gain more insight on how these instances work let's dive into how SearXNG
 protects its users.
+
+.. _SearXNG protect privacy:
 
 How does SearXNG protect privacy?
 =================================
