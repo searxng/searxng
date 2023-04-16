@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
-  Google Play Apps
+# lint: pylint
+"""Google Play Apps & Google Play Movies
 """
 
 from urllib.parse import urlencode
@@ -21,22 +21,66 @@ about = {
     "results": "HTML",
 }
 
-categories = ["files", "apps"]
 send_accept_language_header = True
 
-search_url = "https://play.google.com/store/search?{query}&c=apps"
+play_categ = None  # apps|movies
+base_url = 'https://play.google.com'
+search_url = base_url + "/store/search?{query}&c={play_categ}"
 
 
 def request(query, params):
-    params["url"] = search_url.format(query=urlencode({"q": query}))
+
+    if play_categ not in ('movies', 'apps'):
+        raise ValueError(f"unknown google play category: {play_categ}")
+
+    params["url"] = search_url.format(
+        query=urlencode({"q": query}),
+        play_categ=play_categ,
+    )
     params['cookies']['CONSENT'] = "YES+"
 
     return params
 
 
 def response(resp):
-    results = []
 
+    if play_categ == 'movies':
+        return response_movies(resp)
+    if play_categ == 'apps':
+        return response_apps(resp)
+    return []
+
+
+def response_movies(resp):
+
+    results = []
+    dom = html.fromstring(resp.text)
+
+    for section in eval_xpath(dom, '//c-wiz/section/header/..'):
+        sec_name = extract_text(eval_xpath(section, './header'))
+        for item in eval_xpath(section, './/a'):
+            url = base_url + item.get('href')
+            div_1, div_2 = eval_xpath(item, './div')[:2]
+            title = extract_text(eval_xpath(div_2, './div[@title]'))
+            metadata = extract_text(eval_xpath(div_2, './div[@class]'))
+            img = eval_xpath(div_1, './/img')[0]
+            img_src = img.get('src')
+            results.append(
+                {
+                    "url": url,
+                    "title": title,
+                    "content": sec_name,
+                    "img_src": img_src,
+                    'metadata': metadata,
+                    'template': 'videos.html',
+                }
+            )
+    return results
+
+
+def response_apps(resp):
+
+    results = []
     dom = html.fromstring(resp.text)
 
     if eval_xpath(dom, '//div[@class="v6DsQb"]'):
