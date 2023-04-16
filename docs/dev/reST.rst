@@ -1284,7 +1284,7 @@ install` (with SearXNG modules installed).  We use this e.g. to build chapter:
 :ref:`configured engines`.  Below the jinja directive from the
 :origin:`docs/admin/engines.rst` is shown:
 
-.. literalinclude:: ../admin/engines/configured_engines.rst
+.. literalinclude:: ../user/configured_engines.rst
    :language: reST
    :start-after: .. _configured engines:
 

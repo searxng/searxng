@@ -68,7 +68,7 @@ jinja_filters = {
 # Let the Jinja template in configured_engines.rst access documented_modules
 # to automatically link documentation for modules if it exists.
 def setup(app):
-    ENGINES_DOCNAME = 'admin/engines/configured_engines'
+    ENGINES_DOCNAME = 'user/configured_engines'
 
     def before_read_docs(app, env, docnames):
         assert ENGINES_DOCNAME in docnames
