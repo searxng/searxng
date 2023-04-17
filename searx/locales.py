@@ -245,7 +245,7 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
           ..
           'zh'             : 'zh'
           'zh_Hans'        : 'zh'
-          'zh_Hant'        : 'zh-classical'
+          'zh_Hant'        : 'zh_TW'
       }
 
     .. hint::

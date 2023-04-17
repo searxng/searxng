@@ -166,8 +166,6 @@ def send_wikidata_query(query, method='GET'):
 
 def request(query, params):
 
-    # wikidata does not support zh-classical (zh_Hans) / zh-TW, zh-HK and zh-CN
-    # mapped to zh
     eng_tag, _wiki_netloc = get_wiki_params(params['searxng_locale'], traits)
     query, attributes = get_query(query, eng_tag)
     logger.debug("request --> language %s // len(attributes): %s", eng_tag, len(attributes))
