@@ -17,6 +17,9 @@
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
+  {% if get_setting('server.limiter') %}
+  <link rel="stylesheet" href="/limiter.css" type="text/css" media="screen" />
+  {% endif %}
   {% block styles %}{% endblock %}
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>

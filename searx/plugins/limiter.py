@@ -18,7 +18,7 @@ from flask import request
 
 from searx import redisdb
 from searx.plugins import logger
-from searx.redislib import incr_sliding_window
+from searx.redislib import incr_sliding_window, secret_hash
 
 name = "Request limiter"
 description = "Limit the number of request"
@@ -41,6 +41,18 @@ block_user_agent = re.compile(
     + r')'
 )
 
+PING_KEY = 'SearXNG_limiter.ping'
+TOKEN_KEY = 'SearXNG_limiter.token'
+
+
+def ping():
+    redis_client = redisdb.client()
+    user_agent = request.headers.get('User-Agent', 'unknown')
+    x_forwarded_for = request.headers.get('X-Forwarded-For', '')
+
+    ping_key = PING_KEY + user_agent + x_forwarded_for
+    redis_client.set(secret_hash(ping_key), 1, ex=600)
+
 
 def is_accepted_request() -> bool:
     # pylint: disable=too-many-return-statements
@@ -57,9 +69,20 @@ def is_accepted_request() -> bool:
 
     if request.path == '/search':
 
+        c_burst_max = 2
+        c_10min_max = 10
+
+        ping_key = PING_KEY + user_agent + x_forwarded_for
+        if redis_client.get(secret_hash(ping_key)):
+            logger.debug('got a ping')
+            c_burst_max = 15
+            c_10min_max = 150
+        else:
+            logger.debug('missing a ping')
+
         c_burst = incr_sliding_window(redis_client, 'IP limit, burst' + x_forwarded_for, 20)
         c_10min = incr_sliding_window(redis_client, 'IP limit, 10 minutes' + x_forwarded_for, 600)
-        if c_burst > 15 or c_10min > 150:
+        if c_burst > c_burst_max or c_10min > c_10min_max:
             logger.debug("BLOCK %s: to many request", x_forwarded_for)
             return False
 

@@ -93,7 +93,7 @@ from searx.utils import (
 )
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
-from searx.plugins import Plugin, plugins, initialize as plugin_initialize
+from searx.plugins import limiter, Plugin, plugins, initialize as plugin_initialize
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -640,6 +640,12 @@ def index():
 @app.route('/healthz', methods=['GET'])
 def health():
     return Response('OK', mimetype='text/plain')
+
+
+@app.route('/limiter.css', methods=['GET', 'POST'])
+def limiter_css():
+    limiter.ping()
+    return Response('', mimetype='text/css')
 
 
 @app.route('/search', methods=['GET', 'POST'])
