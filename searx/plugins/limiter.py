@@ -14,6 +14,8 @@ Enable the plugin in ``settings.yml``:
 """
 
 import re
+import string
+import random
 from flask import request
 
 from searx import redisdb
@@ -54,6 +56,27 @@ def ping():
     redis_client.set(secret_hash(ping_key), 1, ex=600)
 
 
+def get_token():
+    redis_client = redisdb.client()
+    if not redis_client:
+        # This function is also called when limiter is inactive / no redis DB
+        # (see render function in webapp.py)
+        return '12345678'
+    token = redis_client.get(TOKEN_KEY)
+    if token:
+        token = token.decode('UTF-8')
+    else:
+        token = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(8))
+        redis_client.set(TOKEN_KEY, token, ex=600)
+    return token
+
+
+def token_is_valid(token):
+    valid = token == get_token()
+    logger.debug("token is valid --> %s", valid)
+    return valid
+
+
 def is_accepted_request() -> bool:
     # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
@@ -83,7 +106,7 @@ def is_accepted_request() -> bool:
         c_burst = incr_sliding_window(redis_client, 'IP limit, burst' + x_forwarded_for, 20)
         c_10min = incr_sliding_window(redis_client, 'IP limit, 10 minutes' + x_forwarded_for, 600)
         if c_burst > c_burst_max or c_10min > c_10min_max:
-            logger.debug("BLOCK %s: to many request", x_forwarded_for)
+            logger.debug("BLOCK %s: too many request", x_forwarded_for)
             return False
 
         if len(request.headers.get('Accept-Language', '').strip()) == '':

@@ -416,6 +416,7 @@ def render(template_name: str, **kwargs):
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
     kwargs['errors'] = request.errors
+    kwargs['limiter_token'] = limiter.get_token()
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
@@ -642,9 +643,10 @@ def health():
     return Response('OK', mimetype='text/plain')
 
 
-@app.route('/limiter.css', methods=['GET', 'POST'])
-def limiter_css():
-    limiter.ping()
+@app.route('/limiter<token>.css', methods=['GET', 'POST'])
+def limiter_css(token=None):
+    if limiter.token_is_valid(token):
+        limiter.ping()
     return Response('', mimetype='text/css')
 
 
