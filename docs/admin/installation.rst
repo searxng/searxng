@@ -12,7 +12,7 @@ Installation
 
 The :ref:`installation basic` is an excellent illustration of *how a SearXNG
 instance is build up* (see :ref:`architecture uWSGI`).  If you do not have any
-special preferences, its recommend to use the :ref:`installation docker` or the
+special preferences, it's recommended to use the :ref:`installation docker` or the
 :ref:`installation scripts`.
 
 .. attention::

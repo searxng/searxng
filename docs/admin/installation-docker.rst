@@ -123,7 +123,7 @@ stoped.  To get rid of a container use ``container rm``:
 
    This might remove all docker items, not only those from SearXNG.
 
-If you won't use docker anymore and want to get rid of all conatiners & images
+If you won't use docker anymore and want to get rid of all containers & images
 use the following *prune* command:
 
 .. code:: sh
