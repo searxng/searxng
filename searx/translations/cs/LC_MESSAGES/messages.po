@@ -11,27 +11,29 @@
 # Masterix <masterix@duck.com>, 2022.
 # LagManCZ <lagmen@post.cz>, 2022.
 # zenobit <zen@osowoso.xyz>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-02-12 09:56+0000\n"
-"Last-Translator: zenobit <zen@osowoso.xyz>\n"
+"PO-Revision-Date: 2023-04-17 13:37+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
+"searxng/cs/>\n"
 "Language: cs\n"
-"Language-Team: Czech "
-"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
-"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 4.16.4\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "bez dalších podskupin"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -381,22 +383,27 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Tento plugin kontroluje, zda je adresa požadavku výstupním uzlem Tor, a "
+"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Nelze stáhnout seznam výstupních uzlů Tor z: https://check.torproject.org/"
+"exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "Používáte Tor a vypadá to, že máte tuto externí IP adresu: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Nepoužíváte Tor a máte tuto externí IP adresu: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -535,11 +542,11 @@ msgstr "Zobrazit ladící záznamy a poslat hlášení o chybě"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang pro tento vyhledávač"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang pro své kategorie"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
@@ -585,7 +592,7 @@ msgstr "Výchozí jazyk"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automatická detekce"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -594,6 +601,7 @@ msgstr "Jaký jazyk vyhledávání upřednostňujete?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Zvolte Automaticky detekovat, aby SearXNG detekoval jazyk vašeho dotazu."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -776,6 +784,8 @@ msgid ""
 "This tab dues not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Tato karta v uživatelském rozhraní neexistuje, ale můžete v těchto "
+"vyhledávačích vyhledávat podle jejích !bang."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -789,7 +799,7 @@ msgstr "Jméno vyhledávače"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -1573,4 +1583,3 @@ msgstr "skrýt video"
 
 #~ msgid "!bang"
 #~ msgstr ""
-
