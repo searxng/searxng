@@ -5,7 +5,7 @@ its users. ([Fufusoup Source Code]). If you would like to support the work and t
 
 ## Donate to Fufusoup
 
-You can donate to Fufusoup to support [Moïse KM] with all the work and IT ressources required to build, improve, maintain, and operate the metasearch engine. 
+You can donate to Fufusoup to support [Moïse KM] with the work and IT ressources required to build, improve, maintain, and operate the metasearch engine. 
 <br/>
 <br/>
 <a href="https://www.buymeacoffee.com/mkmtechnology" target="_blank">https://www.buymeacoffee.com/mkmtechnology</a>. 
@@ -13,7 +13,7 @@ You can donate to Fufusoup to support [Moïse KM] with all the work and IT resso
 
 ## Donate to SearXNG
 
-You can also donate to the wider SearXNG community to support all the the developers, engineers, designers, writers, and more, that contribute to the SearXNG source code. Please find the link to donate below:
+You can also donate to the wider SearXNG community to support all the the developers, engineers, designers, writers, and more, who contribute to the SearXNG source code and project. Please find the link to donate below:
 <br/> 
 <br/>
 <a href="https://docs.searxng.org/donate.html" target="_blank">https://docs.searxng.org/donate.html</a>. 
