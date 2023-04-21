@@ -42,7 +42,7 @@ including a :ref:`uWSGI setup <architecture uWSGI>` as described in the
    For the installation procedure, use a *sudoer* login to run the scripts.  If
    you install from ``root``, take into account that the scripts are creating a
    ``searxng`` user.  In the installation procedure this new created user does
-   need read access to the cloned SearXNG repository, which is not the case if you clone
+   need to have read access to the cloned SearXNG repository, which is not the case if you clone
    it into a folder below ``/root``!
 
 .. sidebar:: further read
@@ -52,7 +52,7 @@ including a :ref:`uWSGI setup <architecture uWSGI>` as described in the
 .. _caddy: https://hub.docker.com/_/caddy
 
 When all services are installed and running fine, you can add SearXNG to your
-HTTP server.  We do not have any preferences for the HTTP server, you can use
+HTTP server.  We do not have any preferences regarding the HTTP server, you can use
 whatever you prefer.
 
 We use caddy in our :ref:`docker image <installation docker>` and we have

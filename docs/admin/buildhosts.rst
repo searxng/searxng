@@ -14,7 +14,7 @@ Buildhosts
    :local:
    :backlinks: entry
 
-To get best results from build, its recommend to install additional packages
+To get best results from build, it's recommend to install additional packages
 on build hosts (see :ref:`searxng.sh`).::
 
   sudo -H ./utils/searxng.sh install buildhost
@@ -51,7 +51,7 @@ Build docs
 Most of the sphinx requirements are installed from :origin:`setup.py` and the
 docs can be build from scratch with ``make docs.html``.  For better math and
 image processing additional packages are needed.  The XeTeX_ needed not only for
-PDF creation, its also needed for :ref:`math` when HTML output is build.
+PDF creation, it's also needed for :ref:`math` when HTML output is build.
 
 To be able to do :ref:`sphinx:math-support` without CDNs, the math are rendered
 as images (``sphinx.ext.imgmath`` extension).
@@ -128,7 +128,7 @@ Lint shell scripts
 
 .. _ShellCheck: https://github.com/koalaman/shellcheck
 
-To lint shell scripts, we use ShellCheck_ - A shell script static analysis tool.
+To lint shell scripts, we use ShellCheck_ - a shell script static analysis tool.
 
 .. SNIP sh lint requirements
 
