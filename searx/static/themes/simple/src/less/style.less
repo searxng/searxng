@@ -589,8 +589,10 @@ article[data-vim-selected].category-social {
   }
 }
 
+#infoboxes .title,
 #suggestions .title,
 #search_url .title,
+#engines_msg .title,
 #apis .title {
   margin: 2em 0 0.5em 0;
   color: var(--color-base-font);
@@ -684,6 +686,14 @@ article[data-vim-selected].category-social {
   }
 }
 
+#apis {
+  input {
+    font-size: 0.9em;
+    margin: 0 10px 0 0;
+    .show-content-button;
+  }
+}
+
 #search_url {
   margin-top: 8px;
 
@@ -752,11 +762,6 @@ article[data-vim-selected].category-social {
   background: transparent;
   color: var(--color-result-link-visited-font);
   border: none;
-}
-
-#apis {
-  margin-top: 8px;
-  clear: both;
 }
 
 #backToTop {
@@ -834,14 +839,6 @@ article[data-vim-selected].category-social {
     input {
       border: 0;
     }
-  }
-
-  #apis {
-    display: none;
-  }
-
-  #search_url {
-    display: none;
   }
 
   .result {
