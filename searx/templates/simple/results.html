@@ -35,84 +35,37 @@
 
     <div id="sidebar">
 
-        {% if number_of_results != '0' -%}
+        {%- if number_of_results != '0' -%}
         <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
-        {%- endif %}
+        {%- endif -%}
 
-        {% if unresponsive_engines and results|length >= 1 %}
-	<div class="dialog-error" role="alert">
-    {{ icon_big('warning') }}
-    <div>
-	    <p><strong>{{ _('Error!') }}</strong> {{ _('Engines cannot retrieve results') }}:</p>
-      {%- for engine_name, error_type in unresponsive_engines -%}
-      <p>{{- engine_name }} (
-        <a href="{{ url_for('stats', engine=engine_name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
-          {{- error_type -}}
-        </a> ){{- '' -}}
-      </p>
-      {% endfor %}
-    </div>
-	</div>
-	{% endif %}
+        {%- if infoboxes -%}
+          <div id="infoboxes">
+            <details open>
+              <summary class="title">{{ _('Info') }}</summary>
+              {%- for infobox in infoboxes -%}
+                {%- include 'simple/elements/infobox.html' -%}
+              {%- endfor -%}
+            </details>
+          </div>
+        {%- endif -%}
 
-        {% if infoboxes %}
-        <div id="infoboxes">
-           {% for infobox in infoboxes -%}
-             {% include 'simple/infobox.html' %}
-           {%- endfor %}
-        </div>
-        {% endif %}
+        {%- if suggestions -%}
+          {%- include 'simple/elements/suggestions.html' -%}
+        {%- endif -%}
 
-        {% if suggestions %}
-        <div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
-	  <h4 class="title" id="suggestions-title">{{ _('Suggestions') }}: </h4>
-	  <div class="wrapper">
-            {% for suggestion in suggestions %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-              <input type="hidden" name="q" value="{{ suggestion.url }}">
-              {% for category in selected_categories %}
-              <input type="hidden" name="category_{{ category }}" value="1">
-              {% endfor %}
-              <input type="hidden" name="language" value="{{ current_language }}">
-              <input type="hidden" name="time_range" value="{{ time_range }}">
-              <input type="hidden" name="safesearch" value="{{ safesearch }}">
-              <input type="hidden" name="theme" value="{{ theme }}">
-              {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-              <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
-            </form>
-            {% endfor %}
-	  </div>
-        </div>
-        {% endif %}
+        {%- if method == 'POST' -%}
+          {%- include 'simple/elements/search_url.html' -%}
+        {%- endif -%}
 
-        {% if method == 'POST' %}
-        <div id="search_url" role="complementary" aria-labelledby="search_url-title">
-            <h4 class="title" id="search_url-title">{{ _('Search URL') }} :</h4>
-            <div class="selectable_url"><pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}{% if pageno > 1 %}&amp;pageno={{ pageno }}{% endif %}{% if selected_categories %}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}{% endif %}{% if timeout_limit %}&amp;timeout_limit={{ timeout_limit|urlencode }}{% endif %}</pre></div>
-        </div>
-        {% endif %}
-        <div id="apis" role="complementary" aria-labelledby="apis-title">
-          {% if search_formats %}
-          <h4 class="title" id="apis-title">{{ _('Download results') }}</h4>
-          {% for output_type in search_formats %}
-	  <div class="left">
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-              <input type="hidden" name="q" value="{{ q|e }}">
-              {% for category in selected_categories %}
-              <input type="hidden" name="category_{{ category }}" value="1">
-              {% endfor %}
-              <input type="hidden" name="pageno" value="{{ pageno }}">
-              <input type="hidden" name="language" value="{{ current_language }}">
-              <input type="hidden" name="time_range" value="{{ time_range }}">
-              <input type="hidden" name="safesearch" value="{{ safesearch }}">
-              <input type="hidden" name="format" value="{{ output_type }}">
-              {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-              <input type="submit" role="link" value="{{ output_type }}">
-            </form>
-	  </div>
-          {% endfor %}
-          {% endif %}
-        </div>
+        {%- if unresponsive_engines and results|length >= 1 -%}
+          {%- include 'simple/elements/engines_msg.html' -%}
+	{%- endif -%}
+
+        {%- if search_formats -%}
+          {%- include 'simple/elements/apis.html' -%}
+        {%- endif -%}
+
     </div>
 
     {% if corrections %}
