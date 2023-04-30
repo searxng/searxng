@@ -37,6 +37,7 @@ block_user_agent = re.compile(
     # unmaintained Farside instances
     + r'|'
     + re.escape(r'Mozilla/5.0 (compatible; Farside/0.1.0; +https://farside.link)')
+    + '|.*PetalBot.*'
     + r')'
 )
 
