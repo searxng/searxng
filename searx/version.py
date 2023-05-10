@@ -59,7 +59,10 @@ def get_git_url_and_branch():
 
 
 def get_git_version():
-    git_commit_date_hash = subprocess_run(r"git show -s --date='format:%-Y.%-m.%-d' --format='%cd+%h'")
+    git_commit_date_hash = subprocess_run(r"git show -s --date='format:%Y.%m.%d' --format='%cd+%h'")
+    # Remove leading zero from minor and patch level / replacement of PR-2122
+    # which depended on the git version: '2023.05.06+..' --> '2023.5.6+..'
+    git_commit_date_hash = git_commit_date_hash.replace('.0', '.')
     tag_version = git_version = git_commit_date_hash
 
     # add "+dirty" suffix if there are uncommited changes except searx/settings.yml
