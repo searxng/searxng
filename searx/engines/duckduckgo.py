@@ -94,12 +94,12 @@ def get_vqd(query, headers):
             logger.debug("re-use cached vqd value: %s", value)
             return value
 
-    query_url = 'https://duckduckgo.com/?{query}&iar=images'.format(query=urlencode({'q': query}))
+    query_url = 'https://duckduckgo.com/?q={query}&atb=v290-5'.format(query=urlencode({'q': query}))
     res = network.get(query_url, headers=headers)
     content = res.text
-    if content.find('vqd=\'') == -1:
+    if content.find('vqd=\"') == -1:
         raise SearxEngineAPIException('Request failed')
-    value = content[content.find('vqd=\'') + 5 :]
+    value = content[content.find('vqd=\"') + 5 :]
     value = value[: value.find('\'')]
     logger.debug("new vqd value: %s", value)
     cache_vqd(query, value)
