@@ -27,8 +27,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
 
 .. sidebar:: be a part
 
-   SearXNG is driven by an open community, come join us!  You can :ref:`donate
-   <donate>`, but much more we appreciate contributions.  Don't hesitate, no
+   SearXNG is driven by an open community, come join us!  Don't hesitate, no
    need to be an *expert*, everyone can contribute:
 
    - `help to improve translations <https://translate.codeberg.org/projects/searxng/searxng/>`_
@@ -52,6 +51,5 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    dev/index
    utils/index
    src/index
-   donate
 
 .. _searx.space: https://searx.space
