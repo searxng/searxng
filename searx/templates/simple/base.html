@@ -56,6 +56,15 @@
     {% endblock %}
     {% block content %}
     {% endblock %}
+      
+    <footer style="background-color: black; color: white; padding: 10px; text-align: center;">
+      <a href="https://dns.spicerhome.net" style="color: grey;">SpicerHome DNS</a> |
+      <a href="https://php.spicerhome.net" style="color: grey;">SpicerHomepPhpMyAdmin</a> |
+      <a href="https://remote.spicerhome.net/guacamole" style="color: grey;">Remote SpicerHome</a> |
+      <a href="https://port.spicerhome.net" style="color: grey;">SpicerHome Portainer</a> |
+      <a href="https://bridge.spicerhome.net" style="color: grey;">SpicerHome Bridge</a>
+    </footer>
+      
   </main>
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
