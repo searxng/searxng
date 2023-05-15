@@ -162,12 +162,3 @@ You can contribute from your browser using `GitHub Codespaces`_:
 .. _GitHub Codespaces: https://docs.github.com/en/codespaces/overview
 .. _120 hours per month: https://github.com/settings/billing
 .. _list of existing Codespaces: https://github.com/codespaces
-
-
-Donations
-=========
-
-Support the SearXNG project by clicking the donation page:
-https://docs.searxng.org/donate.html
-
-Thank you :)
