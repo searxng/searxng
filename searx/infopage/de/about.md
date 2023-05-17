@@ -36,9 +36,9 @@ SearXNG unterstützt [OpenSearch].  Weitere Informationen zum Ändern Ihrer
 Standardsuchmaschine finden Sie in der Dokumentation zu Ihrem [WEB-Browser]:
 
 - [Firefox]
-- [Microsoft Edge] - Hinter dem Link finden sich auch nützliche Hinweise zu
+- [Microsoft Edge] : Hinter dem Link finden sich auch nützliche Hinweise zu
   Chrome und Safari.
-- [Chromium] - basierte Browser fügen nur Websites hinzu, zu denen der Benutzer
+- [Chromium-basierte] Browser : Fügen nur Websites hinzu, zu denen der Benutzer
   ohne Pfadangabe navigiert.
 
 Wenn Sie eine Suchmaschine hinzufügen, darf es keine Duplikate mit demselben
@@ -84,5 +84,5 @@ machen.  Je dezentraler das Internet ist, desto mehr Freiheit haben wir!
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
 [Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
 [Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine
-[Chromium]: https://www.chromium.org/tab-to-search
+[Chromium-basierte]: https://www.chromium.org/tab-to-search
 [WEB-Browser]: https://de.wikipedia.org/wiki/Webbrowser

@@ -33,9 +33,9 @@ SearXNG supports [OpenSearch].  For more information on changing your default
 search engine, see your browser's documentation:
 
 - [Firefox]
-- [Microsoft Edge] - Behind the link, you will also find some useful instructions
+- [Microsoft Edge] : Behind the link, you will also find some useful instructions
   for Chrome and Safari.
-- [Chromium] - based browsers only add websites that the user navigates to without
+- [Chromium-based] : Only add websites that the user navigates to without
   a path.
 
 When adding a search engine, there must be no duplicates with the same name.  If
@@ -76,4 +76,4 @@ internet is, the more freedom we have!
 [OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
 [Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
 [Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine
-[Chromium]: https://www.chromium.org/tab-to-search
+[Chromium-based]: https://www.chromium.org/tab-to-search
