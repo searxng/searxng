@@ -36,9 +36,9 @@ SearXNG unterstützt [OpenSearch].  Weitere Informationen zum Ändern Ihrer
 Standardsuchmaschine finden Sie in der Dokumentation zu Ihrem [WEB-Browser]:
 
 - [Firefox]
-- [Microsoft Edge]: Hinter dem Link finden sich auch nützliche Hinweise zu
+- [Microsoft Edge]: hinter dem Link finden sich auch nützliche Hinweise zu
   Chrome und Safari.
-- [Chromium-basierte] Browser: Fügen nur Websites hinzu, zu denen der Benutzer
+- [Chromium-basierte] Browser: fügen nur Websites hinzu, zu denen der Benutzer
   ohne Pfadangabe navigiert.
 
 Wenn Sie eine Suchmaschine hinzufügen, darf es keine Duplikate mit demselben
