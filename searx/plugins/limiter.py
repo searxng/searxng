@@ -13,10 +13,11 @@ Enable the plugin in ``settings.yml``:
 - ``redis.url: ...`` check the value, see :ref:`settings redis`
 """
 
+import ipaddress
 import re
 from flask import request
 
-from searx import redisdb
+from searx import get_setting, redisdb
 from searx.redislib import incr_sliding_window
 
 name = "Request limiter"
@@ -36,11 +37,29 @@ re_bot = re.compile(
 )
 
 
+WHITELISTED_IPS = get_setting('server.limiter_whitelist_ip', default=[])
+WHITELISTED_SUBNET = get_setting('server.limiter_whitelist_subnet', default=[])
+
+
+def is_whitelist_ip(ip):
+    '''
+    Check if the given IP address belongs to the whitelisted list
+    of IP addresses or subnets.
+    '''
+    return ip in WHITELISTED_IPS or any(ipaddress.ip_address(ip) in
+                                        ipaddress.ip_network(subnet)
+                                        for subnet in WHITELISTED_SUBNET)
+
+
 def is_accepted_request() -> bool:
     # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
     user_agent = request.headers.get('User-Agent', '')
     x_forwarded_for = request.headers.get('X-Forwarded-For', '')
+
+    # if the request source ip belongs to the whitelisted list of ip addresses or subnets
+    if is_whitelist_ip(x_forwarded_for):
+        return True
 
     if request.path == '/image_proxy':
         if re_bot.match(user_agent):
