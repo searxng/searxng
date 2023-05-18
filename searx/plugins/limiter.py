@@ -5,9 +5,9 @@
 
 To monitor rate limits and protect privacy the IP addresses are getting stored
 with a hash so the limiter plugin knows who to block.  A redis database is
-needed to store the hash values. 
+needed to store the hash values.
 
-It is also possible to bypass the limiter for a specific IP address or subnet 
+It is also possible to bypass the limiter for a specific IP address or subnet
 using the `whitelist_ip` and `whitelist_subnet` settings.
 
 Enable the plugin in ``settings.yml``:
@@ -23,6 +23,7 @@ Enable the plugin in ``settings.yml``:
 
 import ipaddress
 import re
+from typing import List, cast
 from flask import request
 
 from searx import get_setting, redisdb
@@ -45,35 +46,37 @@ re_bot = re.compile(
 )
 
 
-WHITELISTED_IPS = get_setting('server.limiter_whitelist_ip', default=[])
-WHITELISTED_SUBNET = get_setting('server.limiter_whitelist_subnet', default=[])
+WHITELISTED_IPS = []
+WHITELISTED_SUBNET = []
 
 
-def is_whitelist_ip(ip: str) -> bool:
+def is_whitelist_ip(ip_str: str) -> bool:
     """Check if the given IP address belongs to the whitelisted list of IP addresses or subnets."""
     # if ip is empty use the source ip
-    if ip == "" or ip is None:
-        ip = request.remote_addr or ""
-    logger.debug("checking whitelist rules for: %s", ip)
-    whitelisted = False
     try:
-        whitelisted = ip in WHITELISTED_IPS or any(
-            ipaddress.ip_address(ip) in ipaddress.ip_network(subnet) for subnet in WHITELISTED_SUBNET
-        )
+        ip_a = ipaddress.ip_address(ip_str)
     except ValueError as e:
         logger.error("Error while checking ratelimiter whitelist: %s", e)
+        return False
+    return ip_a in WHITELISTED_IPS or any(ip_a in subnet for subnet in WHITELISTED_SUBNET)
 
-    return whitelisted
+
+def get_remote_addr() -> str:
+    x_forwarded_for = request.headers.getlist('X-Forwarded-For')
+    if len(x_forwarded_for) > 0:
+        return x_forwarded_for[-1]
+    return request.remote_addr or ''
 
 
 def is_accepted_request() -> bool:
     # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
     user_agent = request.headers.get('User-Agent', '')
-    x_forwarded_for = request.headers.get('X-Forwarded-For', '')
+    remote_addr = get_remote_addr()
 
     # if the request source ip belongs to the whitelisted list of ip addresses or subnets
-    if is_whitelist_ip(x_forwarded_for):
+    if is_whitelist_ip(remote_addr):
+        logger.debug("whitelist IP")
         return True
 
     if request.path == '/image_proxy':
@@ -82,8 +85,8 @@ def is_accepted_request() -> bool:
         return True
 
     if request.path == '/search':
-        c_burst = incr_sliding_window(redis_client, 'IP limit, burst' + x_forwarded_for, 20)
-        c_10min = incr_sliding_window(redis_client, 'IP limit, 10 minutes' + x_forwarded_for, 600)
+        c_burst = incr_sliding_window(redis_client, 'IP limit, burst' + remote_addr, 20)
+        c_10min = incr_sliding_window(redis_client, 'IP limit, 10 minutes' + remote_addr, 600)
         if c_burst > 15 or c_10min > 150:
             logger.debug("to many request")  # pylint: disable=undefined-variable
             return False
@@ -110,7 +113,7 @@ def is_accepted_request() -> bool:
             return False
 
         if request.args.get('format', 'html') != 'html':
-            c = incr_sliding_window(redis_client, 'API limit' + x_forwarded_for, 3600)
+            c = incr_sliding_window(redis_client, 'API limit' + remote_addr, 3600)
             if c > 4:
                 logger.debug("API limit exceeded")  # pylint: disable=undefined-variable
                 return False
@@ -123,6 +126,20 @@ def pre_request():
     return None
 
 
+def init_whitelist(limiter_whitelist_ip: List[str], limiter_whitelist_subnet: List[str]):
+    global WHITELISTED_IPS, WHITELISTED_SUBNET  # pylint: disable=global-statement
+    if isinstance(limiter_whitelist_ip, str):
+        limiter_whitelist_ip = [limiter_whitelist_ip]
+    if isinstance(limiter_whitelist_subnet, str):
+        limiter_whitelist_subnet = [limiter_whitelist_subnet]
+    if not isinstance(limiter_whitelist_ip, list):
+        raise ValueError('server.limiter_whitelist_ip is not a list')
+    if not isinstance(limiter_whitelist_subnet, list):
+        raise ValueError('server.limiter_whitelist_subnet is not a list')
+    WHITELISTED_IPS = [ipaddress.ip_address(ip) for ip in limiter_whitelist_ip]
+    WHITELISTED_SUBNET = [ipaddress.ip_network(subnet, strict=False) for subnet in limiter_whitelist_subnet]
+
+
 def init(app, settings):
     if not settings['server']['limiter']:
         return False
@@ -130,6 +147,11 @@ def init(app, settings):
     if not redisdb.client():
         logger.error("The limiter requires Redis")  # pylint: disable=undefined-variable
         return False
+
+    init_whitelist(
+        cast(list, get_setting('server.limiter_whitelist_ip', default=[])),
+        cast(list, get_setting('server.limiter_whitelist_subnet', default=[])),
+    )
 
     app.before_request(pre_request)
     return True

@@ -698,6 +698,7 @@ test.pylint() {
         build_msg TEST "[pylint] searx tests"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
+            --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
 	    --ignore=searx/engines \
 	    searx tests
     )

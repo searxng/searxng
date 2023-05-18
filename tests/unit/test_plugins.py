@@ -171,8 +171,7 @@ class LimiterPluginTest(SearxTestCase):
         self.assertTrue(len(store.plugins) == 1)
 
         def test_whitelist_case(case):
-            plugins.limiter.WHITELISTED_SUBNET = case[1]['whitelist_subnet']
-            plugins.limiter.WHITELISTED_IPS = case[1]['whitelist_ip']
+            plugins.limiter.init_whitelist(case[1]['whitelist_ip'], case[1]['whitelist_subnet'])
             ret = store.call(store.plugins, 'is_whitelist_ip', case[0])
             self.assertEqual(ret, case[2])
 
@@ -185,12 +184,6 @@ class LimiterPluginTest(SearxTestCase):
                 False,  # expected return value if request is accepted
             )
         )
-
-        # not an ip
-        test_cases.append(('192.0.43.22', {'whitelist_ip': 'not an ip', 'whitelist_subnet': []}, False))
-
-        # not a subnet
-        test_cases.append(('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': 'not a subnet'}, False))
 
         # test single ip
         test_cases.append(('192.0.43.22', {'whitelist_ip': '192.0.43.22', 'whitelist_subnet': []}, True))
@@ -211,3 +204,11 @@ class LimiterPluginTest(SearxTestCase):
 
         for case in test_cases:
             test_whitelist_case(case)
+
+        # not an ip
+        with self.assertRaises(ValueError):
+            test_whitelist_case(('192.0.43.22', {'whitelist_ip': ['not an ip'], 'whitelist_subnet': []}, False))
+
+        # not a subnet
+        with self.assertRaises(ValueError):
+            test_whitelist_case(('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': ['not a subnet']}, False))
