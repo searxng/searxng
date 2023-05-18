@@ -50,13 +50,10 @@ WHITELISTED_SUBNET = get_setting('server.limiter_whitelist_subnet', default=[])
 
 
 def is_whitelist_ip(ip: str) -> bool:
-    '''
-    Check if the given IP address belongs to the whitelisted list
-    of IP addresses or subnets.
-    '''
+    """Check if the given IP address belongs to the whitelisted list of IP addresses or subnets."""
     # if ip is empty use the source ip
-    if ip == '':
-        ip = request.remote_addr
+    if ip == "" or ip is None:
+        ip = request.remote_addr or ""
     logger.debug("checking whitelist rules for: %s", ip)
     whitelisted = False
     try:
