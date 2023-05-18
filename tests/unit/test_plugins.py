@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from searx import plugins
+from searx import plugins, redisdb
 from mock import Mock
+from mock import patch
 from tests import SearxTestCase
 
 
@@ -152,3 +153,61 @@ class HashPluginTest(SearxTestCase):
             '18980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5'
             'fa9ad8e6f57f50028a8ff' in search.result_container.answers['hash']['answer']
         )
+
+
+@patch.object(redisdb, '_CLIENT', new=True)
+class LimiterPluginTest(SearxTestCase):
+    def test_whitelist(self):
+        store = plugins.PluginStore()
+        limiter_settings = {
+            'server': {
+                'limiter': True,
+            }
+        }
+
+        app_mock = Mock(before_request=lambda x: True)
+        plugin = plugins.load_and_initialize_plugin('searx.plugins.limiter', False, (app_mock, limiter_settings))
+        store.register(plugin)
+        self.assertTrue(len(store.plugins) == 1)
+
+        def test_whitelist_case(case):
+            plugins.limiter.WHITELISTED_SUBNET = case[1]['whitelist_subnet']
+            plugins.limiter.WHITELISTED_IPS = case[1]['whitelist_ip']
+            ret = store.call(store.plugins, 'is_whitelist_ip', case[0])
+            self.assertEqual(ret, case[2])
+
+        test_cases = []
+        # default test case with no whitelist
+        test_cases.append(
+            (
+                '192.0.43.22',  # x_forwarded_for
+                {'whitelist_ip': [], 'whitelist_subnet': []},
+                False,  # expected return value if request is accepted
+            )
+        )
+
+        # not an ip
+        test_cases.append(('192.0.43.22', {'whitelist_ip': 'not an ip', 'whitelist_subnet': []}, False))
+
+        # not a subnet
+        test_cases.append(('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': 'not a subnet'}, False))
+
+        # test single ip
+        test_cases.append(('192.0.43.22', {'whitelist_ip': '192.0.43.22', 'whitelist_subnet': []}, True))
+
+        # test ip in list
+        test_cases.append(('192.0.43.22', {'whitelist_ip': ['192.0.43.22'], 'whitelist_subnet': []}, True))
+
+        # test ok single subnet
+        test_cases.append(('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': ['192.0.0.0/16']}, True))
+
+        # test ok subnet in list
+        test_cases.append(
+            ('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': ['192.0.0.0/16', '192.0.0.1/24']}, True)
+        )
+
+        # test ko subnet
+        test_cases.append(('192.0.43.22', {'whitelist_ip': [], 'whitelist_subnet': ['192.0.0.0/24']}, False))
+
+        for case in test_cases:
+            test_whitelist_case(case)

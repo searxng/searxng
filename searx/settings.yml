@@ -72,6 +72,11 @@ server:
   base_url: false  # Possible values: false or "https://example.org/location".
   limiter: false  # rate limit the number of request on the instance, block some bots
 
+  ## If you enabled the rate limiter you can add ips or subnet exceptions,
+  ## uncomment any of the lines below to add you exceptions
+  # limiter_whitelist_ip: ['127.0.0.1'] # disables the rate limiter for localhost
+  # limiter_whitelist_subnet: ['192.168.0.0/24'] # disable the rate limiter for an example home subnet
+
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 

@@ -5,12 +5,20 @@
 
 To monitor rate limits and protect privacy the IP addresses are getting stored
 with a hash so the limiter plugin knows who to block.  A redis database is
-needed to store the hash values.
+needed to store the hash values. 
+
+It is also possible to bypass the limiter for a specific IP address or subnet 
+using the `whitelist_ip` and `whitelist_subnet` settings.
 
 Enable the plugin in ``settings.yml``:
 
 - ``server.limiter: true``
+- ``server.limiter.whitelist_ip: ['127.0.0.1']``
+- ``server.limiter_whitelist_subnet: ['192.168.0.0/24']``
 - ``redis.url: ...`` check the value, see :ref:`settings redis`
+
+
+
 """
 
 import ipaddress
@@ -41,14 +49,24 @@ WHITELISTED_IPS = get_setting('server.limiter_whitelist_ip', default=[])
 WHITELISTED_SUBNET = get_setting('server.limiter_whitelist_subnet', default=[])
 
 
-def is_whitelist_ip(ip):
+def is_whitelist_ip(ip: str) -> bool:
     '''
     Check if the given IP address belongs to the whitelisted list
     of IP addresses or subnets.
     '''
-    return ip in WHITELISTED_IPS or any(ipaddress.ip_address(ip) in
-                                        ipaddress.ip_network(subnet)
-                                        for subnet in WHITELISTED_SUBNET)
+    # if ip is empty use the source ip
+    if ip == '':
+        ip = request.remote_addr
+    logger.debug("checking whitelist rules for: %s", ip)
+    whitelisted = False
+    try:
+        whitelisted = ip in WHITELISTED_IPS or any(
+            ipaddress.ip_address(ip) in ipaddress.ip_network(subnet) for subnet in WHITELISTED_SUBNET
+        )
+    except ValueError as e:
+        logger.error("Error while checking ratelimiter whitelist: %s", e)
+
+    return whitelisted
 
 
 def is_accepted_request() -> bool:
