@@ -460,7 +460,7 @@ def build_engine_locales(tag_list: List[str]):
     for tag in tag_list:
         locale = get_locale(tag)
         if locale is None:
-            logger.warn("build_engine_locales: skip locale tag %s / unknown by babel", tag)
+            logger.warning("build_engine_locales: skip locale tag %s / unknown by babel", tag)
             continue
         if locale.territory:
             engine_locales[region_tag(locale)] = tag
