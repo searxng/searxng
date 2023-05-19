@@ -95,7 +95,7 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
         return None
 
     if engine_name.lower() != engine_name:
-        logger.warn('Engine name is not lowercase: "{}", converting to lowercase'.format(engine_name))
+        logger.warning('Engine name is not lowercase: "{}", converting to lowercase'.format(engine_name))
         engine_name = engine_name.lower()
         engine_data['name'] = engine_name
 

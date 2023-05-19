@@ -74,7 +74,7 @@ class EngineProcessor(ABC):
         try:
             self.engine.init(get_engine_from_settings(self.engine_name))
         except SearxEngineResponseException as exc:
-            self.logger.warn('Fail to initialize // %s', exc)
+            self.logger.warning('Fail to initialize // %s', exc)
         except Exception:  # pylint: disable=broad-except
             self.logger.exception('Fail to initialize')
         else:
