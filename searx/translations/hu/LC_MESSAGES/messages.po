@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-01 07:37+0000\n"
+"PO-Revision-Date: 2023-05-23 11:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Hungarian <https://translate.codeberg.org/projects/searxng/"
 "searxng/hu/>\n"
@@ -403,7 +403,7 @@ msgstr "Ön Tor-t használ, és úgy tűnik, ez a külső IP-címe: {ip_address}
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Nem használ Tor kapcsolatot, és ez a külső IP-címe: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -433,7 +433,7 @@ msgstr "Az oldal nem található"
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr "Vissza a %(search_page)s."
+msgstr "Vissza a %(search_page)s-ra/re."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -542,11 +542,11 @@ msgstr "A hibanapló megtekintése és egy hiba bejelentése"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang erre a keresőmotorra"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang ennek a kategóriájira"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
@@ -592,7 +592,7 @@ msgstr "Alapértelmezett nyelv"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automatikus felismerés"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -601,6 +601,8 @@ msgstr "Preferált keresési nyelv?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Válassza az Automatikus felismerés lehetőséget, hogy a SearXNG felismerje a "
+"lekérdezés nyelvét."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -783,6 +785,8 @@ msgid ""
 "This tab dues not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Ez a fül nem létezik a felhasználói felületen, de ezekben a keresőmotorokban "
+"a !bang-jai segítségével kereshetsz."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -796,7 +800,7 @@ msgstr "Keresőmotor neve"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
