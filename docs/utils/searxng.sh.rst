@@ -5,6 +5,9 @@
 ``utils/searxng.sh``
 ====================
 
+To simplify the installation and maintenance of a SearXNG instance you can use the
+script :origin:`utils/searxng.sh`.
+
 .. sidebar:: further reading
 
    - :ref:`architecture`
@@ -12,8 +15,11 @@
    - :ref:`installation nginx`
    - :ref:`installation apache`
 
-To simplify the installation and maintenance of a SearXNG instance you can use the
-script :origin:`utils/searxng.sh`.
+.. contents:: Contents
+   :depth: 2
+   :local:
+   :backlinks: entry
+
 
 Install
 =======
@@ -28,8 +34,8 @@ The installation is described in chapter :ref:`installation basic`.
 
 .. _searxng.sh overview:
 
-Overview
-========
+Command Help
+============
 
 The ``--help`` output of the script is largely self-explanatory:
 

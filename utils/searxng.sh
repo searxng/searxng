@@ -467,6 +467,18 @@ EOF
     popd > /dev/null
 }
 
+searxng.install.link_src() {
+    rst_title "link SearXNG's sources to: $2" chapter
+    echo
+    tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
+mv -f "${SEARXNG_SRC}" "${SEARXNG_SRC}.backup"
+ln -s "${2}" "${SEARXNG_SRC}"
+ls -ld /usr/local/searxng/searxng-src
+EOF
+    echo
+    uWSGI_restart "$SEARXNG_UWSGI_APP"
+}
+
 searxng.install.pyenv() {
     rst_title "Create virtualenv (python)" section
     echo
