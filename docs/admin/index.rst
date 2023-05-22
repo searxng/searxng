@@ -14,6 +14,7 @@ Administrator documentation
    installation-nginx
    installation-apache
    update-searxng
+   answer-captcha
    engines/index
    api
    architecture
