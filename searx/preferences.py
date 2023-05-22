@@ -331,8 +331,12 @@ class ClientPref:
             except (ValueError, babel.core.UnknownLocaleError):
                 continue
             pairs.append((locale, qvalue))
-        pairs.sort(reverse=True, key=lambda x: x[1])
-        return cls(locale=pairs[0][0])
+
+        locale = None
+        if pairs:
+            pairs.sort(reverse=True, key=lambda x: x[1])
+            locale = pairs[0][0]
+        return cls(locale=locale)
 
 
 class Preferences:
