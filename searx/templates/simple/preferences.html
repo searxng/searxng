@@ -303,7 +303,7 @@
      {{ tab_header('enginetab', 'category' + categ, _(categ), ns.checked )}}
      {% set ns.checked = false %}
      {% if categ == DEFAULT_CATEGORY %}
-      <p>{{_('This tab dues not exists in the user interface, but you can search in these engines by its !bangs.')}} <a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a></p>
+      <p>{{_('This tab does not exists in the user interface, but you can search in these engines by its !bangs.')}} <a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a></p>
      {% endif %}
     <div class="scrollx">
     <table class="striped table_engines">
