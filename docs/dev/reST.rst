@@ -10,13 +10,15 @@ reST primer
    contributors to follow principles like KISS_ and readability_.
 
 We at SearXNG are using reStructuredText (aka reST_) markup for all kind of
-documentation, with the builders from the Sphinx_ project a HTML output is
-generated and deployed at :docs:`github.io <.>`.  For build prerequisites read
+documentation.  With the builders from the Sphinx_ project a HTML output is
+generated and deployed at docs.searxng.org_.  For build prerequisites read
 :ref:`docs build`.
 
-The source files of Searx's documentation are located at :origin:`docs`.  Sphinx
-assumes source files to be encoded in UTF-8 by default.  Run :ref:`make docs.live
-<make docs.live>` to build HTML while editing.
+.. _docs.searxng.org: https://docs.searxng.org/
+
+The source files of SearXNG's documentation are located at :origin:`docs`.
+Sphinx assumes source files to be encoded in UTF-8 by default.  Run :ref:`make
+docs.live <make docs.live>` to build HTML while editing.
 
 .. sidebar:: Further reading
 
@@ -494,7 +496,7 @@ Figures & Images
    is flexible.  To get best results in the generated output format, install
    ImageMagick_ and Graphviz_.
 
-Searx's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scalable here means;
+SearXNG's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scalable here means;
 scalable in sense of the build process.  Normally in absence of a converter
 tool, the build process will break.  From the authors POV it’s annoying to care
 about the build process when handling with images, especially since he has no
