@@ -12,10 +12,14 @@ the User-Agent_ header is unset or matches the regular expression
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
 
 """
+# pylint: disable=unused-argument
 
 from typing import Optional, Tuple
 import re
 import flask
+
+from searx.tools import config
+
 
 USER_AGENT = (
     r'('
@@ -44,7 +48,7 @@ def regexp_user_agent():
     return _regexp
 
 
-def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
     user_agent = request.headers.get('User-Agent', 'unknown')
     if regexp_user_agent().match(user_agent):
         return (

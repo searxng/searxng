@@ -1,4 +1,5 @@
-"""
+""".. _botdetection.ip_limit:
+
 Method ``ip_limit``
 -------------------
 
@@ -22,6 +23,8 @@ The :py:obj:`link_token` method is used to investigate whether a request is
 
 from typing import Optional, Tuple
 import flask
+from searx.tools import config
+
 
 from searx import redisdb
 from searx import logger
@@ -56,7 +59,7 @@ API_MAX = 4
 """Maximum requests from one IP in the :py:obj:`API_WONDOW`"""
 
 
-def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
     redis_client = redisdb.client()
 
     x_forwarded_for = request.headers.get('X-Forwarded-For', '')
@@ -68,7 +71,9 @@ def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
         if c > API_MAX:
             return 429, "BLOCK %s: API limit exceeded"
 
-    suspicious = link_token.is_suspicious(request)
+    suspicious = False
+    if cfg['botdetection.ip_limit.link_token']:
+        suspicious = link_token.is_suspicious(request)
 
     if suspicious:
         c = incr_sliding_window(redis_client, 'IP limit - BURST_WINDOW:' + x_forwarded_for, BURST_WINDOW)

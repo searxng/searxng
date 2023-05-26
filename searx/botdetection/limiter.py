@@ -38,8 +38,11 @@ and set the redis-url connection. Check the value, it depends on your redis DB
 """
 
 from typing import Optional, Tuple
+from pathlib import Path
 import flask
+import pytomlpp as toml
 
+from searx.tools import config
 from searx.botdetection import (
     http_accept,
     http_accept_encoding,
@@ -48,6 +51,42 @@ from searx.botdetection import (
     http_user_agent,
     ip_limit,
 )
+
+LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
+"""Base configuration (schema) of the botdetection."""
+
+LIMITER_CFG = Path('/etc/searxng/limiter.toml')
+"""Lokal Limiter configuration."""
+
+CFG_DEPRECATED = {
+    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
+}
+
+CFG = config.Config({}, {})
+
+
+def init_cfg(log):
+    global CFG  # pylint: disable=global-statement
+    CFG = config.Config(cfg_schema=toml.load(LIMITER_CFG_SCHEMA), deprecated=CFG_DEPRECATED)
+
+    if not LIMITER_CFG.exists():
+        log.warning("missing config file: %s", LIMITER_CFG)
+        return
+
+    log.warning("load config file: %s", LIMITER_CFG)
+    try:
+        upd_cfg = toml.load(LIMITER_CFG)
+    except toml.DecodeError as exc:
+        msg = str(exc).replace('\t', '').replace('\n', ' ')
+        log.error("%s: %s", LIMITER_CFG, msg)
+        raise
+
+    is_valid, issue_list = CFG.validate(upd_cfg)
+    for msg in issue_list:
+        log.error(str(msg))
+    if not is_valid:
+        raise TypeError(f"schema of {LIMITER_CFG} is invalid, can't cutomize limiter configuration from!")
+    CFG.update(upd_cfg)
 
 
 def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
@@ -58,7 +97,7 @@ def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
     for func in [
         http_user_agent,
     ]:
-        val = func.filter_request(request)
+        val = func.filter_request(request, CFG)
         if val is not None:
             return val
 
@@ -72,7 +111,7 @@ def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
             http_user_agent,
             ip_limit,
         ]:
-            val = func.filter_request(request)
+            val = func.filter_request(request, CFG)
             if val is not None:
                 return val
 

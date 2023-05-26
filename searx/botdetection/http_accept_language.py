@@ -11,13 +11,15 @@ if the Accept-Language_ header is unset.
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
 
 """
-
+# pylint: disable=unused-argument
 
 from typing import Optional, Tuple
 import flask
 
+from searx.tools import config
 
-def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
+
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
     if request.headers.get('Accept-Language', '').strip() == '':
         return 429, "bot detected, missing HTTP header Accept-Language"
     return None

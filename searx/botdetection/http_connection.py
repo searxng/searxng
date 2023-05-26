@@ -11,13 +11,15 @@ the Connection_ header is set to ``close``.
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Connection
 
 """
-
+# pylint: disable=unused-argument
 
 from typing import Optional, Tuple
 import flask
 
+from searx.tools import config
 
-def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
+
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
     if request.headers.get('Connection', '').strip() == 'close':
         return 429, "bot detected, HTTP header 'Connection=close'"
     return None

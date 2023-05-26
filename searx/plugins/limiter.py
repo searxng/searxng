@@ -38,5 +38,6 @@ def init(app: flask.Flask, settings) -> bool:
     if not redisdb.client():
         logger.error("The limiter requires Redis")
         return False
+    limiter.init_cfg(logger)
     app.before_request(pre_request)
     return True
