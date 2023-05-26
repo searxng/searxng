@@ -11,13 +11,14 @@
 # zaioti <zaioti@tuta.io>, 2022.
 # Alexandre Flament <alex@al-f.net>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# fabiosantoscode <fabiosantosart@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-11 17:37+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-05-26 07:08+0000\n"
+"Last-Translator: fabiosantoscode <fabiosantosart@gmail.com>\n"
 "Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
 "searxng/pt/>\n"
 "Language: pt\n"
@@ -392,16 +393,20 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Não foi possível obter a lista de nós de saída Tor de: https://check."
+"torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Você está a usar Tor e parece ter este endereço IP externo: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Você não está a usar Tor e parece ter este endereço IP externo: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -537,11 +542,11 @@ msgstr "Olhar os logs de erro e submeter um relatório de bug"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!atalho para este motor"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!atalho para as categorias do motor"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
@@ -587,7 +592,7 @@ msgstr "Idioma padrão"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Auto-detetar"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -596,6 +601,7 @@ msgstr "Que idioma de pesquisa prefere?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Escolha Auto-detetar para deixar SearXNG detetar a língua da sua pesquisa."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -655,7 +661,7 @@ msgstr "Access tokens para private engines"
 
 #: searx/templates/simple/preferences.html:183
 msgid "User interface"
-msgstr "Interface de usuário"
+msgstr "Interface de utilizador"
 
 #: searx/templates/simple/preferences.html:186
 msgid "Interface language"
@@ -780,6 +786,8 @@ msgid ""
 "This tab dues not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Esta aba não existe no interface de utilizador, mas pode procurar nestes "
+"motores usando os seus !atalhos."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -793,7 +801,7 @@ msgstr "Nome do motor de pesquisa"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "Atalho"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -989,7 +997,7 @@ msgstr "pesquisa"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
-msgstr "Não existem dados disponíveis."
+msgstr "Não existem dados disponíveis. "
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -1085,7 +1093,7 @@ msgstr "Informação!"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr "atualmente não existem cookies definidos"
+msgstr "neste momento, não existem cookies definidos."
 
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Engines cannot retrieve results."
