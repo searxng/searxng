@@ -916,9 +916,9 @@ searxng.doc.rst() {
     fedora_build="$(echo "${fedora_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
 
     if [[ ${SEARXNG_UWSGI_USE_SOCKET} == true ]]; then
-        uwsgi_variant=':socket'
+        uwsgi_variant='-socket'
     else
-        uwsgi_variant=':socket'
+        uwsgi_variant='-socket'
     fi
 
     eval "echo \"$(< "${REPO_ROOT}/docs/build-templates/searxng.rst")\""
@@ -999,7 +999,7 @@ EOF
             echo -e "\n.. START nginx socket"
             echo ".. code:: nginx"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}-socket")\"" | prefix_stdout "  "
             echo -e "\n.. END nginx socket"
 
             echo -e "\n.. START nginx http"
@@ -1011,7 +1011,7 @@ EOF
             echo -e "\n.. START apache socket"
             echo ".. code:: apache"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}-socket")\"" | prefix_stdout "  "
             echo -e "\n.. END apache socket"
 
             echo -e "\n.. START apache http"
