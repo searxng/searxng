@@ -9,9 +9,18 @@ bot request.  This method requires a redis DB and needs a HTTP X-Forwarded-For_
 header.  To take privacy only the hash value of an IP is stored in the redis DB
 and at least for a maximum of 10 minutes.
 
-The :py:obj:`link_token` method is used to investigate whether a request is
-*suspicious*.  If the :py:obj:`link_token` method is activated and a request is
-*suspicious* the request rates are reduced:
+The :py:obj:`.link_token` method can be used to investigate whether a request is
+*suspicious*.  To activate the :py:obj:`.link_token` method in the
+:py:obj:`.ip_limit` method add the following to your
+``/etc/searxng/limiter.toml``:
+
+.. code:: toml
+
+   [botdetection.ip_limit]
+   link_token = true
+
+If the :py:obj:`.link_token` method is activated and a request is *suspicious*
+the request rates are reduced:
 
 - :py:obj:`BURST_MAX` -> :py:obj:`BURST_MAX_SUSPICIOUS`
 - :py:obj:`LONG_MAX` -> :py:obj:`LONG_MAX_SUSPICIOUS`
