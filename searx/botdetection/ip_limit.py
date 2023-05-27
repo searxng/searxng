@@ -25,6 +25,13 @@ the request rates are reduced:
 - :py:obj:`BURST_MAX` -> :py:obj:`BURST_MAX_SUSPICIOUS`
 - :py:obj:`LONG_MAX` -> :py:obj:`LONG_MAX_SUSPICIOUS`
 
+To intercept bots that get their IPs from a range of IPs, there is a
+:py:obj:`SUSPICIOUS_IP_WINDOW`.  In this window the suspicious IPs are stored
+for a longer time.  IPs stored in this sliding window have a maximum of
+:py:obj:`SUSPICIOUS_IP_MAX` accesses before they are blocked.  As soon as the IP
+makes a request that is not suspicious, the sliding window for this IP is
+droped.
+
 .. _X-Forwarded-For:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 
@@ -37,7 +44,7 @@ from searx.tools import config
 
 from searx import redisdb
 from searx import logger
-from searx.redislib import incr_sliding_window
+from searx.redislib import incr_sliding_window, drop_counter
 
 from . import link_token
 
@@ -67,6 +74,12 @@ API_WONDOW = 3600
 API_MAX = 4
 """Maximum requests from one IP in the :py:obj:`API_WONDOW`"""
 
+SUSPICIOUS_IP_WINDOW = 3600 * 24
+"""Time (sec) before sliding window for one suspicious IP expires."""
+
+SUSPICIOUS_IP_MAX = 3
+"""Maximum requests from one suspicious IP in the :py:obj:`SUSPICIOUS_IP_WINDOW`."""
+
 
 def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
     redis_client = redisdb.client()
@@ -81,10 +94,18 @@ def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple
             return 429, "BLOCK %s: API limit exceeded"
 
     suspicious = False
+    suspicious_ip_counter = 'IP limit - SUSPICIOUS_IP_WINDOW:' + x_forwarded_for
+
     if cfg['botdetection.ip_limit.link_token']:
         suspicious = link_token.is_suspicious(request)
 
     if suspicious:
+
+        # this IP is suspicious: count requests from this IP
+        c = incr_sliding_window(redis_client, suspicious_ip_counter, SUSPICIOUS_IP_WINDOW)
+        if c > SUSPICIOUS_IP_MAX:
+            return 429, f"bot detected, too many request from {x_forwarded_for} in SUSPICIOUS_IP_WINDOW"
+
         c = incr_sliding_window(redis_client, 'IP limit - BURST_WINDOW:' + x_forwarded_for, BURST_WINDOW)
         if c > BURST_MAX_SUSPICIOUS:
             return 429, f"bot detected, too many request from {x_forwarded_for} in BURST_MAX_SUSPICIOUS"
@@ -94,6 +115,11 @@ def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple
             return 429, f"bot detected, too many request from {x_forwarded_for} in LONG_MAX_SUSPICIOUS"
 
     else:
+
+        if cfg['botdetection.ip_limit.link_token']:
+            # this IP is no longer suspicious: release ip again / delete the counter of this IP
+            drop_counter(redis_client, suspicious_ip_counter)
+
         c = incr_sliding_window(redis_client, 'IP limit - BURST_WINDOW:' + x_forwarded_for, BURST_WINDOW)
         if c > BURST_MAX:
             return 429, f"bot detected, too many request from {x_forwarded_for} in BURST_MAX"
