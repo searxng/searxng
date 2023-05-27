@@ -529,6 +529,10 @@ article[data-vim-selected].category-social {
   grid-area: urls;
 }
 
+#apis .wrapper {
+  display: flex;
+}
+
 #suggestions {
   .wrapper {
     display: flex;
@@ -596,6 +600,21 @@ article[data-vim-selected].category-social {
 #apis .title {
   margin: 2em 0 0.5em 0;
   color: var(--color-base-font);
+}
+
+summary.title {
+  cursor: pointer;
+  padding-top: 1em;
+}
+
+.sidebar-collapsable {
+  border-top: 1px solid var(--color-sidebar-border);
+  padding-bottom: 0.5em;
+}
+
+#sidebar-end-collapsable {
+  border-bottom: 1px solid var(--color-sidebar-border);
+  width: 100%;
 }
 
 #answers {
@@ -695,8 +714,6 @@ article[data-vim-selected].category-social {
 }
 
 #search_url {
-  margin-top: 8px;
-
   div.selectable_url {
     pre {
       width: 200em;

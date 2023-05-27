@@ -1,5 +1,5 @@
 <div id="search_url" role="complementary" aria-labelledby="search_url-title">
-  <details>
+  <details class="sidebar-collapsable">
     <summary class="title" id="search_url-title">{{ _('Search URL') }}</summary>
     <div class="selectable_url">
       <pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}
