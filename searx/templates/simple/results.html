@@ -58,7 +58,7 @@
           {%- include 'simple/elements/search_url.html' -%}
         {%- endif -%}
 
-        {%- if unresponsive_engines and results|length >= 1 -%}
+        {%- if unresponsive_engines -%}
           {%- include 'simple/elements/engines_msg.html' -%}
 	{%- endif -%}
 
