@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
 """.. _botdetection.ip_limit:
 
 Method ``ip_limit``
@@ -37,16 +39,18 @@ droped.
 
 """
 
-from typing import Optional, Tuple
+from typing import Optional
 import flask
+import werkzeug
 from searx.tools import config
-
 
 from searx import redisdb
 from searx import logger
 from searx.redislib import incr_sliding_window, drop_counter
 
 from . import link_token
+from ._helpers import too_many_requests
+
 
 logger = logger.getChild('botdetection.ip_limit')
 
@@ -81,50 +85,51 @@ SUSPICIOUS_IP_MAX = 3
 """Maximum requests from one suspicious IP in the :py:obj:`SUSPICIOUS_IP_WINDOW`."""
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
+    # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
 
-    x_forwarded_for = request.headers.get('X-Forwarded-For', '')
-    if not x_forwarded_for:
+    client_ip = request.headers.get('X-Forwarded-For', '')
+    if not client_ip:
         logger.error("missing HTTP header X-Forwarded-For")
 
     if request.args.get('format', 'html') != 'html':
-        c = incr_sliding_window(redis_client, 'IP limit - API_WONDOW:' + x_forwarded_for, API_WONDOW)
+        c = incr_sliding_window(redis_client, 'ip_limit.API_WONDOW:' + client_ip, API_WONDOW)
         if c > API_MAX:
-            return 429, "BLOCK %s: API limit exceeded"
-
-    suspicious = False
-    suspicious_ip_counter = 'IP limit - SUSPICIOUS_IP_WINDOW:' + x_forwarded_for
+            return too_many_requests(request, "too many request in API_WINDOW")
 
     if cfg['botdetection.ip_limit.link_token']:
-        suspicious = link_token.is_suspicious(request)
 
-    if suspicious:
+        suspicious = link_token.is_suspicious(request, True)
+
+        if not suspicious:
+            # this IP is no longer suspicious: release ip again / delete the counter of this IP
+            drop_counter(redis_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + client_ip)
+            return None
 
         # this IP is suspicious: count requests from this IP
-        c = incr_sliding_window(redis_client, suspicious_ip_counter, SUSPICIOUS_IP_WINDOW)
+        c = incr_sliding_window(redis_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + client_ip, SUSPICIOUS_IP_WINDOW)
         if c > SUSPICIOUS_IP_MAX:
-            return 429, f"bot detected, too many request from {x_forwarded_for} in SUSPICIOUS_IP_WINDOW"
+            logger.error("BLOCK: too many request from %s in SUSPICIOUS_IP_WINDOW (redirect to /)", client_ip)
+            return flask.redirect(flask.url_for('index'), code=302)
 
-        c = incr_sliding_window(redis_client, 'IP limit - BURST_WINDOW:' + x_forwarded_for, BURST_WINDOW)
+        c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + client_ip, BURST_WINDOW)
         if c > BURST_MAX_SUSPICIOUS:
-            return 429, f"bot detected, too many request from {x_forwarded_for} in BURST_MAX_SUSPICIOUS"
+            return too_many_requests(request, "too many request in BURST_WINDOW (BURST_MAX_SUSPICIOUS)")
 
-        c = incr_sliding_window(redis_client, 'IP limit - LONG_WINDOW:' + x_forwarded_for, LONG_WINDOW)
+        c = incr_sliding_window(redis_client, 'ip_limit.LONG_WINDOW' + client_ip, LONG_WINDOW)
         if c > LONG_MAX_SUSPICIOUS:
-            return 429, f"bot detected, too many request from {x_forwarded_for} in LONG_MAX_SUSPICIOUS"
+            return too_many_requests(request, "too many request in LONG_WINDOW (LONG_MAX_SUSPICIOUS)")
 
-    else:
+        return None
 
-        if cfg['botdetection.ip_limit.link_token']:
-            # this IP is no longer suspicious: release ip again / delete the counter of this IP
-            drop_counter(redis_client, suspicious_ip_counter)
+    # vanilla limiter without extensions counts BURST_MAX and LONG_MAX
+    c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + client_ip, BURST_WINDOW)
+    if c > BURST_MAX:
+        return too_many_requests(request, "too many request in BURST_WINDOW (BURST_MAX)")
 
-        c = incr_sliding_window(redis_client, 'IP limit - BURST_WINDOW:' + x_forwarded_for, BURST_WINDOW)
-        if c > BURST_MAX:
-            return 429, f"bot detected, too many request from {x_forwarded_for} in BURST_MAX"
+    c = incr_sliding_window(redis_client, 'ip_limit.LONG_WINDOW' + client_ip, LONG_WINDOW)
+    if c > LONG_MAX:
+        return too_many_requests(request, "too many request in LONG_WINDOW (LONG_MAX)")
 
-        c = incr_sliding_window(redis_client, 'IP limit - LONG_WINDOW:' + x_forwarded_for, LONG_WINDOW)
-        if c > LONG_MAX:
-            return 429, f"bot detected, too many request from {x_forwarded_for} in LONG_MAX"
     return None

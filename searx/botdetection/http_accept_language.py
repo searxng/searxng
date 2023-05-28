@@ -13,13 +13,15 @@ if the Accept-Language_ header is unset.
 """
 # pylint: disable=unused-argument
 
-from typing import Optional, Tuple
+from typing import Optional
 import flask
+import werkzeug
 
 from searx.tools import config
+from ._helpers import too_many_requests
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
     if request.headers.get('Accept-Language', '').strip() == '':
-        return 429, "bot detected, missing HTTP header Accept-Language"
+        return too_many_requests(request, "missing HTTP header Accept-Language")
     return None

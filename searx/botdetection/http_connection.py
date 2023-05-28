@@ -13,13 +13,15 @@ the Connection_ header is set to ``close``.
 """
 # pylint: disable=unused-argument
 
-from typing import Optional, Tuple
+from typing import Optional
 import flask
+import werkzeug
 
 from searx.tools import config
+from ._helpers import too_many_requests
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
     if request.headers.get('Connection', '').strip() == 'close':
-        return 429, "bot detected, HTTP header 'Connection=close'"
+        return too_many_requests(request, "HTTP header 'Connection=close")
     return None

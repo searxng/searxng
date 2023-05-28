@@ -15,13 +15,15 @@ Accept_ header ..
 """
 # pylint: disable=unused-argument
 
-from typing import Optional, Tuple
+from typing import Optional
 import flask
+import werkzeug
 
 from searx.tools import config
+from ._helpers import too_many_requests
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
     if 'text/html' not in request.accept_mimetypes:
-        return 429, "bot detected, HTTP header Accept did not contain text/html"
+        return too_many_requests(request, "HTTP header Accept did not contain text/html")
     return None

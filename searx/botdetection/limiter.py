@@ -42,6 +42,7 @@ from pathlib import Path
 import flask
 import pytomlpp as toml
 
+from searx import logger
 from searx.tools import config
 from searx.botdetection import (
     http_accept,
@@ -62,7 +63,13 @@ CFG_DEPRECATED = {
     # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
 }
 
-CFG = config.Config({}, {})
+CFG = None
+
+
+def get_cfg() -> config.Config:
+    if CFG is None:
+        init_cfg(logger)
+    return CFG
 
 
 def init_cfg(log):
@@ -73,7 +80,7 @@ def init_cfg(log):
         log.warning("missing config file: %s", LIMITER_CFG)
         return
 
-    log.warning("load config file: %s", LIMITER_CFG)
+    log.info("load config file: %s", LIMITER_CFG)
     try:
         upd_cfg = toml.load(LIMITER_CFG)
     except toml.DecodeError as exc:

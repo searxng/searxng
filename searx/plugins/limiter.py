@@ -20,16 +20,10 @@ logger = logger.getChild('limiter')
 
 def pre_request():
     """See :ref:`flask.Flask.before_request`"""
-
-    val = limiter.filter_request(flask.request)
-    if val is not None:
-        http_status, msg = val
-        client_ip = flask.request.headers.get('X-Forwarded-For', '<unknown>')
-        logger.error("BLOCK (IP %s): %s" % (client_ip, msg))
-        return 'Too Many Requests', http_status
-
-    logger.debug("OK: %s" % dump_request(flask.request))
-    return None
+    ret_val = limiter.filter_request(flask.request)
+    if ret_val is None:
+        logger.debug("OK: %s" % dump_request(flask.request))
+    return ret_val
 
 
 def init(app: flask.Flask, settings) -> bool:

@@ -16,14 +16,16 @@ bot if the Accept-Encoding_ header ..
 """
 # pylint: disable=unused-argument
 
-from typing import Optional, Tuple
+from typing import Optional
 import flask
+import werkzeug
 
 from searx.tools import config
+from ._helpers import too_many_requests
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[Tuple[int, str]]:
+def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
     accept_list = [l.strip() for l in request.headers.get('Accept-Encoding', '').split(',')]
     if not ('gzip' in accept_list or 'deflate' in accept_list):
-        return 429, "bot detected, HTTP header Accept-Encoding did not contain gzip nor deflate"
+        return too_many_requests(request, "HTTP header Accept-Encoding did not contain gzip nor deflate")
     return None
