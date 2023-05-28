@@ -11,17 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
 "PO-Revision-Date: 2023-04-26 14:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
-"searxng/af/>\n"
 "Language: af\n"
+"Language-Team: Afrikaans "
+"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -149,84 +148,84 @@ msgstr "lig"
 msgid "dark"
 msgstr "donker"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "tydsverloop"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "ontledingsfout"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP protokol fout"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "netwerk fout"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL vout: Kon nie sertifikaat verifieer nie"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "onverwagse breek"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP fout"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP koppelingsfout"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "proksie fout"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "te veel versoeke"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "toegang geweier"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "bediener API fout"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Geen item gevind"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Bron"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Fout met die laai van die volgende bladsy"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige opstellings, redigeer asb jou voorkeure"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Ongeldige opstellings"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "soekfout"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Opgehef"
 
@@ -392,8 +391,8 @@ msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het "
-":{ip_address}"
+"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het"
+" :{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -464,7 +463,6 @@ msgid "Engine stats"
 msgstr "Enjin statistieke"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr ""
 
@@ -522,10 +520,9 @@ msgstr "Dien 'n nuwe probleem in op GitHub insluitend die bogenoemde inligting"
 msgid "No HTTPS"
 msgstr "Geen HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr ""
 
@@ -766,7 +763,7 @@ msgstr "Huidige gebruikte soekenjins"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -909,40 +906,23 @@ msgstr ""
 msgid "Number of results"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
 msgstr ""
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr ""
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr ""
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr ""
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr ""
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr ""
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr ""
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr ""
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr ""
 
@@ -1037,6 +1017,30 @@ msgstr ""
 msgid "Comment(s)"
 msgstr ""
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr ""
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr ""
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr ""
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr ""
@@ -1065,19 +1069,11 @@ msgstr ""
 msgid "currently, there are no cookies defined."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr ""
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1302,3 +1298,16 @@ msgstr ""
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr ""
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+
