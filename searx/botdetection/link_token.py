@@ -43,6 +43,7 @@ import flask
 from searx import logger
 from searx import redisdb
 from searx.redislib import secret_hash
+from ._helpers import get_real_ip
 
 TOKEN_LIVE_TIME = 600
 """Livetime (sec) of limiter's CSS token."""
@@ -73,7 +74,7 @@ def is_suspicious(request: flask.Request, renew: bool = False):
     if not redis_client.get(ping_key):
         logger.warning(
             "missing ping (IP: %s) / request: %s",
-            request.headers.get('X-Forwarded-For', ''),
+            get_real_ip(request),
             ping_key,
         )
         return True
@@ -111,9 +112,7 @@ def get_ping_key(request: flask.Request):
         PING_KEY
         + "["
         + secret_hash(
-            request.headers.get('X-Forwarded-For', '')
-            + request.headers.get('Accept-Language', '')
-            + request.headers.get('User-Agent', '')
+            get_real_ip(request) + request.headers.get('Accept-Language', '') + request.headers.get('User-Agent', '')
         )
         + "]"
     )

@@ -1,3 +1,8 @@
 [botdetection.ip_limit]
 
 link_token = false
+
+[real_ip]
+
+# Number of values to trust for X-Forwarded-For.
+x_for = 1

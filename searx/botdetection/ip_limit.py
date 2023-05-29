@@ -49,7 +49,7 @@ from searx import logger
 from searx.redislib import incr_sliding_window, drop_counter
 
 from . import link_token
-from ._helpers import too_many_requests
+from ._helpers import too_many_requests, get_real_ip
 
 
 logger = logger.getChild('botdetection.ip_limit')
@@ -89,9 +89,7 @@ def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkz
     # pylint: disable=too-many-return-statements
     redis_client = redisdb.client()
 
-    client_ip = request.headers.get('X-Forwarded-For', '')
-    if not client_ip:
-        logger.error("missing HTTP header X-Forwarded-For")
+    client_ip = get_real_ip(request)
 
     if request.args.get('format', 'html') != 'html':
         c = incr_sliding_window(redis_client, 'ip_limit.API_WONDOW:' + client_ip, API_WONDOW)

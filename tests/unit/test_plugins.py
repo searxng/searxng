@@ -50,9 +50,13 @@ class SelfIPTest(SearxTestCase):
         self.assertTrue(len(store.plugins) == 1)
 
         # IP test
-        request = Mock(remote_addr='127.0.0.1')
-        request.headers.getlist.return_value = []
-        search = get_search_mock(query='ip', pageno=1)
+        request = Mock()
+        request.remote_addr = '127.0.0.1'
+        request.headers = {'X-Forwarded-For': '1.2.3.4, 127.0.0.1', 'X-Real-IP': '127.0.0.1'}
+        search = get_search_mock(
+            query='ip',
+            pageno=1,
+        )
         store.call(store.plugins, 'post_search', request, search)
         self.assertTrue('127.0.0.1' in search.result_container.answers["ip"]["answer"])
 
@@ -62,7 +66,6 @@ class SelfIPTest(SearxTestCase):
 
         # User agent test
         request = Mock(user_agent='Mock')
-        request.headers.getlist.return_value = []
 
         search = get_search_mock(query='user-agent', pageno=1)
         store.call(store.plugins, 'post_search', request, search)
@@ -98,7 +101,6 @@ class HashPluginTest(SearxTestCase):
         self.assertTrue(len(store.plugins) == 1)
 
         request = Mock(remote_addr='127.0.0.1')
-        request.headers.getlist.return_value = []
 
         # MD5
         search = get_search_mock(query='md5 test', pageno=1)
