@@ -146,6 +146,8 @@ SCHEMA = {
         'enable_metrics': SettingsValue(bool, True),
     },
     'brand': {
+        'favicon': SettingsValue(str, "static/themes/simple/img/favicon.png"),
+        'logo': SettingsValue(str, "static/themes/simple/img/searxg.png"),
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
         'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
         'docs_url': SettingsValue(str, 'https://docs.searxng.org'),

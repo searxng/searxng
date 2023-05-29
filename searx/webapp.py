@@ -294,6 +294,79 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
+def get_favicon_or_logo(imgtype: str):
+    # This method returns a favicon or regular image depending on the imgtype parameter
+    # It is used to not repeat code for /favicon.ico and /logo
+    # Called by logo() and favicon()
+    theme = request.preferences.get_value("theme")
+    path = os.path.expanduser(settings.get("brand").get(imgtype))
+    relpath = os.path.join(app.root_path, path)
+    mimetype = 'image/vnd.microsoft.icon' if imgtype == "favicon" else None
+    fallback = send_from_directory(
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
+        'favicon.png' if imgtype == "favicon" else "searxng.png",
+        mimetype=mimetype,
+    )
+
+    # If path is a URL
+    if "://" in path:
+        resp_ok = False
+        resp = None
+        # TODO: Make a a function for this used by both this function and the image proxy # pylint: disable=fixme
+        # ASAP to avoid repeated code like this
+
+        try:
+            # Pull image from it
+            request_headers = {
+                'User-Agent': gen_useragent(),
+                'Accept': 'image/webp,*/*',
+                'Accept-Encoding': 'gzip, deflate',
+                'Sec-GPC': '1',
+                'DNT': '1',
+            }
+            resp, stream = http_stream(method='GET', url=path, headers=request_headers, allow_redirects=True)
+            if resp.status_code != 200:
+                logger.debug(f"{imgtype}: Bad status code %i", resp.status_code)
+                return fallback
+            resp_ok = True
+        except httpx.HTTPError:
+            logger.debug(f"{imgtype}: HTTP error")
+            return fallback
+        finally:
+            if resp and not resp_ok:
+                try:
+                    resp.close()
+                except httpx.HTTPError:
+                    logger.exception(f'{imgtype}: HTTP error on closing')
+
+        def close_stream():
+            nonlocal resp, stream
+            try:
+                if resp:
+                    resp.close()
+                del resp
+                del stream
+            except httpx.HTTPError as e:
+                logger.debug(f'{imgtype}: Exception while closing response', e)
+
+        try:
+            headers = dict_subset(resp.headers, {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'})
+            response = Response(stream, mimetype=resp.headers['Content-Type'], headers=headers, direct_passthrough=True)
+            response.call_on_close(close_stream)
+            return response
+        except httpx.HTTPError:
+            close_stream()
+            return fallback
+
+    elif not os.path.isfile(path) and not os.path.isfile(relpath):
+        # If path doesn't exist neither relatively nor absolutely, fallback  to whatever is in the theme
+        return fallback
+    else:
+        # Otherwise we're good to go, send whatever is specified.
+        # Works with both relative and absolute.
+        return send_from_directory(os.path.dirname(path), os.path.basename(path), mimetype=mimetype)
+
+
 def custom_url_for(endpoint: str, **values):
     suffix = ""
     if endpoint == 'static' and values.get('filename'):
@@ -1286,12 +1359,12 @@ def opensearch():
 
 @app.route('/favicon.ico')
 def favicon():
-    theme = request.preferences.get_value("theme")
-    return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore
-        'favicon.png',
-        mimetype='image/vnd.microsoft.icon',
-    )
+    return get_favicon_or_logo("favicon")
+
+
+@app.route('/logo')
+def logo():
+    return get_favicon_or_logo("logo")
 
 
 @app.route('/clear_cookies')
