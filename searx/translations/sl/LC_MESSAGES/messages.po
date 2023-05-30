@@ -8,21 +8,23 @@
 # Alexandre Flament <alex@al-f.net>, 2022.
 # peterT1D <kozlovic.peter@gmail.com>, 2022.
 # Nik Drešar <nik.dresar@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-05-28 10:23+0000\n"
-"PO-Revision-Date: 2023-01-13 07:14+0000\n"
-"Last-Translator: Nik Drešar <nik.dresar@gmail.com>\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Slovenian <https://translate.codeberg.org/projects/searxng/"
+"searxng/sl/>\n"
 "Language: sl\n"
-"Language-Team: Slovenian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sl/>\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 "
-"|| n%100==4 ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -380,6 +382,9 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Ta vtičnik preveri, če je naslov poizvedbe izhodni prikluček TOR in "
+"informira uporabnika o njem, kot naprimer check.torproject.org ampak preko "
+"SearXNG-ja."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -391,7 +396,7 @@ msgstr ""
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "Uporabljate Tor in kot kaže imate ta zunanji IP naslov: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -921,7 +926,7 @@ msgstr "Število zadetkov"
 
 #: searx/templates/simple/results.html:45
 msgid "Info"
-msgstr ""
+msgstr "Informacije"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
@@ -1576,4 +1581,3 @@ msgstr "skrij video"
 
 #~ msgid "Please, try again later or find another SearXNG instance."
 #~ msgstr "Prosim poizkusite kasneje, ali poiščite drugo SearXNG istanco."
-
