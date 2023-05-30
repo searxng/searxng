@@ -12,15 +12,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-05-28 10:23+0000\n"
-"PO-Revision-Date: 2023-04-26 14:37+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
+"searxng/af/>\n"
 "Language: af\n"
-"Language-Team: Afrikaans "
-"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -379,6 +380,9 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Hierdie inprop toepassing kontroleer of die adres van die versoek 'n TOR "
+"uitgang nodus is en stel die gebruiker in kennis indien wel, soos "
+"check.torproject.org maar vanaf SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -397,6 +401,8 @@ msgstr ""
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het "
+":{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -896,11 +902,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:442
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
-msgstr ""
+msgstr "Antwoord"
 
 #: searx/templates/simple/results.html:39
 msgid "Number of results"
@@ -908,7 +914,7 @@ msgstr ""
 
 #: searx/templates/simple/results.html:45
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
@@ -963,7 +969,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:60
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:61
 msgid "Processing"
@@ -971,7 +977,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:99
 msgid "Warnings"
-msgstr ""
+msgstr "Waarskuwings"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
@@ -987,15 +993,15 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr ""
+msgstr "Persentasie"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
-msgstr ""
+msgstr "Parameter"
 
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
-msgstr ""
+msgstr "Lêernaam"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
@@ -1027,7 +1033,7 @@ msgstr ""
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
-msgstr ""
+msgstr "Fout!"
 
 #: searx/templates/simple/elements/engines_msg.html:9
 msgid "Engines cannot retrieve results"
@@ -1098,7 +1104,7 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "Enjin"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
@@ -1106,7 +1112,7 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "adres"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "show map"
@@ -1142,23 +1148,23 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1186,19 +1192,19 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/torrent.html:13
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 #: searx/templates/simple/result_templates/torrent.html:14
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 #: searx/templates/simple/result_templates/torrent.html:15
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 #: searx/templates/simple/result_templates/torrent.html:16
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
@@ -1310,4 +1316,3 @@ msgstr ""
 
 #~ msgid "Please, try again later or find another SearXNG instance."
 #~ msgstr ""
-
