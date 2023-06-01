@@ -14,8 +14,13 @@ the User-Agent_ header is unset or matches the regular expression
 """
 # pylint: disable=unused-argument
 
-from typing import Optional
+from __future__ import annotations
 import re
+from ipaddress import (
+    IPv4Network,
+    IPv6Network,
+)
+
 import flask
 import werkzeug
 
@@ -50,8 +55,13 @@ def regexp_user_agent():
     return _regexp
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
+def filter_request(
+    network: IPv4Network | IPv6Network,
+    request: flask.Request,
+    cfg: config.Config,
+) -> werkzeug.Response | None:
+
     user_agent = request.headers.get('User-Agent', 'unknown')
     if regexp_user_agent().match(user_agent):
-        return too_many_requests(request, f"bot detected, HTTP header User-Agent: {user_agent}")
+        return too_many_requests(network, f"bot detected, HTTP header User-Agent: {user_agent}")
     return None

@@ -37,14 +37,16 @@ and set the redis-url connection. Check the value, it depends on your redis DB
 
 """
 
-from typing import Optional, Tuple
+from __future__ import annotations
+
 from pathlib import Path
 import flask
-import pytomlpp as toml
+import werkzeug
 
-from searx import logger
 from searx.tools import config
-from searx.botdetection import (
+from searx import logger
+
+from . import (
     http_accept,
     http_accept_encoding,
     http_accept_language,
@@ -52,6 +54,16 @@ from searx.botdetection import (
     http_user_agent,
     ip_limit,
 )
+
+from ._helpers import (
+    get_network,
+    get_real_ip,
+    dump_request,
+)
+
+logger = logger.getChild('botdetection.limiter')
+
+CFG: config.Config = None  # type: ignore
 
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
@@ -63,40 +75,21 @@ CFG_DEPRECATED = {
     # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
 }
 
-CFG = None
-
 
 def get_cfg() -> config.Config:
+    global CFG  # pylint: disable=global-statement
     if CFG is None:
-        init_cfg(logger)
+        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, LIMITER_CFG, CFG_DEPRECATED)
     return CFG
 
 
-def init_cfg(log):
-    global CFG  # pylint: disable=global-statement
-    CFG = config.Config(cfg_schema=toml.load(LIMITER_CFG_SCHEMA), deprecated=CFG_DEPRECATED)
+def filter_request(request: flask.Request) -> werkzeug.Response | None:
 
-    if not LIMITER_CFG.exists():
-        log.warning("missing config file: %s", LIMITER_CFG)
-        return
-
-    log.info("load config file: %s", LIMITER_CFG)
-    try:
-        upd_cfg = toml.load(LIMITER_CFG)
-    except toml.DecodeError as exc:
-        msg = str(exc).replace('\t', '').replace('\n', ' ')
-        log.error("%s: %s", LIMITER_CFG, msg)
-        raise
-
-    is_valid, issue_list = CFG.validate(upd_cfg)
-    for msg in issue_list:
-        log.error(str(msg))
-    if not is_valid:
-        raise TypeError(f"schema of {LIMITER_CFG} is invalid, can't cutomize limiter configuration from!")
-    CFG.update(upd_cfg)
-
-
-def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
+    cfg = get_cfg()
+    real_ip = get_real_ip(request)
+    network = get_network(real_ip, cfg)
+    if network.is_link_local:
+        return None
 
     if request.path == '/healthz':
         return None
@@ -104,7 +97,7 @@ def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
     for func in [
         http_user_agent,
     ]:
-        val = func.filter_request(request, CFG)
+        val = func.filter_request(network, request, cfg)
         if val is not None:
             return val
 
@@ -118,8 +111,8 @@ def filter_request(request: flask.Request) -> Optional[Tuple[int, str]]:
             http_user_agent,
             ip_limit,
         ]:
-            val = func.filter_request(request, CFG)
+            val = func.filter_request(network, request, cfg)
             if val is not None:
                 return val
-
+    logger.debug(f"OK {network}: %s", dump_request(flask.request))
     return None

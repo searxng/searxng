@@ -1,11 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 # pylint: disable=missing-module-docstring, invalid-name
+from __future__ import annotations
 
-from typing import Optional
+from ipaddress import (
+    IPv4Network,
+    IPv6Network,
+    IPv6Address,
+    ip_address,
+    ip_network,
+)
 import flask
 import werkzeug
 
+from searx.tools import config
 from searx import logger
 
 logger = logger.getChild('botdetection')
@@ -13,7 +21,7 @@ logger = logger.getChild('botdetection')
 
 def dump_request(request: flask.Request):
     return (
-        "%s: %s" % (get_real_ip(request), request.path)
+        request.path
         + " || X-Forwarded-For: %s" % request.headers.get('X-Forwarded-For')
         + " || X-Real-IP: %s" % request.headers.get('X-Real-IP')
         + " || form: %s" % request.form
@@ -27,10 +35,28 @@ def dump_request(request: flask.Request):
     )
 
 
-def too_many_requests(request: flask.Request, log_msg: str) -> Optional[werkzeug.Response]:
-    log_prefix = 'BLOCK %s: ' % get_real_ip(request)
-    logger.debug(log_prefix + log_msg)
+def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkzeug.Response | None:
+    """Returns a HTTP 429 response object and writes a ERROR message to the
+    'botdetection' logger.  This function is used in part by the filter methods
+    to return the default ``Too Many Requests`` response.
+
+    """
+
+    logger.debug("BLOCK %s: %s", network.compressed, log_msg)
     return flask.make_response(('Too Many Requests', 429))
+
+
+def get_network(real_ip: str, cfg: config.Config) -> IPv4Network | IPv6Network:
+    """Returns the (client) network of whether the real_ip is part of."""
+
+    ip = ip_address(real_ip)
+    if isinstance(ip, IPv6Address):
+        prefix = cfg['real_ip.ipv6_prefix']
+    else:
+        prefix = cfg['real_ip.ipv4_prefix']
+    network = ip_network(f"{real_ip}/{prefix}", strict=False)
+    # logger.debug("get_network(): %s", network.compressed)
+    return network
 
 
 def get_real_ip(request: flask.Request) -> str:
@@ -63,7 +89,9 @@ def get_real_ip(request: flask.Request) -> str:
     forwarded_for = request.headers.get("X-Forwarded-For")
     real_ip = request.headers.get('X-Real-IP')
     remote_addr = request.remote_addr
-    logger.debug("X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s", forwarded_for, real_ip, remote_addr)
+    # logger.debug(
+    #     "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s", forwarded_for, real_ip, remote_addr
+    # )
 
     if not forwarded_for:
         logger.error("X-Forwarded-For header is not set!")
@@ -89,5 +117,5 @@ def get_real_ip(request: flask.Request) -> str:
         logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
 
     request_ip = forwarded_for or real_ip or remote_addr or '0.0.0.0'
-    logger.debug("get_real_ip() -> %s", request_ip)
+    # logger.debug("get_real_ip() -> %s", request_ip)
     return request_ip

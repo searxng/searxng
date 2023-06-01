@@ -13,7 +13,12 @@ the Connection_ header is set to ``close``.
 """
 # pylint: disable=unused-argument
 
-from typing import Optional
+from __future__ import annotations
+from ipaddress import (
+    IPv4Network,
+    IPv6Network,
+)
+
 import flask
 import werkzeug
 
@@ -21,7 +26,12 @@ from searx.tools import config
 from ._helpers import too_many_requests
 
 
-def filter_request(request: flask.Request, cfg: config.Config) -> Optional[werkzeug.Response]:
+def filter_request(
+    network: IPv4Network | IPv6Network,
+    request: flask.Request,
+    cfg: config.Config,
+) -> werkzeug.Response | None:
+
     if request.headers.get('Connection', '').strip() == 'close':
-        return too_many_requests(request, "HTTP header 'Connection=close")
+        return too_many_requests(network, "HTTP header 'Connection=close")
     return None
