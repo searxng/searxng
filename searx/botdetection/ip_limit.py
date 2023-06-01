@@ -82,7 +82,7 @@ API_WONDOW = 3600
 API_MAX = 4
 """Maximum requests from one IP in the :py:obj:`API_WONDOW`"""
 
-SUSPICIOUS_IP_WINDOW = 3600 * 24
+SUSPICIOUS_IP_WINDOW = 3600 * 24 * 30
 """Time (sec) before sliding window for one suspicious IP expires."""
 
 SUSPICIOUS_IP_MAX = 3
