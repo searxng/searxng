@@ -6,26 +6,28 @@
 # dd721411 <dd721411@gmail.com>, 2018
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # nam000 <nam000gl@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-02-19 11:39+0000\n"
-"Last-Translator: nam000 <nam000gl@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
+"searxng/vi/>\n"
 "Language: vi\n"
-"Language-Team: Vietnamese "
-"<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "mà không cần tách nhóm thêm"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -147,84 +149,84 @@ msgstr "Sáng"
 msgid "dark"
 msgstr "Tối"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "Hết thời gian"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
-msgstr "Lỗi phân tách"
+msgstr "lỗi phân tích"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "Lỗi giao thức HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "Lỗi mạng"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "Lỗi SSL: xác thực chứng chỉ không thành công"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "sập đột ngột"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "Lỗi HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "Lỗi kết nối HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "Lỗi proxy"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "quá nhiều yêu cầu"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "Truy cập bị từ chối"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "Lỗi máy chủ API"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Nguồn"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Không thể tải trang kế tiếp"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Cài đặt không hợp lệ, xin xem lại tuỳ chỉnh"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Cài đặt không hợp lệ"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "lỗi tìm kiếm"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Treo/gián đoạn/chặn"
 
@@ -273,6 +275,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} nguồn trích dẫn từ năm {firstCitationVelocityYear} đến năm "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -327,6 +331,8 @@ msgstr "Thay đổi tên máy chủ"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Viết lại kết quả tên của các máy chủ hoặc loại bỏ kết quả dựa trên tên của "
+"máy chủ"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -354,7 +360,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Thông Tin Cá Nhân"
 
 #: searx/plugins/self_info.py:21
 msgid ""
@@ -371,18 +377,25 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Plugin này kiểm tra xem địa chỉ của yêu cầu này có phải là một nút thoát của "
+"Tor hay không và sẽ báo cáo người dùng nếu đúng như vậy; giống như "
+"check.torproject.org, nhưng từ SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Không thể tải xuống danh sách của những nút thoát Tor từ: https://check."
+"torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Bạn đang sử dụng Tor và hình như bạn có địa chỉ IP ngoại tiếp này: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -405,9 +418,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Điều hướng các kết quả tìm kiếm với các phím tắt Vim-like (yêu cầu "
-"JavaScript). Nhấn phím \"h\" trên trang chính hoặc trang kết quả để xem "
-"trợ giúp."
+"Điều hướng các kết quả tìm kiếm với các phím tắt giống phần mềm Vim (yêu cầu "
+"JavaScript). Nhấn phím \"h\" trên trang chính hoặc trang kết quả để xem trợ "
+"giúp."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -423,9 +436,8 @@ msgid "search page"
 msgstr "tìm kiếm trang"
 
 #: searx/templates/simple/base.html:46
-#, fuzzy
 msgid "About"
-msgstr "Về chúng tôi"
+msgstr "Thông tin"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
@@ -442,32 +454,31 @@ msgstr "Được cung cấp bởi"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "một siêu công cụ tìm kiếm mã nguồn mỡ và tôn trọng quyền riêng tư"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
-msgstr ""
+msgstr "Mã nguồn"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
-msgstr ""
+msgstr "công cụ theo dõi các trục trặc"
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Các thông số về trình tìm kiếm"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
-msgstr ""
+msgstr "Những thực thể công khai"
 
 #: searx/templates/simple/base.html:72
 msgid "Privacy policy"
-msgstr ""
+msgstr "Chính sách bảo mật"
 
 #: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
-msgstr ""
+msgstr "Liên hệ người bảo toàn thực thể"
 
 #: searx/templates/simple/categories.html:24
 msgid "Click on the magnifier to perform search"
@@ -475,13 +486,13 @@ msgstr "Nhấp vào hình kính lúp để tiến hành tìm kiếm"
 
 #: searx/templates/simple/macros.html:36
 msgid "Length"
-msgstr ""
+msgstr "Độ dài"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
-msgstr ""
+msgstr "Tác giả"
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
@@ -493,65 +504,68 @@ msgstr "đã proxy"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Bắt đầu đăng một vấn đề mới trên Github"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
+"Vui lòng kiểm tra các lỗi đang tồn tại của công cụ tìm kiếm này trên Github"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
+"Tôi xác nhận rằng không có lỗi nào đang tồn tại về vấn đề mà tôi gặp phải"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
+"Nếu đây là một thực thể công khai, vui lòng nêu rõ địa chỉ trong bản báo cáo "
+"lỗi"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Đăng một vấn đề mới trên Github cùng với các thông tin trên"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
-msgstr ""
+msgstr "Không hỗ trợ HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Xem nhật ký lỗi và đăng một bản báo cáo lỗi"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang cho công cụ tìm kiếm này"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang cho các danh mục của nó"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
 msgid "Median"
-msgstr ""
+msgstr "Trung vị"
 
 #: searx/templates/simple/preferences.html:55
 #: searx/templates/simple/stats.html:70
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
 #: searx/templates/simple/preferences.html:56
 #: searx/templates/simple/stats.html:76
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
 #: searx/templates/simple/preferences.html:84
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Số bài kiểm định đã thất bại của công cụ kiểm tra: "
 
 #: searx/templates/simple/preferences.html:86
 msgid "Errors:"
-msgstr ""
+msgstr "Số lỗi:"
 
 #: searx/templates/simple/preferences.html:106
 msgid "General"
@@ -574,7 +588,7 @@ msgstr "Ngôn ngữ mặc định"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Tự động phát hiện"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -583,6 +597,7 @@ msgstr "Bạn muốn tìm kiếm bằng ngôn ngữ nào?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Chọn Tự đông phát hiện để SearXNG dò ra ngôn ngữ thuộc tìm kiếm của bạn."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -634,11 +649,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:175
 msgid "Engine tokens"
-msgstr ""
+msgstr "Các vé của công cụ tìm kiếm"
 
 #: searx/templates/simple/preferences.html:179
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Truy cập các vé cho các công cụ tìm kiếm riêng tư"
 
 #: searx/templates/simple/preferences.html:183
 msgid "User interface"
@@ -654,23 +669,23 @@ msgstr "Thay đổi ngôn ngữ giao diện"
 
 #: searx/templates/simple/preferences.html:199
 msgid "Theme"
-msgstr ""
+msgstr "Chủ đề màu"
 
 #: searx/templates/simple/preferences.html:207
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Thay đổi bố cục của SearXNG"
 
 #: searx/templates/simple/preferences.html:210
 msgid "Theme style"
-msgstr ""
+msgstr "Phong cách của chủ đề màu"
 
 #: searx/templates/simple/preferences.html:218
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Chọn tự động để tuân thủ cài đặt của trình duyệt"
 
 #: searx/templates/simple/preferences.html:221
 msgid "Center Alignment"
-msgstr ""
+msgstr "Căn giữa"
 
 #: searx/templates/simple/preferences.html:224
 #: searx/templates/simple/preferences.html:236
@@ -686,7 +701,7 @@ msgstr "Tắt"
 
 #: searx/templates/simple/preferences.html:228
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Hiện các kết quả ở giữa trang (theo bố cục Oscar)."
 
 #: searx/templates/simple/preferences.html:233
 msgid "Results on new tabs"
@@ -710,7 +725,7 @@ msgstr "Quyền riêng tư"
 
 #: searx/templates/simple/preferences.html:261
 msgid "HTTP Method"
-msgstr ""
+msgstr "Phương thức HTTP"
 
 #: searx/templates/simple/preferences.html:268
 msgid ""
@@ -718,6 +733,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Thay đổi cách các biểu mẫu được đăng, <a href=\"https://en.wikipedia.org/"
+"wiki/Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">tìm hiểu "
+"thêm về các phương pháp yêu cầu HTTP</a>"
 
 #: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
@@ -735,7 +753,7 @@ msgstr "Đã tắt"
 
 #: searx/templates/simple/preferences.html:280
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Proxy hóa các kết quả bức ảnh tìm kiếm được thông qua SearXNG"
 
 #: searx/templates/simple/preferences.html:285
 msgid "Query in the page's title"
@@ -757,7 +775,7 @@ msgstr "Các trình tìm kiếm đang được dùng"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -773,7 +791,7 @@ msgstr "Tên trình tìm kiếm"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -889,7 +907,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:440
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 #: searx/templates/simple/preferences.html:441
 msgid "Reset defaults"
@@ -897,7 +915,7 @@ msgstr "Đưa về mặc định"
 
 #: searx/templates/simple/preferences.html:442
 msgid "Back"
-msgstr ""
+msgstr "Quay lại"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -907,40 +925,23 @@ msgstr "Các đáp án"
 msgid "Number of results"
 msgstr "Số lượng kết quả"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Lỗi!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Thông tin"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Các trình tìm kiếm không nhận được kết quả"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Các gợi ý"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "URL Tìm kiếm"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Tải về các kết quả"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Thử tìm kiếm:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr ""
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr ""
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr ""
 
@@ -956,12 +957,12 @@ msgstr "Tìm kiếm về..."
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "clear"
-msgstr ""
+msgstr "Xoá"
 
 #: searx/templates/simple/search.html:11
 #: searx/templates/simple/simple_search.html:7
 msgid "search"
-msgstr ""
+msgstr "tìm kiếm"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
@@ -977,11 +978,11 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
-msgstr ""
+msgstr "Tổng"
 
 #: searx/templates/simple/stats.html:60
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:61
 msgid "Processing"
@@ -989,7 +990,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:99
 msgid "Warnings"
-msgstr ""
+msgstr "Cảnh báo"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
@@ -1001,7 +1002,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:107
 msgid "Message"
-msgstr ""
+msgstr "Tin nhắn"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
@@ -1013,7 +1014,7 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
-msgstr ""
+msgstr "Tên file"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
@@ -1033,7 +1034,31 @@ msgstr ""
 
 #: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
+msgstr "Bình luận"
+
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Tải về các kết quả"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
 msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Lỗi!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Các trình tìm kiếm không nhận được kết quả"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "URL Tìm kiếm"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Các gợi ý"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
@@ -1063,19 +1088,11 @@ msgstr "Thông tin!"
 msgid "currently, there are no cookies defined."
 msgstr "hiện tại không có cookie nào."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Các trình tìm kiếm không nhận được kết quả."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Xin lỗi!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1098,11 +1115,11 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
-msgstr ""
+msgstr "Định dạng"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "Công cụ tìm kiếm"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
@@ -1110,7 +1127,7 @@ msgstr "Xem nguồn"
 
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "Địa chỉ"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "show map"
@@ -1134,7 +1151,7 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Nhà xuất bản"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
@@ -1142,27 +1159,27 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Thẻ"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1553,3 +1570,14 @@ msgstr "ẩn phim"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Các trình tìm kiếm không nhận được kết quả."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""

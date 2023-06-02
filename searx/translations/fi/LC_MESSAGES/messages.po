@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-04 19:37+0000\n"
-"Last-Translator: artnay <jiri.gronroos@iki.fi>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Finnish <https://translate.codeberg.org/projects/searxng/"
 "searxng/fi/>\n"
 "Language: fi\n"
@@ -150,84 +150,84 @@ msgstr "vaalea"
 msgid "dark"
 msgstr "tumma"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "aikakatkaistu"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "jäsentämisvirhe"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP-protokollavirhe"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "verkkovirhe"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL-virhe: sertifikaatin vahvistus epäonnistui"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "odottamaton kaatuminen"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP-virhe"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP-yhteysvirhe"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "proxy-virhe"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "liian monta pyyntöä"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "pääsy kielletty"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "palvelimen API-virhe"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Tietuetta ei löytynyt"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Lähde"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Virhe ladattaessa seuraavaa sivua"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Virheelliset asetukset, muokkaa siis asetuksia"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Virheelliset asetukset"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "hakuvirhe"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Keskeytetty"
 
@@ -380,6 +380,9 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Tämä lisäosa tarkistaa, tuleeko pyyntö TOR exit nodesta, ja ilmoittaa "
+"käyttäjälle, jos se on, samalla tavalla kuin check.torproject.org, mutta "
+"SearXNGista."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -397,8 +400,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Et käytä Tor-verkkoa ja sinulla on tämä ulkoinen IP-osoite: {ip_address}"
+msgstr "Et käytä Tor-verkkoa ja sinulla on tämä ulkoinen IP-osoite: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -467,7 +469,6 @@ msgid "Engine stats"
 msgstr "Hakukoneen tilastot"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Julkiset palvelimet"
 
@@ -527,10 +528,9 @@ msgstr "Lähetä uusi ongelma Githubiin sisältäen edellä mainitut tiedot"
 msgid "No HTTPS"
 msgstr "Ei HTTPS-yhteyttä"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Katso virhelokit ja lähetä virhe raportti"
 
@@ -595,8 +595,8 @@ msgstr "Millä kielellä haluat etsiä ensisijaisesti?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Valitse \"Havaitse automaattisesti\", jotta SearXNG havaitsee haun kielen "
-"automaattisesti."
+"Valitse \"Havaitse automaattisesti\", jotta SearXNG havaitsee haun kielen"
+" automaattisesti."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -732,9 +732,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Vaihda tapaa miten lomakkeet lähetetään, <a href=\"http://en.wikipedia.org/"
-"wiki/Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\""
-">lisätietoja eri pyyntömenetelmistä</a>"
+"Vaihda tapaa miten lomakkeet lähetetään, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">lisätietoja eri pyyntömenetelmistä</a>"
 
 #: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
@@ -776,7 +776,7 @@ msgstr "Nyt käytetyt hakukoneet"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -930,40 +930,23 @@ msgstr "Vastaukset"
 msgid "Number of results"
 msgstr "Tulosten määrä"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Virhe!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Tiedot"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Moottorit eivät voi palauttaa tuloksia"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Ehdotukset"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Haun osoite"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Lataa tulokset"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Yritä etsiä:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Takaisin huipulle"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Edellinen sivu"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Seuraava sivu"
 
@@ -1058,6 +1041,30 @@ msgstr "Epäonnistunut testi"
 msgid "Comment(s)"
 msgstr "Kommentit"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Lataa tulokset"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Virhe!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Moottorit eivät voi palauttaa tuloksia"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Haun osoite"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Ehdotukset"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Milloin tahansa"
@@ -1086,19 +1093,11 @@ msgstr "Huomio!"
 msgid "currently, there are no cookies defined."
 msgstr "Evästeitä ei ole määritetty tällä hetkellä."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Moottorit eivät voi palauttaa tuloksia."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Yritä uudelleen tai etsi toinen SearXNG-palvelin."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Pahoittelut!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1575,3 +1574,15 @@ msgstr "piilota video"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Moottorit eivät voi palauttaa tuloksia."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "Yritä uudelleen tai etsi toinen SearXNG-palvelin."

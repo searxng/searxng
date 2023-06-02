@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-04-17 13:37+0000\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
 "searxng/cs/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 4.16.4\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -155,84 +155,84 @@ msgstr "světlý"
 msgid "dark"
 msgstr "tmavý"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "čas vypršel"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "chyba parsování"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "chyba HTTP protokolu"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "síťová chyba"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "chyba SSL: ověření certifikátu selhalo"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "nečekaná chyba"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "chyba HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "Chyba spojení HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "chyba proxy"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "příliš mnoho požadavků"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "přístup odepřen"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "chyba API serveru"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Nic nenalezeno"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "zdroj"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Neplatné nastavení"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "chyba vyhledávání"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Pozastaveno"
 
@@ -384,16 +384,16 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "Tento plugin kontroluje, zda je adresa požadavku výstupním uzlem Tor, a "
-"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od "
-"SearXNG."
+"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od"
+" SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nelze stáhnout seznam výstupních uzlů Tor z: https://check.torproject.org/"
-"exit-addresses"
+"Nelze stáhnout seznam výstupních uzlů Tor z: https://check.torproject.org"
+"/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -473,7 +473,6 @@ msgid "Engine stats"
 msgstr "Statistiky vyhledávače"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Veřejné instance"
 
@@ -533,10 +532,9 @@ msgstr "Odeslání nového problému na Github včetně výše uvedených inform
 msgid "No HTTPS"
 msgstr "Žádné HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Zobrazit ladící záznamy a poslat hlášení o chybě"
 
@@ -600,8 +598,7 @@ msgstr "Jaký jazyk vyhledávání upřednostňujete?"
 
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Zvolte Automaticky detekovat, aby SearXNG detekoval jazyk vašeho dotazu."
+msgstr "Zvolte Automaticky detekovat, aby SearXNG detekoval jazyk vašeho dotazu."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -781,7 +778,7 @@ msgstr "Aktuálně používané vyhledávače"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 "Tato karta v uživatelském rozhraní neexistuje, ale můžete v těchto "
@@ -936,40 +933,23 @@ msgstr "Odpovědi"
 msgid "Number of results"
 msgstr "Počet výsledků"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Chyba!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Informace"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Vyhledávače nemohou získat výsledky"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Návrhy"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "URL vyhledávání"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Stáhnout výsledky vyhledávání"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Zkuste vyhledat:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Nahoru"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Předchozí stránka"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Další stránka"
 
@@ -1064,6 +1044,30 @@ msgstr "Test selhal"
 msgid "Comment(s)"
 msgstr "Komentář(e)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Stáhnout výsledky vyhledávání"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Chyba!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Vyhledávače nemohou získat výsledky"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "URL vyhledávání"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Návrhy"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Kdykoli"
@@ -1092,19 +1096,11 @@ msgstr "Informace!"
 msgid "currently, there are no cookies defined."
 msgstr "aktuálně nejsou definované žádné cookies."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Načtení výsledků vyhledávači se nezdařilo."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Prosím zkuste to znovu později, nebo si najděte jinou instanci SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Omlouváme se!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1583,3 +1579,18 @@ msgstr "skrýt video"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "Tato karta v uživatelském rozhraní "
+#~ "neexistuje, ale můžete v těchto "
+#~ "vyhledávačích vyhledávat podle jejích !bang."
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Načtení výsledků vyhledávači se nezdařilo."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "Prosím zkuste to znovu později, nebo si najděte jinou instanci SearXNG."

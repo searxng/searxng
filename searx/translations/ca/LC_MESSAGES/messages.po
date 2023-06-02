@@ -12,26 +12,28 @@
 # Joan Montané <joan@montane.cat>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# Ivan Gabaldon <admin@inetol.net>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Catalan <https://translate.codeberg.org/projects/searxng/"
+"searxng/ca/>\n"
 "Language: ca\n"
-"Language-Team: Catalan "
-"<https://translate.codeberg.org/projects/searxng/searxng/ca/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "sense agrupació"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -153,84 +155,84 @@ msgstr "clar"
 msgid "dark"
 msgstr "fosc"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "expirat"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "error de processament"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
-msgstr "error de protocol HTTP"
+msgstr "error del protocol HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "error de xarxa"
 
-#: searx/webapp.py:169
-msgid "SSL error: certificate validation has failed"
-msgstr "Error SSL: la validació del certificat ha fallat"
-
 #: searx/webapp.py:171
-msgid "unexpected crash"
-msgstr "tancament ineseperat"
+msgid "SSL error: certificate validation has failed"
+msgstr "error SSL: la validació del certificat ha fallat"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:173
+msgid "unexpected crash"
+msgstr "error inesperat"
+
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "error HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "error de connexió HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
-msgstr "error de servidor intermediari"
+msgstr "error del servidor intermediari"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "massa peticions"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "accés denegat"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "error en l'API del servidor"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "No s'ha trobat cap element"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Origen"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
-msgstr "S'ha produït un error en carregar la pàgina següent"
+msgstr "S'ha produït un error en carregar la següent pàgina"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "La configuració no és vàlida, editeu-la"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "La configuració no és vàlida"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
-msgstr "error en la cerca"
+msgstr "error de cerca"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Suspès"
 
@@ -244,11 +246,11 @@ msgstr "fa {hours} hores i {minutes} minuts"
 
 #: searx/answerers/random/answerer.py:67
 msgid "Random value generator"
-msgstr "Generador de valor aleatori"
+msgstr "Generador de valors aleatoris"
 
 #: searx/answerers/random/answerer.py:68
 msgid "Generate different random values"
-msgstr "Genera valors aleatoris diferents"
+msgstr "Genera diferents valors aleatoris"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
@@ -279,7 +281,7 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} cites desde l'any {firstCitationVelocityYear} al "
+"{numCitations} cites des de l'any {firstCitationVelocityYear} fins a "
 "{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
@@ -288,18 +290,17 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"No s'ha pogut llegir l'URL de la imatge. Això pot ser degut a un format "
-"de fitxer no compatible. TinEye només admet imatges en format JPEG, PNG, "
-"GIF, BMP, TIFF o WebP."
+"No s'ha pogut llegir l'URL de la imatge. Això pot ser a causa d'un format de "
+"fitxer no compatible. TinEye només admet imatges en format JPEG, PNG, GIF, "
+"BMP, TIFF o WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"La imatge és massa senzilla per trobar coincidències. TinEye requereix un"
-" nivell bàsic de detall visual per identificar amb èxit les "
-"coincidències."
+"La imatge és massa senzilla per trobar coincidències. TinEye requereix un "
+"mínim de complexitat visual per identificar amb èxit les coincidències."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -323,33 +324,31 @@ msgstr "Nit"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr "Converteix cadenes a diferent formats de resum."
+msgstr "Converteix cadenes en diferents empremtes de hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "format de resum"
+msgstr "empremta de hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Substitueix el nom d'amfitrió"
+msgstr "Substitució del nom de l'amfitrió"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
-"Reescriu els noms d'amfitrió resultants o suprimeix els resultats segons "
-"el nom d'amfitrió"
+msgstr "Reescriu o suprimeix resultats basant-se en els noms d'amfitrió"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr "Reescriu l'Open Access DOI"
+msgstr "Reescriptura de l'Open Access DOI"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Evita els llocs de pagaments redirigint a versions d'accés obert de les "
-"publicacions si és possible"
+"Evita els llocs de pagament redirigint a versions d'accés obert de les "
+"publicacions quan estiguin disponibles"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
@@ -384,22 +383,27 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Aquest plugin comprova si l'adreça de la sol·licitud és un node de sortida "
+"TOR i informa a l'usuari si ho és, com check.torproject.org però des de "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"No s'ha pogut descarregar la llista de nodes de sortida de Tor des de: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "Estàs usant Tor i sembla que tens aquesta adreça IP: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "No estàs usant Tor i tens aquesta adreça IP: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -469,7 +473,6 @@ msgid "Engine stats"
 msgstr "Estadístiques del motor"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instàncies públiques"
 
@@ -527,20 +530,19 @@ msgstr "Envieu un tiquet a Github que inclou la informació anterior"
 msgid "No HTTPS"
 msgstr "Sense HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Mostra els informes d'error i envia un informe d'error"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang per a aquest motor de cerca"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang per a les seves categories"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
@@ -586,7 +588,7 @@ msgstr "Llengua predeterminada"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Detecció automàtica"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -595,6 +597,8 @@ msgstr "En quina llengua preferiu cercar?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Selecciona Detecció automàtica per permetre que SearXNG detecti l'idioma de "
+"la teva cerca."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -732,9 +736,10 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Canvia com es trameten els formularis, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">més informació sobre els mètodes de petició</a>"
+"Canvia com es trameten els formularis, <a href=\"http://ca.wikipedia.org/"
+"wiki/"
+"Protocol_de_transfer%C3%A8ncia_d%27hipertext#M%C3%A8todes_de_petici%C3%B3[2]"
+"\" rel=\"external\">més informació sobre els mètodes de petició</a>"
 
 #: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
@@ -776,9 +781,11 @@ msgstr "Motors de cerca usats actualment"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Aquesta pestanya no existeix en la interfície d'usuari, però pots buscar en "
+"aquests motors de cerca mitjançant els seus !bangs."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -792,7 +799,7 @@ msgstr "Nom del motor"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "Bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -930,40 +937,23 @@ msgstr "Respostes"
 msgid "Number of results"
 msgstr "Nombre de resultats"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Error!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Informació"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Els motors no poden obtenir cap resultat"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Suggeriments"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "URL de cerca"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Baixa els resultats"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Proveu a cercar:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Torna al capdemunt"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Pàgina anterior"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pàgina següent"
 
@@ -1058,6 +1048,30 @@ msgstr "Prova fallida"
 msgid "Comment(s)"
 msgstr "Comentaris"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Baixa els resultats"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr "Missatges dels motors de cerca"
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Error!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Els motors no poden obtenir cap resultat"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "URL de cerca"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Suggeriments"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "En qualsevol moment"
@@ -1086,19 +1100,11 @@ msgstr "Informació!"
 msgid "currently, there are no cookies defined."
 msgstr "actualment, no hi ha definida cap galeta."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Els motors no poden obtenir cap resultat."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Torneu a intentar-ho més tard, o proveu amb una altra instància SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Disculpeu!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1583,3 +1589,17 @@ msgstr "amaga el vídeo"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Els motors no poden obtenir cap resultat."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+#~ "Torneu a intentar-ho més tard, o"
+#~ " proveu amb una altra instància "
+#~ "SearXNG."
