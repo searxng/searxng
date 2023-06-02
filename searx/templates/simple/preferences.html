@@ -1,7 +1,40 @@
-{% from 'simple/macros.html' import tabs_open, tabs_close, tab_header, tab_footer, checkbox_onoff, checkbox %}
-{% from 'simple/icons.html' import icon_big %}
+{%- from 'simple/icons.html' import icon_big -%}
+{%- extends "simple/page_with_header.html" -%}
 
-{% extends "simple/page_with_header.html" %}
+{%- macro tabs_open() -%}
+<div class="tabs" role="tablist">
+{%- endmacro -%}
+
+{%- macro tab_header(name, id, label, checked) -%}
+<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %} />
+<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
+<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
+{%- endmacro -%}
+
+{%- macro tab_footer() -%}
+</section>
+{%- endmacro -%}
+
+{%- macro tabs_close() -%}
+</div>
+{%- endmacro -%}
+
+{%- macro checkbox(name, checked, disabled) -%}
+  {%- if checked == '?' -%}
+    {{- icon_small('warning') -}}
+  {%- else -%}
+    <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}/>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro checkbox_onoff_reversed(name, checked) -%}
+  <input type="checkbox" {{- ' ' -}}
+         name="{{ name }}" {{- ' ' -}}
+         id="{{ name }}" {{- ' ' -}}
+         aria-labelledby="pref_{{ name }}"{{- ' ' -}}
+         class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
+         {%- if checked -%} checked{%- endif -%}/>
+{%- endmacro -%}
 
 {%- macro plugin_preferences(section) -%}
 {%- for plugin in plugins -%}
@@ -9,7 +42,7 @@
 <fieldset>{{- '' -}}
     <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
     <div class="value">
-      {{- checkbox_onoff('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
     </div>{{- '' -}}
     <div class="description">
       {{- _(plugin.description) -}}
@@ -19,427 +52,190 @@
 {%- endfor -%}
 {%- endmacro -%}
 
-{% macro engine_about(search_engine) -%}
-{% if search_engine.about is defined %}
-{% set about = search_engine.about %}
-<div class="engine-tooltip" role="tooltip">{{- "" -}}
-    <p class="engine-description"></p>{{- "" -}}
-    <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>
-    {%- if about.wikidata_id -%}<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>{%- endif -%}
-    {%- if search_engine.enable_http %}<p>{{ icon_big('exclamation-sign', 'No HTTPS') }}{{ _('No HTTPS')}}</p>{% endif -%}
-    {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
-    <a href="{{ url_for('stats', engine=search_engine.name|e) }}" title="{{ _('View error logs and submit a bug report') }}">
-      {{ _('View error logs and submit a bug report') -}}
-    </a>
+{%- macro engine_about(search_engine) -%}
+{%- if search_engine.about is defined -%}
+  {%- set about = search_engine.about -%}
+  <div class="engine-tooltip" role="tooltip">{{- '' -}}
+    <p class="engine-description"></p>{{- '' -}}
+    <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
+    {%- if about.wikidata_id -%}
+      <p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
     {%- endif -%}
-    <p><span class="right">{{ _("!bang for this engine") }}</span>{% for bang in [search_engine.name] + [search_engine.shortcut] %}<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>{% endfor %}</p>
-    <p><span class="right">{{ _("!bang for its categories") }}</span>{% for bang in search_engine.categories %}<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>{% endfor %}</p>
-</div>
+    {%- if search_engine.enable_http -%}
+      <p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
+    {% endif -%}
+    {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
+      <a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
+         title="{{ _('View error logs and submit a bug report') }}">
+      {{- _('View error logs and submit a bug report') -}}
+      </a>
+    {%- endif -%}
+    <p>{{- '' -}}
+      <span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
+      {%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
+        <span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
+      {%- endfor -%}
+    </p>{{- '' -}}
+    <p>{{- '' -}}
+      <span class="right">{{ _("!bang for its categories") }}</span>
+      {%- for bang in search_engine.categories -%}
+        <span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
+      {%- endfor -%}
+    </p>{{- '' -}}
+  </div>
 {%- endif -%}
-{%- endmacro %}
+{%- endmacro -%}
 
 {%- macro engine_time(engine_name) -%}
-<td class="{{ label }}">{{- "" -}}
+  <td class="{{ label }}">{{- '' -}}
     {%- if stats[engine_name].time != None -%}
-    <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- "" -}}
+    <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
     <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
         {%- if max_rate95 is not none and max_rate95 > 0 -%}
-        <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- "" -}}
-        <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- "" -}}
-        <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- "" -}}
+        <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- '' -}}
+        <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- '' -}}
+        <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- '' -}}
         <span class="stacked-bar-chart-rate100"></span>
         {%- endif -%}
-    </span>{{- "" -}}
-    <div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- "" -}}
-        <p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- "" -}}
-        <p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- "" -}}
-        <p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- "" -}}
+    </span>{{- '' -}}
+    <div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
+        <p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
+        <p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
+        <p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
     </div>
-    {%- endif -%}
-</td>
+  {%- endif -%}
+  </td>
 {%- endmacro -%}
 
 {%- macro engine_reliability(engine_name) -%}
-{% set r = reliabilities.get(engine_name, {}).get('reliablity', None) %}
-{% set checker_result = reliabilities.get(engine_name, {}).get('checker', []) %}
-{% set errors = reliabilities.get(engine_name, {}).get('errors', []) %}
-{% if r != None %}
-    {% if r <= 50 %}{% set label = 'danger' %}
-    {% elif r < 80 %}{% set label = 'warning' %}
-    {% elif r < 90 %}{% set label = '' %}
-    {% else %}{% set label = 'success' %}
-    {% endif %}
-{% else %}
-    {% set r = '' %}
-{% endif %}
-{% if checker_result or errors %}
-<td class="{{ label }} column-reliability">{{- "" -}}
-    <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- "" -}}
-      <span aria-labelledby="{{engine_name}}_reliability">
-          {{ icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
-      </span>{{- "" -}}
-    </a>{{- "" -}}
-    <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
+  {%- set r = reliabilities.get(engine_name, {}).get('reliablity', None) -%}
+  {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
+  {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
+  {%- if r != None -%}
+    {%- if r <= 50 -%}
+      {% set label = 'danger' -%}
+    {%- elif r < 80 -%}
+      {%- set label = 'warning' -%}
+    {%- elif r < 90 %}
+      {%- set label = '' -%}
+    {%- else -%}
+      {%- set label = 'success' -%}
+    {%- endif -%}
+  {% else %}
+    {%- set r = '' -%}
+  {%- endif -%}
+  {%- if checker_result or errors -%}
+    <td class="{{ label }} column-reliability">{{- '' -}}
+      <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
+        <span aria-labelledby="{{engine_name}}_reliability">
+          {{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
+        </span>{{- '' -}}
+      </a>{{- '' -}}
+      <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
         {%- if checker_result -%}
-        <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
+          <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
         {%- endif -%}
-        {%- if errors %}<p>{{ _('Errors:') }}</p>{% endif -%}
+        {%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
         {%- for error in errors -%}
-        <p>{{ error }} </p>{{- "" -}}
+          <p>{{ error }}</p>{{- '' -}}
         {%- endfor -%}
-    </div>{{- "" -}}
-</td>
-{%- else -%}
-<td class="{{ label }}">{% if r %}<span>{{ r }}</span>{% endif %}</td>
-{%- endif -%}
+      </div>{{- '' -}}
+    </td>
+  {%- else -%}
+    <td class="{{ label }}">{% if r %}<span>{{ r }}</span>
+  {%- endif -%}
+    </td>
+  {%- endif -%}
 {%- endmacro -%}
 
-{% block head %} {% endblock %}
-{% block linkto_preferences %}{% endblock %}
-{% block content %}
-<h1>{{ _('Preferences') }}</h1>
+{%- block head -%}{%- endblock -%}
+{%- block linkto_preferences -%}{%- endblock -%}
 
-<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off" class="reversed-checkbox">
+{%- block content -%}
 
-{{ tabs_open() }}
+  <h1>{{ _('Preferences') }}</h1>
 
-  {{ tab_header('maintab', 'general', _('General'), True) }}
-    {% if 'categories' not in locked_preferences %}
-    <fieldset>
-      <legend>{{ _('Default categories') }}</legend>
-      {% set display_tooltip = false %}
-      {% include 'simple/categories.html' %}
-    </fieldset>
+  <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+    {{- tabs_open() -}}
+
+
+    {{- tab_header('maintab', 'general', _('General'), True) -}}
+    {%- if 'categories' not in locked_preferences -%}
+      <fieldset>
+        <legend>{{- _('Default categories') -}}</legend>
+        {% set display_tooltip = false %}
+        {% include 'simple/categories.html' %}
+      </fieldset>
+    {%- endif -%}
+    {%- if 'language' not in locked_preferences -%}
+      {%- include 'simple/preferences/language.html' -%}
     {% endif %}
-    {% if 'language' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_language">{{ _('Search language') }}</legend>
-      <p class="value">{{- '' -}}
-        <select name='language' aria-labelledby="pref_language" aria-describedby="desc_language">{{- '' -}}
-          <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }} [all]</option>
-          <option value="auto" {% if current_language == 'auto' %}selected="selected"{% endif %}>{{ _('Auto-detect') }} [auto]</option>
-          {%- for sxng_tag,lang_name,country_name,english_name,flag in sxng_locales | sort(attribute=1) -%}
-          <option value="{{ sxng_tag }}" {% if sxng_tag == current_language %}selected="selected"{% endif %}>{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %} - {{ country_name }} {% endif %} [{{sxng_tag}}]</option>
-          {%- endfor -%}
-        </select>{{- '' -}}
-      </p>
-      <div class="description" id="desc_language">
-        {{- _('What language do you prefer for search?') }} {{ _('Choose Auto-detect to let SearXNG detect the language of your query.') -}}
-      </div>
-    </fieldset>
-    {% endif %}
-    {% if 'autocomplete' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_autocomplete">{{ _('Autocomplete') }}</legend>
-      <p class="value">
-        <select name="autocomplete" aria-labelledby="pref_autocomplete">
-          <option value=""> - </option>
-          {%- for backend in autocomplete_backends -%}
-          <option value="{{ backend }}" {% if backend == autocomplete %}selected="selected"{% endif %}>{{ backend }}</option>
-          {%- endfor -%}
-        </select>
-      </p>
-      <div class="description">{{ _('Find stuff as you type') }}</div>
-    </fieldset>
-    {% endif %}
+    {%- if 'autocomplete' not in locked_preferences -%}
+      {%- include 'simple/preferences/autocomplete.html' -%}
+    {%- endif -%}
     {% if 'safesearch' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_safesearch">{{ _('SafeSearch') }}</legend>
-      <p class="value">
-        <select name='safesearch' aria-labelledby="pref_safesearch">
-          <option value="2" {% if safesearch == '2' %}selected="selected"{% endif %}>{{ _('Strict') }}</option>
-          <option value="1" {% if safesearch == '1' %}selected="selected"{% endif %}>{{ _('Moderate') }}</option>
-          <option value="0" {% if safesearch == '0' %}selected="selected"{% endif %}>{{ _('None') }}</option>
-        </select>
-      </p>
-      <p class="description">{{ _('Filter content') }}</p>
-    </fieldset>
-    {% endif %}
-    {{ plugin_preferences('general') }}
-    {% if 'doi_resolver' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_doi_resolver">{{ _('Open Access DOI resolver') }}</legend>
-      <p class="value">
-        <select id='doi_resolver' name='doi_resolver' aria-labelledby="pref_doi_resolver">
-        {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
-          <option value="{{ doi_resolver_name }}" {% if doi_resolver_url == current_doi_resolver %}selected="selected"{% endif %}>
-          {{- doi_resolver_name }} - {{ doi_resolver_url -}}
-          </option>
-        {%- endfor -%}
-        </select>
-      </p>
-      <div class="description"><!-- {{ _('Redirect to open-access versions of publications when available (plugin required)') }} --></div>
-    </fieldset>
-    {% endif %}
-    <fieldset>
-      <legend id="pref_tokens">{{ _('Engine tokens') }}</legend>
-      <p class="value">
-        <input name="tokens" aria-labelledby="pref_tokens" type="text" autocomplete="off" spellcheck="false" autocorrect="off" value='{{ preferences.tokens.get_value() }}'/>
-      </p>
-      <p class="description">{{ _('Access tokens for private engines') }}</p>
-    </fieldset>
-  {{ tab_footer() }}
+      {%- include 'simple/preferences/safesearch.html' -%}
+    {%- endif -%}
+    {{- plugin_preferences('general') -}}
+    {%- if 'doi_resolver' not in locked_preferences %}
+      {%- include 'simple/preferences/doi_resolver.html' -%}
+    {%- endif -%}
+    {%- include 'simple/preferences/tokens.html' -%}
+    {{- tab_footer() -}}
 
-  {{ tab_header('maintab', 'ui', _('User interface')) }}
-    {% if 'locale' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_locale">{{ _('Interface language') }}</legend>
-      <p class="value">
-        <select name='locale' aria-labelledby="pref_locale">
-          {%- for locale_id,locale_name in locales.items() | sort -%}
-          <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected="selected"{% endif %}>{{ locale_name }}</option>
-          {%- endfor -%}
-        </select>
-      </p>
-      <div class="description">{{ _('Change the language of the layout') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'theme' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_theme">{{ _('Theme') }}</legend>
-      <p class="value">
-        <select name="theme" aria-labelledby="pref_theme">
-          {%- for name in themes -%}
-          <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
-          {%- endfor -%}
-        </select>
-      </p>
-      <div class="description">{{ _('Change SearXNG layout') }}</div>
-    </fieldset>
-    <fieldset>
-      <legend id="pref_simple_style">{{ _('Theme style') }}</legend>
-      <p class="value">
-        <select name="simple_style" aria-labelledby="pref_simple_style">
-          {%- for name in ['auto', 'light', 'dark'] -%}
-          <option value="{{ name }}" {% if name == preferences.get_value('simple_style') %}selected="selected"{% endif %}>{{ _(name) }}</option>
-          {%- endfor -%}
-        </select>
-      </p>
-      <div class="description">{{ _('Choose auto to follow your browser settings') }}</div>
-    </fieldset>
-    <fieldset>
-      <legend id="pref_center_alignment">{{ _('Center Alignment') }}</legend>
-      <p class="value">
-        <select name="center_alignment" aria-labelledby="pref_center_alignment">
-            <option value="1" {% if preferences.get_value('center_alignment') %}selected="selected"{% endif %}>{{ _('On') }}</option>
-            <option value="0" {% if not preferences.get_value('center_alignment') %}selected="selected"{% endif %}>{{ _('Off')}}</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Displays results in the center of the page (Oscar layout).') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'results_on_new_tab' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_results_on_new_tab">{{ _('Results on new tabs') }}</legend>
-      <p class="value">
-        <select name='results_on_new_tab' aria-labelledby="pref_results_on_new_tab">
-          <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>
-          <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>
-        </select>
-      </p>
-      <div class="description">{{_('Open result links on new browser tabs') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'infinite_scroll' not in locked_preferences %}
-    <fieldset>
-      <legend>{{ _('Infinite scroll') }}</legend>
-      <p class="value">
-        <select name='infinite_scroll'>
-          <option value="1" {% if infinite_scroll %}selected="selected"{% endif %}>{{ _('On') }}</option>
-          <option value="0" {% if not infinite_scroll %}selected="selected"{% endif %}>{{ _('Off')}}</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Automatically load next page when scrolling to bottom of current page') }}</div>
-    </fieldset>
-    {% endif %}
-    {{ plugin_preferences('ui') }}
-  {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'privacy', _('Privacy')) }}
-    {% if 'method' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_method">{{ _('HTTP Method') }}</legend>
-      <p class="value">
-        <select name='method' aria-labelledby="pref_method">
-          <option value="POST" {% if method == 'POST' %}selected="selected"{% endif %}>POST</option>
-          <option value="GET" {% if method == 'GET' %}selected="selected"{% endif %}>GET</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Change how forms are submitted, <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods" rel="external">learn more about request methods</a>') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'image_proxy' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_image_proxy">{{ _('Image proxy') }}</legend>
-      <p class="value">
-        <select name='image_proxy' aria-labelledby="pref_image_proxy">
-          <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
-          <option value="0" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
-        </select>
-      </p>
-      <div class="description">{{ _('Proxying image results through SearXNG') }}</div>
-    </fieldset>
-    {% endif %}
-    {% if 'query_in_title' not in locked_preferences %}
-    <fieldset>
-      <legend id="pref_query_in_title">{{ _("Query in the page's title") }}</legend>
-      <p class="value">
-        <select name='query_in_title' aria-labelledby="pref_query_in_title">
-          <option value="1" {% if query_in_title %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>
-          <option value="0" {% if not query_in_title %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>
-        </select>
-      </p>
-      <div class="description">{{ _("When enabled, the result page's title contains your query. Your browser can record this title") }}</div>
-    </fieldset>
-    {% endif %}
-    {{ plugin_preferences('privacy') }}
-  {{ tab_footer() }}
+    {{- tab_header('maintab', 'ui', _('User interface')) -}}
+    {%- if 'locale' not in locked_preferences -%}
+      {%- include 'simple/preferences/ui_locale.html' -%}
+    {%- endif -%}
+    {%- if 'theme' not in locked_preferences -%}
+      {%- include 'simple/preferences/theme.html' -%}
+    {%- endif -%}
+    {%- if 'results_on_new_tab' not in locked_preferences -%}
+      {%- include 'simple/preferences/results_on_new_tab.html' -%}
+    {%- endif -%}
+    {%- if 'infinite_scroll' not in locked_preferences -%}
+      {%- include 'simple/preferences/infinite_scroll.html' -%}
+    {%- endif -%}
+    {{- plugin_preferences('ui') -}}
+    {{- tab_footer() -}}
 
-  {{ tab_header('maintab', 'engines', _('Engines')) }}
-    <p>{{ _('Currently used search engines') }}</p>
-    {{ tabs_open() }}
-     {% set ns = namespace(checked=true) %}
-     {% for categ in categories_as_tabs + [DEFAULT_CATEGORY] %}
-     {{ tab_header('enginetab', 'category' + categ, _(categ), ns.checked )}}
-     {% set ns.checked = false %}
-     {% if categ == DEFAULT_CATEGORY %}
-      <p>{{_('This tab does not exists in the user interface, but you can search in these engines by its !bangs.')}} <a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a></p>
-     {% endif %}
-    <div class="scrollx">
-    <table class="striped table_engines">
-      <tr>{{- "" -}}
-        <th class="engine_checkbox">{{ _("Allow") }}</th>{{- "" -}}
-        <th class="name">{{ _("Engine name") }}</th>{{- "" -}}
-        <th class="shortcut">{{ _("Bang") }}</th>{{- "" -}}
-        <th>{{ _("Supports selected language") }}</th>{{- "" -}}
-        <th>{{ _("SafeSearch") }}</th>{{- "" -}}
-        <th>{{ _("Time range") }}</th>{{- "" -}}
-        {%- if enable_metrics %}<th>{{ _("Response time") }}</th>{% endif -%}
-        <th>{{ _("Max time") }}</th>{{- "" -}}
-        {%- if enable_metrics %}<th>{{ _("Reliability") }}</th>{% endif -%}
-      </tr>
-      {% for group, group_bang, engines in engines_by_category[categ] | group_engines_in_tab %}
-      {% if loop.length > 1 %}
-      <tr>
-        <th class="engine-group" colspan="2">{{_(group)}}</th>
-        <th class="engine-group" colspan="7">{% if group_bang %}<span class="bang">{{group_bang}}</span>{% endif %}</th>
-      </tr>{{- "" -}}
-      {% endif %}
-      {% for search_engine in engines %}
-      {% if not search_engine.private %}
-      {% set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') %}
-      <tr>{{- "" -}}
-        <td>{{ checkbox_onoff(engine_id, (search_engine.name, categ) in disabled_engines) }}</td>{{- "" -}}
-        <th class="name" data-engine-name="{{ search_engine.name }}">{% if search_engine.enable_http %}{{ icon_big('warning', 'No HTTPS') }}{% endif -%}
-          <label for="{{ engine_id }}">
-            {{- search_engine.name -}}
-            {%- if search_engine.about and search_engine.about.language %}
-              ({{search_engine.about.language | upper}})
-            {%- endif -%}
-          </label>
-          {{- engine_about(search_engine) -}}
-        </th>{{- "" -}}
-        <td class="shortcut"><span class="bang">{{ '!' + shortcuts[search_engine.name] }}</span></td>{{- "" -}}
-        <td>{{ checkbox(None, supports[search_engine.name]['supports_selected_language'], true) }}</td>{{- "" -}}
-        <td>{{ checkbox(None, supports[search_engine.name]['safesearch'], true) }}</td>{{- "" -}}
-        <td>{{ checkbox(None, supports[search_engine.name]['time_range_support'], true) }}</td>{{- "" -}}
-        {%- if enable_metrics %}{{- engine_time(search_engine.name) -}}{% endif -%}
-        <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">{{ search_engine.timeout }}</td>{{- "" -}}
-        {%- if enable_metrics %}{{ engine_reliability(search_engine.name) -}}{% endif -%}
-      </tr>
-      {% endif %}
-      {% endfor %}
-      {% endfor %}
-    </table>
-    </div>
-    {{ tab_footer() }}
-    {% endfor %}
-    {{ tabs_close() }}
-  {{ tab_footer() }}
 
-  {{ tab_header('maintab', 'query', _('Special Queries')) }}
-    {% if answerers %}
-    <div class="scrollx">
-    <table class="striped">
-      <tr>
-        <th>{{ _('Allow') }}</th>
-        <th>{{ _('Keywords') }}</th>
-        <th>{{ _('Name') }}</th>
-        <th>{{ _('Description') }}</th>
-        <th>{{ _('Examples') }}</th>
-      </tr>
-      <td></td>
-      <th scope="colgroup" colspan="4">{{ _("This is the list of SearXNG's instant answering modules.") }}</th>
-      {% for answerer in answerers %}
-      <tr>
-        <td></td>
-        <td>{{ answerer.keywords|join(', ') }}</td>
-        <td>{{ answerer.info.name }}</td>
-        <td>{{ answerer.info.description }}</td>
-        <td>{{ answerer.info.examples|join(', ') }}</td>
-      </tr>
-      {% endfor %}
-      <td></td>
-      <th scope="colgroup" colspan="4">{{ _('This is the list of plugins.') }}</th>
-      {%- for plugin in plugins -%}
-      {%- if plugin.preference_section == 'query' -%}
-      <tr>
-        <td>{{- checkbox_onoff('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>
-          <td>{{ plugin.query_keywords|join(', ') }}</td>
-          <td>{{ _(plugin.name) }}</td>
-          <td>{{ _(plugin.description) }}</td>
-          <td>{{ plugin.query_examples }}</td>
-      </tr>
-      {%- endif -%}
-      {%- endfor -%}
-    </table>
-    </div>
-    {% endif %}
-  {{ tab_footer() }}
+    {{- tab_header('maintab', 'privacy', _('Privacy')) -}}
+    {%- if 'method' not in locked_preferences -%}
+      {%- include 'simple/preferences/method.html' -%}
+    {%- endif -%}
+    {%- if 'image_proxy' not in locked_preferences -%}
+      {%- include 'simple/preferences/image_proxy.html' -%}
+    {%- endif -%}
+    {%- if 'query_in_title' not in locked_preferences -%}
+      {%- include 'simple/preferences/query_in_title.html' -%}
+    {%- endif -%}
+    {{- plugin_preferences('privacy') -}}
+    {{- tab_footer() -}}
 
-  {{ tab_header('maintab', 'cookies', _('Cookies')) }}
-     <p class="text-muted">{{- "" -}}
-        {{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}<br />{{- "" -}}
-        {{- _('With that list, you can assess SearXNG transparency.') }}<br />{{- "" -}}
-     </p>
-     {% if cookies %}
-     <table class="cookies">
-       <tr>{{- "" -}}
-          <th>{{ _('Cookie name') }}</th>{{- "" -}}
-          <th>{{ _('Value') }}</th>{{- "" -}}
-       </tr>
-       {% for cookie in cookies %}
-       <tr>{{- "" -}}
-          <td>{{ cookie }}</td>{{- "" -}}
-          <td>{{ cookies[cookie] }}</td>{{- "" -}}
-       </tr>
-       {% endfor %}
-     </table>
-     {% else %}
-        {% include 'simple/messages/no_cookies.html' %}
-     {% endif %}
-     <h4>{{ _('Search URL of the currently saved preferences') }} :</h4>
-     <div class="selectable_url">
-       <pre>{{ url_for('index', _external=True) }}?preferences={{ preferences_url_params|e }}{% raw %}&amp;q=%s{% endraw %}</pre>
-     </div>
-     <p class="small_font">{{ _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') }}</p>
-     <h4>{{ _('URL to restore your preferences in another browser') }} :</h4>
-     <div class="selectable_url">
-       <pre>{{ url_for('preferences', _external=True) }}?preferences={{ preferences_url_params|e }}&amp;save=1</pre>
-     </div>
-     <p class="small_font">{{ _('Specifying custom settings in the preferences URL can be used to sync preferences across devices.') }}</p>
-  {{ tab_footer() }}
+    {{- tab_header('maintab', 'engines', _('Engines')) -}}
+    <p>
+      {{- _('Currently used search engines') -}}
+    </p>
+    {{- tabs_open() -}}
+    {%- include 'simple/preferences/engines.html' -%}
+    {{- tabs_close() -}}
+    {{- tab_footer() -}}
 
-{{ tabs_close() }}
 
-  <p class="small_font">{{ _('These settings are stored in your cookies, this allows us not to store this data about you.') }}
-    <br />
-    {{ _("These cookies serve your sole convenience, we don't use these cookies to track you.") }}
-  </p>
+    {{- tab_header('maintab', 'query', _('Special Queries')) -}}
+    {%- if answerers -%}
+      {%- include 'simple/preferences/answerers.html' -%}
+    {%- endif -%}
+    {{- tab_footer() -}}
 
-  <input type="submit" value="{{ _('Save') }}" />
-  <div class="{% if rtl %}left{% else %}right{% endif %} preferences_back"><a href="{{ url_for('clear_cookies') }}">{{ _('Reset defaults') }}</a></div>
-  <div class="{% if rtl %}left{% else %}right{% endif %} preferences_back"><a href="{{ url_for('index') }}">{{ _('Back') }}</a></div>
+    {{- tab_header('maintab', 'cookies', _('Cookies')) -}}
+    {%- include 'simple/preferences/cookies.html' -%}
+    {{- tab_footer() -}}
 
-</form>
-{% endblock %}
+    {{- tabs_close() -}}
+    {%- include 'simple/preferences/footer.html' -%}
+
+  </form>{{- '' -}}
+{%- endblock -%}

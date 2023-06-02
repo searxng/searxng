@@ -1,0 +1,35 @@
+<fieldset>{{- '' -}}
+  <legend id="pref_theme">{{- _('Theme') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <select name="theme" aria-labelledby="pref_theme">{{- '' -}}
+      {%- for name in themes -%}
+        <option value="{{ name }}"
+                {%- if name == theme %} selected="selected"{%- endif -%}>
+                {{- name -}}
+        </option>
+      {%- endfor -%}
+    </select>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Change SearXNG layout') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+<fieldset>{{- '' -}}
+  <legend id="pref_simple_style">{{- _('Theme style') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <select name="simple_style" aria-labelledby="pref_simple_style">
+      {%- for name in ['auto', 'light', 'dark'] -%}
+        <option value="{{ name }}"
+                {%- if name == preferences.get_value('simple_style') %} selected="selected" {%- endif -%}>
+                {{- _(name) -}}
+        </option>
+      {%- endfor -%}
+    </select>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Choose auto to follow your browser settings') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+{%- include 'simple/preferences/center_alignment.html' -%}

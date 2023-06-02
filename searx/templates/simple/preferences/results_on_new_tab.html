@@ -1,0 +1,12 @@
+<fieldset>{{- '' -}}
+  <legend id="pref_results_on_new_tab">{{ _('Results on new tabs') }}</legend>{{- '' -}}
+  <p class="value">{{- '' -}}
+    <select name='results_on_new_tab' aria-labelledby="pref_results_on_new_tab">{{- '' -}}
+      <option value="1" {% if results_on_new_tab %}selected="selected"{% endif %}>{{ _('On') }}</option>{{- '' -}}
+      <option value="0" {% if not results_on_new_tab %}selected="selected"{% endif %}>{{ _('Off')}}</option>{{- '' -}}
+    </select>{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _('Open result links on new browser tabs') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}

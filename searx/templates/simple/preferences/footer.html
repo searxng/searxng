@@ -1,0 +1,14 @@
+<p class="small_font">
+  {{- _('These settings are stored in your cookies, this allows us not to store this data about you.') -}}
+  <br />{{- _("These cookies serve your sole convenience, we don't use these cookies to track you.") -}}
+</p>{{- '' -}}
+
+<input type="submit" value="{{ _('Save') }}" />{{- '' -}}
+
+<div class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
+  <a href="{{ url_for('clear_cookies') }}">{{ _('Reset defaults') }}</a>{{- '' -}}
+</div>{{- '' -}}
+
+<div class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
+  <a href="{{ url_for('index') }}">{{ _('Back') }}</a>{{- '' -}}
+</div>
