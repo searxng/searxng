@@ -1,0 +1,45 @@
+<p class="text-muted">
+  {{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}
+  <br />{{- _('With that list, you can assess SearXNG transparency.') -}}
+  <br />{{- '' -}}
+</p>
+{% if cookies %}
+  <table class="cookies">
+    <tr>{{- '' -}}
+      <th>{{ _('Cookie name') }}</th>{{- '' -}}
+      <th>{{ _('Value') }}</th>{{- '' -}}
+    </tr>
+    {%- for cookie in cookies -%}
+      <tr>{{- '' -}}
+        <td>{{ cookie }}</td>{{- '' -}}
+        <td>{{ cookies[cookie] }}</td>{{- '' -}}
+      </tr>
+    {%- endfor -%}
+  </table>
+{%- else -%}
+  {% include 'simple/messages/no_cookies.html' %}
+{% endif %}
+<h4>
+  {{- _('Search URL of the currently saved preferences') -}}:{{- '' -}}
+</h4>{{- '' -}}
+<div class="selectable_url">{{- '' -}}
+  <pre>
+    {{- url_for('index', _external=True) -}}?preferences={{- preferences_url_params|e -}}
+    {%- raw -%}&amp;q=%s{%- endraw -%}
+  </pre>{{- '' -}}
+</div>{{- '' -}}
+<p class="small_font">
+  {{- _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') -}}
+</p>
+<h4>
+  {{- _('URL to restore your preferences in another browser') -}}:{{- '' -}}
+</h4>{{- '' -}}
+<div class="selectable_url">{{- '' -}}
+  <pre>
+    {{- url_for('preferences', _external=True) -}}?preferences={{- preferences_url_params|e -}}
+    &amp;save=1{{- '' -}}
+  </pre>{{- '' -}}
+</div>{{- '' -}}
+<p class="small_font">
+  {{- _('Specifying custom settings in the preferences URL can be used to sync preferences across devices.') -}}
+</p>

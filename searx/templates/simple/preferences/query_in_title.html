@@ -1,0 +1,12 @@
+<fieldset>{{- '' -}}
+  <legend id="pref_query_in_title">{{ _("Query in the page's title") }}</legend>
+  <p class="value">{{- '' -}}
+    <select name='query_in_title' aria-labelledby="pref_query_in_title">{{- '' -}}
+      <option value="1" {% if query_in_title %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>{{- '' -}}
+      <option value="0" {% if not query_in_title %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>{{- '' -}}
+    </select>{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _("When enabled, the result page's title contains your query. Your browser can record this title") -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}

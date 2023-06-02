@@ -1,0 +1,43 @@
+<div class="scrollx">{{- '' -}}
+  <table class="striped">{{- '' -}}
+    <tr>{{- '' -}}
+      <th>{{ _('Allow') }}</th>{{- '' -}}
+      <th>{{ _('Keywords') }}</th>{{- '' -}}
+      <th>{{ _('Name') }}</th>{{- '' -}}
+      <th>{{ _('Description') }}</th>{{- '' -}}
+      <th>{{ _('Examples') }}</th>{{- '' -}}
+    </tr>{{- '' -}}
+
+    <td></td>{{- '' -}}
+    <th scope="colgroup" colspan="4">
+      {{- _("This is the list of SearXNG's instant answering modules.") -}}
+    </th>
+
+    {%- for answerer in answerers -%}
+      <tr>{{- '' -}}
+        <td></td>{{- '' -}}
+        <td>{{ answerer.keywords|join(', ') }}</td>{{- '' -}}
+        <td>{{ answerer.info.name }}</td>{{- '' -}}
+        <td>{{ answerer.info.description }}</td>{{- '' -}}
+        <td>{{ answerer.info.examples|join(', ') }}</td>{{- '' -}}
+      </tr>
+    {%- endfor -%}
+
+    <td></td>{{- '' -}}
+    <th scope="colgroup" colspan="4">
+      {{- _('This is the list of plugins.') -}}
+    </th>{{- '' -}}
+
+    {%- for plugin in plugins -%}
+      {%- if plugin.preference_section == 'query' -%}
+        <tr>{{- '' -}}
+          <td>{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>{{- '' -}}
+          <td>{{ plugin.query_keywords|join(', ') }}</td>{{- '' -}}
+          <td>{{ _(plugin.name) }}</td>{{- '' -}}
+          <td>{{ _(plugin.description) }}</td>{{- '' -}}
+          <td>{{ plugin.query_examples }}</td>{{- '' -}}
+        </tr>
+      {%- endif -%}
+    {%- endfor -%}
+  </table>{{- '' -}}
+</div>{{- '' -}}

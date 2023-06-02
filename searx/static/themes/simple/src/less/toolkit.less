@@ -428,7 +428,7 @@ reversed-checkbox displays unchecked checkedboxes as checked, and vice versa.
 see https://github.com/searxng/searxng/blob/3408d061aab9abc6168fec9bbc6deab71b236dac/searx/templates/simple/preferences.html#L313
 */
 input.checkbox-onoff[type="checkbox"],
-.reversed-checkbox input.checkbox-onoff[type="checkbox"]:checked {
+input.checkbox-onoff.reversed-checkbox[type="checkbox"]:checked {
   background: var(--color-toolkit-checkbox-onoff-off-background);
 
   &::before {
@@ -440,7 +440,7 @@ input.checkbox-onoff[type="checkbox"],
 }
 
 input.checkbox-onoff[type="checkbox"]:checked,
-.reversed-checkbox input.checkbox-onoff[type="checkbox"] {
+input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   background: var(--color-toolkit-checkbox-onoff-on-background);
 
   &::before {

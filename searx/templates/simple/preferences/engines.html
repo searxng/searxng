@@ -1,0 +1,93 @@
+{%- set ns = namespace(checked=true) -%}
+{%- for categ in categories_as_tabs + [DEFAULT_CATEGORY] -%}
+
+  {{- tab_header('enginetab', 'category_' + categ, _(categ), ns.checked ) -}}
+
+  {%- set ns.checked = false -%}
+  {%- if categ == DEFAULT_CATEGORY -%}
+    <p>
+      {{- _('This tab does not exists in the user interface, but you can search in these engines by its !bangs.') -}}
+      {{- ' ' -}}<a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a>
+    </p>
+  {%- endif -%}
+  <div class="scrollx">{{- '' -}}
+    <table class="striped table_engines">{{- '' -}}
+
+      <tr>{{- '' -}}
+        <th class="engine_checkbox">{{- _("Allow") -}}</th>{{- '' -}}
+        <th class="name">{{- _("Engine name") -}}</th>{{- '' -}}
+        <th class="shortcut">{{ _("!bang") -}}</th>{{- '' -}}
+        <th>{{- _("Supports selected language") -}}</th>{{- '' -}}
+        <th>{{- _("SafeSearch") -}}</th>{{- '' -}}
+        <th>{{- _("Time range") -}}</th>{{- '' -}}
+        {%- if enable_metrics -%}
+          <th>{{- _("Response time") -}}</th>
+        {%- endif -%}
+        <th>{{- _("Max time") -}}</th>
+        {%- if enable_metrics -%}
+          <th>{{- _("Reliability") }}</th>
+        {%- endif -%}
+      </tr>{{- '' -}}
+
+      {%- for group, group_bang, engines in engines_by_category[categ] | group_engines_in_tab -%}
+
+        {%- if loop.length > 1 -%}
+          <tr>{{- '' -}}
+            <th class="engine-group" colspan="2">{{- _(group) -}}</th>{{- '' -}}
+            <th class="engine-group" colspan="7">
+              {%- if group_bang -%}
+                <span class="bang">{{- group_bang -}}</span>
+              {%- endif -%}</th>{{- '' -}}
+          </tr>{{- '' -}}
+        {%- endif -%}
+
+        {%- for search_engine in engines -%}
+          {%- if not search_engine.private -%}
+            {%- set engine_id = 'engine_' + search_engine.name|replace(' ', '_') + '__' + categ|replace(' ', '_') -%}
+            <tr>{{- '' -}}
+              <td>
+                {{- checkbox_onoff_reversed(engine_id, (search_engine.name, categ) in disabled_engines) -}}
+              </td>{{- '' -}}
+              <th class="name" data-engine-name="{{ search_engine.name }}">
+                {%- if search_engine.enable_http -%}
+                  {{- icon_big('warning', 'No HTTPS') -}}
+                {%- endif -%}
+                <label for="{{ engine_id }}">
+                  {{- ' ' -}}{{- search_engine.name -}}
+                  {%- if search_engine.about and search_engine.about.language -%}
+                    {{- ' ' -}}({{search_engine.about.language | upper}})
+                  {%- endif -%}
+                  </label>
+                  {{- engine_about(search_engine) -}}
+              </th>{{- '' -}}
+              <td class="shortcut">{{- '' -}}
+                <span class="bang">{{ '!' + shortcuts[search_engine.name] }}</span>{{- '' -}}
+              </td>{{- '' -}}
+              <td>
+                {{- checkbox(None, supports[search_engine.name]['supports_selected_language'], true) -}}
+              </td>{{- '' -}}
+              <td>
+                {{- checkbox(None, supports[search_engine.name]['safesearch'], true) -}}
+              </td>{{- '' -}}
+              <td>
+                {{- checkbox(None, supports[search_engine.name]['time_range_support'], true) -}}
+              </td>{{- '' -}}
+              {%- if enable_metrics -%}
+                {{- engine_time(search_engine.name) -}}
+              {%- endif -%}
+              <td class="{{ 'danger' if stats[search_engine.name]['warn_timeout'] else '' }}">
+                {{- search_engine.timeout -}}
+              </td>{{- '' -}}
+              {%- if enable_metrics -%}
+                {{- engine_reliability(search_engine.name) -}}
+              {%- endif -%}
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </table>{{- '' -}}
+  </div>
+
+  {{- tab_footer() -}}
+
+{%- endfor -%}
