@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-04-28 07:08+0000\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/searxng/"
 "searxng/de/>\n"
@@ -162,84 +162,84 @@ msgstr "hell"
 msgid "dark"
 msgstr "dunkel"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "Timeout"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "Fehler beim Parsen"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP-Protokollfehler"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "Netzwerkfehler"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL Fehler: Zertifikatsprüfung ist fehlgeschlagen"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "unerwarteter Absturz"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP-Fehler"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP-Verbindungsfehler"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "Proxy-Fehler"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "zu viele Anfragen"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "Zugriff verweigert"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "Server-API-Fehler"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Keine Einträge gefunden"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Quelle"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Fehler beim Laden der nächsten Seite"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ungültige Einstellungen, bitte Einstellungen ändern"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Ungültige Einstellungen"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "Suchfehler"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Ausgesetzt"
 
@@ -488,7 +488,6 @@ msgid "Engine stats"
 msgstr "Suchmaschinenstatistiken"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Öffentliche Instanzen"
 
@@ -552,10 +551,9 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Kein HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Fehlerprotokolle einsehen und einen Fehlerbericht einreichen"
 
@@ -627,7 +625,7 @@ msgstr "Autovervollständigung"
 
 #: searx/templates/simple/preferences.html:142
 msgid "Find stuff as you type"
-msgstr "Die Autovervollständigung zeigt Vorschläge während der Eingabe an."
+msgstr "Die Autovervollständigung zeigt Vorschläge während der Eingabe an"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -801,11 +799,11 @@ msgstr "Aktuell benutzte Suchmaschinen"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Diese Registerkarte ist in der Benutzeroberfläche nicht vorhanden, aber "
-"in Suchmaschinen kann mittels !bang gesucht werden."
+"Diese Registerkarte ist in der Benutzeroberfläche nicht vorhanden, aber in "
+"Suchmaschinen kann mittels !bang gesucht werden."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -957,40 +955,23 @@ msgstr "Antworten"
 msgid "Number of results"
 msgstr "Trefferanzahl"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Fehler!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Information"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Die folgenden Suchmaschinen können die Ergebnisse nicht empfangen"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Vorschläge"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Such-URL"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Ergebnisse herunterladen"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Suche nach:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Zurück zum Anfang"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Nächste Seite"
 
@@ -1085,6 +1066,30 @@ msgstr "Test fehlgeschlagen"
 msgid "Comment(s)"
 msgstr "Kommentar(e)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Ergebnisse herunterladen"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr "Meldungen der Suchmaschinen"
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Fehler!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Die folgenden Suchmaschinen können die Ergebnisse nicht empfangen"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Such-URL"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Vorschläge"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "beliebiger Zeitpunkt"
@@ -1113,21 +1118,11 @@ msgstr "Information!"
 msgid "currently, there are no cookies defined."
 msgstr "Derzeit sind keine Cookies gespeichert."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Suchmaschinen können die Ergebnisse nicht empfangen."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"Bitte versuche es später noch einmal oder wähle eine andere SearXNG "
-"Instanz."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Entschuldigung!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1617,3 +1612,21 @@ msgstr "Video verstecken"
 
 #~ msgid "!bang"
 #~ msgstr "!bang"
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "Diese Registerkarte ist in der "
+#~ "Benutzeroberfläche nicht vorhanden, aber in"
+#~ " Suchmaschinen kann mittels !bang gesucht"
+#~ " werden."
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Suchmaschinen können die Ergebnisse nicht empfangen."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+#~ "Bitte versuche es später noch einmal "
+#~ "oder wähle eine andere SearXNG Instanz."

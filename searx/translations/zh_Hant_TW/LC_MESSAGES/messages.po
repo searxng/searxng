@@ -12,26 +12,28 @@
 # GooGuJiang <gu@gmoe.cc>, 2022.
 # tjvfxtiwdr <tjvfxtiwdr@daimashili.com>, 2022.
 # Grey <elohim@gmail.com>, 2022.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2022-12-23 07:14+0000\n"
-"Last-Translator: Grey <elohim@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Chinese (Traditional) <https://translate.codeberg.org/"
+"projects/searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional) "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "無需進一步分組"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -153,84 +155,84 @@ msgstr "明亮"
 msgid "dark"
 msgstr "黑暗"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "超時"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "解析錯誤"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP 協議錯誤"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "網絡錯誤"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL錯誤：証書驗證失敗"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "意外崩潰"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP 錯誤"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP 連接錯誤"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "代理錯誤"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "驗證碼"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "頻繁請求"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "拒絕訪問"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "服務器 API 錯誤"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "搜尋錯誤"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "暫停服務"
 
@@ -369,7 +371,8 @@ msgstr "Tor 網路檢測"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr ""
+msgstr "該外掛程式檢查請求的位址是否是 Tor 出口節點，並通知使用者是否是;像 check."
+"torproject.org，但來自 SearXNG。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -452,7 +455,6 @@ msgid "Engine stats"
 msgstr "引擎統計"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "公開站臺"
 
@@ -510,10 +512,9 @@ msgstr "在GitHub上提交包含上述信息的新問題"
 msgid "No HTTPS"
 msgstr "無 HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "查看錯誤日誌並提交錯誤報告"
 
@@ -752,7 +753,7 @@ msgstr "目前使用的搜尋引擎"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -895,40 +896,23 @@ msgstr "答案"
 msgid "Number of results"
 msgstr "結果筆數"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "錯誤！"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr ""
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "引擎無法擷取結果"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "建議"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "搜尋網址"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "下載結果"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "嘗試搜尋："
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "返回頂部"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "上一頁"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "下一頁"
 
@@ -1023,6 +1007,30 @@ msgstr "測試未通過"
 msgid "Comment(s)"
 msgstr "注釋"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "下載結果"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "錯誤！"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "引擎無法擷取結果"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "搜尋網址"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "建議"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "任何時間"
@@ -1051,19 +1059,11 @@ msgstr "資訊！"
 msgid "currently, there are no cookies defined."
 msgstr "目前未有已定義的 cookies。"
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "引擎無法擷取結果。"
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "請稍後再試，或換用其他 SearXNG 站點。"
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "抱歉！"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1518,3 +1518,14 @@ msgstr "隱藏影片"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "引擎無法擷取結果。"
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "請稍後再試，或換用其他 SearXNG 站點。"

@@ -8,16 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-02-19 11:39+0000\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
+"th/>\n"
 "Language: th\n"
-"Language-Team: Thai "
-"<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -145,84 +146,84 @@ msgstr "สว่าง"
 msgid "dark"
 msgstr "มืด"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "หมดเวลา"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "ผิดพลาดในการวจีวิภาค"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "ข้อผิดพลาดของโปรโตคอล HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "ข้อผิดพลาดจากเครือข่าย"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr ""
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "ข้อผิดพลาดที่ไม่คาดคิด"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "ข้อผิดพลาดจาก HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "ข้อผิดพลาดจากการเชื่อมต่อ HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "ข้อผิดพลาดจากพร็อกซี"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "แคปต์ชา"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "คำขอมากเกินไป"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "การเข้าถึงถูกปฏิเสธ"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "ข้อผิดพลาดจาก API ของเซิร์ฟเวอร์"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "แหล่งที่มา"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "ถูกระงับ"
 
@@ -454,7 +455,6 @@ msgid "Engine stats"
 msgstr "เครื่องมือสถิติ"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "อินสแตนซ์สาธารณะ"
 
@@ -512,10 +512,9 @@ msgstr "ส่งปัญหาใหม่บน Github รวมทั้ง�
 msgid "No HTTPS"
 msgstr "ไม่มี HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "ดูบันทึกของข้อผิดพลาดและส่งรายงานข้อผิดพลาด"
 
@@ -754,7 +753,7 @@ msgstr "เครื่องมือค้นหาที่ใช้อยู
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -905,40 +904,23 @@ msgstr "คำตอบ"
 msgid "Number of results"
 msgstr "จำนวนผลลัพธ์"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "เกิดข้อผิดพลาด!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "ข้อมูล"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "ข้อเสนอแนะ"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "ค้นหา URL"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "ดาวน์โหลดผลลัพธ์"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "ลองค้นหา:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "กลับไปด้านบน"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "หน้าก่อนหน้านี้"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "หน้าต่อไป"
 
@@ -1033,6 +1015,30 @@ msgstr "ทดสอบไม่ผ่าน"
 msgid "Comment(s)"
 msgstr "ความคิดเห็น"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "ดาวน์โหลดผลลัพธ์"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "เกิดข้อผิดพลาด!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "ค้นหา URL"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "ข้อเสนอแนะ"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "ทุกเวลา"
@@ -1061,19 +1067,11 @@ msgstr "สารสนเทศ!"
 msgid "currently, there are no cookies defined."
 msgstr "ขณะนี้ไม่มีการกำหนดคุกกี้ใดๆ"
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "โปรดลองอีกครั้งในภายหลังหรือค้นหาอินสแตนซ์อื่นของเซียร์เอ็กซ์เอ็นจี"
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "เสียใจด้วย!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1292,3 +1290,14 @@ msgstr "ซ่อนวิดีโอ"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "โปรดลองอีกครั้งในภายหลังหรือค้นหาอินสแตนซ์อื่นของเซียร์เอ็กซ์เอ็นจี"

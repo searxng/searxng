@@ -7,20 +7,23 @@
 # Madis Otenurm, 2019
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # dogyx <aaronloit@tuta.io>, 2022.
+# dom1torii <djmdmitri.a@gmail.com>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2022-10-28 07:18+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
+"searxng/et/>\n"
 "Language: et\n"
-"Language-Team: Estonian "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/et/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -148,84 +151,84 @@ msgstr "herge"
 msgid "dark"
 msgstr "pime"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "aeg maha"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "parsimise viga"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP-protokolli viga"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "võrguviga"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL viga: sertifikaadi valideerimine ebaõnnestus"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "ootamatu krahh"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP-viga"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP-ühenduse viga"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "proxy viga"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "liiga palju taotlusi"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "ligipääs keelatud"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "serveri API viga"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Allikas"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Sobimatud seaded, palun muuda oma eelistusi"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Sobimatud seaded"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "otsingu viga"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Peatatud"
 
@@ -297,19 +300,19 @@ msgstr "Pilti ei saanud alla laadida."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Hommik"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Keskpäev"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Õhtu"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Öö"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -459,7 +462,6 @@ msgid "Engine stats"
 msgstr "Mootori statistika"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Avalikud eksemplarid"
 
@@ -517,10 +519,9 @@ msgstr "Esitage Githubis uus probleem, mis sisaldab ülaltoodud teavet"
 msgid "No HTTPS"
 msgstr "HTTPS puudub"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Vaadake vealogisid ja esitage veateade"
 
@@ -761,7 +762,7 @@ msgstr "Hetkel kasutatud otsingumootorid"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -777,7 +778,7 @@ msgstr "Mootori nimi"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -912,40 +913,23 @@ msgstr "Vastused"
 msgid "Number of results"
 msgstr "Tulemuste arv"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Viga!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "informatsioon"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Mootorid ei saa tulemusi tagastada"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Soovitused"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Otsingu URL"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Laadi tulemused alla"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Proovi otsida:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Tagasi üles"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Eelmine lehekülg"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Järgmine lehekülg"
 
@@ -1040,6 +1024,30 @@ msgstr "Ebaõnnestunud test"
 msgid "Comment(s)"
 msgstr "Kommentaar(id)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Laadi tulemused alla"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Viga!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Mootorid ei saa tulemusi tagastada"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Otsingu URL"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Soovitused"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Igal ajal"
@@ -1068,19 +1076,11 @@ msgstr "Teave!"
 msgid "currently, there are no cookies defined."
 msgstr "hetkel pole ühtegi küpsist määratud."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Mootorid ei saa tulemusi tagastada."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Palun proovige hiljem uuesti või leidke teine SearXNG instants."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Vabandust!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1151,23 +1151,23 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1549,3 +1549,14 @@ msgstr "peida video"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Mootorid ei saa tulemusi tagastada."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "Palun proovige hiljem uuesti või leidke teine SearXNG instants."

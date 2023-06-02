@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-24 22:37+0000\n"
-"Last-Translator: trmx <borcan.cristian1@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ro/>\n"
 "Language: ro\n"
@@ -154,84 +154,84 @@ msgstr "luminos"
 msgid "dark"
 msgstr "întunecat"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "pauza"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "eroare de transpunere"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "eroare protocol HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "eroare rețea"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "Eroare SSL: validarea certificatului a esuat"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "inchidere fortata neasteptata"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "eroare HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "eroare conexiune HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "eroare proxy"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "Prea multe solicitări"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "Acces interzis"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "eroare la API pe Server"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Niciun element găsit"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Sursă"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "eroare de căutare"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Întrerupt"
 
@@ -289,9 +289,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"URL-ul imaginii nu a putut fi citit. O posibilă cauză ar putea fi un format "
-"de fișier nesuportat. TinEye suportă doar imagini care sunt JPEG, PNG,GIF, "
-"BMP, TIFF sau WebP."
+"URL-ul imaginii nu a putut fi citit. O posibilă cauză ar putea fi un "
+"format de fișier nesuportat. TinEye suportă doar imagini care sunt JPEG, "
+"PNG,GIF, BMP, TIFF sau WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -382,24 +382,23 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Acest plugin verifică dacă adresa solicitării este un nod de ieșire Tor și "
-"informează utilizatorul dacă este; la fel ca check.torproject.org, dar de la "
-"SearXNG."
+"Acest plugin verifică dacă adresa solicitării este un nod de ieșire Tor "
+"și informează utilizatorul dacă este; la fel ca check.torproject.org, dar"
+" de la SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nu a putut fi descărcată lista de noduri de ieșire Tor de la: https://check."
-"torproject.org/exit-addresses"
+"Nu a putut fi descărcată lista de noduri de ieșire Tor de la: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
-"Folosiți Tor și pare că aveți această adresă de IP externă: {ip_address}"
+msgstr "Folosiți Tor și pare că aveți această adresă de IP externă: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -473,7 +472,6 @@ msgid "Engine stats"
 msgstr "Statisticile motorului"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instanțe publice"
 
@@ -539,10 +537,9 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Fara HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Vizualizați jurnalele de erori și trimiteți un raport de eroare"
 
@@ -744,9 +741,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
-"Schimbați cum sunt înregistrate cererile, <a href=\"http://en.wikipedia.org/"
-"wiki/Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">învățați "
-"mai multe despre metode de cerere</a>"
+"Schimbați cum sunt înregistrate cererile, <a "
+"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+" rel=\"external\">învățați mai multe despre metode de cerere</a>"
 
 #: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
@@ -788,7 +785,7 @@ msgstr "Motoarele de căutare folosite curent"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 "Acest tab nu există în interfața de utilizator, dar o puteți căuta în aceste "
@@ -806,7 +803,7 @@ msgstr "Numele motorului"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr "Bang"
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -944,40 +941,23 @@ msgstr "Răspunsuri"
 msgid "Number of results"
 msgstr "Numărul de rezultate"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Eroare!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Informații"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Motoarele nu pot obține rezultate"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Sugestii"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "URL de căutare"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Descarcă rezultate"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Încercați să căutați după:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Înapoi sus"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Pagina precedentă"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pagina următoare"
 
@@ -1072,6 +1052,30 @@ msgstr "Test eșuat"
 msgid "Comment(s)"
 msgstr "Comentariu(ii)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Descarcă rezultate"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Eroare!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Motoarele nu pot obține rezultate"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "URL de căutare"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Sugestii"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Oricând"
@@ -1100,21 +1104,11 @@ msgstr "Informație!"
 msgid "currently, there are no cookies defined."
 msgstr "momentan, nu există cookie-uri definite."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Motoarele nu pot obține rezultate."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"Vă rugăm să încercați din nou mai târziu sau să găsiți o altă instanță "
-"SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Ne pare rău!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1592,3 +1586,22 @@ msgstr "ascunde video"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "Acest tab nu există în interfața "
+#~ "de utilizator, dar o puteți căuta "
+#~ "în aceste motoare de căutare după "
+#~ "!bangs specifice lor."
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Motoarele nu pot obține rezultate."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+#~ "Vă rugăm să încercați din nou mai"
+#~ " târziu sau să găsiți o altă "
+#~ "instanță SearXNG."

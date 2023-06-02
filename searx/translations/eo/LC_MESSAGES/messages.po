@@ -9,26 +9,28 @@
 # Venca24 <Vaclav.Zouzalik@seznam.cz>, 2018
 # Gergely <gergely@fsfe.org>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2022-11-30 15:33+0000\n"
-"Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Esperanto <https://translate.codeberg.org/projects/searxng/"
+"searxng/eo/>\n"
 "Language: eo\n"
-"Language-Team: Esperanto "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/eo/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "sen plia subgrupiĝo"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -150,84 +152,84 @@ msgstr "hela"
 msgid "dark"
 msgstr "malhela"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "tempolimo"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "analiza eraro"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP-protokolo-eraro"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "reta eraro"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL-eraro: atestila validigo malsukcesis"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "neatendita kraŝo"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP-eraro"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP-konekto-eraro"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "proxy-eraro"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "tro da petoj"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "aliro rifuzita"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "servilo-API-eraro"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Nenio trovita"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Fonto"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Eraro dum la ŝerĝado de la sekvan paĝon"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nevalidaj agordoj, bonvolu redakti viajn agordojn"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Nevalidaj agordoj"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "serĉa eraro"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Suspendigita"
 
@@ -380,22 +382,27 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Ĉi tiu kromaĵo kontrolas ĉu la adreso de la peto estas Tor elir-nodo, kaj "
+"informas la uzanton ĉu ĝi estas; kiel check.torproject.org, sed de SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Ne eblis elŝuti liston de Tor elirnodoj de: https://check.torproject.org/"
+"exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Vi uzas Tor kaj ŝajnas, ke vi havas ĉi tiun eksteran IP-adreson: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Vi ne uzas Tor kaj vi havas ĉi tiun eksteran IP-adreson: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -464,7 +471,6 @@ msgid "Engine stats"
 msgstr "Statistikoj pri la motoro"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Publikaj instancoj"
 
@@ -500,42 +506,41 @@ msgstr "prokurata"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Komencu sendi novan numeron en GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Bonvolu kontroli ekzistantajn cimojn pri ĉi tiu motoro en GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "Mi konfirmas, ke ne ekzistas cimo pri la problemo, kiun mi renkontas"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Se ĉi tio estas publika kazo, bonvolu specifi la URL en la cimraporto"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Sendu novan numeron ĉe Github inkluzive de ĉi-supraj informoj"
 
 #: searx/templates/simple/preferences.html:29
 msgid "No HTTPS"
 msgstr "Neniu HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Vidu erarprotokolojn kaj sendu erarraporton"
 
 #: searx/templates/simple/preferences.html:35
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang por ĉi tiu serĉilo"
 
 #: searx/templates/simple/preferences.html:36
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang por ĝiaj kategorioj"
 
 #: searx/templates/simple/preferences.html:54
 #: searx/templates/simple/stats.html:64
@@ -581,7 +586,7 @@ msgstr "Defaŭlta lingvo"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences.html:120
 msgid "Auto-detect"
-msgstr ""
+msgstr "Aŭtomate detekti"
 
 #: searx/templates/simple/preferences.html:127
 msgid "What language do you prefer for search?"
@@ -590,6 +595,7 @@ msgstr "Kiun lingvon vi pli ŝatas por serĉi?"
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Elektu Aŭtomate-detekti por lasi SearXNG detekti la lingvon de via demando."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -639,11 +645,11 @@ msgstr "Direkti al malfermaliraj versioj de eldonaĵoj, se eblas (aldonaĵo nece
 
 #: searx/templates/simple/preferences.html:175
 msgid "Engine tokens"
-msgstr "Motoraj ĵetonoj"
+msgstr "Serĉiloj ĵetonoj"
 
 #: searx/templates/simple/preferences.html:179
 msgid "Access tokens for private engines"
-msgstr "Alirĵetonoj por privataj motoroj"
+msgstr "Alirĵetonoj por privataj serĉiloj"
 
 #: searx/templates/simple/preferences.html:183
 msgid "User interface"
@@ -667,15 +673,15 @@ msgstr "Ŝanĝu SearXNG-aranĝon"
 
 #: searx/templates/simple/preferences.html:210
 msgid "Theme style"
-msgstr ""
+msgstr "Temo stilo"
 
 #: searx/templates/simple/preferences.html:218
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Elektu 'auto' por sekvi la agordojn de via retumilo"
 
 #: searx/templates/simple/preferences.html:221
 msgid "Center Alignment"
-msgstr ""
+msgstr "Centra Vicigo"
 
 #: searx/templates/simple/preferences.html:224
 #: searx/templates/simple/preferences.html:236
@@ -691,7 +697,7 @@ msgstr "Malŝaltita"
 
 #: searx/templates/simple/preferences.html:228
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Montras rezultojn en la centro de la paĝo."
 
 #: searx/templates/simple/preferences.html:233
 msgid "Results on new tabs"
@@ -723,6 +729,9 @@ msgid ""
 "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 " rel=\"external\">learn more about request methods</a>"
 msgstr ""
+"Ŝanĝu kiel oni sendas formularojn, <a href=\"http://en.wikipedia.org/wiki/"
+"Hypertext_Transfer_Protocol#Request_methods\" rel=\"external\">lernu pli pri "
+"petaj metodoj</a>"
 
 #: searx/templates/simple/preferences.html:273
 msgid "Image proxy"
@@ -740,21 +749,22 @@ msgstr "Malŝaltita"
 
 #: searx/templates/simple/preferences.html:280
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Prokurado de bildaj rezultoj per SearXNG"
 
 #: searx/templates/simple/preferences.html:285
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Montru demandon en la titolo de la paĝo"
 
 #: searx/templates/simple/preferences.html:292
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Kiam ĝi estas ebligita, la titolo de la rezultpaĝo enhavas vian demandon"
 
 #: searx/templates/simple/preferences.html:298
 msgid "Engines"
-msgstr "Motoroj"
+msgstr "serĉiloj"
 
 #: searx/templates/simple/preferences.html:299
 msgid "Currently used search engines"
@@ -762,9 +772,11 @@ msgstr "Aktuale uzataj serĉiloj"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Ĉi tiu langeto ne ekzistas en la uzantinterfaco, sed vi povas serĉi en ĉi "
+"tiuj serĉiloj per siaj !bangs."
 
 #: searx/templates/simple/preferences.html:311
 #: searx/templates/simple/preferences.html:365
@@ -774,11 +786,11 @@ msgstr "Permesi"
 #: searx/templates/simple/preferences.html:312
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr "Nomo de la motoro"
+msgstr "Nomo de serĉilo"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -792,7 +804,7 @@ msgstr "Tempa intervalo"
 #: searx/templates/simple/preferences.html:317
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Tempo de respondo"
 
 #: searx/templates/simple/preferences.html:318
 msgid "Max time"
@@ -801,7 +813,7 @@ msgstr "Maksimuma tempo"
 #: searx/templates/simple/preferences.html:319
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Fidindeco"
 
 #: searx/templates/simple/preferences.html:360
 msgid "Special Queries"
@@ -825,11 +837,11 @@ msgstr "Ekzemploj"
 
 #: searx/templates/simple/preferences.html:372
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Ĉi tiu estas la listo de la tujaj respondaj moduloj de SearXNG."
 
 #: searx/templates/simple/preferences.html:383
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Ĉi tiu estas la listo de kromaĵoj."
 
 #: searx/templates/simple/preferences.html:400
 msgid "Cookies"
@@ -840,10 +852,11 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Jen la listo de kuketoj kaj iliaj valoroj SearXNG konservas en via komputilo."
 
 #: searx/templates/simple/preferences.html:403
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Kun tiu listo, vi povas taksi SearXNG-travideblecon."
 
 #: searx/templates/simple/preferences.html:408
 msgid "Cookie name"
@@ -867,13 +880,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:426
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL por restarigi viajn preferojn en alia retumilo"
 
 #: searx/templates/simple/preferences.html:430
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Specifante kutimajn agordojn en la URL de preferoj povas esti uzata por "
+"sinkronigi preferojn tra aparatoj."
 
 #: searx/templates/simple/preferences.html:435
 msgid ""
@@ -899,7 +914,7 @@ msgstr "Reagordi al defaŭlto"
 
 #: searx/templates/simple/preferences.html:442
 msgid "Back"
-msgstr ""
+msgstr "Reen"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -909,46 +924,29 @@ msgstr "Respondoj"
 msgid "Number of results"
 msgstr "Nombro da rezultoj"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Eraro!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Info"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Motoroj ne povas trovi rezultojn"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Sugestoj"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Serĉi URL"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Elŝuti rezultojn"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Provu serĉi:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
-msgstr ""
+msgstr "Reen al supro"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Antaŭa paĝo"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Sekva paĝo"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Montru la ĉefpaĝon"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -958,12 +956,12 @@ msgstr "Serĉi..."
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "clear"
-msgstr ""
+msgstr "purigi"
 
 #: searx/templates/simple/search.html:11
 #: searx/templates/simple/simple_search.html:7
 msgid "search"
-msgstr ""
+msgstr "serĉi"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
@@ -975,11 +973,11 @@ msgstr "Poentaroj"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Rezultkalkulo"
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
-msgstr ""
+msgstr "Entute"
 
 #: searx/templates/simple/stats.html:60
 msgid "HTTP"
@@ -987,31 +985,31 @@ msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:61
 msgid "Processing"
-msgstr ""
+msgstr "Prilaborado"
 
 #: searx/templates/simple/stats.html:99
 msgid "Warnings"
-msgstr ""
+msgstr "Avertoj"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Eraroj kaj esceptoj"
 
 #: searx/templates/simple/stats.html:105
 msgid "Exception"
-msgstr ""
+msgstr "Escepton"
 
 #: searx/templates/simple/stats.html:107
 msgid "Message"
-msgstr ""
+msgstr "Mesaĝo"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr ""
+msgstr "Procento"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
-msgstr ""
+msgstr "Parametro"
 
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
@@ -1019,23 +1017,47 @@ msgstr "Dosiernomo"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
-msgstr ""
+msgstr "Funkcio"
 
 #: searx/templates/simple/stats.html:121
 msgid "Code"
-msgstr ""
+msgstr "Fontkodo"
 
 #: searx/templates/simple/stats.html:128
 msgid "Checker"
-msgstr ""
+msgstr "Kontrolilo"
 
 #: searx/templates/simple/stats.html:131
 msgid "Failed test"
-msgstr ""
+msgstr "Malsukcesa testo"
 
 #: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
-msgstr ""
+msgstr "Komento(j)"
+
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Elŝuti rezultojn"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr "Mesaĝoj de la serĉiloj"
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Eraro!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Serĉiloj ne povas retrovi rezultojn"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Serĉi URL"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Sugestoj"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
@@ -1065,19 +1087,11 @@ msgstr "Informoj!"
 msgid "currently, there are no cookies defined."
 msgstr "nun ne estas ajnaj kuketoj difinitaj."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Motoroj ne povas trovi rezultojn."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Pardonu!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1096,15 +1110,15 @@ msgstr "kaŝi aŭdvidaĵojn"
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Ĉi tiu retejo ne disponigis ajnan priskribon."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "serĉiloj"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
@@ -1124,11 +1138,11 @@ msgstr "kaŝi mapon"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Eldonita dato"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Revuo"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
@@ -1544,3 +1558,14 @@ msgstr "kaŝi videojn"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Motoroj ne povas trovi rezultojn."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""

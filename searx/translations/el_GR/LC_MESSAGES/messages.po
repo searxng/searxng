@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-09 05:37+0000\n"
-"Last-Translator: KDesp73 <kdesp2003@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
 "searxng/el/>\n"
 "Language: el_GR\n"
@@ -152,84 +152,84 @@ msgstr "φωτεινό"
 msgid "dark"
 msgstr "σκοτεινό"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "Λήξη χρόνου"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "σφάλμα ανάλυσης"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "Σφάλμα πρωτοκόλλου HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "Σφάλμα δικτύου"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "Σφάλμα SSL: η επικύρωση του πιστοποιητικού απέτυχε"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "Απροσδόκητο σφάλμα"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "Σφάλμα HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "Σφάλμα σύνδεσης HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "Σφάλμα διακομιστή μεσολάβησης"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "υπέρβαση ορίου αιτημάτων"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "Άρνηση πρόσβασης"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "Σφάλμα API διακομιστή"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Δεν βρέθηκαν αντικείμενα"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Πηγή"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Μη έγκυρες ρυθμίσεις"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "σφάλμα αναζήτησης"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Σε αναστολή"
 
@@ -477,7 +477,6 @@ msgid "Engine stats"
 msgstr "Στατιστικά μηχανής"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Δημόσιες εκφάνσεις"
 
@@ -541,10 +540,9 @@ msgstr "Υποβολή νέου ζητήματος στο Github με τις π�
 msgid "No HTTPS"
 msgstr "Όχι HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Προβολή αρχείων καταγραφής σφαλμάτων και υποβολή αναφοράς σφάλματος"
 
@@ -794,7 +792,7 @@ msgstr "Μηχανές αναζήτησης που χρησιμοποιούντ�
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -810,7 +808,7 @@ msgstr "Όνομα μηχανής"
 
 #: searx/templates/simple/preferences.html:313
 msgid "Bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences.html:314
 msgid "Supports selected language"
@@ -949,40 +947,23 @@ msgstr "Απαντήσεις"
 msgid "Number of results"
 msgstr "Αριθμός αποτελεσμάτων"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Λάθος!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Πληροφορίες"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Προτάσεις"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Σύνδεσμος αναζήτησης"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Λήψη αποτελεσμάτων"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Δοκιμάστε αναζήτηση για:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Επιστροφή στην κορυφή"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Προηγούμενη σελίδα"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Επόμενη σελίδα"
 
@@ -1077,6 +1058,30 @@ msgstr "Αποτυχημένη δοκιμή"
 msgid "Comment(s)"
 msgstr "Σχόλιο(α)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Λήψη αποτελεσμάτων"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Λάθος!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Σύνδεσμος αναζήτησης"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Προτάσεις"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Οποιαδήποτε στιγμή"
@@ -1105,21 +1110,11 @@ msgstr "Πληροφορίες!"
 msgid "currently, there are no cookies defined."
 msgstr "προς το παρόν, δεν έχουν οριστεί cookies."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr ""
-"Παρακαλώ, προσπαθήστε ξανά αργότερα ή βρείτε ένα άλλο instance του "
-"SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Συγνώμη!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1590,3 +1585,17 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+#~ "Παρακαλώ, προσπαθήστε ξανά αργότερα ή "
+#~ "βρείτε ένα άλλο instance του SearXNG."

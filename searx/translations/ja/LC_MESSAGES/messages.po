@@ -15,13 +15,14 @@
 # tents <remendne@pentrens.jp>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # tentsbet <remendne@pentrens.jp>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-04-17 13:37+0000\n"
-"Last-Translator: tentsbet <remendne@pentrens.jp>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
 "searxng/ja/>\n"
 "Language: ja\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.16.4\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -157,84 +158,84 @@ msgstr "ライト"
 msgid "dark"
 msgstr "ダーク"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "タイムアウト"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "解析エラー"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "HTTP プロトコルエラー"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "ネットワークエラー"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL エラー: 証明書の検証に失敗しました"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "予期しないクラッシュ"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP エラー"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "HTTP 接続エラー"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "プロキシエラー"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "リクエストが多すぎます"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "アクセスが拒否されました"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "サーバー API エラー"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "ソース"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "検索エラー"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "一時停止"
 
@@ -458,7 +459,6 @@ msgid "Engine stats"
 msgstr "検索エンジンの状態"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "パブリック インスタンス"
 
@@ -516,10 +516,9 @@ msgstr "Githubで情報を含めて新たな問題を提起"
 msgid "No HTTPS"
 msgstr "No HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "エラーログを表示し、バグレポートを送信します"
 
@@ -759,9 +758,9 @@ msgstr "現在使用中の検索エンジン"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
-msgstr "インタフェースやタブの中にはないが、!bangを使うことで検索エンジンとして利用で"
+msgstr "インタフェースやタブの中にはないが、!bangを使うことでこれらのエンジンで検索で"
 "きる。"
 
 #: searx/templates/simple/preferences.html:311
@@ -903,40 +902,23 @@ msgstr "回答"
 msgid "Number of results"
 msgstr "通知の数"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "エラー!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "インフォ"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "エンジンは結果を取得できません"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "提案"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "この検索結果の URL"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "ダウンロードするファイル形式"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "検索:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "トップに戻る"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "前のページ"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "次のページ"
 
@@ -1031,6 +1013,30 @@ msgstr "テストに失敗しました"
 msgid "Comment(s)"
 msgstr "コメント"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "ダウンロードするファイル形式"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "エラー!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "エンジンは結果を取得できません"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "この検索結果の URL"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "提案"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "期間指定なし"
@@ -1059,19 +1065,11 @@ msgstr "お知らせ!"
 msgid "currently, there are no cookies defined."
 msgstr "現在、クッキーは定義されていません。"
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "エンジンは結果を取得できません。"
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "後でやり直すか、別の SearXNG インスタンスを試してみて下さい。"
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "すみません!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1532,3 +1530,15 @@ msgstr "動画を隠す"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr "インタフェースやタブの中にはないが、!bangを使うことで検索エンジンとして利用できる。"
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "エンジンは結果を取得できません。"
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "後でやり直すか、別の SearXNG インスタンスを試してみて下さい。"

@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2023-05-26 07:08+0000\n"
-"Last-Translator: fabiosantoscode <fabiosantosart@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
 "searxng/pt/>\n"
 "Language: pt\n"
@@ -154,84 +154,84 @@ msgstr "claro"
 msgid "dark"
 msgstr "escuro"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "tempo esgotado"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "erro de análise"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "Erro de protocolo HTTP"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "erro de rede"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "Erro SSL: falha na validação do certificado"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "falha inesperada"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "Erro HTTP"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "Erro de conexão HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "erro de proxy"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "demasiados pedidos"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "acesso negado"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "erro de API do servidor"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Nenhum item encontrado"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Fonte"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Erro ao carregar a próxima página"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Definições inválidas, por favor edite as suas preferências"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Configurações inválidas"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "erro de procura"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Suspenso"
 
@@ -385,28 +385,29 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Este plug-in verifica se o endereço da solicitação é um nó de saída do Tor e "
-"informa ao usuário se for; como check.torproject.org, mas de SearXNG."
+"Este plug-in verifica se o endereço da solicitação é um nó de saída do "
+"Tor e informa ao usuário se for; como check.torproject.org, mas de "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Não foi possível obter a lista de nós de saída Tor de: https://check."
-"torproject.org/exit-addresses"
+"Não foi possível obter a lista de nós de saída Tor de: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
-"Você está a usar Tor e parece ter este endereço IP externo: {ip_address}"
+msgstr "Você está a usar Tor e parece ter este endereço IP externo: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
-"Você não está a usar Tor e parece ter este endereço IP externo: {ip_address}"
+"Você não está a usar Tor e parece ter este endereço IP externo: "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -475,7 +476,6 @@ msgid "Engine stats"
 msgstr "Estatísticas de motor de pesquisa"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Instâncias públicas"
 
@@ -533,10 +533,9 @@ msgstr "Submeta um novo problema no Github incluindo a informação acima"
 msgid "No HTTPS"
 msgstr "Sem HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Olhar os logs de erro e submeter um relatório de bug"
 
@@ -600,8 +599,7 @@ msgstr "Que idioma de pesquisa prefere?"
 
 #: searx/templates/simple/preferences.html:127
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Escolha Auto-detetar para deixar SearXNG detetar a língua da sua pesquisa."
+msgstr "Escolha Auto-detetar para deixar SearXNG detetar a língua da sua pesquisa."
 
 #: searx/templates/simple/preferences.html:133
 msgid "Autocomplete"
@@ -783,7 +781,7 @@ msgstr "Motores de pesquisa utilizados"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 "Esta aba não existe no interface de utilizador, mas pode procurar nestes "
@@ -939,40 +937,23 @@ msgstr "Respostas"
 msgid "Number of results"
 msgstr "Número de resultados"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Erro!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Informações"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Mecanismos não podem recuperar resultados"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Sugestões"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Procurar hiperligação"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Resultados de transferências"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Tente pesquisar por:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Voltar ao topo"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Página anterior"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Página seguinte"
 
@@ -1067,6 +1048,30 @@ msgstr "Teste falhado"
 msgid "Comment(s)"
 msgstr "Comentário(s)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Resultados de transferências"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Erro!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Mecanismos não podem recuperar resultados"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Procurar hiperligação"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Sugestões"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Qualquer altura"
@@ -1095,19 +1100,11 @@ msgstr "Informação!"
 msgid "currently, there are no cookies defined."
 msgstr "neste momento, não existem cookies definidos."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Mecanismos não podem recuperar resultados."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Por favor, tente novamente mais tarde ou encontre outra instância SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Desculpe!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1591,3 +1588,20 @@ msgstr "esconder vídeo"
 
 #~ msgid "!bang"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "Esta aba não existe no interface "
+#~ "de utilizador, mas pode procurar nestes"
+#~ " motores usando os seus !atalhos."
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Mecanismos não podem recuperar resultados."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr ""
+#~ "Por favor, tente novamente mais tarde"
+#~ " ou encontre outra instância SearXNG."

@@ -7,21 +7,23 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # Fero Novák <itzwowsmile@gmail.com>, 2022.
 # JohnyPeaN <johnypean@gmail.com>, 2022.
+# return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-08 09:24+0000\n"
-"PO-Revision-Date: 2022-12-12 23:30+0000\n"
-"Last-Translator: JohnyPeaN <johnypean@gmail.com>\n"
+"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
+"searxng/sk/>\n"
 "Language: sk\n"
-"Language-Team: Slovak "
-"<https://weblate.bubu1.eu/projects/searxng/searxng/sk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
-"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -149,84 +151,84 @@ msgstr "svetlý"
 msgid "dark"
 msgstr "tmavý"
 
-#: searx/webapp.py:165
+#: searx/webapp.py:167
 msgid "timeout"
 msgstr "časový limit"
 
-#: searx/webapp.py:166
+#: searx/webapp.py:168
 msgid "parsing error"
 msgstr "chyba parsovania"
 
-#: searx/webapp.py:167
+#: searx/webapp.py:169
 msgid "HTTP protocol error"
 msgstr "chyba HTTP protokolu"
 
-#: searx/webapp.py:168
+#: searx/webapp.py:170
 msgid "network error"
 msgstr "chyba siete"
 
-#: searx/webapp.py:169
+#: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL error: overenie certifikátu zlyhalo"
 
-#: searx/webapp.py:171
+#: searx/webapp.py:173
 msgid "unexpected crash"
 msgstr "neočakávaná chyba"
 
-#: searx/webapp.py:178
+#: searx/webapp.py:180
 msgid "HTTP error"
 msgstr "HTTP chyba"
 
-#: searx/webapp.py:179
+#: searx/webapp.py:181
 msgid "HTTP connection error"
 msgstr "chyba pripojenia cez HTTP"
 
-#: searx/webapp.py:185
+#: searx/webapp.py:187
 msgid "proxy error"
 msgstr "chyba proxy"
 
-#: searx/webapp.py:186
+#: searx/webapp.py:188
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webapp.py:187
+#: searx/webapp.py:189
 msgid "too many requests"
 msgstr "priveľa žiadostí"
 
-#: searx/webapp.py:188
+#: searx/webapp.py:190
 msgid "access denied"
 msgstr "prístup bol odmietnutý"
 
-#: searx/webapp.py:189
+#: searx/webapp.py:191
 msgid "server API error"
 msgstr "API chyba servera"
 
-#: searx/webapp.py:368
+#: searx/webapp.py:363
 msgid "No item found"
 msgstr "Nič sa nenašlo"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:370
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
 msgid "Source"
 msgstr "Zdroj"
 
-#: searx/webapp.py:372
+#: searx/webapp.py:367
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:527 searx/webapp.py:965
+#: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
-#: searx/webapp.py:543
+#: searx/webapp.py:536
 msgid "Invalid settings"
 msgstr "Nesprávne nastavenia"
 
-#: searx/webapp.py:620 searx/webapp.py:696
+#: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
 msgstr "chyba vyhľadávania"
 
-#: searx/webapp.py:869
+#: searx/webapp.py:857
 msgid "Suspended"
 msgstr "Pozastavené"
 
@@ -377,6 +379,8 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Tento plugin kontroluje, či žiadaná adresa je výstupný bod TORu, a informuje "
+"používateľa ak je, ako check.torproject.org ale od SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -462,7 +466,6 @@ msgid "Engine stats"
 msgstr "Štatistiky vyhľadávača"
 
 #: searx/templates/simple/base.html:69
-#: searx/templates/simple/messages/no_results.html:15
 msgid "Public instances"
 msgstr "Verejné inštancie"
 
@@ -522,10 +525,9 @@ msgstr "Odošlite novú chybu na Github vrátane informácii nad"
 msgid "No HTTPS"
 msgstr "Žiadne HTTPS"
 
-#: searx/templates/simple/messages/no_results.html:10
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:31
 #: searx/templates/simple/preferences.html:32
-#: searx/templates/simple/results.html:49
 msgid "View error logs and submit a bug report"
 msgstr "Zobraziť záznamy chýb a odoslať hlásenie o chybe"
 
@@ -771,7 +773,7 @@ msgstr "List práve používaných vyhľadávačov"
 
 #: searx/templates/simple/preferences.html:306
 msgid ""
-"This tab dues not exists in the user interface, but you can search in "
+"This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
 
@@ -925,40 +927,23 @@ msgstr "Odpovede"
 msgid "Number of results"
 msgstr "Počet výsledkov"
 
-#: searx/templates/simple/messages/no_results.html:6
-#: searx/templates/simple/results.html:46
-msgid "Error!"
-msgstr "Chyba!"
+#: searx/templates/simple/results.html:45
+msgid "Info"
+msgstr "Informácie"
 
-#: searx/templates/simple/results.html:46
-msgid "Engines cannot retrieve results"
-msgstr "Vyhľadávače nemôžu získať výsledky"
-
-#: searx/templates/simple/results.html:68
-msgid "Suggestions"
-msgstr "Návrhy"
-
-#: searx/templates/simple/results.html:90
-msgid "Search URL"
-msgstr "Adresa URL vyhľadávania"
-
-#: searx/templates/simple/results.html:96
-msgid "Download results"
-msgstr "Výsledky na stiahnutie"
-
-#: searx/templates/simple/results.html:120
+#: searx/templates/simple/results.html:74
 msgid "Try searching for:"
 msgstr "Skús hľadať:"
 
-#: searx/templates/simple/results.html:152
+#: searx/templates/simple/results.html:106
 msgid "Back to top"
 msgstr "Späť na začiatok"
 
-#: searx/templates/simple/results.html:170
+#: searx/templates/simple/results.html:124
 msgid "Previous page"
 msgstr "Predošlá strana"
 
-#: searx/templates/simple/results.html:187
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Ďalšia strana"
 
@@ -1053,6 +1038,30 @@ msgstr "Zlyhaný test"
 msgid "Comment(s)"
 msgstr "Komentár(e)"
 
+#: searx/templates/simple/elements/apis.html:3
+msgid "Download results"
+msgstr "Výsledky na stiahnutie"
+
+#: searx/templates/simple/elements/engines_msg.html:3
+msgid "Messages from the search engines"
+msgstr ""
+
+#: searx/templates/simple/elements/engines_msg.html:8
+msgid "Error!"
+msgstr "Chyba!"
+
+#: searx/templates/simple/elements/engines_msg.html:9
+msgid "Engines cannot retrieve results"
+msgstr "Vyhľadávače nemôžu získať výsledky"
+
+#: searx/templates/simple/elements/search_url.html:3
+msgid "Search URL"
+msgstr "Adresa URL vyhľadávania"
+
+#: searx/templates/simple/elements/suggestions.html:3
+msgid "Suggestions"
+msgstr "Návrhy"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "Kedykoľvek"
@@ -1081,19 +1090,11 @@ msgstr "Informácia!"
 msgid "currently, there are no cookies defined."
 msgstr "momentálne nie su definované žiadne cookies."
 
-#: searx/templates/simple/messages/no_results.html:6
-msgid "Engines cannot retrieve results."
-msgstr "Vyhľadávače nemôžu získať výsledky."
-
-#: searx/templates/simple/messages/no_results.html:15
-msgid "Please, try again later or find another SearXNG instance."
-msgstr "Skúste znova neskôr, prosím, alebo použite inú inštanciu SearXNG."
-
-#: searx/templates/simple/messages/no_results.html:20
+#: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
 msgstr "Je nám ľúto!"
 
-#: searx/templates/simple/messages/no_results.html:21
+#: searx/templates/simple/messages/no_results.html:4
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
@@ -1569,3 +1570,14 @@ msgstr "skryť video"
 #~ msgid "!bang"
 #~ msgstr ""
 
+#~ msgid ""
+#~ "This tab dues not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+
+#~ msgid "Engines cannot retrieve results."
+#~ msgstr "Vyhľadávače nemôžu získať výsledky."
+
+#~ msgid "Please, try again later or find another SearXNG instance."
+#~ msgstr "Skúste znova neskôr, prosím, alebo použite inú inštanciu SearXNG."
