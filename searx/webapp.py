@@ -94,6 +94,7 @@ from searx.utils import (
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
+from searx.botdetection import link_token
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -416,6 +417,7 @@ def render(template_name: str, **kwargs):
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
     kwargs['errors'] = request.errors
+    kwargs['link_token'] = link_token.get_token()
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
@@ -640,6 +642,12 @@ def index():
 @app.route('/healthz', methods=['GET'])
 def health():
     return Response('OK', mimetype='text/plain')
+
+
+@app.route('/client<token>.css', methods=['GET', 'POST'])
+def client_token(token=None):
+    link_token.ping(request, token)
+    return Response('', mimetype='text/css')
 
 
 @app.route('/search', methods=['GET', 'POST'])

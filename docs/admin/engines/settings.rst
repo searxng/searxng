@@ -235,7 +235,7 @@ Global Settings
 
 ``limiter`` :
   Rate limit the number of request on the instance, block some bots.  The
-  :ref:`limiter plugin` requires a :ref:`settings redis` database.
+  :ref:`limiter src` requires a :ref:`settings redis` database.
 
 .. _image_proxy:
 
