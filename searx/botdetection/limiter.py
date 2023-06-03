@@ -40,6 +40,7 @@ and set the redis-url connection. Check the value, it depends on your redis DB
 from __future__ import annotations
 
 from pathlib import Path
+from ipaddress import ip_address
 import flask
 import werkzeug
 
@@ -53,6 +54,7 @@ from . import (
     http_connection,
     http_user_agent,
     ip_limit,
+    ip_lists,
 )
 
 from ._helpers import (
@@ -84,15 +86,40 @@ def get_cfg() -> config.Config:
 
 
 def filter_request(request: flask.Request) -> werkzeug.Response | None:
+    # pylint: disable=too-many-return-statements
 
     cfg = get_cfg()
-    real_ip = get_real_ip(request)
+    real_ip = ip_address(get_real_ip(request))
     network = get_network(real_ip, cfg)
-    if network.is_link_local:
-        return None
 
     if request.path == '/healthz':
         return None
+
+    # link-local
+
+    if network.is_link_local:
+        return None
+
+    # block- & pass- lists
+    #
+    # 1. The IP of the request is first checked against the pass-list; if the IP
+    #    matches an entry in the list, the request is not blocked.
+    # 2. If no matching entry is found in the pass-list, then a check is made against
+    #    the block list; if the IP matches an entry in the list, the request is
+    #    blocked.
+    # 3. If the IP is not in either list, the request is not blocked.
+
+    match, msg = ip_lists.pass_ip(real_ip, cfg)
+    if match:
+        logger.warning("PASS %s: matched PASSLIST - %s", network.compressed, msg)
+        return None
+
+    match, msg = ip_lists.block_ip(real_ip, cfg)
+    if match:
+        logger.error("BLOCK %s: matched BLOCKLIST - %s", network.compressed, msg)
+        return flask.make_response(('IP is on BLOCKLIST - %s' % msg, 429))
+
+    # methods applied on /
 
     for func in [
         http_user_agent,
@@ -100,6 +127,8 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
         val = func.filter_request(network, request, cfg)
         if val is not None:
             return val
+
+    # methods applied on /search
 
     if request.path == '/search':
 

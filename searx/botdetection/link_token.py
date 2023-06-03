@@ -39,6 +39,7 @@ from __future__ import annotations
 from ipaddress import (
     IPv4Network,
     IPv6Network,
+    ip_address,
 )
 
 import string
@@ -107,7 +108,7 @@ def ping(request: flask.Request, token: str):
         return
 
     cfg = limiter.get_cfg()
-    real_ip = get_real_ip(request)
+    real_ip = ip_address(get_real_ip(request))
     network = get_network(real_ip, cfg)
 
     ping_key = get_ping_key(network, request)

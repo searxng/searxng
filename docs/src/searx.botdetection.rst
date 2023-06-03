@@ -15,6 +15,9 @@ Bot Detection
 .. automodule:: searx.botdetection.limiter
   :members:
 
+.. automodule:: searx.botdetection.ip_lists
+  :members:
+
 
 Rate limit
 ==========

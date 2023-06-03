@@ -16,7 +16,25 @@ ipv6_prefix = 48
 # (networks) are not monitored by the ip_limit
 filter_link_local = false
 
-# acrivate link_token method in the ip_limit method
+# activate link_token method in the ip_limit method
 link_token = false
 
+[botdetection.ip_lists]
 
+# In the limiter, the ip_lists method has priority over all other methods -> if
+# an IP is in the pass_ip list, it has unrestricted access and it is also not
+# checked if e.g. the "user agent" suggests a bot (e.g. curl).
+
+block_ip = [
+  # '93.184.216.34',  # IPv4 of example.org
+  # '257.1.1.1',      # invalid IP --> will be ignored, logged in ERROR class
+]
+
+pass_ip = [
+  # '192.168.0.0/16',      # IPv4 private network
+  # 'fe80::/10'            # IPv6 linklocal / wins over botdetection.ip_limit.filter_link_local
+]
+
+# Activate passlist of (hardcoded) IPs from the SearXNG organization,
+# e.g. `check.searx.space`.
+pass_searxng_org = true
