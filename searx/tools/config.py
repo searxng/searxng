@@ -8,6 +8,7 @@ structured dictionaries.  The configuration schema is defined in a dictionary
 structure and the configuration data is given in a dictionary structure.
 """
 from __future__ import annotations
+from typing import Any
 
 import copy
 import typing
@@ -97,7 +98,7 @@ class Config:
         self.deprecated = deprecated
         self.cfg = copy.deepcopy(cfg_schema)
 
-    def __getitem__(self, key: str):
+    def __getitem__(self, key: str) -> Any:
         return self.get(key)
 
     def validate(self, cfg: dict):
@@ -115,7 +116,7 @@ class Config:
         """Returns default value of field ``name`` in ``self.cfg_schema``."""
         return value(name, self.cfg_schema)
 
-    def get(self, name: str, default=UNSET, replace=True):
+    def get(self, name: str, default: Any = UNSET, replace: bool = True) -> Any:
         """Returns the value to which ``name`` points in the configuration.
 
         If there is no such ``name`` in the config and the ``default`` is
