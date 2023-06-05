@@ -1472,27 +1472,6 @@ engines:
     about:
       website: https://wiby.me/
 
-  - name: marginalia
-    engine: json_engine
-    shortcut: mar
-    categories: general
-    paging: false
-    # index: {"0": "popular", "1": "blogs", "2": "big_sites",
-    # "3": "default", "4": experimental"}
-    search_url: https://api.marginalia.nu/public/search/{query}?index=4&count=20
-    results_query: results
-    url_query: url
-    title_query: title
-    content_query: description
-    timeout: 1.5
-    disabled: true
-    about:
-      website: https://www.marginalia.nu/
-      official_api_documentation: https://api.marginalia.nu/
-      use_official_api: true
-      require_api_key: true
-      results: JSON
-
   - name: alexandria
     engine: json_engine
     shortcut: alx
