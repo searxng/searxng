@@ -49,14 +49,16 @@ import werkzeug
 from searx.tools import config
 
 from searx import redisdb
-from searx import logger
 from searx.redislib import incr_sliding_window, drop_counter
 
 from . import link_token
-from ._helpers import too_many_requests
+from ._helpers import (
+    too_many_requests,
+    logger,
+)
 
 
-logger = logger.getChild('botdetection.ip_limit')
+logger = logger.getChild('ip_limit')
 
 BURST_WINDOW = 20
 """Time (sec) before sliding window for *burst* requests expires."""

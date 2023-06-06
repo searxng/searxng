@@ -6,8 +6,8 @@ from __future__ import annotations
 from ipaddress import (
     IPv4Network,
     IPv6Network,
+    IPv4Address,
     IPv6Address,
-    ip_address,
     ip_network,
 )
 import flask
@@ -46,11 +46,10 @@ def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkz
     return flask.make_response(('Too Many Requests', 429))
 
 
-def get_network(real_ip: str, cfg: config.Config) -> IPv4Network | IPv6Network:
+def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4Network | IPv6Network:
     """Returns the (client) network of whether the real_ip is part of."""
 
-    ip = ip_address(real_ip)
-    if isinstance(ip, IPv6Address):
+    if real_ip.version == 6:
         prefix = cfg['real_ip.ipv6_prefix']
     else:
         prefix = cfg['real_ip.ipv4_prefix']
@@ -99,7 +98,7 @@ def get_real_ip(request: flask.Request) -> str:
         from .limiter import get_cfg  # pylint: disable=import-outside-toplevel, cyclic-import
 
         forwarded_for = [x.strip() for x in forwarded_for.split(',')]
-        x_for: int = get_cfg()['real_ip.x_for']
+        x_for: int = get_cfg()['real_ip.x_for']  # type: ignore
         forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
 
     if not real_ip:
