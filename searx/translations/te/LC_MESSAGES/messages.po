@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-28 10:23+0000\n"
+"POT-Creation-Date: 2023-06-02 18:34+0000\n"
 "PO-Revision-Date: 2022-11-04 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: te\n"
@@ -429,7 +429,7 @@ msgid "Donate"
 msgstr "దానం చేయండి"
 
 #: searx/templates/simple/base.html:54
-#: searx/templates/simple/preferences.html:100
+#: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "అభిరుచులు"
 
@@ -507,399 +507,78 @@ msgstr ""
 msgid "Submit a new issue on Github including the above information"
 msgstr "పై సమాచారంతో సహా Github పై కొత్త సంచికను సమర్పించండి"
 
-#: searx/templates/simple/preferences.html:29
+#: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "HTTPS లేదు"
 
 #: searx/templates/simple/elements/engines_msg.html:14
-#: searx/templates/simple/preferences.html:31
-#: searx/templates/simple/preferences.html:32
+#: searx/templates/simple/preferences.html:69
+#: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
 msgstr "ఎర్రర్ లాగ్‌లను వీక్షించండి మరియు బగ్ నివేదికను సమర్పించండి"
 
-#: searx/templates/simple/preferences.html:35
+#: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:36
+#: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:54
+#: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "మధ్యస్థ"
 
-#: searx/templates/simple/preferences.html:55
+#: searx/templates/simple/preferences.html:103
 #: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/simple/preferences.html:56
+#: searx/templates/simple/preferences.html:104
 #: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:84
+#: searx/templates/simple/preferences.html:136
 msgid "Failed checker test(s): "
 msgstr "విఫలమైన చెకర్ పరీక్ష(లు): "
 
-#: searx/templates/simple/preferences.html:86
+#: searx/templates/simple/preferences.html:138
 msgid "Errors:"
 msgstr "లోపాలు:"
 
-#: searx/templates/simple/preferences.html:106
+#: searx/templates/simple/preferences.html:162
 msgid "General"
 msgstr "సాధారణ"
 
-#: searx/templates/simple/preferences.html:109
+#: searx/templates/simple/preferences.html:165
 msgid "Default categories"
 msgstr "నిష్క్రియ వర్గాలు"
 
-#: searx/templates/simple/filters/languages.html:1
-#: searx/templates/simple/preferences.html:116
-msgid "Search language"
-msgstr "శోధన భాష"
-
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/preferences.html:119
-msgid "Default language"
-msgstr "నిష్క్రియ భాష"
-
-#: searx/templates/simple/filters/languages.html:4
-#: searx/templates/simple/preferences.html:120
-msgid "Auto-detect"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:127
-msgid "What language do you prefer for search?"
-msgstr "శోధన కోసం మీరు ఏ భాషను ఇష్టపడతారు?"
-
-#: searx/templates/simple/preferences.html:127
-msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-
-#: searx/templates/simple/preferences.html:133
-msgid "Autocomplete"
-msgstr "ఆటోకంప్లేటే"
-
-#: searx/templates/simple/preferences.html:142
-msgid "Find stuff as you type"
-msgstr "టైపు చేస్తూ శోధించు"
-
-#: searx/templates/simple/filters/safesearch.html:1
-#: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:147
-#: searx/templates/simple/preferences.html:315
-msgid "SafeSearch"
-msgstr "సురక్షితశోధన"
-
-#: searx/templates/simple/filters/safesearch.html:2
-#: searx/templates/simple/preferences.html:150
-msgid "Strict"
-msgstr "కఠినమైన"
-
-#: searx/templates/simple/filters/safesearch.html:3
-#: searx/templates/simple/preferences.html:151
-msgid "Moderate"
-msgstr "మితమైన"
-
-#: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences.html:152
-msgid "None"
-msgstr "ఏమీ లేదు"
-
-#: searx/templates/simple/preferences.html:155
-msgid "Filter content"
-msgstr "విషయాలను వడకట్టు"
-
-#: searx/templates/simple/preferences.html:161
-msgid "Open Access DOI resolver"
-msgstr "యాక్సెస్ DOI పరిష్కరిణిని తెరవండి"
-
-#: searx/templates/simple/preferences.html:171
-msgid ""
-"Redirect to open-access versions of publications when available (plugin "
-"required)"
-msgstr ""
-"అందుబాటులో ఉన్నప్పుడు ప్రచురణల యొక్క ఓపెన్-యాక్సెస్ వెర్షన్‌లకు దారి "
-"మళ్లించండి (ప్లగ్ఇన్ అవసరం)"
-
-#: searx/templates/simple/preferences.html:175
-msgid "Engine tokens"
-msgstr "ఇంజిన్ టోకెన్లు"
-
-#: searx/templates/simple/preferences.html:179
-msgid "Access tokens for private engines"
-msgstr "ప్రైవేట్ ఇంజిన్ల కోసం యాక్సెస్ టోకెన్లు"
-
-#: searx/templates/simple/preferences.html:183
+#: searx/templates/simple/preferences.html:187
 msgid "User interface"
 msgstr "వినియోగ మార్గము"
 
-#: searx/templates/simple/preferences.html:186
-msgid "Interface language"
-msgstr "వినిమయసీమ భాష"
-
-#: searx/templates/simple/preferences.html:194
-msgid "Change the language of the layout"
-msgstr "వినిమయసీమ యొక్క భాషను మార్చు"
-
-#: searx/templates/simple/preferences.html:199
-msgid "Theme"
-msgstr "థీమ్"
-
-#: searx/templates/simple/preferences.html:207
-msgid "Change SearXNG layout"
-msgstr "SearXNG లేఅవుట్‌ని మార్చండి"
-
-#: searx/templates/simple/preferences.html:210
-msgid "Theme style"
-msgstr "థీమ్ శైలి"
-
-#: searx/templates/simple/preferences.html:218
-msgid "Choose auto to follow your browser settings"
-msgstr "మీ బ్రౌజర్ సెట్టింగ్‌లను అనుసరించడానికి ఆటో ఎంచుకోండి"
-
-#: searx/templates/simple/preferences.html:221
-msgid "Center Alignment"
-msgstr "మధ్య అమరిక"
-
-#: searx/templates/simple/preferences.html:224
-#: searx/templates/simple/preferences.html:236
-#: searx/templates/simple/preferences.html:248
-msgid "On"
-msgstr "పై"
-
-#: searx/templates/simple/preferences.html:225
-#: searx/templates/simple/preferences.html:237
-#: searx/templates/simple/preferences.html:249
-msgid "Off"
-msgstr "ఆఫ్"
-
-#: searx/templates/simple/preferences.html:228
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
-
-#: searx/templates/simple/preferences.html:233
-msgid "Results on new tabs"
-msgstr "కొత్త ట్యాబ్‌లలో ఫలితాలు"
-
-#: searx/templates/simple/preferences.html:240
-msgid "Open result links on new browser tabs"
-msgstr "కొత్త బ్రౌజర్ ట్యాబ్‌లలో ఫలితాల లింక్‌లను తెరవండి"
-
-#: searx/templates/simple/preferences.html:245
-msgid "Infinite scroll"
-msgstr "అనంతమైన స్క్రోల్"
-
-#: searx/templates/simple/preferences.html:252
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
-" లోడ్ చేయండి"
-
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:204
 msgid "Privacy"
 msgstr "ఆంతరంగికత"
 
-#: searx/templates/simple/preferences.html:261
-msgid "HTTP Method"
-msgstr "HTTP పద్ధతి"
-
-#: searx/templates/simple/preferences.html:268
-msgid ""
-"Change how forms are submitted, <a "
-"href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
-" rel=\"external\">learn more about request methods</a>"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:273
-msgid "Image proxy"
-msgstr "చిత్రం ప్రాక్సీ"
-
-#: searx/templates/simple/preferences.html:276
-#: searx/templates/simple/preferences.html:288
-msgid "Enabled"
-msgstr "ఎనేబుల్డ్"
-
-#: searx/templates/simple/preferences.html:277
-#: searx/templates/simple/preferences.html:289
-msgid "Disabled"
-msgstr "దిశల్డ్"
-
-#: searx/templates/simple/preferences.html:280
-msgid "Proxying image results through SearXNG"
-msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
-
-#: searx/templates/simple/preferences.html:285
-msgid "Query in the page's title"
-msgstr "పేజీ శీర్షికలో ప్రశ్న"
-
-#: searx/templates/simple/preferences.html:292
-msgid ""
-"When enabled, the result page's title contains your query. Your browser "
-"can record this title"
-msgstr ""
-"ప్రారంభించబడినప్పుడు, ఫలిత పేజీ యొక్క శీర్షిక మీ ప్రశ్నను కలిగి ఉంటుంది. "
-"మీ బ్రౌజర్ ఈ శీర్షికను రికార్డ్ చేయగలదు"
-
-#: searx/templates/simple/preferences.html:298
+#: searx/templates/simple/preferences.html:217
 msgid "Engines"
 msgstr "యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:299
+#: searx/templates/simple/preferences.html:219
 msgid "Currently used search engines"
 msgstr "ప్రస్తుతం ఉపయోగించబడుతున్న శోధన యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:306
-msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
-msgstr ""
-
-#: searx/templates/simple/preferences.html:311
-#: searx/templates/simple/preferences.html:365
-msgid "Allow"
-msgstr "అనుమతించు"
-
-#: searx/templates/simple/preferences.html:312
-#: searx/templates/simple/stats.html:25
-msgid "Engine name"
-msgstr "యంత్రం పేరు"
-
-#: searx/templates/simple/preferences.html:313
-msgid "Bang"
-msgstr ""
-
-#: searx/templates/simple/preferences.html:314
-msgid "Supports selected language"
-msgstr "ఎంచుకున్న భాషకు మద్దతు ఇస్తుంది"
-
-#: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences.html:316
-msgid "Time range"
-msgstr "కాల శ్రేణి"
-
-#: searx/templates/simple/preferences.html:317
-#: searx/templates/simple/stats.html:28
-msgid "Response time"
-msgstr "ప్రతిస్పందన సమయం"
-
-#: searx/templates/simple/preferences.html:318
-msgid "Max time"
-msgstr "గరిష్ఠ సమయం"
-
-#: searx/templates/simple/preferences.html:319
-#: searx/templates/simple/stats.html:29
-msgid "Reliability"
-msgstr "విశ్వసనీయత"
-
-#: searx/templates/simple/preferences.html:360
+#: searx/templates/simple/preferences.html:227
 msgid "Special Queries"
 msgstr "ప్రత్యేక ప్రశ్నలు"
 
-#: searx/templates/simple/preferences.html:366
-msgid "Keywords"
-msgstr "కీలకపదాలు"
-
-#: searx/templates/simple/preferences.html:367
-msgid "Name"
-msgstr "పేరు"
-
-#: searx/templates/simple/preferences.html:368
-msgid "Description"
-msgstr "వర్ణన"
-
-#: searx/templates/simple/preferences.html:369
-msgid "Examples"
-msgstr "ఉదాహరణలు"
-
-#: searx/templates/simple/preferences.html:372
-msgid "This is the list of SearXNG's instant answering modules."
-msgstr "ఇది SearXNG యొక్క తక్షణ సమాధాన మాడ్యూల్‌ల జాబితా."
-
-#: searx/templates/simple/preferences.html:383
-msgid "This is the list of plugins."
-msgstr "ఇది ప్లగిన్‌ల జాబితా."
-
-#: searx/templates/simple/preferences.html:400
+#: searx/templates/simple/preferences.html:233
 msgid "Cookies"
 msgstr "కుకీలు"
-
-#: searx/templates/simple/preferences.html:402
-msgid ""
-"This is the list of cookies and their values SearXNG is storing on your "
-"computer."
-msgstr ""
-"ఇది మీ కంప్యూటర్‌లో SearXNG నిల్వ చేస్తున్న కుక్కీల జాబితా మరియు వాటి "
-"విలువలు."
-
-#: searx/templates/simple/preferences.html:403
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "ఆ జాబితాతో, మీరు SearXNG పారదర్శకతను అంచనా వేయవచ్చు."
-
-#: searx/templates/simple/preferences.html:408
-msgid "Cookie name"
-msgstr "కుకీ పేరు"
-
-#: searx/templates/simple/preferences.html:409
-msgid "Value"
-msgstr "విలువ"
-
-#: searx/templates/simple/preferences.html:421
-msgid "Search URL of the currently saved preferences"
-msgstr "ప్రస్తుతం సేవ్ చేయబడిన ప్రాధాన్యతల URLని శోధించండి"
-
-#: searx/templates/simple/preferences.html:425
-msgid ""
-"Note: specifying custom settings in the search URL can reduce privacy by "
-"leaking data to the clicked result sites."
-msgstr ""
-"గమనిక: శోధన URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం క్లిక్ చేసిన ఫలితాల "
-"సైట్‌లకు డేటాను లీక్ చేయడం ద్వారా గోప్యతను తగ్గిస్తుంది."
-
-#: searx/templates/simple/preferences.html:426
-msgid "URL to restore your preferences in another browser"
-msgstr "మరొక బ్రౌజర్‌లో మీ ప్రాధాన్యతలను పునరుద్ధరించడానికి URL"
-
-#: searx/templates/simple/preferences.html:430
-msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
-msgstr ""
-"ప్రాధాన్యతల URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం ద్వారా పరికరాల్లో "
-"ప్రాధాన్యతలను సమకాలీకరించడానికి ఉపయోగించవచ్చు."
-
-#: searx/templates/simple/preferences.html:435
-msgid ""
-"These settings are stored in your cookies, this allows us not to store "
-"this data about you."
-msgstr ""
-"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
-"నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
-
-#: searx/templates/simple/preferences.html:437
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr ""
-"ఈ కుక్కీలు మీ సౌకర్యార్థం, మిమ్మల్ని ట్రాక్ చేయడానికి మేము ఈ కుక్కీలను "
-"ఉపయోగించము."
-
-#: searx/templates/simple/preferences.html:440
-msgid "Save"
-msgstr "సేవ్ చేయండి"
-
-#: searx/templates/simple/preferences.html:441
-msgid "Reset defaults"
-msgstr "నిష్క్రియాలకు అమర్చు"
-
-#: searx/templates/simple/preferences.html:442
-msgid "Back"
-msgstr "వెనుకకు"
 
 #: searx/templates/simple/results.html:23
 msgid "Answers"
@@ -952,6 +631,11 @@ msgstr "వెతకండి"
 msgid "There is currently no data available. "
 msgstr "ప్రస్తుతం డేటా అందుబాటులో లేదు."
 
+#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/stats.html:25
+msgid "Engine name"
+msgstr "యంత్రం పేరు"
+
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
 msgstr "స్కోర్లు"
@@ -959,6 +643,16 @@ msgstr "స్కోర్లు"
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
 msgstr "ఫలితాల గణన"
+
+#: searx/templates/simple/preferences/engines.html:24
+#: searx/templates/simple/stats.html:28
+msgid "Response time"
+msgstr "ప్రతిస్పందన సమయం"
+
+#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/stats.html:29
+msgid "Reliability"
+msgstr "విశ్వసనీయత"
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
@@ -1044,6 +738,50 @@ msgstr "శోధన URL"
 msgid "Suggestions"
 msgstr "సూచనలు"
 
+#: searx/templates/simple/filters/languages.html:1
+#: searx/templates/simple/preferences/language.html:2
+msgid "Search language"
+msgstr "శోధన భాష"
+
+#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/preferences/language.html:7
+msgid "Default language"
+msgstr "నిష్క్రియ భాష"
+
+#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/preferences/language.html:11
+msgid "Auto-detect"
+msgstr ""
+
+#: searx/templates/simple/filters/safesearch.html:1
+#: searx/templates/simple/filters/safesearch.html:2
+#: searx/templates/simple/filters/safesearch.html:3
+#: searx/templates/simple/filters/safesearch.html:4
+#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/safesearch.html:2
+msgid "SafeSearch"
+msgstr "సురక్షితశోధన"
+
+#: searx/templates/simple/filters/safesearch.html:2
+#: searx/templates/simple/preferences/safesearch.html:7
+msgid "Strict"
+msgstr "కఠినమైన"
+
+#: searx/templates/simple/filters/safesearch.html:3
+#: searx/templates/simple/preferences/safesearch.html:11
+msgid "Moderate"
+msgstr "మితమైన"
+
+#: searx/templates/simple/filters/safesearch.html:4
+#: searx/templates/simple/preferences/safesearch.html:15
+msgid "None"
+msgstr "ఏమీ లేదు"
+
+#: searx/templates/simple/filters/time_range.html:1
+#: searx/templates/simple/preferences/engines.html:22
+msgid "Time range"
+msgstr "కాల శ్రేణి"
+
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
 msgstr "ఎప్పుడైనా"
@@ -1083,6 +821,261 @@ msgid ""
 msgstr ""
 "మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని"
 " వర్గాల్లో శోధించండి."
+
+#: searx/templates/simple/preferences/answerers.html:4
+#: searx/templates/simple/preferences/engines.html:17
+msgid "Allow"
+msgstr "అనుమతించు"
+
+#: searx/templates/simple/preferences/answerers.html:5
+msgid "Keywords"
+msgstr "కీలకపదాలు"
+
+#: searx/templates/simple/preferences/answerers.html:6
+msgid "Name"
+msgstr "పేరు"
+
+#: searx/templates/simple/preferences/answerers.html:7
+msgid "Description"
+msgstr "వర్ణన"
+
+#: searx/templates/simple/preferences/answerers.html:8
+msgid "Examples"
+msgstr "ఉదాహరణలు"
+
+#: searx/templates/simple/preferences/answerers.html:13
+msgid "This is the list of SearXNG's instant answering modules."
+msgstr "ఇది SearXNG యొక్క తక్షణ సమాధాన మాడ్యూల్‌ల జాబితా."
+
+#: searx/templates/simple/preferences/answerers.html:28
+msgid "This is the list of plugins."
+msgstr "ఇది ప్లగిన్‌ల జాబితా."
+
+#: searx/templates/simple/preferences/autocomplete.html:2
+msgid "Autocomplete"
+msgstr "ఆటోకంప్లేటే"
+
+#: searx/templates/simple/preferences/autocomplete.html:15
+msgid "Find stuff as you type"
+msgstr "టైపు చేస్తూ శోధించు"
+
+#: searx/templates/simple/preferences/center_alignment.html:2
+msgid "Center Alignment"
+msgstr "మధ్య అమరిక"
+
+#: searx/templates/simple/preferences/center_alignment.html:5
+#: searx/templates/simple/preferences/infinite_scroll.html:5
+#: searx/templates/simple/preferences/results_on_new_tab.html:5
+msgid "On"
+msgstr "పై"
+
+#: searx/templates/simple/preferences/center_alignment.html:6
+#: searx/templates/simple/preferences/infinite_scroll.html:6
+#: searx/templates/simple/preferences/results_on_new_tab.html:6
+msgid "Off"
+msgstr "ఆఫ్"
+
+#: searx/templates/simple/preferences/center_alignment.html:10
+msgid "Displays results in the center of the page (Oscar layout)."
+msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
+
+#: searx/templates/simple/preferences/cookies.html:2
+msgid ""
+"This is the list of cookies and their values SearXNG is storing on your "
+"computer."
+msgstr ""
+"ఇది మీ కంప్యూటర్‌లో SearXNG నిల్వ చేస్తున్న కుక్కీల జాబితా మరియు వాటి "
+"విలువలు."
+
+#: searx/templates/simple/preferences/cookies.html:3
+msgid "With that list, you can assess SearXNG transparency."
+msgstr "ఆ జాబితాతో, మీరు SearXNG పారదర్శకతను అంచనా వేయవచ్చు."
+
+#: searx/templates/simple/preferences/cookies.html:9
+msgid "Cookie name"
+msgstr "కుకీ పేరు"
+
+#: searx/templates/simple/preferences/cookies.html:10
+msgid "Value"
+msgstr "విలువ"
+
+#: searx/templates/simple/preferences/cookies.html:23
+msgid "Search URL of the currently saved preferences"
+msgstr "ప్రస్తుతం సేవ్ చేయబడిన ప్రాధాన్యతల URLని శోధించండి"
+
+#: searx/templates/simple/preferences/cookies.html:32
+msgid ""
+"Note: specifying custom settings in the search URL can reduce privacy by "
+"leaking data to the clicked result sites."
+msgstr ""
+"గమనిక: శోధన URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం క్లిక్ చేసిన ఫలితాల "
+"సైట్‌లకు డేటాను లీక్ చేయడం ద్వారా గోప్యతను తగ్గిస్తుంది."
+
+#: searx/templates/simple/preferences/cookies.html:35
+msgid "URL to restore your preferences in another browser"
+msgstr "మరొక బ్రౌజర్‌లో మీ ప్రాధాన్యతలను పునరుద్ధరించడానికి URL"
+
+#: searx/templates/simple/preferences/cookies.html:44
+msgid ""
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
+msgstr ""
+"ప్రాధాన్యతల URLలో అనుకూల సెట్టింగ్‌లను పేర్కొనడం ద్వారా పరికరాల్లో "
+"ప్రాధాన్యతలను సమకాలీకరించడానికి ఉపయోగించవచ్చు."
+
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "Open Access DOI resolver"
+msgstr "యాక్సెస్ DOI పరిష్కరిణిని తెరవండి"
+
+#: searx/templates/simple/preferences/doi_resolver.html:14
+msgid "Select service used by DOI rewrite"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:9
+msgid ""
+"This tab does not exists in the user interface, but you can search in "
+"these engines by its !bangs."
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:19
+msgid "!bang"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:20
+msgid "Supports selected language"
+msgstr "ఎంచుకున్న భాషకు మద్దతు ఇస్తుంది"
+
+#: searx/templates/simple/preferences/engines.html:26
+msgid "Max time"
+msgstr "గరిష్ఠ సమయం"
+
+#: searx/templates/simple/preferences/footer.html:2
+msgid ""
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
+msgstr ""
+"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
+"నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
+
+#: searx/templates/simple/preferences/footer.html:3
+msgid ""
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
+msgstr ""
+"ఈ కుక్కీలు మీ సౌకర్యార్థం, మిమ్మల్ని ట్రాక్ చేయడానికి మేము ఈ కుక్కీలను "
+"ఉపయోగించము."
+
+#: searx/templates/simple/preferences/footer.html:6
+msgid "Save"
+msgstr "సేవ్ చేయండి"
+
+#: searx/templates/simple/preferences/footer.html:9
+msgid "Reset defaults"
+msgstr "నిష్క్రియాలకు అమర్చు"
+
+#: searx/templates/simple/preferences/footer.html:13
+msgid "Back"
+msgstr "వెనుకకు"
+
+#: searx/templates/simple/preferences/image_proxy.html:2
+msgid "Image proxy"
+msgstr "చిత్రం ప్రాక్సీ"
+
+#: searx/templates/simple/preferences/image_proxy.html:5
+#: searx/templates/simple/preferences/query_in_title.html:5
+msgid "Enabled"
+msgstr "ఎనేబుల్డ్"
+
+#: searx/templates/simple/preferences/image_proxy.html:6
+#: searx/templates/simple/preferences/query_in_title.html:6
+msgid "Disabled"
+msgstr "దిశల్డ్"
+
+#: searx/templates/simple/preferences/image_proxy.html:10
+msgid "Proxying image results through SearXNG"
+msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
+
+#: searx/templates/simple/preferences/infinite_scroll.html:2
+msgid "Infinite scroll"
+msgstr "అనంతమైన స్క్రోల్"
+
+#: searx/templates/simple/preferences/infinite_scroll.html:10
+msgid "Automatically load next page when scrolling to bottom of current page"
+msgstr ""
+"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
+" లోడ్ చేయండి"
+
+#: searx/templates/simple/preferences/language.html:24
+msgid "What language do you prefer for search?"
+msgstr "శోధన కోసం మీరు ఏ భాషను ఇష్టపడతారు?"
+
+#: searx/templates/simple/preferences/language.html:25
+msgid "Choose Auto-detect to let SearXNG detect the language of your query."
+msgstr ""
+
+#: searx/templates/simple/preferences/method.html:2
+msgid "HTTP Method"
+msgstr "HTTP పద్ధతి"
+
+#: searx/templates/simple/preferences/method.html:14
+msgid "Change how forms are submitted"
+msgstr ""
+
+#: searx/templates/simple/preferences/query_in_title.html:2
+msgid "Query in the page's title"
+msgstr "పేజీ శీర్షికలో ప్రశ్న"
+
+#: searx/templates/simple/preferences/query_in_title.html:10
+msgid ""
+"When enabled, the result page's title contains your query. Your browser "
+"can record this title"
+msgstr ""
+"ప్రారంభించబడినప్పుడు, ఫలిత పేజీ యొక్క శీర్షిక మీ ప్రశ్నను కలిగి ఉంటుంది. "
+"మీ బ్రౌజర్ ఈ శీర్షికను రికార్డ్ చేయగలదు"
+
+#: searx/templates/simple/preferences/results_on_new_tab.html:2
+msgid "Results on new tabs"
+msgstr "కొత్త ట్యాబ్‌లలో ఫలితాలు"
+
+#: searx/templates/simple/preferences/results_on_new_tab.html:10
+msgid "Open result links on new browser tabs"
+msgstr "కొత్త బ్రౌజర్ ట్యాబ్‌లలో ఫలితాల లింక్‌లను తెరవండి"
+
+#: searx/templates/simple/preferences/safesearch.html:20
+msgid "Filter content"
+msgstr "విషయాలను వడకట్టు"
+
+#: searx/templates/simple/preferences/theme.html:2
+msgid "Theme"
+msgstr "థీమ్"
+
+#: searx/templates/simple/preferences/theme.html:14
+msgid "Change SearXNG layout"
+msgstr "SearXNG లేఅవుట్‌ని మార్చండి"
+
+#: searx/templates/simple/preferences/theme.html:19
+msgid "Theme style"
+msgstr "థీమ్ శైలి"
+
+#: searx/templates/simple/preferences/theme.html:31
+msgid "Choose auto to follow your browser settings"
+msgstr "మీ బ్రౌజర్ సెట్టింగ్‌లను అనుసరించడానికి ఆటో ఎంచుకోండి"
+
+#: searx/templates/simple/preferences/tokens.html:2
+msgid "Engine tokens"
+msgstr "ఇంజిన్ టోకెన్లు"
+
+#: searx/templates/simple/preferences/tokens.html:9
+msgid "Access tokens for private engines"
+msgstr "ప్రైవేట్ ఇంజిన్ల కోసం యాక్సెస్ టోకెన్లు"
+
+#: searx/templates/simple/preferences/ui_locale.html:2
+msgid "Interface language"
+msgstr "వినిమయసీమ భాష"
+
+#: searx/templates/simple/preferences/ui_locale.html:14
+msgid "Change the language of the layout"
+msgstr "వినిమయసీమ యొక్క భాషను మార్చు"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1551,4 +1544,22 @@ msgstr "వీడియోను దాచిపెట్టు"
 #~ msgstr ""
 #~ "దయచేసి, తర్వాత మళ్లీ ప్రయత్నించండి లేదా "
 #~ "మరొక SearXNG ఇన్స్తంచె కనుగొనండి."
+
+#~ msgid ""
+#~ "Redirect to open-access versions of "
+#~ "publications when available (plugin required)"
+#~ msgstr ""
+#~ "అందుబాటులో ఉన్నప్పుడు ప్రచురణల యొక్క "
+#~ "ఓపెన్-యాక్సెస్ వెర్షన్‌లకు దారి మళ్లించండి "
+#~ "(ప్లగ్ఇన్ అవసరం)"
+
+#~ msgid "Bang"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Change how forms are submitted, <a "
+#~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
+#~ " rel=\"external\">learn more about request "
+#~ "methods</a>"
+#~ msgstr ""
 
