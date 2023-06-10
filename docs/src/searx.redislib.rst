@@ -5,4 +5,5 @@ Redis Library
 =============
 
 .. automodule:: searx.redislib
-  :members:
+   :members:
+   :member-order: bysource
