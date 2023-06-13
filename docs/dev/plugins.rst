@@ -19,10 +19,6 @@ Example plugin
    description = 'This plugin extends the suggestions with the word "example"'
    default_on = False  # disabled by default
 
-   js_dependencies = tuple()  # optional, list of static js files
-   css_dependencies = tuple()  # optional, list of static css files
-
-
    # attach callback to the post search hook
    #  request: flask request object
    #  ctx: the whole local context of the post search hook
@@ -40,7 +36,7 @@ SearXNG plugins from *The Green Web Foundation* `[ref]
 
 .. code:: bash
 
-   $ sudo utils/searxng.sh instance cmd bash
+   $ sudo utils/searxng.sh instance cmd bash -c
    (searxng-pyenv)$ pip install git+https://github.com/return42/tgwf-searx-plugins
 
 In the :ref:`settings.yml` activate the ``plugins:`` section and add module
