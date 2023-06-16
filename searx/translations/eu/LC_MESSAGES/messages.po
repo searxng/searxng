@@ -10,26 +10,28 @@
 # beriain <soila@disroot.org>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# alexgabi <alexgabi@disroot.org>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-02 18:34+0000\n"
-"PO-Revision-Date: 2023-06-02 07:07+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-06-16 04:37+0000\n"
+"Last-Translator: alexgabi <alexgabi@disroot.org>\n"
+"Language-Team: Basque <https://translate.codeberg.org/projects/searxng/"
+"searxng/eu/>\n"
 "Language: eu\n"
-"Language-Team: Basque "
-"<https://translate.codeberg.org/projects/searxng/searxng/eu/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "Itzuli"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -54,7 +56,7 @@ msgstr "musika"
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
 msgid "social media"
-msgstr "media soziala"
+msgstr "sare sozialak"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -84,7 +86,7 @@ msgstr "mapa"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr ""
+msgstr "tipulak"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -104,7 +106,7 @@ msgstr "hiztegiak"
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr "hitzak"
+msgstr "letrak"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -134,7 +136,7 @@ msgstr "web"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr ""
+msgstr "argitalpen zientifikoak"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -169,7 +171,7 @@ msgstr "sareko errorea"
 
 #: searx/webapp.py:171
 msgid "SSL error: certificate validation has failed"
-msgstr ""
+msgstr "SSL errorea: ziurtagiria baliozkotzeak huts egin du"
 
 #: searx/webapp.py:173
 msgid "unexpected crash"
@@ -218,11 +220,11 @@ msgstr "Errorea hurrengo orrialdea kargatzean"
 
 #: searx/webapp.py:520 searx/webapp.py:953
 msgid "Invalid settings, please edit your preferences"
-msgstr "Ezarpen ez baliodunak, mesedez editatu zure hobespenak"
+msgstr "Ezarpen baliogabeak, editatu zure hobespenak"
 
 #: searx/webapp.py:536
 msgid "Invalid settings"
-msgstr "Ezarpen ez baliodunak"
+msgstr "Ezarpen baliogabeak"
 
 #: searx/webapp.py:613 searx/webapp.py:691
 msgid "search error"
@@ -230,7 +232,7 @@ msgstr "bilaketa akatsa"
 
 #: searx/webapp.py:857
 msgid "Suspended"
-msgstr ""
+msgstr "Etenda"
 
 #: searx/webutils.py:205
 msgid "{minutes} minute(s) ago"
@@ -254,11 +256,11 @@ msgstr "Funtzio estatistikoak"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
-msgstr "Parametroen {functions} zenbatu"
+msgstr "Kalkulatu argumentuen {funtzioak}"
 
 #: searx/engines/openstreetmap.py:160
 msgid "Get directions"
-msgstr "Norabideak lortu"
+msgstr "Lortu jarraibideak"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -277,6 +279,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} aipamen {firstCitationVelocityYear} urtetik "
+"{lastCitationVelocityYear} bitartekoak"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -284,48 +288,55 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Ezin izan da irudiaren URLa irakurri. Baliteke hori onartzen ez den "
+"fitxategi-formatu baten ondorioz izatea. TinEye-k JPEG, PNG, GIF, BMP, TIFF "
+"edo WebP diren irudiak soilik onartzen ditu."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Irudia sinpleegia da antzekoak aurkitzeko. TinEye-k oinarrizko xehetasun "
+"bisual bat behar du antzekoak ongi identifikatzeko."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "Ezin izan da deskargatu irudia."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
-msgstr ""
+msgstr "Goizean"
 
 #: searx/engines/wttr.py:101
 msgid "Noon"
-msgstr ""
+msgstr "Eguerdian"
 
 #: searx/engines/wttr.py:101
 msgid "Evening"
-msgstr ""
+msgstr "Arratsaldean"
 
 #: searx/engines/wttr.py:101
 msgid "Night"
-msgstr ""
+msgstr "Gauean"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
+msgstr "Kateak traola laburpen desberdinetara bihurtzen ditu."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr ""
+msgstr "traola laburpena"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr ""
+msgstr "Ostalariaren izena ordezkatu"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Berridatzi emaitzen ostalari-izenak edo kendu emaitzak ostalari-izenaren "
+"arabera"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -336,12 +347,12 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Ordainketa hormak sahiestu argitalpenen sartze-askeko bertsioetara "
-"berbidaliz ahal denean"
+"Saihestu ordain-hormak argitalpenen sarbide irekiko bertsioetara "
+"birbideratuz, ahal denean"
 
 #: searx/plugins/search_on_category_select.py:19
 msgid "Search on category select"
-msgstr "Bilatu kategoria hautatzerakoan"
+msgstr "Bilatu kategoria hautatzean"
 
 #: searx/plugins/search_on_category_select.py:20
 msgid ""
@@ -353,41 +364,49 @@ msgstr ""
 
 #: searx/plugins/self_info.py:20
 msgid "Self Information"
-msgstr ""
+msgstr "Norberaren informazioa"
 
 #: searx/plugins/self_info.py:21
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Zure IPa erakutsi bilatutakoa \"ip\" bada eta zure user agenta "
-"bilatutakoa \"user agent\" bada."
+"Zure IPa bistaratzen du kontsulta \"ip\" bada eta zure erabiltzaile-agentea "
+"kontsultak \"erabiltzaile-agentea\" badu."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor check plugina"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Plugin honek eskaeraren helbidea Tor-eko irteera-nodo bat den egiaztatzen du "
+"eta hala ote den jakinarazten dio erabiltzaileari; check.torproject.org "
+"bezala, baina SearXNG-tik."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Ezin izan da Tor irteera-nodoen zerrenda deskargatu: https://check.torproject"
+".org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Tor erabiltzen ari zara eta kanpoko IP helbide hau duzula dirudi: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
+"Ez zara Tor erabiltzen ari eta kanpoko IP helbide hau duzu: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -406,9 +425,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Emaitzetan zehar Vim bezalako tekla azkarrekin nabigatu (JavaScript behar"
-" du). Sakatu \"h\" tekla orri nagusian edo emaitzen orrian laguntza "
-"ikusteko."
+"Emaitzetan zehar Vim-en antzeko laster-teklekin nabigatu (JavaScript behar "
+"du). Sakatu \"h\" tekla orri nagusian edo emaitzen orrian laguntza ikusteko."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -425,11 +443,11 @@ msgstr "bilaketa orria"
 
 #: searx/templates/simple/base.html:46
 msgid "About"
-msgstr ""
+msgstr "Honi buruz"
 
 #: searx/templates/simple/base.html:50
 msgid "Donate"
-msgstr ""
+msgstr "Lagundu diruz"
 
 #: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:156
@@ -438,11 +456,11 @@ msgstr "Hobespenak"
 
 #: searx/templates/simple/base.html:64
 msgid "Powered by"
-msgstr "Honek bultzatua"
+msgstr "Garatzailea"
 
 #: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "pribatutasuna errespetatzen duen metabilatzaile irekia"
 
 #: searx/templates/simple/base.html:65
 msgid "Source code"
@@ -450,7 +468,7 @@ msgstr "Iturburu-kodea"
 
 #: searx/templates/simple/base.html:66
 msgid "Issue tracker"
-msgstr "Arazoak"
+msgstr "Arazoen jarraipena"
 
 #: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -484,31 +502,31 @@ msgstr "Egilea"
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
-msgstr "cacheatuta"
+msgstr "cachean gordeta"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
-msgstr "proxyatuta"
+msgstr "proxyan gordeta"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Hasi gai -issue- berri bat bidaltzen GitHub-en"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
+msgstr "Egiaztatu motor honi buruzko akatsik dagoen GitHub-en"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
+msgstr "Berresten dut aurkitzen dudan arazoari buruzko akatsik ez dagoela"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Hau instantzia publikoa bada, mesedez zehaztu URLa akatsen txostenean"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr ""
+msgstr "Bidali gai -issue- berri bat Github-en goiko informazioa barne"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -518,38 +536,38 @@ msgstr "HTTPS-rik ez"
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
-msgstr ""
+msgstr "Ikusi erroreen erregistroak eta bidali akatsen txostena"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang motor honetarako"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang bere kategorietarako"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
 msgid "Median"
-msgstr ""
+msgstr "Tartekoa"
 
 #: searx/templates/simple/preferences.html:103
 #: searx/templates/simple/stats.html:70
 msgid "P80"
-msgstr ""
+msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
 #: searx/templates/simple/stats.html:76
 msgid "P95"
-msgstr ""
+msgstr "P95"
 
 #: searx/templates/simple/preferences.html:136
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Egiaztatzailearen probak huts egin du: "
 
 #: searx/templates/simple/preferences.html:138
 msgid "Errors:"
-msgstr ""
+msgstr "Erroreak:"
 
 #: searx/templates/simple/preferences.html:162
 msgid "General"
@@ -573,11 +591,11 @@ msgstr "Bilatzaileak"
 
 #: searx/templates/simple/preferences.html:219
 msgid "Currently used search engines"
-msgstr "Erabiliak izaten ari diren bilatzaileak"
+msgstr "Erabiltzen ari diren bilatzaileak"
 
 #: searx/templates/simple/preferences.html:227
 msgid "Special Queries"
-msgstr ""
+msgstr "Kontsulta bereziak"
 
 #: searx/templates/simple/preferences.html:233
 msgid "Cookies"
@@ -593,7 +611,7 @@ msgstr "Emaitza kopurua"
 
 #: searx/templates/simple/results.html:45
 msgid "Info"
-msgstr "Argb"
+msgstr "Informazioa"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
@@ -613,7 +631,7 @@ msgstr "Hurrengo orria"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Erakutsi hasierako orria"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -623,12 +641,12 @@ msgstr "Bilatu..."
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
 msgid "clear"
-msgstr ""
+msgstr "garbitu"
 
 #: searx/templates/simple/search.html:11
 #: searx/templates/simple/simple_search.html:7
 msgid "search"
-msgstr ""
+msgstr "bilatu"
 
 #: searx/templates/simple/stats.html:21
 msgid "There is currently no data available. "
@@ -645,85 +663,85 @@ msgstr "Balorazioak"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Emaitzen zenbaketa"
 
 #: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Erantzuteko denbora"
 
 #: searx/templates/simple/preferences/engines.html:28
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
-msgstr ""
+msgstr "Fidagarritasuna"
 
 #: searx/templates/simple/stats.html:59
 msgid "Total"
-msgstr ""
+msgstr "Guztira"
 
 #: searx/templates/simple/stats.html:60
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: searx/templates/simple/stats.html:61
 msgid "Processing"
-msgstr ""
+msgstr "Prozesatzen"
 
 #: searx/templates/simple/stats.html:99
 msgid "Warnings"
-msgstr ""
+msgstr "Abisuak"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
-msgstr ""
+msgstr "Errore eta salbuespenak"
 
 #: searx/templates/simple/stats.html:105
 msgid "Exception"
-msgstr ""
+msgstr "Salbuespena"
 
 #: searx/templates/simple/stats.html:107
 msgid "Message"
-msgstr ""
+msgstr "Mezua"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr ""
+msgstr "Ehunekoa"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
-msgstr ""
+msgstr "Parametroa"
 
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
-msgstr ""
+msgstr "Fitxategiaren izena"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
-msgstr ""
+msgstr "Funtzioa"
 
 #: searx/templates/simple/stats.html:121
 msgid "Code"
-msgstr ""
+msgstr "Kodea"
 
 #: searx/templates/simple/stats.html:128
 msgid "Checker"
-msgstr ""
+msgstr "Zuzentzailea"
 
 #: searx/templates/simple/stats.html:131
 msgid "Failed test"
-msgstr ""
+msgstr "Probak huts egin du"
 
 #: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
-msgstr ""
+msgstr "Iruzkina(k)"
 
 #: searx/templates/simple/elements/apis.html:3
 msgid "Download results"
-msgstr "Emaitzak deskargatu"
+msgstr "Deskargatu emaitzak"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Bilatzaileen mezuak"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -735,7 +753,7 @@ msgstr "Bilatzaileek ezin dute emaitzarik lortu"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
-msgstr "Bilaketa URLa"
+msgstr "Bilatu URLa"
 
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
@@ -754,7 +772,7 @@ msgstr "Lehenetsitako hizkuntza"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr ""
+msgstr "Auto-detektatu"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -811,7 +829,7 @@ msgstr "Informazioa!"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr "une honetan, ez dago cookierik definitutik."
+msgstr "une honetan, ez dago cookierik definituta."
 
 #: searx/templates/simple/messages/no_results.html:3
 msgid "Sorry!"
@@ -840,7 +858,7 @@ msgstr "Izena"
 
 #: searx/templates/simple/preferences/answerers.html:7
 msgid "Description"
-msgstr "Deskripzioa"
+msgstr "Deskribapena"
 
 #: searx/templates/simple/preferences/answerers.html:8
 msgid "Examples"
@@ -848,11 +866,11 @@ msgstr "Adibideak"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Hau da SearXNG-ren berehalako erantzuteko moduluen zerrenda."
 
 #: searx/templates/simple/preferences/answerers.html:28
 msgid "This is the list of plugins."
-msgstr ""
+msgstr "Hau da pluginen zerrenda."
 
 #: searx/templates/simple/preferences/autocomplete.html:2
 msgid "Autocomplete"
@@ -860,11 +878,11 @@ msgstr "Osatze automatikoa"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Find stuff as you type"
-msgstr "Gauzak aurkitu idatzi bitartean"
+msgstr "Aurkitu idatzi bitartean"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
-msgstr ""
+msgstr "Erdiko Lerrokadura"
 
 #: searx/templates/simple/preferences/center_alignment.html:5
 #: searx/templates/simple/preferences/infinite_scroll.html:5
@@ -880,17 +898,19 @@ msgstr "Itzalita"
 
 #: searx/templates/simple/preferences/center_alignment.html:10
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Emaitzak orriaren erdialdean bistaratzen ditu (Oscar diseinua)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Hau da SearXNG zure ordenagailuan gordetzen ari den cookieen zerrenda eta "
+"haien balioak."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Zerrenda horrekin, SearXNGren gardentasuna ebaluatu dezakezu."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -902,7 +922,7 @@ msgstr "Balioa"
 
 #: searx/templates/simple/preferences/cookies.html:23
 msgid "Search URL of the currently saved preferences"
-msgstr "Une honetan gordetako hobespenen bilaketa URLa"
+msgstr "Bilatu une honetan gordetako hobespenen URLa"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
@@ -914,13 +934,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "Zure hobespenak beste arakatzaile batean leheneratzeko URLa"
 
 #: searx/templates/simple/preferences/cookies.html:44
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Hobespenen URLan ezarpen pertsonalizatuak zehaztea erabil daiteke gailuen "
+"hobespenak sinkronizatzeko."
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -928,17 +950,19 @@ msgstr "Open Access DOI ebatzi"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Hautatu DOI berridazketa-k erabilitako zerbitzua"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Fitxa hau ez dago erabiltzailearen interfazean, baina motor hauetan bilatu "
+"dezakezu bere !bang-en arabera."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
@@ -966,7 +990,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
-msgstr ""
+msgstr "Gorde"
 
 #: searx/templates/simple/preferences/footer.html:9
 msgid "Reset defaults"
@@ -974,11 +998,11 @@ msgstr "Berrezarri lehenetsiak"
 
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
-msgstr ""
+msgstr "Atzera"
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
-msgstr "Irudietarako proxya"
+msgstr "Irudien proxya"
 
 #: searx/templates/simple/preferences/image_proxy.html:5
 #: searx/templates/simple/preferences/query_in_title.html:5
@@ -992,7 +1016,7 @@ msgstr "Desgaituta"
 
 #: searx/templates/simple/preferences/image_proxy.html:10
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Proxy irudien emaitzak SearXNG bidez"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1001,8 +1025,7 @@ msgstr "Korritze amaigabea"
 #: searx/templates/simple/preferences/infinite_scroll.html:10
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Hurrengo orria automatikoki kargatu uneko orriaren behekaldera "
-"mugitzerakoan"
+"Kargatu automatikoki hurrengo orria uneko orrialdearen behealdera mugitzean"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1011,6 +1034,7 @@ msgstr "Zein hizkuntzan egin nahi duzu bilaketa?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Aukeratu Auto-detektatu SearXNG-k zure kontsultaren hizkuntza detektatzeko."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1018,17 +1042,19 @@ msgstr "HTTP metodoa"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Aldatu inprimakiak nola bidaltzen diren"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Kontsulta orriaren izenburuan"
 
 #: searx/templates/simple/preferences/query_in_title.html:10
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Gaituta dagoenean, emaitza orriaren izenburuak zure kontsulta dauka. Zure "
+"arakatzaileak izenburu hau graba dezake"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1044,11 +1070,11 @@ msgstr "Edukia iragazi"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
-msgstr ""
+msgstr "Itxura"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Aldatu SearXNGren diseinua"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1056,11 +1082,11 @@ msgstr "Estiloa"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Aukeratu automatikoa nabigatzailearen ezarpenak jarraitzeko"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
-msgstr "Bilatzaile token-ak"
+msgstr "Bilatzaileen token-ak"
 
 #: searx/templates/simple/preferences/tokens.html:9
 msgid "Access tokens for private engines"
@@ -1072,88 +1098,88 @@ msgstr "Interfazearen hizkuntza"
 
 #: searx/templates/simple/preferences/ui_locale.html:14
 msgid "Change the language of the layout"
-msgstr "Interfazearen hizkuntza aldatu"
+msgstr "Aldatu interfazearen hizkuntza"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
-msgstr "media erakutsi"
+msgstr "erakutsi multimediak"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "hide media"
-msgstr "media ezkutatu"
+msgstr "ezkutatu multimediak"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Gune honek ez du deskribapenik eman."
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
-msgstr ""
+msgstr "Formatua"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr ""
+msgstr "Bilatzailea"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
-msgstr "Iturria ikusi"
+msgstr "Ikusi iturria"
 
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
-msgstr ""
+msgstr "helbidea"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "show map"
-msgstr "mapa erakutsi"
+msgstr "erakutsi mapa"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
-msgstr "mapa ezkutatu"
+msgstr "ezkutatu mapa"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Argitaratutako data"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Egunkaria"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Editorea"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Argitaletxea"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
-msgstr ""
+msgstr "Mota"
 
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Etiketak"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: searx/templates/simple/result_templates/paper.html:28
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: searx/templates/simple/result_templates/paper.html:33
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: searx/templates/simple/result_templates/paper.html:34
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: searx/templates/simple/result_templates/torrent.html:6
 msgid "magnet link"
@@ -1169,11 +1195,11 @@ msgstr "Ereilea"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "Izaina"
+msgstr "Leecher"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
-msgstr "Fitxategi neurria"
+msgstr "Fitxategiaren tamaina"
 
 #: searx/templates/simple/result_templates/torrent.html:12
 msgid "Bytes"
@@ -1564,4 +1590,3 @@ msgstr "ezkutatu bideoa"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
-

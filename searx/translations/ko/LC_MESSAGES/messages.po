@@ -12,21 +12,22 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-02 18:34+0000\n"
-"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"PO-Revision-Date: 2023-06-14 15:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
+"searxng/ko/>\n"
 "Language: ko\n"
-"Language-Team: Korean "
-"<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "미분류"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -520,11 +521,11 @@ msgstr "오류 로그 보기 및 버그 보고서 제출"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "이 검색 엔진을 사용하기 위해 !bang"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "카테고리 사용을 위해 !bang"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -721,7 +722,7 @@ msgstr "검색결과 다운로드"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "검색 엔진에서 발생한 메시지"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -922,17 +923,18 @@ msgstr "오픈 엑세스 DOI 리졸버"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "DOI 재작성에 사용된 서비스 선택"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
-msgstr ""
+msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 "
+"검색할 수 있습니다."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
@@ -1006,7 +1008,7 @@ msgstr "HTTP 메소드"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "요청이 전송되는 방법을 변경합니다"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
@@ -1425,4 +1427,3 @@ msgstr "비디오 숨기기"
 #~ "폼 제출 방법 변경,<a "
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">요청 메소드에 대해 더 알아보기</a>"
-
