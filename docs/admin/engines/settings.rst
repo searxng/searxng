@@ -328,7 +328,7 @@ In this example read/write access is given to the *searxng-redis* group.  To get
 access rights to redis instance (the socket), your SearXNG (or even your
 developer) account needs to be added to the *searxng-redis* group.
 
-``url``
+``url`` : ``$SEARXNG_REDIS_URL``
   URL to connect redis database, see `Redis.from_url(url)`_ & :ref:`redis db`::
 
     redis://[[username]:[password]]@localhost:6379/0
