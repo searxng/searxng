@@ -143,6 +143,17 @@ def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:
         csv.writerow([row.get(key, '') for key in keys])
 
 
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        if isinstance(o, timedelta):
+            return o.total_seconds()
+        if isinstance(o, set):
+            return list(o)
+        return super().default(o)
+
+
 def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
     results = rc.number_of_results
@@ -156,7 +167,7 @@ def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
         'suggestions': list(rc.suggestions),
         'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
     }
-    response = json.dumps(x, default=lambda item: list(item) if isinstance(item, set) else item)
+    response = json.dumps(x, cls=JSONEncoder)
     return response
 
 
