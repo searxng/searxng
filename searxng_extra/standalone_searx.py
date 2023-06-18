@@ -60,7 +60,7 @@ Example to run it from python:
     "infoboxes": [ {...} ],
     "paging": true,
     "results": [... ],
-    "results_number": 820000000.0,
+    "number_of_results": 820000000.0,
     "search": {
         "lang": "all",
         "pageno": 1,
@@ -150,7 +150,7 @@ def to_dict(search_query: searx.search.SearchQuery) -> Dict[str, Any]:
         "suggestions": list(result_container.suggestions),
         "answers": list(result_container.answers),
         "paging": result_container.paging,
-        "results_number": result_container.results_number(),
+        "number_of_results": result_container.number_of_results,
     }
     return result_container_json
 

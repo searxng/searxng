@@ -9,31 +9,80 @@ import hmac
 import re
 import inspect
 import itertools
+import json
 from datetime import datetime, timedelta
 from typing import Iterable, List, Tuple, Dict, TYPE_CHECKING
 
 from io import StringIO
 from codecs import getincrementalencoder
 
-from flask_babel import gettext, format_date
+from flask_babel import gettext, format_date  # type: ignore
 
 from searx import logger, settings
 from searx.engines import DEFAULT_CATEGORY
 
 if TYPE_CHECKING:
     from searx.enginelib import Engine
-
+    from searx.results import ResultContainer
+    from searx.search import SearchQuery
+    from searx.results import UnresponsiveEngine
 
 VALID_LANGUAGE_CODE = re.compile(r'^[a-z]{2,3}(-[a-zA-Z]{2})?$')
 
 logger = logger.getChild('webutils')
 
+timeout_text = gettext('timeout')
+parsing_error_text = gettext('parsing error')
+http_protocol_error_text = gettext('HTTP protocol error')
+network_error_text = gettext('network error')
+ssl_cert_error_text = gettext("SSL error: certificate validation has failed")
+exception_classname_to_text = {
+    None: gettext('unexpected crash'),
+    'timeout': timeout_text,
+    'asyncio.TimeoutError': timeout_text,
+    'httpx.TimeoutException': timeout_text,
+    'httpx.ConnectTimeout': timeout_text,
+    'httpx.ReadTimeout': timeout_text,
+    'httpx.WriteTimeout': timeout_text,
+    'httpx.HTTPStatusError': gettext('HTTP error'),
+    'httpx.ConnectError': gettext("HTTP connection error"),
+    'httpx.RemoteProtocolError': http_protocol_error_text,
+    'httpx.LocalProtocolError': http_protocol_error_text,
+    'httpx.ProtocolError': http_protocol_error_text,
+    'httpx.ReadError': network_error_text,
+    'httpx.WriteError': network_error_text,
+    'httpx.ProxyError': gettext("proxy error"),
+    'searx.exceptions.SearxEngineCaptchaException': gettext("CAPTCHA"),
+    'searx.exceptions.SearxEngineTooManyRequestsException': gettext("too many requests"),
+    'searx.exceptions.SearxEngineAccessDeniedException': gettext("access denied"),
+    'searx.exceptions.SearxEngineAPIException': gettext("server API error"),
+    'searx.exceptions.SearxEngineXPathException': parsing_error_text,
+    'KeyError': parsing_error_text,
+    'json.decoder.JSONDecodeError': parsing_error_text,
+    'lxml.etree.ParserError': parsing_error_text,
+    'ssl.SSLCertVerificationError': ssl_cert_error_text,  # for Python > 3.7
+    'ssl.CertificateError': ssl_cert_error_text,  # for Python 3.7
+}
 
-class UnicodeWriter:
-    """
-    A CSV writer which will write rows to CSV file "f",
-    which is encoded in the given encoding.
-    """
+
+def get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
+    translated_errors = []
+
+    for unresponsive_engine in unresponsive_engines:
+        error_user_text = exception_classname_to_text.get(unresponsive_engine.error_type)
+        if not error_user_text:
+            error_user_text = exception_classname_to_text[None]
+        error_msg = gettext(error_user_text)
+        if unresponsive_engine.suspended:
+            error_msg = gettext('Suspended') + ': ' + error_msg
+        translated_errors.append((unresponsive_engine.engine, error_msg))
+
+    return sorted(translated_errors, key=lambda e: e[0])
+
+
+class CSVWriter:
+    """A CSV writer which will write rows to CSV file "f", which is encoded in
+    the given encoding."""
 
     def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
         # Redirect output to a queue
@@ -57,6 +106,58 @@ class UnicodeWriter:
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
+
+
+def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:
+    """Write rows of the results to a query (``application/csv``) into a CSV
+    table (:py:obj:`CSVWriter`).  First line in the table contain the column
+    names.  The column "type" specifies the type, the following types are
+    included in the table:
+
+    - result
+    - answer
+    - suggestion
+    - correction
+
+    """
+
+    results = rc.get_ordered_results()
+    keys = ('title', 'url', 'content', 'host', 'engine', 'score', 'type')
+    csv.writerow(keys)
+
+    for row in results:
+        row['host'] = row['parsed_url'].netloc
+        row['type'] = 'result'
+        csv.writerow([row.get(key, '') for key in keys])
+
+    for a in rc.answers:
+        row = {'title': a, 'type': 'answer'}
+        csv.writerow([row.get(key, '') for key in keys])
+
+    for a in rc.suggestions:
+        row = {'title': a, 'type': 'suggestion'}
+        csv.writerow([row.get(key, '') for key in keys])
+
+    for a in rc.corrections:
+        row = {'title': a, 'type': 'correction'}
+        csv.writerow([row.get(key, '') for key in keys])
+
+
+def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
+    """Returns the JSON string of the results to a query (``application/json``)"""
+    results = rc.number_of_results
+    x = {
+        'query': sq.query,
+        'number_of_results': results,
+        'results': rc.get_ordered_results(),
+        'answers': list(rc.answers),
+        'corrections': list(rc.corrections),
+        'infoboxes': rc.infoboxes,
+        'suggestions': list(rc.suggestions),
+        'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
+    }
+    response = json.dumps(x, default=lambda item: list(item) if isinstance(item, set) else item)
+    return response
 
 
 def get_themes(templates_path):
