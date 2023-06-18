@@ -69,7 +69,7 @@ class ViewsTestCase(SearxTestCase):
                 infoboxes=[],
                 unresponsive_engines=set(),
                 results=test_results,
-                results_number=lambda: 3,
+                number_of_results=3,
                 results_length=lambda: len(test_results),
                 get_timings=lambda: timings,
                 redirect_url=None,

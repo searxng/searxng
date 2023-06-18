@@ -57,7 +57,7 @@ class StandaloneSearx(SearxTestCase):
                 'suggestions': [],
                 'answers': [],
                 'paging': False,
-                'results_number': 0,
+                'number_of_results': 0,
             },
         )
 
@@ -73,7 +73,7 @@ class StandaloneSearx(SearxTestCase):
                     'infoboxes': m_search.infoboxes,
                     'paging': m_search.paging,
                     'results': m_search.get_ordered_results(),
-                    'results_number': m_search.results_number(),
+                    'number_of_results': m_search.number_of_results,
                     'search': {
                         'lang': m_sq.lang,
                         'pageno': m_sq.pageno,

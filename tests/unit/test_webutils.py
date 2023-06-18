@@ -64,7 +64,7 @@ class TestWebUtils(SearxTestCase):
 
 class TestUnicodeWriter(SearxTestCase):
     def setUp(self):
-        self.unicode_writer = webutils.UnicodeWriter(mock.MagicMock())
+        self.unicode_writer = webutils.CSVWriter(mock.MagicMock())
 
     def test_write_row(self):
         row = [1, 2, 3]

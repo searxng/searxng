@@ -58,7 +58,7 @@ from searx import (
 
 from searx import infopage
 from searx.data import ENGINE_DESCRIPTIONS
-from searx.results import Timing, UnresponsiveEngine
+from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
 from searx.exceptions import SearxParameterException
@@ -68,18 +68,18 @@ from searx.engines import (
     engines,
     engine_shortcuts,
 )
+
+from searx import webutils
 from searx.webutils import (
-    UnicodeWriter,
     highlight_content,
     get_static_files,
     get_result_templates,
     get_themes,
-    prettify_url,
+    exception_classname_to_text,
     new_hmac,
     is_hmac_of,
     is_flask_run_cmdline,
     group_engines_in_tab,
-    searxng_l10n_timespan,
 )
 from searx.webadapter import (
     get_search_query_from_webapp,
@@ -87,7 +87,6 @@ from searx.webadapter import (
     parse_lang,
 )
 from searx.utils import (
-    html_to_text,
     gen_useragent,
     dict_subset,
 )
@@ -164,39 +163,6 @@ app.jinja_env.lstrip_blocks = True
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-member
 app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
-
-timeout_text = gettext('timeout')
-parsing_error_text = gettext('parsing error')
-http_protocol_error_text = gettext('HTTP protocol error')
-network_error_text = gettext('network error')
-ssl_cert_error_text = gettext("SSL error: certificate validation has failed")
-exception_classname_to_text = {
-    None: gettext('unexpected crash'),
-    'timeout': timeout_text,
-    'asyncio.TimeoutError': timeout_text,
-    'httpx.TimeoutException': timeout_text,
-    'httpx.ConnectTimeout': timeout_text,
-    'httpx.ReadTimeout': timeout_text,
-    'httpx.WriteTimeout': timeout_text,
-    'httpx.HTTPStatusError': gettext('HTTP error'),
-    'httpx.ConnectError': gettext("HTTP connection error"),
-    'httpx.RemoteProtocolError': http_protocol_error_text,
-    'httpx.LocalProtocolError': http_protocol_error_text,
-    'httpx.ProtocolError': http_protocol_error_text,
-    'httpx.ReadError': network_error_text,
-    'httpx.WriteError': network_error_text,
-    'httpx.ProxyError': gettext("proxy error"),
-    'searx.exceptions.SearxEngineCaptchaException': gettext("CAPTCHA"),
-    'searx.exceptions.SearxEngineTooManyRequestsException': gettext("too many requests"),
-    'searx.exceptions.SearxEngineAccessDeniedException': gettext("access denied"),
-    'searx.exceptions.SearxEngineAPIException': gettext("server API error"),
-    'searx.exceptions.SearxEngineXPathException': parsing_error_text,
-    'KeyError': parsing_error_text,
-    'json.decoder.JSONDecodeError': parsing_error_text,
-    'lxml.etree.ParserError': parsing_error_text,
-    'ssl.SSLCertVerificationError': ssl_cert_error_text,  # for Python > 3.7
-    'ssl.CertificateError': ssl_cert_error_text,  # for Python 3.7
-}
 
 
 class ExtendedRequest(flask.Request):
@@ -686,9 +652,7 @@ def search():
         search_query, raw_text_query, _, _, selected_locale = get_search_query_from_webapp(
             request.preferences, request.form
         )
-        # search = Search(search_query) #  without plugins
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
-
         result_container = search.search()
 
     except SearxParameterException as e:
@@ -698,45 +662,54 @@ def search():
         logger.exception(e, exc_info=True)
         return index_error(output_format, gettext('search error')), 500
 
-    # results
-    results = result_container.get_ordered_results()
-    number_of_results = result_container.results_number()
-    if number_of_results < result_container.results_length():
-        number_of_results = 0
-
-    # checkin for a external bang
+    # 1. check if the result is a redirect for an external bang
     if result_container.redirect_url:
         return redirect(result_container.redirect_url)
 
-    # Server-Timing header
+    # 2. add Server-Timing header for measuring performance characteristics of
+    # web applications
     request.timings = result_container.get_timings()  # pylint: disable=assigning-non-slot
+
+    # 3. formats without a template
+
+    if output_format == 'json':
+
+        response = webutils.get_json_response(search_query, result_container)
+        return Response(response, mimetype='application/json')
+
+    if output_format == 'csv':
+
+        csv = webutils.CSVWriter(StringIO())
+        webutils.write_csv_response(csv, result_container)
+        csv.stream.seek(0)
+
+        response = Response(csv.stream.read(), mimetype='application/csv')
+        cont_disp = 'attachment;Filename=searx_-_{0}.csv'.format(search_query.query)
+        response.headers.add('Content-Disposition', cont_disp)
+        return response
+
+    # 4. formats rendered by a template / RSS & HTML
 
     current_template = None
     previous_result = None
 
-    # output
+    results = result_container.get_ordered_results()
     for result in results:
         if output_format == 'html':
             if 'content' in result and result['content']:
                 result['content'] = highlight_content(escape(result['content'][:1024]), search_query.query)
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
-        else:
-            if result.get('content'):
-                result['content'] = html_to_text(result['content']).strip()
-            # removing html content and whitespace duplications
-            result['title'] = ' '.join(html_to_text(result['title']).strip().split())
 
         if 'url' in result:
-            result['pretty_url'] = prettify_url(result['url'])
-
+            result['pretty_url'] = webutils.prettify_url(result['url'])
         if result.get('publishedDate'):  # do not try to get a date from an empty string or a None type
             try:  # test if publishedDate >= 1900 (datetime module bug)
                 result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
             except ValueError:
                 result['publishedDate'] = None
             else:
-                result['publishedDate'] = searxng_l10n_timespan(result['publishedDate'])
+                result['publishedDate'] = webutils.searxng_l10n_timespan(result['publishedDate'])
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
@@ -750,42 +723,7 @@ def search():
     if previous_result:
         previous_result['close_group'] = True
 
-    if output_format == 'json':
-        x = {
-            'query': search_query.query,
-            'number_of_results': number_of_results,
-            'results': results,
-            'answers': list(result_container.answers),
-            'corrections': list(result_container.corrections),
-            'infoboxes': result_container.infoboxes,
-            'suggestions': list(result_container.suggestions),
-            'unresponsive_engines': __get_translated_errors(result_container.unresponsive_engines),
-        }
-        response = json.dumps(x, default=lambda item: list(item) if isinstance(item, set) else item)
-        return Response(response, mimetype='application/json')
-
-    if output_format == 'csv':
-        csv = UnicodeWriter(StringIO())
-        keys = ('title', 'url', 'content', 'host', 'engine', 'score', 'type')
-        csv.writerow(keys)
-        for row in results:
-            row['host'] = row['parsed_url'].netloc
-            row['type'] = 'result'
-            csv.writerow([row.get(key, '') for key in keys])
-        for a in result_container.answers:
-            row = {'title': a, 'type': 'answer'}
-            csv.writerow([row.get(key, '') for key in keys])
-        for a in result_container.suggestions:
-            row = {'title': a, 'type': 'suggestion'}
-            csv.writerow([row.get(key, '') for key in keys])
-        for a in result_container.corrections:
-            row = {'title': a, 'type': 'correction'}
-            csv.writerow([row.get(key, '') for key in keys])
-        csv.stream.seek(0)
-        response = Response(csv.stream.read(), mimetype='application/csv')
-        cont_disp = 'attachment;Filename=searx_-_{0}.csv'.format(search_query.query)
-        response.headers.add('Content-Disposition', cont_disp)
-        return response
+    # 4.a RSS
 
     if output_format == 'rss':
         response_rss = render(
@@ -795,11 +733,11 @@ def search():
             corrections=result_container.corrections,
             suggestions=result_container.suggestions,
             q=request.form['q'],
-            number_of_results=number_of_results,
+            number_of_results=result_container.number_of_results,
         )
         return Response(response_rss, mimetype='text/xml')
 
-    # HTML output format
+    # 4.b HTML
 
     # suggestions: use RawTextQuery to get the suggestion URLs with the same bang
     suggestion_urls = list(
@@ -827,14 +765,14 @@ def search():
         selected_categories = search_query.categories,
         pageno = search_query.pageno,
         time_range = search_query.time_range or '',
-        number_of_results = format_decimal(number_of_results),
+        number_of_results = format_decimal(result_container.number_of_results),
         suggestions = suggestion_urls,
         answers = result_container.answers,
         corrections = correction_urls,
         infoboxes = result_container.infoboxes,
         engine_data = result_container.engine_data,
         paging = result_container.paging,
-        unresponsive_engines = __get_translated_errors(
+        unresponsive_engines = webutils.get_translated_errors(
             result_container.unresponsive_engines
         ),
         current_locale = request.preferences.get_value("locale"),
@@ -847,25 +785,6 @@ def search():
         timeout_limit = request.form.get('timeout_limit', None)
         # fmt: on
     )
-
-
-def __get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
-    translated_errors = []
-
-    # make a copy unresponsive_engines to avoid "RuntimeError: Set changed size
-    # during iteration" it happens when an engine modifies the ResultContainer
-    # after the search_multiple_requests method has stopped waiting
-
-    for unresponsive_engine in unresponsive_engines:
-        error_user_text = exception_classname_to_text.get(unresponsive_engine.error_type)
-        if not error_user_text:
-            error_user_text = exception_classname_to_text[None]
-        error_msg = gettext(error_user_text)
-        if unresponsive_engine.suspended:
-            error_msg = gettext('Suspended') + ': ' + error_msg
-        translated_errors.append((unresponsive_engine.engine, error_msg))
-
-    return sorted(translated_errors, key=lambda e: e[0])
 
 
 @app.route('/about', methods=['GET'])
