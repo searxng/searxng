@@ -13,19 +13,18 @@
 # alexgabi <alexgabi@disroot.org>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-16 04:37+0000\n"
 "Last-Translator: alexgabi <alexgabi@disroot.org>\n"
-"Language-Team: Basque <https://translate.codeberg.org/projects/searxng/"
-"searxng/eu/>\n"
 "Language: eu\n"
+"Language-Team: Basque "
+"<https://translate.codeberg.org/projects/searxng/searxng/eu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -153,92 +152,92 @@ msgstr "argia"
 msgid "dark"
 msgstr "iluna"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "itxarote-denbora"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "analizatze errorea"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP protokoloaren errorea"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "sareko errorea"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL errorea: ziurtagiria baliozkotzeak huts egin du"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "ustekabeko kraskatzea"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP errorea"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP konexioaren errorea"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "proxy-aren errorea"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "eskaera gehiegi"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "sarbidea ukatua"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "API zerbitzariaren errorea"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Ez da elementurik aurkitu"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Iturria"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Errorea hurrengo orrialdea kargatzean"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ezarpen baliogabeak, editatu zure hobespenak"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Ezarpen baliogabeak"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "bilaketa akatsa"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "itxarote-denbora"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "analizatze errorea"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP protokoloaren errorea"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "sareko errorea"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL errorea: ziurtagiria baliozkotzeak huts egin du"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "ustekabeko kraskatzea"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP errorea"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP konexioaren errorea"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "proxy-aren errorea"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "eskaera gehiegi"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "sarbidea ukatua"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "API zerbitzariaren errorea"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Etenda"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "duela {minutes} minutu"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "duela {hours} ordu eta {minutes} minutu"
 
@@ -289,8 +288,8 @@ msgid ""
 " WebP."
 msgstr ""
 "Ezin izan da irudiaren URLa irakurri. Baliteke hori onartzen ez den "
-"fitxategi-formatu baten ondorioz izatea. TinEye-k JPEG, PNG, GIF, BMP, TIFF "
-"edo WebP diren irudiak soilik onartzen ditu."
+"fitxategi-formatu baten ondorioz izatea. TinEye-k JPEG, PNG, GIF, BMP, "
+"TIFF edo WebP diren irudiak soilik onartzen ditu."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -362,17 +361,17 @@ msgstr ""
 "Bilaketa egin kategoria hautatu bezain laster. Ezgaitu ezazu hainbat "
 "kategoria hautatu ahal izateko. (JavaScript behar du)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Norberaren informazioa"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Zure IPa bistaratzen du kontsulta \"ip\" bada eta zure erabiltzaile-agentea "
-"kontsultak \"erabiltzaile-agentea\" badu."
+"Zure IPa bistaratzen du kontsulta \"ip\" bada eta zure erabiltzaile-"
+"agentea kontsultak \"erabiltzaile-agentea\" badu."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -383,17 +382,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Plugin honek eskaeraren helbidea Tor-eko irteera-nodo bat den egiaztatzen du "
-"eta hala ote den jakinarazten dio erabiltzaileari; check.torproject.org "
-"bezala, baina SearXNG-tik."
+"Plugin honek eskaeraren helbidea Tor-eko irteera-nodo bat den egiaztatzen"
+" du eta hala ote den jakinarazten dio erabiltzaileari; "
+"check.torproject.org bezala, baina SearXNG-tik."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Ezin izan da Tor irteera-nodoen zerrenda deskargatu: https://check.torproject"
-".org/exit-addresses"
+"Ezin izan da Tor irteera-nodoen zerrenda deskargatu: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -405,8 +404,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Ez zara Tor erabiltzen ari eta kanpoko IP helbide hau duzu: {ip_address}"
+msgstr "Ez zara Tor erabiltzen ari eta kanpoko IP helbide hau duzu: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -425,8 +423,9 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Emaitzetan zehar Vim-en antzeko laster-teklekin nabigatu (JavaScript behar "
-"du). Sakatu \"h\" tekla orri nagusian edo emaitzen orrian laguntza ikusteko."
+"Emaitzetan zehar Vim-en antzeko laster-teklekin nabigatu (JavaScript "
+"behar du). Sakatu \"h\" tekla orri nagusian edo emaitzen orrian laguntza "
+"ikusteko."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -441,48 +440,48 @@ msgstr "%(search_page)s(e)ra joan."
 msgid "search page"
 msgstr "bilaketa orria"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Honi buruz"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Lagundu diruz"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Garatzailea"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "pribatutasuna errespetatzen duen metabilatzaile irekia"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Iturburu-kodea"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Arazoen jarraipena"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Bilatzaileen estatistikak"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Instantzia publikoak"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Pribatutasun politika"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Instantziaren mantentzailearekin harremanetan jarri"
 
@@ -905,8 +904,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Hau da SearXNG zure ordenagailuan gordetzen ari den cookieen zerrenda eta "
-"haien balioak."
+"Hau da SearXNG zure ordenagailuan gordetzen ari den cookieen zerrenda eta"
+" haien balioak."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -941,8 +940,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Hobespenen URLan ezarpen pertsonalizatuak zehaztea erabil daiteke gailuen "
-"hobespenak sinkronizatzeko."
+"Hobespenen URLan ezarpen pertsonalizatuak zehaztea erabil daiteke gailuen"
+" hobespenak sinkronizatzeko."
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -957,8 +956,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Fitxa hau ez dago erabiltzailearen interfazean, baina motor hauetan bilatu "
-"dezakezu bere !bang-en arabera."
+"Fitxa hau ez dago erabiltzailearen interfazean, baina motor hauetan "
+"bilatu dezakezu bere !bang-en arabera."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1025,7 +1024,8 @@ msgstr "Korritze amaigabea"
 #: searx/templates/simple/preferences/infinite_scroll.html:10
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Kargatu automatikoki hurrengo orria uneko orrialdearen behealdera mugitzean"
+"Kargatu automatikoki hurrengo orria uneko orrialdearen behealdera "
+"mugitzean"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1034,7 +1034,8 @@ msgstr "Zein hizkuntzan egin nahi duzu bilaketa?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Aukeratu Auto-detektatu SearXNG-k zure kontsultaren hizkuntza detektatzeko."
+"Aukeratu Auto-detektatu SearXNG-k zure kontsultaren hizkuntza "
+"detektatzeko."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1053,8 +1054,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Gaituta dagoenean, emaitza orriaren izenburuak zure kontsulta dauka. Zure "
-"arakatzaileak izenburu hau graba dezake"
+"Gaituta dagoenean, emaitza orriaren izenburuak zure kontsulta dauka. Zure"
+" arakatzaileak izenburu hau graba dezake"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1590,3 +1591,4 @@ msgstr "ezkutatu bideoa"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+

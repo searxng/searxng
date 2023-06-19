@@ -18,19 +18,18 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-08 13:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
-"searxng/nl/>\n"
 "Language: nl\n"
+"Language-Team: Dutch "
+"<https://translate.codeberg.org/projects/searxng/searxng/nl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -158,92 +157,92 @@ msgstr "licht"
 msgid "dark"
 msgstr "donker"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "verlopen"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "verwerkingsfout"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "Http-protocolfout"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "netwerkfout"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "Ssl-fout: de certificaatvalidatie is mislukt"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "onverwachte crash"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "Http-fout"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "Http-verbindingsfout"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "proxyfout"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "Captcha"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "teveel verzoeken"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "toegang geweigerd"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "server-api-fout"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Er is geen resultaat gevonden"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Bron"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "De volgende pagina kan niet worden geladen"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "De instellingen zijn ongeldig - werk ze bij"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Ongeldige instellingen"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "zoekfout"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "verlopen"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "verwerkingsfout"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "Http-protocolfout"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "netwerkfout"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "Ssl-fout: de certificaatvalidatie is mislukt"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "onverwachte crash"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "Http-fout"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "Http-verbindingsfout"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "proxyfout"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "Captcha"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "teveel verzoeken"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "toegang geweigerd"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "server-api-fout"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Geschorst"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minu(u)t(en) geleden"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} uur, {minutes} minu(u)t(en) geleden"
 
@@ -369,11 +368,11 @@ msgstr ""
 "wordt. Zet dit uit om meerdere categorieën te selecteren. (JavaScript "
 "vereist)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Informatie Over Jezelf"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -448,48 +447,48 @@ msgstr "Ga naar %(search_page)s."
 msgid "search page"
 msgstr "zoekpagina"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Over"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Doneren"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Zoekmachine"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "een privacy respecterende meta zoek machine"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Broncode"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Probleem-tracker"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Zoekmachinestatistieken"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Openbare instanties"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Privacybeleid"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Neem contact op met beheerder instantie"
 
@@ -1626,3 +1625,4 @@ msgstr "verberg video"
 #~ "href=\"http://nl.wikipedia.org/wiki/Hypertext_Transfer_Protocol"
 #~ "#HTTP-requests\" rel=\"external\">lees meer over"
 #~ " opvraagmethodes</a>"
+
