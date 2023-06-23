@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: sr\n"
@@ -151,92 +151,92 @@ msgstr "светло"
 msgid "dark"
 msgstr "мрачно"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "тајмаут"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "грешка при парсирању"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "грешка у HTTP протоколу"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "грешка на мрежи"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL грешка: валидација сертификата није успела"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "неочекиван престанак рада"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP грешка"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "проблем при HTTPS конекцији"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "прокси грешка"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "превише захтева"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "није дозвољен приступ"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "серверска API грешка"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Ставка није пронађена"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Извор"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Грешка приликом учитавања следеће странице"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неважеће поставке, молимо уредите свој избор"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Неважећа подешавања"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "грешка у претрази"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "тајмаут"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "грешка при парсирању"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "грешка у HTTP протоколу"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "грешка на мрежи"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL грешка: валидација сертификата није успела"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "неочекиван престанак рада"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP грешка"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "проблем при HTTPS конекцији"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "прокси грешка"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "превише захтева"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "није дозвољен приступ"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "серверска API грешка"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Суспендован"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "пре {minutes} минут(у,е,а)"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "пре {hours} час(a) и {minutes} минут(у,е,а)"
 
@@ -358,11 +358,11 @@ msgstr ""
 "Одмах извршите претрагу ако је изабрана категорија. Онемогућите да би "
 "изабрали више категорија. (Потребан је JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Licna Informacija"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -434,48 +434,48 @@ msgstr "Иди на %(search_page)s."
 msgid "search page"
 msgstr "Претражи страницу"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "О нама"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Донирај"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Подешавања"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Покреће"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "Javni meta pretrazivac koji postuje privatnost"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Изворни код"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Трагач проблема"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Статистика"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Јавне инстанце"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Политика приватности"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Контактирај домара инстанце"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: lv\n"
@@ -148,92 +148,92 @@ msgstr "gaišs"
 msgid "dark"
 msgstr "tumšs"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "noildze"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "parsēšanas kļūda"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP protokola kļūda"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "tīkla kļūda"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL kļūda: certifikāta validācija neizdevās"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "negaidīta avārija"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP kļūda"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP savienojuma kļūda"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "starpniekservera kļūda"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "pārāk daudz pieprasījumu"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "piekļuve aizliegta"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "servera API kļūda"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Nav atrasts neviens vienums"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Avots"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Kļūda lādējot nākošo lapu"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nepareizi iestatījumi, lūdzu rediģējiet savas preferences"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Nederīgi iestatījumi"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "meklēšanas kļūda"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "noildze"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "parsēšanas kļūda"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP protokola kļūda"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "tīkla kļūda"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL kļūda: certifikāta validācija neizdevās"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "negaidīta avārija"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP kļūda"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP savienojuma kļūda"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "starpniekservera kļūda"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "pārāk daudz pieprasījumu"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "piekļuve aizliegta"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "servera API kļūda"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Apturēts"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "pirms {minutes} minūtes(-ēm)"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pirms {hours} stundas(-ām) un {minutes} minūtēm(-es)"
 
@@ -348,11 +348,11 @@ msgstr ""
 "Nekavējoties veikt meklēšanu, ja ir atlasīta kategorija. Atspējot, lai "
 "atlasītu vairākas kategorijas. (nepieciešams JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -415,48 +415,48 @@ msgstr "Doties uz %(search_page)s."
 msgid "search page"
 msgstr ""
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Par"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr ""
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Opcijas"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr ""
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Pirmkods"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr ""
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr ""
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr ""
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Privātuma politika"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr ""
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2022-11-04 07:18+0000\n"
 "Last-Translator: Markus Heiser <markus.heiser@darmarit.de>\n"
 "Language: te\n"
@@ -147,92 +147,92 @@ msgstr "వెలుగు"
 msgid "dark"
 msgstr "చీకటి"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "సమయం ముగిసినది"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "పార్సింగ్ లోపం"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP నియమాలలో లోపం"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "నెట్వర్క్ లోపం"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr ""
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "ఊహించని లోపం"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP లోపం"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP కనెక్షన్ లోపం"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "ప్రాక్సీ లోపం"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "క్యాప్చా"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "చాలా అభ్యర్థనలు"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "అనుమతి లేదు"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "సర్వర్ API లోపం"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "ఏమీ దొరకలేదు"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "మూలం"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "తదుపరి పేజీని లోడ్ చేయడంలో లోపం"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "చెల్లని సెట్టింగ్‌లు, దయచేసి మీ ప్రాధాన్యతలను సవరించండి"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "చెల్లని అమరికలు"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "శోధనలో లోపము"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "సమయం ముగిసినది"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "పార్సింగ్ లోపం"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP నియమాలలో లోపం"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "నెట్వర్క్ లోపం"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr ""
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "ఊహించని లోపం"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP లోపం"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP కనెక్షన్ లోపం"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "ప్రాక్సీ లోపం"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "క్యాప్చా"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "చాలా అభ్యర్థనలు"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "అనుమతి లేదు"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "సర్వర్ API లోపం"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "రద్ధు చెయ్యబడింది"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} నిమిషము(ల) క్రిందట"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} గంట(లు), {minutes} నిమిషం(లు) క్రితం"
 
@@ -349,11 +349,11 @@ msgstr ""
 "వర్గం ఎంపిక చేయబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను "
 "ఎంచుకోవడానికి నిలిపివేయండి. (జావాస్క్రిప్ట్ అవసరం)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -420,48 +420,48 @@ msgstr "%(search_page)sకు వెళ్ళు"
 msgid "search page"
 msgstr "శోధన పుట"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "గురించి"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "దానం చేయండి"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "అభిరుచులు"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "ద్వారా ఆధారితం"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "సోర్స్ కోడ్"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "ఇష్యూ ట్రాకర్"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "ఇంజిన్ గణాంకాలు"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "పబ్లిక్ ఇన్స్తంచెస్"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "గోప్యతా విధానం"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "నిర్వహించేవాడిని సంప్రదించండి"
 

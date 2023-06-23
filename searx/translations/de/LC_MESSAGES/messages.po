@@ -22,19 +22,18 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-04 04:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: German <https://translate.codeberg.org/projects/searxng/"
-"searxng/de/>\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://translate.codeberg.org/projects/searxng/searxng/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -162,92 +161,92 @@ msgstr "hell"
 msgid "dark"
 msgstr "dunkel"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "Timeout"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "Fehler beim Parsen"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP-Protokollfehler"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "Netzwerkfehler"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL Fehler: Zertifikatsprüfung ist fehlgeschlagen"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "unerwarteter Absturz"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP-Fehler"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP-Verbindungsfehler"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "Proxy-Fehler"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "zu viele Anfragen"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "Zugriff verweigert"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "Server-API-Fehler"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Keine Einträge gefunden"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Quelle"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Fehler beim Laden der nächsten Seite"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ungültige Einstellungen, bitte Einstellungen ändern"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Ungültige Einstellungen"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "Suchfehler"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "Timeout"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "Fehler beim Parsen"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP-Protokollfehler"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "Netzwerkfehler"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL Fehler: Zertifikatsprüfung ist fehlgeschlagen"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "unerwarteter Absturz"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP-Fehler"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP-Verbindungsfehler"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "Proxy-Fehler"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "zu viele Anfragen"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "Zugriff verweigert"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "Server-API-Fehler"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Ausgesetzt"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "vor {minutes} Minute(n)"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "vor {hours} Stunde(n), {minutes} Minute(n)"
 
@@ -373,11 +372,11 @@ msgstr ""
 "dann nicht mehr möglich, mehrere Kategorien auszuwählen. (JavaScript wird"
 " benötigt)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Selbstauskunft"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -454,48 +453,48 @@ msgstr "Gehe zu %(search_page)s."
 msgid "search page"
 msgstr "Suchseite"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Über"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Spenden"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Betrieben mit"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "Eine privatsphären-respektierende, offene Metasuchmaschine"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Quellcode"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Bugtracker"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Suchmaschinenstatistiken"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Öffentliche Instanzen"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Datenschutzerklärung"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Kontakt zum Betreuer der Instanz"
 
@@ -1643,3 +1642,4 @@ msgstr "Video verstecken"
 #~ "href=\"https://de.wikipedia.org/wiki/Hypertext_Transfer_Protocol"
 #~ "#HTTP-Anfragemethoden\" rel=\"external\">lerne mehr "
 #~ "über Anfragemethoden</a>"
+

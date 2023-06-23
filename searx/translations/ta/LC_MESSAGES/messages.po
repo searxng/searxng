@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ta\n"
@@ -152,92 +152,92 @@ msgstr "ஒளி"
 msgid "dark"
 msgstr "இருள்"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "நேரம் முடிந்தது"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "பாகுபடுத்தும் பிழை"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP நெறிமுறை பிழை"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "பிணைய பிழை"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL பிழை: சான்றிதழ் சரிபார்ப்பு தோல்வியடைந்தது"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "எதிர்பாராத விபத்து"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP பிழை"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP இணைப்பு பிழை"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "ப்ராக்ஸி பிழை"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "கேப்ட்சா"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "பல கோரிக்கைகள்"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "அணுகல் மறுக்கப்பட்டது"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "சேவையக API பிழை"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "எதுவும் கிடைக்கவில்லை"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "ஆதாரம்"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "அடுத்த பக்கத்தை திறப்பதில் தவறு நிகழ்ந்துவிட்டது."
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "ஏற்க முடியாத அமைப்பு,உங்கள் விருப்பத்தை தொகுக்கவும்"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "ஏற்கமுடியாத அமைப்பு"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "தேடல் பிழை"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "நேரம் முடிந்தது"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "பாகுபடுத்தும் பிழை"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP நெறிமுறை பிழை"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "பிணைய பிழை"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL பிழை: சான்றிதழ் சரிபார்ப்பு தோல்வியடைந்தது"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "எதிர்பாராத விபத்து"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP பிழை"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP இணைப்பு பிழை"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "ப்ராக்ஸி பிழை"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "கேப்ட்சா"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "பல கோரிக்கைகள்"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "அணுகல் மறுக்கப்பட்டது"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "சேவையக API பிழை"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "இடைநிறுத்தப்பட்டது"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} நிமிடங்களுக்கு முன்னால்"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} மணிநேரம், {minutes} நிமிடங்களுக்கு முன்னால்"
 
@@ -360,11 +360,11 @@ msgstr ""
 "பிரிவு தேர்வு செய்யப்பட்டால் தேடல் உடனடியாகச் செயற்படுத்தும். பல "
 "பிரிவுகளைத் தேர்வு செய்ய முடக்கவும். (ஜாவா ஸ்கிரிப்ட் தேவைப்படும்)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -434,48 +434,48 @@ msgstr "%(search_page)s-க்கு செல்."
 msgid "search page"
 msgstr "தேடல் பக்கம்"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "பற்றி"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "நன்கொடை"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "விருப்பத்தேர்வு"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "மூலம் இயக்கப்படுகிறது"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "மூல குறியீடு"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "பிரச்சினை டிராக்கர்"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "எந்திரத்தின் புள்ளி விவரங்கள்"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "பொது நிகழ்வுகள்"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "தனியுரிமைக் கொள்கை"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "நிகழ்வு பராமரிப்பாளரைத் தொடர்பு கொள்ளவும்"
 

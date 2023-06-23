@@ -9,19 +9,18 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-04 04:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Danish <https://translate.codeberg.org/projects/searxng/"
-"searxng/da/>\n"
 "Language: da\n"
+"Language-Team: Danish "
+"<https://translate.codeberg.org/projects/searxng/searxng/da/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -149,92 +148,92 @@ msgstr "lys"
 msgid "dark"
 msgstr "mørk"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "udløbstid"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "fortolkningsfejl"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP-protokolfejl"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "netværksfejl"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL-fejl: certifikatvalidering mislykkedes"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "uventet nedbrud"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP-fejl"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP-tilkoblingsfejl"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "proxyfejl"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "for mange forespørgsler"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "adgang nægtet"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "server-API-fejl"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Intet fundet"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Kilde"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Fejl ved indlæsning af den næste side"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige indstillinger, redigér venligst dine valg"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Ugyldig indstilling"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "søgefejl"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "udløbstid"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "fortolkningsfejl"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP-protokolfejl"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "netværksfejl"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL-fejl: certifikatvalidering mislykkedes"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "uventet nedbrud"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP-fejl"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP-tilkoblingsfejl"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "proxyfejl"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "for mange forespørgsler"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "adgang nægtet"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "server-API-fejl"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Suspenderet"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "for {minutes} minut(ter) siden"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "for {hours} time(r) og {minutes} minut(ter) siden"
 
@@ -359,11 +358,11 @@ msgstr ""
 "Udfør søgning straks, hvis en kategori vælges. Slå dette fra for at kunne"
 " vælge flere kategorier (JavaScript påkrævet)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Selv information"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -435,48 +434,48 @@ msgstr "Gå til 1%(search_page)s."
 msgid "search page"
 msgstr "søgeside"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Om"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Donere"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Indstillinger"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Leveret af"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "en åben metasøgemaskine, der respekterer privatlivet"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Kildekode"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Problemsporer"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Søgemaskine-statistik"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Offentlige instanser"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Privatlivspolitik"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Kontakt tilbyderen af instansen"
 
@@ -1607,3 +1606,4 @@ msgstr "skjul video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">lær mere om "
 #~ "anmodningsmetoder</a>"
+

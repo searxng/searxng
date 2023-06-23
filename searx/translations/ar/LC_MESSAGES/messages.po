@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
-"PO-Revision-Date: 2023-06-14 15:37+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
+"PO-Revision-Date: 2023-06-22 09:02+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
 "searxng/ar/>\n"
@@ -155,92 +155,92 @@ msgstr "فاتح"
 msgid "dark"
 msgstr "مظلم"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "نفذ الوقت"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "خطأ تحليل"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "خطأ في بروتوكول HTTP"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "خطأ في الشبكة"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "خطأ SSL: فشل التحقق من صحة الشهادة"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "تعطل غير متوقع"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "خطأ HTTP"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "خطأ في اتصال HTTP"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "خطأ في وكيل البروكسي"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "أسئلة التحقق"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "الكثير من الطلبات"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "الدخول مرفوض"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "خطأ في API الخادم"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "تعذر العثور على عناصر"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "المصدر"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "إعدادات غير صالحة"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "خطأ في البحث"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "نفذ الوقت"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "خطأ تحليل"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "خطأ في بروتوكول HTTP"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "خطأ في الشبكة"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "خطأ SSL: فشل التحقق من صحة الشهادة"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "تعطل غير متوقع"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "خطأ HTTP"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "خطأ في اتصال HTTP"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "خطأ في وكيل البروكسي"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "أسئلة التحقق"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "الكثير من الطلبات"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "الدخول مرفوض"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "خطأ في API الخادم"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "معلق"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "قبل دقائق"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "قبل {hours} ساعات، {minutes} دقائق"
 
@@ -361,11 +361,11 @@ msgstr ""
 "اقامت بحث فوري اذا تم اختيار مجموعة, توقيف تعدد الخيارات (java script "
 "ضروريه)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "نشرة المعلومات"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -439,48 +439,48 @@ msgstr "إذهب إلى %(search_page)s."
 msgid "search page"
 msgstr "صفحة البحث"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "حَول"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "تبرُّع"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "التفضيلات"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "مدعوم بواسطة"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "الخصوصية ذو الاعتبار, محرك البحث عميق عُموميا"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "شيفرة مصدرية"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "تعقب القضايا"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "إحصائيات المحرك"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "نماذج الخوادم العمومية"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "سياسة الخصوصية"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "اتصال بالمشرف المخدم النموذجي"
 
@@ -1038,7 +1038,7 @@ msgstr "أسلوب HTTP"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "تغيير كيفية تقديم الاستمارات"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"

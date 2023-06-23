@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -147,92 +147,92 @@ msgstr ""
 msgid "dark"
 msgstr ""
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr ""
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr ""
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr ""
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr ""
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr ""
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr ""
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr ""
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr ""
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr ""
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr ""
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr ""
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr ""
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "རྣམ་གྲངས་གང་ཡང་རྙེད་རྒྱུ་མ་བྱུང་།"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr ""
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།ཁྱེད་ཀྱིས་གདམ་ཀ་ལ་བཅོས་སྒྲིག་གཏོང་རོགས།"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "འཚོལ་བཤེར་ལ་ནོར་འཁྲུལ་བྱུང་།"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr ""
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr ""
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr ""
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr ""
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr ""
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr ""
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr ""
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr ""
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr ""
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr ""
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr ""
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr ""
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr ""
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "སྐར་མ་ {minutes} སྔོན་ལ།"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "ཆུ་ཚོད་ {hours} དང་སྐར་མ {minutes} སྔོན་ལ།"
 
@@ -343,11 +343,11 @@ msgid ""
 "multiple categories. (JavaScript required)"
 msgstr ""
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -410,48 +410,48 @@ msgstr "%(search_page)s ལ་བསྐྱོད།"
 msgid "search page"
 msgstr "འཚོལ་བཤེར་དྲ་ངོས།"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr ""
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr ""
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "སྒྲིག་བཀོད།"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "བཟོ་སྐུན་པ་ནི"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr ""
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr ""
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "སྒུལ་བྱེད་ཀྱི་སྡོམ་རྩིས།"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr ""
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr ""
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr ""
 

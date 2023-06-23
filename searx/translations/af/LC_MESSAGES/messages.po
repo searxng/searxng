@@ -11,17 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-11 13:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
-"searxng/af/>\n"
 "Language: af\n"
+"Language-Team: Afrikaans "
+"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -149,92 +148,92 @@ msgstr "lig"
 msgid "dark"
 msgstr "donker"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "tydsverloop"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "ontledingsfout"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "HTTP protokol fout"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "netwerk fout"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL vout: Kon nie sertifikaat verifieer nie"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "onverwagse breek"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP fout"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "HTTP koppelingsfout"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "proksie fout"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "te veel versoeke"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "toegang geweier"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "bediener API fout"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Geen item gevind"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Bron"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Fout met die laai van die volgende bladsy"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige opstellings, redigeer asb jou voorkeure"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Ongeldige opstellings"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "soekfout"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "tydsverloop"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "ontledingsfout"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "HTTP protokol fout"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "netwerk fout"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL vout: Kon nie sertifikaat verifieer nie"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "onverwagse breek"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP fout"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "HTTP koppelingsfout"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "proksie fout"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "te veel versoeke"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "toegang geweier"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "bediener API fout"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Opgehef"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minute terug"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ure, {minutes} minute terug"
 
@@ -359,11 +358,11 @@ msgstr ""
 "Doen soektog onmiddelik indien 'n kategorie geselekteer is. Deaktiveer om"
 " veelvoudige kategoriee te selekteer. (JavaScript benodig)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Self-inligting"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -389,8 +388,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Kon nie die lys van Tor-uitgangsnodes aflaai vanaf: https://check.torproject."
-"org/exit-addresses"
+"Kon nie die lys van Tor-uitgangsnodes aflaai vanaf: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -423,8 +422,8 @@ msgid ""
 "Navigate search results with Vim-like hotkeys (JavaScript required). "
 "Press \"h\" key on main or result page to get help."
 msgstr ""
-"Navigeer soekresultate met Vim-agtige sneltoetse (JavaScript vereis). Druk "
-"\"h\"-sleutel op hoof- of resultaatbladsy om hulp te kry."
+"Navigeer soekresultate met Vim-agtige sneltoetse (JavaScript vereis). "
+"Druk \"h\"-sleutel op hoof- of resultaatbladsy om hulp te kry."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -439,48 +438,48 @@ msgstr "Gaan na %(search_page)s."
 msgid "search page"
 msgstr "soekblad"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Aangaande"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Skenk"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Voorkeure"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Aangedryf deur"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "'n oop metasoekenjin wat privaatheid respekteer"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Bronkode"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Uitgawe spoorsnyer"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Enjin statistieke"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr ""
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Privaatheidsbeleid"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr ""
 
@@ -1330,3 +1329,4 @@ msgstr ""
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
