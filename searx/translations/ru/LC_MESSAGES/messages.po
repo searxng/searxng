@@ -18,21 +18,20 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-14 15:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -160,92 +159,92 @@ msgstr "Светлая"
 msgid "dark"
 msgstr "Тёмная"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "таймаут"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "ошибка разбора"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "ошибка протокола HTTP"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "сетевая ошибка"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "ошибка SSL: отсутствует действительность сертификата"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "непредвиденная ошибка"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "ошибка HTTP"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "ошибка HTTP-соединения"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "ошибка прокси"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "КАПЧА"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "слишком много запросов"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "доступ запрещён"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "ошибка API сервера"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Ничего не найдено"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Источник"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Не удалось загрузить следующую страницу"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Неверные настройки"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "ошибка поиска"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "таймаут"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "ошибка разбора"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "ошибка протокола HTTP"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "сетевая ошибка"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "ошибка SSL: отсутствует действительность сертификата"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "непредвиденная ошибка"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "ошибка HTTP"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "ошибка HTTP-соединения"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "ошибка прокси"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "КАПЧА"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "слишком много запросов"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "доступ запрещён"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "ошибка API сервера"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Приостановлено"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} минут(а) назад"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} час(ов), {minutes} минут(а) назад"
 
@@ -367,11 +366,11 @@ msgstr ""
 "Выполнять поиск немедленно, если выбрана категория. Отключите для выбора "
 "нескольких категорий. (требуется JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Информация"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -444,48 +443,48 @@ msgstr "Перейти к %(search_page)s."
 msgid "search page"
 msgstr "страница поиска"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "О программе"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Пожертвовать"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Настройки"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Основано на"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "открытая метапоисковая система, соблюдающая конфиденциальность"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Исходный код"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Сообщить о проблеме"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Статистика по поисковым системам"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Публичные зеркала"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Политика конфиденциальности"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Сопровождающий текущего зеркала"
 
@@ -1617,3 +1616,4 @@ msgstr "скрыть видео"
 #~ "Способ отправки запросов. <a "
 #~ "href=\"http://ru.wikipedia.org/wiki/HTTP#Методы\" "
 #~ "rel=\"external\">Подробнее о методах HTTP</a>"
+

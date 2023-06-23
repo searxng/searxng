@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: szl\n"
@@ -144,92 +144,92 @@ msgstr "jasny"
 msgid "dark"
 msgstr "ciymny"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "kōniec czasu"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "feler przetworzanio"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "Feler protokołu HTTP"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "feler necu"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "Feler SSL: niy podarziło sie poświadczynie certyfikatu"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "niyspodziano awaryjo"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "Feler HTTP"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "Feler połōnczynio HTTP"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "feler proxy"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "za moc żōndań"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "dostymp ôdkozany"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "feler serwera API"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Żodyn elymynt niy znojdziōny"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Zdrzōdło"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "kōniec czasu"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "feler przetworzanio"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "Feler protokołu HTTP"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "feler necu"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "Feler SSL: niy podarziło sie poświadczynie certyfikatu"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "niyspodziano awaryjo"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "Feler HTTP"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "Feler połōnczynio HTTP"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "feler proxy"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "za moc żōndań"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "dostymp ôdkozany"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "feler serwera API"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Strzimane"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) tymu"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
 
@@ -354,11 +354,11 @@ msgstr ""
 "Wykōnej wyszukowanie zaroz po ôbraniu kategoryje. Zastow, coby ôbrać "
 "wiyncyj kategoryji. (Potrzebny Javascript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Włosne informacyje"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -429,48 +429,48 @@ msgstr "Idź do %(search_page)s."
 msgid "search page"
 msgstr "strōny wyszukowanio"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Informacyje"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Spōmōż"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Preferyncyje"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Spiyrane ôd"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "ôtwarto metawyszukowarka, co szanuje prywatność"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Kod zdrzōdłowy"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Dziynnik problymōw"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statystyki wyszukowarki"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Publiczne instancyje"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Polityka prywatności"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Skōntaktuj sie ze administratorym instancyje"
 

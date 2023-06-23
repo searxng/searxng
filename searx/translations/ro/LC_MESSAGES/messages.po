@@ -13,20 +13,19 @@
 # trmx <borcan.cristian1@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-11 13:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ro/>\n"
 "Language: ro\n"
+"Language-Team: Romanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
+"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2;\n"
-"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -154,92 +153,92 @@ msgstr "luminos"
 msgid "dark"
 msgstr "întunecat"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "pauza"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "eroare de transpunere"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "eroare protocol HTTP"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "eroare rețea"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "Eroare SSL: validarea certificatului a esuat"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "inchidere fortata neasteptata"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "eroare HTTP"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "eroare conexiune HTTP"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "eroare proxy"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "Prea multe solicitări"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "Acces interzis"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "eroare la API pe Server"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Niciun element găsit"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Sursă"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "eroare de căutare"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "pauza"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "eroare de transpunere"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "eroare protocol HTTP"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "eroare rețea"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "Eroare SSL: validarea certificatului a esuat"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "inchidere fortata neasteptata"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "eroare HTTP"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "eroare conexiune HTTP"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "eroare proxy"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "Prea multe solicitări"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "Acces interzis"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "eroare la API pe Server"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Întrerupt"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(e) în urmă"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
@@ -361,11 +360,11 @@ msgstr ""
 "Execută căutarea imediat dacă o categorie este selectată. Dezactivează "
 "pentru a selecta categorii multiple. (Necesită JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Informații despre sine"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -438,48 +437,48 @@ msgstr "Navighează la %(search_page)s."
 msgid "search page"
 msgstr "pagină de căutare"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Despre"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Donează"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Motorizat de"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "motor de cautare gratuit ce respecta intimitatea"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Cod sursă"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Urmăritor de probleme"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statisticile motorului"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Instanțe publice"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Confidențialitate"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Contactați întreținătorul instanței"
 
@@ -1618,3 +1617,4 @@ msgstr "ascunde video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">învățați mai multe despre "
 #~ "metode de cerere</a>"
+

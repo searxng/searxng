@@ -12,13 +12,14 @@
 # Alexandre Flament <alex@al-f.net>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023.
 # fabiosantoscode <fabiosantosart@gmail.com>, 2023.
+# Coccocoas_Helper <coccocoahelper@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
-"PO-Revision-Date: 2023-06-04 04:37+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
+"PO-Revision-Date: 2023-06-23 07:08+0000\n"
+"Last-Translator: Coccocoas_Helper <coccocoahelper@gmail.com>\n"
 "Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
 "searxng/pt/>\n"
 "Language: pt\n"
@@ -154,92 +155,92 @@ msgstr "claro"
 msgid "dark"
 msgstr "escuro"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "tempo esgotado"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "erro de análise"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "Erro de protocolo HTTP"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "erro de rede"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "Erro SSL: falha na validação do certificado"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "falha inesperada"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "Erro HTTP"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "Erro de conexão HTTP"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "erro de proxy"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "demasiados pedidos"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "acesso negado"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "erro de API do servidor"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Nenhum item encontrado"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Fonte"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Erro ao carregar a próxima página"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Definições inválidas, por favor edite as suas preferências"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Configurações inválidas"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "erro de procura"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "tempo esgotado"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "erro de análise"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "Erro de protocolo HTTP"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "erro de rede"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "Erro SSL: falha na validação do certificado"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "falha inesperada"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "Erro HTTP"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "Erro de conexão HTTP"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "erro de proxy"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "demasiados pedidos"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "acesso negado"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "erro de API do servidor"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Suspenso"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minuto(s) atrás"
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} hora(s), {minutes} minuto(s) atrás"
 
@@ -364,11 +365,11 @@ msgstr ""
 "Desative esta opção para selecionar várias categorias. (Necessário "
 "JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Informação"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -442,48 +443,48 @@ msgstr "Ir para %(search_page)s."
 msgid "search page"
 msgstr "pesquisar página"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Acerca"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Doar"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Preferências"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Produzido por"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "Um motor de multi-pesquisa, que repeita a privacidade"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Código fonte"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Rastreador de problemas"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Estatísticas de motor de pesquisa"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Instâncias públicas"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Política de privacidade"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Contate o mantenedor da instância"
 
@@ -742,7 +743,7 @@ msgstr "Resultados de transferências"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Mensagens dos mecanismos"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -952,7 +953,7 @@ msgstr "Resolvedor DOI de Acesso Aberto"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Selecione o serviço utilizado pela reescrita do DOI"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -1044,7 +1045,7 @@ msgstr "Método HTTP"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Mude como as fórmulas são submetidas"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"

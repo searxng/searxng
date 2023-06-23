@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-02 18:34+0000\n"
+"POT-Creation-Date: 2023-06-19 17:57+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: sk\n"
@@ -150,92 +150,92 @@ msgstr "svetlý"
 msgid "dark"
 msgstr "tmavý"
 
-#: searx/webapp.py:167
-msgid "timeout"
-msgstr "časový limit"
-
-#: searx/webapp.py:168
-msgid "parsing error"
-msgstr "chyba parsovania"
-
-#: searx/webapp.py:169
-msgid "HTTP protocol error"
-msgstr "chyba HTTP protokolu"
-
-#: searx/webapp.py:170
-msgid "network error"
-msgstr "chyba siete"
-
-#: searx/webapp.py:171
-msgid "SSL error: certificate validation has failed"
-msgstr "SSL error: overenie certifikátu zlyhalo"
-
-#: searx/webapp.py:173
-msgid "unexpected crash"
-msgstr "neočakávaná chyba"
-
-#: searx/webapp.py:180
-msgid "HTTP error"
-msgstr "HTTP chyba"
-
-#: searx/webapp.py:181
-msgid "HTTP connection error"
-msgstr "chyba pripojenia cez HTTP"
-
-#: searx/webapp.py:187
-msgid "proxy error"
-msgstr "chyba proxy"
-
-#: searx/webapp.py:188
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webapp.py:189
-msgid "too many requests"
-msgstr "priveľa žiadostí"
-
-#: searx/webapp.py:190
-msgid "access denied"
-msgstr "prístup bol odmietnutý"
-
-#: searx/webapp.py:191
-msgid "server API error"
-msgstr "API chyba servera"
-
-#: searx/webapp.py:363
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Nič sa nenašlo"
 
 #: searx/engines/qwant.py:218
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:365
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Zdroj"
 
-#: searx/webapp.py:367
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:520 searx/webapp.py:953
+#: searx/webapp.py:488 searx/webapp.py:880
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
-#: searx/webapp.py:536
+#: searx/webapp.py:504
 msgid "Invalid settings"
 msgstr "Nesprávne nastavenia"
 
-#: searx/webapp.py:613 searx/webapp.py:691
+#: searx/webapp.py:581 searx/webapp.py:663
 msgid "search error"
 msgstr "chyba vyhľadávania"
 
-#: searx/webapp.py:857
+#: searx/webutils.py:34
+msgid "timeout"
+msgstr "časový limit"
+
+#: searx/webutils.py:35
+msgid "parsing error"
+msgstr "chyba parsovania"
+
+#: searx/webutils.py:36
+msgid "HTTP protocol error"
+msgstr "chyba HTTP protokolu"
+
+#: searx/webutils.py:37
+msgid "network error"
+msgstr "chyba siete"
+
+#: searx/webutils.py:38
+msgid "SSL error: certificate validation has failed"
+msgstr "SSL error: overenie certifikátu zlyhalo"
+
+#: searx/webutils.py:40
+msgid "unexpected crash"
+msgstr "neočakávaná chyba"
+
+#: searx/webutils.py:47
+msgid "HTTP error"
+msgstr "HTTP chyba"
+
+#: searx/webutils.py:48
+msgid "HTTP connection error"
+msgstr "chyba pripojenia cez HTTP"
+
+#: searx/webutils.py:54
+msgid "proxy error"
+msgstr "chyba proxy"
+
+#: searx/webutils.py:55
+msgid "CAPTCHA"
+msgstr "CAPTCHA"
+
+#: searx/webutils.py:56
+msgid "too many requests"
+msgstr "priveľa žiadostí"
+
+#: searx/webutils.py:57
+msgid "access denied"
+msgstr "prístup bol odmietnutý"
+
+#: searx/webutils.py:58
+msgid "server API error"
+msgstr "API chyba servera"
+
+#: searx/webutils.py:77
 msgid "Suspended"
 msgstr "Pozastavené"
 
-#: searx/webutils.py:205
+#: searx/webutils.py:317
 msgid "{minutes} minute(s) ago"
 msgstr "pred {minutes} min."
 
-#: searx/webutils.py:206
+#: searx/webutils.py:318
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} hod., {minutes} min."
 
@@ -357,11 +357,11 @@ msgstr ""
 "Vyhľadávať okamžite, ak je kategória vybraná. Vypnúť pre vyberanie "
 "viacerých kategórií. (Je potrebný JavaScript)"
 
-#: searx/plugins/self_info.py:20
+#: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Vlastné informácie"
 
-#: searx/plugins/self_info.py:21
+#: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
@@ -431,48 +431,48 @@ msgstr "Choď na %(search_page)s."
 msgid "search page"
 msgstr "stránka vyhľadávania"
 
-#: searx/templates/simple/base.html:46
+#: searx/templates/simple/base.html:49
 msgid "About"
 msgstr "O nás"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Prispejte"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Nastavenia"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Používame"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "otvorený metavyhľadávač rešpektujúci súkromie"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:68
 msgid "Source code"
 msgstr "Zdrojový kód"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Sledovanie problémov"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Štatistiky vyhľadávača"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Verejné inštancie"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Ochrana súkromia"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Kontaktujte správcu inštancie"
 
