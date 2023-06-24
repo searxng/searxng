@@ -13,20 +13,22 @@
 # tjvfxtiwdr <tjvfxtiwdr@daimashili.com>, 2022.
 # Grey <elohim@gmail.com>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-19 17:57+0000\n"
-"PO-Revision-Date: 2023-06-02 07:07+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-06-28 09:02+0000\n"
+"Last-Translator: nogb <u8cn71wq@yogibo.anonaddy.me>\n"
+"Language-Team: Chinese (Traditional) <https://translate.codeberg.org/"
+"projects/searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -376,17 +378,18 @@ msgstr "該外掛程式檢查請求的位址是否是 Tor 出口節點，並通�
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr ""
+msgstr "無法從如下地址下載 Tor 出口節點的名單: https://check.torproject.org/exit-"
+"addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "您似乎在使用 Tor，您的外部 IP 地址為: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "您並未使用 Tor，您的外部 IP 地址為: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -518,11 +521,11 @@ msgstr "查看錯誤日誌並提交錯誤報告"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "對於這個引擎的 !bang"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "對於其類別的 !bang"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -589,7 +592,7 @@ msgstr "結果筆數"
 
 #: searx/templates/simple/results.html:45
 msgid "Info"
-msgstr ""
+msgstr "資訊"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
@@ -719,7 +722,7 @@ msgstr "下載結果"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "來自搜索引擎的訊息"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -750,7 +753,7 @@ msgstr "預設語言"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr ""
+msgstr "自動檢測"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -920,17 +923,17 @@ msgstr "開放存取 DOI 解析器"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "選擇 DOI 重寫所使用的服務"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
-msgstr ""
+msgstr "這個標籤頁在用户界面中不存在，但您可以用 !bang 在這些引擎中進行搜索。"
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
@@ -996,7 +999,7 @@ msgstr "您偏好用哪種語言搜尋？"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
+msgstr "選擇自動檢測可以使 SearXNG 檢測您的檢索關鍵詞的語言。"
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1004,7 +1007,7 @@ msgstr "HTTP 方法"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "變更提交表單的方式"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
@@ -1537,4 +1540,3 @@ msgstr "隱藏影片"
 #~ msgstr ""
 #~ "變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\""
 #~ " rel=\"external\">看看更多關於請求方法的介紹</a>"
-
