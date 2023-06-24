@@ -168,3 +168,4 @@ features or generally made searx better:
 - Milad Laly @Milad-Laly
 - @llmII
 - @blob42 `<https://blob42.xyz>`_
+- Paolo Basso `<https://github.com/paolobasso99>`

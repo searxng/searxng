@@ -1392,15 +1392,18 @@ engines:
     shortcut: tch
 
   # torznab engine lets you query any torznab compatible indexer.  Using this
-  # engine in combination with Jackett (https://github.com/Jackett/Jackett)
-  # opens the possibility to query a lot of public and private indexers directly
-  # from SearXNG.
-  # - name: torznab
+  # engine in combination with Jackett opens the possibility to query a lot of
+  # public and private indexers directly from SearXNG. More details at:
+  # https://docs.searxng.org/src/searx.engines.torznab.html
+  #
+  # - name: Torznab EZTV
   #   engine: torznab
-  #   shortcut: trz
-  #   base_url: http://localhost:9117/api/v2.0/indexers/all/results/torznab
+  #   shortcut: eztv
+  #   base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
   #   enable_http: true  # if using localhost
   #   api_key: xxxxxxxxxxxxxxx
+  #   show_magnet_links: true
+  #   show_torrent_files: false
   #   # https://github.com/Jackett/Jackett/wiki/Jackett-Categories
   #   torznab_categories:  # optional
   #     - 2000
