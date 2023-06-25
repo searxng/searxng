@@ -17,7 +17,9 @@ import sys
 import copy
 from os.path import realpath, dirname
 
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Dict
+import types
+import inspect
 
 from searx import logger, settings
 from searx.utils import load_module
@@ -28,21 +30,23 @@ if TYPE_CHECKING:
 logger = logger.getChild('engines')
 ENGINE_DIR = dirname(realpath(__file__))
 ENGINE_DEFAULT_ARGS = {
+    # Common options in the engine module
     "engine_type": "online",
-    "inactive": False,
-    "disabled": False,
-    "timeout": settings["outgoing"]["request_timeout"],
-    "shortcut": "-",
-    "categories": ["general"],
     "paging": False,
-    "safesearch": False,
     "time_range_support": False,
+    "safesearch": False,
+    # settings.yml
+    "categories": ["general"],
     "enable_http": False,
-    "using_tor_proxy": False,
+    "shortcut": "-",
+    "timeout": settings["outgoing"]["request_timeout"],
     "display_error_messages": True,
+    "disabled": False,
+    "inactive": False,
+    "about": {},
+    "using_tor_proxy": False,
     "send_accept_language_header": False,
     "tokens": [],
-    "about": {},
 }
 # set automatically when an engine does not have any tab category
 DEFAULT_CATEGORY = 'other'
@@ -51,7 +55,7 @@ DEFAULT_CATEGORY = 'other'
 # Defaults for the namespace of an engine module, see :py:func:`load_engine`
 
 categories = {'general': []}
-engines: Dict[str, Engine] = {}
+engines: Dict[str, Engine | types.ModuleType] = {}
 engine_shortcuts = {}
 """Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
@@ -63,7 +67,19 @@ engine_shortcuts = {}
 """
 
 
-def load_engine(engine_data: dict) -> Optional[Engine]:
+def check_engine_module(module: types.ModuleType):
+    # probe unintentional name collisions / for example name collisions caused
+    # by import statements in the engine module ..
+
+    # network: https://github.com/searxng/searxng/issues/762#issuecomment-1605323861
+    obj = getattr(module, 'network', None)
+    if obj and inspect.ismodule(obj):
+        msg = f'type of {module.__name__}.network is a module ({obj.__name__}), expected a string'
+        # logger.error(msg)
+        raise TypeError(msg)
+
+
+def load_engine(engine_data: dict) -> Engine | types.ModuleType | None:
     """Load engine from ``engine_data``.
 
     :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``
@@ -100,19 +116,20 @@ def load_engine(engine_data: dict) -> Optional[Engine]:
         engine_data['name'] = engine_name
 
     # load_module
-    engine_module = engine_data.get('engine')
-    if engine_module is None:
+    module_name = engine_data.get('engine')
+    if module_name is None:
         logger.error('The "engine" field is missing for the engine named "{}"'.format(engine_name))
         return None
     try:
-        engine = load_module(engine_module + '.py', ENGINE_DIR)
+        engine = load_module(module_name + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
-        logger.exception('Fatal exception in engine "{}"'.format(engine_module))
+        logger.exception('Fatal exception in engine "{}"'.format(module_name))
         sys.exit(1)
     except BaseException:
-        logger.exception('Cannot load engine "{}"'.format(engine_module))
+        logger.exception('Cannot load engine "{}"'.format(module_name))
         return None
 
+    check_engine_module(engine)
     update_engine_attributes(engine, engine_data)
     update_attributes_for_tor(engine)
 
@@ -153,18 +170,18 @@ def set_loggers(engine, engine_name):
             and not hasattr(module, "logger")
         ):
             module_engine_name = module_name.split(".")[-1]
-            module.logger = logger.getChild(module_engine_name)
+            module.logger = logger.getChild(module_engine_name)  # type: ignore
 
 
-def update_engine_attributes(engine: Engine, engine_data):
+def update_engine_attributes(engine: Engine | types.ModuleType, engine_data):
     # set engine attributes from engine_data
     for param_name, param_value in engine_data.items():
         if param_name == 'categories':
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
-            engine.categories = param_value
+            engine.categories = param_value  # type: ignore
         elif hasattr(engine, 'about') and param_name == 'about':
-            engine.about = {**engine.about, **engine_data['about']}
+            engine.about = {**engine.about, **engine_data['about']}  # type: ignore
         else:
             setattr(engine, param_name, param_value)
 
@@ -174,10 +191,10 @@ def update_engine_attributes(engine: Engine, engine_data):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
 
 
-def update_attributes_for_tor(engine: Engine) -> bool:
+def update_attributes_for_tor(engine: Engine | types.ModuleType):
     if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
-        engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')
-        engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)
+        engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')  # type: ignore
+        engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)  # type: ignore
 
 
 def is_missing_required_attributes(engine):
@@ -193,12 +210,12 @@ def is_missing_required_attributes(engine):
     return missing
 
 
-def using_tor_proxy(engine: Engine):
+def using_tor_proxy(engine: Engine | types.ModuleType):
     """Return True if the engine configuration declares to use Tor."""
     return settings['outgoing'].get('using_tor_proxy') or getattr(engine, 'using_tor_proxy', False)
 
 
-def is_engine_active(engine: Engine):
+def is_engine_active(engine: Engine | types.ModuleType):
     # check if engine is inactive
     if engine.inactive is True:
         return False
@@ -210,7 +227,7 @@ def is_engine_active(engine: Engine):
     return True
 
 
-def register_engine(engine: Engine):
+def register_engine(engine: Engine | types.ModuleType):
     if engine.name in engines:
         logger.error('Engine config error: ambiguous name: {0}'.format(engine.name))
         sys.exit(1)

@@ -397,14 +397,26 @@ Communication with search engines.
   Global timeout of the requests made to others engines in seconds.  A bigger
   timeout will allow to wait for answers from slow engines, but in consequence
   will slow SearXNG reactivity (the result page may take the time specified in the
-  timeout to load). Can be override by :ref:`settings engine`
+  timeout to load).  Can be override by ``timeout`` in the :ref:`settings engine`.
 
 ``useragent_suffix`` :
   Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
   engine wish to block you, a contact info here may be useful to avoid that.
 
+.. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
+
+``pool_maxsize``:
+  Number of allowable keep-alive connections, or ``null`` to always allow.  The
+  default is 10.  See ``max_keepalive_connections`` `Pool limit configuration`_.
+
+``pool_connections`` :
+  Maximum number of allowable connections, or ``null`` # for no limits.  The
+  default is 100.  See ``max_connections`` `Pool limit configuration`_.
+
 ``keepalive_expiry`` :
-  Number of seconds to keep a connection in the pool. By default 5.0 seconds.
+  Number of seconds to keep a connection in the pool.  By default 5.0 seconds.
+  See ``keepalive_expiry`` `Pool limit configuration`_.
+
 
 .. _httpx proxies: https://www.python-httpx.org/advanced/#http-proxying
 
@@ -429,15 +441,6 @@ Communication with search engines.
   Number of retry in case of an HTTP error.  On each retry, SearXNG uses an
   different proxy and source ip.
 
-``retry_on_http_error`` :
-  Retry request on some HTTP status code.
-
-  Example:
-
-  * ``true`` : on HTTP status code between 400 and 599.
-  * ``403`` : on HTTP status code 403.
-  * ``[403, 429]``: on HTTP status code 403 and 429.
-
 ``enable_http2`` :
   Enable by default. Set to ``false`` to disable HTTP/2.
 
@@ -454,6 +457,11 @@ Communication with search engines.
 
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.
+
+``using_tor_proxy`` :
+  Using tor proxy (``true``) or not (``false``) for all engines.  The default is
+  ``false`` and can be overwritten in the :ref:`settings engine`
+
 
 
 .. _settings categories_as_tabs:
@@ -522,13 +530,14 @@ engine is shown.  Most of the options have a default value or even are optional.
         use_official_api: true
         require_api_key: true
         results: HTML
-     enable_http: false
+
+     # overwrite values from section 'outgoing:'
      enable_http2: false
      retries: 1
-     retry_on_http_error: true # or 403 or [404, 429]
      max_connections: 100
      max_keepalive_connections: 10
      keepalive_expiry: 5.0
+     using_tor_proxy: false
      proxies:
        http:
          - http://proxy1:8080
@@ -538,6 +547,11 @@ engine is shown.  Most of the options have a default value or even are optional.
          - http://proxy2:8080
          - socks5://user:password@proxy3:1080
          - socks5h://user:password@proxy4:1080
+
+     # other network settings
+     enable_http: false
+     retry_on_http_error: true # or 403 or [404, 429]
+
 
 ``name`` :
   Name that will be used across SearXNG to define this engine.  In settings, on
@@ -579,7 +593,8 @@ engine is shown.  Most of the options have a default value or even are optional.
   query all search engines in that category (group).
 
 ``timeout`` : optional
-  Timeout of the search with the current search engine.  **Be careful, it will
+  Timeout of the search with the current search engine.  Overwrites
+  ``request_timeout`` from :ref:`settings outgoing`.  **Be careful, it will
   modify the global timeout of SearXNG.**
 
 ``api_key`` : optional
@@ -614,6 +629,37 @@ engine is shown.  Most of the options have a default value or even are optional.
 
   - ``ipv4`` set ``local_addresses`` to ``0.0.0.0`` (use only IPv4 local addresses)
   - ``ipv6`` set ``local_addresses`` to ``::`` (use only IPv6 local addresses)
+
+``enable_http`` : optional
+  Enable HTTP for this engine (by default only HTTPS is enabled).
+
+``retry_on_http_error`` : optional
+  Retry request on some HTTP status code.
+
+  Example:
+
+  * ``true`` : on HTTP status code between 400 and 599.
+  * ``403`` : on HTTP status code 403.
+  * ``[403, 429]``: on HTTP status code 403 and 429.
+
+``proxies`` :
+  Overwrites proxy settings from :ref:`settings outgoing`.
+
+``using_tor_proxy`` :
+  Using tor proxy (``true``) or not (``false``) for this engine.  The default is
+  taken from ``using_tor_proxy`` of the :ref:`settings outgoing`.
+
+``max_keepalive_connection#s`` :
+  `Pool limit configuration`_, overwrites value ``pool_maxsize`` from
+   :ref:`settings outgoing` for this engine.
+
+``max_connections`` :
+  `Pool limit configuration`_, overwrites value ``pool_connections`` from
+  :ref:`settings outgoing` for this engine.
+
+``keepalive_expiry`` :
+  `Pool limit configuration`_, overwrites value ``keepalive_expiry`` from
+  :ref:`settings outgoing` for this engine.
 
 .. note::
 

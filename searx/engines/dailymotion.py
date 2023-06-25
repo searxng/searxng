@@ -18,9 +18,9 @@ from urllib.parse import urlencode
 import time
 import babel
 
-from searx.exceptions import SearxEngineAPIException
-from searx import network
+from searx.network import get, raise_for_httperror  # see https://github.com/searxng/searxng/issues/762
 from searx.utils import html_to_text
+from searx.exceptions import SearxEngineAPIException
 from searx.locales import region_tag, language_tag
 from searx.enginelib.traits import EngineTraits
 
@@ -106,7 +106,7 @@ def request(query, params):
     if not query:
         return False
 
-    eng_region = traits.get_region(params['searxng_locale'], 'en_US')
+    eng_region: str = traits.get_region(params['searxng_locale'], 'en_US')  # type: ignore
     eng_lang = traits.get_language(params['searxng_locale'], 'en')
 
     args = {
@@ -156,7 +156,7 @@ def response(resp):
     if 'error' in search_res:
         raise SearxEngineAPIException(search_res['error'].get('message'))
 
-    network.raise_for_httperror(resp)
+    raise_for_httperror(resp)
 
     # parse results
     for res in search_res.get('list', []):
@@ -218,11 +218,11 @@ def fetch_traits(engine_traits: EngineTraits):
 
     """
 
-    resp = network.get('https://api.dailymotion.com/locales')
-    if not resp.ok:
+    resp = get('https://api.dailymotion.com/locales')
+    if not resp.ok:  # type: ignore
         print("ERROR: response from dailymotion/locales is not OK.")
 
-    for item in resp.json()['list']:
+    for item in resp.json()['list']:  # type: ignore
         eng_tag = item['locale']
         if eng_tag in ('en_EN', 'ar_AA'):
             continue
@@ -241,11 +241,11 @@ def fetch_traits(engine_traits: EngineTraits):
 
     locale_lang_list = [x.split('_')[0] for x in engine_traits.regions.values()]
 
-    resp = network.get('https://api.dailymotion.com/languages')
-    if not resp.ok:
+    resp = get('https://api.dailymotion.com/languages')
+    if not resp.ok:  # type: ignore
         print("ERROR: response from dailymotion/languages is not OK.")
 
-    for item in resp.json()['list']:
+    for item in resp.json()['list']:  # type: ignore
         eng_tag = item['code']
         if eng_tag in locale_lang_list:
             sxng_tag = language_tag(babel.Locale.parse(eng_tag))

@@ -91,8 +91,8 @@ import dateutil.parser
 import lxml.html
 import babel
 
-from searx import network
 from searx.utils import extract_text, eval_xpath, gen_useragent
+from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.exceptions import SearxEngineCaptchaException
 from searx.locales import region_tag
 from searx.enginelib.traits import EngineTraits
@@ -211,25 +211,25 @@ def get_sc_code(searxng_locale, params):
     get_sc_url = base_url + '/?sc=%s' % (sc_code)
     logger.debug("query new sc time-stamp ... %s", get_sc_url)
     logger.debug("headers: %s", headers)
-    resp = network.get(get_sc_url, headers=headers)
+    resp = get(get_sc_url, headers=headers)
 
     # ?? x = network.get('https://www.startpage.com/sp/cdn/images/filter-chevron.svg', headers=headers)
     # ?? https://www.startpage.com/sp/cdn/images/filter-chevron.svg
     # ?? ping-back URL: https://www.startpage.com/sp/pb?sc=TLsB0oITjZ8F21
 
-    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
+    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):  # type: ignore
         raise SearxEngineCaptchaException(
             message="get_sc_code: got redirected to https://www.startpage.com/sp/captcha",
         )
 
-    dom = lxml.html.fromstring(resp.text)
+    dom = lxml.html.fromstring(resp.text)  # type: ignore
 
     try:
         sc_code = eval_xpath(dom, search_form_xpath + '//input[@name="sc"]/@value')[0]
     except IndexError as exc:
         logger.debug("suspend startpage API --> https://github.com/searxng/searxng/pull/695")
         raise SearxEngineCaptchaException(
-            message="get_sc_code: [PR-695] query new sc time-stamp failed! (%s)" % resp.url,
+            message="get_sc_code: [PR-695] query new sc time-stamp failed! (%s)" % resp.url,  # type: ignore
         ) from exc
 
     sc_code_ts = time()
@@ -350,7 +350,7 @@ def _response_cat_web(dom):
         title = extract_text(link)
 
         if eval_xpath(result, content_xpath):
-            content = extract_text(eval_xpath(result, content_xpath))
+            content: str = extract_text(eval_xpath(result, content_xpath))  # type: ignore
         else:
             content = ''
 
@@ -374,7 +374,7 @@ def _response_cat_web(dom):
             date_string = content[0 : date_pos - 5]
 
             # calculate datetime
-            published_date = datetime.now() - timedelta(days=int(re.match(r'\d+', date_string).group()))
+            published_date = datetime.now() - timedelta(days=int(re.match(r'\d+', date_string).group()))  # type: ignore
 
             # fix content string
             content = content[date_pos:]
@@ -399,12 +399,12 @@ def fetch_traits(engine_traits: EngineTraits):
         'User-Agent': gen_useragent(),
         'Accept-Language': "en-US,en;q=0.5",  # bing needs to set the English language
     }
-    resp = network.get('https://www.startpage.com/do/settings', headers=headers)
+    resp = get('https://www.startpage.com/do/settings', headers=headers)
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from Startpage is not OK.")
 
-    dom = lxml.html.fromstring(resp.text)
+    dom = lxml.html.fromstring(resp.text)  # type: ignore
 
     # regions
 
@@ -443,8 +443,10 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # get the native name of every language known by babel
 
-    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()):
-        native_name = babel.Locale(lang_code).get_language_name().lower()
+    for lang_code in filter(
+        lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()  # type: ignore
+    ):
+        native_name = babel.Locale(lang_code).get_language_name().lower()  # type: ignore
         # add native name exactly as it is
         catalog_engine2code[native_name] = lang_code
 
@@ -478,7 +480,7 @@ def fetch_traits(engine_traits: EngineTraits):
         eng_tag = option.get('value')
         if eng_tag in skip_eng_tags:
             continue
-        name = extract_text(option).lower()
+        name = extract_text(option).lower()  # type: ignore
 
         sxng_tag = catalog_engine2code.get(eng_tag)
         if sxng_tag is None:

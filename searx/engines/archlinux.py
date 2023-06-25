@@ -14,7 +14,6 @@ from urllib.parse import urlencode, urljoin, urlparse
 import lxml
 import babel
 
-from searx import network
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
@@ -45,13 +44,13 @@ main_wiki = 'wiki.archlinux.org'
 def request(query, params):
 
     sxng_lang = params['searxng_locale'].split('-')[0]
-    netloc = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)
-    title = traits.custom['title'].get(sxng_lang, 'Special:Search')
+    netloc: str = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)  # type: ignore
+    title: str = traits.custom['title'].get(sxng_lang, 'Special:Search')  # type: ignore
     base_url = 'https://' + netloc + '/index.php?'
     offset = (params['pageno'] - 1) * 20
 
     if netloc == main_wiki:
-        eng_lang: str = traits.get_language(sxng_lang, 'English')
+        eng_lang: str = traits.get_language(sxng_lang, 'English')  # type: ignore
         query += ' (' + eng_lang + ')'
     elif netloc == 'wiki.archlinuxcn.org':
         base_url = 'https://' + netloc + '/wzh/index.php?'
@@ -71,11 +70,11 @@ def request(query, params):
 def response(resp):
 
     results = []
-    dom = lxml.html.fromstring(resp.text)
+    dom = lxml.html.fromstring(resp.text)  # type: ignore
 
     # get the base URL for the language in which request was made
     sxng_lang = resp.search_params['searxng_locale'].split('-')[0]
-    netloc = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)
+    netloc: str = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)  # type: ignore
     base_url = 'https://' + netloc + '/index.php?'
 
     for result in eval_xpath_list(dom, '//ul[@class="mw-search-results"]/li'):
@@ -83,7 +82,7 @@ def response(resp):
         content = extract_text(result.xpath('.//div[@class="searchresult"]'))
         results.append(
             {
-                'url': urljoin(base_url, link.get('href')),
+                'url': urljoin(base_url, link.get('href')),  # type: ignore
                 'title': extract_text(link),
                 'content': content,
             }
@@ -114,6 +113,8 @@ def fetch_traits(engine_traits: EngineTraits):
        },
 
     """
+    # pylint: disable=import-outside-toplevel
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     engine_traits.custom['wiki_netloc'] = {}
     engine_traits.custom['title'] = {}
@@ -125,11 +126,11 @@ def fetch_traits(engine_traits: EngineTraits):
         'zh': 'Special:搜索',
     }
 
-    resp = network.get('https://wiki.archlinux.org/')
-    if not resp.ok:
+    resp = get('https://wiki.archlinux.org/')
+    if not resp.ok:  # type: ignore
         print("ERROR: response from wiki.archlinix.org is not OK.")
 
-    dom = lxml.html.fromstring(resp.text)
+    dom = lxml.html.fromstring(resp.text)  # type: ignore
     for a in eval_xpath_list(dom, "//a[@class='interlanguage-link-target']"):
 
         sxng_tag = language_tag(babel.Locale.parse(a.get('lang'), sep='-'))
@@ -143,9 +144,9 @@ def fetch_traits(engine_traits: EngineTraits):
                 print("ERROR: title tag from %s (%s) is unknown" % (netloc, sxng_tag))
                 continue
             engine_traits.custom['wiki_netloc'][sxng_tag] = netloc
-            engine_traits.custom['title'][sxng_tag] = title
+            engine_traits.custom['title'][sxng_tag] = title  # type: ignore
 
         eng_tag = extract_text(eval_xpath_list(a, ".//span"))
-        engine_traits.languages[sxng_tag] = eng_tag
+        engine_traits.languages[sxng_tag] = eng_tag  # type: ignore
 
     engine_traits.languages['en'] = 'English'

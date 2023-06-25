@@ -13,17 +13,17 @@ import babel
 import lxml.html
 
 from searx import (
-    network,
     locales,
     redislib,
     external_bang,
 )
-from searx import redisdb
 from searx.utils import (
     eval_xpath,
     eval_xpath_getindex,
     extract_text,
 )
+from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+from searx import redisdb
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineAPIException
 
@@ -95,8 +95,8 @@ def get_vqd(query, headers):
             return value
 
     query_url = 'https://duckduckgo.com/?q={query}&atb=v290-5'.format(query=urlencode({'q': query}))
-    res = network.get(query_url, headers=headers)
-    content = res.text
+    res = get(query_url, headers=headers)
+    content = res.text  # type: ignore
     if content.find('vqd=\"') == -1:
         raise SearxEngineAPIException('Request failed')
     value = content[content.find('vqd=\"') + 5 :]
@@ -139,7 +139,9 @@ def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
          params['cookies']['kl'] = eng_region  # 'ar-es'
 
     """
-    return eng_traits.custom['lang_region'].get(sxng_locale, eng_traits.get_language(sxng_locale, default))
+    return eng_traits.custom['lang_region'].get(  # type: ignore
+        sxng_locale, eng_traits.get_language(sxng_locale, default)
+    )
 
 
 ddg_reg_map = {
@@ -358,13 +360,13 @@ def fetch_traits(engine_traits: EngineTraits):
     engine_traits.all_locale = 'wt-wt'
 
     # updated from u588 to u661 / should be updated automatically?
-    resp = network.get('https://duckduckgo.com/util/u661.js')
+    resp = get('https://duckduckgo.com/util/u661.js')
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from DuckDuckGo is not OK.")
 
-    pos = resp.text.find('regions:{') + 8
-    js_code = resp.text[pos:]
+    pos = resp.text.find('regions:{') + 8  # type: ignore
+    js_code = resp.text[pos:]  # type: ignore
     pos = js_code.find('}') + 1
     regions = json.loads(js_code[:pos])
 
@@ -399,8 +401,8 @@ def fetch_traits(engine_traits: EngineTraits):
 
     engine_traits.custom['lang_region'] = {}
 
-    pos = resp.text.find('languages:{') + 10
-    js_code = resp.text[pos:]
+    pos = resp.text.find('languages:{') + 10  # type: ignore
+    js_code = resp.text[pos:]  # type: ignore
     pos = js_code.find('}') + 1
     js_code = '{"' + js_code[1:pos].replace(':', '":').replace(',', ',"')
     languages = json.loads(js_code)
