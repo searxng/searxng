@@ -209,9 +209,7 @@ SCHEMA = {
         'enable_http2': SettingsValue(bool, True),
         'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
-        # Magic number kept from previous code
         'pool_connections': SettingsValue(int, 100),
-        # Picked from constructor
         'pool_maxsize': SettingsValue(int, 10),
         'keepalive_expiry': SettingsValue(numbers.Real, 5.0),
         # default maximum redirect

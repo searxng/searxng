@@ -38,7 +38,6 @@ import babel
 import babel.languages
 
 from searx.utils import eval_xpath, extract_text, eval_xpath_list, eval_xpath_getindex
-from searx import network
 from searx.locales import language_tag, region_tag
 from searx.enginelib.traits import EngineTraits
 
@@ -180,6 +179,10 @@ def request(query, params):
 
 
 def response(resp):
+    # pylint: disable=too-many-locals,import-outside-toplevel
+
+    from searx.network import Request, multi_requests  # see https://github.com/searxng/searxng/issues/762
+
     results = []
     result_len = 0
 
@@ -231,9 +234,9 @@ def response(resp):
 
     # resolve all Bing redirections in parallel
     request_list = [
-        network.Request.get(u, allow_redirects=False, headers=resp.search_params['headers']) for u in url_to_resolve
+        Request.get(u, allow_redirects=False, headers=resp.search_params['headers']) for u in url_to_resolve
     ]
-    response_list = network.multi_requests(request_list)
+    response_list = multi_requests(request_list)
     for i, redirect_response in enumerate(response_list):
         if not isinstance(redirect_response, Exception):
             results[url_to_resolve_index[i]]['url'] = redirect_response.headers['location']
@@ -272,16 +275,19 @@ def fetch_traits(engine_traits: EngineTraits):
 
 
 def _fetch_traits(engine_traits: EngineTraits, url: str, xpath_language_codes: str, xpath_market_codes: str):
+    # pylint: disable=too-many-locals,import-outside-toplevel
+
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     # insert alias to map from a language (zh) to a language + script (zh_Hans)
     engine_traits.languages['zh'] = 'zh-hans'
 
-    resp = network.get(url)
+    resp = get(url)
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from peertube is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = html.fromstring(resp.text)  # type: ignore
 
     map_lang = {'jp': 'ja'}
     for td in eval_xpath(dom, xpath_language_codes):

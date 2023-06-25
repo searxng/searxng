@@ -61,7 +61,7 @@ import babel
 from lxml import html
 
 from searx import utils
-from searx import network
+from searx import network as _network
 from searx import locales
 from searx.enginelib.traits import EngineTraits
 
@@ -180,7 +180,7 @@ def response(resp):
             ):
                 return []
 
-    network.raise_for_httperror(resp)
+    _network.raise_for_httperror(resp)
 
     api_result = resp.json()
     title = utils.html_to_text(api_result.get('titles', {}).get('display') or api_result.get('title'))
@@ -267,7 +267,7 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
         for sxng_tag in sxng_tag_list:
             engine_traits.regions[sxng_tag] = eng_tag
 
-    resp = network.get(list_of_wikipedias)
+    resp = _network.get(list_of_wikipedias)
     if not resp.ok:
         print("ERROR: response from Wikipedia is not OK.")
 

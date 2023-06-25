@@ -13,7 +13,7 @@ from dateutil.relativedelta import relativedelta
 
 import babel
 
-from searx import network
+from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.locales import language_tag
 from searx.utils import html_to_text
 from searx.enginelib.traits import EngineTraits
@@ -147,32 +147,30 @@ def fetch_traits(engine_traits: EngineTraits):
        https://framagit.org/framasoft/peertube/search-index/-/commit/8ed5c729#3d8747f9a60695c367c70bb64efba8f403721fad_0_291
     """
 
-    resp = network.get(
+    resp = get(
         'https://framagit.org/framasoft/peertube/search-index/-/raw/master/client/src/components/Filters.vue',
         # the response from search-index repository is very slow
         timeout=60,
     )
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from peertube is not OK.")
         return
 
-    js_lang = re.search(r"videoLanguages \(\)[^\n]+(.*?)\]", resp.text, re.DOTALL)
+    js_lang = re.search(r"videoLanguages \(\)[^\n]+(.*?)\]", resp.text, re.DOTALL)  # type: ignore
     if not js_lang:
         print("ERROR: can't determine languages from peertube")
         return
 
     for lang in re.finditer(r"\{ id: '([a-z]+)', label:", js_lang.group(1)):
+        eng_tag = lang.group(1)
+        if eng_tag == 'oc':
+            # Occitanis not known by babel, its closest relative is Catalan
+            # but 'ca' is already in the list of engine_traits.languages -->
+            # 'oc' will be ignored.
+            continue
         try:
-            eng_tag = lang.group(1)
-            if eng_tag == 'oc':
-                # Occitanis not known by babel, its closest relative is Catalan
-                # but 'ca' is already in the list of engine_traits.languages -->
-                # 'oc' will be ignored.
-                continue
-
             sxng_tag = language_tag(babel.Locale.parse(eng_tag))
-
         except babel.UnknownLocaleError:
             print("ERROR: %s is unknown by babel" % eng_tag)
             continue
