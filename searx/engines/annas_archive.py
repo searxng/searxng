@@ -36,8 +36,13 @@ xpath_file_info: str = './/div[contains(@class, "text-xs")]'
 
 
 def request(query, params: Dict[str, Any]) -> Dict[str, Any]:
-    search_url: str = base_url + "/search?q={search_query}"
-    params["url"] = search_url.format(search_query=quote(query))
+    search_url: str = base_url + "/search?q={search_query}&lang={lang}"
+    lang: str = ""
+    if params["language"] != "all":
+        lang = params["language"]
+
+    params["url"] = search_url.format(search_query=quote(query), lang=lang)
+    print(params)
     return params
 
 
