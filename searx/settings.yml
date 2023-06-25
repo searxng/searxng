@@ -909,19 +909,11 @@ engines:
       require_api_key: false
       results: HTML
 
-  # Disabling zlibrary due to z-lib.org domain seizure
-  # https://github.com/searxng/searxng/pull/1937
-  #
-  # - name: z-library
-  #   engine: zlibrary
-  #   shortcut: zlib
-  #   categories: files
-  #   timeout: 3.0
-  #   # choose base_url, otherwise engine will do it at initialization time
-  #   # base_url: https://b-ok.cc
-  #   # base_url: https://de1lib.org
-  #   # base_url: https://booksc.eu   # does not have cover preview
-  #   # base_url: https://booksc.org  # does not have cover preview
+  - name: z-library
+    engine: zlibrary
+    shortcut: zlib
+    categories: files
+    timeout: 7.0
 
   - name: library of congress
     engine: loc
