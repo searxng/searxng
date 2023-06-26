@@ -172,7 +172,8 @@ def get_google_info(params, eng_traits):
     # The Interface Language:
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#interfaceLanguages
 
-    ret_val['params']['hl'] = lang_code
+    # https://github.com/searxng/searxng/issues/2515#issuecomment-1607150817
+    ret_val['params']['hl'] = f'{lang_code}-{country}'
 
     # lr parameter:
     #   The lr (language restrict) parameter restricts search results to
@@ -212,7 +213,8 @@ def get_google_info(params, eng_traits):
     #   countries other than the United States.
     #   https://developers.google.com/custom-search/docs/xml_results#glsp
 
-    ret_val['params']['gl'] = country
+    # https://github.com/searxng/searxng/issues/2515#issuecomment-1606294635
+    # ret_val['params']['gl'] = country
 
     # ie parameter:
     #   The ie parameter sets the character encoding scheme that should be used
