@@ -1,14 +1,59 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Anna's Archive
+""".. _annas_archive engine:
+
+==============
+Anna's Archive
+==============
+
+.. _Anna's Archive: https://annas-archive.org/
+.. _AnnaArchivist: https://annas-software.org/AnnaArchivist/annas-archive
+
+`Anna's Archive`_ is a free non-profit online shadow library metasearch engine
+providing access to a variety of book resources (also via IPFS), created by a
+team of anonymous archivists (AnnaArchivist_).
+
+.. contents:: Contents
+   :depth: 2
+   :local:
+   :backlinks: entry
+
+
+Configuration
+=============
+
+The engine has the following additional settings:
+
+- :py:obj:`aa_content`
+- :py:obj:`aa_ext`
+- :py:obj:`aa_sort`
+
+With this options a SearXNG maintainer is able to configure **additional**
+engines for specific searches in Anna's Archive.  For example a engine to search
+for *newest* articles and journals (PDF) / by shortcut ``!aaa <search-term>``.
+
+.. code:: yaml
+
+  - name: annas articles
+    engine: annas_archive
+    shortcut: aaa
+    aa_content: 'journal_article'
+    aa_ext: 'pdf'
+    aa_sort: 'newest'
+
+
+Implementations
+===============
 
 """
+
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote
 from lxml import html
 
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
+from searx.data import ENGINE_TRAITS
 
 # about
 about: Dict[str, Any] = {
@@ -26,6 +71,31 @@ paging: bool = False
 
 # search-url
 base_url: str = "https://annas-archive.org"
+aa_content: str = ""
+"""Anan's search form field **Content** / possible values::
+
+    journal_article, book_any, book_fiction, book_unknown, book_nonfiction,
+    book_comic, magazine, standards_document
+
+To not filter use an empty string (default).
+"""
+aa_sort: str = ''
+"""Sort Anna's results, possible values::
+
+    newest, oldest, largest, smallest
+
+To sort by *most relevant* use an empty string (default)."""
+
+aa_ext: str = ''
+"""Filter Anna's results by a file ending.  Common filters for example are
+``pdf`` and ``epub``.
+
+.. note::
+
+   Anna's Archive is a beta release: Filter results by file extension does not
+   really work on Anna's Archive.
+
+"""
 
 # xpath queries
 xpath_results: str = '//main//a[starts-with(@href,"/md5")]'
@@ -36,13 +106,24 @@ xpath_publisher: str = './/div[contains(@class, "text-sm")]'
 xpath_file_info: str = './/div[contains(@class, "text-xs")]'
 
 
-def request(query, params: Dict[str, Any]) -> Dict[str, Any]:
-    search_url: str = base_url + "/search?q={search_query}&lang={lang}"
-    lang: str = ""
-    if params["language"] != "all":
-        lang = params["language"]
+def init(engine_settings=None):  # pylint: disable=unused-argument
+    """Check of engine's settings."""
+    traits = EngineTraits(**ENGINE_TRAITS['annas archive'])
 
-    params["url"] = search_url.format(search_query=quote(query), lang=lang)
+    if aa_content and aa_content not in traits.custom['content']:
+        raise ValueError(f'invalid setting content: {aa_content}')
+
+    if aa_sort and aa_sort not in traits.custom['sort']:
+        raise ValueError(f'invalid setting sort: {aa_sort}')
+
+    if aa_ext and aa_ext not in traits.custom['ext']:
+        raise ValueError(f'invalid setting ext: {aa_ext}')
+
+
+def request(query, params: Dict[str, Any]) -> Dict[str, Any]:
+    q = quote(query)
+    lang = traits.get_language(params["language"], traits.all_locale)  # type: ignore
+    params["url"] = base_url + f"/search?lang={lang or ''}&content={aa_content}&ext={aa_ext}&sort={aa_sort}&q={q}"
     return params
 
 
