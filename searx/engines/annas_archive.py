@@ -7,7 +7,8 @@ from typing import List, Dict, Any, Optional
 from urllib.parse import quote
 from lxml import html
 
-from searx.utils import extract_text, eval_xpath
+from searx.utils import extract_text, eval_xpath, eval_xpath_list
+from searx.enginelib.traits import EngineTraits
 
 # about
 about: Dict[str, Any] = {
@@ -42,7 +43,6 @@ def request(query, params: Dict[str, Any]) -> Dict[str, Any]:
         lang = params["language"]
 
     params["url"] = search_url.format(search_query=quote(query), lang=lang)
-    print(params)
     return params
 
 
@@ -66,3 +66,52 @@ def response(resp) -> List[Dict[str, Optional[str]]]:
         results.append(result)
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch languages and other search arguments from Anna's search form."""
+    # pylint: disable=import-outside-toplevel
+
+    import babel
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+    from searx.locales import language_tag
+
+    engine_traits.all_locale = ''
+    engine_traits.custom['content'] = []
+    engine_traits.custom['ext'] = []
+    engine_traits.custom['sort'] = []
+
+    resp = get(base_url + '/search')
+    if not resp.ok:  # type: ignore
+        raise RuntimeError("Response from Anna's search page is not OK.")
+    dom = html.fromstring(resp.text)  # type: ignore
+
+    # supported language codes
+
+    lang_map = {}
+    for x in eval_xpath_list(dom, "//form//select[@name='lang']//option"):
+        eng_lang = x.get("value")
+        if eng_lang in ('', '_empty', 'nl-BE', 'und'):
+            continue
+        try:
+            locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
+        except babel.UnknownLocaleError:
+            # silently ignore unknown languages
+            # print("ERROR: %s -> %s is unknown by babel" % (x.get("data-name"), eng_lang))
+            continue
+        sxng_lang = language_tag(locale)
+        conflict = engine_traits.languages.get(sxng_lang)
+        if conflict:
+            if conflict != eng_lang:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_lang, conflict, eng_lang))
+            continue
+        engine_traits.languages[sxng_lang] = eng_lang
+
+    for x in eval_xpath_list(dom, "//form//select[@name='content']//option"):
+        engine_traits.custom['content'].append(x.get("value"))
+
+    for x in eval_xpath_list(dom, "//form//select[@name='ext']//option"):
+        engine_traits.custom['ext'].append(x.get("value"))
+
+    for x in eval_xpath_list(dom, "//form//select[@name='sort']//option"):
+        engine_traits.custom['sort'].append(x.get("value"))
