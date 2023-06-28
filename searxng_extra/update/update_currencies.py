@@ -131,13 +131,6 @@ def fetch_db():
         if 'unit' in r:
             add_currency_name(db, r['unit']['value'], iso4217, normalize_name=False)
 
-    # reduce memory usage:
-    # replace lists with one item by the item.
-    # see searx.search.processors.online_currency.name_to_iso4217
-    for name in db['names']:
-        if len(db['names'][name]) == 1:
-            db['names'][name] = db['names'][name][0]
-
     return db
 
 
@@ -146,8 +139,9 @@ def get_filename():
 
 
 def main():
-    #
+
     db = fetch_db()
+
     # static
     add_currency_name(db, "euro", 'EUR')
     add_currency_name(db, "euros", 'EUR')
@@ -155,6 +149,13 @@ def main():
     add_currency_name(db, "dollars", 'USD')
     add_currency_name(db, "peso", 'MXN')
     add_currency_name(db, "pesos", 'MXN')
+
+    # reduce memory usage:
+    # replace lists with one item by the item.  see
+    # searx.search.processors.online_currency.name_to_iso4217
+    for name in db['names']:
+        if len(db['names'][name]) == 1:
+            db['names'][name] = db['names'][name][0]
 
     with open(get_filename(), 'w', encoding='utf8') as f:
         json.dump(db, f, ensure_ascii=False, indent=4)
