@@ -97,14 +97,6 @@ aa_ext: str = ''
 
 """
 
-# xpath queries
-xpath_results: str = '//main//a[starts-with(@href,"/md5")]'
-xpath_url: str = ".//@href"
-xpath_title: str = ".//h3/text()[1]"
-xpath_authors: str = './/div[contains(@class, "italic")]'
-xpath_publisher: str = './/div[contains(@class, "text-sm")]'
-xpath_file_info: str = './/div[contains(@class, "text-xs")]'
-
 
 def init(engine_settings=None):  # pylint: disable=unused-argument
     """Check of engine's settings."""
@@ -131,22 +123,32 @@ def response(resp) -> List[Dict[str, Optional[str]]]:
     results: List[Dict[str, Optional[str]]] = []
     dom = html.fromstring(resp.text)
 
-    for item in dom.xpath(xpath_results):
-        result: Dict[str, Optional[str]] = {}
+    for item in eval_xpath_list(dom, '//main//div[contains(@class, "h-[125]")]/a'):
+        results.append(_get_result(item))
 
-        result["url"] = base_url + item.xpath(xpath_url)[0]
+    # The rendering of the WEB page is very strange; except the first position
+    # all other positions of Anna's result page are enclosed in SGML comments.
+    # These comments are *uncommented* by some JS code, see query of class
+    # '.js-scroll-hidden' in Anna's HTML template:
+    #   https://annas-software.org/AnnaArchivist/annas-archive/-/blob/main/allthethings/templates/macros/md5_list.html
 
-        result["title"] = extract_text(eval_xpath(item, xpath_title))
-
-        result["content"] = "{publisher}. {authors}. {file_info}".format(
-            authors=extract_text(eval_xpath(item, xpath_authors)),
-            publisher=extract_text(eval_xpath(item, xpath_publisher)),
-            file_info=extract_text(eval_xpath(item, xpath_file_info)),
-        )
-
-        results.append(result)
+    for item in eval_xpath_list(dom, '//main//div[contains(@class, "js-scroll-hidden")]'):
+        item = html.fromstring(item.xpath('./comment()')[0].text)
+        results.append(_get_result(item))
 
     return results
+
+
+def _get_result(item):
+    return {
+        'template': 'paper.html',
+        'url': base_url + item.xpath('./@href')[0],
+        'title': extract_text(eval_xpath(item, './/h3/text()[1]')),
+        'publisher': extract_text(eval_xpath(item, './/div[contains(@class, "text-sm")]')),
+        'authors': [extract_text(eval_xpath(item, './/div[contains(@class, "italic")]'))],
+        'content': extract_text(eval_xpath(item, './/div[contains(@class, "text-xs")]')),
+        'img_src': item.xpath('.//img/@src')[0],
+    }
 
 
 def fetch_traits(engine_traits: EngineTraits):
