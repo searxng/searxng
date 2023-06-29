@@ -297,6 +297,19 @@ engines:
     shortcut: 9g
     disabled: true
 
+  - name: annas archive
+    engine: annas_archive
+    disabled: true
+    shortcut: aa
+
+  # - name: annas articles
+  #   engine: annas_archive
+  #   shortcut: aaa
+  #   # https://docs.searxng.org/src/searx.engines.annas_archive.html
+  #   aa_content: 'journal_article' # book_any .. magazine, standards_document
+  #   aa_ext: 'pdf'  # pdf, epub, ..
+  #   aa_sort: 'newest'  # newest, oldest, largest, smallest
+
   - name: apk mirror
     engine: apkmirror
     timeout: 4.0
