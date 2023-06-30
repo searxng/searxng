@@ -22,7 +22,7 @@ Configured Engines
    called *tabs*), engines can be queried by their name or the categories they
    belong to, by using a :ref:`\!bing syntax <search-syntax>`.
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

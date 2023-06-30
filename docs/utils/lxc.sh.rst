@@ -26,7 +26,7 @@ to care about*).
    - `LXC/LXD Image Server`_
    - `LXD@github`_
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

@@ -10,7 +10,6 @@ and developers.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
 
    searxng.sh
    lxc.sh

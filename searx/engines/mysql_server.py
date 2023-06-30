@@ -1,12 +1,37 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""MySQL database (offline)
+"""MySQL is said to be the most popular open source database.  Before enabling
+MySQL engine, you must install the package ``mysql-connector-python``.
+
+The authentication plugin is configurable by setting ``auth_plugin`` in the
+attributes.  By default it is set to ``caching_sha2_password``.
+
+Example
+=======
+
+This is an example configuration for querying a MySQL server:
+
+.. code:: yaml
+
+   - name: my_database
+     engine: mysql_server
+     database: my_database
+     username: searxng
+     password: password
+     limit: 5
+     query_str: 'SELECT * from my_table WHERE my_column=%(query)s'
+
+Implementations
+===============
 
 """
 
-# import error is ignored because the admin has to install mysql manually to use
-# the engine
-import mysql.connector  # pyright: ignore # pylint: disable=import-error
+try:
+    import mysql.connector  # type: ignore
+except ImportError:
+    # import error is ignored because the admin has to install mysql manually to use
+    # the engine
+    pass
 
 engine_type = 'offline'
 auth_plugin = 'caching_sha2_password'

@@ -61,7 +61,7 @@ section might give you some guidance.
    - `Apache Fedora`_
    - `Apache directives`_
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

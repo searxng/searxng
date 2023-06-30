@@ -1,7 +1,31 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""
- Solr
+""".. sidebar:: info
+
+   - :origin:`solr.py <searx/engines/solr.py>`
+   - `Solr <https://solr.apache.org>`_
+   - `Solr Resources <https://solr.apache.org/resources.html>`_
+   - `Install Solr <https://solr.apache.org/guide/installing-solr.html>`_
+
+Solr_ is a popular search engine based on Lucene, just like Elasticsearch_.  But
+instead of searching in indices, you can search in collections.
+
+Example
+=======
+
+This is an example configuration for searching in the collection
+``my-collection`` and get the results in ascending order.
+
+.. code:: yaml
+
+  - name: solr
+    engine: solr
+    shortcut: slr
+    base_url: http://localhost:8983
+    collection: my-collection
+    sort: asc
+    enable_http: true
+
 """
 
 # pylint: disable=global-statement

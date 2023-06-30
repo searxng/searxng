@@ -37,7 +37,7 @@ docs.live <make docs.live>` to build HTML while editing.
    - DOT_, `Graphviz's dot`_, Graphviz_
 
 
-.. contents:: Contents
+.. contents::
    :depth: 3
    :local:
    :backlinks: entry

@@ -9,7 +9,7 @@ Buildhosts
    If you have any contribution send us your :pull:`PR <../pulls>`, see
    :ref:`how to contribute`.
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

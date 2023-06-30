@@ -22,7 +22,7 @@ Calling the ``help`` target gives a first overview (``make help``):
 
 .. program-output:: bash -c "cd ..; make --no-print-directory help"
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry
@@ -243,14 +243,14 @@ calling ``make clean`` stop all processes using the :ref:`make install` or
 We describe the usage of the ``doc.*`` targets in the :ref:`How to contribute /
 Documentation <contrib docs>` section.  If you want to edit the documentation
 read our :ref:`make docs.live` section.  If you are working in your own brand,
-adjust your :ref:`settings global`.
+adjust your :ref:`settings brand`.
 
 .. _make docs.gh-pages:
 
 ``make docs.gh-pages``
 ======================
 
-To deploy on github.io first adjust your :ref:`settings global`.  For any
+To deploy on github.io first adjust your :ref:`settings brand`.  For any
 further read :ref:`deploy on github.io`.
 
 .. _make test:

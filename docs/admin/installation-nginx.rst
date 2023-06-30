@@ -41,7 +41,7 @@ section might give you some guidance.
    - `uWSGI support from nginx`_
 
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

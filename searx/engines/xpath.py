@@ -3,8 +3,55 @@
 """The XPath engine is a *generic* engine with which it is possible to configure
 engines in the settings.
 
-Here is a simple example of a XPath engine configured in the
-:ref:`settings engine` section, further read :ref:`engines-dev`.
+.. _XPath selector: https://quickref.me/xpath.html#xpath-selectors
+
+Configuration
+=============
+
+Request:
+
+- :py:obj:`search_url`
+- :py:obj:`lang_all`
+- :py:obj:`soft_max_redirects`
+- :py:obj:`cookies`
+- :py:obj:`headers`
+
+Paging:
+
+- :py:obj:`paging`
+- :py:obj:`page_size`
+- :py:obj:`first_page_num`
+
+Time Range:
+
+- :py:obj:`time_range_support`
+- :py:obj:`time_range_url`
+- :py:obj:`time_range_map`
+
+Safe-Search:
+
+- :py:obj:`safe_search_support`
+- :py:obj:`safe_search_map`
+
+Response:
+
+- :py:obj:`no_result_for_http_status`
+
+`XPath selector`_:
+
+- :py:obj:`results_xpath`
+- :py:obj:`url_xpath`
+- :py:obj:`title_xpath`
+- :py:obj:`content_xpath`
+- :py:obj:`thumbnail_xpath`
+- :py:obj:`suggestion_xpath`
+
+
+Example
+=======
+
+Here is a simple example of a XPath engine configured in the :ref:`settings
+engine` section, further read :ref:`engines-dev`.
 
 .. code:: yaml
 
@@ -16,6 +63,9 @@ Here is a simple example of a XPath engine configured in the
     title_xpath : //article[@class="repo-summary"]//a[@class="repo-link"]
     content_xpath : //article[@class="repo-summary"]/p
 
+Implementations
+===============
+
 """
 
 from urllib.parse import urlencode
@@ -26,7 +76,7 @@ from searx.network import raise_for_httperror
 
 search_url = None
 """
-Search URL of the engine. Example::
+Search URL of the engine.  Example::
 
     https://example.org/?search={query}&page={pageno}{time_range}{safe_search}
 
@@ -74,30 +124,33 @@ soft_max_redirects = 0
 '''Maximum redirects, soft limit. Record an error but don't stop the engine'''
 
 results_xpath = ''
-'''XPath selector for the list of result items'''
+'''`XPath selector`_ for the list of result items'''
 
 url_xpath = None
-'''XPath selector of result's ``url``.'''
+'''`XPath selector`_ of result's ``url``.'''
 
 content_xpath = None
-'''XPath selector of result's ``content``.'''
+'''`XPath selector`_ of result's ``content``.'''
 
 title_xpath = None
-'''XPath selector of result's ``title``.'''
+'''`XPath selector`_ of result's ``title``.'''
 
 thumbnail_xpath = False
-'''XPath selector of result's ``img_src``.'''
+'''`XPath selector`_ of result's ``img_src``.'''
 
 suggestion_xpath = ''
-'''XPath selector of result's ``suggestion``.'''
+'''`XPath selector`_ of result's ``suggestion``.'''
 
 cached_xpath = ''
 cached_url = ''
 
 cookies = {}
+'''Some engines might offer different result based on cookies.
+Possible use-case: To set safesearch cookie.'''
+
 headers = {}
-'''Some engines might offer different result based on cookies or headers.
-Possible use-case: To set safesearch cookie or header to moderate.'''
+'''Some engines might offer different result based headers.  Possible use-case:
+To set header to moderate.'''
 
 paging = False
 '''Engine supports paging [True or False].'''
