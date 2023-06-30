@@ -16,20 +16,22 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # tentsbet <remendne@pentrens.jp>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-19 17:57+0000\n"
-"PO-Revision-Date: 2023-06-04 04:37+0000\n"
-"Last-Translator: tentsbet <remendne@pentrens.jp>\n"
+"PO-Revision-Date: 2023-06-28 09:02+0000\n"
+"Last-Translator: nogb <u8cn71wq@yogibo.anonaddy.me>\n"
+"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
+"searxng/ja/>\n"
 "Language: ja\n"
-"Language-Team: Japanese "
-"<https://translate.codeberg.org/projects/searxng/searxng/ja/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -523,11 +525,11 @@ msgstr "エラーログを表示し、バグレポートを送信します"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr "!bangの検索エンジン"
+msgstr "当検索エンジンの!bang"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr "!bangのカテゴリ"
+msgstr "そのカテゴリの!bang"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -598,7 +600,7 @@ msgstr "インフォ"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
-msgstr "検索:"
+msgstr "検索のオススメ:"
 
 #: searx/templates/simple/results.html:106
 msgid "Back to top"
@@ -822,7 +824,8 @@ msgstr "すみません!"
 msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
-msgstr "検索結果はありませんでした。別カテゴリで、他のクエリまたは検索を試してください。"
+msgstr "検索結果はありませんでした。別のカテゴリ、または他のクエリで検索してください"
+"。"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1001,7 +1004,8 @@ msgstr "どの言語で検索しますか？"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr "あなたのクエリーの言語をSearXNGは自動的に検出するように選択する。"
+msgstr "自動検出を選択すると、あなたのクエリの言語をSearXNGに検出させるようになります"
+"。"
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1550,4 +1554,3 @@ msgstr "動画を隠す"
 #~ "フォームの送信方法を変更します。<a "
 #~ "href=\"https://ja.wikipedia.org/wiki/Hypertext_Transfer_Protocol#リクエストメソッド\""
 #~ " rel=\"external\">リクエストメソッドってなに？</a>"
-
