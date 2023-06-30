@@ -7,7 +7,7 @@ Why use a private instance?
   \.\. is a common question among SearXNG users.  Before answering this
   question, see what options a SearXNG user has.
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

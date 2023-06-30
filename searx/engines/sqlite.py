@@ -1,7 +1,40 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
+"""SQLite is a small, fast and reliable SQL database engine.  It does not require
+any extra dependency.
 
-"""SQLite database (Offline)
+Example
+=======
+
+.. _MediathekView: https://mediathekview.de/
+
+To demonstrate the power of database engines, here is a more complex example
+which reads from a MediathekView_ (DE) movie database.  For this example of the
+SQlite engine download the database:
+
+- https://liste.mediathekview.de/filmliste-v2.db.bz2
+
+and unpack into ``searx/data/filmliste-v2.db``.  To search the database use e.g
+Query to test: ``!mediathekview concert``
+
+.. code:: yaml
+
+   - name: mediathekview
+     engine: sqlite
+     disabled: False
+     categories: general
+     result_template: default.html
+     database: searx/data/filmliste-v2.db
+     query_str:  >-
+       SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
+              COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
+              description AS content
+         FROM film
+        WHERE title LIKE :wildcard OR description LIKE :wildcard
+        ORDER BY duration DESC
+
+Implementations
+===============
 
 """
 
@@ -26,14 +59,15 @@ def init(engine_settings):
 
 @contextlib.contextmanager
 def sqlite_cursor():
-    """Implements a `Context Manager`_ for a :py:obj:`sqlite3.Cursor`.
+    """Implements a :py:obj:`Context Manager <contextlib.contextmanager>` for a
+    :py:obj:`sqlite3.Cursor`.
 
-    Open database in read only mode: if the database doesn't exist.
-    The default mode creates an empty file on the file system.
+    Open database in read only mode: if the database doesn't exist.  The default
+    mode creates an empty file on the file system.  See:
 
-    see:
     * https://docs.python.org/3/library/sqlite3.html#sqlite3.connect
     * https://www.sqlite.org/uri.html
+
     """
     uri = 'file:' + database + '?mode=ro'
     with contextlib.closing(sqlite3.connect(uri, uri=True)) as connect:

@@ -4,8 +4,8 @@ Administrator documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
 
+   settings/index
    installation
    installation-docker
    installation-scripts
@@ -15,7 +15,6 @@ Administrator documentation
    installation-apache
    update-searxng
    answer-captcha
-   engines/index
    api
    architecture
    plugins

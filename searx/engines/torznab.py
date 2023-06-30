@@ -1,17 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-""".. _torznab engine:
-
-==============
-Torznab WebAPI
-==============
-
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-Torznab_ is an API specification that provides a standardized way to query
+"""Torznab_ is an API specification that provides a standardized way to query
 torrent site for content. It is used by a number of torrent applications,
 including Prowlarr_ and Jackett_.
 
@@ -54,7 +43,6 @@ The engine has the following settings:
    https://wiki.servarr.com/en/prowlarr/cardigann-yml-definition#categories
 .. _Jackett-categories:
    https://github.com/Jackett/Jackett/wiki/Jackett-Categories
-
 
 Implementations
 ===============

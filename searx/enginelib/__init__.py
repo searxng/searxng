@@ -1,18 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Engine related implementations
+"""Implementations of the framework for the SearXNG engines.
 
-.. note::
+.. hint::
 
-   The long term goal is to modularize all relevant implementations to the
-   engines here in this Python package.  In addition to improved modularization,
-   this will also be necessary in part because the probability of circular
-   imports will increase due to the increased typification of implementations in
-   the future.
+   The long term goal is to modularize all implementations of the engine
+   framework here in this Python package.  ToDo:
 
-   ToDo:
+   - move implementations of the :ref:`searx.engines loader` to a new module in
+     the :py:obj:`searx.enginelib` namespace.
 
-   - move :py:obj:`searx.engines.load_engine` to a new module `searx.enginelib`.
 """
 
 
@@ -36,7 +33,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     # Common options in the engine module
 
     engine_type: str
-    """Type of the engine (:origin:`searx/search/processors`)"""
+    """Type of the engine (:ref:`searx.search.processors`)"""
 
     paging: bool
     """Engine supports multiple pages."""

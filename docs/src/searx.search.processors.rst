@@ -4,7 +4,7 @@
 Search processors
 =================
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry
@@ -34,7 +34,7 @@ Online currency processor
 .. automodule:: searx.search.processors.online_currency
   :members:
 
-Online Dictionary processor
+Online dictionary processor
 ===========================
 
 .. automodule:: searx.search.processors.online_dictionary

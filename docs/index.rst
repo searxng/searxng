@@ -43,7 +43,6 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
 
    user/index
    own-instance

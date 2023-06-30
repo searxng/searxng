@@ -1,11 +1,53 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""MongoDB engine (Offline)
+"""MongoDB_ is a document based database program that handles JSON like data.
+Before configuring the ``mongodb`` engine, you must install the dependency
+pymongo_.
+
+Configuration
+=============
+
+In order to query MongoDB_, you have to select a ``database`` and a
+``collection``.  Furthermore, you have to select a ``key`` that is going to be
+searched.  MongoDB_ also supports the option ``exact_match_only``, so configure
+it as you wish.
+
+Example
+=======
+
+Below is an example configuration for using a MongoDB collection:
+
+.. code:: yaml
+
+  # MongoDB engine
+  # Required dependency: pymongo
+
+  - name: mymongo
+    engine: mongodb
+    shortcut: md
+    exact_match_only: false
+    host: '127.0.0.1'
+    port: 27017
+    enable_http: true
+    results_per_page: 20
+    database: 'business'
+    collection: 'reviews'  # name of the db collection
+    key: 'name'            # key in the collection to search for
+
+Implementations
+===============
 
 """
 
 import re
-from pymongo import MongoClient  # pyright: ignore # pylint: disable=import-error
+
+try:
+    from pymongo import MongoClient  # type: ignore
+except ImportError:
+    # import error is ignored because the admin has to install pymongo manually
+    # to use the engine
+    pass
+
 
 engine_type = 'offline'
 

@@ -4,7 +4,7 @@
 How to contribute
 =================
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

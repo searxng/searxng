@@ -4,12 +4,10 @@ Developer documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
 
    quickstart
    contribution_guide
-   engine_overview
-   offline_engines
+   engines/index
    search_api
    plugins
    translation

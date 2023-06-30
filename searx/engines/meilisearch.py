@@ -1,7 +1,35 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""
- Meilisearch
+""".. sidebar:: info
+
+   - :origin:`meilisearch.py <searx/engines/meilisearch.py>`
+   - `MeiliSearch <https://www.meilisearch.com>`_
+   - `MeiliSearch Documentation <https://docs.meilisearch.com/>`_
+   - `Install MeiliSearch
+     <https://docs.meilisearch.com/learn/getting_started/installation.html>`_
+
+MeiliSearch_ is aimed at individuals and small companies.  It is designed for
+small-scale (less than 10 million documents) data collections.  E.g. it is great
+for storing web pages you have visited and searching in the contents later.
+
+The engine supports faceted search, so you can search in a subset of documents
+of the collection.  Furthermore, you can search in MeiliSearch_ instances that
+require authentication by setting ``auth_token``.
+
+Example
+=======
+
+Here is a simple example to query a Meilisearch instance:
+
+.. code:: yaml
+
+  - name: meilisearch
+    engine: meilisearch
+    shortcut: mes
+    base_url: http://localhost:7700
+    index: my-index
+    enable_http: true
+
 """
 
 # pylint: disable=global-statement

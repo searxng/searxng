@@ -9,7 +9,7 @@ uWSGI
    - `systemd.unit`_
    - `uWSGI Emperor`_
 
-.. contents:: Contents
+.. contents::
    :depth: 2
    :local:
    :backlinks: entry

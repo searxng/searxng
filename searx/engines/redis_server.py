@@ -1,6 +1,37 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Redis engine (offline)
+"""Redis is an open source (BSD licensed), in-memory data structure (key value
+based) store.  Before configuring the ``redis_server`` engine, you must install
+the dependency redis_.
+
+Configuration
+=============
+
+Select a database to search in and set its index in the option ``db``.  You can
+either look for exact matches or use partial keywords to find what you are
+looking for by configuring ``exact_match_only``.
+
+Example
+=======
+
+Below is an example configuration:
+
+.. code:: yaml
+
+  # Required dependency: redis
+
+  - name: myredis
+    shortcut : rds
+    engine: redis_server
+    exact_match_only: false
+    host: '127.0.0.1'
+    port: 6379
+    enable_http: true
+    password: ''
+    db: 0
+
+Implementations
+===============
 
 """
 

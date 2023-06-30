@@ -8,7 +8,6 @@ every item from the source code, but we will add documentation when requested.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
    :glob:
 
    searx.*

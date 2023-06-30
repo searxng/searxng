@@ -1,23 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-""".. _annas_archive engine:
-
-==============
-Anna's Archive
-==============
+"""`Anna's Archive`_ is a free non-profit online shadow library metasearch
+engine providing access to a variety of book resources (also via IPFS), created
+by a team of anonymous archivists (AnnaArchivist_).
 
 .. _Anna's Archive: https://annas-archive.org/
 .. _AnnaArchivist: https://annas-software.org/AnnaArchivist/annas-archive
-
-`Anna's Archive`_ is a free non-profit online shadow library metasearch engine
-providing access to a variety of book resources (also via IPFS), created by a
-team of anonymous archivists (AnnaArchivist_).
-
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 
 Configuration
 =============
@@ -40,7 +28,6 @@ for *newest* articles and journals (PDF) / by shortcut ``!aaa <search-term>``.
     aa_content: 'journal_article'
     aa_ext: 'pdf'
     aa_sort: 'newest'
-
 
 Implementations
 ===============

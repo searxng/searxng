@@ -2,7 +2,7 @@
 User information
 ================
 
-.. contents:: Contents
+.. contents::
    :depth: 3
    :local:
    :backlinks: entry
