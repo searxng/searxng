@@ -455,6 +455,20 @@ engines:
     timeout: 30
     disabled: true
 
+  - name: crowdview
+    engine: json_engine
+    shortcut: cv
+    categories: general
+    paging: false
+    search_url: https://crowdview-next-js.onrender.com/api/search-v3?query={query}
+    results_query: results
+    url_query: link
+    title_query: title
+    content_query: snippet
+    disabled: true
+    about:
+      website: https://crowdview.ai/
+
   - name: yep
     engine: json_engine
     shortcut: yep
