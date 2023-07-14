@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-19 17:57+0000\n"
-"PO-Revision-Date: 2023-06-28 09:02+0000\n"
-"Last-Translator: lemonadeforlife <nahianlabiblimon44@gmail.com>\n"
+"POT-Creation-Date: 2023-07-07 19:41+0000\n"
+"PO-Revision-Date: 2023-07-09 15:33+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Bengali <https://translate.codeberg.org/projects/searxng/"
 "searxng/bn/>\n"
 "Language: bn\n"
@@ -316,6 +316,18 @@ msgstr "সন্ধ্যা"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "রাত"
+
+#: searx/engines/zlibrary.py:129
+msgid "Language"
+msgstr "ভাষা"
+
+#: searx/engines/zlibrary.py:130
+msgid "Book rating"
+msgstr ""
+
+#: searx/engines/zlibrary.py:131
+msgid "File quality"
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -838,8 +850,8 @@ msgid ""
 "we didn't find any results. Please use another query or search in more "
 "categories."
 msgstr ""
-"আমরা কোন ফলাফল খুঁজে পাইনি. অনুগ্রহ করে অন্য কোনো প্রশ্ন ব্যবহার করুন বা আরও "
-"বিভাগে অনুসন্ধান করুন।"
+"আমরা কোন ফলাফল খুঁজে পাইনি. অনুগ্রহ করে অন্য কোনো প্রশ্ন ব্যবহার করুন বা "
+"আরও বিভাগে অনুসন্ধান করুন।"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -902,8 +914,7 @@ msgstr "পেইজের মাঝখানে রেজাল্ট দেখ
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr ""
-"এটি কুকিজের তালিকা এবং সেগুলির মান SearXNG আপনার কম্পিউটারে সংরক্ষণ করছে।"
+msgstr "এটি কুকিজের তালিকা এবং সেগুলির মান SearXNG আপনার কম্পিউটারে সংরক্ষণ করছে।"
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -926,8 +937,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"দ্রষ্টব্য: সার্চ ইউআরএলের কাস্টম সেটিংস নির্দিষ্ট করা হলে ক্লিক করা ফলাফলের "
-"সাইটগুলিতে ডেটা ফাঁস করে গোপনীয়তা হ্রাস করতে পারে।"
+"দ্রষ্টব্য: সার্চ ইউআরএলের কাস্টম সেটিংস নির্দিষ্ট করা হলে ক্লিক করা "
+"ফলাফলের সাইটগুলিতে ডেটা ফাঁস করে গোপনীয়তা হ্রাস করতে পারে।"
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -954,8 +965,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"এই ট্যাবটি ইউজার ইন্টারফেসে নেই, কিন্তু আপনি এই ইঞ্জিনের !bangs ব্যবহার করে "
-"সার্চ করতে পারেন।"
+"এই ট্যাবটি ইউজার ইন্টারফেসে নেই, কিন্তু আপনি এই ইঞ্জিনের !bangs ব্যবহার "
+"করে সার্চ করতে পারেন।"
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -982,8 +993,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"এই কুকিজগুলি আপনার একমাত্র সুবিধা প্রদান করে, আমরা আপনাকে ট্র্যাক করতে এই "
-"কুকিগুলি ব্যবহার করি না।"
+"এই কুকিজগুলি আপনার একমাত্র সুবিধা প্রদান করে, আমরা আপনাকে ট্র্যাক করতে এই"
+" কুকিগুলি ব্যবহার করি না।"
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1022,8 +1033,8 @@ msgstr "অসীম স্ক্রল"
 #: searx/templates/simple/preferences/infinite_scroll.html:10
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"বর্তমান পৃষ্ঠার নীচে স্ক্রোল করার সময় স্বয়ংক্রিয়ভাবে পরবর্তী পৃষ্ঠা লোড "
-"করুন"
+"বর্তমান পৃষ্ঠার নীচে স্ক্রোল করার সময় স্বয়ংক্রিয়ভাবে পরবর্তী পৃষ্ঠা "
+"লোড করুন"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1050,8 +1061,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"সক্রিয় করা হলে, ফলাফল পৃষ্ঠার শিরোনামে আপনার জিজ্ঞাসা থাকে। আপনার ব্রাউজার "
-"এই শিরোনাম রেকর্ড করতে পারেন"
+"সক্রিয় করা হলে, ফলাফল পৃষ্ঠার শিরোনামে আপনার জিজ্ঞাসা থাকে। আপনার "
+"ব্রাউজার এই শিরোনাম রেকর্ড করতে পারেন"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
