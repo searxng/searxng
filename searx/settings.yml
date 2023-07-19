@@ -626,7 +626,6 @@ engines:
     first_page_num: 1
     shortcut: et
     categories: [dictionaries]
-    disabled: false
     about:
       website: https://www.etymonline.com/
       wikidata_id: Q1188617
@@ -1204,7 +1203,6 @@ engines:
     engine: qwant
     shortcut: qw
     categories: [general, web]
-    disabled: false
     additional_tests:
       rosebud: *test_rosebud
 
@@ -1213,7 +1211,6 @@ engines:
     engine: qwant
     shortcut: qwn
     categories: news
-    disabled: false
     network: qwant
 
   - name: qwant images
@@ -1221,7 +1218,6 @@ engines:
     engine: qwant
     shortcut: qwi
     categories: [images, web]
-    disabled: false
     network: qwant
 
   - name: qwant videos
@@ -1229,7 +1225,6 @@ engines:
     engine: qwant
     shortcut: qwv
     categories: [videos, web]
-    disabled: false
     network: qwant
 
   # - name: library
@@ -1369,7 +1364,6 @@ engines:
     engine: solidtorrents
     shortcut: solid
     timeout: 4.0
-    disabled: false
     base_url:
       - https://solidtorrents.net
       - https://solidtorrents.eu
@@ -1394,7 +1388,6 @@ engines:
   #       FROM film
   #      WHERE title LIKE :wildcard OR description LIKE :wildcard
   #      ORDER BY duration DESC
-  #   disabled: false
 
   # Requires Tor
   - name: torch
@@ -1570,7 +1563,6 @@ engines:
     base_url: "https://{language}.wiktionary.org/"
     number_of_results: 5
     search_type: text
-    disabled: false
     about:
       website: https://www.wiktionary.org/
       wikidata_id: Q151
@@ -1620,7 +1612,6 @@ engines:
     engine: translated
     shortcut: tl
     timeout: 5.0
-    disabled: false
     # You can use without an API key, but you are limited to 1000 words/day
     # See: https://mymemory.translated.net/doc/usagelimits.php
     # api_key: ''
@@ -1761,7 +1752,6 @@ engines:
     base_url: https://www.wordnik.com/
     categories: [dictionaries]
     timeout: 5.0
-    disabled: false
 
   - name: woxikon.de synonyme
     engine: xpath
