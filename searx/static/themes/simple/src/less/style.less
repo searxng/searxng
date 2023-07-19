@@ -792,6 +792,7 @@ summary.title {
   .ltr-left(@results-width + @results-offset + (0.5 * @results-gap - 1.2em));
   transition: opacity 0.5s;
   opacity: 0;
+  pointer-events: none;
   .rounded-corners;
 
   a {
@@ -810,6 +811,7 @@ summary.title {
 
 #results.scrolling #backToTop {
   opacity: 1;
+  pointer-events: all;
 }
 
 /*
