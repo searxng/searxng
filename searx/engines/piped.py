@@ -1,7 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Piped (Videos)
+"""An alternative privacy-friendly YouTube frontend which is efficient by
+design.  `Piped’s architecture`_ consists of 3 components:
+
+- :py:obj:`backend <backend_url>`
+- :py:obj:`frontend <frontend_url>`
+- proxy
+
+.. _Piped’s architecture: https://docs.piped.video/docs/architecture/
+
 """
+
+from __future__ import annotations
 
 import time
 import random
@@ -23,24 +33,38 @@ categories = ["videos", "music"]
 paging = False
 
 # search-url
-backend_url = "https://pipedapi.kavin.rocks"
-frontend_url = "https://piped.video"
+backend_url: list|str = "https://pipedapi.kavin.rocks"
+"""Piped-Backend_: The core component behind Piped.  The value is an URL or a
+list of URLs.  In the latter case instance will be selected randomly.  For a
+complete list of offical instances see Piped-Instances (`JSON
+<https://piped-instances.kavin.rocks/>`__)
 
+.. _Piped-Instances: https://github.com/TeamPiped/Piped/wiki/Instances
+.. _Piped-Backend: https://github.com/TeamPiped/Piped-Backend
 
-# do search-request
+"""
+
+frontend_url: str = "https://piped.video"
+"""Piped-Frontend_: URL to use as link and for embeds.
+
+.. _Piped-Frontend: https://github.com/TeamPiped/Piped
+"""
+
+content_filter = 'videos'
+"""Content filter ``music_albums`` or ``videos``"""
+
 def request(query, params):
     if isinstance(backend_url, list):
         base_url = random.choice(backend_url)
     else:
         base_url = backend_url
 
-    search_url = base_url + "/search?{query}&filter=videos"
-    params["url"] = search_url.format(query=urlencode({'q': query}))
+    query = urlencode({'q': query})
+    params["url"] = base_url + f"/search?{query}&filter={content_filter}"
 
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 
