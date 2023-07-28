@@ -1137,16 +1137,26 @@ engines:
 
   - name: piped
     engine: piped
+    shortcut: ppd
+    categories: videos
+    piped_filter: videos
+    timeout: 3.0
+
+    # URL to use as link and for embeds
+    frontend_url: https://srv.piped.video
     # Instance will be selected randomly, for more see https://piped-instances.kavin.rocks/
     backend_url:
       - https://pipedapi.kavin.rocks
       - https://pipedapi-libre.kavin.rocks
       - https://pipedapi.adminforge.de
-    # URL to use as link and for embeds
-    frontend_url: https://srv.piped.video
-    shortcut: ppd
+
+  - name: piped.music
+    engine: piped
+    network: piped
+    shortcut: ppdm
+    categories: music
+    piped_filter: music_songs
     timeout: 3.0
-    disabled: true
 
   - name: piratebay
     engine: piratebay
