@@ -10,8 +10,8 @@ from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 # Project --------------------------------------------------------------
 
 project = 'SearXNG'
-copyright = '2021 SearXNG team, 2015-2021 Adam Tauber, Noémi Ványi'
-author = '2021 SearXNG team, 2015-2021 Adam Tauber'
+copyright = 'SearXNG team'
+author = 'SearXNG team'
 release, version = VERSION_STRING, VERSION_STRING
 
 SEARXNG_URL = get_setting('server.base_url') or 'https://example.org/searxng'
@@ -168,6 +168,7 @@ imgmath_image_format = 'svg'
 imgmath_font_size = 14
 # sphinx.ext.imgmath setup END
 
+html_show_sphinx = False
 html_theme_options = {"index_sidebar_logo": True}
 html_context = {"project_links": [] }
 html_context["project_links"].append(ProjectLink("Source", GIT_URL + '/tree/' + GIT_BRANCH))
