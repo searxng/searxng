@@ -27,6 +27,7 @@ paging = True
 number_of_results = 5
 http_digest_auth_user = ""
 http_digest_auth_pass = ""
+search_mode = 'global'  # 'global', 'local'. By default, in yacy this is 'global'.
 
 # search-url
 base_url = 'http://localhost:8090'
@@ -35,7 +36,7 @@ search_url = (
     '&startRecord={offset}'
     '&maximumRecords={limit}'
     '&contentdom={search_type}'
-    '&resource=global'
+    '&resource={resource}'
 )
 
 # yacy specific type-definitions
@@ -48,7 +49,11 @@ def request(query, params):
     search_type = search_types.get(params.get('category'), '0')
 
     params['url'] = base_url + search_url.format(
-        query=urlencode({'query': query}), offset=offset, limit=number_of_results, search_type=search_type
+        query=urlencode({'query': query}),
+        offset=offset,
+        limit=number_of_results,
+        search_type=search_type,
+        resource=search_mode,
     )
 
     if http_digest_auth_user and http_digest_auth_pass:
@@ -79,7 +84,6 @@ def response(resp):
     for result in search_results[0].get('items', []):
         # parse image results
         if resp.search_params.get('category') == 'images':
-
             result_url = ''
             if 'url' in result:
                 result_url = result['url']
