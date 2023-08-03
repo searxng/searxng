@@ -1,11 +1,44 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# lint: pylint
+"""YaCy_ is a free distributed search engine, built on the principles of
+peer-to-peer (P2P) networks.
+
+API: Dev:APIyacysearch_
+
+Releases:
+
+- https://github.com/yacy/yacy_search_server/tags
+- https://download.yacy.net/
+
+.. _Yacy: https://yacy.net/
+.. _Dev:APIyacysearch: https://wiki.yacy.net/index.php/Dev:APIyacysearch
+
+Configuration
+=============
+
+The engine has the following (additional) settings:
+
+.. code:: yaml
+
+   - name: yacy
+     engine: yacy
+     shortcut: ya
+     base_url: http://localhost:8090
+     # Yacy search mode. 'global' or 'local'.
+     search_mode: 'global'
+     number_of_results: 5
+     http_digest_auth_user: ""
+     http_digest_auth_pass: ""
+
+
+Implementations
+===============
 """
- Yacy (Web, Images, Videos, Music, Files)
-"""
+# pylint: disable=fixme
 
 from json import loads
-from dateutil import parser
 from urllib.parse import urlencode
+from dateutil import parser
 
 from httpx import DigestAuth
 
@@ -27,8 +60,16 @@ paging = True
 number_of_results = 5
 http_digest_auth_user = ""
 http_digest_auth_pass = ""
-search_mode = 'global'  # 'global', 'local'. By default, in yacy this is 'global'.
+search_mode = 'global'
+"""Yacy search mode ``global`` or ``local``.  By default, Yacy operates in ``global``
+mode.
 
+``global``
+  Peer-to-Peer search
+
+``local``
+  Privacy or Stealth mode, restricts the search to local yacy instance.
+"""
 # search-url
 base_url = 'http://localhost:8090'
 search_url = (
@@ -43,7 +84,6 @@ search_url = (
 search_types = {'general': 'text', 'images': 'image', 'files': 'app', 'music': 'audio', 'videos': 'video'}
 
 
-# do search-request
 def request(query, params):
     offset = (params['pageno'] - 1) * number_of_results
     search_type = search_types.get(params.get('category'), '0')
@@ -66,7 +106,6 @@ def request(query, params):
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 
