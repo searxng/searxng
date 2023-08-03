@@ -142,13 +142,14 @@ def response(resp):
 
         if piped_filter == 'videos':
             item["template"] = "videos.html"
-            item["content"] = result.get("shortDescription", "")
+            # if the value of shortDescription set, but is None, return empty string
+            item["content"] = result.get("shortDescription", "") or ""
             item["thumbnail"] = result.get("thumbnail", "")
 
         elif piped_filter == 'music_songs':
             item["template"] = "default.html"
             item["img_src"] = result.get("thumbnail", "")
-            item["content"] = result.get("uploaderName", "")
+            item["content"] = result.get("uploaderName", "") or ""
             length = result.get("duration")
             if length:
                 item["length"] = datetime.timedelta(seconds=length)
