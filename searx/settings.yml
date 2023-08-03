@@ -1845,33 +1845,6 @@ engines:
     categories: news
     brave_category: news
 
-  - name: petalsearch
-    shortcut: pts
-    engine: xpath
-    paging: true
-    search_url: https://petalsearch.com/search?query={query}&pn={pageno}
-    url_xpath: //div[@class='card-source']
-    title_xpath: //div[@class='title-name']
-    content_xpath: //div[@class='webpage-text']
-    first_page_num: 1
-    disabled: true
-    headers:
-      User-Agent: Mozilla/5.0 (Linux; Android 7.0;) \
-        AppleWebKit/537.36 (KHTML, like Gecko) \
-        Mobile Safari/537.36 (compatible; PetalBot;+https://webmaster.petalsearch.com/site/petalbot)
-    about:
-      website: https://petalsearch.com/
-      wikidata_id: Q104399280
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-
-  - name: petalsearch images
-    engine: petal_images
-    shortcut: ptsi
-    disabled: true
-    timeout: 3.0
-
   - name: lib.rs
     shortcut: lrs
     engine: xpath
