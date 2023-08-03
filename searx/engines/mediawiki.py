@@ -3,9 +3,10 @@
  General mediawiki-engine (Web)
 """
 
-from json import loads
 from string import Formatter
 from urllib.parse import urlencode, quote
+
+from searx.utils import html_to_text
 
 # about
 about = {
@@ -69,7 +70,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    search_results = loads(resp.text)
+    search_results = resp.json()
 
     # return empty array if there are no results
     if not search_results.get('query', {}).get('search'):
@@ -86,7 +87,7 @@ def response(resp):
         )
 
         # append result
-        results.append({'url': url, 'title': result['title'], 'content': ''})
+        results.append({'url': url, 'title': result['title'], 'content': html_to_text(result.get('snippet', ''))})
 
     # return results
     return results
