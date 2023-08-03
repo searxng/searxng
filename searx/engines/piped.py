@@ -32,6 +32,18 @@ named `piped` and are used by all piped engines
     shortcut: ppdm
     piped_filter: music_songs
     ...
+
+Known Quirks
+============
+
+The implementation to support :py:obj:`paging <searx.enginelib.Engine.paging>`
+is based on the *nextpage* method of Piped's REST API / the :py:obj:`frontend
+API <frontend_url>`.  This feature is *next page driven* and plays well with the
+:ref:`infinite_scroll <settings ui>` setting in SearXNG but it does not really
+fit into SearXNG's UI to select a page by number.
+
+Implementations
+===============
 """
 
 from __future__ import annotations
@@ -54,7 +66,7 @@ about = {
 
 # engine dependent config
 categories = []
-paging = False
+paging = True
 
 # search-url
 backend_url: list | str = "https://pipedapi.kavin.rocks"
@@ -95,18 +107,29 @@ def _frontend_url() -> str:
 
 def request(query, params):
 
-    query = urlencode({'q': query})
-    params["url"] = _backend_url() + f"/search?{query}&filter={piped_filter}"
+    args = {
+        'q': query,
+        'filter': piped_filter,
+    }
 
+    path = "/search"
+    if params['pageno'] > 1:
+        # don't use nextpage when user selected to jump back to page 1
+        nextpage = params['engine_data'].get('nextpage')
+        if nextpage:
+            path = "/nextpage/search"
+            args['nextpage'] = nextpage
+
+    params["url"] = _backend_url() + f"{path}?" + urlencode(args)
     return params
 
 
 def response(resp):
     results = []
 
-    search_results = resp.json()["items"]
+    json = resp.json()
 
-    for result in search_results:
+    for result in json["items"]:
         publishedDate = parser.parse(time.ctime(result.get("uploaded", 0) / 1000))
 
         item = {
@@ -132,4 +155,10 @@ def response(resp):
 
         results.append(item)
 
+    results.append(
+        {
+            "engine_data": json["nextpage"],
+            "key": "nextpage",
+        }
+    )
     return results
