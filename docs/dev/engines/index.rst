@@ -40,6 +40,12 @@ Online Engines
 
    demo/demo_online
    xpath
+   mediawiki
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
    online/*
 
 .. _offline engines:

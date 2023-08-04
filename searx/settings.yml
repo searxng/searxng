@@ -667,11 +667,6 @@ engines:
     shortcut: fsd
     categories: [it, software wikis]
     base_url: https://directory.fsf.org/
-    number_of_results: 5
-    # what part of a page matches the query string: title, text, nearmatch
-    # * title     - query matches title
-    # * text      - query matches the text of page
-    # * nearmatch - nearmatch in title
     search_type: title
     timeout: 5.0
     disabled: true
@@ -1449,13 +1444,6 @@ engines:
     engine: twitter
     disabled: true
 
-  # maybe in a fun category
-  #  - name: uncyclopedia
-  #    engine: mediawiki
-  #    shortcut: unc
-  #    base_url: https://uncyclopedia.wikia.com/
-  #    number_of_results: 5
-
   # tmp suspended - too slow, too many errors
   #  - name: urbandictionary
   #    engine      : xpath
@@ -1534,7 +1522,6 @@ engines:
     shortcut: wb
     categories: general
     base_url: "https://{language}.wikibooks.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     about:
@@ -1546,9 +1533,9 @@ engines:
     shortcut: wn
     categories: news
     base_url: "https://{language}.wikinews.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
+    srsort: create_timestamp_desc
     about:
       website: https://www.wikinews.org/
       wikidata_id: Q964
@@ -1558,7 +1545,6 @@ engines:
     shortcut: wq
     categories: general
     base_url: "https://{language}.wikiquote.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     additional_tests:
@@ -1572,7 +1558,6 @@ engines:
     shortcut: ws
     categories: general
     base_url: "https://{language}.wikisource.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     about:
@@ -1584,7 +1569,6 @@ engines:
     shortcut: wsp
     categories: [general, science]
     base_url: "https://species.wikimedia.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     about:
@@ -1596,7 +1580,6 @@ engines:
     shortcut: wt
     categories: [dictionaries]
     base_url: "https://{language}.wiktionary.org/"
-    number_of_results: 5
     search_type: text
     about:
       website: https://www.wiktionary.org/
@@ -1607,7 +1590,6 @@ engines:
     shortcut: wv
     categories: general
     base_url: "https://{language}.wikiversity.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     about:
@@ -1619,7 +1601,6 @@ engines:
     shortcut: wy
     categories: general
     base_url: "https://{language}.wikivoyage.org/"
-    number_of_results: 5
     search_type: text
     disabled: true
     about:
