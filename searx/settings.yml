@@ -1520,10 +1520,9 @@ engines:
   - name: wikibooks
     engine: mediawiki
     shortcut: wb
-    categories: general
+    categories: [general, wikimedia]
     base_url: "https://{language}.wikibooks.org/"
     search_type: text
-    disabled: true
     about:
       website: https://www.wikibooks.org/
       wikidata_id: Q367
@@ -1531,10 +1530,9 @@ engines:
   - name: wikinews
     engine: mediawiki
     shortcut: wn
-    categories: news
+    categories: [news, wikimedia]
     base_url: "https://{language}.wikinews.org/"
     search_type: text
-    disabled: true
     srsort: create_timestamp_desc
     about:
       website: https://www.wikinews.org/
@@ -1543,10 +1541,9 @@ engines:
   - name: wikiquote
     engine: mediawiki
     shortcut: wq
-    categories: general
+    categories: [general, wikimedia]
     base_url: "https://{language}.wikiquote.org/"
     search_type: text
-    disabled: true
     additional_tests:
       rosebud: *test_rosebud
     about:
@@ -1556,10 +1553,9 @@ engines:
   - name: wikisource
     engine: mediawiki
     shortcut: ws
-    categories: general
+    categories: [general, wikimedia]
     base_url: "https://{language}.wikisource.org/"
     search_type: text
-    disabled: true
     about:
       website: https://www.wikisource.org/
       wikidata_id: Q263
@@ -1567,10 +1563,9 @@ engines:
   - name: wikipecies
     engine: mediawiki
     shortcut: wsp
-    categories: [general, science]
+    categories: [general, science, wikimedia]
     base_url: "https://species.wikimedia.org/"
     search_type: text
-    disabled: true
     about:
       website: https://species.wikimedia.org/
       wikidata_id: Q13679
@@ -1578,7 +1573,7 @@ engines:
   - name: wiktionary
     engine: mediawiki
     shortcut: wt
-    categories: [dictionaries]
+    categories: [dictionaries, wikimedia]
     base_url: "https://{language}.wiktionary.org/"
     search_type: text
     about:
@@ -1588,10 +1583,9 @@ engines:
   - name: wikiversity
     engine: mediawiki
     shortcut: wv
-    categories: general
+    categories: [general, wikimedia]
     base_url: "https://{language}.wikiversity.org/"
     search_type: text
-    disabled: true
     about:
       website: https://www.wikiversity.org/
       wikidata_id: Q370
@@ -1599,10 +1593,9 @@ engines:
   - name: wikivoyage
     engine: mediawiki
     shortcut: wy
-    categories: general
+    categories: [general, wikimedia]
     base_url: "https://{language}.wikivoyage.org/"
     search_type: text
-    disabled: true
     about:
       website: https://www.wikivoyage.org/
       wikidata_id: Q373
