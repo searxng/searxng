@@ -415,6 +415,7 @@ engines:
   - name: btdigg
     engine: btdigg
     shortcut: bt
+    disabled: true
 
   - name: ccc-tv
     engine: xpath
@@ -1925,6 +1926,10 @@ engines:
       require_api_key: false
       results: HTML
       language: ja
+
+  - name: bt4g
+    engine: bt4g
+    shortcut: bt4g
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.
