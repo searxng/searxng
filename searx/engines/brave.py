@@ -5,7 +5,6 @@
 
 from urllib.parse import urlencode
 import chompjs
-import json
 
 about = {
     "website": 'https://search.brave.com/',
@@ -58,12 +57,12 @@ def response(resp):
             break
 
     json_data = chompjs.parse_js_object(datastr)
-    json_results = json_data[1]["data"]["body"]["response"]["results"]
 
-    with open("outfile.json", "w") as f:
-        json.dump(json_data, f)
+    json_resp = json_data[1]['data']['body']['response']
+    if categories[0] == 'news':
+        json_resp = json_resp['news']
 
-    for result in json_results:
+    for result in json_resp["results"]:
         item = {
             'url': result['url'],
             'title': result['title'],
@@ -72,16 +71,15 @@ def response(resp):
         if result['thumbnail'] != "null":
             item['thumbnail'] = result['thumbnail']['src']
 
-        match categories[0]:
-            case 'images':
-                item['template'] = 'images.html'
-                item['img_format'] = result['properties']['format']
-                item['source'] = result['source']
-                item['img_src'] = result['properties']['url']
-            case 'videos':
-                item['template'] = 'videos.html'
-                item['length'] = result['video']['duration']
-        
+        if categories[0] == 'images':
+            item['template'] = 'images.html'
+            item['img_format'] = result['properties']['format']
+            item['source'] = result['source']
+            item['img_src'] = result['properties']['url']
+        elif categories[0] == 'videos':
+            item['template'] = 'videos.html'
+            item['length'] = result['video']['duration']
+
         results.append(item)
 
     return results
