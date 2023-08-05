@@ -4,10 +4,8 @@
 """
 
 from urllib.parse import urlencode
-from lxml import html
-from searx.utils import extract_text, eval_xpath, eval_xpath_list
-import chompjs, json
-import re
+import chompjs
+import json
 
 about = {
     "website": 'https://search.brave.com/',
@@ -19,7 +17,8 @@ about = {
 }
 base_url = "https://search.brave.com/"
 paging = False
-categories = ['images', 'videos', 'news'] # images, videos, news
+categories = ['images', 'videos', 'news']  # images, videos, news
+
 
 def request(query, params):
     args = {
@@ -28,38 +27,61 @@ def request(query, params):
     }
     params["url"] = f"{base_url}{categories[0]}?{urlencode(args)}"
 
-def get_image_results(text):
+
+def get_video_results(json_data):
     results = []
 
-    datastr = ""
-    for line in text.split("\n"):
-        if "const data = " in line:
-            datastr = line.replace("const data = ", "").strip()[:-1]
-            break
-
-    json_data = chompjs.parse_js_object(datastr)
-
-    for result in json_data[1]["data"]["body"]["response"]["results"]:
+    for result in json_data:
         results.append(
             {
-                'template': 'images.html',
+                'template': 'videos.html',
                 'url': result['url'],
                 'thumbnail_src': result['thumbnail']['src'],
                 'img_src': result['properties']['url'],
                 'content': result['description'],
                 'title': result['title'],
                 'source': result['source'],
-                'img_format': result['properties']['format'],
+                'duration': result['video']['duration'],
             }
         )
 
     return results
 
-def response(resp):
-    dom = html.fromstring(resp.text)
 
-    match categories[0]:
-        case 'images':
-            return get_image_results(resp.text)
-        case _:
-            return []
+def response(resp):
+    results = []
+
+    datastr = ""
+    for line in resp.text.split("\n"):
+        if "const data = " in line:
+            datastr = line.replace("const data = ", "").strip()[:-1]
+            break
+
+    json_data = chompjs.parse_js_object(datastr)
+    json_results = json_data[1]["data"]["body"]["response"]["results"]
+
+    with open("outfile.json", "w") as f:
+        json.dump(json_data, f)
+
+    for result in json_results:
+        item = {
+            'url': result['url'],
+            'title': result['title'],
+            'content': result['description'],
+        }
+        if result['thumbnail'] != "null":
+            item['thumbnail'] = result['thumbnail']['src']
+
+        match categories[0]:
+            case 'images':
+                item['template'] = 'images.html'
+                item['img_format'] = result['properties']['format']
+                item['source'] = result['source']
+                item['img_src'] = result['properties']['url']
+            case 'videos':
+                item['template'] = 'videos.html'
+                item['length'] = result['video']['duration']
+        
+        results.append(item)
+
+    return results
