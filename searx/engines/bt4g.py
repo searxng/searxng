@@ -1,7 +1,40 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""
- BT4G (Videos, Music, Files)
+"""BT4G_ (bt4g.com) is not a tracker and doesn't store any content and only
+collects torrent metadata (such as file names and file sizes) and a magnet link
+(torrent identifier).
+
+This engine does not parse the HTML page because there is an API in XML (RSS).
+The RSS feed provides fewer data like amount of seeders/leechers and the files
+in the torrent file.  It's a tradeoff for a "stable" engine as the XML from RSS
+content will change way less than the HTML page.
+
+.. _BT4G: https://bt4g.com/
+
+Configuration
+=============
+
+The engine has the following additional settings:
+
+- :py:obj:`bt4g_order_by`
+- :py:obj:`bt4g_category`
+
+With this options a SearXNG maintainer is able to configure **additional**
+engines for specific torrent searches.  For example a engine to search only for
+Movies and sort the result list by the count of seeders.
+
+.. code:: yaml
+
+  - name: bt4g.movie
+    engine: bt4g
+    shortcut: bt4gv
+    categories: video
+    bt4g_order_by: seeders
+    bt4g_category: 'movie'
+
+Implementations
+===============
+
 """
 
 import re
@@ -28,8 +61,19 @@ time_range_support = True
 # search-url
 url = 'https://bt4gprx.com'
 search_url = url + '/search?q={search_term}&orderby={order_by}&category={category}&p={pageno}&page=rss'
-bt4g_order_by = 'relevance'  # relevance, size, seeders, time
-bt4g_category = 'all'  # all, audio, movie, doc, app, other
+bt4g_order_by = 'relevance'
+"""Result list can be ordered by ``relevance`` (default), ``size``, ``seeders``
+or ``time``.
+
+.. hint::
+
+  When *time_range* is activate, the results always orderd by ``time``.
+"""
+
+bt4g_category = 'all'
+"""BT$G offers categoies: ``all`` (default), ``audio``, ``movie``, ``doc``,
+``app`` and `` other``.
+"""
 
 
 def request(query, params):
