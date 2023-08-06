@@ -11,8 +11,23 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib.sh"
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_nvm.sh"
 
-# shellcheck source=utils/lib_static.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_static.sh"
+# shellcheck source=utils/lib_sxng_data.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_data.sh"
+
+# shellcheck source=utils/lib_sxng_weblate.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_weblate.sh"
+
+# shellcheck source=utils/lib_sxng_static.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_static.sh"
+
+# shellcheck source=utils/lib_sxng_node.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_node.sh"
+
+# shellcheck source=utils/lib_sxng_themes.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_themes.sh"
+
+# shellcheck source=utils/lib_sxng_test.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_test.sh"
 
 # shellcheck source=utils/lib_go.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
@@ -27,9 +42,8 @@ PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.30.0"
-export NODE_MINIMUM_VERSION="16.13.0"
 # SPHINXOPTS=
-BLACK_OPTIONS=("--target-version" "py37" "--line-length" "120" "--skip-string-normalization")
+BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
 
 _dev_redis_sock="/usr/local/searxng-redis/run/redis.sock"
@@ -73,13 +87,6 @@ buildenv:
   rebuild ./utils/brand.env
 webapp.:
   run       : run developer instance
-weblate.:
-  push.translations: push translation changes from SearXNG to Weblate's counterpart
-  to.translations: Update 'translations' branch with last additions from Weblate.
-data.:
-  all       : update searx/sxng_locales.py and searx/data/*
-  traits    : update searx/data/engine_traits.json & searx/sxng_locales.py
-  useragents: update searx/data/useragents.json with the most recent versions of Firefox
 docs.:
   html      : build HTML documentation
   live      : autobuild HTML documentation while editing
@@ -96,10 +103,6 @@ redis:
   build     : build redis binaries at $(redis._get_dist)
   install   : create user (${REDIS_USER}) and install systemd service (${REDIS_SERVICE_NAME})
   help      : show more redis commands
-node.:
-  env       : download & install SearXNG's npm dependencies locally
-  env.dev   : download & install developer and CI tools
-  clean     : drop locally npm installations
 py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
@@ -112,24 +115,16 @@ pypi.upload:
   Upload python packages to PyPi (to test use pypi.upload.test)
 format.:
   python    : format Python code source using black
-test.:
-  yamllint  : lint YAML files (YAMLLINT_FILES)
-  pylint    : lint PYLINT_FILES, searx/engines, searx & tests
-  pyright   : static type check of python sources
-  black     : check black code format
-  unit      : run unit tests
-  coverage  : run unit tests with coverage
-  robot     : run robot test
-  rst       : test .rst files incl. README.rst
-  clean     : clean intermediate test stuff
-themes.:
-  all       : build all themes
-  simple    : build simple theme
 pygments.:
   less      : build LESS files for pygments
 EOF
     go.help
-    static_help
+    node.help
+    weblate.help
+    data.help
+    test.help
+    themes.help
+    static.help
     cat <<EOF
 environment ...
   SEARXNG_REDIS_URL : ${SEARXNG_REDIS_URL}
@@ -181,258 +176,6 @@ buildenv() {
             | prefix_stdout "${_Blue}BUILDENV${_creset}  "
     )
     return "${PIPESTATUS[0]}"
-}
-
-TRANSLATIONS_WORKTREE="$CACHE/translations"
-
-weblate.translations.worktree() {
-
-    # Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
-    # 'translations' from Weblate's counterpart (weblate) of the SearXNG
-    # (origin).
-    #
-    #     remote weblate https://translate.codeberg.org/git/searxng/searxng/
-
-    (   set -e
-        if ! git remote get-url weblate 2> /dev/null; then
-            git remote add weblate https://translate.codeberg.org/git/searxng/searxng/
-        fi
-        if [ -d "${TRANSLATIONS_WORKTREE}" ]; then
-            pushd .
-            cd "${TRANSLATIONS_WORKTREE}"
-            git reset --hard HEAD
-            git pull origin translations
-            popd
-        else
-            mkdir -p "${TRANSLATIONS_WORKTREE}"
-            git worktree add "${TRANSLATIONS_WORKTREE}" translations
-        fi
-    )
-}
-
-weblate.to.translations() {
-
-    # Update 'translations' branch of SearXNG (origin) with last additions from
-    # Weblate.
-
-    # 1. Check if Weblate is locked, if not die with error message
-    # 2. On Weblate's counterpart (weblate), pull master and translations branch
-    #    from SearXNG (origin).
-    # 3. Commit changes made in a Weblate object on Weblate's counterpart
-    #    (weblate).
-    # 4. In translations worktree, merge changes of branch 'translations' from
-    #    remote 'weblate' and push it on branch 'translations' of 'origin'
-
-    (   set -e
-        pyenv.activate
-        if [ "$(wlc lock-status)" != "locked: True" ]; then
-            die 1 "weblate must be locked, currently: $(wlc lock-status)"
-        fi
-        # weblate: commit pending changes
-        wlc pull
-        wlc commit
-
-        # get the translations in a worktree
-        weblate.translations.worktree
-
-        pushd "${TRANSLATIONS_WORKTREE}"
-        git remote update weblate
-        git merge weblate/translations
-        git push
-        popd
-    )
-    dump_return $?
-}
-
-weblate.translations.commit() {
-
-    # Update 'translations' branch of SearXNG (origin) with last additions from
-    # Weblate.  Copy the changes to the master branch, compile translations and
-    # create a commit in the local branch (master)
-
-    local existing_commit_hash commit_body commit_message exitcode
-    (   set -e
-        pyenv.activate
-        # lock change on weblate
-        wlc lock
-
-        # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
-        weblate.translations.worktree
-        existing_commit_hash=$(cd "${TRANSLATIONS_WORKTREE}"; git log -n1  --pretty=format:'%h')
-
-        # pull weblate commits
-        weblate.to.translations
-
-        # copy the changes to the master branch
-        cp -rv --preserve=mode,timestamps "${TRANSLATIONS_WORKTREE}/searx/translations" "searx"
-
-        # compile translations
-        build_msg BABEL 'compile translation catalogs into binary MO files'
-        pybabel compile --statistics \
-                -d "searx/translations"
-        # git add/commit (no push)
-        commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
-        commit_message=$(echo -e "[translations] update from Weblate\n\n${commit_body}")
-        git add searx/translations
-        git commit -m "${commit_message}"
-    )
-    exitcode=$?
-    (   # make sure to always unlock weblate
-        set -e
-        pyenv.cmd wlc unlock
-    )
-    dump_return $exitcode
-}
-
-weblate.push.translations() {
-
-    # Push *translation changes* from SearXNG (origin) to Weblate's counterpart
-    # (weblate).
-
-    # In branch master of SearXNG (origin) check for meaningful changes in
-    # folder 'searx/translations', commit changes on branch 'translations' and
-    # at least, pull updated branches on Weblate's counterpart (weblate).
-
-    # 1. Create git worktree ${TRANSLATIONS_WORKTREE} and checkout branch
-    #    'translations' from remote 'weblate'.
-    # 2. Stop if there is no meaningful change in the 'master' branch (origin),
-    #    compared to the 'translations' branch (weblate), otherwise ...
-    # 3. Update 'translations' branch of SearXNG (origin) with last additions
-    #    from Weblate.
-    # 5. Notify Weblate to pull updated 'master' & 'translations' branch.
-
-    local messages_pot diff_messages_pot last_commit_hash last_commit_detail \
-          exitcode
-    messages_pot="${TRANSLATIONS_WORKTREE}/searx/translations/messages.pot"
-    (   set -e
-        pyenv.activate
-        # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
-        weblate.translations.worktree
-
-        # update messages.pot in the master branch
-        build_msg BABEL 'extract messages from source files and generate POT file'
-        pybabel extract -F babel.cfg \
-                -o "${messages_pot}" \
-                "searx/"
-
-        # stop if there is no meaningful change in the master branch
-        diff_messages_pot=$(cd "${TRANSLATIONS_WORKTREE}";\
-                            git diff -- "searx/translations/messages.pot")
-        if ! echo "$diff_messages_pot" | grep -qE "[\+\-](msgid|msgstr)"; then
-            build_msg BABEL 'no changes detected, exiting'
-            return 42
-        fi
-        return 0
-    )
-    exitcode=$?
-    if [ "$exitcode" -eq 42 ]; then
-        return 0
-    fi
-    if [ "$exitcode" -gt 0 ]; then
-       return $exitcode
-    fi
-    (
-        set -e
-        pyenv.activate
-
-        # lock change on weblate
-        # weblate may add commit(s) since the call to "weblate.translations.worktree".
-        # this is not a problem because after this line, "weblate.to.translations"
-        # calls again "weblate.translations.worktree" which calls "git pull"
-        wlc lock
-
-        # save messages.pot in the translations branch for later
-        pushd "${TRANSLATIONS_WORKTREE}"
-        git stash push
-        popd
-
-        # merge weblate commits into the translations branch
-        weblate.to.translations
-
-        # restore messages.pot in the translations branch
-        pushd "${TRANSLATIONS_WORKTREE}"
-        git stash pop
-        popd
-
-        # update messages.po files in the master branch
-        build_msg BABEL 'update existing message catalogs from POT file'
-        pybabel update -N \
-            -i "${messages_pot}" \
-            -d "${TRANSLATIONS_WORKTREE}/searx/translations"
-
-        # git add/commit/push
-        last_commit_hash=$(git log -n1  --pretty=format:'%h')
-        last_commit_detail=$(git log -n1 --pretty=format:'%h - %as - %aN <%ae>' "${last_commit_hash}")
-
-        pushd "${TRANSLATIONS_WORKTREE}"
-        git add searx/translations
-        git commit \
-            -m "[translations] update messages.pot and messages.po files" \
-            -m "From ${last_commit_detail}"
-        git push
-        popd
-
-        # notify weblate to pull updated master & translations branch
-        wlc pull
-    )
-    exitcode=$?
-    (   # make sure to always unlock weblate
-        set -e
-        pyenv.activate
-        wlc unlock
-    )
-    dump_return $exitcode
-}
-
-data.all() {
-    (   set -e
-
-        pyenv.activate
-        data.traits
-        data.useragents
-
-        build_msg DATA "update searx/data/osm_keys_tags.json"
-        pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
-        build_msg DATA "update searx/data/ahmia_blacklist.txt"
-        python searxng_extra/update/update_ahmia_blacklist.py
-        build_msg DATA "update searx/data/wikidata_units.json"
-        python searxng_extra/update/update_wikidata_units.py
-        build_msg DATA "update searx/data/currencies.json"
-        python searxng_extra/update/update_currencies.py
-        build_msg DATA "update searx/data/external_bangs.json"
-        python searxng_extra/update/update_external_bangs.py
-        build_msg DATA "update searx/data/engine_descriptions.json"
-        python searxng_extra/update/update_engine_descriptions.py
-    )
-}
-
-
-data.traits() {
-    (   set -e
-        pyenv.activate
-        build_msg DATA "update searx/data/engine_traits.json"
-        python searxng_extra/update/update_engine_traits.py
-        build_msg ENGINES "update searx/sxng_locales.py"
-    )
-    dump_return $?
-}
-
-data.useragents() {
-    build_msg DATA "update searx/data/useragents.json"
-    pyenv.cmd python searxng_extra/update/update_firefox_version.py
-    dump_return $?
-}
-
-docs.prebuild() {
-    build_msg DOCS "build ${DOCS_BUILD}/includes"
-    (
-        set -e
-        [ "$VERBOSE" = "1" ] && set -x
-        mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
-        pyenv.cmd searxng_extra/docs_prebuild
-    )
-    dump_return $?
 }
 
 docker.push() {
@@ -554,44 +297,6 @@ gecko.driver() {
     dump_return $?
 }
 
-nodejs.ensure() {
-    if ! nvm.min_node "${NODE_MINIMUM_VERSION}"; then
-        info_msg "install Node.js by NVM"
-        nvm.nodejs
-    fi
-}
-
-node.env() {
-    nodejs.ensure
-    (   set -e
-        build_msg INSTALL "./searx/static/themes/simple/package.json"
-        npm --prefix searx/static/themes/simple install
-    )
-    dump_return $?
-}
-
-node.env.dev() {
-    nodejs.ensure
-    build_msg INSTALL "./package.json: developer and CI tools"
-    npm install
-}
-
-node.clean() {
-    if ! required_commands npm 2>/dev/null; then
-        build_msg CLEAN "npm is not installed / ignore npm dependencies"
-        return 0
-    fi
-    build_msg CLEAN "themes -- locally installed npm dependencies"
-    (   set -e
-        npm --prefix searx/static/themes/simple run clean
-    )
-    build_msg CLEAN "locally installed developer and CI tools"
-    (   set -e
-        npm --prefix . run clean
-    )
-    dump_return $?
-}
-
 pygments.less() {
     build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
     if ! pyenv.cmd python searxng_extra/update/update_pygments.py; then
@@ -674,150 +379,6 @@ format.python() {
     dump_return $?
 }
 
-test.yamllint() {
-    build_msg TEST "[yamllint] \$YAMLLINT_FILES"
-    pyenv.cmd yamllint --strict --format parsable "${YAMLLINT_FILES[@]}"
-    dump_return $?
-}
-
-test.pylint() {
-    # shellcheck disable=SC2086
-    (   set -e
-        build_msg TEST "[pylint] \$PYLINT_FILES"
-        pyenv.activate
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
-            "${PYLINT_FILES[@]}"
-
-        build_msg TEST "[pylint] searx/engines"
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
-            --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
-            searx/engines
-
-        build_msg TEST "[pylint] searx tests"
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
-	    --ignore=searx/engines \
-	    searx tests
-    )
-    dump_return $?
-}
-
-test.pyright() {
-    build_msg TEST "[pyright] static type check of python sources"
-    node.env.dev
-    # We run Pyright in the virtual environment because Pyright
-    # executes "python" to determine the Python version.
-    build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
-    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
-        | grep -v ".py$" \
-        | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
-        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
-        | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "categories" is not defined'
-    dump_return $?
-}
-
-test.black() {
-    build_msg TEST "[black] \$BLACK_TARGETS"
-    pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
-    dump_return $?
-}
-
-test.unit() {
-    build_msg TEST 'tests/unit'
-    pyenv.cmd python -m nose2 -s tests/unit
-    dump_return $?
-}
-
-test.coverage() {
-    build_msg TEST 'unit test coverage'
-    (   set -e
-        pyenv.activate
-        python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
-        coverage report
-        coverage html
-    )
-    dump_return $?
-}
-
-test.robot() {
-    build_msg TEST 'robot'
-    gecko.driver
-    PYTHONPATH=. pyenv.cmd python -m tests.robot
-    dump_return $?
-}
-
-test.rst() {
-    build_msg TEST "[reST markup] ${RST_FILES[*]}"
-    for rst in "${RST_FILES[@]}"; do
-        pyenv.cmd rst2html.py --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
-    done
-}
-
-test.pybabel() {
-    TEST_BABEL_FOLDER="build/test/pybabel"
-    build_msg TEST "[extract messages] pybabel"
-    mkdir -p "${TEST_BABEL_FOLDER}"
-    pyenv.cmd pybabel extract -F babel.cfg -o "${TEST_BABEL_FOLDER}/messages.pot" searx
-}
-
-test.clean() {
-    build_msg CLEAN  "test stuff"
-    rm -rf geckodriver.log .coverage coverage/
-    dump_return $?
-}
-
-themes.all() {
-    (   set -e
-        pygments.less
-        node.env
-        themes.simple
-    )
-    dump_return $?
-}
-
-themes.live() {
-    local LIVE_THEME="${LIVE_THEME:-${1}}"
-    case "${LIVE_THEME}" in
-        simple)
-            theme="searx/static/themes/${LIVE_THEME}"
-            ;;
-        '')
-            die_caller 42 "missing theme argument"
-            ;;
-        *)
-            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple]'"
-            ;;
-    esac
-    build_msg GRUNT "theme: $1 (live build)"
-    nodejs.ensure
-    cd "${theme}"
-    {
-        npm install
-        npm run watch
-    } 2>&1 \
-        | prefix_stdout "${_Blue}THEME ${1} ${_creset}  " \
-        | grep -E --ignore-case --color 'error[s]?[:]? |warning[s]?[:]? |'
-}
-
-themes.simple() {
-    (   set -e
-        build_msg GRUNT "theme: simple"
-        npm --prefix searx/static/themes/simple run build
-    )
-    dump_return $?
-}
-
-themes.simple.test() {
-    build_msg TEST "theme: simple"
-    nodejs.ensure
-    npm --prefix searx/static/themes/simple install
-    npm --prefix searx/static/themes/simple run test
-    dump_return $?
-}
 
 PYLINT_FILES=()
 while IFS= read -r line; do
