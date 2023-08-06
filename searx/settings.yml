@@ -1816,50 +1816,34 @@ engines:
     timeout: 9.0
 
   - name: brave
-    shortcut: brave
-    engine: xpath
-    paging: true
+    engine: brave
+    shortcut: br
     time_range_support: true
-    first_page_num: 0
-    time_range_url: "&tf={time_range_val}"
-    search_url: https://search.brave.com/search?q={query}&offset={pageno}&spellcheck=1{time_range}
-    url_xpath: //a[@class="result-header"]/@href
-    title_xpath: //span[@class="snippet-title"]
-    content_xpath: //p[1][@class="snippet-description"]
-    suggestion_xpath: //div[@class="text-gray h6"]/a
-    time_range_map:
-      day: 'pd'
-      week: 'pw'
-      month: 'pm'
-      year: 'py'
+    paging: true
     categories: [general, web]
-    disabled: true
-    headers:
-      Accept-Encoding: gzip, deflate
-    about:
-      website: https://brave.com/search/
-      wikidata_id: Q107355971
-      use_official_api: false
-      require_api_key: false
-      results: HTML
+    brave_category: search
+    # brave_spellcheck: true
 
   - name: brave.images
-    shortcut: braveimg
     engine: brave
-    categories: images
-    disabled: true
+    network: brave
+    shortcut: brimg
+    categories: [images, web]
+    brave_category: images
 
   - name: brave.videos
-    shortcut: bravevid
     engine: brave
-    categories: videos
-    disabled: true
+    network: brave
+    shortcut: brvid
+    categories: [videos, web]
+    brave_category: videos
 
   - name: brave.news
-    shortcut: bravenews
     engine: brave
+    network: brave
+    shortcut: brnews
     categories: news
-    disabled: true
+    brave_category: news
 
   - name: petalsearch
     shortcut: pts
