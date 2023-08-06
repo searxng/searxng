@@ -20,7 +20,7 @@ assignees: ''
 **How can SearXNG fetch the information from this engine?**
 <!-- List API URL, example code (using the correct markdown) and more
 that could be useful for the developers in order to implement this engine.
-If you don't know what to write, let this part blank.>
+If you don't know what to write, let this part blank. -->
 
 **Applicable category of this engine**
 <!-- Where should this new engine fit in SearXNG? Current categories in SearXNG:
