@@ -148,7 +148,7 @@ live build
 Live build is like WYSIWYG.  If you want to edit the documentation, its
 recommended to use.  The Makefile target ``docs.live`` builds the docs, opens
 URL in your favorite browser and rebuilds every time a reST file has been
-changed.
+changed (:ref:`make docs.clean`).
 
 .. code:: sh
 
@@ -183,3 +183,8 @@ commit and push:
 .. code:: sh
 
    $ make docs.clean docs.gh-pages
+
+.. attention::
+
+   If you are working in your own brand, don't forgett to adjust your
+   :ref:`settings brand`.

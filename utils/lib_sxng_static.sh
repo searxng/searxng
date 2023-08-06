@@ -12,7 +12,7 @@ STATIC_BUILT_PATHS=(
     'searx/templates/simple/icons.html'
 )
 
-static_help(){
+static.help(){
     cat <<EOF
 static.build.:  ${STATIC_BUILD_COMMIT}
   commit    : build & commit /static folder
