@@ -886,6 +886,33 @@ engines:
     timeout: 4.0
     disabled: true
 
+  - name: lemmy communities
+    engine: lemmy
+    lemmy_type: Communities
+    shortcut: leco
+    disabled: true
+
+  - name: lemmy users
+    engine: lemmy
+    network: lemmy communities
+    lemmy_type: Users
+    shortcut: leus
+    disabled: true
+
+  - name: lemmy posts
+    engine: lemmy
+    network: lemmy communities
+    lemmy_type: Posts
+    shortcut: lepo
+    disabled: true
+
+  - name: lemmy comments
+    engine: lemmy
+    network: lemmy communities
+    lemmy_type: Comments
+    shortcut: lecom
+    disabled: true
+
   - name: library genesis
     engine: xpath
     search_url: https://libgen.fun/search.php?req={query}
