@@ -237,7 +237,8 @@ def _parse_search(resp):
 
     answer_tag = eval_xpath_getindex(dom, '//div[@class="answer"]', 0, default=None)
     if answer_tag:
-        result_list.append({'answer': extract_text(answer_tag)})
+        url = eval_xpath_getindex(dom, '//div[@id="featured_snippet"]/a[@class="result-header"]/@href', 0, default=None)
+        result_list.append({'answer': extract_text(answer_tag), 'url': url})
 
     # xpath_results = '//div[contains(@class, "snippet fdb") and @data-type="web"]'
     xpath_results = '//div[contains(@class, "snippet")]'
