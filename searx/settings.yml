@@ -1431,6 +1431,11 @@ engines:
   #      WHERE title LIKE :wildcard OR description LIKE :wildcard
   #      ORDER BY duration DESC
 
+  - name: tagesschau
+    engine: tagesschau
+    shortcut: ts
+    disabled: true
+
   # Requires Tor
   - name: torch
     engine: xpath
