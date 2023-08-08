@@ -22,7 +22,7 @@ from typing import List, Dict, Iterable
 
 import urllib
 import urllib.parse
-from urllib.parse import urlencode, unquote
+from urllib.parse import urlencode, urlparse, unquote
 
 import httpx
 
@@ -444,6 +444,7 @@ def render(template_name: str, **kwargs):
             }
         )
     )
+    kwargs['urlparse'] = urlparse
 
     # scripts from plugins
     kwargs['scripts'] = set()

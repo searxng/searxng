@@ -23,11 +23,10 @@
     <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
         {%- for answer in answers.values() -%}
         <div class="answer">
-              {% if answer.url %}
-                <a href="{{ answer.url }}">{{ answer.answer }}</a>
-              {% else %}
-                <span>{{ answer.answer }}</span>
-              {% endif %}
+        <span>{{ answer.answer }}</span>
+          {% if answer.url -%}
+          <a href="{{ answer.url }}" class="answer-url">{{ urlparse(answer.url).hostname }}</a>
+          {% endif -%}
         </div>
         {%- endfor -%}
     </div>
