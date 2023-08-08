@@ -31,12 +31,73 @@ Configured ``brave`` engines:
     brave_category: news
 
 
+.. _brave regions:
+
+Brave regions
+=============
+
+Brave uses two-digit tags for the regions like ``ca`` while SearXNG deals with
+locales.  To get a mapping, all *officatl de-facto* languages of the Brave
+region are mapped to regions in SearXNG (see :py:obj:`babel
+<babel.languages.get_official_languages>`):
+
+.. code:: python
+
+    "regions": {
+      ..
+      "en-CA": "ca",
+      "fr-CA": "ca",
+      ..
+     }
+
+
+.. note::
+
+   The language (aka region) support of Brave's index is limited to very basic
+   languages.  The search results for languages like Chinese or Arabic are of
+   low quality.
+
+
+.. _brave languages:
+
+Brave languages
+===============
+
+Brave's language support is limited to the UI (menues, area local notations,
+etc).  Brave's index only seems to support a locale, but it does not seem to
+support any languages in its index.  The choice of available languages is very
+small (and its not clear to me where the differencee in UI is when switching
+from en-us to en-ca or en-gb).
+
+In the :py:obj:`EngineTraits object <searx.enginelib.traits.EngineTraits>` the
+UI languages are stored in a custom field named ``ui_lang``:
+
+.. code:: python
+
+    "custom": {
+      "ui_lang": {
+        "ca": "ca",
+        "de-DE": "de-de",
+        "en-CA": "en-ca",
+        "en-GB": "en-gb",
+        "en-US": "en-us",
+        "es": "es",
+        "fr-CA": "fr-ca",
+        "fr-FR": "fr-fr",
+        "ja-JP": "ja-jp",
+        "pt-BR": "pt-br",
+        "sq-AL": "sq-al"
+      }
+    },
+
 Implementations
 ===============
 
 """
-# pylint: disable=fixme
 
+from typing import TYPE_CHECKING
+
+import re
 from urllib.parse import (
     urlencode,
     urlparse,
@@ -46,11 +107,20 @@ from urllib.parse import (
 import chompjs
 from lxml import html
 
+from searx import locales
 from searx.utils import (
     extract_text,
     eval_xpath_list,
     eval_xpath_getindex,
 )
+from searx.enginelib.traits import EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
+
+traits: EngineTraits
 
 about = {
     "website": 'https://search.brave.com/',
@@ -118,23 +188,20 @@ def request(query, params):
 
     params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
 
-    # set preferences in cookie
+    # set properties in the cookies
+
     params['cookies']['safesearch'] = safesearch_map.get(params['safesearch'], 'off')
-
-    # ToDo: we need a fetch_traits(..) implementation / the ui_lang of Brave are
-    #       limited and the country handling has it quirks
-
-    eng_locale = params.get('searxng_locale')
-    params['cookies']['useLocation'] = '0'  # the useLocation is IP based, we use 'country'
+    # the useLocation is IP based, we use cookie 'country' for the region
+    params['cookies']['useLocation'] = '0'
     params['cookies']['summarizer'] = '0'
 
-    if not eng_locale or eng_locale == 'all':
-        params['cookies']['country'] = 'all'  # country=all
-    else:
-        params['cookies']['country'] = eng_locale.split('-')[-1].lower()
-        params['cookies']['ui_lang'] = eng_locale.split('-')[0].lower()
+    engine_region = traits.get_region(params['searxng_locale'], 'all')
+    params['cookies']['country'] = engine_region.split('-')[-1].lower()  # type: ignore
 
-    # logger.debug("cookies %s", params['cookies'])
+    ui_lang = locales.get_engine_locale(params['searxng_locale'], traits.custom["ui_lang"], 'en-us')
+    params['cookies']['ui_lang'] = ui_lang
+
+    logger.debug("cookies %s", params['cookies'])
 
 
 def response(resp):
@@ -195,7 +262,7 @@ def _parse_search(resp):
         video_tag = eval_xpath_getindex(
             result, './/div[contains(@class, "video-snippet") and @data-macro="video"]', 0, default=None
         )
-        if video_tag:
+        if video_tag is not None:
 
             # In my tests a video tag in the WEB search was mostoften not a
             # video, except the ones from youtube ..
@@ -281,3 +348,72 @@ def _parse_videos(json_resp):
         result_list.append(item)
 
     return result_list
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """Fetch :ref:`languages <brave languages>` and :ref:`regions <brave
+    regions>` from Brave."""
+
+    # pylint: disable=import-outside-toplevel
+
+    import babel.languages
+    from searx.locales import region_tag, language_tag
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+
+    engine_traits.custom["ui_lang"] = {}
+
+    headers = {
+        'Accept-Encoding': 'gzip, deflate',
+    }
+    lang_map = {'no': 'nb'}  # norway
+
+    # languages (UI)
+
+    resp = get('https://search.brave.com/settings', headers=headers)
+
+    if not resp.ok:  # type: ignore
+        print("ERROR: response from Brave is not OK.")
+    dom = html.fromstring(resp.text)  # type: ignore
+
+    for option in dom.xpath('//div[@id="language-select"]//option'):
+
+        ui_lang = option.get('value')
+        try:
+            if '-' in ui_lang:
+                sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep='-'))
+            else:
+                sxng_tag = language_tag(babel.Locale.parse(ui_lang))
+
+        except babel.UnknownLocaleError:
+            print("ERROR: can't determine babel locale of Brave's (UI) language %s" % ui_lang)
+            continue
+
+        conflict = engine_traits.custom["ui_lang"].get(sxng_tag)
+        if conflict:
+            if conflict != ui_lang:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, ui_lang))
+            continue
+        engine_traits.custom["ui_lang"][sxng_tag] = ui_lang
+
+    # search regions of brave
+
+    engine_traits.all_locale = 'all'
+
+    for country in dom.xpath('//div[@id="sidebar"]//ul/li/div[contains(@class, "country")]'):
+
+        flag = country.xpath('./span[contains(@class, "flag")]')[0]
+        # country_name = extract_text(flag.xpath('./following-sibling::*')[0])
+        country_tag = re.search(r'flag-([^\s]*)\s', flag.xpath('./@class')[0]).group(1)  # type: ignore
+
+        # add offical languages of the country ..
+        for lang_tag in babel.languages.get_official_languages(country_tag, de_facto=True):
+            lang_tag = lang_map.get(lang_tag, lang_tag)
+            sxng_tag = region_tag(babel.Locale.parse('%s_%s' % (lang_tag, country_tag.upper())))
+            # print("%-20s: %s <-- %s" % (country_name, country_tag, sxng_tag))
+
+            conflict = engine_traits.regions.get(sxng_tag)
+            if conflict:
+                if conflict != country_tag:
+                    print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, country_tag))
+                    continue
+            engine_traits.regions[sxng_tag] = country_tag
