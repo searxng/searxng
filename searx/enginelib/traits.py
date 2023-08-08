@@ -95,8 +95,8 @@ class EngineTraits:
         :param default: engine's default language
 
         The *best fits* rules are implemented in
-        :py:obj:`locales.get_engine_locale`.  Except for the special value ``all``
-        which is determined from :py:obj`EngineTraits.all_language`.
+        :py:obj:`searx.locales.get_engine_locale`.  Except for the special value ``all``
+        which is determined from :py:obj:`EngineTraits.all_locale`.
         """
         if searxng_locale == 'all' and self.all_locale is not None:
             return self.all_locale
@@ -111,18 +111,20 @@ class EngineTraits:
         :param default: engine's default region
 
         The *best fits* rules are implemented in
-        :py:obj:`locales.get_engine_locale`.  Except for the special value ``all``
-        which is determined from :py:obj`EngineTraits.all_language`.
+        :py:obj:`searx.locales.get_engine_locale`.  Except for the special value ``all``
+        which is determined from :py:obj:`EngineTraits.all_locale`.
         """
         if searxng_locale == 'all' and self.all_locale is not None:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.regions, default=default)
 
     def is_locale_supported(self, searxng_locale: str) -> bool:
-        """A *locale* (SearXNG's internal representation) is considered to be supported
-        by the engine if the *region* or the *language* is supported by the
-        engine.  For verification the functions :py:func:`self.get_region` and
-        :py:func:`self.get_region` are used.
+        """A *locale* (SearXNG's internal representation) is considered to be
+        supported by the engine if the *region* or the *language* is supported
+        by the engine.
+
+        For verification the functions :py:func:`EngineTraits.get_region` and
+        :py:func:`EngineTraits.get_language` are used.
         """
         if self.data_type == 'traits_v1':
             return bool(self.get_region(searxng_locale) or self.get_language(searxng_locale))
