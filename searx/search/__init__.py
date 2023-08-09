@@ -8,6 +8,7 @@ from timeit import default_timer
 from uuid import uuid4
 
 import flask
+from flask import copy_current_request_context
 import babel
 
 from searx import settings
@@ -140,8 +141,9 @@ class Search:
         search_id = str(uuid4())
 
         for engine_name, query, request_params in requests:
+            _search = copy_current_request_context(PROCESSORS[engine_name].search)
             th = threading.Thread(  # pylint: disable=invalid-name
-                target=PROCESSORS[engine_name].search,
+                target=_search,
                 args=(query, request_params, self.result_container, self.start_time, self.actual_timeout),
                 name=search_id,
             )
