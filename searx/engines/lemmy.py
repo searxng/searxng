@@ -39,8 +39,12 @@ Implementations
 
 """
 
+from datetime import datetime
 from urllib.parse import urlencode
+
 from markdown_it import MarkdownIt
+from flask_babel import gettext
+
 from searx.utils import html_to_text
 
 about = {
@@ -83,14 +87,22 @@ def _get_communities(json):
     results = []
 
     for result in json["communities"]:
+        counts = result['counts']
+        metadata = (
+            f"{gettext('subscribers')}: {counts.get('subscribers', 0)}"
+            f" | {gettext('posts')}: {counts.get('posts', 0)}"
+            f" | {gettext('active users')}: {counts.get('users_active_half_year', 0)}"
+        )
         results.append(
             {
                 'url': result['community']['actor_id'],
                 'title': result['community']['title'],
                 'content': _format_content(result['community'].get('description', '')),
+                'img_src': result['community'].get('icon', result['community'].get('banner')),
+                'publishedDate': datetime.strptime(counts['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'metadata': metadata,
             }
         )
-
     return results
 
 
@@ -113,11 +125,31 @@ def _get_posts(json):
     results = []
 
     for result in json["posts"]:
+        user = result['creator'].get('display_name', result['creator']['name'])
+
+        img_src = None
+        if result['post'].get('thumbnail_url'):
+            img_src = result['post']['thumbnail_url'] + '?format=webp&thumbnail=128'
+
+        metadata = (
+            f"&#x25B2; {result['counts']['upvotes']} &#x25BC; {result['counts']['downvotes']}"
+            f" | {gettext('user')}: {user}"
+            f" | {gettext('comments')}: {result['counts']['comments']}"
+            f" | {gettext('community')}: {result['community']['title']}"
+        )
+
+        content = result['post'].get('body', '').strip()
+        if content:
+            content = _format_content(content)
+
         results.append(
             {
                 'url': result['post']['ap_id'],
                 'title': result['post']['name'],
-                'content': _format_content(result['post'].get('body', '')),
+                'content': content,
+                'img_src': img_src,
+                'publishedDate': datetime.strptime(result['post']['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'metadata': metadata,
             }
         )
 
@@ -128,11 +160,25 @@ def _get_comments(json):
     results = []
 
     for result in json["comments"]:
+        user = result['creator'].get('display_name', result['creator']['name'])
+
+        content = result['comment'].get('content', '').strip()
+        if content:
+            content = _format_content(content)
+
+        metadata = (
+            f"&#x25B2; {result['counts']['upvotes']} &#x25BC; {result['counts']['downvotes']}"
+            f" | {gettext('user')}: {user}"
+            f" | {gettext('community')}: {result['community']['title']}"
+        )
+
         results.append(
             {
                 'url': result['comment']['ap_id'],
                 'title': result['post']['name'],
                 'content': _format_content(result['comment']['content']),
+                'publishedDate': datetime.strptime(result['comment']['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'metadata': metadata,
             }
         )
 
