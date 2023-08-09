@@ -1,11 +1,25 @@
 #!/usr/bin/env python
 # lint: pylint
-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # (C) Copyright Contributors to the SearXNG project.
-# (C) Copyright Contributors to the searx project (2014 - 2021)
 
 """Script to run SearXNG from terminal.
+
+  DON'T USE THIS SCRIPT!!
+
+.. danger::
+
+   Be warned, using the ``standalone_searx.py`` won't give you privacy!
+
+   On the contrary, this script behaves like a SearXNG server: your IP is
+   exposed and tracked by all active engines (google, bing, qwant, ... ), with
+   every query!
+
+.. note::
+
+   This is an old and grumpy hack / SearXNG is a Flask application with
+   client/server structure, which can't be turned into a command line tool the
+   way it was done here.
 
 Getting categories without initiate the engine will only return `['general']`
 
@@ -22,54 +36,6 @@ Example to use this script:
 .. code::  bash
 
     $ python3 searxng_extra/standalone_searx.py rain
-
-.. danger::
-
-   Be warned, using the ``standalone_searx.py`` won't give you privacy!
-
-   On the contrary, this script behaves like a SearXNG server: your IP is
-   exposed and tracked by all active engines (google, bing, qwant, ... ), with
-   every query!
-
-Example to run it from python:
-
->>> import importlib
-... import json
-... import sys
-... import searx.engines
-... import searx.search
-... search_query = 'rain'
-... # initialize engines
-... searx.search.initialize()
-... # load engines categories once instead of each time the function called
-... engine_cs = list(searx.engines.categories.keys())
-... # load module
-... spec = importlib.util.spec_from_file_location(
-...     'utils.standalone_searx', 'searxng_extra/standalone_searx.py')
-... sas = importlib.util.module_from_spec(spec)
-... spec.loader.exec_module(sas)
-... # use function from module
-... prog_args = sas.parse_argument([search_query], category_choices=engine_cs)
-... search_q = sas.get_search_query(prog_args, engine_categories=engine_cs)
-... res_dict = sas.to_dict(search_q)
-... sys.stdout.write(json.dumps(
-...     res_dict, sort_keys=True, indent=4, ensure_ascii=False,
-...     default=sas.json_serial))
-{
-    "answers": [],
-    "infoboxes": [ {...} ],
-    "paging": true,
-    "results": [... ],
-    "number_of_results": 820000000.0,
-    "search": {
-        "lang": "all",
-        "pageno": 1,
-        "q": "rain",
-        "safesearch": 0,
-        "timerange": null
-    },
-    "suggestions": [...]
-}
 
 """  # pylint: disable=line-too-long
 

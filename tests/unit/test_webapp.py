@@ -198,9 +198,7 @@ class ViewsTestCase(SearxTestCase):
         result = self.app.get('/preferences')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<form id="search_form" method="post" action="/preferences"', result.data)
-        self.assertIn(
-            b'<input type="checkbox" id="checkbox_general" name="category_general" checked="checked"/>', result.data
-        )
+        self.assertIn(b'<div id="categories_container">', result.data)
         self.assertIn(b'<legend id="pref_ui_locale">Interface language</legend>', result.data)
 
     def test_browser_locale(self):
