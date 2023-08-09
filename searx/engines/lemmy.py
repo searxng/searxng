@@ -56,7 +56,7 @@ about = {
     "results": 'JSON',
 }
 paging = True
-categories = ['general', 'social media']
+categories = ['social media']
 
 base_url = "https://lemmy.ml/"
 """By default, https://lemmy.ml is used for providing the results.  If you want
