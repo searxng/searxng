@@ -1520,10 +1520,12 @@ engines:
 
   - name: wikibooks
     engine: mediawiki
+    weight: 0.5
     shortcut: wb
     categories: [general, wikimedia]
     base_url: "https://{language}.wikibooks.org/"
     search_type: text
+    disabled: true
     about:
       website: https://www.wikibooks.org/
       wikidata_id: Q367
@@ -1541,10 +1543,12 @@ engines:
 
   - name: wikiquote
     engine: mediawiki
+    weight: 0.5
     shortcut: wq
     categories: [general, wikimedia]
     base_url: "https://{language}.wikiquote.org/"
     search_type: text
+    disabled: true
     additional_tests:
       rosebud: *test_rosebud
     about:
@@ -1553,6 +1557,7 @@ engines:
 
   - name: wikisource
     engine: mediawiki
+    weight: 0.5
     shortcut: ws
     categories: [general, wikimedia]
     base_url: "https://{language}.wikisource.org/"
@@ -1567,6 +1572,7 @@ engines:
     categories: [general, science, wikimedia]
     base_url: "https://species.wikimedia.org/"
     search_type: text
+    disabled: true
     about:
       website: https://species.wikimedia.org/
       wikidata_id: Q13679
@@ -1583,20 +1589,24 @@ engines:
 
   - name: wikiversity
     engine: mediawiki
+    weight: 0.5
     shortcut: wv
     categories: [general, wikimedia]
     base_url: "https://{language}.wikiversity.org/"
     search_type: text
+    disabled: true
     about:
       website: https://www.wikiversity.org/
       wikidata_id: Q370
 
   - name: wikivoyage
     engine: mediawiki
+    weight: 0.5
     shortcut: wy
     categories: [general, wikimedia]
     base_url: "https://{language}.wikivoyage.org/"
     search_type: text
+    disabled: true
     about:
       website: https://www.wikivoyage.org/
       wikidata_id: Q373
