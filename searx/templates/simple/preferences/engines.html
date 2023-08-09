@@ -20,6 +20,7 @@
         <th>{{- _("Supports selected language") -}}</th>{{- '' -}}
         <th>{{- _("SafeSearch") -}}</th>{{- '' -}}
         <th>{{- _("Time range") -}}</th>{{- '' -}}
+        <th>{{- _("Weight") }}</th>
         {%- if enable_metrics -%}
           <th>{{- _("Response time") -}}</th>
         {%- endif -%}
@@ -72,6 +73,7 @@
               <td>
                 {{- checkbox(None, supports[search_engine.name]['time_range_support'], true) -}}
               </td>{{- '' -}}
+              <td>{{- search_engine.weight or '1.0' -}}</td>{{- '' -}}
               {%- if enable_metrics -%}
                 {{- engine_time(search_engine.name) -}}
               {%- endif -%}
