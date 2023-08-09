@@ -94,4 +94,7 @@ SOCIAL_MEDIA_TERMS = {
     'POINTS': 'points',
     'TITLE': 'title',
     'AUTHOR': 'author',
+    'THREAD OPEN': 'open',
+    'THREAD CLOSED': 'closed',
+    'THREAD ANSWERED': 'answered',
 }
