@@ -48,7 +48,8 @@ def response(resp):
         return response_movies(resp)
     if play_categ == 'apps':
         return response_apps(resp)
-    return []
+
+    raise ValueError(f"Unsupported play category: {play_categ}")
 
 
 def response_movies(resp):
