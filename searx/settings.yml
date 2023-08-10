@@ -328,6 +328,20 @@ engines:
     enable_http: true
     shortcut: ah
 
+  - name: anaconda
+    engine: xpath
+    paging: true
+    first_page_num: 0
+    search_url: https://anaconda.org/search?q={query}&page={pageno}
+    results_xpath: //tbody/tr
+    url_xpath: ./td/h5/a[last()]/@href
+    title_xpath: ./td/h5
+    content_xpath: ./td[h5]/text()
+    categories: it
+    timeout: 6.0
+    shortcut: conda
+    disabled: true
+
   - name: arch linux wiki
     engine: archlinux
     shortcut: al
