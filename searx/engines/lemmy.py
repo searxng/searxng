@@ -129,7 +129,7 @@ def _get_posts(json):
 
         img_src = None
         if result['post'].get('thumbnail_url'):
-            img_src = result['post']['thumbnail_url'] + '?format=webp&thumbnail=128'
+            img_src = result['post']['thumbnail_url'] + '?format=webp&thumbnail=208'
 
         metadata = (
             f"&#x25B2; {result['counts']['upvotes']} &#x25BC; {result['counts']['downvotes']}"
