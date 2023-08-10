@@ -227,7 +227,7 @@ def response(resp):
     if brave_category == 'videos':
         return _parse_videos(json_resp)
 
-    return []
+    raise ValueError(f"Unsupported brave category: {brave_category}")
 
 
 def _parse_search(resp):
