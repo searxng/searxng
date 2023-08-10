@@ -1807,6 +1807,31 @@ engines:
       results: HTML
       language: de
 
+  - name: seekr news
+    engine: seekr
+    paging: false
+    shortcut: senews
+    categories: news
+    seekr_path: newssearch
+    seekr_api_version: v2
+    disabled: true
+
+  - name: seekr images
+    engine: seekr
+    shortcut: seimg
+    categories: images
+    seekr_path: imagetab
+    seekr_api_version: v1
+    disabled: true
+
+  - name: seekr videos
+    engine: seekr
+    shortcut: sevid
+    categories: videos
+    seekr_path: videotab
+    seekr_api_version: v1
+    disabled: true
+
   - name: sjp.pwn
     engine: sjp
     shortcut: sjp
