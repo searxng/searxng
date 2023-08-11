@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra/standalone_searx.py &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DevOps tooling box" href="../../utils/index.html" />
+    <link rel="prev" title="searxng_extra/update/" href="update.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../utils/index.html" title="DevOps tooling box"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="update.html" title="searxng_extra/update/"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">searxng_extra/standalone_searx.py</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searxng_extra.standalone_searx">
+<span id="searxng-extra-standalone-searx-py"></span><span id="standalone-searx-py"></span><h1><code class="docutils literal notranslate"><span class="pre">searxng_extra/standalone_searx.py</span></code><a class="headerlink" href="#module-searxng_extra.standalone_searx" title="Permalink to this heading">¶</a></h1>
+<p>Script to run SearXNG from terminal.</p>
+<blockquote>
+<div><p>DON’T USE THIS SCRIPT!!</p>
+</div></blockquote>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Be warned, using the <code class="docutils literal notranslate"><span class="pre">standalone_searx.py</span></code> won’t give you privacy!</p>
+<p>On the contrary, this script behaves like a SearXNG server: your IP is
+exposed and tracked by all active engines (google, bing, qwant, … ), with
+every query!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is an old and grumpy hack / SearXNG is a Flask application with
+client/server structure, which can’t be turned into a command line tool the
+way it was done here.</p>
+</div>
+<p>Getting categories without initiate the engine will only return <cite>[‘general’]</cite></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">searx.engines</span>
+<span class="gp">... </span><span class="nb">list</span><span class="p">(</span><span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;general&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">searx.search</span>
+<span class="gp">... </span><span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="gp">... </span><span class="nb">list</span><span class="p">(</span><span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;general&#39;, &#39;it&#39;, &#39;science&#39;, &#39;images&#39;, &#39;news&#39;, &#39;videos&#39;, &#39;music&#39;, &#39;files&#39;, &#39;social media&#39;, &#39;map&#39;]</span>
+</pre></div>
+</div>
+<p>Example to use this script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>searxng_extra/standalone_searx.py<span class="w"> </span>rain
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.standalone_searx.get_search_query">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.standalone_searx.</span></span><span class="sig-name descname"><span class="pre">get_search_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><span class="pre">Namespace</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></span><a class="reference internal" href="../../_modules/searxng_extra/standalone_searx.html#get_search_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.standalone_searx.get_search_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get  search results for the query</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.standalone_searx.json_serial">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.standalone_searx.</span></span><span class="sig-name descname"><span class="pre">json_serial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../../_modules/searxng_extra/standalone_searx.html#json_serial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.standalone_searx.json_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON serializer for objects not serializable by default json code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – raised when <strong>obj</strong> is not serializable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.standalone_searx.no_parsed_url">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.standalone_searx.</span></span><span class="sig-name descname"><span class="pre">no_parsed_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/searxng_extra/standalone_searx.html#no_parsed_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.standalone_searx.no_parsed_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove parsed url from dict.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.standalone_searx.parse_argument">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.standalone_searx.</span></span><span class="sig-name descname"><span class="pre">parse_argument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_choices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><span class="pre">Namespace</span></a></span></span><a class="reference internal" href="../../_modules/searxng_extra/standalone_searx.html#parse_argument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.standalone_searx.parse_argument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse command line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#SystemExit" title="(in Python v3.11)"><strong>SystemExit</strong></a> – Query argument required on <cite>args</cite></p>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">importlib</span>
+<span class="gp">... </span><span class="c1"># load module</span>
+<span class="gp">... </span><span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;utils.standalone_searx&#39;</span><span class="p">,</span> <span class="s1">&#39;utils/standalone_searx.py&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">sas</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">sas</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">sas</span><span class="o">.</span><span class="n">parse_argument</span><span class="p">()</span>
+<span class="go">usage: ptipython [-h] [--category [{general}]] [--lang [LANG]] [--pageno [PAGENO]] [--safesearch [{0,1,2}]] [--timerange [{day,week,month,year}]]</span>
+<span class="go">                 query</span>
+<span class="go">SystemExit: 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sas</span><span class="o">.</span><span class="n">parse_argument</span><span class="p">([</span><span class="s1">&#39;rain&#39;</span><span class="p">])</span>
+<span class="go">Namespace(category=&#39;general&#39;, lang=&#39;all&#39;, pageno=1, query=&#39;rain&#39;, safesearch=&#39;0&#39;, timerange=None)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.standalone_searx.to_dict">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.standalone_searx.</span></span><span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/searxng_extra/standalone_searx.html#to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.standalone_searx.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get result from parsed arguments.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a>
+        <ul>
+          <li>Previous: <a href="update.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a>
+          <li>Next: <a href="../../utils/index.html" title="next chapter">DevOps tooling box</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/searxng_extra/standalone_searx.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

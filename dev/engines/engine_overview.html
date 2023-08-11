@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Engine Overview &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Demo Online Engine" href="demo/demo_online.html" />
+    <link rel="prev" title="SearXNG’s engines loader" href="engines.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo/demo_online.html" title="Demo Online Engine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="engines.html" title="SearXNG’s engines loader"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Engine Overview</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="engine-overview">
+<span id="engines-dev"></span><h1>Engine Overview<a class="headerlink" href="#engine-overview" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#general-engine-configuration" id="id16">General Engine Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#engine-file" id="id17">Engine File</a></p></li>
+<li><p><a class="reference internal" href="#engine-settings-yml" id="id18">Engine <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></p></li>
+<li><p><a class="reference internal" href="#overrides" id="id19">Overrides</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#making-a-request" id="id20">Making a Request</a></p>
+<ul>
+<li><p><a class="reference internal" href="#passed-arguments-request" id="id21">Passed Arguments (request)</a></p></li>
+<li><p><a class="reference internal" href="#specify-request" id="id22">Specify Request</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#result-types-template" id="id23">Result Types (<code class="docutils literal notranslate"><span class="pre">template</span></code>)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#default" id="id24"><code class="docutils literal notranslate"><span class="pre">default</span></code></a></p></li>
+<li><p><a class="reference internal" href="#images" id="id25"><code class="docutils literal notranslate"><span class="pre">images</span></code></a></p></li>
+<li><p><a class="reference internal" href="#videos" id="id26"><code class="docutils literal notranslate"><span class="pre">videos</span></code></a></p></li>
+<li><p><a class="reference internal" href="#torrent" id="id27"><code class="docutils literal notranslate"><span class="pre">torrent</span></code></a></p></li>
+<li><p><a class="reference internal" href="#map" id="id28"><code class="docutils literal notranslate"><span class="pre">map</span></code></a></p></li>
+<li><p><a class="reference internal" href="#paper" id="id29"><code class="docutils literal notranslate"><span class="pre">paper</span></code></a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a></p></li>
+<li><p><a class="reference internal" href="../../admin/settings/settings_engine.html#settings-engine"><span class="std std-ref">engine:</span></a></p></li>
+</ul>
+</aside>
+<p>SearXNG is a <a class="reference external" href="https://en.wikipedia.org/wiki/Metasearch_engine">metasearch-engine</a>, so it uses different search engines to provide
+better results.</p>
+<p>Because there is no general search API which could be used for every search
+engine, an adapter has to be built between SearXNG and the external search
+engines.  Adapters are stored under the folder <a class="reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines">git://searx/engines</a>.</p>
+<section id="general-engine-configuration">
+<span id="id1"></span><h2><a class="toc-backref" href="#id16" role="doc-backlink">General Engine Configuration</a><a class="headerlink" href="#general-engine-configuration" title="Permalink to this heading">¶</a></h2>
+<p>It is required to tell SearXNG the type of results the engine provides. The
+arguments can be set in the engine file or in the settings file (normally
+<code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>). The arguments in the settings file override the ones in the
+engine file.</p>
+<p>It does not matter if an option is stored in the engine file or in the settings.
+However, the standard way is the following:</p>
+<section id="engine-file">
+<span id="id2"></span><h3><a class="toc-backref" href="#id17" role="doc-backlink">Engine File</a><a class="headerlink" href="#engine-file" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Common options in the engine module</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>categories</p></td>
+<td><p>list</p></td>
+<td><p>categories, in which the engine is working</p></td>
+</tr>
+<tr class="row-odd"><td><p>paging</p></td>
+<td><p>boolean</p></td>
+<td><p>support multiple pages</p></td>
+</tr>
+<tr class="row-even"><td><p>time_range_support</p></td>
+<td><p>boolean</p></td>
+<td><p>support search time range</p></td>
+</tr>
+<tr class="row-odd"><td><p>engine_type</p></td>
+<td><p>str</p></td>
+<td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">online</span></code> <a class="reference internal" href="index.html#online-engines"><span class="std std-ref">[ref]</span></a> by
+default, other possibles values are:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offline</span></code> <a class="reference internal" href="index.html#offline-engines"><span class="std std-ref">[ref]</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code> <a class="reference internal" href="index.html#online-dictionary"><span class="std std-ref">[ref]</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">online_currency</span></code> <a class="reference internal" href="index.html#online-currency"><span class="std std-ref">[ref]</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">online_url_search</span></code> <a class="reference internal" href="index.html#online-url-search"><span class="std std-ref">[ref]</span></a></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="engine-settings-yml">
+<span id="engine-settings"></span><h3><a class="toc-backref" href="#id18" role="doc-backlink">Engine <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a><a class="headerlink" href="#engine-settings-yml" title="Permalink to this heading">¶</a></h3>
+<p>For a more  detailed description, see <a class="reference internal" href="../../admin/settings/settings_engine.html#settings-engine"><span class="std std-ref">engine:</span></a> in the <a class="reference internal" href="../../admin/settings/settings.html#settings-yml"><span class="std std-ref">settings.yml</span></a>.</p>
+<table class="docutils align-default" id="id4" style="width: 100%">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Common options in the engine setup (<code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>)</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>string</p></td>
+<td><p>name of search-engine</p></td>
+</tr>
+<tr class="row-odd"><td><p>engine</p></td>
+<td><p>string</p></td>
+<td><p>name of searxng-engine (file name without <code class="docutils literal notranslate"><span class="pre">.py</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>enable_http</p></td>
+<td><p>bool</p></td>
+<td><p>enable HTTP (by default only HTTPS is enabled).</p></td>
+</tr>
+<tr class="row-odd"><td><p>shortcut</p></td>
+<td><p>string</p></td>
+<td><p>shortcut of search-engine</p></td>
+</tr>
+<tr class="row-even"><td><p>timeout</p></td>
+<td><p>string</p></td>
+<td><p>specific timeout for search-engine</p></td>
+</tr>
+<tr class="row-odd"><td><p>display_error_messages</p></td>
+<td><p>boolean</p></td>
+<td><p>display error messages on the web UI</p></td>
+</tr>
+<tr class="row-even"><td><p>proxies</p></td>
+<td><p>dict</p></td>
+<td><p>set proxies for a specific engine
+(e.g. <code class="docutils literal notranslate"><span class="pre">proxies</span> <span class="pre">:</span> <span class="pre">{http:</span> <span class="pre">socks5://proxy:port,</span>
+<span class="pre">https:</span> <span class="pre">socks5://proxy:port}</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="overrides">
+<span id="engine-overrides"></span><h3><a class="toc-backref" href="#id19" role="doc-backlink">Overrides</a><a class="headerlink" href="#overrides" title="Permalink to this heading">¶</a></h3>
+<p>A few of the options have default values in the namespace of engine’s python
+modul, but are often overwritten by the settings.  If <code class="docutils literal notranslate"><span class="pre">None</span></code> is assigned to an
+option in the engine file, it has to be redefined in the settings, otherwise
+SearXNG will not start with that engine (global names with a leading underline can
+be <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<p>Here is an very simple example of the global names in the namespace of engine’s
+module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">_non_overwritten_global</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+</pre></div>
+</div>
+<table class="docutils align-default" id="id5" style="width: 100%">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">The naming of overrides is arbitrary / recommended overrides are:</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>base_url</p></td>
+<td><p>string</p></td>
+<td><p>base-url, can be overwritten to use same
+engine on other URL</p></td>
+</tr>
+<tr class="row-odd"><td><p>number_of_results</p></td>
+<td><p>int</p></td>
+<td><p>maximum number of results per request</p></td>
+</tr>
+<tr class="row-even"><td><p>language</p></td>
+<td><p>string</p></td>
+<td><p>ISO code of language and country like en_US</p></td>
+</tr>
+<tr class="row-odd"><td><p>api_key</p></td>
+<td><p>string</p></td>
+<td><p>api-key if required by engine</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="making-a-request">
+<span id="engine-request"></span><h2><a class="toc-backref" href="#id20" role="doc-backlink">Making a Request</a><a class="headerlink" href="#making-a-request" title="Permalink to this heading">¶</a></h2>
+<p>To perform a search an URL have to be specified.  In addition to specifying an
+URL, arguments can be passed to the query.</p>
+<section id="passed-arguments-request">
+<span id="engine-request-arguments"></span><h3><a class="toc-backref" href="#id21" role="doc-backlink">Passed Arguments (request)</a><a class="headerlink" href="#passed-arguments-request" title="Permalink to this heading">¶</a></h3>
+<p>These arguments can be used to construct the search query.  Furthermore,
+parameters with default value can be redefined for special purposes.</p>
+<span id="engine-request-online"></span><table class="docutils align-default" id="id6" style="width: 100%">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">If the <code class="docutils literal notranslate"><span class="pre">engine_type</span></code> is <a class="reference internal" href="../../src/searx.search.processors.html#searx.search.processors.online.OnlineProcessor.get_params" title="searx.search.processors.online.OnlineProcessor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">online</span></code></a></span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default-value, information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>url</p></td>
+<td><p>str</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">''</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>method</p></td>
+<td><p>str</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'GET'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>headers</p></td>
+<td><p>set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>data</p></td>
+<td><p>set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>cookies</p></td>
+<td><p>set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>verify</p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>headers.User-Agent</p></td>
+<td><p>str</p></td>
+<td><p>a random User-Agent</p></td>
+</tr>
+<tr class="row-odd"><td><p>category</p></td>
+<td><p>str</p></td>
+<td><p>current category, like <code class="docutils literal notranslate"><span class="pre">'general'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>safesearch</p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code> (normal, moderate, strict)</p></td>
+</tr>
+<tr class="row-odd"><td><p>time_range</p></td>
+<td><p>Optional[str]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code>, can be <code class="docutils literal notranslate"><span class="pre">day</span></code>, <code class="docutils literal notranslate"><span class="pre">week</span></code>, <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">year</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>pageno</p></td>
+<td><p>int</p></td>
+<td><p>current pagenumber</p></td>
+</tr>
+<tr class="row-odd"><td><p>searxng_locale</p></td>
+<td><p>str</p></td>
+<td><p>SearXNG’s locale selected by user.  Specific language code like
+<code class="docutils literal notranslate"><span class="pre">'en'</span></code>, <code class="docutils literal notranslate"><span class="pre">'en-US'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'all'</span></code> if unspecified.</p></td>
+</tr>
+</tbody>
+</table>
+<span id="engine-request-online-dictionary"></span><table class="docutils align-default" id="id7" style="width: 100%">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">If the <code class="docutils literal notranslate"><span class="pre">engine_type</span></code> is <a class="reference internal" href="../../src/searx.search.processors.html#searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params" title="searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">online_dictionary</span></code></a>,
+        in addition to the <a class="reference internal" href="#engine-request-online"><span class="std std-ref">online</span></a> arguments:</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default-value, information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>from_lang</p></td>
+<td><p>str</p></td>
+<td><p>specific language code like <code class="docutils literal notranslate"><span class="pre">'en_US'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>to_lang</p></td>
+<td><p>str</p></td>
+<td><p>specific language code like <code class="docutils literal notranslate"><span class="pre">'en_US'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>query</p></td>
+<td><p>str</p></td>
+<td><p>the text query without the languages</p></td>
+</tr>
+</tbody>
+</table>
+<span id="engine-request-online-currency"></span><table class="docutils align-default" id="id8" style="width: 100%">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">If the <code class="docutils literal notranslate"><span class="pre">engine_type</span></code> is <a class="reference internal" href="../../src/searx.search.processors.html#searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params" title="searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">online_currency</span></code></a>,
+        in addition to the <a class="reference internal" href="#engine-request-online"><span class="std std-ref">online</span></a> arguments:</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default-value, information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>amount</p></td>
+<td><p>float</p></td>
+<td><p>the amount to convert</p></td>
+</tr>
+<tr class="row-odd"><td><p>from</p></td>
+<td><p>str</p></td>
+<td><p>ISO 4217 code</p></td>
+</tr>
+<tr class="row-even"><td><p>to</p></td>
+<td><p>str</p></td>
+<td><p>ISO 4217 code</p></td>
+</tr>
+<tr class="row-odd"><td><p>from_name</p></td>
+<td><p>str</p></td>
+<td><p>currency name</p></td>
+</tr>
+<tr class="row-even"><td><p>to_name</p></td>
+<td><p>str</p></td>
+<td><p>currency name</p></td>
+</tr>
+</tbody>
+</table>
+<span id="engine-request-online-url-search"></span><table class="docutils align-default" id="id9" style="width: 100%">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">If the <code class="docutils literal notranslate"><span class="pre">engine_type</span></code> is <a class="reference internal" href="../../src/searx.search.processors.html#searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params" title="searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">online_url_search</span></code></a>,
+        in addition to the <a class="reference internal" href="#engine-request-online"><span class="std std-ref">online</span></a> arguments:</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default-value, information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>search_url</p></td>
+<td><p>dict</p></td>
+<td><p>URLs from the search query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s1">&#39;http&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+  <span class="s1">&#39;ftp&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+  <span class="s1">&#39;data:image&#39;</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="specify-request">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Specify Request</a><a class="headerlink" href="#specify-request" title="Permalink to this heading">¶</a></h3>
+<p>The function <a class="reference internal" href="demo/demo_online.html#searx.engines.demo_online.request" title="searx.engines.demo_online.request"><code class="xref py py-func docutils literal notranslate"><span class="pre">def</span> <span class="pre">request(query,</span> <span class="pre">params):</span></code></a> always returns the <code class="docutils literal notranslate"><span class="pre">params</span></code> variable, the
+following parameters can be used to specify a search request:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>argument</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>url</p></td>
+<td><p>str</p></td>
+<td><p>requested url</p></td>
+</tr>
+<tr class="row-odd"><td><p>method</p></td>
+<td><p>str</p></td>
+<td><p>HTTP request method</p></td>
+</tr>
+<tr class="row-even"><td><p>headers</p></td>
+<td><p>set</p></td>
+<td><p>HTTP header information</p></td>
+</tr>
+<tr class="row-odd"><td><p>data</p></td>
+<td><p>set</p></td>
+<td><p>HTTP data information</p></td>
+</tr>
+<tr class="row-even"><td><p>cookies</p></td>
+<td><p>set</p></td>
+<td><p>HTTP cookies</p></td>
+</tr>
+<tr class="row-odd"><td><p>verify</p></td>
+<td><p>bool</p></td>
+<td><p>Performing SSL-Validity check</p></td>
+</tr>
+<tr class="row-even"><td><p>allow_redirects</p></td>
+<td><p>bool</p></td>
+<td><p>Follow redirects</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_redirects</p></td>
+<td><p>int</p></td>
+<td><p>maximum redirects, hard limit</p></td>
+</tr>
+<tr class="row-even"><td><p>soft_max_redirects</p></td>
+<td><p>int</p></td>
+<td><p>maximum redirects, soft limit. Record an error but don’t stop the engine</p></td>
+</tr>
+<tr class="row-odd"><td><p>raise_for_httperror</p></td>
+<td><p>bool</p></td>
+<td><p>True by default: raise an exception if the HTTP code of response is &gt;= 300</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="result-types-template">
+<span id="engine-media-types"></span><span id="engine-results"></span><h2><a class="toc-backref" href="#id23" role="doc-backlink">Result Types (<code class="docutils literal notranslate"><span class="pre">template</span></code>)</a><a class="headerlink" href="#result-types-template" title="Permalink to this heading">¶</a></h2>
+<p>Each result item of an engine can be of different media-types.  Currently the
+following media-types are supported.  To set another media-type as
+<a class="reference internal" href="#template-default"><span class="std std-ref">default</span></a>, the parameter <code class="docutils literal notranslate"><span class="pre">template</span></code> must be set to the desired
+type.</p>
+<section id="default">
+<span id="template-default"></span><h3><a class="toc-backref" href="#id24" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">default</span></code></a><a class="headerlink" href="#default" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id10" style="width: 100%">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">Parameter of the <strong>default</strong> media type:</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>url</p></td>
+<td><p>string, url of the result</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p>string, title of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>content</p></td>
+<td><p>string, general result-text</p></td>
+</tr>
+<tr class="row-odd"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>, time of publish</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="images">
+<span id="template-images"></span><h3><a class="toc-backref" href="#id25" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">images</span></code></a><a class="headerlink" href="#images" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id11" style="width: 100%">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Parameter of the <strong>images</strong> media type:</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>template</p></th>
+<th class="head"><p>is set to <code class="docutils literal notranslate"><span class="pre">images.html</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>url</p></td>
+<td><p>string, url to the result site</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>string, title of the result <em>(partly implemented)</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>content</p></td>
+<td><p><em>(partly implemented)</em></p></td>
+</tr>
+<tr class="row-even"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>,
+time of publish <em>(partly implemented)</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>img_src</p></td>
+<td><p>string, url to the result image</p></td>
+</tr>
+<tr class="row-even"><td><p>thumbnail_src</p></td>
+<td><p>string, url to a small-preview image</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="videos">
+<span id="template-videos"></span><h3><a class="toc-backref" href="#id26" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">videos</span></code></a><a class="headerlink" href="#videos" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id12" style="width: 100%">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Parameter of the <strong>videos</strong> media type:</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>template</p></th>
+<th class="head"><p>is set to <code class="docutils literal notranslate"><span class="pre">videos.html</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>url</p></td>
+<td><p>string, url of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>string, title of the result</p></td>
+</tr>
+<tr class="row-odd"><td><p>content</p></td>
+<td><p><em>(not implemented yet)</em></p></td>
+</tr>
+<tr class="row-even"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>, time of publish</p></td>
+</tr>
+<tr class="row-odd"><td><p>thumbnail</p></td>
+<td><p>string, url to a small-preview image</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="torrent">
+<span id="template-torrent"></span><h3><a class="toc-backref" href="#id27" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">torrent</span></code></a><a class="headerlink" href="#torrent" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id13" style="width: 100%">
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">Parameter of the <strong>torrent</strong> media type:</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>template</p></th>
+<th class="head"><p>is set to <code class="docutils literal notranslate"><span class="pre">torrent.html</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>url</p></td>
+<td><p>string, url of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>string, title of the result</p></td>
+</tr>
+<tr class="row-odd"><td><p>content</p></td>
+<td><p>string, general result-text</p></td>
+</tr>
+<tr class="row-even"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>,
+time of publish <em>(not implemented yet)</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>seed</p></td>
+<td><p>int, number of seeder</p></td>
+</tr>
+<tr class="row-even"><td><p>leech</p></td>
+<td><p>int, number of leecher</p></td>
+</tr>
+<tr class="row-odd"><td><p>filesize</p></td>
+<td><p>int, size of file in bytes</p></td>
+</tr>
+<tr class="row-even"><td><p>files</p></td>
+<td><p>int, number of files</p></td>
+</tr>
+<tr class="row-odd"><td><p>magnetlink</p></td>
+<td><p>string, <a class="reference external" href="https://en.wikipedia.org/wiki/Magnet_URI_scheme">magnetlink</a> of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>torrentfile</p></td>
+<td><p>string, torrentfile of the result</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="map">
+<span id="template-map"></span><h3><a class="toc-backref" href="#id28" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">map</span></code></a><a class="headerlink" href="#map" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id14" style="width: 100%">
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">Parameter of the <strong>map</strong> media type:</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>template</p></th>
+<th class="head"><p>is set to <code class="docutils literal notranslate"><span class="pre">map.html</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>url</p></td>
+<td><p>string, url of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>string, title of the result</p></td>
+</tr>
+<tr class="row-odd"><td><p>content</p></td>
+<td><p>string, general result-text</p></td>
+</tr>
+<tr class="row-even"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>, time of publish</p></td>
+</tr>
+<tr class="row-odd"><td><p>latitude</p></td>
+<td><p>latitude of result (in decimal format)</p></td>
+</tr>
+<tr class="row-even"><td><p>longitude</p></td>
+<td><p>longitude of result (in decimal format)</p></td>
+</tr>
+<tr class="row-odd"><td><p>boundingbox</p></td>
+<td><p>boundingbox of result (array of 4. values
+<code class="docutils literal notranslate"><span class="pre">[lat-min,</span> <span class="pre">lat-max,</span> <span class="pre">lon-min,</span> <span class="pre">lon-max]</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>geojson</p></td>
+<td><p>geojson of result (<a class="reference external" href="https://geojson.org/">https://geojson.org/</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>osm.type</p></td>
+<td><p>type of osm-object (if OSM-Result)</p></td>
+</tr>
+<tr class="row-even"><td><p>osm.id</p></td>
+<td><p>id of osm-object (if OSM-Result)</p></td>
+</tr>
+<tr class="row-odd"><td><p>address.name</p></td>
+<td><p>name of object</p></td>
+</tr>
+<tr class="row-even"><td><p>address.road</p></td>
+<td><p>street name of object</p></td>
+</tr>
+<tr class="row-odd"><td><p>address.house_number</p></td>
+<td><p>house number of object</p></td>
+</tr>
+<tr class="row-even"><td><p>address.locality</p></td>
+<td><p>city, place of object</p></td>
+</tr>
+<tr class="row-odd"><td><p>address.postcode</p></td>
+<td><p>postcode of object</p></td>
+</tr>
+<tr class="row-even"><td><p>address.country</p></td>
+<td><p>country of object</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="paper">
+<span id="template-paper"></span><h3><a class="toc-backref" href="#id29" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">paper</span></code></a><a class="headerlink" href="#paper" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default" id="id15" style="width: 100%">
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">Parameter of the <strong>paper</strong> media type /
+             see <a class="reference external" href="https://en.wikipedia.org/wiki/BibTeX#Field_types">BibTeX field types</a> and <a class="reference external" href="https://www.bibtex.com/g/bibtex-format/">BibTeX format</a></span><a class="headerlink" href="#id15" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>result-parameter</p></th>
+<th class="head"><p>Python type</p></th>
+<th class="head"><p>information</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>template</p></th>
+<th class="head"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></th>
+<th class="head"><p>is set to <code class="docutils literal notranslate"><span class="pre">paper.html</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>title of the result</p></td>
+</tr>
+<tr class="row-even"><td><p>content</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>abstract</p></td>
+</tr>
+<tr class="row-odd"><td><p>comments</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>free text display in italic below the content</p></td>
+</tr>
+<tr class="row-even"><td><p>tags</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p></td>
+<td><p>free tag list</p></td>
+</tr>
+<tr class="row-odd"><td><p>publishedDate</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></p></td>
+<td><p>last publication date</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>short description of medium type, e.g. <em>book</em>, <em>pdf</em> or <em>html</em> …</p></td>
+</tr>
+<tr class="row-odd"><td><p>authors</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p></td>
+<td><p>list of authors of the work (authors with a “s”)</p></td>
+</tr>
+<tr class="row-even"><td><p>editor</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>list of editors of a book</p></td>
+</tr>
+<tr class="row-odd"><td><p>publisher</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>name of the publisher</p></td>
+</tr>
+<tr class="row-even"><td><p>journal</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>name of the journal or magazine the article was
+published in</p></td>
+</tr>
+<tr class="row-odd"><td><p>volume</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>volume number</p></td>
+</tr>
+<tr class="row-even"><td><p>pages</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>page range where the article is</p></td>
+</tr>
+<tr class="row-odd"><td><p>number</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>number of the report or the issue number for a journal article</p></td>
+</tr>
+<tr class="row-even"><td><p>doi</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>DOI number (like <code class="docutils literal notranslate"><span class="pre">10.1038/d41586-018-07848-2</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>issn</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p></td>
+<td><p>ISSN number like <code class="docutils literal notranslate"><span class="pre">1476-4687</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>isbn</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p></td>
+<td><p>ISBN number like <code class="docutils literal notranslate"><span class="pre">9780201896831</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>pdf_url</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>URL to the full article, the PDF version</p></td>
+</tr>
+<tr class="row-even"><td><p>html_url</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p></td>
+<td><p>URL to full article, HTML version</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="engines.html" title="previous chapter">SearXNG’s engines loader</a>
+          <li>Next: <a href="demo/demo_online.html" title="next chapter">Demo Online Engine</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/engine_overview.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

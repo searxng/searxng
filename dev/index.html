@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Developer documentation &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Quickstart" href="quickstart.html" />
+    <link rel="prev" title="Buildhosts" href="../admin/buildhosts.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Development Quickstart"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../admin/buildhosts.html" title="Buildhosts"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer documentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="developer-documentation">
+<h1>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution_guide.html">How to contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#prime-directives-privacy-hackability">Prime directives: Privacy, Hackability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#code">Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#translation">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="engines/index.html">Engine Implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html#engine-types">Engine Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="search_api.html">Search API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#example-plugin">Example plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#external-plugins">External plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#plugin-entry-points">Plugin entry points</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="translation.html#id2">wlc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lxcdev.html">Developing in Linux Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html#gentlemen-start-your-engines">Gentlemen, start your engines!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html#in-containers-work-as-usual">In containers, work as usual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html#wrap-production-into-developer-suite">Wrap production into developer suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#python-environment-make-install">Python environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-buildenv"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">buildenv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#node-js-environment-make-node-env">Node.js environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">node.env</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-run"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-format-python"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">format.python</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-clean"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-docs"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-test"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-search-checker-engine-name"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">search.checker.{engine</span> <span class="pre">name}</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-themes"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">themes.*</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-static-build"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static.build.*</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#manage-redis-help"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">redis.help</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#manage-go-help"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">go.help</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reST.html">reST primer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#soft-skills">Soft skills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#basic-inline-markup">Basic inline markup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#basic-article-structure">Basic article structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#anchors-links">Anchors &amp; Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#literal-blocks">Literal blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#unicode-substitution">Unicode substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#figures-images">Figures &amp; Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#list-markups">List markups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#admonitions">Admonitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#templating">Templating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#tabbed-views">Tabbed views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#math-equations">Math equations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/standalone_searx.py.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/standalone_searx.py</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="../admin/buildhosts.html" title="previous chapter">Buildhosts</a>
+          <li>Next: <a href="quickstart.html" title="next chapter">Development Quickstart</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

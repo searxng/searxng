@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Source-Code &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Custom message extractor (i18n)" href="searx.babel_extract.html" />
+    <link rel="prev" title="utils/lxc.sh" href="../utils/lxc.sh.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.babel_extract.html" title="Custom message extractor (i18n)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../utils/lxc.sh.html" title="utils/lxc.sh"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Source-Code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="source-code">
+<h1>Source-Code<a class="headerlink" href="#source-code" title="Permalink to this heading">¶</a></h1>
+<p>This is a partial documentation of our source code.  We are not aiming to document
+every item from the source code, but we will add documentation when requested.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html#searx.babel_extract.extract"><code class="docutils literal notranslate"><span class="pre">extract()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#x-forwarded-for">X-Forwarded-For</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#limiter">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#searx.botdetection.limiter.LIMITER_CFG"><code class="docutils literal notranslate"><span class="pre">LIMITER_CFG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#searx.botdetection.limiter.LIMITER_CFG_SCHEMA"><code class="docutils literal notranslate"><span class="pre">LIMITER_CFG_SCHEMA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#method-ip-lists">Method <code class="docutils literal notranslate"><span class="pre">ip_lists</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#searx.botdetection.ip_lists.block_ip"><code class="docutils literal notranslate"><span class="pre">block_ip()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#searx.botdetection.ip_lists.pass_ip"><code class="docutils literal notranslate"><span class="pre">pass_ip()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#searx.botdetection.ip_lists.SEARXNG_ORG"><code class="docutils literal notranslate"><span class="pre">SEARXNG_ORG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#module-searx.botdetection.ip_limit">Rate limit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html#module-searx.botdetection.http_accept">Probe HTTP headers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineAPIException"><code class="docutils literal notranslate"><span class="pre">SearxEngineAPIException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineAccessDeniedException"><code class="docutils literal notranslate"><span class="pre">SearxEngineAccessDeniedException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineCaptchaException"><code class="docutils literal notranslate"><span class="pre">SearxEngineCaptchaException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineException"><code class="docutils literal notranslate"><span class="pre">SearxEngineException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineResponseException"><code class="docutils literal notranslate"><span class="pre">SearxEngineResponseException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineTooManyRequestsException"><code class="docutils literal notranslate"><span class="pre">SearxEngineTooManyRequestsException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxEngineXPathException"><code class="docutils literal notranslate"><span class="pre">SearxEngineXPathException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxException"><code class="docutils literal notranslate"><span class="pre">SearxException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxParameterException"><code class="docutils literal notranslate"><span class="pre">SearxParameterException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxSettingsException"><code class="docutils literal notranslate"><span class="pre">SearxSettingsException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html#searx.exceptions.SearxXPathSyntaxException"><code class="docutils literal notranslate"><span class="pre">SearxXPathSyntaxException</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html#searx.infopage.InfoPage"><code class="docutils literal notranslate"><span class="pre">InfoPage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html#searx.infopage.InfoPageSet"><code class="docutils literal notranslate"><span class="pre">InfoPageSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.locales.html">Locales</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.build_engine_locales"><code class="docutils literal notranslate"><span class="pre">build_engine_locales()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.get_engine_locale"><code class="docutils literal notranslate"><span class="pre">get_engine_locale()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.get_locale"><code class="docutils literal notranslate"><span class="pre">get_locale()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.get_locale_descr"><code class="docutils literal notranslate"><span class="pre">get_locale_descr()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.get_offical_locales"><code class="docutils literal notranslate"><span class="pre">get_offical_locales()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.get_translations"><code class="docutils literal notranslate"><span class="pre">get_translations()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.language_tag"><code class="docutils literal notranslate"><span class="pre">language_tag()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.locales_initialize"><code class="docutils literal notranslate"><span class="pre">locales_initialize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.match_locale"><code class="docutils literal notranslate"><span class="pre">match_locale()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.region_tag"><code class="docutils literal notranslate"><span class="pre">region_tag()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.ADDITIONAL_TRANSLATIONS"><code class="docutils literal notranslate"><span class="pre">ADDITIONAL_TRANSLATIONS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.LOCALE_BEST_MATCH"><code class="docutils literal notranslate"><span class="pre">LOCALE_BEST_MATCH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.LOCALE_NAMES"><code class="docutils literal notranslate"><span class="pre">LOCALE_NAMES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#searx.locales.RTL_LOCALES"><code class="docutils literal notranslate"><span class="pre">RTL_LOCALES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html#module-searx.sxng_locales">SearXNG’s locale codes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.plugins.tor_check.html">Tor check plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html#searx.plugins.tor_check.description"><code class="docutils literal notranslate"><span class="pre">description</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html#searx.plugins.tor_check.name"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html#searx.plugins.tor_check.preference_section"><code class="docutils literal notranslate"><span class="pre">preference_section</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html#searx.plugins.tor_check.query_examples"><code class="docutils literal notranslate"><span class="pre">query_examples</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html#searx.plugins.tor_check.query_keywords"><code class="docutils literal notranslate"><span class="pre">query_keywords</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.redisdb.html">Redis DB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.redisdb.html#searx.redisdb.OLD_REDIS_URL_DEFAULT_URL"><code class="docutils literal notranslate"><span class="pre">OLD_REDIS_URL_DEFAULT_URL</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.redislib.html">Redis Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.drop_counter"><code class="docutils literal notranslate"><span class="pre">drop_counter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.incr_counter"><code class="docutils literal notranslate"><span class="pre">incr_counter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.incr_sliding_window"><code class="docutils literal notranslate"><span class="pre">incr_sliding_window()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.lua_script_storage"><code class="docutils literal notranslate"><span class="pre">lua_script_storage()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.purge_by_prefix"><code class="docutils literal notranslate"><span class="pre">purge_by_prefix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.secret_hash"><code class="docutils literal notranslate"><span class="pre">secret_hash()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html#searx.redislib.LUA_SCRIPT_STORAGE"><code class="docutils literal notranslate"><span class="pre">LUA_SCRIPT_STORAGE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.search.html">Search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html#searx.search.EngineRef"><code class="docutils literal notranslate"><span class="pre">EngineRef</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html#searx.search.SearchQuery"><code class="docutils literal notranslate"><span class="pre">SearchQuery</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html#searx.search.Search"><code class="docutils literal notranslate"><span class="pre">Search</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html#searx.search.SearchWithPlugins"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.search.processors.html">Search processors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.abstract">Abstract processor class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.offline">Offline processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.online">Online processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.online_currency">Online currency processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.online_dictionary">Online dictionary processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html#module-searx.search.processors.online_url_search">Online URL search processor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.convert_str_to_int"><code class="docutils literal notranslate"><span class="pre">convert_str_to_int()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.detect_language"><code class="docutils literal notranslate"><span class="pre">detect_language()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.dict_subset"><code class="docutils literal notranslate"><span class="pre">dict_subset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.ecma_unescape"><code class="docutils literal notranslate"><span class="pre">ecma_unescape()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.eval_xpath"><code class="docutils literal notranslate"><span class="pre">eval_xpath()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.eval_xpath_getindex"><code class="docutils literal notranslate"><span class="pre">eval_xpath_getindex()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.eval_xpath_list"><code class="docutils literal notranslate"><span class="pre">eval_xpath_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.extract_text"><code class="docutils literal notranslate"><span class="pre">extract_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.extract_url"><code class="docutils literal notranslate"><span class="pre">extract_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.gen_useragent"><code class="docutils literal notranslate"><span class="pre">gen_useragent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.get_engine_from_settings"><code class="docutils literal notranslate"><span class="pre">get_engine_from_settings()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.get_torrent_size"><code class="docutils literal notranslate"><span class="pre">get_torrent_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.get_xpath"><code class="docutils literal notranslate"><span class="pre">get_xpath()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.html_to_text"><code class="docutils literal notranslate"><span class="pre">html_to_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.int_or_zero"><code class="docutils literal notranslate"><span class="pre">int_or_zero()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.is_valid_lang"><code class="docutils literal notranslate"><span class="pre">is_valid_lang()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.normalize_url"><code class="docutils literal notranslate"><span class="pre">normalize_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.searx_useragent"><code class="docutils literal notranslate"><span class="pre">searx_useragent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.to_string"><code class="docutils literal notranslate"><span class="pre">to_string()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html#searx.utils.SEARCH_LANGUAGE_CODES"><code class="docutils literal notranslate"><span class="pre">SEARCH_LANGUAGE_CODES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Source-Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html">Tor check plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redisdb.html">Redis DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html">Redis Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="../utils/lxc.sh.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span></code></a>
+          <li>Next: <a href="searx.babel_extract.html" title="next chapter">Custom message extractor (i18n)</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

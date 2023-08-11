@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.standalone_searx &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.standalone_searx</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.standalone_searx</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># lint: pylint</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># (C) Copyright Contributors to the SearXNG project.</span>
+
+<span class="sd">&quot;&quot;&quot;Script to run SearXNG from terminal.</span>
+
+<span class="sd">  DON&#39;T USE THIS SCRIPT!!</span>
+
+<span class="sd">.. danger::</span>
+
+<span class="sd">   Be warned, using the ``standalone_searx.py`` won&#39;t give you privacy!</span>
+
+<span class="sd">   On the contrary, this script behaves like a SearXNG server: your IP is</span>
+<span class="sd">   exposed and tracked by all active engines (google, bing, qwant, ... ), with</span>
+<span class="sd">   every query!</span>
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   This is an old and grumpy hack / SearXNG is a Flask application with</span>
+<span class="sd">   client/server structure, which can&#39;t be turned into a command line tool the</span>
+<span class="sd">   way it was done here.</span>
+
+<span class="sd">Getting categories without initiate the engine will only return `[&#39;general&#39;]`</span>
+
+<span class="sd">&gt;&gt;&gt; import searx.engines</span>
+<span class="sd">... list(searx.engines.categories.keys())</span>
+<span class="sd">[&#39;general&#39;]</span>
+<span class="sd">&gt;&gt;&gt; import searx.search</span>
+<span class="sd">... searx.search.initialize()</span>
+<span class="sd">... list(searx.engines.categories.keys())</span>
+<span class="sd">[&#39;general&#39;, &#39;it&#39;, &#39;science&#39;, &#39;images&#39;, &#39;news&#39;, &#39;videos&#39;, &#39;music&#39;, &#39;files&#39;, &#39;social media&#39;, &#39;map&#39;]</span>
+
+<span class="sd">Example to use this script:</span>
+
+<span class="sd">.. code::  bash</span>
+
+<span class="sd">    $ python3 searxng_extra/standalone_searx.py rain</span>
+
+<span class="sd">&quot;&quot;&quot;</span>  <span class="c1"># pylint: disable=line-too-long</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">searx</span>
+<span class="kn">import</span> <span class="nn">searx.preferences</span>
+<span class="kn">import</span> <span class="nn">searx.query</span>
+<span class="kn">import</span> <span class="nn">searx.search</span>
+<span class="kn">import</span> <span class="nn">searx.webadapter</span>
+
+<span class="n">EngineCategoriesVar</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="get_search_query"><a class="viewcode-back" href="../../dev/searxng_extra/standalone_searx.py.html#searxng_extra.standalone_searx.get_search_query">[docs]</a><span class="k">def</span> <span class="nf">get_search_query</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">engine_categories</span><span class="p">:</span> <span class="n">EngineCategoriesVar</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">SearchQuery</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get  search results for the query&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine_categories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engine_categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">category</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+        <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+        <span class="s2">&quot;pageno&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pageno</span><span class="p">),</span>
+        <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+        <span class="s2">&quot;time_range&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">timerange</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">preferences</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">Preferences</span><span class="p">([</span><span class="s1">&#39;simple&#39;</span><span class="p">],</span> <span class="n">engine_categories</span><span class="p">,</span> <span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">engines</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">preferences</span><span class="o">.</span><span class="n">key_value_settings</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">safesearch</span><span class="p">)</span>
+
+    <span class="n">search_query</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">webadapter</span><span class="o">.</span><span class="n">get_search_query_from_webapp</span><span class="p">(</span><span class="n">preferences</span><span class="p">,</span> <span class="n">form</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">search_query</span></div>
+
+
+<div class="viewcode-block" id="no_parsed_url"><a class="viewcode-back" href="../../dev/searxng_extra/standalone_searx.py.html#searxng_extra.standalone_searx.no_parsed_url">[docs]</a><span class="k">def</span> <span class="nf">no_parsed_url</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove parsed url from dict.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;parsed_url&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="json_serial"><a class="viewcode-back" href="../../dev/searxng_extra/standalone_searx.py.html#searxng_extra.standalone_searx.json_serial">[docs]</a><span class="k">def</span> <span class="nf">json_serial</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;JSON serializer for objects not serializable by default json code.</span>
+
+<span class="sd">    :raise TypeError: raised when **obj** is not serializable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+        <span class="n">serial</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">serial</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Type (</span><span class="si">{}</span><span class="s2">) not serializable&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="to_dict"><a class="viewcode-back" href="../../dev/searxng_extra/standalone_searx.py.html#searxng_extra.standalone_searx.to_dict">[docs]</a><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="n">search_query</span><span class="p">:</span> <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">SearchQuery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get result from parsed arguments.&quot;&quot;&quot;</span>
+    <span class="n">result_container</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">Search</span><span class="p">(</span><span class="n">search_query</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+    <span class="n">result_container_json</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;search&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+            <span class="s2">&quot;pageno&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span><span class="p">,</span>
+            <span class="s2">&quot;lang&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+            <span class="s2">&quot;safesearch&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">safesearch</span><span class="p">,</span>
+            <span class="s2">&quot;timerange&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">time_range</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">no_parsed_url</span><span class="p">(</span><span class="n">result_container</span><span class="o">.</span><span class="n">get_ordered_results</span><span class="p">()),</span>
+        <span class="s2">&quot;infoboxes&quot;</span><span class="p">:</span> <span class="n">result_container</span><span class="o">.</span><span class="n">infoboxes</span><span class="p">,</span>
+        <span class="s2">&quot;suggestions&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">result_container</span><span class="o">.</span><span class="n">suggestions</span><span class="p">),</span>
+        <span class="s2">&quot;answers&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">result_container</span><span class="o">.</span><span class="n">answers</span><span class="p">),</span>
+        <span class="s2">&quot;paging&quot;</span><span class="p">:</span> <span class="n">result_container</span><span class="o">.</span><span class="n">paging</span><span class="p">,</span>
+        <span class="s2">&quot;number_of_results&quot;</span><span class="p">:</span> <span class="n">result_container</span><span class="o">.</span><span class="n">number_of_results</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result_container_json</span></div>
+
+
+<div class="viewcode-block" id="parse_argument"><a class="viewcode-back" href="../../dev/searxng_extra/standalone_searx.py.html#searxng_extra.standalone_searx.parse_argument">[docs]</a><span class="k">def</span> <span class="nf">parse_argument</span><span class="p">(</span>
+    <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">category_choices</span><span class="p">:</span> <span class="n">EngineCategoriesVar</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line.</span>
+
+<span class="sd">    :raise SystemExit: Query argument required on `args`</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; import importlib</span>
+<span class="sd">    ... # load module</span>
+<span class="sd">    ... spec = importlib.util.spec_from_file_location(</span>
+<span class="sd">    ...     &#39;utils.standalone_searx&#39;, &#39;utils/standalone_searx.py&#39;)</span>
+<span class="sd">    ... sas = importlib.util.module_from_spec(spec)</span>
+<span class="sd">    ... spec.loader.exec_module(sas)</span>
+<span class="sd">    ... sas.parse_argument()</span>
+<span class="sd">    usage: ptipython [-h] [--category [{general}]] [--lang [LANG]] [--pageno [PAGENO]] [--safesearch [{0,1,2}]] [--timerange [{day,week,month,year}]]</span>
+<span class="sd">                     query</span>
+<span class="sd">    SystemExit: 2</span>
+<span class="sd">    &gt;&gt;&gt; sas.parse_argument([&#39;rain&#39;])</span>
+<span class="sd">    Namespace(category=&#39;general&#39;, lang=&#39;all&#39;, pageno=1, query=&#39;rain&#39;, safesearch=&#39;0&#39;, timerange=None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">category_choices</span><span class="p">:</span>
+        <span class="n">category_choices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Standalone searx.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Text query&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--category&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">category_choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Search category&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--lang&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Search language&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--pageno&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Page number starting from 1&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--safesearch&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">],</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Safe content filter from none to strict&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--timerange&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Filter by time range&#39;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">settings_engines</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">load_engines</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">)</span>
+    <span class="n">engine_cs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">prog_args</span> <span class="o">=</span> <span class="n">parse_argument</span><span class="p">(</span><span class="n">category_choices</span><span class="o">=</span><span class="n">engine_cs</span><span class="p">)</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize_network</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">,</span> <span class="n">searx</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">])</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">check_network_configuration</span><span class="p">()</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize_metrics</span><span class="p">([</span><span class="n">engine</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">settings_engines</span><span class="p">])</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize_processors</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">)</span>
+    <span class="n">search_q</span> <span class="o">=</span> <span class="n">get_search_query</span><span class="p">(</span><span class="n">prog_args</span><span class="p">,</span> <span class="n">engine_categories</span><span class="o">=</span><span class="n">engine_cs</span><span class="p">)</span>
+    <span class="n">res_dict</span> <span class="o">=</span> <span class="n">to_dict</span><span class="p">(</span><span class="n">search_q</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">json_serial</span><span class="p">))</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

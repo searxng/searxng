@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Makefile &amp; ./manage &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="reST primer" href="reST.html" />
+    <link rel="prev" title="Developing in Linux Containers" href="lxcdev.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reST.html" title="reST primer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxcdev.html" title="Developing in Linux Containers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="makefile-manage">
+<span id="makefile"></span><h1>Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code><a class="headerlink" href="#makefile-manage" title="Permalink to this heading">¶</a></h1>
+<p>All relevant build and development tasks are implemented in the
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/manage">./manage</a> script and for CI or IDE integration a small
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/Makefile">git://Makefile</a> wrapper is available.  If you are not familiar with
+Makefiles, we recommend to read <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html#Introduction">gnu-make</a> introduction.</p>
+<aside class="sidebar">
+<p class="sidebar-title">build environment</p>
+<p>Before looking deeper at the targets, first read about <a class="reference internal" href="#make-install"><span class="std std-ref">Python environment (make install)</span></a>.</p>
+<p>To install developer requirements follow <a class="reference internal" href="../admin/buildhosts.html#buildhosts"><span class="std std-ref">Buildhosts</span></a>.</p>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#python-environment-make-install" id="id15">Python environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>)</a></p></li>
+<li><p><a class="reference internal" href="#make-buildenv" id="id16"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">buildenv</span></code></a></p></li>
+<li><p><a class="reference internal" href="#node-js-environment-make-node-env" id="id17">Node.js environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">node.env</span></code>)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#nvm-make-nvm-install-nvm-status" id="id18">NVM <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">nvm.install</span> <span class="pre">nvm.status</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-nvm-nodejs" id="id19"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">nvm.nodejs</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#make-run" id="id20"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-format-python" id="id21"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">format.python</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-clean" id="id22"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-docs" id="id23"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#make-docs-clean-docs-live" id="id24"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.clean</span> <span class="pre">docs.live</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-docs-gh-pages" id="id25"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.gh-pages</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#make-test" id="id26"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#make-test-shell" id="id27"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test.shell</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-test-pylint" id="id28"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test.pylint</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#make-search-checker-engine-name" id="id29"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">search.checker.{engine</span> <span class="pre">name}</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-themes" id="id30"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">themes.*</span></code></a></p></li>
+<li><p><a class="reference internal" href="#make-static-build" id="id31"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static.build.*</span></code></a></p></li>
+<li><p><a class="reference internal" href="#manage-redis-help" id="id32"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">redis.help</span></code></a></p></li>
+<li><p><a class="reference internal" href="#manage-go-help" id="id33"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">go.help</span></code></a></p></li>
+</ul>
+</nav>
+<p>The usage is simple, just type <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">{target-name}</span></code> to <em>build</em> a target.
+Calling the <code class="docutils literal notranslate"><span class="pre">help</span></code> target gives a first overview (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">help</span></code>):</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-YGBtYWtlYGA=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-YGBtYWtlYGA=" name="YGBtYWtlYGA=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">make</span></code></button><button aria-controls="panel-0-YGAuL21hbmFnZWBg" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-YGAuL21hbmFnZWBg" name="YGAuL21hbmFnZWBg" role="tab" tabindex="-1"><code class="docutils literal notranslate"><span class="pre">./manage</span></code></button></div><div aria-labelledby="tab-0-YGBtYWtlYGA=" class="sphinx-tabs-panel group-tab" id="panel-0-YGBtYWtlYGA=" name="YGBtYWtlYGA=" role="tabpanel" tabindex="0"><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:  sourced NVM environment from /home/runner/.nvm
+nvm.: use nvm (without dot) to execute nvm commands directly
+  install   : install NVM locally at /home/runner/work/searxng/searxng/.nvm
+  clean     : remove NVM installation
+  status    : prompt some status informations about nvm &amp; node
+  nodejs    : install Node.js latest LTS
+  cmd ...   : run command ... in NVM environment
+  bash      : start bash interpreter with NVM environment sourced
+buildenv:
+  rebuild ./utils/brand.env
+webapp.:
+  run       : run developer instance
+docs.:
+  html      : build HTML documentation
+  live      : autobuild HTML documentation while editing
+  gh-pages  : deploy on gh-pages branch
+  prebuild  : build reST include files (./build/docs/includes)
+  clean     : clean documentation build
+docker.:
+  build     : build docker image
+  push      : build and push docker image
+gecko.driver:
+  download &amp; install geckodriver if not already installed (required for
+  robot_tests)
+redis:
+  build     : build redis binaries at /home/runner/work/searxng/searxng/dist/redis/6.2.6/amd64
+  install   : create user (searxng-redis) and install systemd service (searxng-redis)
+  help      : show more redis commands
+py.:
+  build     : Build python packages at ./dist
+  clean     : delete virtualenv and intermediate py files
+pyenv.:
+  install   : developer install of SearXNG into virtualenv
+  uninstall : uninstall developer installation
+  cmd ...   : run command ... in virtualenv
+  OK        : test if virtualenv is OK
+pypi.upload:
+  Upload python packages to PyPi (to test use pypi.upload.test)
+format.:
+  python    : format Python code source using black
+pygments.:
+  less      : build LESS files for pygments
+go.:
+  ls        : list golang binary archives (stable)
+  golang    : (re-) install golang binary in user&#39;s $HOME/local folder
+  install   : install go package in user&#39;s $HOME/go-apps folder
+  bash      : start bash interpreter with golang environment sourced
+node.:
+  env       : download &amp; install SearXNG&#39;s npm dependencies locally
+  env.dev   : download &amp; install developer and CI tools
+  clean     : drop locally npm installations
+weblate.:
+  push.translations: push translation changes from SearXNG to Weblate&#39;s counterpart
+  to.translations: Update &#39;translations&#39; branch with last additions from Weblate.
+data.:
+  all       : update searx/sxng_locales.py and searx/data/*
+  traits    : update searx/data/engine_traits.json &amp; searx/sxng_locales.py
+  useragents: update searx/data/useragents.json with the most recent versions of Firefox
+test.:
+  yamllint  : lint YAML files (YAMLLINT_FILES)
+  pylint    : lint PYLINT_FILES, searx/engines, searx &amp; tests
+  pyright   : static type check of python sources
+  black     : check black code format
+  unit      : run unit tests
+  coverage  : run unit tests with coverage
+  robot     : run robot test
+  rst       : test .rst files incl. README.rst
+  clean     : clean intermediate test stuff
+themes.:
+  all       : build all themes
+  live      : to get live builds of CSS &amp; JS use &#39;LIVE_THEME=simple make run&#39;
+  simple.:
+    build   : build simple theme
+    test    : test simple theme
+static.build.:  [build] /static
+  commit    : build &amp; commit /static folder
+  drop      : drop last commit if it was previously done by static.build.commit
+  restore   : git restore of the /static folder (after themes.all)
+environment ...
+  SEARXNG_REDIS_URL : 
+----
+run            - run developer instance
+install        - developer install of SearxNG into virtualenv
+uninstall      - uninstall developer installation
+clean          - clean up working tree
+search.checker - check search engines
+test           - run shell &amp; CI tests
+test.shell     - test shell scripts
+ci.test        - run CI tests
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-YGAuL21hbmFnZWBg" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-YGAuL21hbmFnZWBg" name="YGAuL21hbmFnZWBg" role="tabpanel" tabindex="0"><p>The Makefile targets are implemented for comfort, if you can do without
+tab-completion and need to have a more granular control, use
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/manage">git://manage</a> without the Makefile wrappers.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./manage<span class="w"> </span><span class="nb">help</span>
+</pre></div>
+</div>
+</div></div>
+<section id="python-environment-make-install">
+<span id="make-install"></span><h2><a class="toc-backref" href="#id15" role="doc-backlink">Python environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>)</a><a class="headerlink" href="#python-environment-make-install" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">activate environment</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">./local/py3/bin/activate</span></code></p>
+</aside>
+<p>We do no longer need to build up the virtualenv manually.  Jump into your git
+working tree and release a <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> to get a virtualenv with a
+<em>developer install</em> of SearXNG (<a class="reference external" href="https://github.com/searxng/searxng/blob/master/setup.py">git://setup.py</a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd ~/searxng-clone
+$ make install
+PYENV     [virtualenv] installing ./requirements*.txt into local/py3
+...
+PYENV     OK
+PYENV     [install] pip install -e &#39;searx[test]&#39;
+...
+Successfully installed argparse-1.4.0 searx
+BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
+BUILDENV  INFO:searx:Initialisation done
+BUILDENV  build utils/brand.env
+</pre></div>
+</div>
+<p>If you release <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> multiple times the installation will only
+rebuild if the sha256 sum of the <em>requirement files</em> fails.  With other words:
+the check fails if you edit the requirements listed in
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/requirements-dev.txt">git://requirements-dev.txt</a> and <a class="reference external" href="https://github.com/searxng/searxng/blob/master/requirements.txt">git://requirements.txt</a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make install
+PYENV     OK
+PYENV     [virtualenv] requirements.sha256 failed
+          [virtualenv] - 6cea6eb6def9e14a18bf32f8a3e...  ./requirements-dev.txt
+          [virtualenv] - 471efef6c73558e391c3adb35f4...  ./requirements.txt
+...
+PYENV     [virtualenv] installing ./requirements*.txt into local/py3
+...
+PYENV     OK
+PYENV     [install] pip install -e &#39;searx[test]&#39;
+...
+Successfully installed argparse-1.4.0 searx
+BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
+BUILDENV  INFO:searx:Initialisation done
+BUILDENV  build utils/brand.env
+</pre></div>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">drop environment</p>
+<p>To get rid of the existing environment before re-build use <a class="reference internal" href="#make-clean"><span class="std std-ref">clean target</span></a> first.</p>
+</aside>
+<p>If you think, something goes wrong with your ./local environment or you change
+the <a class="reference external" href="https://github.com/searxng/searxng/blob/master/setup.py">git://setup.py</a> file, you have to call <a class="reference internal" href="#make-clean"><span class="std std-ref">make clean</span></a>.</p>
+</section>
+<section id="make-buildenv">
+<span id="id1"></span><h2><a class="toc-backref" href="#id16" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">buildenv</span></code></a><a class="headerlink" href="#make-buildenv" title="Permalink to this heading">¶</a></h2>
+<p>Rebuild instance’s environment with the modified settings from the
+<a class="reference internal" href="../admin/settings/settings_brand.html#settings-brand"><span class="std std-ref">brand:</span></a> and <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server:</span></a> section of your
+<a class="reference internal" href="../admin/settings/settings.html#settings-location"><span class="std std-ref">settings.yml</span></a>.</p>
+<blockquote>
+<div><p>What is the <a class="reference external" href="https://github.com/searxng/searxng/blob/master/utils/brand.env">git://utils/brand.env</a> needed for and why do you need to rebuild
+it if necessary?</p>
+<p>Short answer: <a class="reference internal" href="../admin/update-searxng.html#searxng-maintenance"><span class="std std-ref">installation and maintenance</span></a>
+scripts are running outside of instance’s runtime environment and need some
+values defined in the runtime environment.</p>
+</div></blockquote>
+<p>All the SearXNG setups are centralized in the <a class="reference internal" href="../admin/settings/settings.html#settings-yml"><span class="std std-ref">settings.yml</span></a> file.  This
+setup is available as long we are in a <em>installed instance</em>.  E.g. the
+<em>installed instance</em> on the server or the <em>installed developer instance</em> at
+<code class="docutils literal notranslate"><span class="pre">./local</span></code> (the later one is created by a <a class="reference internal" href="#make-install"><span class="std std-ref">make install</span></a> or
+<a class="reference internal" href="#make-run"><span class="std std-ref">make run</span></a>).</p>
+<p>Tasks running outside of an <em>installed instance</em>, especially <a class="reference internal" href="../admin/update-searxng.html#searxng-maintenance"><span class="std std-ref">installation
+and maintenance</span></a> tasks running at (pre-) installation time
+do not have access to the SearXNG setup (from a <em>installed instance</em>).  Those
+tasks need a <em>build environment</em>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">buildenv</span></code> target will update the <em>build environment</em> in:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/searxng/searxng/blob/master/utils/brand.env">git://utils/brand.env</a></p></li>
+</ul>
+<p>Tasks running outside of an <em>installed instance</em>, need the following settings
+from the YAML configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SEARXNG_URL</span></code> from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.base_url</span></a> (aka
+<code class="docutils literal notranslate"><span class="pre">PUBLIC_URL</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEARXNG_BIND_ADDRESS</span></code> from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.bind_address</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEARXNG_PORT</span></code> from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.port</span></a></p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">GIT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">GIT_BRANCH</span></code> in the origin:<cite>utils/brand.env</cite> file, are
+readed from the git VCS and the branch that is checked out when <code class="docutils literal notranslate"><span class="pre">make</span>
+<span class="pre">buildenv</span></code> command runs.</p>
+<p id="brand"><strong>I would like to create my own brand, how should I proceed?</strong></p>
+<p>Create a remote branch (<code class="docutils literal notranslate"><span class="pre">example.org</span></code>), checkout the remote branch (on your
+local developer desktop) and in the <a class="reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> file in the
+<a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server:</span></a> section set <code class="docutils literal notranslate"><span class="pre">base_url</span></code>.  Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">buildenv</span></code> and
+create a commit for your brand.</p>
+<p>On your server you clone the branch (<code class="docutils literal notranslate"><span class="pre">example.org</span></code>) into your HOME folder
+<code class="docutils literal notranslate"><span class="pre">~</span></code> from where you run the <a class="reference internal" href="../admin/installation.html#installation"><span class="std std-ref">installation</span></a> and
+<a class="reference internal" href="../admin/update-searxng.html#searxng-maintenance"><span class="std std-ref">maintenance</span></a> task.</p>
+<p>To upgrade you brand, rebase on SearXNG’s master branch (on your local
+developer desktop), force push it to your remote branch.  Go to your server, do
+a force pull and run <a class="reference internal" href="../admin/update-searxng.html#update-searxng"><span class="std std-ref">sudo -H ./utils/searxng.sh instance update</span></a>.</p>
+</section>
+<section id="node-js-environment-make-node-env">
+<span id="make-node-env"></span><h2><a class="toc-backref" href="#id17" role="doc-backlink">Node.js environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">node.env</span></code>)</a><a class="headerlink" href="#node-js-environment-make-node-env" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://nodejs.org/">Node.js</a> version 16.13.0 or higher is required to build the themes.
+If the requirement is not met, the build chain uses <a class="reference external" href="https://github.com/nvm-sh">nvm</a> (Node Version
+Manager) to install latest LTS of <a class="reference external" href="https://nodejs.org/">Node.js</a> locally: there is no need to
+install <a class="reference external" href="https://github.com/nvm-sh">nvm</a> or <a class="reference external" href="https://www.npmjs.com/">npm</a> on your system.</p>
+<p>To install <a class="reference external" href="https://github.com/nvm-sh">NVM</a> and <a class="reference external" href="https://nodejs.org/">Node.js</a> in once you can use <a class="reference internal" href="#make-nvm-nodejs"><span class="std std-ref">make nvm.nodejs</span></a>.</p>
+<section id="nvm-make-nvm-install-nvm-status">
+<span id="make-nvm"></span><h3><a class="toc-backref" href="#id18" role="doc-backlink">NVM <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">nvm.install</span> <span class="pre">nvm.status</span></code></a><a class="headerlink" href="#nvm-make-nvm-install-nvm-status" title="Permalink to this heading">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">nvm.status</span></code> to get the current status of your <a class="reference external" href="https://nodejs.org/">Node.js</a> and <a class="reference external" href="https://github.com/nvm-sh">nvm</a>
+setup.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-bnZtLmluc3RhbGw=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-bnZtLmluc3RhbGw=" name="bnZtLmluc3RhbGw=" role="tab" tabindex="0">nvm.install</button><button aria-controls="panel-1-bnZtLnN0YXR1cyAodWJ1MjAwNCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-bnZtLnN0YXR1cyAodWJ1MjAwNCk=" name="bnZtLnN0YXR1cyAodWJ1MjAwNCk=" role="tab" tabindex="-1">nvm.status (ubu2004)</button></div><div aria-labelledby="tab-1-bnZtLmluc3RhbGw=" class="sphinx-tabs-panel group-tab" id="panel-1-bnZtLmluc3RhbGw=" name="bnZtLmluc3RhbGw=" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C<span class="w"> </span>make<span class="w"> </span>nvm.install
+INFO:<span class="w">  </span>install<span class="w"> </span><span class="o">(</span>update<span class="o">)</span><span class="w"> </span>NVM<span class="w"> </span>at<span class="w"> </span>./searxng/.nvm
+INFO:<span class="w">  </span>clone:<span class="w"> </span>https://github.com/nvm-sh/nvm.git
+<span class="w">  </span><span class="o">||</span><span class="w"> </span>Cloning<span class="w"> </span>into<span class="w"> </span><span class="s1">&#39;./searxng/.nvm&#39;</span>...
+INFO:<span class="w">  </span>checkout<span class="w"> </span>v0.39.4
+<span class="w">  </span><span class="o">||</span><span class="w"> </span>HEAD<span class="w"> </span>is<span class="w"> </span>now<span class="w"> </span>at<span class="w"> </span>8fbf8ab<span class="w"> </span>v0.39.4
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-bnZtLnN0YXR1cyAodWJ1MjAwNCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-bnZtLnN0YXR1cyAodWJ1MjAwNCk=" name="bnZtLnN0YXR1cyAodWJ1MjAwNCk=" role="tabpanel" tabindex="0"><p>Here is the output you will typically get on a Ubuntu 20.04 system which
+serves only a <a class="reference external" href="https://nodejs.org/en/about/releases/">no longer active</a>
+Release <a class="reference external" href="https://packages.ubuntu.com/focal/nodejs">Node.js v10.19.0</a>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>nvm.status
+INFO:<span class="w">  </span>Node.js<span class="w"> </span>is<span class="w"> </span>installed<span class="w"> </span>at<span class="w"> </span>/usr/bin/node
+INFO:<span class="w">  </span>Node.js<span class="w"> </span>is<span class="w"> </span>version<span class="w"> </span>v10.19.0
+WARN:<span class="w">  </span>minimal<span class="w"> </span>Node.js<span class="w"> </span>version<span class="w"> </span>is<span class="w"> </span><span class="m">16</span>.13.0
+INFO:<span class="w">  </span>npm<span class="w"> </span>is<span class="w"> </span>installed<span class="w"> </span>at<span class="w"> </span>/usr/bin/npm
+INFO:<span class="w">  </span>npm<span class="w"> </span>is<span class="w"> </span>version<span class="w"> </span><span class="m">6</span>.14.4
+WARN:<span class="w">  </span>NVM<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>installed
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="make-nvm-nodejs">
+<span id="id2"></span><h3><a class="toc-backref" href="#id19" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">nvm.nodejs</span></code></a><a class="headerlink" href="#make-nvm-nodejs" title="Permalink to this heading">¶</a></h3>
+<p>Install latest <a class="reference external" href="https://nodejs.org/">Node.js</a> LTS locally (uses <a class="reference external" href="https://github.com/nvm-sh">nvm</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make nvm.nodejs
+INFO:  install (update) NVM at /share/searxng/.nvm
+INFO:  clone: https://github.com/nvm-sh/nvm.git
+...
+Downloading and installing node v16.13.0...
+...
+INFO:  Node.js is installed at searxng/.nvm/versions/node/v16.13.0/bin/node
+INFO:  Node.js is version v16.13.0
+INFO:  npm is installed at searxng/.nvm/versions/node/v16.13.0/bin/npm
+INFO:  npm is version 8.1.0
+INFO:  NVM is installed at searxng/.nvm
+</pre></div>
+</div>
+</section>
+</section>
+<section id="make-run">
+<span id="id3"></span><h2><a class="toc-backref" href="#id20" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code></a><a class="headerlink" href="#make-run" title="Permalink to this heading">¶</a></h2>
+<p>To get up a running a developer instance simply call <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code>.  This enables
+<em>debug</em> option in <a class="reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a>, starts a <code class="docutils literal notranslate"><span class="pre">./searx/webapp.py</span></code>
+instance and opens the URL in your favorite WEB browser (<a class="reference external" href="https://manpages.debian.org/jump?q=xdg-open">xdg-open</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make run
+</pre></div>
+</div>
+<p>Changes to theme’s HTML templates (jinja2) are instant.  Changes to the CSS &amp; JS
+sources of the theme need to be rebuild.  You can do that by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make themes.all
+</pre></div>
+</div>
+<p>Alternatively to <code class="docutils literal notranslate"><span class="pre">themes.all</span></code> you can run <em>live builds</em> of the theme you are
+modify (<a class="reference internal" href="#make-themes"><span class="std std-ref">make themes.*</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ LIVE_THEME=simple make run
+</pre></div>
+</div>
+</section>
+<section id="make-format-python">
+<span id="id4"></span><h2><a class="toc-backref" href="#id21" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">format.python</span></code></a><a class="headerlink" href="#make-format-python" title="Permalink to this heading">¶</a></h2>
+<p>Format Python sourcee code using <a class="reference external" href="https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html">Black code style</a>.  See <code class="docutils literal notranslate"><span class="pre">$BLACK_OPTIONS</span></code>
+and <code class="docutils literal notranslate"><span class="pre">$BLACK_TARGETS</span></code> in <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Makefile">git://Makefile</a>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>We stuck at Black 22.12.0, please read comment in PR <a class="reference external" href="https://github.com/searxng/searxng/pull/2159#pullrequestreview-1284094735">Bump black from 22.12.0
+to 23.1.0</a></p>
+</div>
+</section>
+<section id="make-clean">
+<span id="id5"></span><h2><a class="toc-backref" href="#id22" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a><a class="headerlink" href="#make-clean" title="Permalink to this heading">¶</a></h2>
+<p>Drops all intermediate files, all builds, but keep sources untouched.  Before
+calling <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> stop all processes using the <a class="reference internal" href="#make-install"><span class="std std-ref">Python environment (make install)</span></a> or
+<a class="reference internal" href="#make-node-env"><span class="std std-ref">Node.js environment (make node.env)</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make clean
+CLEAN     pyenv
+PYENV     [virtualenv] drop local/py3
+CLEAN     docs -- build/docs dist/docs
+CLEAN     themes -- locally installed npm dependencies
+...
+CLEAN     test stuff
+CLEAN     common files
+</pre></div>
+</div>
+</section>
+<section id="make-docs">
+<span id="id6"></span><h2><a class="toc-backref" href="#id23" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a><a class="headerlink" href="#make-docs" title="Permalink to this heading">¶</a></h2>
+<p>Target <code class="docutils literal notranslate"><span class="pre">docs</span></code> builds the documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs
+HTML<span class="w"> </span>./docs<span class="w"> </span>--&gt;<span class="w"> </span>file://
+DOCS<span class="w">      </span>build<span class="w"> </span>build/docs/includes
+...
+The<span class="w"> </span>HTML<span class="w"> </span>pages<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>dist/docs.
+</pre></div>
+</div>
+<section id="make-docs-clean-docs-live">
+<span id="make-docs-clean"></span><h3><a class="toc-backref" href="#id24" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.clean</span> <span class="pre">docs.live</span></code></a><a class="headerlink" href="#make-docs-clean-docs-live" title="Permalink to this heading">¶</a></h3>
+<p>We describe the usage of the <code class="docutils literal notranslate"><span class="pre">doc.*</span></code> targets in the <a class="reference internal" href="contribution_guide.html#contrib-docs"><span class="std std-ref">How to contribute /
+Documentation</span></a> section.  If you want to edit the documentation
+read our <a class="reference internal" href="contribution_guide.html#make-docs-live"><span class="std std-ref">live build</span></a> section.  If you are working in your own brand,
+adjust your <a class="reference internal" href="../admin/settings/settings_brand.html#settings-brand"><span class="std std-ref">brand:</span></a>.</p>
+</section>
+<section id="make-docs-gh-pages">
+<span id="id7"></span><h3><a class="toc-backref" href="#id25" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.gh-pages</span></code></a><a class="headerlink" href="#make-docs-gh-pages" title="Permalink to this heading">¶</a></h3>
+<p>To deploy on github.io first adjust your <a class="reference internal" href="../admin/settings/settings_brand.html#settings-brand"><span class="std std-ref">brand:</span></a>.  For any
+further read <a class="reference internal" href="contribution_guide.html#deploy-on-github-io"><span class="std std-ref">deploy on github.io</span></a>.</p>
+</section>
+</section>
+<section id="make-test">
+<span id="id8"></span><h2><a class="toc-backref" href="#id26" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></a><a class="headerlink" href="#make-test" title="Permalink to this heading">¶</a></h2>
+<p>Runs a series of tests: <a class="reference internal" href="#make-test-pylint"><span class="std std-ref">make test.pylint</span></a>, <code class="docutils literal notranslate"><span class="pre">test.pep8</span></code>, <code class="docutils literal notranslate"><span class="pre">test.unit</span></code>
+and <code class="docutils literal notranslate"><span class="pre">test.robot</span></code>.  You can run tests selective, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make test.pep8 test.unit test.shell
+TEST      test.pep8 OK
+...
+TEST      test.unit OK
+...
+TEST      test.shell OK
+</pre></div>
+</div>
+<section id="make-test-shell">
+<span id="id9"></span><h3><a class="toc-backref" href="#id27" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test.shell</span></code></a><a class="headerlink" href="#make-test-shell" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference internal" href="../admin/buildhosts.html#sh-lint"><span class="std std-ref">Lint shell scripts</span></a> / if you have changed some bash scripting run this test before
+commit.</p>
+</section>
+<section id="make-test-pylint">
+<span id="id10"></span><h3><a class="toc-backref" href="#id28" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test.pylint</span></code></a><a class="headerlink" href="#make-test-pylint" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference external" href="https://www.pylint.org/">Pylint</a> is known as one of the best source-code, bug and quality checker for the
+Python programming language.  The pylint profile used in the SearXNG project is
+found in project’s root folder <a class="reference external" href="https://github.com/searxng/searxng/blob/master/.pylintrc">git://.pylintrc</a>.</p>
+</section>
+</section>
+<section id="make-search-checker-engine-name">
+<span id="make-search-checker"></span><h2><a class="toc-backref" href="#id29" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">search.checker.{engine</span> <span class="pre">name}</span></code></a><a class="headerlink" href="#make-search-checker-engine-name" title="Permalink to this heading">¶</a></h2>
+<p>To check all engines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">search</span><span class="o">.</span><span class="n">checker</span>
+</pre></div>
+</div>
+<p>To check a engine with whitespace in the name like <em>google news</em> replace space
+by underline:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">search</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">google_news</span>
+</pre></div>
+</div>
+<p>To see HTTP requests and more use SEARXNG_DEBUG:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">SEARXNG_DEBUG</span><span class="o">=</span><span class="mi">1</span> <span class="n">search</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">google_news</span>
+</pre></div>
+</div>
+<p>To filter out HTTP redirects (<a class="reference external" href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_redirection">3xx</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">SEARXNG_DEBUG</span><span class="o">=</span><span class="mi">1</span> <span class="n">search</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">google_news</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">A1</span> <span class="s2">&quot;HTTP/1.1</span><span class="se">\&quot;</span><span class="s2"> 3[0-9][0-9]&quot;</span>
+<span class="o">...</span>
+<span class="n">Engine</span> <span class="n">google</span> <span class="n">news</span>                   <span class="n">Checking</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">news</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">443</span> <span class="s2">&quot;GET /search?q=life&amp;hl=en&amp;lr=lang_en&amp;ie=utf8&amp;oe=utf8&amp;ceid=US%3Aen&amp;gl=US HTTP/1.1&quot;</span> <span class="mi">302</span> <span class="mi">0</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">news</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">443</span> <span class="s2">&quot;GET /search?q=life&amp;hl=en-US&amp;lr=lang_en&amp;ie=utf8&amp;oe=utf8&amp;ceid=US:en&amp;gl=US HTTP/1.1&quot;</span> <span class="mi">200</span> <span class="kc">None</span>
+<span class="o">--</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">news</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">443</span> <span class="s2">&quot;GET /search?q=computer&amp;hl=en&amp;lr=lang_en&amp;ie=utf8&amp;oe=utf8&amp;ceid=US%3Aen&amp;gl=US HTTP/1.1&quot;</span> <span class="mi">302</span> <span class="mi">0</span>
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">news</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">443</span> <span class="s2">&quot;GET /search?q=computer&amp;hl=en-US&amp;lr=lang_en&amp;ie=utf8&amp;oe=utf8&amp;ceid=US:en&amp;gl=US HTTP/1.1&quot;</span> <span class="mi">200</span> <span class="kc">None</span>
+<span class="o">--</span>
+</pre></div>
+</div>
+</section>
+<section id="make-themes">
+<span id="id11"></span><h2><a class="toc-backref" href="#id30" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">themes.*</span></code></a><a class="headerlink" href="#make-themes" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="quickstart.html#devquickstart"><span class="std std-ref">Development Quickstart</span></a></p></li>
+</ul>
+</aside>
+<p>The <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Makefile">git://Makefile</a> targets <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">theme.*</span></code> cover common tasks to build the
+theme(s).  The <code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">themes.*</span></code> command line can be used to convenient run
+common theme build tasks.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:  sourced NVM environment from /home/runner/.nvm
+themes.:
+  all       : build all themes
+  live      : to get live builds of CSS &amp; JS use &#39;LIVE_THEME=simple make run&#39;
+  simple.:
+    build   : build simple theme
+    test    : test simple theme
+</pre></div>
+</div>
+<p>To get live builds while modifying CSS &amp; JS use (<a class="reference internal" href="#make-run"><span class="std std-ref">make run</span></a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nv">LIVE_THEME</span><span class="o">=</span>simple<span class="w"> </span>make<span class="w"> </span>run
+</pre></div>
+</div>
+</section>
+<section id="make-static-build">
+<span id="id12"></span><h2><a class="toc-backref" href="#id31" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static.build.*</span></code></a><a class="headerlink" href="#make-static-build" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="quickstart.html#devquickstart"><span class="std std-ref">Development Quickstart</span></a></p></li>
+</ul>
+</aside>
+<p>The <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Makefile">git://Makefile</a> targets <code class="docutils literal notranslate"><span class="pre">static.build.*</span></code> cover common tasks to build (a
+commit of) the static files.  The <code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">static.build..*</span></code> command line
+can be used to convenient run common build tasks of the satic files.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:  sourced NVM environment from /home/runner/.nvm
+static.build.:  [build] /static
+  commit    : build &amp; commit /static folder
+  drop      : drop last commit if it was previously done by static.build.commit
+  restore   : git restore of the /static folder (after themes.all)
+</pre></div>
+</div>
+</section>
+<section id="manage-redis-help">
+<span id="id13"></span><h2><a class="toc-backref" href="#id32" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">redis.help</span></code></a><a class="headerlink" href="#manage-redis-help" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">redis.*</span></code> command line can be used to convenient run common Redis
+tasks (<a class="reference internal" href="../admin/settings/settings_redis.html#redis-developer-notes"><span class="std std-ref">Redis Developer Notes</span></a>).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:  sourced NVM environment from /home/runner/.nvm
+redis.:
+  devpkg    : install essential packages to compile redis
+  build     : build redis binaries at /home/runner/work/searxng/searxng/dist/redis/6.2.6/amd64
+  install   : create user (searxng-redis) and install systemd service (searxng-redis)
+  remove    : delete user (searxng-redis) and remove service (searxng-redis)
+  shell     : start bash interpreter from user searxng-redis
+  src       : clone redis source code to &lt;path&gt; and checkput 6.2.6
+  useradd   : create user (searxng-redis) at /usr/local/searxng-redis
+  userdel   : delete user (searxng-redis)
+  addgrp    : add &lt;user&gt; to group (searxng-redis)
+  rmgrp     : remove &lt;user&gt; from group (searxng-redis)
+</pre></div>
+</div>
+</section>
+<section id="manage-go-help">
+<span id="id14"></span><h2><a class="toc-backref" href="#id33" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">go.help</span></code></a><a class="headerlink" href="#manage-go-help" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">go.*</span></code> command line can be used to convenient run common <a class="reference external" href="https://en.wikipedia.org/wiki/Go_(programming_language)">go
+(wiki)</a> tasks.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>INFO:  sourced NVM environment from /home/runner/.nvm
+go.:
+  ls        : list golang binary archives (stable)
+  golang    : (re-) install golang binary in user&#39;s $HOME/local folder
+  install   : install go package in user&#39;s $HOME/go-apps folder
+  bash      : start bash interpreter with golang environment sourced
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="lxcdev.html" title="previous chapter">Developing in Linux Containers</a>
+          <li>Next: <a href="reST.html" title="next chapter">reST primer</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/makefile.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

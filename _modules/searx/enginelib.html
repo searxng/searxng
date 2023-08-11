@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.enginelib &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.enginelib</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.enginelib</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># lint: pylint</span>
+<span class="sd">&quot;&quot;&quot;Implementations of the framework for the SearXNG engines.</span>
+
+<span class="sd">.. hint::</span>
+
+<span class="sd">   The long term goal is to modularize all implementations of the engine</span>
+<span class="sd">   framework here in this Python package.  ToDo:</span>
+
+<span class="sd">   - move implementations of the :ref:`searx.engines loader` to a new module in</span>
+<span class="sd">     the :py:obj:`searx.enginelib` namespace.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">searx.enginelib</span> <span class="kn">import</span> <span class="n">traits</span>
+
+
+<div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../dev/engines/enginelib.html#searx.enginelib.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class of engine instances build from YAML settings.</span>
+
+<span class="sd">    Further documentation see :ref:`general engine configuration`.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       This class is currently never initialized and only used for type hinting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Common options in the engine module</span>
+
+    <span class="n">engine_type</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of the engine (:ref:`searx.search.processors`)&quot;&quot;&quot;</span>
+
+    <span class="n">paging</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Engine supports multiple pages.&quot;&quot;&quot;</span>
+
+    <span class="n">time_range_support</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Engine supports search time range.&quot;&quot;&quot;</span>
+
+    <span class="n">safesearch</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Engine supports SafeSearch&quot;&quot;&quot;</span>
+
+    <span class="n">language_support</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Engine supports languages (locales) search.&quot;&quot;&quot;</span>
+
+    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For an engine, when there is ``language: ...`` in the YAML settings the engine</span>
+<span class="sd">    does support only this one language:</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">      - name: google french</span>
+<span class="sd">        engine: google</span>
+<span class="sd">        language: fr</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">region</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For an engine, when there is ``region: ...`` in the YAML settings the engine</span>
+<span class="sd">    does support only this one region::</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">      - name: google belgium</span>
+<span class="sd">        engine: google</span>
+<span class="sd">        region: fr-BE</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fetch_traits</span><span class="p">:</span> <span class="n">Callable</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to to fetch engine&#39;s traits from origin.&quot;&quot;&quot;</span>
+
+    <span class="n">traits</span><span class="p">:</span> <span class="n">traits</span><span class="o">.</span><span class="n">EngineTraits</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Traits of the engine.&quot;&quot;&quot;</span>
+
+    <span class="c1"># settings.yml</span>
+
+    <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specifies to which :ref:`engine categories` the engine should be added.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name that will be used across SearXNG to define this engine.  In settings, on</span>
+<span class="sd">    the result page ..&quot;&quot;&quot;</span>
+
+    <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the python file used to handle requests and responses to and from</span>
+<span class="sd">    this search engine (file name from :origin:`searx/engines` without</span>
+<span class="sd">    ``.py``).&quot;&quot;&quot;</span>
+
+    <span class="n">enable_http</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable HTTP (by default only HTTPS is enabled).&quot;&quot;&quot;</span>
+
+    <span class="n">shortcut</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Code used to execute bang requests (``!foo``)&quot;&quot;&quot;</span>
+
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specific timeout for search-engine.&quot;&quot;&quot;</span>
+
+    <span class="n">display_error_messages</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display error messages on the web UI.&quot;&quot;&quot;</span>
+
+    <span class="n">proxies</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set proxies for a specific engine (YAML):</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">       proxies :</span>
+<span class="sd">         http:  socks5://proxy:port</span>
+<span class="sd">         https: socks5://proxy:port</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;To disable by default the engine, but not deleting it.  It will allow the</span>
+<span class="sd">    user to manually activate it in the settings.&quot;&quot;&quot;</span>
+
+    <span class="n">inactive</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the engine from the settings (*disabled &amp; removed*).&quot;&quot;&quot;</span>
+
+    <span class="n">about</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Additional fileds describing the engine.</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">       about:</span>
+<span class="sd">          website: https://example.com</span>
+<span class="sd">          wikidata_id: Q306656</span>
+<span class="sd">          official_api_documentation: https://example.com/api-doc</span>
+<span class="sd">          use_official_api: true</span>
+<span class="sd">          require_api_key: true</span>
+<span class="sd">          results: HTML</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">using_tor_proxy</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Using tor proxy (``true``) or not (``false``) for this engine.&quot;&quot;&quot;</span>
+
+    <span class="n">send_accept_language_header</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;When this option is activated, the language (locale) that is selected by</span>
+<span class="sd">    the user is used to build and send a ``Accept-Language`` header in the</span>
+<span class="sd">    request to the origin search engine.&quot;&quot;&quot;</span>
+
+    <span class="n">tokens</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of secret tokens to make this engine *private*, more details see</span>
+<span class="sd">    :ref:`private engines`.&quot;&quot;&quot;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

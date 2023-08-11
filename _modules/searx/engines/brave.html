@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.brave &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.brave</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.brave</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># lint: pylint</span>
+<span class="sd">&quot;&quot;&quot;Brave supports the categories listed in :py:obj:`brave_category` (General,</span>
+<span class="sd">news, videos, images).  The support of :py:obj:`paging` and :py:obj:`time range</span>
+<span class="sd">&lt;time_range_support&gt;` is limited (see remarks).</span>
+
+<span class="sd">Configured ``brave`` engines:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: brave</span>
+<span class="sd">    engine: brave</span>
+<span class="sd">    ...</span>
+<span class="sd">    brave_category: search</span>
+<span class="sd">    time_range_support: true</span>
+<span class="sd">    paging: true</span>
+
+<span class="sd">  - name: brave.images</span>
+<span class="sd">    engine: brave</span>
+<span class="sd">    ...</span>
+<span class="sd">    brave_category: images</span>
+
+<span class="sd">  - name: brave.videos</span>
+<span class="sd">    engine: brave</span>
+<span class="sd">    ...</span>
+<span class="sd">    brave_category: videos</span>
+
+<span class="sd">  - name: brave.news</span>
+<span class="sd">    engine: brave</span>
+<span class="sd">    ...</span>
+<span class="sd">    brave_category: news</span>
+
+
+<span class="sd">.. _brave regions:</span>
+
+<span class="sd">Brave regions</span>
+<span class="sd">=============</span>
+
+<span class="sd">Brave uses two-digit tags for the regions like ``ca`` while SearXNG deals with</span>
+<span class="sd">locales.  To get a mapping, all *officatl de-facto* languages of the Brave</span>
+<span class="sd">region are mapped to regions in SearXNG (see :py:obj:`babel</span>
+<span class="sd">&lt;babel.languages.get_official_languages&gt;`):</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &quot;regions&quot;: {</span>
+<span class="sd">      ..</span>
+<span class="sd">      &quot;en-CA&quot;: &quot;ca&quot;,</span>
+<span class="sd">      &quot;fr-CA&quot;: &quot;ca&quot;,</span>
+<span class="sd">      ..</span>
+<span class="sd">     }</span>
+
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   The language (aka region) support of Brave&#39;s index is limited to very basic</span>
+<span class="sd">   languages.  The search results for languages like Chinese or Arabic are of</span>
+<span class="sd">   low quality.</span>
+
+
+<span class="sd">.. _brave languages:</span>
+
+<span class="sd">Brave languages</span>
+<span class="sd">===============</span>
+
+<span class="sd">Brave&#39;s language support is limited to the UI (menues, area local notations,</span>
+<span class="sd">etc).  Brave&#39;s index only seems to support a locale, but it does not seem to</span>
+<span class="sd">support any languages in its index.  The choice of available languages is very</span>
+<span class="sd">small (and its not clear to me where the differencee in UI is when switching</span>
+<span class="sd">from en-us to en-ca or en-gb).</span>
+
+<span class="sd">In the :py:obj:`EngineTraits object &lt;searx.enginelib.traits.EngineTraits&gt;` the</span>
+<span class="sd">UI languages are stored in a custom field named ``ui_lang``:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">    &quot;custom&quot;: {</span>
+<span class="sd">      &quot;ui_lang&quot;: {</span>
+<span class="sd">        &quot;ca&quot;: &quot;ca&quot;,</span>
+<span class="sd">        &quot;de-DE&quot;: &quot;de-de&quot;,</span>
+<span class="sd">        &quot;en-CA&quot;: &quot;en-ca&quot;,</span>
+<span class="sd">        &quot;en-GB&quot;: &quot;en-gb&quot;,</span>
+<span class="sd">        &quot;en-US&quot;: &quot;en-us&quot;,</span>
+<span class="sd">        &quot;es&quot;: &quot;es&quot;,</span>
+<span class="sd">        &quot;fr-CA&quot;: &quot;fr-ca&quot;,</span>
+<span class="sd">        &quot;fr-FR&quot;: &quot;fr-fr&quot;,</span>
+<span class="sd">        &quot;ja-JP&quot;: &quot;ja-jp&quot;,</span>
+<span class="sd">        &quot;pt-BR&quot;: &quot;pt-br&quot;,</span>
+<span class="sd">        &quot;sq-AL&quot;: &quot;sq-al&quot;</span>
+<span class="sd">      }</span>
+<span class="sd">    },</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">urlencode</span><span class="p">,</span>
+    <span class="n">urlparse</span><span class="p">,</span>
+    <span class="n">parse_qs</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">chompjs</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
+
+<span class="kn">from</span> <span class="nn">searx</span> <span class="kn">import</span> <span class="n">locales</span>
+<span class="kn">from</span> <span class="nn">searx.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">extract_text</span><span class="p">,</span>
+    <span class="n">eval_xpath_list</span><span class="p">,</span>
+    <span class="n">eval_xpath_getindex</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">searx.enginelib.traits</span> <span class="kn">import</span> <span class="n">EngineTraits</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">logging</span>
+
+    <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span>
+
+<span class="n">traits</span><span class="p">:</span> <span class="n">EngineTraits</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://search.brave.com/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q22906900&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://search.brave.com/&quot;</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">brave_category</span> <span class="o">=</span> <span class="s1">&#39;search&#39;</span>
+<span class="sd">&quot;&quot;&quot;Brave supports common web-search, video search, image and video search.</span>
+
+<span class="sd">- ``search``: Common WEB search</span>
+<span class="sd">- ``videos``: search for videos</span>
+<span class="sd">- ``images``: search for images</span>
+<span class="sd">- ``news``: search for news</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">brave_spellcheck</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot;Brave supports some kind of spell checking.  When activated, Brave tries to</span>
+<span class="sd">fix typos, e.g. it searches for ``food`` when the user queries for ``fooh``.  In</span>
+<span class="sd">the UI of Brave the user gets warned about this, since we can not warn the user</span>
+<span class="sd">in SearXNG, the spellchecking is disabled by default.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">send_accept_language_header</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot;Brave only supports paging in :py:obj:`brave_category` ``search`` (UI</span>
+<span class="sd">category All).&quot;&quot;&quot;</span>
+
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;strict&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;moderate&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;off&#39;</span><span class="p">}</span>  <span class="c1"># cookie: safesearch=off</span>
+
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot;Brave only supports time-range in :py:obj:`brave_category` ``search`` (UI</span>
+<span class="sd">category All).&quot;&quot;&quot;</span>
+
+<span class="n">time_range_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;pd&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;week&#39;</span><span class="p">:</span> <span class="s1">&#39;pw&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="s1">&#39;pm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+    <span class="c1"># Don&#39;t accept br encoding / see https://github.com/searxng/searxng/pull/1787</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gzip, deflate&#39;</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">brave_spellcheck</span><span class="p">:</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;spellcheck&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+
+    <span class="k">if</span> <span class="n">brave_category</span> <span class="o">==</span> <span class="s1">&#39;search&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageno&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageno&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">time_range_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]):</span>
+            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_range_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">])</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">brave_category</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># set properties in the cookies</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">safesearch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">],</span> <span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="c1"># the useLocation is IP based, we use cookie &#39;country&#39; for the region</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;useLocation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;summarizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+
+    <span class="n">engine_region</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine_region</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">ui_lang</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="n">get_engine_locale</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ui_lang&quot;</span><span class="p">],</span> <span class="s1">&#39;en-us&#39;</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;ui_lang&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ui_lang</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;cookies </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">brave_category</span> <span class="o">==</span> <span class="s1">&#39;search&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_parse_search</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+
+    <span class="n">datastr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;const data = &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">datastr</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;const data = &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">break</span>
+
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">chompjs</span><span class="o">.</span><span class="n">parse_js_object</span><span class="p">(</span><span class="n">datastr</span><span class="p">)</span>
+    <span class="n">json_resp</span> <span class="o">=</span> <span class="n">json_data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">][</span><span class="s1">&#39;response&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">brave_category</span> <span class="o">==</span> <span class="s1">&#39;news&#39;</span><span class="p">:</span>
+        <span class="n">json_resp</span> <span class="o">=</span> <span class="n">json_resp</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">_parse_news</span><span class="p">(</span><span class="n">json_resp</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">brave_category</span> <span class="o">==</span> <span class="s1">&#39;images&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_parse_images</span><span class="p">(</span><span class="n">json_resp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">brave_category</span> <span class="o">==</span> <span class="s1">&#39;videos&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_parse_videos</span><span class="p">(</span><span class="n">json_resp</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported brave category: </span><span class="si">{</span><span class="n">brave_category</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_search</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+
+    <span class="n">result_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">answer_tag</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//div[@class=&quot;answer&quot;]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">answer_tag</span><span class="p">:</span>
+        <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;answer&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">answer_tag</span><span class="p">)})</span>
+
+    <span class="c1"># xpath_results = &#39;//div[contains(@class, &quot;snippet fdb&quot;) and @data-type=&quot;web&quot;]&#39;</span>
+    <span class="n">xpath_results</span> <span class="o">=</span> <span class="s1">&#39;//div[contains(@class, &quot;snippet&quot;)]&#39;</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">xpath_results</span><span class="p">):</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//a[@class=&quot;result-header&quot;]/@href&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">title_tag</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//span[@class=&quot;snippet-title&quot;]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">url</span> <span class="ow">and</span> <span class="n">title_tag</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="n">content_tag</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//p[@class=&quot;snippet-description&quot;]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">img_src</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//img[@class=&quot;thumb&quot;]/@src&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">title_tag</span><span class="p">),</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">content_tag</span><span class="p">),</span>
+            <span class="s1">&#39;img_src&#39;</span><span class="p">:</span> <span class="n">img_src</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">video_tag</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;video-snippet&quot;) and @data-macro=&quot;video&quot;]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">video_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># In my tests a video tag in the WEB search was mostoften not a</span>
+            <span class="c1"># video, except the ones from youtube ..</span>
+
+            <span class="n">iframe_src</span> <span class="o">=</span> <span class="n">_get_iframe_src</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">iframe_src</span><span class="p">:</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;iframe_src&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iframe_src</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;videos.html&#39;</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">video_tag</span><span class="p">,</span> <span class="s1">&#39;.//img/@src&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;img_src&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">video_tag</span><span class="p">,</span> <span class="s1">&#39;.//img/@src&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_list</span>
+
+
+<span class="k">def</span> <span class="nf">_get_iframe_src</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;/watch&#39;</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
+        <span class="n">video_id</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="n">video_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;https://www.youtube-nocookie.com/embed/&#39;</span> <span class="o">+</span> <span class="n">video_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_news</span><span class="p">(</span><span class="n">json_resp</span><span class="p">):</span>
+    <span class="n">result_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">json_resp</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;img_src&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">][</span><span class="s1">&#39;src&#39;</span><span class="p">]</span>
+        <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_list</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_images</span><span class="p">(</span><span class="n">json_resp</span><span class="p">):</span>
+    <span class="n">result_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">json_resp</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;images.html&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;img_format&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;format&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;img_src&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_list</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_videos</span><span class="p">(</span><span class="n">json_resp</span><span class="p">):</span>
+    <span class="n">result_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">json_resp</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;videos.html&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;video&#39;</span><span class="p">][</span><span class="s1">&#39;duration&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;video&#39;</span><span class="p">][</span><span class="s1">&#39;duration&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">][</span><span class="s1">&#39;src&#39;</span><span class="p">]</span>
+
+        <span class="n">iframe_src</span> <span class="o">=</span> <span class="n">_get_iframe_src</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iframe_src</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;iframe_src&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iframe_src</span>
+
+        <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_list</span>
+
+
+<div class="viewcode-block" id="fetch_traits"><a class="viewcode-back" href="../../../dev/engines/online/brave.html#searx.engines.brave.fetch_traits">[docs]</a><span class="k">def</span> <span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch :ref:`languages &lt;brave languages&gt;` and :ref:`regions &lt;brave</span>
+<span class="sd">    regions&gt;` from Brave.&quot;&quot;&quot;</span>
+
+    <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+    <span class="kn">import</span> <span class="nn">babel.languages</span>
+    <span class="kn">from</span> <span class="nn">searx.locales</span> <span class="kn">import</span> <span class="n">region_tag</span><span class="p">,</span> <span class="n">language_tag</span>
+    <span class="kn">from</span> <span class="nn">searx.network</span> <span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ui_lang&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">lang_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="s1">&#39;nb&#39;</span><span class="p">}</span>  <span class="c1"># norway</span>
+
+    <span class="c1"># languages (UI)</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://search.brave.com/settings&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: response from Brave is not OK.&quot;</span><span class="p">)</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//div[@id=&quot;language-select&quot;]//option&#39;</span><span class="p">):</span>
+
+        <span class="n">ui_lang</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">ui_lang</span><span class="p">:</span>
+                <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ui_lang</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ui_lang</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: can&#39;t determine babel locale of Brave&#39;s (UI) language </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ui_lang</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ui_lang&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">ui_lang</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">ui_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ui_lang&quot;</span><span class="p">][</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">ui_lang</span>
+
+    <span class="c1"># search regions of brave</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+
+    <span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//div[@id=&quot;sidebar&quot;]//ul/li/div[contains(@class, &quot;country&quot;)]&#39;</span><span class="p">):</span>
+
+        <span class="n">flag</span> <span class="o">=</span> <span class="n">country</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./span[contains(@class, &quot;flag&quot;)]&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># country_name = extract_text(flag.xpath(&#39;./following-sibling::*&#39;)[0])</span>
+        <span class="n">country_tag</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;flag-([^\s]*)\s&#39;</span><span class="p">,</span> <span class="n">flag</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./@class&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># add offical languages of the country ..</span>
+        <span class="k">for</span> <span class="n">lang_tag</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get_official_languages</span><span class="p">(</span><span class="n">country_tag</span><span class="p">,</span> <span class="n">de_facto</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">lang_tag</span> <span class="o">=</span> <span class="n">lang_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang_tag</span><span class="p">,</span> <span class="n">lang_tag</span><span class="p">)</span>
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lang_tag</span><span class="p">,</span> <span class="n">country_tag</span><span class="o">.</span><span class="n">upper</span><span class="p">())))</span>
+            <span class="c1"># print(&quot;%-20s: %s &lt;-- %s&quot; % (country_name, country_tag, sxng_tag))</span>
+
+            <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">country_tag</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">country_tag</span><span class="p">))</span>
+                    <span class="k">continue</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">country_tag</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search processors &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utility functions for the engines" href="searx.utils.html" />
+    <link rel="prev" title="Search" href="searx.search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.utils.html" title="Utility functions for the engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.search.html" title="Search"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Search processors</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="search-processors">
+<span id="searx-search-processors"></span><h1>Search processors<a class="headerlink" href="#search-processors" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-searx.search.processors.abstract" id="id1">Abstract processor class</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.search.processors.offline" id="id2">Offline processor</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.search.processors.online" id="id3">Online processor</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.search.processors.online_currency" id="id4">Online currency processor</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.search.processors.online_dictionary" id="id5">Online dictionary processor</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.search.processors.online_url_search" id="id6">Online URL search processor</a></p></li>
+</ul>
+</nav>
+<section id="module-searx.search.processors.abstract">
+<span id="abstract-processor-class"></span><h2><a class="toc-backref" href="#id1" role="doc-backlink">Abstract processor class</a><a class="headerlink" href="#module-searx.search.processors.abstract" title="Permalink to this heading">¶</a></h2>
+<p>Abstract base classes for engine request processores.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.EngineProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.abstract.</span></span><span class="sig-name descname"><span class="pre">EngineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#EngineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.EngineProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base classes used for all types of reqest processores.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.EngineProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#EngineProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.EngineProcessor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of (see <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-arguments"><span class="std std-ref">request params</span></a>) or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if request is not supported.</p>
+<p>Not supported conditions (<code class="docutils literal notranslate"><span class="pre">None</span></code> is returned):</p>
+<ul class="simple">
+<li><p>A page-number &gt; 1 when engine does not support paging.</p></li>
+<li><p>A time range when the engine does not support time range.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.SuspendedStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.abstract.</span></span><span class="sig-name descname"><span class="pre">SuspendedStatus</span></span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#SuspendedStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.SuspendedStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to handle suspend state.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.offline">
+<span id="offline-processor"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Offline processor</a><a class="headerlink" href="#module-searx.search.processors.offline" title="Permalink to this heading">¶</a></h2>
+<p>Processores for engine-type: <code class="docutils literal notranslate"><span class="pre">offline</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.offline.OfflineProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.offline.</span></span><span class="sig-name descname"><span class="pre">OfflineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/offline.html#OfflineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.offline.OfflineProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">offline</span></code> engines</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online">
+<span id="online-processor"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Online processor</a><a class="headerlink" href="#module-searx.search.processors.online" title="Permalink to this heading">¶</a></h2>
+<p>Processores for engine-type: <code class="docutils literal notranslate"><span class="pre">online</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online.</span></span><span class="sig-name descname"><span class="pre">OnlineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processor class for <code class="docutils literal notranslate"><span class="pre">online</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineProcessor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online"><span class="std std-ref">request params</span></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+if request is not supported.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.search.processors.online.default_request_params">
+<span class="sig-prename descclassname"><span class="pre">searx.search.processors.online.</span></span><span class="sig-name descname"><span class="pre">default_request_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online.html#default_request_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.default_request_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default request parameters for <code class="docutils literal notranslate"><span class="pre">online</span></code> engines.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_currency">
+<span id="online-currency-processor"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Online currency processor</a><a class="headerlink" href="#module-searx.search.processors.online_currency" title="Permalink to this heading">¶</a></h2>
+<p>Processores for engine-type: <code class="docutils literal notranslate"><span class="pre">online_currency</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.OnlineCurrencyProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_currency.</span></span><span class="sig-name descname"><span class="pre">OnlineCurrencyProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#OnlineCurrencyProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">online_currency</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#OnlineCurrencyProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online-currency"><span class="std std-ref">request params</span></a>
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> if search query does not match to <code class="xref py py-obj docutils literal notranslate"><span class="pre">parser_re</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_dictionary">
+<span id="online-dictionary-processor"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Online dictionary processor</a><a class="headerlink" href="#module-searx.search.processors.online_dictionary" title="Permalink to this heading">¶</a></h2>
+<p>Processores for engine-type: <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.OnlineDictionaryProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">OnlineDictionaryProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#OnlineDictionaryProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#OnlineDictionaryProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online-dictionary"><span class="std std-ref">request params</span></a> or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if search query does not match to <code class="xref py py-obj docutils literal notranslate"><span class="pre">parser_re</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_url_search">
+<span id="online-url-search-processor"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Online URL search processor</a><a class="headerlink" href="#module-searx.search.processors.online_url_search" title="Permalink to this heading">¶</a></h2>
+<p>Processores for engine-type: <code class="docutils literal notranslate"><span class="pre">online_url_search</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.OnlineUrlSearchProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_url_search.</span></span><span class="sig-name descname"><span class="pre">OnlineUrlSearchProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#OnlineUrlSearchProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">online_url_search</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#OnlineUrlSearchProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online"><span class="std std-ref">request params</span></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+search query does not match to <code class="xref py py-obj docutils literal notranslate"><span class="pre">re_search_urls</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html">Tor check plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redisdb.html">Redis DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html">Redis Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.search.html" title="previous chapter">Search</a>
+          <li>Next: <a href="searx.utils.html" title="next chapter">Utility functions for the engines</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.search.processors.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

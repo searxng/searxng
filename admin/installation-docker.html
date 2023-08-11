@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Docker Container &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installation Script" href="installation-scripts.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-scripts.html" title="Installation Script"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Docker Container</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="docker-container">
+<span id="installation-docker"></span><h1>Docker Container<a class="headerlink" href="#docker-container" title="Permalink to this heading">¶</a></h1>
+<hr class="docutils" />
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/r/searxng/searxng">searxng/searxng &#64;dockerhub</a></p></li>
+<li><p><a class="reference external" href="https://github.com/searxng/searxng/blob/master/Dockerfile">git://Dockerfile</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/get-started/overview">Docker overview</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/get-started/docker_cheatsheet.pdf">Docker Cheat Sheet</a></p></li>
+<li><p><a class="reference external" href="https://alpinelinux.org">Alpine Linux</a>
+<a class="reference external" href="https://en.wikipedia.org/wiki/Alpine_Linux">(wiki)</a>
+<a class="reference external" href="https://pkgs.alpinelinux.org/packages">apt packages</a></p></li>
+<li><p>Alpine’s <code class="docutils literal notranslate"><span class="pre">/bin/sh</span></code> is <a class="reference external" href="https://manpages.debian.org/jump?q=dash">dash</a></p></li>
+</ul>
+</aside>
+<p><strong>If you intend to create a public instance using Docker, use our well maintained
+docker container</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/r/searxng/searxng">searxng/searxng &#64;dockerhub</a>.</p></li>
+</ul>
+<aside class="sidebar">
+<p class="sidebar-title">hint</p>
+<p>The rest of this article is of interest only to those who want to create and
+maintain their own Docker images.</p>
+</aside>
+<p>The sources are hosted at <a class="reference external" href="https://github.com/searxng/searxng-docker">searxng-docker</a> and the container includes:</p>
+<ul class="simple">
+<li><p>a HTTPS reverse proxy <a class="reference external" href="https://hub.docker.com/_/caddy">[caddy]</a> and</p></li>
+<li><p>a <a class="reference external" href="https://redis.io/">Redis</a> DB</p></li>
+</ul>
+<p>The <a class="reference external" href="https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml">default SearXNG setup</a>
+of this container:</p>
+<ul class="simple">
+<li><p>enables <a class="reference internal" href="settings/settings_server.html#limiter"><span class="std std-ref">limiter</span></a> to protect against bots</p></li>
+<li><p>enables <a class="reference internal" href="settings/settings_server.html#image-proxy"><span class="std std-ref">image proxy</span></a> for better privacy</p></li>
+<li><p>enables <a class="reference internal" href="settings/settings_ui.html#static-use-hash"><span class="std std-ref">cache busting</span></a> to save bandwith</p></li>
+</ul>
+<hr class="docutils" />
+<section id="get-docker">
+<h2>Get Docker<a class="headerlink" href="#get-docker" title="Permalink to this heading">¶</a></h2>
+<p>If you plan to build and maintain a docker image by yourself, make sure you have
+<a class="reference external" href="https://docs.docker.com/get-docker/">Docker installed</a>. On Linux don’t
+forget to add your user to the docker group (log out and log back in so that
+your group membership is re-evaluated):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+</section>
+<section id="searxng-searxng">
+<h2>searxng/searxng<a class="headerlink" href="#searxng-searxng" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title"><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.docker.com/engine/reference/run/#clean-up---rm">--rm</a>
+automatically clean up when container exits</p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/engine/reference/run/#detached--d">-d</a> start
+detached container</p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/engine/reference/run/#volume-shared-filesystems">-v</a>
+mount volume <code class="docutils literal notranslate"><span class="pre">HOST:CONTAINER</span></code></p></li>
+</ul>
+</aside>
+<p>The docker image is based on <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Dockerfile">git://Dockerfile</a> and available from
+<a class="reference external" href="https://hub.docker.com/r/searxng/searxng">searxng/searxng &#64;dockerhub</a>.  Using the docker image is quite easy, for
+instance you can pull the <a class="reference external" href="https://hub.docker.com/r/searxng/searxng">searxng/searxng &#64;dockerhub</a> image and deploy a local
+instance using <a class="reference external" href="https://docs.docker.com/engine/reference/run/">docker run</a>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>my-instance
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>my-instance
+$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">PORT</span><span class="o">=</span><span class="m">8080</span>
+$<span class="w"> </span>docker<span class="w"> </span>pull<span class="w"> </span>searxng/searxng
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">PORT</span><span class="si">}</span>:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/searxng:/etc/searxng&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-e<span class="w"> </span><span class="s2">&quot;BASE_URL=http://localhost:</span><span class="nv">$PORT</span><span class="s2">/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>-e<span class="w"> </span><span class="s2">&quot;INSTANCE_NAME=my-instance&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span>searxng/searxng
+2f998....<span class="w"> </span><span class="c1"># container&#39;s ID</span>
+</pre></div>
+</div>
+<p>Open your WEB browser and visit the URL:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>xdg-open<span class="w"> </span><span class="s2">&quot;http://localhost:</span><span class="nv">$PORT</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Inside <code class="docutils literal notranslate"><span class="pre">${PWD}/searxng</span></code>, you will find <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code> and <code class="docutils literal notranslate"><span class="pre">uwsgi.ini</span></code>.  You
+can modify these files according to your needs and restart the Docker image.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>restart<span class="w"> </span>2f998
+</pre></div>
+</div>
+<p>Use command <code class="docutils literal notranslate"><span class="pre">container</span> <span class="pre">ls</span></code> to list running containers, add flag <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/container_ls">-a</a> to list
+exited containers also.  With <code class="docutils literal notranslate"><span class="pre">container</span> <span class="pre">stop</span></code> a running container can be
+stoped.  To get rid of a container use <code class="docutils literal notranslate"><span class="pre">container</span> <span class="pre">rm</span></code>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>ls
+CONTAINER<span class="w"> </span>ID<span class="w">   </span>IMAGE<span class="w">             </span>COMMAND<span class="w">                  </span>CREATED<span class="w">         </span>...
+2f998d725993<span class="w">   </span>searxng/searxng<span class="w">   </span><span class="s2">&quot;/sbin/tini -- /usr/…&quot;</span><span class="w">   </span><span class="m">7</span><span class="w"> </span>minutes<span class="w"> </span>ago<span class="w">   </span>...
+
+$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>2f998
+$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>2f998
+</pre></div>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">Warning</p>
+<p>This might remove all docker items, not only those from SearXNG.</p>
+</aside>
+<p>If you won’t use docker anymore and want to get rid of all containers &amp; images
+use the following <em>prune</em> command:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>stop<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-aq<span class="k">)</span><span class="w">       </span><span class="c1"># stop all containers</span>
+$<span class="w"> </span>docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w">                </span><span class="c1"># make some housekeeping</span>
+$<span class="w"> </span>docker<span class="w"> </span>rmi<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>images<span class="w"> </span>-q<span class="k">)</span><span class="w">  </span><span class="c1"># drop all images</span>
+</pre></div>
+</div>
+<section id="shell-inside-container">
+<h3>shell inside container<a class="headerlink" href="#shell-inside-container" title="Permalink to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">Bashism</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://lwn.net/Articles/343924/">A tale of two shells: bash or dash</a></p></li>
+<li><p><a class="reference external" href="http://mywiki.wooledge.org/Bashism">How to make bash scripts work in dash</a></p></li>
+<li><p><a class="reference external" href="https://dev.to/bowmanjd/writing-bash-scripts-that-are-not-only-bash-checking-for-bashisms-and-testing-with-dash-1bli">Checking for Bashisms</a></p></li>
+</ul>
+</aside>
+<p>Like in many other distributions, Alpine’s <a class="reference external" href="https://wiki.ubuntu.com/DashAsBinSh">/bin/sh</a> is <a class="reference external" href="https://manpages.debian.org/jump?q=dash">dash</a>.  Dash is meant to be
+<a class="reference external" href="https://pubs.opengroup.org/onlinepubs/9699919799">POSIX-compliant</a>.
+Compared to debian, in the Alpine image <a class="reference external" href="https://manpages.debian.org/jump?q=bash">bash</a> is not installed.  The
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/dockerfiles/docker-entrypoint.sh">git://dockerfiles/docker-entrypoint.sh</a> script is checked <em>against dash</em>
+(<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">tests.shell</span></code>).</p>
+<p>To open a shell inside the container:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>2f998<span class="w"> </span>sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-the-image">
+<h2>Build the image<a class="headerlink" href="#build-the-image" title="Permalink to this heading">¶</a></h2>
+<p>It’s also possible to build SearXNG from the embedded <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Dockerfile">git://Dockerfile</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/searxng/searxng.git
+$ cd searxng
+$ make docker.build
+...
+Successfully built 49586c016434
+Successfully tagged searxng/searxng:latest
+Successfully tagged searxng/searxng:1.0.0-209-9c823800-dirty
+
+$ docker images
+REPOSITORY        TAG                        IMAGE ID       CREATED          SIZE
+searxng/searxng   1.0.0-209-9c823800-dirty   49586c016434   13 minutes ago   308MB
+searxng/searxng   latest                     49586c016434   13 minutes ago   308MB
+alpine            3.13                       6dbb9cc54074   3 weeks ago      5.61MB
+</pre></div>
+</div>
+</section>
+<section id="command-line">
+<h2>Command line<a class="headerlink" href="#command-line" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">docker run</p>
+<p>Use flags <code class="docutils literal notranslate"><span class="pre">-it</span></code> for <a class="reference external" href="https://docs.docker.com/engine/reference/run/#foreground">interactive processes</a>.</p>
+</aside>
+<p>In the <a class="reference external" href="https://github.com/searxng/searxng/blob/master/Dockerfile">git://Dockerfile</a> the <a class="reference external" href="https://docs.docker.com/engine/reference/builder/#entrypoint">ENTRYPOINT</a> is defined as
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/dockerfiles/docker-entrypoint.sh">git://dockerfiles/docker-entrypoint.sh</a></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>searxng/searxng<span class="w"> </span>-h
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Command line:
+  -h  Display this help
+  -d  Dry run to update the configuration files.
+  -f  Always update on the configuration files (existing files are renamed with
+      the .old suffix).  Without this option, the new configuration files are
+      copied with the .new suffix
+Environment variables:
+  INSTANCE_NAME settings.yml : general.instance_name
+  AUTOCOMPLETE  settings.yml : search.autocomplete
+  BASE_URL      settings.yml : server.base_url
+  MORTY_URL     settings.yml : result_proxy.url
+  MORTY_KEY     settings.yml : result_proxy.key
+  BIND_ADDRESS  uwsgi bind to the specified TCP socket using HTTP protocol.
+                Default value: 0.0.0.0:8080
+Volume:
+  /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
+                this directory (see the -f command line option)&quot;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Docker Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins builtin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation.html" title="previous chapter">Installation</a>
+          <li>Next: <a href="installation-scripts.html" title="next chapter">Installation Script</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-docker.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

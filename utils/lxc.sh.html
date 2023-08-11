@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>utils/lxc.sh &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Source-Code" href="../src/index.html" />
+    <link rel="prev" title="utils/searxng.sh" href="searxng.sh.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../src/index.html" title="Source-Code"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searxng.sh.html" title="utils/searxng.sh"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">DevOps tooling box</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="utils-lxc-sh">
+<span id="lxc-sh"></span><h1><code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span></code><a class="headerlink" href="#utils-lxc-sh" title="Permalink to this heading">¶</a></h1>
+<p>With the use of <em>Linux Containers</em> (<a class="reference external" href="https://linuxcontainers.org/lxc/introduction/">LXC</a>) we can scale our tasks over a stack of
+containers, what we call the: <em>lxc suite</em>.  The <a class="reference internal" href="#lxc-searxng-env"><span class="std std-ref">SearXNG suite config</span></a> is
+loaded by default, every time you start the <code class="docutils literal notranslate"><span class="pre">lxc.sh</span></code> script (<em>you do not need
+to care about</em>).</p>
+<aside class="sidebar">
+<p class="sidebar-title">further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://snapcraft.io">snap</a>, <a class="reference external" href="https://snapcraft.io/lxd">snapcraft LXD</a></p></li>
+<li><p><a class="reference external" href="https://linuxcontainers.org/lxc/introduction/">LXC</a>,  <a class="reference external" href="https://linuxcontainers.org/lxd/introduction/">LXD</a></p></li>
+<li><p><a class="reference external" href="https://uk.images.linuxcontainers.org/">LXC/LXD Image Server</a></p></li>
+<li><p><a class="reference external" href="https://github.com/lxc/lxd">LXD&#64;github</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#install-lxd" id="id5">Install LXD</a></p>
+<ul>
+<li><p><a class="reference internal" href="#internet-connectivity-docker" id="id6">Internet Connectivity &amp; Docker</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#searxng-lxc-suite" id="id7">SearXNG LXC suite</a></p>
+<ul>
+<li><p><a class="reference internal" href="#running-commands" id="id8">Running commands</a></p></li>
+<li><p><a class="reference internal" href="#good-to-know" id="id9">Good to know</a></p></li>
+<li><p><a class="reference internal" href="#install-suite" id="id10">Install suite</a></p></li>
+<li><p><a class="reference internal" href="#clean-up" id="id11">Clean up</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#setup-searxng-buildhost" id="id12">Setup SearXNG buildhost</a></p></li>
+<li><p><a class="reference internal" href="#command-help" id="id13">Command Help</a></p></li>
+<li><p><a class="reference internal" href="#searxng-suite-config" id="id14">SearXNG suite config</a></p></li>
+</ul>
+</nav>
+<section id="install-lxd">
+<span id="lxd-install"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Install LXD</a><a class="headerlink" href="#install-lxd" title="Permalink to this heading">¶</a></h2>
+<p>Before you can start with containers, you need to install and initiate <a class="reference external" href="https://linuxcontainers.org/lxd/introduction/">LXD</a>
+once:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ snap install lxd
+$ lxd init --auto
+</pre></div>
+</div>
+<p>To make use of the containers from the <em>SearXNG suite</em>, you have to build the
+<a class="reference internal" href="#lxc-sh-help"><span class="std std-ref">LXC suite containers</span></a> initial.  But be warned, <strong>this might
+take some time</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh build
+</pre></div>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">hint</p>
+<p>If you have issues with the internet connectivity of your containers read
+section <a class="reference internal" href="#internet-connectivity-docker"><span class="std std-ref">Internet Connectivity &amp; Docker</span></a>.</p>
+</aside>
+<p>A cup of coffee later, your LXC suite is build up and you can run whatever task
+you want / in a selected or even in all <a class="reference internal" href="#lxc-sh-help"><span class="std std-ref">LXC suite containers</span></a>.</p>
+<section id="internet-connectivity-docker">
+<span id="id1"></span><h3><a class="toc-backref" href="#id6" role="doc-backlink">Internet Connectivity &amp; Docker</a><a class="headerlink" href="#internet-connectivity-docker" title="Permalink to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/docker/for-linux/issues/103">Docker blocking network of existing LXC containers</a></p></li>
+<li><p><a class="reference external" href="https://fralef.me/docker-and-iptables.html">Docker and IPtables (fralef.me)</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/network/iptables/#docker-on-a-router/">Docker and iptables (docker.com)</a></p></li>
+</ul>
+</aside>
+<p>There is a conflict in the <code class="docutils literal notranslate"><span class="pre">iptables</span></code> setup of Docker &amp; LXC.  If you have
+docker installed, you may find that the internet connectivity of your LXD
+containers no longer work.</p>
+<p>Whenever docker is started (reboot) it sets the iptables policy for the
+<code class="docutils literal notranslate"><span class="pre">FORWARD</span></code> chain to <code class="docutils literal notranslate"><span class="pre">DROP</span></code> <a class="reference external" href="https://docs.docker.com/network/iptables/#docker-on-a-router">[ref]</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H iptables-save | grep FORWARD
+:FORWARD ACCEPT [7048:7851230]
+:FORWARD DROP [7048:7851230]
+</pre></div>
+</div>
+<p>A handy solution of this problem might be to reset the policy for the
+<code class="docutils literal notranslate"><span class="pre">FORWARD</span></code> chain after the network has been initialized.  For this create a
+file in the <code class="docutils literal notranslate"><span class="pre">if-up</span></code> section of the network (<code class="docutils literal notranslate"><span class="pre">/etc/network/if-up.d/iptable</span></code>)
+and insert the following lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">F</span> <span class="n">FORWARD</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">P</span> <span class="n">FORWARD</span> <span class="n">ACCEPT</span>
+</pre></div>
+</div>
+<p>Don’t forget to set the execution bit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="n">ugo</span><span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">network</span><span class="o">/</span><span class="k">if</span><span class="o">-</span><span class="n">up</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">iptable</span>
+</pre></div>
+</div>
+<p>Reboot your system and check the iptables rules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H iptables-save | grep FORWARD
+:FORWARD ACCEPT [7048:7851230]
+:FORWARD ACCEPT [7048:7851230]
+</pre></div>
+</div>
+</section>
+</section>
+<section id="searxng-lxc-suite">
+<span id="id2"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">SearXNG LXC suite</a><a class="headerlink" href="#searxng-lxc-suite" title="Permalink to this heading">¶</a></h2>
+<p>The intention of the <em>SearXNG LXC suite</em> is to build up a suite of containers
+for development tasks or <a class="reference internal" href="#setup-searxng-buildhost"><span class="std std-ref">buildhosts</span></a> with a very
+small set of simple commands.  At the end of the <code class="docutils literal notranslate"><span class="pre">--help</span></code> output the SearXNG
+suite from the <a class="reference internal" href="#lxc-searxng-env"><span class="std std-ref">SearXNG suite config</span></a> is introduced:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh --help
+...
+LXC suite: searxng
+  Suite includes installation of SearXNG
+  images:     ubu2004 ubu2204 fedora35 archlinux
+  containers: searxng-ubu2004 searxng-ubu2204 searxng-fedora35 searxng-archlinux
+</pre></div>
+</div>
+<p>As shown above there are images and containers build up on this images.  To show
+more info about the containers in the <em>SearXNG LXC suite</em> call <code class="docutils literal notranslate"><span class="pre">show</span> <span class="pre">suite</span></code>.
+If this is the first time you make use of the SearXNG LXC suite, no containers
+are installed and the output is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh show suite
+
+LXC suite (searxng-*)
+=====================
+
++------+-------+------+------+------+-----------+
+| NAME | STATE | IPV4 | IPV6 | TYPE | SNAPSHOTS |
++------+-------+------+------+------+-----------+
+
+WARN:  container searxng-ubu2004 does not yet exists
+WARN:  container searxng-ubu2204 does not yet exists
+WARN:  container searxng-fedora35 does not yet exists
+WARN:  container searxng-archlinux does not yet exists
+</pre></div>
+</div>
+<p>If you do not want to run a command or a build in all containers, <strong>you can
+build just one</strong>. Here by example in the container that is build upon the
+<em>archlinux</em> image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh build searxng-archlinux
+$ sudo -H ./utils/lxc.sh cmd searxng-archlinux pwd
+</pre></div>
+</div>
+<p>Otherwise, to apply a command to all containers you can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh build
+$ sudo -H ./utils/lxc.sh cmd -- ls -la .
+</pre></div>
+</div>
+<section id="running-commands">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Running commands</a><a class="headerlink" href="#running-commands" title="Permalink to this heading">¶</a></h3>
+<p><strong>Inside containers, you can run scripts</strong> from the <a class="reference internal" href="index.html#toolboxing"><span class="std std-ref">DevOps tooling box</span></a> or run
+what ever command you need.  By example, to start a bash use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh cmd searxng-archlinux bash
+INFO:  [searxng-archlinux] bash
+[root@searxng-archlinux SearXNG]#
+</pre></div>
+</div>
+</section>
+<section id="good-to-know">
+<span id="id3"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">Good to know</a><a class="headerlink" href="#good-to-know" title="Permalink to this heading">¶</a></h3>
+<p>Each container shares the root folder of the repository and the command
+<code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span> <span class="pre">cmd</span></code> <strong>handle relative path names transparent</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pwd
+/share/SearXNG
+
+$ sudo -H ./utils/lxc.sh cmd searxng-archlinux pwd
+INFO:  [searxng-archlinux] pwd
+/share/SearXNG
+</pre></div>
+</div>
+<p>The path <code class="docutils literal notranslate"><span class="pre">/share/SearXNG</span></code> will be different on your HOST system.  The commands
+in the conatiner are executed by the <code class="docutils literal notranslate"><span class="pre">root</span></code> inside of the container.  Compare
+output of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ls -li Makefile
+47712402 -rw-rw-r-- 1 markus markus 2923 Apr 19 13:52 Makefile
+
+$ sudo -H ./utils/lxc.sh cmd searxng-archlinux ls -li Makefile
+INFO:  [searxng-archlinux] ls -li Makefile
+47712402 -rw-rw-r-- 1 root root 2923 Apr 19 11:52 Makefile
+...
+</pre></div>
+</div>
+<p>Since the path <code class="docutils literal notranslate"><span class="pre">/share/SearXNG</span></code> of the HOST system is wrapped into the
+container under the same name, the shown <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> (inode <code class="docutils literal notranslate"><span class="pre">47712402</span></code>) in
+the ouput is always the identical <code class="docutils literal notranslate"><span class="pre">/share/SearXNG/Makefile</span></code> from the HOST
+system.  In the example shown above the owner of the path in the container is
+the <code class="docutils literal notranslate"><span class="pre">root</span></code> user of the conatiner (and the timezone in the container is
+different to HOST system).</p>
+</section>
+<section id="install-suite">
+<span id="lxc-sh-install-suite"></span><h3><a class="toc-backref" href="#id10" role="doc-backlink">Install suite</a><a class="headerlink" href="#install-suite" title="Permalink to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../dev/lxcdev.html#working-in-containers"><span class="std std-ref">In containers, work as usual</span></a></p></li>
+<li><p><a class="reference internal" href="index.html#force-timeout"><span class="std std-ref">FORCE_TIMEOUT</span></a></p></li>
+</ul>
+</aside>
+<p>To install the complete <a class="reference internal" href="#lxc-searxng-env"><span class="std std-ref">SearXNG suite</span></a> into <strong>all</strong> <a class="reference external" href="https://linuxcontainers.org/lxc/introduction/">LXC</a>
+containers leave the container argument empty and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh build
+$ sudo -H ./utils/lxc.sh install suite
+</pre></div>
+</div>
+<p>To <em>build &amp; install</em> suite only in one container you can use by example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh build searxng-archlinux
+$ sudo -H ./utils/lxc.sh install suite searxng-archlinux
+</pre></div>
+</div>
+<p>The command above installs a SearXNG suite (see <a class="reference internal" href="../admin/installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a>).
+To <a class="reference internal" href="../admin/installation-nginx.html#installation-nginx"><span class="std std-ref">install a nginx</span></a> reverse proxy (or alternatively
+use <a class="reference internal" href="../admin/installation-apache.html#installation-apache"><span class="std std-ref">apache</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
+</pre></div>
+</div>
+<p>Same operation just in one container of the suite:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh cmd searxng-archlinux FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="index.html#force-timeout"><span class="std std-ref">FORCE_TIMEOUT</span></a> environment is set to zero to run the
+script without user interaction.</p>
+<p>To get the IP (URL) of the SearXNG service in the containers use <code class="docutils literal notranslate"><span class="pre">show</span> <span class="pre">suite</span></code>
+command.  To test instances from containers just open the URLs in your
+WEB-Browser:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo ./utils/lxc.sh show suite | grep SEARXNG_URL
+
+[searxng-ubu2110]      SEARXNG_URL          : http://n.n.n.170/searxng
+[searxng-ubu2004]      SEARXNG_URL          : http://n.n.n.160/searxng
+[searxnggfedora35]     SEARXNG_URL          : http://n.n.n.150/searxng
+[searxng-archlinux]    SEARXNG_URL          : http://n.n.n.140/searxng
+</pre></div>
+</div>
+</section>
+<section id="clean-up">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Clean up</a><a class="headerlink" href="#clean-up" title="Permalink to this heading">¶</a></h3>
+<p>If there comes the time you want to <strong>get rid off all</strong> the containers and
+<strong>clean up local images</strong> just type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh remove
+$ sudo -H ./utils/lxc.sh remove images
+</pre></div>
+</div>
+</section>
+</section>
+<section id="setup-searxng-buildhost">
+<span id="id4"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Setup SearXNG buildhost</a><a class="headerlink" href="#setup-searxng-buildhost" title="Permalink to this heading">¶</a></h2>
+<p>You can <strong>install the SearXNG buildhost environment</strong> into one or all containers.
+The installation procedure to set up a <a class="reference internal" href="../admin/buildhosts.html#buildhosts"><span class="std std-ref">build host</span></a> takes its
+time.  Installation in all containers will take more time (time for another cup
+of coffee).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">H</span> <span class="o">./</span><span class="n">utils</span><span class="o">/</span><span class="n">lxc</span><span class="o">.</span><span class="n">sh</span> <span class="n">cmd</span> <span class="o">--</span> <span class="o">./</span><span class="n">utils</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">sh</span> <span class="n">install</span> <span class="n">buildhost</span>
+</pre></div>
+</div>
+<p>To build (live) documentation inside a <a class="reference external" href="https://www.archlinux.org/">archlinux</a> container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">H</span> <span class="o">./</span><span class="n">utils</span><span class="o">/</span><span class="n">lxc</span><span class="o">.</span><span class="n">sh</span> <span class="n">cmd</span> <span class="n">searxng</span><span class="o">-</span><span class="n">archlinux</span> <span class="n">make</span> <span class="n">docs</span><span class="o">.</span><span class="n">clean</span> <span class="n">docs</span><span class="o">.</span><span class="n">live</span>
+<span class="o">...</span>
+<span class="p">[</span><span class="n">I</span> <span class="mi">200331</span> <span class="mi">15</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">42</span> <span class="n">server</span><span class="p">:</span><span class="mi">296</span><span class="p">]</span> <span class="n">Serving</span> <span class="n">on</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>To get IP of the container and the port number <em>live docs</em> is listening:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo ./utils/lxc.sh show suite | grep docs.live
+...
+[searxng-archlinux]  INFO:  (eth0) docs.live:  http://n.n.n.140:8080/
+</pre></div>
+</div>
+</section>
+<section id="command-help">
+<span id="lxc-sh-help"></span><h2><a class="toc-backref" href="#id13" role="doc-backlink">Command Help</a><a class="headerlink" href="#command-help" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--help</span></code> output of the script is largely self-explanatory:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage::
+  lxc.sh build        [containers|&lt;name&gt;]
+  lxc.sh copy         [images]
+  lxc.sh remove       [containers|&lt;name&gt;|images]
+  lxc.sh [start|stop] [containers|&lt;name&gt;]
+  lxc.sh show         [images|suite|info|config [&lt;name&gt;]]
+  lxc.sh cmd          [--|&lt;name&gt;] &#39;...&#39;
+  lxc.sh install      [suite|base [&lt;name&gt;]]
+
+build
+  :containers:   build, launch all containers and &#39;install base&#39; packages
+  :&lt;name&gt;:       build, launch container &lt;name&gt;  and &#39;install base&#39; packages
+copy:
+  :images:       copy remote images of the suite into local storage
+remove
+  :containers:   delete all &#39;containers&#39; or only &lt;container-name&gt;
+  :images:       delete local images of the suite
+start/stop
+  :containers:   start/stop all &#39;containers&#39; from the suite
+  :&lt;name&gt;:       start/stop container &lt;name&gt; from suite
+show
+  :info:         show info of all (or &lt;name&gt;) containers from LXC suite
+  :config:       show config of all (or &lt;name&gt;) containers from the LXC suite
+  :suite:        show services of all (or &lt;name&gt;) containers from the LXC suite
+  :images:       show information of local images
+cmd
+  use single quotes to evaluate in container&#39;s bash, e.g.: &#39;echo $(hostname)&#39;
+  --             run command &#39;...&#39; in all containers of the LXC suite
+  :&lt;name&gt;:       run command &#39;...&#39; in container &lt;name&gt;
+install
+  :base:         prepare LXC; install basic packages
+  :suite:        install LXC searxng suite into all (or &lt;name&gt;) containers
+
+LXC suite: searxng
+  Suite includes installation of SearXNG
+  images:     ubu2004 ubu2204 fedora35 archlinux
+  containers: searxng-ubu2004 searxng-ubu2204 searxng-fedora35 searxng-archlinux
+</pre></div>
+</div>
+</section>
+<section id="searxng-suite-config">
+<span id="lxc-searxng-env"></span><h2><a class="toc-backref" href="#id14" role="doc-backlink">SearXNG suite config</a><a class="headerlink" href="#searxng-suite-config" title="Permalink to this heading">¶</a></h2>
+<p>The SearXNG suite is defined in the file <a class="reference external" href="https://github.com/searxng/searxng/blob/master/utils/lxc-searxng.env">git://utils/lxc-searxng.env</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># shellcheck shell=bash</span>
+
+<span class="c1"># This file is a setup of a LXC suite.  It is sourced from different context, do</span>
+<span class="c1"># not manipulate the environment directly, implement functions and manipulate</span>
+<span class="c1"># environment only in subshells.</span>
+
+lxc_set_suite_env<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LXC_SUITE_NAME</span><span class="o">=</span><span class="s2">&quot;searxng&quot;</span>
+
+<span class="w">    </span><span class="c1"># name of https://images.linuxcontainers.org</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LINUXCONTAINERS_ORG_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LINUXCONTAINERS_ORG_NAME</span><span class="k">:-</span><span class="nv">images</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LXC_HOST_PREFIX</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LXC_SUITE_NAME</span><span class="k">:-</span><span class="nv">searx</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LXC_SUITE</span><span class="o">=(</span>
+
+<span class="w">        </span><span class="c1"># end of standard support see https://wiki.ubuntu.com/Releases</span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="nv">$LINUXCONTAINERS_ORG_NAME</span><span class="s2">:ubuntu/20.04&quot;</span><span class="w">  </span><span class="s2">&quot;ubu2004&quot;</span><span class="w"> </span><span class="c1"># LTS EOSS April 2025</span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="nv">$LINUXCONTAINERS_ORG_NAME</span><span class="s2">:ubuntu/22.04&quot;</span><span class="w">  </span><span class="s2">&quot;ubu2204&quot;</span><span class="w"> </span><span class="c1"># LTS EOSS April 2027</span>
+
+<span class="w">        </span><span class="c1"># EOL see https://fedoraproject.org/wiki/Releases</span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="nv">$LINUXCONTAINERS_ORG_NAME</span><span class="s2">:fedora/35&quot;</span><span class="w">     </span><span class="s2">&quot;fedora35&quot;</span>
+
+<span class="w">        </span><span class="c1"># rolling releases see https://www.archlinux.org/releng/releases/</span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="nv">$LINUXCONTAINERS_ORG_NAME</span><span class="s2">:archlinux&quot;</span><span class="w">     </span><span class="s2">&quot;archlinux&quot;</span>
+<span class="w">    </span><span class="o">)</span>
+<span class="o">}</span>
+
+lxc_suite_install_info<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="o">(</span>
+<span class="w">        </span>lxc_set_suite_env
+<span class="w">        </span>cat<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">LXC suite: ${LXC_SUITE_NAME}</span>
+<span class="s">  Suite includes installation of SearXNG</span>
+<span class="s">  images:     ${LOCAL_IMAGES[*]}</span>
+<span class="s">  containers: ${CONTAINERS[*]}</span>
+<span class="s">EOF</span>
+<span class="w">    </span><span class="o">)</span>
+<span class="o">}</span>
+
+lxc_suite_install<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="o">(</span>
+<span class="w">        </span>lxc_set_suite_env
+<span class="w">        </span><span class="nv">FORCE_TIMEOUT</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LXC_REPO_ROOT</span><span class="si">}</span><span class="s2">/utils/searxng.sh&quot;</span><span class="w"> </span>install<span class="w"> </span>all
+<span class="w">        </span>rst_title<span class="w"> </span><span class="s2">&quot;Suite installation finished (</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">)&quot;</span><span class="w"> </span>part
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>ask_yn<span class="w"> </span><span class="s2">&quot;Developer install? (wraps source from HOST into the running instance)&quot;</span><span class="w"> </span>Yn<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LXC_REPO_ROOT</span><span class="si">}</span><span class="s2">/utils/searxng.sh&quot;</span><span class="w"> </span>searxng.install.link_src<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="k">fi</span>
+<span class="w">        </span>lxc_suite_info
+<span class="w">        </span><span class="nb">echo</span>
+<span class="w">    </span><span class="o">)</span>
+<span class="o">}</span>
+
+lxc_suite_info<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="o">(</span>
+<span class="w">        </span>lxc_set_suite_env
+<span class="w">        </span><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>global_IPs<span class="k">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$ip</span><span class="w"> </span><span class="o">=</span>~<span class="w"> </span>.*:.*<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span>info_msg<span class="w"> </span><span class="s2">&quot;(</span><span class="si">${</span><span class="nv">ip</span><span class="p">%|*</span><span class="si">}</span><span class="s2">) IPv6:       http://[</span><span class="si">${</span><span class="nv">ip</span><span class="p">#*|</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="c1"># IPv4:</span>
+<span class="w">                </span><span class="c1"># shellcheck disable=SC2034,SC2031</span>
+<span class="w">                </span>info_msg<span class="w"> </span><span class="s2">&quot;(</span><span class="si">${</span><span class="nv">ip</span><span class="p">%|*</span><span class="si">}</span><span class="s2">) docs-live:  http://</span><span class="si">${</span><span class="nv">ip</span><span class="p">#*|</span><span class="si">}</span><span class="s2">:8080/&quot;</span>
+<span class="w">            </span><span class="k">fi</span>
+<span class="w">        </span><span class="k">done</span>
+<span class="w">        </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LXC_REPO_ROOT</span><span class="si">}</span><span class="s2">/utils/searxng.sh&quot;</span><span class="w"> </span>searxng.instance.env
+<span class="w">    </span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DevOps tooling box</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#common-command-environments">Common command environments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">DevOps tooling box</a>
+        <ul>
+          <li>Previous: <a href="searxng.sh.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a>
+          <li>Next: <a href="../src/index.html" title="next chapter">Source-Code</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/utils/lxc.sh.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

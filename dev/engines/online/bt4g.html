@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BT4G &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Dailymotion" href="dailymotion.html" />
+    <link rel="prev" title="Brave Engines" href="brave.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dailymotion.html" title="Dailymotion"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="brave.html" title="Brave Engines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BT4G</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bt4g">
+<span id="bt4g-engine"></span><h1>BT4G<a class="headerlink" href="#bt4g" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#configuration" id="id2">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id3">Implementations</a></p></li>
+</ul>
+</nav>
+<span class="target" id="module-searx.engines.bt4g"></span><p><a class="reference external" href="https://bt4g.com/">BT4G</a> (bt4g.com) is not a tracker and doesn’t store any content and only
+collects torrent metadata (such as file names and file sizes) and a magnet link
+(torrent identifier).</p>
+<p>This engine does not parse the HTML page because there is an API in XML (RSS).
+The RSS feed provides fewer data like amount of seeders/leechers and the files
+in the torrent file.  It’s a tradeoff for a “stable” engine as the XML from RSS
+content will change way less than the HTML page.</p>
+<section id="configuration">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<p>The engine has the following additional settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.bt4g.bt4g_order_by" title="searx.engines.bt4g.bt4g_order_by"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bt4g_order_by</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.bt4g.bt4g_category" title="searx.engines.bt4g.bt4g_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bt4g_category</span></code></a></p></li>
+</ul>
+<p>With this options a SearXNG maintainer is able to configure <strong>additional</strong>
+engines for specific torrent searches.  For example a engine to search only for
+Movies and sort the result list by the count of seeders.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bt4g.movie</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bt4g</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bt4gv</span>
+<span class="w">  </span><span class="nt">categories</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">video</span>
+<span class="w">  </span><span class="nt">bt4g_order_by</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">seeders</span>
+<span class="w">  </span><span class="nt">bt4g_category</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;movie&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Implementations</a><a class="headerlink" href="#implementations" title="Permalink to this heading">¶</a></h2>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bt4g.bt4g_category">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bt4g.</span></span><span class="sig-name descname"><span class="pre">bt4g_category</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'all'</span></em><a class="headerlink" href="#searx.engines.bt4g.bt4g_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>BT$G offers categoies: <code class="docutils literal notranslate"><span class="pre">all</span></code> (default), <code class="docutils literal notranslate"><span class="pre">audio</span></code>, <code class="docutils literal notranslate"><span class="pre">movie</span></code>, <code class="docutils literal notranslate"><span class="pre">doc</span></code>,
+<code class="docutils literal notranslate"><span class="pre">app</span></code> and `` other``.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bt4g.bt4g_order_by">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bt4g.</span></span><span class="sig-name descname"><span class="pre">bt4g_order_by</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'relevance'</span></em><a class="headerlink" href="#searx.engines.bt4g.bt4g_order_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Result list can be ordered by <code class="docutils literal notranslate"><span class="pre">relevance</span></code> (default), <code class="docutils literal notranslate"><span class="pre">size</span></code>, <code class="docutils literal notranslate"><span class="pre">seeders</span></code>
+or <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>When <em>time_range</em> is activate, the results always orderd by <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="brave.html" title="previous chapter">Brave Engines</a>
+          <li>Next: <a href="dailymotion.html" title="next chapter">Dailymotion</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/bt4g.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

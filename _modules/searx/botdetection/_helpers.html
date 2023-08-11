@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection._helpers &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection._helpers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection._helpers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># lint: pylint</span>
+<span class="c1"># pylint: disable=missing-module-docstring, invalid-name</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">ipaddress</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IPv4Network</span><span class="p">,</span>
+    <span class="n">IPv6Network</span><span class="p">,</span>
+    <span class="n">IPv4Address</span><span class="p">,</span>
+    <span class="n">IPv6Address</span><span class="p">,</span>
+    <span class="n">ip_network</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">flask</span>
+<span class="kn">import</span> <span class="nn">werkzeug</span>
+
+<span class="kn">from</span> <span class="nn">searx.tools</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">searx</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;botdetection&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">dump_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+        <span class="o">+</span> <span class="s2">&quot; || X-Forwarded-For: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X-Forwarded-For&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || X-Real-IP: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X-Real-IP&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || form: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept-Language: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept-Language&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept-Encoding: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Content-Type: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Content-Length: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Connection: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Connection&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || User-Agent: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">too_many_requests</span><span class="p">(</span><span class="n">network</span><span class="p">:</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">werkzeug</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a HTTP 429 response object and writes a ERROR message to the</span>
+<span class="sd">    &#39;botdetection&#39; logger.  This function is used in part by the filter methods</span>
+<span class="sd">    to return the default ``Too Many Requests`` response.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;BLOCK </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">make_response</span><span class="p">((</span><span class="s1">&#39;Too Many Requests&#39;</span><span class="p">,</span> <span class="mi">429</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">get_network</span><span class="p">(</span><span class="n">real_ip</span><span class="p">:</span> <span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the (client) network of whether the real_ip is part of.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">real_ip</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;real_ip.ipv6_prefix&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;real_ip.ipv4_prefix&#39;</span><span class="p">]</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">ip_network</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">real_ip</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># logger.debug(&quot;get_network(): %s&quot;, network.compressed)</span>
+    <span class="k">return</span> <span class="n">network</span>
+
+
+<div class="viewcode-block" id="get_real_ip"><a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.get_real_ip">[docs]</a><span class="k">def</span> <span class="nf">get_real_ip</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns real IP of the request.  Since not all proxies set all the HTTP</span>
+<span class="sd">    headers and incoming headers can be faked it may happen that the IP cannot</span>
+<span class="sd">    be determined correctly.</span>
+
+<span class="sd">    .. sidebar:: :py:obj:`flask.Request.remote_addr`</span>
+
+<span class="sd">       SearXNG uses Werkzeug&#39;s ProxyFix_ (with it default ``x_for=1``).</span>
+
+<span class="sd">    This function tries to get the remote IP in the order listed below,</span>
+<span class="sd">    additional some tests are done and if inconsistencies or errors are</span>
+<span class="sd">    detected, they are logged.</span>
+
+<span class="sd">    The remote IP of the request is taken from (first match):</span>
+
+<span class="sd">    - X-Forwarded-For_ header</span>
+<span class="sd">    - `X-real-IP header &lt;https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516&gt;`__</span>
+<span class="sd">    - :py:obj:`flask.Request.remote_addr`</span>
+
+<span class="sd">    .. _ProxyFix:</span>
+<span class="sd">       https://werkzeug.palletsprojects.com/middleware/proxy_fix/</span>
+
+<span class="sd">    .. _X-Forwarded-For:</span>
+<span class="sd">      https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">forwarded_for</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X-Forwarded-For&quot;</span><span class="p">)</span>
+    <span class="n">real_ip</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X-Real-IP&#39;</span><span class="p">)</span>
+    <span class="n">remote_addr</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span>
+    <span class="c1"># logger.debug(</span>
+    <span class="c1">#     &quot;X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s&quot;, forwarded_for, real_ip, remote_addr</span>
+    <span class="c1"># )</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">forwarded_for</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;X-Forwarded-For header is not set!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.limiter</span> <span class="kn">import</span> <span class="n">get_cfg</span>  <span class="c1"># pylint: disable=import-outside-toplevel, cyclic-import</span>
+
+        <span class="n">forwarded_for</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">forwarded_for</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+        <span class="n">x_for</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_cfg</span><span class="p">()[</span><span class="s1">&#39;real_ip.x_for&#39;</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="n">forwarded_for</span> <span class="o">=</span> <span class="n">forwarded_for</span><span class="p">[</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">forwarded_for</span><span class="p">),</span> <span class="n">x_for</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">real_ip</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;X-Real-IP header is not set!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">forwarded_for</span> <span class="ow">and</span> <span class="n">real_ip</span> <span class="ow">and</span> <span class="n">forwarded_for</span> <span class="o">!=</span> <span class="n">real_ip</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;IP from X-Real-IP (</span><span class="si">%s</span><span class="s2">) is not equal to IP from X-Forwarded-For (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">real_ip</span><span class="p">,</span> <span class="n">forwarded_for</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">forwarded_for</span> <span class="ow">and</span> <span class="n">remote_addr</span> <span class="ow">and</span> <span class="n">forwarded_for</span> <span class="o">!=</span> <span class="n">remote_addr</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;IP from WSGI environment (</span><span class="si">%s</span><span class="s2">) is not equal to IP from X-Forwarded-For (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">remote_addr</span><span class="p">,</span> <span class="n">forwarded_for</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">real_ip</span> <span class="ow">and</span> <span class="n">remote_addr</span> <span class="ow">and</span> <span class="n">real_ip</span> <span class="o">!=</span> <span class="n">remote_addr</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;IP from WSGI environment (</span><span class="si">%s</span><span class="s2">) is not equal to IP from X-Real-IP (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">remote_addr</span><span class="p">,</span> <span class="n">real_ip</span><span class="p">)</span>
+
+    <span class="n">request_ip</span> <span class="o">=</span> <span class="n">forwarded_for</span> <span class="ow">or</span> <span class="n">real_ip</span> <span class="ow">or</span> <span class="n">remote_addr</span> <span class="ow">or</span> <span class="s1">&#39;0.0.0.0&#39;</span>
+    <span class="c1"># logger.debug(&quot;get_real_ip() -&gt; %s&quot;, request_ip)</span>
+    <span class="k">return</span> <span class="n">request_ip</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

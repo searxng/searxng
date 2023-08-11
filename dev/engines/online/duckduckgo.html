@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DukcDukGo Engines &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Google Engines" href="google.html" />
+    <link rel="prev" title="Dailymotion" href="dailymotion.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="google.html" title="Google Engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="dailymotion.html" title="Dailymotion"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DukcDukGo Engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="dukcdukgo-engines">
+<span id="duckduckgo-engines"></span><h1>DukcDukGo Engines<a class="headerlink" href="#dukcdukgo-engines" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#duckduckgo-lite" id="id1">DuckDuckGo Lite</a></p></li>
+<li><p><a class="reference internal" href="#duckduckgo-images" id="id2">DuckDuckGo Images</a></p></li>
+<li><p><a class="reference internal" href="#duckduckgo-instant-answer-api" id="id3">DuckDuckGo Instant Answer API</a></p></li>
+<li><p><a class="reference internal" href="#duckduckgo-weather" id="id4">DuckDuckGo Weather</a></p></li>
+</ul>
+</nav>
+<span class="target" id="module-searx.engines.duckduckgo"></span><section id="duckduckgo-lite">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">DuckDuckGo Lite</a><a class="headerlink" href="#duckduckgo-lite" title="Permalink to this heading">¶</a></h2>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo.cache_vqd">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo.</span></span><span class="sig-name descname"><span class="pre">cache_vqd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo.html#cache_vqd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo.cache_vqd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caches a <code class="docutils literal notranslate"><span class="pre">vqd</span></code> value from a query.</p>
+<p>The vqd value depends on the query string and is needed for the follow up
+pages or the images loaded by a XMLHttpRequest:</p>
+<ul class="simple">
+<li><p>DuckDuckGo Web: <cite>https://links.duckduckgo.com/d.js?q=…&amp;vqd=…</cite></p></li>
+<li><p>DuckDuckGo Images: <cite>https://duckduckgo.com/i.js??q=…&amp;vqd=…</cite></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo.fetch_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch languages &amp; regions from DuckDuckGo.</p>
+<p>SearXNG’s <code class="docutils literal notranslate"><span class="pre">all</span></code> locale maps DuckDuckGo’s “Alle regions” (<code class="docutils literal notranslate"><span class="pre">wt-wt</span></code>).
+DuckDuckGo’s language “Browsers prefered language” (<code class="docutils literal notranslate"><span class="pre">wt_WT</span></code>) makes no
+sense in a SearXNG request since SearXNG’s <code class="docutils literal notranslate"><span class="pre">all</span></code> will not add a
+<code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code> HTTP header.  The value in <code class="docutils literal notranslate"><span class="pre">engine_traits.all_locale</span></code>
+is <code class="docutils literal notranslate"><span class="pre">wt-wt</span></code> (the region).</p>
+<p>Beside regions DuckDuckGo also defines its lanaguages by region codes.  By
+example these are the english languages in DuckDuckGo:</p>
+<ul class="simple">
+<li><p>en_US</p></li>
+<li><p>en_AU</p></li>
+<li><p>en_CA</p></li>
+<li><p>en_GB</p></li>
+</ul>
+<p>The function <a class="reference internal" href="#searx.engines.duckduckgo.get_ddg_lang" title="searx.engines.duckduckgo.get_ddg_lang"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ddg_lang</span></code></a> evaluates DuckDuckGo’s language from
+SearXNG’s locale.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo.get_ddg_lang">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo.</span></span><span class="sig-name descname"><span class="pre">get_ddg_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eng_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sxng_locale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en_US'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo.html#get_ddg_lang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo.get_ddg_lang" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get DuckDuckGo’s language identifier from SearXNG’s locale.</p>
+<p>DuckDuckGo defines its lanaguages by region codes (see
+<a class="reference internal" href="#searx.engines.duckduckgo.fetch_traits" title="searx.engines.duckduckgo.fetch_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_traits</span></code></a>).</p>
+<p>To get region and language of a DDG service use:</p>
+<p>It might confuse, but the <code class="docutils literal notranslate"><span class="pre">l</span></code> value of the cookie is what SearXNG calls
+the <em>region</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !ddi paris :es-AR --&gt; {&#39;ad&#39;: &#39;es_AR&#39;, &#39;ah&#39;: &#39;ar-es&#39;, &#39;l&#39;: &#39;ar-es&#39;}</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;ad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;ah&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p><a class="reference external" href="https://lite.duckduckgo.com/lite">DDG-lite</a> does not offer a language
+selection to the user, only a region can be selected by the user
+(<code class="docutils literal notranslate"><span class="pre">eng_region</span></code> from the example above).  DDG-lite stores the selected
+region in a cookie:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;kl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>  <span class="c1"># &#39;ar-es&#39;</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo.get_vqd">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo.</span></span><span class="sig-name descname"><span class="pre">get_vqd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo.html#get_vqd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo.get_vqd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">vqd</span></code> that fits to the <em>query</em>.  If there is no <code class="docutils literal notranslate"><span class="pre">vqd</span></code> cached
+(<a class="reference internal" href="#searx.engines.duckduckgo.cache_vqd" title="searx.engines.duckduckgo.cache_vqd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_vqd</span></code></a>) the query is sent to DDG to get a vqd value from the
+response.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo.send_accept_language_header">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo.</span></span><span class="sig-name descname"><span class="pre">send_accept_language_header</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#searx.engines.duckduckgo.send_accept_language_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>DuckDuckGo-Lite tries to guess user’s prefered language from the HTTP
+<code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code>.  Optional the user can select a region filter (but not a
+language).</p>
+</dd></dl>
+
+<span class="target" id="module-searx.engines.duckduckgo_images"></span><section id="duckduckgo-images">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">DuckDuckGo Images</a><a class="headerlink" href="#duckduckgo-images" title="Permalink to this heading">¶</a></h2>
+</section>
+<span class="target" id="module-searx.engines.duckduckgo_definitions"></span><section id="duckduckgo-instant-answer-api">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">DuckDuckGo Instant Answer API</a><a class="headerlink" href="#duckduckgo-instant-answer-api" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://duckduckgo.com/api">DDG-API</a> is no longer documented but from
+reverse engineering we can see that some services (e.g. instant answers) still
+in use from the DDG search engine.</p>
+<p>As far we can say the <em>instant answers</em> API does not support languages, or at
+least we could not find out how language support should work.  It seems that
+most of the features are based on English terms.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo_definitions.area_to_str">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo_definitions.</span></span><span class="sig-name descname"><span class="pre">area_to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo_definitions.html#area_to_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo_definitions.area_to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse <code class="docutils literal notranslate"><span class="pre">{'unit':</span> <span class="pre">'https://www.wikidata.org/entity/Q712226',</span> <span class="pre">'amount':</span> <span class="pre">'+20.99'}</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.duckduckgo_definitions.is_broken_text">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.duckduckgo_definitions.</span></span><span class="sig-name descname"><span class="pre">is_broken_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/duckduckgo_definitions.html#is_broken_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.duckduckgo_definitions.is_broken_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>duckduckgo may return something like <code class="docutils literal notranslate"><span class="pre">&lt;a</span> <span class="pre">href=&quot;xxxx&quot;&gt;http://somewhere</span> <span class="pre">Related</span> <span class="pre">website&lt;a/&gt;</span></code></p>
+<p>The href URL is broken, the “Related website” may contains some HTML.</p>
+<p>The best solution seems to ignore these results.</p>
+</dd></dl>
+
+<span class="target" id="module-searx.engines.duckduckgo_weather"></span><section id="duckduckgo-weather">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">DuckDuckGo Weather</a><a class="headerlink" href="#duckduckgo-weather" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="dailymotion.html" title="previous chapter">Dailymotion</a>
+          <li>Next: <a href="google.html" title="next chapter">Google Engines</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/duckduckgo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

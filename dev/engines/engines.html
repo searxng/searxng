@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SearXNG’s engines loader &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Engine Overview" href="engine_overview.html" />
+    <link rel="prev" title="Engine Library" href="enginelib.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="engine_overview.html" title="Engine Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="enginelib.html" title="Engine Library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SearXNG’s engines loader</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.engines">
+<span id="searxng-s-engines-loader"></span><span id="searx-engines-loader"></span><h1>SearXNG’s engines loader<a class="headerlink" href="#module-searx.engines" title="Permalink to this heading">¶</a></h1>
+<p>Load and initialize the <code class="docutils literal notranslate"><span class="pre">engines</span></code>, see <a class="reference internal" href="#searx.engines.load_engines" title="searx.engines.load_engines"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_engines()</span></code></a> and register
+<a class="reference internal" href="#searx.engines.engine_shortcuts" title="searx.engines.engine_shortcuts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engine_shortcuts</span></code></a>.</p>
+<p>usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">load_engines</span><span class="p">(</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.is_missing_required_attributes">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.</span></span><span class="sig-name descname"><span class="pre">is_missing_required_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/engines.html#is_missing_required_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.is_missing_required_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute is required when its name doesn’t start with <code class="docutils literal notranslate"><span class="pre">_</span></code> (underline).
+Required attributes must not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.load_engine">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.</span></span><span class="sig-name descname"><span class="pre">load_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.11)"><span class="pre">types.ModuleType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/engines.html#load_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.load_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load engine from <code class="docutils literal notranslate"><span class="pre">engine_data</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – Attributes from YAML <code class="docutils literal notranslate"><span class="pre">settings:engines/&lt;engine&gt;</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>initialized namespace of the <code class="docutils literal notranslate"><span class="pre">&lt;engine&gt;</span></code>.</p>
+</dd>
+</dl>
+<ol class="arabic simple">
+<li><p>create a namespace and load module of the <code class="docutils literal notranslate"><span class="pre">&lt;engine&gt;</span></code></p></li>
+<li><p>update namespace with the defaults from <code class="xref py py-obj docutils literal notranslate"><span class="pre">ENGINE_DEFAULT_ARGS</span></code></p></li>
+<li><p>update namespace with values from <code class="docutils literal notranslate"><span class="pre">engine_data</span></code></p></li>
+</ol>
+<p>If engine <em>is active</em>, return namespace of the engine, otherwise return
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>This function also returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if initialization of the namespace fails
+for one of the following reasons:</p>
+<ul class="simple">
+<li><p>engine name contains underscore</p></li>
+<li><p>engine name is not lowercase</p></li>
+<li><p>required attribute is not set <a class="reference internal" href="#searx.engines.is_missing_required_attributes" title="searx.engines.is_missing_required_attributes"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_missing_required_attributes()</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.load_engines">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.</span></span><span class="sig-name descname"><span class="pre">load_engines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/engines.html#load_engines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.load_engines" title="Permalink to this definition">¶</a></dt>
+<dd><p>usage: <code class="docutils literal notranslate"><span class="pre">engine_list</span> <span class="pre">=</span> <span class="pre">settings['engines']</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.using_tor_proxy">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.</span></span><span class="sig-name descname"><span class="pre">using_tor_proxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.11)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/engines.html#using_tor_proxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.using_tor_proxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the engine configuration declares to use Tor.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.engine_shortcuts">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.</span></span><span class="sig-name descname"><span class="pre">engine_shortcuts</span></span><a class="headerlink" href="#searx.engines.engine_shortcuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple map of registered <em>shortcuts</em> to name of the engine (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">engine_shortcuts</span><span class="p">[</span><span class="n">engine</span><span class="o">.</span><span class="n">shortcut</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="enginelib.html" title="previous chapter">Engine Library</a>
+          <li>Next: <a href="engine_overview.html" title="next chapter">Engine Overview</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

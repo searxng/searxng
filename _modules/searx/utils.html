@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.utils &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># lint: pylint</span>
+<span class="c1"># pyright: basic</span>
+<span class="sd">&quot;&quot;&quot;Utility functions for the engines</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">importlib.util</span>
+<span class="kn">import</span> <span class="nn">types</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="kn">from</span> <span class="nn">html.parser</span> <span class="kn">import</span> <span class="n">HTMLParser</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
+
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
+<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="kn">import</span> <span class="n">ElementBase</span><span class="p">,</span> <span class="n">XPath</span><span class="p">,</span> <span class="n">XPathError</span><span class="p">,</span> <span class="n">XPathSyntaxError</span><span class="p">,</span> <span class="n">_ElementStringResult</span><span class="p">,</span> <span class="n">_ElementUnicodeResult</span>
+
+<span class="kn">from</span> <span class="nn">searx</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">searx.data</span> <span class="kn">import</span> <span class="n">USER_AGENTS</span><span class="p">,</span> <span class="n">data_dir</span>
+<span class="kn">from</span> <span class="nn">searx.version</span> <span class="kn">import</span> <span class="n">VERSION_TAG</span>
+<span class="kn">from</span> <span class="nn">searx.sxng_locales</span> <span class="kn">import</span> <span class="n">sxng_locales</span>
+<span class="kn">from</span> <span class="nn">searx.exceptions</span> <span class="kn">import</span> <span class="n">SearxXPathSyntaxException</span><span class="p">,</span> <span class="n">SearxEngineXPathException</span>
+<span class="kn">from</span> <span class="nn">searx</span> <span class="kn">import</span> <span class="n">logger</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;utils&#39;</span><span class="p">)</span>
+
+<span class="n">XPathSpecType</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">XPath</span><span class="p">]</span>
+
+<span class="n">_BLOCKED_TAGS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span>
+
+<span class="n">_ECMA_UNESCAPE4_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="si">%u</span><span class="s1">([0-9a-fA-F]</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+<span class="n">_ECMA_UNESCAPE2_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;%([0-9a-fA-F]</span><span class="si">{2}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+
+<span class="n">_STORAGE_UNIT_VALUE</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;TB&#39;</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s1">&#39;GB&#39;</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s1">&#39;MB&#39;</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s1">&#39;TiB&#39;</span><span class="p">:</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;MiB&#39;</span><span class="p">:</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;KiB&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_XPATH_CACHE</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">XPath</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_LANG_TO_LC_CACHE</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">_FASTTEXT_MODEL</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;fasttext.FastText._FastText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot;fasttext model to predict laguage of a search term&quot;&quot;&quot;</span>
+
+<span class="n">SEARCH_LANGUAGE_CODES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">searxng_locale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">searxng_locale</span> <span class="ow">in</span> <span class="n">sxng_locales</span><span class="p">])</span>
+<span class="sd">&quot;&quot;&quot;Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`).&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">_NotSetClass</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class for this module, do not create instance of this class.</span>
+<span class="sd">    Replace the None value, allow explicitly pass None as a function argument&quot;&quot;&quot;</span>
+
+
+<span class="n">_NOTSET</span> <span class="o">=</span> <span class="n">_NotSetClass</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="searx_useragent"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.searx_useragent">[docs]</a><span class="k">def</span> <span class="nf">searx_useragent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the searx User Agent&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;searx/</span><span class="si">{searx_version}</span><span class="s1"> </span><span class="si">{suffix}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">searx_version</span><span class="o">=</span><span class="n">VERSION_TAG</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">][</span><span class="s1">&#39;useragent_suffix&#39;</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="gen_useragent"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.gen_useragent">[docs]</a><span class="k">def</span> <span class="nf">gen_useragent</span><span class="p">(</span><span class="n">os_string</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a random browser User Agent</span>
+
+<span class="sd">    See searx/data/useragents.json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;ua&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">=</span><span class="n">os_string</span> <span class="ow">or</span> <span class="n">choice</span><span class="p">(</span><span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;os&#39;</span><span class="p">]),</span> <span class="n">version</span><span class="o">=</span><span class="n">choice</span><span class="p">(</span><span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;versions&#39;</span><span class="p">]))</span></div>
+
+
+<span class="k">class</span> <span class="nc">_HTMLTextExtractorException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal exception raised when the HTML is invalid&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">_HTMLTextExtractor</span><span class="p">(</span><span class="n">HTMLParser</span><span class="p">):</span>  <span class="c1"># pylint: disable=W0223  # (see https://bugs.python.org/issue31844)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class to extract text from HTML&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">HTMLParser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">handle_starttag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;br&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_endtag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">tag</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">_HTMLTextExtractorException</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">is_valid_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_BLOCKED_TAGS</span>
+
+    <span class="k">def</span> <span class="nf">handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_charref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">):</span>
+            <span class="n">codepoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">codepoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">codepoint</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">handle_entityref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="c1"># codepoint = htmlentitydefs.name2codepoint[name]</span>
+        <span class="c1"># self.result.append(chr(codepoint))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="html_to_text"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.html_to_text">[docs]</a><span class="k">def</span> <span class="nf">html_to_text</span><span class="p">(</span><span class="n">html_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract text from a HTML string</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * html_str (str): string HTML</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: extracted text</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; html_to_text(&#39;Example &lt;span id=&quot;42&quot;&gt;#2&lt;/span&gt;&#39;)</span>
+<span class="sd">        &#39;Example #2&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; html_to_text(&#39;&lt;style&gt;.span { color: red; }&lt;/style&gt;&lt;span&gt;Example&lt;/span&gt;&#39;)</span>
+<span class="sd">        &#39;Example&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html_str</span> <span class="o">=</span> <span class="n">html_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html_str</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">_HTMLTextExtractor</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">html_str</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_HTMLTextExtractorException</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;HTMLTextExtractor: invalid HTML</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">html_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="extract_text"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.extract_text">[docs]</a><span class="k">def</span> <span class="nf">extract_text</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract text from a lxml result</span>
+
+<span class="sd">    * if xpath_results is list, extract the text from each result and concat the list</span>
+<span class="sd">    * if xpath_results is a xml element, extract all the text node from it</span>
+<span class="sd">      ( text_content() method from lxml )</span>
+<span class="sd">    * if xpath_results is a string element, then it&#39;s already done</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="c1"># it&#39;s list of result : concat everything using recursive call</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">xpath_results</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">extract_text</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="n">ElementBase</span><span class="p">):</span>
+        <span class="c1"># it&#39;s a element</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">with_tail</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="p">(</span><span class="n">_ElementStringResult</span><span class="p">,</span> <span class="n">_ElementUnicodeResult</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Number</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_none</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_none</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;extract_text(None, allow_none=False)&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;unsupported type&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalize_url"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.normalize_url">[docs]</a><span class="k">def</span> <span class="nf">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize URL: add protocol, join URL with base_url, add trailing slash if there is no path</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * url (str): Relative URL</span>
+<span class="sd">        * base_url (str): Base URL, it must be an absolute URL.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;https://example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;//example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;http://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;//example.com&#39;, &#39;https://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;/path?a=1&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/path?a=1&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;/test&#39;, &#39;/path&#39;)</span>
+<span class="sd">        raise ValueError</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * lxml.etree.ParserError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: normalized URL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;//&#39;</span><span class="p">):</span>
+        <span class="c1"># add http or https to this kind of url //example.com/</span>
+        <span class="n">parsed_search_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parsed_search_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">or</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="c1"># fix relative url to the search engine</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># fix relative urls that fall through the crack</span>
+    <span class="k">if</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># add a / at this end of the url if there is no path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot parse url&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+    <span class="k">return</span> <span class="n">url</span></div>
+
+
+<div class="viewcode-block" id="extract_url"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.extract_url">[docs]</a><span class="k">def</span> <span class="nf">extract_url</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract and normalize URL from lxml Element</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * xpath_results (Union[List[html.HtmlElement], html.HtmlElement]): lxml Element(s)</span>
+<span class="sd">        * base_url (str): Base URL</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; def f(s, search_url):</span>
+<span class="sd">        &gt;&gt;&gt;    return searx.utils.extract_url(html.fromstring(s), search_url)</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;&lt;span id=&quot;42&quot;&gt;https://example.com&lt;/span&gt;&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;https://example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;//example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;http://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;//example.com&#39;, &#39;https://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;/path?a=1&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/path?a=1&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        raise lxml.etree.ParserError</span>
+<span class="sd">        &gt;&gt;&gt; searx.utils.extract_url([], &#39;https://example.com&#39;)</span>
+<span class="sd">        raise ValueError</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * ValueError</span>
+<span class="sd">        * lxml.etree.ParserError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: normalized URL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Empty url resultset&#39;</span><span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;URL not found&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dict_subset"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.dict_subset">[docs]</a><span class="k">def</span> <span class="nf">dict_subset</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a subset of a dict</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; dict_subset({&#39;A&#39;: &#39;a&#39;, &#39;B&#39;: &#39;b&#39;, &#39;C&#39;: &#39;c&#39;}, [&#39;A&#39;, &#39;C&#39;])</span>
+<span class="sd">        {&#39;A&#39;: &#39;a&#39;, &#39;C&#39;: &#39;c&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; &gt;&gt; dict_subset({&#39;A&#39;: &#39;a&#39;, &#39;B&#39;: &#39;b&#39;, &#39;C&#39;: &#39;c&#39;}, [&#39;A&#39;, &#39;D&#39;])</span>
+<span class="sd">        {&#39;A&#39;: &#39;a&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">properties</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_torrent_size"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_torrent_size">[docs]</a><span class="k">def</span> <span class="nf">get_torrent_size</span><span class="p">(</span><span class="n">filesize</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filesize_multiplier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * filesize (str): size</span>
+<span class="sd">        * filesize_multiplier (str): TB, GB, .... TiB, GiB...</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * int: number of bytes</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; get_torrent_size(&#39;5&#39;, &#39;GB&#39;)</span>
+<span class="sd">        5368709120</span>
+<span class="sd">        &gt;&gt;&gt; get_torrent_size(&#39;3.14&#39;, &#39;MiB&#39;)</span>
+<span class="sd">        3140000</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">multiplier</span> <span class="o">=</span> <span class="n">_STORAGE_UNIT_VALUE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filesize_multiplier</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">filesize</span><span class="p">)</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="convert_str_to_int"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.convert_str_to_int">[docs]</a><span class="k">def</span> <span class="nf">convert_str_to_int</span><span class="p">(</span><span class="n">number_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert number_str to int or 0 if number_str is not a number.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">number_str</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="int_or_zero"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.int_or_zero">[docs]</a><span class="k">def</span> <span class="nf">int_or_zero</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert num to int or 0. num can be either a str or a list.</span>
+<span class="sd">    If num is a list, the first element is converted to int (or return 0 if the list is empty).</span>
+<span class="sd">    If num is a str, see convert_str_to_int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">convert_str_to_int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_valid_lang"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.is_valid_lang">[docs]</a><span class="k">def</span> <span class="nf">is_valid_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return language code and name if lang describe a language.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; is_valid_lang(&#39;zz&#39;)</span>
+<span class="sd">        None</span>
+<span class="sd">        &gt;&gt;&gt; is_valid_lang(&#39;uk&#39;)</span>
+<span class="sd">        (True, &#39;uk&#39;, &#39;ukrainian&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; is_valid_lang(b&#39;uk&#39;)</span>
+<span class="sd">        (True, &#39;uk&#39;, &#39;ukrainian&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; is_valid_lang(&#39;en&#39;)</span>
+<span class="sd">        (True, &#39;en&#39;, &#39;english&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; searx.utils.is_valid_lang(&#39;Español&#39;)</span>
+<span class="sd">        (True, &#39;es&#39;, &#39;spanish&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; searx.utils.is_valid_lang(&#39;Spanish&#39;)</span>
+<span class="sd">        (True, &#39;es&#39;, &#39;spanish&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">is_abbr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">is_abbr</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">sxng_locales</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">lang</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">sxng_locales</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">lang</span> <span class="ow">or</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">:</span>
+    <span class="n">modname</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">modpath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">module_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="c1"># and https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">modpath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading &#39;</span><span class="si">{</span><span class="n">modpath</span><span class="si">}</span><span class="s2">&#39; module&quot;</span><span class="p">)</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading &#39;</span><span class="si">{</span><span class="n">modpath</span><span class="si">}</span><span class="s2">&#39; module&quot;</span><span class="p">)</span>
+    <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">module</span>
+
+
+<div class="viewcode-block" id="to_string"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.to_string">[docs]</a><span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert obj to its string representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__str__&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ecma_unescape"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.ecma_unescape">[docs]</a><span class="k">def</span> <span class="nf">ecma_unescape</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python implementation of the unescape javascript function</span>
+
+<span class="sd">    https://www.ecma-international.org/ecma-262/6.0/#sec-unescape-string</span>
+<span class="sd">    https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/unescape</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%u5409&#39;)</span>
+<span class="sd">        &#39;吉&#39;</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%20&#39;)</span>
+<span class="sd">        &#39; &#39;</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%F3&#39;)</span>
+<span class="sd">        &#39;ó&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># &quot;%u5409&quot; becomes &quot;吉&quot;</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">_ECMA_UNESCAPE4_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">string</span><span class="p">)</span>
+    <span class="c1"># &quot;%20&quot; becomes &quot; &quot;, &quot;%F3&quot; becomes &quot;ó&quot;</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">_ECMA_UNESCAPE2_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_string_replaces_function</span><span class="p">(</span><span class="n">replaces</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="n">rep</span> <span class="o">=</span> <span class="p">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">replaces</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">rep</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))],</span> <span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">func</span>
+
+
+<div class="viewcode-block" id="get_engine_from_settings"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_engine_from_settings">[docs]</a><span class="k">def</span> <span class="nf">get_engine_from_settings</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return engine configuration from settings.yml of a given engine name&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;engines&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">engine</span>
+
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="get_xpath"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_xpath">[docs]</a><span class="k">def</span> <span class="nf">get_xpath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XPath</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return cached compiled XPath</span>
+
+<span class="sd">    There is no thread lock.</span>
+<span class="sd">    Worst case scenario, xpath_str is compiled more than one time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * xpath_spec (str|lxml.etree.XPath): XPath as a str or lxml.etree.XPath</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * result (bool, float, list, str): Results.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * TypeError: Raise when xpath_spec is neither a str nor a lxml.etree.XPath</span>
+<span class="sd">        * SearxXPathSyntaxException: Raise when there is a syntax error in the XPath</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_XPATH_CACHE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">XPath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">XPathSyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SearxXPathSyntaxException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">msg</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="n">_XPATH_CACHE</span><span class="p">[</span><span class="n">xpath_spec</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="n">XPath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xpath_spec</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;xpath_spec must be either a str or a lxml.etree.XPath&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="eval_xpath"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath">[docs]</a><span class="k">def</span> <span class="nf">eval_xpath</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">ElementBase</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Equivalent of element.xpath(xpath_str) but compile xpath_str once for all.</span>
+<span class="sd">    See https://lxml.de/xpathxslt.html#xpath-return-values</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * element (ElementBase): [description]</span>
+<span class="sd">        * xpath_spec (str|lxml.etree.XPath): XPath as a str or lxml.etree.XPath</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * result (bool, float, list, str): Results.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * TypeError: Raise when xpath_spec is neither a str nor a lxml.etree.XPath</span>
+<span class="sd">        * SearxXPathSyntaxException: Raise when there is a syntax error in the XPath</span>
+<span class="sd">        * SearxEngineXPathException: Raise when the XPath can&#39;t be evaluated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xpath</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">XPathError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
+
+
+<div class="viewcode-block" id="eval_xpath_list"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath_list">[docs]</a><span class="k">def</span> <span class="nf">eval_xpath_list</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">ElementBase</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">,</span> <span class="n">min_len</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Same as eval_xpath, check if the result is a list</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * element (ElementBase): [description]</span>
+<span class="sd">        * xpath_spec (str|lxml.etree.XPath): XPath as a str or lxml.etree.XPath</span>
+<span class="sd">        * min_len (int, optional): [description]. Defaults to None.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * TypeError: Raise when xpath_spec is neither a str nor a lxml.etree.XPath</span>
+<span class="sd">        * SearxXPathSyntaxException: Raise when there is a syntax error in the XPath</span>
+<span class="sd">        * SearxEngineXPathException: raise if the result is not a list</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * result (bool, float, list, str): Results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;the result is not a list&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">min_len</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;len(xpath_str) &lt; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">min_len</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="eval_xpath_getindex"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath_getindex">[docs]</a><span class="k">def</span> <span class="nf">eval_xpath_getindex</span><span class="p">(</span><span class="n">elements</span><span class="p">:</span> <span class="n">ElementBase</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">_NOTSET</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Call eval_xpath_list then get one element using the index parameter.</span>
+<span class="sd">    If the index does not exist, either aise an exception is default is not set,</span>
+<span class="sd">    other return the default value (can be None).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * elements (ElementBase): lxml element to apply the xpath.</span>
+<span class="sd">        * xpath_spec (str|lxml.etree.XPath): XPath as a str or lxml.etree.XPath.</span>
+<span class="sd">        * index (int): index to get</span>
+<span class="sd">        * default (Object, optional): Defaults if index doesn&#39;t exist.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * TypeError: Raise when xpath_spec is neither a str nor a lxml.etree.XPath</span>
+<span class="sd">        * SearxXPathSyntaxException: Raise when there is a syntax error in the XPath</span>
+<span class="sd">        * SearxEngineXPathException: if the index is not found. Also see eval_xpath.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * result (bool, float, list, str): Results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">default</span> <span class="o">==</span> <span class="n">_NOTSET</span><span class="p">:</span>
+        <span class="c1"># raise an SearxEngineXPathException instead of IndexError</span>
+        <span class="c1"># to record xpath_spec</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;index &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; not found&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">default</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_fasttext_model</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;fasttext.FastText._FastText&quot;</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">_FASTTEXT_MODEL</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="k">if</span> <span class="n">_FASTTEXT_MODEL</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">fasttext</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+        <span class="c1"># Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.</span>
+        <span class="n">fasttext</span><span class="o">.</span><span class="n">FastText</span><span class="o">.</span><span class="n">eprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="n">_FASTTEXT_MODEL</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;lid.176.ftz&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_FASTTEXT_MODEL</span>
+
+
+<div class="viewcode-block" id="detect_language"><a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.detect_language">[docs]</a><span class="k">def</span> <span class="nf">detect_language</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">only_search_languages</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect the language of the ``text`` parameter.</span>
+
+<span class="sd">    :param str text: The string whose language is to be detected.</span>
+
+<span class="sd">    :param float threshold: Threshold filters the returned labels by a threshold</span>
+<span class="sd">        on probability.  A choice of 0.3 will return labels with at least 0.3</span>
+<span class="sd">        probability.</span>
+
+<span class="sd">    :param bool only_search_languages: If ``True``, returns only supported</span>
+<span class="sd">        SearXNG search languages.  see :py:obj:`searx.languages`</span>
+
+<span class="sd">    :rtype: str, None</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        The detected language code or ``None``. See below.</span>
+
+<span class="sd">    :raises ValueError: If ``text`` is not a string.</span>
+
+<span class="sd">    The language detection is done by using `a fork`_ of the fastText_ library</span>
+<span class="sd">    (`python fasttext`_). fastText_ distributes the `language identification</span>
+<span class="sd">    model`_, for reference:</span>
+
+<span class="sd">    - `FastText.zip: Compressing text classification models`_</span>
+<span class="sd">    - `Bag of Tricks for Efficient Text Classification`_</span>
+
+<span class="sd">    The `language identification model`_ support the language codes</span>
+<span class="sd">    (ISO-639-3)::</span>
+
+<span class="sd">        af als am an ar arz as ast av az azb ba bar bcl be bg bh bn bo bpy br bs</span>
+<span class="sd">        bxr ca cbk ce ceb ckb co cs cv cy da de diq dsb dty dv el eml en eo es</span>
+<span class="sd">        et eu fa fi fr frr fy ga gd gl gn gom gu gv he hi hif hr hsb ht hu hy ia</span>
+<span class="sd">        id ie ilo io is it ja jbo jv ka kk km kn ko krc ku kv kw ky la lb lez li</span>
+<span class="sd">        lmo lo lrc lt lv mai mg mhr min mk ml mn mr mrj ms mt mwl my myv mzn nah</span>
+<span class="sd">        nap nds ne new nl nn no oc or os pa pam pfl pl pms pnb ps pt qu rm ro ru</span>
+<span class="sd">        rue sa sah sc scn sco sd sh si sk sl so sq sr su sv sw ta te tg th tk tl</span>
+<span class="sd">        tr tt tyv ug uk ur uz vec vep vi vls vo wa war wuu xal xmf yi yo yue zh</span>
+
+<span class="sd">    By using ``only_search_languages=True`` the `language identification model`_</span>
+<span class="sd">    is harmonized with the SearXNG&#39;s language (locale) model.  General</span>
+<span class="sd">    conditions of SearXNG&#39;s locale model are:</span>
+
+<span class="sd">    a. SearXNG&#39;s locale of a query is passed to the</span>
+<span class="sd">       :py:obj:`searx.locales.get_engine_locale` to get a language and/or region</span>
+<span class="sd">       code that is used by an engine.</span>
+
+<span class="sd">    b. Most of SearXNG&#39;s engines do not support all the languages from `language</span>
+<span class="sd">       identification model`_ and there is also a discrepancy in the ISO-639-3</span>
+<span class="sd">       (fastext) and ISO-639-2 (SearXNG)handling.  Further more, in SearXNG the</span>
+<span class="sd">       locales like ``zh-TH`` (``zh-CN``) are mapped to ``zh_Hant``</span>
+<span class="sd">       (``zh_Hans``) while the `language identification model`_ reduce both to</span>
+<span class="sd">       ``zh``.</span>
+
+<span class="sd">    .. _a fork: https://github.com/searxng/fasttext-predict</span>
+<span class="sd">    .. _fastText: https://fasttext.cc/</span>
+<span class="sd">    .. _python fasttext: https://pypi.org/project/fasttext/</span>
+<span class="sd">    .. _language identification model: https://fasttext.cc/docs/en/language-identification.html</span>
+<span class="sd">    .. _Bag of Tricks for Efficient Text Classification: https://arxiv.org/abs/1607.01759</span>
+<span class="sd">    .. _`FastText.zip: Compressing text classification models`: https://arxiv.org/abs/1612.03651</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;text must a str&#39;</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_get_fasttext_model</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__label__&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">only_search_languages</span> <span class="ow">and</span> <span class="n">language</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SEARCH_LANGUAGE_CODES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">language</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

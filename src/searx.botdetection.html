@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bot Detection &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SearXNG Exceptions" href="searx.exceptions.html" />
+    <link rel="prev" title="Custom message extractor (i18n)" href="searx.babel_extract.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.exceptions.html" title="SearXNG Exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.babel_extract.html" title="Custom message extractor (i18n)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bot Detection</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bot-detection">
+<span id="botdetection"></span><h1>Bot Detection<a class="headerlink" href="#bot-detection" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#x-forwarded-for" id="id4">X-Forwarded-For</a></p></li>
+<li><p><a class="reference internal" href="#limiter" id="id5">Limiter</a></p></li>
+<li><p><a class="reference internal" href="#method-ip-lists" id="id6">Method <code class="docutils literal notranslate"><span class="pre">ip_lists</span></code></a></p></li>
+<li><p><a class="reference internal" href="#module-searx.botdetection.ip_limit" id="id7">Rate limit</a></p>
+<ul>
+<li><p><a class="reference internal" href="#method-ip-limit" id="id8">Method <code class="docutils literal notranslate"><span class="pre">ip_limit</span></code></a></p></li>
+<li><p><a class="reference internal" href="#method-link-token" id="id9">Method <code class="docutils literal notranslate"><span class="pre">link_token</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-searx.botdetection.http_accept" id="id10">Probe HTTP headers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#method-http-accept" id="id11">Method <code class="docutils literal notranslate"><span class="pre">http_accept</span></code></a></p></li>
+<li><p><a class="reference internal" href="#method-http-accept-encoding" id="id12">Method <code class="docutils literal notranslate"><span class="pre">http_accept_encoding</span></code></a></p></li>
+<li><p><a class="reference internal" href="#method-http-accept-language" id="id13">Method <code class="docutils literal notranslate"><span class="pre">http_accept_language</span></code></a></p></li>
+<li><p><a class="reference internal" href="#method-http-connection" id="id14">Method <code class="docutils literal notranslate"><span class="pre">http_connection</span></code></a></p></li>
+<li><p><a class="reference internal" href="#method-http-user-agent" id="id15">Method <code class="docutils literal notranslate"><span class="pre">http_user_agent</span></code></a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<span class="target" id="module-searx.botdetection"></span><section id="x-forwarded-for">
+<span id="botdetection-src"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">X-Forwarded-For</a><a class="headerlink" href="#x-forwarded-for" title="Permalink to this heading">¶</a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>A correct setup of the HTTP request headers <code class="docutils literal notranslate"><span class="pre">X-Forwarded-For</span></code> and
+<code class="docutils literal notranslate"><span class="pre">X-Real-IP</span></code> is essential to be able to assign a request to an IP correctly:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.searxng.org/admin/installation-nginx.html#nginx-s-searxng-site">NGINX RequestHeader</a></p></li>
+<li><p><a class="reference external" href="https://docs.searxng.org/admin/installation-apache.html#apache-s-searxng-site">Apache RequestHeader</a></p></li>
+</ul>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.get_real_ip">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.</span></span><span class="sig-name descname"><span class="pre">get_real_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request" title="(in Flask v2.3.x)"><span class="pre">Request</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/botdetection/_helpers.html#get_real_ip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.get_real_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns real IP of the request.  Since not all proxies set all the HTTP
+headers and incoming headers can be faked it may happen that the IP cannot
+be determined correctly.</p>
+<aside class="sidebar">
+<p class="sidebar-title"><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request.remote_addr" title="(in Flask v2.3.x)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flask.Request.remote_addr</span></code></a></p>
+<p>SearXNG uses Werkzeug’s <a class="reference external" href="https://werkzeug.palletsprojects.com/middleware/proxy_fix/">ProxyFix</a> (with it default <code class="docutils literal notranslate"><span class="pre">x_for=1</span></code>).</p>
+</aside>
+<p>This function tries to get the remote IP in the order listed below,
+additional some tests are done and if inconsistencies or errors are
+detected, they are logged.</p>
+<p>The remote IP of the request is taken from (first match):</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For</a> header</p></li>
+<li><p><a class="reference external" href="https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516">X-real-IP header</a></p></li>
+<li><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request.remote_addr" title="(in Flask v2.3.x)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flask.Request.remote_addr</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+</section>
+<span class="target" id="module-searx.botdetection.limiter"></span><section id="limiter">
+<span id="limiter-src"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Limiter</a><a class="headerlink" href="#limiter" title="Permalink to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<p>The limiter requires a <a class="reference internal" href="../admin/settings/settings_redis.html#settings-redis"><span class="std std-ref">Redis</span></a> database.</p>
+</aside>
+<p>Bot protection / IP rate limitation.  The intention of rate limitation is to
+limit suspicious requests from an IP.  The motivation behind this is the fact
+that SearXNG passes through requests from bots and is thus classified as a bot
+itself.  As a result, the SearXNG engine then receives a CAPTCHA or is blocked
+by the search engine (the origin) in some other way.</p>
+<p>To avoid blocking, the requests from bots to SearXNG must also be blocked, this
+is the task of the limiter.  To perform this task, the limiter uses the methods
+from the <a class="reference internal" href="#module-searx.botdetection" title="searx.botdetection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.botdetection</span></code></a>.</p>
+<p>To enable the limiter activate:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">limiter</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># rate limit the number of request on the instance, block some bots</span>
+</pre></div>
+</div>
+<p>and set the redis-url connection. Check the value, it depends on your redis DB
+(see <a class="reference internal" href="../admin/settings/settings_redis.html#settings-redis"><span class="std std-ref">redis:</span></a>), by example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">redis</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unix:///usr/local/searxng-redis/run/redis.sock?db=0</span>
+</pre></div>
+</div>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.limiter.LIMITER_CFG">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.limiter.</span></span><span class="sig-name descname"><span class="pre">LIMITER_CFG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/etc/searxng/limiter.toml')</span></em><a class="headerlink" href="#searx.botdetection.limiter.LIMITER_CFG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lokal Limiter configuration.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.limiter.LIMITER_CFG_SCHEMA">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.limiter.</span></span><span class="sig-name descname"><span class="pre">LIMITER_CFG_SCHEMA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/runner/work/searxng/searxng/searx/botdetection/limiter.toml')</span></em><a class="headerlink" href="#searx.botdetection.limiter.LIMITER_CFG_SCHEMA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base configuration (schema) of the botdetection.</p>
+</dd></dl>
+
+<span class="target" id="module-searx.botdetection.ip_lists"></span><section id="method-ip-lists">
+<span id="botdetection-ip-lists"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">ip_lists</span></code></a><a class="headerlink" href="#method-ip-lists" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip_lists</span></code> method implements IP <a class="reference internal" href="#searx.botdetection.ip_lists.block_ip" title="searx.botdetection.ip_lists.block_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">block-</span></code></a> and
+<a class="reference internal" href="#searx.botdetection.ip_lists.pass_ip" title="searx.botdetection.ip_lists.pass_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pass-lists</span></code></a>.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[botdetection.ip_lists]</span>
+
+<span class="n">pass_ip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w"> </span><span class="s">&#39;140.238.172.132&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1"># IPv4 of check.searx.space</span>
+<span class="w"> </span><span class="s">&#39;192.168.0.0/16&#39;</span><span class="p">,</span><span class="w">  </span><span class="c1"># IPv4 private network</span>
+<span class="w"> </span><span class="s">&#39;fe80::/10&#39;</span><span class="w">        </span><span class="c1"># IPv6 linklocal</span>
+<span class="p">]</span>
+<span class="n">block_ip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="s">&#39;93.184.216.34&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1"># IPv4 of example.org</span>
+<span class="w">   </span><span class="s">&#39;257.1.1.1&#39;</span><span class="p">,</span><span class="w">     </span><span class="c1"># invalid IP --&gt; will be ignored, logged in ERROR class</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.ip_lists.block_ip">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_lists.</span></span><span class="sig-name descname"><span class="pre">block_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IPv4Address</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">IPv6Address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">config.Config</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/botdetection/ip_lists.html#block_ip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.ip_lists.block_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the IP on the subnet is in one of the members of the
+<code class="docutils literal notranslate"><span class="pre">botdetection.ip_lists.block_ip</span></code> list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.ip_lists.pass_ip">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_lists.</span></span><span class="sig-name descname"><span class="pre">pass_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IPv4Address</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">IPv6Address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">config.Config</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/botdetection/ip_lists.html#pass_ip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.ip_lists.pass_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the IP on the subnet is in one of the members of the
+<code class="docutils literal notranslate"><span class="pre">botdetection.ip_lists.pass_ip</span></code> list.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_lists.SEARXNG_ORG">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_lists.</span></span><span class="sig-name descname"><span class="pre">SEARXNG_ORG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['140.238.172.132',</span> <span class="pre">'2603:c022:0:4900::/56']</span></em><a class="headerlink" href="#searx.botdetection.ip_lists.SEARXNG_ORG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passlist of IPs from the SearXNG organization, e.g. <cite>check.searx.space</cite>.</p>
+</dd></dl>
+
+<section id="module-searx.botdetection.ip_limit">
+<span id="rate-limit"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">Rate limit</a><a class="headerlink" href="#module-searx.botdetection.ip_limit" title="Permalink to this heading">¶</a></h2>
+<section id="method-ip-limit">
+<span id="botdetection-ip-limit"></span><h3><a class="toc-backref" href="#id8" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">ip_limit</span></code></a><a class="headerlink" href="#method-ip-limit" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">ip_limit</span></code> method counts request from an IP in <em>sliding windows</em>.  If
+there are to many requests in a sliding window, the request is evaluated as a
+bot request.  This method requires a redis DB and needs a HTTP <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For</a>
+header.  To take privacy only the hash value of an IP is stored in the redis DB
+and at least for a maximum of 10 minutes.</p>
+<p>The <a class="reference internal" href="#module-searx.botdetection.link_token" title="searx.botdetection.link_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_token</span></code></a> method can be used to investigate whether a request is
+<em>suspicious</em>.  To activate the <a class="reference internal" href="#module-searx.botdetection.link_token" title="searx.botdetection.link_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_token</span></code></a> method in the
+<a class="reference internal" href="#module-searx.botdetection.ip_limit" title="searx.botdetection.ip_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ip_limit</span></code></a> method add the following to your
+<code class="docutils literal notranslate"><span class="pre">/etc/searxng/limiter.toml</span></code>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[botdetection.ip_limit]</span>
+<span class="n">link_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</pre></div>
+</div>
+<p>If the <a class="reference internal" href="#module-searx.botdetection.link_token" title="searx.botdetection.link_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_token</span></code></a> method is activated and a request is <em>suspicious</em>
+the request rates are reduced:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.botdetection.ip_limit.BURST_MAX" title="searx.botdetection.ip_limit.BURST_MAX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURST_MAX</span></code></a> -&gt; <a class="reference internal" href="#searx.botdetection.ip_limit.BURST_MAX_SUSPICIOUS" title="searx.botdetection.ip_limit.BURST_MAX_SUSPICIOUS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURST_MAX_SUSPICIOUS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.botdetection.ip_limit.LONG_MAX" title="searx.botdetection.ip_limit.LONG_MAX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LONG_MAX</span></code></a> -&gt; <a class="reference internal" href="#searx.botdetection.ip_limit.LONG_MAX_SUSPICIOUS" title="searx.botdetection.ip_limit.LONG_MAX_SUSPICIOUS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LONG_MAX_SUSPICIOUS</span></code></a></p></li>
+</ul>
+<p>To intercept bots that get their IPs from a range of IPs, there is a
+<a class="reference internal" href="#searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW" title="searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SUSPICIOUS_IP_WINDOW</span></code></a>.  In this window the suspicious IPs are stored
+for a longer time.  IPs stored in this sliding window have a maximum of
+<a class="reference internal" href="#searx.botdetection.ip_limit.SUSPICIOUS_IP_MAX" title="searx.botdetection.ip_limit.SUSPICIOUS_IP_MAX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SUSPICIOUS_IP_MAX</span></code></a> accesses before they are blocked.  As soon as the IP
+makes a request that is not suspicious, the sliding window for this IP is
+droped.</p>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.API_MAX">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">API_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.API_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum requests from one IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.API_WONDOW" title="searx.botdetection.ip_limit.API_WONDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">API_WONDOW</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.API_WONDOW">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">API_WONDOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3600</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.API_WONDOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time (sec) before sliding window for API requests (format != html) expires.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.BURST_MAX">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">BURST_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.BURST_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum requests from one IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.BURST_WINDOW" title="searx.botdetection.ip_limit.BURST_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURST_WINDOW</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.BURST_MAX_SUSPICIOUS">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">BURST_MAX_SUSPICIOUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.BURST_MAX_SUSPICIOUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum of suspicious requests from one IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.BURST_WINDOW" title="searx.botdetection.ip_limit.BURST_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURST_WINDOW</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.BURST_WINDOW">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">BURST_WINDOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.BURST_WINDOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time (sec) before sliding window for <em>burst</em> requests expires.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.LONG_MAX">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">LONG_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">150</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.LONG_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum requests from one IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.LONG_WINDOW" title="searx.botdetection.ip_limit.LONG_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LONG_WINDOW</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.LONG_MAX_SUSPICIOUS">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">LONG_MAX_SUSPICIOUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.LONG_MAX_SUSPICIOUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum suspicious requests from one IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.LONG_WINDOW" title="searx.botdetection.ip_limit.LONG_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LONG_WINDOW</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.LONG_WINDOW">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">LONG_WINDOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">600</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.LONG_WINDOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time (sec) before the longer sliding window expires.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.SUSPICIOUS_IP_MAX">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">SUSPICIOUS_IP_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.SUSPICIOUS_IP_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum requests from one suspicious IP in the <a class="reference internal" href="#searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW" title="searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SUSPICIOUS_IP_WINDOW</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.ip_limit.</span></span><span class="sig-name descname"><span class="pre">SUSPICIOUS_IP_WINDOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2592000</span></em><a class="headerlink" href="#searx.botdetection.ip_limit.SUSPICIOUS_IP_WINDOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time (sec) before sliding window for one suspicious IP expires.</p>
+</dd></dl>
+
+<span class="target" id="module-searx.botdetection.link_token"></span><section id="method-link-token">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">link_token</span></code></a><a class="headerlink" href="#method-link-token" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">link_token</span></code> method evaluates a request as <a class="reference internal" href="#searx.botdetection.link_token.is_suspicious" title="searx.botdetection.link_token.is_suspicious"><code class="xref py py-obj docutils literal notranslate"><span class="pre">suspicious</span></code></a> if the URL <code class="docutils literal notranslate"><span class="pre">/client&lt;token&gt;.css</span></code> is not requested by the
+client.  By adding a random component (the token) in the URL, a bot can not send
+a ping by request a static URL.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method requires a redis DB and needs a HTTP <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For</a> header.</p>
+</div>
+<p>To get in use of this method a flask URL route needs to be added:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/client&lt;token&gt;.css&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">client_token</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">link_token</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;text/css&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And in the HTML template from flask a stylesheet link is needed (the value of
+<code class="docutils literal notranslate"><span class="pre">link_token</span></code> comes from <a class="reference internal" href="#searx.botdetection.link_token.get_token" title="searx.botdetection.link_token.get_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_token</span></code></a>):</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span>
+      <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;client_token&#39;, token=link_token) }}&quot;</span>
+      <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="p">/&gt;</span>
+</pre></div>
+</div>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.get_ping_key">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">get_ping_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IPv4Network</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">IPv6Network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request" title="(in Flask v2.3.x)"><span class="pre">flask.Request</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/botdetection/link_token.html#get_ping_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.link_token.get_ping_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a hashed key that fits (more or less) to a <em>WEB-browser
+session</em> in a network.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.get_token">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/botdetection/link_token.html#get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.link_token.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns current token.  If there is no currently active token a new token
+is generated randomly and stored in the redis DB.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.botdetection.link_token.TOKEN_LIVE_TIME" title="searx.botdetection.link_token.TOKEN_LIVE_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOKEN_LIVE_TIME</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.botdetection.link_token.TOKEN_KEY" title="searx.botdetection.link_token.TOKEN_KEY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOKEN_KEY</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.is_suspicious">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">is_suspicious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IPv4Network</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">IPv6Network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request" title="(in Flask v2.3.x)"><span class="pre">flask.Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">renew</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/botdetection/link_token.html#is_suspicious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.link_token.is_suspicious" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a valid ping is exists for this (client) network, if not
+this request is rated as <em>suspicious</em>.  If a valid ping exists and argument
+<code class="docutils literal notranslate"><span class="pre">renew</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> the expire time of this ping is reset to
+<a class="reference internal" href="#searx.botdetection.link_token.PING_LIVE_TIME" title="searx.botdetection.link_token.PING_LIVE_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PING_LIVE_TIME</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.ping">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">ping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request" title="(in Flask v2.3.x)"><span class="pre">Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/botdetection/link_token.html#ping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.botdetection.link_token.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called by a request to URL <code class="docutils literal notranslate"><span class="pre">/client&lt;token&gt;.css</span></code>.  If
+<code class="docutils literal notranslate"><span class="pre">token</span></code> is valid a <a class="reference internal" href="#searx.botdetection.link_token.PING_KEY" title="searx.botdetection.link_token.PING_KEY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PING_KEY</span></code></a> for the client is stored in the DB.
+The expire time of this ping-key is <a class="reference internal" href="#searx.botdetection.link_token.PING_LIVE_TIME" title="searx.botdetection.link_token.PING_LIVE_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PING_LIVE_TIME</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.PING_KEY">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">PING_KEY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SearXNG_limiter.ping'</span></em><a class="headerlink" href="#searx.botdetection.link_token.PING_KEY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefix of all ping-keys generated by <a class="reference internal" href="#searx.botdetection.link_token.get_ping_key" title="searx.botdetection.link_token.get_ping_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ping_key</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.PING_LIVE_TIME">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">PING_LIVE_TIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3600</span></em><a class="headerlink" href="#searx.botdetection.link_token.PING_LIVE_TIME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Livetime (sec) of the ping-key from a client (request)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.TOKEN_KEY">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">TOKEN_KEY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SearXNG_limiter.token'</span></em><a class="headerlink" href="#searx.botdetection.link_token.TOKEN_KEY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Key for which the current token is stored in the DB</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.link_token.TOKEN_LIVE_TIME">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.link_token.</span></span><span class="sig-name descname"><span class="pre">TOKEN_LIVE_TIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">600</span></em><a class="headerlink" href="#searx.botdetection.link_token.TOKEN_LIVE_TIME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Livetime (sec) of limiter’s CSS token.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.botdetection.http_accept">
+<span id="probe-http-headers"></span><h2><a class="toc-backref" href="#id10" role="doc-backlink">Probe HTTP headers</a><a class="headerlink" href="#module-searx.botdetection.http_accept" title="Permalink to this heading">¶</a></h2>
+<section id="method-http-accept">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">http_accept</span></code></a><a class="headerlink" href="#method-http-accept" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">http_accept</span></code> method evaluates a request as the request of a bot if the
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept">Accept</a> header ..</p>
+<ul class="simple">
+<li><p>did not contain <code class="docutils literal notranslate"><span class="pre">text/html</span></code></p></li>
+</ul>
+</section>
+<span class="target" id="module-searx.botdetection.http_accept_encoding"></span><section id="method-http-accept-encoding">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">http_accept_encoding</span></code></a><a class="headerlink" href="#method-http-accept-encoding" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">http_accept_encoding</span></code> method evaluates a request as the request of a
+bot if the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding">Accept-Encoding</a> header ..</p>
+<ul class="simple">
+<li><p>did not contain <code class="docutils literal notranslate"><span class="pre">gzip</span></code> AND <code class="docutils literal notranslate"><span class="pre">deflate</span></code> (if both values are missed)</p></li>
+<li><p>did not contain <code class="docutils literal notranslate"><span class="pre">text/html</span></code></p></li>
+</ul>
+</section>
+<span class="target" id="module-searx.botdetection.http_accept_language"></span><section id="method-http-accept-language">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">http_accept_language</span></code></a><a class="headerlink" href="#method-http-accept-language" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">http_accept_language</span></code> method evaluates a request as the request of a bot
+if the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">Accept-Language</a> header is unset.</p>
+</section>
+<span class="target" id="module-searx.botdetection.http_connection"></span><section id="method-http-connection">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">http_connection</span></code></a><a class="headerlink" href="#method-http-connection" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">http_connection</span></code> method evaluates a request as the request of a bot if
+the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Connection">Connection</a> header is set to <code class="docutils literal notranslate"><span class="pre">close</span></code>.</p>
+</section>
+<span class="target" id="module-searx.botdetection.http_user_agent"></span><section id="method-http-user-agent">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Method <code class="docutils literal notranslate"><span class="pre">http_user_agent</span></code></a><a class="headerlink" href="#method-http-user-agent" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">http_user_agent</span></code> method evaluates a request as the request of a bot if
+the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> header is unset or matches the regular expression
+<a class="reference internal" href="#searx.botdetection.http_user_agent.USER_AGENT" title="searx.botdetection.http_user_agent.USER_AGENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">USER_AGENT</span></code></a>.</p>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.botdetection.http_user_agent.USER_AGENT">
+<span class="sig-prename descclassname"><span class="pre">searx.botdetection.http_user_agent.</span></span><span class="sig-name descname"><span class="pre">USER_AGENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'(unknown|[Cc][Uu][Rr][Ll]|[wW]get|Scrapy|splash|JavaFX|FeedFetcher|python-requests|Go-http-client|Java|Jakarta|okhttp|HttpClient|Jersey|Python|libwww-perl|Ruby|SynHttpClient|UniversalFeedParser|Googlebot|GoogleImageProxy|bingbot|Baiduspider|yacybot|YandexMobileBot|YandexBot|Yahoo!</span> <span class="pre">Slurp|MJ12bot|AhrefsBot|archive.org_bot|msnbot|MJ12bot|SeznamBot|linkdexbot|Netvibes|SMTBot|zgrab|James</span> <span class="pre">BOT|Sogou|Abonti|Pixray|Spinn3r|SemrushBot|Exabot|ZmEu|BLEXBot|bitlybot|Mozilla/5\\.0\\</span> <span class="pre">\\(compatible;\\</span> <span class="pre">Farside/0\\.1\\.0;\\</span> <span class="pre">\\+https://farside\\.link\\)|.*PetalBot.*)'</span></em><a class="headerlink" href="#searx.botdetection.http_user_agent.USER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regular expression that matches to <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a> from known <em>bots</em></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.plugins.tor_check.html">Tor check plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redisdb.html">Redis DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.redislib.html">Redis Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.babel_extract.html" title="previous chapter">Custom message extractor (i18n)</a>
+          <li>Next: <a href="searx.exceptions.html" title="next chapter">SearXNG Exceptions</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.botdetection.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

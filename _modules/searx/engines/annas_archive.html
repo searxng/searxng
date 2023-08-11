@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.annas_archive &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.annas_archive</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.annas_archive</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># lint: pylint</span>
+<span class="sd">&quot;&quot;&quot;`Anna&#39;s Archive`_ is a free non-profit online shadow library metasearch</span>
+<span class="sd">engine providing access to a variety of book resources (also via IPFS), created</span>
+<span class="sd">by a team of anonymous archivists (AnnaArchivist_).</span>
+
+<span class="sd">.. _Anna&#39;s Archive: https://annas-archive.org/</span>
+<span class="sd">.. _AnnaArchivist: https://annas-software.org/AnnaArchivist/annas-archive</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The engine has the following additional settings:</span>
+
+<span class="sd">- :py:obj:`aa_content`</span>
+<span class="sd">- :py:obj:`aa_ext`</span>
+<span class="sd">- :py:obj:`aa_sort`</span>
+
+<span class="sd">With this options a SearXNG maintainer is able to configure **additional**</span>
+<span class="sd">engines for specific searches in Anna&#39;s Archive.  For example a engine to search</span>
+<span class="sd">for *newest* articles and journals (PDF) / by shortcut ``!aaa &lt;search-term&gt;``.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: annas articles</span>
+<span class="sd">    engine: annas_archive</span>
+<span class="sd">    shortcut: aaa</span>
+<span class="sd">    aa_content: &#39;journal_article&#39;</span>
+<span class="sd">    aa_ext: &#39;pdf&#39;</span>
+<span class="sd">    aa_sort: &#39;newest&#39;</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
+
+<span class="kn">from</span> <span class="nn">searx.utils</span> <span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath_list</span>
+<span class="kn">from</span> <span class="nn">searx.enginelib.traits</span> <span class="kn">import</span> <span class="n">EngineTraits</span>
+<span class="kn">from</span> <span class="nn">searx.data</span> <span class="kn">import</span> <span class="n">ENGINE_TRAITS</span>
+
+<span class="c1"># about</span>
+<span class="n">about</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://annas-archive.org/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q115288326&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]</span>
+<span class="n">paging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># search-url</span>
+<span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://annas-archive.org&quot;</span>
+<span class="n">aa_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Anan&#39;s search form field **Content** / possible values::</span>
+
+<span class="sd">    journal_article, book_any, book_fiction, book_unknown, book_nonfiction,</span>
+<span class="sd">    book_comic, magazine, standards_document</span>
+
+<span class="sd">To not filter use an empty string (default).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">aa_sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;Sort Anna&#39;s results, possible values::</span>
+
+<span class="sd">    newest, oldest, largest, smallest</span>
+
+<span class="sd">To sort by *most relevant* use an empty string (default).&quot;&quot;&quot;</span>
+
+<span class="n">aa_ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;Filter Anna&#39;s results by a file ending.  Common filters for example are</span>
+<span class="sd">``pdf`` and ``epub``.</span>
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   Anna&#39;s Archive is a beta release: Filter results by file extension does not</span>
+<span class="sd">   really work on Anna&#39;s Archive.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../../dev/engines/online/annas_archive.html#searx.engines.annas_archive.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check of engine&#39;s settings.&quot;&quot;&quot;</span>
+    <span class="n">traits</span> <span class="o">=</span> <span class="n">EngineTraits</span><span class="p">(</span><span class="o">**</span><span class="n">ENGINE_TRAITS</span><span class="p">[</span><span class="s1">&#39;annas archive&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">aa_content</span> <span class="ow">and</span> <span class="n">aa_content</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid setting content: </span><span class="si">{</span><span class="n">aa_content</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">aa_sort</span> <span class="ow">and</span> <span class="n">aa_sort</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid setting sort: </span><span class="si">{</span><span class="n">aa_sort</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">aa_ext</span> <span class="ow">and</span> <span class="n">aa_ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;ext&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid setting ext: </span><span class="si">{</span><span class="n">aa_ext</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">quote</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">],</span> <span class="n">traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;/search?lang=</span><span class="si">{</span><span class="n">lang</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&amp;content=</span><span class="si">{</span><span class="n">aa_content</span><span class="si">}</span><span class="s2">&amp;ext=</span><span class="si">{</span><span class="n">aa_ext</span><span class="si">}</span><span class="s2">&amp;sort=</span><span class="si">{</span><span class="n">aa_sort</span><span class="si">}</span><span class="s2">&amp;q=</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//main//div[contains(@class, &quot;h-[125]&quot;)]/a&#39;</span><span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_get_result</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
+    <span class="c1"># The rendering of the WEB page is very strange; except the first position</span>
+    <span class="c1"># all other positions of Anna&#39;s result page are enclosed in SGML comments.</span>
+    <span class="c1"># These comments are *uncommented* by some JS code, see query of class</span>
+    <span class="c1"># &#39;.js-scroll-hidden&#39; in Anna&#39;s HTML template:</span>
+    <span class="c1">#   https://annas-software.org/AnnaArchivist/annas-archive/-/blob/main/allthethings/templates/macros/md5_list.html</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//main//div[contains(@class, &quot;js-scroll-hidden&quot;)]&#39;</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./comment()&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_get_result</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span> <span class="nf">_get_result</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;paper.html&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./@href&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//h3/text()[1]&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;publisher&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;text-sm&quot;)]&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;italic&quot;)]&#39;</span><span class="p">))],</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;text-xs&quot;)]&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;img_src&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;.//img/@src&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="fetch_traits"><a class="viewcode-back" href="../../../dev/engines/online/annas_archive.html#searx.engines.annas_archive.fetch_traits">[docs]</a><span class="k">def</span> <span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch languages and other search arguments from Anna&#39;s search form.&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+    <span class="kn">import</span> <span class="nn">babel</span>
+    <span class="kn">from</span> <span class="nn">searx.network</span> <span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+    <span class="kn">from</span> <span class="nn">searx.locales</span> <span class="kn">import</span> <span class="n">language_tag</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;ext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;/search&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response from Anna&#39;s search page is not OK.&quot;</span><span class="p">)</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="c1"># supported language codes</span>
+
+    <span class="n">lang_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form//select[@name=&#39;lang&#39;]//option&quot;</span><span class="p">):</span>
+        <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eng_lang</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;_empty&#39;</span><span class="p">,</span> <span class="s1">&#39;nl-BE&#39;</span><span class="p">,</span> <span class="s1">&#39;und&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">lang_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">eng_lang</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="c1"># silently ignore unknown languages</span>
+            <span class="c1"># print(&quot;ERROR: %s -&gt; %s is unknown by babel&quot; % (x.get(&quot;data-name&quot;), eng_lang))</span>
+            <span class="k">continue</span>
+        <span class="n">sxng_lang</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_lang</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_lang</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_lang</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form//select[@name=&#39;content&#39;]//option&quot;</span><span class="p">):</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form//select[@name=&#39;ext&#39;]//option&quot;</span><span class="p">):</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;ext&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form//select[@name=&#39;sort&#39;]//option&quot;</span><span class="p">):</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

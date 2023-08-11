@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>redis: &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="outgoing:" href="settings_outgoing.html" />
+    <link rel="prev" title="ui:" href="settings_ui.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_outgoing.html" title="outgoing:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings_ui.html" title="ui:"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="redis">
+<span id="settings-redis"></span><h1><code class="docutils literal notranslate"><span class="pre">redis:</span></code><a class="headerlink" href="#redis" title="Permalink to this heading">¶</a></h1>
+<p>A redis DB can be connected by an URL, in <a class="reference internal" href="../../src/searx.redisdb.html#module-searx.redisdb" title="searx.redisdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.redisdb</span></code></a> you
+will find a description to test your redis connection in SerXNG.  When using
+sockets, don’t forget to check the access rights on the socket:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span> <span class="o">-</span><span class="n">la</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">redis</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">redis</span><span class="o">.</span><span class="n">sock</span>
+<span class="n">srwxrwx</span><span class="o">---</span> <span class="mi">1</span> <span class="n">searxng</span><span class="o">-</span><span class="n">redis</span> <span class="n">searxng</span><span class="o">-</span><span class="n">redis</span> <span class="o">...</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">redis</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">redis</span><span class="o">.</span><span class="n">sock</span>
+</pre></div>
+</div>
+<p>In this example read/write access is given to the <em>searxng-redis</em> group.  To get
+access rights to redis instance (the socket), your SearXNG (or even your
+developer) account needs to be added to the <em>searxng-redis</em> group.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">url</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_REDIS_URL</span></code></span></dt><dd><p>URL to connect redis database, see <a class="reference external" href="https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url">Redis.from_url(url)</a> &amp; <a class="reference internal" href="../../src/searx.redisdb.html#redis-db"><span class="std std-ref">Redis DB</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>redis://[[username]:[password]]@localhost:6379/0
+rediss://[[username]:[password]]@localhost:6379/0
+unix://[[username]:[password]]@/path/to/socket.sock?db=0
+</pre></div>
+</div>
+</dd>
+</dl>
+<section id="redis-developer-notes">
+<span id="id1"></span><h2>Redis Developer Notes<a class="headerlink" href="#redis-developer-notes" title="Permalink to this heading">¶</a></h2>
+<p>To set up a local redis instance, first set the socket path of the Redis DB
+in your YAML setting:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">redis</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unix:///usr/local/searxng-redis/run/redis.sock?db=0</span>
+</pre></div>
+</div>
+<p>Then use the following commands to install the redis instance (<a class="reference internal" href="../../dev/makefile.html#manage-redis-help"><span class="std std-ref">./manage redis.help</span></a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./manage<span class="w"> </span>redis.build
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./manage<span class="w"> </span>redis.install
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./manage<span class="w"> </span>redis.addgrp<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1"># don&#39;t forget to logout &amp; login to get member of group</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Docker Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins builtin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings_ui.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a>
+          <li>Next: <a href="settings_outgoing.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_redis.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

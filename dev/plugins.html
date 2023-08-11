@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plugins &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Translation" href="translation.html" />
+    <link rel="prev" title="Search API" href="search_api.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="translation.html" title="Translation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="search_api.html" title="Search API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Plugins</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="plugins">
+<span id="dev-plugin"></span><h1>Plugins<a class="headerlink" href="#plugins" title="Permalink to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../admin/plugins.html#plugins-generic"><span class="std std-ref">Plugins builtin</span></a></p></li>
+</ul>
+</aside>
+<p>Plugins can extend or replace functionality of various components of searx.</p>
+<section id="example-plugin">
+<h2>Example plugin<a class="headerlink" href="#example-plugin" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Example plugin&#39;</span>
+<span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;This plugin extends the suggestions with the word &quot;example&quot;&#39;</span>
+<span class="n">default_on</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># disabled by default</span>
+
+<span class="c1"># attach callback to the post search hook</span>
+<span class="c1">#  request: flask request object</span>
+<span class="c1">#  ctx: the whole local context of the post search hook</span>
+<span class="k">def</span> <span class="nf">post_search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="n">search</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">suggestions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="external-plugins">
+<h2>External plugins<a class="headerlink" href="#external-plugins" title="Permalink to this heading">¶</a></h2>
+<p>SearXNG supports <em>external plugins</em> / there is no need to install one, SearXNG
+runs out of the box.  But to demonstrate; in the example below we install the
+SearXNG plugins from <em>The Green Web Foundation</em> <a class="reference external" href="https://www.thegreenwebfoundation.org/news/searching-the-green-web-with-searx/">[ref]</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>cmd<span class="w"> </span>bash<span class="w"> </span>-c
+<span class="o">(</span>searxng-pyenv<span class="o">)</span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/return42/tgwf-searx-plugins
+</pre></div>
+</div>
+<p>In the <a class="reference internal" href="../admin/settings/settings.html#settings-yml"><span class="std std-ref">settings.yml</span></a> activate the <code class="docutils literal notranslate"><span class="pre">plugins:</span></code> section and add module
+<code class="docutils literal notranslate"><span class="pre">only_show_green_results</span></code> from <code class="docutils literal notranslate"><span class="pre">tgwf-searx-plugins</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- only_show_green_results</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</section>
+<section id="plugin-entry-points">
+<h2>Plugin entry points<a class="headerlink" href="#plugin-entry-points" title="Permalink to this heading">¶</a></h2>
+<p>Entry points (hooks) define when a plugin runs. Right now only three hooks are
+implemented. So feel free to implement a hook if it fits the behaviour of your
+plugin. A plugin doesn’t need to implement all the hooks.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pre_search">
+<span class="sig-name descname"><span class="pre">pre_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#pre_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs BEFORE the search request.</p>
+<p><cite>search.result_container</cite> can be changed.</p>
+<p>Return a boolean:</p>
+<ul class="simple">
+<li><p>True to continue the search</p></li>
+<li><p>False to stop the search</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>flask.request</em>) – </p></li>
+<li><p><strong>search</strong> (<a class="reference internal" href="../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><em>searx.search.SearchWithPlugins</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>False to stop the search</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="post_search">
+<span class="sig-name descname"><span class="pre">post_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#post_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs AFTER the search request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>flask.request</em>) – Flask request.</p></li>
+<li><p><strong>search</strong> (<a class="reference internal" href="../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><em>searx.search.SearchWithPlugins</em></a>) – Context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="on_result">
+<span class="sig-name descname"><span class="pre">on_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#on_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs for each result of each engine.</p>
+<p><cite>result</cite> can be changed.</p>
+<p>If <cite>result[“url”]</cite> is defined, then <cite>result[“parsed_url”] = urlparse(result[‘url’])</cite></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><cite>result[“url”]</cite> can be changed, but <cite>result[“parsed_url”]</cite> must be updated too.</p>
+</div>
+<p>Return a boolean:</p>
+<ul class="simple">
+<li><p>True to keep the result</p></li>
+<li><p>False to remove the result</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>flask.request</em>) – </p></li>
+<li><p><strong>search</strong> (<a class="reference internal" href="../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><em>searx.search.SearchWithPlugins</em></a>) – </p></li>
+<li><p><strong>result</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><em>Dict</em></a>) – Result, see - <a class="reference internal" href="engines/engine_overview.html#engine-results"><span class="std std-ref">Result Types (template)</span></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True to keep the result</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="search_api.html" title="previous chapter">Search API</a>
+          <li>Next: <a href="translation.html" title="next chapter">Translation</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/plugins.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

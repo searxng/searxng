@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Developing in Linux Containers &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Makefile &amp; ./manage" href="makefile.html" />
+    <link rel="prev" title="Translation" href="translation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="makefile.html" title="Makefile &amp; ./manage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="translation.html" title="Translation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developing in Linux Containers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="developing-in-linux-containers">
+<span id="lxcdev"></span><h1>Developing in Linux Containers<a class="headerlink" href="#developing-in-linux-containers" title="Permalink to this heading">¶</a></h1>
+<p>In this article we will show, how you can make use of Linux Containers (<a class="reference external" href="https://linuxcontainers.org/lxc/introduction/">LXC</a>) in
+<em>distributed and heterogeneous development cycles</em> (TL;DR; jump to the
+<a class="reference internal" href="#lxcdev-summary"><span class="std std-ref">Summary</span></a>).</p>
+<aside class="sidebar">
+<p class="sidebar-title">Audience</p>
+<p>This blog post is written for experienced admins and developers.  Readers
+should have a serious meaning about the terms: <em>distributed</em>, <em>merge</em> and
+<em>linux container</em>.</p>
+<p><strong>hint</strong></p>
+<p>If you have issues with the internet connectivity of your containers read
+section <a class="reference internal" href="../utils/lxc.sh.html#internet-connectivity-docker"><span class="std std-ref">Internet Connectivity &amp; Docker</span></a>.</p>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#motivation" id="id1">Motivation</a></p></li>
+<li><p><a class="reference internal" href="#gentlemen-start-your-engines" id="id2">Gentlemen, start your engines!</a></p></li>
+<li><p><a class="reference internal" href="#in-containers-work-as-usual" id="id3">In containers, work as usual</a></p></li>
+<li><p><a class="reference internal" href="#wrap-production-into-developer-suite" id="id4">Wrap production into developer suite</a></p></li>
+<li><p><a class="reference internal" href="#summary" id="id5">Summary</a></p></li>
+</ul>
+</nav>
+<section id="motivation">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Motivation</a><a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h2>
+<p>Most often in our development cycle, we edit the sources and run some test
+and/or builds by using <code class="docutils literal notranslate"><span class="pre">make</span></code> <a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">[ref]</span></a> before we commit.  This
+cycle is simple and perfect but might fail in some aspects we should not
+overlook.</p>
+<blockquote>
+<div><p><strong>The environment in which we run all our development processes matters!</strong></p>
+</div></blockquote>
+<p>The <a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">Makefile &amp; ./manage</span></a> and the <a class="reference internal" href="makefile.html#make-install"><span class="std std-ref">Python environment (make install)</span></a> encapsulate a lot for us, but
+these tools do not have access to all prerequisites.  For example, there may
+have dependencies on packages that are installed on developer’s desktop, but
+usually are not preinstalled on a server or client system.  Another example is;
+settings have been made to the software on developer’s desktop that would never
+be set on a <em>production</em> system.</p>
+<blockquote>
+<div><p><strong>Linux Containers are isolate environments</strong>, we use them to not mix up all
+the prerequisites from various projects on developer’s desktop.</p>
+</div></blockquote>
+<p>The scripts from <a class="reference internal" href="../utils/index.html#searx-utils"><span class="std std-ref">DevOps tooling box</span></a> can divide in those to install and maintain
+software</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a></p></li>
+</ul>
+<p>and the script</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/lxc.sh.html#lxc-sh"><span class="std std-ref">utils/lxc.sh</span></a></p></li>
+</ul>
+<p>with we can scale our installation, maintenance or even development tasks over a
+stack of isolated containers / what we call the:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/lxc.sh.html#searxng-lxc-suite"><span class="std std-ref">SearXNG LXC suite</span></a></p></li>
+</ul>
+</section>
+<section id="gentlemen-start-your-engines">
+<span id="lxcdev-install-searxng"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Gentlemen, start your engines!</a><a class="headerlink" href="#gentlemen-start-your-engines" title="Permalink to this heading">¶</a></h2>
+<p>Before you can start with containers, you need to install and initiate <a class="reference external" href="https://linuxcontainers.org/lxd/introduction/">LXD</a>
+once:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-ZGVza3RvcCAoSE9TVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="0">desktop (HOST)</button></div><div aria-labelledby="tab-0-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" id="panel-0-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>lxd
+$<span class="w"> </span>lxd<span class="w"> </span>init<span class="w"> </span>--auto
+</pre></div>
+</div>
+</div></div>
+<p>And you need to clone from origin or if you have your own fork, clone from your
+fork:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-ZGVza3RvcCAoSE9TVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="0">desktop (HOST)</button></div><div aria-labelledby="tab-1-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" id="panel-1-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Downloads
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/searxng/searxng.git<span class="w"> </span>searxng
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>searxng
+</pre></div>
+</div>
+</div></div>
+<aside class="sidebar">
+<p class="sidebar-title">The <code class="docutils literal notranslate"><span class="pre">searxng-archlinux</span></code> container</p>
+<p>is the base of all our exercises here.</p>
+</aside>
+<p>The <a class="reference internal" href="../utils/lxc.sh.html#lxc-searxng-env"><span class="std std-ref">SearXNG suite config</span></a> consists of several images, see <code class="docutils literal notranslate"><span class="pre">export</span>
+<span class="pre">LXC_SUITE=(...</span></code> near by <a class="reference external" href="https://github.com/searxng/searxng/blob/master/utils/lxc-searxng.env#L19">git://utils/lxc-searxng.env#L19</a>.
+For this blog post we exercise on a <a class="reference external" href="https://www.archlinux.org/">archlinux</a> image.  The container of this
+image is named <code class="docutils literal notranslate"><span class="pre">searxng-archlinux</span></code>.</p>
+<p>Lets build the container, but be sure that this container does not already
+exists, so first lets remove possible old one:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-ZGVza3RvcCAoSE9TVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="0">desktop (HOST)</button></div><div aria-labelledby="tab-2-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" id="panel-2-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>remove<span class="w"> </span>searxng-archlinux
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>build<span class="w"> </span>searxng-archlinux
+</pre></div>
+</div>
+</div></div>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/lxc.sh.html#lxc-sh-install-suite"><span class="std std-ref">Install suite</span></a></p></li>
+<li><p><a class="reference internal" href="../admin/installation-nginx.html#installation-nginx"><span class="std std-ref">NGINX</span></a></p></li>
+</ul>
+</aside>
+<p>To install the complete <a class="reference internal" href="../utils/lxc.sh.html#searxng-lxc-suite"><span class="std std-ref">SearXNG suite</span></a> and the HTTP
+proxy <a class="reference internal" href="../admin/installation-nginx.html#installation-nginx"><span class="std std-ref">NGINX</span></a> into the archlinux container run:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-ZGVza3RvcCAoSE9TVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="0">desktop (HOST)</button></div><div aria-labelledby="tab-3-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" id="panel-3-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>install<span class="w"> </span>suite<span class="w"> </span>searxng-archlinux
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>--<span class="w"> </span><span class="nv">FORCE_TIMEOUT</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>nginx
+$<span class="w"> </span>sudo<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>show<span class="w"> </span>suite<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>SEARXNG_URL
+...
+<span class="o">[</span>searxng-archlinux<span class="o">]</span><span class="w">    </span>SEARXNG_URL<span class="w">          </span>:<span class="w"> </span>http://n.n.n.140/searxng
+</pre></div>
+</div>
+</div></div>
+<aside class="sidebar">
+<p class="sidebar-title">Fully functional SearXNG suite</p>
+<p>From here on you have a fully functional SearXNG suite (including a
+<a class="reference internal" href="../src/searx.redisdb.html#redis-db"><span class="std std-ref">Redis DB</span></a>).</p>
+</aside>
+<p>In such a SearXNG suite admins can maintain and access the debug log of the
+services quite easy.</p>
+<p>In the example above the SearXNG instance in the container is wrapped to
+<code class="docutils literal notranslate"><span class="pre">http://n.n.n.140/searxng</span></code> to the HOST system.  Note, on your HOST system, the
+IP of your <code class="docutils literal notranslate"><span class="pre">searxng-archlinux</span></code> container is different to this example.  To
+test the instance in the conatiner from outside of the container, in your WEB
+browser on your desktop just open the URL reported in your installation</p>
+</section>
+<section id="in-containers-work-as-usual">
+<span id="working-in-containers"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">In containers, work as usual</a><a class="headerlink" href="#in-containers-work-as-usual" title="Permalink to this heading">¶</a></h2>
+<p>Usually you open a root-bash using <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">-H</span> <span class="pre">bash</span></code>.  In case of LXC containers
+open the root-bash in the container is done by the <code class="docutils literal notranslate"><span class="pre">./utils/lxc.sh</span> <span class="pre">cmd</span>
+<span class="pre">searxng-archlinux</span></code> command:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-ZGVza3RvcCAoSE9TVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="0">desktop (HOST)</button></div><div aria-labelledby="tab-4-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" id="panel-4-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>bash
+INFO:<span class="w">  </span><span class="o">[</span>searxng-archlinux<span class="o">]</span><span class="w"> </span>bash
+<span class="o">[</span>root@searxng-archlinux<span class="w"> </span>SearXNG<span class="o">]</span>$
+</pre></div>
+</div>
+</div></div>
+<p>The prompt <code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">...]</span></code> signals, that you are the root user
+in the container (GUEST).  To debug the running SearXNG instance use:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-5-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-5-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-5-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-5-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>inspect
+...
+use<span class="w"> </span><span class="o">[</span>CTRL-C<span class="o">]</span><span class="w"> </span>to<span class="w"> </span>stop<span class="w"> </span>monitoring<span class="w"> </span>the<span class="w"> </span>log
+...
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>inspect
+...
+use<span class="w"> </span><span class="o">[</span>CTRL-C<span class="o">]</span><span class="w"> </span>to<span class="w"> </span>stop<span class="w"> </span>monitoring<span class="w"> </span>the<span class="w"> </span>log
+...
+</pre></div>
+</div>
+</div></div>
+<p>Back in the browser on your desktop open the service <a class="reference external" href="http://n.n.n.140/searxng">http://n.n.n.140/searxng</a>
+and run your application tests while the debug log is shown in the terminal from
+above.  You can stop monitoring using <code class="docutils literal notranslate"><span class="pre">CTRL-C</span></code>, this also disables the <em>“debug
+option”</em> in SearXNG’s settings file and restarts the SearXNG uwsgi application.</p>
+<p>Another point we have to notice is that the service <a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">SearXNG</span></a>
+runs under dedicated system user account with the same name (compare
+<a class="reference internal" href="../admin/installation-searxng.html#create-searxng-user"><span class="std std-ref">Create user</span></a>).  To get a login shell from these accounts, simply
+call:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-6-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-6-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-6-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-6-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-6-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>cmd<span class="w"> </span>bash<span class="w"> </span>-l
+<span class="o">(</span>searx-pyenv<span class="o">)</span><span class="w"> </span><span class="o">[</span>searxng@searxng-archlinux<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span><span class="nb">pwd</span>
+/usr/local/searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-6-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-6-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>cmd<span class="w"> </span>bash<span class="w"> </span>-l
+INFO:<span class="w">  </span><span class="o">[</span>searxng-archlinux<span class="o">]</span><span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>cmd<span class="w"> </span>bash<span class="w"> </span>-l
+<span class="o">(</span>searx-pyenv<span class="o">)</span><span class="w"> </span><span class="o">[</span>searxng@searxng-archlinux<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span><span class="nb">pwd</span>
+/usr/local/searxng
+</pre></div>
+</div>
+</div></div>
+<p>The prompt <code class="docutils literal notranslate"><span class="pre">[searxng&#64;searxng-archlinux]</span></code> signals that you are logged in as system
+user <code class="docutils literal notranslate"><span class="pre">searxng</span></code> in the <code class="docutils literal notranslate"><span class="pre">searxng-archlinux</span></code> container and the python <em>virtualenv</em>
+<code class="docutils literal notranslate"><span class="pre">(searxng-pyenv)</span></code> environment is activated.</p>
+</section>
+<section id="wrap-production-into-developer-suite">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Wrap production into developer suite</a><a class="headerlink" href="#wrap-production-into-developer-suite" title="Permalink to this heading">¶</a></h2>
+<p>In this section we will see how to change the <em>“Fully functional SearXNG suite”</em>
+from a LXC container (which is quite ready for production) into a developer
+suite.  For this, we have to keep an eye on the <a class="reference internal" href="../admin/installation-searxng.html#installation-basic"><span class="std std-ref">Step by step installation</span></a>:</p>
+<ul class="simple">
+<li><p>SearXNG setup in: <code class="docutils literal notranslate"><span class="pre">/etc/searxng/settings.yml</span></code></p></li>
+<li><p>SearXNG user’s home: <code class="docutils literal notranslate"><span class="pre">/usr/local/searxng</span></code></p></li>
+<li><p>virtualenv in: <code class="docutils literal notranslate"><span class="pre">/usr/local/searxng/searxng-pyenv</span></code></p></li>
+<li><p>SearXNG software in: <code class="docutils literal notranslate"><span class="pre">/usr/local/searxng/searxng-src</span></code></p></li>
+</ul>
+<p>With the use of the <a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a> the SearXNG service was installed as
+<a class="reference internal" href="../admin/installation-uwsgi.html#searxng-uwsgi"><span class="std std-ref">uWSGI application</span></a>.  To maintain this service, we can use
+<code class="docutils literal notranslate"><span class="pre">systemctl</span></code> (compare <a class="reference internal" href="../admin/installation-uwsgi.html#uwsgi-maintenance"><span class="std std-ref">uWSGI maintenance</span></a>).</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-dXdzZ2lAc2VhcnhuZw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-7-dXdzZ2lAc2VhcnhuZw==" name="dXdzZ2lAc2VhcnhuZw==" role="tab" tabindex="0"><a class="reference external" href="mailto:uwsgi&#37;&#52;&#48;searxng">uwsgi<span>&#64;</span>searxng</a></button></div><div aria-labelledby="tab-7-dXdzZ2lAc2VhcnhuZw==" class="sphinx-tabs-panel group-tab" id="panel-7-dXdzZ2lAc2VhcnhuZw==" name="dXdzZ2lAc2VhcnhuZw==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>uwsgi@searxng
+</pre></div>
+</div>
+</div></div>
+<p>With the command above, we stopped the SearXNG uWSGI-App in the archlinux
+container.</p>
+<p>The uWSGI-App for the archlinux dsitros is configured in
+<a class="reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/uwsgi/apps-archlinux/searxng.ini">git://utils/templates/etc/uwsgi/apps-archlinux/searxng.ini</a>, from where at
+least you should attend the settings of <code class="docutils literal notranslate"><span class="pre">uid</span></code>, <code class="docutils literal notranslate"><span class="pre">chdir</span></code>, <code class="docutils literal notranslate"><span class="pre">env</span></code> and
+<code class="docutils literal notranslate"><span class="pre">http</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">SEARXNG_SETTINGS_PATH</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">searxng</span><span class="o">/</span><span class="n">settings</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">http</span> <span class="o">=</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8888</span>
+
+<span class="n">chdir</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">src</span><span class="o">/</span><span class="n">searx</span>
+<span class="n">virtualenv</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">pyenv</span>
+<span class="n">pythonpath</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">src</span>
+</pre></div>
+</div>
+<p>If you have read the <a class="reference internal" href="../utils/lxc.sh.html#good-to-know"><span class="std std-ref">Good to know</span></a> you remember, that each container
+shares the root folder of the repository and the command <code class="docutils literal notranslate"><span class="pre">utils/lxc.sh</span> <span class="pre">cmd</span></code>
+handles relative path names <strong>transparent</strong>.</p>
+<p>To wrap the SearXNG installation in the container into a developer one, we
+simple have to create a smylink to the <strong>transparent</strong> reposetory from the
+desktop.  Now lets replace the repository at <code class="docutils literal notranslate"><span class="pre">searxng-src</span></code> in the container
+with the working tree from outside of the container:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-8-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-8-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-8-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-8-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-8-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mv<span class="w"> </span>/usr/local/searxng/searxng-src<span class="w">  </span>/usr/local/searxng/searxng-src.old
+$<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/share/SearXNG/<span class="w"> </span>/usr/local/searxng/searxng-src
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-8-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-8-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>mv<span class="w"> </span>/usr/local/searxng/searxng-src<span class="w"> </span>/usr/local/searxng/searxng-src.old
+
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ln<span class="w"> </span>-s<span class="w"> </span>/share/SearXNG/<span class="w"> </span>/usr/local/searxng/searxng-src
+</pre></div>
+</div>
+</div></div>
+<p>Now we can develop as usual in the working tree of our desktop system.  Every
+time the software was changed, you have to restart the SearXNG service (in the
+container):</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-dXdzZ2lAc2VhcnhuZw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-9-dXdzZ2lAc2VhcnhuZw==" name="dXdzZ2lAc2VhcnhuZw==" role="tab" tabindex="0"><a class="reference external" href="mailto:uwsgi&#37;&#52;&#48;searxng">uwsgi<span>&#64;</span>searxng</a></button></div><div aria-labelledby="tab-9-dXdzZ2lAc2VhcnhuZw==" class="sphinx-tabs-panel group-tab" id="panel-9-dXdzZ2lAc2VhcnhuZw==" name="dXdzZ2lAc2VhcnhuZw==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+</pre></div>
+</div>
+</div></div>
+<p>Remember: <a class="reference internal" href="#working-in-containers"><span class="std std-ref">In containers, work as usual</span></a> .. here are just some examples from my
+daily usage:</p>
+<p>To <em>inspect</em> the SearXNG instance (already described above):</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-10-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-10-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-10-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-10-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-10-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./utils/searx.sh<span class="w"> </span>inspect<span class="w"> </span>service
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-10-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-10-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>./utils/searx.sh<span class="w"> </span>inspect<span class="w"> </span>service
+</pre></div>
+</div>
+</div></div>
+<p>Run <a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">Makefile &amp; ./manage</span></a>, e.g. to test inside the container:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-11-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-11-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-11-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-11-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-11-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-11-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-11-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w">  </span>make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</div></div>
+<p>To install all prerequisites needed for a <a class="reference internal" href="../admin/buildhosts.html#buildhosts"><span class="std std-ref">Buildhosts</span></a>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-12-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-12-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-12-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-12-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-12-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-12-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>buildhost
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-12-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-12-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>buildhost
+</pre></div>
+</div>
+</div></div>
+<p>To build the docs on a buildhost <a class="reference internal" href="../admin/buildhosts.html#buildhosts"><span class="std std-ref">Buildhosts</span></a>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-13-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-13-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tab" tabindex="0"><code class="docutils literal notranslate"><span class="pre">[root&#64;searxng-archlinux</span> <span class="pre">SearXNG]</span></code> (GUEST)</button><button aria-controls="panel-13-ZGVza3RvcCAoSE9TVCk=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-13-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tab" tabindex="-1">desktop (HOST)</button></div><div aria-labelledby="tab-13-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" class="sphinx-tabs-panel group-tab" id="panel-13-YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" name="YGBbcm9vdEBzZWFyeG5nLWFyY2hsaW51eCBTZWFyWE5HXWBgIChHVUVTVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs.html
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-13-ZGVza3RvcCAoSE9TVCk=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-13-ZGVza3RvcCAoSE9TVCk=" name="ZGVza3RvcCAoSE9TVCk=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>make<span class="w"> </span>docs.html
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="summary">
+<span id="lxcdev-summary"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<p>We build up a fully functional SearXNG suite in a archlinux container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>build<span class="w"> </span>searxng-archlinux
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>install<span class="w"> </span>suite<span class="w"> </span>searxng-archlinux
+...
+Developer<span class="w"> </span>install?<span class="w"> </span><span class="o">(</span>wraps<span class="w"> </span><span class="nb">source</span><span class="w"> </span>from<span class="w"> </span>HOST<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>running<span class="w"> </span>instance<span class="o">)</span><span class="w"> </span><span class="o">[</span>YES/no<span class="o">]</span>
+</pre></div>
+</div>
+<p>To wrap the suite into a developer one answer <code class="docutils literal notranslate"><span class="pre">YES</span></code> (or press Enter).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>link SearXNG&#39;s sources to: /share/SearXNG
+=========================================
+
+mv -f &quot;/usr/local/searxng/searxng-src&quot; &quot;/usr/local/searxng/searxng-src.backup&quot;
+ln -s &quot;/share/SearXNG&quot; &quot;/usr/local/searxng/searxng-src&quot;
+ls -ld /usr/local/searxng/searxng-src
+  |searxng| lrwxrwxrwx 1 searxng searxng ... /usr/local/searxng/searxng-src -&gt; /share/SearXNG
+</pre></div>
+</div>
+<p>On code modification the instance has to be restarted (see <a class="reference internal" href="../admin/installation-uwsgi.html#uwsgi-maintenance"><span class="std std-ref">uWSGI maintenance</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>searxng-archlinux<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+</pre></div>
+</div>
+<p>To access HTTP from the desktop we installed nginx for the services inside the
+container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/lxc.sh<span class="w"> </span>cmd<span class="w"> </span>--<span class="w"> </span><span class="nv">FORCE_TIMEOUT</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>nginx
+</pre></div>
+</div>
+<p>To get information about the SearxNG suite in the archlinux container we can
+use:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/lxc.sh show suite searxng-archlinux
+[searxng-archlinux]  INFO:  (eth0) docs-live:  http:///n.n.n.140:8080/
+[searxng-archlinux]  INFO:  (eth0) IPv6:       http://[fd42:555b:2af9:e121:216:3eff:fe5b:1744]
+[searxng-archlinux]  uWSGI:
+[searxng-archlinux]    SEARXNG_UWSGI_SOCKET : /usr/local/searxng/run/socket
+[searxng-archlinux]  environment /usr/local/searxng/searxng-src/utils/brand.env:
+[searxng-archlinux]    GIT_URL              : https://github.com/searxng/searxng
+[searxng-archlinux]    GIT_BRANCH           : master
+[searxng-archlinux]    SEARXNG_URL          : http:///n.n.n.140/searxng
+[searxng-archlinux]    SEARXNG_PORT         : 8888
+[searxng-archlinux]    SEARXNG_BIND_ADDRESS : 127.0.0.1
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="translation.html" title="previous chapter">Translation</a>
+          <li>Next: <a href="makefile.html" title="next chapter">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/lxcdev.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>

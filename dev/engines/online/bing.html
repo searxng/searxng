@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bing Engines &#8212; SearXNG Documentation (2023.8.11+99df7b84d)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=62ef8585"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Brave Engines" href="brave.html" />
+    <link rel="prev" title="Arch Linux" href="archlinux.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="brave.html" title="Brave Engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="archlinux.html" title="Arch Linux"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2023.8.11+99df7b84d)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bing Engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bing-engines">
+<span id="id1"></span><h1>Bing Engines<a class="headerlink" href="#bing-engines" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-searx.engines.bing" id="id2">Bing WEB</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.engines.bing_images" id="id3">Bing Images</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.engines.bing_videos" id="id4">Bing Videos</a></p></li>
+<li><p><a class="reference internal" href="#module-searx.engines.bing_news" id="id5">Bing News</a></p></li>
+</ul>
+</nav>
+<section id="module-searx.engines.bing">
+<span id="bing-web"></span><span id="bing-web-engine"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Bing WEB</a><a class="headerlink" href="#module-searx.engines.bing" title="Permalink to this heading">¶</a></h2>
+<p>This is the implementation of the Bing-WEB engine. Some of this
+implementations are shared by other engines:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bing-images-engine"><span class="std std-ref">Bing Images</span></a></p></li>
+<li><p><a class="reference internal" href="#bing-news-engine"><span class="std std-ref">Bing News</span></a></p></li>
+<li><p><a class="reference internal" href="#bing-videos-engine"><span class="std std-ref">Bing Videos</span></a></p></li>
+</ul>
+<p>On the <a class="reference external" href="https://www.bing.com/account/general">preference page</a> Bing offers a lot of languages an regions (see section
+‘Search results languages’ and ‘Country/region’).  However, the abundant choice
+does not correspond to reality, where Bing has a full-text indexer only for a
+limited number of languages.  By example: you can select a language like Māori
+but you never get a result in this language.</p>
+<p>What comes a bit closer to the truth are the <a class="reference external" href="https://learn.microsoft.com/en-us/bing/search-apis/">search-APIs</a> but they don`t seem
+to be completely correct either (if you take a closer look you will find some
+inaccuracies there too):</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.bing.bing_traits_url" title="searx.engines.bing.bing_traits_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing.bing_traits_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.bing_videos.bing_traits_url" title="searx.engines.bing_videos.bing_traits_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing_videos.bing_traits_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.bing_images.bing_traits_url" title="searx.engines.bing_images.bing_traits_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing_images.bing_traits_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.bing_news.bing_traits_url" title="searx.engines.bing_news.bing_traits_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing_news.bing_traits_url</span></code></a></p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing.fetch_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch languages and regions from Bing-Web.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a Bing-Web request.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://www.bing.com/search'</span></em><a class="headerlink" href="#searx.engines.bing.base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Web) search URL</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing.bing_traits_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing.</span></span><span class="sig-name descname"><span class="pre">bing_traits_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/reference/market-codes'</span></em><a class="headerlink" href="#searx.engines.bing.bing_traits_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Web) search API description</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing.send_accept_language_header">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing.</span></span><span class="sig-name descname"><span class="pre">send_accept_language_header</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#searx.engines.bing.send_accept_language_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing tries to guess user’s language and territory from the HTTP
+Accept-Language.  Optional the user can select a search-language (can be
+different to the UI language) and a region (market code).</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.engines.bing_images">
+<span id="bing-images"></span><span id="bing-images-engine"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Bing Images</a><a class="headerlink" href="#module-searx.engines.bing_images" title="Permalink to this heading">¶</a></h2>
+<p>Bing-Images: description see <a class="reference internal" href="#module-searx.engines.bing" title="searx.engines.bing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing</span></code></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_images.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_images.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_images.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_images.fetch_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch languages and regions from Bing-News.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_images.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_images.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_images.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_images.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a Bing-Image request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_images.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_images.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_images.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_images.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response from Bing-Images</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_images.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_images.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://www.bing.com/images/async'</span></em><a class="headerlink" href="#searx.engines.bing_images.base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Images) search URL</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_images.bing_traits_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_images.</span></span><span class="sig-name descname"><span class="pre">bing_traits_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://learn.microsoft.com/en-us/bing/search-apis/bing-image-search/reference/market-codes'</span></em><a class="headerlink" href="#searx.engines.bing_images.bing_traits_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Images) search API description</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.engines.bing_videos">
+<span id="bing-videos"></span><span id="bing-videos-engine"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Bing Videos</a><a class="headerlink" href="#module-searx.engines.bing_videos" title="Permalink to this heading">¶</a></h2>
+<p>Bing-Videos: description see <a class="reference internal" href="#module-searx.engines.bing" title="searx.engines.bing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing</span></code></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_videos.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_videos.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_videos.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_videos.fetch_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch languages and regions from Bing-Videos.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_videos.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_videos.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_videos.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_videos.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a Bing-Video request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_videos.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_videos.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_videos.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_videos.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response from Bing-Video</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_videos.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_videos.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://www.bing.com/videos/asyncv2'</span></em><a class="headerlink" href="#searx.engines.bing_videos.base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Videos) async search URL.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_videos.bing_traits_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_videos.</span></span><span class="sig-name descname"><span class="pre">bing_traits_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://learn.microsoft.com/en-us/bing/search-apis/bing-video-search/reference/market-codes'</span></em><a class="headerlink" href="#searx.engines.bing_videos.bing_traits_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (Video) search API description</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.engines.bing_news">
+<span id="bing-news"></span><span id="bing-news-engine"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Bing News</a><a class="headerlink" href="#module-searx.engines.bing_news" title="Permalink to this heading">¶</a></h2>
+<p>Bing-News: description see <a class="reference internal" href="#module-searx.engines.bing" title="searx.engines.bing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.bing</span></code></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_news.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_news.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_news.fetch_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch languages and regions from Bing-News.</p>
+<p>The <a class="reference internal" href="#searx.engines.bing_news.bing_traits_url" title="searx.engines.bing_news.bing_traits_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a> of the
+first table says <em>“query parameter when calling the Video Search API.”</em>
+.. thats why I use the 4. table “News Category API markets” for the
+<code class="docutils literal notranslate"><span class="pre">xpath_market_codes</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_news.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_news.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_news.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a Bing-News request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.bing_news.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/bing_news.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.bing_news.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response from Bing-Video</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_news.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://www.bing.com/news/infinitescrollajax'</span></em><a class="headerlink" href="#searx.engines.bing_news.base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (News) search URL</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_news.bing_traits_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">bing_traits_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://learn.microsoft.com/en-us/bing/search-apis/bing-news-search/reference/market-codes'</span></em><a class="headerlink" href="#searx.engines.bing_news.bing_traits_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing (News) search API description</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_news.mkt_alias">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">mkt_alias</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'zh':</span> <span class="pre">'en-WW',</span> <span class="pre">'zh-CN':</span> <span class="pre">'en-WW'}</span></em><a class="headerlink" href="#searx.engines.bing_news.mkt_alias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing News has an official market code ‘zh-CN’ but we won’t get a result with
+this market code.  For ‘zh’ and ‘zh-CN’ we better use the <em>Worldwide aggregate</em>
+market code (en-WW).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.bing_news.time_map">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.bing_news.</span></span><span class="sig-name descname"><span class="pre">time_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'day':</span> <span class="pre">'4',</span> <span class="pre">'month':</span> <span class="pre">'9',</span> <span class="pre">'week':</span> <span class="pre">'8'}</span></em><a class="headerlink" href="#searx.engines.bing_news.time_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string ‘4’ means <em>last hour</em>. We use <em>last hour</em> for <code class="docutils literal notranslate"><span class="pre">day</span></code> here since the
+difference of <em>last day</em> and <em>last week</em> in the result list is just marginally.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="archlinux.html" title="previous chapter">Arch Linux</a>
+          <li>Next: <a href="brave.html" title="next chapter">Brave Engines</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/bing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  <script src="../../../_static/version_warning_offset.js"></script>
+
+  </body>
+</html>
