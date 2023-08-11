@@ -175,7 +175,7 @@ Each container shares the root folder of the repository and the command
  /share/SearXNG
 
 The path ``/share/SearXNG`` will be different on your HOST system.  The commands
-in the conatiner are executed by the ``root`` inside of the container.  Compare
+in the container are executed by the ``root`` inside of the container.  Compare
 output of::
 
   $ ls -li Makefile
@@ -190,7 +190,7 @@ Since the path ``/share/SearXNG`` of the HOST system is wrapped into the
 container under the same name, the shown ``Makefile`` (inode ``47712402``) in
 the ouput is always the identical ``/share/SearXNG/Makefile`` from the HOST
 system.  In the example shown above the owner of the path in the container is
-the ``root`` user of the conatiner (and the timezone in the container is
+the ``root`` user of the container (and the timezone in the container is
 different to HOST system).
 
 

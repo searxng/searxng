@@ -46,7 +46,7 @@
 .. cache_url:
 
 ``cache_url`` : ``https://web.archive.org/web/``
-  URL prefix of the internet archive or cache, don't forgett trailing slash (if
+  URL prefix of the internet archive or cache, don't forget trailing slash (if
   needed).  The default is https://web.archive.org/web/ alternatives are:
 
   - https://webcache.googleusercontent.com/search?q=cache:

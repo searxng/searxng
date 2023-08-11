@@ -86,7 +86,7 @@ below. This setup:
 
 - enables :ref:`limiter <limiter>` to protect against bots
 - enables :ref:`image proxy <image_proxy>` for better privacy
-- enables :ref:`cache busting <static_use_hash>` to save bandwith
+- enables :ref:`cache busting <static_use_hash>` to save bandwidth
 
 Modify the ``/etc/searxng/settings.yml`` to your needs:
 

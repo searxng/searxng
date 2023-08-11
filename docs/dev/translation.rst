@@ -56,7 +56,7 @@ Sync from *origin* to *weblate*: using ``make weblate.push.translations``
   <.github/workflows/integration.yml>` checks for updated translations.
 
 Sync from *weblate* to *origin*: using ``make weblate.translations.commit``
-  Every Friday, the GitHub workflow :origin:`babel / create PR for additons from
+  Every Friday, the GitHub workflow :origin:`babel / create PR for additions from
   weblate <.github/workflows/translations-update.yml>` creates a PR with the
   updated translation files:
 

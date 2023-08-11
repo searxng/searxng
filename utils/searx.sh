@@ -67,7 +67,7 @@ installations that were installed with this script."
     remove_settings
     wait_key
     if service_is_available "${PUBLIC_URL}"; then
-        MSG="** Don't forgett to remove your public site! (${PUBLIC_URL}) **" wait_key 10
+        MSG="** Don't forget to remove your public site! (${PUBLIC_URL}) **" wait_key 10
     fi
 }
 

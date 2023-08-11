@@ -1,8 +1,8 @@
 .. _duckduckgo engines:
 
-=================
-DukcDukGo Engines
-=================
+==================
+DuckDuckGo Engines
+==================
 
 .. contents::
    :depth: 2

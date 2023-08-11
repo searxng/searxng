@@ -61,7 +61,7 @@ and then, to name just a few:
 - The image proxy morty is no longer needed, it has been replaced by the
   :ref:`image proxy <image_proxy>` from SearXNG.
 
-- To save bandwith :ref:`cache busting <static_use_hash>` has been implemented.
+- To save bandwidth :ref:`cache busting <static_use_hash>` has been implemented.
   To get in use, the ``static-expires`` needs to be set in the :ref:`uwsgi
   setup`.
 

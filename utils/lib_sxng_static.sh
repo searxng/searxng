@@ -82,9 +82,9 @@ static.build.commit() {
 
     build_msg STATIC "build & commit /static files"
 
-    # check for not commited files
+    # check for not committed files
     if [ -n "$(git diff --name-only)" ]; then
-        err_msg "some files are not commited:"
+        err_msg "some files are not committed:"
         git diff --name-only | prefix_stdout "  "
         return 1
     fi
