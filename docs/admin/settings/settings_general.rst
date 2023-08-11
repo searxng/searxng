@@ -30,5 +30,5 @@
   Contact ``mailto:`` address or WEB form.
 
 ``enable_metrics``:
-  Enabled by default. Record various anonymous metrics availabled at ``/stats``,
+  Enabled by default. Record various anonymous metrics available at ``/stats``,
   ``/stats/errors`` and ``/preferences``.
