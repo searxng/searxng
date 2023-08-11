@@ -31,9 +31,7 @@ search:
   autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
-  default_lang: "auto"
-  # Available languages
-  # languages:
+  # Available languages:
   #   - all
   #   - en
   #   - en-US
@@ -41,6 +39,7 @@ search:
   #   - it-IT
   #   - fr
   #   - fr-BE
+  default_lang: "auto"
   # ban time in seconds after engine errors
   ban_time_on_fail: 5
   # max ban time in seconds after engine errors
@@ -71,14 +70,16 @@ server:
   port: 8888
   bind_address: "127.0.0.1"
   # public URL of the instance, to ensure correct inbound links. Is overwritten
-  # by ${SEARXNG_URL}.
-  base_url: false  # "http://example.com/location"
-  limiter: false  # rate limit the number of request on the instance, block some bots
+  # by ${SEARXNG_URL}, e.g. "http://example.com/location"
+  base_url: false
+  # rate limit the number of request on the instance, block some bots
+  limiter: false
 
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
+  # Used for cryptography purpose. Is overwritten by ${SEARXNG_SECRET}
+  secret_key: "ultrasecretkey"
   # Proxying image results through searx
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -86,6 +87,7 @@ server:
   # POST queries are more secure as they don't show up in history but may cause
   # problems when using Firefox containers
   method: "POST"
+  # Set additional HTTP headers, see https://github.com/searx/searx/issues/715
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-XSS-Protection: 1; mode=block
@@ -147,7 +149,6 @@ ui:
 #   proxify_results: true
 
 # communication with search engines
-#
 outgoing:
   # default timeout in seconds, can be override by engine
   request_timeout: 3.0
