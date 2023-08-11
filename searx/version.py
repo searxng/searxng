@@ -65,7 +65,7 @@ def get_git_version():
     git_commit_date_hash = git_commit_date_hash.replace('.0', '.')
     tag_version = git_version = git_commit_date_hash
 
-    # add "+dirty" suffix if there are uncommited changes except searx/settings.yml
+    # add "+dirty" suffix if there are uncommitted changes except searx/settings.yml
     try:
         subprocess_run("git diff --quiet -- . ':!searx/settings.yml' ':!utils/brand.env'")
     except subprocess.CalledProcessError as e:

@@ -186,5 +186,5 @@ commit and push:
 
 .. attention::
 
-   If you are working in your own brand, don't forgett to adjust your
+   If you are working in your own brand, don't forget to adjust your
    :ref:`settings brand`.

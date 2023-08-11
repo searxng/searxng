@@ -138,7 +138,7 @@ from the YAML configuration:
 - ``SEARXNG_PORT`` from :ref:`server.port <settings server>`
 
 The ``GIT_URL`` and ``GIT_BRANCH`` in the origin:`utils/brand.env` file, are
-readed from the git VCS and the branch that is checked out when ``make
+read from the git VCS and the branch that is checked out when ``make
 buildenv`` command runs.
 
 .. _brand:
@@ -423,7 +423,7 @@ To get live builds while modifying CSS & JS use (:ref:`make run`):
 
 The :origin:`Makefile` targets ``static.build.*`` cover common tasks to build (a
 commit of) the static files.  The ``./manage static.build..*`` command line
-can be used to convenient run common build tasks of the satic files.
+can be used to convenient run common build tasks of the static files.
 
 .. program-output:: bash -c "cd ..; ./manage static.help"
 

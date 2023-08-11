@@ -148,7 +148,7 @@ services quite easy.
 In the example above the SearXNG instance in the container is wrapped to
 ``http://n.n.n.140/searxng`` to the HOST system.  Note, on your HOST system, the
 IP of your ``searxng-archlinux`` container is different to this example.  To
-test the instance in the conatiner from outside of the container, in your WEB
+test the instance in the container from outside of the container, in your WEB
 browser on your desktop just open the URL reported in your installation
 
 .. _working in containers:
@@ -255,7 +255,7 @@ With the use of the :ref:`searxng.sh` the SearXNG service was installed as
 With the command above, we stopped the SearXNG uWSGI-App in the archlinux
 container.
 
-The uWSGI-App for the archlinux dsitros is configured in
+The uWSGI-App for the archlinux distros is configured in
 :origin:`utils/templates/etc/uwsgi/apps-archlinux/searxng.ini`, from where at
 least you should attend the settings of ``uid``, ``chdir``, ``env`` and
 ``http``::
@@ -272,7 +272,7 @@ shares the root folder of the repository and the command ``utils/lxc.sh cmd``
 handles relative path names **transparent**.
 
 To wrap the SearXNG installation in the container into a developer one, we
-simple have to create a smylink to the **transparent** reposetory from the
+simple have to create a symlink to the **transparent** repository from the
 desktop.  Now lets replace the repository at ``searxng-src`` in the container
 with the working tree from outside of the container:
 

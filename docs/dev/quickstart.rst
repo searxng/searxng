@@ -67,14 +67,14 @@ the modified source code from the build products first run:
    make static.build.restore
 
 This will restore the old build products and only your changes of the code
-remain in the working tree which can now be added & commited.  When all sources
-are commited, you can commit the build products simply by:
+remain in the working tree which can now be added & committed.  When all sources
+are committed, you can commit the build products simply by:
 
 .. code:: bash
 
    make static.build.commit
 
-Commiting the build products should be the last step, just before you send us
+Committing the build products should be the last step, just before you send us
 your PR.  There is also a make target to rewind this last build commit:
 
 .. code:: bash

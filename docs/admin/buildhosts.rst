@@ -33,7 +33,7 @@ This will install packages needed by SearXNG:
    :start-after: START distro-packages
    :end-before: END distro-packages
 
-and packages needed to build docuemtation and run tests:
+and packages needed to build documentation and run tests:
 
 .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
    :start-after: START build-packages
