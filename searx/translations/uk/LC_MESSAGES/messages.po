@@ -9,13 +9,14 @@
 # Markus Heiser <markus.heiser@darmarit.de>, 2022, 2023.
 # BalkanMadman <zurabid2016@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# maxch <maxletters@tutanota.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-07 19:41+0000\n"
-"PO-Revision-Date: 2023-07-09 15:34+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-08-10 08:55+0000\n"
+"PO-Revision-Date: 2023-08-11 07:07+0000\n"
+"Last-Translator: maxch <maxletters@tutanota.com>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
 "Language: uk\n"
@@ -32,7 +33,7 @@ msgstr ""
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "без подальшого підгрупування"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -327,11 +328,11 @@ msgstr "Мова"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
-msgstr ""
+msgstr "Рейтинг книги"
 
 #: searx/engines/zlibrary.py:131
 msgid "File quality"
-msgstr ""
+msgstr "Якість файлу"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -375,7 +376,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
-msgstr "Інформація"
+msgstr "Інформація про себе"
 
 #: searx/plugins/self_info.py:11
 msgid ""
@@ -527,14 +528,18 @@ msgstr "Будь ласка, перевірте наявність недолі�
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
+"Я підтверджую, що не існує помилки, пов'язаної з проблемою, що мені "
+"зустрілася"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
+msgstr "Якщо це публічна інстанція, укажіть URL-адресу у звіті про помилку"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
+"Надіслати нове повідомлення про проблему на Github, включаючи вказану "
+"вище інформацію"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -548,16 +553,16 @@ msgstr "Перегляньте журнали помилок і надішліт
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang для цієї пошукової системи"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang для її категорій"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
 msgid "Median"
-msgstr ""
+msgstr "Медіана"
 
 #: searx/templates/simple/preferences.html:103
 #: searx/templates/simple/stats.html:70
@@ -571,7 +576,7 @@ msgstr "P95"
 
 #: searx/templates/simple/preferences.html:136
 msgid "Failed checker test(s): "
-msgstr ""
+msgstr "Невдалі тести: "
 
 #: searx/templates/simple/preferences.html:138
 msgid "Errors:"
@@ -619,7 +624,7 @@ msgstr "Число результатів"
 
 #: searx/templates/simple/results.html:45
 msgid "Info"
-msgstr "Інформація"
+msgstr "Інфо"
 
 #: searx/templates/simple/results.html:74
 msgid "Try searching for:"
@@ -639,7 +644,7 @@ msgstr "Наступна сторінка"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Показати головну сторінку"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -673,12 +678,12 @@ msgstr "Влучань"
 msgid "Result count"
 msgstr "Кількість результатів"
 
-#: searx/templates/simple/preferences/engines.html:24
+#: searx/templates/simple/preferences/engines.html:25
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Час відгуку"
 
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:29
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Надійність"
@@ -713,7 +718,7 @@ msgstr "Повідомлення"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr "Процент"
+msgstr "Відсоток"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
@@ -733,7 +738,7 @@ msgstr "Код"
 
 #: searx/templates/simple/stats.html:128
 msgid "Checker"
-msgstr ""
+msgstr "Перевірник"
 
 #: searx/templates/simple/stats.html:131
 msgid "Failed test"
@@ -749,7 +754,7 @@ msgstr "Завантажити результати"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Повідомлення від пошукових систем"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -874,7 +879,7 @@ msgstr "Приклади"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr ""
+msgstr "Модулі SearXNG з миттєвою відповіддю."
 
 #: searx/templates/simple/preferences/answerers.html:28
 msgid "This is the list of plugins."
@@ -906,17 +911,19 @@ msgstr "Вимк."
 
 #: searx/templates/simple/preferences/center_alignment.html:10
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Відображає результати в центрі сторінки (макет Оскар)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Список файлів cookie та їх значень, які SearXNG зберігає на вашому "
+"комп’ютері."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "За допомогою цього списку ви можете оцінити прозорість SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -928,13 +935,15 @@ msgstr "Значення"
 
 #: searx/templates/simple/preferences/cookies.html:23
 msgid "Search URL of the currently saved preferences"
-msgstr ""
+msgstr "URL-адреса зі збереженими налаштуваннями"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
+"Увага: використання URL з параметрами може призвести до витоку даних на "
+"сайти, відкриті з результатів пошуку."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -945,30 +954,38 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Зазначення користувацьких налаштувань в URL-адресі можна використовувати "
+"для синхронізації налаштувань на різних пристроях."
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
-msgstr ""
+msgstr "Джерело Open Access DOI"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Виберіть послугу, яку використовує DOI rewrite"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Ця вкладка не існує в інтерфейсі користувача, але ви можете шукати в цих "
+"системах за допомогою їх !bang."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
 msgstr "Підтримка обраної мови"
 
-#: searx/templates/simple/preferences/engines.html:26
+#: searx/templates/simple/preferences/engines.html:23
+msgid "Weight"
+msgstr "Вага"
+
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
 msgstr "Максимальний час"
 
@@ -1016,7 +1033,7 @@ msgstr "Вимкнено"
 
 #: searx/templates/simple/preferences/image_proxy.html:10
 msgid "Proxying image results through SearXNG"
-msgstr ""
+msgstr "Проксувати зображення в результатах методами SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1034,7 +1051,7 @@ msgstr "Якій мові ви віддаєте перевагу для пошу
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
+msgstr "Виберіть автовизначення, щоб SearXNG сам визначав мову вашого запиту."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1042,17 +1059,19 @@ msgstr "HTTP Метод"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Змінити спосіб надсилання форм"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Пошуковий запит у заголовку сторінки"
 
 #: searx/templates/simple/preferences/query_in_title.html:10
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Якщо ввімкнено, заголовок сторінки результатів містить ваш пошуковий "
+"запит. Ваш браузер може зберігати цю назву"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1072,7 +1091,7 @@ msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change SearXNG layout"
-msgstr ""
+msgstr "Змінити макет SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1080,15 +1099,15 @@ msgstr "Стиль теми"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr ""
+msgstr "Виберіть \"автоматично\" для використання налаштувань вашого браузера"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
-msgstr ""
+msgstr "Токени пошукової системи"
 
 #: searx/templates/simple/preferences/tokens.html:9
 msgid "Access tokens for private engines"
-msgstr ""
+msgstr "Токени доступу для приватних пошукових систем"
 
 #: searx/templates/simple/preferences/ui_locale.html:2
 msgid "Interface language"
@@ -1137,19 +1156,19 @@ msgstr "приховати карту"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Дата публікації"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Журнал"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Редактор"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Видавець"
 
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
