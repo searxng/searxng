@@ -102,7 +102,7 @@ def response(resp):
     if answer:
         logger.debug('AnswerType="%s" Answer="%s"', search_res.get('AnswerType'), answer)
         if search_res.get('AnswerType') not in ['calc', 'ip']:
-            results.append({'answer': html_to_text(answer)})
+            results.append({'answer': html_to_text(answer), 'url': search_res.get('AbstractURL', '')})
 
     # add infobox
     if 'Definition' in search_res:
