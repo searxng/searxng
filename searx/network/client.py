@@ -180,7 +180,15 @@ def get_loop():
 
 def init():
     # log
-    for logger_name in ('hpack.hpack', 'hpack.table', 'httpx._client'):
+    for logger_name in (
+        'httpx',
+        'httpcore.proxy',
+        'httpcore.connection',
+        'httpcore.http11',
+        'httpcore.http2',
+        'hpack.hpack',
+        'hpack.table',
+    ):
         logging.getLogger(logger_name).setLevel(logging.WARNING)
 
     # loop
