@@ -1008,6 +1008,12 @@ engines:
   #   collection: 'reviews'  # name of the db collection
   #   key: 'name'  # key in the collection to search for
 
+  - name: mwmbl
+    engine: mwmbl
+    # api_url: https://api.mwmbl.org
+    shortcut: mwm
+    disabled: true
+
   - name: npm
     engine: json_engine
     paging: true
