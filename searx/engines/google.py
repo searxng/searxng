@@ -331,11 +331,13 @@ def response(resp):
 
     # results --> answer
     answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
-    if answer_list:
-        answer_list = [_.xpath("normalize-space()") for _ in answer_list]
-        results.append({'answer': ' '.join(answer_list)})
-    else:
-        logger.debug("did not find 'answer'")
+    for item in answer_list:
+        results.append(
+            {
+                'answer': item.xpath("normalize-space()"),
+                'url': (eval_xpath(item, '../..//a/@href') + [None])[0],
+            }
+        )
 
     # parse results
 
