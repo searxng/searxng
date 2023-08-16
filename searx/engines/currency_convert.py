@@ -47,10 +47,7 @@ def response(resp):
         resp.search_params['to_name'],
     )
 
-    url = 'https://duckduckgo.com/js/spice/currency/1/{0}/{1}'.format(
-        resp.search_params['from'].upper(), resp.search_params['to']
-    )
-
+    url = f"https://duckduckgo.com/?q={resp.search_params['from']}+to+{resp.search_params['to']}"
     results.append({'answer': answer, 'url': url})
 
     return results
