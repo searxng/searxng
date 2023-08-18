@@ -7,6 +7,8 @@
 from timeit import default_timer
 import asyncio
 import ssl
+from typing import Dict, List
+
 import httpx
 
 import searx.network
@@ -40,13 +42,8 @@ class OnlineProcessor(EngineProcessor):
     engine_type = 'online'
 
     def initialize(self):
-        # set timeout for all HTTP requests
-        searx.network.set_timeout_for_thread(self.engine.timeout, start_time=default_timer())
-        # reset the HTTP total time
-        searx.network.reset_time_for_thread()
-        # set the network
-        searx.network.set_context_network_name(self.engine_name)
-        super().initialize()
+        with searx.network.networkcontext_manager(self.engine_name, self.engine.timeout) as network_context:
+            network_context.call(super().initialize)
 
     def get_params(self, search_query, engine_category):
         """Returns a set of :ref:`request params <engine request online>` or ``None``
@@ -110,7 +107,8 @@ class OnlineProcessor(EngineProcessor):
         else:
             req = searx.network.post
 
-        request_args['data'] = params['data']
+        if params['data']:
+            request_args['data'] = params['data']
 
         # send the request
         response = req(params['url'], **request_args)
@@ -131,7 +129,7 @@ class OnlineProcessor(EngineProcessor):
 
         return response
 
-    def _search_basic(self, query, params):
+    def _search_basic(self, query, params) -> List[Dict]:
         # update request parameters dependent on
         # search-engine (contained in engines folder)
         self.engine.request(query, params)
@@ -151,21 +149,18 @@ class OnlineProcessor(EngineProcessor):
         return self.engine.response(response)
 
     def search(self, query, params, result_container, start_time, timeout_limit):
-        # set timeout for all HTTP requests
-        searx.network.set_timeout_for_thread(timeout_limit, start_time=start_time)
-        # reset the HTTP total time
-        searx.network.reset_time_for_thread()
-        # set the network
-        searx.network.set_context_network_name(self.engine_name)
-
         try:
-            # send requests and parse the results
-            search_results = self._search_basic(query, params)
-            self.extend_container(result_container, start_time, search_results)
+            with searx.network.networkcontext_manager(self.engine_name, timeout_limit, start_time) as network_context:
+                # send requests and parse the results
+                search_results = network_context.call(self._search_basic, query, params)
+                # extend_container in the network context to get the HTTP runtime
+                self.extend_container(
+                    result_container, start_time, search_results, network_time=network_context.get_http_runtime()
+                )
         except ssl.SSLError as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine_name).verify))
+            self.logger.error("SSLError {}, verify={}".format(e, searx.network.NETWORKS.get(self.engine_name).verify))
         except (httpx.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)

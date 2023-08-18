@@ -1,265 +1,483 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, global-statement
+# lint: pylint
+# pyright: basic
+# pylint: disable=redefined-outer-name
+# ^^ because there is the raise_for_httperror function and the raise_for_httperror parameter.
+"""HTTP for SearXNG.
 
-import asyncio
+In httpx and similar libraries, a client (also named session) contains a pool of HTTP connections.
+The client reuses these HTTP connections and automatically recreates them when the server at the other
+end closes the connections. Whatever the library, each client uses only one proxy (eventually none) and only
+one local IP address.
+
+SearXNG's primary use case is an engine sending one (or more) outgoing HTTP request(s). The admin can configure
+an engine to use multiple proxies and/or IP addresses:  SearXNG sends the outgoing HTTP requests through these
+different proxies/IP addresses ( = HTTP clients ) on a rotational basis.
+
+In addition, when SearXNG runs an engine request, there is a hard timeout: the engine runtime must not exceed
+a defined value.
+
+Moreover, an engine can ask SearXNG to retry a failed HTTP request.
+
+However, we want to keep the engine codes simple and keep the complexity either in the configuration or the
+core component components (here, in this module).
+
+To answer the above requirements, the `searx.network` module introduces three components:
+* HTTPClient and TorHTTPClient are two classes that wrap one or multiple httpx.Client
+* NetworkManager, a set of named Network. Each Network
+    * holds the configuration defined in settings.yml
+    * creates NetworkContext fed with an HTTPClient (or TorHTTPClient).
+      This is where the rotation between the proxies and IP addresses happens.
+* NetworkContext to provide a runtime context for the engines. The constructor needs a global timeout
+  and an HTTPClient factory. NetworkContext is an abstract class with three implementations,
+  one for each retry policy.
+
+It is only possible to send an HTTP request with a NetworkContext
+(otherwise, SearXNG raises a NetworkContextNotFound exception).
+Two helpers set a NetworkContext for the current thread:
+
+* The decorator `@networkcontext_decorator`, the intended usage is an external script (see searxng_extra)
+* The context manager `networkcontext_manager`, for the generic use case.
+
+Inside the thread, the caller can use `searx.network.get`, `searx.network.post` and similar functions without
+caring about the HTTP client. However, if the caller creates a new thread, it must initialize a new NetworkContext.
+A NetworkContext is most probably thread-safe, but this has not been tested.
+
+The overall architecture:
+* searx.network.network.NETWORKS contains all the networks.
+    The method `NetworkManager.get(network_name)` returns an initialized Network.
+* searx.network.network.Network defines a network (a set of proxies, local IP address, etc...).
+    They are defined in settings.yml.
+    The method `Network.get_context()` creates a new NetworkContext.
+* searx.network.context contains three different implementations of NetworkContext. One for each retry policy.
+* searx.network.client.HTTPClient and searx.network.client.TorHTTPClient implement wrappers around httpx.Client.
+"""
 import threading
-import concurrent.futures
-from queue import SimpleQueue
-from types import MethodType
-from timeit import default_timer
-from typing import Iterable, NamedTuple, Tuple, List, Dict, Union
 from contextlib import contextmanager
+from functools import wraps
+from typing import Any, Callable, Optional, Union
 
 import httpx
-import anyio
 
-from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
-from .client import get_loop
-from .raise_for_httperror import raise_for_httperror
+from searx.network.client import NOTSET, _NotSetClass
+from searx.network.context import NetworkContext, P, R
+from searx.network.network import NETWORKS
+from searx.network.raise_for_httperror import raise_for_httperror
 
-
-THREADLOCAL = threading.local()
-"""Thread-local data is data for thread specific values."""
-
-
-def reset_time_for_thread():
-    THREADLOCAL.total_time = 0
-
-
-def get_time_for_thread():
-    """returns thread's total time or None"""
-    return THREADLOCAL.__dict__.get('total_time')
-
-
-def set_timeout_for_thread(timeout, start_time=None):
-    THREADLOCAL.timeout = timeout
-    THREADLOCAL.start_time = start_time
+__all__ = [
+    "NETWORKS",
+    "NetworkContextNotFound",
+    "networkcontext_manager",
+    "networkcontext_decorator",
+    "raise_for_httperror",
+    "request",
+    "get",
+    "options",
+    "head",
+    "post",
+    "put",
+    "patch",
+    "delete",
+]
 
 
-def set_context_network_name(network_name):
-    THREADLOCAL.network = get_network(network_name)
+_THREADLOCAL = threading.local()
+"""Thread-local that contains only one field: network_context."""
+
+_NETWORK_CONTEXT_KEY = 'network_context'
+"""Key to access _THREADLOCAL"""
+
+DEFAULT_MAX_REDIRECTS = httpx._config.DEFAULT_MAX_REDIRECTS  # pylint: disable=protected-access
 
 
-def get_context_network():
-    """If set return thread's network.
+class NetworkContextNotFound(Exception):
+    """A NetworkContext is expected to exist for the current thread.
 
-    If unset, return value from :py:obj:`get_network`.
+    Use searx.network.networkcontext_manager or searx.network.networkcontext_decorator
+    to set a NetworkContext
     """
-    return THREADLOCAL.__dict__.get('network') or get_network()
 
 
 @contextmanager
-def _record_http_time():
-    # pylint: disable=too-many-branches
-    time_before_request = default_timer()
-    start_time = getattr(THREADLOCAL, 'start_time', time_before_request)
-    try:
-        yield start_time
-    finally:
-        # update total_time.
-        # See get_time_for_thread() and reset_time_for_thread()
-        if hasattr(THREADLOCAL, 'total_time'):
-            time_after_request = default_timer()
-            THREADLOCAL.total_time += time_after_request - time_before_request
+def networkcontext_manager(
+    network_name: Optional[str] = None, timeout: Optional[float] = None, start_time: Optional[float] = None
+):
+    """Context manager to set a NetworkContext for the current thread
 
+    The timeout is for the whole function and is infinite by default (None).
+    The timeout is counted from the current time or start_time if different from None.
 
-def _get_timeout(start_time, kwargs):
-    # pylint: disable=too-many-branches
+    Example of usage:
 
-    # timeout (httpx)
-    if 'timeout' in kwargs:
-        timeout = kwargs['timeout']
-    else:
-        timeout = getattr(THREADLOCAL, 'timeout', None)
-        if timeout is not None:
-            kwargs['timeout'] = timeout
+    ```python
+    from time import sleep
+    from searx.network import networkcontext_manager, get
 
-    # 2 minutes timeout for the requests without timeout
-    timeout = timeout or 120
+    def search(query):
+        # the timeout is automatically set to 2.0 seconds (the remaining time for the NetworkContext)
+        # 2.0 because the timeout for the NetworkContext is 3.0 and one second has elllapsed with sleep(1.0)
+        auckland_time = get("http://worldtimeapi.org/api/timezone/Pacific/Auckland").json()
+        # the timeout is automatically set to 2.0 - (runtime of the previous HTTP request)
+        ip_time = get("http://worldtimeapi.org/api/ip").json()
+        return auckland_time, ip_time
 
-    # adjust actual timeout
-    timeout += 0.2  # overhead
-    if start_time:
-        timeout -= default_timer() - start_time
-
-    return timeout
-
-
-def request(method, url, **kwargs):
-    """same as requests/requests/api.py request(...)"""
-    with _record_http_time() as start_time:
-        network = get_context_network()
-        timeout = _get_timeout(start_time, kwargs)
-        future = asyncio.run_coroutine_threadsafe(network.request(method, url, **kwargs), get_loop())
-        try:
-            return future.result(timeout)
-        except concurrent.futures.TimeoutError as e:
-            raise httpx.TimeoutException('Timeout', request=None) from e
-
-
-def multi_requests(request_list: List["Request"]) -> List[Union[httpx.Response, Exception]]:
-    """send multiple HTTP requests in parallel. Wait for all requests to finish."""
-    with _record_http_time() as start_time:
-        # send the requests
-        network = get_context_network()
-        loop = get_loop()
-        future_list = []
-        for request_desc in request_list:
-            timeout = _get_timeout(start_time, request_desc.kwargs)
-            future = asyncio.run_coroutine_threadsafe(
-                network.request(request_desc.method, request_desc.url, **request_desc.kwargs), loop
-            )
-            future_list.append((future, timeout))
-
-        # read the responses
-        responses = []
-        for future, timeout in future_list:
-            try:
-                responses.append(future.result(timeout))
-            except concurrent.futures.TimeoutError:
-                responses.append(httpx.TimeoutException('Timeout', request=None))
-            except Exception as e:  # pylint: disable=broad-except
-                responses.append(e)
-        return responses
-
-
-class Request(NamedTuple):
-    """Request description for the multi_requests function"""
-
-    method: str
-    url: str
-    kwargs: Dict[str, str] = {}
-
-    @staticmethod
-    def get(url, **kwargs):
-        return Request('GET', url, kwargs)
-
-    @staticmethod
-    def options(url, **kwargs):
-        return Request('OPTIONS', url, kwargs)
-
-    @staticmethod
-    def head(url, **kwargs):
-        return Request('HEAD', url, kwargs)
-
-    @staticmethod
-    def post(url, **kwargs):
-        return Request('POST', url, kwargs)
-
-    @staticmethod
-    def put(url, **kwargs):
-        return Request('PUT', url, kwargs)
-
-    @staticmethod
-    def patch(url, **kwargs):
-        return Request('PATCH', url, kwargs)
-
-    @staticmethod
-    def delete(url, **kwargs):
-        return Request('DELETE', url, kwargs)
-
-
-def get(url, **kwargs):
-    kwargs.setdefault('allow_redirects', True)
-    return request('get', url, **kwargs)
-
-
-def options(url, **kwargs):
-    kwargs.setdefault('allow_redirects', True)
-    return request('options', url, **kwargs)
-
-
-def head(url, **kwargs):
-    kwargs.setdefault('allow_redirects', False)
-    return request('head', url, **kwargs)
-
-
-def post(url, data=None, **kwargs):
-    return request('post', url, data=data, **kwargs)
-
-
-def put(url, data=None, **kwargs):
-    return request('put', url, data=data, **kwargs)
-
-
-def patch(url, data=None, **kwargs):
-    return request('patch', url, data=data, **kwargs)
-
-
-def delete(url, **kwargs):
-    return request('delete', url, **kwargs)
-
-
-async def stream_chunk_to_queue(network, queue, method, url, **kwargs):
-    try:
-        async with await network.stream(method, url, **kwargs) as response:
-            queue.put(response)
-            # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
-            # https://www.python-httpx.org/quickstart/#streaming-responses
-            async for chunk in response.aiter_raw(65536):
-                if len(chunk) > 0:
-                    queue.put(chunk)
-    except (httpx.StreamClosed, anyio.ClosedResourceError):
-        # the response was queued before the exception.
-        # the exception was raised on aiter_raw.
-        # we do nothing here: in the finally block, None will be queued
-        # so stream(method, url, **kwargs) generator can stop
-        pass
-    except Exception as e:  # pylint: disable=broad-except
-        # broad except to avoid this scenario:
-        # exception in network.stream(method, url, **kwargs)
-        # -> the exception is not catch here
-        # -> queue None (in finally)
-        # -> the function below steam(method, url, **kwargs) has nothing to return
-        queue.put(e)
-    finally:
-        queue.put(None)
-
-
-def _stream_generator(method, url, **kwargs):
-    queue = SimpleQueue()
-    network = get_context_network()
-    future = asyncio.run_coroutine_threadsafe(stream_chunk_to_queue(network, queue, method, url, **kwargs), get_loop())
-
-    # yield chunks
-    obj_or_exception = queue.get()
-    while obj_or_exception is not None:
-        if isinstance(obj_or_exception, Exception):
-            raise obj_or_exception
-        yield obj_or_exception
-        obj_or_exception = queue.get()
-    future.result()
-
-
-def _close_response_method(self):
-    asyncio.run_coroutine_threadsafe(self.aclose(), get_loop())
-    # reach the end of _self.generator ( _stream_generator ) to an avoid memory leak.
-    # it makes sure that :
-    # * the httpx response is closed (see the stream_chunk_to_queue function)
-    # * to call future.result() in _stream_generator
-    for _ in self._generator:  # pylint: disable=protected-access
-        continue
-
-
-def stream(method, url, **kwargs) -> Tuple[httpx.Response, Iterable[bytes]]:
-    """Replace httpx.stream.
-
-    Usage:
-    response, stream = poolrequests.stream(...)
-    for chunk in stream:
-        ...
-
-    httpx.Client.stream requires to write the httpx.HTTPTransport version of the
-    the httpx.AsyncHTTPTransport declared above.
+    # "worldtimeapi" is network defined in settings.yml
+    # network_context.call might call multiple times the search function,
+    # however the timeout will be respected.
+    with networkcontext_manager('worldtimeapi', timeout=3.0) as network_context:
+        sleep(1.0)
+        auckland_time, ip_time = network_context.call(search(query))
+        print("Auckland time: ", auckland_time["datetime"])
+        print("My time: ", ip_time["datetime"])
+        print("HTTP runtime:", network_context.get_http_runtime())
+    ```
     """
-    generator = _stream_generator(method, url, **kwargs)
+    network = NETWORKS.get(network_name)
+    network_context = network.get_context(timeout=timeout, start_time=start_time)
+    setattr(_THREADLOCAL, _NETWORK_CONTEXT_KEY, network_context)
+    try:
+        yield network_context
+    finally:
+        delattr(_THREADLOCAL, _NETWORK_CONTEXT_KEY)
+        del network_context
 
-    # yield response
-    response = next(generator)  # pylint: disable=stop-iteration-return
-    if isinstance(response, Exception):
-        raise response
 
-    response._generator = generator  # pylint: disable=protected-access
-    response.close = MethodType(_close_response_method, response)
+def networkcontext_decorator(
+    network_name: Optional[str] = None, timeout: Optional[float] = None, start_time: Optional[float] = None
+):
+    """Set the NetworkContext, then call the wrapped function using searx.network.context.NetworkContext.call
 
-    return response, generator
+    The timeout is for the whole function and is infinite by default (None).
+    The timeout is counted from the current time or start_time if different from None
+
+    Intended usage: to provide a NetworkContext for scripts in searxng_extra.
+
+    Example of usage:
+
+    ```python
+    from time import sleep
+    from searx import network
+
+    @network.networkcontext_decorator(timeout=3.0)
+    def main()
+        sleep(1.0)
+        # the timeout is automatically set to 2.0 (the remaining time for the NetworkContext).
+        my_ip = network.get("https://ifconfig.me/ip").text
+        print(my_ip)
+
+    if __name__ == '__main__':
+        main()
+    ```
+    """
+
+    def func_outer(func: Callable[P, R]):
+        @wraps(func)
+        def func_inner(*args: P.args, **kwargs: P.kwargs) -> R:
+            with networkcontext_manager(network_name, timeout, start_time) as network_context:
+                return network_context.call(func, *args, **kwargs)
+
+        return func_inner
+
+    return func_outer
+
+
+def request(
+    method: str,
+    url: str,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    content: Optional[httpx._types.RequestContent] = None,
+    data: Optional[httpx._types.RequestData] = None,
+    files: Optional[httpx._types.RequestFiles] = None,
+    json: Optional[Any] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    timeout: httpx._types.TimeoutTypes = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.request ( https://www.python-httpx.org/api/ ) with some differences:
+
+    * proxies:
+        it is not available and has to be defined in the Network configuration (in settings.yml)
+    * cert:
+        it is not available and is always None.
+    * trust_env:
+        it is not available and is always True.
+    * timeout:
+        the implementation uses the lowest timeout between this parameter and remaining time for the NetworkContext.
+    * allow_redirects:
+        it replaces the follow_redirects parameter to be compatible with the requests API.
+    * raise_for_httperror:
+        when True, this function calls searx.network.raise_for_httperror.raise_for_httperror.
+
+    Some parameters from httpx.Client ( https://www.python-httpx.org/api/#client) are available:
+
+    * max_redirects:
+        Set to None to use the value from the Network configuration.
+        The maximum number of redirect responses that should be followed.
+    * verify:
+        Set to None to use the value from the Network configuration.
+    * limits:
+        it has to be defined in the Network configuration (in settings.yml)
+    * default_encoding:
+        this parameter is not available and is always "utf-8".
+
+    This function requires a NetworkContext provided by either networkcontext_decorator or networkcontext_manager.
+
+    The implementation uses one or more httpx.Client
+    """
+    # pylint: disable=too-many-arguments
+    network_context: Optional[NetworkContext] = getattr(_THREADLOCAL, _NETWORK_CONTEXT_KEY, None)
+    if network_context is None:
+        raise NetworkContextNotFound()
+    http_client = network_context._get_http_client()  # pylint: disable=protected-access
+    return http_client.request(
+        method,
+        url,
+        params=params,
+        content=content,
+        data=data,
+        files=files,
+        json=json,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        timeout=timeout,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def get(
+    url: str,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = True,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.get, see the request method for the details.
+
+    allow_redirects is by default True (httpx default value is False).
+    """
+    # pylint: disable=too-many-arguments
+    return request(
+        "GET",
+        url,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def options(
+    url: str,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.options, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "OPTIONS",
+        url,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def head(
+    url: str,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.head, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "HEAD",
+        url,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def post(
+    url: str,
+    content: Optional[httpx._types.RequestContent] = None,
+    data: Optional[httpx._types.RequestData] = None,
+    files: Optional[httpx._types.RequestFiles] = None,
+    json: Optional[Any] = None,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.post, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "POST",
+        url,
+        content=content,
+        data=data,
+        files=files,
+        json=json,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def put(
+    url: str,
+    content: Optional[httpx._types.RequestContent] = None,
+    data: Optional[httpx._types.RequestData] = None,
+    files: Optional[httpx._types.RequestFiles] = None,
+    json: Optional[Any] = None,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.put, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "PUT",
+        url,
+        content=content,
+        data=data,
+        files=files,
+        json=json,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def patch(
+    url: str,
+    content: Optional[httpx._types.RequestContent] = None,
+    data: Optional[httpx._types.RequestData] = None,
+    files: Optional[httpx._types.RequestFiles] = None,
+    json: Optional[Any] = None,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.patch, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "PATCH",
+        url,
+        content=content,
+        data=data,
+        files=files,
+        json=json,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )
+
+
+def delete(
+    url: str,
+    params: Optional[httpx._types.QueryParamTypes] = None,
+    headers: Optional[httpx._types.HeaderTypes] = None,
+    cookies: Optional[httpx._types.CookieTypes] = None,
+    auth: Optional[httpx._types.AuthTypes] = None,
+    allow_redirects: bool = False,
+    max_redirects: Union[_NotSetClass, int] = NOTSET,
+    verify: Union[_NotSetClass, httpx._types.VerifyTypes] = NOTSET,
+    timeout: httpx._types.TimeoutTypes = None,
+    raise_for_httperror: bool = False,
+) -> httpx.Response:
+    """Similar to httpx.delete, see the request method for the details."""
+    # pylint: disable=too-many-arguments
+    return request(
+        "DELETE",
+        url,
+        params=params,
+        headers=headers,
+        cookies=cookies,
+        auth=auth,
+        allow_redirects=allow_redirects,
+        max_redirects=max_redirects,
+        verify=verify,
+        timeout=timeout,
+        raise_for_httperror=raise_for_httperror,
+    )

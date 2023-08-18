@@ -45,7 +45,7 @@ Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 import json
 import collections
 
-from searx.network import set_timeout_for_thread
+from searx.network import networkcontext_decorator
 from searx.engines import wikidata, set_loggers
 from searx.sxng_locales import sxng_locales
 from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
@@ -203,12 +203,15 @@ def optimize_keys(data):
     return data
 
 
-if __name__ == '__main__':
-
-    set_timeout_for_thread(60)
+@networkcontext_decorator(timeout=60)
+def main():
     result = {
         'keys': optimize_keys(get_keys()),
         'tags': optimize_tags(get_tags()),
     }
     with DATA_FILE.open('w', encoding="utf8") as f:
         json.dump(result, f, indent=4, sort_keys=True, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    main()

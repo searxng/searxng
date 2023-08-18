@@ -126,7 +126,7 @@ from searx.autocomplete import search_autocomplete, backends as autocomplete_bac
 from searx.redisdb import initialize as redis_initialize
 from searx.sxng_locales import sxng_locales
 from searx.search import SearchWithPlugins, initialize as search_initialize
-from searx.network import stream as http_stream, set_context_network_name
+from searx.network import NETWORKS
 from searx.search.checker import get_result as checker_get_result
 
 logger = logger.getChild('webapp')
@@ -1048,8 +1048,8 @@ def image_proxy():
             'Sec-GPC': '1',
             'DNT': '1',
         }
-        set_context_network_name('image_proxy')
-        resp, stream = http_stream(method='GET', url=url, headers=request_headers, allow_redirects=True)
+        network_context = NETWORKS.get('image_proxy').get_context()
+        resp = network_context.stream(method='GET', url=url, headers=request_headers, allow_redirects=True, timeout=30)
         content_length = resp.headers.get('Content-Length')
         if content_length and content_length.isdigit() and int(content_length) > maximum_size:
             return 'Max size', 400
@@ -1080,18 +1080,19 @@ def image_proxy():
                 logger.exception('HTTP error on closing')
 
     def close_stream():
-        nonlocal resp, stream
+        nonlocal resp
         try:
             if resp:
                 resp.close()
             del resp
-            del stream
         except httpx.HTTPError as e:
             logger.debug('Exception while closing response', e)
 
     try:
         headers = dict_subset(resp.headers, {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'})
-        response = Response(stream, mimetype=resp.headers['Content-Type'], headers=headers, direct_passthrough=True)
+        response = Response(
+            resp.iter_bytes(), mimetype=resp.headers['Content-Type'], headers=headers, direct_passthrough=False
+        )
         response.call_on_close(close_stream)
         return response
     except httpx.HTTPError:
