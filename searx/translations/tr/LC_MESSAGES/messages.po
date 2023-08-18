@@ -13,13 +13,14 @@
 # Kayra Uylar <k.uylar@outlook.com>, 2022.
 # emirhan <xemirhankoc@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# plawlost <ceo@plawlabs.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-10 08:55+0000\n"
-"PO-Revision-Date: 2023-07-09 15:34+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"PO-Revision-Date: 2023-08-15 14:23+0000\n"
+"Last-Translator: plawlost <ceo@plawlabs.org>\n"
 "Language: tr\n"
 "Language-Team: Turkish "
 "<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
@@ -275,6 +276,10 @@ msgstr "Bu girişin yerini alan"
 msgid "Channel"
 msgstr "Kanal"
 
+#: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
+msgid "Language"
+msgstr "Dil"
+
 #: searx/engines/semantic_scholar.py:81
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -320,10 +325,6 @@ msgstr "Akşam"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "Gece"
-
-#: searx/engines/zlibrary.py:129
-msgid "Language"
-msgstr "Dil"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
@@ -987,7 +988,7 @@ msgstr "Seçili dili destekler"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Ağırlık"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-10 08:55+0000\n"
-"PO-Revision-Date: 2023-07-27 12:53+0000\n"
+"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"PO-Revision-Date: 2023-08-15 14:23+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: pl\n"
 "Language-Team: Polish "
@@ -274,6 +274,10 @@ msgstr "Ten wpis został zastąpiony przez"
 msgid "Channel"
 msgstr "Kanał"
 
+#: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
+msgid "Language"
+msgstr "Język"
+
 #: searx/engines/semantic_scholar.py:81
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -319,10 +323,6 @@ msgstr "Wieczorem"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "Noc"
-
-#: searx/engines/zlibrary.py:129
-msgid "Language"
-msgstr "Język"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
@@ -983,7 +983,7 @@ msgstr "Obsługuje wybrany język"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Waga"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"

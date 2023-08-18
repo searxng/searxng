@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-10 08:55+0000\n"
-"PO-Revision-Date: 2023-07-18 15:38+0000\n"
+"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"PO-Revision-Date: 2023-08-12 12:53+0000\n"
 "Last-Translator: tentsbet <remendne@pentrens.jp>\n"
 "Language: ja\n"
 "Language-Team: Japanese "
@@ -279,6 +279,10 @@ msgstr "このエントリは、置き換えられました:"
 msgid "Channel"
 msgstr "チャンネル"
 
+#: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
+msgid "Language"
+msgstr "言語"
+
 #: searx/engines/semantic_scholar.py:81
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -319,10 +323,6 @@ msgstr "夕方"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "夜間"
-
-#: searx/engines/zlibrary.py:129
-msgid "Language"
-msgstr "言語"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
@@ -956,7 +956,7 @@ msgstr "選択された言語のサポート"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "比重"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"

@@ -25,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-10 08:55+0000\n"
-"PO-Revision-Date: 2023-08-10 05:53+0000\n"
-"Last-Translator: JonesBBQ <colson.xu@gmail.com>\n"
+"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"PO-Revision-Date: 2023-08-15 14:23+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: zh_Hans_CN\n"
 "Language-Team: Chinese (Simplified) "
 "<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
@@ -283,6 +283,10 @@ msgstr "此条目已被以下内容取代"
 msgid "Channel"
 msgstr "频道"
 
+#: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
+msgid "Language"
+msgstr "语言"
+
 #: searx/engines/semantic_scholar.py:81
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -321,10 +325,6 @@ msgstr "傍晚"
 #: searx/engines/wttr.py:101
 msgid "Night"
 msgstr "夜晚"
-
-#: searx/engines/zlibrary.py:129
-msgid "Language"
-msgstr "语言"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
@@ -958,7 +958,7 @@ msgstr "支持选定的语言"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "权重"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
