@@ -1,10 +1,14 @@
 <fieldset>{{- '' -}}
   <legend>{{ _('Infinite scroll') }}</legend>{{- '' -}}
   <p class="value">{{- '' -}}
-    <select name='infinite_scroll'>{{- '' -}}
-      <option value="1" {% if infinite_scroll %}selected="selected"{% endif %}>{{ _('On') }}</option>{{- '' -}}
-      <option value="0" {% if not infinite_scroll %}selected="selected"{% endif %}>{{ _('Off')}}</option>{{- '' -}}
-    </select>{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="infinite_scroll" {{- ' ' -}}
+           aria-labelledby="pref_infinite_scroll" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('infinite_scroll') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           />{{- '' -}}
   </p>{{- '' -}}
   <div class="description">
     {{- _('Automatically load next page when scrolling to bottom of current page') -}}

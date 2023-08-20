@@ -383,7 +383,8 @@ class Preferences:
                     '0': False,
                     '1': True,
                     'True': True,
-                    'False': False
+                    'False': False,
+                    'on': True
                 }
             ),
             'method': EnumStringSetting(
@@ -412,7 +413,8 @@ class Preferences:
                     '0': False,
                     '1': True,
                     'False': False,
-                    'True': True
+                    'True': True,
+                    'on': True
                 }
             ),
             'doi_resolver': MultipleChoiceSetting(
@@ -432,7 +434,8 @@ class Preferences:
                     '0': False,
                     '1': True,
                     'False': False,
-                    'True': True
+                    'True': True,
+                    'on': True
                 }
             ),
             'advanced_search': MapSetting(
@@ -454,7 +457,8 @@ class Preferences:
                     '0': False,
                     '1': True,
                     'True': True,
-                    'False': False
+                    'False': False,
+                    'on': True
                 }
             ),
             'infinite_scroll': MapSetting(
@@ -465,7 +469,8 @@ class Preferences:
                     '0': False,
                     '1': True,
                     'True': True,
-                    'False': False
+                    'False': False,
+                    'on': True
                 }
             ),
             # fmt: on

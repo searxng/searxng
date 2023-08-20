@@ -1,11 +1,15 @@
 <fieldset>{{- '' -}}
   <legend id="pref_image_proxy">{{ _('Image proxy') }}</legend>{{- '' -}}
   <p class="value">{{- '' -}}
-    <select name='image_proxy' aria-labelledby="pref_image_proxy">{{- '' -}}
-      <option value="1" {% if image_proxy %}selected="selected"{% endif %}>{{ _('Enabled') }}</option>{{- '' -}}
-      <option value="0" {% if not image_proxy %}selected="selected"{% endif %}>{{ _('Disabled') }}</option>{{- '' -}}
-    </select>{{- '' -}}
-  </p>
+    <input type="checkbox" {{- ' ' -}}
+           name="image_proxy" {{- ' ' -}}
+           aria-labelledby="pref_image_proxy" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('image_proxy') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           />{{- '' -}}
+  </p>{{- '' -}}
   <div class="description">
     {{- _('Proxying image results through SearXNG') -}}
   </div>{{- '' -}}
