@@ -1,10 +1,14 @@
 <fieldset>{{- '' -}}
   <legend id="pref_center_alignment">{{ _('Center Alignment') }}</legend>{{- '' -}}
   <p class="value">{{- '' -}}
-    <select name="center_alignment" aria-labelledby="pref_center_alignment">{{- '' -}}
-      <option value="1" {% if preferences.get_value('center_alignment') %}selected="selected"{% endif %}>{{ _('On') }}</option>{{- '' -}}
-      <option value="0" {% if not preferences.get_value('center_alignment') %}selected="selected"{% endif %}>{{ _('Off')}}</option>{{- '' -}}
-    </select>{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="center_alignment" {{- ' ' -}}
+           aria-labelledby="pref_center_alignment" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('center_alignment') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           />{{- '' -}}
   </p>{{- '' -}}
   <div class="description">
     {{- _('Displays results in the center of the page (Oscar layout).') -}}
