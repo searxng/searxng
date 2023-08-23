@@ -7,7 +7,7 @@ from urllib.parse import urlencode
 
 about = {
     "website": 'https://github.com/mwmbl/mwmbl',
-    "official_api_documentation": None,
+    "official_api_documentation": 'https://api.mwmbl.org/docs',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
