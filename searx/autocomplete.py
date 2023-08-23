@@ -111,6 +111,8 @@ def google_complete(query, sxng_locale):
 
 
 def mwmbl(query, _lang):
+    """Autocomplete from Mwmbl_."""
+
     # mwmbl autocompleter
     url = 'https://api.mwmbl.org/search/complete?{query}'
 
