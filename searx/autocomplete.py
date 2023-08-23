@@ -110,6 +110,16 @@ def google_complete(query, sxng_locale):
     return results
 
 
+def mwmbl(query, _lang):
+    # mwmbl autocompleter
+    url = 'https://api.mwmbl.org/search/complete?{query}'
+
+    results = get(url.format(query=urlencode({'q': query}))).json()[1]
+
+    # results starting with `go:` are direct urls and not useful for auto completion
+    return [result for result in results if not result.startswith("go: ") and not result.startswith("search: ")]
+
+
 def seznam(query, _lang):
     # seznam search autocompleter
     url = 'https://suggest.seznam.cz/fulltext/cs?{query}'
@@ -208,6 +218,7 @@ backends = {
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
     'google': google_complete,
+    'mwmbl': mwmbl,
     'seznam': seznam,
     'startpage': startpage,
     'swisscows': swisscows,

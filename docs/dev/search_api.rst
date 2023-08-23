@@ -68,8 +68,8 @@ Parameters
   Proxy image results through SearXNG.
 
 ``autocomplete`` : default from :ref:`settings search`
-  [ ``google``, ``dbpedia``, ``duckduckgo``, ``startpage``, ``wikipedia``,
-  ``swisscows``, ``qwant`` ]
+  [ ``google``, ``dbpedia``, ``duckduckgo``, ``mwmbl``, ``startpage``,
+  ``wikipedia``, ``swisscows``, ``qwant`` ]
 
   Service which completes words as you type.
 
