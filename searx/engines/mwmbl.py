@@ -1,6 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""mwmbl (general)
+"""Mwmbl_ is a non-profit, ad-free, free-libre and free-lunch search engine with
+a focus on useability and speed.
+
+.. hint::
+
+   At the moment it is little more than an idea together with a proof of concept
+   implementation of the web front-end and search technology on a small index.
+   Mwmbl_ does not support regions, languages, safe-search or time range.
+   search.
+
+.. _Mwmbl: https://github.com/mwmbl/mwmbl
+
 """
 
 from urllib.parse import urlencode
