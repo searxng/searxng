@@ -35,6 +35,7 @@
   - ``dbpedia``
   - ``duckduckgo``
   - ``google``
+  - ``mwmbl``
   - ``startpage``
   - ``swisscows``
   - ``qwant``
