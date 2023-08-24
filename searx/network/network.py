@@ -409,7 +409,7 @@ def done():
     """Close all HTTP client
 
     Avoid a warning at exit
-    see https://github.com/encode/httpx/blob/1a6e254f72d9fd5694a1c10a28927e193ab4f76b/httpx/_client.py#L1785
+    See https://github.com/encode/httpx/pull/2026
 
     Note: since Network.aclose has to be async, it is not possible to call this method on Network.__del__
     So Network.aclose is called here using atexit.register
