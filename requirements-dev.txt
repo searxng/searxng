@@ -7,15 +7,16 @@ splinter==0.19.0
 selenium==4.11.2
 twine==4.0.2
 Pallets-Sphinx-Themes==2.1.1
-Sphinx==7.1.2
+Sphinx==7.1.2; python_version == '3.8'
+Sphinx==7.2.3; python_version > '3.8'
 sphinx-issues==3.0.1
 sphinx-jinja==2.0.2
 sphinx-tabs==3.4.1
 sphinxcontrib-programoutput==0.17
 sphinx-autobuild==2021.3.14
-sphinx-notfound-page==0.8.3
+sphinx-notfound-page==1.0.0rc1
 myst-parser==2.0.0
-linuxdoc==20230629
+linuxdoc==20230827
 aiounittest==1.4.2
 yamllint==1.32.0
 wlc==1.13
