@@ -61,10 +61,39 @@ def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http
 
 
 class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
-    """Block HTTP request"""
+    """Block HTTP request
+
+    The constructor is blank because httpx.AsyncHTTPTransport.__init__ creates an SSLContext unconditionally:
+    https://github.com/encode/httpx/blob/0f61aa58d66680c239ce43c8cdd453e7dc532bfc/httpx/_transports/default.py#L271
+
+    Each SSLContext consumes more than 500kb of memory, since there is about one network per engine.
+
+    In consequence, this class overrides all public methods
+
+    For reference: https://github.com/encode/httpx/issues/2298
+    """
+
+    def __init__(self, *args, **kwargs):
+        # pylint: disable=super-init-not-called
+        # this on purpose if the base class is not called
+        pass
 
     async def handle_async_request(self, request):
         raise httpx.UnsupportedProtocol('HTTP protocol is disabled')
+
+    async def aclose(self) -> None:
+        pass
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type=None,
+        exc_value=None,
+        traceback=None,
+    ) -> None:
+        pass
 
 
 class AsyncProxyTransportFixed(AsyncProxyTransport):
