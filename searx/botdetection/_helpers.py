@@ -58,6 +58,15 @@ def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4N
     return network
 
 
+_logged_errors = []
+
+
+def _log_error_only_once(err_msg):
+    if err_msg not in _logged_errors:
+        logger.error(err_msg)
+        _logged_errors.append(err_msg)
+
+
 def get_real_ip(request: flask.Request) -> str:
     """Returns real IP of the request.  Since not all proxies set all the HTTP
     headers and incoming headers can be faked it may happen that the IP cannot
@@ -93,7 +102,7 @@ def get_real_ip(request: flask.Request) -> str:
     # )
 
     if not forwarded_for:
-        logger.error("X-Forwarded-For header is not set!")
+        _log_error_only_once("X-Forwarded-For header is not set!")
     else:
         from .limiter import get_cfg  # pylint: disable=import-outside-toplevel, cyclic-import
 
@@ -102,7 +111,7 @@ def get_real_ip(request: flask.Request) -> str:
         forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
 
     if not real_ip:
-        logger.error("X-Real-IP header is not set!")
+        _log_error_only_once("X-Real-IP header is not set!")
 
     if forwarded_for and real_ip and forwarded_for != real_ip:
         logger.warning("IP from X-Real-IP (%s) is not equal to IP from X-Forwarded-For (%s)", real_ip, forwarded_for)
