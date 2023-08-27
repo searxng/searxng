@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-09 15:33+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: cy\n"
@@ -163,15 +163,15 @@ msgstr "Ffynhonnell"
 msgid "Error loading the next page"
 msgstr "Gwall wrth lwytho'r dudalen nesaf"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Gosodiadau annilys, golygu eich dewisiadau"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Gosodiadau annilys"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "gwall chwilio"
 
@@ -239,11 +239,11 @@ msgstr "{minutes} munud yn ôl"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} awr, {minutes} munud yn ôl"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Generadur gwerth ar hap"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Cynhyrchu gwahanol werthoedd ar hap"
 
@@ -596,27 +596,27 @@ msgstr "Cwcis"
 msgid "Answers"
 msgstr "Atebion"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Nifer o ganlyniadau"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Gwybodaeth"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Rho gynnig ar chwilio am:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr ""
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr ""
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr ""
 
@@ -875,19 +875,7 @@ msgstr "Darganfod pethau wrth i chi deipio"
 msgid "Center Alignment"
 msgstr ""
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Ymlaen"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "I ffwrdd"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr ""
 
@@ -987,17 +975,7 @@ msgstr "Nôl"
 msgid "Image proxy"
 msgstr ""
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Galluogwyd"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Analluogwyd"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr ""
 
@@ -1005,7 +983,7 @@ msgstr ""
 msgid "Infinite scroll"
 msgstr ""
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 
@@ -1029,7 +1007,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr ""
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1039,7 +1017,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Canlyniadau mewn tabiau newydd"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Agor dolenni canlyniadau mewn tabiau newydd yn y porwr"
 
@@ -1560,4 +1538,16 @@ msgstr "cuddio fideo"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "Ymlaen"
+
+#~ msgid "Off"
+#~ msgstr "I ffwrdd"
+
+#~ msgid "Enabled"
+#~ msgstr "Galluogwyd"
+
+#~ msgid "Disabled"
+#~ msgstr "Analluogwyd"
 

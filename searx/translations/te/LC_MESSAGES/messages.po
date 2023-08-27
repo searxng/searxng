@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: te\n"
@@ -161,15 +161,15 @@ msgstr "మూలం"
 msgid "Error loading the next page"
 msgstr "తదుపరి పేజీని లోడ్ చేయడంలో లోపం"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "చెల్లని సెట్టింగ్‌లు, దయచేసి మీ ప్రాధాన్యతలను సవరించండి"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "చెల్లని అమరికలు"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "శోధనలో లోపము"
 
@@ -237,11 +237,11 @@ msgstr "{minutes} నిమిషము(ల) క్రిందట"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} గంట(లు), {minutes} నిమిషం(లు) క్రితం"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "యాదృచ్ఛిక విలువ ఉత్పత్తిదారు"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "విభిన్న యాదృచ్ఛిక విలువలను రూపొందించండి"
 
@@ -597,27 +597,27 @@ msgstr "కుకీలు"
 msgid "Answers"
 msgstr "జవాబులు"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "ఫలితముల సంఖ్య"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr ""
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "దీనికొరకు శోధించండి:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "తిరిగి పైకి"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "ముందు పేజి"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "తరువాతి పేజీ"
 
@@ -876,19 +876,7 @@ msgstr "టైపు చేస్తూ శోధించు"
 msgid "Center Alignment"
 msgstr "మధ్య అమరిక"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "పై"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "ఆఫ్"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
 
@@ -998,17 +986,7 @@ msgstr "వెనుకకు"
 msgid "Image proxy"
 msgstr "చిత్రం ప్రాక్సీ"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "ఎనేబుల్డ్"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "దిశల్డ్"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
 
@@ -1016,7 +994,7 @@ msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప�
 msgid "Infinite scroll"
 msgstr "అనంతమైన స్క్రోల్"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
@@ -1042,7 +1020,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr "పేజీ శీర్షికలో ప్రశ్న"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1054,7 +1032,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "కొత్త ట్యాబ్‌లలో ఫలితాలు"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "కొత్త బ్రౌజర్ ట్యాబ్‌లలో ఫలితాల లింక్‌లను తెరవండి"
 
@@ -1579,4 +1557,16 @@ msgstr "వీడియోను దాచిపెట్టు"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "పై"
+
+#~ msgid "Off"
+#~ msgstr "ఆఫ్"
+
+#~ msgid "Enabled"
+#~ msgstr "ఎనేబుల్డ్"
+
+#~ msgid "Disabled"
+#~ msgstr "దిశల్డ్"
 

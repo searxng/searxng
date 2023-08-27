@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-11 07:07+0000\n"
 "Last-Translator: Fjuro <ifjuro@proton.me>\n"
 "Language: cs\n"
@@ -168,15 +168,15 @@ msgstr "zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Neplatné nastavení"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "chyba vyhledávání"
 
@@ -244,11 +244,11 @@ msgstr "před {minutes} minutami"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "před {hours} hodinami, {minutes} minutami"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Generátor náhodných hodnot"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Generování náhodných hodnot"
 
@@ -617,27 +617,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Odpovědi"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Počet výsledků"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Informace"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Zkuste vyhledat:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Nahoru"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Předchozí stránka"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Další stránka"
 
@@ -896,19 +896,7 @@ msgstr "Vyhledávat během psaní"
 msgid "Center Alignment"
 msgstr "Zarovnání na střed"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Zapnuto"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Vypnuto"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Zobrazí výsledky uprostřed stránky (rozložení Oscar)."
 
@@ -1020,17 +1008,7 @@ msgstr "Zpět"
 msgid "Image proxy"
 msgstr "Nepřímé vyhledávání obrázků"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Zapnuto"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Vypnuto"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Používat SearXNG jako prostředníka pro vyhledávání obrázků"
 
@@ -1038,7 +1016,7 @@ msgstr "Používat SearXNG jako prostředníka pro vyhledávání obrázků"
 msgid "Infinite scroll"
 msgstr "Nekonečné výsledky"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "Automaticky načítat další výsledky při rolování"
 
@@ -1062,7 +1040,7 @@ msgstr "Změnit způsob odesílání dotazů"
 msgid "Query in the page's title"
 msgstr "Dotaz v titulku stránky"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1074,7 +1052,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Výsledky na novém panelu"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Otevírat výsledky na novém panelu prohlížeče"
 
@@ -1622,4 +1600,16 @@ msgstr "skrýt video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">naočit se více o metodách"
 #~ " žádání</a>"
+
+#~ msgid "On"
+#~ msgstr "Zapnuto"
+
+#~ msgid "Off"
+#~ msgstr "Vypnuto"
+
+#~ msgid "Enabled"
+#~ msgstr "Zapnuto"
+
+#~ msgid "Disabled"
+#~ msgstr "Vypnuto"
 

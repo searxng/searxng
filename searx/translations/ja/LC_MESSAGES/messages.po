@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-12 12:53+0000\n"
 "Last-Translator: tentsbet <remendne@pentrens.jp>\n"
 "Language: ja\n"
@@ -171,15 +171,15 @@ msgstr "ソース"
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "検索エラー"
 
@@ -247,11 +247,11 @@ msgstr "{minutes} 分前"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "ランダムな値を生成"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "異なるランダムな値を生成する"
 
@@ -601,27 +601,27 @@ msgstr "クッキー"
 msgid "Answers"
 msgstr "回答"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "通知の数"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "インフォ"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "検索のオススメ:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "トップに戻る"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "前のページ"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "次のページ"
 
@@ -878,19 +878,7 @@ msgstr "自動補完に使う検索エンジン"
 msgid "Center Alignment"
 msgstr "中央揃え"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "有効"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "無効"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "中央揃えでページに結果表示（Oscar レイアウト)."
 
@@ -990,17 +978,7 @@ msgstr "戻る"
 msgid "Image proxy"
 msgstr "画像プロキシ"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "有効"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "無効"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "画像の結果をSearXNG経由でプロキシする"
 
@@ -1008,7 +986,7 @@ msgstr "画像の結果をSearXNG経由でプロキシする"
 msgid "Infinite scroll"
 msgstr "無限スクロール"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "現在のページの下端でスクロールすると自動的に次のページを読み込む"
 
@@ -1032,7 +1010,7 @@ msgstr "フォームの送信の仕方を変更する"
 msgid "Query in the page's title"
 msgstr "ページのタイトルでクエリを実行する"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1042,7 +1020,7 @@ msgstr "有効にすると、検索結果ページのタイトルにクエリが
 msgid "Results on new tabs"
 msgstr "新しいタブに結果を表示"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "検索結果のリンクを新しいタブで開く"
 
@@ -1567,4 +1545,16 @@ msgstr "動画を隠す"
 #~ "フォームの送信方法を変更します。<a "
 #~ "href=\"https://ja.wikipedia.org/wiki/Hypertext_Transfer_Protocol#リクエストメソッド\""
 #~ " rel=\"external\">リクエストメソッドってなに？</a>"
+
+#~ msgid "On"
+#~ msgstr "有効"
+
+#~ msgid "Off"
+#~ msgstr "無効"
+
+#~ msgid "Enabled"
+#~ msgstr "有効"
+
+#~ msgid "Disabled"
+#~ msgstr "無効"
 

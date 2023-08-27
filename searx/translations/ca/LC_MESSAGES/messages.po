@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-15 13:38+0000\n"
 "Last-Translator: Ivan Gabaldon <admin@inetol.net>\n"
 "Language: ca\n"
@@ -167,15 +167,15 @@ msgstr "Origen"
 msgid "Error loading the next page"
 msgstr "S'ha produït un error en carregar la següent pàgina"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "La configuració no és vàlida, editeu-la"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "La configuració no és vàlida"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "error de cerca"
 
@@ -243,11 +243,11 @@ msgstr "fa {minutes} minuts"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "fa {hours} hores i {minutes} minuts"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Generador de valors aleatoris"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Genera diferents valors aleatoris"
 
@@ -614,27 +614,27 @@ msgstr "Galetes"
 msgid "Answers"
 msgstr "Respostes"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Nombre de resultats"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Informació"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Proveu a cercar:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Torna al capdemunt"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Pàgina anterior"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Pàgina següent"
 
@@ -893,19 +893,7 @@ msgstr "Troba coses tal com escriu"
 msgid "Center Alignment"
 msgstr "Centrat central"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Activat"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Desactivat"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Mostrar els resultats en el centre de la pàgina (disseny Oscar)."
 
@@ -1018,17 +1006,7 @@ msgstr "Enrere"
 msgid "Image proxy"
 msgstr "Servidor intermediari d'imatges"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Activat"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Desactivat"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Les imatges es carreguen via un servidor intermediari SearXNG"
 
@@ -1036,7 +1014,7 @@ msgstr "Les imatges es carreguen via un servidor intermediari SearXNG"
 msgid "Infinite scroll"
 msgstr "Desplaçament infinit"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Carrega automàticament la pàgina següent en desplaçar-se al final de la "
@@ -1064,7 +1042,7 @@ msgstr "Modifica la forma d'enviar les cerques"
 msgid "Query in the page's title"
 msgstr "Consulta en el títol de la pàgina"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1076,7 +1054,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Resultats en pestanyes noves"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Obre els enllaços de resultats en una pestanya nova"
 
@@ -1630,4 +1608,16 @@ msgstr "amaga el vídeo"
 #~ "href=\"https://ca.wikipedia.org/wiki/Protocol_de_transferència_d'hipertext#Mètodes_de_petició[2]\""
 #~ " rel=\"external\">més informació sobre els "
 #~ "mètodes de petició</a>"
+
+#~ msgid "On"
+#~ msgstr "Activat"
+
+#~ msgid "Off"
+#~ msgstr "Desactivat"
+
+#~ msgid "Enabled"
+#~ msgstr "Activat"
+
+#~ msgid "Disabled"
+#~ msgstr "Desactivat"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: szl\n"
@@ -157,15 +157,15 @@ msgstr "Zdrzōdło"
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
@@ -233,11 +233,11 @@ msgstr "{minutes} minut(y) tymu"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) tymu"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Gyneratōr losowych wert"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Wygyneruj insze werty losowe"
 
@@ -605,27 +605,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Ôdpowiedzi"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Liczba wynikōw"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr ""
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Sprōbuj wyszukać:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Nazod do wiyrchu"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Piyrwyjszo strōna"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Dalszo strōna"
 
@@ -884,19 +884,7 @@ msgstr "Szukej w czasie pisanio"
 msgid "Center Alignment"
 msgstr "Wypostrzodkowanie"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Włōnczōny"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Zastawiōne"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Pokoż wyniki we postrzodku strōny (ukłod Oscar)."
 
@@ -1007,17 +995,7 @@ msgstr "Nazod"
 msgid "Image proxy"
 msgstr "Proxy ôbrazōw"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Włōnczōne"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Zastawiōne"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Przesyłanie wynikōw ôbrazōw bez proxy SearXNG"
 
@@ -1025,7 +1003,7 @@ msgstr "Przesyłanie wynikōw ôbrazōw bez proxy SearXNG"
 msgid "Infinite scroll"
 msgstr "Niyskōńczōne przewijanie"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Autōmatycznie laduj nastympno strōna przi przewijaniu do spodka teroźnyj "
@@ -1051,7 +1029,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr "Zapytanie we tytule ôd strōny"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1063,7 +1041,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Wyniki na nowych kartach"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Ôtwōrz linki wynikōw we nowych kartach przeglōndarki"
 
@@ -1368,4 +1346,16 @@ msgstr "skryj wideo"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">przewiydz sie wiyncyj ô "
 #~ "metodach żōndań</a>"
+
+#~ msgid "On"
+#~ msgstr "Włōnczōny"
+
+#~ msgid "Off"
+#~ msgstr "Zastawiōne"
+
+#~ msgid "Enabled"
+#~ msgstr "Włōnczōne"
+
+#~ msgid "Disabled"
+#~ msgstr "Zastawiōne"
 
