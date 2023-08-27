@@ -29,10 +29,11 @@ inaccuracies there too):
 # pylint: disable=too-many-branches, invalid-name
 
 from typing import TYPE_CHECKING
+import base64
 import datetime
 import re
 import uuid
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, urlencode, urlparse
 from lxml import html
 import babel
 import babel.languages
@@ -179,9 +180,7 @@ def request(query, params):
 
 
 def response(resp):
-    # pylint: disable=too-many-locals,import-outside-toplevel
-
-    from searx.network import Request, multi_requests  # see https://github.com/searxng/searxng/issues/762
+    # pylint: disable=too-many-locals
 
     results = []
     result_len = 0
@@ -190,9 +189,6 @@ def response(resp):
 
     # parse results again if nothing is found yet
 
-    url_to_resolve = []
-    url_to_resolve_index = []
-    i = 0
     for result in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
 
         link = eval_xpath_getindex(result, './/h2/a', 0, None)
@@ -208,38 +204,21 @@ def response(resp):
                 e.getparent().remove(e)
         content = extract_text(content)
 
-        # get the real URL either using the URL shown to user or following the Bing URL
+        # get the real URL
         if url.startswith('https://www.bing.com/ck/a?'):
-            url_cite = extract_text(eval_xpath(result, './/div[@class="b_attribution"]/cite'))
-            # Bing can shorten the URL either at the end or in the middle of the string
-            if (
-                url_cite
-                and url_cite.startswith('https://')
-                and '…' not in url_cite
-                and '...' not in url_cite
-                and '›' not in url_cite
-            ):
-                # no need for an additional HTTP request
-                url = url_cite
-            else:
-                # resolve the URL with an additional HTTP request
-                url_to_resolve.append(url.replace('&ntb=1', '&ntb=F'))
-                url_to_resolve_index.append(i)
-                url = None  # remove the result if the HTTP Bing redirect raise an exception
+            # get the first value of u parameter
+            url_query = urlparse(url).query
+            parsed_url_query = parse_qs(url_query)
+            param_u = parsed_url_query["u"][0]
+            # remove "a1" in front
+            encoded_url = param_u[2:]
+            # add padding
+            encoded_url = encoded_url + '=' * (-len(encoded_url) % 4)
+            # decode base64 encoded URL
+            url = base64.urlsafe_b64decode(encoded_url).decode()
 
         # append result
         results.append({'url': url, 'title': title, 'content': content})
-        # increment result pointer for the next iteration in this loop
-        i += 1
-
-    # resolve all Bing redirections in parallel
-    request_list = [
-        Request.get(u, allow_redirects=False, headers=resp.search_params['headers']) for u in url_to_resolve
-    ]
-    response_list = multi_requests(request_list)
-    for i, redirect_response in enumerate(response_list):
-        if not isinstance(redirect_response, Exception):
-            results[url_to_resolve_index[i]]['url'] = redirect_response.headers['location']
 
     # get number_of_results
     try:
@@ -258,6 +237,10 @@ def response(resp):
         logger.debug('result error :\n%s', e)
 
     if result_len and _get_offset_from_pageno(resp.search_params.get("pageno", 0)) > result_len:
+        # Avoid reading more results than avalaible.
+        # For example, if there is 100 results from some search and we try to get results from 120 to 130,
+        # Bing will send back the results from 0 to 10 and no error.
+        # If we compare results count with the first parameter of the request we can avoid this "invalid" results.
         return []
 
     results.append({'number_of_results': result_len})
