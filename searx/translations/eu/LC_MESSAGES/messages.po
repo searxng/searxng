@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: eu\n"
@@ -165,15 +165,15 @@ msgstr "Iturria"
 msgid "Error loading the next page"
 msgstr "Errorea hurrengo orrialdea kargatzean"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ezarpen baliogabeak, editatu zure hobespenak"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Ezarpen baliogabeak"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "bilaketa akatsa"
 
@@ -241,11 +241,11 @@ msgstr "duela {minutes} minutu"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "duela {hours} ordu eta {minutes} minutu"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Ausazko balio sortzailea"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Ausazko balio ezberdinak sortu"
 
@@ -617,27 +617,27 @@ msgstr "Cookieak"
 msgid "Answers"
 msgstr "Erantzunak"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Emaitza kopurua"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Informazioa"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Saiatu hau bilatzen:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Gora bueltatu"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Aurreko orria"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Hurrengo orria"
 
@@ -896,19 +896,7 @@ msgstr "Aurkitu idatzi bitartean"
 msgid "Center Alignment"
 msgstr "Erdiko Lerrokadura"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Piztuta"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Itzalita"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Emaitzak orriaren erdialdean bistaratzen ditu (Oscar diseinua)."
 
@@ -1020,17 +1008,7 @@ msgstr "Atzera"
 msgid "Image proxy"
 msgstr "Irudien proxya"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Gaituta"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Desgaituta"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Proxy irudien emaitzak SearXNG bidez"
 
@@ -1038,7 +1016,7 @@ msgstr "Proxy irudien emaitzak SearXNG bidez"
 msgid "Infinite scroll"
 msgstr "Korritze amaigabea"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Kargatu automatikoki hurrengo orria uneko orrialdearen behealdera "
@@ -1066,7 +1044,7 @@ msgstr "Aldatu inprimakiak nola bidaltzen diren"
 msgid "Query in the page's title"
 msgstr "Kontsulta orriaren izenburuan"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1078,7 +1056,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Emaitzak fitxa berrietan"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Emaitzen estekak nabigatzailearen fitxa berrietan ireki"
 
@@ -1608,4 +1586,16 @@ msgstr "ezkutatu bideoa"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "Piztuta"
+
+#~ msgid "Off"
+#~ msgstr "Itzalita"
+
+#~ msgid "Enabled"
+#~ msgstr "Gaituta"
+
+#~ msgid "Disabled"
+#~ msgstr "Desgaituta"
 

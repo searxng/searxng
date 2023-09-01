@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-18 15:38+0000\n"
 "Last-Translator: Hudobni Volk <hudobni.volk@tuta.io>\n"
 "Language: sl\n"
@@ -165,15 +165,15 @@ msgstr "Vir"
 msgid "Error loading the next page"
 msgstr "Napaka pri nalaganju naslednje strani"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neveljavne nastavitve. Prosimo, preverite vašo konfiguracijo"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "napaka pri iskanju"
 
@@ -241,11 +241,11 @@ msgstr "{minutes} minut nazaj"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} urami in {minutes} minut"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Generator naključnih števil"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Generiraj različne naključne vrednosti"
 
@@ -612,27 +612,27 @@ msgstr "Piškotki"
 msgid "Answers"
 msgstr "Odgovori"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Število zadetkov"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Informacije"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Poskusite iskati:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Nazaj na vrh"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Prejšnja stran"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Naslednja stran"
 
@@ -891,19 +891,7 @@ msgstr "Iščite že med tipkanjem"
 msgid "Center Alignment"
 msgstr "Sredinska poravnava"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Vklopljeno"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Izklopljeno"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Prikaže rezultate na sredini strani (postavitev Oscar)."
 
@@ -1011,17 +999,7 @@ msgstr "Nazaj"
 msgid "Image proxy"
 msgstr "Posredniški strežnik za slike"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Omogočeno"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Onemogočeno"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Proxy rezultatov slik prek SearXNG"
 
@@ -1029,7 +1007,7 @@ msgstr "Proxy rezultatov slik prek SearXNG"
 msgid "Infinite scroll"
 msgstr "Neskončno drsenje"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "Samodejno naloži naslednjo stran ob ogledu dna trenutne strani"
 
@@ -1053,7 +1031,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr "Poizvedba v naslovu strani"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1065,7 +1043,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Zadetki v novih zavihkih"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Odpri povezave zadetkov v novih zavihkih brskalnika"
 
@@ -1609,4 +1587,16 @@ msgstr "skrij video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">izvedite več o metodah "
 #~ "zahtevka</a>"
+
+#~ msgid "On"
+#~ msgstr "Vklopljeno"
+
+#~ msgid "Off"
+#~ msgstr "Izklopljeno"
+
+#~ msgid "Enabled"
+#~ msgstr "Omogočeno"
+
+#~ msgid "Disabled"
+#~ msgstr "Onemogočeno"
 

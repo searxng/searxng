@@ -14,20 +14,19 @@
 # Cavemanly <k.adel.2m@protonmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-21 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -168,15 +167,15 @@ msgstr "المصدر"
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "إعدادات غير صالحة"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "خطأ في البحث"
 
@@ -244,11 +243,11 @@ msgstr "قبل دقائق"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "قبل {hours} ساعات، {minutes} دقائق"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "مولّد قيمة عشوائية"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "توليد قِيم عشوائية مختلفة"
 
@@ -615,27 +614,27 @@ msgstr "كعكات الكوكيز"
 msgid "Answers"
 msgstr "الإجابات"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "حصيلة نتائج البحث"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "معلومات"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "حاول البحث عن :"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "العودة للأعلى"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "الصفحة التالية"
 
@@ -894,19 +893,7 @@ msgstr "العثور على نتائج أثناء الكتابة"
 msgid "Center Alignment"
 msgstr "محاذاة المركز"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "يشتغل"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "مُعطَّل"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "اعرض النتائج في منتصف الصفحة (تخطيط Oscar)."
 
@@ -1018,17 +1005,7 @@ msgstr "الخلف"
 msgid "Image proxy"
 msgstr "وكيل بروكسي الصور"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "مُفَعَّل"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "غير مُفَعَّل"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "تمرير نتائج البحث عن الصور عبر بروكسي SearXNG"
 
@@ -1036,7 +1013,7 @@ msgstr "تمرير نتائج البحث عن الصور عبر بروكسي Sea
 msgid "Infinite scroll"
 msgstr "تمرير الصفحات بلا حدود"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "حمّل تلقائيا الصفحة التالية عن السحب إلى أسفل النتائج"
 
@@ -1060,7 +1037,7 @@ msgstr "تغيير كيفية تقديم الاستمارات"
 msgid "Query in the page's title"
 msgstr "طلب بحث في عنوان الصفحة"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1072,7 +1049,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "عرض نتائج البحث في ألسنة جديدة"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "عرض روابط نتائج البحث في ألسنة جديدة للمتصفح"
 
@@ -1613,3 +1590,16 @@ msgstr "إخفاء الفيديو"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">إعرف المزيد عن طرق "
 #~ "الطلب</a>"
+
+#~ msgid "On"
+#~ msgstr "يشتغل"
+
+#~ msgid "Off"
+#~ msgstr "مُعطَّل"
+
+#~ msgid "Enabled"
+#~ msgstr "مُفَعَّل"
+
+#~ msgid "Disabled"
+#~ msgstr "غير مُفَعَّل"
+

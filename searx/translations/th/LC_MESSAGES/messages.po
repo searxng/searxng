@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: th\n"
@@ -158,15 +158,15 @@ msgstr "แหล่งที่มา"
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
@@ -234,11 +234,11 @@ msgstr "{minutes} นาทีก่อน"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ชั่วโมง),{minutes} นาทีก่อน"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "ทำการสุ่มค่า"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "ทำการสุ่มค่าที่แตกต่างกัน"
 
@@ -596,27 +596,27 @@ msgstr "คุกกี้"
 msgid "Answers"
 msgstr "คำตอบ"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "จำนวนผลลัพธ์"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "ข้อมูล"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "ลองค้นหา:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "กลับไปด้านบน"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "หน้าก่อนหน้านี้"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "หน้าต่อไป"
 
@@ -873,19 +873,7 @@ msgstr "ค้นหาสิ่งต่างๆในขณะพิมพ์
 msgid "Center Alignment"
 msgstr "จัดตำแหน่งกึ่งกลาง"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "เปิด"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "ปิด"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "แสดงผลตรงกลางหน้า (เค้าโครงออสการ์)"
 
@@ -993,17 +981,7 @@ msgstr "กลับ"
 msgid "Image proxy"
 msgstr "พร็อกซีรูปภาพ"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "เปิดใช้งาน"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "ปิดใช้งาน"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "การแสดงพร็อกซี่ของภาพผ่าน เซียร์เอ็กซ์เอ็นจี"
 
@@ -1011,7 +989,7 @@ msgstr "การแสดงพร็อกซี่ของภาพผ่า
 msgid "Infinite scroll"
 msgstr "เลื่อนเมาส์แบบไม่มีที่สิ้นสุด"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "โหลดหน้าถัดไปโดยอัตโนมัติเมื่อเลื่อนเมาส์ลงไปที่ด้านล่างของหน้าปัจจุบัน"
 
@@ -1035,7 +1013,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr "คิวรีในชื่อหน้า"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1047,7 +1025,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "ผลลัพธ์ในแท็บใหม่"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "เปิดลิงก์ผลลัพธ์ด้วยแท็บเบราว์เซอร์ใหม่"
 
@@ -1326,4 +1304,16 @@ msgstr "ซ่อนวิดีโอ"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "เปิด"
+
+#~ msgid "Off"
+#~ msgstr "ปิด"
+
+#~ msgid "Enabled"
+#~ msgstr "เปิดใช้งาน"
+
+#~ msgid "Disabled"
+#~ msgstr "ปิดใช้งาน"
 

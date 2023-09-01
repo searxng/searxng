@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-15 14:23+0000\n"
 "Last-Translator: microsoftocsharp <kottiberyu@gmail.com>\n"
 "Language: ro\n"
@@ -168,15 +168,15 @@ msgstr "Sursă"
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "eroare de căutare"
 
@@ -244,11 +244,11 @@ msgstr "{minutes} minut(e) în urmă"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Generator de numere aleatorii"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Generează valori aleatoare diferite"
 
@@ -623,27 +623,27 @@ msgstr "Cookie-uri"
 msgid "Answers"
 msgstr "Răspunsuri"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Numărul de rezultate"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Informații"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Încercați să căutați după:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Înapoi sus"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Pagina precedentă"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Pagina următoare"
 
@@ -902,19 +902,7 @@ msgstr "Găsește lucruri în timp ce tastezi"
 msgid "Center Alignment"
 msgstr "Aliniere centrală"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Pornit"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Oprit"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Afișează rezultatele pe centrul paginii (amplasare Oscar)."
 
@@ -1027,17 +1015,7 @@ msgstr "Înapoi"
 msgid "Image proxy"
 msgstr "Proxy de imagini"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Activat"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Dezactivat"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Trimitere prin proxy a rezultatelor imagini prin SearXNG"
 
@@ -1045,7 +1023,7 @@ msgstr "Trimitere prin proxy a rezultatelor imagini prin SearXNG"
 msgid "Infinite scroll"
 msgstr "Derulare infinită"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "Încarcă automat pagina următoare când se derulează la baza paginii curente"
 
@@ -1071,7 +1049,7 @@ msgstr "Schimba cum forumurile sunt trimise"
 msgid "Query in the page's title"
 msgstr "Afișați căutarea în titlul paginii"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1083,7 +1061,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Rezultate în taburi noi"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Deschide legăturile rezultate în taburi noi"
 
@@ -1635,4 +1613,16 @@ msgstr "ascunde video"
 #~ "href=\"http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods\""
 #~ " rel=\"external\">învățați mai multe despre "
 #~ "metode de cerere</a>"
+
+#~ msgid "On"
+#~ msgstr "Pornit"
+
+#~ msgid "Off"
+#~ msgstr "Oprit"
+
+#~ msgid "Enabled"
+#~ msgstr "Activat"
+
+#~ msgid "Disabled"
+#~ msgstr "Dezactivat"
 

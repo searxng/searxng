@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-15 14:23+0000\n"
 "Last-Translator: microsoftocsharp <kottiberyu@gmail.com>\n"
 "Language: fr\n"
@@ -171,15 +171,15 @@ msgstr "Source"
 msgid "Error loading the next page"
 msgstr "Erreur lors du chargement de la page suivante"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Paramètres non valides, veuillez éditer vos préférences"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Paramètres non valides"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "erreur de recherche"
 
@@ -247,11 +247,11 @@ msgstr "il y a {minutes} minute(s)"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "il y a {hours} heure(s), {minutes} minute(s)"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Générateur de valeur aléatoire"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Crée des valeurs aléatoires différentes"
 
@@ -623,27 +623,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Réponses"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Nombre de résultats"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Infos"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Essayez de chercher :"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Retour en haut de page"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Page précédente"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "page suivante"
 
@@ -902,19 +902,7 @@ msgstr "Chercher au fil de la saisie"
 msgid "Center Alignment"
 msgstr "Centrer"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Activé"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Désactivé"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Affiche les résultats au centre de la page (similaire au thème Oscar)."
 
@@ -1027,17 +1015,7 @@ msgstr "Retour"
 msgid "Image proxy"
 msgstr "Proxy d'images"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Activé"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Désactivé"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Proxifier les images à travers SearXNG"
 
@@ -1045,7 +1023,7 @@ msgstr "Proxifier les images à travers SearXNG"
 msgid "Infinite scroll"
 msgstr "Défilement infini"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Charge automatiquement la page suivante quand vous arrivez en bas de la "
@@ -1073,7 +1051,7 @@ msgstr "Modifier le mode de soumission des formulaires"
 msgid "Query in the page's title"
 msgstr "Requête dans le titre de la page"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1085,7 +1063,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Résultats dans de nouveaux onglets"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Ouvrir les liens de résultats dans un nouvel onglet"
 
@@ -1648,4 +1626,16 @@ msgstr "cacher la vidéo"
 #~ "href=\"https://fr.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9thodes\""
 #~ " rel=\"external\">en savoir plus sur les"
 #~ " méthodes HTTP</a>"
+
+#~ msgid "On"
+#~ msgstr "Activé"
+
+#~ msgid "Off"
+#~ msgstr "Désactivé"
+
+#~ msgid "Enabled"
+#~ msgstr "Activé"
+
+#~ msgid "Disabled"
+#~ msgstr "Désactivé"
 

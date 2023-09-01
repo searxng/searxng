@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-10 05:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: el_GR\n"
@@ -165,15 +165,15 @@ msgstr "Πηγή"
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "Μη έγκυρες ρυθμίσεις"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "σφάλμα αναζήτησης"
 
@@ -241,11 +241,11 @@ msgstr "{minutes} λεπτά πριν"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ώρα(-ες), {minutes} λεπτό(-ά) πριν"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "Γεννήτρια τυχαίων τιμών"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "Δημιουργία διαφορετικών τυχαίων τιμών"
 
@@ -625,27 +625,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Απαντήσεις"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "Αριθμός αποτελεσμάτων"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "Πληροφορίες"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "Δοκιμάστε αναζήτηση για:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "Επιστροφή στην κορυφή"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "Προηγούμενη σελίδα"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "Επόμενη σελίδα"
 
@@ -904,19 +904,7 @@ msgstr "Εύρεση όρων κατά την πληκτρολόγηση"
 msgid "Center Alignment"
 msgstr "Κεντρική ευθυγράμμιση"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "Ενεργό"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "Ανενεργό"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "Εμφάνιση αποτελεσμάτων στο κέντρο της σελίδας (διάταξη Oscar)."
 
@@ -1030,17 +1018,7 @@ msgstr "Πίσω"
 msgid "Image proxy"
 msgstr "Διακομιστής μεσολάβησης εικόνων"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "Ενεργοποιημένο"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "Απενεργοποιημένο"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "Διαμεσολάβιση φόρτωσης αποτελεσμάτων εικόνων μέσω του SearXNG"
 
@@ -1048,7 +1026,7 @@ msgstr "Διαμεσολάβιση φόρτωσης αποτελεσμάτων �
 msgid "Infinite scroll"
 msgstr "Άπειρη κύλιση"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
 "Αυτόματη φόρτωση της επόμενης σελίδας κατά την κύλιση στο κάτω μέρος της "
@@ -1076,7 +1054,7 @@ msgstr "Αλλαγή τρόπου υποβολής φόρμας"
 msgid "Query in the page's title"
 msgstr "Ερώτημα στον τίτλο της σελίδας"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1088,7 +1066,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "Αποτελέσματα σε νέες καρτέλες"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "Άνοιξε τους συνδέσμους των αποτελεσμάτων σε νέα καρτέλα περιηγητή"
 
@@ -1630,4 +1608,16 @@ msgstr "απόκρυψη βίντεο"
 #~ "href=\"https://el.wikipedia.org/wiki/%CE%A0%CF%81%CF%89%CF%84%CF%8C%CE%BA%CE%BF%CE%BB%CE%BB%CE%BF_%CE%9C%CE%B5%CF%84%CE%B1%CF%86%CE%BF%CF%81%CE%AC%CF%82_%CE%A5%CF%80%CE%B5%CF%81%CE%BA%CE%B5%CE%B9%CE%BC%CE%AD%CE%BD%CE%BF%CF%85#%CE%9C%CE%AD%CE%B8%CE%BF%CE%B4%CE%BF%CE%B9_%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82_%CF%84%CE%BF%CF%85_HTTP\""
 #~ " rel=\"external\">μάθετε περισσότερα για τις "
 #~ "μεθόδους αίτησης</a>"
+
+#~ msgid "On"
+#~ msgstr "Ενεργό"
+
+#~ msgid "Off"
+#~ msgstr "Ανενεργό"
+
+#~ msgid "Enabled"
+#~ msgstr "Ενεργοποιημένο"
+
+#~ msgid "Disabled"
+#~ msgstr "Απενεργοποιημένο"
 
