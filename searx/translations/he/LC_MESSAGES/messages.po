@@ -15,20 +15,19 @@
 # shoko <nickskorohod@outlook.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-08-23 19:53+0000\n"
 "Last-Translator: shoko <nickskorohod@outlook.com>\n"
-"Language-Team: Hebrew <https://translate.codeberg.org/projects/searxng/"
-"searxng/he/>\n"
 "Language: he\n"
+"Language-Team: Hebrew "
+"<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
+"&& n % 10 == 0) ? 2 : 3));\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
-"n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -169,15 +168,15 @@ msgstr "מקור"
 msgid "Error loading the next page"
 msgstr "שגיאה בטעינת העמוד הבא"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "הגדרות לא תקינות, עליך לתקן את ההעדפות שלך"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "הגדרות לא תקינות"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "שגיאת חיפוש"
 
@@ -245,11 +244,11 @@ msgstr "לפני {minutes} דקות"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "לפני {hours} שעות, {minutes} דקות"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "מפיק ערך אקראי"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "מייצרת ערכים אקראיים שונים"
 
@@ -610,27 +609,27 @@ msgstr "עוגיות"
 msgid "Answers"
 msgstr "תשובות"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "מספר תוצאות"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr ""
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "נסה לחפש:"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "בחזרה למעלה"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "עמוד קודם"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "עמוד הבא"
 
@@ -887,19 +886,7 @@ msgstr "מצא טקסט תוך כדי הקלדה"
 msgid "Center Alignment"
 msgstr "יישור מרכז"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "פועל"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "כבוי"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "מציג תוצאות במרכז העמוד (פריסת אוסקר)."
 
@@ -1005,17 +992,7 @@ msgstr "חזור"
 msgid "Image proxy"
 msgstr "פרוקסי תמונה"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "מאופשר"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "מנוטרל"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "העבר תוצאות תמונה דרך פרוקסי מבעד SearXNG"
 
@@ -1023,7 +1000,7 @@ msgstr "העבר תוצאות תמונה דרך פרוקסי מבעד SearXNG"
 msgid "Infinite scroll"
 msgstr "גלילה אינסופית"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "טען אוטומטית של העמוד הבא בעת גלילה לתחתית העמוד"
 
@@ -1047,7 +1024,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr "שאילתא בכותרת העמוד"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1059,7 +1036,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "תוצאות בכרטיסיות חדשות"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "פתח קישורי תוצאה בתוך כרטיסיות דפדפן חדשות"
 
@@ -1594,3 +1571,16 @@ msgstr "הסתר וידאו"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "פועל"
+
+#~ msgid "Off"
+#~ msgstr "כבוי"
+
+#~ msgid "Enabled"
+#~ msgstr "מאופשר"
+
+#~ msgid "Disabled"
+#~ msgstr "מנוטרל"
+

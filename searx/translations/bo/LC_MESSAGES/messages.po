@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -160,15 +160,15 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།ཁྱེད་ཀྱིས་གདམ་ཀ་ལ་བཅོས་སྒྲིག་གཏོང་རོགས།"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "འཚོལ་བཤེར་ལ་ནོར་འཁྲུལ་བྱུང་།"
 
@@ -236,11 +236,11 @@ msgstr "སྐར་མ་ {minutes} སྔོན་ལ།"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "ཆུ་ཚོད་ {hours} དང་སྐར་མ {minutes} སྔོན་ལ།"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "ངེས་མེད་གྲངས་ཀ་མཁོ་སྤྲོད།"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "ངེས་མེད་གྲངས་ཀ་ཁ་ཤས་ཐོབ་པར་བྱེད།"
 
@@ -586,27 +586,27 @@ msgstr "རྐང་རྗེས།"
 msgid "Answers"
 msgstr "ལན།"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "འཚོལ་འབྲས་ཀྱི་ཁ་གྲངས།"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr ""
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "འཚོལ་བཤེར་ནང་དོན་ནི།"
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr ""
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr ""
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr ""
 
@@ -865,19 +865,7 @@ msgstr "འཚོལ་བྱ་གཏགས་པ་ཇི་བཞིན་བ
 msgid "Center Alignment"
 msgstr ""
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "ཁ་ཕྱེས།"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "ཁ་རྒྱབ།"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr ""
 
@@ -977,17 +965,7 @@ msgstr ""
 msgid "Image proxy"
 msgstr "རི་མོ་མངག་བཅོལ་གྱི་ཞབས་ཞུ་སྒྲིག་ཆས།"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "ཁ་འབྱེད་ཟིན།"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "ཁ་རྒྱབ་ཟིན།"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr ""
 
@@ -995,7 +973,7 @@ msgstr ""
 msgid "Infinite scroll"
 msgstr "མཐའ་མེད་པའི་འཆར་ངོས།"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "དྲ་ངོས་མར་འདྲུད་ནས་ཞབས་ལ་སླེབས་དུས་རང་འགུལ་སྒོས་འཕྲོ་མའི་ནང་དོན་འཆར་པར་བྱེད།"
 
@@ -1019,7 +997,7 @@ msgstr ""
 msgid "Query in the page's title"
 msgstr ""
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1029,7 +1007,7 @@ msgstr ""
 msgid "Results on new tabs"
 msgstr "ཤོག་ངོས་གསར་བ་ནས་འཚོལ་འབྲས་འཆར།"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "ཤོག་ངོས་གསར་བ་ཞིག་ནས་དྲ་ངོས་འཆར་པར་བྱེད།"
 
@@ -1549,4 +1527,16 @@ msgstr "རྙན་ཟློས་སྦས།"
 #~ " rel=\"external\">learn more about request "
 #~ "methods</a>"
 #~ msgstr ""
+
+#~ msgid "On"
+#~ msgstr "ཁ་ཕྱེས།"
+
+#~ msgid "Off"
+#~ msgstr "ཁ་རྒྱབ།"
+
+#~ msgid "Enabled"
+#~ msgstr "ཁ་འབྱེད་ཟིན།"
+
+#~ msgid "Disabled"
+#~ msgstr "ཁ་རྒྱབ་ཟིན།"
 

@@ -16,18 +16,19 @@
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 14:23+0000\n"
-"PO-Revision-Date: 2023-08-10 05:53+0000\n"
+"POT-Creation-Date: 2023-08-27 19:28+0000\n"
+"PO-Revision-Date: 2023-08-29 06:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Chinese (Traditional) <https://translate.codeberg.org/"
+"projects/searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -168,15 +169,15 @@ msgstr "來源"
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:488 searx/webapp.py:880
+#: searx/webapp.py:489 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:504
+#: searx/webapp.py:505
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:581 searx/webapp.py:663
+#: searx/webapp.py:582 searx/webapp.py:664
 msgid "search error"
 msgstr "搜尋錯誤"
 
@@ -244,11 +245,11 @@ msgstr "{minutes} 分鐘前"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
-#: searx/answerers/random/answerer.py:67
+#: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
 msgstr "隨機數值產生器"
 
-#: searx/answerers/random/answerer.py:68
+#: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
 msgstr "生成不同的隨機數值"
 
@@ -578,7 +579,7 @@ msgstr "隱私"
 
 #: searx/templates/simple/preferences.html:217
 msgid "Engines"
-msgstr "引擎"
+msgstr "搜尋引擎"
 
 #: searx/templates/simple/preferences.html:219
 msgid "Currently used search engines"
@@ -596,27 +597,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "答案"
 
-#: searx/templates/simple/results.html:39
+#: searx/templates/simple/results.html:38
 msgid "Number of results"
 msgstr "結果筆數"
 
-#: searx/templates/simple/results.html:45
+#: searx/templates/simple/results.html:44
 msgid "Info"
 msgstr "資訊"
 
-#: searx/templates/simple/results.html:74
+#: searx/templates/simple/results.html:73
 msgid "Try searching for:"
 msgstr "嘗試搜尋："
 
-#: searx/templates/simple/results.html:106
+#: searx/templates/simple/results.html:105
 msgid "Back to top"
 msgstr "返回頂部"
 
-#: searx/templates/simple/results.html:124
+#: searx/templates/simple/results.html:123
 msgid "Previous page"
 msgstr "上一頁"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:140
 msgid "Next page"
 msgstr "下一頁"
 
@@ -873,19 +874,7 @@ msgstr "隨打即找"
 msgid "Center Alignment"
 msgstr "置中對齊"
 
-#: searx/templates/simple/preferences/center_alignment.html:5
-#: searx/templates/simple/preferences/infinite_scroll.html:5
-#: searx/templates/simple/preferences/results_on_new_tab.html:5
-msgid "On"
-msgstr "開啟"
-
-#: searx/templates/simple/preferences/center_alignment.html:6
-#: searx/templates/simple/preferences/infinite_scroll.html:6
-#: searx/templates/simple/preferences/results_on_new_tab.html:6
-msgid "Off"
-msgstr "關閉"
-
-#: searx/templates/simple/preferences/center_alignment.html:10
+#: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
 msgstr "搜尋結果置顯示於網頁中間。"
 
@@ -951,7 +940,7 @@ msgstr "支援選定的語言"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "權重"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
@@ -985,17 +974,7 @@ msgstr "返回"
 msgid "Image proxy"
 msgstr "圖片代理伺服器"
 
-#: searx/templates/simple/preferences/image_proxy.html:5
-#: searx/templates/simple/preferences/query_in_title.html:5
-msgid "Enabled"
-msgstr "已啟用"
-
-#: searx/templates/simple/preferences/image_proxy.html:6
-#: searx/templates/simple/preferences/query_in_title.html:6
-msgid "Disabled"
-msgstr "已停用"
-
-#: searx/templates/simple/preferences/image_proxy.html:10
+#: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxying image results through SearXNG"
 msgstr "通過 SearXNG 代理訪問圖片結果"
 
@@ -1003,7 +982,7 @@ msgstr "通過 SearXNG 代理訪問圖片結果"
 msgid "Infinite scroll"
 msgstr "無限捲動"
 
-#: searx/templates/simple/preferences/infinite_scroll.html:10
+#: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr "當捲動至目前頁面的底部時自動載入下一頁"
 
@@ -1027,7 +1006,7 @@ msgstr "變更提交表單的方式"
 msgid "Query in the page's title"
 msgstr "頁面標題顯示查詢關鍵字"
 
-#: searx/templates/simple/preferences/query_in_title.html:10
+#: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
@@ -1037,7 +1016,7 @@ msgstr "啟用時，結果頁的標題包含你的查詢關鍵字。你的瀏覽
 msgid "Results on new tabs"
 msgstr "在新分頁開啟結果"
 
-#: searx/templates/simple/preferences/results_on_new_tab.html:10
+#: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
 msgstr "在新瀏覽器分頁中開啟結果連結"
 
@@ -1555,3 +1534,14 @@ msgstr "隱藏影片"
 #~ "變更遞交形式，<a href=\"https://zh.wikipedia.org/wiki/超文本传输协议#请求方法\""
 #~ " rel=\"external\">看看更多關於請求方法的介紹</a>"
 
+#~ msgid "On"
+#~ msgstr "開啟"
+
+#~ msgid "Off"
+#~ msgstr "關閉"
+
+#~ msgid "Enabled"
+#~ msgstr "已啟用"
+
+#~ msgid "Disabled"
+#~ msgstr "已停用"
