@@ -6,6 +6,7 @@
 """
 
 import time
+from urllib.parse import urlencode
 from datetime import datetime
 
 # Engine metadata
@@ -21,16 +22,14 @@ about = {
 # Engine configuration
 paging = True
 results_per_page = 20
-categories = ['images']
+categories = ['videos']
 
 # Search URL (Note: lighthouse.lbry.com/search works too, and may be faster at times)
 base_url = "https://lighthouse.odysee.tv/search"
 
-# Request function
-def request(query, params):
-    page = params.get("pageno", 1) - 1
-    start_index = page * results_per_page
 
+def request(query, params):
+    start_index = (params["pageno"] - 1) * results_per_page
     query_params = {
         "s": query,
         "size": results_per_page,
@@ -39,8 +38,7 @@ def request(query, params):
         "mediaType": "video",
     }
 
-    query_str = "&".join([f"{key}={value}" for key, value in query_params.items()])
-    params["url"] = f"{base_url}?{query_str}"
+    params["url"] = f"{base_url}?{urlencode(query_params)}"
     return params
 
 
