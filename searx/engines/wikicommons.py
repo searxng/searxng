@@ -43,7 +43,7 @@ def request(query, params):
         'gsrsearch': "filetype:bitmap|drawing " + query,
     }
 
-    params["url"] = f"{base_url}/w/api.php{search_prefix}&{urlencode(args)}"
+    params["url"] = f"{base_url}/w/api.php{search_prefix}&{urlencode(args, safe=':|')}"
     return params
 
 
