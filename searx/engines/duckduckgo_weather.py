@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from json import loads
 from urllib.parse import quote
 
-from datetime import datetime
+from dateutil import parser as date_parser
 from flask_babel import gettext
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
@@ -43,24 +43,24 @@ URL = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
 def generate_condition_table(condition):
     res = ""
 
-    res += f"<tr><td><b>{gettext('Condition')}</b></td>" f"<td><b>{condition['summary']}</b></td></tr>"
+    res += f"<tr><td><b>{gettext('Condition')}</b></td>" f"<td><b>{condition['conditionCode']}</b></td></tr>"
 
     res += (
         f"<tr><td><b>{gettext('Temperature')}</b></td>"
-        f"<td><b>{f_to_c(condition['temperature'])}°C / {condition['temperature']}°F</b></td></tr>"
+        f"<td><b>{condition['temperature']}°C / {c_to_f(condition['temperature'])}°F</b></td></tr>"
     )
 
     res += (
-        f"<tr><td>{gettext('Feels like')}</td><td>{f_to_c(condition['apparentTemperature'])}°C / "
-        f"{condition['apparentTemperature']}°F</td></tr>"
+        f"<tr><td>{gettext('Feels like')}</td><td>{condition['temperatureApparent']}°C / "
+        f"{c_to_f(condition['temperatureApparent'])}°F</td></tr>"
     )
 
     res += (
-        f"<tr><td>{gettext('Wind')}</td><td>{condition['windBearing']}° — "
+        f"<tr><td>{gettext('Wind')}</td><td>{condition['windDirection']}° — "
         f"{(condition['windSpeed'] * 1.6093440006147):.2f} km/h / {condition['windSpeed']} mph</td></tr>"
     )
 
-    res += f"<tr><td>{gettext('Visibility')}</td><td>{condition['visibility']} km</td>"
+    res += f"<tr><td>{gettext('Visibility')}</td><td>{condition['visibility']} m</td>"
 
     res += f"<tr><td>{gettext('Humidity')}</td><td>{(condition['humidity'] * 100):.1f}%</td></tr>"
 
@@ -71,20 +71,16 @@ def generate_day_table(day):
     res = ""
 
     res += (
-        f"<tr><td>{gettext('Min temp.')}</td><td>{f_to_c(day['temperatureLow'])}°C / "
-        f"{day['temperatureLow']}°F</td></tr>"
+        f"<tr><td>{gettext('Min temp.')}</td><td>{day['temperatureMin']}°C / "
+        f"{c_to_f(day['temperatureMin'])}°F</td></tr>"
     )
     res += (
-        f"<tr><td>{gettext('Max temp.')}</td><td>{f_to_c(day['temperatureHigh'])}°C / "
-        f"{day['temperatureHigh']}°F</td></tr>"
+        f"<tr><td>{gettext('Max temp.')}</td><td>{day['temperatureMax']}°C / "
+        f"{c_to_f(day['temperatureMax'])}°F</td></tr>"
     )
-    res += f"<tr><td>{gettext('UV index')}</td><td>{day['uvIndex']}</td></tr>"
-    res += (
-        f"<tr><td>{gettext('Sunrise')}</td><td>{datetime.fromtimestamp(day['sunriseTime']).strftime('%H:%M')}</td></tr>"
-    )
-    res += (
-        f"<tr><td>{gettext('Sunset')}</td><td>{datetime.fromtimestamp(day['sunsetTime']).strftime('%H:%M')}</td></tr>"
-    )
+    res += f"<tr><td>{gettext('UV index')}</td><td>{day['maxUvIndex']}</td></tr>"
+    res += f"<tr><td>{gettext('Sunrise')}</td><td>{date_parser.parse(day['sunrise']).strftime('%H:%M')}</td></tr>"
+    res += f"<tr><td>{gettext('Sunset')}</td><td>{date_parser.parse(day['sunset']).strftime('%H:%M')}</td></tr>"
 
     return res
 
@@ -104,8 +100,8 @@ def request(query, params):
     return params
 
 
-def f_to_c(temperature):
-    return "%.2f" % ((temperature - 32) / 1.8)
+def c_to_f(temperature):
+    return "%.2f" % ((temperature * 1.8) + 32)
 
 
 def response(resp):
@@ -116,9 +112,9 @@ def response(resp):
 
     result = loads(resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2])
 
-    current = result["currently"]
+    current = result["currentWeather"]
 
-    title = result['flags']['ddg-location']
+    title = result['location']
 
     infobox = f"<h3>{gettext('Current condition')}</h3><table><tbody>"
 
@@ -128,8 +124,8 @@ def response(resp):
 
     last_date = None
 
-    for time in result['hourly']['data']:
-        current_time = datetime.fromtimestamp(time['time'])
+    for time in result['forecastHourly']['hours']:
+        current_time = date_parser.parse(time['forecastStart'])
 
         if last_date != current_time.date():
             if last_date is not None:
@@ -139,8 +135,8 @@ def response(resp):
 
             infobox += "<table><tbody>"
 
-            for day in result['daily']['data']:
-                if datetime.fromtimestamp(day['time']).date() == current_time.date():
+            for day in result['forecastDaily']['days']:
+                if date_parser.parse(day['forecastStart']).date() == current_time.date():
                     infobox += generate_day_table(day)
 
             infobox += "</tbody></table><table><tbody>"
