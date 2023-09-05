@@ -50,7 +50,8 @@ def request(query, params):
         'o': 'json',
         # 'u': 'bing',
         'l': eng_region,
-        'vqd': get_vqd(query, params["headers"]),
+        'f': ',,,,,',
+        'vqd': get_vqd(query),
     }
 
     if params['pageno'] > 1:
@@ -59,7 +60,6 @@ def request(query, params):
     params['cookies']['ad'] = eng_lang  # zh_CN
     params['cookies']['ah'] = eng_region  # "us-en,de-de"
     params['cookies']['l'] = eng_region  # "hk-tzh"
-    logger.debug("cookies: %s", params['cookies'])
 
     safe_search = safesearch_cookies.get(params['safesearch'])
     if safe_search is not None:
@@ -68,13 +68,9 @@ def request(query, params):
     if safe_search is not None:
         args['p'] = safe_search  # "-1", "1"
 
+    logger.debug("cookies: %s", params['cookies'])
     args = urlencode(args)
-    params['url'] = 'https://duckduckgo.com/i.js?{args}&f={f}'.format(args=args, f=',,,,,')
-
-    params['headers']['Accept'] = 'application/json, text/javascript, */*; q=0.01'
-    params['headers']['Referer'] = 'https://duckduckgo.com/'
-    params['headers']['X-Requested-With'] = 'XMLHttpRequest'
-    logger.debug("headers: %s", params['headers'])
+    params['url'] = 'https://duckduckgo.com/i.js?{args}'.format(args=args)
 
     return params
 

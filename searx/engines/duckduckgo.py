@@ -25,7 +25,6 @@ from searx.utils import (
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx import redisdb
 from searx.enginelib.traits import EngineTraits
-from searx.exceptions import SearxEngineAPIException
 
 if TYPE_CHECKING:
     import logging
@@ -78,7 +77,7 @@ def cache_vqd(query, value):
         c.set(key, value, ex=600)
 
 
-def get_vqd(query, headers):
+def get_vqd(query):
     """Returns the ``vqd`` that fits to the *query*.  If there is no ``vqd`` cached
     (:py:obj:`cache_vqd`) the query is sent to DDG to get a vqd value from the
     response.
@@ -94,13 +93,10 @@ def get_vqd(query, headers):
             logger.debug("re-use cached vqd value: %s", value)
             return value
 
-    query_url = 'https://duckduckgo.com/?q={query}&atb=v290-5'.format(query=urlencode({'q': query}))
-    res = get(query_url, headers=headers)
-    content = res.text  # type: ignore
-    if content.find('vqd=\"') == -1:
-        raise SearxEngineAPIException('Request failed')
-    value = content[content.find('vqd=\"') + 5 :]
-    value = value[: value.find('\'')]
+    query_url = 'https://lite.duckduckgo.com/lite/?{args}'.format(args=urlencode({'q': query}))
+    res = get(query_url)
+    doc = lxml.html.fromstring(res.text)
+    value = doc.xpath("//input[@name='vqd']/@value")[0]
     logger.debug("new vqd value: %s", value)
     cache_vqd(query, value)
     return value
@@ -240,7 +236,7 @@ def request(query, params):
         params['data']['dc'] = offset + 1
 
     # request needs a vqd argument
-    params['data']['vqd'] = get_vqd(query, params["headers"])
+    params['data']['vqd'] = get_vqd(query)
 
     # initial page does not have additional data in the input form
     if params['pageno'] > 1:
