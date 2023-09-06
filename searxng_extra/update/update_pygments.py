@@ -1,69 +1,71 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
-Update pygments style
+"""Update pygments style
 
 Call this script after each upgrade of pygments
+
 """
 
-# pylint: disable=C0116
-
-# set path
-from os.path import join
+from pathlib import Path
 import pygments
-from pygments.formatters import HtmlFormatter  # pylint: disable=E0611
-from pygments.style import Style
-from pygments.token import Comment, Error, Generic, Keyword, Literal, Name, Operator, Text
+from pygments.formatters import HtmlFormatter
 
 from searx import searx_dir
 
-CSSCLASS = '.code-highlight'
-RULE_CODE_LINENOS = """ .linenos {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: default;
+LESS_FILE = Path(searx_dir) / 'static/themes/simple/src/generated/pygments.less'
 
-    &::selection {
-        background: transparent; /* WebKit/Blink Browsers */
-    }
-    &::-moz-selection {
-        background: transparent; /* Gecko Browsers */
-    }
-
-    margin-right: 8px;
-    text-align: right;
-}"""
-
-
-def get_output_filename(relative_name):
-    return join(searx_dir, relative_name)
-
-
-def get_css(cssclass, style):
-    result = f"""/*
+HEADER = f"""\
+/*
    this file is generated automatically by searxng_extra/update/update_pygments.py
    using pygments version {pygments.__version__}
-*/\n\n"""
-    css_text = HtmlFormatter(style=style).get_style_defs(cssclass)
-    result += cssclass + RULE_CODE_LINENOS + '\n\n'
-    for line in css_text.splitlines():
-        if ' ' in line and not line.startswith(cssclass):
-            line = cssclass + ' ' + line
-        result += line + '\n'
-    return result
+*/
+
+"""
+
+START_LIGHT_THEME = """
+.code-highlight {
+"""
+
+END_LIGHT_THEME = """
+}
+"""
+
+START_DARK_THEME = """
+.code-highlight-dark(){
+  .code-highlight {
+"""
+
+END_DARK_THEME = """
+  }
+}
+"""
 
 
-def main():
+class Formatter(HtmlFormatter):
+    @property
+    def _pre_style(self):
+        return 'line-height: 100%;'
 
-    fname = 'static/themes/simple/src/generated/pygments.less'
-    print("update: %s" % fname)
-    with open(get_output_filename(fname), 'w') as f:
-        f.write(get_css(CSSCLASS, 'default'))
+    def get_style_lines(self, arg=None):
+        style_lines = []
+        style_lines.extend(self.get_linenos_style_defs())
+        style_lines.extend(self.get_background_style_defs(arg))
+        style_lines.extend(self.get_token_style_defs(arg))
+        return style_lines
+
+
+def generat_css(light_style, dark_style) -> str:
+    css = HEADER + START_LIGHT_THEME
+    for line in Formatter(style=light_style).get_style_lines():
+        css += '\n  ' + line
+    css += END_LIGHT_THEME + START_DARK_THEME
+    for line in Formatter(style=dark_style).get_style_lines():
+        css += '\n    ' + line
+    css += END_DARK_THEME
+    return css
 
 
 if __name__ == '__main__':
-    main()
+    print("update: %s" % LESS_FILE)
+    with open(LESS_FILE, 'w') as f:
+        f.write(generat_css('default', 'lightbulb'))

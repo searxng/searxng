@@ -2,12 +2,31 @@
 
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
-{%- if result.content %}{{ result.content|safe }}{% endif %}</p>
-{%- if result.repository -%}
-<p class="content"><a href="{{ result.repository|safe }}" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>{{ result.repository }}</a></p>
+
+{%- if result.content -%}
+  <p class="content">
+    {{- result.content|safe -}}
+  </p>
 {%- endif -%}
+{%- if result.repository -%}
+  <p class="content">{{- '' -}}
+    {{ _('repo') }}: {{- ' ' -}}
+    <a href="{{ result.repository|safe }}"{{- ' ' -}}
+       {% if results_on_new_tab %}
+         target="_blank" {{- ' ' -}}
+         rel="noopener noreferrer"
+       {%- else -%}
+         rel="noreferrer"
+       {%- endif -%}
+       >
+       {{- result.repository -}}
+    </a>{{- '' -}}
+  </p>
+{%- endif -%}
+
 <div dir="ltr" class="codelines">
     {{- result.codelines|code_highlighter(result.code_language)|safe -}}
-</div>{{- '' -}}
+</div>
+
 {{- result_sub_footer(result, proxify) -}}
-{{ result_footer(result) }}
+{{- result_footer(result) -}}
