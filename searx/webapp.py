@@ -216,7 +216,7 @@ def code_highlighter(codelines, language=None):
         lexer = get_lexer_by_name(language, stripall=True)
 
     except Exception as e:  # pylint: disable=broad-except
-        logger.exception(e, exc_info=True)
+        logger.warning("pygments lexer: %s " % e)
         # if lexer is not found, using default one
         lexer = get_lexer_by_name('text', stripall=True)
 
