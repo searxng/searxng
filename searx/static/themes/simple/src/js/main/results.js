@@ -74,6 +74,10 @@
       searxng.scrollPageToSelected();
     }
 
+    searxng.isDetailOpened = function () {
+      return d.getElementById('results').classList.contains('image-detail-open');
+    }
+
     searxng.closeDetail = function (e) {
       d.getElementById('results').classList.remove('image-detail-open');
       searxng.scrollPageToSelected();
