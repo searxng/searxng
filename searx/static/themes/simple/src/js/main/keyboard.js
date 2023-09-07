@@ -32,6 +32,10 @@ searxng.ready(function () {
     return resultElement && resultElement.classList.contains('result-images');
   }
 
+  function hasImageInDetail () {
+    return document.querySelector('#results.image-detail-open') !== null;
+  }
+
   searxng.on('.result', 'click', function (e) {
     if (!isElementInDetail(e.target)) {
       highlightResult(this)(true, true);
@@ -170,6 +174,18 @@ searxng.ready(function () {
       }
     });
   }
+
+  searxng.on(document, 'keydown', function (e) {
+    if (hasImageInDetail()) {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        searxng.selectPrevious(false);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        searxng.selectNext(false);
+      }
+    }
+  });
 
   function highlightResult (which) {
     return function (noScroll, keepFocus) {
