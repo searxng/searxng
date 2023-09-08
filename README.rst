@@ -75,74 +75,40 @@ IRC
 Matrix
   `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
 
-Differences to searx
-====================
-
-SearXNG is a fork of `searx`_, with notable changes:
-
-.. _searx: https://github.com/searx/searx
-
-
-User experience
----------------
-
-- Reworked (and still simple) theme:
-
-  * Usable on desktop, tablet and mobile.
-  * Light and dark versions (available in the preferences).
-  * Right-to-left language support.
-  * `Screenshots <https://dev.searxng.org/screenshots.html>`_
-
-- The translations are up to date, you can contribute on `Weblate`_
-- The preferences page has been updated:
-
-  * Browse which engines are reliable or not.
-  * Engines are grouped inside each tab.
-  * Each engine has a description.
-
-- Thanks to the anonymous metrics, it is easier to report malfunctioning engines,
-  so they get fixed quicker
-
-  - `Turn off metrics on the server
-    <https://docs.searxng.org/admin/engines/settings.html#general>`_ if you don't want them recorded.
-
-- Administrators can `block and/or replace the URLs in the search results
-  <https://github.com/searxng/searxng/blob/5c1c0817c3996c5670a545d05831d234d21e6217/searx/settings.yml#L191-L199>`_
-
 
 Setup
------
+=====
 
-- No need for `Morty`_ to proxy images, even on a public instance.
-- No need for `Filtron`_ to block bots, as there is now a built-in `limiter`_.
-- A well maintained `Docker image`_, now also built for ARM64 and ARM/v7 architectures.
-  (Alternatively there are up to date installation scripts.)
+- A well maintained `Docker image`_, also built for ARM64 and ARM/v7
+  architectures.
+- Alternatively there are *up to date* `installation scripts`_.
+- For individual setup consult our detailed `Step by step`_ instructions.
+- To fine-tune your instance, take a look at the `Administrator documentation`_.
 
+.. _Administrator documentation: https://docs.searxng.org/admin/index.html
+.. _Step by step: https://docs.searxng.org/admin/installation-searxng.html
+.. _installation scripts: https://docs.searxng.org/admin/installation-scripts.html
 .. _Docker image: https://github.com/searxng/searxng-docker
-
-
-Contributing
-------------
-
-- Readable debug log.
-- Contributing is easier, thanks to the `Development Quickstart`_ guide.
-- A lot of code cleanup and bugfixes.
-- Up to date list dependencies.
-
-.. _Morty: https://github.com/asciimoo/morty
-.. _Filtron: https://github.com/searxng/filtron
-.. _limiter: https://docs.searxng.org/src/searx.plugins.limiter.html
-.. _Weblate: https://translate.codeberg.org/projects/searxng/searxng/
-.. _Development Quickstart: https://docs.searxng.org/dev/quickstart.html
-
 
 Translations
 ============
+
+.. _Weblate: https://translate.codeberg.org/projects/searxng/searxng/
 
 Help translate SearXNG at `Weblate`_
 
 .. figure:: https://translate.codeberg.org/widgets/searxng/-/multi-auto.svg
    :target: https://translate.codeberg.org/projects/searxng/
+
+
+Contributing
+============
+
+.. _development quickstart: https://docs.searxng.org/dev/quickstart.html
+.. _developer documentation: https://docs.searxng.org/dev/index.html
+
+Are you a developer?  Have a look at our `development quickstart`_ guide, it's
+very easy to contribute.  Additionally we have a `developer documentation`_.
 
 
 Codespaces
