@@ -10,25 +10,26 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 19:28+0000\n"
-"PO-Revision-Date: 2023-07-09 15:34+0000\n"
+"PO-Revision-Date: 2023-09-05 08:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
+"searxng/sk/>\n"
 "Language: sk\n"
-"Language-Team: Slovak "
-"<https://translate.codeberg.org/projects/searxng/searxng/sk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
-"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 4.18.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "bez ďalšieho zoskupenia"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -323,11 +324,11 @@ msgstr "Noc"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
-msgstr ""
+msgstr "Hodnotenie knižky"
 
 #: searx/engines/zlibrary.py:131
 msgid "File quality"
-msgstr ""
+msgstr "Kvalita súboru"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -398,16 +399,18 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Nepodarilo sa stiahnuť zoznam Tor exit-nodes z: https://check.torproject.org/"
+"exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
+msgstr "Používate Tor a vyzerá to, že máte túto externú IP adresu: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Nepoužívate Tor a máte túto externú IP adresu: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -544,11 +547,11 @@ msgstr "Zobraziť záznamy chýb a odoslať hlásenie o chybe"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang pre tento vyhľadávač"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang pre jeho kategórie"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -745,7 +748,7 @@ msgstr "Výsledky na stiahnutie"
 
 #: searx/templates/simple/elements/engines_msg.html:3
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Hlásenia z vyhľadávačov"
 
 #: searx/templates/simple/elements/engines_msg.html:8
 msgid "Error!"
@@ -776,7 +779,7 @@ msgstr "Predvolený jazyk"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr ""
+msgstr "Auto-detekcia"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -943,17 +946,19 @@ msgstr "DOI vyhodnocovač otvoreným prístupom"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Vyberte službu, ktorú používa DOI rewrite"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Táto stránka neexistuje v používateľskom rozhraní, ale môžete v nich "
+"vyhľadávať pomocou jej !bangs."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
@@ -961,7 +966,7 @@ msgstr "Podporuje zvolený jazyk"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Váha/Hmotnosť"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
@@ -1020,6 +1025,8 @@ msgstr "Aký jazyk preferujete pre vyhľadávanie?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
+"Ak chcete, aby SearXNG zistil jazyk vášho vyhľadávania, vyberte možnosť Auto-"
+"detect (Automatické zisťovanie)."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1027,7 +1034,7 @@ msgstr "Metóda HTTP"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Zmena spôsobu odosielania formulárov"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
@@ -1598,4 +1605,3 @@ msgstr "skryť video"
 
 #~ msgid "Disabled"
 #~ msgstr "Zakázané"
-
