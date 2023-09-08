@@ -8,14 +8,15 @@
       <th>{{ _('Examples') }}</th>{{- '' -}}
     </tr>{{- '' -}}
 
-    <td></td>{{- '' -}}
-    <th scope="colgroup" colspan="4">
-      {{- _("This is the list of SearXNG's instant answering modules.") -}}
-    </th>
+    <tr class="pref-group" >{{- '' -}}
+      <th scope="colgroup" colspan="5">
+        {{- _("This is the list of SearXNG's instant answering modules.") -}}
+      </th>{{- '' -}}
+    </tr>
 
     {%- for answerer in answerers -%}
       <tr>{{- '' -}}
-        <td></td>{{- '' -}}
+        <td class="checkbox-col"></td>{{- '' -}}
         <td>{{ answerer.keywords|join(', ') }}</td>{{- '' -}}
         <td>{{ answerer.info.name }}</td>{{- '' -}}
         <td>{{ answerer.info.description }}</td>{{- '' -}}
@@ -23,15 +24,16 @@
       </tr>
     {%- endfor -%}
 
-    <td></td>{{- '' -}}
-    <th scope="colgroup" colspan="4">
-      {{- _('This is the list of plugins.') -}}
-    </th>{{- '' -}}
+    <tr class="pref-group" >{{- '' -}}
+      <th scope="colgroup" colspan="5">
+        {{- _('This is the list of plugins.') -}}
+      </th>{{- '' -}}
+    </th>
 
     {%- for plugin in plugins -%}
       {%- if plugin.preference_section == 'query' -%}
         <tr>{{- '' -}}
-          <td>{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>{{- '' -}}
+          <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>{{- '' -}}
           <td>{{ plugin.query_keywords|join(', ') }}</td>{{- '' -}}
           <td>{{ _(plugin.name) }}</td>{{- '' -}}
           <td>{{ _(plugin.description) }}</td>{{- '' -}}

@@ -1,7 +1,18 @@
-#tab-content-query table td,
-#tab-content-query table th {
-  .ltr-text-align-right() !important;
-  height: 3rem;
+table {
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: center;
+    padding: 1rem 0.5rem;
+    .ltr-text-align-left();
+  }
+
+  tr.pref-group th {
+    font-weight: normal;
+    .ltr-text-align-left();
+    background: var(--color-settings-table-group-background);
+  }
 }
 
 #main_preferences {
@@ -81,14 +92,6 @@
     border: 0 none;
   }
 
-  table {
-    border-collapse: collapse;
-  }
-
-  table td {
-    text-align: center;
-  }
-
   .category {
     .ltr-margin-right(0.5rem);
 
@@ -104,10 +107,6 @@
   }
 
   table.table_engines {
-    td {
-      height: 3.75rem;
-    }
-
     th.name {
       /* stylelint-disable */
       label {
@@ -130,12 +129,7 @@
       }
     }
 
-    .engine-group {
-      .ltr-text-align-left();
-      font-weight: normal;
-      background: var(--color-settings-engine-group-background);
-    }
-
+    .checkbox-col,
     .name,
     .shortcut {
       .ltr-text-align-left();
