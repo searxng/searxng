@@ -15,6 +15,7 @@ from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
+from markdown_it import MarkdownIt
 
 from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
@@ -156,6 +157,29 @@ def html_to_text(html_str: str) -> str:
     except _HTMLTextExtractorException:
         logger.debug("HTMLTextExtractor: invalid HTML\n%s", html_str)
     return s.get_text()
+
+
+def markdown_to_text(markdown_str: str) -> str:
+    """Extract text from a Markdown string
+
+    Args:
+        * markdown_str (str): string Markdown
+
+    Returns:
+        * str: extracted text
+
+    Examples:
+        >>> markdown_to_text('[example](https://example.com)')
+        'example'
+
+        >>> markdown_to_text('## Headline')
+        'Headline'
+    """
+
+    html_str = (
+        MarkdownIt("commonmark", {"typographer": True}).enable(["replacements", "smartquotes"]).render(markdown_str)
+    )
+    return html_to_text(html_str)
 
 
 def extract_text(xpath_results, allow_none: bool = False) -> Optional[str]:

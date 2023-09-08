@@ -42,10 +42,9 @@ Implementations
 from datetime import datetime
 from urllib.parse import urlencode
 
-from markdown_it import MarkdownIt
 from flask_babel import gettext
 
-from searx.utils import html_to_text
+from searx.utils import markdown_to_text
 
 about = {
     "website": 'https://lemmy.ml/',
@@ -78,11 +77,6 @@ def request(query, params):
     return params
 
 
-def _format_content(content):
-    html = MarkdownIt("commonmark", {"typographer": True}).enable(["replacements", "smartquotes"]).render(content)
-    return html_to_text(html)
-
-
 def _get_communities(json):
     results = []
 
@@ -97,7 +91,7 @@ def _get_communities(json):
             {
                 'url': result['community']['actor_id'],
                 'title': result['community']['title'],
-                'content': _format_content(result['community'].get('description', '')),
+                'content': markdown_to_text(result['community'].get('description', '')),
                 'img_src': result['community'].get('icon', result['community'].get('banner')),
                 'publishedDate': datetime.strptime(counts['published'][:19], '%Y-%m-%dT%H:%M:%S'),
                 'metadata': metadata,
@@ -114,7 +108,7 @@ def _get_users(json):
             {
                 'url': result['person']['actor_id'],
                 'title': result['person']['name'],
-                'content': _format_content(result['person'].get('bio', '')),
+                'content': markdown_to_text(result['person'].get('bio', '')),
             }
         )
 
@@ -140,7 +134,7 @@ def _get_posts(json):
 
         content = result['post'].get('body', '').strip()
         if content:
-            content = _format_content(content)
+            content = markdown_to_text(content)
 
         results.append(
             {
@@ -164,7 +158,7 @@ def _get_comments(json):
 
         content = result['comment'].get('content', '').strip()
         if content:
-            content = _format_content(content)
+            content = markdown_to_text(content)
 
         metadata = (
             f"&#x25B2; {result['counts']['upvotes']} &#x25BC; {result['counts']['downvotes']}"
@@ -176,7 +170,7 @@ def _get_comments(json):
             {
                 'url': result['comment']['ap_id'],
                 'title': result['post']['name'],
-                'content': _format_content(result['comment']['content']),
+                'content': markdown_to_text(result['comment']['content']),
                 'publishedDate': datetime.strptime(result['comment']['published'][:19], '%Y-%m-%dT%H:%M:%S'),
                 'metadata': metadata,
             }
