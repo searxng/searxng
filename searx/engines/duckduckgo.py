@@ -328,6 +328,19 @@ def response(resp):
     len_tr_rows = len(tr_rows)
     offset = 0
 
+    zero_click_info_xpath = '//html/body/form/div/table[2]/tr[2]/td/text()'
+    zero_click = extract_text(eval_xpath(doc, zero_click_info_xpath)).strip()
+
+    if zero_click:
+        current_query = resp.search_params["data"].get("q")
+
+        results.append(
+            {
+                'answer': zero_click,
+                'url': "https://duckduckgo.com/?" + urlencode({"q": current_query}),
+            }
+        )
+
     while len_tr_rows >= offset + 4:
 
         # assemble table rows we need to scrap
