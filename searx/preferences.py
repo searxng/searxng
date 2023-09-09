@@ -461,6 +461,10 @@ class Preferences:
                 settings['ui']['infinite_scroll'],
                 locked=is_locked('infinite_scroll')
             ),
+            'search_on_category_select': BooleanSetting(
+                settings['ui']['search_on_category_select'],
+                locked=is_locked('search_on_category_select')
+            ),
             # fmt: on
         }
 

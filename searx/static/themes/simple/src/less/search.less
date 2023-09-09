@@ -23,12 +23,15 @@
     "spacer categories";
 }
 
-.category {
+.category_checkbox,
+.category_button {
   display: inline-block;
   position: relative;
   .ltr-margin-right(1rem);
   padding: 0;
+}
 
+.category_checkbox {
   input {
     display: none;
   }
@@ -55,6 +58,35 @@
     color: var(--color-categories-item-selected-font);
     border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
+}
+
+button.category_button {
+  background-color: inherit;
+  color: var(--color-base-font);
+  cursor: pointer;
+  padding: 0.2rem 0;
+  display: inline-flex;
+  align-items: center;
+  text-transform: capitalize;
+  font-size: 0.9em;
+  border: none;
+  border-bottom: 2px solid transparent;
+
+  svg {
+    padding-right: 0.2rem;
+  }
+
+  &.selected,
+  &:active,
+  &:focus-within {
+    color: var(--color-categories-item-selected-font);
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+  }
+}
+
+#categories_container:has(button.category_button:focus-within) button.category_button.selected {
+  color: var(--color-base-font);
+  border-bottom: none;
 }
 
 #search_logo {
@@ -205,11 +237,6 @@ html.no-js #clear_search.hide_if_nojs {
   #categories {
     font-size: 90%;
     clear: both;
-
-    .checkbox_container {
-      margin: auto;
-      margin-top: 2px;
-    }
   }
 }
 
@@ -219,7 +246,7 @@ html.no-js #clear_search.hide_if_nojs {
     #categories_container {
       width: max-content;
 
-      .category {
+      .category_checkbox {
         display: inline-block;
         width: auto;
       }
@@ -271,14 +298,21 @@ html.no-js #clear_search.hide_if_nojs {
     width: auto;
     margin: 0;
 
+    svg {
+      display: none;
+    }
+  }
+
+  .category_checkbox {
     label {
       padding: 1rem !important;
       margin: 0 !important;
-
-      svg {
-        display: none;
-      }
     }
+  }
+
+  .category_button {
+    padding: 1rem !important;
+    margin: 0 !important;
   }
 
   #search_view:focus-within {

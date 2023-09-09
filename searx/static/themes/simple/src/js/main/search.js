@@ -151,28 +151,27 @@
     }
 
     // vanilla js version of search_on_category_select.js
-    if (qinput !== null && d.querySelector('.help') != null && searxng.settings.search_on_category_select) {
-      d.querySelector('.help').className = 'invisible';
-
-      searxng.on('#categories input', 'change', function () {
-        var i, categories = d.querySelectorAll('#categories input[type="checkbox"]');
-        for (i = 0; i < categories.length; i++) {
-          if (categories[i] !== this && categories[i].checked) {
-            categories[i].click();
-          }
-        }
-        if (! this.checked) {
-          this.click();
-        }
-        submitIfQuery();
-        return false;
-      });
-
+    if (qinput !== null && searxng.settings.search_on_category_select) {
       searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);
     }
 
+    // most common browsers at the time of writing this support :has, except for Firefox
+    // can be removed when Firefox / Firefox ESL starts supporting it as well
+    try {
+      // this fails when the browser does not support :has
+      d.querySelector("html:has(body)");
+    } catch (_) {
+      // manually deselect the old selection when a new category is selected
+      for (let button of d.querySelectorAll("button.category_button")) {
+        searxng.on(button, 'click', () => {
+          const selected = d.querySelector("button.category_button.selected");
+          console.log(selected);
+          selected.classList.remove("selected");
+        })
+      }
+    }
   });
 
 })(window, document, window.searxng);

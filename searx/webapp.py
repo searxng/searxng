@@ -361,7 +361,7 @@ def get_client_settings():
         'http_method': req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),
-        'search_on_category_select': req_pref.plugins.choices['searx.plugins.search_on_category_select'],
+        'search_on_category_select': req_pref.get_value('searx.plugins.search_on_category_select'),
         'hotkeys': req_pref.plugins.choices['searx.plugins.vim_hotkeys'],
         'theme_static_path': custom_url_for('static', filename='themes/simple'),
     }
@@ -389,6 +389,7 @@ def render(template_name: str, **kwargs):
     kwargs['preferences'] = request.preferences
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
     kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
+    kwargs['search_on_category_select'] = request.preferences.get_value('search_on_category_select')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')

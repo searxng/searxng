@@ -1,0 +1,16 @@
+<fieldset>{{- '' -}}
+  <legend>{{ _('Search on category select') }}</legend>{{- '' -}}
+  <p class="value">{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="search_on_category_select" {{- ' ' -}}
+           aria-labelledby="pref_search_on_category_select" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('search_on_category_select') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           />{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _('Perform search immediately if a category selected. Disable to select multiple categories') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}

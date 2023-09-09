@@ -92,16 +92,14 @@ Parameters
   List of enabled plugins.
 
   :default:
-     ``Hash_plugin``, ``Search_on_category_select``,
-     ``Self_Information``, ``Tracker_URL_remover``,
-     ``Ahmia_blacklist``
+     ``Hash_plugin``, ``Self_Information``,
+     ``Tracker_URL_remover``, ``Ahmia_blacklist``
 
   :values:
      .. enabled by default
 
-     ``Hash_plugin``, ``Search_on_category_select``,
-     ``Self_Information``, ``Tracker_URL_remover``,
-     ``Ahmia_blacklist``,
+     ``Hash_plugin``, ``Self_Information``,
+     ``Tracker_URL_remover``, ``Ahmia_blacklist``,
 
      .. disabled by default
 
