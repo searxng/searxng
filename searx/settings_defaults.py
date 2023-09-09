@@ -199,6 +199,7 @@ SCHEMA = {
         'query_in_title': SettingsValue(bool, False),
         'infinite_scroll': SettingsValue(bool, False),
         'cache_url': SettingsValue(str, 'https://web.archive.org/web/'),
+        'search_on_category_select': SettingsValue(bool, True),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
