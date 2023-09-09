@@ -104,7 +104,6 @@ from urllib.parse import (
     parse_qs,
 )
 
-import chompjs
 from lxml import html
 
 from searx import locales
@@ -112,6 +111,7 @@ from searx.utils import (
     extract_text,
     eval_xpath_list,
     eval_xpath_getindex,
+    js_variable_to_python,
 )
 from searx.enginelib.traits import EngineTraits
 
@@ -215,7 +215,7 @@ def response(resp):
             datastr = line.replace("const data = ", "").strip()[:-1]
             break
 
-    json_data = chompjs.parse_js_object(datastr)
+    json_data = js_variable_to_python(datastr)
     json_resp = json_data[1]['data']['body']['response']
 
     if brave_category == 'news':
