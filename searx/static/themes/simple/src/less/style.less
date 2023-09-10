@@ -521,8 +521,7 @@ article[data-vim-selected].category-social {
     "pagination sidebar";
 }
 
-#results #sidebar *:first-child,
-#results #urls *:first-child {
+#results #sidebar *:first-child {
   margin-top: 0;
 }
 
@@ -737,9 +736,9 @@ summary.title {
 
 #links_on_top {
   position: absolute;
-  .ltr-right(1.8rem);
+  .ltr-right(1rem);
   .ltr-text-align-right();
-  top: 2.2rem;
+  top: 2.7rem;
   padding: 0;
   border: 0;
   display: flex;
@@ -919,7 +918,7 @@ summary.title {
   }
 
   #main_results div#results {
-    margin: 1rem auto 0 auto;
+    margin: 0 auto;
     justify-content: center;
     display: grid;
     grid-template-columns: @results-width;
@@ -1016,12 +1015,12 @@ summary.title {
 
   #main_results div#results {
     grid-template-columns: 100%;
-    margin: 1rem 0 0 0;
+    margin: 0 auto;
   }
 
   #links_on_top {
-    top: 0.8rem;
-    .ltr-right(0.7rem);
+    top: 1.4rem;
+    .ltr-right(10px);
   }
 
   #main_index #links_on_top {
@@ -1045,7 +1044,9 @@ summary.title {
 
   .result {
     background: var(--color-result-background);
-    margin: 1rem 0;
+    border: 1px solid var(--color-result-background);
+    margin: 1rem 10px;
+    .rounded-corners;
   }
 
   .result-images {
