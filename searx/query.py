@@ -150,7 +150,7 @@ class LanguageParser(QueryPartParser):
 class ExternalBangParser(QueryPartParser):
     @staticmethod
     def check(raw_value):
-        return raw_value.startswith('!!')
+        return raw_value.startswith('!!') and len(raw_value) > 2
 
     def __call__(self, raw_value):
         value = raw_value[2:]
@@ -177,7 +177,8 @@ class ExternalBangParser(QueryPartParser):
 class BangParser(QueryPartParser):
     @staticmethod
     def check(raw_value):
-        return raw_value[0] == '!'
+        # make sure it's not any bang with double '!!'
+        return raw_value[0] == '!' and (len(raw_value) < 2 or raw_value[1] != '!')
 
     def __call__(self, raw_value):
         value = raw_value[1:].replace('-', ' ').replace('_', ' ')
@@ -235,14 +236,25 @@ class BangParser(QueryPartParser):
                 self._add_autocomplete(first_char + engine_shortcut)
 
 
+class FeelingLuckyParser(QueryPartParser):
+    @staticmethod
+    def check(raw_value):
+        return raw_value == '!!'
+
+    def __call__(self, raw_value):
+        self.raw_text_query.redirect_to_first_result = True
+        return True
+
+
 class RawTextQuery:
     """parse raw text query (the value from the html input)"""
 
     PARSER_CLASSES = [
-        TimeoutParser,  # this force the timeout
-        LanguageParser,  # this force a language
+        TimeoutParser,  # force the timeout
+        LanguageParser,  # force a language
         ExternalBangParser,  # external bang (must be before BangParser)
-        BangParser,  # this force a engine or category
+        BangParser,  # force an engine or category
+        FeelingLuckyParser,  # redirect to the first link in the results list
     ]
 
     def __init__(self, query, disabled_engines):
@@ -261,6 +273,7 @@ class RawTextQuery:
         self.query_parts = []  # use self.getFullQuery()
         self.user_query_parts = []  # use self.getQuery()
         self.autocomplete_location = None
+        self.redirect_to_first_result = False
         self._parse_query()
 
     def _parse_query(self):
@@ -330,5 +343,6 @@ class RawTextQuery:
             + f"enginerefs={self.enginerefs!r}\n  "
             + f"autocomplete_list={self.autocomplete_list!r}\n  "
             + f"query_parts={self.query_parts!r}\n  "
-            + f"user_query_parts={self.user_query_parts!r} >"
+            + f"user_query_parts={self.user_query_parts!r} >\n"
+            + f"redirect_to_first_result={self.redirect_to_first_result!r}"
         )
