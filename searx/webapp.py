@@ -697,6 +697,10 @@ def search():
     previous_result = None
 
     results = result_container.get_ordered_results()
+
+    if search_query.redirect_to_first_result and results:
+        return redirect(results[0]['url'], 302)
+
     for result in results:
         if output_format == 'html':
             if 'content' in result and result['content']:

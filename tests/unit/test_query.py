@@ -225,18 +225,6 @@ class TestExternalBangParser(SearxTestCase):
         a = query.autocomplete_list[0]
         self.assertEqual(query.get_autocomplete_full_query(a), a + ' the query')
 
-    def test_external_bang_autocomplete_empty(self):
-        query_text = 'the query !!'
-        query = RawTextQuery(query_text, [])
-
-        self.assertEqual(query.getFullQuery(), 'the query !!')
-        self.assertEqual(len(query.query_parts), 0)
-        self.assertFalse(query.specific)
-        self.assertGreater(len(query.autocomplete_list), 2)
-
-        a = query.autocomplete_list[0]
-        self.assertEqual(query.get_autocomplete_full_query(a), 'the query ' + a)
-
 
 class TestBang(SearxTestCase):
 

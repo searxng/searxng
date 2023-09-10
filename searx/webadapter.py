@@ -254,6 +254,7 @@ def get_search_query_from_webapp(
     query_time_range = parse_time_range(form)
     query_timeout = parse_timeout(form, raw_text_query)
     external_bang = raw_text_query.external_bang
+    redirect_to_first_result = raw_text_query.redirect_to_first_result
     engine_data = parse_engine_data(form)
 
     query_lang = parse_lang(preferences, form, raw_text_query)
@@ -288,6 +289,7 @@ def get_search_query_from_webapp(
             query_timeout,
             external_bang=external_bang,
             engine_data=engine_data,
+            redirect_to_first_result=redirect_to_first_result,
         ),
         raw_text_query,
         query_engineref_list_unknown,
