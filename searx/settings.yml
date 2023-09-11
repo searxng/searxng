@@ -1280,6 +1280,18 @@ engines:
     categories: [videos, web]
     network: qwant
 
+  - name: qwantlite
+    engine: xpath
+    paging: true
+    search_url: https://lite.qwant.com/?q={query}&p={pageno}
+    results_xpath: //section/article
+    url_xpath: ./span/text()
+    title_xpath: ./h2/a/text()
+    content_xpath: ./p/text()
+    shortcut: qwl
+    categories: [general, web]
+    network: qwant
+
   # - name: library
   #   engine: recoll
   #   shortcut: lib
