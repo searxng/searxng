@@ -57,118 +57,118 @@ searxng.ready(function () {
 
   // these bindings are always on
   var keyBindings = {
-    27: {
-      key: 'Escape',
+    'Escape': {
+      key: 'ESC',
       fun: removeFocus,
       des: 'remove focus from the focused input',
       cat: 'Control'
     },
-    37: {
-      key: 'Left',
-      fun: ifDetailOpened(highlightResult('up')),
-      des: 'select previous search result',
+    'ArrowLeft': {
+      key: '&#11013;',
+      fun: highlightResult('up'),
+      des: 'Use left arrow to select previous search result',
       cat: 'Results'
     },
-    39: {
-      key: 'Right',
-      fun: ifDetailOpened(highlightResult('down')),
-      des: 'select next search result',
+    'ArrowRight': {
+      key: '&#10145;',
+      fun: highlightResult('down'),
+      des: 'Use right arrow to select next search result',
       cat: 'Results'
-    }
-  }
-
-  // these bindings are enabled by user preferences
-  var vimKeys = {
-    73: {
+    },
+    'h': {
+      key: 'h',
+      fun: toggleHelp,
+      des: 'toggle help window',
+      cat: 'Other'
+    },
+    'i': {
       key: 'i',
       fun: searchInputFocus,
       des: 'focus on the search input',
       cat: 'Control'
     },
-    66: {
-      key: 'b',
-      fun: scrollPage(-window.innerHeight),
-      des: 'scroll one page up',
-      cat: 'Navigation'
-    },
-    70: {
-      key: 'f',
-      fun: scrollPage(window.innerHeight),
-      des: 'scroll one page down',
-      cat: 'Navigation'
-    },
-    85: {
-      key: 'u',
-      fun: scrollPage(-window.innerHeight / 2),
-      des: 'scroll half a page up',
-      cat: 'Navigation'
-    },
-    68: {
-      key: 'd',
-      fun: scrollPage(window.innerHeight / 2),
-      des: 'scroll half a page down',
-      cat: 'Navigation'
-    },
-    71: {
-      key: 'g',
-      fun: scrollPageTo(-document.body.scrollHeight, 'top'),
-      des: 'scroll to the top of the page',
-      cat: 'Navigation'
-    },
-    86: {
-      key: 'v',
-      fun: scrollPageTo(document.body.scrollHeight, 'bottom'),
-      des: 'scroll to the bottom of the page',
-      cat: 'Navigation'
-    },
-    75: {
-      key: 'k',
-      fun: highlightResult('up'),
-      des: 'select previous search result',
-      cat: 'Results'
-    },
-    74: {
-      key: 'j',
-      fun: highlightResult('down'),
-      des: 'select next search result',
-      cat: 'Results'
-    },
-    80: {
-      key: 'p',
-      fun: GoToPreviousPage(),
-      des: 'go to previous page',
-      cat: 'Results'
-    },
-    78: {
+    'n': {
       key: 'n',
       fun: GoToNextPage(),
       des: 'go to next page',
       cat: 'Results'
     },
-    79: {
+    'o': {
       key: 'o',
       fun: openResult(false),
       des: 'open search result',
       cat: 'Results'
     },
-    84: {
-      key: 't',
-      fun: openResult(true),
-      des: 'open the result in a new tab',
+    'p': {
+      key: 'p',
+      fun: GoToPreviousPage(),
+      des: 'go to previous page',
       cat: 'Results'
     },
-    82: {
+    'r': {
       key: 'r',
       fun: reloadPage,
       des: 'reload page from the server',
       cat: 'Control'
     },
-    72: {
-      key: 'h',
-      fun: toggleHelp,
-      des: 'toggle help window',
-      cat: 'Other'
-    }
+    't': {
+      key: 't',
+      fun: openResult(true),
+      des: 'open the result in a new tab',
+      cat: 'Results'
+    },
+  }
+
+  // these bindings are enabled by user preferences
+  var vimKeys = {
+    'b': {
+      key: 'b',
+      fun: scrollPage(-window.innerHeight),
+      des: 'scroll one page up',
+      cat: 'Navigation'
+    },
+    'f': {
+      key: 'f',
+      fun: scrollPage(window.innerHeight),
+      des: 'scroll one page down',
+      cat: 'Navigation'
+    },
+    'u': {
+      key: 'u',
+      fun: scrollPage(-window.innerHeight / 2),
+      des: 'scroll half a page up',
+      cat: 'Navigation'
+    },
+    'd': {
+      key: 'd',
+      fun: scrollPage(window.innerHeight / 2),
+      des: 'scroll half a page down',
+      cat: 'Navigation'
+    },
+    'g': {
+      key: 'g',
+      fun: scrollPageTo(-document.body.scrollHeight, 'top'),
+      des: 'scroll to the top of the page',
+      cat: 'Navigation'
+    },
+    'v': {
+      key: 'v',
+      fun: scrollPageTo(document.body.scrollHeight, 'bottom'),
+      des: 'scroll to the bottom of the page',
+      cat: 'Navigation'
+    },
+    'k': {
+      key: 'k',
+      fun: highlightResult('up'),
+      des: 'select previous search result',
+      cat: 'Results'
+    },
+    'j': {
+      key: 'j',
+      fun: highlightResult('down'),
+      des: 'select next search result',
+      cat: 'Results'
+    },
   };
 
   if (searxng.settings.hotkeys) {
@@ -178,26 +178,22 @@ searxng.ready(function () {
 
   searxng.on(document, "keydown", function (e) {
     // check for modifiers so we don't break browser's hotkeys
-    if (Object.prototype.hasOwnProperty.call(keyBindings, e.keyCode) && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+    if (
+      Object.prototype.hasOwnProperty.call(keyBindings, e.key)
+        && !e.ctrlKey && !e.altKey
+        && !e.shiftKey && !e.metaKey
+    ) {
       var tagName = e.target.tagName.toLowerCase();
-      if (e.keyCode === 27) {
-        keyBindings[e.keyCode].fun(e);
+      if (e.key === 'Escape') {
+        keyBindings[e.key].fun(e);
       } else {
         if (e.target === document.body || tagName === 'a' || tagName === 'button') {
           e.preventDefault();
-          keyBindings[e.keyCode].fun();
+          keyBindings[e.key].fun();
         }
       }
     }
   });
-
-  function ifDetailOpened (f) {
-    return function () {
-      if (searxng.isDetailOpened()) {
-        f();
-      }
-    }
-  }
 
   function highlightResult (which) {
     return function (noScroll, keepFocus) {
@@ -390,7 +386,7 @@ searxng.ready(function () {
     }
 
     var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
-    html += '<h3>How to navigate searx with Vim-like hotkeys</h3>';
+    html += '<h3>How to navigate SearXNG with hotkeys</h3>';
     html += '<table>';
 
     for (var i = 0; i < sorted.length; i++) {
@@ -431,8 +427,6 @@ searxng.ready(function () {
       helpPanel = document.createElement('div');
       helpPanel.id = 'vim-hotkeys-help';
       helpPanel.className = 'dialog-modal';
-      initHelpContent(helpPanel);
-      initHelpContent(helpPanel);
       initHelpContent(helpPanel);
       var body = document.getElementsByTagName('body')[0];
       body.appendChild(helpPanel);
