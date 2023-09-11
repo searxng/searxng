@@ -10,21 +10,20 @@
 # Archfiend <romkutisarch3@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 19:28+0000\n"
+"POT-Creation-Date: 2023-09-11 10:31+0000\n"
 "PO-Revision-Date: 2023-09-10 18:53+0000\n"
 "Last-Translator: Archfiend <romkutisarch3@gmail.com>\n"
-"Language-Team: Lithuanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/lt/>\n"
 "Language: lt\n"
+"Language-Team: Lithuanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/lt/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100"
+" < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < "
+"11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -291,17 +290,17 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Nepavyko perskaityti šio vaizdo URL. Taip gali būti dėl nepalaikomo failo "
-"formato. TinEye palaiko tik JPEG, PNG, GIF, BMP, TIFF arba WebP vaizdus."
+"Nepavyko perskaityti šio vaizdo URL. Taip gali būti dėl nepalaikomo failo"
+" formato. TinEye palaiko tik JPEG, PNG, GIF, BMP, TIFF arba WebP vaizdus."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Vaizdas per paprastas, kad būtų galima rasti atitikmenų. Norint sėkmingai "
-"nustatyti atitikmenis, „TinEye“ reikalingas pagrindinis vizualinių detalių "
-"lygis."
+"Vaizdas per paprastas, kad būtų galima rasti atitikmenų. Norint sėkmingai"
+" nustatyti atitikmenis, „TinEye“ reikalingas pagrindinis vizualinių "
+"detalių lygis."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -394,8 +393,8 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Šis papildinys patikrina, ar užklausos adresas yra Tor išėjimo mazgas, ir "
-"informuoja vartotoją, jei taip yra; kaip check.torproject.org, bet iš "
+"Šis papildinys patikrina, ar užklausos adresas yra Tor išėjimo mazgas, ir"
+" informuoja vartotoją, jei taip yra; kaip check.torproject.org, bet iš "
 "SearXNG."
 
 #: searx/plugins/tor_check.py:62
@@ -403,8 +402,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nepavyko atsisiųsti „Tor“ išėjimo mazgų sąrašo iš: https://check.torproject."
-"org/exit-addresses"
+"Nepavyko atsisiųsti „Tor“ išėjimo mazgų sąrašo iš: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -879,7 +878,7 @@ msgstr "Pavyzdžiai"
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Šis sąrašas yra SearXNG"
 
-#: searx/templates/simple/preferences/answerers.html:28
+#: searx/templates/simple/preferences/answerers.html:29
 msgid "This is the list of plugins."
 msgstr "Čia yra papildinių sąrašas."
 
@@ -1089,6 +1088,10 @@ msgstr "Sąsajos kalba"
 #: searx/templates/simple/preferences/ui_locale.html:14
 msgid "Change the language of the layout"
 msgstr "Keisti išdėstymo kalbą"
+
+#: searx/templates/simple/result_templates/code.html:13
+msgid "repo"
+msgstr ""
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1594,3 +1597,4 @@ msgstr "slėpti vaizdo įrašą"
 
 #~ msgid "Disabled"
 #~ msgstr "Išjungtas"
+
