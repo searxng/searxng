@@ -1,67 +1,96 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""Library of Congress: query Photo, Print and Drawing from API endpoint_
+``photos``.
+
+.. _endpoint: https://www.loc.gov/apis/json-and-yaml/requests/endpoints/
+
+.. note::
+
+   Beside the ``photos`` endpoint_ there are more endpoints available / we are
+   looking forward for contributions implementing more endpoints.
+
 """
 
- Library of Congress : images from Prints and Photographs Online Catalog
-
-"""
-
-from json import loads
 from urllib.parse import urlencode
-
+from searx.network import raise_for_httperror
 
 about = {
     "website": 'https://www.loc.gov/pictures/',
     "wikidata_id": 'Q131454',
-    "official_api_documentation": 'https://www.loc.gov/pictures/api',
+    "official_api_documentation": 'https://www.loc.gov/api',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
 }
 
 categories = ['images']
-
 paging = True
 
-base_url = 'https://loc.gov/pictures/search/?'
-search_string = "&sp={page}&{query}&fo=json"
-
-IMG_SRC_FIXES = {
-    'https://tile.loc.gov/storage-services/': 'https://tile.loc.gov/storage-services/',
-    'https://loc.gov/pictures/static/images/': 'https://tile.loc.gov/storage-services/',
-    'https://www.loc.gov/pictures/cdn/': 'https://tile.loc.gov/storage-services/',
-}
+endpoint = 'photos'
+base_url = 'https://loc.gov'
+search_string = "/{endpoint}/?sp={page}&{query}&fo=json"
 
 
 def request(query, params):
 
-    search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
-
+    search_path = search_string.format(
+        endpoint=endpoint,
+        query=urlencode({'q': query}),
+        page=params['pageno'],
+    )
     params['url'] = base_url + search_path
-
+    params['raise_for_httperror'] = False
     return params
 
 
 def response(resp):
+
     results = []
+    json_data = resp.json()
 
-    json_data = loads(resp.text)
+    json_results = json_data.get('results')
+    if not json_results:
+        # when a search term has none results, loc sends a JSON in a HTTP 404
+        # response and the HTTP status code is set in the 'status' element.
+        if json_data.get('status') == 404:
+            return results
 
-    for result in json_data['results']:
-        img_src = result['image']['full']
-        for url_prefix, url_replace in IMG_SRC_FIXES.items():
-            if img_src.startswith(url_prefix):
-                img_src = img_src.replace(url_prefix, url_replace)
-                break
-        else:
-            img_src = result['image']['thumb']
+    raise_for_httperror(resp)
+
+    for result in json_results:
+
+        url = result["item"].get("link")
+        if not url:
+            continue
+
+        img_src = result['item'].get('service_medium')
+        if not img_src or img_src == 'https://memory.loc.gov/pp/grp.gif':
+            continue
+
+        title = result['title']
+        if title.startswith('['):
+            title = title.strip('[]')
+
+        content_items = [
+            result['item'].get('created_published_date'),
+            result['item'].get('summary', [None])[0],
+            result['item'].get('notes', [None])[0],
+            result['item'].get('part_of', [None])[0],
+        ]
+
+        author = None
+        if result['item'].get('creators'):
+            author = result['item']['creators'][0]['title']
+
         results.append(
             {
-                'url': result['links']['item'],
-                'title': result['title'],
-                'img_src': img_src,
-                'thumbnail_src': result['image']['thumb'],
-                'author': result['creator'],
                 'template': 'images.html',
+                'url': url,
+                'title': title,
+                'content': ' / '.join([i for i in content_items if i]),
+                'img_src': img_src,
+                'thumbnail_src': result['item'].get('thumb_gallery'),
+                'author': author,
             }
         )
 
