@@ -21,6 +21,7 @@ about = {
 
 # Engine configuration
 paging = True
+time_range_support = True
 results_per_page = 20
 categories = ['videos']
 
@@ -29,6 +30,13 @@ base_url = "https://lighthouse.odysee.tv/search"
 
 
 def request(query, params):
+    time_range_dict = {
+        "day": "today",
+        "week": "thisweek",
+        "month": "thismonth",
+        "year": "thisyear",
+    }
+
     start_index = (params["pageno"] - 1) * results_per_page
     query_params = {
         "s": query,
@@ -37,6 +45,9 @@ def request(query, params):
         "include": "channel,thumbnail_url,title,description,duration,release_time",
         "mediaType": "video",
     }
+
+    if params['time_range'] in time_range_dict:
+        query_params['time_filter'] = time_range_dict[params['time_range']]
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
     return params
