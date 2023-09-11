@@ -9,6 +9,14 @@ import time
 from urllib.parse import urlencode
 from datetime import datetime
 
+import babel
+
+from searx.network import get
+from searx.locales import language_tag
+from searx.enginelib.traits import EngineTraits
+
+traits: EngineTraits
+
 # Engine metadata
 about = {
     "website": "https://odysee.com/",
@@ -45,6 +53,10 @@ def request(query, params):
         "include": "channel,thumbnail_url,title,description,duration,release_time",
         "mediaType": "video",
     }
+
+    lang = traits.get_language(params['searxng_locale'], None)
+    if lang is not None:
+        query_params['language'] = lang
 
     if params['time_range'] in time_range_dict:
         query_params['time_filter'] = time_range_dict[params['time_range']]
@@ -99,3 +111,35 @@ def response(resp):
         )
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    """
+    Fetch languages from Odysee's source code.
+    """
+
+    resp = get(
+        'https://raw.githubusercontent.com/OdyseeTeam/odysee-frontend/master/ui/constants/supported_browser_languages.js',  # pylint: disable=line-too-long
+        timeout=60,
+    )
+
+    if not resp.ok:
+        print("ERROR: can't determine languages from Odysee")
+        return
+
+    for line in resp.text.split("\n")[1:-4]:
+        lang_tag = line.strip().split(": ")[0].replace("'", "")
+
+        try:
+            sxng_tag = language_tag(babel.Locale.parse(lang_tag, sep="-"))
+        except babel.UnknownLocaleError:
+            print("ERROR: %s is unknown by babel" % lang_tag)
+            continue
+
+        conflict = engine_traits.languages.get(sxng_tag)
+        if conflict:
+            if conflict != lang_tag:
+                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, lang_tag))
+            continue
+
+        engine_traits.languages[sxng_tag] = lang_tag
