@@ -1235,7 +1235,7 @@ engines:
     shortcut: pypi
     engine: xpath
     paging: true
-    search_url: https://pypi.org/search?q={query}&page={pageno}
+    search_url: https://pypi.org/search/?q={query}&page={pageno}
     results_xpath: /html/body/main/div/div/div/form/div/ul/li/a[@class="package-snippet"]
     url_xpath: ./@href
     title_xpath: ./h3/span[@class="package-snippet__name"]
