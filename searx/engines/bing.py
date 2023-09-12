@@ -138,7 +138,6 @@ def request(query, params):
     query_params = {
         # fmt: off
         'q': query,
-        'pq': query,
         'cvid': CVID,
         'qs': 'n',
         'sp': '-1'
