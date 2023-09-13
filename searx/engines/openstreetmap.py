@@ -453,7 +453,7 @@ def get_key_label(key_name, lang):
             o = CURRENCIES['iso4217'].get(currency[1])
             if o:
                 return get_label(o, lang).lower()
-            return currency
+            return currency[1]
 
     labels = OSM_KEYS_TAGS['keys']
     for k in key_name.split(':') + ['*']:
