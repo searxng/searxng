@@ -5,7 +5,7 @@
 
 import time
 import random
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlparse
 from dateutil import parser
 
 # about
@@ -74,6 +74,11 @@ def response(resp):
                 thumbnail = thumb.get("url", "")
             else:
                 thumbnail = ""
+
+            # some instances return a partial thumbnail url
+            # we check if the url is partial, and prepend the base_url if it is
+            if thumbnail and not urlparse(thumbnail).netloc:
+                thumbnail = resp.search_params['base_url'] + thumbnail
 
             publishedDate = parser.parse(time.ctime(result.get("published", 0)))
             length = time.gmtime(result.get("lengthSeconds"))
