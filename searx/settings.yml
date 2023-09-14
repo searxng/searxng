@@ -1290,6 +1290,36 @@ engines:
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
 
+  - name: presearch
+    engine: presearch
+    search_type: search
+    categories: [general, web]
+    shortcut: ps
+
+  - name: presearch images
+    engine: presearch
+    search_type: images
+    categories: [images, web]
+    timeout: 4.0
+    shortcut: psimg
+    disabled: true
+
+  - name: presearch videos
+    engine: presearch
+    search_type: videos
+    categories: [videos, web]
+    timeout: 4.0
+    shortcut: psvid
+    disabled: true
+
+  - name: presearch news
+    engine: presearch
+    search_type: news
+    categories: [news, web]
+    timeout: 4.0
+    shortcut: psnews
+    disabled: true
+
   - name: pub.dev
     engine: xpath
     shortcut: pd
