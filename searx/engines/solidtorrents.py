@@ -39,8 +39,7 @@ def request(query, params):
     else:
         params['base_url'] = base_url
     search_url = params['base_url'] + '/search?{query}'
-    page = (params['pageno'] - 1) * 20
-    query = urlencode({'q': query, 'page': page})
+    query = urlencode({'q': query, 'page': params['pageno']})
     params['url'] = search_url.format(query=query)
     return params
 
