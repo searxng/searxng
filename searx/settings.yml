@@ -1214,10 +1214,10 @@ engines:
     shortcut: pd
     search_url: https://pub.dev/packages?q={query}&page={pageno}
     paging: true
-    results_xpath: /html/body/main/div/div[@class="search-results"]/div[@class="packages"]/div
+    results_xpath: //div[contains(@class,"packages-item")]
     url_xpath: ./div/h3/a/@href
     title_xpath: ./div/h3/a
-    content_xpath: ./p[@class="packages-description"]
+    content_xpath: ./div/div/div[contains(@class,"packages-description")]/span
     categories: [packages, it]
     timeout: 3.0
     disabled: true
