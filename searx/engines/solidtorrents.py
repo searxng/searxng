@@ -18,7 +18,7 @@ from searx.utils import (
 )
 
 about = {
-    "website": 'https://www.solidtorrents.net/',
+    "website": 'https://www.solidtorrents.to/',
     "wikidata_id": None,
     "official_api_documentation": None,
     "use_official_api": False,
@@ -30,7 +30,7 @@ categories = ['files']
 paging = True
 
 # base_url can be overwritten by a list of URLs in the settings.yml
-base_url = 'https://solidtorrents.net'
+base_url = 'https://solidtorrents.to'
 
 
 def request(query, params):
