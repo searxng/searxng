@@ -23,9 +23,7 @@ categories = ['videos']
 paging = True
 
 # search-url
-base_url = 'https://rumble.com'
-# https://rumble.com/search/video?q=searx&page=3
-search_url = base_url + '/search/video?{query}&page={pageno}'
+base_url = 'https://rumble.com/'
 
 url_xpath = './/a[@class="video-item--a"]/@href'
 thumbnail_xpath = './/img[@class="video-item--img"]/@src'
@@ -39,7 +37,10 @@ length_xpath = './/span[@class="video-item--duration"]/@data-value'
 
 
 def request(query, params):
-    params['url'] = search_url.format(pageno=params['pageno'], query=urlencode({'q': query}))
+    args = {"q": query}
+    if params["pageno"] > 1:
+        args['page'] = params["pageno"]
+    params['url'] = f'{base_url}search/video?{urlencode(args)}'
     return params
 
 
