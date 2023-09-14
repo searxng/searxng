@@ -99,7 +99,7 @@ def response(resp):
             'template': 'paper.html',
             'url': url,
             'title': title,
-            'content': content,
+            'content': content or "",
             'journal': journal,
             'issn': [issn],
             'authors': authors,
