@@ -12,11 +12,11 @@
 
 ## How to test this PR locally?
 
-<!-- commands to run the tests or instructions to test the changes-->
+<!-- commands to run the tests or instructions to test the changes -->
 
 ## Author's checklist
 
-<!-- additional notes for reviewiers -->
+<!-- additional notes for reviewers -->
 
 ## Related issues
 
