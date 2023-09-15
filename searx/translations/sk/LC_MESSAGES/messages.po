@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 19:28+0000\n"
-"PO-Revision-Date: 2023-09-05 08:53+0000\n"
+"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
 "searxng/sk/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
 ">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -399,8 +399,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nepodarilo sa stiahnuť zoznam Tor exit-nodes z: https://check.torproject.org/"
-"exit-addresses"
+"Nepodarilo sa stiahnuť zoznam Tor exit-nodes z: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -875,7 +875,7 @@ msgstr "Príklady"
 msgid "This is the list of SearXNG's instant answering modules."
 msgstr "Toto je zoznam modulov okamžitých odpovedí SearXNG."
 
-#: searx/templates/simple/preferences/answerers.html:28
+#: searx/templates/simple/preferences/answerers.html:29
 msgid "This is the list of plugins."
 msgstr "Toto je zoznam pluginov."
 
@@ -1025,8 +1025,8 @@ msgstr "Aký jazyk preferujete pre vyhľadávanie?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Ak chcete, aby SearXNG zistil jazyk vášho vyhľadávania, vyberte možnosť Auto-"
-"detect (Automatické zisťovanie)."
+"Ak chcete, aby SearXNG zistil jazyk vášho vyhľadávania, vyberte možnosť "
+"Auto-detect (Automatické zisťovanie)."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1091,6 +1091,10 @@ msgstr "Jazyk rozhrania"
 #: searx/templates/simple/preferences/ui_locale.html:14
 msgid "Change the language of the layout"
 msgstr "Zmena jazyku rozhrania"
+
+#: searx/templates/simple/result_templates/code.html:13
+msgid "repo"
+msgstr "repozitáre"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
