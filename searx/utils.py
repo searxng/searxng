@@ -40,6 +40,7 @@ _ECMA_UNESCAPE2_RE = re.compile(r'%([0-9a-fA-F]{2})', re.UNICODE)
 
 _JS_QUOTE_KEYS_RE = re.compile(r'([\{\s,])(\w+)(:)')
 _JS_VOID_RE = re.compile(r'void\s+[0-9]+|void\s*\([0-9]+\)')
+_JS_DECIMAL_RE = re.compile(r":\s*\.")
 
 _STORAGE_UNIT_VALUE: Dict[str, int] = {
     'TB': 1024 * 1024 * 1024 * 1024,
@@ -699,7 +700,7 @@ def js_variable_to_python(js_variable):
             # replace simple quote by double quote
             parts[i] = '"'
             in_string = None
-        #
+
         if not in_string:
             # replace void 0 by null
             # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void
@@ -714,6 +715,7 @@ def js_variable_to_python(js_variable):
     # becomes
     # { "a": 12 }
     s = _JS_QUOTE_KEYS_RE.sub(r'\1"\2"\3', s)
+    s = _JS_DECIMAL_RE.sub(":0.", s)
     # replace the surogate character by colon
     s = s.replace(chr(1), ':')
     # load the JSON and return the result
