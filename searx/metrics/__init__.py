@@ -152,19 +152,19 @@ def get_reliabilities(engline_name_list, checker_results):
         errors = engine_errors.get(engine_name) or []
         if counter('engine', engine_name, 'search', 'count', 'sent') == 0:
             # no request
-            reliablity = None
+            reliability = None
         elif checker_success and not errors:
-            reliablity = 100
+            reliability = 100
         elif 'simple' in checker_result.get('errors', {}):
-            # the basic (simple) test doesn't work: the engine is broken accoding to the checker
+            # the basic (simple) test doesn't work: the engine is broken according to the checker
             # even if there is no exception
-            reliablity = 0
+            reliability = 0
         else:
             # pylint: disable=consider-using-generator
-            reliablity = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
+            reliability = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
 
         reliabilities[engine_name] = {
-            'reliablity': reliablity,
+            'reliability': reliability,
             'errors': errors,
             'checker': checker_results.get(engine_name, {}).get('errors', {}),
         }

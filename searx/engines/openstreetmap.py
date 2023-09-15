@@ -162,7 +162,7 @@ def response(resp):
             }
         )
 
-    # simplify the code below: make sure extratags is a dictionnary
+    # simplify the code below: make sure extratags is a dictionary
     for result in nominatim_json:
         if not isinstance(result.get('extratags'), dict):
             result["extratags"] = {}
@@ -445,7 +445,7 @@ def get_key_label(key_name, lang):
     if key_name.startswith('currency:'):
         # currency:EUR --> get the name from the CURRENCIES variable
         # see https://wiki.openstreetmap.org/wiki/Key%3Acurrency
-        # and for exampe https://taginfo.openstreetmap.org/keys/currency:EUR#values
+        # and for example https://taginfo.openstreetmap.org/keys/currency:EUR#values
         # but there is also currency=EUR (currently not handled)
         # https://taginfo.openstreetmap.org/keys/currency#values
         currency = key_name.split(':')

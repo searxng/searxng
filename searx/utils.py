@@ -543,7 +543,7 @@ def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: Op
 
 def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index: int, default=_NOTSET):
     """Call eval_xpath_list then get one element using the index parameter.
-    If the index does not exist, either aise an exception is default is not set,
+    If the index does not exist, either raise an exception is default is not set,
     other return the default value (can be None).
 
     Args:
@@ -628,7 +628,7 @@ def detect_language(text: str, threshold: float = 0.3, only_search_languages: bo
 
     b. Most of SearXNG's engines do not support all the languages from `language
        identification model`_ and there is also a discrepancy in the ISO-639-3
-       (fastext) and ISO-639-2 (SearXNG)handling.  Further more, in SearXNG the
+       (fasttext) and ISO-639-2 (SearXNG)handling.  Further more, in SearXNG the
        locales like ``zh-TH`` (``zh-CN``) are mapped to ``zh_Hant``
        (``zh_Hans``) while the `language identification model`_ reduce both to
        ``zh``.
@@ -681,7 +681,7 @@ def js_variable_to_python(js_variable):
                 # here, inside a JS string, we escape the double quote
                 parts[i] = parts[i].replace('"', r'\"')
 
-        # deal with delimieters and escape character
+        # deal with delimiters and escape character
         if not in_string and p in ('"', "'"):
             # we are not in string
             # but p is double or simple quote
@@ -710,7 +710,7 @@ def js_variable_to_python(js_variable):
         previous_p = p
     # join the string
     s = ''.join(parts)
-    # add quote arround the key
+    # add quote around the key
     # { a: 12 }
     # becomes
     # { "a": 12 }

@@ -105,7 +105,7 @@ def get_vqd(query):
 def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
     """Get DuckDuckGo's language identifier from SearXNG's locale.
 
-    DuckDuckGo defines its lanaguages by region codes (see
+    DuckDuckGo defines its languages by region codes (see
     :py:obj:`fetch_traits`).
 
     To get region and language of a DDG service use:
@@ -338,7 +338,7 @@ def fetch_traits(engine_traits: EngineTraits):
     ``Accept-Language`` HTTP header.  The value in ``engine_traits.all_locale``
     is ``wt-wt`` (the region).
 
-    Beside regions DuckDuckGo also defines its lanaguages by region codes.  By
+    Beside regions DuckDuckGo also defines its languages by region codes.  By
     example these are the english languages in DuckDuckGo:
 
     - en_US

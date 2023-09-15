@@ -10,7 +10,7 @@ from os.path import realpath, dirname, join, sep, abspath
 repo_root = realpath(dirname(realpath(__file__)) + sep + '..')
 sys.path.insert(0, repo_root)
 
-# Assure that the settings file from reposetorie's working tree is used to
+# Assure that the settings file from repository's working tree is used to
 # generate the build_env, not from /etc/searxng/settings.yml.
 os.environ['SEARXNG_SETTINGS_PATH'] = join(repo_root, 'etc', 'settings.yml')
 
@@ -38,7 +38,7 @@ brand_env = 'utils' + sep + 'brand.env'
 
 # Some defaults in the settings.yml are taken from the environment,
 # e.g. SEARXNG_BIND_ADDRESS (:py:obj:`searx.settings_defaults.SHEMA`).  When the
-# 'brand.env' file is created these envirnoment variables should be unset first::
+# 'brand.env' file is created these environment variables should be unset first::
 
 _unset = object()
 for name, option in name_val:

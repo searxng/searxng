@@ -108,7 +108,7 @@
 {%- endmacro -%}
 
 {%- macro engine_reliability(engine_name) -%}
-  {%- set r = reliabilities.get(engine_name, {}).get('reliablity', None) -%}
+  {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
   {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
   {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
   {%- if r != None -%}

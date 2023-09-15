@@ -119,7 +119,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     """Remove the engine from the settings (*disabled & removed*)."""
 
     about: dict
-    """Additional fileds describing the engine.
+    """Additional fields describing the engine.
 
     .. code:: yaml
 

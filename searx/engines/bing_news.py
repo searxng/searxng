@@ -138,7 +138,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     The :py:obj:`description <searx.engines.bing_news.bing_traits_url>` of the
     first table says *"query parameter when calling the Video Search API."*
-    .. thats why I use the 4. table "News Category API markets" for the
+    .. that's why I use the 4. table "News Category API markets" for the
     ``xpath_market_codes``.
 
     """

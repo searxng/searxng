@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 
-"""Implement request processores used by engine-types.
+"""Implement request processors used by engine-types.
 
 """
 
@@ -30,7 +30,7 @@ from .abstract import EngineProcessor
 
 logger = logger.getChild('search.processors')
 PROCESSORS: Dict[str, EngineProcessor] = {}
-"""Cache request processores, stored by *engine-name* (:py:func:`initialize`)
+"""Cache request processors, stored by *engine-name* (:py:func:`initialize`)
 
 :meta hide-value:
 """

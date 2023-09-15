@@ -87,8 +87,8 @@ For a more  detailed description, see :ref:`settings engine` in the :ref:`settin
 Overrides
 ---------
 
-A few of the options have default values in the namespace of engine's python
-modul, but are often overwritten by the settings.  If ``None`` is assigned to an
+A few of the options have default values in the namespace of the engine's python
+module, but are often overwritten by the settings.  If ``None`` is assigned to an
 option in the engine file, it has to be redefined in the settings, otherwise
 SearXNG will not start with that engine (global names with a leading underline can
 be ``None``).

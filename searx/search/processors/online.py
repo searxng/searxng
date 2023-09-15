@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 
-"""Processores for engine-type: ``online``
+"""Processors for engine-type: ``online``
 
 """
 # pylint: disable=use-dict-literal

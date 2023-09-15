@@ -190,7 +190,7 @@ Debian:
 Apache modules
 --------------
 
-To load additional modules, in most distributions you have to un-comment the
+To load additional modules, in most distributions you have to uncomment the
 lines with the corresponding LoadModule_ directive, except in :ref:`Debian's
 Apache layout`.
 

@@ -215,7 +215,7 @@ class ViewsTestCase(SearxTestCase):
             'Search language ignored browser preference.',
         )
 
-    def test_brower_empty_locale(self):
+    def test_browser_empty_locale(self):
         result = self.app.get('/preferences', headers={'Accept-Language': ''})
         self.assertEqual(result.status_code, 200)
         self.assertIn(

@@ -37,7 +37,7 @@ Brave regions
 =============
 
 Brave uses two-digit tags for the regions like ``ca`` while SearXNG deals with
-locales.  To get a mapping, all *officatl de-facto* languages of the Brave
+locales.  To get a mapping, all *officiat de-facto* languages of the Brave
 region are mapped to regions in SearXNG (see :py:obj:`babel
 <babel.languages.get_official_languages>`):
 
@@ -63,10 +63,10 @@ region are mapped to regions in SearXNG (see :py:obj:`babel
 Brave languages
 ===============
 
-Brave's language support is limited to the UI (menues, area local notations,
+Brave's language support is limited to the UI (menus, area local notations,
 etc).  Brave's index only seems to support a locale, but it does not seem to
 support any languages in its index.  The choice of available languages is very
-small (and its not clear to me where the differencee in UI is when switching
+small (and its not clear to me where the difference in UI is when switching
 from en-us to en-ca or en-gb).
 
 In the :py:obj:`EngineTraits object <searx.enginelib.traits.EngineTraits>` the
@@ -264,7 +264,7 @@ def _parse_search(resp):
         )
         if video_tag is not None:
 
-            # In my tests a video tag in the WEB search was mostoften not a
+            # In my tests a video tag in the WEB search was most often not a
             # video, except the ones from youtube ..
 
             iframe_src = _get_iframe_src(url)
@@ -405,7 +405,7 @@ def fetch_traits(engine_traits: EngineTraits):
         # country_name = extract_text(flag.xpath('./following-sibling::*')[0])
         country_tag = re.search(r'flag-([^\s]*)\s', flag.xpath('./@class')[0]).group(1)  # type: ignore
 
-        # add offical languages of the country ..
+        # add official languages of the country ..
         for lang_tag in babel.languages.get_official_languages(country_tag, de_facto=True):
             lang_tag = lang_map.get(lang_tag, lang_tag)
             sxng_tag = region_tag(babel.Locale.parse('%s_%s' % (lang_tag, country_tag.upper())))

@@ -235,7 +235,7 @@ To refer anchors use the `ref role`_ markup:
 .. admonition:: ``:ref:`` role
    :class: rst-example
 
-   Visist chapter :ref:`reST anchor`.  Or set hyperlink text manually :ref:`foo
+   Visit chapter :ref:`reST anchor`.  Or set hyperlink text manually :ref:`foo
    bar <reST anchor>`.
 
 .. _reST ordinary ref:

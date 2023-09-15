@@ -89,7 +89,7 @@ class Search:
         # max of all selected engine timeout
         default_timeout = 0
 
-        # start search-reqest for all selected engines
+        # start search-request for all selected engines
         for engineref in self.search_query.engineref_list:
             processor = PROCESSORS[engineref.name]
 

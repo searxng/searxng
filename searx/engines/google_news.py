@@ -72,7 +72,7 @@ time_range_support = False
 # Google-News results are always *SafeSearch*. Option 'safesearch' is set to
 # False here, otherwise checker will report safesearch-errors::
 #
-#  safesearch : results are identitical for safesearch=0 and safesearch=2
+#  safesearch : results are identical for safesearch=0 and safesearch=2
 safesearch = True
 # send_accept_language_header = True
 
@@ -155,7 +155,7 @@ def response(resp):
 
         title = extract_text(eval_xpath(result, './article/h3[1]'))
 
-        # The pub_date is mostly a string like 'yesertday', not a real
+        # The pub_date is mostly a string like 'yesterday', not a real
         # timezone date or time.  Therefore we can't use publishedDate.
         pub_date = extract_text(eval_xpath(result, './article//time'))
         pub_origin = extract_text(eval_xpath(result, './article//a[@data-n-tid]'))

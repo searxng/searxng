@@ -188,7 +188,7 @@ output of::
 
 Since the path ``/share/SearXNG`` of the HOST system is wrapped into the
 container under the same name, the shown ``Makefile`` (inode ``47712402``) in
-the ouput is always the identical ``/share/SearXNG/Makefile`` from the HOST
+the output is always the identical ``/share/SearXNG/Makefile`` from the HOST
 system.  In the example shown above the owner of the path in the container is
 the ``root`` user of the container (and the timezone in the container is
 different to HOST system).

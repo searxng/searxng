@@ -47,7 +47,7 @@ def get_user_settings_path() -> Optional[str]:
     if 'SEARXNG_SETTINGS_PATH' in environ:
         return existing_filename_or_none(environ['SEARXNG_SETTINGS_PATH'])
 
-    # if SEARXNG_DISABLE_ETC_SETTINGS don't look any futher
+    # if SEARXNG_DISABLE_ETC_SETTINGS don't look any further
     if environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
         return None
 

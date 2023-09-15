@@ -72,7 +72,7 @@ paging = True
 backend_url: list | str = "https://pipedapi.kavin.rocks"
 """Piped-Backend_: The core component behind Piped.  The value is an URL or a
 list of URLs.  In the latter case instance will be selected randomly.  For a
-complete list of offical instances see Piped-Instances (`JSON
+complete list of official instances see Piped-Instances (`JSON
 <https://piped-instances.kavin.rocks/>`__)
 
 .. _Piped-Instances: https://github.com/TeamPiped/Piped/wiki/Instances

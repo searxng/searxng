@@ -118,8 +118,8 @@ def _get_locale_descr(locale, language_code):
     language_name = locale.get_language_name(language_code).capitalize()
     if language_name and ('a' <= language_name[0] <= 'z'):
         language_name = language_name.capitalize()
-    terrirtory_name = locale.get_territory_name(language_code)
-    return language_name, terrirtory_name
+    territory_name = locale.get_territory_name(language_code)
+    return language_name, territory_name
 
 
 def locales_initialize(directory=None):
@@ -188,7 +188,7 @@ def get_locale(locale_tag: str) -> Optional[babel.Locale]:
         return None
 
 
-def get_offical_locales(
+def get_official_locales(
     territory: str, languages=None, regional: bool = False, de_facto: bool = True
 ) -> Set[babel.Locale]:
     """Returns a list of :py:obj:`babel.Locale` with languages from
@@ -262,20 +262,20 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
        the selected language.
 
     B. When user select a language and a territory the results should be
-       optimized with first priority on terrirtory and second on language.
+       optimized with first priority on territory and second on language.
 
     First approximation rule (*by territory*):
 
-      When the user selects a locale with terrirtory (and a language), the
-      territory has priority over the language.  If any of the offical languages
-      in the terrirtory is supported by the engine (``engine_locales``) it will
+      When the user selects a locale with territory (and a language), the
+      territory has priority over the language.  If any of the official languages
+      in the territory is supported by the engine (``engine_locales``) it will
       be used.
 
     Second approximation rule (*by language*):
 
       If "First approximation rule" brings no result or the user selects only a
-      language without a terrirtory.  Check in which territories the language
-      has an offical status and if one of these territories is supported by the
+      language without a territory.  Check in which territories the language
+      has an official status and if one of these territories is supported by the
       engine.
 
     """
@@ -305,7 +305,7 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
     # SearXNG's selected locale is not supported by the engine ..
 
     if locale.territory:
-        # Try to narrow by *offical* languages in the territory (??-XX).
+        # Try to narrow by *official* languages in the territory (??-XX).
 
         for official_language in babel.languages.get_official_languages(locale.territory, de_facto=True):
             searxng_locale = official_language + '-' + locale.territory
@@ -313,11 +313,11 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
             if engine_locale is not None:
                 return engine_locale
 
-    # Engine does not support one of the offical languages in the territory or
+    # Engine does not support one of the official languages in the territory or
     # there is only a language selected without a territory.
 
     # Now lets have a look if the searxng_lang (the language selected by the
-    # user) is a offical language in other territories.  If so, check if
+    # user) is a official language in other territories.  If so, check if
     # engine does support the searxng_lang in this other territory.
 
     if locale.language:
@@ -343,10 +343,10 @@ def get_engine_locale(searxng_locale, engine_locales, default=None):
 
         # second: sort by population_percent and take first match
 
-        # drawback of "population percent": if there is a terrirtory with a
+        # drawback of "population percent": if there is a territory with a
         #   small number of people (e.g 100) but the majority speaks the
-        #   language, then the percentage migth be 100% (--> 100 people) but in
-        #   a different terrirtory with more people (e.g. 10.000) where only 10%
+        #   language, then the percentage might be 100% (--> 100 people) but in
+        #   a different territory with more people (e.g. 10.000) where only 10%
         #   speak the language the total amount of speaker is higher (--> 200
         #   people).
         #

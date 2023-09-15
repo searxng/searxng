@@ -259,7 +259,7 @@ modify (:ref:`make themes`)::
 ``make format.python``
 ======================
 
-Format Python sourcee code using `Black code style`_.  See ``$BLACK_OPTIONS``
+Format Python source code using `Black code style`_.  See ``$BLACK_OPTIONS``
 and ``$BLACK_TARGETS`` in :origin:`Makefile`.
 
 .. attention::
