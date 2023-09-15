@@ -338,7 +338,7 @@ def _parse_videos(json_resp):
             'duration': result['video']['duration'],
         }
 
-        if result['thumbnail'] != "null":
+        if result['thumbnail'] is not None:
             item['thumbnail'] = result['thumbnail']['src']
 
         iframe_src = _get_iframe_src(url)
