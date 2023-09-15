@@ -86,7 +86,7 @@ Replacements are:
   Search terms from user.
 
 ``{pageno}``:
-  Page number if engine supports pagging :py:obj:`paging`
+  Page number if engine supports paging :py:obj:`paging`
 
 ``{lang}``:
   ISO 639-1 language code (en, de, fr ..)

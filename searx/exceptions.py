@@ -12,7 +12,7 @@ class SearxException(Exception):
 
 
 class SearxParameterException(SearxException):
-    """Raised when query miss a required paramater"""
+    """Raised when query miss a required parameter"""
 
     def __init__(self, name, value):
         if value == '' or value is None:

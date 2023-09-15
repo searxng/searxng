@@ -92,7 +92,7 @@ def response(resp):
 
 
 def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages from Archlinix-Wiki.  The location of the Wiki address of a
+    """Fetch languages from Archlinux-Wiki.  The location of the Wiki address of a
     language is mapped in a :py:obj:`custom field
     <searx.enginelib.traits.EngineTraits.custom>` (``wiki_netloc``).  Depending
     on the location, the ``title`` argument in the request is translated.
@@ -128,7 +128,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     resp = get('https://wiki.archlinux.org/')
     if not resp.ok:  # type: ignore
-        print("ERROR: response from wiki.archlinix.org is not OK.")
+        print("ERROR: response from wiki.archlinux.org is not OK.")
 
     dom = lxml.html.fromstring(resp.text)  # type: ignore
     for a in eval_xpath_list(dom, "//a[@class='interlanguage-link-target']"):

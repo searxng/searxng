@@ -938,19 +938,19 @@ def preferences():
         errors = engine_errors.get(e.name) or []
         if counter('engine', e.name, 'search', 'count', 'sent') == 0:
             # no request
-            reliablity = None
+            reliability = None
         elif checker_success and not errors:
-            reliablity = 100
+            reliability = 100
         elif 'simple' in checker_result.get('errors', {}):
-            # the basic (simple) test doesn't work: the engine is broken accoding to the checker
+            # the basic (simple) test doesn't work: the engine is broken according to the checker
             # even if there is no exception
-            reliablity = 0
+            reliability = 0
         else:
             # pylint: disable=consider-using-generator
-            reliablity = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
+            reliability = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
 
         reliabilities[e.name] = {
-            'reliablity': reliablity,
+            'reliability': reliability,
             'errors': [],
             'checker': checker_results.get(e.name, {}).get('errors', {}).keys(),
         }
@@ -1144,7 +1144,7 @@ def stats():
     reverse, key_name, default_value = STATS_SORT_PARAMETERS[sort_order]
 
     def get_key(engine_stat):
-        reliability = engine_reliabilities.get(engine_stat['name'], {}).get('reliablity', 0)
+        reliability = engine_reliabilities.get(engine_stat['name'], {}).get('reliability', 0)
         reliability_order = 0 if reliability else 1
         if key_name == 'reliability':
             key = reliability

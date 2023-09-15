@@ -55,7 +55,7 @@ class InfoPage:
 
     @cached_property
     def content(self):
-        """Content of the page (rendered in a Jinja conntext)"""
+        """Content of the page (rendered in a Jinja context)"""
         ctx = self.get_ctx()
         template = jinja2.Environment().from_string(self.raw_content)
         return template.render(**ctx)
@@ -119,7 +119,7 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
     ):
         self.page_class = page_class or InfoPage
         self.folder: str = info_folder or _INFO_FOLDER
-        """location of the Markdwon files"""
+        """location of the Markdown files"""
 
         self.CACHE: typing.Dict[tuple, typing.Optional[InfoPage]] = {}
 

@@ -71,7 +71,7 @@ LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
 LIMITER_CFG = Path('/etc/searxng/limiter.toml')
-"""Lokal Limiter configuration."""
+"""Local Limiter configuration."""
 
 CFG_DEPRECATED = {
     # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."

@@ -67,11 +67,11 @@ or ``time``.
 
 .. hint::
 
-  When *time_range* is activate, the results always orderd by ``time``.
+  When *time_range* is activate, the results always ordered by ``time``.
 """
 
 bt4g_category = 'all'
-"""BT$G offers categoies: ``all`` (default), ``audio``, ``movie``, ``doc``,
+"""BT$G offers categories: ``all`` (default), ``audio``, ``movie``, ``doc``,
 ``app`` and `` other``.
 """
 

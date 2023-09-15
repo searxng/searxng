@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 
-"""Abstract base classes for engine request processores.
+"""Abstract base classes for engine request processors.
 
 """
 
@@ -58,7 +58,7 @@ class SuspendedStatus:
 
 
 class EngineProcessor(ABC):
-    """Base classes used for all types of reqest processores."""
+    """Base classes used for all types of request processors."""
 
     __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger'
 
@@ -165,7 +165,7 @@ class EngineProcessor(ABC):
         # deprecated / vintage --> use params['searxng_locale']
         #
         # Conditions related to engine's traits are implemented in engine.traits
-        # module. Don't do 'locale' decissions here in the abstract layer of the
+        # module. Don't do 'locale' decisions here in the abstract layer of the
         # search processor, just pass the value from user's choice unchanged to
         # the engine request.
 

@@ -4,7 +4,7 @@
 """Fetch OSM keys and tags.
 
 To get the i18n names, the scripts uses `Wikidata Query Service`_ instead of for
-example `OSM tags API`_ (sidenote: the actual change log from
+example `OSM tags API`_ (side note: the actual change log from
 map.atownsend.org.uk_ might be useful to normalize OSM tags).
 
 Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...

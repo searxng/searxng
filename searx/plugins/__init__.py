@@ -166,7 +166,7 @@ def load_plugin(plugin_module_name, external):
         # searx compatibility: plugin.name in settings['enabled_plugins']
         plugin.default_on = plugin.name in settings["enabled_plugins"] or plugin.id in settings["enabled_plugins"]
 
-    # copy ressources if this is an external plugin
+    # copy resources if this is an external plugin
     if external:
         prepare_package_resources(plugin, plugin_module_name)
 

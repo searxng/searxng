@@ -287,7 +287,7 @@ def get_results(attribute_result, attributes, language):
             elif attribute_type == WDGeoAttribute:
                 # geocoordinate link
                 # use the area to get the OSM zoom
-                # Note: ignre the unit (must be km² otherwise the calculation is wrong)
+                # Note: ignore the unit (must be km² otherwise the calculation is wrong)
                 # Should use normalized value p:P2046/psn:P2046/wikibase:quantityAmount
                 area = attribute_result.get('P2046')
                 osm_zoom = area_to_osm_zoom(area) if area else 19

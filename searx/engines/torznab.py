@@ -23,7 +23,7 @@ The engine has the following settings:
   Prowlarr-categories_ or Jackett-categories_ for more information.
 
 ``show_torrent_files``:
-  Whether to show the torrent file in the search results.  Be carful as using
+  Whether to show the torrent file in the search results.  Be careful as using
   this with Prowlarr_ or Jackett_ leaks the API key.  This should be used only
   if you are querying a Torznab endpoint without authentication or if the
   instance is private.  Be aware that private trackers may ban you if you share

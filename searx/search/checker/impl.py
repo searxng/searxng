@@ -347,7 +347,7 @@ class CheckerTests:
                         diff2_str = ', '.join(['{}={!r}'.format(k, v2) for (k, (v1, v2)) in diff.items()])
                         self.test_results.add_error(
                             self.test_name,
-                            'results are identitical for {} and {} ({})'.format(diff1_str, diff2_str, common_str),
+                            'results are identical for {} and {} ({})'.format(diff1_str, diff2_str, common_str),
                         )
 
 

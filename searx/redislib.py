@@ -77,7 +77,7 @@ def secret_hash(name: str):
     """Creates a hash of the ``name``.
 
     Combines argument ``name`` with the ``secret_key`` from :ref:`settings
-    server`.  This function can be used to get a more anonymised name of a Redis
+    server`.  This function can be used to get a more anonymized name of a Redis
     KEY.
 
     :param name: the name to create a secret hash for
@@ -205,7 +205,7 @@ def incr_sliding_window(client, name: str, duration: int):
     minus *duration* time (ZREMRANGEBYSCORE_).
 
     The EXPIRE_ time (the duration of the sliding window) is refreshed on each
-    call (incrementation) and if there is no call in this duration, the sorted
+    call (increment) and if there is no call in this duration, the sorted
     set expires from the redis DB.
 
     The return value is the amount of items in the sorted set (ZCOUNT_), what

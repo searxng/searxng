@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Odysee_ is a decentralised video hosting platform.
+"""Odysee_ is a decentralized video hosting platform.
 
 .. _Odysee: https://github.com/OdyseeTeam/odysee-frontend
 """

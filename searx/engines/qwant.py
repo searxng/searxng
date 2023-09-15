@@ -76,7 +76,7 @@ about = {
 categories = []
 paging = True
 qwant_categ = None
-"""One of ``web``, ``news``, ``images`` or ``videos``"""
+"""One of ``web-lite`` (or ``web``), ``news``, ``images`` or ``videos``"""
 
 safesearch = True
 # safe_search_map = {0: '&safesearch=0', 1: '&safesearch=1', 2: '&safesearch=2'}

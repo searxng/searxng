@@ -64,7 +64,7 @@ def _instance_infosetset_ctx(base_url):
     with app.test_request_context(base_url=base_url):
         yield InfoPageSet()
 
-    # The searx.webapp import from above fires some HTTP requests, thats
+    # The searx.webapp import from above fires some HTTP requests, that's
     # why we get a RuntimeError::
     #
     #     RuntimeError: The connection pool was closed while 1 HTTP \

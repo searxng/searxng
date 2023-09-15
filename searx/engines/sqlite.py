@@ -10,7 +10,7 @@ Example
 
 To demonstrate the power of database engines, here is a more complex example
 which reads from a MediathekView_ (DE) movie database.  For this example of the
-SQlite engine download the database:
+SQLite engine download the database:
 
 - https://liste.mediathekview.de/filmliste-v2.db.bz2
 

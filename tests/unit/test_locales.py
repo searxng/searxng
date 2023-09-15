@@ -66,7 +66,7 @@ class TestLocales(SearxTestCase):
         #   B. When user selects a language and a territory the results should be
         #      optimized with first priority on territory and second on language.
 
-        # Assume we have an engine that supports the follwoing locales:
+        # Assume we have an engine that supports the following locales:
         locale_tag_list = ['zh-CN', 'zh-HK', 'nl-BE', 'fr-CA']
 
         # Examples (Assumption A.)

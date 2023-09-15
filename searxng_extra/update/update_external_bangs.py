@@ -62,7 +62,7 @@ def merge_when_no_leaf(node):
       d -> d -> g -> <LEAF_KEY> (ddg)
         -> i -> g -> <LEAF_KEY> (dig)
 
-    becomes (3 noodes)::
+    becomes (3 nodes)::
 
       d -> dg -> <LEAF_KEY>
         -> ig -> <LEAF_KEY>
