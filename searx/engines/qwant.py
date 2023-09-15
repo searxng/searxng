@@ -1,15 +1,29 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Qwant (Web, News, Images, Videos)
+"""This engine uses the Qwant API (https://api.qwant.com/v3) to implement Qwant
+-Web, -News, -Images and -Videos.  The API is undocumented but can be reverse
+engineered by reading the network log of https://www.qwant.com/ queries.
 
-This engine uses the Qwant API (https://api.qwant.com/v3). The API is
-undocumented but can be reverse engineered by reading the network log of
-https://www.qwant.com/ queries.
+For Qwant's *web-search* two alternatives are implemented:
 
-This implementation is used by different qwant engines in the settings.yml::
+- ``web``: uses the :py:obj:`api_url` which returns a JSON structure
+- ``web-lite``: uses the :py:obj:`web_lite_url` which returns a HTML page
+
+
+Configuration
+=============
+
+The engine has the following additional settings:
+
+- :py:obj:`qwant_categ`
+
+This implementation is used by different qwant engines in the :ref:`settings.yml
+<settings engine>`:
+
+.. code:: yaml
 
   - name: qwant
-    qwant_categ: web
+    qwant_categ: web-lite  # alternatively use 'web'
     ...
   - name: qwant news
     qwant_categ: news
@@ -21,6 +35,9 @@ This implementation is used by different qwant engines in the settings.yml::
     qwant_categ: videos
     ...
 
+Implementations
+===============
+
 """
 
 from datetime import (
@@ -31,10 +48,17 @@ from json import loads
 from urllib.parse import urlencode
 from flask_babel import gettext
 import babel
+import lxml
 
 from searx.exceptions import SearxEngineAPIException
 from searx.network import raise_for_httperror
 from searx.enginelib.traits import EngineTraits
+
+from searx.utils import (
+    eval_xpath,
+    eval_xpath_list,
+    extract_text,
+)
 
 traits: EngineTraits
 
@@ -51,10 +75,11 @@ about = {
 # engine dependent config
 categories = []
 paging = True
-qwant_categ = None  # web|news|inages|videos
+qwant_categ = None
+"""One of ``web``, ``news``, ``images`` or ``videos``"""
 
 safesearch = True
-safe_search_map = {0: '&safesearch=0', 1: '&safesearch=1', 2: '&safesearch=2'}
+# safe_search_map = {0: '&safesearch=0', 1: '&safesearch=1', 2: '&safesearch=2'}
 
 # fmt: off
 qwant_news_locales = [
@@ -67,7 +92,12 @@ qwant_news_locales = [
 # fmt: on
 
 # search-url
-url = 'https://api.qwant.com/v3/search/{keyword}?{query}&count={count}&offset={offset}'
+
+api_url = 'https://api.qwant.com/v3/search/'
+"""URL of Qwant's API (JSON)"""
+
+web_lite_url = 'https://lite.qwant.com/'
+"""URL of Qwant-Lite (HTML)"""
 
 
 def request(query, params):
@@ -76,38 +106,78 @@ def request(query, params):
     if not query:
         return None
 
-    count = 10  # web: count must be equal to 10
-
-    if qwant_categ == 'images':
-        count = 50
-        offset = (params['pageno'] - 1) * count
-        # count + offset must be lower than 250
-        offset = min(offset, 199)
-    else:
-        offset = (params['pageno'] - 1) * count
-        # count + offset must be lower than 50
-        offset = min(offset, 40)
-
-    params['url'] = url.format(
-        keyword=qwant_categ,
-        query=urlencode({'q': query}),
-        offset=offset,
-        count=count,
-    )
-
-    # add quant's locale
     q_locale = traits.get_region(params["searxng_locale"], default='en_US')
-    params['url'] += '&locale=' + q_locale
 
-    # add safesearch option
-    params['url'] += safe_search_map.get(params['safesearch'], '')
-
+    url = api_url + f'{qwant_categ}?'
+    args = {'q': query}
     params['raise_for_httperror'] = False
+
+    if qwant_categ == 'web-lite':
+
+        # qwant-lite delivers only 5 pages maximum
+        if params['pageno'] > 5:
+            return None
+
+        url = web_lite_url + '?'
+        args['locale'] = q_locale.lower()
+        args['l'] = q_locale.split('_')[0]
+        args['s'] = params['safesearch']
+        args['p'] = params['pageno']
+
+        params['raise_for_httperror'] = True
+
+    elif qwant_categ == 'images':
+
+        args['locale'] = q_locale
+        args['safesearch'] = params['safesearch']
+
+        args['count'] = 50
+        offset = (params['pageno'] - 1) * args['count']
+        # count + offset must be lower than 250
+        args['offset'] = min(offset, 199)
+
+    else:  # web, news, videos
+
+        args['locale'] = q_locale
+        args['safesearch'] = params['safesearch']
+
+        args['count'] = 10
+        offset = (params['pageno'] - 1) * args['count']
+        # count + offset must be lower than 50
+        args['offset'] = min(offset, 39)
+
+    params['url'] = url + urlencode(args)
+
     return params
 
 
 def response(resp):
-    """Get response from Qwant's search request"""
+
+    if qwant_categ == 'web-lite':
+        return parse_web_lite(resp)
+    return parse_web_api
+
+
+def parse_web_lite(resp):
+    """Parse results from Qwant-Lite"""
+
+    results = []
+    dom = lxml.html.fromstring(resp.text)
+
+    for item in eval_xpath_list(dom, '//section/article'):
+        results.append(
+            {
+                'url': extract_text(eval_xpath(item, './span')),
+                'title': extract_text(eval_xpath(item, './h2/a')),
+                'content': extract_text(eval_xpath(item, './p')),
+            }
+        )
+
+    return results
+
+
+def parse_web_api(resp):
+    """Parse results from Qwant's API"""
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
     results = []
