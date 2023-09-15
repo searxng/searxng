@@ -19,7 +19,7 @@ jobs:
         python-version:  ["3.8", "3.9", "3.10", "3.11"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install Ubuntu packages
       run: |
         sudo ./utils/searxng.sh install packages
@@ -48,7 +48,7 @@ jobs:
     - name: Test coverage
       run: make V=1 test.coverage
     - name: Store coverage result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-${{ matrix.python-version }}
         path: coverage/
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install Ubuntu packages
       run: sudo ./utils/searxng.sh install buildhost
     - name: Set up Python
@@ -88,7 +88,7 @@ jobs:
       contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: '0'
         persist-credentials: false
@@ -134,7 +134,7 @@ jobs:
       contents: write  # for make V=1 weblate.push.translations
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: '0'
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
@@ -179,7 +179,7 @@ jobs:
     steps:
       - name: Checkout
         if: env.DOCKERHUB_USERNAME != null
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           # make sure "make docker.push" can get the git history
           fetch-depth: '0'
