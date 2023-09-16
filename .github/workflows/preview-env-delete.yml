@@ -1,0 +1,20 @@
+name: Delete preview environment
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  closed:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Context
+      uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+
+    - name: Destroy preview environment
+      uses: okteto/destroy-preview@latest
+      with:
+        name: pr-${{ github.event.number }}-unixfox

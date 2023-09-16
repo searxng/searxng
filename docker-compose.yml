@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  searxng:
+    build: .
+    ports:
+      - 8080:8080
