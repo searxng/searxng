@@ -3,5 +3,10 @@ version: "3"
 services:
   searxng:
     build: .
+    environment:
+    - SEARXNG_REDIS_URL=redis://redis:6379/0
     ports:
       - 8080:8080
+
+  redis:
+    image: redis:alpine
