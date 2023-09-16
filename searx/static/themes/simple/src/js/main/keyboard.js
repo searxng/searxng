@@ -235,13 +235,13 @@ searxng.ready(function () {
         case 'down':
           next = current.nextElementSibling;
           if (next === null) {
-            next = results[0];
+            next = current;
           }
           break;
         case 'up':
           next = current.previousElementSibling;
           if (next === null) {
-            next = results[results.length - 1];
+            next = current;
           }
           break;
         case 'bottom':
