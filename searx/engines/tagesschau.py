@@ -83,7 +83,8 @@ def _story(item):
 
 
 def _video(item):
-    video_url = item['streams']['h264s']
+    streams = item['streams']
+    video_url = streams.get('h264s') or streams.get('h264m') or streams.get('h264l') or streams.get('h264xl')
     title = item['title']
 
     if "_vapp.mxf" in title:
