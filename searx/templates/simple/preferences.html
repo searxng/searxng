@@ -200,6 +200,7 @@
     {%- if 'search_on_category_select' not in locked_preferences -%}
       {%- include 'simple/preferences/search_on_category_select.html' -%}
     {%- endif -%}
+    {%- include 'simple/preferences/hotkeys.html' -%}
     {{- plugin_preferences('ui') -}}
     {{- tab_footer() -}}
 
