@@ -55,25 +55,13 @@ searxng.ready(function () {
     }
   }, true);
 
-  // these bindings are always on
-  var keyBindings = {
+  /* common base for layouts */
+  var baseKeyBinding = {
     'Escape': {
       key: 'ESC',
       fun: removeFocus,
       des: 'remove focus from the focused input',
       cat: 'Control'
-    },
-    'ArrowLeft': {
-      key: '&#11013;',
-      fun: highlightResult('up'),
-      des: 'Use left arrow to select previous search result',
-      cat: 'Results'
-    },
-    'ArrowRight': {
-      key: '&#10145;',
-      fun: highlightResult('down'),
-      des: 'Use right arrow to select next search result',
-      cat: 'Results'
     },
     'h': {
       key: 'h',
@@ -117,64 +105,79 @@ searxng.ready(function () {
       des: 'open the result in a new tab',
       cat: 'Results'
     },
-  }
-
-  // these bindings are enabled by user preferences
-  var vimKeys = {
-    'b': {
-      key: 'b',
-      fun: scrollPage(-window.innerHeight),
-      des: 'scroll one page up',
-      cat: 'Navigation'
-    },
-    'f': {
-      key: 'f',
-      fun: scrollPage(window.innerHeight),
-      des: 'scroll one page down',
-      cat: 'Navigation'
-    },
-    'u': {
-      key: 'u',
-      fun: scrollPage(-window.innerHeight / 2),
-      des: 'scroll half a page up',
-      cat: 'Navigation'
-    },
-    'd': {
-      key: 'd',
-      fun: scrollPage(window.innerHeight / 2),
-      des: 'scroll half a page down',
-      cat: 'Navigation'
-    },
-    'g': {
-      key: 'g',
-      fun: scrollPageTo(-document.body.scrollHeight, 'top'),
-      des: 'scroll to the top of the page',
-      cat: 'Navigation'
-    },
-    'v': {
-      key: 'v',
-      fun: scrollPageTo(document.body.scrollHeight, 'bottom'),
-      des: 'scroll to the bottom of the page',
-      cat: 'Navigation'
-    },
-    'k': {
-      key: 'k',
-      fun: highlightResult('up'),
-      des: 'select previous search result',
-      cat: 'Results'
-    },
-    'j': {
-      key: 'j',
-      fun: highlightResult('down'),
-      des: 'select next search result',
-      cat: 'Results'
-    },
   };
+  var keyBindingLayouts = {
 
-  if (searxng.settings.hotkeys) {
-    // To add Vim-like key bindings, merge the 'vimKeys' into 'keyBindings'.
-    Object.assign(keyBindings, vimKeys);
+    "default": Object.assign(
+      { /* SearXNG layout */
+        'ArrowLeft': {
+          key: '←',
+          fun: highlightResult('up'),
+          des: 'select previous search result',
+          cat: 'Results'
+        },
+        'ArrowRight': {
+          key: '→',
+          fun: highlightResult('down'),
+          des: 'select next search result',
+          cat: 'Results'
+        },
+      }, baseKeyBinding),
+
+    'vim': Object.assign(
+      { /* Vim-like Key Layout. */
+        'b': {
+          key: 'b',
+          fun: scrollPage(-window.innerHeight),
+          des: 'scroll one page up',
+          cat: 'Navigation'
+        },
+        'f': {
+          key: 'f',
+          fun: scrollPage(window.innerHeight),
+          des: 'scroll one page down',
+          cat: 'Navigation'
+        },
+        'u': {
+          key: 'u',
+          fun: scrollPage(-window.innerHeight / 2),
+          des: 'scroll half a page up',
+          cat: 'Navigation'
+        },
+        'd': {
+          key: 'd',
+          fun: scrollPage(window.innerHeight / 2),
+          des: 'scroll half a page down',
+          cat: 'Navigation'
+        },
+        'g': {
+          key: 'g',
+          fun: scrollPageTo(-document.body.scrollHeight, 'top'),
+          des: 'scroll to the top of the page',
+          cat: 'Navigation'
+        },
+        'v': {
+          key: 'v',
+          fun: scrollPageTo(document.body.scrollHeight, 'bottom'),
+          des: 'scroll to the bottom of the page',
+          cat: 'Navigation'
+        },
+        'k': {
+          key: 'k',
+          fun: highlightResult('up'),
+          des: 'select previous search result',
+          cat: 'Results'
+        },
+        'j': {
+          key: 'j',
+          fun: highlightResult('down'),
+          des: 'select next search result',
+          cat: 'Results'
+        },
+      }, baseKeyBinding)
   }
+
+  var keyBindings = keyBindingLayouts[searxng.settings.hotkeys] || keyBindingLayouts.default;
 
   searxng.on(document, "keydown", function (e) {
     // check for modifiers so we don't break browser's hotkeys
