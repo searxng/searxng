@@ -213,6 +213,7 @@ searxng.ready(function () {
       }
 
       var next, results = document.querySelectorAll('.result');
+      results = Array.from(results);  // convert NodeList to Array for further use
 
       if (typeof effectiveWhich !== 'string') {
         next = effectiveWhich;
@@ -233,16 +234,10 @@ searxng.ready(function () {
           }
           break;
         case 'down':
-          next = current.nextElementSibling;
-          if (next === null) {
-            next = results[0];
-          }
+          next = results[results.indexOf(current) + 1] || current;
           break;
         case 'up':
-          next = current.previousElementSibling;
-          if (next === null) {
-            next = results[results.length - 1];
-          }
+          next = results[results.indexOf(current) - 1] || current;
           break;
         case 'bottom':
           next = results[results.length - 1];
