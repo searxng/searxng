@@ -369,7 +369,17 @@ engines:
   - name: wikipedia
     engine: wikipedia
     shortcut: wp
+    display_type: "list"
     base_url: 'https://{language}.wikipedia.org/'
+    categories: [general]
+    disabled: true
+
+  - name: wikipedia.infobox
+    engine: wikipedia
+    shortcut: wpi
+    display_type: "infobox"
+    base_url: 'https://{language}.wikipedia.org/'
+    categories: [general]
 
   - name: bilibili
     engine: bilibili
@@ -582,7 +592,18 @@ engines:
     shortcut: wd
     timeout: 3.0
     weight: 2
+    display_type: "list"
     tests: *tests_infobox
+    disabled: true
+    categories: [general]
+
+  - name: wikidata.infobox
+    engine: wikidata
+    timeout: 3.0
+    shortcut: wdi
+    weight: 2
+    display_type: "infobox"
+    categories: [general]
 
   - name: duckduckgo
     engine: duckduckgo
@@ -1615,6 +1636,7 @@ engines:
     categories: [general, wikimedia]
     base_url: "https://{language}.wikisource.org/"
     search_type: text
+    disabled: true
     about:
       website: https://www.wikisource.org/
       wikidata_id: Q263

@@ -67,6 +67,8 @@ from searx.enginelib.traits import EngineTraits
 
 traits: EngineTraits
 
+display_type = "list"
+
 # about
 about = {
     "website": 'https://www.wikipedia.org/',
@@ -185,18 +187,21 @@ def response(resp):
     api_result = resp.json()
     title = utils.html_to_text(api_result.get('titles', {}).get('display') or api_result.get('title'))
     wikipedia_link = api_result['content_urls']['desktop']['page']
-    results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
 
-    if api_result.get('type') == 'standard':
-        results.append(
-            {
-                'infobox': title,
-                'id': wikipedia_link,
-                'content': api_result.get('extract', ''),
-                'img_src': api_result.get('thumbnail', {}).get('source'),
-                'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
-            }
-        )
+    if display_type == "list":
+        results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
+
+    if display_type == "infobox":
+        if api_result.get('type') == 'standard':
+            results.append(
+                {
+                    'infobox': title,
+                    'id': wikipedia_link,
+                    'content': api_result.get('extract', ''),
+                    'img_src': api_result.get('thumbnail', {}).get('source'),
+                    'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
+                }
+            )
 
     return results
 
