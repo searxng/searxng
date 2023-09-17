@@ -50,7 +50,7 @@ from flask_babel import gettext
 import babel
 import lxml
 
-from searx.exceptions import SearxEngineAPIException
+from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
 from searx.network import raise_for_httperror
 from searx.enginelib.traits import EngineTraits
 
@@ -188,15 +188,11 @@ def parse_web_api(resp):
 
     # check for an API error
     if search_results.get('status') != 'success':
-        msg = ",".join(
-            data.get(
-                'message',
-                [
-                    'unknown',
-                ],
-            )
-        )
-        raise SearxEngineAPIException('API error::' + msg)
+        error_code = data.get('error_code')
+        if error_code == 24:
+            raise SearxEngineTooManyRequestsException()
+        msg = ",".join(data.get('message', ['unknown']))
+        raise SearxEngineAPIException(f"{msg} ({error_code})")
 
     # raise for other errors
     raise_for_httperror(resp)
@@ -220,7 +216,6 @@ def parse_web_api(resp):
         return []
 
     for row in mainline:
-
         mainline_type = row.get('type', 'web')
         if mainline_type != qwant_categ:
             continue
