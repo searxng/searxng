@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
 traits: EngineTraits
 
-display_type = "list"
+display_type = ["infobox"]
 
 # about
 about = {
@@ -270,7 +270,7 @@ def get_results(attribute_result, attributes, language):
                 for url in value.split(', '):
                     infobox_urls.append({'title': attribute.get_label(language), 'url': url, **attribute.kwargs})
                     # "normal" results (not infobox) include official website and Wikipedia links.
-                    if display_type == "list" and (attribute.kwargs.get('official') or attribute_type == WDArticle):
+                    if "infobox" in display_type and (attribute.kwargs.get('official') or attribute_type == WDArticle):
                         results.append({'title': infobox_title, 'url': url, "content": infobox_content})
                     # update the infobox_id with the wikipedia URL
                     # first the local wikipedia URL, and as fallback the english wikipedia URL
@@ -309,7 +309,7 @@ def get_results(attribute_result, attributes, language):
 
     if img_src is None and len(infobox_attributes) == 0 and len(infobox_urls) == 1 and len(infobox_content) == 0:
         results.append({'url': infobox_urls[0]['url'], 'title': infobox_title, 'content': infobox_content})
-    elif display_type == "infobox":
+    elif "infobox" in display_type:
         results.append(
             {
                 'infobox': infobox_title,

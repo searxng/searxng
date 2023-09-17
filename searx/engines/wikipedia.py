@@ -67,7 +67,7 @@ from searx.enginelib.traits import EngineTraits
 
 traits: EngineTraits
 
-display_type = "list"
+display_type = ["infobox"]
 
 # about
 about = {
@@ -188,10 +188,10 @@ def response(resp):
     title = utils.html_to_text(api_result.get('titles', {}).get('display') or api_result.get('title'))
     wikipedia_link = api_result['content_urls']['desktop']['page']
 
-    if display_type == "list":
+    if "list" in display_type:
         results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
 
-    if display_type == "infobox":
+    if "infobox" in display_type:
         if api_result.get('type') == 'standard':
             results.append(
                 {

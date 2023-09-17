@@ -369,15 +369,8 @@ engines:
   - name: wikipedia
     engine: wikipedia
     shortcut: wp
-    display_type: "list"
-    base_url: 'https://{language}.wikipedia.org/'
-    categories: [general]
-    disabled: true
-
-  - name: wikipedia.infobox
-    engine: wikipedia
-    shortcut: wpi
-    display_type: "infobox"
+    # add "list" to the array to get results in the results list
+    display_type: ["infobox"]
     base_url: 'https://{language}.wikipedia.org/'
     categories: [general]
 
@@ -592,17 +585,9 @@ engines:
     shortcut: wd
     timeout: 3.0
     weight: 2
-    display_type: "list"
+    # add "list" to the array to get results in the results list
+    display_type: ["infobox"]
     tests: *tests_infobox
-    disabled: true
-    categories: [general]
-
-  - name: wikidata.infobox
-    engine: wikidata
-    timeout: 3.0
-    shortcut: wdi
-    weight: 2
-    display_type: "infobox"
     categories: [general]
 
   - name: duckduckgo
