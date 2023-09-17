@@ -112,11 +112,11 @@ def request(query, params):
     args = {'q': query}
     params['raise_for_httperror'] = False
 
-    if qwant_categ == 'web-lite':
+    # all qwant engines (incl qwant-lite) delivers only 5 pages maximum
+    if params['pageno'] > 5:
+        return None
 
-        # qwant-lite delivers only 5 pages maximum
-        if params['pageno'] > 5:
-            return None
+    if qwant_categ == 'web-lite':
 
         url = web_lite_url + '?'
         args['locale'] = q_locale.lower()
@@ -130,21 +130,15 @@ def request(query, params):
 
         args['locale'] = q_locale
         args['safesearch'] = params['safesearch']
-
         args['count'] = 50
-        offset = (params['pageno'] - 1) * args['count']
-        # count + offset must be lower than 250
-        args['offset'] = min(offset, 199)
+        args['offset'] = (params['pageno'] - 1) * args['count']
 
     else:  # web, news, videos
 
         args['locale'] = q_locale
         args['safesearch'] = params['safesearch']
-
         args['count'] = 10
-        offset = (params['pageno'] - 1) * args['count']
-        # count + offset must be lower than 50
-        args['offset'] = min(offset, 39)
+        args['offset'] = (params['pageno'] - 1) * args['count']
 
     params['url'] = url + urlencode(args)
 
