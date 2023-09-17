@@ -155,7 +155,7 @@ def response(resp):
 
     if qwant_categ == 'web-lite':
         return parse_web_lite(resp)
-    return parse_web_api
+    return parse_web_api(resp)
 
 
 def parse_web_lite(resp):
