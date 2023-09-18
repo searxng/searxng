@@ -1,5 +1,9 @@
 <div id="engines_msg">
+  {% if not results and not answers %}
+  <details class="sidebar-collapsable" open>
+  {% else %}
   <details class="sidebar-collapsable">
+  {% endif %}
     <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
     <div class="dialog-error" role="alert">
       {{ icon_big('warning') }}
