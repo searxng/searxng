@@ -39,7 +39,7 @@ about = {
     'language': 'de',
 }
 paging = True
-categories = []
+categories = ["movies"]
 
 base_url = "https://www.moviepilot.de"
 image_url = "https://assets.cdn.moviepilot.de/files/{image_id}/fill/155/223/{filename}"
