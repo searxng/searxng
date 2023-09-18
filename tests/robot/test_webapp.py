@@ -75,4 +75,4 @@ def test_search(browser):
     browser.visit(url)
     browser.fill('q', 'test search query')
     browser.find_by_xpath('//button[@type="submit"]').first.click()
-    assert browser.is_text_present('didn\'t find any results')
+    assert browser.is_text_present('No results were found')
