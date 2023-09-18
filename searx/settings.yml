@@ -1487,6 +1487,7 @@ engines:
   - name: tmdb
     engine: xpath
     paging: true
+    categories: movies
     search_url: https://www.themoviedb.org/search?page={pageno}&query={query}
     results_xpath: //div[contains(@class,"movie") or contains(@class,"tv")]//div[contains(@class,"card")]
     url_xpath: .//div[contains(@class,"poster")]/a/@href
