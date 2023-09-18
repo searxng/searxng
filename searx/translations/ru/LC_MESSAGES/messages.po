@@ -18,21 +18,20 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -164,7 +163,7 @@ msgstr "Тёмная"
 msgid "No item found"
 msgstr "Ничего не найдено"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Источник"
@@ -173,15 +172,15 @@ msgstr "Источник"
 msgid "Error loading the next page"
 msgstr "Не удалось загрузить следующую страницу"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Неверные настройки"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "ошибка поиска"
 
@@ -277,7 +276,7 @@ msgstr "{title} (УСТАРЕЛО)"
 msgid "This entry has been superseded by"
 msgstr "Эта запись была заменена на"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Канал"
 
@@ -366,18 +365,6 @@ msgid ""
 msgstr ""
 "Пробовать избегать платного доступа путём перенаправления на открытые "
 "версии публикаций"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Поиск по выбранной категории"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Выполнять поиск немедленно, если выбрана категория. Отключите для выбора "
-"нескольких категорий. (требуется JavaScript)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -501,7 +488,7 @@ msgstr "Политика конфиденциальности"
 msgid "Contact instance maintainer"
 msgstr "Сопровождающий текущего зеркала"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Нажмите на лупу, чтобы выполнить поиск"
 
@@ -600,23 +587,23 @@ msgstr "Категории по умолчанию"
 msgid "User interface"
 msgstr "Внешний вид"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Конфиденциальность"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Поисковые системы"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Используемые поисковые системы"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "Особые запросы"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1068,6 +1055,16 @@ msgstr "Открывать результаты поиска в новых вк�
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Отбирает только пристойные результаты"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Поиск по выбранной категории"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1627,3 +1624,13 @@ msgstr "скрыть видео"
 
 #~ msgid "Disabled"
 #~ msgstr "Выключено"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Выполнять поиск немедленно, если выбрана "
+#~ "категория. Отключите для выбора нескольких "
+#~ "категорий. (требуется JavaScript)"
+

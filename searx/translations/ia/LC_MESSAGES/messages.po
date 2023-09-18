@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-06-22 09:02+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ia\n"
@@ -150,7 +150,7 @@ msgstr ""
 msgid "No item found"
 msgstr "Nulle item trovate"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr ""
@@ -159,15 +159,15 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurationes non valide, per favor, modifica tu preferentias"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Configurationes invalide"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "error in recerca"
 
@@ -263,7 +263,7 @@ msgstr ""
 msgid "This entry has been superseded by"
 msgstr "Iste entrata esseva substituite per"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr ""
 
@@ -345,19 +345,6 @@ msgid ""
 msgstr ""
 "Evita paywalls per redirectionar a versiones de publicationes in accesso "
 "aperte, quando disponibile"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Recercar in le categoria selectionate"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Exequer le recerca immediatemente si un categoria es selectionate. "
-"Disactiva lo pro selectionar multiple categorias. (JavaScript es "
-"necessari)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -476,7 +463,7 @@ msgstr ""
 msgid "Contact instance maintainer"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Clicca sur le lupa pro exequer le recerca"
 
@@ -571,23 +558,23 @@ msgstr "categorias predefinite"
 msgid "User interface"
 msgstr "Interfacie del usator"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Confidentialitate"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Motores"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Motores de recerca actualmente usate"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1032,6 +1019,16 @@ msgstr "Aperir le resultatos sur nove schedas del navigator"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filtrar contento"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Recercar in le categoria selectionate"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1573,4 +1570,14 @@ msgstr "occultar video"
 
 #~ msgid "Disabled"
 #~ msgstr "Disactivate"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Exequer le recerca immediatemente si un"
+#~ " categoria es selectionate. Disactiva lo"
+#~ " pro selectionar multiple categorias. "
+#~ "(JavaScript es necessari)"
 

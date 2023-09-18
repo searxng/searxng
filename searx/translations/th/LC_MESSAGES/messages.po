@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: th\n"
@@ -149,7 +149,7 @@ msgstr "มืด"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -158,15 +158,15 @@ msgstr "แหล่งที่มา"
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
@@ -262,7 +262,7 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "ช่อง"
 
@@ -348,18 +348,6 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "ค้นหาในตัวเลือกหมวดหมู่"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"ทำการค้นหาทันทีหากเลือกหมวดหมู่แล้ว "
-"ปิดการใช้งานเพื่อเลือกหมวดหมู่ได้หลายหมวดหมู่ (ต้องใช้จาวาสคริปต์)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -477,7 +465,7 @@ msgstr "นโยบายความเป็นส่วนตัว"
 msgid "Contact instance maintainer"
 msgstr "ติดต่อผู้ดูแลอินสแตนซ์"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "คลิกที่แว่นขยายเพื่อทำการค้นหา"
 
@@ -572,23 +560,23 @@ msgstr "หมวดหมู่เริ่มต้น"
 msgid "User interface"
 msgstr "ส่วนต่อประสานกับผู้ใช้"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "เครื่องมือ"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "เครื่องมือค้นหาที่ใช้อยู่ในปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "การคิวรีพิเศษ"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "คุกกี้"
 
@@ -1033,6 +1021,16 @@ msgstr "เปิดลิงก์ผลลัพธ์ด้วยแท็บ
 msgid "Filter content"
 msgstr "ตัวกรอกเนื้อหา"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "ค้นหาในตัวเลือกหมวดหมู่"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "ธีม"
@@ -1320,4 +1318,13 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Disabled"
 #~ msgstr "ปิดใช้งาน"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "ทำการค้นหาทันทีหากเลือกหมวดหมู่แล้ว "
+#~ "ปิดการใช้งานเพื่อเลือกหมวดหมู่ได้หลายหมวดหมู่ "
+#~ "(ต้องใช้จาวาสคริปต์)"
 

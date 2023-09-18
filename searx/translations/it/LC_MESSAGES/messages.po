@@ -24,19 +24,18 @@
 # nicfab <nicfab@icloud.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
-"searxng/it/>\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -168,7 +167,7 @@ msgstr "scuro"
 msgid "No item found"
 msgstr "Nessun oggetto trovato"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Sorgente"
@@ -177,15 +176,15 @@ msgstr "Sorgente"
 msgid "Error loading the next page"
 msgstr "Errore caricando la pagina successiva"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Impostazioni non valide"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "errore di ricerca"
 
@@ -281,7 +280,7 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Questa voce è stata sostituita da"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Canale"
 
@@ -373,19 +372,6 @@ msgid ""
 msgstr ""
 "Se possibile, evita il paywall di una pubblicazione reindirizzando ad una"
 " versione ad accesso libero"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Cerca nella categoria selezionata"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Esegui la ricerca immediatamente se una categoria è selezionata. "
-"Disabilita questa opzione se vuoi selezionare più categorie. (Javascript "
-"necessario)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -509,7 +495,7 @@ msgstr "Politica sulla riservatezza"
 msgid "Contact instance maintainer"
 msgstr "Contatta il manutentore dell'istanza"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Premi sull'icona della lente per avviare la ricerca"
 
@@ -610,23 +596,23 @@ msgstr "Categorie predefinite"
 msgid "User interface"
 msgstr "Interfaccia utente"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Privacy"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Motori"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Motori di ricerca attualmente in uso"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "Richieste speciali"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "Cookie"
 
@@ -1080,6 +1066,16 @@ msgstr "Apri i risultati in nuove schede del browser"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filtro famiglia"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Cerca nella categoria selezionata"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1641,3 +1637,14 @@ msgstr "nascondi video"
 
 #~ msgid "Disabled"
 #~ msgstr "Disabilitato"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Esegui la ricerca immediatamente se una"
+#~ " categoria è selezionata. Disabilita questa"
+#~ " opzione se vuoi selezionare più "
+#~ "categorie. (Javascript necessario)"
+

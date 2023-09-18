@@ -13,20 +13,19 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Croatian <https://translate.codeberg.org/projects/searxng/"
-"searxng/hr/>\n"
 "Language: hr\n"
+"Language-Team: Croatian "
+"<https://translate.codeberg.org/projects/searxng/searxng/hr/>\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -158,7 +157,7 @@ msgstr "tamno"
 msgid "No item found"
 msgstr "Nije pronađena nijedna stavka"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Izvor"
@@ -167,15 +166,15 @@ msgstr "Izvor"
 msgid "Error loading the next page"
 msgstr "Greška u učitavnju sljedeće stranice"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nevažeće postavke, molimo uredite svoje postavke"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Nevažeće postavke"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "greška u pretraživanju"
 
@@ -271,7 +270,7 @@ msgstr "{title} (ZASTARJELO)"
 msgid "This entry has been superseded by"
 msgstr "Ovaj je unos zamijenio"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanal"
 
@@ -358,18 +357,6 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr "Izbjegnite plaćanje u slučaju dostupnosti besplatne objave"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Traži u odabranoj kategoriji"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Izvrši pretraživanje odmah ako je odabrana kategorija. Onemogući odabir "
-"više kategorija. (Potreban je JavaScript)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -491,7 +478,7 @@ msgstr "Politika privatnosti"
 msgid "Contact instance maintainer"
 msgstr "Kontaktirajte održavatelja instance"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Kliknite na povećalo za izvođenje pretraživanja"
 
@@ -586,23 +573,23 @@ msgstr "Zadane kategorije"
 msgid "User interface"
 msgstr "Korisničko sučelje"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Privatnost"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Tražilice"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Trenutno korištene tražilice"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "Posebni upiti"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "Kolačići"
 
@@ -1053,6 +1040,16 @@ msgstr "Otvorite veze rezultata na novim karticama preglednika"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filtriranje sadržaja"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Traži u odabranoj kategoriji"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1607,3 +1604,13 @@ msgstr "sakrij video"
 
 #~ msgid "Disabled"
 #~ msgstr "Onemogućeno"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Izvrši pretraživanje odmah ako je "
+#~ "odabrana kategorija. Onemogući odabir više "
+#~ "kategorija. (Potreban je JavaScript)"
+

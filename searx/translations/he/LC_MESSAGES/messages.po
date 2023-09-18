@@ -15,20 +15,19 @@
 # shoko <nickskorohod@outlook.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Hebrew <https://translate.codeberg.org/projects/searxng/"
-"searxng/he/>\n"
 "Language: he\n"
+"Language-Team: Hebrew "
+"<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
+"&& n % 10 == 0) ? 2 : 3));\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
-"n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -160,7 +159,7 @@ msgstr "כהה"
 msgid "No item found"
 msgstr "לא נמצא פריט"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "מקור"
@@ -169,15 +168,15 @@ msgstr "מקור"
 msgid "Error loading the next page"
 msgstr "שגיאה בטעינת העמוד הבא"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "הגדרות לא תקינות, עליך לתקן את ההעדפות שלך"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "הגדרות לא תקינות"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "שגיאת חיפוש"
 
@@ -273,7 +272,7 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "רשומה זו הוחלפה על ידי"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "ערוץ"
 
@@ -361,18 +360,6 @@ msgstr ""
 "הימנע מגרסאות paywall על ידי הכוונה מחודשת לגרסאות כניסה-חופשית של "
 "כתבי-עת כאשר ישנן"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "חפש בעת בחירת קטגוריה"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"בצע חיפוש בלחיצה על קטגוריה. עליך לנטרל את תוסף זה אם ברצונך לבחור "
-"קטגוריות מרובות. (נדרש JavaScript)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "מידע עצמי"
@@ -402,8 +389,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"לא ניתן להוריד את רשימת צמתי היציאה של טור מ: https://check.torproject.org/"
-"exit-addresses"
+"לא ניתן להוריד את רשימת צמתי היציאה של טור מ: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -493,7 +480,7 @@ msgstr "פוליסת פרטיות"
 msgid "Contact instance maintainer"
 msgstr "צור קשר עם מפעיל השירת"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "לחץ על זכוכית המגדלת כדי לחפש"
 
@@ -588,23 +575,23 @@ msgstr "קטגוריות עיקריות"
 msgid "User interface"
 msgstr "ממשק משתמש"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "פרטיות"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "מנועים"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "מנועי חיפוש שמופעלים כעת"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "שאילתות מיוחדות"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "עוגיות"
 
@@ -1046,6 +1033,16 @@ msgstr "פתח קישורי תוצאה בתוך כרטיסיות דפדפן חד
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "סנן תוכן"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "חפש בעת בחירת קטגוריה"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1590,3 +1587,13 @@ msgstr "הסתר וידאו"
 
 #~ msgid "Disabled"
 #~ msgstr "מנוטרל"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "בצע חיפוש בלחיצה על קטגוריה. עליך "
+#~ "לנטרל את תוסף זה אם ברצונך לבחור"
+#~ " קטגוריות מרובות. (נדרש JavaScript)"
+

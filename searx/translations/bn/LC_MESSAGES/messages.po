@@ -13,17 +13,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Bengali <https://translate.codeberg.org/projects/searxng/"
-"searxng/bn/>\n"
 "Language: bn\n"
+"Language-Team: Bengali "
+"<https://translate.codeberg.org/projects/searxng/searxng/bn/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -155,7 +154,7 @@ msgstr "কালো"
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "উৎস"
@@ -164,15 +163,15 @@ msgstr "উৎস"
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করায় ত্রুটি দেখা যাচ্ছে"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "অকেজো সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "অকেজো সেটিংস"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "সার্চ ত্রুটি"
 
@@ -268,7 +267,7 @@ msgstr "{title} (অচল)"
 msgid "This entry has been superseded by"
 msgstr "এই এনট্রিটি দ্বারা বাতিল করা হয়েছে৷"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "চ্যানেল"
 
@@ -357,18 +356,6 @@ msgid ""
 msgstr ""
 "Paywall এড়িয়ে চলতে প্রকাশন গুলির open-access সংস্করণে রিডাইরেক্ট করুন "
 "উপলব্ধ থাকলে"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "বিভাগ নির্বাচন খুঁজে দেখুন"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"যখন একটি বিভাগ নির্বাচন করা হয়, অনুসন্ধান অবিলম্বে সঞ্চালিত হয়. একাধিক "
-"বিভাগ নির্বাচন করতে অক্ষম করুন। (জাভাস্ক্রিপ্ট প্রয়োজন)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -493,7 +480,7 @@ msgstr "গোপনীয়তা নীতি"
 msgid "Contact instance maintainer"
 msgstr "ইন্সট্যান্স রক্ষণাবেক্ষণকারীর সাথে যোগাযোগ করুন"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "অনুসন্ধান করতে ম্যাগনিফায়ার আইকনে ক্লিক করুন"
 
@@ -592,23 +579,23 @@ msgstr "ডিফল্ট বিভাগ"
 msgid "User interface"
 msgstr "ব‍্যবহারকারীর সম্মুখে প্রদর্শিত"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "গোপনীয়তা"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "ইঞ্জিন"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "বর্তমানে ব্যবহৃত সার্চ ইঞ্জিন"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "বিশেষ প্রশ্ন"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "কুকি"
 
@@ -1059,6 +1046,16 @@ msgstr "নতুন ব্রাউজার ট্যাবে ফলাফল
 msgid "Filter content"
 msgstr "বাছাইকৃত উপাত্ত"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "বিভাগ নির্বাচন খুঁজে দেখুন"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "থিম"
@@ -1363,3 +1360,14 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 
 #~ msgid "Disabled"
 #~ msgstr "নিষ্ক্রিয়"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "যখন একটি বিভাগ নির্বাচন করা হয়, "
+#~ "অনুসন্ধান অবিলম্বে সঞ্চালিত হয়. একাধিক "
+#~ "বিভাগ নির্বাচন করতে অক্ষম করুন। "
+#~ "(জাভাস্ক্রিপ্ট প্রয়োজন)"
+

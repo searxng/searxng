@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-06-28 09:02+0000\n"
 "Last-Translator: alma <alma@users.noreply.translate.codeberg.org>\n"
 "Language: ms\n"
@@ -153,7 +153,7 @@ msgstr "gelap"
 msgid "No item found"
 msgstr "barang tidak dijumpai"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Punca"
@@ -162,15 +162,15 @@ msgstr "Punca"
 msgid "Error loading the next page"
 msgstr "Gagal memuat turun muka seterusnya"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Kesilapan tetapan, sila ubahsuai pilihan"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Tetapan tidak sah"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "ralat pencarian"
 
@@ -266,7 +266,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Kemasukan ini telah diganti oleh"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Saluran"
 
@@ -354,18 +354,6 @@ msgid ""
 msgstr ""
 "Elakkan paywall dengan mengubahalih kepada penerbitan versi akses-awam "
 "jika ada"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Cari dalam kategori pilihan"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Jalankan pencarian serta-merta jika kategori telah dipilih. Nyah-aktif "
-"untuk memilih pelbagai kategori. (JavaScript diperlukan)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -485,7 +473,7 @@ msgstr "Polisi privasi"
 msgid "Contact instance maintainer"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr ""
 
@@ -580,23 +568,23 @@ msgstr ""
 msgid "User interface"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Privasi"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Enjin-enjin"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Enjin carian yang digunakan pada masa ini"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "Pertanyaan Khas"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr ""
 
@@ -1032,6 +1020,16 @@ msgstr ""
 msgid "Filter content"
 msgstr "Tapis kandungan"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Cari dalam kategori pilihan"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
@@ -1318,4 +1316,14 @@ msgstr "sembunyikkan video"
 
 #~ msgid "Disabled"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Jalankan pencarian serta-merta jika "
+#~ "kategori telah dipilih. Nyah-aktif untuk"
+#~ " memilih pelbagai kategori. (JavaScript "
+#~ "diperlukan)"
 

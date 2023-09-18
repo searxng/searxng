@@ -11,17 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
-"searxng/ko/>\n"
 "Language: ko\n"
+"Language-Team: Korean "
+"<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -153,7 +152,7 @@ msgstr "다크"
 msgid "No item found"
 msgstr "검색 결과가 없습니다"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "소스"
@@ -162,15 +161,15 @@ msgstr "소스"
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "잘못된 설정"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "검색 오류"
 
@@ -266,7 +265,7 @@ msgstr "{title} (사용되지 않음)"
 msgid "This entry has been superseded by"
 msgstr "이 항목은 다음으로 대체되었습니다"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "채널"
 
@@ -352,16 +351,6 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr "가능한 경우 공개 액세스 버전의 출판물로 리디렉션하여 페이월 방지"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "특정 카테고리 검색"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr "카테고리가 선택되면 즉시 검색을 수행합니다. 여러 카테고리를 선택하려면 비활성화합니다. (JavaScript 필요)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -479,7 +468,7 @@ msgstr "개인 정보 정책"
 msgid "Contact instance maintainer"
 msgstr "인스턴스 관리자에게 문의"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "돋보기를 클릭하여 검색을 시작하세요"
 
@@ -574,23 +563,23 @@ msgstr "기본 카테고리"
 msgid "User interface"
 msgstr "사용자 인터페이스"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "개인정보 보호"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "검색엔진"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "현재 사용중인 검색 엔진"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "특수 쿼리"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "쿠키"
 
@@ -1025,6 +1014,16 @@ msgstr "새 탭에서 결과 링크를 엽니다"
 msgid "Filter content"
 msgstr "콘텐츠 필터링"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "특정 카테고리 검색"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "테마"
@@ -1436,3 +1435,10 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Disabled"
 #~ msgstr "비활성화됨"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr "카테고리가 선택되면 즉시 검색을 수행합니다. 여러 카테고리를 선택하려면 비활성화합니다. (JavaScript 필요)"
+

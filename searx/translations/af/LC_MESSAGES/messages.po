@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-18 19:34+0000\n"
 "PO-Revision-Date: 2023-07-09 15:33+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: af\n"
@@ -152,7 +152,7 @@ msgstr "donker"
 msgid "No item found"
 msgstr "Geen item gevind"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Bron"
@@ -161,15 +161,15 @@ msgstr "Bron"
 msgid "Error loading the next page"
 msgstr "Fout met die laai van die volgende bladsy"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:490 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige opstellings, redigeer asb jou voorkeure"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:506
 msgid "Invalid settings"
 msgstr "Ongeldige opstellings"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:583 searx/webapp.py:665
 msgid "search error"
 msgstr "soekfout"
 
@@ -265,7 +265,7 @@ msgstr "{title} (VEROUDERD)"
 msgid "This entry has been superseded by"
 msgstr "Hierdie inskrywing was vervang deur"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -357,18 +357,6 @@ msgid ""
 msgstr ""
 "Vermy betaalmure deur na ope-toegang weergawes van publikasies te herlei "
 "wanneer beskikbaar"
-
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Soek op kategorie selekteer"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Doen soektog onmiddelik indien 'n kategorie geselekteer is. Deaktiveer om"
-" veelvoudige kategoriee te selekteer. (JavaScript benodig)"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -495,7 +483,7 @@ msgstr "Privaatheidsbeleid"
 msgid "Contact instance maintainer"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Kliek op die vergrootglas om 'n soektog te doen"
 
@@ -590,23 +578,23 @@ msgstr "Verstek kategoriee"
 msgid "User interface"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:207
 msgid "Privacy"
 msgstr "Privaatheid"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:220
 msgid "Engines"
 msgstr "Enjins"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:222
 msgid "Currently used search engines"
 msgstr "Huidige gebruikte soekenjins"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:230
 msgid "Special Queries"
 msgstr "Spesiale Navrae"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:236
 msgid "Cookies"
 msgstr "Koekies"
 
@@ -1045,6 +1033,16 @@ msgstr "Maak resultaat skakels oop in nuwe blaaier oortjies"
 msgid "Filter content"
 msgstr "Filter inhoud"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Soek op kategorie selekteer"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
@@ -1339,4 +1337,14 @@ msgstr ""
 
 #~ msgid "Disabled"
 #~ msgstr "Gedeaktiveer"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Doen soektog onmiddelik indien 'n "
+#~ "kategorie geselekteer is. Deaktiveer om "
+#~ "veelvoudige kategoriee te selekteer. "
+#~ "(JavaScript benodig)"
 
