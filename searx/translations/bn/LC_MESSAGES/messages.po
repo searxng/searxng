@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bn\n"
@@ -163,15 +163,15 @@ msgstr "উৎস"
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করায় ত্রুটি দেখা যাচ্ছে"
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "অকেজো সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "অকেজো সেটিংস"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "সার্চ ত্রুটি"
 
@@ -410,18 +410,6 @@ msgstr "ট্র্যাকার URL রিমুভার"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ফিরে আসা URL থেকে ট্র্যাকার আর্গুমেন্টগুলি সরান৷"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "ভিম-এর মতো হটকি"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Vim-এর মতো হটকি (জাভাস্ক্রিপ্ট প্রয়োজন) দিয়ে অনুসন্ধান ফলাফল নেভিগেট "
-"করুন। সাহায্য পেতে প্রধান বা ফলাফল পৃষ্ঠায় \"h\" কী চাপুন।"
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "পৃষ্ঠা খুঁজে পাওয়া যায়নি"
@@ -579,23 +567,23 @@ msgstr "ডিফল্ট বিভাগ"
 msgid "User interface"
 msgstr "ব‍্যবহারকারীর সম্মুখে প্রদর্শিত"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "গোপনীয়তা"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "ইঞ্জিন"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "বর্তমানে ব্যবহৃত সার্চ ইঞ্জিন"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "বিশেষ প্রশ্ন"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "কুকি"
 
@@ -988,6 +976,20 @@ msgstr "ডিফল্টে রিসেট করুন"
 msgid "Back"
 msgstr "পিছনে"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "ছবির প্রক্সি"
@@ -1370,4 +1372,18 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ "অনুসন্ধান অবিলম্বে সঞ্চালিত হয়. একাধিক "
 #~ "বিভাগ নির্বাচন করতে অক্ষম করুন। "
 #~ "(জাভাস্ক্রিপ্ট প্রয়োজন)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "ভিম-এর মতো হটকি"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Vim-এর মতো হটকি (জাভাস্ক্রিপ্ট প্রয়োজন) "
+#~ "দিয়ে অনুসন্ধান ফলাফল নেভিগেট করুন। "
+#~ "সাহায্য পেতে প্রধান বা ফলাফল পৃষ্ঠায়"
+#~ " \"h\" কী চাপুন।"
 

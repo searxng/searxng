@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: oc\n"
@@ -160,15 +160,15 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "Paramètre pas valide, mercés de modificar vòstras preferéncias"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Paramètres invalids"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "error de recèrca"
 
@@ -393,19 +393,6 @@ msgstr "Netejador d'URL de traçat"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Lèva los arguments de las URL utilizats per vos traçar"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Acorchis coma Vim"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Percorrètz los resultats de recèrca amb d'acorchis clavièr coma sus Vim "
-"(Javascript necessari). Picatz sus \"h\" dins la fenestra principala de "
-"resultats per afichar l'ajuda."
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Pagina pas trobada"
@@ -559,23 +546,23 @@ msgstr "Categoria per defaut"
 msgid "User interface"
 msgstr "Interfàcia utilizaire"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Privacitat"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Motors de cerca"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Motors de recèrca utilizat actualament"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -962,6 +949,20 @@ msgstr "Reïnicializar per defaut"
 
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
 msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
@@ -1577,4 +1578,19 @@ msgstr "escondre la vidèo"
 #~ " categoria es seleccionada. Desactivar per"
 #~ " seleccionar mai d'una categoria "
 #~ "(Javascript necessari)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Acorchis coma Vim"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Percorrètz los resultats de recèrca amb"
+#~ " d'acorchis clavièr coma sus Vim "
+#~ "(Javascript necessari). Picatz sus \"h\" "
+#~ "dins la fenestra principala de resultats"
+#~ " per afichar l'ajuda."
 

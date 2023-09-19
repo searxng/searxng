@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: fil\n"
@@ -162,15 +162,15 @@ msgstr "Pinagmulan"
 msgid "Error loading the next page"
 msgstr "Nag error ang pagload ng kabilang pahina"
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "Maling settings, paki ayos ang preferences"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Maling settings"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "nagkaproblema sa paghahanap"
 
@@ -408,19 +408,6 @@ msgstr "Alisin ang URL tracker"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Alisin ang tracker sa ibabalik na URL"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Kasingtulad ng vim hotkeys"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Maglakbay sa resulta ng paghahanap gamit ang 'Vim-like hotkeys' "
-"(Nangagailangan ito ng JavaScript). Pindutin ang \"h\" na pindutan sa "
-"panguna o ang pahina ng resulta para makahingi ng tulong."
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Hindi natagpuan ang pahina"
@@ -578,23 +565,23 @@ msgstr "Ang mga default na uri"
 msgid "User interface"
 msgstr "Ang User interface"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Pagiging Pribado"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Engines"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Ang ginagamit natin na search engines"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Mga Espesyal na Queries"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -985,6 +972,20 @@ msgstr "I-reset ang defaults"
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "Bumalik"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1617,4 +1618,20 @@ msgstr "itago ang video"
 #~ "kapag nakapili ng uri. Alisin kapag "
 #~ "nakapili ng maraming uri. (Nangagailangan "
 #~ "ng JavaScript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Kasingtulad ng vim hotkeys"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Maglakbay sa resulta ng paghahanap gamit"
+#~ " ang 'Vim-like hotkeys' (Nangagailangan "
+#~ "ito ng JavaScript). Pindutin ang \"h\""
+#~ " na pindutan sa panguna o ang "
+#~ "pahina ng resulta para makahingi ng "
+#~ "tulong."
 

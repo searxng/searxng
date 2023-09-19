@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bg\n"
@@ -164,15 +164,15 @@ msgstr "Източник"
 msgid "Error loading the next page"
 msgstr "Грешка при зареждането на следващата страница"
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправилни настройки, моля проверете предпочитанията си"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "невалидни настройки"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "грешка при търсенето"
 
@@ -407,19 +407,6 @@ msgstr "Премахвач на URL тракери"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Премахни следящите аргументи от върнатия URL"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim наподобяващи клавишни комбинации"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Навигирайте резултатите от търсенето с Vim-подобни горещи клавиши "
-"(изисква се JavaScript). Натиснете клавиша \"h\" на главната или "
-"резултатната страница, за да получите помощ."
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Страницата не е намерена"
@@ -577,23 +564,23 @@ msgstr "Първоначални категории"
 msgid "User interface"
 msgstr "Потребителски интерфейс"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Поверителност"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Търсачки"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Използвани търсачки в момента"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Специялни Запитвания"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Бисквитки"
 
@@ -986,6 +973,20 @@ msgstr "Върни първоначалните"
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "Назад"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1609,4 +1610,19 @@ msgstr "скрий видеото"
 #~ "Търси веднага при избрана категория. "
 #~ "Изключи за избор на няколко категории."
 #~ " (Необходим е JavaScript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim наподобяващи клавишни комбинации"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Навигирайте резултатите от търсенето с "
+#~ "Vim-подобни горещи клавиши (изисква се "
+#~ "JavaScript). Натиснете клавиша \"h\" на "
+#~ "главната или резултатната страница, за "
+#~ "да получите помощ."
 

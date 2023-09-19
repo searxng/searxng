@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: zh_Hant_TW\n"
@@ -168,15 +168,15 @@ msgstr "來源"
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "搜尋錯誤"
 
@@ -399,16 +399,6 @@ msgstr "追蹤器 URL 移除器"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "從傳回的 URL 中移除追蹤器參數"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "類 Vim 快捷鍵"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr "以類 Vim 的快捷鍵導覽搜尋結果（需要 JavaScript）。在主頁面或結果頁面按「h」鍵以取得說明。"
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "找不到頁面"
@@ -562,23 +552,23 @@ msgstr "預設分類"
 msgid "User interface"
 msgstr "使用者介面"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "隱私"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "搜尋引擎"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "目前使用的搜尋引擎"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "特殊查詢"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -958,6 +948,20 @@ msgstr "重設為預設值"
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "返回"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1554,4 +1558,14 @@ msgstr "隱藏影片"
 #~ " selected. Disable to select multiple "
 #~ "categories. (JavaScript required)"
 #~ msgstr "若分類被選取時立刻執行搜尋。停用以選取多個分類。（需要 JavaScript）"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "類 Vim 快捷鍵"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr "以類 Vim 的快捷鍵導覽搜尋結果（需要 JavaScript）。在主頁面或結果頁面按「h」鍵以取得說明。"
 

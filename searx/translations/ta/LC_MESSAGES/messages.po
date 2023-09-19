@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-06-29 16:38+0000\n"
 "Last-Translator: jenishngl <jenishngl+codeberg@gmail.com>\n"
 "Language: ta\n"
@@ -166,15 +166,15 @@ msgstr "ஆதாரம்"
 msgid "Error loading the next page"
 msgstr "அடுத்த பக்கத்தை திறப்பதில் தவறு நிகழ்ந்துவிட்டது."
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "ஏற்க முடியாத அமைப்பு,உங்கள் விருப்பத்தை தொகுக்கவும்"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "ஏற்கமுடியாத அமைப்பு"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "தேடல் பிழை"
 
@@ -409,19 +409,6 @@ msgstr ""
 "உங்களை உளவு பார்த்து பின்தொடர பயன்படும் எழுத்துக்களை வலைதள "
 "முகவரியிலிருந்து நீக்குக"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim போன்ற hotkeys"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Vim போன்ற ஹாட்ஸ்கிகள் மூலம் தேடல் முடிவுகளை வழிசெலுத்தவும் "
-"(ஜாவாஸ்கிரிப்ட் தேவை). உதவியைப் பெற, பிரதான அல்லது முடிவுப் பக்கத்தில் "
-"\"h\" விசையை அழுத்தவும்."
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "பக்கம் கிடைக்கவில்லை"
@@ -575,23 +562,23 @@ msgstr "இயல்புநிலை பிரிவுகள்"
 msgid "User interface"
 msgstr "பயனர் இடைமுகப்பு"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "தனியுரிமை"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "எந்திரங்கள்"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "தற்போது பயன்படுத்திய தேடுபொறிகள்"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "சிறப்பு வினாக்கள்"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "நினைவிகள்"
 
@@ -981,6 +968,20 @@ msgstr "இயல்புநிலைக்குத் திருப்ப�
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "பின்"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1591,4 +1592,18 @@ msgstr "காணொளிகளை மறை"
 #~ " செயற்படுத்தும். பல பிரிவுகளைத் தேர்வு "
 #~ "செய்ய முடக்கவும். (ஜாவா ஸ்கிரிப்ட் "
 #~ "தேவைப்படும்)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim போன்ற hotkeys"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Vim போன்ற ஹாட்ஸ்கிகள் மூலம் தேடல் "
+#~ "முடிவுகளை வழிசெலுத்தவும் (ஜாவாஸ்கிரிப்ட் தேவை). "
+#~ "உதவியைப் பெற, பிரதான அல்லது முடிவுப் "
+#~ "பக்கத்தில் \"h\" விசையை அழுத்தவும்."
 

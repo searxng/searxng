@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-18 19:34+0000\n"
+"POT-Creation-Date: 2023-09-19 06:36+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: da\n"
@@ -161,15 +161,15 @@ msgstr "Kilde"
 msgid "Error loading the next page"
 msgstr "Fejl ved indlæsning af den næste side"
 
-#: searx/webapp.py:490 searx/webapp.py:882
+#: searx/webapp.py:491 searx/webapp.py:883
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige indstillinger, redigér venligst dine valg"
 
-#: searx/webapp.py:506
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Ugyldig indstilling"
 
-#: searx/webapp.py:583 searx/webapp.py:665
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "søgefejl"
 
@@ -409,18 +409,6 @@ msgstr "Fjernelse af tracker URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Fjern trackeres parametre fra den returnerede URL"
 
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Genvejstaster i Vim-stil"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Navigér søgeresultater med Vim-lignende genvejstaster (JavaScript "
-"påkrævet). Tryk på \"h\" på hoved- eller resultatsiden for at få hjælp."
-
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Side ikke fundet"
@@ -578,23 +566,23 @@ msgstr "Standardkategorier"
 msgid "User interface"
 msgstr "Brugerinterface"
 
-#: searx/templates/simple/preferences.html:207
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Privatliv"
 
-#: searx/templates/simple/preferences.html:220
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Søgemaskiner"
 
-#: searx/templates/simple/preferences.html:222
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Pt. anvendte søgemaskiner"
 
-#: searx/templates/simple/preferences.html:230
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Specielle Søgetermer"
 
-#: searx/templates/simple/preferences.html:236
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -989,6 +977,20 @@ msgstr "Nustil til standard"
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "Tilbage"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1624,4 +1626,18 @@ msgstr "skjul video"
 #~ " vælges. Slå dette fra for at "
 #~ "kunne vælge flere kategorier (JavaScript "
 #~ "påkrævet)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Genvejstaster i Vim-stil"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Navigér søgeresultater med Vim-lignende "
+#~ "genvejstaster (JavaScript påkrævet). Tryk på"
+#~ " \"h\" på hoved- eller resultatsiden "
+#~ "for at få hjælp."
 
