@@ -361,7 +361,7 @@ def get_client_settings():
         'http_method': req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),
-        'search_on_category_select': req_pref.get_value('searx.plugins.search_on_category_select'),
+        'search_on_category_select': req_pref.get_value('search_on_category_select'),
         'hotkeys': req_pref.get_value('hotkeys'),
         'theme_static_path': custom_url_for('static', filename='themes/simple'),
     }
