@@ -35,7 +35,7 @@ Untuk memilih saringan bahasa gunakan awalan `:`.  Sebagai contoh:
 
   - {{search(':en !wp Jakarta')}}
 
-## `!!` mesin pencarian (*bangs*) eksternal
+## `!!<bang>` mesin pencarian (*bangs*) eksternal
 
 SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [DuckDuckGo].  Untuk
 langsung lompat ke sebuah laman pencarian eksternal gunakan awalan `!!`.
