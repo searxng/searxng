@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bn\n"
@@ -163,7 +163,7 @@ msgstr "উৎস"
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করায় ত্রুটি দেখা যাচ্ছে"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "অকেজো সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন"
 
@@ -518,7 +518,7 @@ msgstr "উপরের তথ্য সহ Github এ একটি নতুন
 msgid "No HTTPS"
 msgstr "HTTPS নেই"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -725,15 +725,15 @@ msgstr "মন্তব্য"
 msgid "Download results"
 msgstr "ডাউনলোডগুলোর ফলাফল"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "সার্চ ইঞ্জিন থেকে বার্তা"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "ত্রুটি!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "ইঞ্জিন ফলাফল পুনরুদ্ধার করতে পারেছেনা"
 
@@ -822,12 +822,24 @@ msgid "Sorry!"
 msgstr "দুঃখিত!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"আমরা কোন ফলাফল খুঁজে পাইনি. অনুগ্রহ করে অন্য কোনো প্রশ্ন ব্যবহার করুন বা "
-"আরও বিভাগে অনুসন্ধান করুন।"
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1386,4 +1398,13 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ "দিয়ে অনুসন্ধান ফলাফল নেভিগেট করুন। "
 #~ "সাহায্য পেতে প্রধান বা ফলাফল পৃষ্ঠায়"
 #~ " \"h\" কী চাপুন।"
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "আমরা কোন ফলাফল খুঁজে পাইনি. অনুগ্রহ "
+#~ "করে অন্য কোনো প্রশ্ন ব্যবহার করুন "
+#~ "বা আরও বিভাগে অনুসন্ধান করুন।"
 

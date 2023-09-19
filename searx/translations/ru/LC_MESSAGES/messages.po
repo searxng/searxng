@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ru\n"
@@ -172,7 +172,7 @@ msgstr "Источник"
 msgid "Error loading the next page"
 msgstr "Не удалось загрузить следующую страницу"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
 
@@ -525,7 +525,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Без HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -732,15 +732,15 @@ msgstr "Комментарии"
 msgid "Download results"
 msgstr "Загрузить результаты"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Сообщения от поисковых систем"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Ошибка!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Поисковые системы не могут получить результат"
 
@@ -829,12 +829,24 @@ msgid "Sorry!"
 msgstr "Грусть-печаль!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"мы не нашли никаких результатов. Попробуйте изменить запрос или поищите в"
-" других категориях."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1650,4 +1662,13 @@ msgstr "скрыть видео"
 #~ "справку, нажмите клавишу \"h\" на "
 #~ "главной странице или на страницах "
 #~ "результатов."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "мы не нашли никаких результатов. "
+#~ "Попробуйте изменить запрос или поищите в"
+#~ " других категориях."
 

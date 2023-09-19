@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ko\n"
@@ -161,7 +161,7 @@ msgstr "소스"
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
@@ -502,7 +502,7 @@ msgstr "Github에 위 정보를 포함한 새 이슈 작성하기"
 msgid "No HTTPS"
 msgstr "HTTPS 없음"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -709,15 +709,15 @@ msgstr "댓글"
 msgid "Download results"
 msgstr "검색결과 다운로드"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "검색 엔진에서 발생한 메시지"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "오류!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "결과를 가져올 수 없습니다"
 
@@ -806,10 +806,24 @@ msgid "Sorry!"
 msgstr "죄송합니다!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
-msgstr "검색결과를 찾을 수 없습니다. 다른 검색어로 검색하거나 검색 범주를 추가해주세요."
+msgid "No results were found. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1456,4 +1470,10 @@ msgstr "비디오 숨기기"
 #~ "Vim 스타일 단축키로 검색 결과를 찾아보세요(JavaScript "
 #~ "필요). 도움말을 보려면 메인 페이지 또는 결과 "
 #~ "페이지에서 \"h\" 키를 누르십시오."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr "검색결과를 찾을 수 없습니다. 다른 검색어로 검색하거나 검색 범주를 추가해주세요."
 

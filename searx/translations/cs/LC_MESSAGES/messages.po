@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: cs\n"
@@ -168,7 +168,7 @@ msgstr "zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
@@ -519,7 +519,7 @@ msgstr "Odeslání nového problému na Github včetně výše uvedených inform
 msgid "No HTTPS"
 msgstr "Žádné HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -726,15 +726,15 @@ msgstr "Komentář(e)"
 msgid "Download results"
 msgstr "Stáhnout výsledky vyhledávání"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Hlášení vyhledávačů"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Chyba!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Vyhledávače nemohou získat výsledky"
 
@@ -823,12 +823,24 @@ msgid "Sorry!"
 msgstr "Omlouváme se!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"Nenašli jsme žádné výsledky. Použijte prosím jiný dotaz nebo hledejte ve "
-"více kategoriích."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1640,4 +1652,13 @@ msgstr "skrýt video"
 #~ " JavaScript). Stisknutím klávesy \"h\" na"
 #~ " hlavní stránce či stránce výsledků "
 #~ "zobrazíte nápovědu."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "Nenašli jsme žádné výsledky. Použijte "
+#~ "prosím jiný dotaz nebo hledejte ve "
+#~ "více kategoriích."
 

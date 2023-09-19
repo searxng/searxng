@@ -9,19 +9,18 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-19 09:15+0000\n"
 "Last-Translator: ghose <correo@xmgz.eu>\n"
-"Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
-"searxng/gl/>\n"
 "Language: gl\n"
+"Language-Team: Galician "
+"<https://translate.codeberg.org/projects/searxng/searxng/gl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -162,7 +161,7 @@ msgstr "Fonte"
 msgid "Error loading the next page"
 msgstr "Erro ao cargar a páxina seguinte"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Axustes non válidos, por favor edita a configuración"
 
@@ -513,7 +512,7 @@ msgstr "Enviar un issue a Github incluíndo a información superior"
 msgid "No HTTPS"
 msgstr "Sen HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -720,15 +719,15 @@ msgstr "Comentario(s)"
 msgid "Download results"
 msgstr "Descargar resultados"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Mensaxes desde os motores de busca"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Fallo!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Os buscadores non obtiveron resultados"
 
@@ -817,12 +816,24 @@ msgid "Sorry!"
 msgstr "Lamentámolo!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"non atopamos ningún resultado. Por favor, realiza outra consulta ou busca"
-" en máis categorías."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -986,8 +997,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navega entre os resultdos cos atallos (require JavaScript). Preme tecla \"h\""
-" na páxina de resultados para obter axuda."
+"Navega entre os resultdos cos atallos (require JavaScript). Preme tecla "
+"\"h\" na páxina de resultados para obter axuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1648,3 +1659,13 @@ msgstr "agochar vídeo"
 #~ "JavaScript). Preme \"h\" na pantalla "
 #~ "principal ou de resultados para obter"
 #~ " axuda."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "non atopamos ningún resultado. Por "
+#~ "favor, realiza outra consulta ou busca"
+#~ " en máis categorías."
+

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ar\n"
@@ -167,7 +167,7 @@ msgstr "المصدر"
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
@@ -516,7 +516,7 @@ msgstr "قم بتقديم مشكلة جديدة على GitHub بالمعلوما
 msgid "No HTTPS"
 msgstr "دون HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -723,15 +723,15 @@ msgstr "تعليق/تعليقات"
 msgid "Download results"
 msgstr "حصيلة التنزيل"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "رسائل من محركات البحث"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "خطأ !"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "لم تتمكن محركات البحث من العثور على أية نتيجة"
 
@@ -820,12 +820,24 @@ msgid "Sorry!"
 msgstr "عفوا !"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"لم نتوصل إلى العثور على أية نتيجة. الرجاء إعادة صياغة طلب البحث أو إبحث "
-"مع تحديد أكثر من فئة."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1629,4 +1641,13 @@ msgstr "إخفاء الفيديو"
 #~ "JavaScript). اضغط على مفتاح \"h\" في "
 #~ "الصفحة الرئيسية أو صفحة النتائج للحصول"
 #~ " على المساعدة."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "لم نتوصل إلى العثور على أية نتيجة."
+#~ " الرجاء إعادة صياغة طلب البحث أو "
+#~ "إبحث مع تحديد أكثر من فئة."
 

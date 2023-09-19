@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།ཁྱེད་ཀྱིས་གདམ་ཀ་ལ་བཅོས་སྒྲིག་གཏོང་རོགས།"
 
@@ -493,7 +493,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -700,15 +700,15 @@ msgstr ""
 msgid "Download results"
 msgstr "འཚོལ་འབྲས་ཕབ་ལེན།"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "ནོར་འཁྲུལ་བྱུང་ཟིན།"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "འཚོལ་བཤེར་སྒུལ་བྱེད་ལ་ནོར་འཁྲུལ་ཅུང་ཟད་བྱུང་།"
 
@@ -797,12 +797,24 @@ msgid "Sorry!"
 msgstr "དགོངས་དག"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"འཚོལ་འབྲས་གང་ཡང་མ་ཐོབ། "
-"ཁྱེད་ཀྱིས་འཚོལ་བཤེར་ཐ་སྙད་གཞན་པ་ནས་ཚོད་ལྟ་བྱེད་རོགས།"
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1563,4 +1575,12 @@ msgstr "རྙན་ཟློས་སྦས།"
 #~ " key on main or result page to"
 #~ " get help."
 #~ msgstr ""
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "འཚོལ་འབྲས་གང་ཡང་མ་ཐོབ། "
+#~ "ཁྱེད་ཀྱིས་འཚོལ་བཤེར་ཐ་སྙད་གཞན་པ་ནས་ཚོད་ལྟ་བྱེད་རོགས།"
 

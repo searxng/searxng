@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 06:36+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: hu\n"
@@ -165,7 +165,7 @@ msgstr "Forrás"
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:491 searx/webapp.py:883
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, kérlek módosítsd őket"
 
@@ -518,7 +518,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Nincs HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -725,15 +725,15 @@ msgstr "Komment(ek)"
 msgid "Download results"
 msgstr "Találatok letöltése"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "A keresőmotorok üzenetei"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Hiba!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Nincs találat a keresőmotortól"
 
@@ -822,12 +822,24 @@ msgid "Sorry!"
 msgstr "Elnézést!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"Nincs megjeleníthető találat. Kérlek, hogy használj másik kifejezést vagy"
-" keress több kategóriában."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1636,4 +1648,13 @@ msgstr "videó elrejtése"
 #~ " betű lenyomásával jeleníthető meg "
 #~ "részletes segítség a használatról. (Ez a"
 #~ " funkció JavaScriptet igényel)."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "Nincs megjeleníthető találat. Kérlek, hogy "
+#~ "használj másik kifejezést vagy keress "
+#~ "több kategóriában."
 
