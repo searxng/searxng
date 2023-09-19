@@ -159,9 +159,12 @@ def parse_web_lite(resp):
     dom = lxml.html.fromstring(resp.text)
 
     for item in eval_xpath_list(dom, '//section/article'):
+        if eval_xpath(item, "./span[contains(@class, 'tooltip')]"):
+            # ignore randomly interspersed advertising adds
+            continue
         results.append(
             {
-                'url': extract_text(eval_xpath(item, './span')),
+                'url': extract_text(eval_xpath(item, "./span[contains(@class, 'url partner')]")),
                 'title': extract_text(eval_xpath(item, './h2/a')),
                 'content': extract_text(eval_xpath(item, './p')),
             }
