@@ -77,6 +77,11 @@ about = {
     "results": 'JSON',
 }
 
+display_type = ["infobox"]
+"""A list of display types composed from ``infobox`` and ``list``.  The latter
+one will add a hit to the result list.  The first one will show a hit in the
+info box.  Both values can be set, or one of the two can be set."""
+
 send_accept_language_header = True
 """The HTTP ``Accept-Language`` header is needed for wikis where
 LanguageConverter_ is enabled."""
@@ -185,18 +190,23 @@ def response(resp):
     api_result = resp.json()
     title = utils.html_to_text(api_result.get('titles', {}).get('display') or api_result.get('title'))
     wikipedia_link = api_result['content_urls']['desktop']['page']
-    results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
 
-    if api_result.get('type') == 'standard':
-        results.append(
-            {
-                'infobox': title,
-                'id': wikipedia_link,
-                'content': api_result.get('extract', ''),
-                'img_src': api_result.get('thumbnail', {}).get('source'),
-                'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
-            }
-        )
+    if "list" in display_type or api_result.get('type') != 'standard':
+        # show item in the result list if 'list' is in the display options or it
+        # is a item that can't be displayed in a infobox.
+        results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
+
+    if "infobox" in display_type:
+        if api_result.get('type') == 'standard':
+            results.append(
+                {
+                    'infobox': title,
+                    'id': wikipedia_link,
+                    'content': api_result.get('extract', ''),
+                    'img_src': api_result.get('thumbnail', {}).get('source'),
+                    'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
+                }
+            )
 
     return results
 

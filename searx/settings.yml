@@ -371,7 +371,10 @@ engines:
   - name: wikipedia
     engine: wikipedia
     shortcut: wp
+    # add "list" to the array to get results in the results list
+    display_type: ["infobox"]
     base_url: 'https://{language}.wikipedia.org/'
+    categories: [general]
 
   - name: bilibili
     engine: bilibili
@@ -584,7 +587,10 @@ engines:
     shortcut: wd
     timeout: 3.0
     weight: 2
+    # add "list" to the array to get results in the results list
+    display_type: ["infobox"]
     tests: *tests_infobox
+    categories: [general]
 
   - name: duckduckgo
     engine: duckduckgo
@@ -1622,6 +1628,7 @@ engines:
     categories: [general, wikimedia]
     base_url: "https://{language}.wikisource.org/"
     search_type: text
+    disabled: true
     about:
       website: https://www.wikisource.org/
       wikidata_id: Q263

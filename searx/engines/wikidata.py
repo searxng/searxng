@@ -41,6 +41,12 @@ about = {
     "results": 'JSON',
 }
 
+display_type = ["infobox"]
+"""A list of display types composed from ``infobox`` and ``list``.  The latter
+one will add a hit to the result list.  The first one will show a hit in the
+info box.  Both values can be set, or one of the two can be set."""
+
+
 # SPARQL
 SPARQL_ENDPOINT_URL = 'https://query.wikidata.org/sparql'
 SPARQL_EXPLAIN_URL = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?explain'
@@ -268,8 +274,9 @@ def get_results(attribute_result, attributes, language):
                 for url in value.split(', '):
                     infobox_urls.append({'title': attribute.get_label(language), 'url': url, **attribute.kwargs})
                     # "normal" results (not infobox) include official website and Wikipedia links.
-                    if attribute.kwargs.get('official') or attribute_type == WDArticle:
+                    if "list" in display_type and (attribute.kwargs.get('official') or attribute_type == WDArticle):
                         results.append({'title': infobox_title, 'url': url, "content": infobox_content})
+
                     # update the infobox_id with the wikipedia URL
                     # first the local wikipedia URL, and as fallback the english wikipedia URL
                     if attribute_type == WDArticle and (
@@ -305,9 +312,15 @@ def get_results(attribute_result, attributes, language):
     # add the wikidata URL at the end
     infobox_urls.append({'title': 'Wikidata', 'url': attribute_result['item']})
 
-    if img_src is None and len(infobox_attributes) == 0 and len(infobox_urls) == 1 and len(infobox_content) == 0:
+    if (
+        "list" in display_type
+        and img_src is None
+        and len(infobox_attributes) == 0
+        and len(infobox_urls) == 1
+        and len(infobox_content) == 0
+    ):
         results.append({'url': infobox_urls[0]['url'], 'title': infobox_title, 'content': infobox_content})
-    else:
+    elif "infobox" in display_type:
         results.append(
             {
                 'infobox': infobox_title,
