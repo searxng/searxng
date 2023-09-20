@@ -5,7 +5,6 @@
 # pylint: disable=invalid-name
 
 from typing import TYPE_CHECKING
-import uuid
 import json
 from urllib.parse import urlencode
 
@@ -16,7 +15,6 @@ from searx.engines.bing import (
     set_bing_cookies,
     _fetch_traits,
 )
-from searx.engines.bing import send_accept_language_header  # pylint: disable=unused-import
 
 if TYPE_CHECKING:
     import logging
@@ -60,11 +58,10 @@ time_map = {
 def request(query, params):
     """Assemble a Bing-Video request."""
 
-    engine_region = traits.get_region(params['searxng_locale'], 'en-US')
-    engine_language = traits.get_language(params['searxng_locale'], 'en')
+    engine_region = traits.get_region(params['searxng_locale'], 'en-us')
+    engine_language = traits.get_language(params['searxng_locale'], 'en-us')
 
-    SID = uuid.uuid1().hex.upper()
-    set_bing_cookies(params, engine_language, engine_region, SID)
+    set_bing_cookies(params, engine_language, engine_region)
 
     # build URL query
     #
