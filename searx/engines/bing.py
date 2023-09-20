@@ -30,9 +30,8 @@ inaccuracies there too):
 
 from typing import TYPE_CHECKING
 import base64
-import datetime
 import re
-import uuid
+import time
 from urllib.parse import parse_qs, urlencode, urlparse
 from lxml import html
 import babel
@@ -58,17 +57,10 @@ about = {
     "results": 'HTML',
 }
 
-send_accept_language_header = True
-"""Bing tries to guess user's language and territory from the HTTP
-Accept-Language.  Optional the user can select a search-language (can be
-different to the UI language) and a region (market code)."""
-
 # engine dependent config
 categories = ['general', 'web']
 paging = True
 time_range_support = True
-safesearch = True
-safesearch_types = {2: 'STRICT', 1: 'DEMOTE', 0: 'OFF'}  # cookie: ADLT=STRICT
 
 base_url = 'https://www.bing.com/search'
 """Bing (Web) search URL"""
@@ -77,105 +69,29 @@ bing_traits_url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-web-s
 """Bing (Web) search API description"""
 
 
-def _get_offset_from_pageno(pageno):
-    return (pageno - 1) * 10 + 1
+def _page_offset(pageno):
+    return (int(pageno) - 1) * 10 + 1
 
 
-def set_bing_cookies(params, engine_language, engine_region, SID):
-
-    # set cookies
-    # -----------
-
-    params['cookies']['_EDGE_V'] = '1'
-
-    # _EDGE_S: F=1&SID=3A5253BD6BCA609509B741876AF961CA&mkt=zh-tw
-    _EDGE_S = [
-        'F=1',
-        'SID=%s' % SID,
-        'mkt=%s' % engine_region.lower(),
-        'ui=%s' % engine_language.lower(),
-    ]
-    params['cookies']['_EDGE_S'] = '&'.join(_EDGE_S)
-    logger.debug("cookie _EDGE_S=%s", params['cookies']['_EDGE_S'])
-
-    # "_EDGE_CD": "m=zh-tw",
-
-    _EDGE_CD = [  # pylint: disable=invalid-name
-        'm=%s' % engine_region.lower(),  # search region: zh-cn
-        'u=%s' % engine_language.lower(),  # UI: en-us
-    ]
-
-    params['cookies']['_EDGE_CD'] = '&'.join(_EDGE_CD) + ';'
-    logger.debug("cookie _EDGE_CD=%s", params['cookies']['_EDGE_CD'])
-
-    SRCHHPGUSR = [  # pylint: disable=invalid-name
-        'SRCHLANG=%s' % engine_language,
-        # Trying to set ADLT cookie here seems not to have any effect, I assume
-        # there is some age verification by a cookie (and/or session ID) needed,
-        # to disable the SafeSearch.
-        'ADLT=%s' % safesearch_types.get(params['safesearch'], 'DEMOTE'),
-    ]
-    params['cookies']['SRCHHPGUSR'] = '&'.join(SRCHHPGUSR)
-    logger.debug("cookie SRCHHPGUSR=%s", params['cookies']['SRCHHPGUSR'])
+def set_bing_cookies(params, engine_language, engine_region):
+    params['cookies']['_EDGE_CD'] = f'm={engine_region.lower()}&u={engine_language.lower()};'
 
 
 def request(query, params):
     """Assemble a Bing-Web request."""
 
-    engine_region = traits.get_region(params['searxng_locale'], 'en-US')
-    engine_language = traits.get_language(params['searxng_locale'], 'en')
+    engine_region = traits.get_region(params['searxng_locale'], 'en-us')
+    engine_language = traits.get_language(params['searxng_locale'], 'en-us')
+    set_bing_cookies(params, engine_language, engine_region)
 
-    SID = uuid.uuid1().hex.upper()
-    CVID = uuid.uuid1().hex.upper()
+    query_params = {'q': query, 'first': _page_offset(params.get('pageno', 1))}
+    params['url'] = f'{base_url}?{urlencode(query_params)}'
 
-    set_bing_cookies(params, engine_language, engine_region, SID)
+    unix_day = int(time.time() / 86400)
+    time_ranges = {'day': '1', 'week': '2', 'month': '3', 'year': f'5_{unix_day-365}_{unix_day}'}
+    if params.get('time_range') in time_ranges:
+        params['url'] += f'&filters=ex1:"ez{time_ranges[params["time_range"]]}"'
 
-    # build URL query
-    # ---------------
-
-    # query term
-    page = int(params.get('pageno', 1))
-    query_params = {
-        # fmt: off
-        'q': query,
-        'pq': query,
-        'cvid': CVID,
-        'qs': 'n',
-        'sp': '-1'
-        # fmt: on
-    }
-
-    # page
-    if page > 1:
-        referer = base_url + '?' + urlencode(query_params)
-        params['headers']['Referer'] = referer
-        logger.debug("headers.Referer --> %s", referer)
-
-    query_params['first'] = _get_offset_from_pageno(page)
-
-    if page == 2:
-        query_params['FORM'] = 'PERE'
-    elif page > 2:
-        query_params['FORM'] = 'PERE%s' % (page - 2)
-
-    filters = ''
-    if params['time_range']:
-        query_params['filt'] = 'custom'
-
-        if params['time_range'] == 'day':
-            filters = 'ex1:"ez1"'
-        elif params['time_range'] == 'week':
-            filters = 'ex1:"ez2"'
-        elif params['time_range'] == 'month':
-            filters = 'ex1:"ez3"'
-        elif params['time_range'] == 'year':
-            epoch_1970 = datetime.date(1970, 1, 1)
-            today_no = (datetime.date.today() - epoch_1970).days
-            filters = 'ex1:"ez5_%s_%s"' % (today_no - 365, today_no)
-
-    params['url'] = base_url + '?' + urlencode(query_params)
-    if filters:
-        params['url'] = params['url'] + '&filters=' + filters
     return params
 
 
@@ -236,7 +152,7 @@ def response(resp):
     except Exception as e:  # pylint: disable=broad-except
         logger.debug('result error :\n%s', e)
 
-    if result_len and _get_offset_from_pageno(resp.search_params.get("pageno", 0)) > result_len:
+    if result_len and _page_offset(resp.search_params.get("pageno", 0)) > result_len:
         # Avoid reading more results than avalaible.
         # For example, if there is 100 results from some search and we try to get results from 120 to 130,
         # Bing will send back the results from 0 to 10 and no error.

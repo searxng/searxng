@@ -6,7 +6,6 @@
 # pylint: disable=invalid-name
 
 from typing import TYPE_CHECKING
-import uuid
 from urllib.parse import urlencode
 
 from lxml import html
@@ -16,7 +15,6 @@ from searx.engines.bing import (
     set_bing_cookies,
     _fetch_traits,
 )
-from searx.engines.bing import send_accept_language_header  # pylint: disable=unused-import
 
 if TYPE_CHECKING:
     import logging
@@ -70,10 +68,9 @@ def request(query, params):
 
     sxng_locale = params['searxng_locale']
     engine_region = traits.get_region(mkt_alias.get(sxng_locale, sxng_locale), traits.all_locale)
-    engine_language = traits.get_language(sxng_locale, 'en')
+    engine_language = traits.get_language(sxng_locale, 'en-us')
 
-    SID = uuid.uuid1().hex.upper()
-    set_bing_cookies(params, engine_language, engine_region, SID)
+    set_bing_cookies(params, engine_language, engine_region)
 
     # build URL query
     #
