@@ -95,7 +95,7 @@ def response(resp):
     json_start = resp.text.find('{"ischj":')
     json_data = loads(resp.text[json_start:])
 
-    for item in json_data["ischj"]["metadata"]:
+    for item in json_data["ischj"].get("metadata", []):
 
         result_item = {
             'url': item["result"]["referrer_url"],
