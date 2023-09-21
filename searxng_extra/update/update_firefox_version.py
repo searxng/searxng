@@ -32,7 +32,7 @@ useragents = {
     "versions": (),
     "os": ('Windows NT 10.0; Win64; x64',
            'X11; Linux x86_64'),
-    "ua": "Mozilla/5.0 ({os}; rv:{version}) Gecko/20100101 Firefox/{version}",
+    "ua": "Mozilla/5.0 ({os}; rv:109.0) Gecko/20100101 Firefox/{version}",
     # fmt: on
 }
 
@@ -64,6 +64,12 @@ def fetch_firefox_last_versions():
     major_last = versions[0].major
     major_list = (major_last, major_last - 1)
     for version in versions:
+        msg = (
+            "Please check if the rv segment of the user agent is still frozen at 109.0: "
+            "https://bugzilla.mozilla.org/show_bug.cgi?id=1805967"
+        )
+        assert version.major != 120, msg
+
         major_current = version.major
         minor_current = version.minor
         if major_current in major_list:
