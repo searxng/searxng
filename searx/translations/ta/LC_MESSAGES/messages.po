@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-06-29 16:38+0000\n"
 "Last-Translator: jenishngl <jenishngl+codeberg@gmail.com>\n"
 "Language: ta\n"
@@ -157,7 +157,7 @@ msgstr "இருள்"
 msgid "No item found"
 msgstr "எதுவும் கிடைக்கவில்லை"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "ஆதாரம்"
@@ -166,15 +166,15 @@ msgstr "ஆதாரம்"
 msgid "Error loading the next page"
 msgstr "அடுத்த பக்கத்தை திறப்பதில் தவறு நிகழ்ந்துவிட்டது."
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "ஏற்க முடியாத அமைப்பு,உங்கள் விருப்பத்தை தொகுக்கவும்"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "ஏற்கமுடியாத அமைப்பு"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "தேடல் பிழை"
 
@@ -270,7 +270,7 @@ msgstr "{title} (காலாவதியானது)"
 msgid "This entry has been superseded by"
 msgstr "இந்த நுழைவு மாற்றப்பட்டது"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "சேனல்"
 
@@ -361,18 +361,6 @@ msgstr ""
 "பணம் பறிக்கும் தளங்களை தவிர்த்து முடிந்த வரையில் open-access பதிப்புகளை "
 "வழங்கும் தளங்களுக்கு செல்லவும்"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "தேர்ந்தெடுத்தப் பிரிவில் தேடுக"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"பிரிவு தேர்வு செய்யப்பட்டால் தேடல் உடனடியாகச் செயற்படுத்தும். பல "
-"பிரிவுகளைத் தேர்வு செய்ய முடக்கவும். (ஜாவா ஸ்கிரிப்ட் தேவைப்படும்)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "சுய தகவல்"
@@ -420,19 +408,6 @@ msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "உங்களை உளவு பார்த்து பின்தொடர பயன்படும் எழுத்துக்களை வலைதள "
 "முகவரியிலிருந்து நீக்குக"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim போன்ற hotkeys"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Vim போன்ற ஹாட்ஸ்கிகள் மூலம் தேடல் முடிவுகளை வழிசெலுத்தவும் "
-"(ஜாவாஸ்கிரிப்ட் தேவை). உதவியைப் பெற, பிரதான அல்லது முடிவுப் பக்கத்தில் "
-"\"h\" விசையை அழுத்தவும்."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -492,7 +467,7 @@ msgstr "தனியுரிமைக் கொள்கை"
 msgid "Contact instance maintainer"
 msgstr "நிகழ்வு பராமரிப்பாளரைத் தொடர்பு கொள்ளவும்"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "உருப்பெருக்கியைச் சொடுக்கி தேடலைத் தொடங்கவும்"
 
@@ -538,7 +513,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "HTTPS இல்லை"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -587,23 +562,23 @@ msgstr "இயல்புநிலை பிரிவுகள்"
 msgid "User interface"
 msgstr "பயனர் இடைமுகப்பு"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "தனியுரிமை"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "எந்திரங்கள்"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "தற்போது பயன்படுத்திய தேடுபொறிகள்"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "சிறப்பு வினாக்கள்"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "நினைவிகள்"
 
@@ -745,15 +720,15 @@ msgstr "கருத்து(கள்)"
 msgid "Download results"
 msgstr "தேடல் பதில்களை தரவிறக்கு"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "பிழை!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "எந்திரங்களால் பதில்களை பெற முடியவில்லை"
 
@@ -842,12 +817,24 @@ msgid "Sorry!"
 msgstr "மன்னிக்கவும்!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"எங்களால் எந்ததொரு பதில்களையும் தேட இயலவில்லை. தயவு செய்து வேறொரு வினவலில்"
-" அல்லது கூடுதலானப் பிரிவுகளில் தேடவும்."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -994,6 +981,20 @@ msgstr "இயல்புநிலைக்குத் திருப்ப�
 msgid "Back"
 msgstr "பின்"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "பட நிகராளி"
@@ -1049,6 +1050,16 @@ msgstr "இணைப்புகளை புதிய Tab-ல் திறக�
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "வடிகட்டி உள்ளடக்கம்"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "தேர்ந்தெடுத்தப் பிரிவில் தேடுக"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1583,4 +1594,37 @@ msgstr "காணொளிகளை மறை"
 
 #~ msgid "Disabled"
 #~ msgstr "நிறுத்தப்பட்டது"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "பிரிவு தேர்வு செய்யப்பட்டால் தேடல் உடனடியாகச்"
+#~ " செயற்படுத்தும். பல பிரிவுகளைத் தேர்வு "
+#~ "செய்ய முடக்கவும். (ஜாவா ஸ்கிரிப்ட் "
+#~ "தேவைப்படும்)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim போன்ற hotkeys"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Vim போன்ற ஹாட்ஸ்கிகள் மூலம் தேடல் "
+#~ "முடிவுகளை வழிசெலுத்தவும் (ஜாவாஸ்கிரிப்ட் தேவை). "
+#~ "உதவியைப் பெற, பிரதான அல்லது முடிவுப் "
+#~ "பக்கத்தில் \"h\" விசையை அழுத்தவும்."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "எங்களால் எந்ததொரு பதில்களையும் தேட இயலவில்லை."
+#~ " தயவு செய்து வேறொரு வினவலில் அல்லது "
+#~ "கூடுதலானப் பிரிவுகளில் தேடவும்."
 

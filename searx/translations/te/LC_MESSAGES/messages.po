@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: te\n"
@@ -152,7 +152,7 @@ msgstr "చీకటి"
 msgid "No item found"
 msgstr "ఏమీ దొరకలేదు"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "మూలం"
@@ -161,15 +161,15 @@ msgstr "మూలం"
 msgid "Error loading the next page"
 msgstr "తదుపరి పేజీని లోడ్ చేయడంలో లోపం"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "చెల్లని సెట్టింగ్‌లు, దయచేసి మీ ప్రాధాన్యతలను సవరించండి"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "చెల్లని అమరికలు"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "శోధనలో లోపము"
 
@@ -265,7 +265,7 @@ msgstr "{title} (వాడుకలో లేదు)"
 msgid "This entry has been superseded by"
 msgstr "దీని ద్వారా ఈ ఎంట్రీ భర్తీ చేయబడింది"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "ఛానెల్"
 
@@ -350,18 +350,6 @@ msgstr ""
 "అందుబాటులో ఉన్నప్పుడు ప్రచురణల యొక్క ఓపెన్-యాక్సెస్ వెర్షన్‌లకు దారి "
 "మళ్లించడం ద్వారా పేవాల్‌లను నివారించండి"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "వర్గం ఎంపికపై శోధించండి"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"వర్గం ఎంపిక చేయబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను "
-"ఎంచుకోవడానికి నిలిపివేయండి. (జావాస్క్రిప్ట్ అవసరం)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
@@ -407,18 +395,6 @@ msgstr "ట్రాకర్ URL రిమూవర్"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "తిరిగి వచ్చిన URL నుండి ట్రాకర్స్ ఆర్గ్యుమెంట్‌లను తీసివేయండి"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim లాంటి హాట్‌కీలు"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Vim లాంటి హాట్‌కీలతో శోధన ఫలితాలను నావిగేట్ చేయండి (జావాస్క్రిప్ట్ "
-"అవసరం). సహాయం పొందడానికి ప్రధాన లేదా ఫలితాల పేజీలో \"h\" కీని నొక్కండి."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -478,7 +454,7 @@ msgstr "గోప్యతా విధానం"
 msgid "Contact instance maintainer"
 msgstr "నిర్వహించేవాడిని సంప్రదించండి"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "శోధనను నిర్వహించడానికి మాగ్నిఫైయర్‌పై క్లిక్ చేయండి"
 
@@ -524,7 +500,7 @@ msgstr "పై సమాచారంతో సహా Github పై కొత్�
 msgid "No HTTPS"
 msgstr "HTTPS లేదు"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -573,23 +549,23 @@ msgstr "నిష్క్రియ వర్గాలు"
 msgid "User interface"
 msgstr "వినియోగ మార్గము"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "ఆంతరంగికత"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "ప్రస్తుతం ఉపయోగించబడుతున్న శోధన యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "ప్రత్యేక ప్రశ్నలు"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "కుకీలు"
 
@@ -731,15 +707,15 @@ msgstr "వ్యాఖ్య(లు)"
 msgid "Download results"
 msgstr "ఫలితాలను దింపుకోండి"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "దోషం!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "యంత్రాలు ఫలితాలను రాబట్టలేకపోతున్నాయి"
 
@@ -828,12 +804,24 @@ msgid "Sorry!"
 msgstr "క్షమించండి!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని"
-" వర్గాల్లో శోధించండి."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -982,6 +970,20 @@ msgstr "నిష్క్రియాలకు అమర్చు"
 msgid "Back"
 msgstr "వెనుకకు"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "చిత్రం ప్రాక్సీ"
@@ -1039,6 +1041,16 @@ msgstr "కొత్త బ్రౌజర్ ట్యాబ్‌లలో ఫ
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "విషయాలను వడకట్టు"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "వర్గం ఎంపికపై శోధించండి"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1573,4 +1585,36 @@ msgstr "వీడియోను దాచిపెట్టు"
 
 #~ msgid "Disabled"
 #~ msgstr "దిశల్డ్"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "వర్గం ఎంపిక చేయబడితే వెంటనే శోధనను "
+#~ "నిర్వహించండి. బహుళ వర్గాలను ఎంచుకోవడానికి "
+#~ "నిలిపివేయండి. (జావాస్క్రిప్ట్ అవసరం)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim లాంటి హాట్‌కీలు"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Vim లాంటి హాట్‌కీలతో శోధన ఫలితాలను "
+#~ "నావిగేట్ చేయండి (జావాస్క్రిప్ట్ అవసరం). సహాయం"
+#~ " పొందడానికి ప్రధాన లేదా ఫలితాల పేజీలో "
+#~ "\"h\" కీని నొక్కండి."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక"
+#~ " ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని "
+#~ "వర్గాల్లో శోధించండి."
 

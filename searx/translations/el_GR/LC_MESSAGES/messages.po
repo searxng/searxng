@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
-"PO-Revision-Date: 2023-09-12 14:53+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
+"PO-Revision-Date: 2023-09-22 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
 "searxng/el/>\n"
@@ -157,7 +157,7 @@ msgstr "σκοτεινό"
 msgid "No item found"
 msgstr "Δεν βρέθηκαν αντικείμενα"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Πηγή"
@@ -166,15 +166,15 @@ msgstr "Πηγή"
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Μη έγκυρες ρυθμίσεις"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "σφάλμα αναζήτησης"
 
@@ -270,7 +270,7 @@ msgstr "{title} (ΠΑΡΩΧΗΜΕΝΟΣ)"
 msgid "This entry has been superseded by"
 msgstr "Αυτή η καταχώριση έχει αντικατασταθεί από"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Κανάλι"
 
@@ -363,18 +363,6 @@ msgstr ""
 "Αποφυγή τοίχων πληρωμής με ανακατεύθυνση σε ανοικτές εκδόσεις των "
 "δημοσιεύσεων όταν είναι διαθέσιμες"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Αναζήτηση κατά την επιλογή κατηγορίας"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Άμεση αναζήτηση κατά την επιλογή κατηγορίας. Απενεργοποιήστε για να "
-"διαλέξετε πολλαπλές κατηγορίες. (απαιτείται JavaScript)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Αυτοπληροφορίες"
@@ -429,19 +417,6 @@ msgstr "Αφαίρεση ιχνηλατών από συνδέσμους"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Αφαίρεση ιχνηλατών από τους επιστρεφόμενους συνδέσμους"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Πλήκτρα συντόμευσης τύπου Vim"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Πλοήγηση στα αποτελέσματα αναζήτησης με πλήκτρα συντόμευσης τύπου Vim "
-"(απαιτείται JavaScript). Πατήστε το πλήκτρο \"h\" στην κύρια σελίδα ή στη"
-" σελίδα αποτελεσμάτων για να λάβετε βοήθεια."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -501,7 +476,7 @@ msgstr "Πολιτική απορρήτου"
 msgid "Contact instance maintainer"
 msgstr "Επικοινωνήστε με τον συντηρητή αυτής της σελίδας"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Κάντε κλικ στο μεγεθυντικό φακό για να πραγματοποιήσετε αναζήτηση"
 
@@ -553,7 +528,7 @@ msgstr "Υποβολή νέου ζητήματος στο Github με τις π�
 msgid "No HTTPS"
 msgstr "Όχι HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -602,23 +577,23 @@ msgstr "Προεπιλεγμένες κατηγορίες"
 msgid "User interface"
 msgstr "Διεπαφή χρήστη"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Ιδιωτικότητα"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Μηχανές"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Μηχανές αναζήτησης που χρησιμοποιούνται"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Ειδικά Ερωτήματα"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -760,15 +735,15 @@ msgstr "Σχόλιο(α)"
 msgid "Download results"
 msgstr "Λήψη αποτελεσμάτων"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Μηνύματα από μηχανές αναζήτησης"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Λάθος!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
 
@@ -857,12 +832,24 @@ msgid "Sorry!"
 msgstr "Συγνώμη!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
+msgstr "Δεν βρέθηκαν αποτελέσματα. Μπορείτε να δοκιμάσετε:"
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr "Ανανέωση σελίδας."
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr "Υποβάλετε νέα αναζήτηση ή επιλέξτε άλλη κατηγορία (επάνω)."
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr "Αλλάξτε την μηχανή αναζήτησης που χρησιμοποιείται στις ρυθμίσεις:"
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
 msgstr ""
-"δε βρέθηκαν αποτελέσματα. Παρακαλούμε χρησιμοποιήστε άλλη αναζήτηση ή "
-"ψάξτε σε περισσότερες κατηγορίες."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -981,7 +968,7 @@ msgstr "Υποστηρίζει την επιλεγμένη γλώσσα"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Βάρος"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
@@ -1014,6 +1001,23 @@ msgstr "Επαναφορά προεπιλογών"
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
 msgstr "Πίσω"
+
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr "Πλήκτρα συντόμευσης"
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr "Σαν του Vim"
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+"Πλοήγηση αποτελεσμάτων με πλήκτρα συντόμευσης (αναγκαία η χρήση Javascript). "
+"Πατήστε το πλήκτρο\"h\" στην κύρια σελίδα ή την σελίδα αποτελεσμάτων για "
+"οδηγίες."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1074,6 +1078,18 @@ msgstr "Άνοιξε τους συνδέσμους των αποτελεσμάτ
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Φιλτράρισμα περιεχομένου"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Αναζήτηση κατά την επιλογή κατηγορίας"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+"Άμεση αναζήτηση κατά την επιλογή κατηγορίας. Απενεργοποιήστε για να "
+"διαλέξετε πολλαπλές κατηγορίες"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1625,3 +1641,36 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "Disabled"
 #~ msgstr "Απενεργοποιημένο"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Άμεση αναζήτηση κατά την επιλογή "
+#~ "κατηγορίας. Απενεργοποιήστε για να διαλέξετε"
+#~ " πολλαπλές κατηγορίες. (απαιτείται JavaScript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Πλήκτρα συντόμευσης τύπου Vim"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Πλοήγηση στα αποτελέσματα αναζήτησης με "
+#~ "πλήκτρα συντόμευσης τύπου Vim (απαιτείται "
+#~ "JavaScript). Πατήστε το πλήκτρο \"h\" "
+#~ "στην κύρια σελίδα ή στη σελίδα "
+#~ "αποτελεσμάτων για να λάβετε βοήθεια."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "δε βρέθηκαν αποτελέσματα. Παρακαλούμε "
+#~ "χρησιμοποιήστε άλλη αναζήτηση ή ψάξτε σε"
+#~ " περισσότερες κατηγορίες."

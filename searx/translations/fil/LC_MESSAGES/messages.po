@@ -9,20 +9,19 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Filipino <https://translate.codeberg.org/projects/searxng/"
-"searxng/fil/>\n"
 "Language: fil\n"
+"Language-Team: Filipino "
+"<https://translate.codeberg.org/projects/searxng/searxng/fil/>\n"
+"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4"
+" || n % 10 != 6 || n % 10 != 9);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4 || "
-"n % 10 != 6 || n % 10 != 9);\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -154,7 +153,7 @@ msgstr "madilim"
 msgid "No item found"
 msgstr "Walang nakita na aytem"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Pinagmulan"
@@ -163,15 +162,15 @@ msgstr "Pinagmulan"
 msgid "Error loading the next page"
 msgstr "Nag error ang pagload ng kabilang pahina"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Maling settings, paki ayos ang preferences"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Maling settings"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "nagkaproblema sa paghahanap"
 
@@ -267,7 +266,7 @@ msgstr "{title} (Luma)"
 msgid "This entry has been superseded by"
 msgstr "Ang tala na ito ay ipinagpaliban ng"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Tyanel"
 
@@ -356,18 +355,6 @@ msgstr ""
 "Iwasan ang paywall sa pag-redirect sa open-access na bersyon ng "
 "pahahayagan kapagmakukuha"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Maghanap kapag nakapili ng uri"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Gawin ang paghahanap hanggat maaari kapag nakapili ng uri. Alisin kapag "
-"nakapili ng maraming uri. (Nangagailangan ng JavaScript)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Pansariling impormasyon"
@@ -420,19 +407,6 @@ msgstr "Alisin ang URL tracker"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Alisin ang tracker sa ibabalik na URL"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Kasingtulad ng vim hotkeys"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Maglakbay sa resulta ng paghahanap gamit ang 'Vim-like hotkeys' "
-"(Nangagailangan ito ng JavaScript). Pindutin ang \"h\" na pindutan sa "
-"panguna o ang pahina ng resulta para makahingi ng tulong."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -492,7 +466,7 @@ msgstr "Polisiyang pampribado"
 msgid "Contact instance maintainer"
 msgstr "Kontakin ang iyong instance maintainer"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Pindutin ang magnifier para maghanap"
 
@@ -542,7 +516,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Walang HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -591,23 +565,23 @@ msgstr "Ang mga default na uri"
 msgid "User interface"
 msgstr "Ang User interface"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Pagiging Pribado"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Engines"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Ang ginagamit natin na search engines"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Mga Espesyal na Queries"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -749,15 +723,15 @@ msgstr ""
 msgid "Download results"
 msgstr "I-download ang mga resulta"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Kamalian!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Hindi makuha ng engines ang mga resulta"
 
@@ -846,12 +820,24 @@ msgid "Sorry!"
 msgstr "Paumanhin!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"wala kaming nakita na resulta. Pakiusap na ibahin ang tanong o maghanap "
-"sa maraming uri."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -999,6 +985,20 @@ msgstr "I-reset ang defaults"
 msgid "Back"
 msgstr "Bumalik"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "Proxy ng larawan"
@@ -1056,6 +1056,16 @@ msgstr "Buksan ang resulta sa panibagong browser tab"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Salain ang mga nilalaman"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Maghanap kapag nakapili ng uri"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1610,3 +1620,39 @@ msgstr "itago ang video"
 
 #~ msgid "Disabled"
 #~ msgstr "Hindi paganahin"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Gawin ang paghahanap hanggat maaari "
+#~ "kapag nakapili ng uri. Alisin kapag "
+#~ "nakapili ng maraming uri. (Nangagailangan "
+#~ "ng JavaScript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Kasingtulad ng vim hotkeys"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Maglakbay sa resulta ng paghahanap gamit"
+#~ " ang 'Vim-like hotkeys' (Nangagailangan "
+#~ "ito ng JavaScript). Pindutin ang \"h\""
+#~ " na pindutan sa panguna o ang "
+#~ "pahina ng resulta para makahingi ng "
+#~ "tulong."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "wala kaming nakita na resulta. Pakiusap"
+#~ " na ibahin ang tanong o maghanap "
+#~ "sa maraming uri."
+
