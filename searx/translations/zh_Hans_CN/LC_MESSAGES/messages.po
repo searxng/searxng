@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
-"PO-Revision-Date: 2023-09-12 14:53+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
+"PO-Revision-Date: 2023-09-21 05:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
 "searxng/searxng/zh_Hans/>\n"
@@ -96,7 +96,7 @@ msgstr "地图"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "暗网"
+msgstr "洋葱网络"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -167,7 +167,7 @@ msgstr "暗色"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "来源"
@@ -176,15 +176,15 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "搜索错误"
 
@@ -280,7 +280,7 @@ msgstr "{title} (已过时)"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "频道"
 
@@ -361,16 +361,6 @@ msgid ""
 "when available"
 msgstr "尽可能重定向到开放访问的版本以免被要求付费"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "搜索特定类别"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr "选择一个类别后立即开始搜索。禁用后可以一次选中多个类别。（需启用 JavaScript）"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "自身信息"
@@ -414,16 +404,6 @@ msgstr "移除跟踪链接"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "去除返回的链接中的跟踪参数"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim 式快捷键"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr "使用 Vim 式快捷键浏览搜索结果（需启用 JavaScript）。在主页或结果页面按“h”键获取帮助。"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -483,7 +463,7 @@ msgstr "隐私政策"
 msgid "Contact instance maintainer"
 msgstr "联系站点维护人员"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "点击放大镜按钮开始搜索"
 
@@ -529,7 +509,7 @@ msgstr "在 GitHub 上提交包含上述信息的 Issue"
 msgid "No HTTPS"
 msgstr "无 HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -578,23 +558,23 @@ msgstr "默认类别"
 msgid "User interface"
 msgstr "用户界面"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "隐私"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "搜索引擎"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "目前使用的搜索引擎"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "特殊查询"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -736,15 +716,15 @@ msgstr "注释"
 msgid "Download results"
 msgstr "下载结果"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "来自搜索引擎的消息"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "错误！"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "引擎无法检索到结果"
 
@@ -833,10 +813,24 @@ msgid "Sorry!"
 msgstr "抱歉！"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
-msgstr "我们没有找到任何结果。请使用其他关键词，或在更多类别中搜索。"
+msgid "No results were found. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -977,6 +971,20 @@ msgstr "恢复默认设置"
 msgid "Back"
 msgstr "返回"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "代理图片"
@@ -1030,6 +1038,16 @@ msgstr "在新标签页打开搜索结果中的链接"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "内容过滤"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "搜索特定类别"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1560,3 +1578,25 @@ msgstr "隐藏视频"
 
 #~ msgid "Disabled"
 #~ msgstr "禁用"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr "选择一个类别后立即开始搜索。禁用后可以一次选中多个类别。（需启用 JavaScript）"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim 式快捷键"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr "使用 Vim 式快捷键浏览搜索结果（需启用 JavaScript）。在主页或结果页面按“h”键获取帮助。"
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr "我们没有找到任何结果。请使用其他关键词，或在更多类别中搜索。"

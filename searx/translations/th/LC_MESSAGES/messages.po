@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: th\n"
@@ -149,7 +149,7 @@ msgstr "มืด"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -158,15 +158,15 @@ msgstr "แหล่งที่มา"
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดในการโหลดหน้าถัดไป"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
@@ -262,7 +262,7 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "ช่อง"
 
@@ -349,18 +349,6 @@ msgid ""
 "when available"
 msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "ค้นหาในตัวเลือกหมวดหมู่"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"ทำการค้นหาทันทีหากเลือกหมวดหมู่แล้ว "
-"ปิดการใช้งานเพื่อเลือกหมวดหมู่ได้หลายหมวดหมู่ (ต้องใช้จาวาสคริปต์)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
@@ -406,18 +394,6 @@ msgstr "ลบตัวติดตาม URL"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ลบอาร์กิวเมนต์ตัวติดตามออกจากการส่งค่าคืนของ URL"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "วิมเหมือนปุ่มลัด"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"นำทางผลลัพธ์จากการค้นหาด้วยปุ่มลัดแบบ Vim (ต้องใช้ JavaScript) กดปุ่ม "
-"\"h\" บนหน้าหลักหรือหน้าผลลัพธ์เพื่อรับความช่วยเหลือ"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -477,7 +453,7 @@ msgstr "นโยบายความเป็นส่วนตัว"
 msgid "Contact instance maintainer"
 msgstr "ติดต่อผู้ดูแลอินสแตนซ์"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "คลิกที่แว่นขยายเพื่อทำการค้นหา"
 
@@ -523,7 +499,7 @@ msgstr "ส่งปัญหาใหม่บน Github รวมทั้ง�
 msgid "No HTTPS"
 msgstr "ไม่มี HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -572,23 +548,23 @@ msgstr "หมวดหมู่เริ่มต้น"
 msgid "User interface"
 msgstr "ส่วนต่อประสานกับผู้ใช้"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "เครื่องมือ"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "เครื่องมือค้นหาที่ใช้อยู่ในปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "การคิวรีพิเศษ"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "คุกกี้"
 
@@ -730,15 +706,15 @@ msgstr "ความคิดเห็น"
 msgid "Download results"
 msgstr "ดาวน์โหลดผลลัพธ์"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "เกิดข้อผิดพลาด!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
 
@@ -827,10 +803,24 @@ msgid "Sorry!"
 msgstr "เสียใจด้วย!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
-msgstr "เราไม่พบผลลัพธ์ใดๆ โปรดใช้คิวรีอื่นหรือค้นหาในหมวดหมู่เพิ่มเติม"
+msgid "No results were found. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -977,6 +967,20 @@ msgstr "รีเซ็ตค่าเริ่มต้น"
 msgid "Back"
 msgstr "กลับ"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "พร็อกซีรูปภาพ"
@@ -1032,6 +1036,16 @@ msgstr "เปิดลิงก์ผลลัพธ์ด้วยแท็บ
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "ตัวกรอกเนื้อหา"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "ค้นหาในตัวเลือกหมวดหมู่"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1320,4 +1334,32 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Disabled"
 #~ msgstr "ปิดใช้งาน"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "ทำการค้นหาทันทีหากเลือกหมวดหมู่แล้ว "
+#~ "ปิดการใช้งานเพื่อเลือกหมวดหมู่ได้หลายหมวดหมู่ "
+#~ "(ต้องใช้จาวาสคริปต์)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "วิมเหมือนปุ่มลัด"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "นำทางผลลัพธ์จากการค้นหาด้วยปุ่มลัดแบบ Vim (ต้องใช้ "
+#~ "JavaScript) กดปุ่ม \"h\" "
+#~ "บนหน้าหลักหรือหน้าผลลัพธ์เพื่อรับความช่วยเหลือ"
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr "เราไม่พบผลลัพธ์ใดๆ โปรดใช้คิวรีอื่นหรือค้นหาในหมวดหมู่เพิ่มเติม"
 

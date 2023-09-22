@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -151,7 +151,7 @@ msgstr ""
 msgid "No item found"
 msgstr "རྣམ་གྲངས་གང་ཡང་རྙེད་རྒྱུ་མ་བྱུང་།"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr ""
@@ -160,15 +160,15 @@ msgstr ""
 msgid "Error loading the next page"
 msgstr ""
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།ཁྱེད་ཀྱིས་གདམ་ཀ་ལ་བཅོས་སྒྲིག་གཏོང་རོགས།"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "ནུས་མེད་ཀྱི་སྒྲིག་འགོད།"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "འཚོལ་བཤེར་ལ་ནོར་འཁྲུལ་བྱུང་།"
 
@@ -264,7 +264,7 @@ msgstr ""
 msgid "This entry has been superseded by"
 msgstr "འཚོལ་བྱང་འདི་གཞན་གྱིས་ཚབ་བྱེད་འདུག"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr ""
 
@@ -345,16 +345,6 @@ msgid ""
 "when available"
 msgstr ""
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "རིགས་གདམ་གསེས་བཏང་ནས་འཚོལ་བཤེར་གཏོང་།"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
@@ -397,16 +387,6 @@ msgstr "དྲ་གནས་རྗེས་འདེད་སྤོ་འབུ
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "མགྱོགས་མྱུར་མཐེབ་གཞོང་གི་སྤྱོད་སྟངས།"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
 msgstr ""
 
 #: searx/templates/simple/404.html:4
@@ -467,7 +447,7 @@ msgstr ""
 msgid "Contact instance maintainer"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "ས་བོན་སྟེང་གི་སྦྲེལ་ཐག་ལ་རྡེབ་ནས་འཚོལ་བཤེར་གཏོང་།"
 
@@ -513,7 +493,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -562,23 +542,23 @@ msgstr "གཞི་བཞག་གི་རིགས།"
 msgid "User interface"
 msgstr "མདུན་ངོས།"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "མི་སྒེར་གསང་དོན།"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "སྒུལ་བྱེད།"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "ཉེ་ལམ་སྤྱད་ཟིན་པའི་འཚོལ་བྱེད་སྒུལ་བྱེད།"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "རྐང་རྗེས།"
 
@@ -720,15 +700,15 @@ msgstr ""
 msgid "Download results"
 msgstr "འཚོལ་འབྲས་ཕབ་ལེན།"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "ནོར་འཁྲུལ་བྱུང་ཟིན།"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "འཚོལ་བཤེར་སྒུལ་བྱེད་ལ་ནོར་འཁྲུལ་ཅུང་ཟད་བྱུང་།"
 
@@ -817,12 +797,24 @@ msgid "Sorry!"
 msgstr "དགོངས་དག"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"འཚོལ་འབྲས་གང་ཡང་མ་ཐོབ། "
-"ཁྱེད་ཀྱིས་འཚོལ་བཤེར་ཐ་སྙད་གཞན་པ་ནས་ཚོད་ལྟ་བྱེད་རོགས།"
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -961,6 +953,20 @@ msgstr "གཞི་བཞག་གི་རྣམ་པར་སྒྲིག་
 msgid "Back"
 msgstr ""
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "རི་མོ་མངག་བཅོལ་གྱི་ཞབས་ཞུ་སྒྲིག་ཆས།"
@@ -1014,6 +1020,16 @@ msgstr "ཤོག་ངོས་གསར་བ་ཞིག་ནས་དྲ་
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "ནང་དོན་བཙག་བྱེད།"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "རིགས་གདམ་གསེས་བཏང་ནས་འཚོལ་བཤེར་གཏོང་།"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1543,4 +1559,28 @@ msgstr "རྙན་ཟློས་སྦས།"
 
 #~ msgid "Disabled"
 #~ msgstr "ཁ་རྒྱབ་ཟིན།"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "མགྱོགས་མྱུར་མཐེབ་གཞོང་གི་སྤྱོད་སྟངས།"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "འཚོལ་འབྲས་གང་ཡང་མ་ཐོབ། "
+#~ "ཁྱེད་ཀྱིས་འཚོལ་བཤེར་ཐ་སྙད་གཞན་པ་ནས་ཚོད་ལྟ་བྱེད་རོགས།"
 

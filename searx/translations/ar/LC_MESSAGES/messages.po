@@ -14,20 +14,19 @@
 # Cavemanly <k.adel.2m@protonmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -159,7 +158,7 @@ msgstr "مظلم"
 msgid "No item found"
 msgstr "تعذر العثور على عناصر"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "المصدر"
@@ -168,15 +167,15 @@ msgstr "المصدر"
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "إعدادات غير صالحة"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "خطأ في البحث"
 
@@ -272,7 +271,7 @@ msgstr "{title} (قديما)"
 msgid "This entry has been superseded by"
 msgstr "هذا الإدخال تم استبداله بـ"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "القناة"
 
@@ -361,18 +360,6 @@ msgstr ""
 "تجنب جدران الدفع عن طريق إعادة التوجيه إلى إصدارات الوصول المفتوح من "
 "المنشورات عند توفرها"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "البحث في الفئة المحددة"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"اقامت بحث فوري اذا تم اختيار مجموعة, توقيف تعدد الخيارات (java script "
-"ضروريه)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "نشرة المعلومات"
@@ -424,19 +411,6 @@ msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
 "محدد موقع الموارد الموحد الذي تم إرجاعه"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "إختصارات لوحة المفاتيح مثل التي في Vim"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"تصفح نتائج البحث باستخدام مفاتيح الاختصار التي تشبه Vim (مطلوب "
-"JavaScript). اضغط على مفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج "
-"للحصول على المساعدة."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -496,7 +470,7 @@ msgstr "سياسة الخصوصية"
 msgid "Contact instance maintainer"
 msgstr "اتصال بالمشرف المخدم النموذجي"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "انقر على رمز المكبر للقيام بالبحث"
 
@@ -542,7 +516,7 @@ msgstr "قم بتقديم مشكلة جديدة على GitHub بالمعلوما
 msgid "No HTTPS"
 msgstr "دون HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -591,23 +565,23 @@ msgstr "القوائم الإفتراضية"
 msgid "User interface"
 msgstr "واجهة المستخدم"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "الخصوصية"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "المحركات"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "محركات البحث المُستخدَمة حاليًا"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "استفسارات خاصة"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "كعكات الكوكيز"
 
@@ -749,15 +723,15 @@ msgstr "تعليق/تعليقات"
 msgid "Download results"
 msgstr "حصيلة التنزيل"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "رسائل من محركات البحث"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "خطأ !"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "لم تتمكن محركات البحث من العثور على أية نتيجة"
 
@@ -846,12 +820,24 @@ msgid "Sorry!"
 msgstr "عفوا !"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"لم نتوصل إلى العثور على أية نتيجة. الرجاء إعادة صياغة طلب البحث أو إبحث "
-"مع تحديد أكثر من فئة."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1002,6 +988,20 @@ msgstr "إعاد التعيين إلى الإعدادات الإفتراضية"
 msgid "Back"
 msgstr "الخلف"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "وكيل بروكسي الصور"
@@ -1057,6 +1057,16 @@ msgstr "عرض روابط نتائج البحث في ألسنة جديدة لل�
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "فلترة المحتوى"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "البحث في الفئة المحددة"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1607,3 +1617,37 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "Disabled"
 #~ msgstr "غير مُفَعَّل"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "اقامت بحث فوري اذا تم اختيار "
+#~ "مجموعة, توقيف تعدد الخيارات (java script"
+#~ " ضروريه)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "إختصارات لوحة المفاتيح مثل التي في Vim"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "تصفح نتائج البحث باستخدام مفاتيح "
+#~ "الاختصار التي تشبه Vim (مطلوب "
+#~ "JavaScript). اضغط على مفتاح \"h\" في "
+#~ "الصفحة الرئيسية أو صفحة النتائج للحصول"
+#~ " على المساعدة."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "لم نتوصل إلى العثور على أية نتيجة."
+#~ " الرجاء إعادة صياغة طلب البحث أو "
+#~ "إبحث مع تحديد أكثر من فئة."
+

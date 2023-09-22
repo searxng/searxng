@@ -10,20 +10,19 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
-"PO-Revision-Date: 2023-09-12 14:53+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
+"PO-Revision-Date: 2023-09-17 10:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
-"searxng/sk/>\n"
 "Language: sk\n"
+"Language-Team: Slovak "
+"<https://translate.codeberg.org/projects/searxng/searxng/sk/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
+"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
-">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -155,7 +154,7 @@ msgstr "tmavý"
 msgid "No item found"
 msgstr "Nič sa nenašlo"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Zdroj"
@@ -164,15 +163,15 @@ msgstr "Zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Nesprávne nastavenia"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "chyba vyhľadávania"
 
@@ -268,7 +267,7 @@ msgstr "{title} (ZASTARANÉ)"
 msgid "This entry has been superseded by"
 msgstr "Táto položka bola nahradená"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanál"
 
@@ -358,18 +357,6 @@ msgstr ""
 "Vyhnúť sa plateným bránam presmerovaním na verejne prístupné verzie "
 "publikácií ak sú k dispozícii"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Vyhľadávanie pri výbere kategórie"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Vyhľadávať okamžite, ak je kategória vybraná. Vypnúť pre vyberanie "
-"viacerých kategórií. (Je potrebný JavaScript)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Vlastné informácie"
@@ -419,19 +406,6 @@ msgstr "Odstraňovanie sledovacích argumentov"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Odstrániť sledovacie argumenty z vrátenej URL"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Skratky ako vo VIM"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Prechádzať výsledky vyhľadávania klávesovými skratkami ako VIM (je "
-"potrebný JavaScript). Stlačte klávesy \"h\" na hlavnej stránke alebo na "
-"stránke s výsledkami pre zobrazenie pomoci."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -491,7 +465,7 @@ msgstr "Ochrana súkromia"
 msgid "Contact instance maintainer"
 msgstr "Kontaktujte správcu inštancie"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Kliknite na lupu pre vyhľadávanie"
 
@@ -539,7 +513,7 @@ msgstr "Odošlite novú chybu na Github vrátane informácii nad"
 msgid "No HTTPS"
 msgstr "Žiadne HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -588,23 +562,23 @@ msgstr "Predvolené kategórie"
 msgid "User interface"
 msgstr "UI"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Súkromie"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Vyhľadávače"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "List práve používaných vyhľadávačov"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Špeciálne vyhľadávania"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -746,15 +720,15 @@ msgstr "Komentár(e)"
 msgid "Download results"
 msgstr "Výsledky na stiahnutie"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Hlásenia z vyhľadávačov"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Chyba!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Vyhľadávače nemôžu získať výsledky"
 
@@ -843,12 +817,24 @@ msgid "Sorry!"
 msgstr "Je nám ľúto!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"nepodarilo sa nájsť žiadne výsledky. Skúste použiť iné zadanie alebo "
-"vyhľadávajte vo viacerých kategóriach."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1000,6 +986,20 @@ msgstr "Obnoviť predvolené"
 msgid "Back"
 msgstr "Späť"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "Proxy pre obrázky"
@@ -1060,6 +1060,16 @@ msgstr "Otvoriť odkazy v novom tabe"
 msgid "Filter content"
 msgstr "Filtrovanie obsahu"
 
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Vyhľadávanie pri výbere kategórie"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
+
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Téma"
@@ -1094,7 +1104,7 @@ msgstr "Zmena jazyku rozhrania"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
-msgstr "repozitáre"
+msgstr "repozitár"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1609,3 +1619,37 @@ msgstr "skryť video"
 
 #~ msgid "Disabled"
 #~ msgstr "Zakázané"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Vyhľadávať okamžite, ak je kategória "
+#~ "vybraná. Vypnúť pre vyberanie viacerých "
+#~ "kategórií. (Je potrebný JavaScript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Skratky ako vo VIM"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Prechádzať výsledky vyhľadávania klávesovými "
+#~ "skratkami ako VIM (je potrebný "
+#~ "JavaScript). Stlačte klávesy \"h\" na "
+#~ "hlavnej stránke alebo na stránke s "
+#~ "výsledkami pre zobrazenie pomoci."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "nepodarilo sa nájsť žiadne výsledky. "
+#~ "Skúste použiť iné zadanie alebo "
+#~ "vyhľadávajte vo viacerých kategóriach."
+

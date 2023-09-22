@@ -12,21 +12,20 @@
 # mradalbert <mister.adalbert@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
-"searxng/pl/>\n"
 "Language: pl\n"
+"Language-Team: Polish "
+"<https://translate.codeberg.org/projects/searxng/searxng/pl/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
-"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -158,7 +157,7 @@ msgstr "ciemny"
 msgid "No item found"
 msgstr "Nie znaleziono elementu"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Źródło"
@@ -167,15 +166,15 @@ msgstr "Źródło"
 msgid "Error loading the next page"
 msgstr "Błąd wczytywania następnej strony"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nieprawidłowe ustawienia, zmień swoje preferencje"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Nieprawidłowe ustawienia"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "błąd wyszukiwania"
 
@@ -271,7 +270,7 @@ msgstr "{title} (PRZESTARZAŁY)"
 msgid "This entry has been superseded by"
 msgstr "Ten wpis został zastąpiony przez"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanał"
 
@@ -361,18 +360,6 @@ msgstr ""
 "Unikaj opłat za dostęp, przekierowując do otwartych wersji publikacji, "
 "gdy są dostępne"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Szukaj po wybraniu kategorii"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Wykonaj wyszukiwanie natychmiast po wybraniu kategorii. Wyłącz, aby "
-"wybrać wiele kategorii. (Wymagany Javascript)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Informacje o sobie"
@@ -425,19 +412,6 @@ msgstr "Usuwanie elementów śledzących z linków"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Usuń argumenty elementów śledzących ze zwróconego adresu URL"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Skróty podobne do Vima"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Poruszaj się po wynikach wyszukiwania za pomocą skrótów podobnych do Vima"
-" (wymagany Javascript). Naciśnij klawisz \"h\" na stronie głównej lub "
-"stronie wyników, aby uzyskać pomoc."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -497,7 +471,7 @@ msgstr "Polityka prywatności"
 msgid "Contact instance maintainer"
 msgstr "Skontaktuj się z właścicielem instancji"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Kliknij na szkło powiększające, aby wykonać wyszukiwanie"
 
@@ -545,7 +519,7 @@ msgstr "Zgłoś nowy problem na Githubie, podając powyższe informacje"
 msgid "No HTTPS"
 msgstr "Brak HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -594,23 +568,23 @@ msgstr "Domyślne kategorie"
 msgid "User interface"
 msgstr "Interfejs użytkownika"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Wyszukiwarki"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Obecnie używane wyszukiwarki"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Specialne Zapytania"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Ciasteczka"
 
@@ -752,15 +726,15 @@ msgstr "Komentarz(e)"
 msgid "Download results"
 msgstr "Ściągnij wyniki"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "Wiadomości z silnika wyszukiwania"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Błąd!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Wyszukiwarki nie mogą pobrać wyników"
 
@@ -849,12 +823,24 @@ msgid "Sorry!"
 msgstr "Przepraszamy!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"nie znaleźliśmy żadnych wyników. Użyj innego zapytania lub wyszukaj "
-"więcej kategorii."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1006,6 +992,20 @@ msgstr "Przywróć domyślne"
 msgid "Back"
 msgstr "Powrót"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "Proxy zdjęć"
@@ -1065,6 +1065,16 @@ msgstr "Otwórz hiperłącza wyników w nowych kartach przeglądarki"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filtruj treści"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Szukaj po wybraniu kategorii"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1619,3 +1629,37 @@ msgstr "ukryj wideo"
 
 #~ msgid "Disabled"
 #~ msgstr "Wyłączone"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Wykonaj wyszukiwanie natychmiast po wybraniu"
+#~ " kategorii. Wyłącz, aby wybrać wiele "
+#~ "kategorii. (Wymagany Javascript)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Skróty podobne do Vima"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Poruszaj się po wynikach wyszukiwania za"
+#~ " pomocą skrótów podobnych do Vima "
+#~ "(wymagany Javascript). Naciśnij klawisz \"h\""
+#~ " na stronie głównej lub stronie "
+#~ "wyników, aby uzyskać pomoc."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "nie znaleźliśmy żadnych wyników. Użyj "
+#~ "innego zapytania lub wyszukaj więcej "
+#~ "kategorii."
+

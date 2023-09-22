@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: et\n"
@@ -154,7 +154,7 @@ msgstr "pime"
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Allikas"
@@ -163,15 +163,15 @@ msgstr "Allikas"
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Sobimatud seaded, palun muuda oma eelistusi"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Sobimatud seaded"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "otsingu viga"
 
@@ -267,7 +267,7 @@ msgstr "{title} (VANANENUD)"
 msgid "This entry has been superseded by"
 msgstr "See üksus on asendatud"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanal"
 
@@ -355,18 +355,6 @@ msgstr ""
 "Väldi maksumüüre, suunates võimalusel väljaannete avatud ligipääsuga "
 "versioonidele"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Otsi kategooria valimisel"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Teosta otsing koheselt, kui kategooria on valitud. Keela mitme kategooria"
-" valimiseks. (Nõuab JavaScripti)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr ""
@@ -412,19 +400,6 @@ msgstr "Jälitajate eemaldus URList"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Eemaldab jälitavad argumendid tagastatud URList"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim'i-sarnased kiirklahvid"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Navigeeri otsingutulemusi Vim'i-sarnaste kiirklahvidega (nõuab "
-"JavaScripti). Abi saamiseks vajuta avalehel või tulemuste lehel klahvi "
-"\"h\"."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -484,7 +459,7 @@ msgstr "Privaatsus poliitika"
 msgid "Contact instance maintainer"
 msgstr "Võtke ühendust instantsi hooldajaga"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Klõpsa luubile otsingu teostamiseks"
 
@@ -530,7 +505,7 @@ msgstr "Esitage Githubis uus probleem, mis sisaldab ülaltoodud teavet"
 msgid "No HTTPS"
 msgstr "HTTPS puudub"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -579,23 +554,23 @@ msgstr "Vaikimisi kategooriad"
 msgid "User interface"
 msgstr "Kasutajaliides"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Privaatsus"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Mootorid"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Hetkel kasutatud otsingumootorid"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Spetsiaalsed päringud"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Küpsised"
 
@@ -737,15 +712,15 @@ msgstr "Kommentaar(id)"
 msgid "Download results"
 msgstr "Laadi tulemused alla"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Viga!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "Mootorid ei saa tulemusi tagastada"
 
@@ -834,12 +809,24 @@ msgid "Sorry!"
 msgstr "Vabandust!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
 msgstr ""
-"me ei leidnud ühtegi tulemust. Palun kasuta teist päringut või otsi "
-"rohkematest kategooriatest."
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -986,6 +973,20 @@ msgstr "Lähtesta vaikeseaded"
 msgid "Back"
 msgstr "Tagasi"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "Pildiproksi"
@@ -1041,6 +1042,16 @@ msgstr "Ava tulemuste lingid uutel brauserikaartidel"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filtreeri sisu"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Otsi kategooria valimisel"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1579,4 +1590,36 @@ msgstr "peida video"
 
 #~ msgid "Disabled"
 #~ msgstr "Keelatud"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Teosta otsing koheselt, kui kategooria "
+#~ "on valitud. Keela mitme kategooria "
+#~ "valimiseks. (Nõuab JavaScripti)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim'i-sarnased kiirklahvid"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Navigeeri otsingutulemusi Vim'i-sarnaste "
+#~ "kiirklahvidega (nõuab JavaScripti). Abi "
+#~ "saamiseks vajuta avalehel või tulemuste "
+#~ "lehel klahvi \"h\"."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
+#~ "me ei leidnud ühtegi tulemust. Palun "
+#~ "kasuta teist päringut või otsi "
+#~ "rohkematest kategooriatest."
 

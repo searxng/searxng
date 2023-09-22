@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-07-09 15:33+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: af\n"
@@ -152,7 +152,7 @@ msgstr "donker"
 msgid "No item found"
 msgstr "Geen item gevind"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "Bron"
@@ -161,15 +161,15 @@ msgstr "Bron"
 msgid "Error loading the next page"
 msgstr "Fout met die laai van die volgende bladsy"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ongeldige opstellings, redigeer asb jou voorkeure"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Ongeldige opstellings"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "soekfout"
 
@@ -265,7 +265,7 @@ msgstr "{title} (VEROUDERD)"
 msgid "This entry has been superseded by"
 msgstr "Hierdie inskrywing was vervang deur"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -358,18 +358,6 @@ msgstr ""
 "Vermy betaalmure deur na ope-toegang weergawes van publikasies te herlei "
 "wanneer beskikbaar"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "Soek op kategorie selekteer"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr ""
-"Doen soektog onmiddelik indien 'n kategorie geselekteer is. Deaktiveer om"
-" veelvoudige kategoriee te selekteer. (JavaScript benodig)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "Self-inligting"
@@ -424,18 +412,6 @@ msgstr "Spoorsnyer URL verwyderaar"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Verwyder spoorsnyersargumente van die teruggestuurde URL"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Soortgelyke-VIM kortpad sleutels"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"Navigeer soekresultate met Vim-agtige sneltoetse (JavaScript vereis). "
-"Druk \"h\"-sleutel op hoof- of resultaatbladsy om hulp te kry."
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -495,7 +471,7 @@ msgstr "Privaatheidsbeleid"
 msgid "Contact instance maintainer"
 msgstr ""
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "Kliek op die vergrootglas om 'n soektog te doen"
 
@@ -541,7 +517,7 @@ msgstr "Dien 'n nuwe probleem in op GitHub insluitend die bogenoemde inligting"
 msgid "No HTTPS"
 msgstr "Geen HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -590,23 +566,23 @@ msgstr "Verstek kategoriee"
 msgid "User interface"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "Privaatheid"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "Enjins"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "Huidige gebruikte soekenjins"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "Spesiale Navrae"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "Koekies"
 
@@ -748,15 +724,15 @@ msgstr ""
 msgid "Download results"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr ""
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "Fout!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr ""
 
@@ -845,9 +821,23 @@ msgid "Sorry!"
 msgstr ""
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
+msgid "No results were found. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
@@ -987,6 +977,20 @@ msgstr ""
 msgid "Back"
 msgstr "Terug"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "Beeld proksie"
@@ -1044,6 +1048,16 @@ msgstr "Maak resultaat skakels oop in nuwe blaaier oortjies"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "Filter inhoud"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "Soek op kategorie selekteer"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1339,4 +1353,34 @@ msgstr ""
 
 #~ msgid "Disabled"
 #~ msgstr "Gedeaktiveer"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr ""
+#~ "Doen soektog onmiddelik indien 'n "
+#~ "kategorie geselekteer is. Deaktiveer om "
+#~ "veelvoudige kategoriee te selekteer. "
+#~ "(JavaScript benodig)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Soortgelyke-VIM kortpad sleutels"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "Navigeer soekresultate met Vim-agtige "
+#~ "sneltoetse (JavaScript vereis). Druk "
+#~ "\"h\"-sleutel op hoof- of resultaatbladsy "
+#~ "om hulp te kry."
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr ""
 

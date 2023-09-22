@@ -19,19 +19,18 @@
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 10:31+0000\n"
+"POT-Creation-Date: 2023-09-19 09:15+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
-"searxng/ja/>\n"
 "Language: ja\n"
+"Language-Team: Japanese "
+"<https://translate.codeberg.org/projects/searxng/searxng/ja/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -163,7 +162,7 @@ msgstr "ダーク"
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
-#: searx/engines/qwant.py:218
+#: searx/engines/qwant.py:277
 #: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
 msgid "Source"
 msgstr "ソース"
@@ -172,15 +171,15 @@ msgstr "ソース"
 msgid "Error loading the next page"
 msgstr "次のページの読み込み中にエラーが発生しました"
 
-#: searx/webapp.py:489 searx/webapp.py:881
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "設定が無効です、設定を変更してください"
 
-#: searx/webapp.py:505
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "無効な設定です"
 
-#: searx/webapp.py:582 searx/webapp.py:664
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "検索エラー"
 
@@ -276,7 +275,7 @@ msgstr "{title} (廃止)"
 msgid "This entry has been superseded by"
 msgstr "このエントリは、置き換えられました:"
 
-#: searx/engines/qwant.py:220
+#: searx/engines/qwant.py:279
 msgid "Channel"
 msgstr "チャンネル"
 
@@ -359,16 +358,6 @@ msgid ""
 "when available"
 msgstr "可能ならば オープンアクセス版の出版物へリダイレクトし、有料出版物を回避する"
 
-#: searx/plugins/search_on_category_select.py:19
-msgid "Search on category select"
-msgstr "カテゴリ選択したら検索を実行"
-
-#: searx/plugins/search_on_category_select.py:20
-msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories. (JavaScript required)"
-msgstr "カテゴリが選択されたときに検索を実行します。複数のカテゴリを選択する場合は無効にします。(JavaScript が必要です)"
-
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
 msgstr "自分の情報"
@@ -412,18 +401,6 @@ msgstr "トラッカー URL リムーバー"
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
 msgstr "返された URL からトラッカー引数を消去する"
-
-#: searx/plugins/vim_hotkeys.py:3
-msgid "Vim-like hotkeys"
-msgstr "Vim 風のホットキー"
-
-#: searx/plugins/vim_hotkeys.py:4
-msgid ""
-"Navigate search results with Vim-like hotkeys (JavaScript required). "
-"Press \"h\" key on main or result page to get help."
-msgstr ""
-"検索結果をVim 風のホットキーで操作します(JavaScript が必要)。メインページまたは検索結果ページで \"h\" "
-"キーを押してヘルプを表示します。"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -483,7 +460,7 @@ msgstr "プライバシーポリシー"
 msgid "Contact instance maintainer"
 msgstr "インスタンスメンテナと連絡を取る"
 
-#: searx/templates/simple/categories.html:24
+#: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
 msgstr "虫めがねをクリックして検索します"
 
@@ -529,7 +506,7 @@ msgstr "Githubで情報を含めて新たな問題を提起"
 msgid "No HTTPS"
 msgstr "No HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:14
+#: searx/templates/simple/elements/engines_msg.html:18
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -578,23 +555,23 @@ msgstr "デフォルトのカテゴリ"
 msgid "User interface"
 msgstr "ユーザーインターフェース"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:208
 msgid "Privacy"
 msgstr "プライバシー"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:221
 msgid "Engines"
 msgstr "検索エンジン"
 
-#: searx/templates/simple/preferences.html:219
+#: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
 msgstr "現在使用中の検索エンジン"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
 msgstr "特殊クエリー"
 
-#: searx/templates/simple/preferences.html:233
+#: searx/templates/simple/preferences.html:237
 msgid "Cookies"
 msgstr "クッキー"
 
@@ -736,15 +713,15 @@ msgstr "コメント"
 msgid "Download results"
 msgstr "ダウンロードするファイル形式"
 
-#: searx/templates/simple/elements/engines_msg.html:3
+#: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
 msgstr "検索エンジンからのメッセージ"
 
-#: searx/templates/simple/elements/engines_msg.html:8
+#: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
 msgstr "エラー!"
 
-#: searx/templates/simple/elements/engines_msg.html:9
+#: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
 msgstr "エンジンは結果を取得できません"
 
@@ -833,10 +810,24 @@ msgid "Sorry!"
 msgstr "すみません!"
 
 #: searx/templates/simple/messages/no_results.html:4
-msgid ""
-"we didn't find any results. Please use another query or search in more "
-"categories."
-msgstr "検索結果はありませんでした。別のカテゴリ、または他のクエリで検索してください。"
+msgid "No results were found. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:6
+msgid "Refresh the page."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:7
+msgid "Search for another query or select another category (above)."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:8
+msgid "Change the search engine used in the preferences:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:9
+msgid "Switch to another instance:"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -975,6 +966,20 @@ msgstr "デフォルト設定に戻す"
 msgid "Back"
 msgstr "戻る"
 
+#: searx/templates/simple/preferences/hotkeys.html:2
+msgid "Hotkeys"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:13
+msgid "Vim-like"
+msgstr ""
+
+#: searx/templates/simple/preferences/hotkeys.html:18
+msgid ""
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
+msgstr ""
+
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
 msgstr "画像プロキシ"
@@ -1028,6 +1033,16 @@ msgstr "検索結果のリンクを新しいタブで開く"
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
 msgstr "コンテンツをフィルタリングする"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:2
+msgid "Search on category select"
+msgstr "カテゴリ選択したら検索を実行"
+
+#: searx/templates/simple/preferences/search_on_category_select.html:14
+msgid ""
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1562,3 +1577,28 @@ msgstr "動画を隠す"
 
 #~ msgid "Disabled"
 #~ msgstr "無効"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories. (JavaScript required)"
+#~ msgstr "カテゴリが選択されたときに検索を実行します。複数のカテゴリを選択する場合は無効にします。(JavaScript が必要です)"
+
+#~ msgid "Vim-like hotkeys"
+#~ msgstr "Vim 風のホットキー"
+
+#~ msgid ""
+#~ "Navigate search results with Vim-like"
+#~ " hotkeys (JavaScript required). Press \"h\""
+#~ " key on main or result page to"
+#~ " get help."
+#~ msgstr ""
+#~ "検索結果をVim 風のホットキーで操作します(JavaScript が必要)。メインページまたは検索結果ページで"
+#~ " \"h\" キーを押してヘルプを表示します。"
+
+#~ msgid ""
+#~ "we didn't find any results. Please "
+#~ "use another query or search in "
+#~ "more categories."
+#~ msgstr "検索結果はありませんでした。別のカテゴリ、または他のクエリで検索してください。"
+
