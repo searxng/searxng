@@ -123,8 +123,11 @@ button.category_button {
 }
 
 #search_view {
-  padding: 0.5rem 2.8rem 0 0;
   grid-area: search;
+
+  body.results_endpoint & {
+    padding: 0.5rem 2.8rem 0 0;
+  }
 }
 
 .search_box {
