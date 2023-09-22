@@ -15,6 +15,7 @@ Administrator documentation
    installation-apache
    update-searxng
    answer-captcha
+   searx.botdetection
    api
    architecture
    plugins
