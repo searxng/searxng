@@ -19,6 +19,8 @@ Bot Detection
   :members:
 
 
+.. _botdetection rate limit:
+
 Rate limit
 ==========
 
@@ -28,6 +30,8 @@ Rate limit
 .. automodule:: searx.botdetection.link_token
   :members:
 
+
+.. _botdetection probe headers:
 
 Probe HTTP headers
 ==================

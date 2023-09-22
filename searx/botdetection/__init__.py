@@ -2,6 +2,23 @@
 # lint: pylint
 """.. _botdetection src:
 
+The :ref:`limiter <limiter src>` implements several methods to block bots:
+
+a. Analysis of the HTTP header in the request / can be easily bypassed.
+
+b. Block and pass lists in which IPs are listed / difficult to maintain, since
+   the IPs of bots are not all known and change over the time.
+
+c. Detection of bots based on the behavior of the requests and blocking and, if
+   necessary, unblocking of the IPs via a dynamically changeable IP block list.
+
+For dynamically changeable IP lists a Redis database is needed and for any kind
+of IP list the determination of the IP of the client is essential.  The IP of
+the client is determined via the X-Forwarded-For_ HTTP header
+
+.. _X-Forwarded-For:
+   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+
 X-Forwarded-For
 ===============
 
