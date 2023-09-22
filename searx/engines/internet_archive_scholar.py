@@ -56,7 +56,7 @@ def response(resp):
             {
                 'template': 'paper.html',
                 'url': result['fulltext']['access_url'],
-                'title': result['biblio']['title'],
+                'title': result['biblio'].get('title') or result['biblio'].get('container_name'),
                 'content': html_to_text(content),
                 'publisher': result['biblio'].get('publisher'),
                 'doi': doi,
