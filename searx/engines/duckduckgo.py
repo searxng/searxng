@@ -57,13 +57,13 @@ url = 'https://lite.duckduckgo.com/lite/'
 # url_ping = 'https://duckduckgo.com/t/sl_l'
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
+form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
 
 
 def cache_vqd(query, value):
-    """Caches a ``vqd`` token from a query, if token is None the cached value
-    is deleted.
+    """Caches a ``vqd`` value from a query.
 
-    The vqd token depends on the query string and is needed for the follow up
+    The vqd value depends on the query string and is needed for the follow up
     pages or the images loaded by a XMLHttpRequest:
 
     - DuckDuckGo Web: `https://links.duckduckgo.com/d.js?q=...&vqd=...`
@@ -72,27 +72,18 @@ def cache_vqd(query, value):
     """
     c = redisdb.client()
     if c:
+        logger.debug("cache vqd value: %s", value)
         key = 'SearXNG_ddg_vqd' + redislib.secret_hash(query)
-        if value is not None:
-            logger.debug("cache vqd value: %s", value)
-            c.set(key, value, ex=600)
-        else:
-            # remove from cache
-            c.delete(key)
-
-
-def _get_vqd_value(query):
-    res = get('https://lite.duckduckgo.com/lite/?' + urlencode({'q': query}))
-    doc = lxml.html.fromstring(res.text)
-    return eval_xpath_getindex(doc, "//input[@name='vqd']/@value", 0, None)
+        c.set(key, value, ex=600)
 
 
 def get_vqd(query):
     """Returns the ``vqd`` that fits to the *query*.  If there is no ``vqd`` cached
-    (:py:obj:`cache_vqd`) the query is sent to DDG to get a vqd token from the
+    (:py:obj:`cache_vqd`) the query is sent to DDG to get a vqd value from the
     response.
 
     """
+    value = None
     c = redisdb.client()
     if c:
         key = 'SearXNG_ddg_vqd' + redislib.secret_hash(query)
@@ -102,20 +93,12 @@ def get_vqd(query):
             logger.debug("re-use cached vqd value: %s", value)
             return value
 
-    value = _get_vqd_value(query)
-    if not value:
-        # seems we got a CAPTCHA for this query string, send a dummy request to
-        # release the captcha and then fetch the vqd value for the query string
-        # again.
-        logger.warning("vqd token will no longer work, trying to get a new one by sending another query")
-        _get_vqd_value(f'{query[:3]} duckduckgo')
-        value = _get_vqd_value(query)
-
-    if not value:
-        logger.error("was not able to fetch a valid vqd token from DDG")
-    else:
-        logger.debug("new vqd value: %s", value)
-        cache_vqd(query, value)
+    query_url = 'https://lite.duckduckgo.com/lite/?{args}'.format(args=urlencode({'q': query}))
+    res = get(query_url)
+    doc = lxml.html.fromstring(res.text)
+    value = doc.xpath("//input[@name='vqd']/@value")[0]
+    logger.debug("new vqd value: %s", value)
+    cache_vqd(query, value)
     return value
 
 
@@ -258,10 +241,10 @@ def request(query, params):
     # initial page does not have additional data in the input form
     if params['pageno'] > 1:
 
-        params['data']['o'] = 'json'
-        params['data']['api'] = 'd.js'
-        params['data']['nextParams'] = ''
-        params['data']['v'] = 'l'
+        params['data']['o'] = form_data.get('o', 'json')
+        params['data']['api'] = form_data.get('api', 'd.js')
+        params['data']['nextParams'] = form_data.get('nextParams', '')
+        params['data']['v'] = form_data.get('v', 'l')
 
     params['data']['kl'] = eng_region
     params['cookies']['kl'] = eng_region
@@ -291,19 +274,23 @@ def response(resp):
         # the layout of the HTML tables is different.
         result_table = result_table[1]
     elif not len(result_table) >= 3:
-        # no more results / if we have the vqd token in cache, it's no longer
-        # valid and has to be deleted
-        cache_vqd(resp.search_params['data']['q'], None)
+        # no more results
         return []
     else:
         result_table = result_table[2]
         # update form data from response
         form = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table//input/..')
         if len(form):
-            value = eval_xpath_getindex(form[0], "//input[@name='vqd']/@value", 0, None)
+
+            form = form[0]
+            form_data['v'] = eval_xpath(form, '//input[@name="v"]/@value')[0]
+            form_data['api'] = eval_xpath(form, '//input[@name="api"]/@value')[0]
+            form_data['o'] = eval_xpath(form, '//input[@name="o"]/@value')[0]
+            logger.debug('form_data: %s', form_data)
+
+            value = eval_xpath(form, '//input[@name="vqd"]/@value')[0]
             query = resp.search_params['data']['q']
-            if value:
-                cache_vqd(query, value)
+            cache_vqd(query, value)
 
     tr_rows = eval_xpath(result_table, './/tr')
     # In the last <tr> is the form of the 'previous/next page' links
