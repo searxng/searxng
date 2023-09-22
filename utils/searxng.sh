@@ -23,6 +23,7 @@ SEARXNG_STATIC="${SEARXNG_SRC}/searx/static"
 
 SEARXNG_PYENV="${SERVICE_HOME}/searx-pyenv"
 SEARXNG_SETTINGS_PATH="/etc/searxng/settings.yml"
+LIMITER_SETTINGS_PATH="/etc/searxng/limiter.toml"
 SEARXNG_UWSGI_APP="searxng.ini"
 
 SEARXNG_INTERNAL_HTTP="${SEARXNG_BIND_ADDRESS}:${SEARXNG_PORT}"
@@ -131,7 +132,7 @@ install|remove:
   all           : complete (de-) installation of the SearXNG service
   user          : service user '${SERVICE_USER}' (${SERVICE_HOME})
   pyenv         : virtualenv (python) in ${SEARXNG_PYENV}
-  settings      : settings from ${SEARXNG_SETTINGS_PATH}
+  settings      : settings from $(dirname "${SEARXNG_SETTINGS_PATH}")
   uwsgi         : SearXNG's uWSGI app ${SEARXNG_UWSGI_APP}
   redis         : build & install or remove a local redis server ${REDIS_HOME}/run/redis.sock
   nginx         : HTTP site ${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}
@@ -522,7 +523,7 @@ EOF
 }
 
 searxng.install.settings() {
-    rst_title "install ${SEARXNG_SETTINGS_PATH}" section
+    rst_title "install $(dirname "${SEARXNG_SETTINGS_PATH}")" section
 
     if ! [[ -f "${SEARXNG_SRC}/.git/config" ]]; then
         die "Before install settings, first install SearXNG."
@@ -530,6 +531,11 @@ searxng.install.settings() {
     fi
 
     mkdir -p "$(dirname "${SEARXNG_SETTINGS_PATH}")"
+
+    DEFAULT_SELECT=1 \
+                  install_template --no-eval \
+                  "${LIMITER_SETTINGS_PATH}" \
+                  "${SERVICE_USER}" "${SERVICE_GROUP}"
 
     DEFAULT_SELECT=1 \
                   install_template --no-eval \
@@ -545,6 +551,7 @@ searxng.remove.settings() {
     rst_title "remove ${SEARXNG_SETTINGS_PATH}" section
     if ask_yn "Do you want to delete the SearXNG settings?" Yn; then
         rm -f "${SEARXNG_SETTINGS_PATH}"
+        rm -f "${LIMITER_SETTINGS_PATH}"
     fi
 }
 
@@ -575,6 +582,12 @@ pip install -U wheel
 pip install -U pyyaml
 pip install -U -e .
 EOF
+    rst_para "update instance's limiter.toml from ${LIMITER_SETTINGS_PATH}"
+    DEFAULT_SELECT=2 \
+                  install_template --no-eval \
+                  "${LIMITER_SETTINGS_PATH}" \
+                  "${SERVICE_USER}" "${SERVICE_GROUP}"
+
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
     DEFAULT_SELECT=2 \
                   install_template --no-eval \
