@@ -75,7 +75,7 @@ buffer-size = 8192
 #     static_use_hash: true
 #
 static-map = /static=${SEARXNG_STATIC}
-# expires set to one year since there are hashes
-static-expires = /* 31557600
+# expires set to one day
+static-expires = /* 86400
 static-gzip-all = True
 offload-threads = %k
