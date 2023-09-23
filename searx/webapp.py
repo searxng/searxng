@@ -57,6 +57,7 @@ from searx import (
 )
 
 from searx import infopage
+from searx.botdetection import limiter
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
@@ -1265,6 +1266,8 @@ def config():
     for _ in plugins:
         _plugins.append({'name': _.name, 'enabled': _.default_on})
 
+    _limiter_cfg = limiter.get_cfg()
+
     return jsonify(
         {
             'categories': list(categories.keys()),
@@ -1283,6 +1286,11 @@ def config():
                 'GIT_URL': GIT_URL,
                 'GIT_BRANCH': GIT_BRANCH,
                 'DOCS_URL': get_setting('brand.docs_url'),
+            },
+            'limiter': {
+                'enabled': settings['server']['limiter'],
+                'botdetection.ip_limit.link_token': _limiter_cfg.get('botdetection.ip_limit.link_token'),
+                'botdetection.ip_lists.pass_searxng_org': _limiter_cfg.get('botdetection.ip_lists.pass_searxng_org'),
             },
             'doi_resolvers': list(settings['doi_resolvers'].keys()),
             'default_doi_resolver': settings['default_doi_resolver'],
