@@ -8,7 +8,7 @@
       <div class="search_box">
         <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
         <button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs"><span>{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
-        <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+        <button id="send_search" type="submit" {%- if search_on_category_select -%}name="category_{{ selected_categories[0]|replace(' ', '_') }}"{%- endif -%} aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
       </div>
     </div>
     {% set display_tooltip = true %}
