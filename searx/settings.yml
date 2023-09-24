@@ -912,9 +912,14 @@ engines:
 
   - name: kickass
     engine: kickass
+    base_url:
+      - https://kickasstorrents.to
+      - https://kickasstorrents.cr
+      - https://kickasstorrent.cr
+      - https://kickass.sx
+      - https://kat.am
     shortcut: kc
     timeout: 4.0
-    disabled: true
 
   - name: lemmy communities
     engine: lemmy
