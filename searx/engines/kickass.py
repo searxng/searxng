@@ -1,16 +1,23 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Kickass Torrent (Videos, Music, Files)
-"""
+# lint: pylint
+"""Kickass Torrent (Videos, Music, Files)"""
+
+import random
+from operator import itemgetter
+from urllib.parse import quote
 
 from lxml import html
-from operator import itemgetter
-from urllib.parse import quote, urljoin
-from searx.utils import extract_text, get_torrent_size, convert_str_to_int
+from searx.utils import (
+    eval_xpath,
+    eval_xpath_getindex,
+    eval_xpath_list,
+    extract_text,
+    get_torrent_size,
+    int_or_zero,
+)
 
-# about
 about = {
-    "website": 'https://kickass.so',
+    "website": 'https://kickasstorrents.to',
     "wikidata_id": 'Q17062285',
     "official_api_documentation": None,
     "use_official_api": False,
@@ -18,80 +25,39 @@ about = {
     "results": 'HTML',
 }
 
-# engine dependent config
 categories = ['files']
 paging = True
 
-# search-url
-url = 'https://kickass.cd/'
-search_url = url + 'search/{search_term}/{pageno}/'
-
-# specific xpath variables
-magnet_xpath = './/a[@title="Torrent magnet link"]'
-torrent_xpath = './/a[@title="Download torrent file"]'
-content_xpath = './/span[@class="font11px lightgrey block"]'
+# base_url can be overwritten by a list of URLs in the settings.yml
+base_url = 'https://kickasstorrents.to'
 
 
-# do search-request
 def request(query, params):
-    params['url'] = search_url.format(search_term=quote(query), pageno=params['pageno'])
+    params['base_url'] = random.choice(base_url) if isinstance(base_url, list) else base_url
+    params['url'] = params['base_url'] + f'/usearch/{quote(query)}/{params["pageno"]}/'
 
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
-
     dom = html.fromstring(resp.text)
 
-    search_res = dom.xpath('//table[@class="data"]//tr')
-
-    # return empty array if nothing is found
-    if not search_res:
+    search_res = eval_xpath_list(dom, '//table[contains(@class, "data")]//tr', None)
+    if search_res is None:
         return []
 
-    # parse results
-    for result in search_res[1:]:
-        link = result.xpath('.//a[@class="cellMainLink"]')[0]
-        href = urljoin(url, link.attrib['href'])
-        title = extract_text(link)
-        content = extract_text(result.xpath(content_xpath))
-        seed = extract_text(result.xpath('.//td[contains(@class, "green")]'))
-        leech = extract_text(result.xpath('.//td[contains(@class, "red")]'))
-        filesize_info = extract_text(result.xpath('.//td[contains(@class, "nobr")]'))
-        files = extract_text(result.xpath('.//td[contains(@class, "center")][2]'))
+    for tag in search_res[1:]:
+        result = {'template': 'torrent.html'}
+        url = eval_xpath_getindex(tag, './/a[contains(@class, "cellMainLink")]/@href', 0, None)
+        result['url'] = resp.search_params['base_url'] + url
+        result['title'] = extract_text(eval_xpath(tag, './/a[contains(@class, "cellMainLink")]'))
+        result['content'] = extract_text(eval_xpath(tag, './/span[@class="font11px lightgrey block"]'))
+        result['seed'] = int_or_zero(extract_text(eval_xpath(tag, './/td[contains(@class, "green")]')))
+        result['leech'] = int_or_zero(extract_text(eval_xpath(tag, './/td[contains(@class, "red")]')))
+        result['filesize'] = get_torrent_size(*extract_text(eval_xpath(tag, './/td[contains(@class, "nobr")]')).split())
 
-        seed = convert_str_to_int(seed)
-        leech = convert_str_to_int(leech)
+        results.append(result)
 
-        filesize, filesize_multiplier = filesize_info.split()
-        filesize = get_torrent_size(filesize, filesize_multiplier)
-        if files.isdigit():
-            files = int(files)
-        else:
-            files = None
-
-        magnetlink = result.xpath(magnet_xpath)[0].attrib['href']
-
-        torrentfile = result.xpath(torrent_xpath)[0].attrib['href']
-        torrentfileurl = quote(torrentfile, safe="%/:=&?~#+!$,;'@()*")
-
-        # append result
-        results.append(
-            {
-                'url': href,
-                'title': title,
-                'content': content,
-                'seed': seed,
-                'leech': leech,
-                'filesize': filesize,
-                'files': files,
-                'magnetlink': magnetlink,
-                'torrentfile': torrentfileurl,
-                'template': 'torrent.html',
-            }
-        )
-
-    # return results sorted by seeder
+    # results sorted by seeder count
     return sorted(results, key=itemgetter('seed'), reverse=True)
