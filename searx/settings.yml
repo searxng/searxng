@@ -74,6 +74,7 @@ server:
   # by ${SEARXNG_URL}.
   base_url: false  # "http://example.com/location"
   limiter: false  # rate limit the number of request on the instance, block some bots
+  public_instance: false  # enable features designed only for public instances
 
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
@@ -95,7 +96,7 @@ server:
 
 redis:
   # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
-  # https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
+  # https://docs.searxng.org/admin/settings/settings_redis.html#settings-redis
   url: false
 
 ui:

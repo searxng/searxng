@@ -1294,6 +1294,7 @@ def config():
             },
             'doi_resolvers': list(settings['doi_resolvers'].keys()),
             'default_doi_resolver': settings['default_doi_resolver'],
+            'public_instance': settings['server']['public_instance'],
         }
     )
 
