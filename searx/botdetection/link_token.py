@@ -83,7 +83,7 @@ def is_suspicious(network: IPv4Network | IPv6Network, request: flask.Request, re
 
     ping_key = get_ping_key(network, request)
     if not redis_client.get(ping_key):
-        logger.warning("missing ping (IP: %s) / request: %s", network.compressed, ping_key)
+        logger.info("missing ping (IP: %s) / request: %s", network.compressed, ping_key)
         return True
 
     if renew:
