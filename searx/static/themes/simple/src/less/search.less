@@ -123,8 +123,12 @@ button.category_button {
 }
 
 #search_view {
-  padding: 0.5rem 2.8rem 0 0;
+  padding: 0.5rem 0.3rem 0 0.5rem;
   grid-area: search;
+
+  body.results_endpoint & {
+    padding: 0.5rem 2.8rem 0 0;
+  }
 }
 
 .search_box {
@@ -227,10 +231,6 @@ html.no-js #clear_search.hide_if_nojs {
   #search_header {
     padding: 1.5em @results-tablet-offset 0 @results-tablet-offset;
     column-gap: @results-tablet-offset;
-  }
-
-  #search_view {
-    padding: 0.5rem 0.3rem 0 0.5rem;
   }
 
   .search_filters {
