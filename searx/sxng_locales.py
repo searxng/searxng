@@ -7,7 +7,10 @@ This file is generated automatically by::
 '''
 
 sxng_locales = (
+    ('af', 'Afrikaans', '', 'Afrikaans', '\U0001f310'),
     ('ar', 'العربية', '', 'Arabic', '\U0001f310'),
+    ('ar-SA', 'العربية', 'المملكة العربية السعودية', 'Arabic', '\U0001f1f8\U0001f1e6'),
+    ('be', 'Беларуская', '', 'Belarusian', '\U0001f310'),
     ('bg', 'Български', '', 'Bulgarian', '\U0001f310'),
     ('bg-BG', 'Български', 'България', 'Bulgarian', '\U0001f1e7\U0001f1ec'),
     ('ca', 'Català', '', 'Catalan', '\U0001f310'),
