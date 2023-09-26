@@ -159,7 +159,7 @@ def fetch_traits(engine_traits: EngineTraits):
     # supported language codes
 
     lang_map = {}
-    for x in eval_xpath_list(dom, "//form//select[@name='lang']//option"):
+    for x in eval_xpath_list(dom, "//form//input[@name='lang']"):
         eng_lang = x.get("value")
         if eng_lang in ('', '_empty', 'nl-BE', 'und'):
             continue
@@ -177,10 +177,10 @@ def fetch_traits(engine_traits: EngineTraits):
             continue
         engine_traits.languages[sxng_lang] = eng_lang
 
-    for x in eval_xpath_list(dom, "//form//select[@name='content']//option"):
+    for x in eval_xpath_list(dom, "//form//input[@name='content']"):
         engine_traits.custom['content'].append(x.get("value"))
 
-    for x in eval_xpath_list(dom, "//form//select[@name='ext']//option"):
+    for x in eval_xpath_list(dom, "//form//input[@name='ext']"):
         engine_traits.custom['ext'].append(x.get("value"))
 
     for x in eval_xpath_list(dom, "//form//select[@name='sort']//option"):
