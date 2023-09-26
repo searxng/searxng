@@ -97,7 +97,6 @@ Implementations
 
 from typing import TYPE_CHECKING
 
-import re
 from urllib.parse import (
     urlencode,
     urlparse,
@@ -354,7 +353,7 @@ def fetch_traits(engine_traits: EngineTraits):
     """Fetch :ref:`languages <brave languages>` and :ref:`regions <brave
     regions>` from Brave."""
 
-    # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel, too-many-branches
 
     import babel.languages
     from searx.locales import region_tag, language_tag
@@ -397,19 +396,26 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # search regions of brave
 
-    engine_traits.all_locale = 'all'
+    resp = get('https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js', headers=headers)
 
-    for country in dom.xpath('//div[@id="sidebar"]//ul/li/div[contains(@class, "country")]'):
+    if not resp.ok:  # type: ignore
+        print("ERROR: response from Brave is not OK.")
 
-        flag = country.xpath('./span[contains(@class, "flag")]')[0]
-        # country_name = extract_text(flag.xpath('./following-sibling::*')[0])
-        country_tag = re.search(r'flag-([^\s]*)\s', flag.xpath('./@class')[0]).group(1)  # type: ignore
+    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]
+    country_js = country_js[: country_js.index("},k={default")]
+    country_tags = js_variable_to_python(country_js)
+
+    for k, v in country_tags.items():
+        if k == 'all':
+            engine_traits.all_locale = 'all'
+            continue
+        country_tag = v['value']
 
         # add official languages of the country ..
         for lang_tag in babel.languages.get_official_languages(country_tag, de_facto=True):
             lang_tag = lang_map.get(lang_tag, lang_tag)
             sxng_tag = region_tag(babel.Locale.parse('%s_%s' % (lang_tag, country_tag.upper())))
-            # print("%-20s: %s <-- %s" % (country_name, country_tag, sxng_tag))
+            # print("%-20s: %s <-- %s" % (v['label'], country_tag, sxng_tag))
 
             conflict = engine_traits.regions.get(sxng_tag)
             if conflict:
