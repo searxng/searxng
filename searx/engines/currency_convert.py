@@ -30,13 +30,12 @@ def request(_query, params):
 
 
 def response(resp):
-    """remove first and last lines to get only json"""
+    # remove first and last lines to get only json
     json_resp = resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2]
-    results = []
     try:
-        conversion_rate = float(json.loads(json_resp)['conversion']['converted-amount'])
-    except ValueError:
-        return results
+        conversion_rate = float(json.loads(json_resp)["to"][0]["mid"])
+    except IndexError:
+        return []
     answer = '{0} {1} = {2} {3}, 1 {1} ({5}) = {4} {3} ({6})'.format(
         resp.search_params['amount'],
         resp.search_params['from'],
@@ -48,6 +47,5 @@ def response(resp):
     )
 
     url = f"https://duckduckgo.com/?q={resp.search_params['from']}+to+{resp.search_params['to']}"
-    results.append({'answer': answer, 'url': url})
 
-    return results
+    return [{"answer": answer, "url": url}]
