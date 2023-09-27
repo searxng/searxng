@@ -11,10 +11,9 @@ from urllib.parse import urlencode
 from lxml import html
 
 from searx.enginelib.traits import EngineTraits
-from searx.engines.bing import (
-    set_bing_cookies,
-    _fetch_traits,
-)
+from searx.engines.bing import set_bing_cookies
+from searx.engines.bing import fetch_traits  # pylint: disable=unused-import
+from searx.engines.bing_images import time_map
 
 if TYPE_CHECKING:
     import logging
@@ -42,25 +41,12 @@ time_range_support = True
 base_url = 'https://www.bing.com/videos/asyncv2'
 """Bing (Videos) async search URL."""
 
-bing_traits_url = 'https://learn.microsoft.com/en-us/bing/search-apis/bing-video-search/reference/market-codes'
-"""Bing (Video) search API description"""
-
-time_map = {
-    # fmt: off
-    'day': 60 * 24,
-    'week': 60 * 24 * 7,
-    'month': 60 * 24 * 31,
-    'year': 60 * 24 * 365,
-    # fmt: on
-}
-
 
 def request(query, params):
     """Assemble a Bing-Video request."""
 
-    engine_region = traits.get_region(params['searxng_locale'], 'en-us')
-    engine_language = traits.get_language(params['searxng_locale'], 'en-us')
-
+    engine_region = traits.get_region(params['searxng_locale'], traits.all_locale)  # type: ignore
+    engine_language = traits.get_language(params['searxng_locale'], 'en')  # type: ignore
     set_bing_cookies(params, engine_language, engine_region)
 
     # build URL query
@@ -68,13 +54,11 @@ def request(query, params):
     # example: https://www.bing.com/videos/asyncv2?q=foo&async=content&first=1&count=35
 
     query_params = {
-        # fmt: off
         'q': query,
-        'async' : 'content',
+        'async': 'content',
         # to simplify the page count lets use the default of 35 images per page
-        'first' : (int(params.get('pageno', 1)) - 1) * 35 + 1,
-        'count' : 35,
-        # fmt: on
+        'first': (int(params.get('pageno', 1)) - 1) * 35 + 1,
+        'count': 35,
     }
 
     # time range
@@ -113,13 +97,3 @@ def response(resp):
         )
 
     return results
-
-
-def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages and regions from Bing-Videos."""
-
-    xpath_market_codes = '//table[1]/tbody/tr/td[3]'
-    # xpath_country_codes = '//table[2]/tbody/tr/td[2]'
-    xpath_language_codes = '//table[3]/tbody/tr/td[2]'
-
-    _fetch_traits(engine_traits, bing_traits_url, xpath_language_codes, xpath_market_codes)
