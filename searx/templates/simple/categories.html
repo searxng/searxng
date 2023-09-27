@@ -26,7 +26,7 @@
             {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
         {%- else -%}
             {%- for category in categories_as_tabs -%}{{- '\n' -}}
-                <button type="submit" name="category_{{ category|replace(' ', '_') }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
+                <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
                     {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
                     <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
                 </button>{{- '' -}}
