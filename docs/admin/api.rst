@@ -69,10 +69,6 @@ Sample response
        {
          "enabled": true,
          "name": "HTTPS rewrite"
-       },
-       {
-         "enabled": false,
-         "name": "Vim-like hotkeys"
        }
      ],
      "safe_search": 0
