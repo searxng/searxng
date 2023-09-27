@@ -16,6 +16,8 @@
           }
         ));
 
+    d.querySelector('#search_url button#copy_url').style.display = "block";
+
     searxng.on('.btn-collapse', 'click', function () {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
@@ -39,6 +41,12 @@
       if (srctest === null || srctest === undefined || srctest === false) {
         iframe_load.setAttribute('src', iframe_load.getAttribute('data-src'));
       }
+    });
+
+    searxng.on('#copy_url', 'click', function () {
+      var target = this.parentElement.querySelector('pre');
+      navigator.clipboard.writeText(target.innerText);
+      this.innerText = this.dataset.copiedText;
     });
 
     searxng.selectImage = function (resultElement) {
