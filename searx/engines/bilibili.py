@@ -26,7 +26,7 @@ results_per_page = 20
 categories = ["videos"]
 
 # Search URL
-base_url = "https://api.bilibili.com/x/web-interface/wbi/search/type"
+base_url = "https://api.bilibili.com/x/web-interface/search/type"
 
 cookie = {
     "innersign": "0",
