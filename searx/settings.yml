@@ -1482,6 +1482,9 @@ engines:
 
   - name: tagesschau
     engine: tagesschau
+    # when set to false, display URLs from Tagesschau, and not the actual source
+    # (e.g. NDR, WDR, SWR, HR, ...)
+    use_source_url: true
     shortcut: ts
     disabled: true
 
