@@ -870,6 +870,25 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: hackernews
+    engine: json_engine
+    paging: true
+    search_url: https://hn.algolia.com/api/v1/search?query={query}&page={pageno}
+    results_query: hits
+    url_query: url
+    title_query: title
+    content_query: story_text
+    categories: it
+    first_page_num: 0
+    shortcut: hn
+    about:
+      website: https://news.ycombinator.com/
+      wikidata_id: Q686797
+      official_api_documentation: https://hn.algolia.com/api
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
   - name: imdb
     engine: imdb
     shortcut: imdb
