@@ -1016,6 +1016,18 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: mastodon users
+    engine: mastodon
+    mastodon_type: accounts
+    base_url: https://mastodon.social
+    shortcut: mau
+
+  - name: mastodon hashtags
+    engine: mastodon
+    mastodon_type: hashtags
+    base_url: https://mastodon.social
+    shortcut: mah
+
   - name: matrixrooms
     engine: matrixrooms
     shortcut: mtrx
