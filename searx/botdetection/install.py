@@ -6,16 +6,15 @@
 import sys
 import flask
 
-from searx import redisdb
-from searx.plugins import logger
+from searx import redisdb, logger
 from searx.botdetection import limiter
 
-name = "Request limiter"
-description = "Limit the number of request"
-default_on = False
-preference_section = 'service'
-
+# the configuration are limiter.toml and "limiter" in settings.yml
+# so, for coherency, the logger is "limiter" even if the module name "searx.botdetection"
 logger = logger.getChild('limiter')
+
+
+_INSTALLED = False
 
 
 def pre_request():
@@ -23,9 +22,15 @@ def pre_request():
     return limiter.filter_request(flask.request)
 
 
-def init(app: flask.Flask, settings) -> bool:
+def is_installed():
+    return _INSTALLED
+
+
+def initialize(app: flask.Flask, settings):
+    """Instal the botlimiter aka limiter"""
+    global _INSTALLED  # pylint: disable=global-statement
     if not settings['server']['limiter'] and not settings['server']['public_instance']:
-        return False
+        return
     if not redisdb.client():
         logger.error(
             "The limiter requires Redis, please consult the documentation: "
@@ -33,6 +38,6 @@ def init(app: flask.Flask, settings) -> bool:
         )
         if settings['server']['public_instance']:
             sys.exit(1)
-        return False
+        return
     app.before_request(pre_request)
-    return True
+    _INSTALLED = True

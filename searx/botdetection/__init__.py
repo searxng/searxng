@@ -42,3 +42,6 @@ X-Forwarded-For
 from ._helpers import dump_request
 from ._helpers import get_real_ip
 from ._helpers import too_many_requests
+from .install import initialize, is_installed
+
+__all__ = ['dump_request', 'get_real_ip', 'too_many_requests', 'initialize', 'is_installed']
