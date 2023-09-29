@@ -41,7 +41,7 @@ PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
 
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
-GECKODRIVER_VERSION="v0.30.0"
+GECKODRIVER_VERSION="v0.33.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "searx/static,searx/languages.py" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
