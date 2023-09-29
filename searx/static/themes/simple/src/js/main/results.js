@@ -16,6 +16,36 @@
           }
         ));
 
+    function ping (url, callback) {
+      var start = performance.now();
+      var faviconUrl = new URL('/favicon.ico', url).href;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', faviconUrl, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          var end = performance.now();
+          var delay = end - start;  // delay time in ms.
+          var level = delay <= 300 ? 'fast' : delay <= 1000 ? 'medium' : 'slow';
+          callback(level);
+        }
+      };
+      xhr.timeout = 3000;
+      xhr.ontimeout = function () {
+        callback('slow');
+      }
+      xhr.send();
+    }
+
+    // check network connection
+    d.querySelectorAll('article.result').forEach(article => {
+      var url = article.querySelector('span.url_i1').innerText;
+      ping(url, function (level) {
+        var delayElement = article.querySelector('span.delay');
+        delayElement.innerText = delayElement.dataset[level];
+        delayElement.classList.add(level);
+      });
+    })
+
     searxng.on('.btn-collapse', 'click', function () {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
       var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
