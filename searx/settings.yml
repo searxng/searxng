@@ -1935,21 +1935,22 @@ engines:
     disabled: true
 
   - name: tootfinder
-    engine: json_engine
+    engine: xpath
     categories: ['social media']
     paging: false
-    search_url: https://www.tootfinder.ch/rest/api/search/{query}
-    url_query: uri
-    title_query: card/title
-    content_query: content
-    thumbnail_query: card/image
+    search_url: https://www.tootfinder.ch/search/{query}
+    results_xpath: //div[contains(@class,"container")]/div[contains(@class,"post")]
+    url_xpath: ./div[contains(@class,"postheader")]/span/a/@href
+    title_xpath: (.//div[contains(@class,"media")]/a/img/@alt | .//div[contains(@class,"postheader")]/span/text())[last()]
+    content_xpath: .//p/text()
+    thumbnail_xpath: .//img[contains(@class,"media")]/@src
     shortcut: toot
     about:
       website: https://tootfinder.ch/
       official_api_documentation: https://wiki.tootfinder.ch/index.php?name=the-tootfinder-rest-api
-      use_official_api: true
+      use_official_api: false
       require_api_key: false
-      results: 'JSON'
+      results: 'HTML'
 
   - name: wallhaven
     engine: wallhaven
