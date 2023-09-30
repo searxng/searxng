@@ -159,7 +159,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     resp = network.get('https://search.yahoo.com/preferences/languages')
     if not resp.ok:
-        print("ERROR: response from peertube is not OK.")
+        print("ERROR: response from yahoo is not OK.")
 
     dom = html.fromstring(resp.text)
     offset = len('lang_')
