@@ -1990,21 +1990,8 @@ engines:
     disabled: true
 
   - name: tootfinder
-    engine: json_engine
-    categories: ['social media']
-    paging: false
-    search_url: https://www.tootfinder.ch/rest/api/search/{query}
-    url_query: uri
-    title_query: card/title
-    content_query: content
-    thumbnail_query: card/image
+    engine: tootfinder
     shortcut: toot
-    about:
-      website: https://tootfinder.ch/
-      official_api_documentation: https://wiki.tootfinder.ch/index.php?name=the-tootfinder-rest-api
-      use_official_api: true
-      require_api_key: false
-      results: 'JSON'
 
   - name: wallhaven
     engine: wallhaven
