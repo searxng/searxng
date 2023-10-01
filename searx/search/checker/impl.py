@@ -19,6 +19,7 @@ from searx.results import ResultContainer
 from searx.search.models import SearchQuery, EngineRef
 from searx.search.processors import EngineProcessor
 from searx.metrics import counter_inc
+from searx.exceptions import SearxEngineResponseException
 
 
 logger = logger.getChild('searx.search.checker')
@@ -102,6 +103,9 @@ def _download_and_check_if_image(image_url: str) -> bool:
             logger.error('Timeout for %s: %i', image_url, int(time() - a))
             retry -= 1
         except httpx.HTTPError:
+            logger.exception('Exception for %s', image_url)
+            return False
+        except SearxEngineResponseException:
             logger.exception('Exception for %s', image_url)
             return False
     return False
