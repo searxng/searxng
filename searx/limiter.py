@@ -211,23 +211,33 @@ def pre_request():
 
 
 def is_installed():
+    """Returns ``True`` if limiter is active and a redis DB is available."""
     return _INSTALLED
 
 
 def initialize(app: flask.Flask, settings):
-    """Instal the botlimiter aka limiter"""
+    """Install the limiter"""
     global _INSTALLED  # pylint: disable=global-statement
-    if not settings['server']['limiter'] and not settings['server']['public_instance']:
+
+    if not (settings['server']['limiter'] or settings['server']['public_instance']):
         return
+
     redis_client = redisdb.client()
     if not redis_client:
         logger.error(
             "The limiter requires Redis, please consult the documentation: "
-            + "https://docs.searxng.org/admin/searx.botdetection.html#limiter"
+            "https://docs.searxng.org/admin/searx.limiter.html"
         )
         if settings['server']['public_instance']:
             sys.exit(1)
         return
-    botdetection.init(get_cfg(), redis_client)
-    app.before_request(pre_request)
+
     _INSTALLED = True
+
+    cfg = get_cfg()
+    if settings['server']['public_instance']:
+        # overwrite limiter.toml setting
+        cfg.set('botdetection.ip_limit.link_token', True)
+
+    botdetection.init(cfg, redis_client)
+    app.before_request(pre_request)
