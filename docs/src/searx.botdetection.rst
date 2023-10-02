@@ -12,8 +12,10 @@ Bot Detection
 .. automodule:: searx.botdetection
   :members:
 
-.. automodule:: searx.botdetection.limiter
-  :members:
+.. _botdetection ip_lists:
+
+IP lists
+========
 
 .. automodule:: searx.botdetection.ip_lists
   :members:
@@ -49,4 +51,12 @@ Probe HTTP headers
   :members:
 
 .. automodule:: searx.botdetection.http_user_agent
+  :members:
+
+.. _botdetection config:
+
+Config
+======
+
+.. automodule:: searx.botdetection.config
   :members:

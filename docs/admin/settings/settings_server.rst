@@ -36,11 +36,9 @@
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
-.. _limiter:
-
 ``limiter`` :
   Rate limit the number of request on the instance, block some bots.  The
-  :ref:`limiter src` requires a :ref:`settings redis` database.
+  :ref:`limiter` requires a :ref:`settings redis` database.
 
 .. _image_proxy:
 

@@ -33,7 +33,7 @@ from ipaddress import (
     IPv6Address,
 )
 
-from searx.tools import config
+from . import config
 from ._helpers import logger
 
 logger = logger.getChild('ip_limit')

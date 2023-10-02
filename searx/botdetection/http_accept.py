@@ -24,7 +24,7 @@ from ipaddress import (
 import flask
 import werkzeug
 
-from searx.tools import config
+from . import config
 from ._helpers import too_many_requests
 
 
