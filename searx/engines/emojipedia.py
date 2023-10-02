@@ -14,7 +14,6 @@ from lxml import html
 
 from searx.utils import (
     eval_xpath_list,
-    eval_xpath_getindex,
     extract_text,
 )
 
@@ -28,11 +27,9 @@ about = {
 }
 
 categories = []
-paging = False
-time_range_support = False
 
 base_url = 'https://emojipedia.org'
-search_url = base_url + '/search/?{query}'
+search_url = base_url + '/search?{query}'
 
 
 def request(query, params):
@@ -47,20 +44,10 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath_list(dom, "//ol[@class='search-results']/li"):
+    for result in eval_xpath_list(dom, '//div[starts-with(@class, "EmojisList")]/a'):
 
-        extracted_desc = extract_text(eval_xpath_getindex(result, './/p', 0))
-
-        if 'No results found.' in extracted_desc:
-            break
-
-        link = eval_xpath_getindex(result, './/h2/a', 0)
-
-        url = base_url + link.attrib.get('href')
-        title = extract_text(link)
-        content = extracted_desc
-
-        res = {'url': url, 'title': title, 'content': content}
+        url = base_url + result.attrib.get('href')
+        res = {'url': url, 'title': extract_text(result), 'content': ''}
 
         results.append(res)
 

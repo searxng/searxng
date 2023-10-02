@@ -1018,6 +1018,11 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: matrixrooms
+    engine: matrixrooms
+    shortcut: mtrx
+    disabled: true
+
   - name: metacpan
     engine: metacpan
     shortcut: cpan
@@ -1200,6 +1205,10 @@ engines:
   - name: photon
     engine: photon
     shortcut: ph
+
+  - name: pinterest
+    engine: pinterest
+    shortcut: pin
 
   - name: piped
     engine: piped
@@ -1483,6 +1492,9 @@ engines:
 
   - name: tagesschau
     engine: tagesschau
+    # when set to false, display URLs from Tagesschau, and not the actual source
+    # (e.g. NDR, WDR, SWR, HR, ...)
+    use_source_url: true
     shortcut: ts
     disabled: true
 
