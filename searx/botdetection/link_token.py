@@ -99,15 +99,13 @@ def ping(request: flask.Request, token: str):
     The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.
 
     """
-    from . import limiter  # pylint: disable=import-outside-toplevel, cyclic-import
+    from . import redis_client, cfg  # pylint: disable=import-outside-toplevel, cyclic-import
 
-    redis_client = redisdb.client()
     if not redis_client:
         return
     if not token_is_valid(token):
         return
 
-    cfg = limiter.get_cfg()
     real_ip = ip_address(get_real_ip(request))
     network = get_network(real_ip, cfg)
 

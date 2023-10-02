@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import  sys, os
+from pathlib import Path
 from pallets_sphinx_themes import ProjectLink
 
 from searx import get_setting
@@ -13,7 +14,6 @@ project = 'SearXNG'
 copyright = 'SearXNG team'
 author = 'SearXNG team'
 release, version = VERSION_STRING, VERSION_STRING
-
 SEARXNG_URL = get_setting('server.base_url') or 'https://example.org/searxng'
 ISSUE_URL = get_setting('brand.issue_url')
 DOCS_URL = get_setting('brand.docs_url')
@@ -21,6 +21,9 @@ PUBLIC_INSTANCES = get_setting('brand.public_instances')
 PRIVACYPOLICY_URL = get_setting('general.privacypolicy_url')
 CONTACT_URL = get_setting('general.contact_url')
 WIKI_URL = get_setting('brand.wiki_url')
+
+SOURCEDIR = Path(__file__).parent.parent / "searx"
+os.environ['SOURCEDIR'] = str(SOURCEDIR)
 
 # hint: sphinx.ext.viewcode won't highlight when 'highlight_language' [1] is set
 #       to string 'none' [2]
