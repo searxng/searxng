@@ -51,7 +51,6 @@ from . import (
     http_accept,
     http_accept_encoding,
     http_accept_language,
-    http_connection,
     http_user_agent,
     ip_limit,
     ip_lists,
@@ -136,7 +135,6 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
             http_accept,
             http_accept_encoding,
             http_accept_language,
-            http_connection,
             http_user_agent,
             ip_limit,
         ]:

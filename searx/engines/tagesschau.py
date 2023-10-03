@@ -42,6 +42,17 @@ paging = True
 results_per_page = 10
 base_url = "https://www.tagesschau.de"
 
+use_source_url = True
+"""When set to false, display URLs from Tagesschau, and not the actual source
+(e.g. NDR, WDR, SWR, HR, ...)
+
+.. note::
+
+   The actual source may contain additional content, such as commentary, that is
+   not displayed in the Tagesschau.
+
+"""
+
 
 def request(query, params):
     args = {
@@ -78,7 +89,7 @@ def _story(item):
         'thumbnail': item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
         'publishedDate': datetime.strptime(item['date'][:19], '%Y-%m-%dT%H:%M:%S'),
         'content': item['firstSentence'],
-        'url': item['shareURL'],
+        'url': item['shareURL'] if use_source_url else item['detailsweb'],
     }
 
 
