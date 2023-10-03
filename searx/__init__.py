@@ -40,7 +40,7 @@ LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
 LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
 
 searx_loglevel = settings['general']['log_level']
-if searx_loglevel.upper() in ValidLogLevels._member_names_:
+if searx_loglevel.upper() in list(ValidLogLevels.__members__):
     LOG_LEVEL_PROD = ValidLogLevels[searx_loglevel.upper()].name
 else:
     LOG_LEVEL_PROD = logging.WARNING
