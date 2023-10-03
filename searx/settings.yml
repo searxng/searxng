@@ -865,6 +865,11 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: hackernews
+    engine: hackernews
+    shortcut: hn
+    disabled: true
+
   - name: hoogle
     engine: xpath
     paging: true
