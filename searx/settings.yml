@@ -1295,6 +1295,7 @@ engines:
     search_type: search
     categories: [general, web]
     shortcut: ps
+    disabled: true
 
   - name: presearch images
     engine: presearch
@@ -1307,7 +1308,7 @@ engines:
   - name: presearch videos
     engine: presearch
     search_type: videos
-    categories: [videos, web]
+    categories: [general, web]
     timeout: 4.0
     shortcut: psvid
     disabled: true
