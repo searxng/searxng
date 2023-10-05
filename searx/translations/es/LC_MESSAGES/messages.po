@@ -28,19 +28,18 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 09:15+0000\n"
+"POT-Creation-Date: 2023-10-05 09:01+0000\n"
 "PO-Revision-Date: 2023-10-01 03:53+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
-"Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
-"searxng/es/>\n"
 "Language: es\n"
+"Language-Team: Spanish "
+"<https://translate.codeberg.org/projects/searxng/searxng/es/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -168,28 +167,28 @@ msgstr "claro"
 msgid "dark"
 msgstr "oscuro"
 
-#: searx/webapp.py:330
+#: searx/webapp.py:331
 msgid "No item found"
 msgstr "Ningún artículo encontrado"
 
-#: searx/engines/qwant.py:277
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
+#: searx/engines/qwant.py:280
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
 msgid "Source"
 msgstr "Fuente"
 
-#: searx/webapp.py:334
+#: searx/webapp.py:335
 msgid "Error loading the next page"
 msgstr "Error al cargar la siguiente página"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:492 searx/webapp.py:888
 msgid "Invalid settings, please edit your preferences"
 msgstr "Parámetros incorrectos, por favor, cambia tus preferencias"
 
-#: searx/webapp.py:507
+#: searx/webapp.py:508
 msgid "Invalid settings"
 msgstr "Ajustes no válidos"
 
-#: searx/webapp.py:584 searx/webapp.py:666
+#: searx/webapp.py:585 searx/webapp.py:667
 msgid "search error"
 msgstr "error en la búsqueda"
 
@@ -285,9 +284,25 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Esta entrada ha sido sustituida por"
 
-#: searx/engines/qwant.py:279
+#: searx/engines/qwant.py:282
 msgid "Channel"
 msgstr "Canal"
+
+#: searx/engines/radio_browser.py:104
+msgid "radio"
+msgstr ""
+
+#: searx/engines/radio_browser.py:106
+msgid "bitrate"
+msgstr ""
+
+#: searx/engines/radio_browser.py:107
+msgid "votes"
+msgstr ""
+
+#: searx/engines/radio_browser.py:108
+msgid "clicks"
+msgstr ""
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -1024,9 +1039,9 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navega por los resultados de la búsqueda con las teclas de acceso rápido (se "
-"requiere JavaScript). Presiona la tecla \"h\" en la página principal o de "
-"los resultados para obtener ayuda."
+"Navega por los resultados de la búsqueda con las teclas de acceso rápido "
+"(se requiere JavaScript). Presiona la tecla \"h\" en la página principal "
+"o de los resultados para obtener ayuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1698,3 +1713,4 @@ msgstr "ocultar video"
 #~ "No encontramos ningún resultado. Por "
 #~ "favor, formule su búsqueda de otra "
 #~ "forma o busque en más categorías."
+
