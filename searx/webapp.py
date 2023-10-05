@@ -1161,6 +1161,21 @@ def stats():
                 reliability_order = 1 - reliability_order
         return (reliability_order, key, engine_stat['name'])
 
+    technical_report = []
+    for error in engine_reliabilities.get(selected_engine_name, {}).get('errors', []):
+        technical_report.append(
+            f"\
+            Error: {error['exception_classname'] or error['log_message']} \
+            Parameters: {error['log_parameters']} \
+            File name: {error['filename'] }:{ error['line_no'] } \
+            Error Function: {error['function']} \
+            Code: {error['code']} \
+            ".replace(
+                ' ' * 12, ''
+            ).strip()
+        )
+    technical_report = ' '.join(technical_report)
+
     engine_stats['time'] = sorted(engine_stats['time'], reverse=reverse, key=get_key)
     return render(
         # fmt: off
@@ -1170,6 +1185,7 @@ def stats():
         engine_reliabilities = engine_reliabilities,
         selected_engine_name = selected_engine_name,
         searx_git_branch = GIT_BRANCH,
+        technical_report = technical_report,
         # fmt: on
     )
 
