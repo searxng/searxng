@@ -12,19 +12,18 @@
 # Salif Mehmed <mail@salif.eu>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-19 09:15+0000\n"
+"POT-Creation-Date: 2023-10-05 09:01+0000\n"
 "PO-Revision-Date: 2023-09-29 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Bulgarian <https://translate.codeberg.org/projects/searxng/"
-"searxng/bg/>\n"
 "Language: bg\n"
+"Language-Team: Bulgarian "
+"<https://translate.codeberg.org/projects/searxng/searxng/bg/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -152,28 +151,28 @@ msgstr "светъл"
 msgid "dark"
 msgstr "тъмен"
 
-#: searx/webapp.py:330
+#: searx/webapp.py:331
 msgid "No item found"
 msgstr "Не е намерен артикул"
 
-#: searx/engines/qwant.py:277
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:332
+#: searx/engines/qwant.py:280
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
 msgid "Source"
 msgstr "Източник"
 
-#: searx/webapp.py:334
+#: searx/webapp.py:335
 msgid "Error loading the next page"
 msgstr "Грешка при зареждането на следващата страница"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:492 searx/webapp.py:888
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправилни настройки, моля проверете предпочитанията си"
 
-#: searx/webapp.py:507
+#: searx/webapp.py:508
 msgid "Invalid settings"
 msgstr "невалидни настройки"
 
-#: searx/webapp.py:584 searx/webapp.py:666
+#: searx/webapp.py:585 searx/webapp.py:667
 msgid "search error"
 msgstr "грешка при търсенето"
 
@@ -269,9 +268,25 @@ msgstr "{title} (ОСТАРЯЛО)"
 msgid "This entry has been superseded by"
 msgstr "Този запис е заменен от"
 
-#: searx/engines/qwant.py:279
+#: searx/engines/qwant.py:282
 msgid "Channel"
 msgstr "Канал"
+
+#: searx/engines/radio_browser.py:104
+msgid "radio"
+msgstr ""
+
+#: searx/engines/radio_browser.py:106
+msgid "bitrate"
+msgstr ""
+
+#: searx/engines/radio_browser.py:107
+msgid "votes"
+msgstr ""
+
+#: searx/engines/radio_browser.py:108
+msgid "clicks"
+msgstr ""
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -946,8 +961,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Този раздел несъществува в потребителския интерфейс, но може да търсиш със "
-"следните търсачки по !bangs."
+"Този раздел несъществува в потребителския интерфейс, но може да търсиш "
+"със следните търсачки по !bangs."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1006,8 +1021,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Навигирай резултати чрез клавишни комбинации (необходим е JavaScript). За "
-"помощ натисни клавиша \"h\" на главната страница или на страницата с "
+"Навигирай резултати чрез клавишни комбинации (необходим е JavaScript). За"
+" помощ натисни клавиша \"h\" на главната страница или на страницата с "
 "резултатите."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
@@ -1033,8 +1048,8 @@ msgstr "Кой език предпочитате за търсене?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Избери автоматично разпознаване, за да може SearXNG да разпознае езика на "
-"който пишеш."
+"Избери автоматично разпознаване, за да може SearXNG да разпознае езика на"
+" който пишеш."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1658,3 +1673,4 @@ msgstr "скрий видеото"
 #~ "не намерихме резултати. Моля пробвайте "
 #~ "други ключови думи или търсете в "
 #~ "повече категории."
+
