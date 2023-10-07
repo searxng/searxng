@@ -466,7 +466,7 @@ class Preferences:
                 locked=is_locked('search_on_category_select')
             ),
             'hotkeys': EnumStringSetting(
-                'default',
+                settings['ui']['hotkeys'],
                 choices=['default', 'vim']
             ),
             # fmt: on
