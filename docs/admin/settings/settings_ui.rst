@@ -20,6 +20,7 @@
      theme_args:
        simple_style: auto
      search_on_category_select: true
+     hotkeys: default
 
 .. _static_use_hash:
 
@@ -64,3 +65,6 @@
 
 ``search_on_category_select``:
   Perform search immediately if a category selected. Disable to select multiple categories.
+
+``hotkeys``:
+  Hotkeys to use in the search interface: ``default``, ``vim`` (Vim-like).
