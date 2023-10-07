@@ -66,8 +66,10 @@ def cache_vqd(query, value):
     The vqd value depends on the query string and is needed for the follow up
     pages or the images loaded by a XMLHttpRequest:
 
-    - DuckDuckGo Web: `https://links.duckduckgo.com/d.js?q=...&vqd=...`
-    - DuckDuckGo Images: `https://duckduckgo.com/i.js??q=...&vqd=...`
+    - DuckDuckGo Web: ``https://links.duckduckgo.com/d.js?q=...&vqd=...``
+    - DuckDuckGo Images: ``https://duckduckgo.com/i.js??q=...&vqd=...``
+    - DuckDuckGo Videos: ``https://duckduckgo.com/v.js??q=...&vqd=...``
+    - DuckDuckGo News: ``https://duckduckgo.com/news.js??q=...&vqd=...``
 
     """
     c = redisdb.client()

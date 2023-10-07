@@ -603,9 +603,24 @@ engines:
     shortcut: ddg
 
   - name: duckduckgo images
-    engine: duckduckgo_images
+    engine: duckduckgo_extra
+    categories: [images, web]
+    ddg_category: images
     shortcut: ddi
-    timeout: 3.0
+    disabled: true
+
+  - name: duckduckgo videos
+    engine: duckduckgo_extra
+    categories: [videos, web]
+    ddg_category: videos
+    shortcut: ddv
+    disabled: true
+
+  - name: duckduckgo news
+    engine: duckduckgo_extra
+    categories: [news, web]
+    ddg_category: news
+    shortcut: ddn
     disabled: true
 
   - name: duckduckgo weather
