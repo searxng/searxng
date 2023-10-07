@@ -43,7 +43,7 @@ def response(resp):
     results = []
     dom = html.fromstring(resp.text)
 
-    search_res = eval_xpath_list(dom, '//table[contains(@class, "data")]//tr', None)
+    search_res = eval_xpath_list(dom, '//table[contains(@class, "data")]//tr[descendant::a]', None)
     if search_res is None:
         return []
 
