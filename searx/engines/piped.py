@@ -140,6 +140,9 @@ def response(resp):
             "publishedDate": parser.parse(time.ctime(uploaded / 1000)) if uploaded != -1 else None,
             "iframe_src": _frontend_url() + '/embed' + result.get("url", ""),
         }
+        length = result.get("duration")
+        if length:
+            item["length"] = datetime.timedelta(seconds=length)
 
         if piped_filter == 'videos':
             item["template"] = "videos.html"
@@ -151,9 +154,6 @@ def response(resp):
             item["template"] = "default.html"
             item["img_src"] = result.get("thumbnail", "")
             item["content"] = result.get("uploaderName", "") or ""
-            length = result.get("duration")
-            if length:
-                item["length"] = datetime.timedelta(seconds=length)
 
         results.append(item)
 
