@@ -12,7 +12,7 @@ DuckDuckGo Engines
 .. automodule:: searx.engines.duckduckgo
    :members:
 
-.. automodule:: searx.engines.duckduckgo_images
+.. automodule:: searx.engines.duckduckgo_extra
    :members:
 
 .. automodule:: searx.engines.duckduckgo_definitions
