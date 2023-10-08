@@ -18,17 +18,27 @@ Configuration
 
 The engine has the following (additional) settings:
 
+- :py:obj:`http_digest_auth_user`
+- :py:obj:`http_digest_auth_pass`
+- :py:obj:`search_mode`
+- :py:obj:`search_type`
+
 .. code:: yaml
 
-   - name: yacy
-     engine: yacy
-     shortcut: ya
-     base_url: http://localhost:8090
-     # Yacy search mode. 'global' or 'local'.
-     search_mode: 'global'
-     number_of_results: 5
-     http_digest_auth_user: ""
-     http_digest_auth_pass: ""
+  - name: yacy
+    engine: yacy
+    categories: general
+    search_type: text
+    base_url: https://yacy.searchlab.eu
+    shortcut: ya
+
+  - name: yacy images
+    engine: yacy
+    categories: images
+    search_type: image
+    base_url: https://yacy.searchlab.eu
+    shortcut: yai
+    disabled: true
 
 
 Implementations
@@ -55,11 +65,14 @@ about = {
 }
 
 # engine dependent config
-categories = ['general', 'images']  # TODO , 'music', 'videos', 'files'
+categories = ['general']
 paging = True
-number_of_results = 5
+number_of_results = 10
 http_digest_auth_user = ""
+"""HTTP digest user for the local YACY instance"""
 http_digest_auth_pass = ""
+"""HTTP digest password for the local YACY instance"""
+
 search_mode = 'global'
 """Yacy search mode ``global`` or ``local``.  By default, Yacy operates in ``global``
 mode.
@@ -70,8 +83,13 @@ mode.
 ``local``
   Privacy or Stealth mode, restricts the search to local yacy instance.
 """
+search_type = 'text'
+"""One of ``text``, ``image`` / The search-types ``app``, ``audio`` and
+``video`` are not yet implemented (Pull-Requests are welcome).
+"""
+
 # search-url
-base_url = 'http://localhost:8090'
+base_url = 'https://yacy.searchlab.eu'
 search_url = (
     '/yacysearch.json?{query}'
     '&startRecord={offset}'
@@ -80,13 +98,19 @@ search_url = (
     '&resource={resource}'
 )
 
-# yacy specific type-definitions
-search_types = {'general': 'text', 'images': 'image', 'files': 'app', 'music': 'audio', 'videos': 'video'}
+
+def init(_):
+    valid_types = [
+        'text',
+        'image',
+        # 'app', 'audio', 'video',
+    ]
+    if search_type not in valid_types:
+        raise ValueError('search_type "%s" is  not one of %s' % (search_type, valid_types))
 
 
 def request(query, params):
     offset = (params['pageno'] - 1) * number_of_results
-    search_type = search_types.get(params.get('category'), '0')
 
     params['url'] = base_url + search_url.format(
         query=urlencode({'query': query}),
@@ -122,7 +146,7 @@ def response(resp):
 
     for result in search_results[0].get('items', []):
         # parse image results
-        if resp.search_params.get('category') == 'images':
+        if search_type == 'image':
             result_url = ''
             if 'url' in result:
                 result_url = result['url']
@@ -144,12 +168,14 @@ def response(resp):
 
         # parse general results
         else:
-            publishedDate = parser.parse(result['pubDate'])
+            publishedDate = None
+            if 'pubDate' in result:
+                publishedDate = parser.parse(result['pubDate'])
 
             # append result
             results.append(
                 {
-                    'url': result['link'],
+                    'url': result['link'] or '',
                     'title': result['title'],
                     'content': html_to_text(result['description']),
                     'publishedDate': publishedDate,
