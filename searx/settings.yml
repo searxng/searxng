@@ -1862,15 +1862,26 @@ engines:
     shortcut: mvw
     disabled: true
 
-  # - name: yacy
-  #   engine: yacy
-  #   shortcut: ya
-  #   base_url: http://localhost:8090
-  #   # required if you aren't using HTTPS for your local yacy instance'
-  #   enable_http: true
-  #   timeout: 3.0
-  #   # Yacy search mode. 'global' or 'local'.
-  #   search_mode: 'global'
+  - name: yacy
+    engine: yacy
+    categories: general
+    search_type: text
+    base_url: https://yacy.searchlab.eu
+    shortcut: ya
+    disabled: true
+    # required if you aren't using HTTPS for your local yacy instance
+    # https://docs.searxng.org/dev/engines/online/yacy.html
+    # enable_http: true
+    # timeout: 3.0
+    # search_mode: 'global'
+
+  - name: yacy images
+    engine: yacy
+    categories: images
+    search_type: image
+    base_url: https://yacy.searchlab.eu
+    shortcut: yai
+    disabled: true
 
   - name: rumble
     engine: rumble
