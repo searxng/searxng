@@ -1,24 +1,50 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-"""Matrixrooms.info (social media)
+"""Matrix Rooms Search - a fully-featured, standalone, matrix rooms search service.
+
+Configuration
+=============
+
+The engine has the following mandatory settings:
+
+- :py:obj:`base_url`
+
+.. code:: yaml
+
+  - name: MRS
+    engine: mrs
+    base_url: https://mrs-host
+    ...
+
+Implementation
+==============
 """
 
 from urllib.parse import quote_plus
 
 about = {
     "website": 'https://matrixrooms.info',
-    "wikidata_id": 'Q107565255',
-    "official_api_documentation": None,
-    "use_official_api": False,
+    "wikidata_id": None,
+    "official_api_documentation": 'https://gitlab.com/etke.cc/mrs/api/-/blob/main/openapi.yml?ref_type=heads',
+    "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
 }
 paging = True
 categories = ['social media']
 
-base_url = "https://apicdn.matrixrooms.info"
+base_url = ""
 matrix_url = "https://matrix.to"
 page_size = 20
+
+
+def init(engine_settings):  # pylint: disable=unused-argument
+    """The ``base_url`` must be set in the configuration, if ``base_url`` is not
+    set, a :py:obj:`ValueError` is raised during initialization.
+
+    """
+    if not base_url:
+        raise ValueError('engine MRS, base_url is unset')
 
 
 def request(query, params):
