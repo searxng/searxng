@@ -121,9 +121,9 @@ You can contribute from your browser using `GitHub Codespaces`_:
 - Click on the ``Codespaces`` tab instead of ``Local``
 - Click on ``Create codespace on master``
 - VSCode is going to start in the browser
-- Wait for ``git pull && make install`` to appears and then to disapear
+- Wait for ``git pull && make install`` to appear and then disappear
 - You have `120 hours per month`_ (see also your `list of existing Codespaces`_)
-- You can start SearXNG using ``make run`` in the terminal or by pressing ``Ctrl+Shift+B``.
+- You can start SearXNG using ``make run`` in the terminal or by pressing ``Ctrl+Shift+B``
 
 .. _GitHub Codespaces: https://docs.github.com/en/codespaces/overview
 .. _120 hours per month: https://github.com/settings/billing
