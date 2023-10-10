@@ -222,7 +222,6 @@ def request(query, params):
     # link again and again ..
 
     params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
-    params['headers']['Referer'] = 'https://google.com/'
 
     # initial page does not have an offset
     if params['pageno'] == 2:
@@ -247,6 +246,10 @@ def request(query, params):
         params['data']['api'] = form_data.get('api', 'd.js')
         params['data']['nextParams'] = form_data.get('nextParams', '')
         params['data']['v'] = form_data.get('v', 'l')
+
+        # request needs a vqd argument
+        params['data']['vqd'] = get_vqd(query)
+        params['headers']['Referer'] = 'https://lite.duckduckgo.com/'
 
     params['data']['kl'] = eng_region
     params['cookies']['kl'] = eng_region
