@@ -48,6 +48,13 @@ search_path_map = {'images': 'i', 'videos': 'v', 'news': 'news'}
 
 def request(query, params):
 
+    # request needs a vqd argument
+    vqd = get_vqd(query)
+    if not vqd:
+        # some search terms do not have results and therefore no vqd value
+        params['url'] = None
+        return params
+
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 
@@ -57,7 +64,7 @@ def request(query, params):
         # 'u': 'bing',
         'l': eng_region,
         'f': ',,,,,',
-        'vqd': get_vqd(query),
+        'vqd': vqd,
     }
 
     if params['pageno'] > 1:
