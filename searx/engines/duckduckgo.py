@@ -98,7 +98,12 @@ def get_vqd(query):
     query_url = 'https://lite.duckduckgo.com/lite/?{args}'.format(args=urlencode({'q': query}))
     res = get(query_url)
     doc = lxml.html.fromstring(res.text)
-    value = doc.xpath("//input[@name='vqd']/@value")[0]
+    value = doc.xpath("//input[@name='vqd']/@value")
+    if value:
+        value = value[0]
+    else:
+        # some search terms do not have results and therefore no vqd value
+        value = ''
     logger.debug("new vqd value: %s", value)
     cache_vqd(query, value)
     return value
@@ -235,9 +240,6 @@ def request(query, params):
         offset = 30 + (params['pageno'] - 2) * 50
         params['data']['s'] = offset
         params['data']['dc'] = offset + 1
-
-    # request needs a vqd argument
-    params['data']['vqd'] = get_vqd(query)
 
     # initial page does not have additional data in the input form
     if params['pageno'] > 1:
