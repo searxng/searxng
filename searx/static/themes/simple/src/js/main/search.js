@@ -150,8 +150,17 @@
       }
     }
 
-    // vanilla js version of search_on_category_select.js
-    if (qinput !== null && searxng.settings.search_on_category_select) {
+    // Additionally to searching when selecting a new category, we also
+    // automatically start a new search request when the user changes a search
+    // filter (safesearch, time range or language) (this requires JavaScript
+    // though)
+    if (
+      qinput !== null
+        && searxng.settings.search_on_category_select
+      // If .search_filters is undefined (invisible) we are on the homepage and
+      // hence don't have to set any listeners
+        && d.querySelector(".search_filters") != null
+    ) {
       searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);
