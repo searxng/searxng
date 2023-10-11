@@ -9,7 +9,7 @@ from searx.utils import extract_text, eval_xpath, eval_xpath_list
 
 about = {
     "website": 'https://imgur.com/',
-    "wikidata_id": 'Q107565255',
+    "wikidata_id": 'Q355022',
     "official_api_documentation": 'https://api.imgur.com/',
     "use_official_api": False,
     "require_api_key": False,
