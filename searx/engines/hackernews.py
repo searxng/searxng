@@ -71,17 +71,17 @@ def response(resp):
 
     for hit in data["hits"]:
         object_id = hit["objectID"]
-        points = hit["points"] or 0
-        num_comments = hit["num_comments"] or 0
+        points = hit.get("points") or 0
+        num_comments = hit.get("num_comments") or 0
 
         metadata = ""
         if points != 0 or num_comments != 0:
             metadata = f"{gettext('points')}: {points}" f" | {gettext('comments')}: {num_comments}"
         results.append(
             {
-                "title": hit["title"] or f"{gettext('author')}: {hit['author']}",
+                "title": hit.get("title") or f"{gettext('author')}: {hit['author']}",
                 "url": f"https://news.ycombinator.com/item?id={object_id}",
-                "content": hit["url"] or hit["comment_text"] or hit["story_text"] or "",
+                "content": hit.get("url") or hit.get("comment_text") or hit.get("story_text") or "",
                 "metadata": metadata,
                 "author": hit["author"],
                 "publishedDate": datetime.utcfromtimestamp(hit["created_at_i"]),
