@@ -244,7 +244,7 @@ def _parse_search(resp):
     for result in eval_xpath_list(dom, xpath_results):
 
         url = eval_xpath_getindex(result, './/a[contains(@class, "h")]/@href', 0, default=None)
-        title_tag = eval_xpath_getindex(result, './/div[contains(@class, "title")]', 0, default=None)
+        title_tag = eval_xpath_getindex(result, './/div[contains(@class, "url")]', 0, default=None)
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
