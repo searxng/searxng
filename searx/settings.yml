@@ -483,23 +483,25 @@ engines:
       website: https://crowdview.ai/
 
   - name: yep
-    engine: json_engine
+    engine: yep
     shortcut: yep
     categories: general
+    search_type: web
     disabled: true
-    paging: false
-    content_html_to_text: true
-    title_html_to_text: true
-    search_url: https://api.yep.com/fs/1/?type=web&q={query}&no_correct=false&limit=100
-    results_query: 1/results
-    title_query: title
-    url_query: url
-    content_query: snippet
-    about:
-      website: https://yep.com
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+
+  - name: yep images
+    engine: yep
+    shortcut: yepi
+    categories: images
+    search_type: images
+    disabled: true
+
+  - name: yep news
+    engine: yep
+    shortcut: yepn
+    categories: news
+    search_type: news
+    disabled: true
 
   - name: curlie
     engine: xpath
