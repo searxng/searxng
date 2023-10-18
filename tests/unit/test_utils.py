@@ -41,6 +41,7 @@ class TestUtils(SearxTestCase):
         self.assertIsInstance(utils.html_to_text(html_str), str)
         self.assertIsNotNone(utils.html_to_text(html_str))
         self.assertEqual(utils.html_to_text(html_str), "Test text")
+        self.assertEqual(utils.html_to_text(r"regexp: (?<![a-zA-Z]"), "regexp: (?<![a-zA-Z]")
 
     def test_extract_text(self):
         html_str = """

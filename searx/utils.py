@@ -15,6 +15,7 @@ from numbers import Number
 from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
+from html import escape
 from urllib.parse import urljoin, urlparse
 from markdown_it import MarkdownIt
 
@@ -88,7 +89,7 @@ class _HTMLTextExtractorException(Exception):
     """Internal exception raised when the HTML is invalid"""
 
 
-class _HTMLTextExtractor(HTMLParser):  # pylint: disable=W0223  # (see https://bugs.python.org/issue31844)
+class _HTMLTextExtractor(HTMLParser):
     """Internal class to extract text from HTML"""
 
     def __init__(self):
@@ -137,6 +138,11 @@ class _HTMLTextExtractor(HTMLParser):  # pylint: disable=W0223  # (see https://b
     def get_text(self):
         return ''.join(self.result).strip()
 
+    def error(self, message):
+        # error handle is needed in <py3.10
+        # https://github.com/python/cpython/pull/8562/files
+        raise AssertionError(message)
+
 
 def html_to_text(html_str: str) -> str:
     """Extract text from a HTML string
@@ -153,12 +159,18 @@ def html_to_text(html_str: str) -> str:
 
         >>> html_to_text('<style>.span { color: red; }</style><span>Example</span>')
         'Example'
+
+        >>> html_to_text(r'regexp: (?<![a-zA-Z]')
+        'regexp: (?<![a-zA-Z]'
     """
     html_str = html_str.replace('\n', ' ').replace('\r', ' ')
     html_str = ' '.join(html_str.split())
     s = _HTMLTextExtractor()
     try:
         s.feed(html_str)
+    except AssertionError:
+        s = _HTMLTextExtractor()
+        s.feed(escape(html_str, quote=True))
     except _HTMLTextExtractorException:
         logger.debug("HTMLTextExtractor: invalid HTML\n%s", html_str)
     return s.get_text()
