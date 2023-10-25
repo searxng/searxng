@@ -34,7 +34,7 @@ jalankan di server Anda sendiri!
 SearXNG mendukung [OpenSearch].  Untuk informasi lanjut tentang mengubah mesin
 pencari bawaan Anda, lihat dokumentasi peramban Anda:
 
-- [Firefox]
+- [Firefox] - Di balik tautan tersebut, Anda juga akan menemukan beberapa petunjuk berguna untuk Firefox.
 - [Microsoft Edge] - Dibalik tautan, Anda juga akan menemukan beberapa instruksi
   berguna untuk Chrome dan Safari.
 - Peramban berbasis [Chromium] hanya menambahkan situs web yang dikunjungi oleh
