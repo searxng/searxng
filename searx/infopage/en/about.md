@@ -35,7 +35,7 @@ search engine, see your browser's documentation:
 - [Firefox] - Behind the link, you will also find some useful instructions for Firefox.
 - [Microsoft Edge] - Behind the link, you will also find some useful instructions
   for Chrome and Safari.
-- [Chromium]-based browsers only add websites that the user navigates to without
+- [Chromium] - based browsers only add websites that the user navigates to without
   a path.
 
 When adding a search engine, there must be no duplicates with the same name.  If
