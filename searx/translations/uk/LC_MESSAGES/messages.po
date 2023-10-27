@@ -10,23 +10,25 @@
 # BalkanMadman <zurabid2016@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
 # maxch <maxletters@tutanota.com>, 2023.
+# SomeTr <SomeTr@users.noreply.translate.codeberg.org>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-10-03 06:53+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2023-10-25 21:57+0000\n"
+"Last-Translator: SomeTr <SomeTr@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
+"searxng/uk/>\n"
 "Language: uk\n"
-"Language-Team: Ukrainian "
-"<https://translate.codeberg.org/projects/searxng/searxng/uk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 !="
-" 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n "
-"% 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9)"
-" || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -107,7 +109,7 @@ msgstr "словники"
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr "текст пісні"
+msgstr "тексти пісень"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -117,7 +119,7 @@ msgstr "пакети"
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr "q&a"
+msgstr "запитання і відповіді"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
@@ -137,7 +139,7 @@ msgstr "веб"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr "Наукова публікація"
+msgstr "наукова публікація"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -189,7 +191,7 @@ msgstr "помилка парсингу"
 
 #: searx/webutils.py:36
 msgid "HTTP protocol error"
-msgstr "помилка HTTP протоколу"
+msgstr "помилка протоколу HTTP"
 
 #: searx/webutils.py:37
 msgid "network error"
@@ -197,7 +199,7 @@ msgstr "помилка мережі"
 
 #: searx/webutils.py:38
 msgid "SSL error: certificate validation has failed"
-msgstr "Помилка SSL: не вдалося перевірити сертифікат"
+msgstr "помилка SSL: не вдалося перевірити сертифікат"
 
 #: searx/webutils.py:40
 msgid "unexpected crash"
@@ -209,7 +211,7 @@ msgstr "помилка HTTP"
 
 #: searx/webutils.py:48
 msgid "HTTP connection error"
-msgstr "помилка HTTP з'єднання"
+msgstr "помилка з'єднання HTTP"
 
 #: searx/webutils.py:54
 msgid "proxy error"
@@ -229,7 +231,7 @@ msgstr "доступ заборонено"
 
 #: searx/webutils.py:58
 msgid "server API error"
-msgstr "Помилка API сервера"
+msgstr "помилка API сервера"
 
 #: searx/webutils.py:77
 msgid "Suspended"
@@ -269,7 +271,7 @@ msgstr "{title} (ЗАСТАРІЛО)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr "Цей запис був змінений"
+msgstr "Цей запис було замінено на"
 
 #: searx/engines/qwant.py:282
 msgid "Channel"
@@ -277,19 +279,19 @@ msgstr "Канал"
 
 #: searx/engines/radio_browser.py:104
 msgid "radio"
-msgstr ""
+msgstr "радіо"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "бітрейт"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "голоси"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "кліки"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -309,9 +311,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Не вдалось зчитати зображення за вказаним URL. Можливо, тому що формат "
-"даного зображення не підтримується. TinEye підтримує зображення у "
-"форматах JPEG, PNG, GIF, BMP, TIFF та WebP."
+"Не вдалося зчитати зображення за вказаним URL. Можливо, тому що формат цього "
+"зображення не підтримується. TinEye підтримує зображення у форматах JPEG, "
+"PNG, GIF, BMP, TIFF та WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -323,7 +325,7 @@ msgstr ""
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr "Зображення не можливо завантажити."
+msgstr "Зображення неможливо завантажити."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
@@ -406,14 +408,14 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Не вдалось завантажити список вихідних вузлів Tor з: "
-"https://check.torproject.org/exit-addresses"
+"Не вдалося завантажити список вихідних вузлів Tor з: https://check.torproject"
+".org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr "Ви використовуєте Tor і, здається, у вас наступна IP адреса: {ip_address}"
+msgstr "Ви використовуєте Tor і, здається, Ваша IP-адреса така: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -475,7 +477,7 @@ msgstr "Статистика пошукової системи"
 
 #: searx/templates/simple/base.html:72
 msgid "Public instances"
-msgstr "Публічні інстанції"
+msgstr "Публічні інстанси"
 
 #: searx/templates/simple/base.html:75
 msgid "Privacy policy"
@@ -483,7 +485,7 @@ msgstr "Політика приватності"
 
 #: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
-msgstr "Зв'язатися з власником інстанції"
+msgstr "Зв'язатися з власником інстансу"
 
 #: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
@@ -501,7 +503,7 @@ msgstr "Автор"
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
-msgstr "архівовано"
+msgstr "кеш"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"
@@ -523,7 +525,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "Якщо це публічна інстанція, укажіть URL-адресу у звіті про помилку"
+msgstr "Якщо це публічний інстанс, укажіть URL-адресу у звіті про помилку"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -586,7 +588,7 @@ msgstr "Інтерфейс користувача"
 
 #: searx/templates/simple/preferences.html:208
 msgid "Privacy"
-msgstr "Конфеденційність"
+msgstr "Конфіденційність"
 
 #: searx/templates/simple/preferences.html:221
 msgid "Engines"
@@ -752,7 +754,7 @@ msgstr "Помилка!"
 
 #: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
-msgstr "Пошукові системи неможуть отримати результати"
+msgstr "Пошукові системи не можуть отримати результати"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -784,12 +786,12 @@ msgstr "Автовизначення"
 #: searx/templates/simple/preferences/engines.html:21
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
-msgstr "БезпечнийПошук"
+msgstr "Безпечний пошук"
 
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/preferences/safesearch.html:7
 msgid "Strict"
-msgstr "Жорский"
+msgstr "Жорсткий"
 
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/preferences/safesearch.html:11
@@ -844,19 +846,19 @@ msgstr "Результатів не знайдено. Ви можете спро
 
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Refresh the page."
-msgstr ""
+msgstr "Оновити сторінку."
 
 #: searx/templates/simple/messages/no_results.html:7
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "Шукати за іншим запитом або вибрати іншу категорію (вгорі)."
 
 #: searx/templates/simple/messages/no_results.html:8
 msgid "Change the search engine used in the preferences:"
-msgstr ""
+msgstr "Змінити пошукову систему, вказану в налаштуваннях:"
 
 #: searx/templates/simple/messages/no_results.html:9
 msgid "Switch to another instance:"
-msgstr ""
+msgstr "Перемкнути інстанс SearXNG:"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -893,7 +895,7 @@ msgstr "Автозаповнення"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Find stuff as you type"
-msgstr "Шукати підчас набору"
+msgstr "Шукати під час набору"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1009,17 +1011,20 @@ msgstr "Назад"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr ""
+msgstr "Гарячі клавіші"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
-msgstr ""
+msgstr "Вигляд як Vim"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
+"Переміщуйтеся в результатах пошуку за допомогою гарячих клавіш (потрібен "
+"JavaScript). Натисніть клавішу «h» на головній сторінці або сторінці "
+"результатів, щоб прочитати довідку."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1073,7 +1078,7 @@ msgstr "Результати в нових вкладках"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
-msgstr "Відкривати посилання результатів в нових вкладках"
+msgstr "Відкривати посилання результатів у нових вкладках"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1081,13 +1086,15 @@ msgstr "Фільтр контенту"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:2
 msgid "Search on category select"
-msgstr "Пошук по обраній категорії"
+msgstr "Пошук при виборі категорії"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
+"Шукати негайно при виборі категорії. Вимкніть, якщо хочете вибрати кілька "
+"категорій"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1103,7 +1110,7 @@ msgstr "Стиль теми"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "Виберіть \"автоматично\" для використання налаштувань вашого браузера"
+msgstr "Виберіть «автоматично» для використання налаштувань вашого браузера"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -1123,7 +1130,7 @@ msgstr "Змінити мову сайту"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
-msgstr "репозиторії"
+msgstr "репозиторій"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "show media"
@@ -1224,7 +1231,7 @@ msgstr "Лічер"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
-msgstr "Розмір файла"
+msgstr "Розмір файлу"
 
 #: searx/templates/simple/result_templates/torrent.html:12
 msgid "Bytes"
@@ -1248,7 +1255,7 @@ msgstr "ТіБ"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
-msgstr "Кількість Файлів"
+msgstr "Кількість файлів"
 
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "show video"
@@ -1654,4 +1661,3 @@ msgstr "приховати відео"
 #~ "ми не знайшли жодних результатів. Будь"
 #~ " ласка, використайте інший запит або "
 #~ "виконайте пошук в декількох категоріях."
-
