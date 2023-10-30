@@ -1,0 +1,16 @@
+<fieldset>{{- '' -}}
+  <legend id="pref_query_in_title">{{ _("Query in the page's title") }}</legend>{{- '' -}}
+  <p class="value">{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="query_in_title" {{- ' ' -}}
+           aria-labelledby="pref_query_in_title" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('query_in_title') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           />{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _("When enabled, the result page's title contains your query. Your browser can record this title") -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}

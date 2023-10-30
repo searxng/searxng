@@ -1,0 +1,27 @@
+<div id="engines_msg">
+  {% if not results and not answers %}
+  <details class="sidebar-collapsable" open>
+  {% else %}
+  <details class="sidebar-collapsable">
+  {% endif %}
+    <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
+    <div class="dialog-error" role="alert">
+      {{ icon_big('warning') }}
+      <div>
+        <p>
+          <strong>{{ _('Error!') }}</strong>
+          {{ _('Engines cannot retrieve results') }}:
+        </p>
+        {%- for engine_name, error_type in unresponsive_engines -%}
+          <p>{{- engine_name }} (
+            <a href="{{ url_for('stats', engine=engine_name|e) }}"
+               title="{{ _('View error logs and submit a bug report') }}">
+               {{- error_type -}}
+            </a>
+            ){{- '' -}}
+          </p>
+        {%- endfor -%}
+      </div>
+    </div>
+  </details>
+</div>

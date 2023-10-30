@@ -1,0 +1,52 @@
+{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'simple/icons.html' import icon_small %}
+
+{{ result_header(result, favicons, image_proxify) -}}
+{{- result_sub_header(result) -}}
+
+{%- if result.content %}<p class="content">{{ result.content|safe }}</p>{% endif -%}
+
+<table>
+    {%- if result.address -%}
+    <tr>
+        <th scope="row">{{ result.address_label or _('address') }}</th>
+        <td itemscope itemtype="http://schema.org/PostalAddress">
+            {%- if result.address.name -%}
+                <strong itemprop="name" class="hidden">{{ result.address.name }}</strong>
+            {%- endif -%}
+            {% if result.address.road -%}
+                <span itemprop="streetAddress">
+                    {%- if result.address.house_number -%}{{- result.address.house_number -}}, {% endif %}
+                    {{- result.address.road -}}
+                </span><br/>
+            {%- endif %}
+            {%- if result.address.locality -%}
+                <span itemprop="addressLocality">{{- result.address.locality -}}</span>
+                {%- if result.address.postcode -%}, <span itemprop="postalCode">{{- result.address.postcode -}}</span>{% endif %}
+                <br/>
+            {%- endif -%}
+            {%- if result.address.country -%}
+                <span itemprop="addressCountry">{{- result.address.country -}}</span>
+            {%- endif -%}
+        </td>
+    </tr>
+    {%- endif %}
+    {%- for info in result.data -%}
+    <tr><th scope="row">{{ info.label }}</th><td>{{ info.value|safe }}</td></tr>
+    {%- endfor -%}
+    {%- for link in result.links -%}
+    <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td></tr>
+    {%- endfor -%}
+</table>
+
+{%- if (result.latitude and result.longitude) or result.boundingbox -%}
+    <small> <a class="btn-collapse collapsed searxng_init_map hide_if_nojs" data-target="#result-map-{{ index }}" data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %}>{{ icon_small( 'globe-outline') }} {{ _('show map') }}</a></small>
+{%- endif -%}
+
+{{- result_sub_footer(result, proxify) -}}
+
+{% if (result.latitude and result.longitude) or result.boundingbox -%}
+    <div id="result-map-{{ index }}" class="invisible"><div id="osm-map-{{ index }}" class="osm-map-box"></div></div>
+{%- endif %}
+
+{{- result_footer(result) }}

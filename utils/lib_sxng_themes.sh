@@ -12,6 +12,9 @@ themes.:
   simple.:
     build   : build simple theme
     test    : test simple theme
+  kvanDark.:
+    build   : build kvanDark theme
+    test    : test kvanDark theme
 EOF
 }
 
@@ -20,6 +23,7 @@ themes.all() {
         pygments.less
         node.env
         themes.simple
+		themes.kvanDark
     )
     dump_return $?
 }
@@ -34,7 +38,7 @@ themes.live() {
             die_caller 42 "missing theme argument"
             ;;
         *)
-            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple]'"
+            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple, kvanDark]'"
             ;;
     esac
     build_msg GRUNT "theme: $1 (live build)"
@@ -61,5 +65,21 @@ themes.simple.test() {
     nodejs.ensure
     npm --prefix searx/static/themes/simple install
     npm --prefix searx/static/themes/simple run test
+    dump_return $?
+}
+
+themes.kvanDark() {
+    (   set -e
+        build_msg GRUNT "theme: kvanDark"
+        npm --prefix searx/static/themes/kvanDark run build
+    )
+    dump_return $?
+}
+
+themes.kvanDark.test() {
+    build_msg TEST "theme: cystom"
+    nodejs.ensure
+    npm --prefix searx/static/themes/kvanDark install
+    npm --prefix searx/static/themes/kvanDark run test
     dump_return $?
 }

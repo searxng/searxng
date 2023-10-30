@@ -1,0 +1,26 @@
+<div id="apis" role="complementary" aria-labelledby="apis-title">
+  <details class="sidebar-collapsable">
+    <summary class="title" id="apis-title">{{ _('Download results') }}</summary>
+    <div class="wrapper">
+      {%- for output_type in search_formats -%}
+        <div class="left">
+          <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+            <input type="hidden" name="q" value="{{ q|e }}">
+            {%- for category in selected_categories -%}
+              <input type="hidden" name="category_{{ category }}" value="1">
+            {%- endfor -%}
+            <input type="hidden" name="pageno" value="{{ pageno }}">
+            <input type="hidden" name="language" value="{{ current_language }}">
+            <input type="hidden" name="time_range" value="{{ time_range }}">
+            <input type="hidden" name="safesearch" value="{{ safesearch }}">
+            <input type="hidden" name="format" value="{{ output_type }}">
+            {%- if timeout_limit -%}
+              <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
+            {%- endif -%}
+            <input type="submit" role="link" value="{{ output_type }}">
+          </form>
+        </div>
+      {%- endfor -%}
+    </div>
+  </details>
+</div>

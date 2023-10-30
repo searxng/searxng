@@ -1,0 +1,23 @@
+<div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
+  <details class="sidebar-collapsable">
+    <summary class="title" id="suggestions-title">{{ _('Suggestions') }}</summary>
+    <div class="wrapper">
+      {%- for suggestion in suggestions -%}
+        <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+          <input type="hidden" name="q" value="{{ suggestion.url }}">
+          {%- for category in selected_categories -%}
+            <input type="hidden" name="category_{{ category }}" value="1">
+          {%- endfor -%}
+          <input type="hidden" name="language" value="{{ current_language }}">
+          <input type="hidden" name="time_range" value="{{ time_range }}">
+          <input type="hidden" name="safesearch" value="{{ safesearch }}">
+          <input type="hidden" name="theme" value="{{ theme }}">
+          {%- if timeout_limit -%}
+            <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
+          {%- endif -%}
+          <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
+        </form>
+      {%- endfor -%}
+    </div>
+  </details>
+</div>

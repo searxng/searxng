@@ -1,0 +1,155 @@
+.ltr-left(@offset) {
+  right: @offset;
+}
+
+.ltr-right(@offset) {
+  left: @offset;
+}
+
+.ltr-margin-right(@offset) {
+  margin-left: @offset;
+}
+
+.ltr-margin-left(@offset) {
+  margin-right: @offset;
+}
+
+.ltr-border-right(@offset) {
+  border-left: @offset;
+}
+
+.ltr-border-left(@offset) {
+  border-right: @offset;
+}
+
+.ltr-padding-right(@offset) {
+  padding-left: @offset;
+}
+
+.ltr-padding-left(@offset) {
+  padding-right: @offset;
+}
+
+.ltr-float-left() {
+  float: right;
+}
+
+.ltr-float-right() {
+  float: left;
+}
+
+.ltr-text-align-right() {
+  text-align: left;
+}
+
+.ltr-rounded-left-corners(@radius) {
+  border-radius: 0 @radius @radius 0;
+}
+
+.ltr-rounded-top-left-corners(@radius) {
+  border-radius: 0 @radius 0 0;
+}
+
+.ltr-rounded-bottom-left-corners(@radius) {
+  border-radius: 0 0 @radius 0;
+}
+
+.ltr-rounded-right-corners(@radius) {
+  border-radius: @radius 0 0 @radius;
+}
+
+.ltr-rounded-top-right-corners(@radius) {
+  border-radius: @radius 0 0 0;
+}
+
+.ltr-rounded-bottom-right-corners(@radius) {
+  border-radius: 0 0 0 @radius;
+}
+
+.ltr-text-align-left() {
+  text-align: right;
+}
+
+.ltr-border-left-width(@offset) {
+  border-right-width: @offset;
+}
+
+.ltr-border-right-width(@offset) {
+  border-left-width: @offset;
+}
+
+.ltr-transform() {
+  transform: scale(-1, 1);
+}
+
+@import "style.less";
+
+#q,
+#sidebar .infobox dt bdi {
+  direction: rtl;
+}
+
+// URL are displayed LTR but align on the right
+#urls {
+  direction: initial;
+  text-align: right;
+
+  .result .url_wrapper {
+    justify-content: end;
+  }
+}
+
+// Image flexbox
+#main_results div#results.only_template_images #urls {
+  direction: rtl;
+}
+
+// Image detail
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p {
+  direction: rtl;
+
+  &.result-url {
+    // Display URL using the LTR direction
+    direction: ltr;
+
+    span {
+      // And put the label on the right
+      direction: rtl;
+      float: right;
+    }
+  }
+}
+
+// select HTML element
+@supports ((background-position-x: 100%) and ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none))) {
+  select {
+    border-width: 0 0 0 2rem;
+    background-position-x: -2rem;
+  }
+}
+
+// vim hotkey helps is not translated
+#vim-hotkeys-help table {
+  direction: ltr;
+  text-align: left;
+}
+
+// Logo on the right
+#main_preferences h1,
+#main_stats h1 {
+  background-position-x: 100%;
+}
+
+// patch of stats.less
+.bar-chart-serie1,
+.bar-chart-serie2 {
+  float: right;
+}
+
+.engine-stats .engine-name,
+.engine-stats .engine-score,
+.engine-stats .result-count,
+.engine-stats .response-time,
+.engine-stats .engine-reliability {
+  text-align: right;
+}

@@ -1,0 +1,18 @@
+<div id="search_url" role="complementary" aria-labelledby="search_url-title">
+  <details class="sidebar-collapsable">
+    <summary class="title" id="search_url-title">{{ _('Search URL') }}</summary>
+    <div class="selectable_url">
+      <pre>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}
+        {%- if pageno > 1 -%}
+          &amp;pageno={{ pageno }}
+        {%- endif -%}
+        {%- if selected_categories -%}
+          &amp;categories={{ selected_categories|join(",") | replace(' ','+') }}
+        {%- endif -%}
+        {%- if timeout_limit -%}
+          &amp;timeout_limit={{ timeout_limit|urlencode }}
+        {%- endif -%}
+      </pre>
+    </div>
+  </details>
+</div>
