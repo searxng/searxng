@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html
-	class="no-js theme-{{ preferences.get_value('kvanDark_style') or 'dark' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}"
+	class="no-js theme-{{ preferences.get_value('simple_style') or 'dark' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}"
 	lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl" {% endif %}>
 
 <head>
@@ -76,8 +76,8 @@
 	</main>
 	<footer>
 		<p>
-			{{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} —
-			{{ _('a privacy-respecting, open metasearch engine') }}<br />
+			{{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }}
+			<br />
 			<a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
 			| <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
 			{% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
