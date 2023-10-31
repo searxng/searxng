@@ -2,7 +2,7 @@ general:
   # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
   # displayed name
-  instance_name: "SearXNG"
+  instance_name: "KSearch"
   # For example: https://example.com/privacy
   privacypolicy_url: false
   # use true to use your own donation page written in searx/info/en/donate.md
@@ -26,7 +26,7 @@ search:
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
   # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
-  autocomplete: ""
+  autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or
@@ -111,7 +111,7 @@ ui:
   # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
   infinite_scroll: false
   # ui theme
-  default_theme: simple
+  default_theme: kvanDark
   # center the results ?
   center_alignment: false
   # URL prefix of the internet archive, don't forget trailing slash (if needed).
@@ -123,7 +123,7 @@ ui:
   # results_on_new_tab: false
   theme_args:
     # style of simple theme: auto, light, dark
-    simple_style: auto
+    simple_style: dark
   # Perform search immediately if a category selected.
   # Disable to select multiple categories at once and start the search manually.
   search_on_category_select: true
@@ -285,6 +285,7 @@ checker:
 
 categories_as_tabs:
   general:
+  code:
   images:
   videos:
   news:
@@ -341,7 +342,7 @@ engines:
     url_xpath: ./td/h5/a[last()]/@href
     title_xpath: ./td/h5
     content_xpath: ./td[h5]/text()
-    categories: it
+    categories: [it, code]
     timeout: 6.0
     shortcut: conda
     disabled: true
@@ -407,7 +408,7 @@ engines:
     url_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]/@href
     title_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]
     content_xpath: //article[@class="repo-summary"]/p
-    categories: [it, repos]
+    categories: [it, repos, code]
     timeout: 4.0
     disabled: true
     shortcut: bb
@@ -554,7 +555,8 @@ engines:
   - name: docker hub
     engine: docker_hub
     shortcut: dh
-    categories: [it, packages]
+    categories: [it, packages, code]
+    disabled: true
 
   - name: erowid
     engine: xpath
@@ -736,7 +738,7 @@ engines:
     title_query: name_with_namespace
     content_query: description
     page_size: 20
-    categories: [it, repos]
+    categories: [it, repos, code]
     shortcut: gl
     timeout: 10.0
     disabled: true
@@ -762,7 +764,7 @@ engines:
     url_query: html_url
     title_query: name
     content_query: description
-    categories: [it, repos]
+    categories: [it, repos, code]
     shortcut: cb
     disabled: true
     about:
@@ -855,7 +857,7 @@ engines:
     url_xpath: .//a[@class="tm-title__link"]/@href
     title_xpath: .//a[@class="tm-title__link"]
     content_xpath: .//div[contains(@class, "article-formatted-body")]
-    categories: it
+    categories: [it, code]
     timeout: 4.0
     disabled: true
     shortcut: habr
@@ -881,7 +883,7 @@ engines:
     url_xpath: './/div[@class="ans"]//a/@href'
     content_xpath: './/div[@class="from"]'
     page_size: 20
-    categories: [it, packages]
+    categories: [it, packages, code]
     shortcut: ho
     about:
       website: https://hoogle.haskell.org/
@@ -1007,7 +1009,7 @@ engines:
     url_xpath: .//a[@class="u-url"]/@href
     title_xpath: .//a[@class="u-url"]
     content_xpath: .//a[@class="domain"]
-    categories: it
+    categories: [it, code]
     shortcut: lo
     timeout: 5.0
     disabled: true
@@ -1104,7 +1106,7 @@ engines:
     title_query: package/name
     content_query: package/description
     page_size: 25
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     timeout: 5.0
     shortcut: npm
@@ -1128,7 +1130,7 @@ engines:
     url_query: url
     title_query: name
     content_query: description
-    categories: it
+    categories: [it, code]
     shortcut: man
     about:
       website: https://www.mankier.com/
@@ -1218,7 +1220,7 @@ engines:
     url_query: url
     title_query: name
     content_query: description
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     timeout: 5.0
     shortcut: pack
@@ -1294,7 +1296,7 @@ engines:
     url_xpath: ./div/h3/a/@href
     title_xpath: ./div/h3/a
     content_xpath: ./div/div/div[contains(@class,"packages-description")]/span
-    categories: [packages, it]
+    categories: [packages, it, code]
     timeout: 3.0
     disabled: true
     first_page_num: 1
@@ -1321,7 +1323,7 @@ engines:
     content_xpath: ./p
     suggestion_xpath: /html/body/main/div/div/div/form/div/div[@class="callout-block"]/p/span/a[@class="link"]
     first_page_num: 1
-    categories: [it, packages]
+    categories: [it, packages, code]
     about:
       website: https://pypi.org
       wikidata_id: Q2984686
@@ -1419,13 +1421,13 @@ engines:
     engine: stackexchange
     shortcut: st
     api_site: 'stackoverflow'
-    categories: [it, q&a]
+    categories: [it, q&a, code]
 
   - name: askubuntu
     engine: stackexchange
     shortcut: ubuntu
     api_site: 'askubuntu'
-    categories: [it, q&a]
+    categories: [it, q&a, code]
 
   - name: internetarchivescholar
     engine: internet_archive_scholar
@@ -1436,7 +1438,7 @@ engines:
     engine: stackexchange
     shortcut: su
     api_site: 'superuser'
-    categories: [it, q&a]
+    categories: [it, q&a, code]
 
   - name: searchcode code
     engine: searchcode_code
@@ -1873,7 +1875,7 @@ engines:
     content_xpath: ./span/p
     suggestion_xpath: /html/body/main/div/div[@class="search__suggestions"]/p/a
     first_page_num: 1
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     about:
       website: https://rubygems.org/
@@ -2079,7 +2081,7 @@ engines:
     url_xpath: ./@href
     title_xpath: ./div[@class="h"]/h4
     content_xpath: ./div[@class="h"]/p
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     about:
       website: https://lib.rs
@@ -2098,7 +2100,7 @@ engines:
     title_xpath: ./h4/a[2]
     content_xpath: ./p
     first_page_num: 1
-    categories: [it, repos]
+    categories: [it, repos, code]
     disabled: true
     about:
       website: https://sr.ht
@@ -2140,7 +2142,7 @@ engines:
     url_xpath: ./div[@class="SearchSnippet-headerContainer"]/h2/a/@href
     title_xpath: ./div[@class="SearchSnippet-headerContainer"]/h2/a
     content_xpath: ./p[@class="SearchSnippet-synopsis"]
-    categories: [packages, it]
+    categories: [packages, it, code]
     timeout: 3.0
     disabled: true
     about:

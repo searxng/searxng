@@ -191,6 +191,7 @@ module.exports = function (grunt) {
           'people-outline': 'node_modules/ionicons/dist/svg/people-outline.svg',
           'heart-outline': 'node_modules/ionicons/dist/svg/heart-outline.svg',
           'information-circle-outline': 'src/svg/information-circle-outline.svg',
+          'code-outline': 'src/svg/code.svg',
         },
         dest: '../../../templates/kvanDark/icons.html',
       },
