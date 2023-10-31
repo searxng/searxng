@@ -4,31 +4,31 @@ see the CSS rules for #results in style.less ( grid-template-columns and gap).
 
 In this file, the --center-page-width values comes from the Oscar theme (Bootstrap 3).
 
-All rules starts with ".center-aligment-yes #main_results" to be enabled only
+All rules starts with ".center-aligment-yes #main_kvanDark\/results" to be enabled only
 on the /search URL and when the "center alignment" preference is enabled.
 */
 
 @media screen and (min-width: @phone) {
-  .center-aligment-yes #main_results {
+  .center-aligment-yes #main_kvanDark\/results {
     --center-page-width: 48rem;
   }
 }
 
 @media screen and (min-width: 62rem) {
-  .center-aligment-yes #main_results {
+  .center-aligment-yes #main_kvanDark\/results {
     --center-page-width: 60rem;
   }
 }
 
 @media screen and (min-width: @tablet) {
-  .center-aligment-yes #main_results {
+  .center-aligment-yes #main_kvanDark\/results {
     --center-page-width: 73rem;
   }
 }
 
 @media screen and (min-width: @phone) and (max-width: @tablet) {
   // any change must be reset in @media screen and (min-width: @tablet) { ... }
-  .center-aligment-yes #main_results {
+  .center-aligment-yes #main_kvanDark\/results {
     #results {
       grid-template-columns: 60% calc(40% - @results-gap);
       margin-left: 0;
@@ -50,7 +50,7 @@ on the /search URL and when the "center alignment" preference is enabled.
 }
 
 @media screen and (min-width: @tablet) {
-  .center-aligment-yes #main_results {
+  .center-aligment-yes #main_kvanDark\/results {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,7 +86,7 @@ on the /search URL and when the "center alignment" preference is enabled.
       &.image-detail-open {
         // * grid-template-columns and .ltr-margin-left are set in style.less
         // * With .image-detail-open.only_template_images, the width is set in detail.less
-        // * #results is going to be centered because of the #main_results rules,
+        // * #results is going to be centered because of the #main_kvanDark\/results rules,
         //   align-self aligns the results on the left or right according to the language.
         align-self: flex-start;
       }

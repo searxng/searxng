@@ -1,37 +1,39 @@
-{% from 'simple/icons.html' import icon_big %}
+{% from 'kvanDark/icons.html' import icon_big %}
 {%- set category_icons = {
-    'general': 'search-outline',
-    'images': 'image-outline',
-    'videos': 'play-outline',
-    'news': 'newspaper-outline',
-    'map': 'location-outline',
-    'music': 'musical-notes-outline',
-    'it': 'layers-outline',
-    'science': 'school-outline',
-    'files': 'file-tray-full-outline',
-    'social media': 'people-outline',
-}  -%}
+'general': 'search-outline',
+'images': 'image-outline',
+'videos': 'play-outline',
+'news': 'newspaper-outline',
+'map': 'location-outline',
+'music': 'musical-notes-outline',
+'it': 'layers-outline',
+'science': 'school-outline',
+'files': 'file-tray-full-outline',
+'social media': 'people-outline',
+} -%}
 <div id="categories" class="search_categories">{{- '' -}}
-    <div id="categories_container">
-        {%- if not search_on_category_select or not display_tooltip -%}
-            {%- for category in categories_as_tabs -%}
-                <div class="category category_checkbox">{{- '' -}}
-                    <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}/>
-                    <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
-                        {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe-outline') -}}
-                        <div class="category_name">{{- _(category) -}}</div>
-                    </label>
-                </div>
-            {%- endfor -%}
-            {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
-        {%- else -%}
-            {%- for category in categories_as_tabs -%}{{- '\n' -}}
-                <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
-                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
-                    <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
-                </button>{{- '' -}}
-            {%- endfor -%}
-            {{- '\n' -}}
-        {%- endif -%}
-    </div>{{- '' -}}
+	<div id="categories_container">
+		{%- if not search_on_category_select or not display_tooltip -%}
+		{%- for category in categories_as_tabs -%}
+		<div class="category category_checkbox">{{- '' -}}
+			<input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}" {% if
+				category in selected_categories %} checked="checked" {% endif %} />
+			<label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
+				{{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+				<div class="category_name">{{- _(category) -}}</div>
+			</label>
+		</div>
+		{%- endfor -%}
+		{%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
+		{%- else -%}
+		{%- for category in categories_as_tabs -%}{{- '\n' -}}
+		<button type="submit" name="category_{{ category }}"
+			class="category category_button {% if category in selected_categories %}selected{% endif %}">
+			{{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+			<div class="category_name">{{- _(category) -}}</div>{{- '' -}}
+		</button>{{- '' -}}
+		{%- endfor -%}
+		{{- '\n' -}}
+		{%- endif -%}
+	</div>{{- '' -}}
 </div>

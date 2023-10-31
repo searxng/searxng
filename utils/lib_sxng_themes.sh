@@ -15,6 +15,7 @@ themes.:
   kvanDark.:
     build   : build kvanDark theme
     test    : test kvanDark theme
+	stylelint : stylelint
 EOF
 }
 
@@ -32,6 +33,9 @@ themes.live() {
     local LIVE_THEME="${LIVE_THEME:-${1}}"
     case "${LIVE_THEME}" in
         simple)
+            theme="searx/static/themes/${LIVE_THEME}"
+            ;;
+		kvanDark)
             theme="searx/static/themes/${LIVE_THEME}"
             ;;
         '')
@@ -77,9 +81,14 @@ themes.kvanDark() {
 }
 
 themes.kvanDark.test() {
-    build_msg TEST "theme: cystom"
+    build_msg TEST "theme: kvanDark"
     nodejs.ensure
     npm --prefix searx/static/themes/kvanDark install
     npm --prefix searx/static/themes/kvanDark run test
+    dump_return $?
+}
+
+themes.kvanDark.stylelint() {
+    npm --prefix searx/static/themes/kvanDark run stylelint
     dump_return $?
 }

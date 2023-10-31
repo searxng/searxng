@@ -14,12 +14,12 @@
 	</div>{{- '' -}}
 </fieldset>{{- '' -}}
 
-<fieldset>{{- '' -}}
-	<legend id="pref_simple_style">{{- _('Theme style') -}}</legend>{{- '' -}}
+<!-- <fieldset>{{- '' -}}
+	<legend id="pref_kvanDark_style">{{- _('Theme style') -}}</legend>{{- '' -}}
 	<div class="value">{{- '' -}}
-		<select name="simple_style" aria-labelledby="pref_simple_style">
+		<select name="kvanDark_style" aria-labelledby="pref_kvanDark_style">
 			{%- for name in ['auto', 'light', 'dark'] -%}
-			<option value="{{ name }}" {%- if name==preferences.get_value('simple_style') %} selected="selected" {%-
+			<option value="{{ name }}" {%- if name==preferences.get_value('kvanDark_style') %} selected="selected" {%-
 				endif -%}>
 				{{- _(name) -}}
 			</option>
@@ -29,6 +29,6 @@
 	<div class="description">
 		{{- _('Choose auto to follow your browser settings') -}}
 	</div>{{- '' -}}
-</fieldset>{{- '' -}}
+</fieldset>{{- '' -}} -->
 
-{%- include 'simple/preferences/center_alignment.html' -%}
+{%- include 'kvanDark/preferences/center_alignment.html' -%}

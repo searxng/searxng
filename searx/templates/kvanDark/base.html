@@ -1,86 +1,100 @@
 <!DOCTYPE html>
-<html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
-  <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
-  <meta name="generator" content="searxng/{{ searx_version }}">
-  <meta name="referrer" content="no-referrer">
-  <meta name="robots" content="noarchive">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="HandheldFriendly" content="True">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-  <title>{% block title %}{% endblock %}{{ instance_name }}</title>
-  {% block meta %}{% endblock %}
-  {% if rtl %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen" />
-  {% else %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
-  {% endif %}
-  {% if get_setting('server.limiter') %}
-  <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css" />
-  {% endif %}
-  {% block styles %}{% endblock %}
-  <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>
-  <!--<![endif]-->
-  {% block head %}
-  <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}"/>
-  {% endblock %}
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
-</head>
-<body class="{{ endpoint }}_endpoint" >
-  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
-    {% if errors %}
-        <div class="dialog-error" role="alert">
-            <a href="#" class="close" aria-label="close" title="close">×</a>
-            <ul>
-            {% for message in errors %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+<html
+	class="no-js theme-{{ preferences.get_value('kvanDark_style') or 'dark' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}"
+	lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl" {% endif %}>
 
-    <nav id="links_on_top">
-      {%- from 'simple/icons.html' import icon_big -%}
-      {%- block linkto_about -%}
-        <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
-      {%- endblock -%}
-      {%- block linkto_donate -%}
-        {%- if donation_url -%}
-        <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate') }}</span></a>
-        {%- endif -%}
-      {%- endblock -%}
-      {%- block linkto_preferences -%}
-        <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline') }}<span>{{ _('Preferences') }}</span></a>
-      {%- endblock -%}
-    </nav>
-    {% block header %}
-    {% endblock %}
-    {% block content %}
-    {% endblock %}
-  </main>
-  <footer>
-    <p>
-    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br/>
-        <a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
-        | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
-        {% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
-        {% if get_setting('brand.public_instances') %}
-        | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
-        {% endif %}
-        {% if get_setting('general.privacypolicy_url') %}
-        | <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
-        {% endif %}
-        {% if get_setting('general.contact_url') %}
-        | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
-        {% endif %}
-    </p>
-  </footer>
-  <!--[if gte IE 9]>-->
-  <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
-  <!--<![endif]-->
+<head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
+	<meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+	<meta name="generator" content="searxng/{{ searx_version }}">
+	<meta name="referrer" content="no-referrer">
+	<meta name="robots" content="noarchive">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="HandheldFriendly" content="True">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<title>{% block title %}{% endblock %}{{ instance_name }}</title>
+	{% block meta %}{% endblock %}
+	{% if rtl %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css"
+		media="screen" />
+	{% else %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css"
+		media="screen" />
+	{% endif %}
+	{% if get_setting('server.limiter') %}
+	<link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css" />
+	{% endif %}
+	{% block styles %}{% endblock %}
+	<!--[if gte IE 9]>-->
+	<script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
+		client_settings="{{ client_settings }}"></script>
+	<!--<![endif]-->
+	{% block head %}
+	<link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search"
+		href="{{ opensearch_url }}" />
+	{% endblock %}
+	<link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
+	<link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+</head>
+
+<body class="{{ endpoint }}_endpoint">
+	<main id="main_{{  self._TemplateReference__context.name|replace(" kvanDark/", "" )|replace(".html", "" ) }}"
+		class="{{body_class}}">
+		{% if errors %}
+		<div class="dialog-error" role="alert">
+			<a href="#" class="close" aria-label="close" title="close">×</a>
+			<ul>
+				{% for message in errors %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+
+		<nav id="links_on_top">
+			{%- from 'kvanDark/icons.html' import icon_big -%}
+			{%- block linkto_about -%}
+			<a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{
+				icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
+			{%- endblock -%}
+			{%- block linkto_donate -%}
+			{%- if donation_url -%}
+			<a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate')
+					}}</span></a>
+			{%- endif -%}
+			{%- endblock -%}
+			{%- block linkto_preferences -%}
+			<a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline')
+				}}<span>{{ _('Preferences') }}</span></a>
+			{%- endblock -%}
+		</nav>
+		{% block header %}
+		{% endblock %}
+		{% block content %}
+		{% endblock %}
+	</main>
+	<footer>
+		<p>
+			{{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} —
+			{{ _('a privacy-respecting, open metasearch engine') }}<br />
+			<a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
+			| <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
+			{% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
+			{% if get_setting('brand.public_instances') %}
+			| <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
+			{% endif %}
+			{% if get_setting('general.privacypolicy_url') %}
+			| <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
+			{% endif %}
+			{% if get_setting('general.contact_url') %}
+			| <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
+			{% endif %}
+		</p>
+	</footer>
+	<!--[if gte IE 9]>-->
+	<script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
+	<!--<![endif]-->
 </body>
+
 </html>

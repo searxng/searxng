@@ -1,52 +1,52 @@
-{%- from 'simple/icons.html' import icon_small, icon_big -%}
-{%- extends "simple/page_with_header.html" -%}
+{%- from 'kvanDark/icons.html' import icon_small, icon_big -%}
+{%- extends "kvanDark/page_with_header.html" -%}
 
 {%- macro tabs_open() -%}
 <div class="tabs" role="tablist">
-{%- endmacro -%}
+	{%- endmacro -%}
 
-{%- macro tab_header(name, id, label, checked) -%}
-<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %} />
-<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
-<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
-{%- endmacro -%}
+	{%- macro tab_header(name, id, label, checked) -%}
+	<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked" {% endif
+		%} />
+	<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label
+		}}</label>
+	<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
+		{%- endmacro -%}
 
-{%- macro tab_footer() -%}
-</section>
-{%- endmacro -%}
+		{%- macro tab_footer() -%}
+	</section>
+	{%- endmacro -%}
 
-{%- macro tabs_close() -%}
+	{%- macro tabs_close() -%}
 </div>
 {%- endmacro -%}
 
 {%- macro checkbox(name, checked, disabled) -%}
-  {%- if checked == '?' -%}
-    {{- icon_small('warning') -}}
-  {%- else -%}
-    <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}/>
-  {%- endif -%}
+{%- if checked == '?' -%}
+{{- icon_small('warning') -}}
+{%- else -%}
+<input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif
+	-%}{%- if disabled %} disabled {%- endif -%} />
+{%- endif -%}
 {%- endmacro -%}
 
 {%- macro checkbox_onoff_reversed(name, checked) -%}
-  <input type="checkbox" {{- ' ' -}}
-         name="{{ name }}" {{- ' ' -}}
-         id="{{ name }}" {{- ' ' -}}
-         aria-labelledby="pref_{{ name }}"{{- ' ' -}}
-         class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
-         {%- if checked -%} checked{%- endif -%}/>
+<input type="checkbox" {{- ' ' -}} name="{{ name }}" {{- ' ' -}} id="{{ name }}" {{- ' ' -}}
+	aria-labelledby="pref_{{ name }}" {{- ' ' -}} class="checkbox-onoff reversed-checkbox" {{- ' ' -}} {%- if checked
+	-%} checked{%- endif -%} />
 {%- endmacro -%}
 
 {%- macro plugin_preferences(section) -%}
 {%- for plugin in plugins -%}
 {%- if plugin.preference_section == section -%}
 <fieldset>{{- '' -}}
-    <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
-    <div class="value">
-      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
-    </div>{{- '' -}}
-    <div class="description">
-      {{- _(plugin.description) -}}
-    </div>{{- '' -}}
+	<legend>{{ _(plugin.name) }}</legend>{{- '' -}}
+	<div class="value">
+		{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+	</div>{{- '' -}}
+	<div class="description">
+		{{- _(plugin.description) -}}
+	</div>{{- '' -}}
 </fieldset>
 {%- endif -%}
 {%- endfor -%}
@@ -54,192 +54,187 @@
 
 {%- macro engine_about(search_engine) -%}
 {%- if search_engine.about is defined -%}
-  {%- set about = search_engine.about -%}
-  <div class="engine-tooltip" role="tooltip">{{- '' -}}
-    <p class="engine-description"></p>{{- '' -}}
-    <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
-    {%- if about.wikidata_id -%}
-      <p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
-    {%- endif -%}
-    {%- if search_engine.enable_http -%}
-      <p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
-    {% endif -%}
-    {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
-      <a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
-         title="{{ _('View error logs and submit a bug report') }}">
-      {{- _('View error logs and submit a bug report') -}}
-      </a>
-    {%- endif -%}
-    <p>{{- '' -}}
-      <span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
-      {%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
-        <span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
-      {%- endfor -%}
-    </p>{{- '' -}}
-    <p>{{- '' -}}
-      <span class="right">{{ _("!bang for its categories") }}</span>
-      {%- for bang in search_engine.categories -%}
-        <span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
-      {%- endfor -%}
-    </p>{{- '' -}}
-  </div>
+{%- set about = search_engine.about -%}
+<div class="engine-tooltip" role="tooltip">{{- '' -}}
+	<p class="engine-description"></p>{{- '' -}}
+	<p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
+	{%- if about.wikidata_id -%}
+	<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}"
+			rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
+	{%- endif -%}
+	{%- if search_engine.enable_http -%}
+	<p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
+	{% endif -%}
+	{%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
+	<a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
+		title="{{ _('View error logs and submit a bug report') }}">
+		{{- _('View error logs and submit a bug report') -}}
+	</a>
+	{%- endif -%}
+	<p>{{- '' -}}
+		<span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
+		{%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
+		<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
+		{%- endfor -%}
+	</p>{{- '' -}}
+	<p>{{- '' -}}
+		<span class="right">{{ _("!bang for its categories") }}</span>
+		{%- for bang in search_engine.categories -%}
+		<span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
+		{%- endfor -%}
+	</p>{{- '' -}}
+</div>
 {%- endif -%}
 {%- endmacro -%}
 
 {%- macro engine_time(engine_name) -%}
-  <td class="{{ label }}">{{- '' -}}
-    {%- if stats[engine_name].time != None -%}
-    <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
-    <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
-        {%- if max_rate95 is not none and max_rate95 > 0 -%}
-        <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- '' -}}
-        <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- '' -}}
-        <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- '' -}}
-        <span class="stacked-bar-chart-rate100"></span>
-        {%- endif -%}
-    </span>{{- '' -}}
-    <div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
-        <p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
-        <p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
-        <p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
-    </div>
-  {%- endif -%}
-  </td>
+<td class="{{ label }}">{{- '' -}}
+	{%- if stats[engine_name].time != None -%}
+	<span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
+	<span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
+		{%- if max_rate95 is not none and max_rate95 > 0 -%}
+		<div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- ''
+		-}}
+		<div
+			class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}">
+		</div>{{- '' -}}
+		<div
+			class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}">
+		</div>{{- '' -}}
+		<span class="stacked-bar-chart-rate100"></span>
+		{%- endif -%}
+	</span>{{- '' -}}
+	<div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
+		<p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
+		<p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
+		<p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
+	</div>
+	{%- endif -%}
+</td>
 {%- endmacro -%}
 
 {%- macro engine_reliability(engine_name) -%}
-  {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
-  {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
-  {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
-  {%- if r != None -%}
-    {%- if r <= 50 -%}
-      {% set label = 'danger' -%}
-    {%- elif r < 80 -%}
-      {%- set label = 'warning' -%}
-    {%- elif r < 90 %}
-      {%- set label = '' -%}
-    {%- else -%}
-      {%- set label = 'success' -%}
-    {%- endif -%}
-  {% else %}
-    {%- set r = '' -%}
-  {%- endif -%}
-  {%- if checker_result or errors -%}
-    <td class="{{ label }} column-reliability">{{- '' -}}
-      <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
-        <span aria-labelledby="{{engine_name}}_reliability">
-          {{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
-        </span>{{- '' -}}
-      </a>{{- '' -}}
-      <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
-        {%- if checker_result -%}
-          <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
-        {%- endif -%}
-        {%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
-        {%- for error in errors -%}
-          <p>{{ error }}</p>{{- '' -}}
-        {%- endfor -%}
-      </div>{{- '' -}}
-    </td>
-  {%- else -%}
-    <td class="{{ label }}">{% if r %}<span>{{ r }}</span>
-  {%- endif -%}
-    </td>
-  {%- endif -%}
-{%- endmacro -%}
+{%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
+{%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
+{%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
+{%- if r != None -%}
+{%- if r <= 50 -%} {% set label='danger' -%} {%- elif r < 80 -%} {%- set label='warning' -%} {%- elif r < 90 %} {%- set
+	label='' -%} {%- else -%} {%- set label='success' -%} {%- endif -%} {% else %} {%- set r='' -%} {%- endif -%} {%- if
+	checker_result or errors -%} <td class="{{ label }} column-reliability">{{- '' -}}
+	<a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
+		<span aria-labelledby="{{engine_name}}_reliability">
+			{{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
+		</span>{{- '' -}}
+	</a>{{- '' -}}
+	<div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
+		{%- if checker_result -%}
+		<p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
+		{%- endif -%}
+		{%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
+		{%- for error in errors -%}
+		<p>{{ error }}</p>{{- '' -}}
+		{%- endfor -%}
+	</div>{{- '' -}}
+	</td>
+	{%- else -%}
+	<td class="{{ label }}">{% if r %}<span>{{ r }}</span>
+		{%- endif -%}
+	</td>
+	{%- endif -%}
+	{%- endmacro -%}
 
-{%- block head -%}{%- endblock -%}
-{%- block linkto_preferences -%}{%- endblock -%}
+	{%- block head -%}{%- endblock -%}
+	{%- block linkto_preferences -%}{%- endblock -%}
 
-{%- block content -%}
+	{%- block content -%}
 
-  <h1>{{ _('Preferences') }}</h1>
+	<h1>{{ _('Preferences') }}</h1>
 
-  <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
-    {{- tabs_open() -}}
+	<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+		{{- tabs_open() -}}
 
 
-    {{- tab_header('maintab', 'general', _('General'), True) -}}
-    {%- if 'categories' not in locked_preferences -%}
-      <fieldset>
-        <legend>{{- _('Default categories') -}}</legend>
-        {% set display_tooltip = false %}
-        {% include 'simple/categories.html' %}
-      </fieldset>
-    {%- endif -%}
-    {%- if 'language' not in locked_preferences -%}
-      {%- include 'simple/preferences/language.html' -%}
-    {% endif %}
-    {%- if 'autocomplete' not in locked_preferences -%}
-      {%- include 'simple/preferences/autocomplete.html' -%}
-    {%- endif -%}
-    {% if 'safesearch' not in locked_preferences %}
-      {%- include 'simple/preferences/safesearch.html' -%}
-    {%- endif -%}
-    {{- plugin_preferences('general') -}}
-    {%- if 'doi_resolver' not in locked_preferences %}
-      {%- include 'simple/preferences/doi_resolver.html' -%}
-    {%- endif -%}
-    {%- include 'simple/preferences/tokens.html' -%}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'general', _('General'), True) -}}
+		{%- if 'categories' not in locked_preferences -%}
+		<fieldset>
+			<legend>{{- _('Default categories') -}}</legend>
+			{% set display_tooltip = false %}
+			{% include 'kvanDark/categories.html' %}
+		</fieldset>
+		{%- endif -%}
+		{%- if 'language' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/language.html' -%}
+		{% endif %}
+		{%- if 'autocomplete' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/autocomplete.html' -%}
+		{%- endif -%}
+		{% if 'safesearch' not in locked_preferences %}
+		{%- include 'kvanDark/preferences/safesearch.html' -%}
+		{%- endif -%}
+		{{- plugin_preferences('general') -}}
+		{%- if 'doi_resolver' not in locked_preferences %}
+		{%- include 'kvanDark/preferences/doi_resolver.html' -%}
+		{%- endif -%}
+		{%- include 'kvanDark/preferences/tokens.html' -%}
+		{{- tab_footer() -}}
 
 
-    {{- tab_header('maintab', 'ui', _('User interface')) -}}
-    {%- if 'locale' not in locked_preferences -%}
-      {%- include 'simple/preferences/ui_locale.html' -%}
-    {%- endif -%}
-    {%- if 'theme' not in locked_preferences -%}
-      {%- include 'simple/preferences/theme.html' -%}
-    {%- endif -%}
-    {%- if 'results_on_new_tab' not in locked_preferences -%}
-      {%- include 'simple/preferences/results_on_new_tab.html' -%}
-    {%- endif -%}
-    {%- if 'infinite_scroll' not in locked_preferences -%}
-      {%- include 'simple/preferences/infinite_scroll.html' -%}
-    {%- endif -%}
-    {%- if 'search_on_category_select' not in locked_preferences -%}
-      {%- include 'simple/preferences/search_on_category_select.html' -%}
-    {%- endif -%}
-    {%- include 'simple/preferences/hotkeys.html' -%}
-    {{- plugin_preferences('ui') -}}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'ui', _('User interface')) -}}
+		{%- if 'locale' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/ui_locale.html' -%}
+		{%- endif -%}
+		{%- if 'theme' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/theme.html' -%}
+		{%- endif -%}
+		{%- if 'results_on_new_tab' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/results_on_new_tab.html' -%}
+		{%- endif -%}
+		{%- if 'infinite_scroll' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/infinite_scroll.html' -%}
+		{%- endif -%}
+		{%- if 'search_on_category_select' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/search_on_category_select.html' -%}
+		{%- endif -%}
+		{%- include 'kvanDark/preferences/hotkeys.html' -%}
+		{{- plugin_preferences('ui') -}}
+		{{- tab_footer() -}}
 
 
-    {{- tab_header('maintab', 'privacy', _('Privacy')) -}}
-    {%- if 'method' not in locked_preferences -%}
-      {%- include 'simple/preferences/method.html' -%}
-    {%- endif -%}
-    {%- if 'image_proxy' not in locked_preferences -%}
-      {%- include 'simple/preferences/image_proxy.html' -%}
-    {%- endif -%}
-    {%- if 'query_in_title' not in locked_preferences -%}
-      {%- include 'simple/preferences/query_in_title.html' -%}
-    {%- endif -%}
-    {{- plugin_preferences('privacy') -}}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'privacy', _('Privacy')) -}}
+		{%- if 'method' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/method.html' -%}
+		{%- endif -%}
+		{%- if 'image_proxy' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/image_proxy.html' -%}
+		{%- endif -%}
+		{%- if 'query_in_title' not in locked_preferences -%}
+		{%- include 'kvanDark/preferences/query_in_title.html' -%}
+		{%- endif -%}
+		{{- plugin_preferences('privacy') -}}
+		{{- tab_footer() -}}
 
-    {{- tab_header('maintab', 'engines', _('Engines')) -}}
-    <p>
-      {{- _('Currently used search engines') -}}
-    </p>
-    {{- tabs_open() -}}
-    {%- include 'simple/preferences/engines.html' -%}
-    {{- tabs_close() -}}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'engines', _('Engines')) -}}
+		<p>
+			{{- _('Currently used search engines') -}}
+		</p>
+		{{- tabs_open() -}}
+		{%- include 'kvanDark/preferences/engines.html' -%}
+		{{- tabs_close() -}}
+		{{- tab_footer() -}}
 
 
-    {{- tab_header('maintab', 'query', _('Special Queries')) -}}
-    {%- if answerers -%}
-      {%- include 'simple/preferences/answerers.html' -%}
-    {%- endif -%}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'query', _('Special Queries')) -}}
+		{%- if answerers -%}
+		{%- include 'kvanDark/preferences/answerers.html' -%}
+		{%- endif -%}
+		{{- tab_footer() -}}
 
-    {{- tab_header('maintab', 'cookies', _('Cookies')) -}}
-    {%- include 'simple/preferences/cookies.html' -%}
-    {{- tab_footer() -}}
+		{{- tab_header('maintab', 'cookies', _('Cookies')) -}}
+		{%- include 'kvanDark/preferences/cookies.html' -%}
+		{{- tab_footer() -}}
 
-    {{- tabs_close() -}}
-    {%- include 'simple/preferences/footer.html' -%}
+		{{- tabs_close() -}}
+		{%- include 'kvanDark/preferences/footer.html' -%}
 
-  </form>{{- '' -}}
-{%- endblock -%}
+	</form>{{- '' -}}
+	{%- endblock -%}

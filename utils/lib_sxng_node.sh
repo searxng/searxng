@@ -44,6 +44,7 @@ node.clean() {
     build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
         npm --prefix searx/static/themes/simple run clean
+        npm --prefix searx/static/themes/kvanDark run clean
     )
     build_msg CLEAN "locally installed developer and CI tools"
     (   set -e
