@@ -30,7 +30,9 @@ def on_result(request, search, result):
                 # (only) on the 'parsed_url'
                 if not replacement:
                     return False
-                result[parsed] = result[parsed]._replace(netloc=pattern.sub(replacement, result[parsed].netloc))
+                subdomain = pattern.search(result[parsed].netloc).group(1) or ''
+                new_netloc = replacement.replace('(*)', subdomain)
+                result[parsed] = result[parsed]._replace(netloc=pattern.sub(new_netloc, result[parsed].netloc))
                 result['url'] = urlunparse(result[parsed])
 
         for url_field in _url_fields:
@@ -40,7 +42,10 @@ def on_result(request, search, result):
                     if not replacement:
                         del result[url_field]
                     else:
-                        url_src = url_src._replace(netloc=pattern.sub(replacement, url_src.netloc))
+                        # Add subdomain to replacement
+                        subdomain = pattern.search(url_src.netloc).group(1) or ''
+                        new_netloc = replacement.replace('(*)', subdomain)
+                        url_src = url_src._replace(netloc=pattern.sub(new_netloc, url_src.netloc))
                         result[url_field] = urlunparse(url_src)
 
     return True
