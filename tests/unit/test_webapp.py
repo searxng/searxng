@@ -6,6 +6,7 @@ from mock import Mock
 from searx.results import Timing
 
 import searx.search.processors
+from searx import limiter
 from searx.search import Search
 from searx.preferences import Preferences
 from tests import SearxTestCase
@@ -20,6 +21,8 @@ class ViewsTestCase(SearxTestCase):
         self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
 
         from searx import webapp  # pylint disable=import-outside-toplevel
+
+        limiter.initialize(webapp.app, webapp.settings)
 
         webapp.app.config['TESTING'] = True  # to get better error messages
         self.app = webapp.app.test_client()

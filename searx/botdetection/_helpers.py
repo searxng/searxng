@@ -3,6 +3,7 @@
 # pylint: disable=missing-module-docstring, invalid-name
 from __future__ import annotations
 
+import logging
 from ipaddress import (
     IPv4Network,
     IPv6Network,
@@ -13,10 +14,9 @@ from ipaddress import (
 import flask
 import werkzeug
 
-from searx import logger
 from . import config
 
-logger = logger.getChild('botdetection')
+logger = logging.getLogger('botdetection')
 
 
 def dump_request(request: flask.Request):
@@ -104,10 +104,10 @@ def get_real_ip(request: flask.Request) -> str:
     if not forwarded_for:
         _log_error_only_once("X-Forwarded-For header is not set!")
     else:
-        from . import cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+        from . import ctx  # pylint: disable=import-outside-toplevel, cyclic-import
 
         forwarded_for = [x.strip() for x in forwarded_for.split(',')]
-        x_for: int = cfg['real_ip.x_for']  # type: ignore
+        x_for: int = ctx.cfg['real_ip.x_for']  # type: ignore
         forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
 
     if not real_ip:

@@ -107,7 +107,6 @@ from searx import (
 )
 from searx import botdetection
 from searx.botdetection import (
-    config,
     http_accept,
     http_accept_encoding,
     http_accept_language,
@@ -123,31 +122,26 @@ from searx.botdetection import (
 # coherency, the logger is "limiter"
 logger = logger.getChild('limiter')
 
-CFG: config.Config = None  # type: ignore
-_INSTALLED = False
+_FULLY_INSTALLED = False
 
-LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
+DEFAULT_CFG = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
 LIMITER_CFG = Path('/etc/searxng/limiter.toml')
 """Local Limiter configuration."""
 
-CFG_DEPRECATED = {
-    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
-}
-
-
-def get_cfg() -> config.Config:
-    global CFG  # pylint: disable=global-statement
-    if CFG is None:
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, LIMITER_CFG, CFG_DEPRECATED)
-    return CFG
+SEARXNG_ORG = [
+    # https://github.com/searxng/searxng/pull/2484#issuecomment-1576639195
+    '167.235.158.251',  # IPv4 check.searx.space
+    '2a01:04f8:1c1c:8fc2::/64',  # IPv6 check.searx.space
+]
+"""Passlist of IPs from the SearXNG organization, e.g. `check.searx.space`."""
 
 
 def filter_request(request: flask.Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
-    cfg = get_cfg()
+    cfg = botdetection.ctx.cfg
     real_ip = ip_address(get_real_ip(request))
     network = get_network(real_ip, cfg)
 
@@ -210,34 +204,42 @@ def pre_request():
     return filter_request(flask.request)
 
 
-def is_installed():
+def is_fully_installed():
     """Returns ``True`` if limiter is active and a redis DB is available."""
-    return _INSTALLED
+    return _FULLY_INSTALLED
 
 
 def initialize(app: flask.Flask, settings):
     """Install the limiter"""
-    global _INSTALLED  # pylint: disable=global-statement
+    global _FULLY_INSTALLED  # pylint: disable=global-statement
 
-    if not (settings['server']['limiter'] or settings['server']['public_instance']):
-        return
+    # even if the limiter is not activated, the botdetection must be activated
+    # (e.g. the self_info plugin uses the botdetection to get client IP)
 
     redis_client = redisdb.client()
-    if not redis_client:
+    botdetection.ctx.init(DEFAULT_CFG, redis_client)
+    cfg = botdetection.ctx.cfg
+
+    if settings['server']['public_instance']:
+        # overwrite SearXNG and limiter.toml settings
+        settings['server']['limiter'] = True
+        settings['server']['pass_searxng_org'] = True
+        cfg.set('botdetection.ip_limit.link_token', True)
+
+    if settings['server']['pass_searxng_org']:
+        cfg.get('botdetection.ip_lists.pass_ip').extend(SEARXNG_ORG)
+
+    if settings['server']['limiter']:
+        app.before_request(pre_request)
+
+    if redis_client:
+        _FULLY_INSTALLED = True
+
+    else:
         logger.error(
             "The limiter requires Redis, please consult the documentation: "
             "https://docs.searxng.org/admin/searx.limiter.html"
         )
         if settings['server']['public_instance']:
-            sys.exit(1)
-        return
-
-    _INSTALLED = True
-
-    cfg = get_cfg()
-    if settings['server']['public_instance']:
-        # overwrite limiter.toml setting
-        cfg.set('botdetection.ip_limit.link_token', True)
-
-    botdetection.init(cfg, redis_client)
-    app.before_request(pre_request)
+            logger.error('server:public_instance activated but redis DB is missed')
+            sys.exit()

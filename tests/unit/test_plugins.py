@@ -3,7 +3,6 @@
 from searx import (
     plugins,
     limiter,
-    botdetection,
 )
 
 from mock import Mock
@@ -51,8 +50,10 @@ class SelfIPTest(SearxTestCase):
         plugin = plugins.load_and_initialize_plugin('searx.plugins.self_info', False, (None, {}))
         store = plugins.PluginStore()
         store.register(plugin)
-        cfg = limiter.get_cfg()
-        botdetection.init(cfg, None)
+
+        from searx import webapp  # pylint disable=import-outside-toplevel
+
+        limiter.initialize(webapp.app, webapp.settings)
 
         self.assertTrue(len(store.plugins) == 1)
 

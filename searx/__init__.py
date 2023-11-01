@@ -104,10 +104,3 @@ if max_request_timeout is None:
     logger.info('max_request_timeout=%s', repr(max_request_timeout))
 else:
     logger.info('max_request_timeout=%i second(s)', max_request_timeout)
-
-if settings['server']['public_instance']:
-    logger.warning(
-        "Be aware you have activated features intended only for public instances. "
-        "This force the usage of the limiter and link_token / "
-        "see https://docs.searxng.org/admin/searx.limiter.html"
-    )

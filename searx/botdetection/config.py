@@ -57,18 +57,20 @@ class Config:
     UNSET = UNSET
 
     @classmethod
-    def from_toml(cls, schema_file: pathlib.Path, cfg_file: pathlib.Path, deprecated: dict) -> Config:
-
+    def from_toml(cls, schema_file: pathlib.Path, cfg_file: pathlib.Path | None, deprecated: dict) -> Config:
         # init schema
-
         log.debug("load schema file: %s", schema_file)
         cfg = cls(cfg_schema=toml.load(schema_file), deprecated=deprecated)
+        if cfg_file is None:
+            return cfg
         if not cfg_file.exists():
             log.warning("missing config file: %s", cfg_file)
             return cfg
+        # load configuration from toml file
+        cfg.load_toml(cfg_file)
+        return cfg
 
-        # load configuration
-
+    def load_toml(self, cfg_file: pathlib.Path):
         log.debug("load config file: %s", cfg_file)
         try:
             upd_cfg = toml.load(cfg_file)
@@ -77,13 +79,12 @@ class Config:
             log.error("%s: %s", cfg_file, msg)
             raise
 
-        is_valid, issue_list = cfg.validate(upd_cfg)
+        is_valid, issue_list = self.validate(upd_cfg)
         for msg in issue_list:
             log.error(str(msg))
         if not is_valid:
             raise TypeError(f"schema of {cfg_file} is invalid!")
-        cfg.update(upd_cfg)
-        return cfg
+        self.update(upd_cfg)
 
     def __init__(self, cfg_schema: typing.Dict, deprecated: typing.Dict[str, str]):
         """Construtor of class Config.
@@ -153,7 +154,7 @@ class Config:
             raise KeyError(parent_name)
         return parent
 
-    def path(self, name: str, default=UNSET):
+    def path(self, name: str, default: Any = UNSET):
         """Get a :py:class:`pathlib.Path` object from a config string."""
 
         val = self.get(name, default)
@@ -163,7 +164,7 @@ class Config:
             return default
         return pathlib.Path(str(val))
 
-    def pyobj(self, name, default=UNSET):
+    def pyobj(self, name, default: Any = UNSET):
         """Get python object refered by full qualiffied name (FQN) in the config
         string."""
 
