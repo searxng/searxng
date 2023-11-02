@@ -13,8 +13,7 @@ and at least for a maximum of 10 minutes.
 
 The :py:obj:`.link_token` method can be used to investigate whether a request is
 *suspicious*.  To activate the :py:obj:`.link_token` method in the
-:py:obj:`.ip_limit` method add the following to your
-``/etc/searxng/limiter.toml``:
+:py:obj:`.ip_limit` method add the following configuration:
 
 .. code:: toml
 
@@ -46,13 +45,12 @@ from ipaddress import (
 
 import flask
 import werkzeug
-from searx.tools import config
-from searx import settings
 
 from searx import redisdb
 from searx.redislib import incr_sliding_window, drop_counter
 
 from . import link_token
+from . import config
 from ._helpers import (
     too_many_requests,
     logger,
@@ -110,7 +108,7 @@ def filter_request(
         if c > API_MAX:
             return too_many_requests(network, "too many request in API_WINDOW")
 
-    if settings['server']['public_instance'] or cfg['botdetection.ip_limit.link_token']:
+    if cfg['botdetection.ip_limit.link_token']:
 
         suspicious = link_token.is_suspicious(network, request, True)
 

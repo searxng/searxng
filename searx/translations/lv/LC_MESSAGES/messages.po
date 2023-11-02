@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-10-06 07:07+0000\n"
+"PO-Revision-Date: 2023-10-24 11:13+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Latvian <https://translate.codeberg.org/projects/searxng/"
 "searxng/lv/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
 "19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -272,19 +272,19 @@ msgstr "Kanāls"
 
 #: searx/engines/radio_browser.py:104
 msgid "radio"
-msgstr ""
+msgstr "radio"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "bitu pārraide"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "balsis"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "klikšķi"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -304,16 +304,20 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
+"Nevar nolasīt šo attēla url. Tas var būt saistīts ar neatbalstītu faila "
+"formātu. TinEye atbalsta tikai JPEG, PNG, GIF, BMP, TIFF vai WebP attēlus."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Attēls ir pārāk vienkāršs, lai atrastu atbilstību. Lai veiksmīgi noteiktu "
+"sakritības, TinEye ir nepieciešams pamata vizuālo detaļu līmenis."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
-msgstr "Attēlu nav iespējams lejupielādēt"
+msgstr "Attēlu neizdevās lejupielādēt."
 
 #: searx/engines/wttr.py:101
 msgid "Morning"
@@ -354,26 +358,32 @@ msgstr "Resursdatora vārda nomaiņa"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
+"Pārrakstīt rezultātu saimniekvārdus vai noņemt rezultātus, pamatojoties uz "
+"saimniekvārdu"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
-msgstr ""
+msgstr "Atvērtās piekļuves DOI pārrakstīšana"
 
 #: searx/plugins/oa_doi_rewrite.py:10
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
+"Izvairieties no maksas sienām, novirzot uz publikāciju atvērtās piekļuves "
+"versijām, ja tās ir pieejamas"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
-msgstr ""
+msgstr "Informācija par sevi"
 
 #: searx/plugins/self_info.py:11
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"Tiek parādīts jūsu IP, ja pieprasījums ir \"ip\", un jūsu lietotāja aģents, "
+"ja pieprasījumā ir \"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -403,7 +413,7 @@ msgstr ""
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr ""
+msgstr "Izsekošanas URL noņemšanas līdzeklis"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"

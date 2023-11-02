@@ -57,7 +57,9 @@ from searx import (
 )
 
 from searx import infopage
-from searx.botdetection import limiter
+from searx import limiter
+from searx.botdetection import link_token
+
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
@@ -94,7 +96,6 @@ from searx.utils import (
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
-from searx.botdetection import link_token
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -1288,7 +1289,7 @@ def config():
                 'DOCS_URL': get_setting('brand.docs_url'),
             },
             'limiter': {
-                'enabled': settings['server']['limiter'],
+                'enabled': limiter.is_installed(),
                 'botdetection.ip_limit.link_token': _limiter_cfg.get('botdetection.ip_limit.link_token'),
                 'botdetection.ip_lists.pass_searxng_org': _limiter_cfg.get('botdetection.ip_lists.pass_searxng_org'),
             },
@@ -1322,6 +1323,7 @@ if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_
     redis_initialize()
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
+    limiter.initialize(app, settings)
 
 
 def run():

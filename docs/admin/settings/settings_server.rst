@@ -12,6 +12,7 @@
        bind_address: "127.0.0.1"
        secret_key: "ultrasecretkey"           # change this!
        limiter: false
+       public_instance: false
        image_proxy: false
        default_http_headers:
          X-Content-Type-Options : nosniff
@@ -19,7 +20,6 @@
          X-Download-Options : noopen
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
-
 
 ``base_url`` : ``$SEARXNG_URL`` :ref:`buildenv <make buildenv>`
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
@@ -36,11 +36,19 @@
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
-.. _limiter:
-
 ``limiter`` :
   Rate limit the number of request on the instance, block some bots.  The
-  :ref:`limiter src` requires a :ref:`settings redis` database.
+  :ref:`limiter` requires a :ref:`settings redis` database.
+
+.. _public_instance:
+
+``public_instance`` :
+
+  Setting that allows to enable features specifically for public instances (not
+  needed for local usage).  By set to ``true`` the following features are
+  activated:
+
+  - :py:obj:`searx.botdetection.link_token` in the :ref:`limiter`
 
 .. _image_proxy:
 

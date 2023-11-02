@@ -108,5 +108,6 @@ else:
 if settings['server']['public_instance']:
     logger.warning(
         "Be aware you have activated features intended only for public instances. "
-        + "This force the usage of the bot limiter and link_token plugins."
+        "This force the usage of the limiter and link_token / "
+        "see https://docs.searxng.org/admin/searx.limiter.html"
     )
