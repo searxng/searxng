@@ -150,6 +150,7 @@ intersphinx_mapping = {
     "linuxdoc" : ("https://return42.github.io/linuxdoc/", None),
     "sphinx" : ("https://www.sphinx-doc.org/en/master/", None),
     "redis": ('https://redis.readthedocs.io/en/stable/', None),
+    "botdetection" : ("https://searxng.org/botdetection/", None),
 }
 
 issues_github_path = "searxng/searxng"

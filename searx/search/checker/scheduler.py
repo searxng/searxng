@@ -17,8 +17,9 @@ import time
 import importlib
 from typing import Callable
 
+from botdetection.redislib import lua_script_storage
+
 from searx.redisdb import client as get_redis_client
-from searx.botdetection.redislib import lua_script_storage
 
 
 logger = logging.getLogger('searx.search.checker')

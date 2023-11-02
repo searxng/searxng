@@ -42,7 +42,7 @@
 
   - ``server: limiter`` option :ref:`see below <activate limiter>`
   - ``server: pass_searxng_org`` option :ref:`see below <pass_searxng_org>`
-  - :py:obj:`searx.botdetection.link_token` in the :ref:`limiter`
+  - :py:obj:`botdetection.link_token` in the :ref:`limiter`
 
 .. _activate limiter:
 

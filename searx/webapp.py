@@ -49,6 +49,8 @@ from flask_babel import (
     format_decimal,
 )
 
+import botdetection
+
 from searx import (
     logger,
     get_setting,
@@ -58,7 +60,6 @@ from searx import (
 
 from searx import infopage
 from searx import limiter
-from searx import botdetection
 
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing

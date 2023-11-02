@@ -101,12 +101,8 @@ from ipaddress import ip_address
 import flask
 import werkzeug
 
-from searx import (
-    logger,
-    redisdb,
-)
-from searx import botdetection
-from searx.botdetection import (
+import botdetection
+from botdetection import (
     http_accept,
     http_accept_encoding,
     http_accept_language,
@@ -116,6 +112,11 @@ from searx.botdetection import (
     get_network,
     get_real_ip,
     dump_request,
+)
+
+from searx import (
+    logger,
+    redisdb,
 )
 
 # the configuration are limiter.toml and "limiter" in settings.yml so, for

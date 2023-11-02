@@ -5,7 +5,7 @@
 import re
 from flask_babel import gettext
 
-from searx.botdetection._helpers import get_real_ip
+from botdetection._helpers import get_real_ip
 
 name = gettext('Self Information')
 description = gettext('Displays your IP if the query is "ip" and your user agent if the query contains "user agent".')
