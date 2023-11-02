@@ -295,6 +295,7 @@ categories_as_tabs:
   science:
   files:
   social media:
+  # devdocs:
 
 engines:
   - name: 9gag
@@ -1493,7 +1494,7 @@ engines:
     engine: startpage
     shortcut: sp
     timeout: 6.0
-    disabled: true
+    disabled: false
     additional_tests:
       rosebud: *test_rosebud
 
@@ -1599,7 +1600,7 @@ engines:
   - name: yahoo
     engine: yahoo
     shortcut: yh
-    disabled: true
+    disabled: false
 
   - name: yahoo news
     engine: yahoo_news
@@ -1633,7 +1634,7 @@ engines:
     content_query: Snippet
     categories: [general, web]
     shortcut: wib
-    disabled: true
+    disabled: false
     about:
       website: https://wiby.me/
 
