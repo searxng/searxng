@@ -248,7 +248,10 @@ def _parse_search(resp):
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
-        content_tag = eval_xpath_getindex(result, './/div[@class="snippet-description"]', 0, default='')
+        content_tag = eval_xpath_getindex(
+            result, './/div[@class="snippet-description text-small-regular"]', 0, default=''
+        )
+
         img_src = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
 
         item = {
