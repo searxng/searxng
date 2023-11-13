@@ -48,6 +48,7 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
+max_page = 50
 time_range_support = True
 safesearch = True
 
