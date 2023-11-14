@@ -16,7 +16,9 @@
           }
         ));
 
-    d.querySelector('#search_url button#copy_url').style.display = "block";
+    if (d.querySelector('#search_url button#copy_url')) {
+      d.querySelector('#search_url button#copy_url').style.display = "block";
+    }
 
     searxng.on('.btn-collapse', 'click', function () {
       var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
