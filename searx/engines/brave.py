@@ -152,6 +152,10 @@ send_accept_language_header = True
 paging = False
 """Brave only supports paging in :py:obj:`brave_category` ``search`` (UI
 category All)."""
+max_page = 10
+"""Tested 9 pages maximum (``&offset=8``), to be save max is set to 10.  Trying
+to do more won't return any result and you will most likely be flagged as a bot.
+"""
 
 safesearch = True
 safesearch_map = {2: 'strict', 1: 'moderate', 0: 'off'}  # cookie: safesearch=off

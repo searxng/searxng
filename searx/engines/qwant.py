@@ -75,6 +75,10 @@ about = {
 # engine dependent config
 categories = []
 paging = True
+max_page = 5
+"""5 pages maximum (``&p=5``): Trying to do more just results in an improper
+redirect"""
+
 qwant_categ = None
 """One of ``web-lite`` (or ``web``), ``news``, ``images`` or ``videos``"""
 
@@ -111,10 +115,6 @@ def request(query, params):
     url = api_url + f'{qwant_categ}?'
     args = {'q': query}
     params['raise_for_httperror'] = False
-
-    # all qwant engines (incl qwant-lite) delivers only 5 pages maximum
-    if params['pageno'] > 5:
-        return None
 
     if qwant_categ == 'web-lite':
 
