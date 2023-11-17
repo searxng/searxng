@@ -10,19 +10,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
+"POT-Creation-Date: 2023-11-11 15:25+0000\n"
 "PO-Revision-Date: 2023-10-24 11:13+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Latvian <https://translate.codeberg.org/projects/searxng/"
-"searxng/lv/>\n"
 "Language: lv\n"
+"Language-Team: Latvian "
+"<https://translate.codeberg.org/projects/searxng/searxng/lv/>\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100"
+" <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
-"19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
-"X-Generator: Weblate 5.1\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.13.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -149,28 +148,28 @@ msgstr "gaišs"
 msgid "dark"
 msgstr "tumšs"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Nav atrasts neviens vienums"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "Avots"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Kļūda lādējot nākošo lapu"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nepareizi iestatījumi, lūdzu rediģējiet savas preferences"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "Nederīgi iestatījumi"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "meklēšanas kļūda"
 
@@ -305,15 +304,16 @@ msgid ""
 " WebP."
 msgstr ""
 "Nevar nolasīt šo attēla url. Tas var būt saistīts ar neatbalstītu faila "
-"formātu. TinEye atbalsta tikai JPEG, PNG, GIF, BMP, TIFF vai WebP attēlus."
+"formātu. TinEye atbalsta tikai JPEG, PNG, GIF, BMP, TIFF vai WebP "
+"attēlus."
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Attēls ir pārāk vienkāršs, lai atrastu atbilstību. Lai veiksmīgi noteiktu "
-"sakritības, TinEye ir nepieciešams pamata vizuālo detaļu līmenis."
+"Attēls ir pārāk vienkāršs, lai atrastu atbilstību. Lai veiksmīgi noteiktu"
+" sakritības, TinEye ir nepieciešams pamata vizuālo detaļu līmenis."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -358,8 +358,8 @@ msgstr "Resursdatora vārda nomaiņa"
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
-"Pārrakstīt rezultātu saimniekvārdus vai noņemt rezultātus, pamatojoties uz "
-"saimniekvārdu"
+"Pārrakstīt rezultātu saimniekvārdus vai noņemt rezultātus, pamatojoties "
+"uz saimniekvārdu"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -370,8 +370,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Izvairieties no maksas sienām, novirzot uz publikāciju atvērtās piekļuves "
-"versijām, ja tās ir pieejamas"
+"Izvairieties no maksas sienām, novirzot uz publikāciju atvērtās piekļuves"
+" versijām, ja tās ir pieejamas"
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
@@ -382,8 +382,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Tiek parādīts jūsu IP, ja pieprasījums ir \"ip\", un jūsu lietotāja aģents, "
-"ja pieprasījumā ir \"user agent\"."
+"Tiek parādīts jūsu IP, ja pieprasījums ir \"ip\", un jūsu lietotāja "
+"aģents, ja pieprasījumā ir \"user agent\"."
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
@@ -746,6 +746,14 @@ msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
+msgstr ""
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr ""
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
 msgstr ""
 
 #: searx/templates/simple/elements/suggestions.html:3
@@ -1387,3 +1395,4 @@ msgstr "slēpt video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+
