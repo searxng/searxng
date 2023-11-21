@@ -5,7 +5,7 @@
       {%- for name in themes -%}
         <option value="{{ name }}"
                 {%- if name == theme %} selected="selected"{%- endif -%}>
-                {{- name -}}
+                {{- name | capitalize -}}
         </option>
       {%- endfor -%}
     </select>{{- '' -}}
@@ -22,7 +22,7 @@
       {%- for name in ['auto', 'light', 'dark'] -%}
         <option value="{{ name }}"
                 {%- if name == preferences.get_value('simple_style') %} selected="selected" {%- endif -%}>
-                {{- _(name) -}}
+                {{- _(name) | capitalize -}}
         </option>
       {%- endfor -%}
     </select>{{- '' -}}
