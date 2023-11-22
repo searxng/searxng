@@ -232,7 +232,7 @@ class ResultContainer:
         if engine_name in engines:
             histogram_observe(standard_result_count, 'engine', engine_name, 'result', 'count')
 
-        if not self.paging and standard_result_count > 0 and engine_name in engines and engines[engine_name].paging:
+        if not self.paging and engine_name in engines and engines[engine_name].paging:
             self.paging = True
 
     def _merge_infobox(self, infobox):
