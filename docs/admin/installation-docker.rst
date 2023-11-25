@@ -92,6 +92,9 @@ instance using `docker run <https://docs.docker.com/engine/reference/run/>`_:
                 searxng/searxng
    2f998.... # container's ID
 
+The environment variables UWSGI_WORKERS and UWSGI_THREADS overwrite the default
+number of UWSGI processes and UWSGI threads specified in `/etc/searxng/uwsgi.ini`.
+
 Open your WEB browser and visit the URL:
 
 .. code:: sh

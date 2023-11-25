@@ -177,6 +177,7 @@ main() {
 
     case $1 in
         --getenv)  var="$2"; echo "${!var}"; exit 0;;
+        --cmd)  shift; "$@";;
         -h|--help) usage; exit 0;;
         install)
             sudo_or_exit
