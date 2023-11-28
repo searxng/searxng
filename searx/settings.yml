@@ -1857,6 +1857,23 @@ engines:
   #   timeout: 5.0
   #   disabled: true
 
+  - name: marginalia
+    shortcut: ma
+    engine: xpath
+    categories: general
+    search_url: https://search.marginalia.nu/search?query={query}
+    results_xpath: //section[contains(@class, "search-result")]
+    url_xpath: ./div[contains(@class, "url")]/a/@href
+    title_xpath: ./h2
+    content_xpath: ./p[contains(@class, "description")]/text()
+    disabled: true
+    about:
+      website: https://search.marginalia.nu
+      official_api_documentation: https://www.marginalia.nu/marginalia-search/api/
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
   - name: mojeek
     shortcut: mjk
     engine: xpath
