@@ -419,6 +419,11 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: bpb
+    engine: bpb
+    shortcut: bpb
+    disabled: true
+
   - name: btdigg
     engine: btdigg
     shortcut: bt
@@ -484,23 +489,25 @@ engines:
       website: https://crowdview.ai/
 
   - name: yep
-    engine: json_engine
+    engine: yep
     shortcut: yep
     categories: general
+    search_type: web
     disabled: true
-    paging: false
-    content_html_to_text: true
-    title_html_to_text: true
-    search_url: https://api.yep.com/fs/1/?type=web&q={query}&no_correct=false&limit=100
-    results_query: 1/results
-    title_query: title
-    url_query: url
-    content_query: snippet
-    about:
-      website: https://yep.com
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+
+  - name: yep images
+    engine: yep
+    shortcut: yepi
+    categories: images
+    search_type: images
+    disabled: true
+
+  - name: yep news
+    engine: yep
+    shortcut: yepn
+    categories: news
+    search_type: news
+    disabled: true
 
   - name: curlie
     engine: xpath
@@ -530,6 +537,11 @@ engines:
   - name: deezer
     engine: deezer
     shortcut: dz
+    disabled: true
+
+  - name: destatis
+    engine: destatis
+    shortcut: destat
     disabled: true
 
   - name: deviantart
@@ -1284,6 +1296,37 @@ engines:
   #    limit: 10
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
+
+  - name: presearch
+    engine: presearch
+    search_type: search
+    categories: [general, web]
+    shortcut: ps
+    disabled: true
+
+  - name: presearch images
+    engine: presearch
+    search_type: images
+    categories: [images, web]
+    timeout: 4.0
+    shortcut: psimg
+    disabled: true
+
+  - name: presearch videos
+    engine: presearch
+    search_type: videos
+    categories: [general, web]
+    timeout: 4.0
+    shortcut: psvid
+    disabled: true
+
+  - name: presearch news
+    engine: presearch
+    search_type: news
+    categories: [news, web]
+    timeout: 4.0
+    shortcut: psnews
+    disabled: true
 
   - name: pub.dev
     engine: xpath
