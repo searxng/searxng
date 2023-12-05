@@ -169,6 +169,7 @@ SCHEMA = {
             'recaptcha_SearxEngineCaptcha': SettingsValue(numbers.Real, 604800),
         },
         'formats': SettingsValue(list, OUTPUT_FORMATS),
+        'max_page': SettingsValue(int, 0),
     },
     'server': {
         'port': SettingsValue((int, str), 8888, 'SEARXNG_PORT'),

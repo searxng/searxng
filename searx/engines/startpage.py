@@ -127,6 +127,9 @@ different to the UI language) and a region filter.
 # engine dependent config
 categories = ['general', 'web']
 paging = True
+max_page = 18
+"""Tested 18 pages maximum (argument ``page``), to be save max is set to 20."""
+
 time_range_support = True
 safesearch = True
 

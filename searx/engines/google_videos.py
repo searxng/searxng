@@ -57,6 +57,7 @@ about = {
 
 categories = ['videos', 'web']
 paging = True
+max_page = 50
 language_support = True
 time_range_support = True
 safesearch = True
