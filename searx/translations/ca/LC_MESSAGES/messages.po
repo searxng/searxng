@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-11-11 15:25+0000\n"
-"PO-Revision-Date: 2023-12-04 10:44+0000\n"
-"Last-Translator: akwceles <abadcopovisamuel@gmail.com>\n"
+"PO-Revision-Date: 2023-12-08 07:07+0000\n"
+"Last-Translator: Ivan Gabaldon <admin@inetol.net>\n"
 "Language-Team: Catalan <https://translate.codeberg.org/projects/searxng/"
 "searxng/ca/>\n"
 "Language: ca\n"
@@ -40,7 +40,7 @@ msgstr "sense agrupació"
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "altre"
+msgstr "altres"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -75,7 +75,7 @@ msgstr "vídeos"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "informàtica"
+msgstr "tic"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -358,7 +358,7 @@ msgstr "Converteix cadenes en diferents empremtes de hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "empremta de hash"
+msgstr "resum del hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -471,11 +471,11 @@ msgstr "Codi font"
 
 #: searx/templates/simple/base.html:69
 msgid "Issue tracker"
-msgstr "Gestor de tiquets"
+msgstr "Gestor d'incidències"
 
 #: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr "Estadístiques del motor"
+msgstr "Estadístiques del cercador"
 
 #: searx/templates/simple/base.html:72
 msgid "Public instances"
@@ -483,7 +483,7 @@ msgstr "Instàncies públiques"
 
 #: searx/templates/simple/base.html:75
 msgid "Privacy policy"
-msgstr "Polítiques de privacitat"
+msgstr "Política de privacitat"
 
 #: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
@@ -513,23 +513,25 @@ msgstr "en servidor intermediari"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr "Enviar un nou problema a GitHub"
+msgstr "Obriu una incidència a GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Comproveu si ja hi ha cap problema amb aquest motor a GitHub"
+msgstr ""
+"Comproveu si existeix alguna incidència oberta amb aquest cercador a GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Confirmo que no hi ha un problema relacionat amb el problema que he trobat"
+msgstr ""
+"Confirmo que no hi ha cap incidència relacionada amb el problema que presento"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "Si aquesta és una instància pública, indiqueu l'URL a l'informe d'error"
+msgstr "Si aquesta és una instància pública, indiqueu l'URL a la incidència"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr "Envieu un tiquet a Github que inclou la informació anterior"
+msgstr "Creeu una incidència a GitHub incloent la informació anterior"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -539,7 +541,7 @@ msgstr "Sense HTTPS"
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
-msgstr "Mostra els informes d'error i envia un informe d'error"
+msgstr "Mostra els informes d'error i envia una incidència"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
@@ -582,7 +584,7 @@ msgstr "Categories predeterminades"
 
 #: searx/templates/simple/preferences.html:187
 msgid "User interface"
-msgstr "Interfície d'usuari"
+msgstr "Interfície de l'usuari"
 
 #: searx/templates/simple/preferences.html:208
 msgid "Privacy"
@@ -590,11 +592,11 @@ msgstr "Privadesa"
 
 #: searx/templates/simple/preferences.html:221
 msgid "Engines"
-msgstr "Motors"
+msgstr "Motors de cerca"
 
 #: searx/templates/simple/preferences.html:223
 msgid "Currently used search engines"
-msgstr "Motors de cerca usats actualment"
+msgstr "Cercadors usats actualment"
 
 #: searx/templates/simple/preferences.html:231
 msgid "Special Queries"
@@ -658,7 +660,7 @@ msgstr "Actualment no hi ha dades disponibles. "
 #: searx/templates/simple/preferences/engines.html:18
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
-msgstr "Nom del motor"
+msgstr "Nom del cercador"
 
 #: searx/templates/simple/stats.html:26
 msgid "Scores"
@@ -752,7 +754,7 @@ msgstr "Error!"
 
 #: searx/templates/simple/elements/engines_msg.html:13
 msgid "Engines cannot retrieve results"
-msgstr "Els motors no poden obtenir cap resultat"
+msgstr "Els cercadors no poden obtenir cap resultat"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -807,7 +809,7 @@ msgstr "Moderada"
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences/safesearch.html:15
 msgid "None"
-msgstr "Cap"
+msgstr "Desactivat"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences/engines.html:22
@@ -816,11 +818,11 @@ msgstr "Interval de temps"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
-msgstr "En qualsevol moment"
+msgstr "Qualsevol moment"
 
 #: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
-msgstr "Les darreres 24 hores"
+msgstr "Les 24 darreres hores"
 
 #: searx/templates/simple/filters/time_range.html:9
 msgid "Last week"
@@ -860,7 +862,7 @@ msgstr "Busca una altre consulta o selecciona una alte categoria (més amunt)."
 
 #: searx/templates/simple/messages/no_results.html:8
 msgid "Change the search engine used in the preferences:"
-msgstr "Caniva el motor de búsqueda utilitzat a les preferències:"
+msgstr "Canvia el motor de cerca utilitzat a les preferències:"
 
 #: searx/templates/simple/messages/no_results.html:9
 msgid "Switch to another instance:"
@@ -893,7 +895,7 @@ msgstr "Aquesta és la llista dels mòduls de resposta instantània de SearXNG."
 
 #: searx/templates/simple/preferences/answerers.html:29
 msgid "This is the list of plugins."
-msgstr "Això és la llista dels connectors."
+msgstr "Aquest és el llistat de les extensions."
 
 #: searx/templates/simple/preferences/autocomplete.html:2
 msgid "Autocomplete"
@@ -953,12 +955,12 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Indicar els paràmetres personalitzats en l'URL de preferències pot usar-"
-"se per a sincronitzar preferències entre aparells."
+"Especificar els paràmetres personalitzats en l'URL de preferències pot usar-"
+"se per sincronitzar entre dispositius."
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
-msgstr "Resolució de l'Open Access DOI"
+msgstr "Resolució del DOI"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
@@ -1029,8 +1031,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navega els resultats de búsqueda amb dreceres (requereix JavaScript). Prem "
-"la tecla \"h\" a una pàgina de resultat per rebres ajuda."
+"Navega pels resultats amb dreceres (requereix JavaScript). Prem la tecla \"h"
+"\" en una cerca per mostrar ajuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1086,7 +1088,7 @@ msgstr "Resultats en pestanyes noves"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links on new browser tabs"
-msgstr "Obre els enllaços de resultats en una pestanya nova"
+msgstr "Obre els enllaços en una nova pestanya"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1101,8 +1103,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Buscar inmediatament si s'ha seleccionat una categoria. Desactiva per a "
-"seleccionar categories múltiples."
+"Buscar immediatament si s'ha seleccionat una categoria. Deshabilita per a "
+"seleccionar múltiples categories"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1110,7 +1112,7 @@ msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change SearXNG layout"
-msgstr "Canvia la interfície del SearXNG"
+msgstr "Canvia l'aparença de SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1118,7 +1120,7 @@ msgstr "Estil del tema"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "Trieu automàtic per a mantenir la configuració del navegador"
+msgstr "Seleccioneu automàtic per seguir la configuració del navegador"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -1130,7 +1132,7 @@ msgstr "Claus d'accés per a motors privats"
 
 #: searx/templates/simple/preferences/ui_locale.html:2
 msgid "Interface language"
-msgstr "Llengua de la interfície"
+msgstr "Idioma de la interfície"
 
 #: searx/templates/simple/preferences/ui_locale.html:14
 msgid "Change the language of the layout"
@@ -1146,7 +1148,7 @@ msgstr "mostra el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:6
 msgid "hide media"
-msgstr "amaga el contingut multimèdia"
+msgstr "oculta el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
@@ -1159,11 +1161,11 @@ msgstr "Format"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Engine"
-msgstr "Motor"
+msgstr "Cercador"
 
 #: searx/templates/simple/result_templates/images.html:22
 msgid "View source"
-msgstr "Mostra el codi font"
+msgstr "Veure el codi font"
 
 #: searx/templates/simple/result_templates/map.html:12
 msgid "address"
@@ -1175,7 +1177,7 @@ msgstr "mostra el mapa"
 
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
-msgstr "amaga el mapa"
+msgstr "oculta el mapa"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1271,7 +1273,7 @@ msgstr "mostra el vídeo"
 
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "hide video"
-msgstr "amaga el vídeo"
+msgstr "oculta el vídeo"
 
 #~ msgid "Engine time (sec)"
 #~ msgstr "Temps del motor (segons)"
