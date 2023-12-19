@@ -57,6 +57,11 @@ class TestWebUtils(SearxTestCase):
                     ]
                 ),
             ),
+            (
+                'a class',
+                'a string with class.',
+                '<span class="highlight">a</span> string with <span class="highlight">class</span>.',
+            ),
         )
         for query, content, expected in data:
             self.assertEqual(webutils.highlight_content(content, query), expected)

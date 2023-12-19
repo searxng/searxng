@@ -290,10 +290,8 @@ def highlight_content(content, query):
         if len(qs) > 0:
             queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
     if len(queries) > 0:
-        for q in set(queries):
-            content = re.sub(
-                regex_highlight_cjk(q), f'<span class="highlight">{q}</span>'.replace('\\', r'\\'), content
-            )
+        regex = re.compile("|".join(map(regex_highlight_cjk, queries)))
+        return regex.sub(lambda match: f'<span class="highlight">{match.group(0)}</span>'.replace('\\', r'\\'), content)
     return content
 
 
