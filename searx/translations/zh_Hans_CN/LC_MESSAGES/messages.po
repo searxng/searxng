@@ -23,20 +23,22 @@
 # JonesBBQ <colson.xu@gmail.com>, 2023.
 # BernieHuang2008 <berniehuang2008@163.com>, 2023.
 # clsty <celestial.y@outlook.com>, 2023.
+# kirisameSoup <kirisoup@skiff.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-11-11 15:25+0000\n"
-"PO-Revision-Date: 2023-10-24 11:13+0000\n"
-"Last-Translator: clsty <celestial.y@outlook.com>\n"
+"PO-Revision-Date: 2023-12-04 03:38+0000\n"
+"Last-Translator: kirisameSoup <kirisoup@skiff.com>\n"
+"Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
+"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.2.1\n"
 "Generated-By: Babel 2.13.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -127,7 +129,7 @@ msgstr "程序包"
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr "问与答"
+msgstr "问答"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
@@ -231,7 +233,7 @@ msgstr "验证码"
 
 #: searx/webutils.py:56
 msgid "too many requests"
-msgstr "频繁请求"
+msgstr "请求过于频繁"
 
 #: searx/webutils.py:57
 msgid "access denied"
@@ -310,8 +312,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} 次引用，从 {firstCitationVelocityYear} 年到 "
-"{lastCitationVelocityYear} 年"
+"{firstCitationVelocityYear} 年至 {lastCitationVelocityYear} 年间总计 "
+"{numCitations} 次引用"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -753,11 +755,11 @@ msgstr "搜索网址"
 
 #: searx/templates/simple/elements/search_url.html:4
 msgid "Copied"
-msgstr ""
+msgstr "已复制"
 
 #: searx/templates/simple/elements/search_url.html:4
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
@@ -956,7 +958,7 @@ msgstr "选择 DOI 重写使用的服务"
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
-msgstr "这个标签页在用户界面中不存在，但你可以用 !bang 对这些引擎进行搜索。"
+msgstr "这个标签页在用户界面中不存在，但你可以使用 !bang 对这些引擎进行搜索。"
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1068,7 +1070,7 @@ msgstr "内容过滤"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:2
 msgid "Search on category select"
-msgstr "搜索特定类别"
+msgstr "在选中类别时立即进行搜索"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
@@ -1090,7 +1092,7 @@ msgstr "主题样式"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "自动（取决于您的浏览器设置）"
+msgstr "选择自动以跟随您的浏览器设置"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -1203,11 +1205,11 @@ msgstr "种子文件"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "播种者"
+msgstr "做种用户"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "接收者"
+msgstr "下载用户"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
@@ -1627,4 +1629,3 @@ msgstr "隐藏视频"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "我们没有找到任何结果。请使用其他关键词，或在更多类别中搜索。"
-

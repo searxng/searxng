@@ -8,6 +8,7 @@ from searx.utils import to_string, html_to_text
 
 search_url = None
 url_query = None
+url_prefix = ""
 content_query = None
 title_query = None
 content_html_to_text = False
@@ -129,7 +130,7 @@ def response(resp):
                 content = ""
             results.append(
                 {
-                    'url': to_string(url),
+                    'url': url_prefix + to_string(url),
                     'title': title_filter(to_string(title)),
                     'content': content_filter(to_string(content)),
                 }
@@ -138,7 +139,7 @@ def response(resp):
         for url, title, content in zip(query(json, url_query), query(json, title_query), query(json, content_query)):
             results.append(
                 {
-                    'url': to_string(url),
+                    'url': url_prefix + to_string(url),
                     'title': title_filter(to_string(title)),
                     'content': content_filter(to_string(content)),
                 }
