@@ -12,18 +12,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-12-08 07:07+0000\n"
 "Last-Translator: APoniatowski <adam@poniatowski.dev>\n"
-"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
-"searxng/af/>\n"
 "Language: af\n"
+"Language-Team: Afrikaans "
+"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -528,7 +527,8 @@ msgstr "Ek bevestig daar is geen bestaande gogga oor die probleem wat ek teekom"
 #, fuzzy
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"As dit 'n publieke geval is, spesifiseer asseblief die URL in die foutverslag"
+"As dit 'n publieke geval is, spesifiseer asseblief die URL in die "
+"foutverslag"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -633,7 +633,7 @@ msgstr "Terug na bo"
 msgid "Previous page"
 msgstr "Vorige bladsy"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Volgende bladsy"
 
@@ -849,28 +849,40 @@ msgstr ""
 msgid "currently, there are no cookies defined."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
@@ -924,7 +936,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dit is die lys van koekies en hul waardes wat SearXNG op jou rekenaar stoor."
+"Dit is die lys van koekies en hul waardes wat SearXNG op jou rekenaar "
+"stoor."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1002,8 +1015,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Hierdie koekies dien jou enigste gerief, ons gebruik nie hierdie koekies om "
-"jou op te spoor nie."
+"Hierdie koekies dien jou enigste gerief, ons gebruik nie hierdie koekies "
+"om jou op te spoor nie."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1033,8 +1046,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navigeer soekresultate met sneltoetse (JavaScript vereis). Druk \"h\"-"
-"sleutel op hoof- of resultaatbladsy om hulp te kry."
+"Navigeer soekresultate met sneltoetse (JavaScript vereis). Druk "
+"\"h\"-sleutel op hoof- of resultaatbladsy om hulp te kry."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1439,3 +1452,4 @@ msgstr "versteek video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+

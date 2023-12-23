@@ -24,20 +24,19 @@
 # nicfab <nicfab@icloud.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-12-10 13:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
-"searxng/it/>\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -645,7 +644,7 @@ msgstr "Torna in cima"
 msgid "Previous page"
 msgstr "Pagina precedente"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pagina successiva"
 
@@ -859,29 +858,41 @@ msgstr "Informazione!"
 msgid "currently, there are no cookies defined."
 msgstr "Attualmente non ci sono cookie definiti."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "Scusa!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "Non sono stati trovati risultati. Puoi provare a:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Aggiorna la pagina."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Cerca un'altra query o seleziona un'altra categoria (sopra)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Modifica il motore di ricerca utilizzato nelle preferenze:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Passa ad un'altra istanza:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -957,8 +968,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Nota: specificando le impostazioni personalizzate nell'URL di ricerca si può "
-"ridurre la privacy facendo trapelare dati ai siti cliccati."
+"Nota: specificando le impostazioni personalizzate nell'URL di ricerca si "
+"può ridurre la privacy facendo trapelare dati ai siti cliccati."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1046,8 +1057,8 @@ msgid ""
 "key on main or result page to get help."
 msgstr ""
 "Naviga tra i risultati della ricerca con i tasti di scelta rapida (è "
-"necessario JavaScript). Premi il tasto \"h\" nella pagina principale o in "
-"quella dei risultati per ottenere aiuto."
+"necessario JavaScript). Premi il tasto \"h\" nella pagina principale o in"
+" quella dei risultati per ottenere aiuto."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1714,3 +1725,4 @@ msgstr "nascondi video"
 #~ "non abbiamo trovato alcun risultato. "
 #~ "Prova una nuova ricerca, o cerca "
 #~ "in più categorie."
+

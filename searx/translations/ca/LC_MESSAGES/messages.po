@@ -17,20 +17,19 @@
 # akwceles <abadcopovisamuel@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-12-08 07:07+0000\n"
 "Last-Translator: Ivan Gabaldon <admin@inetol.net>\n"
-"Language-Team: Catalan <https://translate.codeberg.org/projects/searxng/"
-"searxng/ca/>\n"
 "Language: ca\n"
+"Language-Team: Catalan "
+"<https://translate.codeberg.org/projects/searxng/searxng/ca/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -518,12 +517,14 @@ msgstr "Obriu una incidència a GitHub"
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Comproveu si existeix alguna incidència oberta amb aquest cercador a GitHub"
+"Comproveu si existeix alguna incidència oberta amb aquest cercador a "
+"GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Confirmo que no hi ha cap incidència relacionada amb el problema que presento"
+"Confirmo que no hi ha cap incidència relacionada amb el problema que "
+"presento"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -630,7 +631,7 @@ msgstr "Torna al capdemunt"
 msgid "Previous page"
 msgstr "Pàgina anterior"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pàgina següent"
 
@@ -844,29 +845,41 @@ msgstr "Informació!"
 msgid "currently, there are no cookies defined."
 msgstr "actualment, no hi ha definida cap galeta."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "Disculpeu!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "No s'han trobat resultats. Pots porvar:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Refresca la pestanya."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Busca una altre consulta o selecciona una alte categoria (més amunt)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Canvia el motor de cerca utilitzat a les preferències:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Canvia a una altra instància:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -955,8 +968,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Especificar els paràmetres personalitzats en l'URL de preferències pot usar-"
-"se per sincronitzar entre dispositius."
+"Especificar els paràmetres personalitzats en l'URL de preferències pot "
+"usar-se per sincronitzar entre dispositius."
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1031,8 +1044,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navega pels resultats amb dreceres (requereix JavaScript). Prem la tecla \"h"
-"\" en una cerca per mostrar ajuda."
+"Navega pels resultats amb dreceres (requereix JavaScript). Prem la tecla "
+"\"h\" en una cerca per mostrar ajuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1103,8 +1116,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Buscar immediatament si s'ha seleccionat una categoria. Deshabilita per a "
-"seleccionar múltiples categories"
+"Buscar immediatament si s'ha seleccionat una categoria. Deshabilita per a"
+" seleccionar múltiples categories"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1702,3 +1715,4 @@ msgstr "oculta el vídeo"
 #~ "no hem trobat cap resultat. Feu "
 #~ "una consulta diferent o cerqueu en "
 #~ "més categories."
+
