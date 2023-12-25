@@ -92,8 +92,14 @@
       e.preventDefault();
       searxng.closeDetail();
     });
-    searxng.on('.result-detail-previous', 'click', e => searxng.selectPrevious(false));
-    searxng.on('.result-detail-next', 'click', e => searxng.selectNext(false));
+    searxng.on('.result-detail-previous', 'click', e => {
+      e.preventDefault();
+      searxng.selectPrevious(false)
+    });
+    searxng.on('.result-detail-next', 'click', e => {
+      e.preventDefault();
+      searxng.selectNext(false);
+    });
 
     w.addEventListener('scroll', function () {
       var e = d.getElementById('backToTop'),
