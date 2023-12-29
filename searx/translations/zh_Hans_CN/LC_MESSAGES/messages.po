@@ -24,13 +24,15 @@
 # BernieHuang2008 <berniehuang2008@163.com>, 2023.
 # clsty <celestial.y@outlook.com>, 2023.
 # kirisameSoup <kirisoup@skiff.com>, 2023.
+# err_connection_closed <err_connection_closed@users.noreply.translate.codeberg.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
-"PO-Revision-Date: 2023-12-04 03:38+0000\n"
-"Last-Translator: kirisameSoup <kirisoup@skiff.com>\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-12-27 07:56+0000\n"
+"Last-Translator: err_connection_closed <err_connection_closed@users.noreply."
+"translate.codeberg.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
 "searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
@@ -38,8 +40,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.2.1\n"
-"Generated-By: Babel 2.13.1\n"
+"X-Generator: Weblate 5.3.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -623,7 +625,7 @@ msgstr "返回顶部"
 msgid "Previous page"
 msgstr "上一页"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "下一页"
 
@@ -837,29 +839,41 @@ msgstr "信息！"
 msgid "currently, there are no cookies defined."
 msgstr "目前还没有在 Cookie 中存储任何信息。"
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "抱歉！"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "未找到结果，你可以尝试："
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr "没有更多结果。你可以尝试："
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "刷新页面。"
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "（在上方）对其他查询进行搜索，或选择其他类别。"
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "更改“首选项”中使用的搜索引擎："
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "切换至另一个 SearXNG 实例："
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr "对其他查询进行搜索，或选择其他类别。"
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr "使用返回按钮按钮返回上一页。"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17

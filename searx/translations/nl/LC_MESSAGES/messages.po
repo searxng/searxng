@@ -19,20 +19,19 @@
 # microsoftocsharp <kottiberyu@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-12-10 13:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
-"searxng/nl/>\n"
 "Language: nl\n"
+"Language-Team: Dutch "
+"<https://translate.codeberg.org/projects/searxng/searxng/nl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -639,7 +638,7 @@ msgstr "Terug naar boven in"
 msgid "Previous page"
 msgstr "Vorige pagina"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Volgende pagina"
 
@@ -853,29 +852,41 @@ msgstr "Informatie!"
 msgid "currently, there are no cookies defined."
 msgstr "er zijn momenteel geen cookies gedefinieerd."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "Sorry!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "Geen zoekresultaten. Probeer:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Ververs de pagina"
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Zoek op iets anders of selecteer een andere categorie (zie boven)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Verander de zoekmachine gebruikt in de voorkeuren:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Verbind met een andere instance:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1112,8 +1123,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Voer zoekopdracht direct uit wanneer categorie is geselecteerd. Zet uit om "
-"meerdere categorieën te selecteren."
+"Voer zoekopdracht direct uit wanneer categorie is geselecteerd. Zet uit "
+"om meerdere categorieën te selecteren."
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1709,3 +1720,4 @@ msgstr "verberg video"
 #~ "We konden geen resultaten vinden. "
 #~ "Probeer een andere zoekopdracht, of zoek"
 #~ " in meer categorieën."
+

@@ -13,20 +13,19 @@
 # RaptaG <george-raptis@tutamail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-12-21 20:16+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
-"searxng/el/>\n"
 "Language: el_GR\n"
+"Language-Team: Greek "
+"<https://translate.codeberg.org/projects/searxng/searxng/el/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -637,7 +636,7 @@ msgstr "Επιστροφή στην κορυφή"
 msgid "Previous page"
 msgstr "Προηγούμενη σελίδα"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Επόμενη σελίδα"
 
@@ -851,29 +850,41 @@ msgstr "Πληροφορίες!"
 msgid "currently, there are no cookies defined."
 msgstr "προς το παρόν, δεν έχουν οριστεί cookies."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "Συγνώμη!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "Δεν βρέθηκαν αποτελέσματα. Μπορείτε να δοκιμάσετε:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Ανανέωση σελίδας."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Υποβάλετε νέα αναζήτηση ή επιλέξτε άλλη κατηγορία (επάνω)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Αλλάξτε την μηχανή αναζήτησης που χρησιμοποιείται στις ρυθμίσεις:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Αλλαγή σε άλλη έκδοση:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1698,3 +1709,4 @@ msgstr "απόκρυψη βίντεο"
 #~ "δε βρέθηκαν αποτελέσματα. Παρακαλούμε "
 #~ "χρησιμοποιήστε άλλη αναζήτηση ή ψάξτε σε"
 #~ " περισσότερες κατηγορίες."
+

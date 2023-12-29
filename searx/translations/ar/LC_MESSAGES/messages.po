@@ -14,21 +14,20 @@
 # Cavemanly <k.adel.2m@protonmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
 "PO-Revision-Date: 2023-11-17 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.1\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -626,7 +625,7 @@ msgstr "العودة للأعلى"
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "الصفحة التالية"
 
@@ -840,29 +839,41 @@ msgstr "معلومة !"
 msgid "currently, there are no cookies defined."
 msgstr "حاليا لم تقم بتحديد أي مِن كعكات الكوكيز."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "عفوا !"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "لم يتم العثور على نتائج. يمكنك محاولة:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "حدث الصفحة."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "ابحث عن استعلام آخر أو اختار فئتار فئة أخرى (أعلاه)"
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "قم بتغيير محرك البحث المستخدم في الإعدادات:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "قم بتبديل SearxNG إلى نسخة أخرى:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1026,8 +1037,9 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"تنقل في نتائج البحث باستخدام مفاتيح التشغيل السريع (يتطلب JavaScript). اضغط "
-"على المفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج للحصول على المساعدة."
+"تنقل في نتائج البحث باستخدام مفاتيح التشغيل السريع (يتطلب JavaScript). "
+"اضغط على المفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج للحصول على "
+"المساعدة."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1093,8 +1105,7 @@ msgstr "البحث في الفئة المحددة"
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
-msgstr ""
-"قم بإجراء البحث على الفور إذا تم تحديد فئة. قم بتعطيل لتحديد فئات متعددة"
+msgstr "قم بإجراء البحث على الفور إذا تم تحديد فئة. قم بتعطيل لتحديد فئات متعددة"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1678,3 +1689,4 @@ msgstr "إخفاء الفيديو"
 #~ "لم نتوصل إلى العثور على أية نتيجة."
 #~ " الرجاء إعادة صياغة طلب البحث أو "
 #~ "إبحث مع تحديد أكثر من فئة."
+
