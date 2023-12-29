@@ -26,13 +26,14 @@
 # mester <oscarodriguez56@gmail.com>, 2023.
 # gallegonovato <fran-carro@hotmail.es>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# 1024mb <aberetta@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-11 15:25+0000\n"
-"PO-Revision-Date: 2023-11-14 13:13+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-12-29 07:07+0000\n"
+"Last-Translator: 1024mb <aberetta@protonmail.com>\n"
 "Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
 "searxng/es/>\n"
 "Language: es\n"
@@ -40,8 +41,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1\n"
-"Generated-By: Babel 2.13.1\n"
+"X-Generator: Weblate 5.3.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -183,11 +184,11 @@ msgstr "Error al cargar la siguiente página"
 
 #: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
-msgstr "Parámetros incorrectos, por favor, cambia tus preferencias"
+msgstr "Ajustes inválidos, por favor, cambia tus preferencias"
 
 #: searx/webapp.py:509
 msgid "Invalid settings"
-msgstr "Ajustes no válidos"
+msgstr "Ajustes inválidos"
 
 #: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
@@ -324,8 +325,8 @@ msgid ""
 " WebP."
 msgstr ""
 "No se pudo leer la URL de esa imagen. Esto puede deberse a un formato de "
-"archivo no compatible. TinEye solo admite imágenes JPEG, PNG, GIF, BMP, "
-"TIFF o WebP."
+"archivo no compatible. TinEye solo admite imágenes que son JPEG, PNG, GIF, "
+"BMP, TIFF o WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -366,13 +367,11 @@ msgstr "Calidad de los archivos"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
-msgstr ""
-"Convierte cadenas de texto a diferentes valores extraído con funciones "
-"'hash'."
+msgstr "Convierte cadenas de texto a diferentes resúmenes hash."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "procesar hash"
+msgstr "resumen de hash"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
@@ -417,16 +416,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Este plug-in comprueba si la dirección de las solicitudes son nodo de "
-"salida de Tor, como chec.torproject.org, pero desde SearXNG."
+"Este plug-in comprueba si la dirección de las solicitudes son nodo de salida "
+"de Tor, e informa al usuario si lo es; como check.torproject.org, pero desde "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"No pudimos descargar la lista de nodos de salida de tor desde: "
-"https://check.torproject.org/exit-addresses"
+"No se pudo descargar la lista de nodos de salida de Tor desde: https://check."
+"torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -442,11 +442,11 @@ msgstr "No estás usando Tor y tienes esta dirección IP externa: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
-msgstr "Eliminador de URL rastreadora"
+msgstr "Removedor de URL rastreadora"
 
 #: searx/plugins/tracker_url_remover.py:30
 msgid "Remove trackers arguments from the returned URL"
-msgstr "Eliminar los argumentos de los rastreadores en la URL devuelta"
+msgstr "Remueve los argumentos de rastreadores de la URL devuelta"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -459,7 +459,7 @@ msgstr "Ir a %(search_page)s."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
-msgstr "Página de búsqueda"
+msgstr "página de búsqueda"
 
 #: searx/templates/simple/base.html:49
 msgid "About"
@@ -647,7 +647,7 @@ msgstr "Inicio"
 msgid "Previous page"
 msgstr "Página anterior"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Siguiente página"
 
@@ -861,29 +861,41 @@ msgstr "¡Información!"
 msgid "currently, there are no cookies defined."
 msgstr "No existen cookies definidas actualmente."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "¡Lo sentimos!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "No se encontraron resultados. Puedes intentar:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr "No hay más resultados. Puedes probar a:"
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Recarga la página."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Haz otra consulta o selecciona otra categoría (arriba)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Cambiar el motor de búsqueda utilizado en las preferencias:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Cambiar a otra instancia:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr "Realiza otra consulta o selecciona otra categoría."
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr "Vuelve a la página anterior usando el botón de página anterior."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
