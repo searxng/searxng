@@ -192,7 +192,7 @@ class OnlineProcessor(EngineProcessor):
             self.logger.exception('Too many requests')
         except SearxEngineAccessDeniedException as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('Searx is blocked')
+            self.logger.exception('SearXNG is blocked')
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
             self.logger.exception('exception : {0}'.format(e))
