@@ -6,7 +6,7 @@
 # pylint: disable=use-dict-literal
 
 import json
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 
 import lxml
 from httpx import HTTPError
@@ -16,15 +16,24 @@ from searx.engines import (
     engines,
     google,
 )
-from searx.network import get as http_get
+from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
 
 
-def get(*args, **kwargs):
+def update_kwargs(**kwargs):
     if 'timeout' not in kwargs:
         kwargs['timeout'] = settings['outgoing']['request_timeout']
     kwargs['raise_for_httperror'] = True
+
+
+def get(*args, **kwargs):
+    update_kwargs(**kwargs)
     return http_get(*args, **kwargs)
+
+
+def post(*args, **kwargs):
+    update_kwargs(**kwargs)
+    return http_post(*args, **kwargs)
 
 
 def brave(query, _lang):
@@ -145,6 +154,18 @@ def seznam(query, _lang):
     ]
 
 
+def stract(query, _lang):
+    # stract autocompleter (beta)
+    url = f"https://stract.com/beta/api/autosuggest?q={quote_plus(query)}"
+
+    resp = post(url)
+
+    if not resp.ok:
+        return []
+
+    return [suggestion['raw'] for suggestion in resp.json()]
+
+
 def startpage(query, sxng_locale):
     """Autocomplete from Startpage. Supports Startpage's languages"""
     lui = engines['startpage'].traits.get_language(sxng_locale, 'english')
@@ -223,6 +244,7 @@ backends = {
     'mwmbl': mwmbl,
     'seznam': seznam,
     'startpage': startpage,
+    'stract': stract,
     'swisscows': swisscows,
     'qwant': qwant,
     'wikipedia': wikipedia,
