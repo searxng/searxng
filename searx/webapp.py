@@ -673,7 +673,9 @@ def search():
 
     # 2. add Server-Timing header for measuring performance characteristics of
     # web applications
-    request.timings = result_container.get_timings()  # pylint: disable=assigning-non-slot
+    timings = result_container.get_timings()
+    request.timings = timings
+    longest_loading_time = result_container.get_longest_loading_time()
 
     # 3. formats without a template
 
@@ -791,7 +793,9 @@ def search():
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),
-        timeout_limit = request.form.get('timeout_limit', None)
+        timeout_limit = request.form.get('timeout_limit', None),
+        longest_loading_time = longest_loading_time,
+        loading_times = timings,
         # fmt: on
     )
 

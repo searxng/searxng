@@ -441,5 +441,8 @@ class ResultContainer:
     def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
         self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
-    def get_timings(self):
+    def get_timings(self) -> List[Timing]:
         return self.timings
+
+    def get_longest_loading_time(self) -> Timing:
+        return max(self.timings, key=itemgetter(1))

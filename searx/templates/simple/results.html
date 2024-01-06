@@ -35,7 +35,22 @@
     <div id="sidebar">
 
         {%- if number_of_results != '0' -%}
-        <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
+        <p id="result_count">
+            <small>{{ _('Number of results') }}: {{ number_of_results }}</small>
+        </p>
+        <details>
+            <summary>
+                <small>Longest loading time: {{ longest_loading_time.load }} from {{ longest_loading_time.engine }}</small>
+            </summary>
+            <div>
+                <ul>
+                    {% for timing in loading_times %}
+                        <li>
+                            <small>{{ timing.load }} from {{ timing.engine }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+        </details>
         {%- endif -%}
 
         {%- if infoboxes -%}
