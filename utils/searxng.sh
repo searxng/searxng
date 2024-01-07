@@ -9,8 +9,8 @@ SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET:-true}"
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 # shellcheck source=utils/lib_redis.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib_redis.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
+# shellcheck source=utils/brand.sh
+source "${REPO_ROOT}/utils/brand.sh"
 
 SERVICE_NAME="searxng"
 SERVICE_USER="searxng"
@@ -159,7 +159,7 @@ searxng.instance.env() {
         echo "  SEARXNG_INTERNAL_HTTP: ${SEARXNG_INTERNAL_HTTP}"
     fi
     cat <<EOF
-environment ${SEARXNG_SRC}/utils/brand.env:
+environment:
   GIT_URL              : ${GIT_URL}
   GIT_BRANCH           : ${GIT_BRANCH}
   SEARXNG_URL          : ${SEARXNG_URL}
@@ -527,7 +527,6 @@ searxng.install.settings() {
 
     if ! [[ -f "${SEARXNG_SRC}/.git/config" ]]; then
         die "Before install settings, first install SearXNG."
-        exit 42
     fi
 
     mkdir -p "$(dirname "${SEARXNG_SETTINGS_PATH}")"
@@ -608,8 +607,8 @@ searxng.install.uwsgi.http() {
 
 searxng.install.uwsgi.socket() {
     rst_para "Install ${SEARXNG_UWSGI_APP} using socket at: ${SEARXNG_UWSGI_SOCKET}"
-    mkdir -p "$(dirname ${SEARXNG_UWSGI_SOCKET})"
-    chown -R "${SERVICE_USER}:${SERVICE_GROUP}" "$(dirname ${SEARXNG_UWSGI_SOCKET})"
+    mkdir -p "$(dirname "${SEARXNG_UWSGI_SOCKET}")"
+    chown -R "${SERVICE_USER}:${SERVICE_GROUP}" "$(dirname "${SEARXNG_UWSGI_SOCKET}")"
 
     case $DIST_ID-$DIST_VERS in
         fedora-*)

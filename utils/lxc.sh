@@ -4,8 +4,6 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
 
 # load environment of the LXC suite
 LXC_ENV="${LXC_ENV:-${REPO_ROOT}/utils/lxc-searxng.env}"

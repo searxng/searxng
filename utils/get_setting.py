@@ -12,17 +12,6 @@ from pathlib import Path
 repo_root = Path(__file__).resolve().parent.parent
 
 
-# If you add or remove variables here, do not forget to update:
-# - ./docs/admin/engines/settings.rst
-# - ./docs/dev/makefile.rst (section make buildenv)
-
-name_val = [
-    ("SEARXNG_URL", "server.base_url"),
-    ("SEARXNG_PORT", "server.port"),
-    ("SEARXNG_BIND_ADDRESS", "server.bind_address"),
-]
-
-
 def main(setting_name):
 
     settings_path = repo_root / "searx" / "settings.yml"
