@@ -33,20 +33,21 @@
     {%- endif %}
 
     <div id="sidebar">
-
-        {%- if number_of_results != '0' -%}
-        <details>
-            <summary>
-                <small id="result_count">{{ _('Number of results') }}: {{ number_of_results }}</small>
-                <small>{{ longest_load_time_formatted }}</small>
-            </summary>
-            <ul>
-                {% for engine, timing in loading_times %}
-                    <li>{{ engine }}: {{ timing }}</li>
-                {% endfor %}
-            </ul>
-        </details>
-        {%- endif -%}
+        <div id="results_info">
+            <details class="sidebar-collapsable">
+                <summary class="title">
+                    {%- if number_of_results != '0' -%}
+                        <small id="result_count">{{ _('Number of results') }}: {{ number_of_results }}; </small>
+                    {%- endif -%}
+                    <small>{{ longest_load_time_formatted }}</small>
+                </summary>
+                <ul>
+                    {% for engine, timing in loading_times %}
+                        <li>{{ engine }}: <b>{{ timing }}</b></li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
 
         {%- if infoboxes -%}
           <div id="infoboxes">
