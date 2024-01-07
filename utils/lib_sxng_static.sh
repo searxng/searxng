@@ -37,7 +37,7 @@ is.static.build.commit() {
 
     # check all files of the commit belongs to $STATIC_BUILT_PATHS
     commit_files=$(git diff-tree --no-commit-id --name-only -r "${commit_sha}")
-    for i in ${STATIC_BUILT_PATHS[*]}; do
+    for i in "${STATIC_BUILT_PATHS[@]}"; do
         # remove files of ${STATIC_BUILT_PATHS}
         commit_files=$(echo "${commit_files}" | grep -v "^${i}")
     done
