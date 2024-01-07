@@ -673,7 +673,7 @@ def search():
 
     # 2. add Server-Timing header for measuring performance characteristics of
     # web applications
-    timings = result_container.get_timings()
+    timings = result_container.get_timings()  # pylint: disable=assigning-non-slot
     request.timings = timings
     longest_loading_time = result_container.get_longest_loading_time()
 
