@@ -794,8 +794,14 @@ def search():
             fallback=request.preferences.get_value("language")
         ),
         timeout_limit = request.form.get('timeout_limit', None),
-        longest_loading_time = longest_loading_time,
-        loading_times = timings,
+        longest_load_time_formatted = gettext("Took {seconds} second(s)")
+            .format(seconds="{:.2f}".format(longest_loading_time[1])),
+        # List of tuples of (engine, load time); Displayed in the sidebar
+        # Sorted by load time, descending
+        loading_times = sorted((
+            (timing.engine, "{:.2f}".format(timing.load))
+            for timing in timings
+        ), key=lambda x: x[1], reverse=True),
         # fmt: on
     )
 
