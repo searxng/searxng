@@ -66,9 +66,7 @@ search:
     - html
 
 server:
-  # If you change port, bind_address or base_url don't forget to rebuild
-  # instance's environment (make buildenv). Is overwritten by ${SEARXNG_PORT}
-  # and ${SEARXNG_BIND_ADDRESS}
+  # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
   port: 8888
   bind_address: "127.0.0.1"
   # public URL of the instance, to ensure correct inbound links. Is overwritten

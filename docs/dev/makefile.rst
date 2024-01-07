@@ -61,13 +61,9 @@ working tree and release a ``make install`` to get a virtualenv with a
    $ make install
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
-   PYENV     OK
    PYENV     [install] pip install -e 'searx[test]'
    ...
-   Successfully installed argparse-1.4.0 searx
-   BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
-   BUILDENV  INFO:searx:Initialisation done
-   BUILDENV  build utils/brand.env
+   Successfully installed searxng-2023.7.19+a446dea1b
 
 If you release ``make install`` multiple times the installation will only
 rebuild if the sha256 sum of the *requirement files* fails.  With other words:
@@ -82,13 +78,9 @@ the check fails if you edit the requirements listed in
    ...
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
-   PYENV     OK
    PYENV     [install] pip install -e 'searx[test]'
    ...
-   Successfully installed argparse-1.4.0 searx
-   BUILDENV  INFO:searx:load the default settings from ./searx/settings.yml
-   BUILDENV  INFO:searx:Initialisation done
-   BUILDENV  build utils/brand.env
+   Successfully installed searxng-2023.7.19+a446dea1b
 
 .. sidebar:: drop environment
 
@@ -97,67 +89,6 @@ the check fails if you edit the requirements listed in
 
 If you think, something goes wrong with your ./local environment or you change
 the :origin:`setup.py` file, you have to call :ref:`make clean`.
-
-.. _make buildenv:
-
-``make buildenv``
-=================
-
-Rebuild instance's environment with the modified settings from the
-:ref:`settings brand` and :ref:`settings server` section of your
-:ref:`settings.yml <settings location>`.
-
-  What is the :origin:`utils/brand.env` needed for and why do you need to rebuild
-  it if necessary?
-
-  Short answer: :ref:`installation and maintenance <searxng maintenance>`
-  scripts are running outside of instance's runtime environment and need some
-  values defined in the runtime environment.
-
-All the SearXNG setups are centralized in the :ref:`settings.yml` file.  This
-setup is available as long we are in a *installed instance*.  E.g. the
-*installed instance* on the server or the *installed developer instance* at
-``./local`` (the later one is created by a :ref:`make install <make install>` or
-:ref:`make run <make run>`).
-
-Tasks running outside of an *installed instance*, especially :ref:`installation
-and maintenance <searxng maintenance>` tasks running at (pre-) installation time
-do not have access to the SearXNG setup (from a *installed instance*).  Those
-tasks need a *build environment*.
-
-The ``make buildenv`` target will update the *build environment* in:
-
-- :origin:`utils/brand.env`
-
-Tasks running outside of an *installed instance*, need the following settings
-from the YAML configuration:
-
-- ``SEARXNG_URL`` from :ref:`server.base_url <settings  server>` (aka
-  ``PUBLIC_URL``)
-- ``SEARXNG_BIND_ADDRESS`` from :ref:`server.bind_address <settings server>`
-- ``SEARXNG_PORT`` from :ref:`server.port <settings server>`
-
-The ``GIT_URL`` and ``GIT_BRANCH`` in the origin:`utils/brand.env` file, are
-read from the git VCS and the branch that is checked out when ``make
-buildenv`` command runs.
-
-.. _brand:
-
-**I would like to create my own brand, how should I proceed?**
-
-Create a remote branch (``example.org``), checkout the remote branch (on your
-local developer desktop) and in the :origin:`searx/settings.yml` file in the
-:ref:`settings server` section set ``base_url``.  Run ``make buildenv`` and
-create a commit for your brand.
-
-On your server you clone the branch (``example.org``) into your HOME folder
-``~`` from where you run the :ref:`installation <installation>` and
-:ref:`maintenance <searxng maintenance>` task.
-
-To upgrade you brand, rebase on SearXNG's master branch (on your local
-developer desktop), force push it to your remote branch.  Go to your server, do
-a force pull and run :ref:`sudo -H ./utils/searxng.sh instance update <update
-searxng>`.
 
 .. _make node.env:
 

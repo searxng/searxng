@@ -56,7 +56,7 @@ test.shell:
 	$(Q)shellcheck -x -s dash \
 		dockerfiles/docker-entrypoint.sh
 	$(Q)shellcheck -x -s bash \
-		utils/brand.env \
+		utils/brand.sh \
 		$(MTOOLS) \
 		utils/lib.sh \
 		utils/lib_sxng*.sh \
@@ -74,7 +74,6 @@ test.shell:
 
 # wrap ./manage script
 
-MANAGE += buildenv
 MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.traits data.useragents
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
