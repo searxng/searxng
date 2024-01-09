@@ -1217,6 +1217,13 @@ engines:
       require_api_key: false
       results: JSON
 
+  # - name: mullvadleta
+  #   engine: mullvad_leta
+  #   use_cache: true  # Only 100 non-cache searches per day, suggested only for private instances
+  #   search_url: https://leta.mullvad.net
+  #   categories: [general, web]
+  #   shortcut: ml
+
   - name: odysee
     engine: odysee
     shortcut: od
