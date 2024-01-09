@@ -103,11 +103,13 @@ from urllib.parse import (
     parse_qs,
 )
 
+from dateutil import parser
 from lxml import html
 
 from searx import locales
 from searx.utils import (
     extract_text,
+    eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
     js_variable_to_python,
@@ -207,6 +209,16 @@ def request(query, params):
     logger.debug("cookies %s", params['cookies'])
 
 
+def _extract_published_date(published_date_raw):
+    if published_date_raw is None:
+        return None
+
+    try:
+        return parser.parse(published_date_raw)
+    except parser.ParserError:
+        return None
+
+
 def response(resp):
 
     if brave_category == 'search':
@@ -252,13 +264,15 @@ def _parse_search(resp):
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
-        content_tag = eval_xpath_getindex(result, './/div[@class="snippet-description"]', 0, default='')
+        content_tag = eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
+        pub_date_raw = eval_xpath(result, 'substring-before(.//div[contains(@class, "snippet-description")], "-")')
         img_src = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
 
         item = {
             'url': url,
             'title': extract_text(title_tag),
             'content': extract_text(content_tag),
+            'publishedDate': _extract_published_date(pub_date_raw),
             'img_src': img_src,
         }
 
@@ -275,6 +289,10 @@ def _parse_search(resp):
                 item['iframe_src'] = iframe_src
                 item['template'] = 'videos.html'
                 item['thumbnail'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
+                pub_date_raw = extract_text(
+                    eval_xpath(video_tag, './/div[contains(@class, "snippet-attributes")]/div/text()')
+                )
+                item['publishedDate'] = _extract_published_date(pub_date_raw)
             else:
                 item['img_src'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
 
@@ -300,6 +318,7 @@ def _parse_news(json_resp):
             'url': result['url'],
             'title': result['title'],
             'content': result['description'],
+            'publishedDate': _extract_published_date(result['age']),
         }
         if result['thumbnail'] is not None:
             item['img_src'] = result['thumbnail']['src']
@@ -339,6 +358,7 @@ def _parse_videos(json_resp):
             'template': 'videos.html',
             'length': result['video']['duration'],
             'duration': result['video']['duration'],
+            'publishedDate': _extract_published_date(result['age']),
         }
 
         if result['thumbnail'] is not None:
