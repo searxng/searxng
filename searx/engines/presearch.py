@@ -30,6 +30,7 @@ about = {
     "results": "JSON",
 }
 paging = True
+safesearch = True
 time_range_support = True
 categories = ["general", "web"]  # general, images, videos, news
 
@@ -45,18 +46,18 @@ def init(_):
         raise ValueError(f'presearch search_type: {search_type}')
 
 
-def _get_request_id(query, page, time_range, safesearch):
+def _get_request_id(query, page, time_range, safesearch_param):
     args = {
         "q": query,
         "page": page,
     }
     if time_range:
-        args["time_range"] = time_range
+        args["time"] = time_range
 
     url = f"{base_url}/{search_type}?{urlencode(args)}"
     headers = {
         'User-Agent': gen_useragent(),
-        'Cookie': f"b=1;presearch_session=;use_safe_search={safesearch_map[safesearch]}",
+        'Cookie': f"b=1;presearch_session=;use_safe_search={safesearch_map[safesearch_param]}",
     }
     resp_text = get(url, headers=headers).text  # type: ignore
 
@@ -137,7 +138,7 @@ def response(resp):
         results = parse_search_query(json_resp['results'])
 
     elif search_type == 'images':
-        for item in json_resp['images']:
+        for item in json_resp.get('images', []):
             results.append(
                 {
                     'template': 'images.html',
@@ -152,7 +153,7 @@ def response(resp):
         # The results in the video category are most often links to pages that contain
         # a video and not to a video stream --> SearXNG can't use the video template.
 
-        for item in json_resp['videos']:
+        for item in json_resp.get('videos', []):
             metadata = [x for x in [item.get('description'), item.get('duration')] if x]
             results.append(
                 {
@@ -165,7 +166,7 @@ def response(resp):
             )
 
     elif search_type == 'news':
-        for item in json_resp['news']:
+        for item in json_resp.get('news', []):
             metadata = [x for x in [item.get('source'), item.get('time')] if x]
             results.append(
                 {
