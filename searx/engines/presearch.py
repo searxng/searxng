@@ -113,7 +113,9 @@ def parse_search_query(json_results):
             value = _strip_leading_strings(value)
             attributes.append({'label': label, 'value': value})
         content = []
-        for item in [info['subtitle'], info['description']]:
+        for item in [info.get('subtitle'), info.get('description')]:
+            if not item:
+                continue
             item = _strip_leading_strings(html_to_text(item))
             if item:
                 content.append(item)
@@ -135,7 +137,7 @@ def response(resp):
     json_resp = resp.json()
 
     if search_type == 'search':
-        results = parse_search_query(json_resp['results'])
+        results = parse_search_query(json_resp.get('results'))
 
     elif search_type == 'images':
         for item in json_resp.get('images', []):
@@ -143,9 +145,9 @@ def response(resp):
                 {
                     'template': 'images.html',
                     'title': item['title'],
-                    'url': item['link'],
-                    'img_src': item['image'],
-                    'thumbnail_src': item['thumbnail'],
+                    'url': item.get('link'),
+                    'img_src': item.get('image'),
+                    'thumbnail_src': item.get('thumbnail'),
                 }
             )
 
@@ -158,7 +160,7 @@ def response(resp):
             results.append(
                 {
                     'title': item['title'],
-                    'url': item['link'],
+                    'url': item.get('link'),
                     'content': '',
                     'metadata': ' / '.join(metadata),
                     'img_src': item.get('image'),
@@ -171,8 +173,8 @@ def response(resp):
             results.append(
                 {
                     'title': item['title'],
-                    'url': item['link'],
-                    'content': item['description'],
+                    'url': item.get('link'),
+                    'content': item.get('description', ''),
                     'metadata': ' / '.join(metadata),
                     'img_src': item.get('image'),
                 }
