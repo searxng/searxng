@@ -1347,10 +1347,12 @@ engines:
     search_type: search
     categories: [general, web]
     shortcut: ps
+    timeout: 4.0
     disabled: true
 
   - name: presearch images
     engine: presearch
+    network: presearch
     search_type: images
     categories: [images, web]
     timeout: 4.0
@@ -1359,6 +1361,7 @@ engines:
 
   - name: presearch videos
     engine: presearch
+    network: presearch
     search_type: videos
     categories: [general, web]
     timeout: 4.0
@@ -1367,6 +1370,7 @@ engines:
 
   - name: presearch news
     engine: presearch
+    network: presearch
     search_type: news
     categories: [news, web]
     timeout: 4.0
