@@ -49,8 +49,4 @@
 {%- if result.mtype %}<tr><td>{{ _('Type') }}</td><td>{{ result.mtype|safe }}/{{ result.subtype|safe }}</td></tr>{% endif -%}
 </table>
 
-{%- if rtl -%}
-{{ result_sub_footer(result) }}
-{%- else -%}
 {{ result_footer(result) }}
-{%- endif -%}
