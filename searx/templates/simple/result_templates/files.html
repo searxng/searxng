@@ -12,7 +12,7 @@
 {%- endif -%}
 
 {%- if result.embedded -%}
-<div id="result-media-{{ index }}" class="collapse">
+<div id="result-media-{{ index }}" class="collapse invisible">
    {{- result.embedded|safe -}}
 </div>
 {%- endif -%}
