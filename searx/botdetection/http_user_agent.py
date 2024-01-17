@@ -35,7 +35,7 @@ USER_AGENT = (
     + r'|HttpClient|Jersey|Python|libwww-perl|Ruby|SynHttpClient|UniversalFeedParser|Googlebot|GoogleImageProxy'
     + r'|bingbot|Baiduspider|yacybot|YandexMobileBot|YandexBot|Yahoo! Slurp|MJ12bot|AhrefsBot|archive.org_bot|msnbot'
     + r'|MJ12bot|SeznamBot|linkdexbot|Netvibes|SMTBot|zgrab|James BOT|Sogou|Abonti|Pixray|Spinn3r|SemrushBot|Exabot'
-    + r'|ZmEu|BLEXBot|bitlybot'
+    + r'|ZmEu|BLEXBot|bitlybot|HeadlessChrome'
     # unmaintained Farside instances
     + r'|'
     + re.escape(r'Mozilla/5.0 (compatible; Farside/0.1.0; +https://farside.link)')
