@@ -1,4 +1,4 @@
-test.help(){
+test.help() {
     cat <<EOF
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
@@ -9,6 +9,7 @@ test.:
   coverage  : run unit tests with coverage
   robot     : run robot test
   rst       : test .rst files incl. README.rst
+  int       : run integraiton tests on engines
   clean     : clean intermediate test stuff
 EOF
 }
@@ -21,7 +22,8 @@ test.yamllint() {
 
 test.pylint() {
     # shellcheck disable=SC2086
-    (   set -e
+    (
+        set -e
         build_msg TEST "[pylint] \$PYLINT_FILES"
         pyenv.activate
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
@@ -37,8 +39,8 @@ test.pylint() {
         build_msg TEST "[pylint] searx tests"
         python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
-	    --ignore=searx/engines \
-	    searx tests
+            --ignore=searx/engines \
+            searx tests
     )
     dump_return $?
 }
@@ -49,13 +51,13 @@ test.pyright() {
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
     build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
-    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
-        | grep -v ".py$" \
-        | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
-        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
-        | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "categories" is not defined'
+    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json |
+        grep -v ".py$" |
+        grep -v '/engines/.*.py.* - warning: "logger" is not defined' |
+        grep -v '/plugins/.*.py.* - error: "logger" is not defined' |
+        grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' |
+        grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' |
+        grep -v '/engines/.*.py.* - warning: "categories" is not defined'
     dump_return $?
 }
 
@@ -73,7 +75,8 @@ test.unit() {
 
 test.coverage() {
     build_msg TEST 'unit test coverage'
-    (   set -e
+    (
+        set -e
         pyenv.activate
         python -m nose2 -C --log-capture --with-coverage --coverage searx -s tests/unit
         coverage report
@@ -92,7 +95,7 @@ test.robot() {
 test.rst() {
     build_msg TEST "[reST markup] ${RST_FILES[*]}"
     for rst in "${RST_FILES[@]}"; do
-        pyenv.cmd rst2html.py --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
+        pyenv.cmd rst2html.py --halt error "$rst" >/dev/null || die 42 "fix issue in $rst"
     done
 }
 
@@ -103,9 +106,14 @@ test.pybabel() {
     pyenv.cmd pybabel extract -F babel.cfg -o "${TEST_BABEL_FOLDER}/messages.pot" searx
 }
 
-test.clean() {
-    build_msg CLEAN  "test stuff"
-    rm -rf geckodriver.log .coverage coverage/
+test.int() {
+    build_msg TEST 'tests/integration'
+    pyenv.cmd python -m nose2 -s tests/integration
     dump_return $?
 }
 
+test.clean() {
+    build_msg CLEAN "test stuff"
+    rm -rf geckodriver.log .coverage coverage/
+    dump_return $?
+}
