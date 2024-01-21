@@ -45,8 +45,6 @@ GECKODRIVER_VERSION="v0.33.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
-# add one or more engines, comma seperated, here to only test a subset of engines
-INTEGRATION_ENGINES="google"
 
 _dev_redis_sock="/usr/local/searxng-redis/run/redis.sock"
 # set SEARXNG_REDIS_URL if it is not defined and "{_dev_redis_sock}" exists.

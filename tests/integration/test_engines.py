@@ -16,9 +16,6 @@ logger.level = logging.INFO
 stream_handler = logging.StreamHandler(sys.stdout)
 logger.addHandler(stream_handler)
 
-SAFESEARCH = 0
-PAGENO = 1
-
 
 def test_single_engine(app: Flask, engine_name: str) -> Tuple[str, Optional[Exception], int]:
     logger.debug(f'Testing Engine: {engine_name}')
