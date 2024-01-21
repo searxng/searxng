@@ -8,7 +8,10 @@ import logging
 from flask import Flask
 from dotenv import load_dotenv, find_dotenv
 
-logger = logging.getLogger()
+# Root directeory .env.test file
+load_dotenv(find_dotenv("../../.env.test", raise_error_if_not_found=False))
+
+logger = logging.getLogger('integration-test')
 logger.level = logging.INFO
 stream_handler = logging.StreamHandler(sys.stdout)
 logger.addHandler(stream_handler)
@@ -18,8 +21,7 @@ PAGENO = 1
 
 
 def test_single_engine(app: Flask, engine_name: str) -> Tuple[str, Optional[Exception], int]:
-    logger.debug('---------------------------')
-    logger.info(f'Testing Engine: {engine_name}')
+    logger.debug(f'Testing Engine: {engine_name}')
     try:
         with app.test_request_context():
             # test your app context code
@@ -31,13 +33,10 @@ def test_single_engine(app: Flask, engine_name: str) -> Tuple[str, Optional[Exce
             return (engine_name, None, info.results_length())
     except Exception as e:
         return (engine_name, e, 0)
-    finally:
-        logger.debug('---------------------------')
 
 
 def get_specific_engines() -> list[str]:
-    load_dotenv(find_dotenv("../../.env.test", raise_error_if_not_found=True))
-    integration_engines = getenv("TEST_INTEGRATION_ENGINES")
+    integration_engines = getenv("INTEGRATION_TEST_ENGINES")
     if integration_engines is None or integration_engines == '':
         return []
     return integration_engines.split(',')
@@ -76,16 +75,14 @@ class TestEnginesSingleSearch(SearxTestCase):
             else:
                 engines_passed.append(r)
 
-        def log_results(lst, name: str, level: int):
-            logger.log(level, f'{name}: {len(lst)}')
+        def log_results(lst, name: str):
+            logger.info(f'{name}: {len(lst)}')
             for e in lst:
-                logger.log(level, f'{name}: {e[0]}')
-                if e[1] is not None:
-                    logger.log(level, f'{name}: {e[1]}')
+                logger.info(f'{name}: engine: {e[0]}')
 
-        log_results(engines_passed, 'engines_passed', logging.INFO)
-        log_results(engines_exception, 'engines_exception', logging.ERROR)
-        log_results(engines_no_results, 'engines_no_results', logging.WARN)
+        log_results(engines_passed, 'engines_passed')
+        log_results(engines_exception, 'engines_exception')
+        log_results(engines_no_results, 'engines_no_results')
 
         self.assertEqual(len(engines_exception), 0)
         self.assertEqual(len(engines_no_results), 0)
