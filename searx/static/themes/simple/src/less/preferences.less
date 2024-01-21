@@ -33,6 +33,21 @@ table {
     width: 300px;
   }
 
+  input[type="text"] {
+    width: 13.25rem;
+    color: var(--color-toolkit-input-text-font);
+    border: none;
+    background: none repeat scroll 0 0 var(--color-toolkit-select-background);
+    padding: 0.2rem 0.4rem;
+    height: 2rem;
+    .rounded-corners-tiny;
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-toolkit-select-background-hover);
+    }
+  }
+
   .value {
     margin: 0;
     padding: 0;
@@ -50,21 +65,6 @@ table {
 
     select {
       width: 14rem;
-    }
-
-    input[type="text"] {
-      width: 13.25rem;
-      color: var(--color-toolkit-input-text-font);
-      border: none;
-      background: none repeat scroll 0 0 var(--color-toolkit-select-background);
-      padding: 0.2rem 0.4rem;
-      height: 2rem;
-      .rounded-corners-tiny;
-
-      &:hover,
-      &:focus {
-        background-color: var(--color-toolkit-select-background-hover);
-      }
     }
 
     select:focus,
@@ -189,6 +189,23 @@ table {
     pre {
       width: 100%;
     }
+  }
+
+  #copy-hash-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    div.selectable_url {
+      pre {
+        width: auto;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  #pref-hash-input {
+    width: 100%;
   }
 }
 

@@ -26,5 +26,12 @@
     for (const el of d.querySelectorAll('[data-engine-name]')) {
       searxng.on(el, 'mouseenter', load_engine_descriptions);
     }
+
+    const copyHashButton = d.querySelector("#copy-hash");
+    searxng.on(copyHashButton, 'click', (e) => {
+      e.preventDefault();
+      navigator.clipboard.writeText(copyHashButton.dataset.hash);
+      copyHashButton.innerText = copyHashButton.dataset.copiedText;
+    });
   });
 })(window, document, window.searxng);
