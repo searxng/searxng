@@ -36,10 +36,24 @@
 </h4>{{- '' -}}
 <div class="selectable_url">{{- '' -}}
   <pre>
-    {{- url_for('preferences', _external=True) -}}?preferences={{- preferences_url_params|e -}}
-    &amp;save=1{{- '' -}}
+    {{- url_for('preferences', _external=True) -}}?preferences={{- preferences_url_params|e -}}{{- '' -}}
   </pre>{{- '' -}}
 </div>{{- '' -}}
 <p class="small_font">
   {{- _('Specifying custom settings in the preferences URL can be used to sync preferences across devices.') -}}
 </p>
+<h4>
+  {{- _('Copy preferences hash') -}}:{{- '' -}}
+</h4>{{- '' -}}
+<div id="copy-hash-container">{{- '' -}}
+  <div class="selectable_url">{{- '' -}}
+    <pre>
+      {{- preferences_url_params|e }}
+    </pre>{{- '' -}}
+  </div>
+  <button id="copy-hash" class="button" data-hash="{{- preferences_url_params|e -}}" data-copied-text="{{- _('Copied') -}}">{{- _('Copy') -}}</button>
+</div>
+<h4>
+  {{- _('Insert copied preferences hash (without URL) to restore') -}}:{{- '' -}}
+</h4>{{- '' -}}
+<input type="text" id="pref-hash-input" name="preferences" placeholder="{{- _('Preferences hash') -}}">{{- '' -}}

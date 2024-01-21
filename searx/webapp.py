@@ -875,8 +875,8 @@ def preferences():
     # pylint: disable=too-many-locals, too-many-return-statements, too-many-branches
     # pylint: disable=too-many-statements
 
-    # save preferences using the link the /preferences?preferences=...&save=1
-    if request.args.get('save') == '1':
+    # save preferences using the link the /preferences?preferences=...
+    if request.args.get('preferences') or request.form.get('preferences'):
         resp = make_response(redirect(url_for('index', _external=True)))
         return request.preferences.save(resp)
 
