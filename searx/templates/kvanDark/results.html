@@ -47,7 +47,7 @@
         <div id="chat_box">
             <details open class="sidebar-collapsable">
                 <summary class="title">{{ _('Chat') }}</summary>
-                {%- for infobox in chat_box -%}
+                {%- for chat_box in chat_box -%}
                 {%- include 'kvanDark/elements/chat_box.html' -%}
                 {%- endfor -%}
             </details>

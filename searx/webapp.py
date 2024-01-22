@@ -1300,6 +1300,12 @@ def config():
         }
     )
 
+@app.route('/get-chat-content')
+def get_chat_content():
+    # Retrieve chat content from wherever it's stored
+    chat_content = {'chat_box': 'hello world', 'content': 'Response From Flask'}
+    return jsonify(chat_content)
+
 
 @app.errorhandler(404)
 def page_not_found(_e):

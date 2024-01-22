@@ -548,7 +548,8 @@ article[data-vim-selected].category-social {
 }
 
 #suggestions,
-#infoboxes {
+#infoboxes,
+#chat_box {
   input {
     padding: 0;
     margin: 3px;
@@ -564,7 +565,8 @@ article[data-vim-selected].category-social {
   }
 
   input[type="submit"],
-  .infobox .url a {
+  .infobox .url a,
+  .chat_box .url a {
     color: var(--color-result-link-font);
     text-decoration: none;
     font-size: 0.9rem;
@@ -595,6 +597,7 @@ article[data-vim-selected].category-social {
 }
 
 #infoboxes .title,
+#chat_box .title,
 #suggestions .title,
 #search_url .title,
 #engines_msg .title,
@@ -648,7 +651,8 @@ summary.title {
   }
 }
 
-#infoboxes {
+#infoboxes,
+#chat_box {
   form {
     min-width: 210px;
   }
@@ -659,7 +663,8 @@ summary.title {
   word-wrap: break-word;
   color: var(--color-sidebar-font);
 
-  .infobox {
+  .infobox,
+  .chat_box {
     margin: 10px 0 10px;
     border: 1px solid var(--color-sidebar-border);
     padding: 1rem;
@@ -843,11 +848,13 @@ summary.title {
     width: auto;
   }
 
-  #infoboxes {
+  #infoboxes,
+  #chat_box {
     position: inherit;
     max-width: inherit;
 
-    .infobox {
+    .infobox,
+    .chat_box {
       clear: both;
 
       img {
@@ -1056,7 +1063,8 @@ summary.title {
     background: var(--color-base-background-mobile);
   }
 
-  .infobox {
+  .infobox,
+  .chat_box {
     border: none !important;
     background-color: var(--color-sidebar-background);
   }
