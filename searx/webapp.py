@@ -96,7 +96,7 @@ from searx.utils import (
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
-import searx.plugins.chat
+import searx.plugins.chat as chat
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -664,7 +664,7 @@ def search():
         search_query, raw_text_query, _, _, selected_locale = get_search_query_from_webapp(
             request.preferences, request.form
         )
-        if searx.plugins.chat in request.user_plugins:
+        if chat in request.user_plugins:
             extremely_bad_global_variable_search_query = raw_text_query.getQuery()
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
         result_container = search.search()
@@ -1309,43 +1309,13 @@ def config():
         }
     )
 
-@app.route('/get-chat-content')
-def get_chat_content():
-    global extremely_bad_global_variable_search_query
-    # Retrieve chat content from wherever it's stored
-    # temp
-    chat_content = None
-    # retrieve from searx.plugins.chat
-    if extremely_bad_global_variable_search_query:
-        # do task
-        chat_content = {'chat_box': 'hello world', 'content': 'Not Generated Response Yet'}
-        model = GPT4All(model_name='gpt4all-falcon-q4_0.gguf',
-                model_path=(Path.cwd() / 'searx' / 'plugins'),
-                allow_download=False)
-
-        system_template = """
-### System Instructions: 
-1. Provide concise, accurate, and directly relevant answers to queries.
-2. Emulate the style of a Google Answer Box, which includes straightforward and authoritative responses.
-3. Where appropriate, use bullet points or structured formatting to clearly present information.
-4. Avoid unnecessary elaborations and focus on the key points of the query.
-5. Ensure the information is up-to-date and factually correct.
-"""
-
-        prompt_template = """
-### Query: 
-{0}
-
-### Expected Response:
-"""
-        with model.chat_session(system_template, prompt_template):
-            response = model.generate(extremely_bad_global_variable_search_query)
-            chat_content['content'] = str(response)
-
-        extremely_bad_global_variable_search_query = None
-
-
-    return jsonify(chat_content)
+@app.route('/generate-chat-content', methods=['POST'])
+def generate_chat_content_endpoint():
+    if request.json is None:
+        return jsonify({'content': ''})
+    query = request.json.get('query')
+    chat_content = chat.generate_chat_content(query)
+    return jsonify({'chat_box': 'GPT4ALL', 'content': chat_content})
 
 
 @app.errorhandler(404)

@@ -3,21 +3,24 @@
     <p><bdi>{{ chat_box.content | safe }}</bdi></p>
 </aside>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        function updateChatBox() {
-            fetch('/get-chat-content')
-                .then(response => response.json())
-                .then(data => {
-                    const chatBox = document.querySelector('.chat_box');
-                    console.log('response from api', data);
-                    chatBox.querySelector('bdi').textContent = data.chat_box;
-                    chatBox.querySelector('p').textContent = data.content;
-                })
-                .catch(error => console.error('Error:', error));
-        }
+    window.onload = function () {
+        // Extract the 'q' parameter from the search URL in the sidebar
+        const searchUrl = document.querySelector('#search_url pre').textContent;
+        const url = new URL(searchUrl);
+        const query = url.searchParams.get('q');
 
-        // Call updateChatBox after search is completed
-        // This might be tied to an event, depending on how your search functionality is implemented
-        updateChatBox();
-    });
+        fetch('/generate-chat-content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: query }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                const chatBox = document.querySelector('.chat_box');
+                chatBox.querySelector('h2 bdi').style.display = 'none';
+                chatBox.querySelector('p bdi').innerHTML = data.content;
+            });
+    };
 </script>
