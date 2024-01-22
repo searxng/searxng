@@ -96,6 +96,7 @@ from searx.utils import (
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
+import searx.plugins.chat as chat
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -131,6 +132,9 @@ from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
 
+from gpt4all import GPT4All
+from pathlib import Path
+
 logger = logger.getChild('webapp')
 
 # check secret_key
@@ -165,7 +169,6 @@ app.jinja_env.lstrip_blocks = True
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-member
 app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
-
 
 class ExtendedRequest(flask.Request):
     """This class is never initialized and only used for type checking."""
@@ -779,6 +782,7 @@ def search():
         answers = result_container.answers,
         corrections = correction_urls,
         infoboxes = result_container.infoboxes,
+        chat_box = result_container.chat_box,
         engine_data = result_container.engine_data,
         paging = result_container.paging,
         unresponsive_engines = webutils.get_translated_errors(
@@ -1298,6 +1302,16 @@ def config():
             'public_instance': settings['server']['public_instance'],
         }
     )
+
+@app.route('/generate-chat-content', methods=['POST'])
+def generate_chat_content_endpoint():
+    if request.json is None:
+        return jsonify({'chat_box': 'GPT4ALL', 'code':404, 'content': ''})
+    if not request.preferences.validate_token(chat):
+        return jsonify({'chat_box': 'GPT4ALL', 'code':401, 'content': ''})
+    query = request.json.get('query')
+    chat_content = chat.generate_chat_content(query)
+    return jsonify({'chat_box': 'GPT4ALL', 'code':200, 'content': chat_content})
 
 
 @app.errorhandler(404)

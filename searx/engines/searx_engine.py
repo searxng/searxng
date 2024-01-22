@@ -49,7 +49,7 @@ def response(resp):
     response_json = loads(resp.text)
     results = response_json['results']
 
-    for i in ('answers', 'infoboxes'):
+    for i in ('answers', 'infoboxes', 'chat_box'):
         results.extend(response_json[i])
 
     results.extend({'suggestion': s} for s in response_json['suggestions'])

@@ -164,6 +164,7 @@ def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
         'answers': list(rc.answers),
         'corrections': list(rc.corrections),
         'infoboxes': rc.infoboxes,
+        'chat_box': rc.chat_box,
         'suggestions': list(rc.suggestions),
         'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
     }
