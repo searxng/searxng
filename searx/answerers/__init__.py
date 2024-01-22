@@ -23,8 +23,8 @@ def get_answerers_by_keywords(answerers):
     by_keyword = defaultdict(list)
     for answerer in answerers:
         for keyword in answerer.keywords:
-            for keyword in answerer.keywords:
-                by_keyword[keyword].append(answerer.answer)
+            # for keyword in answerer.keywords:
+            by_keyword[keyword].append(answerer.answer)
     return by_keyword
 
 
