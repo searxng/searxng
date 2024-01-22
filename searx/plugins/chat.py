@@ -11,7 +11,6 @@ def post_search(request, search: SearchWithPlugins) -> None:
     search_request = search.search_query
     container = search.result_container
     # container.infoboxes.append(container.infoboxes[0])
-    container.chat_box = container.infoboxes
-    print(search_request)
-    
+    container.chat_box = {'chat_box': 'hello world'}
+    print(container.infoboxes)
     print("HELLO WORLD =====================================================================")
