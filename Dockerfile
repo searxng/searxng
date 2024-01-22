@@ -1,5 +1,18 @@
-FROM debian:bullseye-slim
-ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
+FROM debian:latest
+RUN apt-get update && apt-get install -y gcc make git \
+    && git clone https://github.com/ncopa/su-exec.git /tmp/su-exec \
+    && cd /tmp/su-exec \
+    && make \
+    && cp su-exec /usr/local/bin \
+    && cd / \
+    && rm -rf /tmp/su-exec \
+    && apt-get purge -y --auto-remove gcc make git
+
+# RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list \
+#     && apt-get update \
+#     && apt-get install -t bullseye-backports -y libstdc++6
+
+ENTRYPOINT ["/usr/bin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
 
@@ -77,7 +90,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install Python packages from requirements.txt
 COPY requirements.txt ./requirements.txt
-RUN pip3 install --no-cache -r requirements.txt
+RUN pip3 install --no-cache --break-system-packages -r requirements.txt
 
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles

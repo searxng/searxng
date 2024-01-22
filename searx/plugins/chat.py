@@ -1,7 +1,7 @@
 from searx.search import SearchWithPlugins
 from pathlib import Path
 from gpt4all import GPT4All
-
+import os
 
 name = "Chat Plugin"
 description = "[REQUIRES ENGINE TOKEN] Similar to bing GPT or google bard in their respective searches"
@@ -17,8 +17,9 @@ def post_search(request, search: SearchWithPlugins) -> None:
     container.chat_box['content'] = 'Generating response to query: <br>' + f'\n{search_request.query}'
     container.chat_box['code'] = 202
 def generate_chat_content(query):
+    script_directory = Path(os.path.dirname(__file__))
     model = GPT4All(model_name='gpt4all-falcon-q4_0.gguf',
-            model_path=(Path.cwd() / 'searx' / 'plugins'),
+            model_path=script_directory,
             allow_download=False)
 
     system_template = """
