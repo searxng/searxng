@@ -43,17 +43,6 @@
         <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
         {%- endif -%}
 
-        {%- if chat_box -%}
-        <div id="chat_box">
-            <details open class="sidebar-collapsable">
-                <summary class="title">{{ _('Chat') }}</summary>
-                {%- for chat_box in chat_box -%}
-                {%- include 'kvanDark/elements/chat_box.html' -%}
-                {%- endfor -%}
-            </details>
-        </div>
-        {%- endif -%}
-
         {%- if infoboxes -%}
         <div id="infoboxes">
             <details open class="sidebar-collapsable">
@@ -61,6 +50,15 @@
                 {%- for infobox in infoboxes -%}
                 {%- include 'kvanDark/elements/infobox.html' -%}
                 {%- endfor -%}
+            </details>
+        </div>
+        {%- endif -%}
+
+        {%- if chat_box -%}
+        <div id="chat_box">
+            <details open class="sidebar-collapsable">
+                <summary class="title">{{ _('Chat') }}</summary>
+                {%- include 'kvanDark/elements/chat_box.html' -%}
             </details>
         </div>
         {%- endif -%}
