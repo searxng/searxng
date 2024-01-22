@@ -23,13 +23,16 @@
 # JonesBBQ <colson.xu@gmail.com>, 2023.
 # BernieHuang2008 <berniehuang2008@163.com>, 2023.
 # clsty <celestial.y@outlook.com>, 2023.
+# kirisameSoup <kirisoup@skiff.com>, 2023.
+# err_connection_closed <err_connection_closed@users.noreply.translate.codeberg.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-10-24 11:13+0000\n"
-"Last-Translator: clsty <celestial.y@outlook.com>\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-12-27 07:56+0000\n"
+"Last-Translator: err_connection_closed <err_connection_closed@users.noreply."
+"translate.codeberg.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
 "searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
@@ -37,8 +40,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.1\n"
-"Generated-By: Babel 2.12.1\n"
+"X-Generator: Weblate 5.3.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -128,7 +131,7 @@ msgstr "程序包"
 #. CATEGORY_GROUPS['Q_A']
 #: searx/searxng.msg
 msgid "q&a"
-msgstr "问与答"
+msgstr "问答"
 
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
@@ -165,28 +168,28 @@ msgstr "浅色"
 msgid "dark"
 msgstr "暗色"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "未找到项目"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "来源"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "搜索错误"
 
@@ -232,7 +235,7 @@ msgstr "验证码"
 
 #: searx/webutils.py:56
 msgid "too many requests"
-msgstr "频繁请求"
+msgstr "请求过于频繁"
 
 #: searx/webutils.py:57
 msgid "access denied"
@@ -311,23 +314,21 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} 次引用，从 {firstCitationVelocityYear} 年到 "
-"{lastCitationVelocityYear} 年"
+"{firstCitationVelocityYear} 年至 {lastCitationVelocityYear} 年间总计 "
+"{numCitations} 次引用"
 
 #: searx/engines/tineye.py:40
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr "无法读取该图片网址。这可能是由于文件格式不受支持。TinEye 仅支持 "
-"JPEG、PNG、GIF、BMP、TIFF 或 WebP 格式的图像。"
+msgstr "无法读取该图片网址。这可能是由于文件格式不受支持。TinEye 仅支持 JPEG、PNG、GIF、BMP、TIFF 或 WebP 格式的图像。"
 
 #: searx/engines/tineye.py:46
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "图像过于简单，无法找到匹配项。TinEye "
-"需要基本级别的视觉细节才能成功识别匹配项。"
+msgstr "图像过于简单，无法找到匹配项。TinEye 需要基本级别的视觉细节才能成功识别匹配项。"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -401,16 +402,13 @@ msgstr "Tor 网络检测插件"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr ""
-"此插件检查请求地址是否为 Tor 出口节点，若是则告知用户。这是由 SearXNG "
-"提供的类似 check.torproject.org 的服务。"
+msgstr "此插件检查请求地址是否为 Tor 出口节点，若是则告知用户。这是由 SearXNG 提供的类似 check.torproject.org 的服务。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr "未能从此地址下载 Tor 出口节点的列表： https://check.torproject.org/exit-"
-"addresses"
+msgstr "未能从此地址下载 Tor 出口节点的列表： https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -627,7 +625,7 @@ msgstr "返回顶部"
 msgid "Previous page"
 msgstr "上一页"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "下一页"
 
@@ -757,6 +755,14 @@ msgstr "引擎无法检索到结果"
 msgid "Search URL"
 msgstr "搜索网址"
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr "已复制"
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr "复制"
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr "搜索建议"
@@ -833,29 +839,41 @@ msgstr "信息！"
 msgid "currently, there are no cookies defined."
 msgstr "目前还没有在 Cookie 中存储任何信息。"
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "抱歉！"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "未找到结果，你可以尝试："
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr "没有更多结果。你可以尝试："
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "刷新页面。"
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "（在上方）对其他查询进行搜索，或选择其他类别。"
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "更改“首选项”中使用的搜索引擎："
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "切换至另一个 SearXNG 实例："
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr "对其他查询进行搜索，或选择其他类别。"
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr "使用返回按钮按钮返回上一页。"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -954,7 +972,7 @@ msgstr "选择 DOI 重写使用的服务"
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
-msgstr "这个标签页在用户界面中不存在，但你可以用 !bang 对这些引擎进行搜索。"
+msgstr "这个标签页在用户界面中不存在，但你可以使用 !bang 对这些引擎进行搜索。"
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1066,7 +1084,7 @@ msgstr "内容过滤"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:2
 msgid "Search on category select"
-msgstr "搜索特定类别"
+msgstr "在选中类别时立即进行搜索"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
@@ -1088,7 +1106,7 @@ msgstr "主题样式"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "自动（取决于您的浏览器设置）"
+msgstr "选择自动以跟随您的浏览器设置"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -1201,11 +1219,11 @@ msgstr "种子文件"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "播种者"
+msgstr "做种用户"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "接收者"
+msgstr "下载用户"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"

@@ -194,6 +194,7 @@ wait_key(){
     [[ -n $FORCE_TIMEOUT ]] && _t=$FORCE_TIMEOUT
     [[ -n $_t ]] && _t="-t $_t"
     printf "$msg"
+    # shellcheck disable=SC2229
     # shellcheck disable=SC2086
     read -r -s -n1 $_t || true
     echo
@@ -227,7 +228,7 @@ ask_yn() {
     while true; do
         clean_stdin
         printf "$1 ${choice} "
-        # shellcheck disable=SC2086
+        # shellcheck disable=SC2086,SC2229
         read -r -n1 $_t
         if [[ -z $REPLY ]]; then
             printf "$default\n"; break
@@ -261,7 +262,7 @@ tee_stderr () {
     if [[ -n $1 ]] ; then _t="$1"; fi
 
     (while read -r line; do
-         # shellcheck disable=SC2086
+         # shellcheck disable=SC2086,SC2229
          sleep $_t
          echo -e "$line" >&2
          echo "$line"
@@ -367,7 +368,7 @@ choose_one() {
         printf "$1 [${_BGreen}$default${_creset}] "
 
         if (( 10 > max )); then
-            # shellcheck disable=SC2086
+            # shellcheck disable=SC2086,SC2229
             read -r -n1 $_t
         else
             # shellcheck disable=SC2086,SC2229
@@ -708,6 +709,7 @@ pyenv.uninstall() {
 	pyenv.cmd python setup.py develop --uninstall 2>&1 \
             | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
     else
+        # shellcheck disable=SC2086
 	pyenv.cmd python -m pip uninstall --yes ${PYOBJECTS} 2>&1 \
             | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
     fi

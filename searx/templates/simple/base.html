@@ -17,7 +17,7 @@
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen" />
   {% endif %}
-  {% if get_setting('server.limiter') %}
+  {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
   <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css" />
   {% endif %}
   {% block styles %}{% endblock %}

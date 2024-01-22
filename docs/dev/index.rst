@@ -6,6 +6,7 @@ Developer documentation
    :maxdepth: 2
 
    quickstart
+   rtm_asdf
    contribution_guide
    engines/index
    search_api

@@ -48,6 +48,7 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
+max_page = 50
 time_range_support = True
 safesearch = True
 
@@ -429,14 +430,13 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
     if not resp.ok:  # type: ignore
         raise RuntimeError("Response from Google's preferences is not OK.")
 
-    dom = html.fromstring(resp.text)  # type: ignore
+    dom = html.fromstring(resp.text.replace('<?xml version="1.0" encoding="UTF-8"?>', ''))
 
     # supported language codes
 
     lang_map = {'no': 'nb'}
-    for x in eval_xpath_list(dom, '//*[@id="langSec"]//input[@name="lr"]'):
-
-        eng_lang = x.get("value").split('_')[-1]
+    for x in eval_xpath_list(dom, "//select[@name='hl']/option"):
+        eng_lang = x.get("value")
         try:
             locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
         except babel.UnknownLocaleError:
@@ -456,7 +456,7 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
 
     # supported region codes
 
-    for x in eval_xpath_list(dom, '//*[@name="region"]/..//input[@name="region"]'):
+    for x in eval_xpath_list(dom, "//select[@name='gl']/option"):
         eng_country = x.get("value")
 
         if eng_country in skip_countries:

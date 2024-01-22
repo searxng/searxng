@@ -45,7 +45,7 @@ def validate_engineref_list(
 
 def parse_pageno(form: Dict[str, str]) -> int:
     pageno_param = form.get('pageno', '1')
-    if not pageno_param.isdigit() or int(pageno_param) < 1 or int(pageno_param) > 50:
+    if not pageno_param.isdigit() or int(pageno_param) < 1:
         raise SearxParameterException('pageno', pageno_param)
     return int(pageno_param)
 

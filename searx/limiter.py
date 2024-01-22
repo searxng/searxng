@@ -1,15 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
-""".. _limiter src:
-
-Limiter
-=======
-
-.. sidebar:: info
-
-   The limiter requires a :ref:`Redis <settings redis>` database.
-
-Bot protection / IP rate limitation.  The intention of rate limitation is to
+"""Bot protection / IP rate limitation.  The intention of rate limitation is to
 limit suspicious requests from an IP.  The motivation behind this is the fact
 that SearXNG passes through requests from bots and is thus classified as a bot
 itself.  As a result, the SearXNG engine then receives a CAPTCHA or is blocked
@@ -17,7 +8,40 @@ by the search engine (the origin) in some other way.
 
 To avoid blocking, the requests from bots to SearXNG must also be blocked, this
 is the task of the limiter.  To perform this task, the limiter uses the methods
-from the :py:obj:`searx.botdetection`.
+from the :ref:`botdetection`:
+
+- Analysis of the HTTP header in the request / :ref:`botdetection probe headers`
+  can be easily bypassed.
+
+- Block and pass lists in which IPs are listed / :ref:`botdetection ip_lists`
+  are hard to maintain, since the IPs of bots are not all known and change over
+  the time.
+
+- Detection & dynamically :ref:`botdetection rate limit` of bots based on the
+  behavior of the requests.  For dynamically changeable IP lists a Redis
+  database is needed.
+
+The prerequisite for IP based methods is the correct determination of the IP of
+the client. The IP of the client is determined via the X-Forwarded-For_ HTTP
+header.
+
+.. attention::
+
+   A correct setup of the HTTP request headers ``X-Forwarded-For`` and
+   ``X-Real-IP`` is essential to be able to assign a request to an IP correctly:
+
+   - `NGINX RequestHeader`_
+   - `Apache RequestHeader`_
+
+.. _X-Forwarded-For:
+    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+.. _NGINX RequestHeader:
+    https://docs.searxng.org/admin/installation-nginx.html#nginx-s-searxng-site
+.. _Apache RequestHeader:
+    https://docs.searxng.org/admin/installation-apache.html#apache-s-searxng-site
+
+Enable Limiter
+==============
 
 To enable the limiter activate:
 
@@ -35,36 +59,72 @@ and set the redis-url connection. Check the value, it depends on your redis DB
    redis:
      url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
 
+
+Configure Limiter
+=================
+
+The methods of :ref:`botdetection` the limiter uses are configured in a local
+file ``/etc/searxng/limiter.toml``.  The defaults are shown in limiter.toml_ /
+Don't copy all values to your local configuration, just enable what you need by
+overwriting the defaults.  For instance to activate the ``link_token`` method in
+the :ref:`botdetection.ip_limit` you only need to set this option to ``true``:
+
+.. code:: toml
+
+   [botdetection.ip_limit]
+   link_token = true
+
+.. _limiter.toml:
+
+``limiter.toml``
+================
+
+In this file the limiter finds the configuration of the :ref:`botdetection`:
+
+- :ref:`botdetection ip_lists`
+- :ref:`botdetection rate limit`
+- :ref:`botdetection probe headers`
+
+.. kernel-include:: $SOURCEDIR/limiter.toml
+   :code: toml
+
+Implementation
+==============
+
 """
 
 from __future__ import annotations
+import sys
 
 from pathlib import Path
 from ipaddress import ip_address
 import flask
 import werkzeug
 
-from searx.tools import config
-from searx import logger
-
-from . import (
+from searx import (
+    logger,
+    redisdb,
+)
+from searx import botdetection
+from searx.botdetection import (
+    config,
     http_accept,
     http_accept_encoding,
     http_accept_language,
     http_user_agent,
     ip_limit,
     ip_lists,
-)
-
-from ._helpers import (
     get_network,
     get_real_ip,
     dump_request,
 )
 
-logger = logger.getChild('botdetection.limiter')
+# the configuration are limiter.toml and "limiter" in settings.yml so, for
+# coherency, the logger is "limiter"
+logger = logger.getChild('limiter')
 
 CFG: config.Config = None  # type: ignore
+_INSTALLED = False
 
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
@@ -143,3 +203,41 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
                 return val
     logger.debug(f"OK {network}: %s", dump_request(flask.request))
     return None
+
+
+def pre_request():
+    """See :py:obj:`flask.Flask.before_request`"""
+    return filter_request(flask.request)
+
+
+def is_installed():
+    """Returns ``True`` if limiter is active and a redis DB is available."""
+    return _INSTALLED
+
+
+def initialize(app: flask.Flask, settings):
+    """Install the limiter"""
+    global _INSTALLED  # pylint: disable=global-statement
+
+    if not (settings['server']['limiter'] or settings['server']['public_instance']):
+        return
+
+    redis_client = redisdb.client()
+    if not redis_client:
+        logger.error(
+            "The limiter requires Redis, please consult the documentation: "
+            "https://docs.searxng.org/admin/searx.limiter.html"
+        )
+        if settings['server']['public_instance']:
+            sys.exit(1)
+        return
+
+    _INSTALLED = True
+
+    cfg = get_cfg()
+    if settings['server']['public_instance']:
+        # overwrite limiter.toml setting
+        cfg.set('botdetection.ip_limit.link_token', True)
+
+    botdetection.init(cfg, redis_client)
+    app.before_request(pre_request)

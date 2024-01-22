@@ -9,20 +9,19 @@
 # quenty_occitania <quentinantonin@free.fr>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-10-27 07:07+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-11-04 18:13+0000\n"
 "Last-Translator: quenty_occitania <quentinantonin@free.fr>\n"
-"Language-Team: Occitan <https://translate.codeberg.org/projects/searxng/"
-"searxng/oc/>\n"
 "Language: oc\n"
+"Language-Team: Occitan "
+"<https://translate.codeberg.org/projects/searxng/searxng/oc/>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.1\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -149,28 +148,28 @@ msgstr "clar"
 msgid "dark"
 msgstr "fosc"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Cap d’element pas trobat"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "Font"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Error en cargant la pagina seguenta"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "Paramètre pas valide, mercés de modificar vòstras preferéncias"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "Paramètres invalids"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "error de recèrca"
 
@@ -295,8 +294,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} citacions dempuèi l’annada {firstCitationVelocityYear} fins a "
-"{lastCitationVelocityYear}"
+"{numCitations} citacions dempuèi l’annada {firstCitationVelocityYear} "
+"fins a {lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -469,7 +468,7 @@ msgstr "Politica de confidencialitat"
 
 #: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
-msgstr "Contactatz lo responsable de l’instància"
+msgstr "Contactar lo responsable de l’instància"
 
 #: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
@@ -610,7 +609,7 @@ msgstr "Tornar ennaut"
 msgid "Previous page"
 msgstr "Pagina precedenta"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pagina seguenta"
 
@@ -740,6 +739,14 @@ msgstr "Los cercadors pòdons pas recuperar los resultats"
 msgid "Search URL"
 msgstr "URL de recèrca"
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr ""
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr ""
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr "Suggestions"
@@ -816,28 +823,40 @@ msgstr "Informacion !"
 msgid "currently, there are no cookies defined."
 msgstr "pel moment i a pas cap de cookie definit"
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "O planhèm !"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Actualizar la pagina."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
@@ -1634,3 +1653,4 @@ msgstr "escondre la vidèo"
 #~ "avèm pas trobat cap de resultat. "
 #~ "Mercés d'utilizar une autre mot clau "
 #~ "o de cercar dins autras categorias."
+

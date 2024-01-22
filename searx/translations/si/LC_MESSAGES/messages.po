@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-06-02 07:07+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-11-23 06:13+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: si\n"
 "Language-Team: Sinhala "
@@ -19,12 +19,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "තවදුරටත් උප සමූහයකින් තොරව"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -99,7 +99,7 @@ msgstr "ශබ්දකෝෂ"
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr ""
+msgstr "ගී පද"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -119,7 +119,7 @@ msgstr "ගබඩා"
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
-msgstr ""
+msgstr "මෘදුකාංග විකි"
 
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
@@ -146,28 +146,28 @@ msgstr "එළිය"
 msgid "dark"
 msgstr "අඳුරු"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "අයිතමයක් හමු නොවීය"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "මූලාශ්‍රය"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "ඊළඟ පිටුව පූරණය කිරීමේ දෝෂයකි"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "වලංගු නොවන සැකසුම්, කරුණාකර ඔබගේ මනාප සංස්කරණය කරන්න"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "වලංගු නොවන සැකසුම්"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "සෙවුම් දෝෂයකි"
 
@@ -601,7 +601,7 @@ msgstr ""
 msgid "Previous page"
 msgstr ""
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr ""
 
@@ -731,6 +731,14 @@ msgstr ""
 msgid "Search URL"
 msgstr ""
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr ""
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr ""
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr ""
@@ -807,28 +815,40 @@ msgstr ""
 msgid "currently, there are no cookies defined."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4

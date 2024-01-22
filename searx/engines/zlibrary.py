@@ -200,6 +200,8 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     for locale in babel.core.localedata.locale_identifiers():  # type: ignore
         # Create a Locale object for the current locale
         loc = babel.Locale.parse(locale)
+        if loc.english_name is None:
+            continue
         language_name_locale_map[loc.english_name.lower()] = loc  # type: ignore
 
     for x in eval_xpath_list(dom, "//div[@id='advSearch-noJS']//select[@id='sf_languages']/option"):

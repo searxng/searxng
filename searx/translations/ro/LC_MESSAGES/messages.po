@@ -15,20 +15,21 @@
 # microsoftocsharp <kottiberyu@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-09-29 14:25+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-12-30 09:19+0000\n"
 "Last-Translator: alextecplayz <alextec70@outlook.com>\n"
+"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
+"searxng/ro/>\n"
 "Language: ro\n"
-"Language-Team: Romanian "
-"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
-"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 5.3.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -123,7 +124,7 @@ msgstr "î&r"
 #. CATEGORY_GROUPS['REPOS']
 #: searx/searxng.msg
 msgid "repos"
-msgstr "arhive digitale"
+msgstr "repozitorii"
 
 #. CATEGORY_GROUPS['SOFTWARE_WIKIS']
 #: searx/searxng.msg
@@ -155,28 +156,28 @@ msgstr "luminos"
 msgid "dark"
 msgstr "întunecat"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Niciun element găsit"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "Sursă"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "eroare de căutare"
 
@@ -278,19 +279,19 @@ msgstr "Canal"
 
 #: searx/engines/radio_browser.py:104
 msgid "radio"
-msgstr ""
+msgstr "radio"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "rata de biți"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "voturi"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "click-uri"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -634,7 +635,7 @@ msgstr "Înapoi sus"
 msgid "Previous page"
 msgstr "Pagina precedentă"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "Pagina următoare"
 
@@ -764,6 +765,14 @@ msgstr "Motoarele nu pot obține rezultate"
 msgid "Search URL"
 msgstr "URL de căutare"
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr "Copiat"
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr "Copiați"
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr "Sugestii"
@@ -840,29 +849,42 @@ msgstr "Informație!"
 msgid "currently, there are no cookies defined."
 msgstr "momentan, nu există cookie-uri definite."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "Ne pare rău!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "Niciun rezultat nu a fost găsit. Puteți încerca să:"
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr "Nu mai sunt rezultate. Puteți să:"
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "Reîncărcați pagina."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "Căutați pentru un alt termen sau selectați altă categorie (deasupra)."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "Schimbați motorul de căutare folosit în preferințe:"
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "Treceți la o altă instanță:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr "Căutați folosind o altă solicitare sau selectați altă categorie."
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
+"Reveniți la pagina anterioară folosind butonul pentru pagina anterioară."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -1695,4 +1717,3 @@ msgstr "ascunde video"
 #~ "n-am găsit nici un rezultat. Folosiți"
 #~ " o altă interogare sau căutați în "
 #~ "mai multe categorii."
-

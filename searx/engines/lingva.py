@@ -16,7 +16,7 @@ about = {
 engine_type = 'online_dictionary'
 categories = ['general']
 
-url = "https://lingva.ml"
+url = "https://lingva.thedaviddelta.com/"
 search_url = "{url}/api/v1/{from_lang}/{to_lang}/{query}"
 
 

@@ -15,13 +15,15 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 # nonepork <ptohrek@gmail.com>, 2023.
+# proton-penguin <cgshyuankai@proton.me>, 2023.
+# kirisameSoup <kirisoup@skiff.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-09-29 07:07+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-12-04 03:38+0000\n"
+"Last-Translator: kirisameSoup <kirisoup@skiff.com>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: Chinese (Traditional) "
 "<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
@@ -29,7 +31,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -156,28 +158,28 @@ msgstr "明亮"
 msgid "dark"
 msgstr "黑暗"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "搜尋錯誤"
 
@@ -195,7 +197,7 @@ msgstr "HTTP 協議錯誤"
 
 #: searx/webutils.py:37
 msgid "network error"
-msgstr "網絡錯誤"
+msgstr "網路錯誤"
 
 #: searx/webutils.py:38
 msgid "SSL error: certificate validation has failed"
@@ -279,19 +281,19 @@ msgstr "頻道"
 
 #: searx/engines/radio_browser.py:104
 msgid "radio"
-msgstr ""
+msgstr "廣播電台"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "位元速率"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "投票"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "點擊"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -390,7 +392,7 @@ msgstr "Tor 網路檢測"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr "該外掛程式檢查請求的位址是否是 Tor 出口節點，並通知使用者是否是;像 check.torproject.org，但來自 SearXNG。"
+msgstr "該外掛程式檢查請求的位址是否是 Tor 出口節點，並通知使用者是否是；類似 check.torproject.org，但來自 SearXNG。"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
@@ -423,7 +425,7 @@ msgstr "找不到頁面"
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr "到 %(search_page)s。"
+msgstr "訪問 %(search_page)s。"
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -498,7 +500,7 @@ msgstr "已代理"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr "開始再 GitHub 上提交問題"
+msgstr "在 GitHub 上提交問題"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
@@ -514,7 +516,7 @@ msgstr "如果你的站點是公開訪問， 請在問題報告中附上你的 U
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr "在GitHub上提交包含上述信息的新問題"
+msgstr "在 GitHub 上提交包含上述信息的新問題"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -613,7 +615,7 @@ msgstr "返回頂部"
 msgid "Previous page"
 msgstr "上一頁"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "下一頁"
 
@@ -743,6 +745,14 @@ msgstr "引擎無法擷取結果"
 msgid "Search URL"
 msgstr "搜尋網址"
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr "已複製"
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr "複製"
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr "建議"
@@ -819,29 +829,41 @@ msgstr "資訊！"
 msgid "currently, there are no cookies defined."
 msgstr "目前未有已定義的 cookies。"
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "抱歉！"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
 msgstr "未找到任何結果。你可以嘗試："
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
 msgstr "重新整理頁面。"
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
 msgstr "請以其他關鍵字搜尋或選擇其他類別（最上方）。"
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
 msgstr "在偏好設定裡更改使用的搜尋引擎："
 
-#: searx/templates/simple/messages/no_results.html:9
+#: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
 msgstr "切換另一個視窗："
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
+msgstr ""
+
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -886,7 +908,7 @@ msgstr "置中對齊"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "搜尋結果置顯示於網頁中間。"
+msgstr "搜尋結果置顯示於網頁中間。（Oscar 佈局）"
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1181,15 +1203,15 @@ msgstr "磁力連結"
 
 #: searx/templates/simple/result_templates/torrent.html:7
 msgid "torrent file"
-msgstr "torrent 檔案"
+msgstr "種子檔案"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "播種者"
+msgstr "做種用戶"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
-msgstr "接收者"
+msgstr "下載用戶"
 
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"

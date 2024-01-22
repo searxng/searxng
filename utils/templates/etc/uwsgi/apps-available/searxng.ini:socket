@@ -50,6 +50,9 @@ plugin = python3,http
 # default behaviour is for performance reasons.
 enable-threads = true
 
+# Number of workers (usually CPU count)
+workers = ${UWSGI_WORKERS:-%k}
+threads = ${UWSGI_THREADS:-4}
 
 # plugin: python
 # --------------

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-05 09:01+0000\n"
-"PO-Revision-Date: 2023-09-12 14:53+0000\n"
+"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"PO-Revision-Date: 2023-11-23 06:13+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: ko\n"
 "Language-Team: Korean "
@@ -21,7 +21,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -148,28 +148,28 @@ msgstr "라이트"
 msgid "dark"
 msgstr "다크"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "검색 결과가 없습니다"
 
 #: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:333
+#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
 msgid "Source"
 msgstr "소스"
 
-#: searx/webapp.py:335
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:492 searx/webapp.py:888
+#: searx/webapp.py:493 searx/webapp.py:889
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:509
 msgid "Invalid settings"
 msgstr "잘못된 설정"
 
-#: searx/webapp.py:585 searx/webapp.py:667
+#: searx/webapp.py:586 searx/webapp.py:668
 msgid "search error"
 msgstr "검색 오류"
 
@@ -271,19 +271,19 @@ msgstr "채널"
 
 #: searx/engines/radio_browser.py:104
 msgid "radio"
-msgstr ""
+msgstr "라디오"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "비트 레이트"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "표"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "clicks"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -611,7 +611,7 @@ msgstr "위로 돌아가기"
 msgid "Previous page"
 msgstr "이전 페이지"
 
-#: searx/templates/simple/results.html:140
+#: searx/templates/simple/results.html:141
 msgid "Next page"
 msgstr "다음 페이지"
 
@@ -741,6 +741,14 @@ msgstr "결과를 가져올 수 없습니다"
 msgid "Search URL"
 msgstr "검색 URL"
 
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copied"
+msgstr "복사됨"
+
+#: searx/templates/simple/elements/search_url.html:4
+msgid "Copy"
+msgstr "복사하기"
+
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
 msgstr "제안"
@@ -817,28 +825,40 @@ msgstr "알림!"
 msgid "currently, there are no cookies defined."
 msgstr "현재 정의된 쿠기가 없습니다."
 
-#: searx/templates/simple/messages/no_results.html:3
+#: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
 msgstr "죄송합니다!"
 
-#: searx/templates/simple/messages/no_results.html:4
+#: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
+msgstr "검색 결과 없음. 다음을 시도해 보세요:"
+
+#: searx/templates/simple/messages/no_results.html:14
+msgid "There are no more results. You can try to:"
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:6
+#: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr ""
+msgstr "페이지를 새로고침 하세요."
 
-#: searx/templates/simple/messages/no_results.html:7
+#: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "다른 검색어를 사용하거나 위에서 다른 카테고리를 선택해 주세요."
 
-#: searx/templates/simple/messages/no_results.html:8
+#: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
+msgstr "설정에서 사용할 검색엔진 바꾸기:"
+
+#: searx/templates/simple/messages/no_results.html:22
+msgid "Switch to another instance:"
+msgstr "다른 인스터스를 사용해 주세요:"
+
+#: searx/templates/simple/messages/no_results.html:24
+msgid "Search for another query or select another category."
 msgstr ""
 
-#: searx/templates/simple/messages/no_results.html:9
-msgid "Switch to another instance:"
+#: searx/templates/simple/messages/no_results.html:25
+msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
@@ -980,17 +1000,19 @@ msgstr "뒤로"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr ""
+msgstr "단축키"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
-msgstr ""
+msgstr "vim 형식"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
+"단축키를 이용해 검색결과를 탐색합니다 (Javascript 필요). 검색결과 페이지나 홈페이지에서 'h'를 눌러 도움말을 볼수 "
+"있습니다."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1054,7 +1076,7 @@ msgstr "특정 카테고리 검색"
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
-msgstr ""
+msgstr "카테고리 선택후 즉시 검색을 합니다. 한개 이상의 카테고리를 선택하면 비활성화됩니다"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"

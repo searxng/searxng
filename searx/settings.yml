@@ -24,7 +24,7 @@ search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
-  # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
+  # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
   autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
@@ -32,6 +32,7 @@ search:
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
   default_lang: "auto"
+  # max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages
   # Available languages
   # languages:
   #   - all
@@ -65,9 +66,7 @@ search:
     - html
 
 server:
-  # If you change port, bind_address or base_url don't forget to rebuild
-  # instance's environment (make buildenv). Is overwritten by ${SEARXNG_PORT}
-  # and ${SEARXNG_BIND_ADDRESS}
+  # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
   port: 8888
   bind_address: "127.0.0.1"
   # public URL of the instance, to ensure correct inbound links. Is overwritten
@@ -421,6 +420,11 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: bpb
+    engine: bpb
+    shortcut: bpb
+    disabled: true
+
   - name: btdigg
     engine: btdigg
     shortcut: bt
@@ -486,23 +490,25 @@ engines:
       website: https://crowdview.ai/
 
   - name: yep
-    engine: json_engine
+    engine: yep
     shortcut: yep
     categories: general
+    search_type: web
     disabled: true
-    paging: false
-    content_html_to_text: true
-    title_html_to_text: true
-    search_url: https://api.yep.com/fs/1/?type=web&q={query}&no_correct=false&limit=100
-    results_query: 1/results
-    title_query: title
-    url_query: url
-    content_query: snippet
-    about:
-      website: https://yep.com
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+
+  - name: yep images
+    engine: yep
+    shortcut: yepi
+    categories: images
+    search_type: images
+    disabled: true
+
+  - name: yep news
+    engine: yep
+    shortcut: yepn
+    categories: news
+    search_type: news
+    disabled: true
 
   - name: curlie
     engine: xpath
@@ -529,9 +535,31 @@ engines:
     categories: general
     shortcut: cc
 
+  - name: bahnhof
+    engine: json_engine
+    search_url: https://www.bahnhof.de/api/stations/search/{query}
+    url_prefix: https://www.bahnhof.de/
+    url_query: slug
+    title_query: name
+    content_query: state
+    shortcut: bf
+    disabled: true
+    about:
+      website: https://www.bahn.de
+      wikidata_id: Q22811603
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+      language: de
+
   - name: deezer
     engine: deezer
     shortcut: dz
+    disabled: true
+
+  - name: destatis
+    engine: destatis
+    shortcut: destat
     disabled: true
 
   - name: deviantart
@@ -720,6 +748,12 @@ engines:
   - name: frinkiac
     engine: frinkiac
     shortcut: frk
+    disabled: true
+
+  - name: fyyd
+    engine: fyyd
+    shortcut: fy
+    timeout: 8.0
     disabled: true
 
   - name: genius
@@ -1002,7 +1036,7 @@ engines:
     engine: lingva
     shortcut: lv
     # set lingva instance in url, by default it will use the official instance
-    # url: https://lingva.ml
+    # url: https://lingva.thedaviddelta.com/
 
   - name: lobste.rs
     engine: xpath
@@ -1060,6 +1094,25 @@ engines:
   #   # base_url: https://mrs-api-host
   #   shortcut: mtrx
   #   disabled: true
+
+  - name: mdn
+    shortcut: mdn
+    engine: json_engine
+    categories: [it]
+    paging: true
+    search_url: https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}
+    results_query: documents
+    url_query: mdn_url
+    url_prefix: https://developer.mozilla.org
+    title_query: title
+    content_query: summary
+    about:
+      website: https://developer.mozilla.org
+      wikidata_id: Q3273508
+      official_api_documentation: null
+      use_official_api: false
+      require_api_key: false
+      results: JSON
 
   - name: metacpan
     engine: metacpan
@@ -1280,6 +1333,10 @@ engines:
     url: https://thepiratebay.org/
     timeout: 3.0
 
+  - name: podcastindex
+    engine: podcastindex
+    shortcut: podcast
+
   # Required dependency: psychopg2
   #  - name: postgresql
   #    engine: postgresql
@@ -1289,6 +1346,41 @@ engines:
   #    limit: 10
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
+
+  - name: presearch
+    engine: presearch
+    search_type: search
+    categories: [general, web]
+    shortcut: ps
+    timeout: 4.0
+    disabled: true
+
+  - name: presearch images
+    engine: presearch
+    network: presearch
+    search_type: images
+    categories: [images, web]
+    timeout: 4.0
+    shortcut: psimg
+    disabled: true
+
+  - name: presearch videos
+    engine: presearch
+    network: presearch
+    search_type: videos
+    categories: [general, web]
+    timeout: 4.0
+    shortcut: psvid
+    disabled: true
+
+  - name: presearch news
+    engine: presearch
+    network: presearch
+    search_type: news
+    categories: [news, web]
+    timeout: 4.0
+    shortcut: psnews
+    disabled: true
 
   - name: pub.dev
     engine: xpath
@@ -1394,6 +1486,11 @@ engines:
     engine: reddit
     shortcut: re
     page_size: 25
+
+  - name: rottentomatoes
+    engine: rottentomatoes
+    shortcut: rt
+    disabled: true
 
   # Required dependency: redis
   # - name: myredis
@@ -1832,6 +1929,7 @@ engines:
     suggestion_xpath: //div[@class="top-info"]/p[@class="top-info spell"]/em/a
     first_page_num: 0
     page_size: 10
+    max_page: 100
     disabled: true
     about:
       website: https://www.mojeek.com/
@@ -1988,6 +2086,11 @@ engines:
     timeout: 5.0
     disabled: true
 
+  - name: stract
+    engine: stract
+    shortcut: str
+    disabled: true
+
   - name: svgrepo
     engine: svgrepo
     shortcut: svg
@@ -1995,21 +2098,8 @@ engines:
     disabled: true
 
   - name: tootfinder
-    engine: json_engine
-    categories: ['social media']
-    paging: false
-    search_url: https://www.tootfinder.ch/rest/api/search/{query}
-    url_query: uri
-    title_query: card/title
-    content_query: content
-    thumbnail_query: card/image
+    engine: tootfinder
     shortcut: toot
-    about:
-      website: https://tootfinder.ch/
-      official_api_documentation: https://wiki.tootfinder.ch/index.php?name=the-tootfinder-rest-api
-      use_official_api: true
-      require_api_key: false
-      results: 'JSON'
 
   - name: wallhaven
     engine: wallhaven

@@ -59,6 +59,9 @@ about = {
 # engine dependent config
 categories = ['general', 'web']
 paging = True
+max_page = 200
+"""200 pages maximum (``&first=1991``)"""
+
 time_range_support = True
 safesearch = True
 """Bing results are always SFW.  To get NSFW links from bing some age

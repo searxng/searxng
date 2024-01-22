@@ -47,6 +47,7 @@ about = {
 # engine dependent config
 categories = ['images', 'web']
 paging = True
+max_page = 50
 time_range_support = True
 safesearch = True
 send_accept_language_header = True

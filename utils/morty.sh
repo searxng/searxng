@@ -3,8 +3,6 @@
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=utils/brand.env
-source "${REPO_ROOT}/utils/brand.env"
 
 # ----------------------------------------------------------------------------
 # config
