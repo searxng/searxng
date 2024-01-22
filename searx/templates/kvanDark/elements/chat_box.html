@@ -9,6 +9,16 @@
         const url = new URL(searchUrl);
         const query = url.searchParams.get('q');
 
+        const httpStatusCodes = {
+            200: 'OK',
+            400: 'Bad Request',
+            401: 'Unauthorized',
+            403: 'Forbidden',
+            404: 'Not Found',
+            500: 'Internal Server Error',
+            // ... add other status codes as needed
+        };
+
         fetch('/generate-chat-content', {
             method: 'POST',
             headers: {
@@ -19,7 +29,15 @@
             .then(response => response.json())
             .then(data => {
                 const chatBox = document.querySelector('.chat_box');
-                chatBox.querySelector('h2 bdi').style.display = 'none';
+                switch (data.code) {
+                    case 200:
+                        chatBox.querySelector('h2 bdi').style.display = 'none';
+                        break;
+                    default:
+                        let statusMessage = httpStatusCodes[data.code] || 'Unknown Status';
+                        chatBox.querySelector('h2 bdi').innerHTML = `<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/${data.code}">${data.code} ${statusMessage}</a>`;
+                        break;
+                }
                 chatBox.querySelector('p bdi').innerHTML = data.content;
             });
     };

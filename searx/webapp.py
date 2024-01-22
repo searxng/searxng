@@ -170,9 +170,6 @@ app.jinja_env.add_extension('jinja2.ext.loopcontrols')  # pylint: disable=no-mem
 app.jinja_env.filters['group_engines_in_tab'] = group_engines_in_tab  # pylint: disable=no-member
 app.secret_key = settings['server']['secret_key']
 
-# FIXME: This is a huge security vulnerability.
-extremely_bad_global_variable_search_query = None
-
 class ExtendedRequest(flask.Request):
     """This class is never initialized and only used for type checking."""
 
@@ -629,7 +626,6 @@ def client_token(token=None):
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    global extremely_bad_global_variable_search_query
     """Search query in q and return results.
 
     Supported outputs: html, json, csv, rss.
@@ -664,8 +660,6 @@ def search():
         search_query, raw_text_query, _, _, selected_locale = get_search_query_from_webapp(
             request.preferences, request.form
         )
-        if chat in request.user_plugins:
-            extremely_bad_global_variable_search_query = raw_text_query.getQuery()
         search = SearchWithPlugins(search_query, request.user_plugins, request)  # pylint: disable=redefined-outer-name
         result_container = search.search()
 
@@ -1312,10 +1306,12 @@ def config():
 @app.route('/generate-chat-content', methods=['POST'])
 def generate_chat_content_endpoint():
     if request.json is None:
-        return jsonify({'content': ''})
+        return jsonify({'chat_box': 'GPT4ALL', 'code':404, 'content': ''})
+    if not request.preferences.validate_token(chat):
+        return jsonify({'chat_box': 'GPT4ALL', 'code':401, 'content': ''})
     query = request.json.get('query')
     chat_content = chat.generate_chat_content(query)
-    return jsonify({'chat_box': 'GPT4ALL', 'content': chat_content})
+    return jsonify({'chat_box': 'GPT4ALL', 'code':200, 'content': chat_content})
 
 
 @app.errorhandler(404)
