@@ -779,6 +779,7 @@ def search():
         answers = result_container.answers,
         corrections = correction_urls,
         infoboxes = result_container.infoboxes,
+        chat_box = result_container.chat_box,
         engine_data = result_container.engine_data,
         paging = result_container.paging,
         unresponsive_engines = webutils.get_translated_errors(
