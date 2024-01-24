@@ -33,8 +33,6 @@ def request(query, params):
             "page": params['pageno'],
             "pageSize": 10,
             "sort": "relevance",
-            "useFallbackRankerService": False,
-            "useFallbackSearchCluster": False,
             "getQuerySuggestions": False,
             "authors": [],
             "coAuthors": [],
