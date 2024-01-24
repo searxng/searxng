@@ -807,6 +807,12 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: goodreads
+    engine: goodreads
+    shortcut: good
+    timeout: 4.0
+    disabled: true
+
   - name: google
     engine: google
     shortcut: go
