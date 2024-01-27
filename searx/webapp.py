@@ -150,6 +150,7 @@ STATS_SORT_PARAMETERS = {
     'result_count': (True, 'result_count', 0),
     'time': (False, 'total', 0),
     'reliability': (False, 'reliability', 100),
+    'request': (True, 'request_count', 0),
 }
 
 # Flask app
