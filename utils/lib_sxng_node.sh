@@ -4,7 +4,7 @@
 declare _Blue
 declare _creset
 
-export NODE_MINIMUM_VERSION="16.13.0"
+export NODE_MINIMUM_VERSION="18.17.0"
 
 node.help(){
     cat <<EOF
