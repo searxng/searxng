@@ -42,9 +42,6 @@ def random_color():
     color = "%06x" % random.randint(0, 0xFFFFFF)
     return f"#{color.upper()}"
 
-def random_number(x: int):
-    return str(random.randint(1, x))
-
 def random_coin():
     return random.choice(['heads', 'tails'])
 
@@ -56,6 +53,24 @@ def random_dice():
 
 def random_d20():
     return str(random.randint(1, 20))
+
+def random_number(x: int):
+    return str(random.randint(1, x))
+
+def random_groups(team_count: int, items: list):
+    if type(items) is list and len(items) < 2:
+        if ',' in items[0]:
+            items = items[0].split(',')
+        else:
+            return []
+
+    random.shuffle(items)
+    groups = [[] for _ in range(team_count)]
+
+    for i in range(len(items)):
+        groups[i % team_count].append(items[i])
+
+    return str(groups).replace("'", "")
 
 random_types = {
     'string': random_string,
@@ -75,6 +90,9 @@ random_types = {
 # can return a list of results (any result type) for a given query
 def answer(query):
     parts = query.query.split()
+    if len(parts) >= 4:
+        if parts[1] == 'groups':
+            return [{'answer': random_groups(int(parts[2]), parts[3:])}]
     if len(parts) != 2:
         return []
 
