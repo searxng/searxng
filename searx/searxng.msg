@@ -11,6 +11,7 @@ __all__ = [
     'CATEGORY_NAMES',
     'CATEGORY_GROUPS',
     'STYLE_NAMES',
+    'BRAND_CUSTOM_LINKS',
 ]
 
 CONSTANT_NAMES = {
@@ -50,4 +51,9 @@ STYLE_NAMES = {
     'AUTO': 'auto',
     'LIGHT': 'light',
     'DARK': 'dark',
+}
+
+BRAND_CUSTOM_LINKS = {
+    'UPTIME': 'Uptime',
+    'ABOUT': 'About',
 }
