@@ -77,8 +77,8 @@
         {% if get_setting('general.contact_url') %}
         | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
         {% endif %}
-        {% for title, link in get_setting('brand.custom').items() %}
-        | <a href="{{ link }}">{{ title }}</a>
+        {% for title, link in get_setting('brand.custom.links').items() %}
+        | <a href="{{ link }}">{{ _(title) }}</a>
         {% endfor %}
     </p>
   </footer>
