@@ -13,17 +13,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-29 14:09+0000\n"
 "Last-Translator: staram <gritty.year0043@fastmail.com>\n"
-"Language-Team: Malay <https://translate.codeberg.org/projects/searxng/"
-"searxng/ms/>\n"
 "Language: ms\n"
+"Language-Team: Malay "
+"<https://translate.codeberg.org/projects/searxng/searxng/ms/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -232,11 +231,11 @@ msgstr "ralat API pelayan"
 msgid "Suspended"
 msgstr "Digantung"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minit} minit yang lalu"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{jam} jam, {minit} minit yang lalu"
 
@@ -292,7 +291,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -356,8 +355,7 @@ msgstr "Gantikan nama hos"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr ""
-"Buat semula keputusan nama hos atau buang keputusan berdasarkan nama hos"
+msgstr "Buat semula keputusan nama hos atau buang keputusan berdasarkan nama hos"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -411,8 +409,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Anda tidak mengguna Tor dan ini adalah alamat IP luaran anda: {ip_address}"
+msgstr "Anda tidak mengguna Tor dan ini adalah alamat IP luaran anda: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -750,10 +747,12 @@ msgid "Search URL"
 msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr ""
 
@@ -946,10 +945,22 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL untuk memulihkan pilihan anda dalam pelayar lain"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
 msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
@@ -1396,3 +1407,4 @@ msgstr "sembunyikkan video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+

@@ -15,20 +15,19 @@
 # Fjuro <ifjuro@proton.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-24 20:56+0000\n"
 "Last-Translator: Fjuro <ifjuro@proton.me>\n"
-"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
-"searxng/cs/>\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -237,11 +236,11 @@ msgstr "chyba API serveru"
 msgid "Suspended"
 msgstr "Pozastaveno"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "před {minutes} minutami"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "před {hours} hodinami, {minutes} minutami"
 
@@ -297,7 +296,7 @@ msgstr "kliknutí"
 msgid "Language"
 msgstr "Jazyk"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -760,10 +759,12 @@ msgid "Search URL"
 msgstr "URL vyhledávání"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Zkopírováno"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Kopírovat"
 
@@ -960,13 +961,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL k obnovení vašich preferencí v jiném prohlížeči"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Zadání vlastních nastavení v URL předvoleb lze použít k synchronizaci "
 "předvoleb mezi zařízeními."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1703,3 +1716,4 @@ msgstr "skrýt video"
 #~ "Nenašli jsme žádné výsledky. Použijte "
 #~ "prosím jiný dotaz nebo hledejte ve "
 #~ "více kategoriích."
+

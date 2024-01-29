@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-11-04 18:13+0000\n"
 "Last-Translator: quenty_occitania <quentinantonin@free.fr>\n"
 "Language: oc\n"
@@ -229,11 +229,11 @@ msgstr "error de l’API del servidor"
 msgid "Suspended"
 msgstr "Suspendut"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "fa {minutes} minuta(s)"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "Fa {hours} ora(s), {minutes} minuta(s)"
 
@@ -289,7 +289,7 @@ msgstr "clics"
 msgid "Language"
 msgstr "Lenga"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -740,10 +740,12 @@ msgid "Search URL"
 msgstr "URL de recèrca"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr ""
 
@@ -938,10 +940,22 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr ""
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
 msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2

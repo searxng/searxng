@@ -17,19 +17,18 @@
 # Oğuz Ersen <oguz@ersen.moe>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-29 15:56+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
-"Language-Team: Turkish <https://translate.codeberg.org/projects/searxng/"
-"searxng/tr/>\n"
 "Language: tr\n"
+"Language-Team: Turkish "
+"<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -238,11 +237,11 @@ msgstr "sunucu API hatası"
 msgid "Suspended"
 msgstr "Askıya alındı"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} dakika önce"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} saat, {minutes} dakika önce"
 
@@ -298,7 +297,7 @@ msgstr "tıklamalar"
 msgid "Language"
 msgstr "Dil"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -767,10 +766,12 @@ msgid "Search URL"
 msgstr "Arama URL'si"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "kopyalandı"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "kopyala"
 
@@ -967,13 +968,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "Seçeneklerinizi farklı bir tarayıcıda yükleme URL'i"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Tercihler URL'sinde özel ayarları belirtmek, cihazlar arasında senkronize"
 " etmek için kullanılabilir."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1708,3 +1721,4 @@ msgstr "görüntüyü gizle"
 #~ "herhangi bir sonuç bulamadık. Lütfen, "
 #~ "başka bir sorgu kullanın veya daha "
 #~ "fazla kategoride arama yapın."
+

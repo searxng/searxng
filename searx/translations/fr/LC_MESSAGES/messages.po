@@ -20,19 +20,18 @@
 # quenty_occitania <quentinantonin@free.fr>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-11 08:23+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: French <https://translate.codeberg.org/projects/searxng/"
-"searxng/fr/>\n"
 "Language: fr\n"
+"Language-Team: French "
+"<https://translate.codeberg.org/projects/searxng/searxng/fr/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -241,11 +240,11 @@ msgstr "erreur API du serveur"
 msgid "Suspended"
 msgstr "Suspendu"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "il y a {minutes} minute(s)"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "il y a {hours} heure(s), {minutes} minute(s)"
 
@@ -301,7 +300,7 @@ msgstr "clics"
 msgid "Language"
 msgstr "Langue"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -767,10 +766,12 @@ msgid "Search URL"
 msgstr "URL de recherche"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copié"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copier"
 
@@ -968,13 +969,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL pour restaurer vos préférences dans un autre navigateur"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "La spécification de paramètres personnalisés dans l'URL des préférences "
 "peut être utilisée pour synchroniser les préférences entre les appareils."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1730,3 +1743,4 @@ msgstr "cacher la vidéo"
 #~ "nous n'avons trouvé aucun résultat. "
 #~ "Effectuez une autre recherche ou changez"
 #~ " de catégorie."
+

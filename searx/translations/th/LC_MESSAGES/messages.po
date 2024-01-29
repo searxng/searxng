@@ -9,17 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-29 15:56+0000\n"
 "Last-Translator: yuttct <yuttct@yahoo.com>\n"
-"Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
-"th/>\n"
 "Language: th\n"
+"Language-Team: Thai "
+"<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -228,11 +227,11 @@ msgstr "ข้อผิดพลาดจาก API ของเซิร์ฟ�
 msgid "Suspended"
 msgstr "ถูกระงับ"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} นาทีก่อน"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ชั่วโมง),{minutes} นาทีก่อน"
 
@@ -288,13 +287,13 @@ msgstr "คลิก"
 msgid "Language"
 msgstr "ภาษา"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"การอ้างอิง {numCitations} รายการตั้งแต่ปี {firstCitationVelocityYear} ถึง "
-"{lastCitationVelocityYear}"
+"การอ้างอิง {numCitations} รายการตั้งแต่ปี {firstCitationVelocityYear} ถึง"
+" {lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -391,15 +390,16 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "ปลั๊กอินนี้จะตรวจสอบว่าที่อยู่ของคำขอเป็นโหนดทางออกของ Tor หรือไม่ "
-"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก SearXNG"
+"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก "
+"SearXNG"
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"ไม่สามารถดาวน์โหลดรายการ Tor exit-nodes จาก: https://check.torproject.org/"
-"exit-addresses"
+"ไม่สามารถดาวน์โหลดรายการ Tor exit-nodes จาก: https://check.torproject.org"
+"/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -747,10 +747,12 @@ msgid "Search URL"
 msgstr "ค้นหา URL"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "คัดลอกแล้ว"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "สำเนา"
 
@@ -945,13 +947,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL เพื่อกู้คืนการตั้งค่าของคุณในเบราว์เซอร์อื่น"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "การระบุการตั้งค่าแบบกำหนดเองใน URL "
 "ค่ากำหนดสามารถใช้เพื่อซิงค์กับค่ากำหนดในอุปกรณ์ต่างๆได้"
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -966,8 +980,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"แท็บนี้ไม่มีอยู่ในอินเทอร์เฟซผู้ใช้ แต่คุณสามารถค้นหาในเอ็นจิ้นเหล่านี้ได้ด้"
-"วย !bangs"
+"แท็บนี้ไม่มีอยู่ในอินเทอร์เฟซผู้ใช้ "
+"แต่คุณสามารถค้นหาในเอ็นจิ้นเหล่านี้ได้ด้วย !bangs"
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1410,3 +1424,4 @@ msgstr "ซ่อนวิดีโอ"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "เราไม่พบผลลัพธ์ใดๆ โปรดใช้คิวรีอื่นหรือค้นหาในหมวดหมู่เพิ่มเติม"
+

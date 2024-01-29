@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-11-17 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: sk\n"
@@ -231,11 +231,11 @@ msgstr "API chyba servera"
 msgid "Suspended"
 msgstr "Pozastavené"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "pred {minutes} min."
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} hod., {minutes} min."
 
@@ -291,7 +291,7 @@ msgstr "kliknutia"
 msgid "Language"
 msgstr "Jazyk"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -753,10 +753,12 @@ msgid "Search URL"
 msgstr "Adresa URL vyhľadávania"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Skopírované"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Kopírovať"
 
@@ -954,13 +956,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "Adresa (URL) pre obnovu nastavení v inom prehliadači"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Zadaním osobitých nastavení v adrese (URL) nastavení je možné "
 "synchronizovať nastavenia do iných zariadení."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"

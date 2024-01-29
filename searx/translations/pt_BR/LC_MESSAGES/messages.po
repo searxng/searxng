@@ -24,19 +24,18 @@
 # ETRB <codeberg-cm58mk@r.acmrb.uk>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-29 14:09+0000\n"
 "Last-Translator: ETRB <codeberg-cm58mk@r.acmrb.uk>\n"
-"Language-Team: Portuguese (Brazil) <https://translate.codeberg.org/projects/"
-"searxng/searxng/pt_BR/>\n"
 "Language: pt_BR\n"
+"Language-Team: Portuguese (Brazil) "
+"<https://translate.codeberg.org/projects/searxng/searxng/pt_BR/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -245,11 +244,11 @@ msgstr "erro de API do servidor"
 msgid "Suspended"
 msgstr "Suspenso"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minuto(s) atrás"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} hora(s), {minutes} minuto(s) atrás"
 
@@ -305,7 +304,7 @@ msgstr "cliques"
 msgid "Language"
 msgstr "Idioma"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -773,10 +772,12 @@ msgid "Search URL"
 msgstr "Buscar URL"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copiado"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copiar"
 
@@ -974,13 +975,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL para restaurar suas preferências em outro navegador"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Especificar preferências customizadas na URL pode ser usado para "
 "sincronizar preferências em outros dispositivos."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1733,3 +1746,4 @@ msgstr "ocultar vídeo"
 #~ "Não encontramos nenhum resultado. Utilize "
 #~ "outra consulta ou pesquisa em mais "
 #~ "categorias."
+

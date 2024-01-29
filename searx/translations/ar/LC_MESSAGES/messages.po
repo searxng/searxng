@@ -15,20 +15,19 @@
 # Rick1029 <yoshibear1029@gmail.com>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-11 08:23+0000\n"
 "Last-Translator: Rick1029 <yoshibear1029@gmail.com>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -237,11 +236,11 @@ msgstr "خطأ في API الخادم"
 msgid "Suspended"
 msgstr "معلق"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "قبل دقائق"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "قبل {hours} ساعات، {minutes} دقائق"
 
@@ -297,7 +296,7 @@ msgstr "نقرات"
 msgid "Language"
 msgstr "اللغة"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -758,10 +757,12 @@ msgid "Search URL"
 msgstr "رابط البحث"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "نسخ"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "نسخة"
 
@@ -958,13 +959,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL لاستعادة تفضيلاتك في متصفح آخر"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "يمكن استخدام تحديد الإعدادات المخصصة في تفضيلات URL لمزامنة التفضيلات عبر"
 " الأجهزة."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1691,3 +1704,4 @@ msgstr "إخفاء الفيديو"
 #~ "لم نتوصل إلى العثور على أية نتيجة."
 #~ " الرجاء إعادة صياغة طلب البحث أو "
 #~ "إبحث مع تحديد أكثر من فئة."
+

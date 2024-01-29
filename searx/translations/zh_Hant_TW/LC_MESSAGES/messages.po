@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-04 03:38+0000\n"
 "Last-Translator: kirisameSoup <kirisoup@skiff.com>\n"
 "Language: zh_Hant_TW\n"
@@ -239,11 +239,11 @@ msgstr "服務器 API 錯誤"
 msgid "Suspended"
 msgstr "暫停服務"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分鐘前"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
@@ -299,7 +299,7 @@ msgstr "點擊"
 msgid "Language"
 msgstr "語系"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -746,10 +746,12 @@ msgid "Search URL"
 msgstr "搜尋網址"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "已複製"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "複製"
 
@@ -942,11 +944,23 @@ msgstr "注意：在搜尋 URL 中指定自訂的設定可能會降低隱私，�
 msgid "URL to restore your preferences in another browser"
 msgstr "用於在其他瀏覽器上還原您的偏好設定的網址"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr "於URL中指定設定可把您的偏好設定同步至其他設備。"
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"

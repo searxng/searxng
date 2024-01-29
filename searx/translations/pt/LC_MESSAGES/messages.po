@@ -15,19 +15,18 @@
 # Coccocoas_Helper <coccocoahelper@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-03 15:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
-"searxng/pt/>\n"
 "Language: pt\n"
+"Language-Team: Portuguese "
+"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -236,11 +235,11 @@ msgstr "erro de API do servidor"
 msgid "Suspended"
 msgstr "Suspenso"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minuto(s) atrás"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} hora(s), {minutes} minuto(s) atrás"
 
@@ -296,7 +295,7 @@ msgstr "clica"
 msgid "Language"
 msgstr "Idioma"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -761,10 +760,12 @@ msgid "Search URL"
 msgstr "Procurar hiperligação"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "copiado"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "copiar"
 
@@ -862,8 +863,7 @@ msgstr "Atualize a página"
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
-"Pesquisar por outras palavras chaves ou escolher outra categoria (abaixo)."
+msgstr "Pesquisar por outras palavras chaves ou escolher outra categoria (abaixo)."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
@@ -876,7 +876,8 @@ msgstr "Troque de instância:"
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
 msgstr ""
-"Pesquisar por outras palavras-chave ou selecionar outra categoria (abaixo)."
+"Pesquisar por outras palavras-chave ou selecionar outra categoria "
+"(abaixo)."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
@@ -964,13 +965,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL para restaurar suas preferências em outro navegador"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Especificar configurações customizadas na URL de preferências pode ser "
 "usado para sincronizar preferências entre dispositivos."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1046,8 +1059,8 @@ msgid ""
 "key on main or result page to get help."
 msgstr ""
 "Navegue os resultados de pesquisa com teclas de atalhos de (JavaScript "
-"necessário). Pressione a tecla \"h\" na página principal ou de resultados "
-"para conseguir ajuda."
+"necessário). Pressione a tecla \"h\" na página principal ou de resultados"
+" para conseguir ajuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1116,8 +1129,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Pesquisar imediatamente se uma categoria estiver selecionada. Desative para "
-"selecionar múltiplas categorias."
+"Pesquisar imediatamente se uma categoria estiver selecionada. Desative "
+"para selecionar múltiplas categorias."
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1716,3 +1729,4 @@ msgstr "esconder vídeo"
 #~ "não encontramos nenhum resultado. Por "
 #~ "favor pesquise outra coisa ou utilize"
 #~ " mais categorias na sua pesquisa."
+

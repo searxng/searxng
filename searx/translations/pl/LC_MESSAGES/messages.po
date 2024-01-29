@@ -15,21 +15,20 @@
 # Linuks <linuks@skiff.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-28 14:56+0000\n"
 "Last-Translator: Linuks <linuks@skiff.com>\n"
-"Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
-"searxng/pl/>\n"
 "Language: pl\n"
+"Language-Team: Polish "
+"<https://translate.codeberg.org/projects/searxng/searxng/pl/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
-"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -238,11 +237,11 @@ msgstr "błąd serwera API"
 msgid "Suspended"
 msgstr "Zawieszone"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(y) temu"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} godzin(y), {minutes} minut(y) temu"
 
@@ -298,7 +297,7 @@ msgstr "kliknięcia"
 msgid "Language"
 msgstr "Język"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -763,10 +762,12 @@ msgid "Search URL"
 msgstr "URL wyszukiwania"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Skopiowane"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Kopiuj"
 
@@ -964,13 +965,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL do przywrócenia twoich ustawień w innej przeglądarce"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Określanie własnych ustawień w adresie URL preferencji może służyć do "
 "synchronizowania preferencji między urządzeniami."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1017,7 +1030,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Te ciasteczka służą wyłącznie twojej wygodzie, nie używamy ich do śledzenia."
+"Te ciasteczka służą wyłącznie twojej wygodzie, nie używamy ich do "
+"śledzenia."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1706,3 +1720,4 @@ msgstr "ukryj wideo"
 #~ "nie znaleźliśmy żadnych wyników. Użyj "
 #~ "innego zapytania lub wyszukaj więcej "
 #~ "kategorii."
+

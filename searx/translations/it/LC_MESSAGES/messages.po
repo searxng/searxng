@@ -24,19 +24,18 @@
 # nicfab <nicfab@icloud.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2024-01-03 15:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
-"searxng/it/>\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -245,11 +244,11 @@ msgstr "errore server API"
 msgid "Suspended"
 msgstr "Sospeso"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "di {minutes} minuto(i) fa"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "di {hours} ora(e) e {minutes} minuto(i) fa"
 
@@ -305,7 +304,7 @@ msgstr "clic"
 msgid "Language"
 msgstr "Lingua"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -776,10 +775,12 @@ msgid "Search URL"
 msgstr "URL della ricerca"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copiato"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copia"
 
@@ -894,7 +895,8 @@ msgstr "Prova con un’altra ricerca o seleziona un’altra categoria."
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
-"Torna alla pagina precedente utilizzando il pulsante della pagina precedente."
+"Torna alla pagina precedente utilizzando il pulsante della pagina "
+"precedente."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -977,13 +979,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL per ripristinare le tue preferenze in un altro browser"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Specificando le impostazioni personalizzate nell'URL delle preferenze è "
 "possibile sincronizzare le preferenze tra i vari dispositivi."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1727,3 +1741,4 @@ msgstr "nascondi video"
 #~ "non abbiamo trovato alcun risultato. "
 #~ "Prova una nuova ricerca, o cerca "
 #~ "in più categorie."
+

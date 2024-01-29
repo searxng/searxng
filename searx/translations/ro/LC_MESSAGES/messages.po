@@ -15,20 +15,19 @@
 # microsoftocsharp <kottiberyu@gmail.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-30 09:19+0000\n"
 "Last-Translator: alextecplayz <alextec70@outlook.com>\n"
-"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ro/>\n"
 "Language: ro\n"
+"Language-Team: Romanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
+"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -237,11 +236,11 @@ msgstr "eroare la API pe Server"
 msgid "Suspended"
 msgstr "Întrerupt"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(e) în urmă"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
@@ -297,7 +296,7 @@ msgstr "click-uri"
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -766,10 +765,12 @@ msgid "Search URL"
 msgstr "URL de căutare"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copiat"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copiați"
 
@@ -883,8 +884,7 @@ msgstr "Căutați folosind o altă solicitare sau selectați altă categorie."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
-"Reveniți la pagina anterioară folosind butonul pentru pagina anterioară."
+msgstr "Reveniți la pagina anterioară folosind butonul pentru pagina anterioară."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -968,13 +968,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL pentru revindecarea preferințelor dintr-un alt browser"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Specificând setări personalizate în URLul de preferințe poate fi folosit "
 "pentru sincronizarea preferințelor pe toate aparatele."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1717,3 +1729,4 @@ msgstr "ascunde video"
 #~ "n-am găsit nici un rezultat. Folosiți"
 #~ " o altă interogare sau căutați în "
 #~ "mai multe categorii."
+

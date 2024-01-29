@@ -18,19 +18,18 @@
 # Luna <github@luwuna.gay>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-29 17:13+0000\n"
 "PO-Revision-Date: 2023-12-27 12:16+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Swedish <https://translate.codeberg.org/projects/searxng/"
-"searxng/sv/>\n"
 "Language: sv\n"
+"Language-Team: Swedish "
+"<https://translate.codeberg.org/projects/searxng/searxng/sv/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -239,11 +238,11 @@ msgstr "server API-fel"
 msgid "Suspended"
 msgstr "Avstängd"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
 
@@ -299,7 +298,7 @@ msgstr "klick"
 msgid "Language"
 msgstr "Språk"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -765,10 +764,12 @@ msgid "Search URL"
 msgstr "Sök webbadress"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Kopierat"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Kopiera"
 
@@ -965,13 +966,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL för att återställa dina inställningar i en annan webbläsare"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Dina anpassade inställningar i inställningarnas URL kan användas för att "
 "synkronisera inställningar mellan olika enheter."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1704,3 +1717,4 @@ msgstr "göm video"
 #~ "vi hittade inte några resultat. Använd"
 #~ " en annan förfråga eller sök i "
 #~ "flera kategorier."
+
