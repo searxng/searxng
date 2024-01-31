@@ -16,7 +16,6 @@
        image_proxy: false
        default_http_headers:
          X-Content-Type-Options : nosniff
-         X-XSS-Protection : 1; mode=block
          X-Download-Options : noopen
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
