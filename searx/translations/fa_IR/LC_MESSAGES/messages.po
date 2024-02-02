@@ -15,19 +15,18 @@
 # arashe22 <arashe22@proton.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-31 19:06+0000\n"
 "PO-Revision-Date: 2024-01-18 04:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Persian <https://translate.codeberg.org/projects/searxng/"
-"searxng/fa/>\n"
 "Language: fa_IR\n"
+"Language-Team: Persian "
+"<https://translate.codeberg.org/projects/searxng/searxng/fa/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -236,11 +235,11 @@ msgstr "خطای API سرور"
 msgid "Suspended"
 msgstr "تعلیق‌شده"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} دقیقه پیش"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ساعت و {minutes} دقیقه پیش"
 
@@ -296,7 +295,7 @@ msgstr "کلیک ها"
 msgid "Language"
 msgstr "زبان"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -498,6 +497,7 @@ msgid "Length"
 msgstr "طول"
 
 #: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
@@ -716,6 +716,7 @@ msgstr "درصد"
 msgid "Parameter"
 msgstr "شاخص"
 
+#: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "نام پرونده"
@@ -761,10 +762,12 @@ msgid "Search URL"
 msgstr "URL جست‌وجو"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr ""
 
@@ -959,13 +962,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL برای بازیابی تنظیمات مورد نظر خود در مرورگر دیگری"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "تعیین تنظیمات سفارشی در URL تنظیمات برگزیده می‌تواند برای همگام‌سازی "
 "تنظیمات برگزیده در بین دستگاه‌ها استفاده شود."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1144,10 +1159,13 @@ msgid "repo"
 msgstr "مخازن"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/files.html:11
 msgid "show media"
 msgstr "نمایش رسانه"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
 msgid "hide media"
 msgstr "پنهان‌سازی رسانه"
 
@@ -1155,6 +1173,45 @@ msgstr "پنهان‌سازی رسانه"
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "این سایت هیچ توصیفی ندارد."
+
+#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "اندازهٔ پرونده"
+
+#: searx/templates/simple/result_templates/files.html:39
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "بایت"
+
+#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "کیلوبایت"
+
+#: searx/templates/simple/result_templates/files.html:41
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "مگابایت"
+
+#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "گیگابایت"
+
+#: searx/templates/simple/result_templates/files.html:43
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "ترابایت"
+
+#: searx/templates/simple/result_templates/files.html:47
+msgid "Date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "نوع"
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1196,10 +1253,6 @@ msgstr "ویرایشگر"
 msgid "Publisher"
 msgstr "ناشر"
 
-#: searx/templates/simple/result_templates/paper.html:24
-msgid "Type"
-msgstr "نوع"
-
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
 msgstr "تگ ها"
@@ -1239,30 +1292,6 @@ msgstr "بذرپاش"
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
 msgstr "مکنده"
-
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "اندازهٔ پرونده"
-
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "بایت"
-
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "کیلوبایت"
-
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "مگابایت"
-
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "گیگابایت"
-
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "ترابایت"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
@@ -1693,3 +1722,4 @@ msgstr "پنهان‌سازی ویدئو"
 #~ "چیزی پیدا نشد. لطفاً ورودی دیگری "
 #~ "را بیازمایید یا در دسته‌‌های بیش‌تری "
 #~ "جست‌وجو کنید."
+

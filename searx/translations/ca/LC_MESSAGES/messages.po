@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-31 19:06+0000\n"
 "PO-Revision-Date: 2023-12-08 07:07+0000\n"
 "Last-Translator: Ivan Gabaldon <admin@inetol.net>\n"
 "Language: ca\n"
@@ -237,11 +237,11 @@ msgstr "error en l'API del servidor"
 msgid "Suspended"
 msgstr "Suspès"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "fa {minutes} minut(s)"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "fa {hours} hores i {minutes} minut(s)"
 
@@ -297,7 +297,7 @@ msgstr "clics"
 msgid "Language"
 msgstr "Llengua"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -497,6 +497,7 @@ msgid "Length"
 msgstr "Longitud"
 
 #: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
@@ -717,6 +718,7 @@ msgstr "Percentatge"
 msgid "Parameter"
 msgstr "Paràmetre"
 
+#: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nom de fitxer"
@@ -762,10 +764,12 @@ msgid "Search URL"
 msgstr "URL de cerca"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copiat"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copiar"
 
@@ -963,13 +967,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL per a recuperar les preferències en un altre navegador"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Especificar els paràmetres personalitzats en l'URL de preferències pot "
 "usar-se per sincronitzar entre dispositius."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1156,10 +1172,13 @@ msgid "repo"
 msgstr "repositori"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/files.html:11
 msgid "show media"
 msgstr "mostra el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
 msgid "hide media"
 msgstr "oculta el contingut multimèdia"
 
@@ -1167,6 +1186,45 @@ msgstr "oculta el contingut multimèdia"
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "Aquest lloc no proporciona cap descripció."
+
+#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Mida del fitxer"
+
+#: searx/templates/simple/result_templates/files.html:39
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Bytes"
+
+#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "kiB"
+
+#: searx/templates/simple/result_templates/files.html:41
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/files.html:43
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
+#: searx/templates/simple/result_templates/files.html:47
+msgid "Date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Tipus"
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1208,10 +1266,6 @@ msgstr "Redactor"
 msgid "Publisher"
 msgstr "Editor"
 
-#: searx/templates/simple/result_templates/paper.html:24
-msgid "Type"
-msgstr "Tipus"
-
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
 msgstr "Etiquetes"
@@ -1251,30 +1305,6 @@ msgstr "Font"
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
 msgstr "Descarregador"
-
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Mida del fitxer"
-
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bytes"
-
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"

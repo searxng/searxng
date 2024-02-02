@@ -19,19 +19,18 @@
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
+"POT-Creation-Date: 2024-01-31 19:06+0000\n"
 "PO-Revision-Date: 2023-12-28 14:56+0000\n"
 "Last-Translator: tentsbet <remendne@pentrens.jp>\n"
-"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
-"searxng/ja/>\n"
 "Language: ja\n"
+"Language-Team: Japanese "
+"<https://translate.codeberg.org/projects/searxng/searxng/ja/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -240,11 +239,11 @@ msgstr "サーバー API エラー"
 msgid "Suspended"
 msgstr "一時停止"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分前"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
 
@@ -300,7 +299,7 @@ msgstr "クリック"
 msgid "Language"
 msgstr "言語"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -486,6 +485,7 @@ msgid "Length"
 msgstr "長さ"
 
 #: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
@@ -702,6 +702,7 @@ msgstr "確率"
 msgid "Parameter"
 msgstr "パラメータ"
 
+#: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "ファイル名"
@@ -747,10 +748,12 @@ msgid "Search URL"
 msgstr "この検索結果の URL"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "コピーしました"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "コピー"
 
@@ -943,11 +946,23 @@ msgstr "注意: 検索 URL にカスタム設定を指定すると、クリッ�
 msgid "URL to restore your preferences in another browser"
 msgstr "このURLで違うブラウザに設定を復活"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr "初期設定URLを使うことで、特別な設定をデバイスをまたいで同期できる。"
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1118,10 +1133,13 @@ msgid "repo"
 msgstr "リポジトリ"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/files.html:11
 msgid "show media"
 msgstr "メディアを表示する"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
 msgid "hide media"
 msgstr "メディアを隠す"
 
@@ -1129,6 +1147,45 @@ msgstr "メディアを隠す"
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "このサイトは説明を提供しませんでした。"
+
+#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "ファイルサイズ"
+
+#: searx/templates/simple/result_templates/files.html:39
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "バイト"
+
+#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "キロバイト"
+
+#: searx/templates/simple/result_templates/files.html:41
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "メガバイト"
+
+#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "ギガバイト"
+
+#: searx/templates/simple/result_templates/files.html:43
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "テラバイト"
+
+#: searx/templates/simple/result_templates/files.html:47
+msgid "Date"
+msgstr ""
+
+#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "分類"
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1170,10 +1227,6 @@ msgstr "編集者"
 msgid "Publisher"
 msgstr "発行者"
 
-#: searx/templates/simple/result_templates/paper.html:24
-msgid "Type"
-msgstr "分類"
-
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
 msgstr "タグ"
@@ -1213,30 +1266,6 @@ msgstr "シーダー"
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
 msgstr "リーチャー"
-
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "ファイルサイズ"
-
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "バイト"
-
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "キロバイト"
-
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "メガバイト"
-
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "ギガバイト"
-
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "テラバイト"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
@@ -1638,3 +1667,4 @@ msgstr "動画を隠す"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "検索結果はありませんでした。別のカテゴリ、または他のクエリで検索してください。"
+
