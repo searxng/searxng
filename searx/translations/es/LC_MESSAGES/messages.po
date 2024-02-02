@@ -24,16 +24,16 @@
 # Peter Martin <weblate@pe7er.com>, 2022.
 # zDylant <dylantfcs@gmail.com>, 2022.
 # mester <oscarodriguez56@gmail.com>, 2023.
-# gallegonovato <fran-carro@hotmail.es>, 2023.
-# return42 <markus.heiser@darmarit.de>, 2023.
+# gallegonovato <fran-carro@hotmail.es>, 2023, 2024.
+# return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # 1024mb <aberetta@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
-"PO-Revision-Date: 2023-12-29 07:07+0000\n"
-"Last-Translator: 1024mb <aberetta@protonmail.com>\n"
+"POT-Creation-Date: 2024-01-31 19:06+0000\n"
+"PO-Revision-Date: 2024-02-01 06:37+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
 "searxng/es/>\n"
 "Language: es\n"
@@ -250,11 +250,11 @@ msgstr "error en la API del servidor"
 msgid "Suspended"
 msgstr "Suspendido"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "hace {minutes} minuto(s)"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "hace {hours} hora(s) y {minutes} minuto(s)"
 
@@ -310,7 +310,7 @@ msgstr "clics"
 msgid "Language"
 msgstr "Idioma"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -325,8 +325,8 @@ msgid ""
 " WebP."
 msgstr ""
 "No se pudo leer la URL de esa imagen. Esto puede deberse a un formato de "
-"archivo no compatible. TinEye solo admite imágenes que son JPEG, PNG, GIF, "
-"BMP, TIFF o WebP."
+"archivo no compatible. TinEye solo admite imágenes que son JPEG, PNG, "
+"GIF, BMP, TIFF o WebP."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -416,17 +416,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Este plug-in comprueba si la dirección de las solicitudes son nodo de salida "
-"de Tor, e informa al usuario si lo es; como check.torproject.org, pero desde "
-"SearXNG."
+"Este plug-in comprueba si la dirección de las solicitudes son nodo de "
+"salida de Tor, e informa al usuario si lo es; como check.torproject.org, "
+"pero desde SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"No se pudo descargar la lista de nodos de salida de Tor desde: https://check."
-"torproject.org/exit-addresses"
+"No se pudo descargar la lista de nodos de salida de Tor desde: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
@@ -515,6 +515,7 @@ msgid "Length"
 msgstr "Longitud"
 
 #: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
@@ -733,6 +734,7 @@ msgstr "Porcentaje"
 msgid "Parameter"
 msgstr "Parámetro"
 
+#: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nombre de archivo"
@@ -778,10 +780,12 @@ msgid "Search URL"
 msgstr "URL de la búsqueda"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Copiado"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Copiar"
 
@@ -979,13 +983,25 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL para restaurar sus preferencias en otro navegador"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "Especificar ajustes personalizados en la URL de preferencias puede usarse"
 " para sincronizar las preferencias entre dispositivos."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr "Copiar el hash de preferencias"
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr "Inserte el hash de preferencias copiado (sin URL) para restaurar"
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr "Hash de preferencias"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1173,10 +1189,13 @@ msgid "repo"
 msgstr "repositorios"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/files.html:11
 msgid "show media"
 msgstr "mostrar multimedia"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
 msgid "hide media"
 msgstr "ocultar multimedia"
 
@@ -1184,6 +1203,45 @@ msgstr "ocultar multimedia"
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "Este sitio no provee ninguna descripción."
+
+#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Tamaño de archivo"
+
+#: searx/templates/simple/result_templates/files.html:39
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Bytes"
+
+#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "KiB"
+
+#: searx/templates/simple/result_templates/files.html:41
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "MiB"
+
+#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "GiB"
+
+#: searx/templates/simple/result_templates/files.html:43
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "TiB"
+
+#: searx/templates/simple/result_templates/files.html:47
+msgid "Date"
+msgstr "Fecha"
+
+#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Tipo"
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1225,10 +1283,6 @@ msgstr "Editor"
 msgid "Publisher"
 msgstr "Editor"
 
-#: searx/templates/simple/result_templates/paper.html:24
-msgid "Type"
-msgstr "Tipo"
-
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
 msgstr "Etiquetas"
@@ -1268,30 +1322,6 @@ msgstr "Seeders"
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
 msgstr "Leechers"
-
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Tamaño de archivo"
-
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bytes"
-
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "KiB"
-
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"

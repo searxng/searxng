@@ -15,16 +15,16 @@
 # No4vick <MineBor1@yandex.ru>, 2022.
 # BalkanMadman <zurabid2016@gmail.com>, 2023.
 # AHOHNMYC <lqwh2h2cwa@protonmail.com>, 2023.
-# return42 <markus.heiser@darmarit.de>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # 0que <0que@users.noreply.translate.codeberg.org>, 2023.
 # mittwerk <w0o0y8jt@duck.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-23 08:54+0000\n"
-"PO-Revision-Date: 2023-12-24 20:56+0000\n"
-"Last-Translator: mittwerk <w0o0y8jt@duck.com>\n"
+"POT-Creation-Date: 2024-01-31 19:06+0000\n"
+"PO-Revision-Date: 2024-02-01 06:37+0000\n"
+"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ru/>\n"
 "Language: ru\n"
@@ -243,11 +243,11 @@ msgstr "ошибка API сервера"
 msgid "Suspended"
 msgstr "Приостановлено"
 
-#: searx/webutils.py:317
+#: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} минут(-у) назад"
 
-#: searx/webutils.py:318
+#: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} час(ов), {minutes} минут(а) назад"
 
@@ -303,7 +303,7 @@ msgstr "нажатия"
 msgid "Language"
 msgstr "Язык"
 
-#: searx/engines/semantic_scholar.py:81
+#: searx/engines/semantic_scholar.py:79
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -503,6 +503,7 @@ msgid "Length"
 msgstr "Длительность"
 
 #: searx/templates/simple/macros.html:37
+#: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:18
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
@@ -723,6 +724,7 @@ msgstr "Процент"
 msgid "Parameter"
 msgstr "Параметр"
 
+#: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Имя файла"
@@ -768,10 +770,12 @@ msgid "Search URL"
 msgstr "Ссылка поиска"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
 msgstr "Скопировано"
 
 #: searx/templates/simple/elements/search_url.html:4
+#: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
 msgstr "Копировать"
 
@@ -966,13 +970,26 @@ msgstr ""
 msgid "URL to restore your preferences in another browser"
 msgstr "URL-адрес для восстановления ваших настроек в другом браузере"
 
-#: searx/templates/simple/preferences/cookies.html:44
+#: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
 "URL-адреса с пользовательскими настройками можно использовать для "
 "синхронизации настроек между устройствами."
+
+#: searx/templates/simple/preferences/cookies.html:46
+msgid "Copy preferences hash"
+msgstr "Скопировать хэш настроек"
+
+#: searx/templates/simple/preferences/cookies.html:57
+msgid "Insert copied preferences hash (without URL) to restore"
+msgstr ""
+"Вставить скопированный хэш настроек (без URL-адреса) для их восстановления"
+
+#: searx/templates/simple/preferences/cookies.html:59
+msgid "Preferences hash"
+msgstr "Хэш настроек"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1160,10 +1177,13 @@ msgid "repo"
 msgstr "Репозиторий"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/files.html:11
 msgid "show media"
 msgstr "показать медиа"
 
 #: searx/templates/simple/result_templates/default.html:6
+#: searx/templates/simple/result_templates/files.html:8
 msgid "hide media"
 msgstr "скрыть медиа"
 
@@ -1171,6 +1191,45 @@ msgstr "скрыть медиа"
 #: searx/templates/simple/result_templates/videos.html:14
 msgid "This site did not provide any description."
 msgstr "Этот сайт не предоставил описания."
+
+#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/torrent.html:11
+msgid "Filesize"
+msgstr "Размер файла"
+
+#: searx/templates/simple/result_templates/files.html:39
+#: searx/templates/simple/result_templates/torrent.html:12
+msgid "Bytes"
+msgstr "Байт"
+
+#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/torrent.html:13
+msgid "kiB"
+msgstr "КиБ"
+
+#: searx/templates/simple/result_templates/files.html:41
+#: searx/templates/simple/result_templates/torrent.html:14
+msgid "MiB"
+msgstr "МиБ"
+
+#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/torrent.html:15
+msgid "GiB"
+msgstr "ГиБ"
+
+#: searx/templates/simple/result_templates/files.html:43
+#: searx/templates/simple/result_templates/torrent.html:16
+msgid "TiB"
+msgstr "ТиБ"
+
+#: searx/templates/simple/result_templates/files.html:47
+msgid "Date"
+msgstr "Дата"
+
+#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/paper.html:24
+msgid "Type"
+msgstr "Тип"
 
 #: searx/templates/simple/result_templates/images.html:19
 msgid "Format"
@@ -1212,10 +1271,6 @@ msgstr "Редактор"
 msgid "Publisher"
 msgstr "Издатель"
 
-#: searx/templates/simple/result_templates/paper.html:24
-msgid "Type"
-msgstr "Тип"
-
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
 msgstr "Теги"
@@ -1255,30 +1310,6 @@ msgstr "Сиды"
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
 msgstr "Личи"
-
-#: searx/templates/simple/result_templates/torrent.html:11
-msgid "Filesize"
-msgstr "Размер файла"
-
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Байт"
-
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "КиБ"
-
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "МиБ"
-
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "ГиБ"
-
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "ТиБ"
 
 #: searx/templates/simple/result_templates/torrent.html:20
 msgid "Number of Files"
