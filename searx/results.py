@@ -354,10 +354,13 @@ class ResultContainer:
         for result in self._merged_results:
             score = result_score(result)
             result['score'] = score
+
+            # removing html content and whitespace duplications
             if result.get('content'):
                 result['content'] = utils.html_to_text(result['content']).strip()
-            # removing html content and whitespace duplications
-            result['title'] = ' '.join(utils.html_to_text(result['title']).strip().split())
+            if result.get('title'):
+                result['title'] = ' '.join(utils.html_to_text(result['title']).strip().split())
+
             for result_engine in result['engines']:
                 counter_add(score, 'engine', result_engine, 'score')
 
