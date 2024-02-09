@@ -37,8 +37,9 @@
 
   searxng.ready(function () {
     qinput = d.getElementById(qinput_id);
+    const wasSearchBarFound = qinput !== null;
 
-    if (qinput !== null) {
+    if (wasSearchBarFound) {
       // clear button
       createClearButton(qinput);
 
@@ -155,7 +156,7 @@
     // filter (safesearch, time range or language) (this requires JavaScript
     // though)
     if (
-      qinput !== null
+      wasSearchBarFound
         && searxng.settings.search_on_category_select
       // If .search_filters is undefined (invisible) we are on the homepage and
       // hence don't have to set any listeners
@@ -180,6 +181,17 @@
           selected.classList.remove("selected");
         })
       }
+    }
+
+    // shortcut to focus search bar
+    if (wasSearchBarFound) {
+      d.addEventListener('keyup', function (event) {
+        if (event.key == "/") {
+          const queryLength = qinput.value.length;
+          qinput.setSelectionRange(queryLength, queryLength);
+          qinput.focus();
+        }
+      });
     }
   });
 
