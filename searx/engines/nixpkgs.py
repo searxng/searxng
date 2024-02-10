@@ -68,7 +68,6 @@ def response(resp):
     for result in resp_json["hits"]["hits"]:
         r = {key: value if not key.startswith("_") else value for key, value in result["_source"].items()}
         r["template"] = "nix-package.html"
-        r["url"] = _get_url(result)
         r["title"] = result["_source"]["package_pname"]
         r["content"] = result["_source"]["package_description"]
         r["github_url"] = _position_to_github_url(result["_source"]["package_position"])
@@ -150,21 +149,6 @@ def _build_query(query: str):
 def _position_to_github_url(package_position: str):
     path, line = package_position.split(":")
     return f"https://github.com/NixOS/nixpkgs/blob/master/{path}#L{line}"
-
-
-def _get_url(result: dict):
-    try:
-        url = result["_source"]["package_homepage"][0]
-    except:
-        try:
-            position = result["_source"]["package_position"]
-            if not position:
-                raise
-            else:
-                url = _position_to_github_url(position)
-        except:
-            url = "https://search.nixos.org"
-    return url
 
 
 def _get_codelines(package_name: str):

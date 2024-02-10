@@ -1,6 +1,6 @@
 {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
 
-{{ result_header(result, favicons, image_proxify) -}}
+<h3>{{ result.package_pname }}</h3>
 {{- result_sub_header(result) -}}
 {%- if result.content %}
   <p class="content">
@@ -32,5 +32,8 @@
     {{- result.codelines|code_highlighter('sh')|safe -}}
 </div>
 
-{{- result_sub_footer(result, proxify) -}}
+<div class="engines">
+    {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
+  </div>{{- '' -}}
+  <div class="break"></div>{{- '' -}}
 {{- result_footer(result) -}}
