@@ -170,4 +170,5 @@ features or generally made searx better:
 - @blob42 `<https://blob42.xyz>`_
 - Paolo Basso `<https://github.com/paolobasso99>`
 - Bernie Huang `<https://github.com/BernieHuang2008>`
+- Austin Olacsi `<https://github.com/Austin-Olacsi>`
 - Valentin Rieß `<https://github.com/v411e>`

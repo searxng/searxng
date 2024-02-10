@@ -19,6 +19,12 @@ brand:
   public_instances: https://searx.space
   wiki_url: https://github.com/searxng/searxng/wiki
   issue_url: https://github.com/searxng/searxng/issues
+  # custom:
+  #   maintainer: "Jon Doe"
+  #   # Custom entries in the footer: [title]: [link]
+  #   links:
+  #     Uptime: https://uptime.searxng.org/history/darmarit-org
+  #     About: "https://searxng.org"
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -2166,6 +2172,16 @@ engines:
     shortcut: brnews
     categories: news
     brave_category: news
+
+  # - name: brave.goggles
+  #   engine: brave
+  #   network: brave
+  #   shortcut: brgog
+  #   time_range_support: true
+  #   paging: true
+  #   categories: [general, web]
+  #   brave_category: goggles
+  #   Goggles: # required! This should be a URL ending in .goggle
 
   - name: lib.rs
     shortcut: lrs

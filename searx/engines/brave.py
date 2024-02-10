@@ -30,6 +30,13 @@ Configured ``brave`` engines:
     ...
     brave_category: news
 
+  - name: brave.goggles
+    brave_category: goggles
+    time_range_support: true
+    paging: true
+    ...
+    brave_category: goggles
+
 
 .. _brave regions:
 
@@ -56,6 +63,23 @@ region are mapped to regions in SearXNG (see :py:obj:`babel
    The language (aka region) support of Brave's index is limited to very basic
    languages.  The search results for languages like Chinese or Arabic are of
    low quality.
+
+
+.. _brave googles:
+
+Brave Goggles
+=============
+
+.. _list of Goggles: https://search.brave.com/goggles/discover
+.. _Goggles Whitepaper: https://brave.com/static-assets/files/goggles.pdf
+.. _Goggles Quickstart: https://github.com/brave/goggles-quickstart
+
+Goggles allow you to choose, alter, or extend the ranking of Brave Search
+results (`Goggles Whitepaper`_).  Goggles are openly developed by the community
+of Brave Search users.
+
+Select from the `list of Goggles`_ people have published, or create your own
+(`Goggles Quickstart`_).
 
 
 .. _brave languages:
@@ -95,7 +119,7 @@ Implementations
 
 """
 
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 from urllib.parse import (
     urlencode,
@@ -135,12 +159,14 @@ about = {
 base_url = "https://search.brave.com/"
 categories = []
 brave_category = 'search'
-"""Brave supports common web-search, video search, image and video search.
+Goggles = Any
+"""Brave supports common web-search, videos, images, news, and goggles search.
 
 - ``search``: Common WEB search
 - ``videos``: search for videos
 - ``images``: search for images
 - ``news``: search for news
+- ``goggles``: Common WEB search with custom rules
 """
 
 brave_spellcheck = False
@@ -153,7 +179,7 @@ in SearXNG, the spellchecking is disabled by default.
 send_accept_language_header = True
 paging = False
 """Brave only supports paging in :py:obj:`brave_category` ``search`` (UI
-category All)."""
+category All) and in the goggles category."""
 max_page = 10
 """Tested 9 pages maximum (``&offset=8``), to be save max is set to 10.  Trying
 to do more won't return any result and you will most likely be flagged as a bot.
@@ -164,7 +190,7 @@ safesearch_map = {2: 'strict', 1: 'moderate', 0: 'off'}  # cookie: safesearch=of
 
 time_range_support = False
 """Brave only supports time-range in :py:obj:`brave_category` ``search`` (UI
-category All)."""
+category All) and in the goggles category."""
 
 time_range_map = {
     'day': 'pd',
@@ -185,11 +211,14 @@ def request(query, params):
     if brave_spellcheck:
         args['spellcheck'] = '1'
 
-    if brave_category == 'search':
+    if brave_category in ('search', 'goggles'):
         if params.get('pageno', 1) - 1:
             args['offset'] = params.get('pageno', 1) - 1
         if time_range_map.get(params['time_range']):
             args['tf'] = time_range_map.get(params['time_range'])
+
+    if brave_category == 'goggles':
+        args['goggles_id'] = Goggles
 
     params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
 
@@ -221,7 +250,7 @@ def _extract_published_date(published_date_raw):
 
 def response(resp):
 
-    if brave_category == 'search':
+    if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
 
     datastr = ""

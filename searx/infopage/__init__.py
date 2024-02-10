@@ -27,12 +27,12 @@ import logging
 import typing
 
 import urllib.parse
+from functools import cached_property
 import jinja2
 from flask.helpers import url_for
 from markdown_it import MarkdownIt
 
 from .. import get_setting
-from ..compat import cached_property
 from ..version import GIT_URL
 from ..locales import LOCALE_NAMES
 
