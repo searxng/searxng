@@ -20,21 +20,20 @@
 # mittwerk <w0o0y8jt@duck.com>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-31 19:06+0000\n"
+"POT-Creation-Date: 2024-02-10 07:07+0000\n"
 "PO-Revision-Date: 2024-02-01 06:37+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -161,6 +160,16 @@ msgstr "светлая"
 #: searx/searxng.msg
 msgid "dark"
 msgstr "тёмная"
+
+#. BRAND_CUSTOM_LINKS['UPTIME']
+#: searx/searxng.msg
+msgid "Uptime"
+msgstr ""
+
+#. BRAND_CUSTOM_LINKS['ABOUT']
+#: searx/searxng.msg searx/templates/simple/base.html:49
+msgid "About"
+msgstr "О программе"
 
 #: searx/webapp.py:332
 msgid "No item found"
@@ -448,10 +457,6 @@ msgstr "Перейти к %(search_page)s."
 #: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "страница поиска"
-
-#: searx/templates/simple/base.html:49
-msgid "About"
-msgstr "О программе"
 
 #: searx/templates/simple/base.html:53
 msgid "Donate"
@@ -984,8 +989,7 @@ msgstr "Скопировать хэш настроек"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
-"Вставить скопированный хэш настроек (без URL-адреса) для их восстановления"
+msgstr "Вставить скопированный хэш настроек (без URL-адреса) для их восстановления"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
@@ -1746,3 +1750,4 @@ msgstr "скрыть видео"
 #~ "мы не нашли никаких результатов. "
 #~ "Попробуйте изменить запрос или поищите в"
 #~ " других категориях."
+
