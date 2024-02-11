@@ -1153,6 +1153,17 @@ engines:
   #   collection: 'reviews'  # name of the db collection
   #   key: 'name'  # key in the collection to search for
 
+  - name: mozhi
+    engine: mozhi
+    base_url:
+      - https://mozhi.aryak.me
+      - https://translate.bus-hit.me
+      - https://nyc1.mz.ggtyler.dev
+    # mozhi_engine: google - see https://mozhi.aryak.me for supported engines
+    timeout: 4.0
+    shortcut: mz
+    disabled: true
+
   - name: mwmbl
     engine: mwmbl
     # api_url: https://api.mwmbl.org
