@@ -323,6 +323,7 @@ engines:
     timeout: 4.0
     shortcut: apkm
     disabled: true
+    inactive: true
 
   - name: apple app store
     engine: apple_app_store
@@ -349,6 +350,7 @@ engines:
     timeout: 6.0
     shortcut: conda
     disabled: true
+    inactive: true
 
   - name: arch linux wiki
     engine: archlinux
@@ -363,6 +365,8 @@ engines:
     engine: arxiv
     shortcut: arx
     timeout: 4.0
+    disabled: true
+    inactive: true
 
   # tmp suspended:  dh key too small
   # - name: base
@@ -386,6 +390,7 @@ engines:
     engine: bilibili
     shortcut: bil
     disabled: true
+    inactive: true
 
   - name: bing
     engine: bing
@@ -462,6 +467,7 @@ engines:
   - name: chefkoch
     engine: chefkoch
     shortcut: chef
+    inactive: true
     # to show premium or plus results too:
     # skip_premium: false
 
@@ -477,6 +483,7 @@ engines:
     shortcut: cr
     timeout: 30
     disabled: true
+    inactive: true
 
   - name: crowdview
     engine: json_engine
@@ -559,11 +566,13 @@ engines:
     engine: deezer
     shortcut: dz
     disabled: true
+    inactive: true
 
   - name: destatis
     engine: destatis
     shortcut: destat
     disabled: true
+    inactive: true
 
   - name: deviantart
     engine: deviantart
@@ -588,6 +597,8 @@ engines:
     engine: docker_hub
     shortcut: dh
     categories: [it, packages]
+    disabled: true
+    inactive: true
 
   - name: erowid
     engine: xpath
@@ -601,6 +612,7 @@ engines:
     categories: []
     shortcut: ew
     disabled: true
+    inactive: true
     about:
       website: https://www.erowid.org/
       wikidata_id: Q1430691
@@ -674,6 +686,7 @@ engines:
     timeout: 4.0
     shortcut: em
     disabled: true
+    inactive: true
 
   - name: tineye
     engine: tineye
@@ -757,6 +770,7 @@ engines:
     shortcut: fy
     timeout: 8.0
     disabled: true
+    inactive: true
 
   - name: genius
     engine: genius
@@ -884,6 +898,7 @@ engines:
     page_size: 19
     categories: music
     disabled: true
+    inactive: true
     about:
       website: https://gpodder.net
       wikidata_id: Q3093354
@@ -903,6 +918,7 @@ engines:
     categories: it
     timeout: 4.0
     disabled: true
+    inactive: true
     shortcut: habr
     about:
       website: https://habr.com/
@@ -928,6 +944,8 @@ engines:
     page_size: 20
     categories: [it, packages]
     shortcut: ho
+    disabled: true
+    inactive: true
     about:
       website: https://hoogle.haskell.org/
       wikidata_id: Q34010
@@ -952,6 +970,7 @@ engines:
     shortcut: in
     timeout: 6.0
     disabled: true
+    inactive: true
 
   - name: invidious
     engine: invidious
@@ -975,6 +994,7 @@ engines:
     shortcut: js
     timeout: 3.0
     disabled: true
+    inactive: true
 
   - name: kickass
     engine: kickass
@@ -1043,6 +1063,8 @@ engines:
   - name: lingva
     engine: lingva
     shortcut: lv
+    disabled: true
+    inactive: true
     # set lingva instance in url, by default it will use the official instance
     # url: https://lingva.thedaviddelta.com
 
@@ -1108,6 +1130,8 @@ engines:
     engine: json_engine
     categories: [it]
     paging: true
+    disabled: true
+    inactive: true
     search_url: https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}
     results_query: documents
     url_query: mdn_url
@@ -1126,6 +1150,7 @@ engines:
     engine: metacpan
     shortcut: cpan
     disabled: true
+    inactive: true
     number_of_results: 20
 
   # - name: meilisearch
@@ -1266,6 +1291,7 @@ engines:
     categories: files
     timeout: 4.0
     disabled: true
+    inactive: true
     shortcut: or
     about:
       website: https://openrepos.net/
@@ -1285,6 +1311,7 @@ engines:
     content_query: description
     categories: [it, packages]
     disabled: true
+    inactive: true
     timeout: 5.0
     shortcut: pack
     about:
@@ -1343,6 +1370,7 @@ engines:
   - name: podcastindex
     engine: podcastindex
     shortcut: podcast
+    inactive: true
 
   # Required dependency: psychopg2
   #  - name: postgresql
@@ -1401,6 +1429,7 @@ engines:
     categories: [packages, it]
     timeout: 3.0
     disabled: true
+    inactive: true
     first_page_num: 1
     about:
       website: https://pub.dev/
@@ -1413,6 +1442,8 @@ engines:
     engine: pubmed
     shortcut: pub
     timeout: 3.0
+    disabled: true
+    inactive: true
 
   - name: pypi
     shortcut: pypi
@@ -1426,6 +1457,8 @@ engines:
     suggestion_xpath: /html/body/main/div/div/div/form/div/div[@class="callout-block"]/p/span/a[@class="link"]
     first_page_num: 1
     categories: [it, packages]
+    disabled: true
+    inactive: true
     about:
       website: https://pypi.org
       wikidata_id: Q2984686
@@ -1498,6 +1531,7 @@ engines:
     engine: rottentomatoes
     shortcut: rt
     disabled: true
+    inactive: true
 
   # Required dependency: redis
   # - name: myredis
@@ -1551,11 +1585,13 @@ engines:
     engine: searchcode_code
     shortcut: scc
     disabled: true
+    inactive: true
 
   - name: framalibre
     engine: framalibre
     shortcut: frl
     disabled: true
+    inactive: true
 
   # - name: searx
   #   engine: searx_engine
@@ -1569,6 +1605,7 @@ engines:
     engine: semantic_scholar
     disabled: true
     shortcut: se
+    inactive: true
 
   # Spotify needs API credentials
   # - name: spotify
@@ -1657,6 +1694,7 @@ engines:
     content_xpath: .//div[contains(@class,"overview")]
     shortcut: tm
     disabled: true
+    inactive: true
 
   # Requires Tor
   - name: torch
@@ -1880,11 +1918,15 @@ engines:
   - name: dictzone
     engine: dictzone
     shortcut: dc
+    disabled: true
+    inactive: true
 
   - name: mymemory translated
     engine: translated
     shortcut: tl
     timeout: 5.0
+    disabled: true
+    inactive: true
     # You can use without an API key, but you are limited to 1000 words/day
     # See: https://mymemory.translated.net/doc/usagelimits.php
     # api_key: ''
@@ -1908,6 +1950,7 @@ engines:
     engine: duden
     shortcut: du
     disabled: true
+    inactive: true
 
   - name: seznam
     shortcut: szn
@@ -1950,6 +1993,7 @@ engines:
     engine: moviepilot
     shortcut: mp
     disabled: true
+    inactive: true
 
   - name: naver
     shortcut: nvr
@@ -1985,6 +2029,7 @@ engines:
     first_page_num: 1
     categories: [it, packages]
     disabled: true
+    inactive: true
     about:
       website: https://rubygems.org/
       wikidata_id: Q1853420
@@ -2007,6 +2052,7 @@ engines:
     engine: mediathekviewweb
     shortcut: mvw
     disabled: true
+    inactive: true
 
   - name: yacy
     engine: yacy
@@ -2043,6 +2089,8 @@ engines:
     base_url: https://www.wordnik.com/
     categories: [dictionaries]
     timeout: 5.0
+    disabled: true
+    inactive: true
 
   - name: woxikon.de synonyme
     engine: xpath
@@ -2050,6 +2098,7 @@ engines:
     categories: [dictionaries]
     timeout: 5.0
     disabled: true
+    inactive: true
     search_url: https://synonyme.woxikon.de/synonyme/{query}.php
     url_xpath: //div[@class="upper-synonyms"]/a/@href
     content_xpath: //div[@class="synonyms-list-group"]
@@ -2107,6 +2156,7 @@ engines:
   - name: tootfinder
     engine: tootfinder
     shortcut: toot
+    inactive: true
 
   - name: wallhaven
     engine: wallhaven
@@ -2142,6 +2192,7 @@ engines:
     engine: yummly
     shortcut: yum
     disabled: true
+    inactive: true
 
   - name: brave
     engine: brave
