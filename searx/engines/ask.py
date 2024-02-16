@@ -3,8 +3,9 @@
 """Ask.com"""
 
 from urllib.parse import urlencode
-import re
+import dateutil
 from lxml import html
+from searx import utils
 
 # Metadata
 about = {
@@ -37,20 +38,37 @@ def request(query, params):
 
 def response(resp):
 
-    text = html.fromstring(resp.text).text_content()
-    urls_match = re.findall(r'"url":"(.*?)"', text)
-    titles_match = re.findall(r'"title":"(.*?)"', text)[3:]
-    content_match = re.findall(r'"abstract":"(.*?)"', text)
+    start_tag = 'window.MESON.initialState = {'
+    end_tag = '}};'
 
-    results = [
-        {
-            "url": url,
-            "title": title,
-            "content": content,
-        }
-        for url, title, content in zip(urls_match, titles_match, content_match)
-        if "&qo=relatedSearchNarrow" not in url
-        # Related searches shouldn't be in the search results: www.ask.com/web&q=related
-    ]
+    dom = html.fromstring(resp.text)
+    script = utils.eval_xpath_getindex(dom, '//script', 0, default=None).text
+
+    pos = script.index(start_tag) + len(start_tag) - 1
+    script = script[pos:]
+    pos = script.index(end_tag) + len(end_tag) - 1
+    script = script[:pos]
+
+    json_resp = utils.js_variable_to_python(script)
+
+    results = []
+
+    for item in json_resp['search']['webResults']['results']:
+
+        pubdate_original = item.get('pubdate_original')
+        if pubdate_original:
+            pubdate_original = dateutil.parser.parse(pubdate_original)
+        metadata = [item.get(field) for field in ['category_l1', 'catsy'] if item.get(field)]
+
+        results.append(
+            {
+                "url": item['url'],
+                "title": item['title'],
+                "content": item['abstract'],
+                "publishedDate": pubdate_original,
+                # "img_src": item.get('image_url') or None, # these are not thumbs / to large
+                "metadata": ' | '.join(metadata),
+            }
+        )
 
     return results
