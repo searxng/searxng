@@ -109,8 +109,6 @@ pyenv.:
   uninstall : uninstall developer installation
   cmd ...   : run command ... in virtualenv
   OK        : test if virtualenv is OK
-pypi.upload:
-  Upload python packages to PyPi (to test use pypi.upload.test)
 format.:
   python    : format Python code source using black
 pygments.:
@@ -332,19 +330,6 @@ pyenv.uninstall() {
     pyenv.cmd python setup.py develop --uninstall 2>&1 \
         | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
 
-}
-
-pypi.upload() {
-    py.clean
-    py.build
-    # https://github.com/pypa/twine
-    pyenv.cmd twine upload "${PYDIST}"/*
-}
-
-pypi.upload.test() {
-    py.clean
-    py.build
-    pyenv.cmd twine upload -r testpypi "${PYDIST}"/*
 }
 
 format.python() {
