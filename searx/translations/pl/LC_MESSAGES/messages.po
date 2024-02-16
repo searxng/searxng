@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-31 19:06+0000\n"
-"PO-Revision-Date: 2024-02-02 07:07+0000\n"
+"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"PO-Revision-Date: 2024-02-15 16:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
 "searxng/pl/>\n"
@@ -156,6 +156,16 @@ msgstr "jasny"
 #: searx/searxng.msg
 msgid "dark"
 msgstr "ciemny"
+
+#. BRAND_CUSTOM_LINKS['UPTIME']
+#: searx/searxng.msg
+msgid "Uptime"
+msgstr "czas działania"
+
+#. BRAND_CUSTOM_LINKS['ABOUT']
+#: searx/searxng.msg searx/templates/simple/base.html:49
+msgid "About"
+msgstr "Informacje o"
 
 #: searx/webapp.py:332
 msgid "No item found"
@@ -445,10 +455,6 @@ msgstr "Przejdź do %(search_page)s."
 #: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "strona wyszukiwania"
-
-#: searx/templates/simple/base.html:49
-msgid "About"
-msgstr "Informacje o"
 
 #: searx/templates/simple/base.html:53
 msgid "Donate"
