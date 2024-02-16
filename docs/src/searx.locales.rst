@@ -10,11 +10,6 @@ Locales
    :backlinks: entry
 
 .. automodule:: searx.locales
-  :members:
+   :members:
 
 
-SearXNG's locale codes
-======================
-
-.. automodule:: searx.sxng_locales
-  :members:
