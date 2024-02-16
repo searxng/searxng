@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-31 19:06+0000\n"
-"PO-Revision-Date: 2024-02-01 06:37+0000\n"
+"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"PO-Revision-Date: 2024-02-15 16:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
 "searxng/searxng/zh_Hans/>\n"
@@ -167,6 +167,16 @@ msgstr "浅色"
 #: searx/searxng.msg
 msgid "dark"
 msgstr "暗色"
+
+#. BRAND_CUSTOM_LINKS['UPTIME']
+#: searx/searxng.msg
+msgid "Uptime"
+msgstr "运行时间"
+
+#. BRAND_CUSTOM_LINKS['ABOUT']
+#: searx/searxng.msg searx/templates/simple/base.html:49
+msgid "About"
+msgstr "关于"
 
 #: searx/webapp.py:332
 msgid "No item found"
@@ -440,10 +450,6 @@ msgstr "前往 %(search_page)s。"
 #: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "搜索页面"
-
-#: searx/templates/simple/base.html:49
-msgid "About"
-msgstr "关于"
 
 #: searx/templates/simple/base.html:53
 msgid "Donate"
@@ -966,11 +972,11 @@ msgstr "在首选项 URL 中指定可跨设备同步的偏好设置。"
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "复制配置哈希值"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
+msgstr "插入复制的（不带URL）首选项哈希，以恢复"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
