@@ -696,7 +696,7 @@ To install uWSGI use::
         die 42 "SearXNG's uWSGI app not available"
     fi
 
-    if ! searxng.instance.exec python -c "from searx.shared import redisdb; redisdb.initialize() or exit(42)"; then
+    if ! searxng.instance.exec python -c "from searx import redisdb; redisdb.initialize() or exit(42)"; then
         rst_para "\
 The configured redis DB is not available: If your server is public to the
 internet, you should setup a bot protection to block excessively bot queries.
