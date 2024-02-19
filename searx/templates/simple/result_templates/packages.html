@@ -1,0 +1,67 @@
+{%- from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context -%}
+{{ result_header(result, favicons, image_proxify) -}}
+
+{%- if result.content -%}<p class="content">{{- result.content|safe -}}</p>{%- endif -%}
+<div class="attributes">{{- '' -}}
+  <div class="result_package_name">{{- '' -}}
+    <span>{{ _('Name') }}:</span>{{- '' -}}
+    <span><code>{{- result.package_name -}}</code></span>{{- '' -}}
+  </div>
+  {%- if result.version -%}
+    <div class="result_version">{{- '' -}}
+      <span>{{- _('Version') }}:</span>{{- '' -}}
+      <span><strong>{{ result.version }}</strong></span>{{- '' -}}
+    </div>
+  {%- endif -%}
+  {%- if result.maintainer -%}
+    <div class="result_maintainer">{{- '' -}}
+      <span>{{ _('Maintainer') }}:</span>{{- '' -}}
+      <span>{{ result.maintainer }}</span>{{- '' -}}
+    </div>
+  {%- endif -%}
+  {%- if result.publishedDate -%}
+    <div class="result_pubdate">{{- '' -}}
+      <span>{{ _('Updated at') }}:</span>{{- '' -}}
+      <span><time datetime="{{ result.pubdate }}">{{ result.publishedDate }}</time></span>{{- '' -}}
+    </div>
+  {%- endif -%}
+  {%- if result.tags -%}
+    <div class="result_tags">{{- '' -}}
+      <span>{{ _('Tags') }}:</span>{{- '' -}}
+      <span>{{ result.tags|join(', ') }}</span>{{- '' -}}
+    </div>
+  {%- endif -%}
+  {%- if result.popularity -%}
+    <div class="result_popularity">{{- '' -}}
+      <span>{{ _('Popularity') }}:</span>{{- '' -}}
+      <span>{{ result.popularity }}</span>{{- '' -}}
+    </div>
+  {%- endif -%}
+  {%- if result.license_name -%}
+    <div class="result_license">{{- '' -}}
+      <span>{{- _('License') -}}:</span>
+      {%- if result.license_url -%}
+        <span><a href="{{ result.license_url }}" target="_blank">{{ result.license_name }}</a></span>
+      {%- else -%}
+        <span>{{ result.license_name }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  {%- if result.homepage or result.source_code_url -%}
+    <div class="result_project">{{- '' -}}
+      <span>{{ _('Project') }}</span>
+      <span>{{- '' -}}
+        {%- if result.homepage -%}
+          <a href="{{ result.homepage }}" target="_blank">{{ _('Project homepage') }}</a>
+        {%- endif -%}
+        {%- if result.homepage and result.source_code_url %} | {% endif -%}
+        {%- if result.source_code_url -%}
+          <a href="{{ result.source_code_url }}" target="_blank">{{ _('Source code') }}</a>
+        {%- endif -%}
+      </span>{{- '' -}}
+    </div>
+  {%- endif -%}
+</div>{{- '' -}}
+<div class="break"></div>
+
+{{- result_footer(result) }}
