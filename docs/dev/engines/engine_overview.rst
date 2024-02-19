@@ -466,3 +466,68 @@ type.
      - :py:class:`str`
      - URL to full article, HTML version
 
+
+.. _template packages:
+
+``packages``
+------------
+
+.. list-table:: Parameter of the **packages** media type
+   :header-rows: 2
+   :width: 100%
+
+   * - result-parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``packages.html``
+
+   * - title
+     - :py:class:`str`
+     - title of the result
+
+   * - content
+     - :py:class:`str`
+     - abstract
+
+   * - package_name
+     - :py:class:`str`
+     - the name of the package
+
+   * - version
+     - :py:class:`str`
+     - the current version of the package
+
+   * - maintainer
+     - :py:class:`str`
+     - the maintainer or author of the project
+
+   * - publishedDate
+     - :py:class:`datetime <datetime.datetime>`
+     - date of latest update or release
+
+   * - tags
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - free tag list
+
+   * - popularity
+     - :py:class:`str`
+     - the popularity of the package, e.g. rating or download count
+
+   * - license_name
+     - :py:class:`str`
+     - the name of the license
+
+   * - license_url
+     - :py:class:`str`
+     - the web location of a license copy
+
+   * - homepage
+     - :py:class:`str`
+     - the url of the project's homepage
+
+   * - source_code_url
+     - :py:class:`str`
+     - the location of the project's source code
