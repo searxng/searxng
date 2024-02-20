@@ -8,6 +8,8 @@
 from datetime import datetime
 from urllib.parse import urlencode
 
+from searx.utils import humanize_bytes
+
 about = {
     'website': 'https://wallhaven.cc/',
     'official_api_documentation': 'https://wallhaven.cc/help/api',
@@ -68,6 +70,7 @@ def response(resp):
     json = resp.json()
 
     for result in json['data']:
+
         results.append(
             {
                 'template': 'images.html',
@@ -76,8 +79,10 @@ def response(resp):
                 'url': result['url'],
                 'img_src': result['path'],
                 'thumbnail_src': result['thumbs']['small'],
-                'img_format': result['resolution'],
+                'resolution': result['resolution'].replace('x', ' x '),
                 'publishedDate': datetime.strptime(result['created_at'], '%Y-%m-%d %H:%M:%S'),
+                'img_format': result['file_type'],
+                'filesize': humanize_bytes(result['file_size']),
             }
         )
 

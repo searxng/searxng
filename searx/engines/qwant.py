@@ -265,6 +265,8 @@ def parse_web_api(resp):
                         'template': 'images.html',
                         'thumbnail_src': thumbnail,
                         'img_src': img_src,
+                        'resolution': f"{item['width']} x {item['height']}",
+                        'img_format': item.get('thumb_type'),
                     }
                 )
 

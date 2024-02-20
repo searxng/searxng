@@ -96,7 +96,7 @@ def _image_result(result):
         'content': '',
         'thumbnail_src': result['thumbnail'],
         'img_src': result['image'],
-        'img_format': '%s x %s' % (result['width'], result['height']),
+        'resolution': '%s x %s' % (result['width'], result['height']),
         'source': result['source'],
     }
 

@@ -110,7 +110,7 @@ def response(resp):  # pylint: disable=too-many-branches
             continue
 
         img_src = size_data['url']
-        img_format = f"{size_data['width']} x {size_data['height']}"
+        resolution = f"{size_data['width']} x {size_data['height']}"
 
         # For a bigger thumbnail, keep only the url_z, not the url_n
         if 'n' in photo['sizes']['data']:
@@ -131,7 +131,7 @@ def response(resp):  # pylint: disable=too-many-branches
             'img_src': img_src,
             'thumbnail_src': thumbnail_src,
             'source': source,
-            'img_format': img_format,
+            'resolution': resolution,
             'template': 'images.html',
         }
         result['author'] = author.encode(errors='ignore').decode()
