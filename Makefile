@@ -75,7 +75,7 @@ test.shell:
 # wrap ./manage script
 
 MANAGE += weblate.translations.commit weblate.push.translations
-MANAGE += data.all data.traits data.useragents
+MANAGE += data.all data.traits data.useragents data.locales
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
 MANAGE += docker.build docker.push docker.buildx
 MANAGE += gecko.driver
