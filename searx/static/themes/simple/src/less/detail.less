@@ -49,8 +49,7 @@ article.result-images .detail {
 
   .result-images-labels {
     color: var(--color-result-detail-font);
-    max-height: 16rem;
-    min-height: 16rem;
+    height: 19rem;
 
     hr {
       border-top: 1px solid var(--color-result-detail-hr);
@@ -62,11 +61,13 @@ article.result-images .detail {
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 0.9rem;
+      margin-bottom: 0;
     }
 
     p {
       color: var(--color-result-detail-label-font);
       font-size: 0.9rem;
+      line-height: 0.9rem;
 
       span {
         display: inline-block;
@@ -82,6 +83,7 @@ article.result-images .detail {
 
     p.result-content {
       height: 2rem;
+      line-height: unset;
       overflow: hidden;
       text-overflow: ellipsis;
     }

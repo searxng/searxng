@@ -62,7 +62,7 @@ def response(resp):
             'title': title,
             'content': item["snippet"],
             'img_src': imageinfo["url"],
-            'img_format': f'{imageinfo["width"]} x {imageinfo["height"]}',
+            'resolution': f'{imageinfo["width"]} x {imageinfo["height"]}',
             'thumbnail_src': imageinfo["thumburl"],
             'template': 'images.html',
         }

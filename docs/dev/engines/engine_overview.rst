@@ -271,22 +271,54 @@ type.
 ``images``
 ----------
 
-.. table::  Parameter of the **images** media type:
+.. list-table:: Parameter of the **images** media type
+   :header-rows: 2
    :width: 100%
 
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``images.html``
-   ========================= =====================================================
-   url                       string, url to the result site
-   title                     string, title of the result *(partly implemented)*
-   content                   *(partly implemented)*
-   publishedDate             :py:class:`datetime.datetime`,
-                             time of publish *(partly implemented)*
-   img\_src                  string, url to the result image
-   thumbnail\_src            string, url to a small-preview image
-   ========================= =====================================================
+   * - result-parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``images.html``
+
+   * - url
+     - :py:class:`str`
+     - url to the result site
+
+   * - title
+     - :py:class:`str`
+     - title of the result
+
+   * - content
+     - :py:class:`str`
+     - description of the image
+
+   * - publishedDate
+     - :py:class:`datetime <datetime.datetime>`
+     - time of publish
+
+   * - img_src
+     - :py:class:`str`
+     - url to the result image
+
+   * - thumbnail_src
+     - :py:class:`str`
+     - url to a small-preview image
+
+   * - resolution
+     - :py:class:`str`
+     - the resolution of the image (e.g. ``1920 x 1080`` pixel)
+
+   * - img_format
+     - :py:class:`str`
+     - the format of the image (e.g. ``png``)
+
+   * - filesize
+     - :py:class:`str`
+     - size of bytes in :py:obj:`human readable <searx.humanize_bytes>` notation
+       (e.g. ``MB`` for 1024 \* 1024 Bytes filesize).
 
 
 .. _template videos:

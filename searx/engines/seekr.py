@@ -122,7 +122,7 @@ def _images_response(json):
                 'url': summary['refererurl'],
                 'title': result['title'],
                 'img_src': result['url'],
-                'img_format': f"{summary['width']}x{summary['height']}",
+                'resolution': f"{summary['width']}x{summary['height']}",
                 'thumbnail_src': 'https://media.seekr.com/engine/rp/' + summary['tg'] + '/?src= ' + result['thumbnail'],
             }
         )
