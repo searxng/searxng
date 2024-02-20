@@ -58,7 +58,7 @@ def main():
 
     content = {
         "LOCALE_NAMES": LOCALE_NAMES,
-        "RTL_LOCALES": list(RTL_LOCALES),
+        "RTL_LOCALES": sorted(RTL_LOCALES),
     }
 
     with open(LOCALE_DATA_FILE, 'w', encoding='utf-8') as f:
