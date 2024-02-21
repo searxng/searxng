@@ -67,7 +67,10 @@ article.result-images .detail {
     p {
       color: var(--color-result-detail-label-font);
       font-size: 0.9rem;
-      line-height: 0.9rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0.8rem 0;
 
       span {
         display: inline-block;
