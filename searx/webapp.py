@@ -438,16 +438,6 @@ def render(template_name: str, **kwargs):
     kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
     kwargs['doi_resolver'] = get_doi_resolver(request.preferences)
-    kwargs['opensearch_url'] = (
-        url_for('opensearch')
-        + '?'
-        + urlencode(
-            {
-                'method': request.preferences.get_value('method'),
-                'autocomplete': request.preferences.get_value('autocomplete'),
-            }
-        )
-    )
     kwargs['urlparse'] = urlparse
 
     # scripts from plugins

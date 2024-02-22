@@ -15,7 +15,7 @@
   {% if autocomplete %}
     <Url rel="suggestions" type="application/x-suggestions+json" method="{{ opensearch_method }}" template="{{ url_for('autocompleter', _external=True) }}?q={searchTerms}"/>
   {% endif %}
-  <Url rel="self" type="application/opensearchdescription+xml"  method="{{ opensearch_method }}" template="{{ opensearch_url }}" />
+  <Url rel="self" type="application/opensearchdescription+xml"  method="{{ opensearch_method }}" template="{{ url_for('opensearch', _external=True) }}" />
   <Query role="example" searchTerms="SearXNG" />
   <moz:SearchForm>{{ url_for('search', _external=True) }}</moz:SearchForm>
 </OpenSearchDescription>
