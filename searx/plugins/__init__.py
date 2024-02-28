@@ -212,6 +212,7 @@ class PluginStore:
 
 plugins = PluginStore()
 
+plugins.register('./query_strings.py')
 
 def plugin_module_names():
     yield_plugins = set()
