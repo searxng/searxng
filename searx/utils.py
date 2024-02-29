@@ -4,6 +4,7 @@
 """Utility functions for the engines
 
 """
+import collections
 import re
 import importlib
 import importlib.util
@@ -55,8 +56,15 @@ _STORAGE_UNIT_VALUE: Dict[str, int] = {
 _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 
-_FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None
+_FASTTEXT_MODEL: Dict[str, "fasttext.FastText._FastText"] = {}
 """fasttext model to predict laguage of a search term"""
+
+_FASTTEXT_UNCERTAIN_SETS = frozenset(('zh', 'ko', 'ja'))
+_FASTTEXT_CHINESE_FAMILY_CODES = frozenset(('zh-hant', 'zh-hans', 'zh-yue'))
+_FASTTEXT_MODEL_S_THRESHOLD = 0.93
+
+FastTextResult = collections.namedtuple('FastTextResult', 'language, prob')
+
 
 SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in sxng_locales])
 """Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`)."""
@@ -594,15 +602,48 @@ def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index:
     return default
 
 
-def _get_fasttext_model() -> "fasttext.FastText._FastText":
-    global _FASTTEXT_MODEL  # pylint: disable=global-statement
-    if _FASTTEXT_MODEL is None:
+def _get_fasttext_model(model_name: str) -> "fasttext.FastText._FastText":
+    if model_name not in _FASTTEXT_MODEL:
         import fasttext  # pylint: disable=import-outside-toplevel
 
         # Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
         fasttext.FastText.eprint = lambda x: None
-        _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
-    return _FASTTEXT_MODEL
+        _FASTTEXT_MODEL[model_name] = fasttext.load_model(str(data_dir / model_name))
+    return _FASTTEXT_MODEL[model_name]
+
+
+def _fast_text_predict(model: str, text: str, k: int, threshold: float):
+    r = _get_fasttext_model(model).predict(text, k=k, threshold=threshold)
+    if isinstance(r, tuple) and len(r) == 2:
+        return [FastTextResult(language=label.split('__label__')[1], prob=prob) for label, prob in zip(r[0], r[1])]
+    return []
+
+
+def _inner_detect_language(text: str, threshold: float = 0.3) -> Optional[str]:
+    text = text.replace("\n", "")
+    r = _fast_text_predict("lid.176.ftz", text, k=1, threshold=threshold)
+    if len(r) == 0:
+        return None
+
+    first_result = r[0]
+
+    # fastlang
+    # https://github.com/currentslab/fastlangid
+    # Licence Apache-2.0 license
+    if first_result.language in _FASTTEXT_UNCERTAIN_SETS and first_result.prob < _FASTTEXT_MODEL_S_THRESHOLD:
+        # lid.176.ftz models usually confuse chinese, korean, japanese words
+        # if the model is not so sure we pass to our model to reduce down the uncertainty
+        r = _fast_text_predict("model_s.ftz", text, k=1, threshold=threshold)
+        return r[0].language if len(r) > 0 else None
+
+    if first_result.language == 'zh' and first_result.prob >= _FASTTEXT_MODEL_S_THRESHOLD:
+        # predict chinese: now we want to know which chinese family it belongs
+        for lang, prob in _fast_text_predict("model_s.ftz", text, k=10, threshold=0):
+            if lang in _FASTTEXT_CHINESE_FAMILY_CODES and prob > threshold:
+                return lang
+        return 'zh' if r[0].prob > threshold else None
+
+    return first_result.language
 
 
 def detect_language(text: str, threshold: float = 0.3, only_search_languages: bool = False) -> Optional[str]:
@@ -667,13 +708,10 @@ def detect_language(text: str, threshold: float = 0.3, only_search_languages: bo
     """
     if not isinstance(text, str):
         raise ValueError('text must a str')
-    r = _get_fasttext_model().predict(text.replace('\n', ' '), k=1, threshold=threshold)
-    if isinstance(r, tuple) and len(r) == 2 and len(r[0]) > 0 and len(r[1]) > 0:
-        language = r[0][0].split('__label__')[1]
-        if only_search_languages and language not in SEARCH_LANGUAGE_CODES:
-            return None
-        return language
-    return None
+    language = _inner_detect_language(text, threshold=threshold)
+    if only_search_languages and language not in SEARCH_LANGUAGE_CODES:
+        return None
+    return language
 
 
 def js_variable_to_python(js_variable):
