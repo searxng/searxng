@@ -306,7 +306,8 @@ article[data-vim-selected].category-social {
   }
 }
 
-.result-paper {
+.result-paper,
+.result-packages {
   .attributes {
     display: table;
     border-spacing: 0.125rem;
@@ -346,6 +347,12 @@ article[data-vim-selected].category-social {
     word-wrap: break-word;
     line-height: 1.24;
     font-style: italic;
+  }
+}
+
+.result-packages {
+  .attributes {
+    margin-top: 0.3rem;
   }
 }
 
@@ -455,6 +462,17 @@ article[data-vim-selected].category-social {
     object-fit: cover;
     vertical-align: bottom;
     background: var(--color-result-image-background);
+  }
+
+  .image_resolution {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 50%);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.9rem;
+    color: #fff;
+    border-top-left-radius: 0.3rem;
   }
 
   span.title,
@@ -1076,7 +1094,8 @@ summary.title {
     display: none;
   }
 
-  .result-paper {
+  .result-paper,
+  .result-packages {
     .attributes {
       display: block;
 

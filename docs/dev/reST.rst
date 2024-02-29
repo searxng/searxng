@@ -292,7 +292,7 @@ content becomes smart.
    files & folders origin     :origin:`docs/dev/reST.rst`        ``:origin:`docs/dev/reST.rst```
    pull request               :pull:`4`                          ``:pull:`4```
    patch                      :patch:`af2cae6`                   ``:patch:`af2cae6```
-   PyPi package               :pypi:`searx`                      ``:pypi:`searx```
+   PyPi package               :pypi:`httpx`                      ``:pypi:`httpx```
    manual page man            :man:`bash`                        ``:man:`bash```
    intersphinx_
    --------------------------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ about = {
 engine_type = 'online_dictionary'
 categories = ['general']
 
-url = "https://lingva.thedaviddelta.com/"
+url = "https://lingva.thedaviddelta.com"
 search_url = "{url}/api/v1/{from_lang}/{to_lang}/{query}"
 
 
@@ -48,8 +48,6 @@ def response(resp):
     infobox = ""
 
     for translation in info["extraTranslations"]:
-        infobox += f"<b>{translation['type']}</b>"
-
         for word in translation["list"]:
             infobox += f"<dl><dt>{word['word']}</dt>"
 

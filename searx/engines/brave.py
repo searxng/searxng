@@ -367,9 +367,10 @@ def _parse_images(json_resp):
             'title': result['title'],
             'content': result['description'],
             'template': 'images.html',
-            'img_format': result['properties']['format'],
+            'resolution': result['properties']['format'],
             'source': result['source'],
             'img_src': result['properties']['url'],
+            'thumbnail_src': result['thumbnail']['src'],
         }
         result_list.append(item)
 

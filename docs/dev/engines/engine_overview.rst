@@ -271,22 +271,54 @@ type.
 ``images``
 ----------
 
-.. table::  Parameter of the **images** media type:
+.. list-table:: Parameter of the **images** media type
+   :header-rows: 2
    :width: 100%
 
-   ========================= =====================================================
-   result-parameter          information
-   ------------------------- -----------------------------------------------------
-   template                  is set to ``images.html``
-   ========================= =====================================================
-   url                       string, url to the result site
-   title                     string, title of the result *(partly implemented)*
-   content                   *(partly implemented)*
-   publishedDate             :py:class:`datetime.datetime`,
-                             time of publish *(partly implemented)*
-   img\_src                  string, url to the result image
-   thumbnail\_src            string, url to a small-preview image
-   ========================= =====================================================
+   * - result-parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``images.html``
+
+   * - url
+     - :py:class:`str`
+     - url to the result site
+
+   * - title
+     - :py:class:`str`
+     - title of the result
+
+   * - content
+     - :py:class:`str`
+     - description of the image
+
+   * - publishedDate
+     - :py:class:`datetime <datetime.datetime>`
+     - time of publish
+
+   * - img_src
+     - :py:class:`str`
+     - url to the result image
+
+   * - thumbnail_src
+     - :py:class:`str`
+     - url to a small-preview image
+
+   * - resolution
+     - :py:class:`str`
+     - the resolution of the image (e.g. ``1920 x 1080`` pixel)
+
+   * - img_format
+     - :py:class:`str`
+     - the format of the image (e.g. ``png``)
+
+   * - filesize
+     - :py:class:`str`
+     - size of bytes in :py:obj:`human readable <searx.humanize_bytes>` notation
+       (e.g. ``MB`` for 1024 \* 1024 Bytes filesize).
 
 
 .. _template videos:
@@ -466,3 +498,68 @@ type.
      - :py:class:`str`
      - URL to full article, HTML version
 
+
+.. _template packages:
+
+``packages``
+------------
+
+.. list-table:: Parameter of the **packages** media type
+   :header-rows: 2
+   :width: 100%
+
+   * - result-parameter
+     - Python type
+     - information
+
+   * - template
+     - :py:class:`str`
+     - is set to ``packages.html``
+
+   * - title
+     - :py:class:`str`
+     - title of the result
+
+   * - content
+     - :py:class:`str`
+     - abstract
+
+   * - package_name
+     - :py:class:`str`
+     - the name of the package
+
+   * - version
+     - :py:class:`str`
+     - the current version of the package
+
+   * - maintainer
+     - :py:class:`str`
+     - the maintainer or author of the project
+
+   * - publishedDate
+     - :py:class:`datetime <datetime.datetime>`
+     - date of latest update or release
+
+   * - tags
+     - :py:class:`List <list>`\ [\ :py:class:`str`\ ]
+     - free tag list
+
+   * - popularity
+     - :py:class:`str`
+     - the popularity of the package, e.g. rating or download count
+
+   * - license_name
+     - :py:class:`str`
+     - the name of the license
+
+   * - license_url
+     - :py:class:`str`
+     - the web location of a license copy
+
+   * - homepage
+     - :py:class:`str`
+     - the url of the project's homepage
+
+   * - source_code_url
+     - :py:class:`str`
+     - the location of the project's source code

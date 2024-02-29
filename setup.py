@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """Installer for SearXNG package."""
 
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import setup, find_packages
 
 from searx.version import VERSION_TAG, GIT_URL
 from searx import get_setting
@@ -18,7 +17,7 @@ with open('requirements-dev.txt') as f:
 
 setup(
     name='searxng',
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     version=VERSION_TAG,
     description="A privacy-respecting, hackable metasearch engine",
     long_description=long_description,
@@ -28,7 +27,6 @@ setup(
         "Issue tracker": get_setting('brand.issue_url')
     },
     classifiers=[
-        "Development Status :: 4 - Beta",
         "Programming Language :: Python",
         "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
@@ -39,40 +37,40 @@ setup(
     author='SearXNG dev team',
     author_email='contact@searxng.org',
     license='GNU Affero General Public License',
-    packages=find_packages(exclude=["tests*", "searxng_extra"]),
-    zip_safe=False,
+    packages=find_packages(
+        include=[
+            'searx', 'searx.*', 'searx.*.*', 'searx.*.*.*',
+        ]
+    ),
     install_requires=requirements,
     extras_require={
         'test': dev_requirements
     },
     entry_points={
         'console_scripts': [
-            'searx-run = searx.webapp:run',
-            'searx-checker = searx.search.checker.__main__:main'
+            'searxng-run = searx.webapp:run',
+            'searxng-checker = searx.search.checker.__main__:main'
         ]
     },
     package_data={
         'searx': [
             'settings.yml',
-            '../README.rst',
-            '../requirements.txt',
-            '../requirements-dev.txt',
-            'data/*',
-            'info/*',
-            'info/*/*',
-            'plugins/*/*',
-            'static/*.*',
-            'static/*/*.*',
-            'static/*/*/*.*',
-            'static/*/*/*/*.*',
-            'static/*/*/*/*/*.*',
-            'templates/*/*.*',
-            'templates/*/*/*.*',
-            'tests/*',
-            'tests/*/*',
-            'tests/*/*/*',
-            'translations/*/*/*'
+            '*.toml',
+            '*.msg',
+            'search/checker/scheduler.lua',
+            'data/*.json',
+            'data/*.txt',
+            'data/*.ftz',
+            'infopage/*/*',
+            'static/themes/simple/css/*',
+            'static/themes/simple/css/*/*',
+            'static/themes/simple/img/*',
+            'static/themes/simple/js/*',
+            'templates/*/*',
+            'templates/*/*/*',
+            'translations/*',
+            'translations/*/*',
+            'translations/*/*/*',
         ],
     },
-
 )

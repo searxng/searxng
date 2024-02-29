@@ -78,6 +78,16 @@ Scripts to update static data in :origin:`searx/data/`
 .. automodule:: searxng_extra.update.update_pygments
   :members:
 
+.. _update_locales.py:
+
+``update_locales.py``
+=====================
+
+:origin:`[source] <searxng_extra/update/update_locales.py>`
+
+.. automodule:: searxng_extra.update.update_locales
+  :members:
+
 
 ``update_wikidata_units.py``
 ============================

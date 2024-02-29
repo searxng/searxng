@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Github (IT)
+# lint: pylint
+
+"""Github (IT)
 """
 
-from json import loads
 from urllib.parse import urlencode
+from dateutil import parser
 
 # about
 about = {
@@ -20,42 +21,48 @@ about = {
 categories = ['it', 'repos']
 
 # search-url
-search_url = 'https://api.github.com/search/repositories?sort=stars&order=desc&{query}'  # noqa
-
+search_url = 'https://api.github.com/search/repositories?sort=stars&order=desc&{query}'
 accept_header = 'application/vnd.github.preview.text-match+json'
 
 
-# do search-request
 def request(query, params):
-    params['url'] = search_url.format(query=urlencode({'q': query}))
 
+    params['url'] = search_url.format(query=urlencode({'q': query}))
     params['headers']['Accept'] = accept_header
 
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 
-    search_res = loads(resp.text)
+    for item in resp.json().get('items', []):
+        content = [item.get(i) for i in ['language', 'description'] if item.get(i)]
 
-    # check if items are received
-    if 'items' not in search_res:
-        return []
+        # license can be None
+        lic = item.get('license') or {}
+        lic_url = None
+        if lic.get('spdx_id'):
+            lic_url = f"https://spdx.org/licenses/{lic.get('spdx_id')}.html"
 
-    # parse results
-    for res in search_res['items']:
-        title = res['name']
-        url = res['html_url']
+        results.append(
+            {
+                'template': 'packages.html',
+                'url': item.get('html_url'),
+                'title': item.get('full_name'),
+                'content': ' / '.join(content),
+                'img_src': item.get('owner', {}).get('avatar_url'),
+                'package_name': item.get('name'),
+                # 'version': item.get('updated_at'),
+                'maintainer': item.get('owner', {}).get('login'),
+                'publishedDate': parser.parse(item.get("updated_at") or item.get("created_at")),
+                'tags': item.get('topics', []),
+                'popularity': item.get('stargazers_count'),
+                'license_name': lic.get('name'),
+                'license_url': lic_url,
+                'homepage': item.get('homepage'),
+                'source_code_url': item.get('clone_url'),
+            }
+        )
 
-        if res['description']:
-            content = res['description'][:500]
-        else:
-            content = ''
-
-        # append result
-        results.append({'url': url, 'title': title, 'content': content})
-
-    # return results
     return results

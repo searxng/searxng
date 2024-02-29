@@ -75,14 +75,13 @@ test.shell:
 # wrap ./manage script
 
 MANAGE += weblate.translations.commit weblate.push.translations
-MANAGE += data.all data.traits data.useragents
+MANAGE += data.all data.traits data.useragents data.locales
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
 MANAGE += docker.build docker.push docker.buildx
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
-MANAGE += pypi.upload pypi.upload.test
 MANAGE += format.python
 MANAGE += test.yamllint test.pylint test.pyright test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean
 MANAGE += themes.all themes.simple themes.simple.test pygments.less

@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-31 19:06+0000\n"
-"PO-Revision-Date: 2024-02-01 06:37+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"PO-Revision-Date: 2024-02-17 18:56+0000\n"
+"Last-Translator: Fjuro <ifjuro@proton.me>\n"
 "Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
 "searxng/cs/>\n"
 "Language: cs\n"
@@ -155,6 +155,16 @@ msgstr "světlý"
 #: searx/searxng.msg
 msgid "dark"
 msgstr "tmavý"
+
+#. BRAND_CUSTOM_LINKS['UPTIME']
+#: searx/searxng.msg
+msgid "Uptime"
+msgstr "Spolehlivost"
+
+#. BRAND_CUSTOM_LINKS['ABOUT']
+#: searx/searxng.msg searx/templates/simple/base.html:49
+msgid "About"
+msgstr "O SearXNG"
 
 #: searx/webapp.py:332
 msgid "No item found"
@@ -442,10 +452,6 @@ msgstr "Přejít na %(search_page)s."
 #: searx/templates/simple/404.html:6
 msgid "search page"
 msgstr "stránka vyhledávání"
-
-#: searx/templates/simple/base.html:49
-msgid "About"
-msgstr "O SearXNG"
 
 #: searx/templates/simple/base.html:53
 msgid "Donate"

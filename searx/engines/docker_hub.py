@@ -5,7 +5,6 @@
 """
 # pylint: disable=use-dict-literal
 
-from json import loads
 from urllib.parse import urlencode
 from dateutil import parser
 
@@ -18,7 +17,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['it']  # optional
+categories = ['it', 'packages']  # optional
 paging = True
 
 base_url = "https://hub.docker.com/"
@@ -38,26 +37,24 @@ def response(resp):
     resp: requests response object
     '''
     results = []
-    body = loads(resp.text)
+    body = resp.json()
 
-    # Make sure `summaries` isn't `null`
-    search_res = body.get("summaries")
-    if search_res:
-        for item in search_res:
-            result = {}
+    for item in body.get("summaries", []):
+        filter_type = item.get("filter_type")
+        is_official = filter_type in ["store", "official"]
 
-            # Make sure correct URL is set
-            filter_type = item.get("filter_type")
-            is_official = filter_type in ["store", "official"]
-
-            if is_official:
-                result["url"] = base_url + "_/" + item.get('slug', "")
-            else:
-                result["url"] = base_url + "r/" + item.get('slug', "")
-            result["title"] = item.get("name")
-            result["content"] = item.get("short_description")
-            result["publishedDate"] = parser.parse(item.get("updated_at") or item.get("created_at"))
-            result["thumbnail"] = item["logo_url"].get("large") or item["logo_url"].get("small")
-            results.append(result)
+        result = {
+            'template': 'packages.html',
+            'url': base_url + ("_/" if is_official else "r/") + item.get("slug", ""),
+            'title': item.get("name"),
+            'content': item.get("short_description"),
+            'img_src': item["logo_url"].get("large") or item["logo_url"].get("small"),
+            'package_name': item.get("name"),
+            'maintainer': item["publisher"].get("name"),
+            'publishedDate': parser.parse(item.get("updated_at") or item.get("created_at")),
+            'popularity': item.get("pull_count", "0") + " pulls",
+            'tags': [arch['name'] for arch in item["architectures"]],
+        }
+        results.append(result)
 
     return results

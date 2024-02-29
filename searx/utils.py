@@ -353,6 +353,18 @@ def get_torrent_size(filesize: str, filesize_multiplier: str) -> Optional[int]:
         return None
 
 
+def humanize_bytes(size, precision=2):
+    """Determine the *human readable* value of bytes on 1024 base (1KB=1024B)."""
+    s = ['B ', 'KB', 'MB', 'GB', 'TB']
+
+    x = len(s)
+    p = 0
+    while size > 1024 and p < x:
+        p += 1
+        size = size / 1024.0
+    return "%.*f %s" % (precision, size, s[p])
+
+
 def convert_str_to_int(number_str: str) -> int:
     """Convert number_str to int or 0 if number_str is not a number."""
     if number_str.isdigit():

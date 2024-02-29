@@ -96,10 +96,15 @@ weblate.translations.commit() {
         build_msg BABEL 'compile translation catalogs into binary MO files'
         pybabel compile --statistics \
                 -d "searx/translations"
+
+        # update searx/data/translation_labels.json
+        data.locales
+
         # git add/commit (no push)
         commit_body=$(cd "${TRANSLATIONS_WORKTREE}"; git log --pretty=format:'%h - %as - %aN <%ae>' "${existing_commit_hash}..HEAD")
         commit_message=$(echo -e "[translations] update from Weblate\n\n${commit_body}")
         git add searx/translations
+        git add searx/data/locales.json
         git commit -m "${commit_message}"
     )
     exitcode=$?
