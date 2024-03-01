@@ -42,7 +42,7 @@ jobs:
         env:
           FETCH_SCRIPT: ./searxng_extra/update/${{ matrix.fetch }}
         run: |
-          V=1 ./manage pyenv.cmd python "$FETCH_SCRIPT"
+          V=1 rye run python "$FETCH_SCRIPT"
 
       - name: Create Pull Request
         id: cpr

@@ -44,10 +44,10 @@ lxc.clean:
 
 PHONY += search.checker search.checker.%
 search.checker: install
-	$(Q)./manage pyenv.cmd searxng-checker -v
+	$(Q)./manage rye run searxng-checker -v
 
 search.checker.%: install
-	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
+	$(Q)./manage rye run searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
 ci.test: test.yamllint test.black test.pyright test.pylint test.unit test.robot test.rst test.pybabel

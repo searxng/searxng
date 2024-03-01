@@ -110,7 +110,7 @@ weblate.translations.commit() {
     exitcode=$?
     (   # make sure to always unlock weblate
         set -e
-        pyenv.cmd wlc unlock
+        rye run wlc unlock
     )
     dump_return $exitcode
 }

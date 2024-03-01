@@ -24,20 +24,17 @@ jobs:
       run: |
         sudo ./utils/searxng.sh install packages
         sudo apt install firefox
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-        architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
       uses: actions/cache@v3
       with:
         path: |
-          ./local
+          ./.venv
           ./.nvm
           ./node_modules
-        key: python-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
+        key: python-rye-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
+    - name: Set Python version
+      run: echo "${{ matrix.python-version }}" > .python-version
     - name: Install Python dependencies
       if: steps.cache-python.outputs.cache-hit != 'true'
       run: |
@@ -72,10 +69,10 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          ./local
+          ./.venv
           ./.nvm
           ./node_modules
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+        key: python-rye-ubuntu-20.04-3.9-${{ hashFiles('requirements*.lock', 'pyproject.toml','.nvmrc', 'package.json') }}
     - name: Install node dependencies
       run: make V=1 node.env
     - name: Build themes
@@ -107,7 +104,7 @@ jobs:
           ./local
           ./.nvm
           ./node_modules
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+        key: python-rye-ubuntu-20.04-3.9-${{ hashFiles('requirements*.lock', 'pyproject.toml','.nvmrc', 'package.json') }}
     - name: Build documentation
       run: |
         make V=1 docs.clean docs.html
@@ -151,7 +148,7 @@ jobs:
           ./local
           ./.nvm
           ./node_modules
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+        key: python-rye-ubuntu-20.04-3.9-${{ hashFiles('requirements*.lock', 'pyproject.toml','.nvmrc', 'package.json') }}
     - name: weblate & git setup
       env:
         WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
@@ -195,7 +192,7 @@ jobs:
             ./local
             ./.nvm
             ./node_modules
-          key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+          key: python-rye-ubuntu-20.04-3.9-${{ hashFiles('requirements*.lock', 'pyproject.toml','.nvmrc', 'package.json') }}
       - name: Set up QEMU
         if: env.DOCKERHUB_USERNAME != null
         uses: docker/setup-qemu-action@v1

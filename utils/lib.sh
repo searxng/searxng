@@ -527,15 +527,12 @@ service_is_available() {
 # python
 # ------
 
-PY="${PY:=3}"
-PYTHON="${PYTHON:=python$PY}"
-PY_ENV="${PY_ENV:=local/py${PY}}"
+PY_ENV="${PY_ENV:=.venv}"
 PY_ENV_BIN="${PY_ENV}/bin"
-PY_ENV_REQ="${PY_ENV_REQ:=${REPO_ROOT}/requirements*.txt}"
+PY_ENV_SHA256_FILE="${PY_ENV}/requirements.sha256"
+PY_ENV_REQ="${REPO_ROOT}/pyproject.toml ${REPO_ROOT}/requirements*.lock"
 
-# List of python packages (folders) or modules (files) installed by command:
-# pyenv.install
-PYOBJECTS="${PYOBJECTS:=.}"
+PYENV_INSTALL_DONE=0
 
 # folder where the python distribution takes place
 PYDIST="${PYDIST:=dist}"
@@ -543,88 +540,10 @@ PYDIST="${PYDIST:=dist}"
 # folder where the intermediate build files take place
 PYBUILD="${PYBUILD:=build/py${PY}}"
 
-# https://www.python.org/dev/peps/pep-0508/#extras
-#PY_SETUP_EXTRAS='[develop,test]'
-PY_SETUP_EXTRAS="${PY_SETUP_EXTRAS:=[develop,test]}"
+export RYE_VERSION="0.28.0"
+export RYE_HOME="${REPO_ROOT}/.local"
+export PATH="$RYE_HOME/shims:$PATH"
 
-PIP_BOILERPLATE=( pip wheel setuptools )
-
-# shellcheck disable=SC2120
-pyenv() {
-
-    # usage:  pyenv [vtenv_opts ...]
-    #
-    #   vtenv_opts: see 'pip install --help'
-    #
-    # Builds virtualenv with 'requirements*.txt' (PY_ENV_REQ) installed.  The
-    # virtualenv will be reused by validating sha256sum of the requirement
-    # files.
-
-    required_commands \
-        sha256sum "${PYTHON}" \
-        || exit
-
-    local pip_req=()
-
-    if ! pyenv.OK > /dev/null; then
-        rm -f "${PY_ENV}/${PY_ENV_REQ}.sha256"
-        pyenv.drop > /dev/null
-        build_msg PYENV "[virtualenv] installing ${PY_ENV_REQ} into ${PY_ENV}"
-
-        "${PYTHON}" -m venv "$@" "${PY_ENV}"
-        "${PY_ENV_BIN}/python" -m pip install -U "${PIP_BOILERPLATE[@]}"
-
-        for i in ${PY_ENV_REQ}; do
-            pip_req=( "${pip_req[@]}" "-r" "$i" )
-        done
-
-        (
-            [ "$VERBOSE" = "1" ] && set -x
-            # shellcheck disable=SC2086
-            "${PY_ENV_BIN}/python" -m pip install "${pip_req[@]}" \
-                && sha256sum ${PY_ENV_REQ} > "${PY_ENV}/requirements.sha256"
-        )
-    fi
-    pyenv.OK
-}
-
-_pyenv_OK=''
-pyenv.OK() {
-
-    # probes if pyenv exists and runs the script from pyenv.check
-
-    [ "$_pyenv_OK" == "OK" ] && return 0
-
-    if [ ! -f "${PY_ENV_BIN}/python" ]; then
-        build_msg PYENV "[virtualenv] missing ${PY_ENV_BIN}/python"
-        return 1
-    fi
-
-    if [ ! -f "${PY_ENV}/requirements.sha256" ] \
-        || ! sha256sum -c "${PY_ENV}/requirements.sha256" > /dev/null 2>&1; then
-        build_msg PYENV "[virtualenv] requirements.sha256 failed"
-        sed 's/^/          [virtualenv] - /' <"${PY_ENV}/requirements.sha256"
-        return 1
-    fi
-
-    if [ "$VERBOSE" = "1" ]; then
-        pyenv.check \
-            | "${PY_ENV_BIN}/python" 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[check] "
-    else
-        pyenv.check | "${PY_ENV_BIN}/python" 1>/dev/null
-    fi
-
-    local err=${PIPESTATUS[1]}
-    if [ "$err" -ne "0" ]; then
-        build_msg PYENV "[check] python test failed"
-        return "$err"
-    fi
-
-    [ "$VERBOSE" = "1" ] && build_msg PYENV "OK"
-    _pyenv_OK="OK"
-    return 0
-}
 
 pyenv.drop() {
 
@@ -634,104 +553,59 @@ pyenv.drop() {
 
 }
 
-pyenv.check() {
-
-    # Prompts a python script with additional checks. Used by pyenv.OK to check
-    # if virtualenv is ready to install python objects.  This function should be
-    # overwritten by the application script.
-
-    local imp=""
-
-    for i in "${PIP_BOILERPLATE[@]}"; do
-        imp="$imp, $i"
-    done
-
-    cat  <<EOF
-import ${imp#,*}
-
-EOF
-}
-
-pyenv.install() {
-
-    if ! pyenv.OK; then
-        py.clean > /dev/null
-    fi
-    if ! pyenv.install.OK > /dev/null; then
-        build_msg PYENV "[install] ${PYOBJECTS}"
-        if ! pyenv.OK >/dev/null; then
-            pyenv
-        fi
-        for i in ${PYOBJECTS}; do
-    	    build_msg PYENV "[install] pip install -e '$i${PY_SETUP_EXTRAS}'"
-    	    "${PY_ENV_BIN}/python" -m pip install -e "$i${PY_SETUP_EXTRAS}"
-        done
-    fi
-    pyenv.install.OK
-}
-
-_pyenv_install_OK=''
-pyenv.install.OK() {
-
-    [ "$_pyenv_install_OK" == "OK" ] && return 0
-
-    local imp=""
-    local err=""
-
-    if [ "." = "${PYOBJECTS}" ]; then
-        imp="import $(basename "$(pwd)")"
-    else
-        # shellcheck disable=SC2086
-        for i in ${PYOBJECTS}; do imp="$imp, $i"; done
-        imp="import ${imp#,*} "
-    fi
-    (
-        [ "$VERBOSE" = "1" ] && set -x
-        "${PY_ENV_BIN}/python" -c "import sys; sys.path.pop(0); $imp;" 2>/dev/null
-    )
-
-    err=$?
-    if [ "$err" -ne "0" ]; then
-        build_msg PYENV "[install] python installation test failed"
-        return "$err"
-    fi
-
-    build_msg PYENV "[install] OK"
-    _pyenv_install_OK="OK"
-    return 0
-}
-
-pyenv.uninstall() {
-
-    build_msg PYENV "[uninstall] ${PYOBJECTS}"
-
-    if [ "." = "${PYOBJECTS}" ]; then
-	pyenv.cmd python setup.py develop --uninstall 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
-    else
-        # shellcheck disable=SC2086
-	pyenv.cmd python -m pip uninstall --yes ${PYOBJECTS} 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
-    fi
-}
-
-
-pyenv.cmd() {
-    pyenv.install
-    (   set -e
-        # shellcheck source=/dev/null
-        source "${PY_ENV_BIN}/activate"
-        [ "$VERBOSE" = "1" ] && set -x
-        "$@"
-    )
-}
-
 
 pyenv.activate() {
     pyenv.install
     # shellcheck source=/dev/null
     source "${PY_ENV_BIN}/activate"
 }
+
+
+_pyenv_OK=''
+pyenv.OK() {
+    # probes if pyenv exists and runs the script from pyenv.check
+    [ "$_pyenv_OK" == "OK" ] && return 0
+    if [ ! -f "${PY_ENV_SHA256_FILE}" ] || ! sha256sum -c "${PY_ENV_SHA256_FILE}" > /dev/null 2>&1; then
+        return 1
+    fi
+    _pyenv_OK="OK"
+    return 0
+}
+
+
+pyenv.install() {
+    if [ ! -d "${RYE_HOME}" ]; then  # FIXME : check the RYE_VERSION
+        mkdir -p "${RYE_HOME}"
+        RYE_URL="https://github.com/astral-sh/rye/releases/download/${RYE_VERSION}/rye-x86_64-linux.gz"
+        PYTHON_PATH="$(which python)"
+        RYE_TMP="$RYE_HOME/rye"
+        curl -L "$RYE_URL" | gzip -d > "$RYE_TMP"
+        chmod +x "$RYE_TMP"
+        # use --toolchain "${PYTHON_PATH}" only if the version meet the rye requirement 
+        $RYE_TMP self install --no-modify-path --yes
+        rm "$RYE_TMP"
+        # don't use uv because of Sphinx<=7.1.2; python_version == '3.8'
+        # echo "use-uv = true" >> "${RYE_HOME}/config.toml"
+    fi
+    if ! pyenv.OK > /dev/null; then
+        "$RYE_HOME/shims/rye" sync
+        PYENV_INSTALL_DONE=1
+        sha256sum ${PY_ENV_REQ} > "${PY_ENV_SHA256_FILE}"
+    fi
+}
+
+
+pyenv.uninstall() {
+    # TODO
+    echo "Not implemented"
+}
+
+
+rye() {
+    pyenv.install
+    "$RYE_HOME/shims/rye" $@
+}
+
 
 
 # Sphinx doc
@@ -746,7 +620,7 @@ docs.html() {
     pyenv.install
     docs.prebuild
     # shellcheck disable=SC2086
-    PATH="${PY_ENV_BIN}:${PATH}" pyenv.cmd sphinx-build \
+    PATH="${PY_ENV_BIN}:${PATH}" rye run sphinx-build \
         ${SPHINX_VERBOSE} ${SPHINXOPTS} \
 	-b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
     dump_return $?
@@ -757,7 +631,7 @@ docs.live() {
     pyenv.install
     docs.prebuild
     # shellcheck disable=SC2086
-    PATH="${PY_ENV_BIN}:${PATH}" pyenv.cmd sphinx-autobuild \
+    PATH="${PY_ENV_BIN}:${PATH}" rye run sphinx-autobuild \
         ${SPHINX_VERBOSE} ${SPHINXOPTS} --open-browser --host 0.0.0.0 \
 	-b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
     dump_return $?

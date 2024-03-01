@@ -14,32 +14,30 @@ EOF
 data.all() {
     (   set -e
 
-        pyenv.activate
         data.traits
         data.useragents
-	data.locales
+	    data.locales
 
         build_msg DATA "update searx/data/osm_keys_tags.json"
-        pyenv.cmd python searxng_extra/update/update_osm_keys_tags.py
+        rye run python searxng_extra/update/update_osm_keys_tags.py
         build_msg DATA "update searx/data/ahmia_blacklist.txt"
-        python searxng_extra/update/update_ahmia_blacklist.py
+        rye run python searxng_extra/update/update_ahmia_blacklist.py
         build_msg DATA "update searx/data/wikidata_units.json"
-        python searxng_extra/update/update_wikidata_units.py
+        rye run python searxng_extra/update/update_wikidata_units.py
         build_msg DATA "update searx/data/currencies.json"
-        python searxng_extra/update/update_currencies.py
+        rye run python searxng_extra/update/update_currencies.py
         build_msg DATA "update searx/data/external_bangs.json"
-        python searxng_extra/update/update_external_bangs.py
+        rye run python searxng_extra/update/update_external_bangs.py
         build_msg DATA "update searx/data/engine_descriptions.json"
-        python searxng_extra/update/update_engine_descriptions.py
+        rye run python searxng_extra/update/update_engine_descriptions.py
     )
 }
 
 
 data.traits() {
     (   set -e
-        pyenv.activate
         build_msg DATA "update searx/data/engine_traits.json"
-        python searxng_extra/update/update_engine_traits.py
+        rye run python searxng_extra/update/update_engine_traits.py
         build_msg ENGINES "update searx/sxng_locales.py"
     )
     dump_return $?
@@ -47,15 +45,14 @@ data.traits() {
 
 data.useragents() {
     build_msg DATA "update searx/data/useragents.json"
-    pyenv.cmd python searxng_extra/update/update_firefox_version.py
+    rye run python searxng_extra/update/update_firefox_version.py
     dump_return $?
 }
 
 data.locales() {
     (   set -e
-        pyenv.activate
         build_msg DATA "update searx/data/locales.json"
-        python searxng_extra/update/update_locales.py
+        rye run python searxng_extra/update/update_locales.py
     )
     dump_return $?
 }
@@ -67,7 +64,7 @@ docs.prebuild() {
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
         ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
-        pyenv.cmd searxng_extra/docs_prebuild
+        rye run searxng_extra/docs_prebuild
     )
     dump_return $?
 }
