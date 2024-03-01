@@ -13,17 +13,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
 "PO-Revision-Date: 2024-02-19 09:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Malay <https://translate.codeberg.org/projects/searxng/"
-"searxng/ms/>\n"
 "Language: ms\n"
+"Language-Team: Malay "
+"<https://translate.codeberg.org/projects/searxng/searxng/ms/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -165,8 +164,8 @@ msgstr "Tentang"
 msgid "No item found"
 msgstr "barang tidak dijumpai"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Punca"
 
@@ -174,15 +173,15 @@ msgstr "Punca"
 msgid "Error loading the next page"
 msgstr "Gagal memuat turun muka seterusnya"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "Kesilapan tetapan, sila ubahsuai pilihan"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "Tetapan tidak sah"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "ralat pencarian"
 
@@ -278,7 +277,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Kemasukan ini telah diganti oleh"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "Saluran"
 
@@ -461,6 +460,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Kod sumber"
 
@@ -494,7 +494,7 @@ msgstr "Panjang"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Penulis"
@@ -887,6 +887,7 @@ msgid "Keywords"
 msgstr "Kata kunci"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "Nama"
 
@@ -1157,6 +1158,7 @@ msgid "This site did not provide any description."
 msgstr "Laman web ini tidak memberikan sebarang diskripsi."
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "Saiz fail"
@@ -1195,15 +1197,19 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "Format"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "Enjin"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr ""
 
@@ -1218,6 +1224,39 @@ msgstr "tunjuk peta"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "sembunyikan peta"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Tag"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1234,10 +1273,6 @@ msgstr ""
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr ""
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "Tag"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
@@ -1430,3 +1465,4 @@ msgstr "sembunyikkan video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+

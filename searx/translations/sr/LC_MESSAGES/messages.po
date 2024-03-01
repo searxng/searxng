@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
 "PO-Revision-Date: 2023-12-29 14:09+0000\n"
 "Last-Translator: SecularSteve <fairfull.playing@gmail.com>\n"
 "Language: sr\n"
@@ -165,8 +165,8 @@ msgstr "О нама"
 msgid "No item found"
 msgstr "Ставка није пронађена"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Извор"
 
@@ -174,15 +174,15 @@ msgstr "Извор"
 msgid "Error loading the next page"
 msgstr "Грешка приликом учитавања следеће странице"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неважеће поставке, молимо уредите свој избор"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "Неважећа подешавања"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "грешка у претрази"
 
@@ -278,7 +278,7 @@ msgstr "{title} (ЗАСТАРЕЛО)"
 msgid "This entry has been superseded by"
 msgstr "Овај унос је заменио"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "Канал"
 
@@ -467,6 +467,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr "Javni meta pretrazivac koji postuje privatnost"
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Изворни код"
 
@@ -500,7 +501,7 @@ msgstr "Дужина"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Аутор"
@@ -893,6 +894,7 @@ msgid "Keywords"
 msgstr "Кључне речи"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "Име"
 
@@ -1186,6 +1188,7 @@ msgid "This site did not provide any description."
 msgstr "Овај сајт није дао никакав опис."
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "величина фајла"
@@ -1224,15 +1227,19 @@ msgstr ""
 msgid "Type"
 msgstr "Tip"
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "Формат"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "Енџин"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "Види извор"
 
@@ -1247,6 +1254,39 @@ msgstr "покажи мапу"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "сакриј мапу"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Tagovi"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1263,10 +1303,6 @@ msgstr "Editor"
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr "Izdavac"
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "Tagovi"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
