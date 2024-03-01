@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
 "PO-Revision-Date: 2024-01-31 19:06+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bn\n"
@@ -164,8 +164,8 @@ msgstr "সম্বন্ধে"
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "উৎস"
 
@@ -173,15 +173,15 @@ msgstr "উৎস"
 msgid "Error loading the next page"
 msgstr "পরবর্তী পৃষ্ঠাটি লোড করায় ত্রুটি দেখা যাচ্ছে"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "অকেজো সেটিংস, অনুগ্রহ করে আপনার পছন্দগুলি সম্পাদনা করুন"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "অকেজো সেটিংস"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "সার্চ ত্রুটি"
 
@@ -277,7 +277,7 @@ msgstr "{title} (অচল)"
 msgid "This entry has been superseded by"
 msgstr "এই এনট্রিটি দ্বারা বাতিল করা হয়েছে৷"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "চ্যানেল"
 
@@ -467,6 +467,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr "একটি গোপনীয়তা-সম্মানকারী, খোলা মেটাসার্চ ইঞ্জিন"
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "সোর্স কোড"
 
@@ -500,7 +501,7 @@ msgstr "দৈর্ঘ্য"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "লেখক"
@@ -897,6 +898,7 @@ msgid "Keywords"
 msgstr "মূলশব্দ"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "নাম"
 
@@ -1181,6 +1183,7 @@ msgid "This site did not provide any description."
 msgstr "এই সাইট কোন বিবরণ প্রদান করেনি।"
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "ফাইলের আকার"
@@ -1219,15 +1222,19 @@ msgstr ""
 msgid "Type"
 msgstr "ধরন"
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "সজ্জা"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "ইঞ্জিন"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "উৎস দেখুন"
 
@@ -1242,6 +1249,39 @@ msgstr "মানচিত্র দেখান"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "মানচিত্র লুকান"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "ট্যাগসমূহ"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1258,10 +1298,6 @@ msgstr "সম্পাদক"
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr "প্রকাশক"
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "ট্যাগসমূহ"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"

@@ -23,13 +23,14 @@
 # SonoAX <giovanniilgiovo@gmail.com>, 2023.
 # nicfab <nicfab@icloud.com>, 2023.
 # pietro395 <me@pietro.in>, 2024.
+# feather1 <verdimario2015@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
-"PO-Revision-Date: 2024-02-15 16:56+0000\n"
-"Last-Translator: pietro395 <me@pietro.in>\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
+"PO-Revision-Date: 2024-02-26 16:56+0000\n"
+"Last-Translator: feather1 <verdimario2015@gmail.com>\n"
 "Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
 "searxng/it/>\n"
 "Language: it\n"
@@ -37,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -179,8 +180,8 @@ msgstr "A proposito"
 msgid "No item found"
 msgstr "Nessun oggetto trovato"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Sorgente"
 
@@ -188,15 +189,15 @@ msgstr "Sorgente"
 msgid "Error loading the next page"
 msgstr "Errore di caricamento della pagina successiva"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "Impostazioni non valide"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "errore di ricerca"
 
@@ -292,7 +293,7 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Questa voce è stata sostituita da"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "Canale"
 
@@ -484,6 +485,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr "un meta-motore di ricerca web, open source e rispettoso della privacy"
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Codice sorgente"
 
@@ -517,7 +519,7 @@ msgstr "Lunghezza"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autore"
@@ -918,6 +920,7 @@ msgid "Keywords"
 msgstr "Parole chiave"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "Nome"
 
@@ -1211,6 +1214,7 @@ msgid "This site did not provide any description."
 msgstr "Questo sito non fornisce nessuna descrizione."
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "Dimensioni file"
@@ -1249,15 +1253,19 @@ msgstr "Data"
 msgid "Type"
 msgstr "Tipo"
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr "Risoluzione"
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "Formato"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "Motore"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "Guarda la fonte"
 
@@ -1272,6 +1280,39 @@ msgstr "mostra mappa"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "nascondi mappa"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr "Versione"
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr "Manutentore"
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr "Aggiornato alle"
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Etichette"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr "Popolarità"
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr "Licenza"
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr "Progetto"
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr "Pagina iniziale del progetto"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1288,10 +1329,6 @@ msgstr "Redattore"
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr "Editore"
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "Etichette"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"

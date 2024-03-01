@@ -28,19 +28,18 @@
 # <err_connection_closed@users.noreply.translate.codeberg.org>, 2023.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
 "PO-Revision-Date: 2024-02-15 16:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
-"Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
-"searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -182,8 +181,8 @@ msgstr "关于"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "来源"
 
@@ -191,15 +190,15 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "搜索错误"
 
@@ -295,7 +294,7 @@ msgstr "{title} （已过时）"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "频道"
 
@@ -469,6 +468,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr "尊重隐私的开源元搜索引擎"
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "源代码"
 
@@ -502,7 +502,7 @@ msgstr "长度"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "作者"
@@ -895,6 +895,7 @@ msgid "Keywords"
 msgstr "关键词"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "名称"
 
@@ -1167,6 +1168,7 @@ msgid "This site did not provide any description."
 msgstr "此站点未提供任何描述。"
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "文件大小"
@@ -1205,15 +1207,19 @@ msgstr "日期"
 msgid "Type"
 msgstr "输入"
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "格式"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "引擎"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "查看来源"
 
@@ -1228,6 +1234,39 @@ msgstr "显示地图"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "隐藏地图"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "标签"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr ""
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1244,10 +1283,6 @@ msgstr "编者"
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr "出版者"
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "标签"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
@@ -1679,3 +1714,4 @@ msgstr "隐藏视频"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "我们没有找到任何结果。请使用其他关键词，或在更多类别中搜索。"
+

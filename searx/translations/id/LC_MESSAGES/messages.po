@@ -2,23 +2,24 @@
 # Copyright (C) 2021 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
-# Linerly <linerly@protonmail.com>, 2022, 2023.
+# Linerly <linerly@protonmail.com>, 2022, 2023, 2024.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 07:07+0000\n"
-"PO-Revision-Date: 2024-02-05 08:56+0000\n"
+"POT-Creation-Date: 2024-02-25 15:26+0000\n"
+"PO-Revision-Date: 2024-02-26 16:56+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
+"searxng/id/>\n"
 "Language: id\n"
-"Language-Team: Indonesian "
-"<https://translate.codeberg.org/projects/searxng/searxng/id/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -149,7 +150,7 @@ msgstr "gelap"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "Waktu aktif"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:49
@@ -160,8 +161,8 @@ msgstr "Tentang"
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:280
-#: searx/templates/simple/result_templates/images.html:20 searx/webapp.py:334
+#: searx/engines/qwant.py:282
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Sumber"
 
@@ -169,15 +170,15 @@ msgstr "Sumber"
 msgid "Error loading the next page"
 msgstr "Gagal memuat halaman berikutnya"
 
-#: searx/webapp.py:493 searx/webapp.py:889
+#: searx/webapp.py:483 searx/webapp.py:879
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:509
+#: searx/webapp.py:499
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:586 searx/webapp.py:668
+#: searx/webapp.py:576 searx/webapp.py:658
 msgid "search error"
 msgstr "kesalahan pencarian"
 
@@ -273,7 +274,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Masukan ini telah digantikan oleh"
 
-#: searx/engines/qwant.py:282
+#: searx/engines/qwant.py:284
 msgid "Channel"
 msgstr "Saluran"
 
@@ -466,6 +467,7 @@ msgid "a privacy-respecting, open metasearch engine"
 msgstr "sebuah mesin pencari meta terbuka yang menghormati privasi"
 
 #: searx/templates/simple/base.html:68
+#: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Kode sumber"
 
@@ -499,7 +501,7 @@ msgstr "Durasi"
 
 #: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
-#: searx/templates/simple/result_templates/images.html:18
+#: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Penulis"
@@ -894,6 +896,7 @@ msgid "Keywords"
 msgstr "Kata kunci"
 
 #: searx/templates/simple/preferences/answerers.html:6
+#: searx/templates/simple/result_templates/packages.html:7
 msgid "Name"
 msgstr "Nama"
 
@@ -984,7 +987,7 @@ msgstr "Sisipkan salinan hash preferensi (tanpa URL) untuk memulihkan"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "hash preferensi"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1187,6 +1190,7 @@ msgid "This site did not provide any description."
 msgstr "Situs ini tidak memberikan deskripsi apa pun."
 
 #: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:11
 msgid "Filesize"
 msgstr "Ukuran berkas"
@@ -1218,22 +1222,26 @@ msgstr "TiB"
 
 #: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
-msgstr ""
+msgstr "Tanggal"
 
 #: searx/templates/simple/result_templates/files.html:49
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "Jenis"
 
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:20
+msgid "Resolution"
+msgstr "Resolusi"
+
+#: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
 msgstr "Format"
 
-#: searx/templates/simple/result_templates/images.html:21
+#: searx/templates/simple/result_templates/images.html:24
 msgid "Engine"
 msgstr "Mesin"
 
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:25
 msgid "View source"
 msgstr "Tampilkan sumber"
 
@@ -1248,6 +1256,39 @@ msgstr "tampilkan peta"
 #: searx/templates/simple/result_templates/map.html:43
 msgid "hide map"
 msgstr "sembunyikan peta"
+
+#: searx/templates/simple/result_templates/packages.html:12
+msgid "Version"
+msgstr "Versi"
+
+#: searx/templates/simple/result_templates/packages.html:18
+msgid "Maintainer"
+msgstr "Pemelihara"
+
+#: searx/templates/simple/result_templates/packages.html:24
+msgid "Updated at"
+msgstr "Diperbarui pada"
+
+#: searx/templates/simple/result_templates/packages.html:30
+#: searx/templates/simple/result_templates/paper.html:25
+msgid "Tags"
+msgstr "Tag"
+
+#: searx/templates/simple/result_templates/packages.html:36
+msgid "Popularity"
+msgstr "Kepopuleran"
+
+#: searx/templates/simple/result_templates/packages.html:42
+msgid "License"
+msgstr "Lisensi"
+
+#: searx/templates/simple/result_templates/packages.html:52
+msgid "Project"
+msgstr "Proyek"
+
+#: searx/templates/simple/result_templates/packages.html:55
+msgid "Project homepage"
+msgstr "Laman beranda proyek"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1264,10 +1305,6 @@ msgstr "Editor"
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
 msgstr "Penerbit"
-
-#: searx/templates/simple/result_templates/paper.html:25
-msgid "Tags"
-msgstr "Tag"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
@@ -1621,4 +1658,3 @@ msgstr "sembunyikan video"
 #~ "kami tidak menemukan hasil apa pun. "
 #~ "Mohon menggunakan pencarian lain atau "
 #~ "cari dalam kategori lain."
-
