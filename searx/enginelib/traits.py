@@ -14,14 +14,16 @@ from __future__ import annotations
 import json
 import dataclasses
 import types
-from typing import Dict, Iterable, Union, Callable, Optional, TYPE_CHECKING
-from typing_extensions import Literal, Self
+from typing import Dict, Literal, Iterable, Union, Callable, TypeVar, Optional, TYPE_CHECKING
 
 from searx import locales
 from searx.data import data_dir, ENGINE_TRAITS
 
 if TYPE_CHECKING:
     from . import Engine
+
+
+Self = TypeVar("Self", bound="EngineTraits")  # Python 3.11, to replace by typing.Self
 
 
 class EngineTraitsEncoder(json.JSONEncoder):
