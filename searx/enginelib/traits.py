@@ -14,16 +14,13 @@ from __future__ import annotations
 import json
 import dataclasses
 import types
-from typing import Dict, Literal, Iterable, Union, Callable, TypeVar, Optional, TYPE_CHECKING
+from typing import Dict, Literal, Iterable, Union, Callable, Optional, TYPE_CHECKING
 
 from searx import locales
 from searx.data import data_dir, ENGINE_TRAITS
 
 if TYPE_CHECKING:
     from . import Engine
-
-
-Self = TypeVar("Self", bound="EngineTraits")  # Python 3.11, to replace by typing.Self
 
 
 class EngineTraitsEncoder(json.JSONEncoder):
@@ -138,7 +135,7 @@ class EngineTraits:
         return EngineTraits(**dataclasses.asdict(self))
 
     @classmethod
-    def fetch_traits(cls, engine: Engine) -> Union[Self, None]:
+    def fetch_traits(cls, engine: Engine) -> Union['EngineTraits', None]:
         """Call a function ``fetch_traits(engine_traits)`` from engines namespace to fetch
         and set properties from the origin engine in the object ``engine_traits``.  If
         function does not exists, ``None`` is returned.
@@ -206,7 +203,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
             json.dump(self, f, indent=2, sort_keys=True, cls=EngineTraitsEncoder)
 
     @classmethod
-    def from_data(cls) -> Self:
+    def from_data(cls) -> 'EngineTraitsMap':
         """Instantiate :class:`EngineTraitsMap` object from :py:obj:`ENGINE_TRAITS`"""
         obj = cls()
         for k, v in ENGINE_TRAITS.items():
@@ -214,7 +211,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
         return obj
 
     @classmethod
-    def fetch_traits(cls, log: Callable) -> Self:
+    def fetch_traits(cls, log: Callable) -> 'EngineTraitsMap':
         from searx import engines  # pylint: disable=cyclic-import, import-outside-toplevel
 
         names = list(engines.engines)
