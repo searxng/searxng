@@ -65,7 +65,7 @@ def cache_vqd(query, value):
     c = redisdb.client()
     if c:
         logger.debug("cache vqd value: %s", value)
-        key = 'SearXNG_ddg_vqd' + redislib.secret_hash(query)
+        key = 'SearXNG_ddg_web_vqd' + redislib.secret_hash(query)
         c.set(key, value, ex=600)
 
 
@@ -105,27 +105,25 @@ def get_vqd(query):
     - DuckDuckGo News: ``https://duckduckgo.com/news.js??q=...&vqd=...``
 
     """
-    value = ''
+    value = None
     c = redisdb.client()
     if c:
-        key = 'SearXNG_ddg_vqd' + redislib.secret_hash(query)
+        key = 'SearXNG_ddg_web_vqd' + redislib.secret_hash(query)
         value = c.get(key)
         if value or value == b'':
             value = value.decode('utf-8')
             logger.debug("re-use cached vqd value: %s", value)
             return value
 
-    query_url = 'https://lite.duckduckgo.com/lite/?{args}'.format(args=urlencode({'q': query}))
+    query_url = 'https://duckduckgo.com/?' + urlencode({'q': query})
     res = get(query_url)
     doc = lxml.html.fromstring(res.text)
-    value = doc.xpath("//input[@name='vqd']/@value")
-    if value:
-        value = value[0]
-    else:
-        # Some search terms do not have results and therefore no vqd value.  If
-        # no vqd value can be determined for the search term, an empty string is
-        # chached.
-        value = ''
+    for script in doc.xpath("//script[@type='text/javascript']"):
+        script = script.text
+        if 'vqd="' in script:
+            value = script[script.index('vqd="') + 5 :]
+            value = value[: value.index('"')]
+            break
     logger.debug("new vqd value: '%s'", value)
     cache_vqd(query, value)
     return value
@@ -228,10 +226,6 @@ def request(query, params):
 
     # request needs a vqd argument
     vqd = get_vqd(query)
-    if not vqd:
-        # some search terms do not have results and therefore no vqd value
-        params['url'] = None
-        return params
 
     # quote ddg bangs
     query_parts = []
@@ -260,14 +254,14 @@ def request(query, params):
 
     # initial page does not have an offset
     if params['pageno'] == 2:
-        # second page does have an offset of 30
-        offset = (params['pageno'] - 1) * 30
+        # second page does have an offset of 20
+        offset = (params['pageno'] - 1) * 20
         params['data']['s'] = offset
         params['data']['dc'] = offset + 1
 
     elif params['pageno'] > 2:
-        # third and following pages do have an offset of 30 + n*50
-        offset = 30 + (params['pageno'] - 2) * 50
+        # third and following pages do have an offset of 20 + n*50
+        offset = 20 + (params['pageno'] - 2) * 50
         params['data']['s'] = offset
         params['data']['dc'] = offset + 1
 
@@ -321,10 +315,6 @@ def response(resp):
             form_data['api'] = eval_xpath(form, '//input[@name="api"]/@value')[0]
             form_data['o'] = eval_xpath(form, '//input[@name="o"]/@value')[0]
             logger.debug('form_data: %s', form_data)
-
-            value = eval_xpath(form, '//input[@name="vqd"]/@value')[0]
-            query = resp.search_params['data']['q']
-            cache_vqd(query, value)
 
     tr_rows = eval_xpath(result_table, './/tr')
     # In the last <tr> is the form of the 'previous/next page' links
