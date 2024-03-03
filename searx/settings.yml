@@ -1870,6 +1870,16 @@ engines:
     about:
       website: https://species.wikimedia.org/
       wikidata_id: Q13679
+    tests:
+      wikispecies:
+        matrix:
+          query: "Campbell, L.I. et al. 2011: MicroRNAs"
+          lang: en
+        result_container:
+          - not_empty
+          - ['one_title_contains', 'Tardigrada']
+        test:
+          - unique_results
 
   - name: wiktionary
     engine: mediawiki
