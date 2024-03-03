@@ -565,6 +565,16 @@ engines:
       require_api_key: false
       results: JSON
       language: de
+    tests:
+      bahnhof:
+        matrix:
+          query: berlin
+          lang: en
+        result_container:
+          - not_empty
+          - ['one_title_contains', 'Berlin Hauptbahnhof']
+        test:
+          - unique_results
 
   - name: deezer
     engine: deezer
