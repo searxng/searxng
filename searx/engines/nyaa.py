@@ -1,11 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Nyaa.si (Anime Bittorrent tracker)
+# lint: pylint
+"""Nyaa.si (Anime Bittorrent tracker)
+
 """
 
-from lxml import html
 from urllib.parse import urlencode
-from searx.utils import extract_text, get_torrent_size, int_or_zero
+
+from lxml import html
+from searx.utils import (
+    eval_xpath_getindex,
+    extract_text,
+    get_torrent_size,
+    int_or_zero,
+)
 
 # about
 about = {
@@ -23,7 +30,6 @@ paging = True
 
 # search-url
 base_url = 'https://nyaa.si/'
-search_url = base_url + '?page=search&{query}&offset={offset}'
 
 # xpath queries
 xpath_results = '//table[contains(@class, "torrent-list")]//tr[not(th)]'
@@ -38,8 +44,14 @@ xpath_downloads = './/td[8]/text()'
 
 # do search-request
 def request(query, params):
-    query = urlencode({'term': query})
-    params['url'] = search_url.format(query=query, offset=params['pageno'])
+    args = urlencode(
+        {
+            'q': query,
+            'p': params['pageno'],
+        }
+    )
+    params['url'] = base_url + '?' + args  #
+    logger.debug("query_url --> %s", params['url'])
     return params
 
 
@@ -56,10 +68,10 @@ def response(resp):
         torrent_link = ""
 
         # category in which our torrent belongs
-        try:
-            category = result.xpath(xpath_category)[0].attrib.get('title')
-        except:
-            pass
+
+        category = eval_xpath_getindex(result, xpath_category, 0, '')
+        if category:
+            category = category.attrib.get('title')
 
         # torrent title
         page_a = result.xpath(xpath_title)[0]
@@ -87,12 +99,12 @@ def response(resp):
         downloads = int_or_zero(result.xpath(xpath_downloads))
 
         # let's try to calculate the torrent size
-        try:
+
+        filesize = None
+        filesize_info = eval_xpath_getindex(result, xpath_filesize, 0, '')
+        if filesize_info:
             filesize_info = result.xpath(xpath_filesize)[0]
-            filesize, filesize_multiplier = filesize_info.split()
-            filesize = get_torrent_size(filesize, filesize_multiplier)
-        except:
-            pass
+            filesize = get_torrent_size(*filesize_info.split())
 
         # content string contains all information not included into template
         content = 'Category: "{category}". Downloaded {downloads} times.'
