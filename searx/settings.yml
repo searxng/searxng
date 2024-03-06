@@ -940,8 +940,7 @@ engines:
 
   - name: hoogle
     engine: xpath
-    paging: true
-    search_url: https://hoogle.haskell.org/?hoogle={query}&start={pageno}
+    search_url: https://hoogle.haskell.org/?hoogle={query}
     results_xpath: '//div[@class="result"]'
     title_xpath: './/div[@class="ans"]//a'
     url_xpath: './/div[@class="ans"]//a/@href'
