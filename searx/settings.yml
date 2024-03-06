@@ -2017,7 +2017,7 @@ engines:
     search_url: https://search.naver.com/search.naver?where=webkr&sm=osp_hty&ie=UTF-8&query={query}&start={pageno}
     url_xpath: //a[@class="link_tit"]/@href
     title_xpath: //a[@class="link_tit"]
-    content_xpath: //a[@class="total_dsc"]/div
+    content_xpath: //div[@class="total_dsc_wrap"]/a
     first_page_num: 1
     page_size: 10
     disabled: true
