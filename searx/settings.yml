@@ -1069,7 +1069,7 @@ engines:
 
   - name: lobste.rs
     engine: xpath
-    search_url: https://lobste.rs/search?utf8=%E2%9C%93&q={query}&what=stories&order=relevance
+    search_url: https://lobste.rs/search?q={query}&what=stories&order=relevance
     results_xpath: //li[contains(@class, "story")]
     url_xpath: .//a[@class="u-url"]/@href
     title_xpath: .//a[@class="u-url"]
