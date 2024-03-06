@@ -1093,7 +1093,8 @@ engines:
     disabled: true
     categories: [music, lyrics]
     paging: true
-    search_url: https://search.azlyrics.com/search.php?q={query}&w=lyrics&p={pageno}
+    search_url:
+      https://search.azlyrics.com/search.php?q={query}&w=lyrics&p={pageno}&x=7f889302d4f34f629e1fc4adbdd48e67b4e7c6c2cdf3add48438b16b5299d2cb
     url_xpath: //td[@class="text-left visitedlyr"]/a/@href
     title_xpath: //span/b/text()
     content_xpath: //td[@class="text-left visitedlyr"]/a/small
