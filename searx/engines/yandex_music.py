@@ -31,6 +31,7 @@ paging = True
 url = 'https://music.yandex.ru'
 search_url = url + '/handlers/music-search.jsx'
 
+
 # do search-request
 def request(query, params):
     args = {'text': query, 'page': params['pageno'] - 1}

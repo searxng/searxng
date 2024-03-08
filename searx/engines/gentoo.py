@@ -79,6 +79,7 @@ main_langs = {
     'zh': '简体中文',
 }
 
+
 # do search-request
 def request(query, params):
     # translate the locale (e.g. 'en-US') to language code ('en')

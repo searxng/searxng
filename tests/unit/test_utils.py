@@ -207,7 +207,9 @@ class TestXPathUtils(SearxTestCase):
         l = utils.detect_language('The quick brown fox jumps over\nthe lazy dog')
         self.assertEqual(l, 'en')
 
-        l = utils.detect_language('いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす')
+        l = utils.detect_language(
+            'いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす'
+        )
         self.assertEqual(l, 'ja')
 
         l = utils.detect_language('Pijamalı hasta yağız şoföre çabucak güvendi.')

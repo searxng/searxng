@@ -29,6 +29,7 @@ search_url = (
     url + "search/text/?query={query}&page={page}&fields=name,url,download,created,description,type&token={api_key}"
 )
 
+
 # search request
 def request(query, params):
     params["url"] = search_url.format(
