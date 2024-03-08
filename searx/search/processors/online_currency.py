@@ -32,7 +32,6 @@ def iso4217_to_name(iso4217, language):
 
 
 class OnlineCurrencyProcessor(OnlineProcessor):
-
     """Processor class used by ``online_currency`` engines."""
 
     engine_type = 'online_currency'

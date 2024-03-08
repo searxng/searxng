@@ -66,14 +66,14 @@ def construct_body(result):
                 year=result['release_year'],
             )
         img_src = pdbe_preview_url.format(pdb_id=result['pdb_id'])
-    except (KeyError):
+    except KeyError:
         content = None
         img_src = None
 
     # construct url for preview image
     try:
         img_src = pdbe_preview_url.format(pdb_id=result['pdb_id'])
-    except (KeyError):
+    except KeyError:
         img_src = None
 
     return [title, content, img_src]

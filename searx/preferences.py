@@ -39,7 +39,6 @@ MAP_STR2BOOL: Dict[str, bool] = OrderedDict(
 
 
 class ValidationException(Exception):
-
     """Exption from ``cls.__init__`` when configuration value is invalid."""
 
 

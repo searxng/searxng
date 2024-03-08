@@ -14,7 +14,6 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 
 '''
 
-
 from searx.engines import command as command_engine
 from tests import SearxTestCase
 
