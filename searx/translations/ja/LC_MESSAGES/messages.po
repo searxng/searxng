@@ -15,16 +15,17 @@
 # tents <remendne@pentrens.jp>, 2022.
 # Markus Heiser <markus.heiser@darmarit.de>, 2022.
 # tentsbet <remendne@pentrens.jp>, 2023, 2024.
-# return42 <markus.heiser@darmarit.de>, 2023.
+# return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # nogb <u8cn71wq@yogibo.anonaddy.me>, 2023.
 # eownerdead <wlpx0yii@anonaddy.me>, 2024.
+# syobon <syobon@syobon.net>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-25 15:26+0000\n"
-"PO-Revision-Date: 2024-02-29 07:56+0000\n"
-"Last-Translator: eownerdead <wlpx0yii@anonaddy.me>\n"
+"PO-Revision-Date: 2024-03-05 21:13+0000\n"
+"Last-Translator: tentsbet <remendne@pentrens.jp>\n"
 "Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
 "searxng/ja/>\n"
 "Language: ja\n"
@@ -330,7 +331,8 @@ msgstr "この画像URLは読み取ることができません。サポートさ
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "画像がマッチするものが多すぎます。TinEyeは基本的に視覚情報の詳細が一致することで成功しやすいです。"
+msgstr "画像が単純すぎます。TinEyeが正しく照合を行うにはある程度詳細な視覚情報が必要"
+"です。"
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -458,7 +460,7 @@ msgstr "Powered by"
 
 #: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
-msgstr "プライバシーにリスペクトする、オープンメタ検索エンジン"
+msgstr "プライバシーを尊重する、オープンメタ検索エンジン"
 
 #: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
@@ -1200,7 +1202,7 @@ msgstr "分類"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
-msgstr ""
+msgstr "解像度"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
@@ -1236,7 +1238,7 @@ msgstr "メインテイナー"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
-msgstr ""
+msgstr "更新される"
 
 #: searx/templates/simple/result_templates/packages.html:30
 #: searx/templates/simple/result_templates/paper.html:25
@@ -1245,7 +1247,7 @@ msgstr "タグ"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "人気度"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
