@@ -49,6 +49,8 @@ from flask_babel import (
     format_decimal,
 )
 
+import botdetection
+
 from searx import (
     logger,
     get_setting,
@@ -58,7 +60,6 @@ from searx import (
 
 from searx import infopage
 from searx import limiter
-from searx.botdetection import link_token
 
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
@@ -385,7 +386,7 @@ def render(template_name: str, **kwargs):
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
     kwargs['errors'] = request.errors
-    kwargs['link_token'] = link_token.get_token()
+    kwargs['link_token'] = botdetection.link_token.get_token()
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
@@ -617,7 +618,7 @@ def health():
 
 @app.route('/client<token>.css', methods=['GET', 'POST'])
 def client_token(token=None):
-    link_token.ping(request, token)
+    botdetection.link_token.ping(request, token)
     return Response('', mimetype='text/css')
 
 
@@ -1267,8 +1268,6 @@ def config():
     for _ in plugins:
         _plugins.append({'name': _.name, 'enabled': _.default_on})
 
-    _limiter_cfg = limiter.get_cfg()
-
     return jsonify(
         {
             'categories': list(categories.keys()),
@@ -1289,9 +1288,11 @@ def config():
                 'DOCS_URL': get_setting('brand.docs_url'),
             },
             'limiter': {
-                'enabled': limiter.is_installed(),
-                'botdetection.ip_limit.link_token': _limiter_cfg.get('botdetection.ip_limit.link_token'),
-                'botdetection.ip_lists.pass_searxng_org': _limiter_cfg.get('botdetection.ip_lists.pass_searxng_org'),
+                'enabled': limiter.is_fully_installed(),
+                'pass_searxng_org': settings['server']['pass_searxng_org'],
+                'botdetection.ip_limit.link_token': botdetection.ctx.cfg.get('botdetection.ip_limit.link_token'),
+                # depricated .. replaced by 'pass_searxng_org' from above
+                'botdetection.ip_lists.pass_searxng_org': settings['server']['pass_searxng_org'],
             },
             'doi_resolvers': list(settings['doi_resolvers'].keys()),
             'default_doi_resolver': settings['default_doi_resolver'],

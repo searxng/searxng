@@ -78,8 +78,9 @@ server:
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_URL}.
   base_url: false  # "http://example.com/location"
+  public_instance: false  # enable best defaults designed for public instances
   limiter: false  # rate limit the number of request on the instance, block some bots
-  public_instance: false  # enable features designed only for public instances
+  pass_searxng_org: false  # pass IPs from the SearXNG org (check.searx.space)
 
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.

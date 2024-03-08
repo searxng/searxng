@@ -176,6 +176,7 @@ SCHEMA = {
         'port': SettingsValue((int, str), 8888, 'SEARXNG_PORT'),
         'bind_address': SettingsValue(str, '127.0.0.1', 'SEARXNG_BIND_ADDRESS'),
         'limiter': SettingsValue(bool, False),
+        'pass_searxng_org': SettingsValue(bool, False),
         'public_instance': SettingsValue(bool, False),
         'secret_key': SettingsValue(str, environ_name='SEARXNG_SECRET'),
         'base_url': SettingsValue((False, str), False, 'SEARXNG_BASE_URL'),
@@ -247,4 +248,16 @@ SCHEMA = {
 
 def settings_set_defaults(settings):
     apply_schema(settings, SCHEMA, [])
+    public_instance(settings)
     return settings
+
+
+def public_instance(settings):
+    if settings['server']['public_instance']:
+        logger.warning(
+            "Be aware you have activated features intended only for public instances. "
+            "This force the usage of the limiter and link_token / "
+            "see https://docs.searxng.org/admin/searx.limiter.html"
+        )
+        # public_instance activates by default the limiter
+        settings['server']['limiter'] = True

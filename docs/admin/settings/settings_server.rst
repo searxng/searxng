@@ -11,8 +11,9 @@
        port: 8888
        bind_address: "127.0.0.1"
        secret_key: "ultrasecretkey"           # change this!
-       limiter: false
        public_instance: false
+       limiter: false
+       pass_searxng_org: false
        image_proxy: false
        default_http_headers:
          X-Content-Type-Options : nosniff
@@ -31,10 +32,6 @@
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
-``limiter`` :
-  Rate limit the number of request on the instance, block some bots.  The
-  :ref:`limiter` requires a :ref:`settings redis` database.
-
 .. _public_instance:
 
 ``public_instance`` :
@@ -43,7 +40,21 @@
   needed for local usage).  By set to ``true`` the following features are
   activated:
 
-  - :py:obj:`searx.botdetection.link_token` in the :ref:`limiter`
+  - ``server: limiter`` option :ref:`see below <activate limiter>`
+  - ``server: pass_searxng_org`` option :ref:`see below <pass_searxng_org>`
+  - :py:obj:`botdetection.link_token` in the :ref:`limiter`
+
+.. _activate limiter:
+
+``limiter`` :
+  Rate limit the number of request on the instance, block some bots.  The
+  :ref:`limiter` requires a :ref:`settings redis` database.
+
+.. _pass_searxng_org:
+
+``pass_searxng_org`` :
+  In the limiter activates the passlist of (hardcoded) IPs of the SearXNG
+  organization, e.g. ``check.searx.space``.
 
 .. _image_proxy:
 
