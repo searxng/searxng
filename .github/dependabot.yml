@@ -1,4 +1,4 @@
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
 updates:
   - package-ecosystem: "pip"
@@ -8,6 +8,9 @@ updates:
       day: "friday"
     open-pull-requests-limit: 5
     target-branch: "master"
+    commit-message:
+      prefix: "[upd] pypi:"
+
   - package-ecosystem: "npm"
     directory: "/searx/static/themes/simple"
     schedule:
@@ -15,3 +18,5 @@ updates:
       day: "friday"
     open-pull-requests-limit: 5
     target-branch: "master"
+    commit-message:
+      prefix: "[upd] npm:"

@@ -48,16 +48,16 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: Update searx.data - ${{ matrix.fetch }}
+          commit-message: [data] update searx.data - ${{ matrix.fetch }}
           committer: searxng-bot <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: update_data_${{ matrix.fetch }}
           delete-branch: true
           draft: false
-          title: 'Update searx.data - ${{ matrix.fetch }}'
+          title: '[data] update searx.data - ${{ matrix.fetch }}'
           body: |
-            Update searx.data - ${{ matrix.fetch }}
+            update searx.data - ${{ matrix.fetch }}
           labels: |
             data
 
