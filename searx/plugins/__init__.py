@@ -191,8 +191,7 @@ class PluginStore:
         self.plugins: List[Plugin] = []
 
     def __iter__(self):
-        for plugin in self.plugins:
-            yield plugin
+        yield from self.plugins
 
     def register(self, plugin):
         self.plugins.append(plugin)

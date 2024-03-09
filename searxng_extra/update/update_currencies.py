@@ -97,8 +97,7 @@ def add_currency_label(db, label, iso4217, language):
 def wikidata_request_result_iterator(request):
     result = wikidata.send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL))
     if result is not None:
-        for r in result['results']['bindings']:
-            yield r
+        yield from result['results']['bindings']
 
 
 def fetch_db():

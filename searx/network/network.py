@@ -111,8 +111,7 @@ class Network:
             return
         if isinstance(local_addresses, str):
             local_addresses = [local_addresses]
-        for address in local_addresses:
-            yield address
+        yield from local_addresses
 
     def get_ipaddress_cycle(self):
         while True:

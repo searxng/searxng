@@ -14,7 +14,7 @@ This scheduler is not generic on purpose: if more feature are required, a dedica
 
 import logging
 import time
-import importlib
+from pathlib import Path
 from typing import Callable
 
 from searx.redisdb import client as get_redis_client
@@ -22,6 +22,8 @@ from searx.redislib import lua_script_storage
 
 
 logger = logging.getLogger('searx.search.checker')
+
+SCHEDULER_LUA = Path(__file__).parent / "scheduler.lua"
 
 
 def scheduler_function(start_after_from: int, start_after_to: int, every_from: int, every_to: int, callback: Callable):
@@ -35,7 +37,7 @@ def scheduler_function(start_after_from: int, start_after_to: int, every_from: i
     * to call this function is multiple workers
     * to kill workers at any time as long there is one at least one worker
     """
-    scheduler_now_script = importlib.resources.read_text(__package__, "scheduler.lua")
+    scheduler_now_script = SCHEDULER_LUA.open().read()
     while True:
         # ask the Redis script what to do
         # the script says
