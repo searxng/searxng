@@ -120,7 +120,7 @@ jobs:
         FOLDER: dist/docs
         CLEAN: true # Automatically remove deleted files from the deploy branch
         SINGLE_COMMIT: True
-        COMMIT_MESSAGE: [doc] build from commit ${{ github.sha }}
+        COMMIT_MESSAGE: '[doc] build from commit ${{ github.sha }}'
 
   babel:
     name: Update translations branch
