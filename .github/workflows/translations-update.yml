@@ -45,7 +45,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
-        commit-message: [l10n] update translations from Weblate
+        commit-message: '[l10n] update translations from Weblate'
         committer: searxng-bot <searxng-bot@users.noreply.github.com>
         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
         signoff: false
