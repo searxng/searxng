@@ -1,17 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+from __future__ import annotations
 import sys
+from collections import defaultdict
 from os import listdir
 from os.path import realpath, dirname, join, isdir
-from collections import defaultdict
-
+from typing import Callable
+from searx.answerers.models import AnswerModule, AnswerDict
+from searx.search.models import BaseQuery
 from searx.utils import load_module
 
 answerers_dir = dirname(realpath(__file__))
 
 
-def load_answerers():
+def load_answerers() -> list[AnswerModule]:
     answerers = []  # pylint: disable=redefined-outer-name
 
     for filename in listdir(answerers_dir):
@@ -24,7 +27,9 @@ def load_answerers():
     return answerers
 
 
-def get_answerers_by_keywords(answerers):  # pylint:disable=redefined-outer-name
+def get_answerers_by_keywords(
+    answerers: list[AnswerModule],  # pylint: disable=redefined-outer-name
+) -> dict[str, list[Callable[[BaseQuery], list[AnswerDict]]]]:
     by_keyword = defaultdict(list)
     for answerer in answerers:
         for keyword in answerer.keywords:
@@ -33,8 +38,8 @@ def get_answerers_by_keywords(answerers):  # pylint:disable=redefined-outer-name
     return by_keyword
 
 
-def ask(query):
-    results = []
+def ask(query: BaseQuery) -> list[list[AnswerDict]]:
+    results: list[list[AnswerDict]] = []
     query_parts = list(filter(None, query.query.split()))
 
     if not query_parts or query_parts[0] not in answerers_by_keywords:

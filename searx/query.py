@@ -5,6 +5,7 @@ from abc import abstractmethod, ABC
 import re
 
 from searx import settings
+from searx.search.models import BaseQuery
 from searx.sxng_locales import sxng_locales
 from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
@@ -247,7 +248,7 @@ class FeelingLuckyParser(QueryPartParser):
         return True
 
 
-class RawTextQuery:
+class RawTextQuery(BaseQuery):
     """parse raw text query (the value from the html input)"""
 
     PARSER_CLASSES = [

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+from abc import ABC
 import typing
 import babel
 
@@ -24,7 +25,13 @@ class EngineRef:
         return hash((self.name, self.category))
 
 
-class SearchQuery:
+class BaseQuery(ABC):  # pylint: disable=too-few-public-methods
+    """Contains properties among all query classes"""
+
+    query: str
+
+
+class SearchQuery(BaseQuery):
     """container for all the search parameters (query, language, etc...)"""
 
     __slots__ = (

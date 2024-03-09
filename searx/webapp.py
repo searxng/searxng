@@ -851,7 +851,7 @@ def autocompleter():
 
     for answers in ask(raw_text_query):
         for answer in answers:
-            results.append(str(answer['answer']))
+            results.append(answer['answer'])
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         # the suggestion request comes from the searx search form
