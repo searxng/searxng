@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # lint: pylint
 
-"""This is the implementation of the Mullvad-Leta meta-search engine
+"""This is the implementation of the Mullvad-Leta meta-search engine.
 
-This engine _REQUIRES_ that searxng operate within a Mullvad VPN
+This engine **REQUIRES** that searxng operate within a Mullvad VPN
 
 If using docker, consider using gluetun for easily connecting to the Mullvad
 
@@ -13,6 +13,12 @@ Otherwise, follow instructions provided by Mullvad for enabling the VPN on Linux
 
 - https://mullvad.net/en/help/install-mullvad-app-linux
 
+.. hint::
+
+   The :py:obj:`EngineTraits` is empty by default.  Maintainers have to run
+   ``make data.traits`` (in the Mullvad VPN / :py:obj:`fetch_traits`) and rebase
+   the modified JSON file ``searx/data/engine_traits.json`` on every single
+   update of SearXNG!
 """
 
 from typing import TYPE_CHECKING
@@ -125,7 +131,8 @@ def response(resp: Response):
 def fetch_traits(engine_traits: EngineTraits):
     """Fetch languages and regions from Mullvad-Leta
 
-    WARNING
+    .. warning::
+
         Fetching the engine traits also requires a Mullvad VPN connection. If
         not connected, then an error message will print and no traits will be
         updated.
