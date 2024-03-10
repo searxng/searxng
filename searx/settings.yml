@@ -314,9 +314,9 @@ engines:
   #   engine: annas_archive
   #   shortcut: aaa
   #   # https://docs.searxng.org/dev/engines/online/annas_archive.html
-  #   aa_content: 'journal_article' # book_any .. magazine, standards_document
+  #   aa_content: 'magazine' # book_fiction, book_unknown, book_nonfiction, book_comic
   #   aa_ext: 'pdf'  # pdf, epub, ..
-  #   aa_sort: 'newest'  # newest, oldest, largest, smallest
+  #   aa_sort: oldest'  # newest, oldest, largest, smallest
 
   - name: apk mirror
     engine: apkmirror
