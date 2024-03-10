@@ -1,14 +1,16 @@
 #!/usr/bin/env python
+# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Update pygments style
 
 Call this script after each upgrade of pygments
 
 """
+# pylint: disable=too-few-public-methods
 
 from pathlib import Path
 import pygments
-from pygments.formatters import HtmlFormatter
+from pygments.formatters.html import HtmlFormatter
 
 from searx import searx_dir
 
@@ -41,7 +43,7 @@ END_DARK_THEME = """
 """
 
 
-class Formatter(HtmlFormatter):
+class Formatter(HtmlFormatter):  # pylint: disable=missing-class-docstring
     @property
     def _pre_style(self):
         return 'line-height: 100%;'
@@ -67,5 +69,5 @@ def generat_css(light_style, dark_style) -> str:
 
 if __name__ == '__main__':
     print("update: %s" % LESS_FILE)
-    with open(LESS_FILE, 'w') as f:
+    with LESS_FILE.open('w', encoding='utf8') as f:
         f.write(generat_css('default', 'lightbulb'))

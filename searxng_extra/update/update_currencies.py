@@ -15,12 +15,11 @@ import re
 import unicodedata
 import json
 
-# set path
-from os.path import join
-
-from searx import searx_dir
 from searx.locales import LOCALE_NAMES, locales_initialize
 from searx.engines import wikidata, set_loggers
+from searx.data import data_dir
+
+DATA_FILE = data_dir / 'currencies.json'
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -133,10 +132,6 @@ def fetch_db():
     return db
 
 
-def get_filename():
-    return join(join(searx_dir, "data"), "currencies.json")
-
-
 def main():
 
     db = fetch_db()
@@ -156,8 +151,8 @@ def main():
         if len(db['names'][name]) == 1:
             db['names'][name] = db['names'][name][0]
 
-    with open(get_filename(), 'w', encoding='utf8') as f:
-        json.dump(db, f, ensure_ascii=False, indent=4)
+    with DATA_FILE.open('w', encoding='utf8') as f:
+        json.dump(db, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 
 if __name__ == '__main__':
