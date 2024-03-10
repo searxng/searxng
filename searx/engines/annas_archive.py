@@ -25,7 +25,7 @@ for *newest* articles and journals (PDF) / by shortcut ``!aaa <search-term>``.
   - name: annas articles
     engine: annas_archive
     shortcut: aaa
-    aa_content: 'journal_article'
+    aa_content: 'magazine'
     aa_ext: 'pdf'
     aa_sort: 'newest'
 
@@ -61,7 +61,7 @@ base_url: str = "https://annas-archive.org"
 aa_content: str = ""
 """Anan's search form field **Content** / possible values::
 
-    journal_article, book_any, book_fiction, book_unknown, book_nonfiction,
+    book_fiction, book_unknown, book_nonfiction,
     book_comic, magazine, standards_document
 
 To not filter use an empty string (default).
