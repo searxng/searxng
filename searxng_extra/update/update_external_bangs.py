@@ -8,19 +8,16 @@ from :py:obj:`BANGS_URL`.
 
 """
 
-from pathlib import Path
 import json
-
 import httpx
 
-from searx import searx_dir
 from searx.external_bang import LEAF_KEY
+from searx.data import data_dir
 
+DATA_FILE = data_dir / 'external_bangs.json'
 
 BANGS_URL = 'https://duckduckgo.com/bang.js'
 """JSON file which contains the bangs."""
-
-BANGS_DATA_FILE = Path(searx_dir) / 'data' / 'external_bangs.json'
 
 HTTPS_COLON = 'https:'
 HTTP_COLON = 'http:'
@@ -36,8 +33,8 @@ def main():
         'version': 0,
         'trie': trie,
     }
-    with open(BANGS_DATA_FILE, 'w', encoding="utf8") as f:
-        json.dump(output, f, sort_keys=True, ensure_ascii=False, indent=4)
+    with DATA_FILE.open('w', encoding="utf8") as f:
+        json.dump(output, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 
 def merge_when_no_leaf(node):

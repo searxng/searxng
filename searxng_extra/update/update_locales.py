@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Update locale names in :origin:`searx/data/locales.json` used by
 :ref:`searx.locales`
@@ -6,12 +7,12 @@
 - :py:obj:`searx.locales.RTL_LOCALES`
 - :py:obj:`searx.locales.LOCALE_NAMES`
 """
+# pylint: disable=invalid-name
 from __future__ import annotations
 
 from typing import Set
 import json
 from pathlib import Path
-import os
 
 import babel
 import babel.languages
@@ -61,7 +62,7 @@ def main():
         "RTL_LOCALES": sorted(RTL_LOCALES),
     }
 
-    with open(LOCALE_DATA_FILE, 'w', encoding='utf-8') as f:
+    with LOCALE_DATA_FILE.open('w', encoding='utf-8') as f:
         json.dump(content, f, indent=2, sort_keys=True, ensure_ascii=False)
 
 
@@ -84,11 +85,10 @@ def get_locale_descr(locale: babel.Locale, tr_locale):
             return native_language
         return native_language + ' (' + english_language + ')'
 
-    else:
-        result = native_language + ', ' + native_territory + ' (' + english_language
-        if english_territory:
-            return result + ', ' + english_territory + ')'
-        return result + ')'
+    result = native_language + ', ' + native_territory + ' (' + english_language
+    if english_territory:
+        return result + ', ' + english_territory + ')'
+    return result + ')'
 
 
 def _get_locale_descr(locale: babel.Locale, tr_locale: str) -> tuple[str, str]:

@@ -11,13 +11,14 @@ Output file: :origin:`searx/data/useragents.json` (:origin:`CI Update data ...
 
 import json
 import re
-from os.path import join
 from urllib.parse import urlparse, urljoin
 from packaging.version import parse
 
 import requests
 from lxml import html
-from searx import searx_dir
+from searx.data import data_dir
+
+DATA_FILE = data_dir / 'useragents.json'
 
 URL = 'https://ftp.mozilla.org/pub/firefox/releases/'
 RELEASE_PATH = '/pub/firefox/releases/'
@@ -41,7 +42,7 @@ def fetch_firefox_versions():
     resp = requests.get(URL, timeout=2.0)
     if resp.status_code != 200:
         # pylint: disable=broad-exception-raised
-        raise Exception("Error fetching firefox versions, HTTP code " + resp.status_code)
+        raise Exception("Error fetching firefox versions, HTTP code " + resp.status_code)  # type: ignore
     dom = html.fromstring(resp.text)
     versions = []
 
@@ -74,11 +75,7 @@ def fetch_firefox_last_versions():
     return result
 
 
-def get_useragents_filename():
-    return join(join(searx_dir, "data"), "useragents.json")
-
-
 if __name__ == '__main__':
     useragents["versions"] = fetch_firefox_last_versions()
-    with open(get_useragents_filename(), "w", encoding='utf-8') as f:
-        json.dump(useragents, f, indent=4, ensure_ascii=False)
+    with DATA_FILE.open('w', encoding='utf-8') as f:
+        json.dump(useragents, f, indent=4, sort_keys=True, ensure_ascii=False)
