@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Tokyo Toshokan (A BitTorrent Library for Japanese Media)
+"""Tokyo Toshokan (A BitTorrent Library for Japanese Media)
+
 """
 
 import re
-from urllib.parse import urlencode
-from lxml import html
 from datetime import datetime
+from urllib.parse import urlencode
+
+from lxml import html
 from searx.utils import extract_text, get_torrent_size, int_or_zero
 
 # about
@@ -75,14 +76,14 @@ def response(resp):
                     # ('1.228', 'GB')
                     groups = size_re.match(item).groups()
                     params['filesize'] = get_torrent_size(groups[0], groups[1])
-                except:
+                except:  # pylint: disable=bare-except
                     pass
             elif item.startswith('Date:'):
                 try:
                     # Date: 2016-02-21 21:44 UTC
                     date = datetime.strptime(item, 'Date: %Y-%m-%d %H:%M UTC')
                     params['publishedDate'] = date
-                except:
+                except:  # pylint: disable=bare-except
                     pass
             elif item.startswith('Comment:'):
                 params['content'] = item

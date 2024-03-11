@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""ArXiV (Scientific preprints)
+
 """
- ArXiV (Scientific preprints)
-"""
+
+from datetime import datetime
 
 from lxml import etree
 from lxml.etree import XPath
-from datetime import datetime
 from searx.utils import eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
@@ -50,7 +51,7 @@ def request(query, params):
     # basic search
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=query, offset=offset, number_of_results=number_of_results)
+    string_args = {'query': query, 'offset': offset, 'number_of_results': number_of_results}
 
     params['url'] = base_url.format(**string_args)
 

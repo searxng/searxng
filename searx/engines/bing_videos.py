@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
+# pylint: disable=invalid-name
 """Bing-Videos: description see :py:obj:`searx.engines.bing`.
 """
-# pylint: disable=invalid-name
 
 from typing import TYPE_CHECKING
 import json

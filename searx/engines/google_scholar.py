@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """This is the implementation of the Google Scholar engine.
 
 Compared to other Google services the Scholar engine has a simple GET REST-API

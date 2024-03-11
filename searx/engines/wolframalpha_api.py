@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Wolfram|Alpha (Science)
+"""Wolfram|Alpha (Science)
+
 """
 
-from lxml import etree
 from urllib.parse import urlencode
+
+from lxml import etree
 
 # about
 about = {
@@ -79,7 +80,7 @@ def response(resp):
 
     try:
         infobox_title = search_results.xpath(input_xpath)[0].text
-    except:
+    except:  # pylint: disable=bare-except
         infobox_title = ""
 
     pods = search_results.xpath(pods_xpath)

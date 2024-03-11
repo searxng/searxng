@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Yahoo (News)
 
 Yahoo News is "English only" and do not offer localized nor language queries.

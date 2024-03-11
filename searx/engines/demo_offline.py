@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Within this module we implement a *demo offline engine*.  Do not look to
 close to the implementation, its just a simple example.  To get in use of this
 *demo* engine add the following entry to your engines list in ``settings.yml``:

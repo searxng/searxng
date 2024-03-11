@@ -74,7 +74,7 @@ def response(resp):
     if number_of_results:
         try:
             results.append({'number_of_results': int(extract_text(number_of_results))})
-        except:
+        except:  # pylint: disable=bare-except
             pass
 
     return results

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """The Art Institute of Chicago
 
 Explore thousands of artworks from The Art Institute of Chicago.

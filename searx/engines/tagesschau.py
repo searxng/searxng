@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """ARD: `Tagesschau API`_
 
 The Tagesschau is a news program of the ARD.  Via the `Tagesschau API`_, current

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """lib.rs (packages)"""
 
 from urllib.parse import quote_plus

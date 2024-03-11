@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """MongoDB_ is a document based database program that handles JSON like data.
 Before configuring the ``mongodb`` engine, you must install the dependency
 pymongo_.

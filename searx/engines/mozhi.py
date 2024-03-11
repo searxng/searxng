@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Mozhi (alternative frontend for popular translation engines)"""
 
 import random

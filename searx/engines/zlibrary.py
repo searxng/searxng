@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """`Z-Library`_ (abbreviated as z-lib, formerly BookFinder) is a shadow library
 project for file-sharing access to scholarly journal articles, academic texts
 and general-interest books.  It began as a mirror of Library Genesis, from which

@@ -5,9 +5,9 @@
 
 import re
 from json import loads
+from urllib.parse import quote_plus, urlencode
 from lxml import html
 from dateutil import parser
-from urllib.parse import quote_plus, urlencode
 from searx.network import get as http_get
 
 # about
@@ -42,10 +42,10 @@ guest_client_id = ''
 
 
 def get_client_id():
-    response = http_get("https://soundcloud.com")
+    resp = http_get("https://soundcloud.com")
 
-    if response.ok:
-        tree = html.fromstring(response.content)
+    if resp.ok:
+        tree = html.fromstring(resp.content)
         # script_tags has been moved from /assets/app/ to /assets/ path.  I
         # found client_id in https://a-v2.sndcdn.com/assets/49-a0c01933-3.js
         script_tags = tree.xpath("//script[contains(@src, '/assets/')]")
@@ -54,17 +54,17 @@ def get_client_id():
         # extracts valid app_js urls from soundcloud.com content
         for app_js_url in app_js_urls[::-1]:
             # gets app_js and searches for the clientid
-            response = http_get(app_js_url)
-            if response.ok:
-                cids = cid_re.search(response.content.decode())
+            resp = http_get(app_js_url)
+            if resp.ok:
+                cids = cid_re.search(resp.content.decode())
                 if cids is not None and len(cids.groups()):
                     return cids.groups()[0]
     logger.warning("Unable to fetch guest client_id from SoundCloud, check parser!")
     return ""
 
 
-def init(engine_settings=None):
-    global guest_client_id
+def init(engine_settings=None):  # pylint: disable=unused-argument
+    global guest_client_id  # pylint: disable=global-statement
     # api-key
     guest_client_id = get_client_id()
 
@@ -78,7 +78,6 @@ def request(query, params):
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
     search_res = loads(resp.text)

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- 1337x
+# pylint: disable=invalid-name
+"""1337x
+
 """
 
 from urllib.parse import quote, urljoin

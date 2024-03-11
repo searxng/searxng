@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """SepiaSearch uses the same languages as :py:obj:`Peertube
 <searx.engines.peertube>` and the response is identical to the response from the
 peertube engines.

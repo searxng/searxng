@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """This engine implements *Tineye - reverse image search*
 
 Using TinEye, you can search by image or perform what we call a reverse image

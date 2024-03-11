@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """YaCy_ is a free distributed search engine, built on the principles of
 peer-to-peer (P2P) networks.
 

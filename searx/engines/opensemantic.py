@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Open Semantic Search
+"""Open Semantic Search
+
 """
 
-from dateutil import parser
 from json import loads
 from urllib.parse import quote
+from dateutil import parser
 
 # about
 about = {

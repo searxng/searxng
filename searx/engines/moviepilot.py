@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Moviepilot is a German movie database, similar to IMDB or TMDB.  It doesn't
 have any official API, but it uses JSON requests internally to fetch search
 results and suggestions, that's being used in this implementation.

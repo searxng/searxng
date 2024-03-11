@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Bilibili is a Chinese video sharing website.
 
 .. _Bilibili: https://www.bilibili.com

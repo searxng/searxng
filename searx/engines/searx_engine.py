@@ -25,7 +25,7 @@ instance_index = 0
 
 # do search-request
 def request(query, params):
-    global instance_index
+    global instance_index  # pylint: disable=global-statement
     params['url'] = instance_urls[instance_index % len(instance_urls)]
     params['method'] = 'POST'
 

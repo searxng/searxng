@@ -18,7 +18,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['general']  # TODO , 'images', 'music', 'videos', 'files'
+categories = ['general']  # 'images', 'music', 'videos', 'files'
 paging = False
 number_of_results = 5
 
@@ -31,8 +31,8 @@ search_url = (
     '&{query}'
     # fmt: on
 )
-# TODO  '&startRecord={offset}'
-# TODO  '&maximumRecords={limit}'
+# '&startRecord={offset}'
+# '&maximumRecords={limit}'
 
 
 # do search-request
@@ -54,7 +54,7 @@ def response(resp):
     for r in eval_xpath(doc, '//div[@class="search_quickresult"]/ul/li'):
         try:
             res_url = eval_xpath(r, './/a[@class="wikilink1"]/@href')[-1]
-        except:
+        except:  # pylint: disable=bare-except
             continue
 
         if not res_url:
@@ -76,7 +76,7 @@ def response(resp):
 
                 # append result
                 results.append({'title': title, 'content': content, 'url': base_url + res_url})
-        except:
+        except:  # pylint: disable=bare-except
             continue
 
         if not res_url:

@@ -87,7 +87,7 @@ def response(resp):
                 properties.get('extent')[2],
             ]
         else:
-            # TODO: better boundingbox calculation
+            # better boundingbox calculation?
             boundingbox = [
                 geojson['coordinates'][1],
                 geojson['coordinates'][1],

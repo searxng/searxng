@@ -26,7 +26,7 @@ results_xpath = './/table[@id="r"]/tr'
 https_support = True
 
 
-def request(query, params):
+def request(query, params):  # pylint: disable=unused-argument
     params['url'] = url.format(from_lang=params['from_lang'][2], to_lang=params['to_lang'][2], query=params['query'])
 
     return params
@@ -40,7 +40,7 @@ def response(resp):
     for k, result in enumerate(eval_xpath(dom, results_xpath)[1:]):
         try:
             from_result, to_results_raw = eval_xpath(result, './td')
-        except:
+        except:  # pylint: disable=bare-except
             continue
 
         to_results = []

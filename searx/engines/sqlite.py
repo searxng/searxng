@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """SQLite is a small, fast and reliable SQL database engine.  It does not require
 any extra dependency.
 

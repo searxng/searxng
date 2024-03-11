@@ -45,7 +45,7 @@ def response(resp):
     for result in search_res.get('data', []):
         if result['type'] == 'track':
             title = result['title']
-            url = result['link']
+            url = result['link']  # pylint: disable=redefined-outer-name
 
             if url.startswith('http://'):
                 url = 'https' + url[4:]

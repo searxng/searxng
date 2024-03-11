@@ -78,12 +78,10 @@ def response(resp):
         else:
             thumbnail_src = img_src
 
-        url = build_flickr_url(photo['owner'], photo['id'])
-
         # append result
         results.append(
             {
-                'url': url,
+                'url': build_flickr_url(photo['owner'], photo['id']),
                 'title': photo['title'],
                 'img_src': img_src,
                 'thumbnail_src': thumbnail_src,

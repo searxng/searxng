@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Spotify (Music)
+"""Spotify (Music)
+
 """
 
 from json import loads
@@ -60,13 +60,13 @@ def response(resp):
     for result in search_res.get('tracks', {}).get('items', {}):
         if result['type'] == 'track':
             title = result['name']
-            url = result['external_urls']['spotify']
+            link = result['external_urls']['spotify']
             content = '{} - {} - {}'.format(result['artists'][0]['name'], result['album']['name'], result['name'])
 
             # append result
             results.append(
                 {
-                    'url': url,
+                    'url': link,
                     'title': title,
                     'iframe_src': "https://embed.spotify.com/?uri=spotify:track:" + result['id'],
                     'content': content,

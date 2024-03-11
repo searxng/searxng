@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-"""Stract is an independent open source search engine. 
-At this state, it's still in beta and hence this implementation will need to be updated once beta ends.
+"""Stract is an independent open source search engine.  At this state, it's
+still in beta and hence this implementation will need to be updated once beta
+ends.
+
 """
 
 from json import dumps

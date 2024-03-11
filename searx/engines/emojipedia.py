@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Emojipedia
 
 Emojipedia is an emoji reference website which documents the meaning and
