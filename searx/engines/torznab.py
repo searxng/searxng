@@ -48,20 +48,15 @@ Implementations
 
 """
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
 from typing import List, Dict, Any
 from datetime import datetime
 from urllib.parse import quote
+
 from lxml import etree  # type: ignore
+import httpx
 
 from searx.exceptions import SearxEngineAPIException
-
-if TYPE_CHECKING:
-    import httpx
-    import logging
-
-    logger: logging.Logger
 
 # engine settings
 about: Dict[str, Any] = {

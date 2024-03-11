@@ -5,7 +5,7 @@
 
 from urllib.parse import urlencode
 
-from lxml import etree
+from lxml import etree  # type: ignore
 
 # about
 about = {

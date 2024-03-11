@@ -9,7 +9,7 @@ description = "Filter out onion results that appear in Ahmia's blacklist. (See h
 default_on = True
 preference_section = 'onions'
 
-ahmia_blacklist = None
+ahmia_blacklist = []
 
 
 def on_result(_request, _search, result):

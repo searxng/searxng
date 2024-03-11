@@ -17,7 +17,7 @@ from urllib.parse import urlencode
 from searx.utils import to_string, html_to_text
 
 
-search_url = None
+search_url: str = ''
 url_query = None
 url_prefix = ""
 content_query = None

@@ -63,7 +63,7 @@ class EngineProcessor(ABC):
     def __init__(self, engine, engine_name: str):
         self.engine = engine
         self.engine_name = engine_name
-        self.logger = engines[engine_name].logger
+        self.logger = engines[engine_name].logger  # type: ignore
         key = get_network(self.engine_name)
         key = id(key) if key else self.engine_name
         self.suspended_status = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())

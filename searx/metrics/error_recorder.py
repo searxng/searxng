@@ -87,7 +87,7 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
 def add_error_context(engine_name: str, error_context: ErrorContext) -> None:
     errors_for_engine = errors_per_engines.setdefault(engine_name, {})
     errors_for_engine[error_context] = errors_for_engine.get(error_context, 0) + 1
-    engines[engine_name].logger.warning('%s', str(error_context))
+    engines[engine_name].logger.warning('%s', str(error_context))  # type: ignore
 
 
 def get_trace(traces):
@@ -102,9 +102,9 @@ def get_trace(traces):
 
 def get_hostname(exc: HTTPError) -> typing.Optional[None]:
     url = exc.request.url
-    if url is None and exc.response is not None:
-        url = exc.response.url
-    return urlparse(url).netloc
+    if url is None and exc.response is not None:  # type: ignore
+        url = exc.response.url  # type: ignore
+    return urlparse(url).netloc  # type: ignore
 
 
 def get_request_exception_messages(
@@ -118,8 +118,8 @@ def get_request_exception_messages(
         # exc.request is property that raise an RuntimeException
         # if exc._request is not defined.
         url = exc.request.url
-    if url is None and hasattr(exc, 'response') and exc.response is not None:
-        url = exc.response.url
+    if url is None and hasattr(exc, 'response') and exc.response is not None:  # type: ignore
+        url = exc.response.url  # type: ignore
     if url is not None:
         hostname = url.host
     if isinstance(exc, HTTPStatusError):

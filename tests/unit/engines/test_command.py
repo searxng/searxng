@@ -168,8 +168,8 @@ commit '''
         git_log_engine.result_separator = '\n\ncommit '
         git_log_engine.delimiter = {}
         git_log_engine.parse_regex = {
-            'commit': '\w{40}',
-            'author': '[\w* ]* <\w*@?\w*\.?\w*>',
+            'commit': r'\w{40}',
+            'author': r'[\w* ]* <\w*@?\w*\.?\w*>',
             'date': 'Date: .*',
             'message': '\n\n.*$',
         }

@@ -10,8 +10,6 @@ Dailymotion (Videos)
 
 """
 
-from typing import TYPE_CHECKING
-
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 import time
@@ -23,14 +21,7 @@ from searx.exceptions import SearxEngineAPIException
 from searx.locales import region_tag, language_tag
 from searx.enginelib.traits import EngineTraits
 
-if TYPE_CHECKING:
-    import logging
 
-    logger: logging.Logger
-
-traits: EngineTraits
-
-# about
 about = {
     "website": 'https://www.dailymotion.com',
     "wikidata_id": 'Q769222',

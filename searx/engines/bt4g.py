@@ -40,7 +40,7 @@ import re
 from datetime import datetime
 from urllib.parse import quote
 
-from lxml import etree
+from lxml import etree  # type: ignore
 
 from searx.utils import get_torrent_size
 

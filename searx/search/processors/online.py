@@ -147,7 +147,7 @@ class OnlineProcessor(EngineProcessor):
         response = self._send_http_request(params)
 
         # parse the response
-        response.search_params = params
+        response.search_params = params  # type: ignore
         return self.engine.response(response)
 
     def search(self, query, params, result_container, start_time, timeout_limit):

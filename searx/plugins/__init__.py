@@ -128,10 +128,9 @@ def load_plugin(plugin_module_name, external):
         return None
 
     # difference with searx: use module name instead of the user name
-    plugin.id = plugin_module_name
+    plugin.id = plugin_module_name  # type: ignore
 
-    #
-    plugin.logger = getLogger(plugin_module_name)
+    plugin.logger = getLogger(plugin_module_name)  # type: ignore
 
     for plugin_attr, plugin_attr_type in required_attrs:
         if not hasattr(plugin, plugin_attr):
@@ -152,7 +151,7 @@ def load_plugin(plugin_module_name, external):
             setattr(plugin, plugin_attr, plugin_attr_type())
 
     if not hasattr(plugin, "preference_section"):
-        plugin.preference_section = "general"
+        plugin.preference_section = "general"  # type: ignore
 
     # query plugin
     if plugin.preference_section == "query":
@@ -163,7 +162,9 @@ def load_plugin(plugin_module_name, external):
 
     if settings.get("enabled_plugins"):
         # searx compatibility: plugin.name in settings['enabled_plugins']
-        plugin.default_on = plugin.name in settings["enabled_plugins"] or plugin.id in settings["enabled_plugins"]
+        plugin.default_on = (  # type: ignore
+            plugin.name in settings["enabled_plugins"] or plugin.id in settings["enabled_plugins"]
+        )
 
     # copy resources if this is an external plugin
     if external:

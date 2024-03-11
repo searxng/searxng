@@ -7,7 +7,6 @@ can make use of the :ref:`google API` to assemble the arguments of the GET
 request.
 """
 
-from typing import TYPE_CHECKING
 from typing import Optional
 
 from urllib.parse import urlencode
@@ -28,14 +27,6 @@ from searx.engines.google import (
     get_google_info,
     time_range_dict,
 )
-from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {

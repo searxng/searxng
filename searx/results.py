@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+from __future__ import annotations
+from typing import List, NamedTuple, Set, Callable, Any
+
 import re
 from collections import defaultdict
 from operator import itemgetter
 from threading import RLock
-from typing import List, NamedTuple, Set
 from urllib.parse import urlparse, unquote
 
 from searx import logger
@@ -61,11 +63,11 @@ def compare_urls(url_a, url_b):
 def merge_two_infoboxes(infobox1, infobox2):  # pylint: disable=too-many-branches, too-many-statements
     # get engines weights
     if hasattr(engines[infobox1['engine']], 'weight'):
-        weight1 = engines[infobox1['engine']].weight
+        weight1 = engines[infobox1['engine']].weight  # type: ignore
     else:
         weight1 = 1
     if hasattr(engines[infobox2['engine']], 'weight'):
-        weight2 = engines[infobox2['engine']].weight
+        weight2 = engines[infobox2['engine']].weight  # type: ignore
     else:
         weight2 = 1
 
@@ -135,7 +137,7 @@ def result_score(result):
 
     for result_engine in result['engines']:
         if hasattr(engines[result_engine], 'weight'):
-            weight *= float(engines[result_engine].weight)
+            weight *= float(engines[result_engine].weight)  # type: ignore
 
     occurrences = len(result['positions'])
 
@@ -187,8 +189,8 @@ class ResultContainer:
         self.paging = False
         self.unresponsive_engines: Set[UnresponsiveEngine] = set()
         self.timings: List[Timing] = []
-        self.redirect_url = None
-        self.on_result = lambda _: True
+        self.redirect_url: str | None = None
+        self.on_result: Callable[[dict], Any] = lambda _: True
         self._lock = RLock()
 
     def extend(self, engine_name, results):  # pylint: disable=too-many-branches

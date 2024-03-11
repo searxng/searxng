@@ -47,8 +47,8 @@ def brave(query, _lang):
 
     results = []
 
-    if resp.ok:
-        data = resp.json()
+    if resp.ok:  # type: ignore
+        data = resp.json()  # type: ignore
         for item in data[1]:
             results.append(item)
     return results
@@ -62,8 +62,8 @@ def dbpedia(query, _lang):
 
     results = []
 
-    if response.ok:
-        dom = lxml.etree.fromstring(response.content)
+    if response.ok:  # type: ignore
+        dom = lxml.etree.fromstring(response.content)  # type: ignore
         results = dom.xpath('//Result/Label//text()')
 
     return results
@@ -82,8 +82,8 @@ def duckduckgo(query, sxng_locale):
     resp = get(url)
 
     ret_val = []
-    if resp.ok:
-        j = resp.json()
+    if resp.ok:  # type: ignore
+        j = resp.json()  # type: ignore
         if len(j) > 1:
             ret_val = j[1]
     return ret_val
@@ -110,11 +110,11 @@ def google_complete(query, sxng_locale):
     )
     results = []
     resp = get(url.format(subdomain=google_info['subdomain'], args=args))
-    if resp.ok:
-        json_txt = resp.text[resp.text.find('[') : resp.text.find(']', -3) + 1]
+    if resp.ok:  # type: ignore
+        json_txt = resp.text[resp.text.find('[') : resp.text.find(']', -3) + 1]  # type: ignore
         data = json.loads(json_txt)
         for item in data[0]:
-            results.append(lxml.html.fromstring(item[0]).text_content())
+            results.append(lxml.html.fromstring(item[0]).text_content())  # type: ignore
     return results
 
 
@@ -124,7 +124,7 @@ def mwmbl(query, _lang):
     # mwmbl autocompleter
     url = 'https://api.mwmbl.org/search/complete?{query}'
 
-    results = get(url.format(query=urlencode({'q': query}))).json()[1]
+    results = get(url.format(query=urlencode({'q': query}))).json()[1]  # type: ignore
 
     # results starting with `go:` are direct urls and not useful for auto completion
     return [result for result in results if not result.startswith("go: ") and not result.startswith("search: ")]
@@ -142,10 +142,10 @@ def seznam(query, _lang):
         )
     )
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         return []
 
-    data = resp.json()
+    data = resp.json()  # type: ignore
     return [
         ''.join([part.get('text', '') for part in item.get('text', [])])
         for item in data.get('result', [])
@@ -159,10 +159,10 @@ def stract(query, _lang):
 
     resp = post(url)
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         return []
 
-    return [suggestion['raw'] for suggestion in resp.json()]
+    return [suggestion['raw'] for suggestion in resp.json()]  # type: ignore
 
 
 def startpage(query, sxng_locale):
@@ -170,7 +170,7 @@ def startpage(query, sxng_locale):
     lui = engines['startpage'].traits.get_language(sxng_locale, 'english')
     url = 'https://startpage.com/suggestions?{query}'
     resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
-    data = resp.json()
+    data = resp.json()  # type: ignore
     return [e['text'] for e in data.get('suggestions', []) if 'text' in e]
 
 
@@ -178,7 +178,7 @@ def swisscows(query, _lang):
     # swisscows autocompleter
     url = 'https://swisscows.ch/api/suggest?{query}&itemsCount=5'
 
-    resp = json.loads(get(url.format(query=urlencode({'query': query}))).text)
+    resp = json.loads(get(url.format(query=urlencode({'query': query}))).text)  # type: ignore
     return resp
 
 
@@ -190,8 +190,8 @@ def qwant(query, sxng_locale):
     url = 'https://api.qwant.com/v3/suggest?{query}'
     resp = get(url.format(query=urlencode({'q': query, 'locale': locale, 'version': '2'})))
 
-    if resp.ok:
-        data = resp.json()
+    if resp.ok:  # type: ignore
+        data = resp.json()  # type: ignore
         if data['status'] == 'success':
             for item in data['data']['items']:
                 results.append(item['value'])
@@ -204,7 +204,7 @@ def wikipedia(query, sxng_locale):
     results = []
     eng_traits = engines['wikipedia'].traits
     wiki_lang = eng_traits.get_language(sxng_locale, 'en')
-    wiki_netloc = eng_traits.custom['wiki_netloc'].get(wiki_lang, 'en.wikipedia.org')
+    wiki_netloc = eng_traits.custom['wiki_netloc'].get(wiki_lang, 'en.wikipedia.org')  # type: ignore
 
     url = 'https://{wiki_netloc}/w/api.php?{args}'
     args = urlencode(
@@ -218,8 +218,8 @@ def wikipedia(query, sxng_locale):
         }
     )
     resp = get(url.format(args=args, wiki_netloc=wiki_netloc))
-    if resp.ok:
-        data = resp.json()
+    if resp.ok:  # type: ignore
+        data = resp.json()  # type: ignore
         if len(data) > 1:
             results = data[1]
 
@@ -230,7 +230,7 @@ def yandex(query, _lang):
     # yandex autocompleter
     url = "https://suggest.yandex.com/suggest-ff.cgi?{0}"
 
-    resp = json.loads(get(url.format(urlencode(dict(part=query)))).text)
+    resp = json.loads(get(url.format(urlencode(dict(part=query)))).text)  # type: ignore
     if len(resp) > 1:
         return resp[1]
     return []

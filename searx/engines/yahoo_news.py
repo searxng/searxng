@@ -82,7 +82,7 @@ def response(resp):
         item = {'url': url, 'title': title, 'content': content, 'img_src': img_src}
 
         pub_date = extract_text(result.xpath('.//span[contains(@class,"s-time")]'))
-        ago = AGO_RE.search(pub_date)
+        ago = AGO_RE.search(pub_date)  # type: ignore
         if ago:
             number = int(ago.group(1))
             delta = AGO_TIMEDELTA[ago.group(2)]

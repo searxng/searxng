@@ -44,7 +44,7 @@ guest_client_id = ''
 def get_client_id():
     resp = http_get("https://soundcloud.com")
 
-    if resp.ok:
+    if resp.ok:  # type: ignore
         tree = html.fromstring(resp.content)
         # script_tags has been moved from /assets/app/ to /assets/ path.  I
         # found client_id in https://a-v2.sndcdn.com/assets/49-a0c01933-3.js
@@ -55,7 +55,7 @@ def get_client_id():
         for app_js_url in app_js_urls[::-1]:
             # gets app_js and searches for the clientid
             resp = http_get(app_js_url)
-            if resp.ok:
+            if resp.ok:  # type: ignore
                 cids = cid_re.search(resp.content.decode())
                 if cids is not None and len(cids.groups()):
                     return cids.groups()[0]

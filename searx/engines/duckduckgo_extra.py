@@ -5,7 +5,6 @@ DuckDuckGo Extra (images, videos, news)
 """
 
 from datetime import datetime
-from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
@@ -13,16 +12,8 @@ from searx.engines.duckduckgo import (
     get_ddg_lang,
     get_vqd,
 )
-from searx.enginelib.traits import EngineTraits
 
-if TYPE_CHECKING:
-    import logging
 
-    logger: logging.Logger
-
-traits: EngineTraits
-
-# about
 about = {
     "website": 'https://duckduckgo.com/',
     "wikidata_id": 'Q12805',

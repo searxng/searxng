@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name, missing-module-docstring, missing-class-docstring
 
+from typing import Any
 from abc import abstractmethod, ABC
 import re
 
@@ -18,7 +19,7 @@ class QueryPartParser(ABC):
 
     @staticmethod
     @abstractmethod
-    def check(raw_value):
+    def check(raw_value) -> Any:
         """Check if raw_value can be parsed"""
 
     def __init__(self, raw_text_query, enable_autocomplete):
@@ -26,7 +27,7 @@ class QueryPartParser(ABC):
         self.enable_autocomplete = enable_autocomplete
 
     @abstractmethod
-    def __call__(self, raw_value):
+    def __call__(self, raw_value) -> Any:
         """Try to parse raw_value: set the self.raw_text_query properties
 
         return True if raw_value has been parsed
@@ -309,7 +310,7 @@ class RawTextQuery:
         self.autocomplete_location = last_index_location
 
     def get_autocomplete_full_query(self, text):
-        qlist, position = self.autocomplete_location
+        qlist, position = self.autocomplete_location  # type: ignore
         qlist[position] = text
         return self.getFullQuery()
 

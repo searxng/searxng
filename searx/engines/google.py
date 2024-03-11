@@ -11,8 +11,6 @@ engines:
 
 """
 
-from typing import TYPE_CHECKING
-
 import re
 from urllib.parse import urlencode
 from lxml import html
@@ -25,14 +23,6 @@ from searx.locales import language_tag, region_tag, get_official_locales
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.exceptions import SearxEngineCaptchaException
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
-
 
 # about
 about = {
