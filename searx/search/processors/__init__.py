@@ -77,6 +77,6 @@ def initialize(engine_list):
             processor = get_processor(engine, engine_name)
             initialize_processor(processor)
             if processor is None:
-                engine.logger.error('Error get processor for engine %s', engine_name)
+                engine.logger.error('Error get processor for engine %s', engine_name)  # type: ignore
             else:
                 PROCESSORS[engine_name] = processor

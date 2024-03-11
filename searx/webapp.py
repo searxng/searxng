@@ -171,7 +171,7 @@ class ExtendedRequest(flask.Request):
     preferences: Preferences
     errors: List[str]
     user_plugins: List[Plugin]
-    form: Dict[str, str]
+    form: Dict[str, str]  # type: ignore
     start_time: float
     render_time: float
     timings: List[Timing]

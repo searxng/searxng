@@ -56,7 +56,7 @@ def get_external_url(url_id, item_id, alternative="default"):
 def get_earth_coordinates_url(latitude, longitude, osm_zoom, alternative='default'):
     url = (
         get_external_url('map', None, alternative)
-        .replace('${latitude}', str(latitude))
+        .replace('${latitude}', str(latitude))  # type: ignore
         .replace('${longitude}', str(longitude))
         .replace('${zoom}', str(osm_zoom))
     )

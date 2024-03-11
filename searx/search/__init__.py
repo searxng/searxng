@@ -50,8 +50,8 @@ class Search:
         super().__init__()
         self.search_query = search_query
         self.result_container = ResultContainer()
-        self.start_time = None
-        self.actual_timeout = None
+        self.start_time: float = 0
+        self.actual_timeout: float = 0
 
     def search_external_bang(self):
         """
@@ -146,8 +146,8 @@ class Search:
                 args=(query, request_params, self.result_container, self.start_time, self.actual_timeout),
                 name=search_id,
             )
-            th._timeout = False
-            th._engine_name = engine_name
+            th._timeout = False  # type: ignore
+            th._engine_name = engine_name  # type: ignore
             th.start()
 
         for th in threading.enumerate():  # pylint: disable=invalid-name
@@ -155,9 +155,9 @@ class Search:
                 remaining_time = max(0.0, self.actual_timeout - (default_timer() - self.start_time))
                 th.join(remaining_time)
                 if th.is_alive():
-                    th._timeout = True
-                    self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')
-                    PROCESSORS[th._engine_name].logger.error('engine timeout')
+                    th._timeout = True  # type: ignore
+                    self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')  # type: ignore
+                    PROCESSORS[th._engine_name].logger.error('engine timeout')  # type: ignore
 
     def search_standard(self):
         """
@@ -197,7 +197,7 @@ class SearchWithPlugins(Search):
         # * https://github.com/pallets/werkzeug/blob/3c5d3c9bd0d9ce64590f0af8997a38f3823b368d/src/werkzeug/local.py#L548-L559
         # * https://werkzeug.palletsprojects.com/en/2.0.x/local/#werkzeug.local.LocalProxy._get_current_object
         # pylint: enable=line-too-long
-        self.request = request._get_current_object()
+        self.request = request._get_current_object()  # type: ignore[attr-defined]
 
     def _on_result(self, result):
         return plugins.call(self.ordered_plugin_list, 'on_result', self.request, self, result)

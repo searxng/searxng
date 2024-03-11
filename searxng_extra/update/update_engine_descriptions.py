@@ -178,7 +178,7 @@ def get_website_description(url, lang1, lang2=None):
 def initialize():
     global IDS, LANGUAGES_SPARQL
     searx.search.initialize()
-    wikipedia_engine = searx.engines.engines['wikipedia']
+    wikipedia_engine = searx.engines.engines['wikipedia']  # type: ignore
 
     locale2lang = {'nl-BE': 'nl'}
     for sxng_ui_lang in LOCALE_NAMES:
@@ -196,7 +196,7 @@ def initialize():
         WIKIPEDIA_LANGUAGES[sxng_ui_lang] = wiki_lang
 
     LANGUAGES_SPARQL = ', '.join(f"'{l}'" for l in set(WIKIPEDIA_LANGUAGES.values()))
-    for engine_name, engine in searx.engines.engines.items():
+    for engine_name, engine in searx.engines.engines.items():  # type: ignore
         descriptions[engine_name] = {}
         wikidata_id = getattr(engine, "about", {}).get('wikidata_id')
         if wikidata_id is not None:
@@ -209,7 +209,7 @@ def fetch_wikidata_descriptions():
     print('Fetching wikidata descriptions')
     searx.network.set_timeout_for_thread(60)
     result = wikidata.send_wikidata_query(
-        SPARQL_DESCRIPTION.replace('%IDS%', IDS).replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)
+        SPARQL_DESCRIPTION.replace('%IDS%', IDS).replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)  # type: ignore
     )
     if result is not None:
         for binding in result['results']['bindings']:
@@ -230,7 +230,7 @@ def fetch_wikidata_descriptions():
 def fetch_wikipedia_descriptions():
     print('Fetching wikipedia descriptions')
     result = wikidata.send_wikidata_query(
-        SPARQL_WIKIPEDIA_ARTICLE.replace('%IDS%', IDS).replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)
+        SPARQL_WIKIPEDIA_ARTICLE.replace('%IDS%', IDS).replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)  # type: ignore
     )
     if result is not None:
         for binding in result['results']['bindings']:
@@ -313,7 +313,7 @@ def fetch_website_description(engine_name, website):
 
 def fetch_website_descriptions():
     print('Fetching website descriptions')
-    for engine_name, engine in searx.engines.engines.items():
+    for engine_name, engine in searx.engines.engines.items():  # type: ignore
         website = getattr(engine, "about", {}).get('website')
         if website is None and hasattr(engine, "search_url"):
             website = normalize_url(getattr(engine, "search_url"))

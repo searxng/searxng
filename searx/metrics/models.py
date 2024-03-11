@@ -70,7 +70,7 @@ class Histogram:  # pylint: disable=missing-class-docstring
         # use Decimal to avoid rounding errors
         x = decimal.Decimal(0)
         width = decimal.Decimal(self._width)
-        width_exponent = -width.as_tuple().exponent
+        width_exponent = -width.as_tuple().exponent  # type: ignore
         with self._lock:
             if self._count > 0:
                 for y in self._quartiles:

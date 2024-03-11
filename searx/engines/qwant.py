@@ -47,7 +47,7 @@ from json import loads
 from urllib.parse import urlencode
 from flask_babel import gettext
 import babel
-import lxml
+import lxml.html
 
 from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
 from searx.network import raise_for_httperror
@@ -58,8 +58,6 @@ from searx.utils import (
     eval_xpath_list,
     extract_text,
 )
-
-traits: EngineTraits
 
 # about
 about = {

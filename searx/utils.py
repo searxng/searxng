@@ -52,7 +52,7 @@ _STORAGE_UNIT_VALUE: Dict[str, int] = {
 }
 
 _XPATH_CACHE: Dict[str, XPath] = {}
-_LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
+_LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}  # type: ignore
 
 _FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None  # type: ignore
 """fasttext model to predict laguage of a search term"""
@@ -214,7 +214,7 @@ def extract_text(xpath_results, allow_none: bool = False) -> Optional[str]:
         return result.strip()
     if isinstance(xpath_results, ElementBase):
         # it's a element
-        text: str = html.tostring(xpath_results, encoding='unicode', method='text', with_tail=False)
+        text: str = html.tostring(xpath_results, encoding='unicode', method='text', with_tail=False)  # type: ignore
         text = text.strip().replace('\n', ' ')
         return ' '.join(text.split())
     if isinstance(xpath_results, (str, Number, bool)):
@@ -564,7 +564,7 @@ def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: Op
     return result
 
 
-def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index: int, default=_NOTSET):
+def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index: int, default=_NOTSET) -> ElementBase:
     """Call eval_xpath_list then get one element using the index parameter.
     If the index does not exist, either raise an exception is default is not set,
     other return the default value (can be None).
@@ -599,7 +599,7 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
         import fasttext  # pylint: disable=import-outside-toplevel
 
         # Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
-        fasttext.FastText.eprint = lambda x: None
+        fasttext.FastText.eprint = lambda x: None  # type: ignore
         _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
     return _FASTTEXT_MODEL
 

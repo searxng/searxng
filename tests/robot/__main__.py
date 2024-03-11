@@ -44,7 +44,7 @@ class SearxRobotLayer:
             [exe, webapp], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
         if hasattr(self.server.stdout, 'read1'):
-            print(self.server.stdout.read1(1024).decode())
+            print(self.server.stdout.read1(1024).decode())  # type: ignore
 
     def tearDown(self):
         os.kill(self.server.pid, 9)
@@ -55,7 +55,11 @@ class SearxRobotLayer:
 def run_robot_tests(tests):
     print('Running {0} tests'.format(len(tests)))
     for test in tests:
-        with Browser('firefox', headless=True, profile_preferences={'intl.accept_languages': 'en'}) as browser:
+        with Browser(
+            'firefox',
+            headless=True,
+            profile_preferences={'intl.accept_languages': 'en'},
+        ) as browser:  # type: ignore
             test(browser)
 
 

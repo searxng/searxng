@@ -51,7 +51,7 @@ def response(resp):
 
         link = eval_xpath_getindex(result, './/h5/a', 0)
 
-        url = base_url + link.attrib.get('href') + '#downloads'
+        url = base_url + link.attrib.get('href') + '#downloads'  # type: ignore
         title = extract_text(link)
         img_src = base_url + eval_xpath_getindex(result, './/img/@src', 0)
         res = {'url': url, 'title': title, 'img_src': img_src}

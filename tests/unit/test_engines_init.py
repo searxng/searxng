@@ -54,7 +54,7 @@ class TestEnginesInit(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertIn('engine1', engines.engines)
         self.assertIn('engine2', engines.engines)
         self.assertIn('onions', engines.categories)
-        self.assertIn('http://engine1.onion', engines.engines['engine1'].search_url)
+        self.assertIn('http://engine1.onion', engines.engines['engine1'].search_url)  # type: ignore
         self.assertEqual(engines.engines['engine1'].timeout, 120.0)
 
     def test_missing_name_field(self):

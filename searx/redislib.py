@@ -83,7 +83,7 @@ def secret_hash(name: str):
     :type name: str
     """
     m = hmac.new(bytes(name, encoding='utf-8'), digestmod='sha256')
-    m.update(bytes(get_setting('server.secret_key'), encoding='utf-8'))
+    m.update(bytes(get_setting('server.secret_key'), encoding='utf-8'))  # type: ignore
     return m.hexdigest()
 
 

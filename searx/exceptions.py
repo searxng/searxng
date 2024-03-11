@@ -61,7 +61,7 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """This settings contains the default suspended time (default 86400 sec / 1
     day)."""
 
-    def __init__(self, suspended_time: int = None, message: str = 'Access denied'):
+    def __init__(self, suspended_time: int = 0, message: str = 'Access denied'):
         """Generic exception to raise when an engine denies access to the results.
 
         :param suspended_time: How long the engine is going to be suspended in
@@ -75,10 +75,10 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
         self.suspended_time = suspended_time
         self.message = message
 
-    def _get_default_suspended_time(self):
+    def _get_default_suspended_time(self) -> int:
         from searx import get_setting  # pylint: disable=C0415
 
-        return get_setting(self.SUSPEND_TIME_SETTING)
+        return get_setting(self.SUSPEND_TIME_SETTING)  # type: ignore
 
 
 class SearxEngineCaptchaException(SearxEngineAccessDeniedException):

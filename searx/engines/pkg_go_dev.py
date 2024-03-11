@@ -5,7 +5,7 @@ import re
 from urllib.parse import urlencode
 from dateutil import parser
 
-import babel
+import babel.numbers
 import flask_babel
 from lxml import html
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
@@ -69,14 +69,18 @@ def response(resp):
         results.append(
             {
                 'template': 'packages.html',
-                'url': base_url + extract_text(eval_xpath(result, url_xpath)),
+                'url': base_url + extract_text(eval_xpath(result, url_xpath)),  # type: ignore
                 'title': extract_text(eval_xpath(result, title_xpath)),
                 'content': extract_text(eval_xpath(result, content_xpath)),
-                'package_name': re.sub(r"\(|\)", "", extract_text(eval_xpath(result, package_name_xpath))),
+                'package_name': re.sub(
+                    r"\(|\)",
+                    "",
+                    extract_text(eval_xpath(result, package_name_xpath)),
+                ),  # type: ignore
                 'version': extract_text(eval_xpath(result, version_xpath)),
                 'popularity': popularity,
                 'license_name': extract_text(eval_xpath(result, license_name_xpath)),
-                'license_url': base_url + extract_text(eval_xpath(result, license_url_xpath)),
+                'license_url': base_url + extract_text(eval_xpath(result, license_url_xpath)),  # type: ignore
                 'publishedDate': publishedDate,
             }
         )

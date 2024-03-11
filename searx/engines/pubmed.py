@@ -6,7 +6,7 @@
 from datetime import datetime
 from urllib.parse import urlencode
 
-from lxml import etree
+from lxml import etree  # type: ignore
 from searx.network import get
 from searx.utils import (
     eval_xpath_getindex,
@@ -77,8 +77,8 @@ def response(resp):  # pylint: disable=too-many-locals
     for entry in eval_xpath_list(search_results, '//PubmedArticle'):
         medline = eval_xpath_getindex(entry, './MedlineCitation', 0)
 
-        title = eval_xpath_getindex(medline, './/Article/ArticleTitle', 0).text
-        pmid = eval_xpath_getindex(medline, './/PMID', 0).text
+        title = eval_xpath_getindex(medline, './/Article/ArticleTitle', 0).text  # type: ignore
+        pmid = eval_xpath_getindex(medline, './/PMID', 0).text  # type: ignore
         url = pubmed_url + pmid
         content = extract_text(
             eval_xpath_getindex(medline, './/Abstract/AbstractText//text()', 0, default=None), allow_none=True
@@ -120,7 +120,7 @@ def response(resp):  # pylint: disable=too-many-locals
             day = eval_xpath_getindex(accepted_date, './Day', 0)
             try:
                 publishedDate = datetime.strptime(
-                    year.text + '-' + month.text + '-' + day.text,
+                    year.text + '-' + month.text + '-' + day.text,  # type: ignore
                     '%Y-%m-%d',
                 )
                 res_dict['publishedDate'] = publishedDate

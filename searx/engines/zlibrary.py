@@ -32,11 +32,13 @@ Implementations
 ===============
 
 """
+
 from __future__ import annotations
-from typing import TYPE_CHECKING
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from urllib.parse import quote
+
+import httpx
 from lxml import html
 from flask_babel import gettext
 
@@ -44,13 +46,7 @@ from searx.utils import extract_text, eval_xpath, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
 from searx.data import ENGINE_TRAITS
 
-if TYPE_CHECKING:
-    import httpx
-    import logging
 
-    logger: logging.Logger
-
-# about
 about: Dict[str, Any] = {
     "website": "https://zlibrary-global.se",
     "wikidata_id": "Q104863992",

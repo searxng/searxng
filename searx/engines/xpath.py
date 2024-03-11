@@ -73,7 +73,7 @@ from lxml import html
 from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
 from searx.network import raise_for_httperror
 
-search_url = None
+search_url = ''
 """
 Search URL of the engine.  Example::
 
@@ -270,7 +270,9 @@ def response(resp):  # pylint: disable=too-many-branches
 
             # add alternative cached url if available
             if cached_xpath:
-                tmp_result['cached_url'] = cached_url + extract_text(eval_xpath_list(result, cached_xpath, min_len=1))
+                tmp_result['cached_url'] = cached_url + extract_text(
+                    eval_xpath_list(result, cached_xpath, min_len=1)
+                )  # type: ignore
 
             if is_onion:
                 tmp_result['is_onion'] = True
@@ -290,7 +292,7 @@ def response(resp):  # pylint: disable=too-many-branches
                         'url': url,
                         'title': title,
                         'content': content,
-                        'cached_url': cached_url + cached,
+                        'cached_url': cached_url + cached,  # type: ignore
                         'is_onion': is_onion,
                     }
                 )

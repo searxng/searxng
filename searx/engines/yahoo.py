@@ -19,8 +19,6 @@ from searx.utils import (
 )
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 # about
 about = {
     "website": 'https://search.yahoo.com/',
@@ -86,7 +84,7 @@ def request(query, params):
             'p': query,
             'ei': 'UTF-8',
             'fl': 1,
-            'vl': 'lang_' + lang,
+            'vl': 'lang_' + lang,  # type: ignore
             'btf': btf,
             'fr2': 'time',
             'age': age,
@@ -95,7 +93,7 @@ def request(query, params):
         }
     )
 
-    domain = lang2domain.get(lang, '%s.search.yahoo.com' % lang)
+    domain = lang2domain.get(lang, '%s.search.yahoo.com' % lang)  # type: ignore
     params['url'] = 'https://%s/search?%s' % (domain, args)
     return params
 
@@ -158,7 +156,7 @@ def fetch_traits(engine_traits: EngineTraits):
     engine_traits.all_locale = 'any'
 
     resp = network.get('https://search.yahoo.com/preferences/languages')
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from yahoo is not OK.")
 
     dom = html.fromstring(resp.text)

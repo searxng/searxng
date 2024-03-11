@@ -4,7 +4,6 @@ DuckDuckGo Weather
 ~~~~~~~~~~~~~~~~~~
 """
 
-from typing import TYPE_CHECKING
 from json import loads
 from urllib.parse import quote
 
@@ -13,15 +12,6 @@ from flask_babel import gettext
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang
-from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
-
 
 about = {
     "website": 'https://duckduckgo.com/',

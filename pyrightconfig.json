@@ -1,9 +1,13 @@
 {
     "venvPath": "local",
     "venv": "py3",
+    "stubPath": "searx/engines/__builtins__.pyi",
     "include": [
         "searx",
         "searxng_extra",
         "tests"
-    ]
+    ],
+    "reportPossiblyUnboundVariable": false,
+    "reportArgumentType": false,
+    "reportOptionalMemberAccess": false
 }

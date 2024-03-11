@@ -81,7 +81,7 @@ def get_result() -> CheckerResult:
     if client is None:
         # without Redis, the checker is disabled
         return {'status': 'disabled'}
-    serialized_result: Optional[bytes] = client.get(REDIS_RESULT_KEY)
+    serialized_result: Optional[bytes] = client.get(REDIS_RESULT_KEY)  # type: ignore
     if serialized_result is None:
         # the Redis key does not exist
         return {'status': 'unknown'}

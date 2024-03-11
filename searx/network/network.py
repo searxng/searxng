@@ -166,9 +166,8 @@ class Network:
         for transport in client._mounts.values():  # pylint: disable=protected-access
             if isinstance(transport, AsyncHTTPTransportNoHttp):
                 continue
-            if getattr(transport, "_pool") and getattr(
-                transport._pool, "_rdns", False  # pylint: disable=protected-access
-            ):
+            # pylint: disable=protected-access
+            if getattr(transport, "_pool") and getattr(transport._pool, "_rdns", False):  # type: ignore
                 continue
             return False
         response = await client.get("https://check.torproject.org/api/ip", timeout=60)
@@ -238,7 +237,7 @@ class Network:
         if isinstance(response, httpx.Response):
             # requests compatibility (response is not streamed)
             # see also https://www.python-httpx.org/compatibility/#checking-for-4xx5xx-responses
-            response.ok = not response.is_error
+            response.ok = not response.is_error  # type: ignore
 
             # raise an exception
             if do_raise_for_httperror:

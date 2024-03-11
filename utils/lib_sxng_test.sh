@@ -44,18 +44,13 @@ test.pylint() {
 }
 
 test.pyright() {
-    build_msg TEST "[pyright] static type check of python sources"
-    node.env.dev
     # We run Pyright in the virtual environment because Pyright
     # executes "python" to determine the Python version.
-    build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
-    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
-        | grep -v ".py$" \
-        | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
-        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
-        | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "categories" is not defined'
+    (   set -e
+        build_msg TEST "[pyright] static type check of python sources"
+        node.env.dev
+        pyenv.cmd npx --no-install pyright -p pyrightconfig.json
+    )
     dump_return $?
 }
 
@@ -108,4 +103,3 @@ test.clean() {
     rm -rf geckodriver.log .coverage coverage/
     dump_return $?
 }
-

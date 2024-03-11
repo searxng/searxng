@@ -263,7 +263,7 @@ class ResultContainerTests:  # pylint: disable=missing-class-docstring
     def check_basic(self):
         if len(self.result_container.unresponsive_engines) > 0:
             for message in self.result_container.unresponsive_engines:
-                self._record_error(message[1] + ' ' + (message[2] or ''))
+                self._record_error(message.error_type + ' ' + (str(message.suspended) if message.suspended else ''))
             self.stop_test = True
             return
 

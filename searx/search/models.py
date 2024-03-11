@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 import typing
-import babel
+import babel.core
 
 
 class EngineRef:

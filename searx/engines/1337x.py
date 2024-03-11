@@ -41,7 +41,7 @@ def response(resp):
         seed = extract_text(eval_xpath(result, './/td[contains(@class, "seeds")]'))
         leech = extract_text(eval_xpath(result, './/td[contains(@class, "leeches")]'))
         filesize_info = extract_text(eval_xpath(result, './/td[contains(@class, "size")]/text()'))
-        filesize, filesize_multiplier = filesize_info.split()
+        filesize, filesize_multiplier = filesize_info.split()  # type: ignore
         filesize = get_torrent_size(filesize, filesize_multiplier)
 
         results.append(

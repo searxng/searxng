@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 
 from urllib.parse import urlencode
-from lxml import etree
+from lxml import etree  # type: ignore
 from searx.utils import searx_useragent
 
 # about

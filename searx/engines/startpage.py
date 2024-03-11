@@ -79,7 +79,6 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 
 """
 
-from typing import TYPE_CHECKING
 from collections import OrderedDict
 import re
 from unicodedata import normalize, combining
@@ -96,14 +95,7 @@ from searx.exceptions import SearxEngineCaptchaException
 from searx.locales import region_tag
 from searx.enginelib.traits import EngineTraits
 
-if TYPE_CHECKING:
-    import logging
 
-    logger: logging.Logger
-
-traits: EngineTraits
-
-# about
 about = {
     "website": 'https://startpage.com',
     "wikidata_id": 'Q2333295',

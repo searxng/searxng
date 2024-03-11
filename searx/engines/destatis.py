@@ -57,10 +57,10 @@ def response(resp):
 
         results.append(
             {
-                'url': base_url + "/" + extract_text(eval_xpath(result, url_xpath)),
+                'url': base_url + "/" + extract_text(eval_xpath(result, url_xpath)),  # type: ignore
                 'title': extract_text(eval_xpath(result, title_xpath)),
                 'content': extract_text(eval_xpath(result, content_xpath)),
-                'metadata': ', '.join(metadata),
+                'metadata': ', '.join(metadata),  # type: ignore
             }
         )
 

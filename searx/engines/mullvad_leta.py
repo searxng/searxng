@@ -20,7 +20,6 @@ Otherwise, follow instructions provided by Mullvad for enabling the VPN on Linux
    update of SearXNG!
 """
 
-from typing import TYPE_CHECKING
 from httpx import Response
 from lxml import html
 from searx.enginelib.traits import EngineTraits
@@ -28,18 +27,10 @@ from searx.locales import region_tag, get_official_locales
 from searx.utils import eval_xpath, extract_text, eval_xpath_list
 from searx.exceptions import SearxEngineResponseException
 
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
 
 use_cache: bool = True  # non-cache use only has 100 searches per day!
-
 search_url = "https://leta.mullvad.net"
 
-# about
 about = {
     "website": search_url,
     "wikidata_id": 'Q47008412',  # the Mullvad id - not leta, but related
@@ -145,7 +136,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not isinstance(resp, Response):
         print("ERROR: failed to get response from mullvad-leta. Are you connected to the VPN?")
         return
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from mullvad-leta is not OK. Are you connected to the VPN?")
         return
     dom = html.fromstring(resp.text)

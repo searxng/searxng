@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- INA (Videos)
+"""INA (Videos)
+
 """
 
 from html import unescape
@@ -58,7 +58,7 @@ def response(resp):
         thumbnail = extract_text(eval_xpath(result, thumbnail_xpath))
         content = extract_text(eval_xpath(result, publishedDate_xpath)) + extract_text(
             eval_xpath(result, content_xpath)
-        )
+        )  # type: ignore
 
         # append result
         results.append(

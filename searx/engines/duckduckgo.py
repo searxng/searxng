@@ -4,7 +4,6 @@ DuckDuckGo Lite
 ~~~~~~~~~~~~~~~
 """
 
-from typing import TYPE_CHECKING
 import re
 from urllib.parse import urlencode
 import json
@@ -24,13 +23,6 @@ from searx.utils import (
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx import redisdb
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 about = {
     "website": 'https://lite.duckduckgo.com/lite/',
@@ -110,7 +102,7 @@ def get_vqd(query):
         key = 'SearXNG_ddg_web_vqd' + redislib.secret_hash(query)
         value = c.get(key)
         if value or value == b'':
-            value = value.decode('utf-8')
+            value = value.decode('utf-8')  # type: ignore
             logger.debug("re-use cached vqd value: %s", value)
             return value
 
@@ -129,7 +121,7 @@ def get_vqd(query):
     return value
 
 
-def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
+def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default: str = 'en_US') -> str:
     """Get DuckDuckGo's language identifier from SearXNG's locale.
 
     DuckDuckGo defines its languages by region codes (see

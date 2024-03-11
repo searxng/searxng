@@ -14,15 +14,13 @@ import sys
 import copy
 from os.path import realpath, dirname
 
-from typing import TYPE_CHECKING, Dict
+from typing import Dict
 import types
 import inspect
 
 from searx import logger, settings
+from searx.enginelib import Engine
 from searx.utils import load_module
-
-if TYPE_CHECKING:
-    from searx.enginelib import Engine
 
 logger = logger.getChild('engines')
 ENGINE_DIR = dirname(realpath(__file__))

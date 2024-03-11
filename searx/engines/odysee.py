@@ -14,8 +14,6 @@ from searx.network import get
 from searx.locales import language_tag
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 # Engine metadata
 about = {
     "website": "https://odysee.com/",
@@ -122,11 +120,11 @@ def fetch_traits(engine_traits: EngineTraits):
         timeout=60,
     )
 
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: can't determine languages from Odysee")
         return
 
-    for line in resp.text.split("\n")[1:-4]:
+    for line in resp.text.split("\n")[1:-4]:  # type: ignore
         lang_tag = line.strip().split(": ")[0].replace("'", "")
 
         try:

@@ -11,10 +11,10 @@ This scheduler is not generic on purpose: if more feature are required, a dedica
 (= a better scheduler should not use the web workers)
 """
 
+from typing import Callable
 import logging
 import time
 from pathlib import Path
-from typing import Callable
 
 from searx.redisdb import client as get_redis_client
 from searx.redislib import lua_script_storage

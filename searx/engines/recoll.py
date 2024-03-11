@@ -66,9 +66,9 @@ paging = True
 time_range_support = True
 
 # parameters from settings.yml
-base_url = None
+base_url: str = ''
 search_dir = ''
-mount_prefix = None
+mount_prefix: str = ''
 dl_prefix = None
 
 # embedded

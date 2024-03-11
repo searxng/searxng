@@ -147,7 +147,7 @@ def get_token() -> str:
         return '12345678'
     token = redis_client.get(TOKEN_KEY)
     if token:
-        token = token.decode('UTF-8')
+        token = token.decode('UTF-8')  # type: ignore
     else:
         token = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(16))
         redis_client.set(TOKEN_KEY, token, ex=TOKEN_LIVE_TIME)

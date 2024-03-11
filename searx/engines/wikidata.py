@@ -5,7 +5,6 @@ from :ref:`wikipedia engine`.
 """
 # pylint: disable=missing-class-docstring
 
-from typing import TYPE_CHECKING
 from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
@@ -23,14 +22,6 @@ from searx.engines.wikipedia import (
 )
 from searx.enginelib.traits import EngineTraits
 
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
-
-# about
 about = {
     "website": 'https://wikidata.org/',
     "wikidata_id": 'Q2013',
@@ -142,7 +133,7 @@ def get_headers():
     return {'Accept': 'application/sparql-results+json', 'User-Agent': searx_useragent()}
 
 
-def get_label_for_entity(entity_id, language):
+def get_label_for_entity(entity_id, language):  # type: ignore
     name = WIKIDATA_PROPERTIES.get(entity_id)
     if name is None:
         name = WIKIDATA_PROPERTIES.get((entity_id, language))
@@ -497,7 +488,7 @@ class WDAttribute:
     def __init__(self, name):
         self.name = name
 
-    def get_select(self):
+    def get_select(self) -> str:
         return '(group_concat(distinct ?{name};separator=", ") as ?{name}s)'.replace('{name}', self.name)
 
     def get_label(self, language):
@@ -506,10 +497,10 @@ class WDAttribute:
     def get_where(self):
         return "OPTIONAL { ?item wdt:{name} ?{name} . }".replace('{name}', self.name)
 
-    def get_wikibase_label(self):
+    def get_wikibase_label(self) -> str:
         return ""
 
-    def get_group_by(self):
+    def get_group_by(self) -> str:
         return ""
 
     def get_str(self, result, language):  # pylint: disable=unused-argument
@@ -702,7 +693,7 @@ class WDDateAttribute(WDAttribute):
         # precision: minute
         return (
             get_datetime_format(format, locale=locale)
-            .replace("'", "")
+            .replace("'", "")  # type: ignore
             .replace('{0}', format_time(timestamp, 'full', tzinfo=None, locale=locale))
             .replace('{1}', format_date(timestamp, 'short', locale=locale))
         )

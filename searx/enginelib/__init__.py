@@ -13,7 +13,7 @@
 
 
 from __future__ import annotations
-from typing import List, Callable, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
     from searx.enginelib import traits
@@ -76,7 +76,7 @@ class Engine:  # pylint: disable=too-few-public-methods
 
     # settings.yml
 
-    categories: List[str]
+    categories: list[str]
     """Specifies to which :ref:`engine categories` the engine should be added."""
 
     name: str
@@ -139,6 +139,6 @@ class Engine:  # pylint: disable=too-few-public-methods
     the user is used to build and send a ``Accept-Language`` header in the
     request to the origin search engine."""
 
-    tokens: List[str]
+    tokens: list[str]
     """A list of secret tokens to make this engine *private*, more details see
     :ref:`private engines`."""

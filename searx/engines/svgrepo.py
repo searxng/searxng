@@ -36,7 +36,7 @@ def response(resp):
         results.append(
             {
                 'template': 'images.html',
-                'url': base_url + extract_text(eval_xpath(result, url_xpath)),
+                'url': base_url + extract_text(eval_xpath(result, url_xpath)),  # type: ignore
                 'title': extract_text(eval_xpath(result, title_xpath)).replace(" SVG File", "").replace("Show ", ""),
                 'img_src': extract_text(eval_xpath(result, img_src_xpath)),
             }

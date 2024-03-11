@@ -55,7 +55,7 @@ def parse_pageno(form: Dict[str, str]) -> int:
 
 def parse_lang(preferences: Preferences, form: Dict[str, str], raw_text_query: RawTextQuery) -> str:
     if is_locked('language'):
-        return preferences.get_value('language')
+        return preferences.get_value('language')  # type: ignore
     # get language
     # set specific language if set on request, query or preferences
     # search with multiple languages is not supported (by most engines)
@@ -67,15 +67,15 @@ def parse_lang(preferences: Preferences, form: Dict[str, str], raw_text_query: R
         query_lang = preferences.get_value('language')
 
     # check language
-    if not VALID_LANGUAGE_CODE.match(query_lang) and query_lang != 'auto':
+    if not VALID_LANGUAGE_CODE.match(query_lang) and query_lang != 'auto':  # type: ignore
         raise SearxParameterException('language', query_lang)
 
-    return query_lang
+    return query_lang  # type: ignore
 
 
 def parse_safesearch(preferences: Preferences, form: Dict[str, str]) -> int:
     if is_locked('safesearch'):
-        return preferences.get_value('safesearch')
+        return preferences.get_value('safesearch')  # type: ignore
 
     if 'safesearch' in form:
         query_safesearch = form.get('safesearch')
@@ -87,10 +87,10 @@ def parse_safesearch(preferences: Preferences, form: Dict[str, str]) -> int:
         query_safesearch = preferences.get_value('safesearch')
 
     # safesearch : second check
-    if query_safesearch < 0 or query_safesearch > 2:
+    if query_safesearch < 0 or query_safesearch > 2:  # type: ignore
         raise SearxParameterException('safesearch', query_safesearch)
 
-    return query_safesearch
+    return query_safesearch  # type: ignore
 
 
 def parse_time_range(form: Dict[str, str]) -> Optional[str]:
@@ -145,7 +145,7 @@ def get_selected_categories(preferences: Preferences, form: Optional[Dict[str, s
     # (is stored in cookie)
     if not selected_categories:
         cookie_categories = preferences.get_value('categories')
-        for ccateg in cookie_categories:
+        for ccateg in cookie_categories:  # type: ignore
             selected_categories.append(ccateg)
 
     # if still no category is specified, using general

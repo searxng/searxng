@@ -13,8 +13,6 @@
 
 """
 
-from typing import TYPE_CHECKING
-
 from urllib.parse import urlencode
 from lxml import html
 
@@ -33,14 +31,6 @@ from searx.engines.google import (
     suggestion_xpath,
     detect_google_sorry,
 )
-from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {

@@ -42,10 +42,12 @@ class PluginStoreTest(SearxTestCase):  # pylint: disable=missing-class-docstring
         request = Mock()
         store.call([], 'asdf', request, Mock())
 
-        self.assertFalse(testplugin.asdf.called)  # pylint: disable=E1101
+        # pylint: disable=no-member
+        self.assertFalse(testplugin.asdf.called)  # type: ignore
 
         store.call([testplugin], 'asdf', request, Mock())
-        self.assertTrue(testplugin.asdf.called)  # pylint: disable=E1101
+        self.assertTrue(testplugin.asdf.called)  # type: ignore
+        # pylint: enable=no-member
 
 
 class SelfIPTest(SearxTestCase):  # pylint: disable=missing-class-docstring
