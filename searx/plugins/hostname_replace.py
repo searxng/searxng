@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 import re
 from urllib.parse import urlunparse, urlparse
+
+from flask_babel import gettext
+
 from searx import settings
 from searx.plugins import logger
-from flask_babel import gettext
 
 name = gettext('Hostname replace')
 description = gettext('Rewrite result hostnames or remove results based on the hostname')
@@ -20,7 +23,7 @@ parsed = 'parsed_url'
 _url_fields = ['iframe_src', 'audio_src']
 
 
-def on_result(request, search, result):
+def on_result(_request, _search, result):
 
     for pattern, replacement in replacements.items():
 

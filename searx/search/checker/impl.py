@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, invalid-name
 
 import gc
 import typing
@@ -149,7 +150,7 @@ def _search_query_diff(
     return (common, diff)
 
 
-class TestResults:
+class TestResults:  # pylint: disable=missing-class-docstring
 
     __slots__ = 'errors', 'logs', 'languages'
 
@@ -181,7 +182,7 @@ class TestResults:
                 yield (test_name, error)
 
 
-class ResultContainerTests:
+class ResultContainerTests:  # pylint: disable=missing-class-docstring
 
     __slots__ = 'test_name', 'search_query', 'result_container', 'languages', 'stop_test', 'test_results'
 
@@ -210,7 +211,6 @@ class ResultContainerTests:
         if langStr:
             self.languages.add(langStr)
             self.test_results.add_language(langStr)
-        return None
 
     def _check_result(self, result):
         if not _check_no_html(result.get('title', '')):
@@ -319,7 +319,7 @@ class ResultContainerTests:
         self._record_error(('{!r} not found in the title'.format(title)))
 
 
-class CheckerTests:
+class CheckerTests:  # pylint: disable=missing-class-docstring, too-few-public-methods
 
     __slots__ = 'test_results', 'test_name', 'result_container_tests_list'
 
@@ -351,7 +351,7 @@ class CheckerTests:
                         )
 
 
-class Checker:
+class Checker:  # pylint: disable=missing-class-docstring
 
     __slots__ = 'processor', 'tests', 'test_results'
 
@@ -377,7 +377,7 @@ class Checker:
             p.append(l)
 
         for kwargs in itertools.product(*p):
-            kwargs = {k: v for k, v in kwargs}
+            kwargs = dict(kwargs)
             query = kwargs['query']
             params = dict(kwargs)
             del params['query']

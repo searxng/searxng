@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=invalid-name, missing-module-docstring, missing-class-docstring
 
 from abc import abstractmethod, ABC
 import re
@@ -191,7 +192,7 @@ class BangParser(QueryPartParser):
 
     def _parse(self, value):
         # check if prefix is equal with engine shortcut
-        if value in engine_shortcuts:
+        if value in engine_shortcuts:  # pylint: disable=consider-using-get
             value = engine_shortcuts[value]
 
         # check if prefix is equal with engine name

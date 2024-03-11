@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 from tests import SearxTestCase
 import searx.exceptions
 from searx import get_setting
 
 
-class TestExceptions(SearxTestCase):
+class TestExceptions(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_default_suspend_time(self):
         with self.assertRaises(searx.exceptions.SearxEngineAccessDeniedException) as e:
             raise searx.exceptions.SearxEngineAccessDeniedException()

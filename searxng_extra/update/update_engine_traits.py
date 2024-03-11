@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Update :py:obj:`searx.enginelib.traits.EngineTraitsMap` and :origin:`searx/languages.py`
 
@@ -28,7 +27,7 @@ from searx.enginelib.traits import EngineTraitsMap
 # Output files.
 languages_file = Path(searx_dir) / 'sxng_locales.py'
 languages_file_header = """\
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
 '''List of SearXNG's locale codes.
 
 .. hint::

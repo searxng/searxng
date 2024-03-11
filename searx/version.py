@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 # pylint: disable=,missing-module-docstring,missing-class-docstring
 
 import os
@@ -108,6 +107,7 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "freeze":
         # freeze the version (to create an archive outside a git repository)
         python_code = f"""# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 # this file is generated automatically by searx/version.py
 
 VERSION_STRING = "{VERSION_STRING}"

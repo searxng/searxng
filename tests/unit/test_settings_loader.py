@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 from os.path import dirname, join, abspath
 from unittest.mock import patch
@@ -11,7 +12,7 @@ from tests import SearxTestCase
 test_dir = abspath(dirname(__file__))
 
 
-class TestLoad(SearxTestCase):
+class TestLoad(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_load_zero(self):
         with self.assertRaises(SearxSettingsException):
             settings_loader.load_yaml('/dev/zero')
@@ -29,7 +30,7 @@ class TestLoad(SearxTestCase):
         self.assertEqual(settings_loader.existing_filename_or_none(bad_settings_path), bad_settings_path)
 
 
-class TestDefaultSettings(SearxTestCase):
+class TestDefaultSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_load(self):
         settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
@@ -43,7 +44,7 @@ class TestDefaultSettings(SearxTestCase):
         self.assertTrue(isinstance(settings['default_doi_resolver'], str))
 
 
-class TestUserSettings(SearxTestCase):
+class TestUserSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_is_use_default_settings(self):
         self.assertFalse(settings_loader.is_use_default_settings({}))
         self.assertTrue(settings_loader.is_use_default_settings({'use_default_settings': True}))

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """A collection of convenient functions and redis/lua scripts.
 
 This code was partial inspired by the `Bullet-Proofing Lua Scripts in RedisPy`_

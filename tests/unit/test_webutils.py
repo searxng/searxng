@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
+
 import mock
 from searx import webutils
 from tests import SearxTestCase
 
 
-class TestWebUtils(SearxTestCase):
+class TestWebUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_prettify_url(self):
         data = (
             ('https://searx.me/', 'https://searx.me/'),
@@ -32,6 +34,7 @@ class TestWebUtils(SearxTestCase):
         query = 'a test'
         self.assertEqual(webutils.highlight_content(content, query), '<span class="highlight">a</span>')
 
+        # pylint: disable=line-too-long
         data = (
             ('" test "', 'a test string', 'a <span class="highlight">test</span> string'),
             ('"a"', 'this is a test string', 'this is <span class="highlight">a</span> test string'),
@@ -67,7 +70,7 @@ class TestWebUtils(SearxTestCase):
             self.assertEqual(webutils.highlight_content(content, query), expected)
 
 
-class TestUnicodeWriter(SearxTestCase):
+class TestUnicodeWriter(SearxTestCase):  # pylint: disable=missing-class-docstring
     def setUp(self):
         self.unicode_writer = webutils.CSVWriter(mock.MagicMock())
 
@@ -82,7 +85,7 @@ class TestUnicodeWriter(SearxTestCase):
         self.assertEqual(self.unicode_writer.writerow.call_count, len(rows))
 
 
-class TestNewHmac(SearxTestCase):
+class TestNewHmac(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_bytes(self):
         data = b'http://example.com'
         with self.assertRaises(AttributeError):

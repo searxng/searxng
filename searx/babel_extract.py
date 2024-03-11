@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """This module implements the :origin:`searxng_msg <babel.cfg>` extractor to
 extract messages from:
 

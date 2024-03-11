@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Implementation of the redis client (redis-py_).
 
 .. _redis-py: https://github.com/redis/redis-py

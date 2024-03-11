@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
+
 import re
 from collections import defaultdict
 from operator import itemgetter
@@ -19,8 +22,7 @@ WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 def result_content_len(content):
     if isinstance(content, str):
         return len(CONTENT_LEN_IGNORED_CHARS_REGEX.sub('', content))
-    else:
-        return 0
+    return 0
 
 
 def compare_urls(url_a, url_b):
@@ -56,7 +58,7 @@ def compare_urls(url_a, url_b):
     return unquote(path_a) == unquote(path_b)
 
 
-def merge_two_infoboxes(infobox1, infobox2):
+def merge_two_infoboxes(infobox1, infobox2):  # pylint: disable=too-many-branches, too-many-statements
     # get engines weights
     if hasattr(engines[infobox1['engine']], 'weight'):
         weight1 = engines[infobox1['engine']].weight
@@ -140,13 +142,13 @@ def result_score(result):
     return sum((occurrences * weight) / position for position in result['positions'])
 
 
-class Timing(NamedTuple):
+class Timing(NamedTuple):  # pylint: disable=missing-class-docstring
     engine: str
     total: float
     load: float
 
 
-class UnresponsiveEngine(NamedTuple):
+class UnresponsiveEngine(NamedTuple):  # pylint: disable=missing-class-docstring
     engine: str
     error_type: str
     suspended: bool
@@ -189,7 +191,7 @@ class ResultContainer:
         self.on_result = lambda _: True
         self._lock = RLock()
 
-    def extend(self, engine_name, results):
+    def extend(self, engine_name, results):  # pylint: disable=too-many-branches
         if self._closed:
             return
 
@@ -314,11 +316,11 @@ class ResultContainer:
                 if result_template != 'images.html':
                     # not an image, same template, same url : it's a duplicate
                     return merged_result
-                else:
-                    # it's an image
-                    # it's a duplicate if the parsed_url, template and img_src are different
-                    if result.get('img_src', '') == merged_result.get('img_src', ''):
-                        return merged_result
+
+                # it's an image
+                # it's a duplicate if the parsed_url, template and img_src are different
+                if result.get('img_src', '') == merged_result.get('img_src', ''):
+                    return merged_result
         return None
 
     def __merge_duplicated_http_result(self, duplicated, result, position):
@@ -371,11 +373,11 @@ class ResultContainer:
         categoryPositions = {}
 
         for res in results:
-            # FIXME : handle more than one category per engine
+            # do we need to handle more than one category per engine?
             engine = engines[res['engine']]
             res['category'] = engine.categories[0] if len(engine.categories) > 0 else ''
 
-            # FIXME : handle more than one category per engine
+            # do we need to handle more than one category per engine?
             category = (
                 res['category']
                 + ':'
@@ -397,7 +399,7 @@ class ResultContainer:
 
                 # update every index after the current one
                 # (including the current one)
-                for k in categoryPositions:
+                for k in categoryPositions:  # pylint: disable=consider-using-dict-items
                     v = categoryPositions[k]['index']
                     if v >= index:
                         categoryPositions[k]['index'] = v + 1

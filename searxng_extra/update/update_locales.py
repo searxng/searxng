@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Update locale names in :origin:`searx/data/locales.json` used by
 :ref:`searx.locales`

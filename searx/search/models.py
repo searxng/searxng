@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 import typing
 import babel
@@ -52,7 +53,7 @@ class SearchQuery:
         external_bang: typing.Optional[str] = None,
         engine_data: typing.Optional[typing.Dict[str, str]] = None,
         redirect_to_first_result: typing.Optional[bool] = None,
-    ):
+    ):  # pylint:disable=too-many-arguments
         self.query = query
         self.engineref_list = engineref_list
         self.lang = lang

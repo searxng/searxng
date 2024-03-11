@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
+# pylint: disable=missing-module-docstring
 """Test some code from module :py:obj:`searx.locales`"""
 
 from searx import locales

@@ -120,8 +120,7 @@ def _get_request_id(query, params):
         l = locales.get_locale(params['searxng_locale'])
 
         # Presearch narrows down the search by region.  In SearXNG when the user
-        # does not set a region (e.g. 'en-CA' / canada) we cannot hand over a
-        # region.
+        # does not set a region (e.g. 'en-CA' / canada) we cannot hand over a region.
 
         # We could possibly use searx.locales.get_official_locales to determine
         # in which regions this language is an official one, but then we still

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
+
 import math
 
 from searx.data import EXTERNAL_URLS
@@ -46,8 +49,7 @@ def get_external_url(url_id, item_id, alternative="default"):
         if url_template is not None:
             if item_id is not None:
                 return url_template.replace('$1', item_id)
-            else:
-                return url_template
+            return url_template
     return None
 
 
