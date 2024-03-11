@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Bot protection / IP rate limitation.  The intention of rate limitation is to
 limit suspicious requests from an IP.  The motivation behind this is the fact
 that SearXNG passes through requests from bots and is thus classified as a bot

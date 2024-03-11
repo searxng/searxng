@@ -52,23 +52,6 @@ if [ -S "${_dev_redis_sock}" ] && [ -z "${SEARXNG_REDIS_URL}" ]; then
     export SEARXNG_REDIS_URL="unix://${_dev_redis_sock}?db=0"
 fi
 
-pylint.FILES() {
-
-    # List files tagged by comment:
-    #
-    #   # lint: pylint
-    #
-    # These py files are linted by test.pylint()
-
-    grep -l -r --include \*.py '^#[[:blank:]]*lint:[[:blank:]]*pylint' searx searxng_extra tests
-    find . -name searxng.msg
-}
-
-PYLINT_FILES=()
-while IFS= read -r line; do
-   PYLINT_FILES+=("$line")
-done <<< "$(pylint.FILES)"
-
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
@@ -78,10 +61,6 @@ RST_FILES=(
     'README.rst'
 )
 
-PYLINT_SEARXNG_DISABLE_OPTION="\
-I,C,R,\
-W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
-E1136"
 help() {
     nvm.help
     cat <<EOF

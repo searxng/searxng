@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 from urllib.parse import quote_plus, urlparse
 from searx.data import EXTERNAL_BANGS
@@ -53,7 +54,7 @@ def resolve_bang_definition(bang_definition, query):
     return (url, rank)
 
 
-def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):
+def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):  # pylint: disable=invalid-name
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 

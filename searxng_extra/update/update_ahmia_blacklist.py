@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This script saves `Ahmia's blacklist`_ for onion sites.
 

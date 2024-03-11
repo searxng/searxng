@@ -1,5 +1,7 @@
-import os
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
+import os
 import aiounittest
 
 os.environ.pop('SEARX_DEBUG', None)

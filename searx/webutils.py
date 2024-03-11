@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, invalid-name
+
 from __future__ import annotations
 
 import os
@@ -108,7 +110,7 @@ class CSVWriter:
             self.writerow(row)
 
 
-def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:
+def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:  # pylint: disable=redefined-outer-name
     """Write rows of the results to a query (``application/csv``) into a CSV
     table (:py:obj:`CSVWriter`).  First line in the table contain the column
     names.  The column "type" specifies the type, the following types are
@@ -143,7 +145,7 @@ def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:
         csv.writerow([row.get(key, '') for key in keys])
 
 
-class JSONEncoder(json.JSONEncoder):
+class JSONEncoder(json.JSONEncoder):  # pylint: disable=missing-class-docstring
     def default(self, o):
         if isinstance(o, datetime):
             return o.isoformat()
@@ -226,8 +228,7 @@ def prettify_url(url, max_length=74):
     if len(url) > max_length:
         chunk_len = int(max_length / 2 + 1)
         return '{0}[...]{1}'.format(url[:chunk_len], url[-chunk_len:])
-    else:
-        return url
+    return url
 
 
 def contains_cjko(s: str) -> bool:
@@ -269,8 +270,7 @@ def regex_highlight_cjk(word: str) -> str:
     rword = re.escape(word)
     if contains_cjko(rword):
         return fr'({rword})'
-    else:
-        return fr'\b({rword})(?!\w)'
+    return fr'\b({rword})(?!\w)'
 
 
 def highlight_content(content, query):
@@ -279,7 +279,6 @@ def highlight_content(content, query):
         return None
 
     # ignoring html contents
-    # TODO better html content detection
     if content.find('<') != -1:
         return content
 
@@ -353,8 +352,8 @@ def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[
     sorted_groups = sorted(((name, list(engines)) for name, engines in subgroups), key=group_sort_key)
 
     ret_val = []
-    for groupname, engines in sorted_groups:
+    for groupname, _engines in sorted_groups:
         group_bang = '!' + groupname.replace(' ', '_') if groupname != NO_SUBGROUPING else ''
-        ret_val.append((groupname, group_bang, sorted(engines, key=engine_sort_key)))
+        ret_val.append((groupname, group_bang, sorted(_engines, key=engine_sort_key)))
 
     return ret_val

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """.. _botdetection src:
 
 Implementations used for bot detection.

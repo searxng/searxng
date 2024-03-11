@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, protected-access
 
 from mock import patch
 
@@ -8,7 +9,7 @@ from searx.network.network import Network, NETWORKS, initialize
 from tests import SearxTestCase
 
 
-class TestNetwork(SearxTestCase):
+class TestNetwork(SearxTestCase):  # pylint: disable=missing-class-docstring
     def setUp(self):
         initialize()
 
@@ -121,7 +122,7 @@ class TestNetwork(SearxTestCase):
             await network.aclose()
 
 
-class TestNetworkRequestRetries(SearxTestCase):
+class TestNetworkRequestRetries(SearxTestCase):  # pylint: disable=missing-class-docstring
 
     TEXT = 'Lorem Ipsum'
 
@@ -129,7 +130,7 @@ class TestNetworkRequestRetries(SearxTestCase):
     def get_response_404_then_200(cls):
         first = True
 
-        async def get_response(*args, **kwargs):
+        async def get_response(*args, **kwargs):  # pylint: disable=unused-argument
             nonlocal first
             if first:
                 first = False
@@ -169,7 +170,7 @@ class TestNetworkRequestRetries(SearxTestCase):
     async def test_retries_exception_then_200(self):
         request_count = 0
 
-        async def get_response(*args, **kwargs):
+        async def get_response(*args, **kwargs):  # pylint: disable=unused-argument
             nonlocal request_count
             request_count += 1
             if request_count < 3:
@@ -194,7 +195,7 @@ class TestNetworkRequestRetries(SearxTestCase):
             await network.aclose()
 
 
-class TestNetworkStreamRetries(SearxTestCase):
+class TestNetworkStreamRetries(SearxTestCase):  # pylint: disable=missing-class-docstring
 
     TEXT = 'Lorem Ipsum'
 
@@ -202,7 +203,7 @@ class TestNetworkStreamRetries(SearxTestCase):
     def get_response_exception_then_200(cls):
         first = True
 
-        def stream(*args, **kwargs):
+        def stream(*args, **kwargs):  # pylint: disable=unused-argument
             nonlocal first
             if first:
                 first = False
@@ -228,7 +229,7 @@ class TestNetworkStreamRetries(SearxTestCase):
     async def test_retries_exception(self):
         first = True
 
-        def stream(*args, **kwargs):
+        def stream(*args, **kwargs):  # pylint: disable=unused-argument
             nonlocal first
             if first:
                 first = False

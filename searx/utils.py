@@ -1,6 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-# pyright: basic
 """Utility functions for the engines
 
 """
@@ -56,7 +54,7 @@ _STORAGE_UNIT_VALUE: Dict[str, int] = {
 _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 
-_FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None
+_FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None  # type: ignore
 """fasttext model to predict laguage of a search term"""
 
 SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in sxng_locales])
@@ -595,7 +593,7 @@ def eval_xpath_getindex(elements: ElementBase, xpath_spec: XPathSpecType, index:
     return default
 
 
-def _get_fasttext_model() -> "fasttext.FastText._FastText":
+def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
     global _FASTTEXT_MODEL  # pylint: disable=global-statement
     if _FASTTEXT_MODEL is None:
         import fasttext  # pylint: disable=import-outside-toplevel

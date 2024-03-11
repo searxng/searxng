@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, invalid-name
 
 from copy import copy
 
@@ -23,7 +24,7 @@ TEST_ENGINES = [
 ]
 
 
-class SearchQueryTestCase(SearxTestCase):
+class SearchQueryTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_repr(self):
         s = SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g')
         self.assertEqual(
@@ -42,10 +43,10 @@ class SearchQueryTestCase(SearxTestCase):
         self.assertEqual(s, t)
 
 
-class SearchTestCase(SearxTestCase):
+class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def setUp(self):
 
-        from searx import webapp  # pylint disable=import-outside-toplevel
+        from searx import webapp  # pylint: disable=import-outside-toplevel
 
         self.app = webapp.app
 

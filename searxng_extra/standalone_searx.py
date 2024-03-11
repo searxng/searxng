@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-# lint: pylint
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# (C) Copyright Contributors to the SearXNG project.
-
 """Script to run SearXNG from terminal.
 
   DON'T USE THIS SCRIPT!!

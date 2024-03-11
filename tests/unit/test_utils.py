@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, invalid-name
+
 import lxml.etree
 from lxml import html
 
@@ -8,7 +10,7 @@ from searx import utils
 from tests import SearxTestCase
 
 
-class TestUtils(SearxTestCase):
+class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_gen_useragent(self):
         self.assertIsInstance(utils.gen_useragent(), str)
         self.assertIsNotNone(utils.gen_useragent())
@@ -85,8 +87,8 @@ class TestUtils(SearxTestCase):
             utils.extract_url([], 'https://example.com')
 
     def test_html_to_text_invalid(self):
-        html = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
-        self.assertEqual(utils.html_to_text(html), "Lorem ipsum")
+        _html = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
+        self.assertEqual(utils.html_to_text(_html), "Lorem ipsum")
 
     def test_ecma_unscape(self):
         self.assertEqual(utils.ecma_unescape('text%20with%20space'), 'text with space')
@@ -94,9 +96,9 @@ class TestUtils(SearxTestCase):
         self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'), 'text using %u: 吉, 世界')
 
 
-class TestHTMLTextExtractor(SearxTestCase):
+class TestHTMLTextExtractor(SearxTestCase):  # pylint: disable=missing-class-docstring
     def setUp(self):
-        self.html_text_extractor = utils._HTMLTextExtractor()
+        self.html_text_extractor = utils._HTMLTextExtractor()  # pylint: disable=protected-access
 
     def test__init__(self):
         self.assertEqual(self.html_text_extractor.result, [])
@@ -117,11 +119,11 @@ class TestHTMLTextExtractor(SearxTestCase):
 
     def test_invalid_html(self):
         text = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
-        with self.assertRaises(utils._HTMLTextExtractorException):
+        with self.assertRaises(utils._HTMLTextExtractorException):  # pylint: disable=protected-access
             self.html_text_extractor.feed(text)
 
 
-class TestXPathUtils(SearxTestCase):
+class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
 
     TEST_DOC = """<ul>
         <li>Text in <b>bold</b> and <i>italic</i> </li>

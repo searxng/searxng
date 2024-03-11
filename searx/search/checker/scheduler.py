@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 # pylint: disable=missing-module-docstring
 """Lame scheduler which use Redis as a source of truth:
 * the Redis key SearXNG_checker_next_call_ts contains the next time the embedded checker should run.

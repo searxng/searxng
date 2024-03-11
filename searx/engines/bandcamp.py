@@ -37,16 +37,6 @@ iframe_src = "https://bandcamp.com/EmbeddedPlayer/{type}={result_id}/size=large/
 
 
 def request(query, params):
-    '''pre-request callback
-
-    params<dict>:
-      method  : POST/GET
-      headers : {}
-      data    : {} # if method == POST
-      url     : ''
-      category: 'search category'
-      pageno  : 1 # number of the requested page
-    '''
 
     search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
     params['url'] = base_url + search_path
@@ -54,10 +44,7 @@ def request(query, params):
 
 
 def response(resp):
-    '''post-response callback
 
-    resp: requests response object
-    '''
     results = []
     dom = html.fromstring(resp.text)
 

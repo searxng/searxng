@@ -1,6 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-# pyright: basic
 """Render SearXNG instance documentation.
 
 Usage in a Flask app route:

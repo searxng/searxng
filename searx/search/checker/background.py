@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-# pylint: disable=missing-module-docstring
-# pyright: basic
+# pylint: disable=missing-module-docstring, cyclic-import
 
 import json
 import time

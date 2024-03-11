@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Engine's traits are fetched from the origin engines and stored in a JSON file
 in the *data folder*.  Most often traits are languages and region codes and
 their mapping from SearXNG's representation to the representation in the origin
@@ -167,7 +166,7 @@ class EngineTraits:
         #   - name: google italian
         #     engine: google
         #     language: it
-        #     region: it-IT
+        #     region: it-IT                                      # type: ignore
 
         traits = self.copy()
 

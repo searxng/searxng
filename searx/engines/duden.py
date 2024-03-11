@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Duden
+"""Duden
+
 """
 
 import re
@@ -29,15 +29,6 @@ search_url = base_url + 'suchen/dudenonline/{query}?search_api_fulltext=&page={o
 
 
 def request(query, params):
-    '''pre-request callback
-    params<dict>:
-      method  : POST/GET
-      headers : {}
-      data    : {} # if method == POST
-      url     : ''
-      category: 'search category'
-      pageno  : 1 # number of the requested page
-    '''
 
     offset = params['pageno'] - 1
     if offset == 0:
@@ -53,9 +44,6 @@ def request(query, params):
 
 
 def response(resp):
-    '''post-response callback
-    resp: requests response object
-    '''
     results = []
 
     if resp.status_code == 404:

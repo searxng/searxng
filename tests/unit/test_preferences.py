@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring, invalid-name
+
 from searx.locales import locales_initialize
 from searx.preferences import (
     EnumStringSetting,
@@ -12,13 +15,13 @@ from tests import SearxTestCase
 locales_initialize()
 
 
-class PluginStub:
+class PluginStub:  # pylint: disable=missing-class-docstring, too-few-public-methods
     def __init__(self, plugin_id, default_on):
         self.id = plugin_id
         self.default_on = default_on
 
 
-class TestSettings(SearxTestCase):
+class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
     # map settings
 
     def test_map_setting_invalid_default_value(self):
@@ -118,9 +121,9 @@ class TestSettings(SearxTestCase):
         self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin3']))
 
 
-class TestPreferences(SearxTestCase):
+class TestPreferences(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_encode(self):
-        from searx.preferences import Preferences
+        from searx.preferences import Preferences  # pylint: disable=import-outside-toplevel
 
         pref = Preferences(['simple'], ['general'], {}, [])
         url_params = (

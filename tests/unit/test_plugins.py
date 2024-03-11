@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
+
+from mock import Mock
 
 from searx import (
     plugins,
@@ -6,21 +9,20 @@ from searx import (
     botdetection,
 )
 
-from mock import Mock
 from tests import SearxTestCase
 
 
 def get_search_mock(query, **kwargs):
-    return Mock(search_query=Mock(query=query, **kwargs), result_container=Mock(answers=dict()))
+    return Mock(search_query=Mock(query=query, **kwargs), result_container=Mock(answers={}))
 
 
-class PluginMock:
+class PluginMock:  # pylint: disable=missing-class-docstring, too-few-public-methods
     default_on = False
     name = 'Default plugin'
     description = 'Default plugin description'
 
 
-class PluginStoreTest(SearxTestCase):
+class PluginStoreTest(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_PluginStore_init(self):
         store = plugins.PluginStore()
         self.assertTrue(isinstance(store.plugins, list) and len(store.plugins) == 0)
@@ -46,7 +48,7 @@ class PluginStoreTest(SearxTestCase):
         self.assertTrue(testplugin.asdf.called)  # pylint: disable=E1101
 
 
-class SelfIPTest(SearxTestCase):
+class SelfIPTest(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_PluginStore_init(self):
         plugin = plugins.load_and_initialize_plugin('searx.plugins.self_info', False, (None, {}))
         store = plugins.PluginStore()
@@ -99,7 +101,7 @@ class SelfIPTest(SearxTestCase):
         self.assertFalse('user-agent' in search.result_container.answers)
 
 
-class HashPluginTest(SearxTestCase):
+class HashPluginTest(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_PluginStore_init(self):
         store = plugins.PluginStore()
         plugin = plugins.load_and_initialize_plugin('searx.plugins.hash_plugin', False, (None, {}))

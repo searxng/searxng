@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 from searx.results import ResultContainer
 from tests import SearxTestCase
@@ -17,8 +18,7 @@ def fake_result(url='https://aa.bb/cc?dd=ee#ff', title='aaa', content='bbb', eng
     return result
 
 
-#  TODO
-class ResultContainerTestCase(SearxTestCase):
+class ResultContainerTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_empty(self):
         c = ResultContainer()
         self.assertEqual(c.get_ordered_results(), [])

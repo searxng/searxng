@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# pylint: disable=missing-module-docstring
 
 import decimal
 import threading
@@ -11,7 +12,7 @@ __all__ = ["Histogram", "HistogramStorage", "CounterStorage"]
 logger = logger.getChild('searx.metrics')
 
 
-class Histogram:
+class Histogram:  # pylint: disable=missing-class-docstring
 
     _slots__ = '_lock', '_size', '_sum', '_quartiles', '_count', '_width'
 
@@ -25,11 +26,11 @@ class Histogram:
 
     def observe(self, value):
         q = int(value / self._width)
-        if q < 0:
-            """Value below zero is ignored"""
+        if q < 0:  # pylint: disable=consider-using-max-builtin
+            # Value below zero is ignored
             q = 0
         if q >= self._size:
-            """Value above the maximum is replaced by the maximum"""
+            # Value above the maximum is replaced by the maximum
             q = self._size - 1
         with self._lock:
             self._quartiles[q] += 1
@@ -53,8 +54,7 @@ class Histogram:
         with self._lock:
             if self._count != 0:
                 return self._sum / self._count
-            else:
-                return 0
+            return 0
 
     @property
     def quartile_percentage(self):
@@ -62,8 +62,7 @@ class Histogram:
         with self._lock:
             if self._count > 0:
                 return [int(q * 100 / self._count) for q in self._quartiles]
-            else:
-                return self._quartiles
+            return self._quartiles
 
     @property
     def quartile_percentage_map(self):
@@ -75,7 +74,7 @@ class Histogram:
         with self._lock:
             if self._count > 0:
                 for y in self._quartiles:
-                    yp = int(y * 100 / self._count)
+                    yp = int(y * 100 / self._count)  # pylint: disable=invalid-name
                     if yp != 0:
                         result[round(float(x), width_exponent)] = yp
                     x += width
@@ -100,7 +99,7 @@ class Histogram:
         return "Histogram<avg: " + str(self.average) + ", count: " + str(self._count) + ">"
 
 
-class HistogramStorage:
+class HistogramStorage:  # pylint: disable=missing-class-docstring
 
     __slots__ = 'measures', 'histogram_class'
 
@@ -121,12 +120,12 @@ class HistogramStorage:
 
     def dump(self):
         logger.debug("Histograms:")
-        ks = sorted(self.measures.keys(), key='/'.join)
+        ks = sorted(self.measures.keys(), key='/'.join)  # pylint: disable=invalid-name
         for k in ks:
             logger.debug("- %-60s %s", '|'.join(k), self.measures[k])
 
 
-class CounterStorage:
+class CounterStorage:  # pylint: disable=missing-class-docstring
 
     __slots__ = 'counters', 'lock'
 
@@ -151,17 +150,17 @@ class CounterStorage:
 
     def dump(self):
         with self.lock:
-            ks = sorted(self.counters.keys(), key='/'.join)
+            ks = sorted(self.counters.keys(), key='/'.join)  # pylint: disable=invalid-name
         logger.debug("Counters:")
         for k in ks:
             logger.debug("- %-60s %s", '|'.join(k), self.counters[k])
 
 
-class VoidHistogram(Histogram):
+class VoidHistogram(Histogram):  # pylint: disable=missing-class-docstring
     def observe(self, value):
         pass
 
 
-class VoidCounterStorage(CounterStorage):
+class VoidCounterStorage(CounterStorage):  # pylint: disable=missing-class-docstring
     def add(self, value, *args):
         pass

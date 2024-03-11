@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Configuration class :py:class:`Config` with deep-update, schema validation
 and deprecated names.
 
