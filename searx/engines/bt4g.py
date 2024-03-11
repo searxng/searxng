@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """BT4G_ (bt4g.com) is not a tracker and doesn't store any content and only
 collects torrent metadata (such as file names and file sizes) and a magnet link
 (torrent identifier).

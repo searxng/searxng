@@ -37,9 +37,9 @@ def response(resp):
     search_res = dom.xpath('.//td[@class="x-item"]')
 
     if not search_res:
-        return list()
+        return []
 
-    results = list()
+    results = []
     for result in search_res:
         url = urljoin(URL, result.xpath('.//a[@title]/@href')[0])
         title = extract_text(result.xpath('.//a[@title]'))

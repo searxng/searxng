@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """`Anna's Archive`_ is a free non-profit online shadow library metasearch
 engine providing access to a variety of book resources (also via IPFS), created
 by a team of anonymous archivists (AnnaArchivist_).

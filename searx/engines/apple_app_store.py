@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-"""
-    Apple App Store
+"""Apple App Store
+
 """
 
 from json import loads

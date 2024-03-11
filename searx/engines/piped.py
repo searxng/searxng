@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """An alternative privacy-friendly YouTube frontend which is efficient by
 design.  `Piped’s architecture`_ consists of 3 components:
 

@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""Rumble (Videos)
+
 """
- Rumble (Videos)
-"""
+
+from datetime import datetime
+
 from urllib.parse import urlencode
 from lxml import html
-from datetime import datetime
 
 # about
 from searx.utils import extract_text

@@ -96,7 +96,7 @@ def response(resp):
             title = gettext('{title} (OBSOLETE)').format(title=result['title'])
             try:
                 superseded_url = pdbe_entry_url.format(pdb_id=result['superseded_by'])
-            except:
+            except:  # pylint: disable=bare-except
                 continue
 
             # since we can't construct a proper body from the response, we'll make up our own

@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+[[ -z "${PYLINT_OPTIONS}" ]] &&  PYLINT_OPTIONS="-j 0 --rcfile .pylintrc"
+
 test.help(){
     cat <<EOF
 test.:
@@ -22,20 +27,19 @@ test.yamllint() {
 test.pylint() {
     # shellcheck disable=SC2086
     (   set -e
-        build_msg TEST "[pylint] \$PYLINT_FILES"
         pyenv.activate
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
+
+        build_msg TEST "[pylint] \$PYLINT_FILES"
+        pylint ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             "${PYLINT_FILES[@]}"
 
         build_msg TEST "[pylint] searx/engines"
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
-            --additional-builtins="${PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES}" \
+        pylint ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+            --additional-builtins="traits,supported_languages,language_aliases,logger,categories" \
             searx/engines
 
         build_msg TEST "[pylint] searx tests"
-        python ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
+        pylint ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
             --disable="${PYLINT_SEARXNG_DISABLE_OPTION}" \
 	    --ignore=searx/engines \
 	    searx tests

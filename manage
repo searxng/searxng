@@ -64,6 +64,11 @@ pylint.FILES() {
     find . -name searxng.msg
 }
 
+PYLINT_FILES=()
+while IFS= read -r line; do
+   PYLINT_FILES+=("$line")
+done <<< "$(pylint.FILES)"
+
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
@@ -77,9 +82,6 @@ PYLINT_SEARXNG_DISABLE_OPTION="\
 I,C,R,\
 W0105,W0212,W0511,W0603,W0613,W0621,W0702,W0703,W1401,\
 E1136"
-PYLINT_ADDITIONAL_BUILTINS_FOR_ENGINES="traits,supported_languages,language_aliases,logger,categories"
-PYLINT_OPTIONS="-m pylint -j 0 --rcfile .pylintrc"
-
 help() {
     nvm.help
     cat <<EOF
@@ -337,12 +339,6 @@ format.python() {
     pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
     dump_return $?
 }
-
-
-PYLINT_FILES=()
-while IFS= read -r line; do
-   PYLINT_FILES+=("$line")
-done <<< "$(pylint.FILES)"
 
 # shellcheck disable=SC2119
 main() {

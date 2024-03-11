@@ -106,7 +106,7 @@ def init(engine_settings):
     if 'command' not in engine_settings:
         raise ValueError('engine command : missing configuration key: command')
 
-    global command, working_dir, delimiter, parse_regex, environment_variables
+    global command, working_dir, delimiter, parse_regex, environment_variables  # pylint: disable=global-statement
 
     command = engine_settings['command']
 
@@ -172,7 +172,7 @@ def _get_results_from_process(results, cmd, pageno):
                     _command_logger.debug('skipped result:', raw_result)
                     continue
 
-                if start <= count and count <= end:
+                if start <= count and count <= end:  # pylint: disable=chained-comparison
                     result['template'] = result_template
                     results.append(result)
 
@@ -185,6 +185,7 @@ def _get_results_from_process(results, cmd, pageno):
         return_code = process.wait(timeout=timeout)
         if return_code != 0:
             raise RuntimeError('non-zero return code when running command', cmd, return_code)
+        return None
 
 
 def __get_results_limits(pageno):
@@ -230,7 +231,7 @@ def __parse_single_result(raw_result):
         elements = raw_result.split(delimiter['chars'], maxsplit=len(delimiter['keys']) - 1)
         if len(elements) != len(delimiter['keys']):
             return {}
-        for i in range(len(elements)):
+        for i in range(len(elements)):  # pylint: disable=consider-using-enumerate
             result[delimiter['keys'][i]] = elements[i]
 
     if parse_regex:

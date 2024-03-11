@@ -82,14 +82,14 @@ def response(resp):
         try:
             date = datetime.fromtimestamp(float(result["added"]))
             params['publishedDate'] = date
-        except:
+        except:  # pylint: disable=bare-except
             pass
 
         # let's try to calculate the torrent size
         try:
             filesize = get_torrent_size(result["size"], "B")
             params['filesize'] = filesize
-        except:
+        except:  # pylint: disable=bare-except
             pass
 
         # append result

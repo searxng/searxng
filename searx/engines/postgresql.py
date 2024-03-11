@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """PostgreSQL is a powerful and robust open source database.  Before configuring
 the PostgreSQL engine, you must install the dependency ``psychopg2``.
 

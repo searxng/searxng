@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Dummy Offline
+# pylint: disable=invalid-name
+"""Dummy Offline
+
 """
 
 
@@ -14,7 +15,7 @@ about = {
 }
 
 
-def search(query, request_params):
+def search(query, request_params):  # pylint: disable=unused-argument
     return [
         {
             'result': 'this is what you get',

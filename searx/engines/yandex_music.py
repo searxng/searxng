@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Yandex Music
 
 .. _Countries where Yandex.Music is available: https://yandex.com/support/music/access.html

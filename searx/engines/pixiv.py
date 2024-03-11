@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Pixiv (images)"""
 
 from urllib.parse import urlencode

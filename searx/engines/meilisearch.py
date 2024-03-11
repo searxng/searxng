@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """.. sidebar:: info
 
    - :origin:`meilisearch.py <searx/engines/meilisearch.py>`

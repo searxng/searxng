@@ -1,6 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
-
 """IMDB - Internet Movie Database
 
 Retrieves results from a basic search.  Advanced search options are not

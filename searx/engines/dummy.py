@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- Dummy
+"""Dummy
+
 """
 
 # about
@@ -15,10 +15,10 @@ about = {
 
 
 # do search-request
-def request(query, params):
+def request(query, params):  # pylint: disable=unused-argument
     return params
 
 
 # get response from search-request
-def response(resp):
+def response(resp):  # pylint: disable=unused-argument
     return []

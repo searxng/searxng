@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- MyMemory Translated
+"""MyMemory Translated
+
 """
 
 # about
@@ -23,7 +23,7 @@ https_support = True
 api_key = ''
 
 
-def request(query, params):
+def request(query, params):  # pylint: disable=unused-argument
     if api_key:
         key_form = '&key=' + api_key
     else:

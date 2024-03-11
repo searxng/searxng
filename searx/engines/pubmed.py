@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""
- PubMed (Scholar publications)
+"""PubMed (Scholar publications)
+
 """
 
-from lxml import etree
 from datetime import datetime
 from urllib.parse import urlencode
+
+from lxml import etree
 from searx.network import get
 from searx.utils import (
     eval_xpath_getindex,
@@ -41,14 +42,18 @@ def request(query, params):
     # basic search
     offset = (params['pageno'] - 1) * number_of_results
 
-    string_args = dict(query=urlencode({'term': query}), offset=offset, hits=number_of_results)
+    string_args = {
+        'query': urlencode({'term': query}),
+        'offset': offset,
+        'hits': number_of_results,
+    }
 
     params['url'] = base_url.format(**string_args)
 
     return params
 
 
-def response(resp):
+def response(resp):  # pylint: disable=too-many-locals
     results = []
 
     # First retrieve notice of each result
@@ -63,7 +68,7 @@ def response(resp):
     for item in pmids:
         pmids_string += item.text + ','
 
-    retrieve_notice_args = dict(pmids_string=pmids_string)
+    retrieve_notice_args = {'pmids_string': pmids_string}
 
     retrieve_url_encoded = pubmed_retrieve_api_url.format(**retrieve_notice_args)
 
@@ -119,7 +124,7 @@ def response(resp):
                     '%Y-%m-%d',
                 )
                 res_dict['publishedDate'] = publishedDate
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 print(e)
 
         results.append(res_dict)

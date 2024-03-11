@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """SearXNG engine for `Void Linux binary packages`_.  Void is a general purpose
 operating system, based on the monolithic Linux kernel. Its package system
 allows you to quickly install, update and remove software; software is provided

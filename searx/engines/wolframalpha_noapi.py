@@ -54,12 +54,12 @@ def obtain_token():
         token_response = http_get('https://www.wolframalpha.com/input/api/v1/code?ts=9999999999999999999', timeout=2.0)
         token['value'] = loads(token_response.text)['code']
         token['last_updated'] = update_time
-    except:
+    except:  # pylint: disable=bare-except
         pass
     return token
 
 
-def init(engine_settings=None):
+def init(engine_settings=None):  # pylint: disable=unused-argument
     obtain_token()
 
 
@@ -83,7 +83,7 @@ def response(resp):
     if not resp_json['queryresult']['success']:
         return []
 
-    # TODO handle resp_json['queryresult']['assumptions']
+    # handle resp_json['queryresult']['assumptions']?
     result_chunks = []
     infobox_title = ""
     result_content = ""

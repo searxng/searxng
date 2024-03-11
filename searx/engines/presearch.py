@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Presearch supports the search types listed in :py:obj:`search_type` (general,
 images, videos, news).
 

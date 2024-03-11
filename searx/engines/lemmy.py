@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """This engine uses the Lemmy API (https://lemmy.ml/api/v3/search), which is
 documented at `lemmy-js-client`_ / `Interface Search`_.  Since Lemmy is
 federated, results are from many different, independent lemmy instances, and not

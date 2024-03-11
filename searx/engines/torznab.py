@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Torznab_ is an API specification that provides a standardized way to query
 torrent site for content. It is used by a number of torrent applications,
 including Prowlarr_ and Jackett_.

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """Startpage's language & region selectors are a mess ..
 
 .. _startpage regions:

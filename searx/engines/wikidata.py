@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# lint: pylint
 """This module implements the Wikidata engine.  Some implementations are shared
 from :ref:`wikipedia engine`.
 
