@@ -6,6 +6,7 @@ ends.
 """
 
 from json import dumps
+from searx.utils import searx_useragent
 
 about = {
     "website": "https://stract.com/",
@@ -23,7 +24,11 @@ search_url = "https://stract.com/beta/api/search"
 def request(query, params):
     params['url'] = search_url
     params['method'] = "POST"
-    params['headers'] = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    params['headers'] = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'User-Agent': searx_useragent(),
+    }
     params['data'] = dumps({'query': query, 'page': params['pageno'] - 1})
 
     return params
