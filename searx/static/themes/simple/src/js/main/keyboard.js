@@ -63,6 +63,12 @@ searxng.ready(function () {
       des: 'remove focus from the focused input',
       cat: 'Control'
     },
+    'c': {
+      key: 'c',
+      fun: copyURLToClipboard,
+      des: 'copy url of the selected result to the clipboard',
+      cat: 'Results'
+    },
     'h': {
       key: 'h',
       fun: toggleHelp,
@@ -172,6 +178,12 @@ searxng.ready(function () {
           key: 'j',
           fun: highlightResult('down'),
           des: 'select next search result',
+          cat: 'Results'
+        },
+        'y': {
+          key: 'y',
+          fun: copyURLToClipboard,
+          des: 'copy url of the selected result to the clipboard',
           cat: 'Results'
         },
       }, baseKeyBinding)
@@ -433,6 +445,14 @@ searxng.ready(function () {
       helpPanel.classList.toggle('invisible');
       return;
     }
+  }
+
+  function copyURLToClipboard () {
+    var currentUrlElement = document.querySelector('.result[data-vim-selected] h3 a');
+    if (currentUrlElement === null) return;
+
+    const url = currentUrlElement.getAttribute('href');
+    navigator.clipboard.writeText(url);
   }
 
   searxng.scrollPageToSelected = scrollPageToSelected;
