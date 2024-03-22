@@ -85,7 +85,7 @@ Kong."""
 def localeselector():
     locale = 'en'
     if has_request_context():
-        value = flask.request.preferences.get_value('locale')
+        value = flask.request.preferences.get_value('locale')  # type: ignore
         if value:
             locale = value
 

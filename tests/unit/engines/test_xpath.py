@@ -10,13 +10,13 @@ from tests import SearxTestCase
 class TestXpathEngine(SearxTestCase):
     def test_request(self):
         xpath.search_url = 'https://url.com/{query}'
-        xpath.categories = []
+        xpath.categories = []  # type: ignore
         xpath.paging = False
         query = 'test_query'
         dicto = defaultdict(dict)
         params = xpath.request(query, dicto)
         self.assertIn('url', params)
-        self.assertEquals('https://url.com/test_query', params['url'])
+        self.assertEquals('https://url.com/test_query', params['url'])  # type: ignore
 
         xpath.search_url = 'https://url.com/q={query}&p={pageno}'
         xpath.paging = True
@@ -25,7 +25,7 @@ class TestXpathEngine(SearxTestCase):
         dicto['pageno'] = 1
         params = xpath.request(query, dicto)
         self.assertIn('url', params)
-        self.assertEquals('https://url.com/q=test_query&p=1', params['url'])
+        self.assertEquals('https://url.com/q=test_query&p=1', params['url'])  # type: ignore
 
     def test_response(self):
         # without results_xpath
@@ -41,7 +41,7 @@ class TestXpathEngine(SearxTestCase):
         response = mock.Mock(text='<html></html>')
         self.assertEqual(xpath.response(response), [])
 
-        html = u"""
+        html = """
         <div>
             <div class="search_result">
                 <a class="result" href="https://result1.com">Result 1</a>
@@ -76,7 +76,7 @@ class TestXpathEngine(SearxTestCase):
         self.assertFalse(results[0].get('is_onion', False))
 
         # results are onion urls (no results_xpath)
-        xpath.categories = ['onions']
+        xpath.categories = ['onions']  # type: ignore
         results = xpath.response(response)
         self.assertTrue(results[0]['is_onion'])
 
@@ -86,7 +86,7 @@ class TestXpathEngine(SearxTestCase):
         xpath.title_xpath = './/a[@class="result"]'
         xpath.content_xpath = './/p[@class="content"]'
         xpath.cached_xpath = None
-        xpath.categories = []
+        xpath.categories = []  # type: ignore
 
         self.assertRaises(AttributeError, xpath.response, None)
         self.assertRaises(AttributeError, xpath.response, [])
@@ -117,6 +117,6 @@ class TestXpathEngine(SearxTestCase):
         self.assertFalse(results[0].get('is_onion', False))
 
         # results are onion urls (with results_xpath)
-        xpath.categories = ['onions']
+        xpath.categories = ['onions']  # type: ignore
         results = xpath.response(response)
         self.assertTrue(results[0]['is_onion'])

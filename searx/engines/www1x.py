@@ -4,7 +4,7 @@
 """
 
 from urllib.parse import urlencode, urljoin
-from lxml import html, etree
+from lxml import html, etree  # type: ignore
 
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex
 

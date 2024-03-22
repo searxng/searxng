@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 def client() -> redis.Redis:
-    return _CLIENT
+    return _CLIENT  # type: ignore
 
 
 def initialize():
@@ -43,7 +43,7 @@ def initialize():
         return False
     try:
         # create a client, but no connection is done
-        _CLIENT = redis.Redis.from_url(redis_url)
+        _CLIENT = redis.Redis.from_url(redis_url)  # type: ignore
 
         # log the parameters as seen by the redis lib, without the password
         kwargs = _CLIENT.get_connection_kwargs().copy()
@@ -57,11 +57,11 @@ def initialize():
         # no error: the redis connection is working
         logger.info("connected to Redis")
         return True
-    except redis.exceptions.RedisError as e:
+    except redis.exceptions.RedisError as e:  # type: ignore
         _CLIENT = None
         _pw = pwd.getpwuid(os.getuid())
         logger.exception("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
-        if redis_url == OLD_REDIS_URL_DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):
+        if redis_url == OLD_REDIS_URL_DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):  # type: ignore
             logger.info(
                 "You can safely ignore the above Redis error if you don't use Redis. "
                 "You can remove this error by setting redis.url to false in your settings.yml."

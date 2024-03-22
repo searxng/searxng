@@ -69,7 +69,7 @@ test.shell:
 		utils/searx.sh \
 		utils/filtron.sh \
 		utils/morty.sh
-	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
+	$(Q)$(MTOOLS) build_msg TEST "[shellcheck] $@ OK"
 
 
 # wrap ./manage script

@@ -2,7 +2,7 @@
 """Ask.com"""
 
 from urllib.parse import urlencode
-import dateutil
+import dateutil.parser
 from lxml import html
 from searx import utils
 

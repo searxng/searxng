@@ -10,10 +10,12 @@ used.
 """
 
 from __future__ import annotations
+from collections.abc import Callable
+
 import json
 import dataclasses
 import types
-from typing import Dict, Literal, Iterable, Union, Callable, Optional, TYPE_CHECKING
+from typing import Dict, Literal, Iterable, Union, Optional, TYPE_CHECKING
 
 from searx import locales
 from searx.data import data_dir, ENGINE_TRAITS

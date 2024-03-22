@@ -324,7 +324,7 @@ class ClientPref:
 
     # hint: searx.webapp.get_client_settings should be moved into this class
 
-    locale: babel.Locale
+    locale: Optional[babel.Locale]
     """Locale prefered by the client."""
 
     def __init__(self, locale: Optional[babel.Locale] = None):
@@ -359,7 +359,7 @@ class ClientPref:
             try:
                 qvalue = float(qvalue.split('=')[-1])
                 locale = babel.Locale.parse(lang, sep='-')
-            except (ValueError, babel.core.UnknownLocaleError):
+            except (ValueError, babel.core.UnknownLocaleError):  # type: ignore
                 continue
             pairs.append((locale, qvalue))
 
@@ -548,7 +548,7 @@ class Preferences:
                 self.tokens.parse_form(user_setting)
             else:
                 self.unknown_params[user_setting_name] = user_setting
-        self.key_value_settings['categories'].parse_form(enabled_categories)
+        self.key_value_settings['categories'].parse_form(enabled_categories)  # type: ignore
         self.engines.parse_form(disabled_engines)
         self.plugins.parse_form(disabled_plugins)
 

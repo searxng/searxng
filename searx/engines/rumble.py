@@ -55,7 +55,7 @@ def response(resp):
         return []
 
     for result_dom in results_dom:
-        url = base_url + extract_text(result_dom.xpath(url_xpath))
+        url = base_url + extract_text(result_dom.xpath(url_xpath))  # type: ignore
         thumbnail = extract_text(result_dom.xpath(thumbnail_xpath))
         title = extract_text(result_dom.xpath(title_xpath))
         p_date = extract_text(result_dom.xpath(published_date))

@@ -5,8 +5,6 @@ peertube engines.
 
 """
 
-from typing import TYPE_CHECKING
-
 from urllib.parse import urlencode
 from datetime import datetime
 
@@ -17,14 +15,6 @@ from searx.engines.peertube import (
     safesearch_table,
     time_range_table,
 )
-from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 about = {
     # pylint: disable=line-too-long

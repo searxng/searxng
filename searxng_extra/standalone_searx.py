@@ -56,7 +56,7 @@ def get_search_query(
 ) -> searx.search.SearchQuery:
     """Get  search results for the query"""
     if engine_categories is None:
-        engine_categories = list(searx.engines.categories.keys())
+        engine_categories = list(searx.engines.categories.keys())  # type: ignore
     try:
         category = args.category.decode('utf-8')
     except AttributeError:
@@ -68,7 +68,7 @@ def get_search_query(
         "language": args.lang,
         "time_range": args.timerange,
     }
-    preferences = searx.preferences.Preferences(['simple'], engine_categories, searx.engines.engines, [])
+    preferences = searx.preferences.Preferences(['simple'], engine_categories, searx.engines.engines, [])  # type: ignore
     preferences.key_value_settings['safesearch'].parse(args.safesearch)
 
     search_query = searx.webadapter.get_search_query_from_webapp(preferences, form)[0]
@@ -141,7 +141,7 @@ def parse_argument(
     Namespace(category='general', lang='all', pageno=1, query='rain', safesearch='0', timerange=None)
     """  # noqa: E501
     if not category_choices:
-        category_choices = list(searx.engines.categories.keys())
+        category_choices = list(searx.engines.categories.keys())  # type: ignore
     parser = argparse.ArgumentParser(description='Standalone searx.')
     parser.add_argument('query', type=str, help='Text query')
     parser.add_argument(
@@ -166,7 +166,7 @@ def parse_argument(
 if __name__ == '__main__':
     settings_engines = searx.settings['engines']
     searx.search.load_engines(settings_engines)
-    engine_cs = list(searx.engines.categories.keys())
+    engine_cs = list(searx.engines.categories.keys())  # type: ignore
     prog_args = parse_argument(category_choices=engine_cs)
     searx.search.initialize_network(settings_engines, searx.settings['outgoing'])
     searx.search.check_network_configuration()

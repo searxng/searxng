@@ -69,7 +69,7 @@ def search(query, _params):
 
     ret = _redis_client.hgetall(query)
     if ret:
-        ret['template'] = result_template
+        ret['template'] = result_template  # type: ignore
         return [ret]
 
     if ' ' in query:
@@ -98,7 +98,7 @@ def search_keys(query):
             res = dict(enumerate(_redis_client.lrange(key, 0, -1)))
 
         if res:
-            res['template'] = result_template
-            res['redis_key'] = key
+            res['template'] = result_template  # type: ignore
+            res['redis_key'] = key  # type: ignore
             ret.append(res)
     return ret

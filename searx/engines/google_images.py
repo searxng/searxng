@@ -13,8 +13,6 @@ This internal API offer results in
 .. _Protobuf: https://en.wikipedia.org/wiki/Protocol_Buffers
 """
 
-from typing import TYPE_CHECKING
-
 from urllib.parse import urlencode
 from json import loads
 
@@ -25,15 +23,7 @@ from searx.engines.google import (
     detect_google_sorry,
 )
 
-if TYPE_CHECKING:
-    import logging
-    from searx.enginelib.traits import EngineTraits
 
-    logger: logging.Logger
-    traits: EngineTraits
-
-
-# about
 about = {
     "website": 'https://images.google.com',
     "wikidata_id": 'Q521550',

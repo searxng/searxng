@@ -3,6 +3,7 @@
 
 """
 
+from __future__ import annotations
 import typing
 import numbers
 import errno
@@ -49,7 +50,7 @@ class SettingsValue:
         self,
         type_definition: typing.Union[None, typing.Any, typing.Tuple[typing.Any]] = None,
         default: typing.Any = None,
-        environ_name: str = None,
+        environ_name: str | None = None,
     ):
         self.type_definition = (
             type_definition if type_definition is None or isinstance(type_definition, tuple) else (type_definition,)
@@ -59,13 +60,13 @@ class SettingsValue:
 
     @property
     def type_definition_repr(self):
-        types_str = [t.__name__ if isinstance(t, type) else repr(t) for t in self.type_definition]
+        types_str = [t.__name__ if isinstance(t, type) else repr(t) for t in self.type_definition]  # type: ignore
         return ', '.join(types_str)
 
     def check_type_definition(self, value: typing.Any) -> None:
         if value in self.type_definition:
             return
-        type_list = tuple(t for t in self.type_definition if isinstance(t, type))
+        type_list = tuple(t for t in self.type_definition if isinstance(t, type))  # type: ignore
         if not isinstance(value, type_list):
             raise ValueError('The value has to be one of these types/values: {}'.format(self.type_definition_repr))
 
@@ -89,7 +90,7 @@ class SettingSublistValue(SettingsValue):
         if not isinstance(value, list):
             raise ValueError('The value has to a list')
         for item in value:
-            if not item in self.type_definition[0]:
+            if not item in self.type_definition[0]:  # type: ignore
                 raise ValueError('{} not in {}'.format(item, self.type_definition))
 
 

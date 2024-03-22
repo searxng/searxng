@@ -5,7 +5,7 @@
 
 from datetime import datetime
 
-from lxml import etree
+from lxml import etree  # type: ignore
 from lxml.etree import XPath
 from searx.utils import eval_xpath, eval_xpath_list, eval_xpath_getindex
 

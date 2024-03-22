@@ -56,7 +56,7 @@ def response(resp):
         content = html.tostring(excerpt, encoding='unicode', method='text', with_tail=False)
         # it is better to emit <br/> instead of |, but html tags are verboten
         content = content.strip().replace('\n', ' | ')
-        content = ' '.join(content.split())
+        content = ' '.join(content.split())  # type: ignore
 
         filesize = result.xpath('.//span[@class="torrent_size"]/text()')[0].split()[0]
         filesize_multiplier = result.xpath('.//span[@class="torrent_size"]/text()')[0].split()[1]

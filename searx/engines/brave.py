@@ -118,7 +118,7 @@ Implementations
 
 """
 
-from typing import Any, TYPE_CHECKING
+from typing import Any
 
 from urllib.parse import (
     urlencode,
@@ -138,13 +138,6 @@ from searx.utils import (
     js_variable_to_python,
 )
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 about = {
     "website": 'https://search.brave.com/',
@@ -228,10 +221,10 @@ def request(query, params):
     params['cookies']['useLocation'] = '0'
     params['cookies']['summarizer'] = '0'
 
-    engine_region = traits.get_region(params['searxng_locale'], 'all')
+    engine_region = traits.get_region(params['searxng_locale'], 'all')  # type: ignore
     params['cookies']['country'] = engine_region.split('-')[-1].lower()  # type: ignore
 
-    ui_lang = locales.get_engine_locale(params['searxng_locale'], traits.custom["ui_lang"], 'en-us')
+    ui_lang = locales.get_engine_locale(params['searxng_locale'], traits.custom["ui_lang"], 'en-us')  # type: ignore
     params['cookies']['ui_lang'] = ui_lang
 
     logger.debug("cookies %s", params['cookies'])

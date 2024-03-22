@@ -46,7 +46,7 @@ def response(resp):
     for result in eval_xpath_list(dom, results_xpath):
         results.append(
             {
-                'url': base_url + extract_text(eval_xpath(result, url_xpath)),
+                'url': base_url + extract_text(eval_xpath(result, url_xpath)),  # type: ignore
                 'title': extract_text(eval_xpath(result, title_xpath)),
                 'img_src': extract_text(eval_xpath(result, thumbnail_xpath)),
                 'content': extract_text(eval_xpath(result, info_text_xpath)),

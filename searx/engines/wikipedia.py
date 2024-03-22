@@ -64,8 +64,6 @@ from searx import network as _network
 from searx import locales
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 # about
 about = {
     "website": 'https://www.wikipedia.org/',
@@ -277,7 +275,7 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
             engine_traits.regions[sxng_tag] = eng_tag
 
     resp = _network.get(list_of_wikipedias)
-    if not resp.ok:
+    if not resp.ok:  # type: ignore
         print("ERROR: response from Wikipedia is not OK.")
 
     dom = html.fromstring(resp.text)
