@@ -1,0 +1,97 @@
+server:
+  secret_key: "user_settings_secret"
+outgoing:
+  networks:
+    http00:
+      enable_http: false
+      enable_http2: false
+    http10:
+      enable_http: true
+      enable_http2: false
+    http01:
+      enable_http: false
+      enable_http2: true
+    http11:
+      enable_http: true
+      enable_http2: true
+    sock5h:
+      proxies: socks5h://127.0.0.1:4000
+    sock5:
+      proxies: socks5://127.0.0.1:4000
+    sock4:
+      proxies: socks4://127.0.0.1:4000
+engines:
+  #
+  - name: enginea
+    shortcut: a
+    engine: dummy
+    network:
+      proxies: http://127.0.0.1:8000
+  - name: engineb
+    shortcut: b
+    engine: dummy
+    proxies: http://127.0.0.1:8000
+  - name: enginec
+    shortcut: c
+    engine: dummy
+    network:
+      proxies:
+        all://: http://127.0.0.1:8000
+  - name: engined
+    shortcut: d
+    engine: dummy
+    network:
+      proxies:
+        all://:
+          - http://127.0.0.1:8000
+          - http://127.0.0.1:9000
+  - name: enginee
+    shortcut: e
+    engine: dummy
+    network:
+      proxies:
+        all://:
+          - http://127.0.0.1:8000
+          - http://127.0.0.1:9000
+        example.com://:
+          - http://127.0.0.1:6000
+          - http://127.0.0.1:7000
+  - name: enginef
+    shortcut: f
+    engine: dummy
+    network:
+      proxies:
+        - http://127.0.0.1:8000
+        - http://127.0.0.1:9000
+  - name: engineg
+    shortcut: g
+    engine: dummy
+    network:
+      local_addresses:
+        - 192.168.0.1
+        - 192.168.0.200
+  - name: engineh
+    shortcut: h
+    engine: dummy
+    network:
+      local_addresses: 192.168.0.2
+  - name: ip2
+    shortcut: ip2
+    engine: dummy
+    network:
+      local_addresses: 192.168.0.1/30
+  - name: enginei
+    shortcut: i
+    engine: dummy
+    network:
+      retry_strategy: engine
+  - name: enginej
+    shortcut: j
+    engine: dummy
+    network:
+      retry_strategy: SAME_HTTP_CLIENT
+  - name: enginek
+    shortcut: k
+    engine: dummy
+    network:
+      retry_strategy: DIFFERENT_HTTP_CLIENT

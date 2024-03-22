@@ -97,6 +97,18 @@ else:
 logger = logging.getLogger('searx')
 logger.info(settings_load_message)
 
+# set the levels of verbose loggers to WARNING
+for logger_name in (
+    'httpx',
+    'httpcore.proxy',
+    'httpcore.connection',
+    'httpcore.http11',
+    'httpcore.http2',
+    'hpack.hpack',
+    'hpack.table',
+):
+    logging.getLogger(logger_name).setLevel(logging.WARNING)
+
 # log max_request_timeout
 max_request_timeout = settings['outgoing']['max_request_timeout']
 if max_request_timeout is None:

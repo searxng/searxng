@@ -210,9 +210,11 @@ SCHEMA = {
     'outgoing': {
         'useragent_suffix': SettingsValue(str, ''),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
-        'enable_http2': SettingsValue(bool, True),
-        'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
+        # defaut network
+        'verify': SettingsValue((bool, str), True),
+        'enable_http': SettingsValue(bool, False),
+        'enable_http2': SettingsValue(bool, True),
         'pool_connections': SettingsValue(int, 100),
         'pool_maxsize': SettingsValue(int, 10),
         'keepalive_expiry': SettingsValue(numbers.Real, 5.0),

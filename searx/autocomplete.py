@@ -15,7 +15,7 @@ from searx.engines import (
     engines,
     google,
 )
-from searx.network import get as http_get, post as http_post
+from searx.network import NETWORKS
 from searx.exceptions import SearxEngineResponseException
 
 
@@ -27,12 +27,14 @@ def update_kwargs(**kwargs):
 
 def get(*args, **kwargs):
     update_kwargs(**kwargs)
-    return http_get(*args, **kwargs)
+    network_context = NETWORKS.get('autocomplete').get_context()
+    return network_context.request('GET', *args, **kwargs)
 
 
 def post(*args, **kwargs):
     update_kwargs(**kwargs)
-    return http_post(*args, **kwargs)
+    network_context = NETWORKS.get('autocomplete').get_context()
+    return network_context.request('POST', *args, **kwargs)
 
 
 def brave(query, _lang):

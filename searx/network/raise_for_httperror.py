@@ -3,12 +3,12 @@
 
 """
 
+from searx import get_setting
 from searx.exceptions import (
+    SearxEngineAccessDeniedException,
     SearxEngineCaptchaException,
     SearxEngineTooManyRequestsException,
-    SearxEngineAccessDeniedException,
 )
-from searx import get_setting
 
 
 def is_cloudflare_challenge(resp):

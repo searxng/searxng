@@ -10,7 +10,7 @@ from typing import Dict, Union
 
 from searx import settings, logger
 from searx.engines import engines
-from searx.network import get_time_for_thread, get_network
+from searx.network import NETWORKS
 from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
 from searx.utils import get_engine_from_settings
@@ -64,7 +64,7 @@ class EngineProcessor(ABC):
         self.engine = engine
         self.engine_name = engine_name
         self.logger = engines[engine_name].logger
-        key = get_network(self.engine_name)
+        key = NETWORKS.get(self.engine_name)
         key = id(key) if key else self.engine_name
         self.suspended_status = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())
 
@@ -105,26 +105,25 @@ class EngineProcessor(ABC):
                 suspended_time = exception_or_message.suspended_time
             self.suspended_status.suspend(suspended_time, error_message)  # pylint: disable=no-member
 
-    def _extend_container_basic(self, result_container, start_time, search_results):
+    def _extend_container_basic(self, result_container, start_time, search_results, network_time=None):
         # update result_container
         result_container.extend(self.engine_name, search_results)
         engine_time = default_timer() - start_time
-        page_load_time = get_time_for_thread()
-        result_container.add_timing(self.engine_name, engine_time, page_load_time)
+        result_container.add_timing(self.engine_name, engine_time, network_time)
         # metrics
         counter_inc('engine', self.engine_name, 'search', 'count', 'successful')
         histogram_observe(engine_time, 'engine', self.engine_name, 'time', 'total')
-        if page_load_time is not None:
-            histogram_observe(page_load_time, 'engine', self.engine_name, 'time', 'http')
+        if network_time is not None:
+            histogram_observe(network_time, 'engine', self.engine_name, 'time', 'http')
 
-    def extend_container(self, result_container, start_time, search_results):
+    def extend_container(self, result_container, start_time, search_results, network_time=None):
         if getattr(threading.current_thread(), '_timeout', False):
             # the main thread is not waiting anymore
             self.handle_exception(result_container, 'timeout', None)
         else:
             # check if the engine accepted the request
             if search_results is not None:
-                self._extend_container_basic(result_container, start_time, search_results)
+                self._extend_container_basic(result_container, start_time, search_results, network_time)
             self.suspended_status.resume()
 
     def extend_container_if_suspended(self, result_container):
