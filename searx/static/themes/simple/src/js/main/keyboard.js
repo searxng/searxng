@@ -66,7 +66,7 @@ searxng.ready(function () {
     'c': {
       key: 'c',
       fun: copyURLToClipboard,
-      des: 'copy URL of the selected result to the clipboard',
+      des: 'copy url of the selected result to the clipboard',
       cat: 'Results'
     },
     'h': {
@@ -183,7 +183,7 @@ searxng.ready(function () {
         'y': {
           key: 'y',
           fun: copyURLToClipboard,
-          des: 'copy URL of the selected result to the clipboard',
+          des: 'copy url of the selected result to the clipboard',
           cat: 'Results'
         },
       }, baseKeyBinding)
@@ -448,9 +448,10 @@ searxng.ready(function () {
   }
 
   function copyURLToClipboard () {
-    var current = document.querySelector('.result[data-vim-selected] h3 a');
-    if (current === null) return;
-    var url = current.getAttribute('href');
+    var currentUrlElement = document.querySelector('.result[data-vim-selected] h3 a');
+    if (currentUrlElement === null) return;
+
+    const url = currentUrlElement.getAttribute('href');
     navigator.clipboard.writeText(url);
   }
 
