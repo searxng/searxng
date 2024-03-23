@@ -55,7 +55,7 @@ fi
 YAMLLINT_FILES=()
 while IFS= read -r line; do
    YAMLLINT_FILES+=("$line")
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
+done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml' '.github/*.yml' '.github/*/*.yml')"
 
 RST_FILES=(
     'README.rst'
