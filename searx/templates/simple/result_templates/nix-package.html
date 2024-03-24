@@ -1,0 +1,39 @@
+{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+
+<h3>{{ result.package_pname }}</h3>
+{{- result_sub_header(result) -}}
+{%- if result.content %}
+  <p class="content">
+    {{ result.content|safe }}
+  </p>
+{%- else %}
+  <p class="content empty_element">
+    {{ _('No description available.')|safe }}
+  </p>
+{% endif -%}
+<ul>
+    <li>Name: <code>{{ result.package_pname }}</code></li>
+    <li>Version: <strong>{{ result.package_pversion }}</strong></li>
+    <li>Outputs: 
+        <code>{{ result.package_outputs|join(", ") }}</code>
+    </li>
+    {% if result.package_homepage %}
+    <li><a href="{{ result.package_homepage|first() }}" target="_blank">🌐 Homepage</a></li>
+    {% endif %}
+    {% if result.package_position %}
+    <li><a href="{{ result.github_url }}" target="_blank">📦 Source</a></li>
+    {% endif %}
+    {% if result.package_license.url and result.package_license.fullName %}
+    <li>License: <a href="{{ result.package_license.url }}" target="_blank">{{ result.package_license.fullName }}</a></li>
+    {% endif %}
+</ul>
+
+<div dir="ltr" class="codelines">
+    {{- result.codelines|code_highlighter('sh')|safe -}}
+</div>
+
+<div class="engines">
+    {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
+  </div>{{- '' -}}
+  <div class="break"></div>{{- '' -}}
+{{- result_footer(result) -}}
