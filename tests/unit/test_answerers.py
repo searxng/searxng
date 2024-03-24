@@ -12,5 +12,10 @@ class AnswererTest(SearxTestCase):  # pylint: disable=missing-class-docstring
         query = Mock()
         unicode_payload = 'árvíztűrő tükörfúrógép'
         for answerer in answerers:
-            query.query = '{} {}'.format(answerer.keywords[0], unicode_payload)
-            self.assertTrue(isinstance(answerer.answer(query), list))
+            for keyword in answerer.keywords:
+                query.query = '{} {}'.format(keyword, unicode_payload)
+                answer_dicts = answerer.answer(query)
+                self.assertTrue(isinstance(answer_dicts, list))
+                for answer_dict in answer_dicts:
+                    self.assertTrue('answer' in answer_dict)
+                    self.assertTrue(isinstance(answer_dict['answer'], str))

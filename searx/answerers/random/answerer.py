@@ -1,10 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+from __future__ import annotations
 import hashlib
 import random
 import string
 import uuid
 from flask_babel import gettext
+from typing import Callable
+from searx.answerers.models import AnswerDict, AnswerSelfInfoDict
+from searx.search.models import BaseQuery
 
 # required answerer attribute
 # specifies which search query keywords triggers this answerer
@@ -45,7 +49,7 @@ def random_color():
     return f"#{color.upper()}"
 
 
-random_types = {
+random_types: dict[str, Callable[[], str]] = {
     'string': random_string,
     'int': random_int,
     'float': random_float,
@@ -57,7 +61,7 @@ random_types = {
 
 # required answerer function
 # can return a list of results (any result type) for a given query
-def answer(query):
+def answer(query: BaseQuery) -> list[AnswerDict]:
     parts = query.query.split()
     if len(parts) != 2:
         return []
@@ -70,7 +74,7 @@ def answer(query):
 
 # required answerer function
 # returns information about the answerer
-def self_info():
+def self_info() -> AnswerSelfInfoDict:
     return {
         'name': gettext('Random value generator'),
         'description': gettext('Generate different random values'),
