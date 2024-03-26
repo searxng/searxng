@@ -23,10 +23,30 @@
     <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
         {%- for answer in answers.values() -%}
         <div class="answer">
-        <span>{{ answer.answer }}</span>
-          {% if answer.url -%}
-          <a href="{{ answer.url }}" class="answer-url">{{ urlparse(answer.url).hostname }}</a>
-          {% endif -%}
+          {% if answer.title %}
+            <h5 class="answer-title">{{ answer.title }}</h5>
+          {% endif %}
+          {% if answer.url %}
+            <a href="{{ answer.url }}">{{ answer.answer }}</a>
+          {% else %}
+            <span>{{ answer.answer }}</span>
+          {% endif %}
+          {% if answer.fields %}
+            <dl class="answer-fields">
+              {% for field in answer.fields -%}
+                <dt>{{ field.label }}</dt>
+                <dd>{{ field.value }}</dd>
+              {%- endfor %}
+            </dl>
+          {% endif %}
+          {% if answer.sources %}
+            <div class="answer-sources">
+              {{ _('Sources') }}:
+              {% for source in answer.sources -%}
+                {% if not loop.first %}, {% endif %}<a href="{{ source.url }}">{{ source.title }}</a>
+              {%- endfor %}
+            </div>
+          {% endif %}
         </div>
         {%- endfor -%}
     </div>
