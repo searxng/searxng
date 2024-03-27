@@ -191,6 +191,10 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<h1>Search syntax</h1>', result.data)
 
+        result = self.app.get('/info/en/privacy-policy')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'<h1>Privacy Policy</h1>', result.data)
+
     def test_health(self):
         result = self.app.get('/healthz')
         self.assertEqual(result.status_code, 200)
