@@ -19,6 +19,7 @@ about = {
 # Engine Configuration
 categories = ['general']
 paging = True
+max_page = 5
 
 # Base URL
 base_url = "https://www.ask.com/web"
@@ -61,7 +62,7 @@ def response(resp):
 
         results.append(
             {
-                "url": item['url'],
+                "url": item['url'].split('&ueid')[0],
                 "title": item['title'],
                 "content": item['abstract'],
                 "publishedDate": pubdate_original,
