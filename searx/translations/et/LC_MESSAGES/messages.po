@@ -9,26 +9,28 @@
 # dogyx <aaronloit@tuta.io>, 2022.
 # dom1torii <djmdmitri.a@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
+# pixrobot <pixrobot@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-25 15:26+0000\n"
-"PO-Revision-Date: 2023-10-08 16:53+0000\n"
-"Last-Translator: return42 <markus.heiser@darmarit.de>\n"
+"PO-Revision-Date: 2024-03-25 23:18+0000\n"
+"Last-Translator: pixrobot <pixrobot@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
+"searxng/et/>\n"
 "Language: et\n"
-"Language-Team: Estonian "
-"<https://translate.codeberg.org/projects/searxng/searxng/et/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.4.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr ""
+msgstr "ilma edasise alagrupeerimiseta"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -153,7 +155,7 @@ msgstr "pime"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "Kasutusaeg"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:49
@@ -287,15 +289,15 @@ msgstr "raadio"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
-msgstr ""
+msgstr "bitikiirus"
 
 #: searx/engines/radio_browser.py:107
 msgid "votes"
-msgstr ""
+msgstr "hääled"
 
 #: searx/engines/radio_browser.py:108
 msgid "clicks"
-msgstr ""
+msgstr "klikid"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -306,6 +308,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
+"{numCitations} aasta tsitaadid {firstCitationVelocityYear} kuni "
+"{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:40
 msgid ""
@@ -322,6 +326,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
+"Pilt on liiga lihtne, et leida vasteid. TinEye nõuab vastete edukaks "
+"tuvastamiseks elementaarseid visuaalseid üksikasju."
 
 #: searx/engines/tineye.py:52
 msgid "The image could not be downloaded."
@@ -345,11 +351,11 @@ msgstr "Öö"
 
 #: searx/engines/zlibrary.py:130
 msgid "Book rating"
-msgstr ""
+msgstr "Raamatu hinnang"
 
 #: searx/engines/zlibrary.py:131
 msgid "File quality"
-msgstr ""
+msgstr "Faili kvaliteet"
 
 #: searx/plugins/hash_plugin.py:24
 msgid "Converts strings to different hash digests."
@@ -383,7 +389,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:10
 msgid "Self Information"
-msgstr ""
+msgstr "Eneseteave"
 
 #: searx/plugins/self_info.py:11
 msgid ""
@@ -395,29 +401,34 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:25
 msgid "Tor check plugin"
-msgstr ""
+msgstr "Tor kontrollplugin"
 
 #: searx/plugins/tor_check.py:28
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"See plugin kontrollib, kas päringu aadress on Tor'i väljumissõlm ja teavitab "
+"kasutajat, kui see on nii: nagu check.torproject.org, aga alates SearXNG."
 
 #: searx/plugins/tor_check.py:62
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
+"Ei saanud alla laadida Tori väljumissõlmede nimekiri aadressilt: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:78
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
+"Te kasutate Tor'i ja tundub, et teil on see väline IP-aadress: {ip_address}"
 
 #: searx/plugins/tor_check.py:86
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
+msgstr "Te ei kasuta Tor'i ja teil on see väline IP-aadress: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:29
 msgid "Tracker URL remover"
@@ -455,7 +466,7 @@ msgstr "Põhineb tarkvaral"
 
 #: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "üks privaatsust austav, vaba metaotsingumootor"
 
 #: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
@@ -507,7 +518,7 @@ msgstr "proksitud"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submiting a new issue on GitHub"
-msgstr ""
+msgstr "Alustage uue probleemi esitamist GitHubis"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
@@ -516,6 +527,8 @@ msgstr "Palun uurige olemasolevate selle otsingumootori tõrgete kohta GitHubist
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
+"Ma kinnitan et mul ei ole olemasolevat viga probleemi kohta millega ma kokku "
+"puutun"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -537,11 +550,11 @@ msgstr "Vaadake vealogisid ja esitage veateade"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
-msgstr ""
+msgstr "!bang selle mootori jaoks"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr ""
+msgstr "!bang oma kategooriate puhul"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -739,7 +752,7 @@ msgstr "Laadi tulemused alla"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Sõnumid otsingumootorist"
 
 #: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
@@ -756,12 +769,12 @@ msgstr "Otsingu URL"
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
-msgstr ""
+msgstr "Kopeeritud"
 
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
-msgstr ""
+msgstr "Kopeeri"
 
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
@@ -780,7 +793,7 @@ msgstr "Vaikimisi keel"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automaatne-tuvastamine"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -845,35 +858,35 @@ msgstr "Vabandust!"
 
 #: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
-msgstr ""
+msgstr "Tulemusi ei leitud. Võite proovida:"
 
 #: searx/templates/simple/messages/no_results.html:14
 msgid "There are no more results. You can try to:"
-msgstr ""
+msgstr "Rohkem tulemusi ei ole. Võite proovida:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr ""
+msgstr "Värskenda lehekülge."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "Teise päringu otsimine või teise kategooria valimine (üleval)."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
-msgstr ""
+msgstr "Muutke eelistustes kasutatud otsingumootorit:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr ""
+msgstr "Vahetage teisele instantsile:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "Teise päringu otsimine või teise kategooria valimine."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
+msgstr "Mine tagasi eelmisele lehele, kasutades nuppu eelmine lehekülg."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -915,11 +928,11 @@ msgstr "Otsi asju kirjutamise ajal"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
-msgstr ""
+msgstr "Keskuse joondamine"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Kuvab tulemused lehekülje keskel (Oscari paigutus)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -955,25 +968,27 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
-msgstr ""
+msgstr "URL et taastada oma eelistused teises brauseris"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Kohandatud seadete määramine eelistuste URL-i saab kasutada eelistuste "
+"sünkroniseerimiseks eri seadmetes."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "Kopeeri eelistuste hash"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
+msgstr "Sisesta kopeeritud eelistuste hash (ilma URL-aadressita) et taastada"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "Eelistuste hash"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -981,17 +996,19 @@ msgstr "Open Access DOI resolver"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Valige teenus mida kasutab DOI ümberkirjutamine"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Seda vahekaarti ei ole kasutajaliideses olemas, kuid te saate otsida neis "
+"mootorites selle !bang järgi."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
-msgstr ""
+msgstr "!bang"
 
 #: searx/templates/simple/preferences/engines.html:20
 msgid "Supports selected language"
@@ -999,7 +1016,7 @@ msgstr "Toetab valitud keelt"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Kaal"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
@@ -1035,17 +1052,19 @@ msgstr "Tagasi"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr ""
+msgstr "Kiirklahvid"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
-msgstr ""
+msgstr "Vim-taoline"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
+"Otsingutulemustes navigeerimine kiirklahvide abil (Vajalik JavaScript). Abi "
+"saamiseks vajutage põhi või tulemuslehel klahvi \"h\"."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1069,7 +1088,7 @@ msgstr "Mis keelt sa otsinguks eelistad?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
+msgstr "Valige Automaatne tuvastamine et SearXNG tuvastaks teie päringu keele."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1077,7 +1096,7 @@ msgstr "HTTP meetod"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Muutke vormide esitamise viisi"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
@@ -1112,6 +1131,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
+"Teostage otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks "
+"keelake"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1147,7 +1168,7 @@ msgstr "Muuda paigutuse keelt"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
-msgstr ""
+msgstr "repot"
 
 #: searx/templates/simple/result_templates/default.html:6
 #: searx/templates/simple/result_templates/files.html:8
@@ -1198,16 +1219,16 @@ msgstr "TiB"
 
 #: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
-msgstr ""
+msgstr "Kuupäev"
 
 #: searx/templates/simple/result_templates/files.html:49
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
-msgstr ""
+msgstr "Resolutsioon"
 
 #: searx/templates/simple/result_templates/images.html:21
 msgid "Format"
@@ -1235,52 +1256,52 @@ msgstr "peida kaart"
 
 #: searx/templates/simple/result_templates/packages.html:12
 msgid "Version"
-msgstr ""
+msgstr "Versioon"
 
 #: searx/templates/simple/result_templates/packages.html:18
 msgid "Maintainer"
-msgstr ""
+msgstr "Hooldaja"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
-msgstr ""
+msgstr "Uuendatud"
 
 #: searx/templates/simple/result_templates/packages.html:30
 #: searx/templates/simple/result_templates/paper.html:25
 msgid "Tags"
-msgstr ""
+msgstr "Tagid"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "Populaarsus"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
-msgstr ""
+msgstr "Litsents"
 
 #: searx/templates/simple/result_templates/packages.html:52
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #: searx/templates/simple/result_templates/packages.html:55
 msgid "Project homepage"
-msgstr ""
+msgstr "Projekti koduleht"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Avaldatud kuupäev"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Ajakiri"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Toimetaja"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "Väljaandja"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
@@ -1730,4 +1751,3 @@ msgstr "peida video"
 #~ "me ei leidnud ühtegi tulemust. Palun "
 #~ "kasuta teist päringut või otsi "
 #~ "rohkematest kategooriatest."
-
