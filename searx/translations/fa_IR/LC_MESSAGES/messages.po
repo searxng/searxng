@@ -14,13 +14,14 @@
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # arashe22 <arashe22@proton.me>, 2023.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# tegcope <tegcope@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-25 15:26+0000\n"
-"PO-Revision-Date: 2024-03-12 17:28+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2024-04-06 00:18+0000\n"
+"Last-Translator: tegcope <tegcope@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Persian <https://translate.codeberg.org/projects/searxng/"
 "searxng/fa/>\n"
 "Language: fa_IR\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -159,7 +160,7 @@ msgstr "تاریک"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "زمان به کار سرور"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:49
@@ -321,9 +322,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"نمی‌توان آدرسِ تصویر را خواند. این ممکن است به دلیل فرمت فایل پشتیبانی "
-"نشده باشد. TinEye فقط تصویر های با فرمت JPEG، PNG، GIF، BMP، TIFF یا WebP"
-" را پشتیبانی می‌کند."
+"نمی‌توان آدرسِ ‎URL‎ تصویر را خواند. این ممکن است به دلیل فرمت فایل پشتیبانی "
+"نشده ای باشد. TinEye فقط تصویر های با فرمت JPEG، PNG، GIF، BMP، TIFF یا WebP "
+"را پشتیبانی می‌کند."
 
 #: searx/engines/tineye.py:46
 msgid ""
@@ -449,7 +450,7 @@ msgstr "صفحه پیدا نشد"
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr "برو به %(search_page)s."
+msgstr "برو به ‎%(search_page)s‎."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -462,7 +463,7 @@ msgstr "اهداء کردن"
 #: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
-msgstr "پیش‌فرض‌ها"
+msgstr "تنظیمات"
 
 #: searx/templates/simple/base.html:67
 msgid "Powered by"
@@ -495,7 +496,7 @@ msgstr "سیاست حفظ حریم خصوصی"
 
 #: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
-msgstr "تماس با نگهدارنده نمونه"
+msgstr "تماس با مسئول‌نگهداری نمونه"
 
 #: searx/templates/simple/categories.html:26
 msgid "Click on the magnifier to perform search"
@@ -773,7 +774,7 @@ msgstr "URL جست‌وجو"
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
 msgid "Copied"
-msgstr "رونوشت"
+msgstr "کپی شد"
 
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
@@ -874,7 +875,7 @@ msgstr "صفحه را تازه کنید."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "جست‌وجو برای ورودی دیگر یا انتخاب دسته بندی دیگر(در بالا)."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
@@ -882,15 +883,15 @@ msgstr "موتور جست‌وجو رو در تنظیمات تغییر دهید:
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr ""
+msgstr "تغییر به نمونه ای دیگر:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "جست‌وجو برای ورودی دیگر یا انتخاب دسته بندی دیگر."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
+msgstr "برو به سفحه قبل، با استفاده از کلید رفتن به صفحه قبل."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -958,7 +959,7 @@ msgstr "مقدار"
 
 #: searx/templates/simple/preferences/cookies.html:23
 msgid "Search URL of the currently saved preferences"
-msgstr "URL جست‌وجوی پیش‌فرض‌های ذخیره‌شدهٔ کنونی"
+msgstr "URL جست‌وجوی تنظیمات ذخیره‌شدهٔ کنونی"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
@@ -982,15 +983,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "کپی هش تنظیمات"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
+msgstr "هش تنظیمات کپی شده را وارد کنید(بدون URL) برای بازیابی"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "هش تنظیمات"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1054,17 +1055,19 @@ msgstr "بازگشت"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr ""
+msgstr "کلید های میانبر"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
-msgstr ""
+msgstr "مانند-‎Vim‎"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
+"هدایت نتایج جست‌وجو با کلید های میانبر (نیازمند ‎JavaScript‎). برای راهنمایی،"
+" کلید «h» را در صفحه اصلی یا صفحه نتایج فشار دهید."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1124,13 +1127,15 @@ msgstr "فیلتر کردن محتوا"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:2
 msgid "Search on category select"
-msgstr "جست‌وجو در دستهٔ انتخابی"
+msgstr "جست‌وجو در انتخاب دسته بندی"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
+"انجام دادن جست‌وجو درجا درصورت انتخاب یک دسته بندی. برای انتخاب بیش از یک "
+"دسته بندی غیر فعال کنید"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1258,7 +1263,7 @@ msgstr "ورژن"
 
 #: searx/templates/simple/result_templates/packages.html:18
 msgid "Maintainer"
-msgstr ""
+msgstr "مسئول‌نگهداری"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
@@ -1271,7 +1276,7 @@ msgstr "تگ ها"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "محبوبیت"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
