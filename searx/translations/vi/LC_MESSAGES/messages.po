@@ -8,13 +8,14 @@
 # nam000 <nam000gl@gmail.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# vducong <vducong@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-25 15:26+0000\n"
-"PO-Revision-Date: 2024-03-12 17:28+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2024-04-07 07:18+0000\n"
+"Last-Translator: vducong <vducong@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
 "searxng/vi/>\n"
 "Language: vi\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -153,7 +154,7 @@ msgstr "Tối"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "Thời gian hoạt động liên tục"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:49
@@ -282,8 +283,9 @@ msgid "Channel"
 msgstr "Kênh"
 
 #: searx/engines/radio_browser.py:104
+#, fuzzy
 msgid "radio"
-msgstr ""
+msgstr "radio"
 
 #: searx/engines/radio_browser.py:106
 msgid "bitrate"
@@ -294,8 +296,9 @@ msgid "votes"
 msgstr "bình chọn"
 
 #: searx/engines/radio_browser.py:108
+#, fuzzy
 msgid "clicks"
-msgstr "clicks"
+msgstr "nhấp chuột"
 
 #: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
 msgid "Language"
@@ -641,7 +644,7 @@ msgstr "Trang sau"
 
 #: searx/templates/simple/search.html:3
 msgid "Display the front page"
-msgstr ""
+msgstr "Hiển thị trang đầu"
 
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
@@ -673,7 +676,7 @@ msgstr "Điểm số"
 
 #: searx/templates/simple/stats.html:27
 msgid "Result count"
-msgstr ""
+msgstr "Số lượng kết quả"
 
 #: searx/templates/simple/preferences/engines.html:25
 #: searx/templates/simple/stats.html:28
@@ -728,7 +731,7 @@ msgstr "Tên file"
 
 #: searx/templates/simple/stats.html:120
 msgid "Function"
-msgstr ""
+msgstr "Chức năng"
 
 #: searx/templates/simple/stats.html:121
 msgid "Code"
@@ -736,11 +739,12 @@ msgstr "Code"
 
 #: searx/templates/simple/stats.html:128
 msgid "Checker"
-msgstr ""
+msgstr "Người kiểm duyệt"
 
 #: searx/templates/simple/stats.html:131
+#, fuzzy
 msgid "Failed test"
-msgstr ""
+msgstr "Bản kiểm thử không đạt"
 
 #: searx/templates/simple/stats.html:132
 msgid "Comment(s)"
@@ -752,7 +756,7 @@ msgstr "Tải về các kết quả"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "Messages from the search engines"
-msgstr ""
+msgstr "Tin nhắn từ công cụ tìm kiếm"
 
 #: searx/templates/simple/elements/engines_msg.html:12
 msgid "Error!"
@@ -858,35 +862,38 @@ msgstr "Xin lỗi!"
 
 #: searx/templates/simple/messages/no_results.html:12
 msgid "No results were found. You can try to:"
-msgstr ""
+msgstr "Không tìm thấy kết quả. Bạn có thể thử:"
 
 #: searx/templates/simple/messages/no_results.html:14
 msgid "There are no more results. You can try to:"
-msgstr ""
+msgstr "Không còn kết quả phù hợp. Bạn có thể thử:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr ""
+msgstr "Tải lại trang."
 
 #: searx/templates/simple/messages/no_results.html:20
+#, fuzzy
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "Tìm kiếm bằng truy vấn khác hoặc chọn lại một trong những mục ở trên."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
-msgstr ""
+msgstr "Thay đổi công cụ tìm kiếm sẽ được dùng trong phần tùy chọn:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr ""
+msgstr "Đổi sang phiên bản khác:"
 
 #: searx/templates/simple/messages/no_results.html:24
+#, fuzzy
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "Tìm kiếm bằng truy vấn khác hoặc chọn mục khác."
 
 #: searx/templates/simple/messages/no_results.html:25
+#, fuzzy
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
+msgstr "Nhấn nút trang trước để quay lại trang trước"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:17
@@ -912,11 +919,11 @@ msgstr "Các ví dụ"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
-msgstr "Đây là danh sách các mô-đun trả lời tức thì của SearXNG"
+msgstr "Danh sách các mô-đun trả lời nhanh của SearXNG."
 
 #: searx/templates/simple/preferences/answerers.html:29
 msgid "This is the list of plugins."
-msgstr "Đây là danh sách các plugins"
+msgstr "Danh sách các plugins."
 
 #: searx/templates/simple/preferences/autocomplete.html:2
 msgid "Autocomplete"
@@ -939,10 +946,12 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
+"Danh sách tên và giá trị của những cookies mà SearXNG lưu trữ trên máy tính "
+"của bạn."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
-msgstr ""
+msgstr "Qua danh sách này, bạn có thể đánh giá sự minh bạch của SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -968,38 +977,47 @@ msgstr ""
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
 msgstr ""
+"URL dùng để khôi phục những lựa chọn ưu tiên của bạn trong một trình duyệt "
+"khác"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
+"Chỉ định cài đặt tùy chỉnh cho những tùy chọn URL có thể dùng để đồng bộ tùy "
+"chọn giữa nhiều thiết bị."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "Sao chép những mã băm được ưu tiên"
 
 #: searx/templates/simple/preferences/cookies.html:57
+#, fuzzy
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
+msgstr "Chèn những mã băm được ưu tiên (không bao gồm URL) để khôi phục"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "Mã băm được ưu tiên"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
 msgstr "Trình xử lý DOI Truy Cập Miễn Phí"
 
 #: searx/templates/simple/preferences/doi_resolver.html:14
+#, fuzzy
 msgid "Select service used by DOI rewrite"
-msgstr ""
+msgstr "Chọn dịch vụ được dùng bởi DOI rewrite"
 
 #: searx/templates/simple/preferences/engines.html:9
+#, fuzzy
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
+"Tab không tồn tại trong giao diện người dùng, nhưng bạn có thể tìm kiếm bằng "
+"!bangs của nó."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1011,7 +1029,7 @@ msgstr "Có hỗ trợ ngôn ngữ được chọn"
 
 #: searx/templates/simple/preferences/engines.html:23
 msgid "Weight"
-msgstr ""
+msgstr "Tỉ trọng"
 
 #: searx/templates/simple/preferences/engines.html:27
 msgid "Max time"
@@ -1047,17 +1065,20 @@ msgstr "Quay lại"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr ""
+msgstr "Phím tắt"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
+#, fuzzy
 msgid "Vim-like"
-msgstr ""
+msgstr "Kiểu giống Vim"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
+"Điều hướng kết quả tìm kiếm bằng phím tắt (yêu cầu JavaScript). Tại trang "
+"chủ hoặc tại trang tìm kiếm, nhấn phím \"h\" để nhận trợ giúp."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1089,17 +1110,19 @@ msgstr "Phương thức HTTP"
 
 #: searx/templates/simple/preferences/method.html:14
 msgid "Change how forms are submitted"
-msgstr ""
+msgstr "Thay đổi cách gửi biểu mẫu"
 
 #: searx/templates/simple/preferences/query_in_title.html:2
 msgid "Query in the page's title"
-msgstr ""
+msgstr "Truy vấn đặt ở tiêu đề trang"
 
 #: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
+"Nếu bật lên, truy vấn sẽ nằm ở tiêu đề của trang kết quả. Trình duyệt có thể "
+"ghi lại tiêu đề này"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1122,6 +1145,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
+"Thực hiện tìm kiếm ngay lập tức ngay khi chọn một danh mục. Tắt cài đặt này "
+"để lựa chọn nhiều danh mục"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1172,8 +1197,9 @@ msgstr "ẩn nội dung"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
+#, fuzzy
 msgid "This site did not provide any description."
-msgstr ""
+msgstr "Trang không có diễn giải."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
@@ -1248,12 +1274,13 @@ msgid "Version"
 msgstr "Phiên bản"
 
 #: searx/templates/simple/result_templates/packages.html:18
+#, fuzzy
 msgid "Maintainer"
-msgstr ""
+msgstr "Người bảo trì"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
-msgstr ""
+msgstr "Cập nhật lúc"
 
 #: searx/templates/simple/result_templates/packages.html:30
 #: searx/templates/simple/result_templates/paper.html:25
@@ -1262,7 +1289,7 @@ msgstr "Thẻ"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "Độ phổ biến"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
@@ -1270,23 +1297,23 @@ msgstr "Giấy phép"
 
 #: searx/templates/simple/result_templates/packages.html:52
 msgid "Project"
-msgstr ""
+msgstr "Dự án"
 
 #: searx/templates/simple/result_templates/packages.html:55
 msgid "Project homepage"
-msgstr ""
+msgstr "Trang chủ dự án"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "Ngày phát hành"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "Tạp chí"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "Người chỉnh sửa"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
