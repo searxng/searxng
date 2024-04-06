@@ -27,6 +27,22 @@
       searxng.on(el, 'mouseenter', load_engine_descriptions);
     }
 
+    const enableAllEngines = d.querySelectorAll(".enable-all-engines");
+    const disableAllEngines = d.querySelectorAll(".disable-all-engines");
+    const engineToggles = d.querySelectorAll('tbody input[type=checkbox][class~=checkbox-onoff]');
+    const toggleEngines = (enable) => {
+      for (const el of engineToggles) {
+        // check if element visible, so that only engines of the current category are modified
+        if (el.offsetParent !== null) el.checked = !enable;
+      }
+    };
+    for (const el of enableAllEngines) {
+      searxng.on(el, 'click', () => toggleEngines(true));
+    }
+    for (const el of disableAllEngines) {
+      searxng.on(el, 'click', () => toggleEngines(false));
+    }
+
     const copyHashButton = d.querySelector("#copy-hash");
     searxng.on(copyHashButton, 'click', (e) => {
       e.preventDefault();
