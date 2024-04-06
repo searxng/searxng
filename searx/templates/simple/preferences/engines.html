@@ -10,6 +10,12 @@
       {{- ' ' -}}<a href="{{ url_for('info', pagename='search-syntax') }}">&#9432;</a>
     </p>
   {%- endif -%}
+
+  <div class="hide_if_nojs" id="toggle-all-engines-container">
+    <button type="button" class="button enable-all-engines">{{ _("Enable all") }}</button>
+    <button type="button" class="button disable-all-engines">{{ _("Disable all") }}</button>
+  </div>
+
   <div class="scrollx">{{- '' -}}
     <table class="striped table_engines">{{- '' -}}
 
