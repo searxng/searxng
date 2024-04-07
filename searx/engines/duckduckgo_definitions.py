@@ -238,7 +238,10 @@ def unit_to_str(unit):
     for prefix in WIKIDATA_PREFIX:
         if unit.startswith(prefix):
             wikidata_entity = unit[len(prefix) :]
-            return WIKIDATA_UNITS.get(wikidata_entity, unit)
+            real_unit = WIKIDATA_UNITS.get(wikidata_entity)
+            if real_unit is None:
+                return unit
+            return real_unit['symbol']
     return unit
 
 
