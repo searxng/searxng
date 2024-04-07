@@ -218,10 +218,16 @@ def initialize(app: flask.Flask, settings):
     """Install the limiter"""
     global _INSTALLED  # pylint: disable=global-statement
 
+    # even if the limiter is not activated, the botdetection must be activated
+    # (e.g. the self_info plugin uses the botdetection to get client IP)
+
+    cfg = get_cfg()
+    redis_client = redisdb.client()
+    botdetection.init(cfg, redis_client)
+
     if not (settings['server']['limiter'] or settings['server']['public_instance']):
         return
 
-    redis_client = redisdb.client()
     if not redis_client:
         logger.error(
             "The limiter requires Redis, please consult the documentation: "
@@ -233,10 +239,8 @@ def initialize(app: flask.Flask, settings):
 
     _INSTALLED = True
 
-    cfg = get_cfg()
     if settings['server']['public_instance']:
         # overwrite limiter.toml setting
         cfg.set('botdetection.ip_limit.link_token', True)
 
-    botdetection.init(cfg, redis_client)
     app.before_request(pre_request)
