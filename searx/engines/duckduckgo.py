@@ -124,7 +124,8 @@ def get_vqd(query):
             value = value[: value.index('"')]
             break
     logger.debug("new vqd value: '%s'", value)
-    cache_vqd(query, value)
+    if value is not None:
+        cache_vqd(query, value)
     return value
 
 
@@ -221,13 +222,10 @@ ddg_lang_map = {
 }
 
 
-def request(query, params):
-
-    # request needs a vqd argument
-    vqd = get_vqd(query)
-
+def quote_ddg_bangs(query):
     # quote ddg bangs
     query_parts = []
+
     # for val in re.split(r'(\s+)', query):
     for val in re.split(r'(\s+)', query):
         if not val.strip():
@@ -235,7 +233,15 @@ def request(query, params):
         if val.startswith('!') and external_bang.get_node(external_bang.EXTERNAL_BANGS, val[1:]):
             val = f"'{val}'"
         query_parts.append(val)
-    query = ' '.join(query_parts)
+    return ' '.join(query_parts)
+
+
+def request(query, params):
+
+    query = quote_ddg_bangs(query)
+
+    # request needs a vqd argument
+    vqd = get_vqd(query)
 
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     # eng_lang = get_ddg_lang(traits, params['searxng_locale'])
