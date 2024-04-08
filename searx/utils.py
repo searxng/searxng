@@ -18,7 +18,7 @@ from urllib.parse import urljoin, urlparse
 from markdown_it import MarkdownIt
 
 from lxml import html
-from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError, _ElementStringResult, _ElementUnicodeResult
+from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError
 
 from searx import settings
 from searx.data import USER_AGENTS, data_dir
@@ -217,7 +217,7 @@ def extract_text(xpath_results, allow_none: bool = False) -> Optional[str]:
         text: str = html.tostring(xpath_results, encoding='unicode', method='text', with_tail=False)
         text = text.strip().replace('\n', ' ')
         return ' '.join(text.split())
-    if isinstance(xpath_results, (_ElementStringResult, _ElementUnicodeResult, str, Number, bool)):
+    if isinstance(xpath_results, (str, Number, bool)):
         return str(xpath_results)
     if xpath_results is None and allow_none:
         return None
