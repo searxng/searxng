@@ -17,7 +17,6 @@ from urllib.parse import urlencode
 
 about = {
     "website": 'https://github.com/mwmbl/mwmbl',
-    "official_api_documentation": 'https://api.mwmbl.org/docs',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
@@ -25,11 +24,11 @@ about = {
 paging = False
 categories = ['general']
 
-api_url = "https://api.mwmbl.org"
+api_url = "https://api.mwmbl.org/api/v1"
 
 
 def request(query, params):
-    params['url'] = f"{api_url}/search?{urlencode({'s': query})}"
+    params['url'] = f"{api_url}/search/?{urlencode({'s': query})}"
     return params
 
 
