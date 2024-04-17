@@ -300,6 +300,17 @@ categories_as_tabs:
   social media:
 
 engines:
+  - name: 4get
+    engine: 4get
+    shortcut: 4g
+    disabled: true
+    enable_http: true  # if using localhost
+    search_type: web  # web, images, videos, news, music
+    categories: general
+    base_url: https://4get.example.com  # your api-enabled, captcha-free instance
+    inactive: true
+    scraper: ddg  # scraper you want 4get to use
+
   - name: 9gag
     engine: 9gag
     shortcut: 9g
