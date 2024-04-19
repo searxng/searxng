@@ -7,11 +7,6 @@ Why use a private instance?
   \.\. is a common question among SearXNG users.  Before answering this
   question, see what options a SearXNG user has.
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 Public instances are open to everyone who has access to its URL.  Usually, these
 are operated by unknown parties (from the users' point of view).  Private
 instances can be used by a select group of people.  It is for example a SearXNG of

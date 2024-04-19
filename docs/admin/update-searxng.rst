@@ -9,11 +9,6 @@ SearXNG maintenance
    - :ref:`toolboxing`
    - :ref:`uWSGI maintenance`
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. _update searxng:
 
 How to update

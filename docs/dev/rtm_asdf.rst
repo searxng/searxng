@@ -6,12 +6,6 @@ The runtimes are managed with asdf and are activated in this project via the
 `.tool-versions <.tool-versions>`_. If you have not yet installed asdf_, then
 chapter :ref:`introduce asdf` may be of help to you.
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 Get started
 ===========
 
