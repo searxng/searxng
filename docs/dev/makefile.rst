@@ -19,11 +19,6 @@ Makefiles, we recommend to read gnu-make_ introduction.
    To install developer requirements follow :ref:`buildhosts`.
 
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 The usage is simple, just type ``make {target-name}`` to *build* a target.
 Calling the ``help`` target gives a first overview (``make help``):
 

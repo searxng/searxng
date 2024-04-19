@@ -4,12 +4,6 @@
 Google Engines
 ==============
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _google API:
 
 Google API

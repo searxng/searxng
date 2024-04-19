@@ -4,12 +4,6 @@
 Step by step installation
 =========================
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 In this section we show the setup of a SearXNG instance that will be installed
 by the :ref:`installation scripts`.
 

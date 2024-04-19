@@ -8,11 +8,6 @@ Favicons
 
    Don't activate the favicons before reading the documentation.
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 Activating the favicons in SearXNG is very easy, but this **generates a
 significantly higher load** in the client/server communication and increases
 resources needed on the server.
@@ -250,4 +245,3 @@ into the *proxy*:
 .. _data URL:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs
 .. _FQN: https://en.wikipedia.org/wiki/Fully_qualified_name
-

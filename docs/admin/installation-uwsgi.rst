@@ -9,12 +9,6 @@ uWSGI
    - `systemd.unit`_
    - `uWSGI Emperor`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _systemd.unit: https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 .. _One service per app in systemd:
     https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd

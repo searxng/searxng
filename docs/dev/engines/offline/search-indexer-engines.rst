@@ -7,11 +7,6 @@ Local Search APIs
    - `Comparison to alternatives
      <https://docs.meilisearch.com/learn/what_is_meilisearch/comparison_to_alternatives.html>`_
 
-.. contents::
-   :depth: 1
-   :local:
-   :backlinks: entry
-
 .. sidebar:: info
 
    Initial sponsored by `Search and Discovery Fund

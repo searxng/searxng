@@ -14,11 +14,6 @@ type of a result is defined by the :py:obj:`result_type.Result.template`.  To
 set another media-type as :ref:`template default`, the field ``template``
 in the result item must be set to the desired type.
 
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 
 .. _result template macros:
 

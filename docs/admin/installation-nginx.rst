@@ -41,12 +41,6 @@ section might give you some guidance.
    - `uWSGI support from nginx`_
 
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 The nginx HTTP server
 =====================
 

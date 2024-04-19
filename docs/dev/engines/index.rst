@@ -4,12 +4,6 @@
 Engine Implementations
 ======================
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. toctree::
    :caption: Framework Components
    :maxdepth: 2

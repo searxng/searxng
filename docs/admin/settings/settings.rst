@@ -12,11 +12,6 @@ file.
    - :ref:`use_default_settings.yml`
    - :ref:`search API`
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. _settings location:
 
 settings.yml location
