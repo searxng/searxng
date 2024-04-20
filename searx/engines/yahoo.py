@@ -132,7 +132,8 @@ def response(resp):
             continue
         url = parse_url(url)
 
-        title = extract_text(result.xpath('.//h3//a/@aria-label'))
+        title = eval_xpath_getindex(result, './/h3//a/@aria-label', 0, default='')
+        title = extract_text(title)
         content = eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0, default='')
         content = extract_text(content, allow_none=True)
 
