@@ -218,7 +218,7 @@ module.exports = function (grunt) {
               name: "addAttributesToSVGElement",
               params: {
                 attributes: [
-                  { "aria-hidden": "true" }
+                  { "class": "ionicon", "aria-hidden": "true" }
                 ]
               }
             }
