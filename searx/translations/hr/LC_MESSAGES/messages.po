@@ -12,13 +12,14 @@
 # ptomljanovic <phill2605@gmail.com>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# Uzakmo <Uzakmo@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-25 15:26+0000\n"
-"PO-Revision-Date: 2024-03-22 07:09+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2024-04-07 07:18+0000\n"
+"Last-Translator: Uzakmo <Uzakmo@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Croatian <https://translate.codeberg.org/projects/searxng/"
 "searxng/hr/>\n"
 "Language: hr\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -88,7 +89,7 @@ msgstr "karta"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "vamata"
+msgstr "kapule"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -108,7 +109,7 @@ msgstr "rječnici"
 #. CATEGORY_GROUPS['LYRICS']
 #: searx/searxng.msg
 msgid "lyrics"
-msgstr "tekst"
+msgstr "tekstovi"
 
 #. CATEGORY_GROUPS['PACKAGES']
 #: searx/searxng.msg
@@ -158,7 +159,7 @@ msgstr "tamno"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "Vrijeme rada"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:49
@@ -212,7 +213,7 @@ msgstr "SSL pogreška: provjera valjanosti certifikata nije uspjela"
 
 #: searx/webutils.py:40
 msgid "unexpected crash"
-msgstr "neočekivano rušenje"
+msgstr "neočekivani prekid"
 
 #: searx/webutils.py:47
 msgid "HTTP error"
@@ -244,7 +245,7 @@ msgstr "server API greška"
 
 #: searx/webutils.py:77
 msgid "Suspended"
-msgstr "Zaustavljeno"
+msgstr "Suspendirano"
 
 #: searx/webutils.py:315
 msgid "{minutes} minute(s) ago"
@@ -252,19 +253,19 @@ msgstr "prije {minutes} minut(u,e,a)"
 
 #: searx/webutils.py:316
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "prije {hours} sat(i) i {minutes} minut(u,e,a)"
+msgstr "prije {hours} sat(i,a) i {minutes} minut(u,e,a)"
 
 #: searx/answerers/random/answerer.py:73
 msgid "Random value generator"
-msgstr "Generator vrijednosti nasumice"
+msgstr "Nasumični generator vrijednosti"
 
 #: searx/answerers/random/answerer.py:74
 msgid "Generate different random values"
-msgstr "Generirajte različite slučajne vrijednosti"
+msgstr "Generirajte različite nasumične vrijednosti"
 
 #: searx/answerers/statistics/answerer.py:47
 msgid "Statistics functions"
-msgstr "Funkcije statistike"
+msgstr "Statistične funkcije"
 
 #: searx/answerers/statistics/answerer.py:48
 msgid "Compute {functions} of the arguments"
@@ -272,7 +273,7 @@ msgstr "Izračunajte {functions} argumenata"
 
 #: searx/engines/openstreetmap.py:160
 msgid "Get directions"
-msgstr "Uzmi upute za smjer"
+msgstr "Dobij upute"
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -366,15 +367,17 @@ msgstr "Pretvara niz u drukčije hash mješavine."
 
 #: searx/plugins/hash_plugin.py:52
 msgid "hash digest"
-msgstr "Izlaz heš funkcije"
+msgstr "Izlaz hash funkcije"
 
 #: searx/plugins/hostname_replace.py:9
 msgid "Hostname replace"
-msgstr "Lokalnoime zamijeniti"
+msgstr "Zamjena lokalnog imena"
 
 #: searx/plugins/hostname_replace.py:10
 msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "Ponovo upišite rezultat hostnameova ili maknite rezultate"
+msgstr ""
+"Ispravite (prepišite) rezultat hostnameova ili maknite rezultate bazirane na "
+"hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:9
 msgid "Open Access DOI rewrite"
@@ -978,15 +981,15 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "Kopirajte preferencu hash-a"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
+msgstr "Umetnite kopiranu preferencu hash-a (bez URL-a) za rješenje"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "Preference hash-a"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1261,11 +1264,11 @@ msgstr "Verzija"
 
 #: searx/templates/simple/result_templates/packages.html:18
 msgid "Maintainer"
-msgstr ""
+msgstr "Održavatelj"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
-msgstr ""
+msgstr "Ažurirano u"
 
 #: searx/templates/simple/result_templates/packages.html:30
 #: searx/templates/simple/result_templates/paper.html:25
@@ -1274,7 +1277,7 @@ msgstr "Oznake"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "Popularnost"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
@@ -1282,11 +1285,11 @@ msgstr "Licenca"
 
 #: searx/templates/simple/result_templates/packages.html:52
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #: searx/templates/simple/result_templates/packages.html:55
 msgid "Project homepage"
-msgstr ""
+msgstr "Projekt početna stranica"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
