@@ -72,7 +72,16 @@ base_url = 'https://www.bing.com/search'
 
 
 def _page_offset(pageno):
-    return (int(pageno) - 1) * 10 + 1
+    """
+    Page 1 => 1 (returns 10 results)
+    Page 2 => 11 (returns 14 results)
+    Page 3 => 25 (returns 14 results)
+    Page 4 => 39 (returns 14 results)
+    """
+    pageno_int = int(pageno)
+    if pageno_int <= 1:
+        return 1
+    return 11 + (pageno_int - 2) * 14
 
 
 def set_bing_cookies(params, engine_language, engine_region):
@@ -95,18 +104,19 @@ def request(query, params):
         # don't ask why it is only sometimes / its M$ and they have never been
         # deterministic ;)
         'pq': query,
+        # Unsure meaning of sc, but breaks bing if not present
+        'sc': '0-0',
     }
 
     # To get correct page, arg first and this arg FORM is needed, the value PERE
     # is on page 2, on page 3 its PERE1 and on page 4 its PERE2 .. and so forth.
     # The 'first' arg should never send on page 1.
-
     if page > 1:
         query_params['first'] = _page_offset(page)  # see also arg FORM
-    if page == 2:
-        query_params['FORM'] = 'PERE'
-    elif page > 2:
-        query_params['FORM'] = 'PERE%s' % (page - 2)
+        if page == 2:
+            query_params['FORM'] = 'PERE'
+        else:  # page > 2:
+            query_params['FORM'] = 'PERE%s' % (page - 2)
 
     params['url'] = f'{base_url}?{urlencode(query_params)}'
 
