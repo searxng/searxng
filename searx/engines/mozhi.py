@@ -15,7 +15,7 @@ about = {
 }
 
 engine_type = 'online_dictionary'
-categories = ['general']
+categories = ['general', 'translate']
 
 base_url = "https://mozhi.aryak.me"
 mozhi_engine = "google"
