@@ -1060,6 +1060,16 @@ engines:
     shortcut: loc
     categories: images
 
+  - name: libretranslate
+    engine: libretranslate
+    # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
+    base_url:
+      - https://translate.terraprint.co
+      - https://trans.zillyhuhn.com
+    # api_key: abc123
+    shortcut: lt
+    disabled: true
+
   - name: lingva
     engine: lingva
     shortcut: lv
