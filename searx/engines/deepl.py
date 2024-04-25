@@ -13,7 +13,7 @@ about = {
 }
 
 engine_type = 'online_dictionary'
-categories = ['general']
+categories = ['general', 'translate']
 
 url = 'https://api-free.deepl.com/v2/translate'
 api_key = None
@@ -51,11 +51,6 @@ def response(resp):
 
     infobox += "</dl>"
 
-    results.append(
-        {
-            'infobox': 'Deepl',
-            'content': infobox,
-        }
-    )
+    results.append({'answer': infobox})
 
     return results
