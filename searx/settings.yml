@@ -1563,6 +1563,20 @@ engines:
   #    engine: scanr_structures
   #    disabled: true
 
+  - name: searchmysite
+    engine: xpath
+    shortcut: sms
+    categories: general
+    paging: true
+    search_url: https://searchmysite.net/search/?q={query}&page={pageno}
+    results_xpath: //div[contains(@class,'search-result')]
+    url_xpath: .//a[contains(@class,'result-link')]/@href
+    title_xpath: .//span[contains(@class,'result-title-txt')]/text()
+    content_xpath: ./p[@id='result-hightlight']
+    disabled: true
+    about:
+      website: https://searchmysite.net
+
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
