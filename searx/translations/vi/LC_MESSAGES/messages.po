@@ -11,19 +11,18 @@
 # vducong <vducong@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-25 15:26+0000\n"
+"POT-Creation-Date: 2024-04-26 05:37+0000\n"
 "PO-Revision-Date: 2024-04-07 07:18+0000\n"
 "Last-Translator: vducong <vducong@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
-"searxng/vi/>\n"
 "Language: vi\n"
+"Language-Team: Vietnamese "
+"<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -65,6 +64,17 @@ msgstr "hình ảnh"
 #: searx/searxng.msg
 msgid "videos"
 msgstr "phim"
+
+#. CATEGORY_NAMES['RADIO']
+#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#, fuzzy
+msgid "radio"
+msgstr "radio"
+
+#. CATEGORY_NAMES['TV']
+#: searx/searxng.msg
+msgid "tv"
+msgstr ""
 
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
@@ -157,116 +167,256 @@ msgid "Uptime"
 msgstr "Thời gian hoạt động liên tục"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:49
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Thông tin"
 
-#: searx/webapp.py:332
+#. WEATHER_TERMS['AVERAGE TEMP.']
+#: searx/searxng.msg
+msgid "Average temp."
+msgstr ""
+
+#. WEATHER_TERMS['CLOUD COVER']
+#: searx/searxng.msg
+msgid "Cloud cover"
+msgstr ""
+
+#. WEATHER_TERMS['CONDITION']
+#: searx/searxng.msg
+msgid "Condition"
+msgstr ""
+
+#. WEATHER_TERMS['CURRENT CONDITION']
+#: searx/searxng.msg
+msgid "Current condition"
+msgstr ""
+
+#. WEATHER_TERMS['EVENING']
+#: searx/engines/wttr.py:100 searx/searxng.msg
+msgid "Evening"
+msgstr "Buổi chiều"
+
+#. WEATHER_TERMS['FEELS LIKE']
+#: searx/searxng.msg
+msgid "Feels like"
+msgstr ""
+
+#. WEATHER_TERMS['HUMIDITY']
+#: searx/searxng.msg
+msgid "Humidity"
+msgstr ""
+
+#. WEATHER_TERMS['MAX TEMP.']
+#: searx/searxng.msg
+msgid "Max temp."
+msgstr ""
+
+#. WEATHER_TERMS['MIN TEMP.']
+#: searx/searxng.msg
+msgid "Min temp."
+msgstr ""
+
+#. WEATHER_TERMS['MORNING']
+#: searx/engines/wttr.py:100 searx/searxng.msg
+msgid "Morning"
+msgstr "Buổi sáng"
+
+#. WEATHER_TERMS['NIGHT']
+#: searx/engines/wttr.py:100 searx/searxng.msg
+msgid "Night"
+msgstr "Buổi tối"
+
+#. WEATHER_TERMS['NOON']
+#: searx/engines/wttr.py:100 searx/searxng.msg
+msgid "Noon"
+msgstr "Buổi trưa"
+
+#. WEATHER_TERMS['PRESSURE']
+#: searx/searxng.msg
+msgid "Pressure"
+msgstr ""
+
+#. WEATHER_TERMS['SUNRISE']
+#: searx/searxng.msg
+msgid "Sunrise"
+msgstr ""
+
+#. WEATHER_TERMS['SUNSET']
+#: searx/searxng.msg
+msgid "Sunset"
+msgstr ""
+
+#. WEATHER_TERMS['TEMPERATURE']
+#: searx/searxng.msg
+msgid "Temperature"
+msgstr ""
+
+#. WEATHER_TERMS['UV INDEX']
+#: searx/searxng.msg
+msgid "UV index"
+msgstr ""
+
+#. WEATHER_TERMS['VISIBILITY']
+#: searx/searxng.msg
+msgid "Visibility"
+msgstr ""
+
+#. WEATHER_TERMS['WIND']
+#: searx/searxng.msg
+msgid "Wind"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
+#: searx/searxng.msg
+msgid "subscribers"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['POSTS']
+#: searx/searxng.msg
+msgid "posts"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
+#: searx/searxng.msg
+msgid "active users"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['COMMENTS']
+#: searx/searxng.msg
+msgid "comments"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['USER']
+#: searx/searxng.msg
+msgid "user"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['COMMUNITY']
+#: searx/searxng.msg
+msgid "community"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['POINTS']
+#: searx/searxng.msg
+msgid "points"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['TITLE']
+#: searx/searxng.msg
+msgid "title"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['AUTHOR']
+#: searx/searxng.msg
+msgid "author"
+msgstr ""
+
+#: searx/webapp.py:330
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
-#: searx/engines/qwant.py:282
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
+#: searx/engines/qwant.py:281
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:332
 msgid "Source"
 msgstr "Nguồn"
 
-#: searx/webapp.py:336
+#: searx/webapp.py:334
 msgid "Error loading the next page"
 msgstr "Không thể tải trang kế tiếp"
 
-#: searx/webapp.py:483 searx/webapp.py:879
+#: searx/webapp.py:491 searx/webapp.py:887
 msgid "Invalid settings, please edit your preferences"
 msgstr "Cài đặt không hợp lệ, xin xem lại tuỳ chỉnh"
 
-#: searx/webapp.py:499
+#: searx/webapp.py:507
 msgid "Invalid settings"
 msgstr "Cài đặt không hợp lệ"
 
-#: searx/webapp.py:576 searx/webapp.py:658
+#: searx/webapp.py:584 searx/webapp.py:666
 msgid "search error"
 msgstr "lỗi tìm kiếm"
 
-#: searx/webutils.py:34
+#: searx/webutils.py:36
 msgid "timeout"
 msgstr "Hết thời gian"
 
-#: searx/webutils.py:35
+#: searx/webutils.py:37
 msgid "parsing error"
 msgstr "lỗi phân tích"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:38
 msgid "HTTP protocol error"
 msgstr "Lỗi giao thức HTTP"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:39
 msgid "network error"
 msgstr "Lỗi mạng"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:40
 msgid "SSL error: certificate validation has failed"
 msgstr "Lỗi SSL: xác thực chứng chỉ không thành công"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:42
 msgid "unexpected crash"
 msgstr "sập đột ngột"
 
-#: searx/webutils.py:47
+#: searx/webutils.py:49
 msgid "HTTP error"
 msgstr "Lỗi HTTP"
 
-#: searx/webutils.py:48
+#: searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "Lỗi kết nối HTTP"
 
-#: searx/webutils.py:54
+#: searx/webutils.py:56
 msgid "proxy error"
 msgstr "Lỗi proxy"
 
-#: searx/webutils.py:55
+#: searx/webutils.py:57
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:58
 msgid "too many requests"
 msgstr "quá nhiều yêu cầu"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:59
 msgid "access denied"
 msgstr "Truy cập bị từ chối"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:60
 msgid "server API error"
 msgstr "Lỗi máy chủ API"
 
-#: searx/webutils.py:77
+#: searx/webutils.py:79
 msgid "Suspended"
 msgstr "Treo/gián đoạn/chặn"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} phút() trước"
 
-#: searx/webutils.py:316
+#: searx/webutils.py:315
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} giờ, {minutes} phút trước"
 
-#: searx/answerers/random/answerer.py:73
+#: searx/answerers/random/answerer.py:75
 msgid "Random value generator"
 msgstr "Trình tạo giá trị ngẫu nhiên"
 
-#: searx/answerers/random/answerer.py:74
+#: searx/answerers/random/answerer.py:76
 msgid "Generate different random values"
 msgstr "Tạo các giá trị ngẫu nhiên khác nhau"
 
-#: searx/answerers/statistics/answerer.py:47
+#: searx/answerers/statistics/answerer.py:48
 msgid "Statistics functions"
 msgstr "Các hàm thống kê"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:49
 msgid "Compute {functions} of the arguments"
 msgstr "Tính toán {functions} của các đối số"
 
-#: searx/engines/openstreetmap.py:160
+#: searx/engines/openstreetmap.py:159
 msgid "Get directions"
 msgstr "Nhận điều hướng"
 
@@ -278,33 +428,29 @@ msgstr "{title} (HẾT HẠN)"
 msgid "This entry has been superseded by"
 msgstr "Mục này đã được thay thế bởi"
 
-#: searx/engines/qwant.py:284
+#: searx/engines/qwant.py:283
 msgid "Channel"
 msgstr "Kênh"
 
-#: searx/engines/radio_browser.py:104
-#, fuzzy
-msgid "radio"
-msgstr "radio"
-
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:105
 msgid "bitrate"
 msgstr "tốc độ bit"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:106
 msgid "votes"
 msgstr "bình chọn"
 
-#: searx/engines/radio_browser.py:108
+#: searx/engines/radio_browser.py:107
 #, fuzzy
 msgid "clicks"
 msgstr "nhấp chuột"
 
-#: searx/engines/seekr.py:194 searx/engines/zlibrary.py:129
+#: searx/engines/seekr.py:193 searx/engines/yummly.py:71
+#: searx/engines/zlibrary.py:128
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:78
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -312,7 +458,7 @@ msgstr ""
 "{numCitations} nguồn trích dẫn từ năm {firstCitationVelocityYear} đến năm"
 " {lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:40
+#: searx/engines/tineye.py:39
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -322,7 +468,7 @@ msgstr ""
 "dạng không được hỗ trợ. TinEye chỉ hỗ trợ ảnh ở định dạng JPEG, PNG, GIF,"
 " BMP, TIFF hoặc WebP."
 
-#: searx/engines/tineye.py:46
+#: searx/engines/tineye.py:45
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -330,57 +476,41 @@ msgstr ""
 "Hình ảnh này quá đơn giản để tìm ra kết quả. TinEye cần mức độ chi tiết "
 "hình ảnh cơ bản để tìm thấy kết quả thành công."
 
-#: searx/engines/tineye.py:52
+#: searx/engines/tineye.py:51
 msgid "The image could not be downloaded."
 msgstr "Hình ảnh không thể được hiển thị."
 
-#: searx/engines/wttr.py:101
-msgid "Morning"
-msgstr "Buổi sáng"
-
-#: searx/engines/wttr.py:101
-msgid "Noon"
-msgstr "Buổi trưa"
-
-#: searx/engines/wttr.py:101
-msgid "Evening"
-msgstr "Buổi chiều"
-
-#: searx/engines/wttr.py:101
-msgid "Night"
-msgstr "Buổi tối"
-
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:129
 msgid "Book rating"
 msgstr "Đánh giá của sách"
 
-#: searx/engines/zlibrary.py:131
+#: searx/engines/zlibrary.py:130
 msgid "File quality"
 msgstr "Chất lượng tệp"
 
-#: searx/plugins/hash_plugin.py:24
+#: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Chuyển các chuỗi thành các hash băm khác nhau."
 
-#: searx/plugins/hash_plugin.py:52
+#: searx/plugins/hash_plugin.py:38
 msgid "hash digest"
 msgstr "hash băm"
 
-#: searx/plugins/hostname_replace.py:9
+#: searx/plugins/hostname_replace.py:12
 msgid "Hostname replace"
 msgstr "Thay đổi tên máy chủ"
 
-#: searx/plugins/hostname_replace.py:10
+#: searx/plugins/hostname_replace.py:13
 msgid "Rewrite result hostnames or remove results based on the hostname"
 msgstr ""
 "Viết lại kết quả tên của các máy chủ hoặc loại bỏ kết quả dựa trên tên "
 "của máy chủ"
 
-#: searx/plugins/oa_doi_rewrite.py:9
+#: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
 msgstr "Viết lại DOI Truy Cập Miễn Phí"
 
-#: searx/plugins/oa_doi_rewrite.py:10
+#: searx/plugins/oa_doi_rewrite.py:13
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -388,21 +518,21 @@ msgstr ""
 "Tránh việc trả phí bằng cách chuyển hướng đến các phiên bản truy cập miễn"
 " phí của ấn phẩm khi có thể"
 
-#: searx/plugins/self_info.py:10
+#: searx/plugins/self_info.py:9
 msgid "Self Information"
 msgstr "Thông Tin Cá Nhân"
 
-#: searx/plugins/self_info.py:11
+#: searx/plugins/self_info.py:10
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr "Hiện IP của bạn khi gõ \"ip\" và hiện user agent khi gõ \"user agent\"."
 
-#: searx/plugins/tor_check.py:25
+#: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
 msgstr "Kiểm tra Tor plugin"
 
-#: searx/plugins/tor_check.py:28
+#: searx/plugins/tor_check.py:27
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -411,7 +541,7 @@ msgstr ""
 "của Tor hay không và sẽ báo cáo người dùng nếu đúng như vậy; giống như "
 "check.torproject.org, nhưng từ SearXNG."
 
-#: searx/plugins/tor_check.py:62
+#: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
@@ -419,7 +549,7 @@ msgstr ""
 "Không thể tải xuống danh sách của những nút thoát Tor từ: "
 "https://check.torproject.org/exit-addresses"
 
-#: searx/plugins/tor_check.py:78
+#: searx/plugins/tor_check.py:77
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
@@ -427,15 +557,15 @@ msgstr ""
 "Bạn đang sử dụng Tor và hình như bạn có địa chỉ IP ngoại tiếp này: "
 "{ip_address}"
 
-#: searx/plugins/tor_check.py:86
+#: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr "Bạn hiện không sử dụng Tor và đây là địa chỉ IP của bạn: {ip_address}"
 
-#: searx/plugins/tracker_url_remover.py:29
+#: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
 msgstr "Trình loại bỏ URL theo dõi"
 
-#: searx/plugins/tracker_url_remover.py:30
+#: searx/plugins/tracker_url_remover.py:17
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Loại bỏ các đối số theo dõi từ URL trả về"
 
@@ -452,45 +582,45 @@ msgstr "Đi đến %(search_page)s."
 msgid "search page"
 msgstr "tìm kiếm trang"
 
-#: searx/templates/simple/base.html:53
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Ủng hộ"
 
-#: searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Tuỳ chỉnh"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:68
 msgid "Powered by"
 msgstr "Được cung cấp bởi"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:68
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "một siêu công cụ tìm kiếm mã nguồn mỡ và tôn trọng quyền riêng tư"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Mã nguồn"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 msgid "Issue tracker"
 msgstr "công cụ theo dõi các trục trặc"
 
-#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Các thông số về trình tìm kiếm"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:73
 msgid "Public instances"
 msgstr "Những thực thể công khai"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:76
 msgid "Privacy policy"
 msgstr "Chính sách bảo mật"
 
-#: searx/templates/simple/base.html:78
+#: searx/templates/simple/base.html:79
 msgid "Contact instance maintainer"
 msgstr "Liên hệ người bảo toàn thực thể"
 
@@ -946,8 +1076,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Danh sách tên và giá trị của những cookies mà SearXNG lưu trữ trên máy tính "
-"của bạn."
+"Danh sách tên và giá trị của những cookies mà SearXNG lưu trữ trên máy "
+"tính của bạn."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -977,16 +1107,16 @@ msgstr ""
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
 msgstr ""
-"URL dùng để khôi phục những lựa chọn ưu tiên của bạn trong một trình duyệt "
-"khác"
+"URL dùng để khôi phục những lựa chọn ưu tiên của bạn trong một trình "
+"duyệt khác"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Chỉ định cài đặt tùy chỉnh cho những tùy chọn URL có thể dùng để đồng bộ tùy "
-"chọn giữa nhiều thiết bị."
+"Chỉ định cài đặt tùy chỉnh cho những tùy chọn URL có thể dùng để đồng bộ "
+"tùy chọn giữa nhiều thiết bị."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1016,8 +1146,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Tab không tồn tại trong giao diện người dùng, nhưng bạn có thể tìm kiếm bằng "
-"!bangs của nó."
+"Tab không tồn tại trong giao diện người dùng, nhưng bạn có thể tìm kiếm "
+"bằng !bangs của nó."
 
 #: searx/templates/simple/preferences/engines.html:19
 msgid "!bang"
@@ -1077,8 +1207,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Điều hướng kết quả tìm kiếm bằng phím tắt (yêu cầu JavaScript). Tại trang "
-"chủ hoặc tại trang tìm kiếm, nhấn phím \"h\" để nhận trợ giúp."
+"Điều hướng kết quả tìm kiếm bằng phím tắt (yêu cầu JavaScript). Tại trang"
+" chủ hoặc tại trang tìm kiếm, nhấn phím \"h\" để nhận trợ giúp."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1121,8 +1251,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Nếu bật lên, truy vấn sẽ nằm ở tiêu đề của trang kết quả. Trình duyệt có thể "
-"ghi lại tiêu đề này"
+"Nếu bật lên, truy vấn sẽ nằm ở tiêu đề của trang kết quả. Trình duyệt có "
+"thể ghi lại tiêu đề này"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1145,8 +1275,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Thực hiện tìm kiếm ngay lập tức ngay khi chọn một danh mục. Tắt cài đặt này "
-"để lựa chọn nhiều danh mục"
+"Thực hiện tìm kiếm ngay lập tức ngay khi chọn một danh mục. Tắt cài đặt "
+"này để lựa chọn nhiều danh mục"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1785,3 +1915,4 @@ msgstr "ẩn phim"
 #~ " nào. Xin gõ cụm từ khác hoặc"
 #~ " tìm kiếm trong nhiều danh mục "
 #~ "hơn."
+
