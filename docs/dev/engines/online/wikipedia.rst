@@ -4,12 +4,6 @@
 Wikimedia
 =========
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _wikipedia engine:
 
 Wikipedia

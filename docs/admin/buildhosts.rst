@@ -4,11 +4,6 @@
 Buildhosts
 ==========
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 To get best results from build, it's recommend to install additional packages on
 build hosts (see :ref:`searxng.sh`).
 

@@ -10,11 +10,6 @@ SQL Engines
    - `PostgreSQL <https://www.postgresql.org>`_
    - `MySQL <https://www.mysql.com>`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. sidebar:: info
 
    Initial sponsored by `Search and Discovery Fund

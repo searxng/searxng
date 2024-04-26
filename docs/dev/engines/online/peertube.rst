@@ -4,12 +4,6 @@
 Peertube Engines
 ================
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _peertube video engine:
 
 Peertube Video

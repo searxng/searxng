@@ -26,12 +26,6 @@ to care about*).
    - `LXC/LXD Image Server`_
    - `LXD@github`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _lxd install:
 
 Install LXD

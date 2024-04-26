@@ -22,12 +22,6 @@ In this article we will show, how you can make use of Linux Containers (LXC_) in
    section :ref:`internet connectivity docker`.
 
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 Motivation
 ==========
 

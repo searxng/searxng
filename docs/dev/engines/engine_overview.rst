@@ -4,11 +4,6 @@
 Engine Overview
 ===============
 
-.. contents::
-   :depth: 3
-   :local:
-   :backlinks: entry
-
 .. _metasearch-engine: https://en.wikipedia.org/wiki/Metasearch_engine
 
 .. sidebar:: Further reading ..

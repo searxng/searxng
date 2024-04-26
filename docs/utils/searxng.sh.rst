@@ -15,12 +15,6 @@ script :origin:`utils/searxng.sh`.
    - :ref:`installation nginx`
    - :ref:`installation apache`
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 Install
 =======
 
