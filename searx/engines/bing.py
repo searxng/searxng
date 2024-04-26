@@ -72,16 +72,7 @@ base_url = 'https://www.bing.com/search'
 
 
 def _page_offset(pageno):
-    """
-    Page 1 => 1 (returns 10 results)
-    Page 2 => 11 (returns 14 results)
-    Page 3 => 25 (returns 14 results)
-    Page 4 => 39 (returns 14 results)
-    """
-    pageno_int = int(pageno)
-    if pageno_int <= 1:
-        return 1
-    return 11 + (pageno_int - 2) * 14
+    return (int(pageno) - 1) * 10 + 1
 
 
 def set_bing_cookies(params, engine_language, engine_region):
@@ -104,8 +95,14 @@ def request(query, params):
         # don't ask why it is only sometimes / its M$ and they have never been
         # deterministic ;)
         'pq': query,
-        # Unsure meaning of sc, but breaks bing if not present
+        # TODO: Figure out how below parameters are populated
         'sc': '0-0',
+		"sp": "-1",
+		"lq": "0",
+		"qs": "n",
+		"ghsh": "0",
+		"ghacc": "0",
+		"ghpl": "",
     }
 
     # To get correct page, arg first and this arg FORM is needed, the value PERE
