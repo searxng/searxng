@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:14+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-04-18 13:18+0000\n"
 "Last-Translator: Right202209 "
 "<Right202209@users.noreply.translate.codeberg.org>\n"
@@ -789,7 +789,7 @@ msgstr "搜索"
 msgid "There is currently no data available. "
 msgstr "目前無可用資料。"
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "引擎名稱"
@@ -802,12 +802,12 @@ msgstr "分數"
 msgid "Result count"
 msgstr "結果數量"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "響應時間"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "可靠性"
@@ -926,7 +926,7 @@ msgstr "自動檢測"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "安全搜尋"
@@ -947,7 +947,7 @@ msgid "None"
 msgstr "無"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "時間範圍"
 
@@ -1016,7 +1016,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "使用上一頁按鈕返回上一頁。"
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "允許"
 
@@ -1125,19 +1125,27 @@ msgid ""
 "these engines by its !bangs."
 msgstr "這個標籤頁在用户界面中不存在，但您可以用 !bang 在這些引擎中進行搜索。"
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "支援選定的語言"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "權重"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "最大時間"
 

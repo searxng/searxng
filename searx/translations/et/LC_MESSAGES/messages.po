@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:14+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-03-25 23:18+0000\n"
 "Last-Translator: pixrobot <pixrobot@users.noreply.translate.codeberg.org>"
 "\n"
@@ -799,7 +799,7 @@ msgstr "otsing"
 msgid "There is currently no data available. "
 msgstr "Hetkel andmed puuduvad."
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Mootori nimi"
@@ -812,12 +812,12 @@ msgstr "Skoorid"
 msgid "Result count"
 msgstr "Tulemuste arv"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Reageerimisaeg"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Usaldusväärsus"
@@ -936,7 +936,7 @@ msgstr "Automaatne-tuvastamine"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Ohutuotsing"
@@ -957,7 +957,7 @@ msgid "None"
 msgstr "Puudub"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Ajavahemik"
 
@@ -1026,7 +1026,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "Mine tagasi eelmisele lehele, kasutades nuppu eelmine lehekülg."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Luba"
 
@@ -1143,19 +1143,27 @@ msgstr ""
 "Seda vahekaarti ei ole kasutajaliideses olemas, kuid te saate otsida neis"
 " mootorites selle !bang järgi."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Toetab valitud keelt"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Kaal"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Maksimaalne aeg"
 
