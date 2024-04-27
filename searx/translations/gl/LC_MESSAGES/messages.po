@@ -7,7 +7,7 @@
 # Xosé M. <correo@xmgz.eu>, 2018-2019, 2022.
 # ghose <correo@xmgz.eu>, 2023, 2024.
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
-# ghose <ghose@users.noreply.translate.codeberg.org>, 2024.
+# ghose <ghose@users.noreply.translate.codeberg.org>, 2024, 2025.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-06 15:28+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: Anonymous <anonymous@users.noreply.translate.codeberg.org>\n"
+"Last-Translator: ghose <ghose@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
 "searxng/gl/>\n"
 "Language: gl\n"
@@ -544,8 +544,8 @@ msgstr "Complemento de nomes de servidor"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Reescribe nomes de servidor, elimina resultados ou prioriza en función do"
-" servidor"
+"Reescribe nomes de servidor, elimina resultados ou prioriza en función do "
+"servidor"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -556,8 +556,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Evitar valados de pago redirixindo a versións abertas das publicacións "
-"cando estean dispoñibles"
+"Evitar valados de pago redirixindo a versións abertas das publicacións cando "
+"estean dispoñibles"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -589,22 +589,22 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "Este complemento comproba se o enderezo da solicitude é un nodo-saída de "
-"Tor, e informate de se o é; como check.torproject.org, pero desde "
-"SearXNG."
+"Tor, e informate de se o é; como check.torproject.org, pero desde SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Non se puido descargar a lista de nodos de saída a Tor desde: "
-"https://check.torproject.org/exit-addresses"
+"Non se puido descargar a lista de nodos de saída a Tor desde: https://"
+"check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr "Estás usando Tor e semella que tes este enderezo IP externo: {ip_address}"
+msgstr ""
+"Estás usando Tor e semella que tes este enderezo IP externo: {ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -1146,8 +1146,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Nota: establecer axustes personalizados no URL de busca pode reducir a "
-"túa privacidade ao filtrar datos aos sitios web dos resultados."
+"Nota: establecer axustes personalizados no URL de busca pode reducir a túa "
+"privacidade ao filtrar datos aos sitios web dos resultados."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1228,16 +1228,16 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Estes axustes gárdanse en rastros, así non temos que almacenar ningún "
-"dato sobre ti."
+"Estes axustes gárdanse en rastros, así non temos que almacenar ningún dato "
+"sobre ti."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Estes rastros son para a túa conveniencia, non utilizamos os rastros para"
-" rastrexarte."
+"Estes rastros son para a túa conveniencia, non utilizamos os rastros para "
+"rastrexarte."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1264,8 +1264,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navega entre os resultdos cos atallos (require JavaScript). Preme tecla "
-"\"h\" na páxina de resultados para obter axuda."
+"Navega entre os resultdos cos atallos (require JavaScript). Preme tecla \"h\""
+" na páxina de resultados para obter axuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1292,8 +1292,7 @@ msgstr "Que idioma prefires para buscar?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Elixe Autodetectar para deixar que SearXNG detecte o idioma da túa "
-"consulta."
+"Elixe Autodetectar para deixar que SearXNG detecte o idioma da túa consulta."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
