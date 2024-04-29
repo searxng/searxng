@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 from urllib.parse import quote_plus, urlparse
-from searx.data import EXTERNAL_BANGS
+from searx import data
 
 LEAF_KEY = chr(16)
 
@@ -56,7 +56,7 @@ def resolve_bang_definition(bang_definition, query):
 
 def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):  # pylint: disable=invalid-name
     if external_bangs_db is None:
-        external_bangs_db = EXTERNAL_BANGS
+        external_bangs_db = data.EXTERNAL_BANGS
 
     bang_definition, bang_ac_list = get_bang_definition_and_ac(external_bangs_db, bang)
 
@@ -90,7 +90,7 @@ def get_bang_url(search_query, external_bangs_db=None):
     ret_val = None
 
     if external_bangs_db is None:
-        external_bangs_db = EXTERNAL_BANGS
+        external_bangs_db = data.EXTERNAL_BANGS
 
     if search_query.external_bang:
         bang_definition, _ = get_bang_definition_and_ac(external_bangs_db, search_query.external_bang)

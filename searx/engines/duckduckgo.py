@@ -12,6 +12,7 @@ import babel
 import lxml.html
 
 from searx import (
+    data,
     locales,
     redislib,
     external_bang,
@@ -230,7 +231,7 @@ def quote_ddg_bangs(query):
     for val in re.split(r'(\s+)', query):
         if not val.strip():
             continue
-        if val.startswith('!') and external_bang.get_node(external_bang.EXTERNAL_BANGS, val[1:]):
+        if val.startswith('!') and external_bang.get_node(data.EXTERNAL_BANGS, val[1:]):
             val = f"'{val}'"
         query_parts.append(val)
     return ' '.join(query_parts)

@@ -6,7 +6,7 @@
 import unicodedata
 import re
 
-from searx.data import CURRENCIES
+from searx import data
 from .online import OnlineProcessor
 
 parser_re = re.compile('.*?(\\d+(?:\\.\\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)', re.I)
@@ -20,14 +20,14 @@ def normalize_name(name):
 
 def name_to_iso4217(name):
     name = normalize_name(name)
-    currency = CURRENCIES['names'].get(name, [name])
+    currency = data.CURRENCIES['names'].get(name, [name])
     if isinstance(currency, str):
         return currency
     return currency[0]
 
 
 def iso4217_to_name(iso4217, language):
-    return CURRENCIES['iso4217'].get(iso4217, {}).get(language, iso4217)
+    return data.CURRENCIES['iso4217'].get(iso4217, {}).get(language, iso4217)
 
 
 class OnlineCurrencyProcessor(OnlineProcessor):

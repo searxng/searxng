@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING
 from urllib.parse import urlencode, urlparse, urljoin
 from lxml import html
 
-from searx.data import WIKIDATA_UNITS
+from searx import data
 from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 
@@ -238,7 +238,7 @@ def unit_to_str(unit):
     for prefix in WIKIDATA_PREFIX:
         if unit.startswith(prefix):
             wikidata_entity = unit[len(prefix) :]
-            real_unit = WIKIDATA_UNITS.get(wikidata_entity)
+            real_unit = data.WIKIDATA_UNITS.get(wikidata_entity)
             if real_unit is None:
                 return unit
             return real_unit['symbol']

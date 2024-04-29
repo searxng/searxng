@@ -21,7 +21,7 @@ from lxml import html
 from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError
 
 from searx import settings
-from searx.data import USER_AGENTS, data_dir
+from searx import data as searx_data
 from searx.version import VERSION_TAG
 from searx.sxng_locales import sxng_locales
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
@@ -81,7 +81,9 @@ def gen_useragent(os_string: Optional[str] = None) -> str:
 
     See searx/data/useragents.json
     """
-    return USER_AGENTS['ua'].format(os=os_string or choice(USER_AGENTS['os']), version=choice(USER_AGENTS['versions']))
+    return searx_data.USER_AGENTS['ua'].format(
+        os=os_string or choice(searx_data.USER_AGENTS['os']), version=choice(searx_data.USER_AGENTS['versions'])
+    )
 
 
 class _HTMLTextExtractorException(Exception):
@@ -600,7 +602,7 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
 
         # Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.
         fasttext.FastText.eprint = lambda x: None
-        _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
+        _FASTTEXT_MODEL = fasttext.load_model(str(searx_data.data_dir / 'lid.176.ftz'))
     return _FASTTEXT_MODEL
 
 

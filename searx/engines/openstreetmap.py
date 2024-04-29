@@ -10,7 +10,7 @@ from functools import partial
 
 from flask_babel import gettext
 
-from searx.data import OSM_KEYS_TAGS, CURRENCIES
+from searx import data as searx_data
 from searx.utils import searx_useragent
 from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
@@ -435,7 +435,7 @@ def get_label(labels, lang):
 def get_tag_label(tag_category, tag_name, lang):
     """Get tag label from OSM_KEYS_TAGS"""
     tag_name = '' if tag_name is None else tag_name
-    tag_labels = OSM_KEYS_TAGS['tags'].get(tag_category, {}).get(tag_name, {})
+    tag_labels = searx_data.OSM_KEYS_TAGS['tags'].get(tag_category, {}).get(tag_name, {})
     return get_label(tag_labels, lang)
 
 
@@ -449,12 +449,12 @@ def get_key_label(key_name, lang):
         # https://taginfo.openstreetmap.org/keys/currency#values
         currency = key_name.split(':')
         if len(currency) > 1:
-            o = CURRENCIES['iso4217'].get(currency[1])
+            o = searx_data.CURRENCIES['iso4217'].get(currency[1])
             if o:
                 return get_label(o, lang).lower()
             return currency[1]
 
-    labels = OSM_KEYS_TAGS['keys']
+    labels = searx_data.OSM_KEYS_TAGS['keys']
     for k in key_name.split(':') + ['*']:
         labels = labels.get(k)
         if labels is None:

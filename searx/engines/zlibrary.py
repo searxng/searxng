@@ -40,9 +40,9 @@ from urllib.parse import quote
 from lxml import html
 from flask_babel import gettext
 
+from searx import data
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
-from searx.data import ENGINE_TRAITS
 
 if TYPE_CHECKING:
     import httpx
@@ -80,7 +80,7 @@ zlib_ext: str = ""
 
 def init(engine_settings=None) -> None:  # pylint: disable=unused-argument
     """Check of engine's settings."""
-    traits: EngineTraits = EngineTraits(**ENGINE_TRAITS["z-library"])
+    traits: EngineTraits = EngineTraits(**data.ENGINE_TRAITS["z-library"])
 
     if zlib_ext and zlib_ext not in traits.custom["ext"]:
         raise ValueError(f"invalid setting ext: {zlib_ext}")

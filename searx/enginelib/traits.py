@@ -16,7 +16,7 @@ import types
 from typing import Dict, Literal, Iterable, Union, Callable, Optional, TYPE_CHECKING
 
 from searx import locales
-from searx.data import data_dir, ENGINE_TRAITS
+from searx import data
 
 if TYPE_CHECKING:
     from . import Engine
@@ -193,7 +193,7 @@ class EngineTraits:
 class EngineTraitsMap(Dict[str, EngineTraits]):
     """A python dictionary to map :class:`EngineTraits` by engine name."""
 
-    ENGINE_TRAITS_FILE = (data_dir / 'engine_traits.json').resolve()
+    ENGINE_TRAITS_FILE = (data.data_dir / 'engine_traits.json').resolve()
     """File with persistence of the :py:obj:`EngineTraitsMap`."""
 
     def save_data(self):
@@ -205,7 +205,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
     def from_data(cls) -> 'EngineTraitsMap':
         """Instantiate :class:`EngineTraitsMap` object from :py:obj:`ENGINE_TRAITS`"""
         obj = cls()
-        for k, v in ENGINE_TRAITS.items():
+        for k, v in data.ENGINE_TRAITS.items():
             obj[k] = EngineTraits(**v)
         return obj
 

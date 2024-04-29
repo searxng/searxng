@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 from hashlib import md5
-from searx.data import ahmia_blacklist_loader
+from searx import data
 
 name = "Ahmia blacklist"
 description = "Filter out onion results that appear in Ahmia's blacklist. (See https://ahmia.fi/blacklist)"
@@ -24,5 +24,5 @@ def init(_app, settings):
     if not settings['outgoing']['using_tor_proxy']:
         # disable the plugin
         return False
-    ahmia_blacklist = ahmia_blacklist_loader()
+    ahmia_blacklist = data.ahmia_blacklist_loader()
     return True

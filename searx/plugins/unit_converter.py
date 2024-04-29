@@ -4,7 +4,7 @@
 
 from flask_babel import gettext
 
-from searx.data import WIKIDATA_UNITS
+from searx import data
 
 name = "Unit converter plugin"
 description = gettext("Convert between units")
@@ -38,7 +38,7 @@ def _parse_text_and_convert(search, splitted_query):
     from_unit = None
     to_unit = None
 
-    for unit in WIKIDATA_UNITS.values():
+    for unit in data.WIKIDATA_UNITS.values():
         if unit['symbol'] == from_unit_key:
             from_unit = unit
 

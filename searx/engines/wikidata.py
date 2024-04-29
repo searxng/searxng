@@ -13,7 +13,7 @@ from json import loads
 from dateutil.parser import isoparse
 from babel.dates import format_datetime, format_date, format_time, get_datetime_format
 
-from searx.data import WIKIDATA_UNITS
+from searx import data
 from searx.network import post, get
 from searx.utils import searx_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
@@ -762,7 +762,7 @@ def debug_explain_wikidata_query(query, method='GET'):
 
 def init(engine_settings=None):  # pylint: disable=unused-argument
     # WIKIDATA_PROPERTIES : add unit symbols
-    WIKIDATA_PROPERTIES.update(WIKIDATA_UNITS)
+    WIKIDATA_PROPERTIES.update(data.WIKIDATA_UNITS)
 
     # WIKIDATA_PROPERTIES : add property labels
     wikidata_property_names = []

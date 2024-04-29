@@ -37,9 +37,9 @@ from typing import List, Dict, Any, Optional
 from urllib.parse import quote
 from lxml import html
 
+from searx import data
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
-from searx.data import ENGINE_TRAITS
 
 # about
 about: Dict[str, Any] = {
@@ -86,7 +86,7 @@ aa_ext: str = ''
 
 def init(engine_settings=None):  # pylint: disable=unused-argument
     """Check of engine's settings."""
-    traits = EngineTraits(**ENGINE_TRAITS['annas archive'])
+    traits = EngineTraits(**data.ENGINE_TRAITS['annas archive'])
 
     if aa_content and aa_content not in traits.custom['content']:
         raise ValueError(f'invalid setting content: {aa_content}')

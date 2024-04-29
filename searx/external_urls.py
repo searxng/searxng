@@ -3,7 +3,7 @@
 
 import math
 
-from searx.data import EXTERNAL_URLS
+from searx import data
 
 
 IMDB_PREFIX_TO_URL_ID = {
@@ -43,7 +43,7 @@ def get_external_url(url_id, item_id, alternative="default"):
         elif url_id == 'wikimedia_image':
             item_id = get_wikimedia_image_id(item_id)
 
-    url_description = EXTERNAL_URLS.get(url_id)
+    url_description = data.EXTERNAL_URLS.get(url_id)
     if url_description:
         url_template = url_description["urls"].get(alternative)
         if url_template is not None:
