@@ -51,16 +51,18 @@ WHERE
 ORDER BY ?item DESC(?rank) ?symbol
 """
 
-_wikidata_url = "https://www.wikidata.org/entity/"
-
 
 def get_data():
     results = collections.OrderedDict()
     response = wikidata.send_wikidata_query(SARQL_REQUEST)
     for unit in response['results']['bindings']:
-        name = unit['item']['value'].replace(_wikidata_url, '')
+
         symbol = unit['symbol']['value']
-        si_name = unit.get('tosiUnit', {}).get('value', '').replace(_wikidata_url, '')
+        name = unit['item']['value'].rsplit('/', 1)[1]
+        si_name = unit.get('tosiUnit', {}).get('value', '')
+        if si_name:
+            si_name = si_name.rsplit('/', 1)[1]
+
         to_si_factor = unit.get('tosi', {}).get('value', '')
         if name not in results:
             # ignore duplicate: always use the first one
