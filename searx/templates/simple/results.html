@@ -24,8 +24,12 @@
         {%- for answer in answers.values() -%}
         <div class="answer">
         <span>{{ answer.answer }}</span>
-          {% if answer.url -%}
-          <a href="{{ answer.url }}" class="answer-url">{{ urlparse(answer.url).hostname }}</a>
+          {%- if answer.url -%}
+          <a href="{{ answer.url }}" class="answer-url"
+             {%- if results_on_new_tab %} target="_blank" rel="noopener noreferrer"
+             {%- else -%} rel="noreferrer"
+             {%- endif -%}
+             >{{ urlparse(answer.url).hostname }}</a>
           {% endif -%}
         </div>
         {%- endfor -%}
