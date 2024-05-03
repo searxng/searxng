@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-04-07 07:18+0000\n"
 "Last-Translator: omfj <omfj@users.noreply.translate.codeberg.org>\n"
 "Language: nb_NO\n"
@@ -567,6 +567,10 @@ msgstr "Sporings-nettadressefjerner"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Fjern sporer-argumenter fra returnert nettadresse"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Fant ikke siden"
@@ -791,7 +795,7 @@ msgstr "søk"
 msgid "There is currently no data available. "
 msgstr "Ingen data tilgjengelig for øyeblikket. "
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Søkemotornavn"
@@ -804,12 +808,12 @@ msgstr "Poengsummer"
 msgid "Result count"
 msgstr "Antall resultater"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Svartid"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Pålitelighet"
@@ -928,7 +932,7 @@ msgstr "Auto-oppdag"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "TrygtSøk"
@@ -949,7 +953,7 @@ msgid "None"
 msgstr "Ingen"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Tidsområde"
 
@@ -1018,7 +1022,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "Gå tilbake til forrige side med tilbake knappen."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Tillat"
 
@@ -1135,19 +1139,27 @@ msgstr ""
 "Denne fanen eksisterer ikke i brukergrensesnittet, men du kan søke i "
 "disse motorene ved hjelp av dens !bangs."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Støtter valgt språk"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Vekt"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Mak. tid"
 

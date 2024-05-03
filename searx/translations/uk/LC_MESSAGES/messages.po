@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
-"PO-Revision-Date: 2024-04-26 07:09+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"PO-Revision-Date: 2024-04-28 18:18+0000\n"
 "Last-Translator: SomeTr <SomeTr@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
@@ -184,17 +184,17 @@ msgstr "Середня темп."
 #. WEATHER_TERMS['CLOUD COVER']
 #: searx/searxng.msg
 msgid "Cloud cover"
-msgstr ""
+msgstr "Хмарність"
 
 #. WEATHER_TERMS['CONDITION']
 #: searx/searxng.msg
 msgid "Condition"
-msgstr ""
+msgstr "Умови"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
 #: searx/searxng.msg
 msgid "Current condition"
-msgstr ""
+msgstr "Поточні умови"
 
 #. WEATHER_TERMS['EVENING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -274,22 +274,22 @@ msgstr "Вітер"
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/searxng.msg
 msgid "subscribers"
-msgstr ""
+msgstr "підписників"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/searxng.msg
 msgid "posts"
-msgstr ""
+msgstr "дописів"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/searxng.msg
 msgid "active users"
-msgstr ""
+msgstr "активних користувачів"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/searxng.msg
 msgid "comments"
-msgstr ""
+msgstr "коментарів"
 
 #. SOCIAL_MEDIA_TERMS['USER']
 #: searx/searxng.msg
@@ -304,12 +304,12 @@ msgstr "спільнота"
 #. SOCIAL_MEDIA_TERMS['POINTS']
 #: searx/searxng.msg
 msgid "points"
-msgstr ""
+msgstr "балів"
 
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr ""
+msgstr "назва"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/searxng.msg
@@ -570,6 +570,10 @@ msgstr "Видалення URL-адреси трекера"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Вилучіть аргументи трекера з поверненої URL-адреси"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr "Конвертувати одиниці"
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Сторінку не знайдено"
@@ -796,7 +800,7 @@ msgstr "шукати"
 msgid "There is currently no data available. "
 msgstr "В даний час немає доступних даних. "
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Назва пошукової системи"
@@ -809,12 +813,12 @@ msgstr "Влучань"
 msgid "Result count"
 msgstr "Кількість результатів"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Час відгуку"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Надійність"
@@ -933,7 +937,7 @@ msgstr "Автовизначення"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Безпечний пошук"
@@ -954,7 +958,7 @@ msgid "None"
 msgstr "Вимкнений"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Часовий діапазон"
 
@@ -1023,7 +1027,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "Повернутися до попередньої сторінки, натиснувши «Попередня сторінка»."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Дозволити"
 
@@ -1140,19 +1144,27 @@ msgstr ""
 "Ця вкладка не існує в інтерфейсі користувача, але ви можете шукати в цих "
 "системах за допомогою їх !bang."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr "Увімкнути все"
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr "Вимкнути все"
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Підтримка обраної мови"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Вага"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Максимальний час"
 

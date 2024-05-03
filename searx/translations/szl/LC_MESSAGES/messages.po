@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2023-09-12 14:53+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: szl\n"
@@ -561,6 +561,10 @@ msgstr "Wymazowanie trackrōw z URL-ōw"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Wymaż argumynta trackrōw ze swrōcōnyj adresy URL"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Strōna niy znojdziōno"
@@ -783,7 +787,7 @@ msgstr "szukanie"
 msgid "There is currently no data available. "
 msgstr "Teroz niy ma dostympnych danych. "
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Miano ôd wyszukowarki"
@@ -796,12 +800,12 @@ msgstr "Wyniki"
 msgid "Result count"
 msgstr "Wielość wynikōw"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Czas ôdpowiedzi"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Wiarogodność"
@@ -920,7 +924,7 @@ msgstr ""
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Bezpieczne szukanie"
@@ -941,7 +945,7 @@ msgid "None"
 msgstr "Brak"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Zakres czasu"
 
@@ -1010,7 +1014,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Zwōl"
 
@@ -1126,19 +1130,27 @@ msgid ""
 "these engines by its !bangs."
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Spiyro ôbrany jynzyk"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Maks. czas"
 

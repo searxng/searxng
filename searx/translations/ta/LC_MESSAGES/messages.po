@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-01-24 12:56+0000\n"
 "Last-Translator: Eshan-K-I <2027eiyer@tjhsst.edu>\n"
 "Language: ta\n"
@@ -569,6 +569,10 @@ msgstr ""
 "உங்களை உளவு பார்த்து பின்தொடர பயன்படும் எழுத்துக்களை வலைதள "
 "முகவரியிலிருந்து நீக்குக"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "பக்கம் கிடைக்கவில்லை"
@@ -791,7 +795,7 @@ msgstr "தேடு"
 msgid "There is currently no data available. "
 msgstr "தற்போது தரவுகள் ஏதும் இல்லை."
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "எந்திரத்தின் பெயர்"
@@ -804,12 +808,12 @@ msgstr "மதிப்புகள்"
 msgid "Result count"
 msgstr "முடிவு எண்ணிக்கை"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "பதில் நேரம்"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "நம்பகத்தன்மை"
@@ -928,7 +932,7 @@ msgstr ""
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "பாதுகாப்பன தேடல்"
@@ -949,7 +953,7 @@ msgid "None"
 msgstr "எதுவுமில்லை"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "நேர வரம்பு"
 
@@ -1018,7 +1022,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "அனுமதி"
 
@@ -1131,19 +1135,27 @@ msgid ""
 "these engines by its !bangs."
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "தேர்ந்தெடுத்த மொழிக்கு ஆதரவு உள்ளது."
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "அதிகபட்ச நேரம்"
 

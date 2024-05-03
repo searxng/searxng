@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-03-22 07:09+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
 "\n"
@@ -557,6 +557,10 @@ msgstr "추적기 URL 제거기"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "반환된 URL에서 추적기 매개변수 제거"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "페이지를 찾을 수 없음"
@@ -779,7 +783,7 @@ msgstr "검색"
 msgid "There is currently no data available. "
 msgstr "데이터가 존재하지 않습니다. "
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "검색엔진 이름"
@@ -792,12 +796,12 @@ msgstr "점수"
 msgid "Result count"
 msgstr "결과 개수"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "응답시간"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "신뢰성"
@@ -916,7 +920,7 @@ msgstr "자동 감지"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "세이프서치"
@@ -937,7 +941,7 @@ msgid "None"
 msgstr "없음"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "기간"
 
@@ -1006,7 +1010,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "허용"
 
@@ -1115,19 +1119,27 @@ msgid ""
 "these engines by its !bangs."
 msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 검색할 수 있습니다."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "선택 언어 지원함"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "무게"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "최대시간"
 

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-04-07 07:18+0000\n"
 "Last-Translator: Uzakmo <Uzakmo@users.noreply.translate.codeberg.org>\n"
 "Language: hr\n"
@@ -570,6 +570,10 @@ msgstr "Ukloni praćenje URL-ova"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Ukloni elemente za označavanje rezultata vraćenih s URL-a"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Stranica nije pronađena"
@@ -792,7 +796,7 @@ msgstr "traži"
 msgid "There is currently no data available. "
 msgstr "Trenutačno nema dostupnih podataka."
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Naziv tražilice"
@@ -805,12 +809,12 @@ msgstr "Pogodci"
 msgid "Result count"
 msgstr "Broj rezultata"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Vrijeme odziva"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Pouzdanost"
@@ -929,7 +933,7 @@ msgstr "Automatski otkrij"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Sigurno pretraživanje"
@@ -950,7 +954,7 @@ msgid "None"
 msgstr "Ništa"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Vremenski raspon"
 
@@ -1019,7 +1023,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "Vratite se na prethodnu stranicu pomoću gumba prethodne stranice."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Dozvoli"
 
@@ -1137,19 +1141,27 @@ msgstr ""
 "Ova kartica ne postoji u korisničkom sučelju, ali u ovim tražilicama "
 "možete pretraživati po !bangs-ima."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Podržava odabrani jezik"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Težina"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Maksimalno vrijeme"
 

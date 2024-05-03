@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-03-28 15:18+0000\n"
 "Last-Translator: matheuspolachini "
 "<matheuspolachini@users.noreply.translate.codeberg.org>\n"
@@ -586,6 +586,10 @@ msgstr "Removedor de rastreador da URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Remover os argumentos de rastreio da URL recebida"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Página não encontrada"
@@ -812,7 +816,7 @@ msgstr "buscar"
 msgid "There is currently no data available. "
 msgstr "Atualmente, não há dados disponíveis. "
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Nome do motor"
@@ -825,12 +829,12 @@ msgstr "Pontuações"
 msgid "Result count"
 msgstr "Contagem de resultados"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Tempo de resposta"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Consistência"
@@ -949,7 +953,7 @@ msgstr "Auto-detectar"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Busca Segura"
@@ -970,7 +974,7 @@ msgid "None"
 msgstr "Nenhum"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Intervalo de tempo"
 
@@ -1039,7 +1043,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "Volte para a página anterior usando o botão 'página anterior'."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Permitir"
 
@@ -1157,19 +1161,27 @@ msgstr ""
 "Essa aba não existe na interface de usuário, mas você pode pesquisar "
 "nessas ferramentas/motores pelos seus !bangs."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Suporta o idioma selecionado"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Peso"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Tempo máximo"
 

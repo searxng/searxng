@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
 "PO-Revision-Date: 2024-04-06 00:18+0000\n"
 "Last-Translator: tegcope <tegcope@users.noreply.translate.codeberg.org>\n"
 "Language: fa_IR\n"
@@ -573,6 +573,10 @@ msgstr "حذف کننده URL ردیاب"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "آرگومان های ردیاب ها را از URL برگشتی حذف کنید"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "صفحه پیدا نشد"
@@ -797,7 +801,7 @@ msgstr "جست‌وجو"
 msgid "There is currently no data available. "
 msgstr "در حال حاضر هیچ داده‌ای در دسترس نیست."
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "نام موتور"
@@ -810,12 +814,12 @@ msgstr "نمره‌ها"
 msgid "Result count"
 msgstr "تعداد نتیجه ها"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "زمان پاسخ‌دهی"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "اعتمادپذیری"
@@ -934,7 +938,7 @@ msgstr "انتخاب خودکار"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "جست‌وجوی امن"
@@ -955,7 +959,7 @@ msgid "None"
 msgstr "هیچ"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "بازهٔ زمانی"
 
@@ -1024,7 +1028,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr "برو به سفحه قبل، با استفاده از کلید رفتن به صفحه قبل."
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "اجازه"
 
@@ -1139,19 +1143,27 @@ msgstr ""
 "این تب در رابط کاربری وجود ندارد، اما می توانید در این موتورها با !بنگ "
 "های آن جستجو کنید."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!بنگ"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "پشتیبانی از زبان انتخاب شده"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "وزن"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "زمان بیشینه"
 
