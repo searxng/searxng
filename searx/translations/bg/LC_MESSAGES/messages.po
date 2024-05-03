@@ -13,19 +13,19 @@
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-26 05:37+0000\n"
-"PO-Revision-Date: 2024-03-22 07:09+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
-"\n"
+"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"PO-Revision-Date: 2024-04-28 18:18+0000\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Bulgarian <https://translate.codeberg.org/projects/searxng/"
+"searxng/bg/>\n"
 "Language: bg\n"
-"Language-Team: Bulgarian "
-"<https://translate.codeberg.org/projects/searxng/searxng/bg/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -76,7 +76,7 @@ msgstr "радио"
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
 msgid "tv"
-msgstr ""
+msgstr "телевизия"
 
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
@@ -201,12 +201,12 @@ msgstr "Вечер"
 #. WEATHER_TERMS['FEELS LIKE']
 #: searx/searxng.msg
 msgid "Feels like"
-msgstr ""
+msgstr "Усеща се като"
 
 #. WEATHER_TERMS['HUMIDITY']
 #: searx/searxng.msg
 msgid "Humidity"
-msgstr ""
+msgstr "Влажност"
 
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
@@ -236,47 +236,47 @@ msgstr "Обяд"
 #. WEATHER_TERMS['PRESSURE']
 #: searx/searxng.msg
 msgid "Pressure"
-msgstr ""
+msgstr "Налягане"
 
 #. WEATHER_TERMS['SUNRISE']
 #: searx/searxng.msg
 msgid "Sunrise"
-msgstr ""
+msgstr "Изгрев"
 
 #. WEATHER_TERMS['SUNSET']
 #: searx/searxng.msg
 msgid "Sunset"
-msgstr ""
+msgstr "Залез"
 
 #. WEATHER_TERMS['TEMPERATURE']
 #: searx/searxng.msg
 msgid "Temperature"
-msgstr ""
+msgstr "Температура"
 
 #. WEATHER_TERMS['UV INDEX']
 #: searx/searxng.msg
 msgid "UV index"
-msgstr ""
+msgstr "UV индекс"
 
 #. WEATHER_TERMS['VISIBILITY']
 #: searx/searxng.msg
 msgid "Visibility"
-msgstr ""
+msgstr "Видимост"
 
 #. WEATHER_TERMS['WIND']
 #: searx/searxng.msg
 msgid "Wind"
-msgstr ""
+msgstr "Вятър"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/searxng.msg
 msgid "subscribers"
-msgstr ""
+msgstr "Абонати"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/searxng.msg
 msgid "posts"
-msgstr ""
+msgstr "Публикации"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/searxng.msg
@@ -286,12 +286,12 @@ msgstr ""
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/searxng.msg
 msgid "comments"
-msgstr ""
+msgstr "Коментари"
 
 #. SOCIAL_MEDIA_TERMS['USER']
 #: searx/searxng.msg
 msgid "user"
-msgstr ""
+msgstr "Потребител"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
 #: searx/searxng.msg
@@ -301,17 +301,17 @@ msgstr ""
 #. SOCIAL_MEDIA_TERMS['POINTS']
 #: searx/searxng.msg
 msgid "points"
-msgstr ""
+msgstr "Точки"
 
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr ""
+msgstr "Заглавие"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/searxng.msg
 msgid "author"
-msgstr ""
+msgstr "Автор"
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -568,6 +568,10 @@ msgstr "Премахвач на URL тракери"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Премахни следящите аргументи от върнатия URL"
 
+#: searx/plugins/unit_converter.py:10
+msgid "Convert between units"
+msgstr ""
+
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
 msgstr "Страницата не е намерена"
@@ -794,7 +798,7 @@ msgstr "търси"
 msgid "There is currently no data available. "
 msgstr "Няма налична достъпна информация."
 
-#: searx/templates/simple/preferences/engines.html:18
+#: searx/templates/simple/preferences/engines.html:24
 #: searx/templates/simple/stats.html:25
 msgid "Engine name"
 msgstr "Име на търсачка"
@@ -807,12 +811,12 @@ msgstr "Резултати"
 msgid "Result count"
 msgstr "Брой резултати"
 
-#: searx/templates/simple/preferences/engines.html:25
+#: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
 msgstr "Време за отговор"
 
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
 msgid "Reliability"
 msgstr "Надеждност"
@@ -931,7 +935,7 @@ msgstr "Автоматично разпознаване"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:21
+#: searx/templates/simple/preferences/engines.html:27
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Безопасно търсене"
@@ -952,7 +956,7 @@ msgid "None"
 msgstr "Нищо"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:22
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Time range"
 msgstr "Времева зона"
 
@@ -1021,7 +1025,7 @@ msgid "Go back to the previous page using the previous page button."
 msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:4
-#: searx/templates/simple/preferences/engines.html:17
+#: searx/templates/simple/preferences/engines.html:23
 msgid "Allow"
 msgstr "Позволи"
 
@@ -1141,19 +1145,27 @@ msgstr ""
 "Този раздел несъществува в потребителския интерфейс, но може да търсиш "
 "със следните търсачки по !bangs."
 
-#: searx/templates/simple/preferences/engines.html:19
+#: searx/templates/simple/preferences/engines.html:15
+msgid "Enable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:16
+msgid "Disable all"
+msgstr ""
+
+#: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:20
+#: searx/templates/simple/preferences/engines.html:26
 msgid "Supports selected language"
 msgstr "Поддържка на избраният език"
 
-#: searx/templates/simple/preferences/engines.html:23
+#: searx/templates/simple/preferences/engines.html:29
 msgid "Weight"
 msgstr "Тегло"
 
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Максимално време"
 
@@ -1898,4 +1910,3 @@ msgstr "скрий видеото"
 #~ "не намерихме резултати. Моля пробвайте "
 #~ "други ключови думи или търсете в "
 #~ "повече категории."
-
