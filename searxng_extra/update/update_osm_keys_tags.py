@@ -42,8 +42,9 @@ Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 
 """
 
-import json
-import collections
+import csv
+import sqlite3
+from pathlib import Path
 
 from searx.network import set_timeout_for_thread
 from searx.engines import wikidata, set_loggers
@@ -51,7 +52,9 @@ from searx.sxng_locales import sxng_locales
 from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
 from searx.data import data_dir
 
-DATA_FILE = data_dir / 'osm_keys_tags.json'
+DATABASE_FILE = data_dir / 'osm_keys_tags.db'
+CSV_KEYS_FILE = data_dir / 'dumps' / 'osm_keys.csv'
+CSV_TAGS_FILE = data_dir / 'dumps' / 'osm_tags.csv'
 
 set_loggers(wikidata, 'wikidata')
 
@@ -78,42 +81,39 @@ ORDER BY ?key ?item ?itemLabel
 
 LANGUAGES = [l[0].lower() for l in sxng_locales]
 
-PRESET_KEYS = {
-    ('wikidata',): {'en': 'Wikidata'},
-    ('wikipedia',): {'en': 'Wikipedia'},
-    ('email',): {'en': 'Email'},
-    ('facebook',): {'en': 'Facebook'},
-    ('fax',): {'en': 'Fax'},
-    ('internet_access', 'ssid'): {'en': 'Wi-Fi'},
-}
+PRESET_KEYS = [
+    ["wikidata", "en", "Wikidata"],
+    ["wikipedia", "en", "Wikipedia"],
+    ["email", "en", "email"],
+    ["facebook", "en", "facebook"],
+    ["fax", "en", "Fax"],
+    ["internet_access:ssid", "en", "Wi-Fi"],
+]
 
 INCLUDED_KEYS = {('addr',)}
 
 
-def get_preset_keys():
-    results = collections.OrderedDict()
-    for keys, value in PRESET_KEYS.items():
-        r = results
-        for k in keys:
-            r = r.setdefault(k, {})
-        r.setdefault('*', value)
-    return results
-
-
 def get_keys():
-    results = get_preset_keys()
+    result_keys = set()
+    results = PRESET_KEYS.copy()
     response = wikidata.send_wikidata_query(SPARQL_KEYS_REQUEST)
 
     for key in response['results']['bindings']:
         keys = key['key']['value'].split(':')[1:]
+        label = key['itemLabel']['value'].lower()
+        lang = key['itemLabel']['xml:lang']
+
+        if lang not in LANGUAGES:
+            continue
+
         if keys[0] == 'currency' and len(keys) > 1:
             # special case in openstreetmap.py
             continue
         if keys[0] == 'contact' and len(keys) > 1:
-            # label for the key "contact.email" is "Email"
-            # whatever the language
-            r = results.setdefault('contact', {})
-            r[keys[1]] = {'*': {'en': keys[1]}}
+            if lang == "en":
+                # label for the key "contact.email" is "Email"
+                # whatever the language
+                results.append((":".join(keys), "en", keys[1]))
             continue
         if tuple(keys) in PRESET_KEYS:
             # skip presets (already set above)
@@ -125,40 +125,46 @@ def get_keys():
         ):
             # keep only keys that will be displayed by openstreetmap.py
             continue
-        label = key['itemLabel']['value'].lower()
-        lang = key['itemLabel']['xml:lang']
-        r = results
-        for k in keys:
-            r = r.setdefault(k, {})
-        r = r.setdefault('*', {})
-        if lang in LANGUAGES:
-            r.setdefault(lang, label)
+
+        entry = (":".join(keys), lang, label)
+        entry_key = (entry[0], entry[1])
+        if entry_key not in result_keys:
+            results.append(entry)
+            result_keys.add(entry_key)
 
     # special cases
-    results['delivery']['covid19']['*'].clear()
-    for k, v in results['delivery']['*'].items():
-        results['delivery']['covid19']['*'][k] = v + ' (COVID19)'
+    results = [entry for entry in results if entry[0] != 'delivery:covid19']
+    results.extend(
+        [['delivery:covid19', entry[1], entry[2] + ' (COVID19)'] for entry in results if entry[0] == 'delivery']
+    )
 
-    results['opening_hours']['covid19']['*'].clear()
-    for k, v in results['opening_hours']['*'].items():
-        results['opening_hours']['covid19']['*'][k] = v + ' (COVID19)'
+    results = [entry for entry in results if entry[0] != 'opening_hours:covid19']
+    results.extend(
+        [
+            ['opening_hours:covid19', entry[1], entry[2] + ' (COVID19)']
+            for entry in results
+            if entry[0] == 'opening_hours'
+        ]
+    )
 
     return results
 
 
 def get_tags():
-    results = collections.OrderedDict()
+    results = []
     response = wikidata.send_wikidata_query(SPARQL_TAGS_REQUEST)
     for tag in response['results']['bindings']:
-        tag_names = tag['tag']['value'].split(':')[1].split('=')
-        if len(tag_names) == 2:
-            tag_category, tag_type = tag_names
-        else:
-            tag_category, tag_type = tag_names[0], ''
+        try:
+            tag_key, tag_value = tag['tag']['value'].split('=')
+            if tag_key.startswith("Tag:"):
+                tag_key = tag_key[4:]
+        except ValueError:
+            print("ignore tag", tag['tag']['value'])
+            continue
         label = tag['itemLabel']['value'].lower()
         lang = tag['itemLabel']['xml:lang']
         if lang in LANGUAGES:
-            results.setdefault(tag_category, {}).setdefault(tag_type, {}).setdefault(lang, label)
+            results.append((tag_key, tag_value, lang, label))
     return results
 
 
@@ -206,9 +212,30 @@ def optimize_keys(data):
 if __name__ == '__main__':
 
     set_timeout_for_thread(60)
-    result = {
-        'keys': optimize_keys(get_keys()),
-        'tags': optimize_tags(get_tags()),
-    }
-    with DATA_FILE.open('w', encoding="utf8") as f:
-        json.dump(result, f, indent=4, sort_keys=True, ensure_ascii=False)
+    osm_keys = get_keys()
+    osm_tags = get_tags()
+
+    osm_keys.sort(key=lambda item: (item[0], item[1]))
+    osm_tags.sort(key=lambda item: (item[0], item[1]))
+
+    Path(DATABASE_FILE).unlink(missing_ok=True)
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()
+        cur.execute("CREATE TABLE osm_keys(name, language, label)")
+        cur.executemany("INSERT INTO osm_keys VALUES(?, ?, ?)", osm_keys)
+        cur.execute("CREATE INDEX index_osm_keys ON osm_keys('name', 'language')")
+        cur.execute("CREATE TABLE osm_tags(tag_key, tag_value, language, label)")
+        cur.executemany("INSERT INTO osm_tags VALUES(?, ?, ?, ?)", osm_tags)
+        cur.execute("CREATE INDEX index_osm_tags ON osm_tags('tag_key', 'tag_value', 'language')")
+        con.commit()
+
+    with CSV_KEYS_FILE.open('w', encoding="utf8") as f:
+        w = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+        w.writerow(["name", "language", "label"])
+        for row in osm_keys:
+            w.writerow(row)
+    with CSV_TAGS_FILE.open('w', encoding="utf8") as f:
+        w = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+        w.writerow(["tag_key", "tag_value", "language", "label"])
+        for row in osm_tags:
+            w.writerow(row)

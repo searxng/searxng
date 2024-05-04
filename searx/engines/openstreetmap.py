@@ -10,7 +10,7 @@ from functools import partial
 
 from flask_babel import gettext
 
-from searx.data import OSM_KEYS_TAGS, fetch_name_from_iso4217
+from searx.data import fetch_osm_tag_label, fetch_osm_key_label
 from searx.utils import searx_useragent
 from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
@@ -187,14 +187,14 @@ def response(resp):
                 'template': 'map.html',
                 'title': title,
                 'address': address,
-                'address_label': get_key_label('addr', user_language),
+                'address_label': fetch_osm_key_label('addr', user_language),
                 'url': url,
                 'osm': osm,
                 'geojson': geojson,
                 'thumbnail': thumbnail,
                 'links': links,
                 'data': data,
-                'type': get_tag_label(result.get('category'), result.get('type', ''), user_language),
+                'type': fetch_osm_tag_label(result.get('category'), result.get('type', ''), user_language),
                 'type_icon': result.get('icon'),
                 'content': '',
                 'longitude': result['lon'],
@@ -367,7 +367,7 @@ def get_links(result, user_language):
             url_label = result.get('wikidata', {}).get('itemLabel') or url_label
         links.append(
             {
-                'label': get_key_label(k, user_language),
+                'label': fetch_osm_key_label(k, user_language),
                 'url': url,
                 'url_label': url_label,
             }
@@ -389,7 +389,7 @@ def get_data(result, user_language, ignore_keys):
             continue
         if get_key_rank(k) is None:
             continue
-        k_label = get_key_label(k, user_language)
+        k_label = fetch_osm_key_label(k, user_language)
         if k_label:
             data.append(
                 {
@@ -412,51 +412,3 @@ def get_key_rank(k):
         # "payment:*" in KEY_ORDER matches "payment:cash", "payment:debit card", etc...
         key_rank = KEY_RANKS.get(k.split(':')[0] + ':*')
     return key_rank
-
-
-def get_label(labels, lang):
-    """Get label from labels in OSM_KEYS_TAGS
-
-    in OSM_KEYS_TAGS, labels have key == '*'
-    """
-    tag_label = labels.get(lang.lower())
-    if tag_label is None:
-        # example: if 'zh-hk' is not found, check 'zh'
-        tag_label = labels.get(lang.split('-')[0])
-    if tag_label is None and lang != 'en':
-        # example: if 'zh' is not found, check 'en'
-        tag_label = labels.get('en')
-    if tag_label is None and len(labels.values()) > 0:
-        # example: if still not found, use the first entry
-        tag_label = labels.values()[0]
-    return tag_label
-
-
-def get_tag_label(tag_category, tag_name, lang):
-    """Get tag label from OSM_KEYS_TAGS"""
-    tag_name = '' if tag_name is None else tag_name
-    tag_labels = OSM_KEYS_TAGS['tags'].get(tag_category, {}).get(tag_name, {})
-    return get_label(tag_labels, lang)
-
-
-def get_key_label(key_name, lang):
-    """Get key label from OSM_KEYS_TAGS"""
-    if key_name.startswith('currency:'):
-        # currency:EUR --> get the name from the CURRENCIES variable
-        # see https://wiki.openstreetmap.org/wiki/Key%3Acurrency
-        # and for example https://taginfo.openstreetmap.org/keys/currency:EUR#values
-        # but there is also currency=EUR (currently not handled)
-        # https://taginfo.openstreetmap.org/keys/currency#values
-        currency = key_name.split(':')
-        if len(currency) > 1:
-            label = fetch_name_from_iso4217(currency[1], lang)
-            if label:
-                return label
-            return currency[1]
-
-    labels = OSM_KEYS_TAGS['keys']
-    for k in key_name.split(':') + ['*']:
-        labels = labels.get(k)
-        if labels is None:
-            return None
-    return get_label(labels, lang)

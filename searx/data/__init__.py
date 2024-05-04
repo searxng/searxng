@@ -11,12 +11,12 @@ __all__ = [
     'EXTERNAL_URLS',
     'WIKIDATA_UNITS',
     'EXTERNAL_BANGS',
-    'OSM_KEYS_TAGS',
     'LOCALES',
     'ahmia_blacklist_loader',
     'fetch_engine_descriptions',
     'fetch_iso4217_from_user',
     'fetch_name_from_iso4217',
+    'fetch_osm_key_label',
 ]
 
 import re
@@ -109,6 +109,45 @@ def fetch_name_from_iso4217(iso4217: str, language: str) -> Optional[str]:
         return None
 
 
+@lru_cache(100)
+def fetch_osm_key_label(key_name: str, language: str) -> Optional[str]:
+    if key_name.startswith('currency:'):
+        # currency:EUR --> get the name from the CURRENCIES variable
+        # see https://wiki.openstreetmap.org/wiki/Key%3Acurrency
+        # and for example https://taginfo.openstreetmap.org/keys/currency:EUR#values
+        # but there is also currency=EUR (currently not handled)
+        # https://taginfo.openstreetmap.org/keys/currency#values
+        currency = key_name.split(':')
+        if len(currency) > 1:
+            label = fetch_name_from_iso4217(currency[1], language)
+            if label:
+                return label
+            return currency[1]
+
+    language = language.lower()
+    language_short = language.split('-')[0]
+    with sql_connection("osm_keys_tags.db") as conn:
+        res = conn.execute(
+            "SELECT language, label FROM osm_keys WHERE name=? AND language in (?, ?, 'en')",
+            (key_name, language, language_short),
+        )
+        result = {result[0]: result[1] for result in res.fetchall()}
+        return result.get(language) or result.get(language_short) or result.get('en')
+
+
+@lru_cache(100)
+def fetch_osm_tag_label(tag_key: str, tag_value: str, language: str) -> Optional[str]:
+    language = language.lower()
+    language_short = language.split('-')[0]
+    with sql_connection("osm_keys_tags.db") as conn:
+        res = conn.execute(
+            "SELECT language, label FROM osm_tags WHERE tag_key=? AND tag_value=? AND language in (?, ?, 'en')",
+            (tag_key, tag_value, language, language_short),
+        )
+        result = {result[0]: result[1] for result in res.fetchall()}
+        return result.get(language) or result.get(language_short) or result.get('en')
+
+
 def ahmia_blacklist_loader():
     """Load data from `ahmia_blacklist.txt` and return a list of MD5 values of onion
     names.  The MD5 values are fetched by::
@@ -126,6 +165,5 @@ USER_AGENTS = _load('useragents.json')
 EXTERNAL_URLS = _load('external_urls.json')
 WIKIDATA_UNITS = _load('wikidata_units.json')
 EXTERNAL_BANGS = _load('external_bangs.json')
-OSM_KEYS_TAGS = _load('osm_keys_tags.json')
 ENGINE_TRAITS = _load('engine_traits.json')
 LOCALES = _load('locales.json')

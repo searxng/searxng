@@ -6,7 +6,7 @@ from time import time
 from urllib.parse import urlencode
 
 from searx.network import get as http_get
-from searx.engines.openstreetmap import get_key_label
+from searx.data import fetch_osm_key_label
 
 about = {
     "website": 'https://www.apple.com/maps/',
@@ -72,7 +72,7 @@ def response(resp):
             telephone = result['telephone']
             links.append(
                 {
-                    'label': get_key_label('phone', user_language),
+                    'label': fetch_osm_key_label('phone', user_language),
                     'url': 'tel:' + telephone,
                     'url_label': telephone,
                 }
@@ -81,7 +81,7 @@ def response(resp):
             url = result['urls'][0]
             links.append(
                 {
-                    'label': get_key_label('website', user_language),
+                    'label': fetch_osm_key_label('website', user_language),
                     'url': url,
                     'url_label': url,
                 }
