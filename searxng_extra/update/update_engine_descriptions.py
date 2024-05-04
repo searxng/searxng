@@ -9,22 +9,24 @@ Output file: :origin:`searx/data/engine_descriptions.json`.
 
 # pylint: disable=invalid-name, global-statement
 
+import csv
 import json
+import sqlite3
 from urllib.parse import urlparse
-from os.path import join
+from pathlib import Path
 
 from lxml.html import fromstring
 
 from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text, searx_useragent
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
-from searx import searx_dir
 from searx.utils import gen_useragent, detect_language
 import searx.search
 import searx.network
 from searx.data import data_dir
 
-DATA_FILE = data_dir / 'engine_descriptions.json'
+DATABASE_FILE = data_dir / 'engine_descriptions.db'
+CSV_FILE = data_dir / 'dumps' / 'engine_descriptions.csv'
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -323,37 +325,32 @@ def fetch_website_descriptions():
             fetch_website_description(engine_name, website)
 
 
-def get_engine_descriptions_filename():
-    return join(join(searx_dir, "data"), "engine_descriptions.json")
-
-
-def get_output():
+def write_db():
     """
-    From descriptions[engine][language] = [description, source]
-    To
+    Erase and write the SQLite database searx/data/engine_descriptions.db :
+    * create one table engine_descriptions
+    * dump write all the values
 
-    * output[language][engine] = description_and_source
-    * description_and_source can be:
-       * [description, source]
-       * description (if source = "wikipedia")
-       * [f"engine:lang", "ref"] (reference to another existing description)
+    Make a JSON dump of the values into engine_descriptions.json
     """
-    output = {locale: {} for locale in LOCALE_NAMES}
-
-    seen_descriptions = {}
-
-    for engine_name, lang_descriptions in descriptions.items():
-        for language, description in lang_descriptions.items():
-            if description[0] in seen_descriptions:
-                ref = seen_descriptions[description[0]]
-                description = [f'{ref[0]}:{ref[1]}', 'ref']
-            else:
-                seen_descriptions[description[0]] = (engine_name, language)
-                if description[1] == 'wikipedia':
-                    description = description[0]
-            output.setdefault(language, {}).setdefault(engine_name, description)
-
-    return output
+    data = [
+        (language, engine_name, description[0], description[1])
+        for engine_name, lang_descriptions in descriptions.items()
+        for language, description in lang_descriptions.items()
+    ]
+    data.sort(key=lambda item: (item[0], item[1]))
+    Path(DATABASE_FILE).unlink(missing_ok=True)
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()
+        cur.execute("CREATE TABLE engine_descriptions(language, engine, description, source)")
+        cur.executemany("INSERT INTO engine_descriptions VALUES(?, ?, ?, ?)", data)
+        cur.execute("CREATE INDEX index_engine_descriptions ON engine_descriptions('language')")
+        con.commit()
+    with CSV_FILE.open('w', encoding="utf8") as f:
+        w = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+        w.writerow(["language", "engine", "description", "source"])
+        for row in data:
+            w.writerow(row)
 
 
 def main():
@@ -361,10 +358,7 @@ def main():
     fetch_wikidata_descriptions()
     fetch_wikipedia_descriptions()
     fetch_website_descriptions()
-
-    output = get_output()
-    with DATA_FILE.open('w', encoding='utf8') as f:
-        f.write(json.dumps(output, indent=1, separators=(',', ':'), sort_keys=True, ensure_ascii=False))
+    write_db()
 
 
 if __name__ == "__main__":

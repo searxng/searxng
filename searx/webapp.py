@@ -58,7 +58,7 @@ from searx import infopage
 from searx import limiter
 from searx.botdetection import link_token
 
-from searx.data import ENGINE_DESCRIPTIONS
+from searx.data import fetch_engine_descriptions
 from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
 from searx.settings_loader import get_default_settings_path
@@ -1102,17 +1102,10 @@ def image_proxy():
 @app.route('/engine_descriptions.json', methods=['GET'])
 def engine_descriptions():
     locale = get_locale().split('_')[0]
-    result = ENGINE_DESCRIPTIONS['en'].copy()
+    result = fetch_engine_descriptions('en')
     if locale != 'en':
-        for engine, description in ENGINE_DESCRIPTIONS.get(locale, {}).items():
+        for engine, description in fetch_engine_descriptions(locale).items():
             result[engine] = description
-    for engine, description in result.items():
-        if len(description) == 2 and description[1] == 'ref':
-            ref_engine, ref_lang = description[0].split(':')
-            description = ENGINE_DESCRIPTIONS[ref_lang][ref_engine]
-        if isinstance(description, str):
-            description = [description, 'wikipedia']
-        result[engine] = description
 
     # overwrite by about:description (from settings)
     for engine_name, engine_mod in engines.items():
