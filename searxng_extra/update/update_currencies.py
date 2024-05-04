@@ -9,15 +9,20 @@ Output file: :origin:`searx/data/currencies.json` (:origin:`CI Update data ...
 
 # pylint: disable=invalid-name
 
+import csv
 import re
 import unicodedata
-import json
+import sqlite3
+from pathlib import Path
 
+from searx.network import set_timeout_for_thread
 from searx.locales import LOCALE_NAMES, locales_initialize
 from searx.engines import wikidata, set_loggers
 from searx.data import data_dir
 
-DATA_FILE = data_dir / 'currencies.json'
+DATABASE_FILE = data_dir / 'currencies.db'
+CSV_FILE = data_dir / 'dumps' / 'currencies.csv'
+
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -75,57 +80,45 @@ def _normalize_name(name):
     return name
 
 
-def add_currency_name(db, name, iso4217, normalize_name=True):
-    db_names = db['names']
-
+def add_entry(db, language, iso4217, name, normalize_name=True):
     if normalize_name:
         name = _normalize_name(name)
 
-    iso4217_set = db_names.setdefault(name, [])
-    if iso4217 not in iso4217_set:
-        iso4217_set.insert(0, iso4217)
-
-
-def add_currency_label(db, label, iso4217, language):
-    labels = db['iso4217'].setdefault(iso4217, {})
-    labels[language] = label
+    entry = (language, iso4217, name)
+    db.add(entry)
 
 
 def wikidata_request_result_iterator(request):
+    set_timeout_for_thread(60)
     result = wikidata.send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL))
     if result is not None:
         yield from result['results']['bindings']
 
 
 def fetch_db():
-    db = {
-        'names': {},
-        'iso4217': {},
-    }
+    db = set()
 
     for r in wikidata_request_result_iterator(SPARQL_WIKIPEDIA_NAMES_REQUEST):
         iso4217 = r['iso4217']['value']
         article_name = r['article_name']['value']
         article_lang = r['article_name']['xml:lang']
-        add_currency_name(db, article_name, iso4217)
-        add_currency_label(db, article_name, iso4217, article_lang)
+        add_entry(db, article_lang, iso4217, article_name)
 
     for r in wikidata_request_result_iterator(SARQL_REQUEST):
         iso4217 = r['iso4217']['value']
         if 'label' in r:
             label = r['label']['value']
             label_lang = r['label']['xml:lang']
-            add_currency_name(db, label, iso4217)
-            add_currency_label(db, label, iso4217, label_lang)
+            add_entry(db, label_lang, iso4217, label)
 
         if 'alias' in r:
-            add_currency_name(db, r['alias']['value'], iso4217)
+            add_entry(db, "", iso4217, r['alias']['value'])
 
         if 'unicode' in r:
-            add_currency_name(db, r['unicode']['value'], iso4217, normalize_name=False)
+            add_entry(db, "", iso4217, r['unicode']['value'], normalize_name=False)
 
         if 'unit' in r:
-            add_currency_name(db, r['unit']['value'], iso4217, normalize_name=False)
+            add_entry(db, "", iso4217, r['unit']['value'], normalize_name=False)
 
     return db
 
@@ -135,22 +128,33 @@ def main():
     db = fetch_db()
 
     # static
-    add_currency_name(db, "euro", 'EUR')
-    add_currency_name(db, "euros", 'EUR')
-    add_currency_name(db, "dollar", 'USD')
-    add_currency_name(db, "dollars", 'USD')
-    add_currency_name(db, "peso", 'MXN')
-    add_currency_name(db, "pesos", 'MXN')
+    add_entry(db, "", 'EUR', "euro")
+    add_entry(db, "", 'EUR', "euros")
+    add_entry(db, "", 'USD', "dollar")
+    add_entry(db, "", 'USD', "dollars")
+    add_entry(
+        db,
+        "",
+        'MXN',
+        "peso",
+    )
+    add_entry(db, "", 'MXN', "pesos")
 
-    # reduce memory usage:
-    # replace lists with one item by the item.  see
-    # searx.search.processors.online_currency.name_to_iso4217
-    for name in db['names']:
-        if len(db['names'][name]) == 1:
-            db['names'][name] = db['names'][name][0]
-
-    with DATA_FILE.open('w', encoding='utf8') as f:
-        json.dump(db, f, indent=4, sort_keys=True, ensure_ascii=False)
+    db = list(db)
+    db.sort(key=lambda entry: (entry[0], entry[1], entry[2]))
+    Path(DATABASE_FILE).unlink(missing_ok=True)
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()
+        cur.execute("CREATE TABLE currencies(language, iso4217, name)")
+        cur.executemany("INSERT INTO currencies VALUES(?, ?, ?)", db)
+        cur.execute("CREATE INDEX index_currencies_iso4217 ON currencies('iso4217')")
+        cur.execute("CREATE INDEX index_currencies_name ON currencies('name')")
+        con.commit()
+    with CSV_FILE.open('w', encoding='utf8') as f:
+        w = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+        w.writerow(["language", "iso4217", "name"])
+        for row in db:
+            w.writerow(row)
 
 
 if __name__ == '__main__':

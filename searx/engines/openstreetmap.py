@@ -10,7 +10,7 @@ from functools import partial
 
 from flask_babel import gettext
 
-from searx.data import OSM_KEYS_TAGS, CURRENCIES
+from searx.data import OSM_KEYS_TAGS, fetch_name_from_iso4217
 from searx.utils import searx_useragent
 from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
@@ -449,9 +449,9 @@ def get_key_label(key_name, lang):
         # https://taginfo.openstreetmap.org/keys/currency#values
         currency = key_name.split(':')
         if len(currency) > 1:
-            o = CURRENCIES['iso4217'].get(currency[1])
-            if o:
-                return get_label(o, lang).lower()
+            label = fetch_name_from_iso4217(currency[1], lang)
+            if label:
+                return label
             return currency[1]
 
     labels = OSM_KEYS_TAGS['keys']

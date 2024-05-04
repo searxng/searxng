@@ -7,7 +7,6 @@
 
 __all__ = [
     'ENGINE_TRAITS',
-    'CURRENCIES',
     'USER_AGENTS',
     'EXTERNAL_URLS',
     'WIKIDATA_UNITS',
@@ -16,12 +15,17 @@ __all__ = [
     'LOCALES',
     'ahmia_blacklist_loader',
     'fetch_engine_descriptions',
+    'fetch_iso4217_from_user',
+    'fetch_name_from_iso4217',
 ]
 
+import re
+import unicodedata
 import json
 import sqlite3
 from contextlib import contextmanager
-from typing import Dict, Generator, List
+from typing import Dict, Generator, List, Optional
+from functools import lru_cache
 from pathlib import Path
 
 
@@ -69,6 +73,42 @@ def fetch_engine_descriptions(language) -> Dict[str, List[str]]:
         return {result[0]: [result[1], result[2]] for result in res.fetchall()}
 
 
+def _normalize_name(name):
+    name = name.lower().replace('-', ' ').rstrip('s')
+    name = re.sub(' +', ' ', name)
+    return unicodedata.normalize('NFKD', name).lower()
+
+
+@lru_cache(10)
+def fetch_iso4217_from_user(name: str) -> Optional[str]:
+    with sql_connection("currencies.db") as connection:
+        # try the iso4217
+        res = connection.execute("SELECT iso4217 FROM currencies WHERE lower(iso4217)=? LIMIT 1", (name.lower(),))
+        result = res.fetchone()
+        if result:
+            return result[0]
+
+        # try the currency names
+        name = _normalize_name(name)
+        res = connection.execute("SELECT iso4217 FROM currencies WHERE name=?", (name,))
+        result = list(set(result[0] for result in res.fetchall()))
+        if len(result) == 1:
+            return result[0]
+
+        # ambiguity --> return nothing
+        return None
+
+
+@lru_cache(10)
+def fetch_name_from_iso4217(iso4217: str, language: str) -> Optional[str]:
+    with sql_connection("currencies.db") as connection:
+        res = connection.execute("SELECT name FROM currencies WHERE iso4217=? AND language=?", (iso4217, language))
+        result = [result[0] for result in res.fetchall()]
+        if len(result) == 1:
+            return result[0]
+        return None
+
+
 def ahmia_blacklist_loader():
     """Load data from `ahmia_blacklist.txt` and return a list of MD5 values of onion
     names.  The MD5 values are fetched by::
@@ -82,7 +122,6 @@ def ahmia_blacklist_loader():
         return f.read().split()
 
 
-CURRENCIES = _load('currencies.json')
 USER_AGENTS = _load('useragents.json')
 EXTERNAL_URLS = _load('external_urls.json')
 WIKIDATA_UNITS = _load('wikidata_units.json')
