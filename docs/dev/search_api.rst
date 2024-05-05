@@ -103,14 +103,14 @@ Parameters
 
      .. disabled by default
 
-     ``Hostname_replace``, ``Open_Access_DOI_rewrite``,
+     ``Hostnames_plugin``, ``Open_Access_DOI_rewrite``,
      ``Vim-like_hotkeys``, ``Tor_check_plugin``
 
 ``disabled_plugins``: optional
   List of disabled plugins.
 
   :default:
-     ``Hostname_replace``, ``Open_Access_DOI_rewrite``,
+     ``Hostnames_plugin``, ``Open_Access_DOI_rewrite``,
      ``Vim-like_hotkeys``, ``Tor_check_plugin``
 
   :values:

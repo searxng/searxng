@@ -219,7 +219,7 @@ outgoing:
 #   - 'Tracker URL remover'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
-#   - 'Hostname replace'  # see hostname_replace configuration below
+#   - 'Hostnames plugin'  # see 'hostnames' configuration below
 #   - 'Basic Calculator'
 #   - 'Open Access DOI rewrite'
 #   - 'Tor check plugin'
@@ -228,17 +228,21 @@ outgoing:
 #   # preferences if they want.
 #   - 'Autodetect search language'
 
-# Configuration of the "Hostname replace" plugin:
+# Configuration of the "Hostnames plugin":
 #
-# hostname_replace:
-#   '(.*\.)?youtube\.com$': 'invidious.example.com'
-#   '(.*\.)?youtu\.be$': 'invidious.example.com'
-#   '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
-#   '(.*\.)?reddit\.com$': 'teddit.example.com'
-#   '(.*\.)?redd\.it$': 'teddit.example.com'
-#   '(www\.)?twitter\.com$': 'nitter.example.com'
-#   # to remove matching host names from result list, set value to false
-#   'spam\.example\.com': false
+# hostnames:
+#   replace:
+#     '(.*\.)?youtube\.com$': 'invidious.example.com'
+#     '(.*\.)?youtu\.be$': 'invidious.example.com'
+#     '(.*\.)?reddit\.com$': 'teddit.example.com'
+#     '(.*\.)?redd\.it$': 'teddit.example.com'
+#     '(www\.)?twitter\.com$': 'nitter.example.com'
+#   remove:
+#     - '(.*\.)?facebook.com$'
+#   low_priority:
+#     - '(.*\.)?google(\..*)?$'
+#   high_priority:
+#     - '(.*\.)?wikipedia.org$'
 
 checker:
   # disable checker when in debug mode
