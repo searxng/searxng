@@ -3,11 +3,7 @@
 
 from mock import Mock
 
-from searx import (
-    plugins,
-    limiter,
-    botdetection,
-)
+from searx import plugins
 
 from tests import SearxTestCase
 
@@ -53,8 +49,6 @@ class SelfIPTest(SearxTestCase):  # pylint: disable=missing-class-docstring
         plugin = plugins.load_and_initialize_plugin('searx.plugins.self_info', False, (None, {}))
         store = plugins.PluginStore()
         store.register(plugin)
-        cfg = limiter.get_cfg()
-        botdetection.init(cfg, None)
 
         self.assertTrue(len(store.plugins) == 1)
 

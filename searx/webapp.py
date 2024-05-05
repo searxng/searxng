@@ -56,7 +56,6 @@ from searx import (
 
 from searx import infopage
 from searx import limiter
-from searx.botdetection import link_token
 
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
@@ -383,7 +382,6 @@ def render(template_name: str, **kwargs):
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
     kwargs['cookies'] = request.cookies
     kwargs['errors'] = request.errors
-    kwargs['link_token'] = link_token.get_token()
 
     # values from the preferences
     kwargs['preferences'] = request.preferences
@@ -611,12 +609,6 @@ def index():
 @app.route('/healthz', methods=['GET'])
 def health():
     return Response('OK', mimetype='text/plain')
-
-
-@app.route('/client<token>.css', methods=['GET', 'POST'])
-def client_token(token=None):
-    link_token.ping(request, token)
-    return Response('', mimetype='text/css')
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -1281,7 +1273,7 @@ def config():
     for _ in plugins:
         _plugins.append({'name': _.name, 'enabled': _.default_on})
 
-    _limiter_cfg = limiter.get_cfg()
+    _limiter_cfg = limiter.get_config()
 
     return jsonify(
         {
@@ -1304,8 +1296,8 @@ def config():
             },
             'limiter': {
                 'enabled': limiter.is_installed(),
-                'botdetection.ip_limit.link_token': _limiter_cfg.get('botdetection.ip_limit.link_token'),
-                'botdetection.ip_lists.pass_searxng_org': _limiter_cfg.get('botdetection.ip_lists.pass_searxng_org'),
+                'botdetection.ip_limit.link_token': _limiter_cfg.botdetection.ip_limit.link_token,
+                'botdetection.ip_lists.pass_searxng_org': _limiter_cfg.botdetection.ip_lists,  # fix me
             },
             'doi_resolvers': list(settings['doi_resolvers'].keys()),
             'default_doi_resolver': settings['default_doi_resolver'],

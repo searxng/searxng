@@ -96,33 +96,37 @@ from __future__ import annotations
 import sys
 
 from pathlib import Path
-from ipaddress import ip_address
 import flask
 import werkzeug
 
-from searx import (
-    logger,
-    redisdb,
+from botdetection import (
+    install_botdetection,
+    RouteFilter,
+    Config,
+    PredefinedRequestFilter,
+    RequestContext,
+    RequestInfo,
+    too_many_requests,
 )
-from searx import botdetection
-from searx.botdetection import (
-    config,
-    http_accept,
-    http_accept_encoding,
-    http_accept_language,
-    http_user_agent,
-    ip_limit,
-    ip_lists,
-    get_network,
-    get_real_ip,
-    dump_request,
-)
+from searx import logger, redisdb
+
+try:
+    import tomllib
+
+    pytomlpp = None
+    USE_TOMLLIB = True
+except ImportError:
+    import pytomlpp
+
+    tomllib = None
+    USE_TOMLLIB = False
+
 
 # the configuration are limiter.toml and "limiter" in settings.yml so, for
 # coherency, the logger is "limiter"
 logger = logger.getChild('limiter')
 
-CFG: config.Config = None  # type: ignore
+CFG: Config = None  # type: ignore
 _INSTALLED = False
 
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
@@ -131,82 +135,71 @@ LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 LIMITER_CFG = Path('/etc/searxng/limiter.toml')
 """Local Limiter configuration."""
 
-CFG_DEPRECATED = {
-    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
-}
+API_WINDOW = 3600
+"""Time (sec) before sliding window for API requests (format != html) expires."""
+
+API_MAX = 4
+"""Maximum requests from one IP in the :py:obj:`API_WINDOW`"""
 
 
-def get_cfg() -> config.Config:
+def toml_load(file_name):
+    if USE_TOMLLIB:
+        # Python >= 3.11
+        try:
+            with open(file_name, "rb") as f:
+                return tomllib.load(f)
+        except tomllib.TOMLDecodeError as exc:
+            msg = str(exc).replace('\t', '').replace('\n', ' ')
+            logger.error("%s: %s", file_name, msg)
+            raise
+    # fallback to pytomlpp for Python < 3.11
+    try:
+        return pytomlpp.load(file_name)
+    except pytomlpp.DecodeError as exc:
+        msg = str(exc).replace('\t', '').replace('\n', ' ')
+        logger.error("%s: %s", file_name, msg)
+        raise
+
+
+def get_config() -> Config:
     global CFG  # pylint: disable=global-statement
     if CFG is None:
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, LIMITER_CFG, CFG_DEPRECATED)
+        if LIMITER_CFG.is_file():
+            data = toml_load(LIMITER_CFG)
+        else:
+            data = toml_load(LIMITER_CFG_SCHEMA)
+        CFG = Config(real_ip=data["real_ip"], botdetection=data["botdetection"])
     return CFG
 
 
-def filter_request(request: flask.Request) -> werkzeug.Response | None:
-    # pylint: disable=too-many-return-statements
-
-    cfg = get_cfg()
-    real_ip = ip_address(get_real_ip(request))
-    network = get_network(real_ip, cfg)
-
-    if request.path == '/healthz':
-        return None
-
-    # link-local
-
-    if network.is_link_local:
-        return None
-
-    # block- & pass- lists
-    #
-    # 1. The IP of the request is first checked against the pass-list; if the IP
-    #    matches an entry in the list, the request is not blocked.
-    # 2. If no matching entry is found in the pass-list, then a check is made against
-    #    the block list; if the IP matches an entry in the list, the request is
-    #    blocked.
-    # 3. If the IP is not in either list, the request is not blocked.
-
-    match, msg = ip_lists.pass_ip(real_ip, cfg)
-    if match:
-        logger.warning("PASS %s: matched PASSLIST - %s", network.compressed, msg)
-        return None
-
-    match, msg = ip_lists.block_ip(real_ip, cfg)
-    if match:
-        logger.error("BLOCK %s: matched BLOCKLIST - %s", network.compressed, msg)
-        return flask.make_response(('IP is on BLOCKLIST - %s' % msg, 429))
-
-    # methods applied on /
-
-    for func in [
-        http_user_agent,
-    ]:
-        val = func.filter_request(network, request, cfg)
-        if val is not None:
-            return val
-
-    # methods applied on /search
-
-    if request.path == '/search':
-
-        for func in [
-            http_accept,
-            http_accept_encoding,
-            http_accept_language,
-            http_user_agent,
-            ip_limit,
-        ]:
-            val = func.filter_request(network, request, cfg)
-            if val is not None:
-                return val
-    logger.debug(f"OK {network}: %s", dump_request(flask.request))
+def api_rate_filter_request(
+    context: RequestContext,
+    request_info: RequestInfo,
+    request: flask.Request,
+) -> werkzeug.Response | None:
+    if request.args.get("format", "html") != "html":
+        c = context.redislib.incr_sliding_window("ip_limit.API_WINDOW:" + request_info.network.compressed, API_WINDOW)
+        if c > API_MAX:
+            return too_many_requests(request_info, "too many request in API_WINDOW")
     return None
 
 
-def pre_request():
-    """See :py:obj:`flask.Flask.before_request`"""
-    return filter_request(flask.request)
+route_filter = RouteFilter(
+    {
+        "/healthz": [],
+        "/search": [
+            PredefinedRequestFilter.HTTP_ACCEPT,
+            PredefinedRequestFilter.HTTP_ACCEPT_ENCODING,
+            PredefinedRequestFilter.HTTP_ACCEPT_LANGUAGE,
+            PredefinedRequestFilter.HTTP_USER_AGENT,
+            api_rate_filter_request,
+            PredefinedRequestFilter.IP_LIMIT,
+        ],
+        "*": [
+            PredefinedRequestFilter.HTTP_USER_AGENT,
+        ],
+    }
+)
 
 
 def is_installed():
@@ -221,13 +214,10 @@ def initialize(app: flask.Flask, settings):
     # even if the limiter is not activated, the botdetection must be activated
     # (e.g. the self_info plugin uses the botdetection to get client IP)
 
-    cfg = get_cfg()
-    redis_client = redisdb.client()
-    botdetection.init(cfg, redis_client)
-
     if not (settings['server']['limiter'] or settings['server']['public_instance']):
         return
 
+    redis_client = redisdb.client()
     if not redis_client:
         logger.error(
             "The limiter requires Redis, please consult the documentation: "
@@ -237,10 +227,12 @@ def initialize(app: flask.Flask, settings):
             sys.exit(1)
         return
 
+    # install botdetection
     _INSTALLED = True
 
+    config = get_config()
     if settings['server']['public_instance']:
         # overwrite limiter.toml setting
-        cfg.set('botdetection.ip_limit.link_token', True)
+        config.botdetection.ip_limit.link_token = True
 
-    app.before_request(pre_request)
+    install_botdetection(app, redis_client, config, route_filter)
