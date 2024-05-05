@@ -29,6 +29,9 @@ name = "Unit converter plugin"
 description = gettext("Convert between units")
 default_on = True
 
+plugin_id = "unit_converter"
+preference_section = "general"
+
 CONVERT_KEYWORDS = ["in", "to", "as"]
 
 # inspired from https://stackoverflow.com/a/42475086
