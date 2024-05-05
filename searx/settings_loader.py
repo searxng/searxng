@@ -31,6 +31,14 @@ def load_yaml(file_name):
         raise SearxSettingsException(e, file_name) from e
 
 
+def get_yaml_file(file_name):
+    path = existing_filename_or_none(join(searx_dir, file_name))
+    if path is None:
+        raise FileNotFoundError(f"File {file_name} does not exist!")
+
+    return load_yaml(path)
+
+
 def get_default_settings_path():
     return existing_filename_or_none(join(searx_dir, 'settings.yml'))
 

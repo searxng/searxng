@@ -243,6 +243,16 @@ outgoing:
 #     - '(.*\.)?google(\..*)?$'
 #   high_priority:
 #     - '(.*\.)?wikipedia.org$'
+#
+# Alternatively you can use external files for configuring the "Hostnames plugin":
+#
+# hostnames:
+#  replace: 'rewrite-hosts.yml'
+#
+# Content of 'rewrite-hosts.yml' (place the file in the same directory as 'settings.yml'):
+# '(.*\.)?youtube\.com$': 'invidious.example.com'
+# '(.*\.)?youtu\.be$': 'invidious.example.com'
+#
 
 checker:
   # disable checker when in debug mode

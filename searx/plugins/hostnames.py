@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring, too-many-branches
 
 import re
 from urllib.parse import urlunparse, urlparse
@@ -8,6 +8,7 @@ from flask_babel import gettext
 
 from searx import settings
 from searx.plugins import logger
+from searx.settings_loader import get_yaml_file
 
 name = gettext('Hostnames plugin')
 description = gettext('Rewrite hostnames, remove results or prioritize them based on the hostname')
@@ -16,17 +17,34 @@ preference_section = 'general'
 
 plugin_id = 'hostnames'
 
-replacements = {
-    re.compile(p): r
-    for (p, r) in (settings.get(plugin_id, {}).get('replace', settings.get('hostname_replace', {})).items())
-}
-removables = {re.compile(p) for p in settings[plugin_id].get('remove', [])}
-high_priority = {re.compile(p) for p in settings[plugin_id].get('high_priority', [])}
-low_priority = {re.compile(p) for p in settings[plugin_id].get('low_priority', [])}
-
 logger = logger.getChild(plugin_id)
 parsed = 'parsed_url'
 _url_fields = ['iframe_src', 'audio_src']
+
+
+def _load_regular_expressions(settings_key):
+    setting_value = settings.get(plugin_id, {}).get(settings_key)
+
+    if not setting_value:
+        return {}
+
+    # load external file with configuration
+    if isinstance(setting_value, str):
+        setting_value = get_yaml_file(setting_value)
+
+    if isinstance(setting_value, list):
+        return {re.compile(r) for r in setting_value}
+
+    if isinstance(setting_value, dict):
+        return {re.compile(p): r for (p, r) in setting_value.items()}
+
+    return {}
+
+
+replacements = _load_regular_expressions('replace')
+removables = _load_regular_expressions('remove')
+high_priority = _load_regular_expressions('high_priority')
+low_priority = _load_regular_expressions('low_priority')
 
 
 def _matches_parsed_url(result, pattern):
