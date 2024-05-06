@@ -33,23 +33,22 @@ def response(resp):
     results = []
     for package in resp.json():
         meta = package["meta"]
-        publishedDate = package.get("inserted_at")
-        if publishedDate:
-            publishedDate = parser.parse(publishedDate)
-        tags = meta.get("licenses", [])
+        published_date = package.get("updated_at")
+        published_date = parser.parse(published_date)
+        links = meta.get("links")
         results.append(
             {
                 "template": "packages.html",
-                "url": package["url"],
+                "url": package["html_url"],
                 "title": package["name"],
                 "package_name": package["name"],
                 "content": meta.get("description", ""),
                 "version": meta.get("latest_version"),
                 "maintainer": ", ".join(meta.get("maintainers", [])),
-                "publishedDate": publishedDate,
-                "tags": tags,
-                "homepage": meta.get("links", {}).get("homepage"),
-                "source_code_url": meta.get("links", {}).get("github"),
+                "publishedDate": published_date,
+                "license_name": ", ".join(meta.get("licenses", [])),
+                "homepage": package["docs_html_url"],
+                "links": links,
             }
         )
 
