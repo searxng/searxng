@@ -563,3 +563,7 @@ type.
    * - source_code_url
      - :py:class:`str`
      - the location of the project's source code
+
+   * - links
+     - :py:class:`dict`
+     - additional links in the form of ``{'link_name': 'http://example.com'}``

@@ -47,7 +47,7 @@
       {%- endif -%}
     </div>
   {%- endif -%}
-  {%- if result.homepage or result.source_code_url -%}
+  {%- if result.homepage or result.source_code_url or result.links -%}
     <div class="result_project">{{- '' -}}
       <span>{{ _('Project') }}</span>
       <span>{{- '' -}}
@@ -57,6 +57,14 @@
         {%- if result.homepage and result.source_code_url %} | {% endif -%}
         {%- if result.source_code_url -%}
           <a href="{{ result.source_code_url }}" target="_blank">{{ _('Source code') }}</a>
+        {%- endif -%}
+        {%- if result.links %}
+          {%- for name, link in result.links.items() -%}
+            {% if not loop.first or result.homepage or result.source_code_url %} | {% endif %}
+            <a href="{{ link }}" target="_blank">
+              {{- _(name) -}}
+            </a>
+          {%- endfor -%}
         {%- endif -%}
       </span>{{- '' -}}
     </div>
