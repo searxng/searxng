@@ -17,7 +17,7 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    - :ref:`no user tracking / no profiling <SearXNG protect privacy>`
    - script & cookies are optional
    - secure, encrypted connections
-   - :ref:`about 130 search engines <configured engines>`
+   - :ref:`about 200 search engines <configured engines>`
    - `about 60 translations <https://translate.codeberg.org/projects/searxng/searxng/>`_
    - about 100 `well maintained <https://uptime.searxng.org/>`__ instances on searx.space_
    - :ref:`easy integration of search engines <demo online engine>`
