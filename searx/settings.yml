@@ -822,6 +822,12 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: gitea.com
+    engine: gitea
+    base_url: https://gitea.com
+    shortcut: gitea
+    disabled: true
+
   - name: goodreads
     engine: goodreads
     shortcut: good
