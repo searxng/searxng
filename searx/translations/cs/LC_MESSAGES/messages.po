@@ -16,20 +16,19 @@
 # Fjuro <fjuro@alius.cz>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
 "PO-Revision-Date: 2024-04-30 09:18+0000\n"
 "Last-Translator: Fjuro <fjuro@alius.cz>\n"
-"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
-"searxng/cs/>\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -493,6 +492,10 @@ msgstr "Hodnocení knih"
 msgid "File quality"
 msgstr "Množství souborů"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Převádí řetězce na různé hash hodnoty."
@@ -572,7 +575,7 @@ msgstr "Odstraňovač sledovacích URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Odstranit sledovací parametry z načtených URL"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
 msgstr "Převod mezi jednotkami"
 
@@ -753,27 +756,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Odpovědi"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Počet výsledků"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Informace"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Zkuste vyhledat:"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Nahoru"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Předchozí stránka"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Další stránka"
 
@@ -1919,3 +1922,4 @@ msgstr "skrýt video"
 #~ "Nenašli jsme žádné výsledky. Použijte "
 #~ "prosím jiný dotaz nebo hledejte ve "
 #~ "více kategoriích."
+

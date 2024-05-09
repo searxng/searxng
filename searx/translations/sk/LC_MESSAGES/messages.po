@@ -12,20 +12,19 @@
 # Vision <Vision@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
 "PO-Revision-Date: 2024-05-06 07:18+0000\n"
 "Last-Translator: Vision <Vision@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
-"searxng/sk/>\n"
 "Language: sk\n"
+"Language-Team: Slovak "
+"<https://translate.codeberg.org/projects/searxng/searxng/sk/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
+"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
-">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -489,6 +488,10 @@ msgstr "Hodnotenie knižky"
 msgid "File quality"
 msgstr "Kvalita súboru"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Skonvertuje text pomocou rôznych hash funkcií."
@@ -567,7 +570,7 @@ msgstr "Odstraňovanie sledovacích argumentov"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Odstrániť sledovacie argumenty z vrátenej URL"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
 msgstr "Previesť medzi jednotkami"
 
@@ -748,27 +751,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Odpovede"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Počet výsledkov"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Informácie"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Skús hľadať:"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Späť na začiatok"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Predošlá strana"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Ďalšia strana"
 
@@ -1020,7 +1023,8 @@ msgstr "Vyhľadajte inú požiadavku alebo vyberte inú kategóriu."
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
-"Vráťte sa na predchádzajúcu stránku pomocou tlačidla predchádzajúcej stránky."
+"Vráťte sa na predchádzajúcu stránku pomocou tlačidla predchádzajúcej "
+"stránky."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1206,9 +1210,9 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navigujte vo výsledkoch vyhľadávania pomocou klávesových skratiek (vyžaduje "
-"sa JavaScript). Stlačte klávesu \"h\" na hlavnej stránke alebo na stránke s "
-"výsledkami vyhľadávania pre získanie pomoci."
+"Navigujte vo výsledkoch vyhľadávania pomocou klávesových skratiek "
+"(vyžaduje sa JavaScript). Stlačte klávesu \"h\" na hlavnej stránke alebo "
+"na stránke s výsledkami vyhľadávania pre získanie pomoci."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1279,8 +1283,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Okamžité vykonanie vyhľadávania, ak je vybraná kategória. Zakážte pre výber "
-"viacerých kategórií"
+"Okamžité vykonanie vyhľadávania, ak je vybraná kategória. Zakážte pre "
+"výber viacerých kategórií"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1912,3 +1916,4 @@ msgstr "skryť video"
 #~ "nepodarilo sa nájsť žiadne výsledky. "
 #~ "Skúste použiť iné zadanie alebo "
 #~ "vyhľadávajte vo viacerých kategóriach."
+

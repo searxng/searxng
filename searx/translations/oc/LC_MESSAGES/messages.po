@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
 "PO-Revision-Date: 2024-03-12 17:28+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
 "\n"
@@ -481,6 +481,10 @@ msgstr "Nòta del libre"
 msgid "File quality"
 msgstr "Qualitat del fichièr"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr ""
@@ -555,7 +559,7 @@ msgstr "Netejador d'URL de traçat"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Lèva los arguments de las URL utilizats per vos traçar"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
 msgstr ""
 
@@ -734,27 +738,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Responsas"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Nombre de resultats"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Info"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Ensajatz de cercar :"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Tornar ennaut"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Pagina precedenta"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Pagina seguenta"
 
