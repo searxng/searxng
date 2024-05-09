@@ -2081,7 +2081,11 @@ engines:
     engine: yacy
     categories: general
     search_type: text
-    base_url: https://yacy.searchlab.eu
+    base_url:
+      - https://yacy.searchlab.eu
+      - https://search.lomig.me
+      - https://yacy.ecosys.eu
+      - https://search.webproject.link
     shortcut: ya
     disabled: true
     # required if you aren't using HTTPS for your local yacy instance
@@ -2094,7 +2098,6 @@ engines:
     engine: yacy
     categories: images
     search_type: image
-    base_url: https://yacy.searchlab.eu
     shortcut: yai
     disabled: true
 

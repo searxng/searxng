@@ -22,20 +22,26 @@ The engine has the following (additional) settings:
 - :py:obj:`search_mode`
 - :py:obj:`search_type`
 
+The :py:obj:`base_url` has to be set in the engine named `yacy` and is used by
+all yacy engines.
+
 .. code:: yaml
 
   - name: yacy
     engine: yacy
     categories: general
     search_type: text
-    base_url: https://yacy.searchlab.eu
     shortcut: ya
+    base_url:
+      - https://yacy.searchlab.eu
+      - https://search.lomig.me
+      - https://yacy.ecosys.eu
+      - https://search.webproject.link
 
   - name: yacy images
     engine: yacy
     categories: images
     search_type: image
-    base_url: https://yacy.searchlab.eu
     shortcut: yai
     disabled: true
 
@@ -45,6 +51,9 @@ Implementations
 """
 # pylint: disable=fixme
 
+from __future__ import annotations
+
+import random
 from json import loads
 from urllib.parse import urlencode
 from dateutil import parser
@@ -87,15 +96,10 @@ search_type = 'text'
 ``video`` are not yet implemented (Pull-Requests are welcome).
 """
 
-# search-url
-base_url = 'https://yacy.searchlab.eu'
-search_url = (
-    '/yacysearch.json?{query}'
-    '&startRecord={offset}'
-    '&maximumRecords={limit}'
-    '&contentdom={search_type}'
-    '&resource={resource}'
-)
+base_url: list | str = 'https://yacy.searchlab.eu'
+"""The value is an URL or a list of URLs.  In the latter case instance will be
+selected randomly.
+"""
 
 
 def init(_):
@@ -108,23 +112,34 @@ def init(_):
         raise ValueError('search_type "%s" is  not one of %s' % (search_type, valid_types))
 
 
+def _base_url() -> str:
+    from searx.engines import engines  # pylint: disable=import-outside-toplevel
+
+    url = engines['yacy'].base_url  # type: ignore
+    if isinstance(url, list):
+        url = random.choice(url)
+    return url
+
+
 def request(query, params):
+
     offset = (params['pageno'] - 1) * number_of_results
-
-    params['url'] = base_url + search_url.format(
-        query=urlencode({'query': query}),
-        offset=offset,
-        limit=number_of_results,
-        search_type=search_type,
-        resource=search_mode,
-    )
-
-    if http_digest_auth_user and http_digest_auth_pass:
-        params['auth'] = DigestAuth(http_digest_auth_user, http_digest_auth_pass)
+    args = {
+        'query': query,
+        'startRecord': offset,
+        'maximumRecords': number_of_results,
+        'contentdom': search_type,
+        'resource': search_mode,
+    }
 
     # add language tag if specified
     if params['language'] != 'all':
-        params['url'] += '&lr=lang_' + params['language'].split('-')[0]
+        args['lr'] = 'lang_' + params['language'].split('-')[0]
+
+    params["url"] = f"{_base_url()}/yacysearch.json?{urlencode(args)}"
+
+    if http_digest_auth_user and http_digest_auth_pass:
+        params['auth'] = DigestAuth(http_digest_auth_user, http_digest_auth_pass)
 
     return params
 
