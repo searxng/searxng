@@ -46,23 +46,20 @@ def response(resp):
         if recipe['submissionDate']:
             publishedDate = datetime.strptime(result['recipe']['submissionDate'][:19], "%Y-%m-%dT%H:%M:%S")
 
-        content = (
-            "difficulity: "
-            + str(recipe['difficulty'])
-            + " / preparation time: "
-            + str(recipe['preparationTime'])
-            + "min / ingredient count: "
-            + str(recipe['ingredientCount'])
-        )
+        content = [
+            f"Schwierigkeitsstufe (1-3): {recipe['difficulty']}",
+            f"Zubereitungszeit: {recipe['preparationTime']}min",
+            f"Anzahl der Zutaten: {recipe['ingredientCount']}",
+        ]
 
         if recipe['subtitle']:
-            content = f"{recipe['subtitle']} / {content}"
+            content.insert(0, recipe['subtitle'])
 
         results.append(
             {
                 'url': recipe['siteUrl'],
                 'title': recipe['title'],
-                'content': content,
+                'content': " | ".join(content),
                 'thumbnail': recipe['previewImageUrlTemplate'].replace("<format>", thumbnail_format),
                 'publishedDate': publishedDate,
             }
