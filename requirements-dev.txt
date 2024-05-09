@@ -14,9 +14,12 @@ sphinx-tabs==3.4.5
 sphinxcontrib-programoutput==0.17
 sphinx-autobuild==2021.3.14
 sphinx-notfound-page==1.0.0
-myst-parser==2.0.0
-linuxdoc==20231020
+myst-parser==3.0.1
+linuxdoc==20240509
 aiounittest==1.4.2
 yamllint==1.35.1
 wlc==1.14
 coloredlogs==15.0.1
+docutils<=0.21; python_version == '3.8'
+docutils>=0.21.2; python_version > '3.8'
+
