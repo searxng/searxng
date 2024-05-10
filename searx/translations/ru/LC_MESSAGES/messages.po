@@ -22,21 +22,20 @@
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
-"PO-Revision-Date: 2024-04-30 09:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"PO-Revision-Date: 2024-05-07 04:37+0000\n"
+"Last-Translator: 0ko <0ko@users.noreply.translate.codeberg.org>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -500,6 +499,10 @@ msgstr "Рейтинг книги"
 msgid "File quality"
 msgstr "Качество файла"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Рассчитывает контрольные суммы от строки."
@@ -579,9 +582,9 @@ msgstr "Убрать отслеживание URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Удаление параметров для отслеживания пользователя из URL-адреса"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
-msgstr "Конвертировать"
+msgstr "Преобразовать единицы измерения"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -762,27 +765,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Ответы"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Количество результатов"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Информация"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Попробуйте поискать:"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Наверх"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Предыдущая страница"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Следующая страница"
 
@@ -1932,3 +1935,4 @@ msgstr "скрыть видео"
 #~ "мы не нашли никаких результатов. "
 #~ "Попробуйте изменить запрос или поищите в"
 #~ " других категориях."
+

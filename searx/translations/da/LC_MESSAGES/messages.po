@@ -10,19 +10,19 @@
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
 "PO-Revision-Date: 2024-04-30 09:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Danish <https://translate.codeberg.org/projects/searxng/"
-"searxng/da/>\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: da\n"
+"Language-Team: Danish "
+"<https://translate.codeberg.org/projects/searxng/searxng/da/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -487,6 +487,10 @@ msgstr "Bogbedømmelse"
 msgid "File quality"
 msgstr "Filkvalitet"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr ""
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Konverterer strenge til forskellige hash-digests."
@@ -568,7 +572,7 @@ msgstr "Fjernelse af tracker URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Fjern trackeres parametre fra den returnerede URL"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
 msgstr ""
 
@@ -751,27 +755,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Svar"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Antal resultater"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Info"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Prøv at søge efter:"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Tilbage til toppen"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Forrige side"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Næste side"
 
@@ -1918,3 +1922,4 @@ msgstr "skjul video"
 #~ "Vi fandt ingen resultater. Benyt "
 #~ "venligst en anden søge-streng eller "
 #~ "søg i flere kategorier."
+
