@@ -21,13 +21,14 @@
 # Peter Martin <weblate@pe7er.com>, 2022.
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# German <German@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-27 16:29+0000\n"
-"PO-Revision-Date: 2024-04-28 18:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"PO-Revision-Date: 2024-05-10 06:13+0000\n"
+"Last-Translator: German <German@users.noreply.translate.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/searxng/"
 "searxng/de/>\n"
 "Language: de\n"
@@ -35,13 +36,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr "ohne weitere Untergruppierung"
+msgstr "keine weitere Untergruppierung"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -106,7 +107,7 @@ msgstr "Karte"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "Onion"
+msgstr "Zwiebel"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -161,7 +162,7 @@ msgstr "wissenschaftliche Veröffentlichungen"
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr "auto"
+msgstr "automatisch"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
@@ -276,7 +277,7 @@ msgstr "Sichtweite"
 #. WEATHER_TERMS['WIND']
 #: searx/searxng.msg
 msgid "Wind"
-msgstr "Wind"
+msgstr "Sturm"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/searxng.msg
@@ -500,6 +501,10 @@ msgstr "Buchbewertung"
 msgid "File quality"
 msgstr "Dateiqualität"
 
+#: searx/plugins/calculator.py:12
+msgid "Calculate mathematical expressions via the search bar"
+msgstr "Rechne mathematische Ausdrücke mit der Suchleiste aus"
+
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
 msgstr "Konvertiert Zeichenketten in verschiedene Hashwerte."
@@ -585,7 +590,7 @@ msgstr "Tracker-URL-Entferner"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Tracker-Argumente von den zurückgegebenen URLs entfernen"
 
-#: searx/plugins/unit_converter.py:10
+#: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
 msgstr "Einheiten umrechnen"
 
@@ -770,27 +775,27 @@ msgstr "Cookies"
 msgid "Answers"
 msgstr "Antworten"
 
-#: searx/templates/simple/results.html:38
+#: searx/templates/simple/results.html:42
 msgid "Number of results"
 msgstr "Trefferanzahl"
 
-#: searx/templates/simple/results.html:44
+#: searx/templates/simple/results.html:48
 msgid "Info"
 msgstr "Information"
 
-#: searx/templates/simple/results.html:73
+#: searx/templates/simple/results.html:77
 msgid "Try searching for:"
 msgstr "Suche nach:"
 
-#: searx/templates/simple/results.html:105
+#: searx/templates/simple/results.html:109
 msgid "Back to top"
 msgstr "Zurück zum Anfang"
 
-#: searx/templates/simple/results.html:123
+#: searx/templates/simple/results.html:127
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
-#: searx/templates/simple/results.html:141
+#: searx/templates/simple/results.html:145
 msgid "Next page"
 msgstr "Nächste Seite"
 
@@ -1021,15 +1026,15 @@ msgstr "Es gibt keine weiteren Ergebnisse zu dem Suchbegriff:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr "Suche wiederholen"
+msgstr "Die Seite neuladen."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr "einen anderen Suchbegriff verwenden oder die Kategorie (oben) wechseln"
+msgstr "Einen anderen Suchbegriff verwenden oder die Kategorie (oben) wechseln."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
-msgstr "Anpassen der verwendeten Suchmaschinen in den Einstellungen"
+msgstr "Ändern der verwendeten Suchmaschinen in den Einstellungen:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
@@ -1216,7 +1221,7 @@ msgstr "Zurück"
 
 #: searx/templates/simple/preferences/hotkeys.html:2
 msgid "Hotkeys"
-msgstr "Hotkeys"
+msgstr "Funktionstasten"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
