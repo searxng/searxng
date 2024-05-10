@@ -762,7 +762,8 @@ def debug_explain_wikidata_query(query, method='GET'):
 
 def init(engine_settings=None):  # pylint: disable=unused-argument
     # WIKIDATA_PROPERTIES : add unit symbols
-    WIKIDATA_PROPERTIES.update(WIKIDATA_UNITS)
+    for k, v in WIKIDATA_UNITS.items():
+        WIKIDATA_PROPERTIES[k] = v['symbol']
 
     # WIKIDATA_PROPERTIES : add property labels
     wikidata_property_names = []
