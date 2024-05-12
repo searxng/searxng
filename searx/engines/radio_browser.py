@@ -114,7 +114,7 @@ def response(resp):
             {
                 'url': url,
                 'title': result['name'],
-                'img_src': result.get('favicon', '').replace("http://", "https://"),
+                'thumbnail': result.get('favicon', '').replace("http://", "https://"),
                 'content': ' | '.join(content),
                 'metadata': ' | '.join(metadata),
                 'iframe_src': result['url_resolved'].replace("http://", "https://"),

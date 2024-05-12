@@ -64,13 +64,13 @@ def response_movies(resp):
             title = extract_text(eval_xpath(div_2, './div[@title]'))
             metadata = extract_text(eval_xpath(div_2, './div[@class]'))
             img = eval_xpath(div_1, './/img')[0]
-            img_src = img.get('src')
+            thumbnail = img.get('src')
             results.append(
                 {
                     "url": url,
                     "title": title,
                     "content": sec_name,
-                    "img_src": img_src,
+                    "thumbnail": thumbnail,
                     'metadata': metadata,
                     'template': 'videos.html',
                 }

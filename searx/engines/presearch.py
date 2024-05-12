@@ -162,7 +162,7 @@ def parse_search_query(json_results):
         result = {
             'url': item['link'],
             'title': item['title'],
-            'img_src': item['image'],
+            'thumbnail': item['image'],
             'content': '',
             'metadata': item.get('source'),
         }
@@ -244,7 +244,7 @@ def response(resp):
                     'url': item.get('link'),
                     'content': '',
                     'metadata': ' / '.join(metadata),
-                    'img_src': item.get('image'),
+                    'thumbnail': item.get('image'),
                 }
             )
 
@@ -257,7 +257,7 @@ def response(resp):
                     'url': item.get('link'),
                     'content': item.get('description', ''),
                     'metadata': ' / '.join(metadata),
-                    'img_src': item.get('image'),
+                    'thumbnail': item.get('image'),
                 }
             )
 

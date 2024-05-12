@@ -90,7 +90,7 @@ def response(resp):
                 "title": title,
                 "url": href_base.format(category=categ, entry_id=entry_id),
                 "content": content,
-                "img_src": image_url,
+                "thumbnail": image_url,
             }
         )
 

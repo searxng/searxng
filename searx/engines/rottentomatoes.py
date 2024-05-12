@@ -22,7 +22,7 @@ base_url = "https://www.rottentomatoes.com"
 results_xpath = "//search-page-media-row"
 url_xpath = "./a[1]/@href"
 title_xpath = "./a/img/@alt"
-img_src_xpath = "./a/img/@src"
+thumbnail_xpath = "./a/img/@src"
 release_year_xpath = "concat('From ', string(./@releaseyear))"
 score_xpath = "concat('Score: ', string(./@tomatometerscore))"
 cast_xpath = "concat('Starring ', string(./@cast))"
@@ -52,7 +52,7 @@ def response(resp):
                 'url': extract_text(eval_xpath(result, url_xpath)),
                 'title': extract_text(eval_xpath(result, title_xpath)),
                 'content': ', '.join(content),
-                'img_src': extract_text(eval_xpath(result, img_src_xpath)),
+                'thumbnail': extract_text(eval_xpath(result, thumbnail_xpath)),
             }
         )
 

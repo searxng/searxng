@@ -151,7 +151,7 @@ def response(resp):
 
         elif piped_filter == 'music_songs':
             item["template"] = "default.html"
-            item["img_src"] = result.get("thumbnail", "")
+            item["thumbnail"] = result.get("thumbnail", "")
             item["content"] = result.get("uploaderName", "") or ""
 
         results.append(item)

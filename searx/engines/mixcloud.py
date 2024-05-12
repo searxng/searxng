@@ -44,7 +44,7 @@ def response(resp):
             'url': r_url,
             'title': result['name'],
             'iframe_src': iframe_src.format(url=r_url),
-            'img_src': result['pictures']['medium'],
+            'thumbnail': result['pictures']['medium'],
             'publishedDate': publishedDate,
             'content': result['user']['name'],
         }

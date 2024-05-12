@@ -141,8 +141,11 @@ def _parse_result(item) -> Dict[str, Any]:
         "authors": [extract_text(author) for author in author_elements],
         "publisher": _text(item, './/a[@title="Publisher"]'),
         "type": _text(item, './/div[contains(@class, "property__file")]//div[contains(@class, "property_value")]'),
-        "img_src": _text(item, './/img[contains(@class, "cover")]/@data-src'),
     }
+
+    thumbnail = _text(item, './/img[contains(@class, "cover")]/@data-src')
+    if not thumbnail.startswith('/'):
+        result["thumbnail"] = thumbnail
 
     year = _text(item, './/div[contains(@class, "property_year")]//div[contains(@class, "property_value")]')
     if year:

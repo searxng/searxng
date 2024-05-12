@@ -242,15 +242,15 @@ def parse_web_api(resp):
                 if pub_date is not None:
                     pub_date = datetime.fromtimestamp(pub_date)
                 news_media = item.get('media', [])
-                img_src = None
+                thumbnail = None
                 if news_media:
-                    img_src = news_media[0].get('pict', {}).get('url', None)
+                    thumbnail = news_media[0].get('pict', {}).get('url', None)
                 results.append(
                     {
                         'title': title,
                         'url': res_url,
                         'publishedDate': pub_date,
-                        'img_src': img_src,
+                        'thumbnail': thumbnail,
                     }
                 )
 

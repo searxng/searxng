@@ -50,7 +50,7 @@ def response(resp):
                 'url': item.get('html_url'),
                 'title': item.get('full_name'),
                 'content': ' / '.join(content),
-                'img_src': item.get('owner', {}).get('avatar_url'),
+                'thumbnail': item.get('owner', {}).get('avatar_url'),
                 'package_name': item.get('name'),
                 # 'version': item.get('updated_at'),
                 'maintainer': item.get('owner', {}).get('login'),

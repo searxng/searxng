@@ -53,8 +53,8 @@ def response(resp):
 
         url = base_url + link.attrib.get('href') + '#downloads'
         title = extract_text(link)
-        img_src = base_url + eval_xpath_getindex(result, './/img/@src', 0)
-        res = {'url': url, 'title': title, 'img_src': img_src}
+        thumbnail = base_url + eval_xpath_getindex(result, './/img/@src', 0)
+        res = {'url': url, 'title': title, 'thumbnail': thumbnail}
 
         results.append(res)
 

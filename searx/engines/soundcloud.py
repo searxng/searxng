@@ -94,9 +94,9 @@ def response(resp):
                 'publishedDate': parser.parse(result['last_modified']),
                 'iframe_src': "https://w.soundcloud.com/player/?url=" + uri,
             }
-            img_src = result['artwork_url'] or result['user']['avatar_url']
-            if img_src:
-                res['img_src'] = img_src
+            thumbnail = result['artwork_url'] or result['user']['avatar_url']
+            if thumbnail:
+                res['thumbnail'] = thumbnail
             results.append(res)
 
     return results

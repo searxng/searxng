@@ -52,11 +52,11 @@ def response(resp):
         if description is not None:
             content = markdown_to_text(description['text'])
 
-        img_src = None
+        thumbnail = None
         if result['display']['images']:
-            img_src = result['display']['images'][0]
+            thumbnail = result['display']['images'][0]
         elif result['content']['details']['images']:
-            img_src = result['content']['details']['images'][0]['resizableImageUrl']
+            thumbnail = result['content']['details']['images'][0]['resizableImageUrl']
 
         url = result['display']['source']['sourceRecipeUrl']
         if 'www.yummly.com/private' in url:
@@ -67,7 +67,7 @@ def response(resp):
                 'url': url,
                 'title': result['display']['displayName'],
                 'content': content,
-                'img_src': img_src,
+                'thumbnail': thumbnail,
                 'metadata': gettext('Language') + f": {result['locale'].split('-')[0]}",
             }
         )

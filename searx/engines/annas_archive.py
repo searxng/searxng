@@ -133,7 +133,7 @@ def _get_result(item):
         'publisher': extract_text(eval_xpath(item, './/div[contains(@class, "text-sm")]')),
         'authors': [extract_text(eval_xpath(item, './/div[contains(@class, "italic")]'))],
         'content': extract_text(eval_xpath(item, './/div[contains(@class, "text-xs")]')),
-        'img_src': item.xpath('.//img/@src')[0],
+        'thumbnail': item.xpath('.//img/@src')[0],
     }
 
 

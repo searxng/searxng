@@ -133,7 +133,7 @@ def response(resp):
                 )
 
             if mtype in ['image'] and subtype in ['bmp', 'gif', 'jpeg', 'png']:
-                item['img_src'] = url
+                item['thumbnail'] = url
 
         results.append(item)
 

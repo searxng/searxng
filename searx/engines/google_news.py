@@ -165,14 +165,14 @@ def response(resp):
         # "https://lh3.googleusercontent.com/DjhQh7DMszk.....z=-p-h100-w100"
         # These URL are long but not personalized (double checked via tor).
 
-        img_src = extract_text(result.xpath('preceding-sibling::a/figure/img/@src'))
+        thumbnail = extract_text(result.xpath('preceding-sibling::a/figure/img/@src'))
 
         results.append(
             {
                 'url': href,
                 'title': title,
                 'content': content,
-                'img_src': img_src,
+                'thumbnail': thumbnail,
             }
         )
 
