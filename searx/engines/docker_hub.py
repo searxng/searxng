@@ -47,7 +47,7 @@ def response(resp):
             'url': base_url + ("_/" if is_official else "r/") + item.get("slug", ""),
             'title': item.get("name"),
             'content': item.get("short_description"),
-            'img_src': item["logo_url"].get("large") or item["logo_url"].get("small"),
+            'thumbnail': item["logo_url"].get("large") or item["logo_url"].get("small"),
             'package_name': item.get("name"),
             'maintainer': item["publisher"].get("name"),
             'publishedDate': parser.parse(item.get("updated_at") or item.get("created_at")),

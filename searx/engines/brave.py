@@ -296,14 +296,14 @@ def _parse_search(resp):
 
         content_tag = eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
         pub_date_raw = eval_xpath(result, 'substring-before(.//div[contains(@class, "snippet-description")], "-")')
-        img_src = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
+        thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
 
         item = {
             'url': url,
             'title': extract_text(title_tag),
             'content': extract_text(content_tag),
             'publishedDate': _extract_published_date(pub_date_raw),
-            'img_src': img_src,
+            'thumbnail': thumbnail,
         }
 
         video_tag = eval_xpath_getindex(
@@ -324,7 +324,7 @@ def _parse_search(resp):
                 )
                 item['publishedDate'] = _extract_published_date(pub_date_raw)
             else:
-                item['img_src'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
+                item['thumbnail'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
 
         result_list.append(item)
 
@@ -351,7 +351,7 @@ def _parse_news(json_resp):
             'publishedDate': _extract_published_date(result['age']),
         }
         if result['thumbnail'] is not None:
-            item['img_src'] = result['thumbnail']['src']
+            item['thumbnail'] = result['thumbnail']['src']
         result_list.append(item)
 
     return result_list

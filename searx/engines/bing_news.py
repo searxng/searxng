@@ -130,7 +130,7 @@ def response(resp):
                 'url': url,
                 'title': title,
                 'content': content,
-                'img_src': thumbnail,
+                'thumbnail': thumbnail,
                 'metadata': metadata,
             }
         )

@@ -281,24 +281,12 @@ article[data-vim-selected].category-social {
     color: var(--color-result-description-highlight-font);
   }
 
-  img {
-    &.thumbnail {
-      .ltr-float-left();
-      padding-top: 0.6rem;
-      .ltr-padding-right(1rem);
-      width: 20rem;
-      height: unset; // remove heigth value that was needed for lazy loading
-    }
-
-    &.image {
-      .ltr-float-left();
-      padding-top: 0.6rem;
-      .ltr-padding-right(1rem);
-      width: 7rem;
-      max-height: 7rem;
-      object-fit: scale-down;
-      object-position: right top;
-    }
+  img.thumbnail {
+    .ltr-float-left();
+    padding-top: 0.6rem;
+    .ltr-padding-right(1rem);
+    width: 7rem;
+    height: unset; // remove heigth value that was needed for lazy loading
   }
 
   .break {
@@ -392,6 +380,16 @@ article[data-vim-selected].category-social {
 .embedded-content iframe {
   width: 100%;
   padding: 10px 0 0 0;
+}
+
+.result-videos {
+  img.thumbnail {
+    .ltr-float-left();
+    padding-top: 0.6rem;
+    .ltr-padding-right(1rem);
+    width: 20rem;
+    height: unset; // remove heigth value that was needed for lazy loading
+  }
 }
 
 .result-videos .content {

@@ -47,8 +47,8 @@ def response(resp):
             + ' - '
             + extract_text(app.xpath('./div/div/span[@class="package-license"]')).strip()
         )
-        app_img_src = app.xpath('./img[@class="package-icon"]/@src')[0]
+        thumbnail = app.xpath('./img[@class="package-icon"]/@src')[0]
 
-        results.append({'url': app_url, 'title': app_title, 'content': app_content, 'img_src': app_img_src})
+        results.append({'url': app_url, 'title': app_title, 'content': app_content, 'thumbnail': thumbnail})
 
     return results

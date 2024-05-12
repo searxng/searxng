@@ -107,8 +107,8 @@ def response(resp):
     # parse results
     for result in eval_xpath_list(dom, '//div[contains(@class, "g ")]'):
 
-        img_src = eval_xpath_getindex(result, './/img/@src', 0, None)
-        if img_src is None:
+        thumbnail = eval_xpath_getindex(result, './/img/@src', 0, None)
+        if thumbnail is None:
             continue
 
         title = extract_text(eval_xpath_getindex(result, './/a/h3[1]', 0))
@@ -124,7 +124,7 @@ def response(resp):
                 'title': title,
                 'content': content,
                 'author': pub_info,
-                'thumbnail': img_src,
+                'thumbnail': thumbnail,
                 'template': 'videos.html',
             }
         )

@@ -178,7 +178,7 @@ def response(resp):
             continue
 
         url, osm, geojson = get_url_osm_geojson(result)
-        img_src = get_thumbnail(get_img_src(result))
+        thumbnail = get_thumbnail(get_img_src(result))
         links, link_keys = get_links(result, user_language)
         data = get_data(result, user_language, link_keys)
 
@@ -191,7 +191,7 @@ def response(resp):
                 'url': url,
                 'osm': osm,
                 'geojson': geojson,
-                'img_src': img_src,
+                'thumbnail': thumbnail,
                 'links': links,
                 'data': data,
                 'type': get_tag_label(result.get('category'), result.get('type', ''), user_language),

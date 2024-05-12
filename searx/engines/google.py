@@ -365,17 +365,17 @@ def response(resp):
                 logger.debug('ignoring item from the result_xpath list: missing content of title "%s"', title)
                 continue
 
-            img_src = content_nodes[0].xpath('.//img/@src')
-            if img_src:
-                img_src = img_src[0]
-                if img_src.startswith('data:image'):
+            thumbnail = content_nodes[0].xpath('.//img/@src')
+            if thumbnail:
+                thumbnail = thumbnail[0]
+                if thumbnail.startswith('data:image'):
                     img_id = content_nodes[0].xpath('.//img/@id')
                     if img_id:
-                        img_src = data_image_map.get(img_id[0])
+                        thumbnail = data_image_map.get(img_id[0])
             else:
-                img_src = None
+                thumbnail = None
 
-            results.append({'url': url, 'title': title, 'content': content, 'img_src': img_src})
+            results.append({'url': url, 'title': title, 'content': content, 'thumbnail': thumbnail})
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)

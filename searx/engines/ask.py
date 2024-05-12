@@ -66,7 +66,7 @@ def response(resp):
                 "title": item['title'],
                 "content": item['abstract'],
                 "publishedDate": pubdate_original,
-                # "img_src": item.get('image_url') or None, # these are not thumbs / to large
+                # "thumbnail": item.get('image_url') or None, # these are not thumbs / to large
                 "metadata": ' | '.join(metadata),
             }
         )

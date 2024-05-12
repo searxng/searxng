@@ -47,7 +47,7 @@ def response(resp):
                 'url': result['trackViewUrl'],
                 'title': result['trackName'],
                 'content': result['description'],
-                'img_src': result['artworkUrl100'],
+                'thumbnail': result['artworkUrl100'],
                 'publishedDate': parse(result['currentVersionReleaseDate']),
                 'author': result['sellerName'],
             }
