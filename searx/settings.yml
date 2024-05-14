@@ -924,6 +924,12 @@ engines:
     shortcut: hex
     disabled: true
 
+  - name: crates.io
+    engine: crates
+    shortcut: crates
+    disabled: true
+    timeout: 6.0
+
   - name: hoogle
     engine: xpath
     search_url: https://hoogle.haskell.org/?hoogle={query}
