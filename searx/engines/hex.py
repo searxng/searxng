@@ -22,6 +22,29 @@ categories = ["it", "packages"]
 paging = True
 search_url = "https://hex.pm/api/packages/"
 
+linked_terms = {
+    # lower-case : replacement
+    "author": "Author",
+    "bitbucket": "Bitbucket",
+    "bug tracker": "Issue tracker",
+    "changelog": "Changelog",
+    "doc": "Documentation",
+    "docs": "Documentation",
+    "documentation": "Documentation",
+    "github repository": "GitHub",
+    "github": "GitHub",
+    "gitlab": "GitLab",
+    "issues": "Issue tracker",
+    "project source code": "Source code",
+    "repository": "Source code",
+    "scm": "Source code",
+    "sourcehut": "SourceHut",
+    "sources": "Source code",
+    "sponsor": "Sponsors",
+    "sponsors": "Sponsors",
+    "website": "Homepage",
+}
+
 
 def request(query: str, params):
     args = urlencode({"page": params["pageno"], "search": query})
@@ -35,7 +58,7 @@ def response(resp):
         meta = package["meta"]
         published_date = package.get("updated_at")
         published_date = parser.parse(published_date)
-        links = meta.get("links")
+        links = {linked_terms.get(k.lower(), k): v for k, v in meta.get("links").items()}
         results.append(
             {
                 "template": "packages.html",
