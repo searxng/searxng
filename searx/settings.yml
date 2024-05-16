@@ -923,6 +923,9 @@ engines:
     engine: hex
     shortcut: hex
     disabled: true
+    # Valid values: name inserted_at updated_at total_downloads recent_downloads
+    sort_criteria: "recent_downloads"
+    page_size: 10
 
   - name: crates.io
     engine: crates

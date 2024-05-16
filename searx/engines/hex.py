@@ -21,6 +21,9 @@ categories = ["it", "packages"]
 # engine dependent config
 paging = True
 search_url = "https://hex.pm/api/packages/"
+# Valid values: name inserted_at updated_at total_downloads recent_downloads
+sort_criteria = "recent_downloads"
+page_size = 10
 
 linked_terms = {
     # lower-case : replacement
@@ -47,7 +50,7 @@ linked_terms = {
 
 
 def request(query: str, params):
-    args = urlencode({"page": params["pageno"], "search": query})
+    args = urlencode({"page": params["pageno"], "per_page": page_size, "sort": sort_criteria, "search": query})
     params["url"] = f"{search_url}?{args}"
     return params
 
