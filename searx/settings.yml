@@ -178,9 +178,9 @@ outgoing:
   # and https://www.python-httpx.org/compatibility/#ssl-configuration
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
   #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
+  # Uncomment below section if you want to use a proxy. See:
   #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
+  # SOCKS proxies are also supported. See:
   #   https://2.python-requests.org/en/latest/user/advanced/#socks
   #
   #  proxies:
@@ -189,6 +189,11 @@ outgoing:
   #      - http://proxy2:8080
   #
   #  using_tor_proxy: true
+  #
+  # Uncomment below if you want to make multiple request in parallel
+  # through all the proxies at once:
+  #
+  #  proxy_request_redundancy: 10
   #
   # Extra seconds to add in order to account for the time taken by the proxy
   #

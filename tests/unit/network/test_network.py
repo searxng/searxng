@@ -17,7 +17,7 @@ class TestNetwork(SearxTestCase):  # pylint: disable=missing-class-docstring
         network = Network()
 
         self.assertEqual(next(network._local_addresses_cycle), None)
-        self.assertEqual(next(network._proxies_cycle), ())
+        self.assertEqual(network._proxies_by_pattern, {})
 
     def test_ipaddress_cycle(self):
         network = NETWORKS['ipv6']
@@ -47,27 +47,26 @@ class TestNetwork(SearxTestCase):  # pylint: disable=missing-class-docstring
         with self.assertRaises(ValueError):
             Network(local_addresses=['not_an_ip_address'])
 
-    def test_proxy_cycles(self):
+    def test_proxies_by_patterns(self):
         network = Network(proxies='http://localhost:1337')
-        self.assertEqual(next(network._proxies_cycle), (('all://', 'http://localhost:1337'),))
+        assert network._proxies_by_pattern == {'all://': ('http://localhost:1337',)}
 
         network = Network(proxies={'https': 'http://localhost:1337', 'http': 'http://localhost:1338'})
-        self.assertEqual(
-            next(network._proxies_cycle), (('https://', 'http://localhost:1337'), ('http://', 'http://localhost:1338'))
-        )
-        self.assertEqual(
-            next(network._proxies_cycle), (('https://', 'http://localhost:1337'), ('http://', 'http://localhost:1338'))
-        )
+        assert network._proxies_by_pattern == {
+            'https://': ('http://localhost:1337',),
+            'http://': ('http://localhost:1338',),
+        }
 
         network = Network(
             proxies={'https': ['http://localhost:1337', 'http://localhost:1339'], 'http': 'http://localhost:1338'}
         )
-        self.assertEqual(
-            next(network._proxies_cycle), (('https://', 'http://localhost:1337'), ('http://', 'http://localhost:1338'))
-        )
-        self.assertEqual(
-            next(network._proxies_cycle), (('https://', 'http://localhost:1339'), ('http://', 'http://localhost:1338'))
-        )
+        assert network._proxies_by_pattern == {
+            'https://': (
+                'http://localhost:1337',
+                'http://localhost:1339',
+            ),
+            'http://': ('http://localhost:1338',),
+        }
 
         with self.assertRaises(ValueError):
             Network(proxies=1)
