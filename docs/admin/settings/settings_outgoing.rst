@@ -37,7 +37,7 @@ Communication with search engines.
      # Uncomment below if you want to make multiple request in parallel
      # through all the proxies at once:
      #
-     #  proxy_request_redundancy: 10
+     #  proxy_request_redundancy: 4
      #
      # Extra seconds to add in order to account for the time taken by the proxy
      #
