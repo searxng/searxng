@@ -63,9 +63,9 @@ class TestClient(SearxTestCase):
 
     @patch(
         'searx.network.client.AsyncProxyTransportFixed.handle_async_request',
-        side_effect=[httpx.Response(404, html="<html/>"), httpx.Response(200, html="<html/>")],
+        side_effect=[httpx.Response(404, html="<html/>"), httpx.Response(404, html="<html/>")],
     )
-    async def test_parallel_transport_404(self, handler_mock: Mock):
+    async def test_parallel_transport_404_404(self, handler_mock: Mock):
         t = client.get_transport(
             proxy_urls=["socks5h://local:1080", "socks5h://local:1180"],
             proxy_request_redundancy=2,
@@ -76,6 +76,22 @@ class TestClient(SearxTestCase):
         handler_mock.assert_called_with(request)
         self.assertEqual(handler_mock.call_count, 2)
         self.assertEqual(response.status_code, 404)
+
+    @patch(
+        'searx.network.client.AsyncProxyTransportFixed.handle_async_request',
+        side_effect=[httpx.Response(200, html="<html/>"), httpx.Response(404, html="<html/>")],
+    )
+    async def test_parallel_transport_404_200(self, handler_mock: Mock):
+        t = client.get_transport(
+            proxy_urls=["socks5h://local:1080", "socks5h://local:1180"],
+            proxy_request_redundancy=2,
+        )
+        self.assertTrue(isinstance(t, client.AsyncParallelTransport))
+        request = httpx.Request(url="http://wiki.com", method="GET")
+        response = await t.handle_async_request(request)
+        handler_mock.assert_called_with(request)
+        self.assertEqual(handler_mock.call_count, 2)
+        self.assertEqual(response.status_code, 200)
 
     @patch(
         'searx.network.client.AsyncProxyTransportFixed.handle_async_request',

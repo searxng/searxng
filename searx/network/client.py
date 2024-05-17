@@ -222,6 +222,7 @@ class AsyncParallelTransport(httpx.AsyncBaseTransport):
         self,
         request: httpx.Request,
     ) -> httpx.Response:
+        # pylint: disable=too-many-branches
         """Issue parallel requests to all sub-transports.
 
         Return the response of the first completed.
@@ -254,7 +255,9 @@ class AsyncParallelTransport(httpx.AsyncBaseTransport):
             for task in done:
                 try:
                     result = task.result()
-                    if not result.is_error or result.status_code == 404:
+                    if not result.is_error:
+                        response = result
+                    elif result.status_code == 404 and response is None:
                         response = result
                     elif not error_response:
                         self._logger.warning("Error response: %s for %s", result.status_code, request.url)
