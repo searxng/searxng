@@ -351,6 +351,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
     }
 
     def new_network(params, logger_name=None):
+        nonlocal default_params
         result = {}
         result.update(default_params)
         result.update(params)
@@ -358,7 +359,8 @@ def initialize(settings_engines=None, settings_outgoing=None):
             result['logger_name'] = logger_name
         return Network(**result)
 
-    def iter_engine_networks():
+    def iter_networks():
+        nonlocal settings_engines
         for engine_spec in settings_engines:
             engine_name = engine_spec['name']
             engine = engines.get(engine_name)
@@ -379,7 +381,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
         NETWORKS[network_name] = new_network(network, logger_name=network_name)
 
     # define networks from engines.[i].network (except references)
-    for engine_name, engine, network in iter_engine_networks():
+    for engine_name, engine, network in iter_networks():
         if network is None:
             network = {}
             for attribute_name, attribute_value in default_params.items():
@@ -392,7 +394,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
             NETWORKS[engine_name] = new_network(network, logger_name=engine_name)
 
     # define networks from engines.[i].network (references)
-    for engine_name, engine, network in iter_engine_networks():
+    for engine_name, engine, network in iter_networks():
         if isinstance(network, str):
             NETWORKS[engine_name] = NETWORKS[network]
 

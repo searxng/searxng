@@ -207,16 +207,16 @@ class AsyncParallelTransport(httpx.AsyncBaseTransport):
         network_logger: logging.Logger,
     ) -> None:
         """Init the parallel transport using a list of base `transports`."""
+        self._logger = network_logger or logger
         self._transports = list(transports)
         if len(self._transports) == 0:
             msg = "Got an empty list of (proxy) transports."
             raise ValueError(msg)
         if proxy_request_redundancy < 1:
-            logger.warning("Invalid proxy_request_redundancy specified: %d", proxy_request_redundancy)
+            self._logger.warning("Invalid proxy_request_redundancy specified: %d", proxy_request_redundancy)
             proxy_request_redundancy = 1
         self._proxy_request_redundancy = proxy_request_redundancy
         self._index = random.randrange(len(self._transports))  # noqa: S311
-        self._logger = network_logger or logger
 
     async def handle_async_request(
         self,
@@ -258,7 +258,7 @@ class AsyncParallelTransport(httpx.AsyncBaseTransport):
                     if not result.is_error:
                         response = result
                     elif result.status_code == 404 and response is None:
-                        response = result
+                        error_response = response = result
                     elif not error_response:
                         self._logger.warning("Error response: %s for %s", result.status_code, request.url)
                         error_response = result
