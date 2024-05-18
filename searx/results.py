@@ -430,21 +430,38 @@ class ResultContainer:
         """Returns the average of results number, returns zero if the average
         result number is smaller than the actual result count."""
 
-        resultnum_sum = sum(self._number_of_results)
-        if not resultnum_sum or not self._number_of_results:
-            return 0
+        with self._lock:
+            if not self._closed:
+                logger.error("call to ResultContainer.number_of_results before ResultContainer.close")
+                return 0
 
-        average = int(resultnum_sum / len(self._number_of_results))
-        if average < self.results_length():
-            average = 0
-        return average
+            resultnum_sum = sum(self._number_of_results)
+            if not resultnum_sum or not self._number_of_results:
+                return 0
+
+            average = int(resultnum_sum / len(self._number_of_results))
+            if average < self.results_length():
+                average = 0
+            return average
 
     def add_unresponsive_engine(self, engine_name: str, error_type: str, suspended: bool = False):
-        if engines[engine_name].display_error_messages:
-            self.unresponsive_engines.add(UnresponsiveEngine(engine_name, error_type, suspended))
+        with self._lock:
+            if self._closed:
+                logger.error("call to ResultContainer.add_unresponsive_engine after ResultContainer.close")
+                return
+            if engines[engine_name].display_error_messages:
+                self.unresponsive_engines.add(UnresponsiveEngine(engine_name, error_type, suspended))
 
     def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
-        self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
+        with self._lock:
+            if self._closed:
+                logger.error("call to ResultContainer.add_timing after ResultContainer.close")
+                return
+            self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
     def get_timings(self):
-        return self.timings
+        with self._lock:
+            if not self._closed:
+                logger.error("call to ResultContainer.get_timings before ResultContainer.close")
+                return []
+            return self.timings
