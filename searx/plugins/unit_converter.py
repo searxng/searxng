@@ -138,8 +138,8 @@ def symbol_to_si():
                 (
                     item['symbol'],
                     item['si_name'],
-                    item['to_si_factor'],  # from_si
-                    1 / item['to_si_factor'],  # to_si
+                    1 / item['to_si_factor'],  # from_si
+                    item['to_si_factor'],  # to_si
                     item['symbol'],
                 )
             )
