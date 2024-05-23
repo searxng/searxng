@@ -392,7 +392,9 @@ def fetch_traits(engine_traits: EngineTraits):
     SearXNG's locale.
 
     """
-    # pylint: disable=too-many-branches, too-many-statements
+    # pylint: disable=too-many-branches, too-many-statements, disable=import-outside-toplevel
+    from searx.utils import extr, js_variable_to_python
+
     # fetch regions
 
     engine_traits.all_locale = 'wt-wt'
@@ -403,11 +405,9 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:  # type: ignore
         print("ERROR: response from DuckDuckGo is not OK.")
 
-    pos = resp.text.find('regions:{') + 8  # type: ignore
-    js_code = resp.text[pos:]  # type: ignore
-    pos = js_code.find('}') + 1
-    regions = json.loads(js_code[:pos])
+    js_code = extr(resp.text, 'regions:', ',snippetLengths')
 
+    regions = json.loads(js_code)
     for eng_tag, name in regions.items():
 
         if eng_tag == 'wt-wt':
@@ -439,12 +439,9 @@ def fetch_traits(engine_traits: EngineTraits):
 
     engine_traits.custom['lang_region'] = {}
 
-    pos = resp.text.find('languages:{') + 10  # type: ignore
-    js_code = resp.text[pos:]  # type: ignore
-    pos = js_code.find('}') + 1
-    js_code = '{"' + js_code[1:pos].replace(':', '":').replace(',', ',"')
-    languages = json.loads(js_code)
+    js_code = extr(resp.text, 'languages:', ',regions')
 
+    languages = js_variable_to_python(js_code)
     for eng_lang, name in languages.items():
 
         if eng_lang == 'wt_WT':

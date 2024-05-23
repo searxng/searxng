@@ -132,6 +132,7 @@ from lxml import html
 from searx import locales
 from searx.utils import (
     extract_text,
+    extr,
     eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
@@ -252,11 +253,7 @@ def response(resp):
     if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
 
-    datastr = ""
-    for line in resp.text.split("\n"):
-        if "const data = " in line:
-            datastr = line.replace("const data = ", "").strip()[:-1]
-            break
+    datastr = extr(resp.text, "const data = ", ";\n").strip()
 
     json_data = js_variable_to_python(datastr)
     json_resp = json_data[1]['data']['body']['response']

@@ -7,6 +7,8 @@ from urllib.parse import urlencode
 from json import loads
 from dateutil import parser
 
+from searx.utils import extr
+
 # about
 about = {
     "website": 'https://vimeo.com/',
@@ -23,7 +25,7 @@ paging = True
 
 # search-url
 base_url = 'https://vimeo.com/'
-search_url = base_url + '/search/page:{pageno}?{query}'
+search_url = base_url + 'search/page:{pageno}?{query}'
 
 
 # do search-request
@@ -36,9 +38,8 @@ def request(query, params):
 # get response from search-request
 def response(resp):
     results = []
-    data_start_pos = resp.text.find('{"filtered"')
-    data_end_pos = resp.text.find(';\n', data_start_pos + 1)
-    data = loads(resp.text[data_start_pos:data_end_pos])
+
+    data = loads(extr(resp.text, 'var data = ', ';\n'))
 
     # parse results
     for result in data['filtered']['data']:
