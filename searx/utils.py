@@ -2,6 +2,9 @@
 """Utility functions for the engines
 
 """
+
+from __future__ import annotations
+
 import re
 import importlib
 import importlib.util
@@ -369,6 +372,35 @@ def convert_str_to_int(number_str: str) -> int:
     if number_str.isdigit():
         return int(number_str)
     return 0
+
+
+def extr(txt: str, begin: str, end: str, default: str = ""):
+    """Extract the string between ``begin`` and ``end`` from ``txt``
+
+    :param txt:     String to search in
+    :param begin:   First string to be searched for
+    :param end:     Second string to be searched for after ``begin``
+    :param default: Default value if one of ``begin`` or ``end`` is not
+                    found.  Defaults to an empty string.
+    :return: The string between the two search-strings ``begin`` and ``end``.
+             If at least one of ``begin`` or ``end`` is not found, the value of
+             ``default`` is returned.
+
+    Examples:
+      >>> extr("abcde", "a", "e")
+      "bcd"
+      >>> extr("abcde", "a", "z", deafult="nothing")
+      "nothing"
+
+    """
+
+    # From https://github.com/mikf/gallery-dl/blob/master/gallery_dl/text.py#L129
+
+    try:
+        first = txt.index(begin) + len(begin)
+        return txt[first : txt.index(end, first)]
+    except ValueError:
+        return default
 
 
 def int_or_zero(num: Union[List[str], str]) -> int:
