@@ -84,11 +84,13 @@ Setup
 - Alternatively there are *up to date* `installation scripts`_.
 - For individual setup consult our detailed `Step by step`_ instructions.
 - To fine-tune your instance, take a look at the `Administrator documentation`_.
+- One-click deployment available via `RepoCloud`_.
 
 .. _Administrator documentation: https://docs.searxng.org/admin/index.html
 .. _Step by step: https://docs.searxng.org/admin/installation-searxng.html
 .. _installation scripts: https://docs.searxng.org/admin/installation-scripts.html
 .. _Docker image: https://github.com/searxng/searxng-docker
+.. _RepoCloud: https://repocloud.io/details/?app_id=53
 
 Translations
 ============
