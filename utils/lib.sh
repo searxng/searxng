@@ -943,7 +943,7 @@ nginx_distro_setup() {
     NGINX_APPS_AVAILABLE="/etc/nginx/default.apps-available"
 
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             NGINX_PACKAGES="nginx"
             NGINX_DEFAULT_SERVER=/etc/nginx/sites-available/default
             ;;
@@ -1101,7 +1101,7 @@ nginx_dissable_app() {
 apache_distro_setup() {
     # shellcheck disable=SC2034
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             # debian uses the /etc/apache2 path, while other distros use
             # the apache default at /etc/httpd
             APACHE_SITES_AVAILABLE="/etc/apache2/sites-available"
@@ -1257,7 +1257,7 @@ uWSGI_SETUP="${uWSGI_SETUP:=/etc/uwsgi}"
 
 uWSGI_distro_setup() {
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             # init.d --> /usr/share/doc/uwsgi/README.Debian.gz
             # For uWSGI debian uses the LSB init process, this might be changed
             # one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067
@@ -1314,7 +1314,7 @@ uWSGI_restart() {
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     info_msg "restart uWSGI service"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             # the 'service' method seems broken in that way, that it (re-)starts
             # the whole uwsgi process.
             service uwsgi restart "${CONF%.*}"
@@ -1397,7 +1397,7 @@ uWSGI_app_enabled() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             [[ -f "${uWSGI_APPS_ENABLED}/${CONF}" ]]
             exit_val=$?
             ;;
@@ -1427,7 +1427,7 @@ uWSGI_enable_app() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             mkdir -p "${uWSGI_APPS_ENABLED}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ln -s "${uWSGI_APPS_AVAILABLE}/${CONF}" "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1461,7 +1461,7 @@ uWSGI_disable_app() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-*|debian-*|raspbian-*)
             service uwsgi stop "${CONF%.*}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             info_msg "disabled uWSGI app: ${CONF} (restart uWSGI required)"
@@ -1686,7 +1686,7 @@ LXC_BASE_PACKAGES_fedora="bash git @development-tools python"
 LXC_BASE_PACKAGES_centos="bash git python3"
 
 case $DIST_ID in
-    ubuntu|debian) LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_debian}" ;;
+    ubuntu|debian|raspbian-*) LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_debian}" ;;
     arch)          LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_arch}" ;;
     fedora)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_fedora}" ;;
     centos)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_centos}" ;;
