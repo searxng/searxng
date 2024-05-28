@@ -80,8 +80,10 @@ def response(resp):
 
     for entry in search_results.xpath('./result/doc'):
         content = "No description available"
-
+        url = ""
+        title = ""
         date = datetime.now()  # needed in case no dcdate is available for an item
+
         for item in entry:
             if item.attrib["name"] == "dcdate":
                 date = item.text

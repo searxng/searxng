@@ -276,8 +276,8 @@ def custom_url_for(endpoint: str, **values):
             suffix = "?" + file_hash
     if endpoint == 'info' and 'locale' not in values:
         locale = request.preferences.get_value('locale')
-        if _INFO_PAGES.get_page(values['pagename'], locale) is None:
-            locale = _INFO_PAGES.locale_default
+        if infopage.INFO_PAGES.get_page(values['pagename'], locale) is None:
+            locale = infopage.INFO_PAGES.locale_default
         values['locale'] = locale
     return url_for(endpoint, **values) + suffix
 
@@ -804,14 +804,14 @@ def about():
 @app.route('/info/<locale>/<pagename>', methods=['GET'])
 def info(pagename, locale):
     """Render page of online user documentation"""
-    page = _INFO_PAGES.get_page(pagename, locale)
+    page = infopage.INFO_PAGES.get_page(pagename, locale)
     if page is None:
         flask.abort(404)
 
     user_locale = request.preferences.get_value('locale')
     return render(
         'info.html',
-        all_pages=_INFO_PAGES.iter_pages(user_locale, fallback_to_default=True),
+        all_pages=infopage.INFO_PAGES.iter_pages(user_locale, fallback_to_default=True),
         active_page=page,
         active_pagename=pagename,
     )
@@ -1333,7 +1333,6 @@ werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__mai
 # initialize the engines except on the first run of the werkzeug server.
 if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
     locales_initialize()
-    _INFO_PAGES = infopage.InfoPageSet()
     redis_initialize()
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
