@@ -1,5 +1,50 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, too-many-branches
+# pylint: disable=too-many-branches
+"""In addition to rewriting/replace reslut URLs, the *hoostnames* plugin offers
+other features.
+
+- ``hostnames.replace``: A mapping of regular expressions to hostnames to be
+  replaced by other hostnames.
+
+- ``hostnames.remove``: A list of regular expressions of the hostnames whose
+  results should be taken from the results list.
+
+- ``hostnames.high_priority``: A list of regular expressions for hostnames whose
+  result should be given higher priority. The results from these hosts are
+  arranged higher in the results list.
+
+- ``hostnames.lower_priority``: A list of regular expressions for hostnames
+  whose result should be given lower priority. The results from these hosts are
+  arranged lower in the results list.
+
+Alternatively, a file name can also be specified for the mappings or lists:
+
+.. code:: yaml
+
+   hostnames:
+     replace: 'rewrite-hosts.yml'
+     remove:
+       - '(.*\\.)?facebook.com$'
+       ...
+     low_priority:
+       - '(.*\\.)?google(\\..*)?$'
+       ...
+     high_priority:
+       - '(.*\\.)?wikipedia.org$'
+       ...
+
+The ``rewrite-hosts.yml`` from the example above must be in the folder in which
+the ``settings.yml`` file is already located (``/etc/searxng``). The file then
+only contains the lists or the mapping tables without further information on the
+namespaces.  In the example above, this would be a mapping table that looks
+something like this:
+
+.. code:: yaml
+
+   '(.*\\.)?youtube\\.com$': 'invidious.example.com'
+   '(.*\\.)?youtu\\.be$': 'invidious.example.com'
+
+"""
 
 import re
 from urllib.parse import urlunparse, urlparse
