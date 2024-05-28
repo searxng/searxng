@@ -1589,6 +1589,27 @@ engines:
     api_site: 'superuser'
     categories: [it, q&a]
 
+  - name: discuss.python
+    engine: discourse
+    shortcut: dpy
+    base_url: 'https://discuss.python.org'
+    categories: [it, q&a]
+    disabled: true
+
+  - name: caddy.community
+    engine: discourse
+    shortcut: caddy
+    base_url: 'https://caddy.community'
+    categories: [it, q&a]
+    disabled: true
+
+  - name: pi-hole.community
+    engine: discourse
+    shortcut: pi
+    categories: [it, q&a]
+    base_url: 'https://discourse.pi-hole.net'
+    disabled: true
+
   - name: searchcode code
     engine: searchcode_code
     shortcut: scc
