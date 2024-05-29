@@ -78,6 +78,7 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
    yet implemented.
 
 """
+# pylint: disable=too-many-statements
 
 from typing import TYPE_CHECKING
 from collections import OrderedDict
@@ -88,7 +89,7 @@ from datetime import datetime, timedelta
 
 import dateutil.parser
 import lxml.html
-import babel
+import babel.localedata
 
 from searx.utils import extract_text, eval_xpath, gen_useragent
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
@@ -439,10 +440,12 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # get the native name of every language known by babel
 
-    for lang_code in filter(
-        lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()  # type: ignore
-    ):
-        native_name = babel.Locale(lang_code).get_language_name().lower()  # type: ignore
+    for lang_code in filter(lambda lang_code: lang_code.find('_') == -1, babel.localedata.locale_identifiers()):
+        native_name = babel.Locale(lang_code).get_language_name()
+        if not native_name:
+            print(f"ERROR: language name of startpage's language {lang_code} is unknown by babel")
+            continue
+        native_name = native_name.lower()
         # add native name exactly as it is
         catalog_engine2code[native_name] = lang_code
 
