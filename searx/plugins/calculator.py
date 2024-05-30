@@ -7,13 +7,12 @@ import operator
 from multiprocessing import Process, Queue
 
 from flask_babel import gettext
-from searx import settings
 
 from searx.plugins import logger
 
 name = "Basic Calculator"
 description = gettext("Calculate mathematical expressions via the search bar")
-default_on = False
+default_on = True
 
 preference_section = 'general'
 plugin_id = 'calculator'
@@ -81,9 +80,6 @@ def timeout_func(timeout, func, *args, **kwargs):
 
 
 def post_search(_request, search):
-    # don't run on public instances due to possible attack surfaces
-    if settings['server']['public_instance']:
-        return True
 
     # only show the result of the expression on the first page
     if search.search_query.pageno > 1:
@@ -113,7 +109,3 @@ def post_search(_request, search):
     if result != query:
         search.result_container.answers['calculate'] = {'answer': f"{query} = {result}"}
     return True
-
-
-def is_allowed():
-    return not settings['server']['public_instance']
