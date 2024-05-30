@@ -38,7 +38,7 @@
 
 {%- macro plugin_preferences(section) -%}
 {%- for plugin in plugins -%}
-{%- if plugin.preference_section == section and (plugin.is_allowed() if plugin.is_allowed else True) -%}
+{%- if plugin.preference_section == section -%}
 <fieldset>{{- '' -}}
     <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
     <div class="value">
