@@ -11,21 +11,22 @@
 # return42 <markus.heiser@darmarit.de>, 2023, 2024.
 # Salif Mehmed <mail@salif.eu>, 2023, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# krlsk <krlsk@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-09 15:27+0000\n"
-"PO-Revision-Date: 2024-04-28 18:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
-"\n"
+"PO-Revision-Date: 2024-05-25 08:18+0000\n"
+"Last-Translator: krlsk <krlsk@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Bulgarian <https://translate.codeberg.org/projects/searxng/"
+"searxng/bg/>\n"
 "Language: bg\n"
-"Language-Team: Bulgarian "
-"<https://translate.codeberg.org/projects/searxng/searxng/bg/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.14.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -166,7 +167,7 @@ msgstr "тъмен"
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "Време на работа"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:50
@@ -176,22 +177,22 @@ msgstr "Относно"
 #. WEATHER_TERMS['AVERAGE TEMP.']
 #: searx/searxng.msg
 msgid "Average temp."
-msgstr ""
+msgstr "Средна темп."
 
 #. WEATHER_TERMS['CLOUD COVER']
 #: searx/searxng.msg
 msgid "Cloud cover"
-msgstr ""
+msgstr "Облачно"
 
 #. WEATHER_TERMS['CONDITION']
 #: searx/searxng.msg
 msgid "Condition"
-msgstr ""
+msgstr "Обстановка"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
 #: searx/searxng.msg
 msgid "Current condition"
-msgstr ""
+msgstr "Сегашна обстановка"
 
 #. WEATHER_TERMS['EVENING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -211,12 +212,12 @@ msgstr "Влажност"
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr ""
+msgstr "Максилмална темп."
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr ""
+msgstr "Минимална темп."
 
 #. WEATHER_TERMS['MORNING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -281,7 +282,7 @@ msgstr "Публикации"
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/searxng.msg
 msgid "active users"
-msgstr ""
+msgstr "активни потребители"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/searxng.msg
@@ -296,7 +297,7 @@ msgstr "Потребител"
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
 #: searx/searxng.msg
 msgid "community"
-msgstr ""
+msgstr "общност"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
 #: searx/searxng.msg
@@ -492,7 +493,7 @@ msgstr "Качество на файл"
 
 #: searx/plugins/calculator.py:12
 msgid "Calculate mathematical expressions via the search bar"
-msgstr ""
+msgstr "Изчеслете математически изрази през лентата за търсене"
 
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
@@ -526,7 +527,7 @@ msgstr ""
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
-msgstr ""
+msgstr "Лична информация"
 
 #: searx/plugins/self_info.py:10
 msgid ""
@@ -574,7 +575,7 @@ msgstr "Премахни следящите аргументи от върнат
 
 #: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
-msgstr ""
+msgstr "Превръщане между единици"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1002,11 +1003,11 @@ msgstr "Няма намерени резултати. Може да опитат
 
 #: searx/templates/simple/messages/no_results.html:14
 msgid "There are no more results. You can try to:"
-msgstr ""
+msgstr "Няма повече резултати. Може да опитате да:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr "Опресни страницата"
+msgstr "Опресни страницата."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
@@ -1022,11 +1023,13 @@ msgstr "Премини на друг сървър:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "Потърсете друга заявка или изберете друга категория."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
+"Върнете се към предишната страница, като използвате бутона \"Предишна "
+"страница\"."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1121,15 +1124,16 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
-msgstr ""
+msgstr "Копиране на хеш на предпочитанията"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
 msgstr ""
+"Вмъкнете копирания хеш на предпочитанията (без URL), за да ги възстановите"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
-msgstr ""
+msgstr "Хеш на предпочитанията"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "Open Access DOI resolver"
@@ -1151,11 +1155,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
-msgstr ""
+msgstr "Разрешаване на всички"
 
 #: searx/templates/simple/preferences/engines.html:16
 msgid "Disable all"
-msgstr ""
+msgstr "Деактивиране на всички"
 
 #: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
@@ -1285,6 +1289,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
+"Извършване на търсене веднага, ако е избрана категория. Деактивирайте, за да "
+"изберете няколко категории"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1412,11 +1418,11 @@ msgstr "Версия"
 
 #: searx/templates/simple/result_templates/packages.html:18
 msgid "Maintainer"
-msgstr ""
+msgstr "Поддържащ"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
-msgstr ""
+msgstr "Обновено в"
 
 #: searx/templates/simple/result_templates/packages.html:30
 #: searx/templates/simple/result_templates/paper.html:25
@@ -1425,7 +1431,7 @@ msgstr "Етикети"
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "Популярност"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
@@ -1437,7 +1443,7 @@ msgstr "Проект"
 
 #: searx/templates/simple/result_templates/packages.html:55
 msgid "Project homepage"
-msgstr ""
+msgstr "Начална страница на проекта"
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
@@ -1914,4 +1920,3 @@ msgstr "скрий видеото"
 #~ "не намерихме резултати. Моля пробвайте "
 #~ "други ключови думи или търсете в "
 #~ "повече категории."
-
