@@ -2022,26 +2022,25 @@ engines:
 
   - name: mojeek
     shortcut: mjk
-    engine: xpath
-    paging: true
+    engine: mojeek
     categories: [general, web]
-    search_url: https://www.mojeek.com/search?q={query}&s={pageno}&lang={lang}&lb={lang}
-    results_xpath: //ul[@class="results-standard"]/li/a[@class="ob"]
-    url_xpath: ./@href
-    title_xpath: ../h2/a
-    content_xpath: ..//p[@class="s"]
-    suggestion_xpath: //div[@class="top-info"]/p[@class="top-info spell"]/em/a
-    first_page_num: 0
-    page_size: 10
-    max_page: 100
     disabled: true
-    about:
-      website: https://www.mojeek.com/
-      wikidata_id: Q60747299
-      official_api_documentation: https://www.mojeek.com/services/api.html/
-      use_official_api: false
-      require_api_key: false
-      results: HTML
+
+  - name: mojeek images
+    shortcut: mjkimg
+    engine: mojeek
+    categories: [images, web]
+    search_type: images
+    paging: false
+    disabled: true
+
+  - name: mojeek news
+    shortcut: mjknews
+    engine: mojeek
+    categories: [news, web]
+    search_type: news
+    paging: false
+    disabled: true
 
   - name: moviepilot
     engine: moviepilot
