@@ -5,6 +5,7 @@
 import re
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
+from searx.utils import humanize_bytes
 from html import unescape
 from searx import logger
 from searx import utils
@@ -139,21 +140,49 @@ def response(resp):
             raise SearxEngineCaptchaException()
 
         html_data = html.fromstring(resp.text)
-        text = unescape(html.tostring(html_data, encoding='unicode'))
+        html_sample = unescape(html.tostring(html_data, encoding='unicode'))
 
-        urls = re.findall(r'"img_href":"(.*?)"', text)
-        titles = re.findall(r'"alt":"(.*?)"', text)
+        start_tag = 'data-state="'
+        end_tag = '"advRsyaSearchColumn":null}}"'
 
-        results = [
-            {
+        start_pos = html_sample.find(start_tag)
+        start_pos += len(start_tag)
+
+        end_pos = html_sample.find(end_tag, start_pos)
+        end_pos += len(end_tag) - 1
+
+        content_between_tags = html_sample[start_pos:end_pos]
+
+        json_resp = utils.js_variable_to_python(content_between_tags)
+
+        # save to a file
+        #with open('/path/to/yandexdump.txt', 'w') as f:
+        #sys.stdout = f
+        #print(json_resp)
+
+        results = []
+        for item_id, item_data in json_resp['initialState']['serpList']['items']['entities'].items():
+            title = item_data['snippet']['title']
+            source = item_data['snippet']['url']
+            thumb = item_data['image']
+#            fullsize_image = item_data['origUrl']
+            fullsize_image = item_data['viewerData']['dups'][0]['url']
+#            height = item_data['height']
+#            width = item_data['width']
+            height = item_data['viewerData']['dups'][0]['h']
+            width = item_data['viewerData']['dups'][0]['w']
+            filesize = item_data['viewerData']['dups'][0]['fileSizeInBytes']
+            humanized_filesize = humanize_bytes(filesize)
+
+            results.append({
                 "title": title,
-                "url": url,
-                "img_src": url,
-                "thumbnail_src": url,
+                "url": source,
+                "img_src": fullsize_image,
+                "filesize": humanized_filesize,
+                "thumbnail_src": thumb,
                 "template": "images.html",
-            }
-            for url, title in zip(urls, titles)
-        ]
+                "resolution": f'{width} x {height}'
+            })
 
         return results
 
