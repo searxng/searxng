@@ -7,6 +7,7 @@ from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 from html import unescape
 from searx import logger
+from searx import utils
 from searx.exceptions import SearxEngineCaptchaException
 from datetime import datetime
 
@@ -30,6 +31,10 @@ base_url_images = 'https://yandex.com/images/search'
 base_url_videos = 'https://yandex.com/video/search'
 
 url_extension = 'tmpl_version=releases%2Ffrontend%2Fvideo%2Fv1.1168.0%238d942de0f4ebc4eb6b8f3c24ffbd1f8dbc5bbe63'
+
+url_xpath = "//a[@class='b-serp-item__title-link']/@href"
+title_xpath = "//h3[@class='b-serp-item__title']/a[@class='b-serp-item__title-link']/span"
+content_xpath = "//div[@class='b-serp-item__content']//div[@class='b-serp-item__text']"
 
 images_request_block = '{"blocks":[{"block":"extra-content","params":{},"version":2},{"block":"i-global__params:ajax","params":{},"version":2},{"block":"search2:ajax","params":{},"version":2},{"block":"preview__isWallpaper","params":{},"version":2},{"block":"content_type_search","params":{},"version":2},{"block":"serp-controller","params":{},"version":2},{"block":"cookies_ajax","params":{},"version":2},{"block":"advanced-search-block","params":{},"version":2}],"metadata":{"bundles":{"lb":"AS?(E<X120"},"assets":{"las":"justifier-height=1;justifier-setheight=1;fitimages-height=1;justifier-fitincuts=1;react-with-dom=1;"},"extraContent":{"names":["i-react-ajax-adapter"]}}}'
 
@@ -103,27 +108,29 @@ def get_youtube_iframe_src(url):
         if video_id:
             return 'https://www.youtube-nocookie.com/embed/' + video_id[0]
 
-
 def response(resp):
     if yandex_category == 'web':
         if (resp.url).path.startswith('/showcaptcha'):
             raise SearxEngineCaptchaException()
 
-        html_data = html.fromstring(resp.text)
-        text = html.tostring(html_data, encoding='unicode')
+        dom = html.fromstring(resp.text)
+        results_dom = dom.xpath('//li[contains(@class, "serp-item")]')
 
-        urls = re.findall(r'title-link" href="(.*?)" target="_blank"', text)
-        titles = re.findall(r'tabindex="4"><span>(.*?)</span></a></h3>', text)
-        contents = re.findall(r'"b-serp-item__text">(.*?)</div>', text)
+        results = []
+        for result_dom in results_dom:
+            urls = result_dom.xpath(url_xpath)
+            titles = result_dom.xpath(title_xpath)
+            contents = result_dom.xpath(content_xpath)
 
-        results = [
-            {
-                "url": url,
-                "title": title,
-                "content": content,
-            }
-            for url, title, content in zip(urls, titles, contents)
-        ]
+            title_texts = [title.xpath("normalize-space(.)") for title in titles]
+            content_texts = [content.xpath("normalize-space(.)") for content in contents]
+
+            for url, title_text, content_text in zip(urls, title_texts, content_texts):
+                results.append({
+                    "url": url,
+                    "title": title_text,
+                    "content": content_text,
+                })
 
         return results
 
