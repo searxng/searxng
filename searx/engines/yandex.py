@@ -3,6 +3,7 @@
 """Yandex (Web, images, videos)"""
 
 import re
+import sys
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 from searx.utils import humanize_bytes
@@ -142,23 +143,25 @@ def response(resp):
         html_data = html.fromstring(resp.text)
         html_sample = unescape(html.tostring(html_data, encoding='unicode'))
 
-        start_tag = 'data-state="'
-        end_tag = '"advRsyaSearchColumn":null}}"'
+        start_tag = '{"location":"/images/search/'
+        end_tag = 'advRsyaSearchColumn":null}}'
 
-        start_pos = html_sample.find(start_tag)
-        start_pos += len(start_tag)
+        start_index = html_sample.find(start_tag)
+        start_index = start_index if start_index != -1 else -1
 
-        end_pos = html_sample.find(end_tag, start_pos)
-        end_pos += len(end_tag) - 1
+        end_index = html_sample.find(end_tag, start_index)
+        end_index = end_index + len(end_tag) if end_index != -1 else -1
 
-        content_between_tags = html_sample[start_pos:end_pos]
+        content_between_tags = html_sample[start_index:end_index] if start_index != -1 and end_index != -1 else None
+
+#      # save to a file
+#        with open('/path/to/output.txt', 'w') as f:
+#         sys.stdout = f
+#         print(selected_text)
+
 
         json_resp = utils.js_variable_to_python(content_between_tags)
 
-        # save to a file
-        #with open('/path/to/yandexdump.txt', 'w') as f:
-        #sys.stdout = f
-        #print(json_resp)
 
         results = []
         for item_id, item_data in json_resp['initialState']['serpList']['items']['entities'].items():
