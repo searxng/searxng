@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-06-07 00:18+0000\n"
 "Last-Translator: ghose <ghose@users.noreply.translate.codeberg.org>\n"
 "Language: gl\n"
@@ -512,15 +512,17 @@ msgstr "Converte o escrito usando diferentes funcións hash."
 msgid "hash digest"
 msgstr "función hash"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Substituír servidor"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Reescribir o nome do servidor dos resultados ou eliminar resultados en "
-"función do nome do servidor"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1941,4 +1943,10 @@ msgstr "agochar vídeo"
 #~ "non atopamos ningún resultado. Por "
 #~ "favor, realiza outra consulta ou busca"
 #~ " en máis categorías."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Reescribir o nome do servidor dos "
+#~ "resultados ou eliminar resultados en "
+#~ "función do nome do servidor"
 

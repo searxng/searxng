@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-14 19:20+0000\n"
 "Last-Translator: sacred-serpent <sacred-"
 "serpent@users.noreply.translate.codeberg.org>\n"
@@ -522,13 +522,17 @@ msgstr "ממיר מחרוזות לתוך hash digests (לקט גיבוב) שונ
 msgid "hash digest"
 msgstr "hash digest"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "החלפת Hostname"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "שכתב hostname של תוצאות או הסר תוצאות בהתבסס על hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr ""
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1908,4 +1912,7 @@ msgstr "הסתר וידאו"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "לא מצאנו תוצאות. אנא נסו שאילתא אחרת או חפשו בתוך יותר קטגוריות."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "שכתב hostname של תוצאות או הסר תוצאות בהתבסס על hostname"
 

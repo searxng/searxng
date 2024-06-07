@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-23 23:17+0000\n"
 "Last-Translator: lolmeOzzi "
 "<lolmeOzzi@users.noreply.translate.codeberg.org>\n"
@@ -515,15 +515,17 @@ msgstr "Konverterer strenge til forskellige hash-digests."
 msgid "hash digest"
 msgstr "hash-digest"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Værtsnavn erstat"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Omskriv resultatets værtsnavne eller fjerne resultater baseret på "
-"værtsnavnet"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1938,4 +1940,9 @@ msgstr "skjul video"
 #~ "Vi fandt ingen resultater. Benyt "
 #~ "venligst en anden søge-streng eller "
 #~ "søg i flere kategorier."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Omskriv resultatets værtsnavne eller fjerne"
+#~ " resultater baseret på værtsnavnet"
 

@@ -18,19 +18,18 @@
 # diodio <diodio@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-06-07 12:50+0000\n"
 "Last-Translator: diodio <diodio@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
-"searxng/pt/>\n"
 "Language: pt\n"
+"Language-Team: Portuguese "
+"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -521,15 +520,17 @@ msgstr "Converte strings em diferentes resumos de hash."
 msgid "hash digest"
 msgstr "resumo de hash"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Substituição do nome do host"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Reescrever os nomes de host dos resultados ou remover os resultados com "
-"base no nome do host"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1953,3 +1954,10 @@ msgstr "esconder vídeo"
 #~ "não encontramos nenhum resultado. Por "
 #~ "favor pesquise outra coisa ou utilize"
 #~ " mais categorias na sua pesquisa."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Reescrever os nomes de host dos "
+#~ "resultados ou remover os resultados com"
+#~ " base no nome do host"
+

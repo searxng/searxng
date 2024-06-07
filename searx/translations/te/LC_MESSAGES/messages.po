@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2023-07-09 15:34+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: te\n"
@@ -504,15 +504,17 @@ msgstr "స్ట్రింగ్‌లను విభిన్న హాష�
 msgid "hash digest"
 msgstr "హాష్ డైజెస్ట్"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "హోస్ట్ పేరు భర్తీ"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"ఫలితాల హోస్ట్ పేర్లను తిరిగి వ్రాయండి లేదా హోస్ట్ పేరు ఆధారంగా ఫలితాలను "
-"తీసివేయండి"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1887,4 +1889,10 @@ msgstr "వీడియోను దాచిపెట్టు"
 #~ "మేము ఏ ఫలితాలను కనుగొనలేదు. దయచేసి మరొక"
 #~ " ప్రశ్నను ఉపయోగించండి లేదా మరిన్ని "
 #~ "వర్గాల్లో శోధించండి."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "ఫలితాల హోస్ట్ పేర్లను తిరిగి వ్రాయండి "
+#~ "లేదా హోస్ట్ పేరు ఆధారంగా ఫలితాలను "
+#~ "తీసివేయండి"
 

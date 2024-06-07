@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-06-03 14:40+0000\n"
 "Last-Translator: sygmamess "
 "<sygmamess@users.noreply.translate.codeberg.org>\n"
@@ -525,15 +525,17 @@ msgstr "Dizileri farklı özdeğerlerine çevirir."
 msgid "hash digest"
 msgstr "özdeğer"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Sunucu adını değiştir"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Sonuçların sunucu adlarını tekrar yaz ya da sunucu adına göre sonuçları "
-"sil"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1947,4 +1949,9 @@ msgstr "görüntüyü gizle"
 #~ "herhangi bir sonuç bulamadık. Lütfen, "
 #~ "başka bir sorgu kullanın veya daha "
 #~ "fazla kategoride arama yapın."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Sonuçların sunucu adlarını tekrar yaz ya"
+#~ " da sunucu adına göre sonuçları sil"
 

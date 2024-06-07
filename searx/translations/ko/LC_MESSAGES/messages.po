@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-17 06:18+0000\n"
 "Last-Translator: eaglclaws "
 "<eaglclaws@users.noreply.translate.codeberg.org>\n"
@@ -513,13 +513,17 @@ msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
 msgid "hash digest"
 msgstr "해시 다이제스트"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "호스트 이름 변경"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "결과의 호스트 이름을 재작성하거나 호스트 이름에 따라 결과를 삭제합니다"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr ""
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1751,4 +1755,7 @@ msgstr "비디오 숨기기"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "검색결과를 찾을 수 없습니다. 다른 검색어로 검색하거나 검색 범주를 추가해주세요."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "결과의 호스트 이름을 재작성하거나 호스트 이름에 따라 결과를 삭제합니다"
 

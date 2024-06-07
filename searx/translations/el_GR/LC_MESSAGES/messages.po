@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-03-12 17:28+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
 "\n"
@@ -518,15 +518,17 @@ msgstr "Μετατρέπει κείμενο σε διαφορετικές συν
 msgid "hash digest"
 msgstr "συνάρτηση κατατεμαχισμού"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Αντικατάσταση hostname"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Αντικατάσταση hostname των αποτελεσμάτων ή αφαίρεση των αποτελεσμάτων με "
-"βάση το hostname"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1945,4 +1947,10 @@ msgstr "απόκρυψη βίντεο"
 #~ "δε βρέθηκαν αποτελέσματα. Παρακαλούμε "
 #~ "χρησιμοποιήστε άλλη αναζήτηση ή ψάξτε σε"
 #~ " περισσότερες κατηγορίες."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Αντικατάσταση hostname των αποτελεσμάτων ή "
+#~ "αφαίρεση των αποτελεσμάτων με βάση το"
+#~ " hostname"
 

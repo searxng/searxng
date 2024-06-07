@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-25 08:18+0000\n"
 "Last-Translator: yannickmaes "
 "<yannickmaes@users.noreply.translate.codeberg.org>\n"
@@ -525,15 +525,17 @@ msgstr "Zet tekstwaarden om naar verschillende hash digests."
 msgid "hash digest"
 msgstr "hash digest"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Servernaam vervangen"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Pas resulterende servernamen aan of verwijder resultaten op basis van de "
-"servernaam"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1957,4 +1959,10 @@ msgstr "verberg video"
 #~ "We konden geen resultaten vinden. "
 #~ "Probeer een andere zoekopdracht, of zoek"
 #~ " in meer categorieën."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Pas resulterende servernamen aan of "
+#~ "verwijder resultaten op basis van de "
+#~ "servernaam"
 

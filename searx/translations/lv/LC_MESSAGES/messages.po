@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-23 21:19+0000\n"
 "Last-Translator: Obligate <Obligate@users.noreply.translate.codeberg.org>"
 "\n"
@@ -514,15 +514,17 @@ msgstr "Pārvērš virknes (strings) par dažādiem jaucējkoda īssavilkumiem."
 msgid "hash digest"
 msgstr "jaucējkoda sašķelšana"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Resursdatora vārda nomaiņa"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Pārrakstīt rezultātu saimniekvārdus vai noņemt rezultātus, pamatojoties "
-"uz saimniekvārdu"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1645,4 +1647,9 @@ msgstr "slēpt video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Pārrakstīt rezultātu saimniekvārdus vai noņemt"
+#~ " rezultātus, pamatojoties uz saimniekvārdu"
 

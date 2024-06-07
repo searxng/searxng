@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-22 16:18+0000\n"
 "Last-Translator: ecevinoth "
 "<ecevinoth@users.noreply.translate.codeberg.org>\n"
@@ -520,15 +520,17 @@ msgstr "சரங்களை வெவ்வேறு ஹாஷ் டைஜெ
 msgid "hash digest"
 msgstr "ஹாஷ் டைஜெஸ்ட்"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "ஹோஸ்ட்பெயர் மாற்றீடு"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"முடிவு ஹோஸ்ட்பெயர்களை மீண்டும் எழுதவும் அல்லது ஹோஸ்ட்பெயரின் அடிப்படையில்"
-" முடிவுகளை அகற்றவும்"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1902,4 +1904,9 @@ msgstr "காணொளிகளை மறை"
 #~ "எங்களால் எந்ததொரு பதில்களையும் தேட இயலவில்லை."
 #~ " தயவு செய்து வேறொரு வினவலில் அல்லது "
 #~ "கூடுதலானப் பிரிவுகளில் தேடவும்."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "முடிவு ஹோஸ்ட்பெயர்களை மீண்டும் எழுதவும் அல்லது"
+#~ " ஹோஸ்ட்பெயரின் அடிப்படையில் முடிவுகளை அகற்றவும்"
 

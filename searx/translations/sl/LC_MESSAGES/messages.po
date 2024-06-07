@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 08:23+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-23 21:19+0000\n"
 "Last-Translator: cynedex <cynedex@users.noreply.translate.codeberg.org>\n"
 "Language: sl\n"
@@ -517,15 +517,17 @@ msgstr "Pretvori besede v drugo hash vrednost."
 msgid "hash digest"
 msgstr "Hash vrednost"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Preimenuj strežniško ime"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Prepiši rezultate strežniških imen ali odstrani rezultate na bazi "
-"strežniških imen"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1928,4 +1930,10 @@ msgstr "skrij video"
 #~ "Nismo našli zadetkov. Uporabite drugo "
 #~ "poizvedbo ali pa razširite nabor "
 #~ "kategorij za iskanje."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Prepiši rezultate strežniških imen ali "
+#~ "odstrani rezultate na bazi strežniških "
+#~ "imen"
 
