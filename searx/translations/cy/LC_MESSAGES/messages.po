@@ -12,22 +12,21 @@
 # EifionLlwyd <EifionLlwyd@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 08:23+0000\n"
 "PO-Revision-Date: 2024-06-07 00:18+0000\n"
-"Last-Translator: EifionLlwyd <EifionLlwyd@users.noreply.translate.codeberg."
-"org>\n"
-"Language-Team: Welsh <https://translate.codeberg.org/projects/searxng/"
-"searxng/cy/>\n"
+"Last-Translator: EifionLlwyd "
+"<EifionLlwyd@users.noreply.translate.codeberg.org>\n"
 "Language: cy\n"
+"Language-Team: Welsh "
+"<https://translate.codeberg.org/projects/searxng/searxng/cy/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n "
+"!= 11) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
-"11) ? 2 : 3;\n"
-"X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -314,6 +313,21 @@ msgstr "teitl"
 msgid "author"
 msgstr "awdur"
 
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
+
 #: searx/webapp.py:330
 msgid "No item found"
 msgstr "Ni chanfuwyd eitem"
@@ -466,17 +480,18 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Methu darllen url y ddelwedd honno. Gall hyn fod oherwydd fformat nad yw'n "
-"cael ei gefnogi. Mae TinEye ond yn cefnogi delweddau JPEG, PNG, GIF, BMP, "
-"TIFF neu WebP."
+"Methu darllen url y ddelwedd honno. Gall hyn fod oherwydd fformat nad "
+"yw'n cael ei gefnogi. Mae TinEye ond yn cefnogi delweddau JPEG, PNG, GIF,"
+" BMP, TIFF neu WebP."
 
 #: searx/engines/tineye.py:45
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Mae'r ddelwedd yn rhy syml i ganfod canlyniadau. Mae angen lefel sylfaenol o "
-"fanylion gweledol i TinEye allu canfod canlyniadau yn llwyddiannus."
+"Mae'r ddelwedd yn rhy syml i ganfod canlyniadau. Mae angen lefel "
+"sylfaenol o fanylion gweledol i TinEye allu canfod canlyniadau yn "
+"llwyddiannus."
 
 #: searx/engines/tineye.py:51
 msgid "The image could not be downloaded."
@@ -557,8 +572,8 @@ msgstr ""
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
-"Dydych chi ddim yn defnyddio Tor ac mae gennych chi'r cyfeiriad IP allanol "
-"canlynol: {ip_address}"
+"Dydych chi ddim yn defnyddio Tor ac mae gennych chi'r cyfeiriad IP "
+"allanol canlynol: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -631,22 +646,22 @@ msgstr "Cysylltu â chynhaliwr y gweinydd"
 msgid "Click on the magnifier to perform search"
 msgstr "Cliciwch ar y chwyddwydr i chwilio"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Hyd"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Awdur"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "wedi'i storio"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "wedi'i ddirprwyo"
 
@@ -1020,8 +1035,7 @@ msgstr "Chwilio am rywbeth arall neu ddewis categori arall."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
-"Mynd yn ôl i'r dudalen flaenorol gan ddefnyddio'r botwm tudalen flaenorol."
+msgstr "Mynd yn ôl i'r dudalen flaenorol gan ddefnyddio'r botwm tudalen flaenorol."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1074,8 +1088,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dyma'r rhestr o friwsion a'u gwerthoedd y mae SearXNG yn eu storio ar eich "
-"cyfrifiadur."
+"Dyma'r rhestr o friwsion a'u gwerthoedd y mae SearXNG yn eu storio ar "
+"eich cyfrifiadur."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1221,8 +1235,7 @@ msgstr "Ym mha iaith ydych chi'n ffafrio chwilio?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Dewiswch canfod yn awtomatig i adael i SearXNG ganfod iaith eich chwiliad."
+msgstr "Dewiswch canfod yn awtomatig i adael i SearXNG ganfod iaith eich chwiliad."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1869,3 +1882,4 @@ msgstr "cuddio'r fideo"
 #~ "ganlyniadau. Defnyddiwch derm(au) chwilio "
 #~ "gwahanol neu ehangu'r chwilio i ragor"
 #~ " o gategorïau."
+

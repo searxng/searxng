@@ -12,19 +12,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 08:23+0000\n"
 "PO-Revision-Date: 2024-05-23 21:19+0000\n"
-"Last-Translator: Obligate <Obligate@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Latvian <https://translate.codeberg.org/projects/searxng/"
-"searxng/lv/>\n"
+"Last-Translator: Obligate <Obligate@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: lv\n"
+"Language-Team: Latvian "
+"<https://translate.codeberg.org/projects/searxng/searxng/lv/>\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100"
+" <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
-"19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
-"X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -310,6 +310,21 @@ msgstr "virsraksts"
 #: searx/searxng.msg
 msgid "author"
 msgstr "autors"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -630,22 +645,22 @@ msgstr ""
 msgid "Click on the magnifier to perform search"
 msgstr "Noklikšķiniet uz lupas, lai veiktu meklēšanu"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Garums"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autors"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr ""
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr ""
 
@@ -1630,3 +1645,4 @@ msgstr "slēpt video"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr ""
+

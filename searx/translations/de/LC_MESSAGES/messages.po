@@ -24,20 +24,19 @@
 # German <German@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 08:23+0000\n"
 "PO-Revision-Date: 2024-05-10 06:13+0000\n"
 "Last-Translator: German <German@users.noreply.translate.codeberg.org>\n"
-"Language-Team: German <https://translate.codeberg.org/projects/searxng/"
-"searxng/de/>\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://translate.codeberg.org/projects/searxng/searxng/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.2\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -323,6 +322,21 @@ msgstr "Titel"
 #: searx/searxng.msg
 msgid "author"
 msgstr "Autor/-in"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -653,22 +667,22 @@ msgstr "Kontakt zum Betreuer der Instanz"
 msgid "Click on the magnifier to perform search"
 msgstr "klicke auf die Lupe, um die Suche zu starten"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Länge"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "Im Cache"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "proxy"
 
@@ -1958,3 +1972,4 @@ msgstr "Video verstecken"
 #~ "werden. Bitte nutze einen anderen "
 #~ "Suchbegriff, oder suche das gewünschte "
 #~ "in einer anderen Kategorie."
+

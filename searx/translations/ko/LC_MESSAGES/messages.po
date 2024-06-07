@@ -13,18 +13,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 08:23+0000\n"
 "PO-Revision-Date: 2024-05-17 06:18+0000\n"
-"Last-Translator: eaglclaws <eaglclaws@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
-"searxng/ko/>\n"
+"Last-Translator: eaglclaws "
+"<eaglclaws@users.noreply.translate.codeberg.org>\n"
 "Language: ko\n"
+"Language-Team: Korean "
+"<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -310,6 +310,21 @@ msgstr "제목"
 #: searx/searxng.msg
 msgid "author"
 msgstr "작성자"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -625,22 +640,22 @@ msgstr "인스턴스 관리자에게 문의"
 msgid "Click on the magnifier to perform search"
 msgstr "돋보기를 클릭하여 검색을 시작하세요"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "길이"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "저자"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "캐시"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "프록시됨"
 
@@ -1736,3 +1751,4 @@ msgstr "비디오 숨기기"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "검색결과를 찾을 수 없습니다. 다른 검색어로 검색하거나 검색 범주를 추가해주세요."
+

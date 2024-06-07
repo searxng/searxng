@@ -17,20 +17,19 @@
 # Kran21 <Kran21@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 08:23+0000\n"
 "PO-Revision-Date: 2024-05-21 08:18+0000\n"
 "Last-Translator: Kran21 <Kran21@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Hungarian <https://translate.codeberg.org/projects/searxng/"
-"searxng/hu/>\n"
 "Language: hu\n"
+"Language-Team: Hungarian "
+"<https://translate.codeberg.org/projects/searxng/searxng/hu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -316,6 +315,21 @@ msgstr "cím"
 #: searx/searxng.msg
 msgid "author"
 msgstr "szerző"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -643,22 +657,22 @@ msgstr "Kapcsolatfelvétel a példány karbantartójával"
 msgid "Click on the magnifier to perform search"
 msgstr "A kereséshez kattintson a nagyítóra"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Hossz"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Szerző"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "tárolt"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "proxy nézet"
 
@@ -1925,3 +1939,4 @@ msgstr "videó elrejtése"
 #~ "Nincs megjeleníthető találat. Kérlek, hogy "
 #~ "használj másik kifejezést vagy keress "
 #~ "több kategóriában."
+
