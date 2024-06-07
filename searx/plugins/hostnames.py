@@ -3,16 +3,6 @@
 """In addition to rewriting/replace reslut URLs, the *hoostnames* plugin offers
 other features.
 
-.. attention::
-
-   The 'Hostnames plugin' from `PR-3463
-   <https://github.com/searxng/searxng/pull/3463>`_ is a rewrite of the
-   'Hostname replace' plugin.  Backwards compatibility is guaranteed for a
-   transitional period, but this will end soon.
-
-   **To maintainers of SearXNG instances, please modify your old plugin config
-   to the new.**
-
 - ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
   replaced by other hostnames.
 
@@ -129,29 +119,8 @@ def _load_regular_expressions(settings_key):
     return {}
 
 
-# compatibility fallback for old hostname replace plugin
-# TODO: remove in the future once most/all instance maintainers finished migrating # pylint: disable=fixme
-def _load_regular_expressions_with_fallback(settings_key):
-    expressions = _load_regular_expressions(settings_key)
-    if expressions:
-        return expressions
-
-    # fallback to the old `hostname_replace` settings format
-    # pylint: disable=import-outside-toplevel, cyclic-import
-    hostname_replace_config = settings.get('hostname_replace', {})
-    if hostname_replace_config:
-        from searx.plugins.hostname_replace import deprecated_msg
-
-        deprecated_msg()
-
-    if settings_key == 'replace':
-        return {re.compile(p): r for (p, r) in hostname_replace_config.items() if r}
-
-    return {re.compile(p) for (p, r) in hostname_replace_config.items() if not r}
-
-
-replacements = _load_regular_expressions_with_fallback('replace')
-removables = _load_regular_expressions_with_fallback('remove')
+replacements = _load_regular_expressions('replace')
+removables = _load_regular_expressions('remove')
 high_priority = _load_regular_expressions('high_priority')
 low_priority = _load_regular_expressions('low_priority')
 
