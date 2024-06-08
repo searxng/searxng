@@ -482,6 +482,23 @@ engines:
     # to show premium or plus results too:
     # skip_premium: false
 
+  - name: cloudflareai
+    engine: cloudflareai
+    shortcut: cfai
+    # get api token and accont id from https://developers.cloudflare.com/workers-ai/get-started/rest-api/
+    cf_account_id: 'your_cf_accout_id'
+    cf_ai_api: 'your_cf_api'
+    # create your ai gateway by https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/
+    cf_ai_gateway: 'your_cf_ai_gateway_name'
+    # find the model name from https://developers.cloudflare.com/workers-ai/models/#text-generation
+    cf_ai_model: 'ai_model_name'
+    # custom your preferences
+    # cf_ai_model_display_name: 'Cloudflare AI'
+    # cf_ai_model_assistant: 'prompts_for_assistant_role'
+    # cf_ai_model_system: 'prompts_for_system_role'
+    timeout: 30
+    disabled: true
+
   # - name: core.ac.uk
   #   engine: core
   #   categories: science
