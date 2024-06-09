@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 from lxml import html
 
 from dateutil.relativedelta import relativedelta
-from searx.utils import eval_xpath, eval_xpath_list, extract_text, gen_useragent
+from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
 about = {
     'website': 'https://mojeek.com',
@@ -63,7 +63,6 @@ def request(query, params):
         logger.debug(args["since"])
 
     params['url'] = f"{base_url}/search?{urlencode(args)}"
-    params['headers'] = {'User-Agent': gen_useragent()}
 
     return params
 
