@@ -6,6 +6,7 @@
 import json
 from datetime import datetime
 from urllib.parse import urlencode, urljoin, urlparse
+from searx.utils import gen_useragent
 
 # about
 about = {
@@ -30,6 +31,7 @@ def request(query, params):
 
     query = urlencode({'q': query, 'limit': page_size})
     params['url'] = search_url.format(query=query)
+    params['headers']['User-Agent'] = gen_useragent()
 
     return params
 
