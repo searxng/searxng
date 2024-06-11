@@ -13,6 +13,7 @@ from searx.exceptions import SearxSettingsException
 
 
 searx_dir = abspath(dirname(__file__))
+default_settings_file_name = 'settings.yml'
 
 
 def existing_filename_or_none(file_name: str) -> Optional[str]:
@@ -32,15 +33,25 @@ def load_yaml(file_name):
 
 
 def get_yaml_file(file_name):
-    path = existing_filename_or_none(join(searx_dir, file_name))
+    path = get_settings_path(file_name)
+
     if path is None:
         raise FileNotFoundError(f"File {file_name} does not exist!")
 
     return load_yaml(path)
 
 
+def get_settings_path(file_name):
+    user_settings_path = get_user_settings_path()
+
+    if user_settings_path:
+        return join(dirname(user_settings_path), file_name)
+
+    return existing_filename_or_none(join(searx_dir, file_name))
+
+
 def get_default_settings_path():
-    return existing_filename_or_none(join(searx_dir, 'settings.yml'))
+    return existing_filename_or_none(join(searx_dir, default_settings_file_name))
 
 
 def get_user_settings_path() -> Optional[str]:
@@ -62,7 +73,7 @@ def get_user_settings_path() -> Optional[str]:
 
     # check /etc/searxng/settings.yml
     # (continue with other locations if the file is not found)
-    return existing_filename_or_none('/etc/searxng/settings.yml')
+    return existing_filename_or_none(f'/etc/searxng/{default_settings_file_name}')
 
 
 def update_dict(default_dict, user_dict):
