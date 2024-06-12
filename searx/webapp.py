@@ -61,7 +61,7 @@ from searx.botdetection import link_token
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
-from searx.settings_loader import get_default_settings_path
+from searx.settings_loader import DEFAULT_SETTINGS_FILE
 from searx.exceptions import SearxParameterException
 from searx.engines import (
     DEFAULT_CATEGORY,
@@ -1347,7 +1347,7 @@ def run():
         port=settings['server']['port'],
         host=settings['server']['bind_address'],
         threaded=True,
-        extra_files=[get_default_settings_path()],
+        extra_files=[DEFAULT_SETTINGS_FILE],
     )
 
 

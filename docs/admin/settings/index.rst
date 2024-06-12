@@ -1,3 +1,5 @@
+.. _searxng settings.yml:
+
 ========
 Settings
 ========

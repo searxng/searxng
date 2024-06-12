@@ -96,7 +96,7 @@ from flask_babel import gettext
 
 from searx import settings
 from searx.plugins import logger
-from searx.settings_loader import get_yaml_file
+from searx.settings_loader import get_yaml_cfg
 
 name = gettext('Hostnames plugin')
 description = gettext('Rewrite hostnames, remove results or prioritize them based on the hostname')
@@ -118,7 +118,7 @@ def _load_regular_expressions(settings_key):
 
     # load external file with configuration
     if isinstance(setting_value, str):
-        setting_value = get_yaml_file(setting_value)
+        setting_value = get_yaml_cfg(setting_value)
 
     if isinstance(setting_value, list):
         return {re.compile(r) for r in setting_value}
@@ -163,10 +163,10 @@ def _matches_parsed_url(result, pattern):
 def on_result(_request, _search, result):
     for pattern, replacement in replacements.items():
         if _matches_parsed_url(result, pattern):
-            logger.debug(result['url'])
+            # logger.debug(result['url'])
             result[parsed] = result[parsed]._replace(netloc=pattern.sub(replacement, result[parsed].netloc))
             result['url'] = urlunparse(result[parsed])
-            logger.debug(result['url'])
+            # logger.debug(result['url'])
 
         for url_field in _url_fields:
             if not result.get(url_field):
