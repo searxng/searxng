@@ -35,14 +35,7 @@
 
 {%- if result.filename %}<tr><td>{{ _('Filename') }}</td><td>{{ result.filename|safe }}</td></tr>{% endif -%}
 
-{%- if result.size %}<tr><td>{{ _('Filesize') }}</td><td>
-        {%- if result.size < 1024 %}{{ result.size }} {{ _('Bytes') -}}
-        {%- elif result.size < 1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024) }} {{ _('kiB') -}}
-        {%- elif result.size < 1024*1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024/1024) }} {{ _('MiB') -}}
-        {%- elif result.size < 1024*1024*1024*1024 %}{{ '{0:0.2f}'.format(result.size/1024/1024/1024) }} {{ _('GiB') -}}
-        {%- else %}{{ '{0:0.2f}'.format(result.size/1024/1024/1024/1024) }} {{ _('TiB') }}{% endif -%}
-    </td></tr>
-{%- endif -%}
+{%- if result.size %}<tr><td>{{ _('Filesize') }}</td><td>{{ result.size|safe }}</td></tr>{%- endif -%}
 
 {%- if result.time %}<tr><td>{{ _('Date') }}</td><td>{{ result.time|safe }}</td></tr>{% endif -%}
 

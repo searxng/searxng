@@ -8,7 +8,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from lxml import html
-from searx.utils import extract_text, get_torrent_size, int_or_zero
+from searx.utils import extract_text, int_or_zero
 
 # about
 about = {
@@ -49,7 +49,7 @@ def response(resp):
         return []
 
     # regular expression for parsing torrent size strings
-    size_re = re.compile(r'Size:\s*([\d.]+)(TB|GB|MB|B)', re.IGNORECASE)
+    size_re = re.compile(r'[\d.]+(T|G|M)?B', re.IGNORECASE)
 
     # processing the results, two rows at a time
     for i in range(0, len(rows), 2):
@@ -73,9 +73,7 @@ def response(resp):
             item = item.strip()
             if item.startswith('Size:'):
                 try:
-                    # ('1.228', 'GB')
-                    groups = size_re.match(item).groups()
-                    params['filesize'] = get_torrent_size(groups[0], groups[1])
+                    params['filesize'] = size_re.search(item).group()
                 except:  # pylint: disable=bare-except
                     pass
             elif item.startswith('Date:'):
