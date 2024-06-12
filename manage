@@ -54,7 +54,9 @@ fi
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
-   YAMLLINT_FILES+=("$line")
+    if [ "$line" != "tests/unit/settings/syntaxerror_settings.yml" ]; then
+        YAMLLINT_FILES+=("$line")
+    fi
 done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
 
 RST_FILES=(

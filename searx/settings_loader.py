@@ -1,68 +1,116 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, too-many-branches
+"""Implementations for loading configurations from YAML files.  This essentially
+includes the configuration of the (:ref:`SearXNG appl <searxng settings.yml>`)
+server. The default configuration for the application server is loaded from the
+:origin:`DEFAULT_SETTINGS_FILE <searx/settings.yml>`.  This default
+configuration can be completely replaced or :ref:`customized individually
+<use_default_settings.yml>` and the ``SEARXNG_SETTINGS_PATH`` environment
+variable can be used to set the location from which the local customizations are
+to be loaded. The rules used for this can be found in the
+:py:obj:`get_user_cfg_folder` function.
 
-from typing import Optional
-from os import environ
-from os.path import dirname, join, abspath, isfile
+- By default, local configurations are expected in folder ``/etc/searxng`` from
+  where applications can load them with the :py:obj:`get_yaml_cfg` function.
+
+- By default, customized :ref:`SearXNG appl <searxng settings.yml>` settings are
+  expected in a file named ``settings.yml``.
+
+"""
+
+from __future__ import annotations
+
+import os.path
 from collections.abc import Mapping
 from itertools import filterfalse
+from pathlib import Path
 
 import yaml
 
 from searx.exceptions import SearxSettingsException
 
+searx_dir = os.path.abspath(os.path.dirname(__file__))
 
-searx_dir = abspath(dirname(__file__))
-
-
-def existing_filename_or_none(file_name: str) -> Optional[str]:
-    if isfile(file_name):
-        return file_name
-    return None
+SETTINGS_YAML = Path("settings.yml")
+DEFAULT_SETTINGS_FILE = Path(searx_dir) / SETTINGS_YAML
+"""The :origin:`searx/settings.yml` file with all the default settings."""
 
 
-def load_yaml(file_name):
+def load_yaml(file_name: str | Path):
+    """Load YAML config from a file."""
     try:
         with open(file_name, 'r', encoding='utf-8') as settings_yaml:
-            return yaml.safe_load(settings_yaml)
+            return yaml.safe_load(settings_yaml) or {}
     except IOError as e:
-        raise SearxSettingsException(e, file_name) from e
+        raise SearxSettingsException(e, str(file_name)) from e
     except yaml.YAMLError as e:
-        raise SearxSettingsException(e, file_name) from e
+        raise SearxSettingsException(e, str(file_name)) from e
 
 
-def get_yaml_file(file_name):
-    path = existing_filename_or_none(join(searx_dir, file_name))
-    if path is None:
-        raise FileNotFoundError(f"File {file_name} does not exist!")
+def get_yaml_cfg(file_name: str | Path) -> dict:
+    """Shortcut to load a YAML config from a file, located in the
 
-    return load_yaml(path)
-
-
-def get_default_settings_path():
-    return existing_filename_or_none(join(searx_dir, 'settings.yml'))
-
-
-def get_user_settings_path() -> Optional[str]:
-    """Get an user settings file.
-    By descending priority:
-    1. ``environ['SEARXNG_SETTINGS_PATH']``
-    2. ``/etc/searxng/settings.yml`` except if ``SEARXNG_DISABLE_ETC_SETTINGS`` is ``true`` or ``1``
-    3. ``None``
+    - :py:obj:`get_user_cfg_folder` or
+    - in the ``searx`` folder of the SearXNG installation
     """
 
-    # check the environment variable SEARXNG_SETTINGS_PATH
-    # if the environment variable is defined, this is the last check
-    if 'SEARXNG_SETTINGS_PATH' in environ:
-        return existing_filename_or_none(environ['SEARXNG_SETTINGS_PATH'])
+    folder = get_user_cfg_folder() or Path(searx_dir)
+    fname = folder / file_name
+    if not fname.is_file():
+        raise FileNotFoundError(f"File {fname} does not exist!")
 
-    # if SEARXNG_DISABLE_ETC_SETTINGS don't look any further
-    if environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true'):
-        return None
+    return load_yaml(fname)
 
-    # check /etc/searxng/settings.yml
-    # (continue with other locations if the file is not found)
-    return existing_filename_or_none('/etc/searxng/settings.yml')
+
+def get_user_cfg_folder() -> Path | None:
+    """Returns folder where the local configurations are located.
+
+    1. If the ``SEARXNG_SETTINGS_PATH`` environment is set and points to a
+       folder (e.g. ``/etc/mysxng/``), all local configurations are expected in
+       this folder.  The settings of the :ref:`SearXNG appl <searxng
+       settings.yml>` then expected in ``settings.yml``
+       (e.g. ``/etc/mysxng/settings.yml``).
+
+    2. If the ``SEARXNG_SETTINGS_PATH`` environment is set and points to a file
+       (e.g. ``/etc/mysxng/myinstance.yml``), this file contains the settings of
+       the :ref:`SearXNG appl <searxng settings.yml>` and the folder
+       (e.g. ``/etc/mysxng/``) is used for all other configurations.
+
+       This type (``SEARXNG_SETTINGS_PATH`` points to a file) is suitable for
+       use cases in which different profiles of the :ref:`SearXNG appl <searxng
+       settings.yml>` are to be managed, such as in test scenarios.
+
+    3. If folder ``/etc/searxng`` exists, it is used.
+
+    In case none of the above path exists, ``None`` is returned.  In case of
+    environment ``SEARXNG_SETTINGS_PATH`` is set, but the (folder or file) does
+    not exists, a :py:obj:`EnvironmentError` is raised.
+
+    """
+
+    folder = None
+    settings_path = os.environ.get("SEARXNG_SETTINGS_PATH")
+
+    # Disable default /etc/searxng is intended exclusively for internal testing purposes
+    # and is therefore not documented!
+    disable_etc = os.environ.get('SEARXNG_DISABLE_ETC_SETTINGS', '').lower() in ('1', 'true')
+
+    if settings_path:
+        # rule 1. and 2.
+        settings_path = Path(settings_path)
+        if settings_path.is_dir():
+            folder = settings_path
+        elif settings_path.is_file():
+            folder = settings_path.parent
+        else:
+            raise EnvironmentError(1, f"{settings_path} not exists!", settings_path)
+
+    if not folder and not disable_etc:
+        # default: rule 3.
+        folder = Path("/etc/searxng")
+        if not folder.is_dir():
+            folder = None
+
+    return folder
 
 
 def update_dict(default_dict, user_dict):
@@ -74,7 +122,9 @@ def update_dict(default_dict, user_dict):
     return default_dict
 
 
-def update_settings(default_settings, user_settings):
+def update_settings(default_settings: dict, user_settings: dict):
+    # pylint: disable=too-many-branches
+
     # merge everything except the engines
     for k, v in user_settings.items():
         if k not in ('use_default_settings', 'engines'):
@@ -124,6 +174,7 @@ def update_settings(default_settings, user_settings):
 
 
 def is_use_default_settings(user_settings):
+
     use_default_settings = user_settings.get('use_default_settings')
     if use_default_settings is True:
         return True
@@ -134,25 +185,37 @@ def is_use_default_settings(user_settings):
     raise ValueError('Invalid value for use_default_settings')
 
 
-def load_settings(load_user_settings=True):
-    default_settings_path = get_default_settings_path()
-    user_settings_path = get_user_settings_path()
-    if user_settings_path is None or not load_user_settings:
-        # no user settings
-        return (load_yaml(default_settings_path), 'load the default settings from {}'.format(default_settings_path))
+def load_settings(load_user_settings=True) -> tuple[dict, str]:
+    """Function for loading the settings of the SearXNG application
+    (:ref:`settings.yml <searxng settings.yml>`)."""
 
-    # user settings
-    user_settings = load_yaml(user_settings_path)
-    if is_use_default_settings(user_settings):
+    msg = f"load the default settings from {DEFAULT_SETTINGS_FILE}"
+    cfg = load_yaml(DEFAULT_SETTINGS_FILE)
+    cfg_folder = get_user_cfg_folder()
+
+    if not load_user_settings or not cfg_folder:
+        return cfg, msg
+
+    settings_yml = os.environ.get("SEARXNG_SETTINGS_PATH")
+    if settings_yml and Path(settings_yml).is_file():
+        # see get_user_cfg_folder() --> SEARXNG_SETTINGS_PATH points to a file
+        settings_yml = Path(settings_yml).name
+    else:
+        # see get_user_cfg_folder() --> SEARXNG_SETTINGS_PATH points to a folder
+        settings_yml = SETTINGS_YAML
+
+    cfg_file = cfg_folder / settings_yml
+    if not cfg_file.exists():
+        return cfg, msg
+
+    msg = f"load the user settings from {cfg_file}"
+    user_cfg = load_yaml(cfg_file)
+
+    if is_use_default_settings(user_cfg):
         # the user settings are merged with the default configuration
-        default_settings = load_yaml(default_settings_path)
-        update_settings(default_settings, user_settings)
-        return (
-            default_settings,
-            'merge the default settings ( {} ) and the user settings ( {} )'.format(
-                default_settings_path, user_settings_path
-            ),
-        )
+        msg = f"merge the default settings ( {DEFAULT_SETTINGS_FILE} ) and the user settings ( {cfg_file} )"
+        update_settings(cfg, user_cfg)
+    else:
+        cfg = user_cfg
 
-    # the user settings, fully replace the default configuration
-    return (user_settings, 'load the user settings from {}'.format(user_settings_path))
+    return cfg, msg
