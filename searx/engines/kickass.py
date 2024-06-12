@@ -11,7 +11,6 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    get_torrent_size,
     int_or_zero,
 )
 
@@ -54,7 +53,7 @@ def response(resp):
         result['content'] = extract_text(eval_xpath(tag, './/span[@class="font11px lightgrey block"]'))
         result['seed'] = int_or_zero(extract_text(eval_xpath(tag, './/td[contains(@class, "green")]')))
         result['leech'] = int_or_zero(extract_text(eval_xpath(tag, './/td[contains(@class, "red")]')))
-        result['filesize'] = get_torrent_size(*extract_text(eval_xpath(tag, './/td[contains(@class, "nobr")]')).split())
+        result['filesize'] = extract_text(eval_xpath(tag, './/td[contains(@class, "nobr")]'))
 
         results.append(result)
 

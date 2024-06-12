@@ -9,7 +9,6 @@ from lxml import html
 from searx.utils import (
     eval_xpath_getindex,
     extract_text,
-    get_torrent_size,
     int_or_zero,
 )
 
@@ -99,11 +98,7 @@ def response(resp):
 
         # let's try to calculate the torrent size
 
-        filesize = None
-        filesize_info = eval_xpath_getindex(result, xpath_filesize, 0, '')
-        if filesize_info:
-            filesize_info = result.xpath(xpath_filesize)[0]
-            filesize = get_torrent_size(*filesize_info.split())
+        filesize = eval_xpath_getindex(result, xpath_filesize, 0, '')
 
         # content string contains all information not included into template
         content = 'Category: "{category}". Downloaded {downloads} times.'

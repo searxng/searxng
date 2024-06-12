@@ -14,7 +14,6 @@ from searx.utils import (
     eval_xpath,
     eval_xpath_getindex,
     eval_xpath_list,
-    get_torrent_size,
 )
 
 about = {
@@ -63,7 +62,7 @@ def response(resp):
             'leech': extract_text(stats[2]),
             'title': extract_text(title),
             'url': resp.search_params['base_url'] + url,
-            'filesize': get_torrent_size(*extract_text(stats[1]).split()),
+            'filesize': extract_text(stats[1]),
             'magnetlink': magnet,
             'torrentfile': torrentfile,
             'metadata': extract_text(categ),

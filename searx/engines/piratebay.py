@@ -8,7 +8,7 @@ from datetime import datetime
 from operator import itemgetter
 
 from urllib.parse import quote
-from searx.utils import get_torrent_size
+from searx.utils import humanize_bytes
 
 # about
 about = {
@@ -80,17 +80,12 @@ def response(resp):
 
         # extract and convert creation date
         try:
-            date = datetime.fromtimestamp(float(result["added"]))
-            params['publishedDate'] = date
+            params['publishedDate'] = datetime.fromtimestamp(float(result["added"]))
         except:  # pylint: disable=bare-except
             pass
 
         # let's try to calculate the torrent size
-        try:
-            filesize = get_torrent_size(result["size"], "B")
-            params['filesize'] = filesize
-        except:  # pylint: disable=bare-except
-            pass
+        params['filesize'] = humanize_bytes(int(result["size"]))
 
         # append result
         results.append(params)
