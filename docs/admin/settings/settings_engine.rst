@@ -204,7 +204,7 @@ Example configuration to restrict access to the Arch Linux Wiki engine:
     tokens: [ 'my-secret-token' ]
 
 Unless a user has configured the right token, the engine is going to be hidden
-from him/her.  It is not going to be included in the list of engines on the
+from them.  It is not going to be included in the list of engines on the
 Preferences page and in the output of `/config` REST API call.
 
 Tokens can be added to one's configuration on the Preferences page under "Engine
