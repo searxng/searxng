@@ -221,6 +221,7 @@ SCHEMA = {
         'max_redirects': SettingsValue(int, 30),
         'retries': SettingsValue(int, 0),
         'proxies': SettingsValue((None, str, dict), None),
+        'proxy_request_redundancy': SettingsValue(int, 1),
         'source_ips': SettingsValue((None, str, list), None),
         # Tor configuration
         'using_tor_proxy': SettingsValue(bool, False),

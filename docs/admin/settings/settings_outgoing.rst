@@ -22,9 +22,9 @@ Communication with search engines.
      # and https://www.python-httpx.org/compatibility/#ssl-configuration
      #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
      #
-     # uncomment below section if you want to use a proxyq see: SOCKS proxies
+     # Uncomment below section if you want to use a proxy. See:
      #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-     # are also supported: see
+     # SOCKS proxies are also supported. See:
      #   https://2.python-requests.org/en/latest/user/advanced/#socks
      #
      #  proxies:
@@ -33,6 +33,11 @@ Communication with search engines.
      #      - http://proxy2:8080
      #
      #  using_tor_proxy: true
+     #
+     # Uncomment below if you want to make multiple request in parallel
+     # through all the proxies at once:
+     #
+     #  proxy_request_redundancy: 4
      #
      # Extra seconds to add in order to account for the time taken by the proxy
      #
@@ -70,6 +75,10 @@ Communication with search engines.
   If there are more than one proxy for one protocol (http, https),
   requests to the engines are distributed in a round-robin fashion.
 
+``proxy_request_redundancy`` :
+  Cycle the proxies (``1``) on by one or use them in parallel (``> 1``) for all engines.
+  The default is ``1`` and can be overwritten in the :ref:`settings engine`
+
 ``source_ips`` :
   If you use multiple network interfaces, define from which IP the requests must
   be made. Example:
@@ -106,5 +115,3 @@ Communication with search engines.
 ``using_tor_proxy`` :
   Using tor proxy (``true``) or not (``false``) for all engines.  The default is
   ``false`` and can be overwritten in the :ref:`settings engine`
-
-

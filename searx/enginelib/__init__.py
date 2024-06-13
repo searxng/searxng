@@ -110,6 +110,10 @@ class Engine:  # pylint: disable=too-few-public-methods
          https: socks5://proxy:port
     """
 
+    proxy_request_redundancy: int
+    """Cycle proxies one by one (``1``) or
+    use them in parallel at once (``> 1``) for this engine."""
+
     disabled: bool
     """To disable by default the engine, but not deleting it.  It will allow the
     user to manually activate it in the settings."""

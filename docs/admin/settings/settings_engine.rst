@@ -47,6 +47,7 @@ engine is shown.  Most of the options have a default value or even are optional.
      max_keepalive_connections: 10
      keepalive_expiry: 5.0
      using_tor_proxy: false
+     proxy_request_redundancy: 1
      proxies:
        http:
          - http://proxy1:8080
@@ -154,6 +155,9 @@ engine is shown.  Most of the options have a default value or even are optional.
 ``proxies`` :
   Overwrites proxy settings from :ref:`settings outgoing`.
 
+``proxy_request_redundancy`` :
+  Overwrites proxy settings from :ref:`settings outgoing`.
+
 ``using_tor_proxy`` :
   Using tor proxy (``true``) or not (``false``) for this engine.  The default is
   taken from ``using_tor_proxy`` of the :ref:`settings outgoing`.
@@ -241,4 +245,3 @@ Example configuration in settings.yml for a German and English speaker:
 
 When searching, the default google engine will return German results and
 "google english" will return English results.
-

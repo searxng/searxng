@@ -2,10 +2,11 @@
 # pylint: disable=global-statement
 # pylint: disable=missing-module-docstring, missing-class-docstring
 
+from __future__ import annotations
+
 import atexit
 import asyncio
 import ipaddress
-from itertools import cycle
 from typing import Dict
 
 import httpx
@@ -46,12 +47,14 @@ class Network:
         'keepalive_expiry',
         'local_addresses',
         'proxies',
+        'proxy_request_redundancy',
         'using_tor_proxy',
         'max_redirects',
         'retries',
         'retry_on_http_error',
         '_local_addresses_cycle',
         '_proxies_cycle',
+        '_proxies_by_pattern',
         '_clients',
         '_logger',
     )
@@ -68,6 +71,7 @@ class Network:
         max_keepalive_connections=None,
         keepalive_expiry=None,
         proxies=None,
+        proxy_request_redundancy=1,
         using_tor_proxy=False,
         local_addresses=None,
         retries=0,
@@ -83,13 +87,15 @@ class Network:
         self.max_keepalive_connections = max_keepalive_connections
         self.keepalive_expiry = keepalive_expiry
         self.proxies = proxies
+        self.proxy_request_redundancy = proxy_request_redundancy
         self.using_tor_proxy = using_tor_proxy
         self.local_addresses = local_addresses
         self.retries = retries
         self.retry_on_http_error = retry_on_http_error
         self.max_redirects = max_redirects
         self._local_addresses_cycle = self.get_ipaddress_cycle()
-        self._proxies_cycle = self.get_proxy_cycles()
+        # Contains a dictionary with a list of proxies by pattern.
+        self._proxies_by_pattern = dict(self.iter_proxies())
         self._clients = {}
         self._logger = logger.getChild(logger_name) if logger_name else logger
         self.check_parameters()
@@ -132,21 +138,17 @@ class Network:
             return
         # https://www.python-httpx.org/compatibility/#proxy-keys
         if isinstance(self.proxies, str):
-            yield 'all://', [self.proxies]
-        else:
-            for pattern, proxy_url in self.proxies.items():
+            yield 'all://', (self.proxies,)
+        elif isinstance(self.proxies, dict):
+            for pattern, proxy_urls in self.proxies.items():
                 pattern = PROXY_PATTERN_MAPPING.get(pattern, pattern)
-                if isinstance(proxy_url, str):
-                    proxy_url = [proxy_url]
-                yield pattern, proxy_url
-
-    def get_proxy_cycles(self):
-        proxy_settings = {}
-        for pattern, proxy_urls in self.iter_proxies():
-            proxy_settings[pattern] = cycle(proxy_urls)
-        while True:
-            # pylint: disable=stop-iteration-return
-            yield tuple((pattern, next(proxy_url_cycle)) for pattern, proxy_url_cycle in proxy_settings.items())
+                if isinstance(proxy_urls, str):
+                    yield pattern, (proxy_urls,)
+                else:
+                    yield pattern, tuple(proxy_urls)
+        else:
+            msg = "`proxies` need to be either a string or a patthern to url dictionary."
+            raise ValueError(msg)
 
     async def log_response(self, response: httpx.Response):
         request = response.request
@@ -181,10 +183,11 @@ class Network:
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
-        proxies = next(self._proxies_cycle)  # is a tuple so it can be part of the key
-        key = (verify, max_redirects, local_address, proxies)
         hook_log_response = self.log_response if searx_debug else None
-        if key not in self._clients or self._clients[key].is_closed:
+        proxies = self._proxies_by_pattern
+        key = (verify, max_redirects, local_address)
+        client = self._clients.get(key)
+        if not client or client.is_closed:
             client = new_client(
                 self.enable_http,
                 verify,
@@ -192,17 +195,19 @@ class Network:
                 self.max_connections,
                 self.max_keepalive_connections,
                 self.keepalive_expiry,
-                dict(proxies),
+                proxies,
+                self.proxy_request_redundancy,
                 local_address,
                 0,
                 max_redirects,
                 hook_log_response,
+                self._logger,
             )
             if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
                 await client.aclose()
                 raise httpx.ProxyError('Network configuration problem: not using Tor')
             self._clients[key] = client
-        return self._clients[key]
+        return client
 
     async def aclose(self):
         async def close_client(client):
@@ -340,6 +345,7 @@ def initialize(settings_engines=None, settings_outgoing=None):
         'local_addresses': settings_outgoing['source_ips'],
         'using_tor_proxy': settings_outgoing['using_tor_proxy'],
         'proxies': settings_outgoing['proxies'],
+        'proxy_request_redundancy': settings_outgoing['proxy_request_redundancy'],
         'max_redirects': settings_outgoing['max_redirects'],
         'retries': settings_outgoing['retries'],
         'retry_on_http_error': None,
