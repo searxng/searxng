@@ -24,7 +24,7 @@
 
 .. _static_use_hash:
 
-``static_use_hash`` :
+``static_use_hash`` : ``$SEARXNG_STATIC_USE_HASH``
   Enables `cache busting`_ of static files.
 
 ``default_locale`` :
