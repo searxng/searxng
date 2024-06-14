@@ -24,6 +24,7 @@ from searx.utils import (
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx import redisdb
 from searx.enginelib.traits import EngineTraits
+from searx.utils import extr
 
 if TYPE_CHECKING:
     import logging
@@ -120,8 +121,7 @@ def get_vqd(query):
     for script in doc.xpath("//script[@type='text/javascript']"):
         script = script.text
         if 'vqd="' in script:
-            value = script[script.index('vqd="') + 5 :]
-            value = value[: value.index('"')]
+            value = extr(script, 'vqd="', '"')
             break
     logger.debug("new vqd value: '%s'", value)
     if value is not None:
@@ -393,7 +393,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     """
     # pylint: disable=too-many-branches, too-many-statements, disable=import-outside-toplevel
-    from searx.utils import extr, js_variable_to_python
+    from searx.utils import js_variable_to_python
 
     # fetch regions
 
