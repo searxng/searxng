@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-06 07:18+0000\n"
 "Last-Translator: Vision <Vision@users.noreply.translate.codeberg.org>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -312,6 +312,21 @@ msgstr "názov"
 msgid "author"
 msgstr "autor"
 
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
+
 #: searx/webapp.py:330
 msgid "No item found"
 msgstr "Nič sa nenašlo"
@@ -500,13 +515,17 @@ msgstr "Skonvertuje text pomocou rôznych hash funkcií."
 msgid "hash digest"
 msgstr "hash hodnota"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Nahradenie názvu servera"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "Informácie o sebe"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr ""
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -633,22 +652,22 @@ msgstr "Kontaktujte správcu inštancie"
 msgid "Click on the magnifier to perform search"
 msgstr "Kliknite na lupu pre vyhľadávanie"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Dĺžka"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "z vyrovnávacej pamäte"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "cez proxy"
 
@@ -1916,4 +1935,7 @@ msgstr "skryť video"
 #~ "nepodarilo sa nájsť žiadne výsledky. "
 #~ "Skúste použiť iné zadanie alebo "
 #~ "vyhľadávajte vo viacerých kategóriach."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "Informácie o sebe"
 

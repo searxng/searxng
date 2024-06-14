@@ -15,13 +15,15 @@
 # sriramsekar <srirams_24@yahoo.com>, 2023.
 # Eshan-K-I <2027eiyer@tjhsst.edu>, 2024.
 # ecevinoth <ecevinoth@users.noreply.translate.codeberg.org>, 2024.
+# mukmckenzie <mukmckenzie@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
-"PO-Revision-Date: 2024-05-22 16:18+0000\n"
-"Last-Translator: ecevinoth <ecevinoth@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"PO-Revision-Date: 2024-06-11 21:30+0000\n"
+"Last-Translator: mukmckenzie <mukmckenzie@users.noreply.translate.codeberg."
+"org>\n"
 "Language-Team: Tamil <https://translate.codeberg.org/projects/searxng/"
 "searxng/ta/>\n"
 "Language: ta\n"
@@ -30,7 +32,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -180,12 +182,12 @@ msgstr "பற்றி"
 #. WEATHER_TERMS['AVERAGE TEMP.']
 #: searx/searxng.msg
 msgid "Average temp."
-msgstr ""
+msgstr "சராசரி வெப்பநிலை."
 
 #. WEATHER_TERMS['CLOUD COVER']
 #: searx/searxng.msg
 msgid "Cloud cover"
-msgstr ""
+msgstr "மேக மூட்டம்"
 
 #. WEATHER_TERMS['CONDITION']
 #: searx/searxng.msg
@@ -210,17 +212,17 @@ msgstr ""
 #. WEATHER_TERMS['HUMIDITY']
 #: searx/searxng.msg
 msgid "Humidity"
-msgstr ""
+msgstr "ஈரப்பதம்"
 
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr ""
+msgstr "அதிகபட்ச வெப்பநிலை."
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr ""
+msgstr "குறைந்தபட்ச வெப்பநிலை."
 
 #. WEATHER_TERMS['MORNING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -240,57 +242,57 @@ msgstr "நண்பகல்"
 #. WEATHER_TERMS['PRESSURE']
 #: searx/searxng.msg
 msgid "Pressure"
-msgstr ""
+msgstr "அழுத்தம்"
 
 #. WEATHER_TERMS['SUNRISE']
 #: searx/searxng.msg
 msgid "Sunrise"
-msgstr ""
+msgstr "சூரிய உதயம்"
 
 #. WEATHER_TERMS['SUNSET']
 #: searx/searxng.msg
 msgid "Sunset"
-msgstr ""
+msgstr "சூரிய அஸ்தமனம்"
 
 #. WEATHER_TERMS['TEMPERATURE']
 #: searx/searxng.msg
 msgid "Temperature"
-msgstr ""
+msgstr "வெப்ப நிலை"
 
 #. WEATHER_TERMS['UV INDEX']
 #: searx/searxng.msg
 msgid "UV index"
-msgstr ""
+msgstr "புற ஊதா குறியீடு"
 
 #. WEATHER_TERMS['VISIBILITY']
 #: searx/searxng.msg
 msgid "Visibility"
-msgstr ""
+msgstr "தெரிவுநிலை"
 
 #. WEATHER_TERMS['WIND']
 #: searx/searxng.msg
 msgid "Wind"
-msgstr ""
+msgstr "காற்று"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/searxng.msg
 msgid "subscribers"
-msgstr ""
+msgstr "சந்தாதாரர்கள்"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/searxng.msg
 msgid "posts"
-msgstr ""
+msgstr "பதிவுகள்"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/searxng.msg
 msgid "active users"
-msgstr ""
+msgstr "செயலில் உள்ள பயனர்கள்"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/searxng.msg
 msgid "comments"
-msgstr ""
+msgstr "கருத்துக்கள்"
 
 #. SOCIAL_MEDIA_TERMS['USER']
 #: searx/searxng.msg
@@ -310,12 +312,27 @@ msgstr ""
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr ""
+msgstr "தலைப்பு"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/searxng.msg
 msgid "author"
+msgstr "நூலாசிரியர்"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
 msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr "பதில் அளிக்கப்பட்டது"
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -505,15 +522,17 @@ msgstr "சரங்களை வெவ்வேறு ஹாஷ் டைஜெ
 msgid "hash digest"
 msgstr "ஹாஷ் டைஜெஸ்ட்"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "ஹோஸ்ட்பெயர் மாற்றீடு"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"முடிவு ஹோஸ்ட்பெயர்களை மீண்டும் எழுதவும் அல்லது ஹோஸ்ட்பெயரின் அடிப்படையில்"
-" முடிவுகளை அகற்றவும்"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -638,22 +657,22 @@ msgstr "நிகழ்வு பராமரிப்பாளரைத் த�
 msgid "Click on the magnifier to perform search"
 msgstr "உருப்பெருக்கியைச் சொடுக்கி தேடலைத் தொடங்கவும்"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "நீளம்"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "நூலாசிரியர்"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "தற்காலிக சேமிப்பு"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "ப்ராக்ஸி"
 
@@ -1358,7 +1377,7 @@ msgstr "TiB"
 
 #: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
-msgstr ""
+msgstr "தேதி"
 
 #: searx/templates/simple/result_templates/files.html:49
 #: searx/templates/simple/result_templates/paper.html:24
@@ -1412,11 +1431,11 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/packages.html:36
 msgid "Popularity"
-msgstr ""
+msgstr "பிரபலம்"
 
 #: searx/templates/simple/result_templates/packages.html:42
 msgid "License"
-msgstr ""
+msgstr "உரிமம்"
 
 #: searx/templates/simple/result_templates/packages.html:52
 msgid "Project"
@@ -1428,23 +1447,23 @@ msgstr ""
 
 #: searx/templates/simple/result_templates/paper.html:5
 msgid "Published date"
-msgstr ""
+msgstr "வெளியிடப்பட்ட தேதி"
 
 #: searx/templates/simple/result_templates/paper.html:9
 msgid "Journal"
-msgstr ""
+msgstr "பத்திரிகை"
 
 #: searx/templates/simple/result_templates/paper.html:22
 msgid "Editor"
-msgstr ""
+msgstr "பதிப்பாசிரியர்"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr ""
+msgstr "வெளியீட்டாளர்"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 #: searx/templates/simple/result_templates/paper.html:27
 msgid "ISSN"
@@ -1887,3 +1906,8 @@ msgstr "காணொளிகளை மறை"
 #~ "எங்களால் எந்ததொரு பதில்களையும் தேட இயலவில்லை."
 #~ " தயவு செய்து வேறொரு வினவலில் அல்லது "
 #~ "கூடுதலானப் பிரிவுகளில் தேடவும்."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "முடிவு ஹோஸ்ட்பெயர்களை மீண்டும் எழுதவும் அல்லது"
+#~ " ஹோஸ்ட்பெயரின் அடிப்படையில் முடிவுகளை அகற்றவும்"

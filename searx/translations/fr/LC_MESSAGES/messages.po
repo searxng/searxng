@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
-"PO-Revision-Date: 2024-05-10 07:09+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"PO-Revision-Date: 2024-06-08 13:18+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/searxng/"
 "searxng/fr/>\n"
@@ -35,8 +35,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.2\n"
-"Generated-By: Babel 2.14.0\n"
+"X-Generator: Weblate 5.5.5\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -323,6 +323,21 @@ msgstr "Titre"
 msgid "author"
 msgstr "Auteur"
 
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr "Ouvert"
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr "Fermé"
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
+
 #: searx/webapp.py:330
 msgid "No item found"
 msgstr "Pas d'élément trouvé"
@@ -512,13 +527,17 @@ msgstr "Convertit les chaînes de caractères en différents condensés de hacha
 msgid "hash digest"
 msgstr "hash digest"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Remplacer les noms de domaine"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "Réécrit ou supprime les résultats en se basant sur les noms de domaine"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr ""
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -646,22 +665,22 @@ msgstr "Contacter le responsable de l'instance"
 msgid "Click on the magnifier to perform search"
 msgstr "Cliquez sur la loupe pour effectuer une recherche"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Durée"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Auteur"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "en cache"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "proxifié"
 
@@ -1952,3 +1971,6 @@ msgstr "cacher la vidéo"
 #~ "nous n'avons trouvé aucun résultat. "
 #~ "Effectuez une autre recherche ou changez"
 #~ " de catégorie."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "Réécrit ou supprime les résultats en se basant sur les noms de domaine"

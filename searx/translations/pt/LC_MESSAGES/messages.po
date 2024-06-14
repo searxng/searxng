@@ -15,22 +15,23 @@
 # Coccocoas_Helper <coccocoahelper@gmail.com>, 2023.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 # lspepinho <lspepinho@users.noreply.translate.codeberg.org>, 2024.
+# diodio <diodio@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
-"PO-Revision-Date: 2024-05-03 07:09+0000\n"
-"Last-Translator: lspepinho "
-"<lspepinho@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"PO-Revision-Date: 2024-06-08 13:18+0000\n"
+"Last-Translator: diodio <diodio@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
+"searxng/pt/>\n"
 "Language: pt\n"
-"Language-Team: Portuguese "
-"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 5.5.5\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -210,17 +211,17 @@ msgstr ""
 #. WEATHER_TERMS['HUMIDITY']
 #: searx/searxng.msg
 msgid "Humidity"
-msgstr ""
+msgstr "Humidade"
 
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr ""
+msgstr "Temperatura máxima"
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr ""
+msgstr "Temperatura mínima"
 
 #. WEATHER_TERMS['MORNING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -245,17 +246,17 @@ msgstr ""
 #. WEATHER_TERMS['SUNRISE']
 #: searx/searxng.msg
 msgid "Sunrise"
-msgstr ""
+msgstr "Nascer do sol"
 
 #. WEATHER_TERMS['SUNSET']
 #: searx/searxng.msg
 msgid "Sunset"
-msgstr ""
+msgstr "Pôr do sol"
 
 #. WEATHER_TERMS['TEMPERATURE']
 #: searx/searxng.msg
 msgid "Temperature"
-msgstr ""
+msgstr "Temperatura"
 
 #. WEATHER_TERMS['UV INDEX']
 #: searx/searxng.msg
@@ -265,17 +266,17 @@ msgstr ""
 #. WEATHER_TERMS['VISIBILITY']
 #: searx/searxng.msg
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilidade"
 
 #. WEATHER_TERMS['WIND']
 #: searx/searxng.msg
 msgid "Wind"
-msgstr ""
+msgstr "Vento"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/searxng.msg
 msgid "subscribers"
-msgstr ""
+msgstr "Subscritores"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/searxng.msg
@@ -285,36 +286,51 @@ msgstr ""
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/searxng.msg
 msgid "active users"
-msgstr ""
+msgstr "utilizadores átivos"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/searxng.msg
 msgid "comments"
-msgstr ""
+msgstr "comentadores"
 
 #. SOCIAL_MEDIA_TERMS['USER']
 #: searx/searxng.msg
 msgid "user"
-msgstr ""
+msgstr "utilizador"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
 #: searx/searxng.msg
 msgid "community"
-msgstr ""
+msgstr "comunidade"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
 #: searx/searxng.msg
 msgid "points"
-msgstr ""
+msgstr "pontos"
 
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr ""
+msgstr "título"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/searxng.msg
 msgid "author"
+msgstr "autor"
+
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr "aberta"
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr "fechada"
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
 msgstr ""
 
 #: searx/webapp.py:330
@@ -505,15 +521,17 @@ msgstr "Converte strings em diferentes resumos de hash."
 msgid "hash digest"
 msgstr "resumo de hash"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Substituição do nome do host"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
 msgstr ""
-"Reescrever os nomes de host dos resultados ou remover os resultados com "
-"base no nome do host"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -643,22 +661,22 @@ msgstr "Contate o mantenedor da instância"
 msgid "Click on the magnifier to perform search"
 msgstr "Clique na lupa para realizar a pesquisa"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Comprimento"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "armazenados em cache"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "via proxy"
 
@@ -1938,3 +1956,8 @@ msgstr "esconder vídeo"
 #~ "favor pesquise outra coisa ou utilize"
 #~ " mais categorias na sua pesquisa."
 
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+#~ "Reescrever os nomes de host dos "
+#~ "resultados ou remover os resultados com"
+#~ " base no nome do host"

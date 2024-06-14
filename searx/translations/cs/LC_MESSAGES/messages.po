@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
-"PO-Revision-Date: 2024-05-10 06:13+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"PO-Revision-Date: 2024-06-08 13:18+0000\n"
 "Last-Translator: Fjuro <fjuro@alius.cz>\n"
 "Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
 "searxng/cs/>\n"
@@ -29,8 +29,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.5.2\n"
-"Generated-By: Babel 2.14.0\n"
+"X-Generator: Weblate 5.5.5\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -317,6 +317,21 @@ msgstr "název"
 msgid "author"
 msgstr "autor"
 
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr "otevřené"
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr "zavřené"
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr "zodpovězené"
+
 #: searx/webapp.py:330
 msgid "No item found"
 msgstr "Nic nenalezeno"
@@ -505,13 +520,19 @@ msgstr "Převádí řetězce na různé hash hodnoty."
 msgid "hash digest"
 msgstr "hash hodnota"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "Nahrazení adresy serveru"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "Přepsat adresy serverů nebo odstranit výsledky podle adresy"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr "Doplněk hostitelských jmen"
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
+"Přepsat hostitelská jména, odstranit výsledky nebo je prioritizovat na "
+"základě hostitelského jména"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -639,22 +660,22 @@ msgstr "Kontaktujte správce instance"
 msgid "Click on the magnifier to perform search"
 msgstr "Vyhledávání provedete kliknutím na lupu"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "Délka"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "archivovaná verze"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "přes proxy"
 
@@ -1923,3 +1944,6 @@ msgstr "skrýt video"
 #~ "Nenašli jsme žádné výsledky. Použijte "
 #~ "prosím jiný dotaz nebo hledejte ve "
 #~ "více kategoriích."
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "Přepsat adresy serverů nebo odstranit výsledky podle adresy"

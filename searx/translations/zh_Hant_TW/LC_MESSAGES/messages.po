@@ -20,23 +20,24 @@
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 # shadow3x3x3 <shadow3x3x3@users.noreply.translate.codeberg.org>, 2024.
 # Right202209 <Right202209@users.noreply.translate.codeberg.org>, 2024.
-# morenewsavailable <morenewsavailable@users.noreply.translate.codeberg.org>, 2024.
+# morenewsavailable
+# <morenewsavailable@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-09 15:27+0000\n"
+"POT-Creation-Date: 2024-06-07 12:50+0000\n"
 "PO-Revision-Date: 2024-05-29 09:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Chinese (Traditional) <https://translate.codeberg.org/"
-"projects/searxng/searxng/zh_Hant/>\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: zh_Hant_TW\n"
+"Language-Team: Chinese (Traditional) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -323,6 +324,21 @@ msgstr "標題"
 msgid "author"
 msgstr "作者"
 
+#. SOCIAL_MEDIA_TERMS['THREAD OPEN']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "open"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
+#: searx/engines/discourse.py:121 searx/searxng.msg
+msgid "closed"
+msgstr ""
+
+#. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
+#: searx/engines/discourse.py:132 searx/searxng.msg
+msgid "answered"
+msgstr ""
+
 #: searx/webapp.py:330
 msgid "No item found"
 msgstr "找不到項目"
@@ -506,13 +522,17 @@ msgstr "將字符串裝換為不同的散列摘要值。"
 msgid "hash digest"
 msgstr "散列摘要值"
 
-#: searx/plugins/hostname_replace.py:12
+#: searx/plugins/hostname_replace.py:7
 msgid "Hostname replace"
 msgstr "主機名替換"
 
-#: searx/plugins/hostname_replace.py:13
-msgid "Rewrite result hostnames or remove results based on the hostname"
-msgstr "重寫結果的主機名或在此主機名移除結果"
+#: searx/plugins/hostnames.py:68
+msgid "Hostnames plugin"
+msgstr ""
+
+#: searx/plugins/hostnames.py:69
+msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -631,22 +651,22 @@ msgstr "聯繫站點維護人員"
 msgid "Click on the magnifier to perform search"
 msgstr "點選放大鏡以執行搜尋"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:35
 msgid "Length"
 msgstr "長度"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:36
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "作者"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "cached"
 msgstr "已快取"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:44
 msgid "proxied"
 msgstr "已代理"
 
@@ -1851,3 +1871,7 @@ msgstr "隱藏影片"
 #~ "use another query or search in "
 #~ "more categories."
 #~ msgstr "我們找不到任何結果。請使用其他搜尋方式或在更多分類中搜尋。"
+
+#~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr "重寫結果的主機名或在此主機名移除結果"
+
