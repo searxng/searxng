@@ -31,13 +31,13 @@
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
-``limiter`` :
+``limiter`` :  ``$SEARXNG_LIMITER``
   Rate limit the number of request on the instance, block some bots.  The
   :ref:`limiter` requires a :ref:`settings redis` database.
 
 .. _public_instance:
 
-``public_instance`` :
+``public_instance`` :  ``$SEARXNG_PUBLIC_INSTANCE``
 
   Setting that allows to enable features specifically for public instances (not
   needed for local usage).  By set to ``true`` the following features are
@@ -47,7 +47,7 @@
 
 .. _image_proxy:
 
-``image_proxy`` :
+``image_proxy`` : ``$SEARXNG_IMAGE_PROXY``
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
 
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
