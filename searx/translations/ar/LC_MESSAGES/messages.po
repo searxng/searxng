@@ -19,20 +19,19 @@
 # nebras <nebras@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-15 13:45+0000\n"
 "PO-Revision-Date: 2024-06-11 02:08+0000\n"
 "Last-Translator: nebras <nebras@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -533,8 +532,8 @@ msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 #: searx/plugins/hostnames.py:69
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها بناءً"
-" على اسم المضيف (hostname)"
+"أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها "
+"بناءً على اسم المضيف (hostname)"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -1363,36 +1362,11 @@ msgstr "هذا الموقع لم يقدم أي وصف."
 msgid "Filesize"
 msgstr "حجم الملف"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "بايت"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "ك.بايت"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "ميغابايت"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "جيجابيت"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "تيرابيت"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "تاريخ"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "نوع"
@@ -1510,7 +1484,7 @@ msgstr "الزارع"
 msgid "Leecher"
 msgstr "الحاصد"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "عدد الملفات"
 
@@ -1938,3 +1912,19 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "Rewrite result hostnames or remove results based on the hostname"
 #~ msgstr "أعد كتابة أسماء مضيفي النتائج أو أزل النتائج بناءً على اسم المضيف"
+
+#~ msgid "Bytes"
+#~ msgstr "بايت"
+
+#~ msgid "kiB"
+#~ msgstr "ك.بايت"
+
+#~ msgid "MiB"
+#~ msgstr "ميغابايت"
+
+#~ msgid "GiB"
+#~ msgstr "جيجابيت"
+
+#~ msgid "TiB"
+#~ msgstr "تيرابيت"
+
