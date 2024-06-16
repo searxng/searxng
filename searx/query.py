@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name, missing-module-docstring, missing-class-docstring
-
 from __future__ import annotations
+
 from abc import abstractmethod, ABC
 import re
-
 from searx import settings
 from searx.sxng_locales import sxng_locales
 from searx.engines import categories, engines, engine_shortcuts
@@ -274,14 +273,17 @@ class RawTextQuery:
         # internal properties
         self.query_parts = []  # use self.getFullQuery()
         self.user_query_parts = []  # use self.getQuery()
-        self.autocomplete_location = None
         self.redirect_to_first_result = False
-        self._parse_query()
+        self.autocomplete_location = self._parse_query()
 
     def _parse_query(self):
         """
         parse self.query, if tags are set, which
         change the search engine or search-language
+
+        Returns a tuple:
+            [0] The query parts as a list
+            [1] The indexor into the above list
         """
 
         # split query, including whitespaces
@@ -307,28 +309,25 @@ class RawTextQuery:
             qlist.append(query_part)
             last_index_location = (qlist, len(qlist) - 1)
 
-        self.autocomplete_location = last_index_location
+        return last_index_location
 
-    def get_autocomplete_full_query(self, text):
+    def get_autocomplete_full_query(self, text: str) -> str:
+        assert self.autocomplete_location is not None
         qlist, position = self.autocomplete_location
         qlist[position] = text
         return self.getFullQuery()
 
-    def changeQuery(self, query):
-        self.user_query_parts = query.strip().split()
-        self.query = self.getFullQuery()
-        self.autocomplete_location = (self.user_query_parts, len(self.user_query_parts) - 1)
-        self.autocomplete_list = []
-        return self
-
-    def getQuery(self):
+    def getQuery(self) -> str:
         return ' '.join(self.user_query_parts)
 
-    def getFullQuery(self):
-        """
-        get full query including whitespaces
-        """
-        return '{0} {1}'.format(' '.join(self.query_parts), self.getQuery()).strip()
+    def getFullQuery(self, new_query: str | None = None):
+        def format_query(query: str) -> str:
+            return '{0} {1}'.format(' '.join(self.query_parts), query).strip()
+
+        if new_query is None:
+            return format_query(self.getQuery())
+
+        return format_query(new_query.strip())
 
     def __str__(self):
         return self.getFullQuery()
