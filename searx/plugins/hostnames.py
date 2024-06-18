@@ -13,21 +13,54 @@ other features.
    **To maintainers of SearXNG instances, please modify your old plugin config
    to the new.**
 
-- ``hostnames.replace``: A mapping of regular expressions to hostnames to be
+- ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
   replaced by other hostnames.
 
-- ``hostnames.remove``: A list of regular expressions of the hostnames whose
+  .. code:: yaml
+
+     hostnames:
+       replace:
+         '(.*\\.)?youtube\\.com$': 'invidious.example.com'
+         '(.*\\.)?youtu\\.be$': 'invidious.example.com'
+         ...
+
+- ``hostnames.remove``: A **list** of regular expressions of the hostnames whose
   results should be taken from the results list.
 
-- ``hostnames.high_priority``: A list of regular expressions for hostnames whose
-  result should be given higher priority. The results from these hosts are
+  .. code:: yaml
+
+     hostnames:
+       remove:
+         - '(.*\\.)?facebook.com$'
+         - ...
+
+- ``hostnames.high_priority``: A **list** of regular expressions for hostnames
+  whose result should be given higher priority. The results from these hosts are
   arranged higher in the results list.
 
-- ``hostnames.lower_priority``: A list of regular expressions for hostnames
+  .. code:: yaml
+
+     hostnames:
+       high_priority:
+         - '(.*\\.)?wikipedia.org$'
+         - ...
+
+- ``hostnames.lower_priority``: A **list** of regular expressions for hostnames
   whose result should be given lower priority. The results from these hosts are
   arranged lower in the results list.
 
-Alternatively, a file name can also be specified for the mappings or lists:
+  .. code:: yaml
+
+     hostnames:
+       low_priority:
+         - '(.*\\.)?google(\\..*)?$'
+         - ...
+
+If the URL matches the pattern of ``high_priority`` AND ``low_priority``, the
+higher priority wins over the lower priority.
+
+Alternatively, you can also specify a file name for the **mappings** or
+**lists** to load these from an external file:
 
 .. code:: yaml
 
@@ -35,13 +68,13 @@ Alternatively, a file name can also be specified for the mappings or lists:
      replace: 'rewrite-hosts.yml'
      remove:
        - '(.*\\.)?facebook.com$'
-       ...
+       - ...
      low_priority:
        - '(.*\\.)?google(\\..*)?$'
-       ...
+       - ...
      high_priority:
        - '(.*\\.)?wikipedia.org$'
-       ...
+       - ...
 
 The ``rewrite-hosts.yml`` from the example above must be in the folder in which
 the ``settings.yml`` file is already located (``/etc/searxng``). The file then
