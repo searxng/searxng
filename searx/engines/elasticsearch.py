@@ -49,7 +49,7 @@ base_url = 'http://localhost:9200'
 username = ''
 password = ''
 index = ''
-search_url = base_url + '/' + index + '/_search'
+search_url = '{base_url}/{index}/_search'
 query_type = 'match'
 custom_query_json = {}
 show_metadata = False
@@ -71,7 +71,7 @@ def request(query, params):
     if username and password:
         params['auth'] = (username, password)
 
-    params['url'] = search_url
+    params['url'] = search_url.format(base_url=base_url, index=index)
     params['method'] = 'GET'
     params['data'] = dumps(_available_query_types[query_type](query))
     params['headers']['Content-Type'] = 'application/json'
