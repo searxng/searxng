@@ -247,6 +247,7 @@ class TestBang(SearxTestCase):  # pylint:disable=missing-class-docstring
                 self.assertEqual(query.user_query_parts, TestBang.THE_QUERY.split(' '))
 
     def test_specific(self):
+        load_engines(TEST_ENGINES)
         for bang in TestBang.SPECIFIC_BANGS:
             with self.subTest(msg="Check bang is specific", bang=bang):
                 query_text = TestBang.THE_QUERY + ' ' + bang

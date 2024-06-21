@@ -7,25 +7,43 @@ from searx.engines import xpath
 from tests import SearxTestCase
 
 
-class TestXpathEngine(SearxTestCase):
+class TestXpathEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
+    html = """
+    <div>
+        <div class="search_result">
+            <a class="result" href="https://result1.com">Result 1</a>
+            <p class="content">Content 1</p>
+            <a class="cached" href="https://cachedresult1.com">Cache</a>
+        </div>
+        <div class="search_result">
+            <a class="result" href="https://result2.com">Result 2</a>
+            <p class="content">Content 2</p>
+            <a class="cached" href="https://cachedresult2.com">Cache</a>
+        </div>
+    </div>
+    """
+
     def test_request(self):
         xpath.search_url = 'https://url.com/{query}'
         xpath.categories = []
         xpath.paging = False
         query = 'test_query'
         dicto = defaultdict(dict)
+        dicto['language'] = 'all'
+        dicto['pageno'] = 1
         params = xpath.request(query, dicto)
         self.assertIn('url', params)
-        self.assertEquals('https://url.com/test_query', params['url'])
+        self.assertEqual('https://url.com/test_query', params['url'])
 
         xpath.search_url = 'https://url.com/q={query}&p={pageno}'
         xpath.paging = True
         query = 'test_query'
         dicto = defaultdict(dict)
+        dicto['language'] = 'all'
         dicto['pageno'] = 1
         params = xpath.request(query, dicto)
         self.assertIn('url', params)
-        self.assertEquals('https://url.com/q=test_query&p=1', params['url'])
+        self.assertEqual('https://url.com/q=test_query&p=1', params['url'])
 
     def test_response(self):
         # without results_xpath
@@ -38,24 +56,10 @@ class TestXpathEngine(SearxTestCase):
         self.assertRaises(AttributeError, xpath.response, '')
         self.assertRaises(AttributeError, xpath.response, '[]')
 
-        response = mock.Mock(text='<html></html>')
+        response = mock.Mock(text='<html></html>', status_code=200)
         self.assertEqual(xpath.response(response), [])
 
-        html = u"""
-        <div>
-            <div class="search_result">
-                <a class="result" href="https://result1.com">Result 1</a>
-                <p class="content">Content 1</p>
-                <a class="cached" href="https://cachedresult1.com">Cache</a>
-            </div>
-            <div class="search_result">
-                <a class="result" href="https://result2.com">Result 2</a>
-                <p class="content">Content 2</p>
-                <a class="cached" href="https://cachedresult2.com">Cache</a>
-            </div>
-        </div>
-        """
-        response = mock.Mock(text=html)
+        response = mock.Mock(text=self.html, status_code=200)
         results = xpath.response(response)
         self.assertEqual(type(results), list)
         self.assertEqual(len(results), 2)
@@ -80,6 +84,7 @@ class TestXpathEngine(SearxTestCase):
         results = xpath.response(response)
         self.assertTrue(results[0]['is_onion'])
 
+    def test_response_results_xpath(self):
         # with results_xpath
         xpath.results_xpath = '//div[@class="search_result"]'
         xpath.url_xpath = './/a[@class="result"]/@href'
@@ -93,10 +98,10 @@ class TestXpathEngine(SearxTestCase):
         self.assertRaises(AttributeError, xpath.response, '')
         self.assertRaises(AttributeError, xpath.response, '[]')
 
-        response = mock.Mock(text='<html></html>')
+        response = mock.Mock(text='<html></html>', status_code=200)
         self.assertEqual(xpath.response(response), [])
 
-        response = mock.Mock(text=html)
+        response = mock.Mock(text=self.html, status_code=200)
         results = xpath.response(response)
         self.assertEqual(type(results), list)
         self.assertEqual(len(results), 2)
