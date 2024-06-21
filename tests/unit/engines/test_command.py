@@ -21,7 +21,7 @@ from searx.engines import command as command_engine
 from tests import SearxTestCase
 
 
-class TestCommandEngine(SearxTestCase):
+class TestCommandEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_basic_seq_command_engine(self):
         ls_engine = command_engine
         ls_engine.command = ['seq', '{{QUERY}}']
@@ -33,10 +33,10 @@ class TestCommandEngine(SearxTestCase):
             {'number': '4', 'template': 'key-value.html'},
             {'number': '5', 'template': 'key-value.html'},
         ]
-        results = ls_engine.search('5'.encode('utf-8'), {'pageno': 1})
+        results = ls_engine.search('5', {'pageno': 1})
         self.assertEqual(results, expected_results)
 
-    def test_delimiter_parsing_command_engine(self):
+    def test_delimiter_parsing(self):
         searx_logs = '''DEBUG:searx.webapp:static directory is /home/n/p/searx/searx/static
 DEBUG:searx.webapp:templates directory is /home/n/p/searx/searx/templates
 DEBUG:searx.engines:soundcloud engine: Starting background initialization
@@ -140,10 +140,10 @@ INFO:werkzeug: * Debugger PIN: 299-578-362'''
         ]
 
         for i in [0, 1]:
-            results = echo_engine.search(''.encode('utf-8'), {'pageno': i + 1})
+            results = echo_engine.search('', {'pageno': i + 1})
             self.assertEqual(results, expected_results_by_page[i])
 
-    def test_regex_parsing_command_engine(self):
+    def test_regex_parsing(self):
         txt = '''commit 35f9a8c81d162a361b826bbcd4a1081a4fbe76a7
 Author: Noémi Ványi <sitbackandwait@gmail.com>
 Date:   Tue Oct 15 11:31:33 2019 +0200
@@ -168,11 +168,12 @@ commit '''
         git_log_engine.result_separator = '\n\ncommit '
         git_log_engine.delimiter = {}
         git_log_engine.parse_regex = {
-            'commit': '\w{40}',
-            'author': '[\w* ]* <\w*@?\w*\.?\w*>',
-            'date': 'Date: .*',
-            'message': '\n\n.*$',
+            'commit': r'\w{40}',
+            'author': r'[\w* ]* <\w*@?\w*\.?\w*>',
+            'date': r'Date: .*',
+            'message': r'\n\n.*$',
         }
+        git_log_engine.init({"command": git_log_engine.command, "parse_regex": git_log_engine.parse_regex})
         expected_results = [
             {
                 'commit': '35f9a8c81d162a361b826bbcd4a1081a4fbe76a7',
@@ -197,7 +198,7 @@ commit '''
             },
         ]
 
-        results = git_log_engine.search(''.encode('utf-8'), {'pageno': 1})
+        results = git_log_engine.search('', {'pageno': 1})
         self.assertEqual(results, expected_results)
 
     def test_working_dir_path_query(self):
@@ -207,7 +208,7 @@ commit '''
         ls_engine.delimiter = {'chars': ' ', 'keys': ['file']}
         ls_engine.query_type = 'path'
 
-        results = ls_engine.search('.'.encode(), {'pageno': 1})
+        results = ls_engine.search('.', {'pageno': 1})
         self.assertTrue(len(results) != 0)
 
         forbidden_paths = [
@@ -218,7 +219,7 @@ commit '''
             '/var',
         ]
         for forbidden_path in forbidden_paths:
-            self.assertRaises(ValueError, ls_engine.search, '..'.encode(), {'pageno': 1})
+            self.assertRaises(ValueError, ls_engine.search, forbidden_path, {'pageno': 1})
 
     def test_enum_queries(self):
         echo_engine = command_engine
@@ -227,7 +228,7 @@ commit '''
         echo_engine.query_enum = ['i-am-allowed-to-say-this', 'and-that']
 
         for allowed in echo_engine.query_enum:
-            results = echo_engine.search(allowed.encode(), {'pageno': 1})
+            results = echo_engine.search(allowed, {'pageno': 1})
             self.assertTrue(len(results) != 0)
 
         forbidden_queries = [
@@ -236,4 +237,4 @@ commit '''
             'prohibited',
         ]
         for forbidden in forbidden_queries:
-            self.assertRaises(ValueError, echo_engine.search, forbidden.encode(), {'pageno': 1})
+            self.assertRaises(ValueError, echo_engine.search, forbidden, {'pageno': 1})

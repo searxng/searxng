@@ -72,6 +72,7 @@ from urllib.parse import urlencode
 from lxml import html
 from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
 from searx.network import raise_for_httperror
+from searx import logger
 
 search_url = None
 """
@@ -208,11 +209,14 @@ safe_search_map = {0: '&filter=none', 1: '&filter=moderate', 2: '&filter=strict'
 
 '''
 
+categories = []
+'''engine dependent config'''
+
 
 def request(query, params):
     '''Build request parameters (see :ref:`engine request`).'''
     lang = lang_all
-    if params['language'] != 'all':
+    if params.get('language', 'all') != 'all':
         lang = params['language'][:2]
 
     time_range = ''
@@ -221,13 +225,13 @@ def request(query, params):
         time_range = time_range_url.format(time_range_val=time_range_val)
 
     safe_search = ''
-    if params['safesearch']:
+    if 'safesearch' in params:
         safe_search = safe_search_map[params['safesearch']]
 
     fargs = {
         'query': urlencode({'q': query})[2:],
         'lang': lang,
-        'pageno': (params['pageno'] - 1) * page_size + first_page_num,
+        'pageno': (params.get('pageno', 1) - 1) * page_size + first_page_num,
         'time_range': time_range,
         'safe_search': safe_search,
     }
