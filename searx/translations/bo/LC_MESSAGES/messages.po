@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
 "PO-Revision-Date: 2023-06-02 07:07+0000\n"
 "Last-Translator: return42 <markus.heiser@darmarit.de>\n"
 "Language: bo\n"
@@ -533,6 +533,14 @@ msgstr ""
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
+msgstr ""
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
 msgstr ""
 
 #: searx/plugins/tor_check.py:24
@@ -1315,36 +1323,11 @@ msgstr ""
 msgid "Filesize"
 msgstr "ཡིག་ཆའི་ཆེ་ཆུང་།"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "གྲངས་གནས།"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kB"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MB"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GB"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TB"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr ""
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr ""
@@ -1462,7 +1445,7 @@ msgstr "མཁོ་སྤྲོད་གཏོང་མཁན།"
 msgid "Leecher"
 msgstr "དང་ལེན་བྱེད་མཁན།"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "ཡིག་ཆའི་ཁ་གྲངས།"
 
@@ -1860,4 +1843,19 @@ msgstr "རྙན་ཟློས་སྦས།"
 
 #~ msgid "Rewrite result hostnames or remove results based on the hostname"
 #~ msgstr ""
+
+#~ msgid "Bytes"
+#~ msgstr "གྲངས་གནས།"
+
+#~ msgid "kiB"
+#~ msgstr "kB"
+
+#~ msgid "MiB"
+#~ msgstr "MB"
+
+#~ msgid "GiB"
+#~ msgstr "GB"
+
+#~ msgid "TiB"
+#~ msgstr "TB"
 

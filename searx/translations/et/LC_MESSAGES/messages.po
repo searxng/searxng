@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
 "PO-Revision-Date: 2024-06-01 07:13+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
 "\n"
@@ -551,6 +551,14 @@ msgid ""
 msgstr ""
 "Kuvab sinu IP'd, kui päringuks on \"ip\" ning kasutajaagenti, kui "
 "päringuks on \"user agent\"."
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr ""
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -1359,36 +1367,11 @@ msgstr "See sait ei andnud mingit kirjeldust."
 msgid "Filesize"
 msgstr "Failisuurus"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Baite"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "Kuupäev"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "Tüüp"
@@ -1506,7 +1489,7 @@ msgstr "Seemendaja"
 msgid "Leecher"
 msgstr "Kaanija"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "Failide arv"
 
@@ -1923,4 +1906,19 @@ msgstr "peida video"
 #~ msgstr ""
 #~ "Tulemuste hostinimede ümberkirjutamine või "
 #~ "tulemuste eemaldamine hostinime alusel"
+
+#~ msgid "Bytes"
+#~ msgstr "Baite"
+
+#~ msgid "kiB"
+#~ msgstr "kiB"
+
+#~ msgid "MiB"
+#~ msgstr "MiB"
+
+#~ msgid "GiB"
+#~ msgstr "GiB"
+
+#~ msgid "TiB"
+#~ msgstr "TiB"
 

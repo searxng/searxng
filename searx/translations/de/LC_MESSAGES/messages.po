@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
-"PO-Revision-Date: 2024-06-08 13:18+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"PO-Revision-Date: 2024-06-18 21:18+0000\n"
 "Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/searxng/"
 "searxng/de/>\n"
@@ -539,8 +539,8 @@ msgstr "Hostnames plugin"
 #: searx/plugins/hostnames.py:69
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Umschreiben von Hostnamen, Entfernen von Ergebnissen oder Priorisieren von "
-"Ergebnissen auf der Grundlage des Hostnamens"
+"Umschreiben von Hostnamen, Entfernen von Ergebnissen oder Priorisieren "
+"von Ergebnissen auf der Grundlage des Hostnamens"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -565,6 +565,14 @@ msgid ""
 msgstr ""
 "Zeigt deine IP-Adresse an, wenn die Suchabfrage \"ip\" lautet, und deinen"
 " User-Agent, wenn deine Suchabfrage \"user agent\" beinhaltet."
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr "IP: "
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr "User-Agent: "
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -1382,36 +1390,11 @@ msgstr "Diese Seite besitzt keine Beschreibung."
 msgid "Filesize"
 msgstr "Dateigröße"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bytes"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kB"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MB"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GB"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TB"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "Datum"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "Medium"
@@ -1529,7 +1512,7 @@ msgstr "Seeder"
 msgid "Leecher"
 msgstr "Leecher"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "Anzahl der Dateien"
 
@@ -1982,3 +1965,18 @@ msgstr "Video verstecken"
 #~ msgstr ""
 #~ "Umschreiben des Hostnamen oder sperren "
 #~ "von Hostnamen in den Such-Ergebnissen"
+
+#~ msgid "Bytes"
+#~ msgstr "Bytes"
+
+#~ msgid "kiB"
+#~ msgstr "kB"
+
+#~ msgid "MiB"
+#~ msgstr "MB"
+
+#~ msgid "GiB"
+#~ msgstr "GB"
+
+#~ msgid "TiB"
+#~ msgstr "TB"

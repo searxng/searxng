@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
-"PO-Revision-Date: 2024-06-14 07:08+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"PO-Revision-Date: 2024-06-18 21:18+0000\n"
 "Last-Translator: Xvnov <Xvnov@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ru/>\n"
@@ -566,6 +566,14 @@ msgstr ""
 "Показывать ваш IP-адрес по запросу \"ip\" и информацию о браузере по "
 "запросу \"user agent\"."
 
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr "Ваш IP-адрес: "
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr "Информация о вашем браузере: "
+
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
 msgstr "Плагин проверки Tor'a"
@@ -595,7 +603,8 @@ msgstr "Вы не используете Tor. Ваш публичный IP-ад�
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "Вы не используете Tor, и у вас следующий публичный IP адрес: {ip_address}"
+msgstr ""
+"Вы не используете Tor, и у вас следующий публичный IP-адрес: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -1376,36 +1385,11 @@ msgstr "Этот сайт не предоставил описания."
 msgid "Filesize"
 msgstr "Размер файла"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Байт"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "КиБ"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "МиБ"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "ГиБ"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "ТиБ"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "Дата"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "Тип"
@@ -1523,7 +1507,7 @@ msgstr "Сиды"
 msgid "Leecher"
 msgstr "Личи"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "Количество файлов"
 
@@ -1961,3 +1945,18 @@ msgstr "скрыть видео"
 
 #~ msgid "Rewrite result hostnames or remove results based on the hostname"
 #~ msgstr "Заменить имя хоста или удалить результаты на основе имени хоста"
+
+#~ msgid "Bytes"
+#~ msgstr "Байт"
+
+#~ msgid "kiB"
+#~ msgstr "КиБ"
+
+#~ msgid "MiB"
+#~ msgstr "МиБ"
+
+#~ msgid "GiB"
+#~ msgstr "ГиБ"
+
+#~ msgid "TiB"
+#~ msgstr "ТиБ"

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
 "PO-Revision-Date: 2024-05-23 21:19+0000\n"
 "Last-Translator: cynedex <cynedex@users.noreply.translate.codeberg.org>\n"
 "Language: sl\n"
@@ -552,6 +552,14 @@ msgid ""
 msgstr ""
 "Prikaže IP naslov, če je niz poizvedbe \"ip\", in uporabniški agent, če "
 "je niz \"user agent\"."
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr ""
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -1356,36 +1364,11 @@ msgstr "Ta stran ni posredovala nobenega opisa."
 msgid "Filesize"
 msgstr "Velikost"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "Bajti"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "Datum"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "Vrsta"
@@ -1503,7 +1486,7 @@ msgstr "Sejalec"
 msgid "Leecher"
 msgstr "Odjemalec"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "Število datotek"
 
@@ -1936,4 +1919,19 @@ msgstr "skrij video"
 #~ "Prepiši rezultate strežniških imen ali "
 #~ "odstrani rezultate na bazi strežniških "
 #~ "imen"
+
+#~ msgid "Bytes"
+#~ msgstr "Bajti"
+
+#~ msgid "kiB"
+#~ msgstr "kiB"
+
+#~ msgid "MiB"
+#~ msgstr "MiB"
+
+#~ msgid "GiB"
+#~ msgstr "GiB"
+
+#~ msgid "TiB"
+#~ msgstr "TiB"
 

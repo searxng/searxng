@@ -18,17 +18,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
-"PO-Revision-Date: 2024-05-25 08:18+0000\n"
-"Last-Translator: MusfiquerRhman "
-"<MusfiquerRhman@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"PO-Revision-Date: 2024-06-20 06:18+0000\n"
+"Last-Translator: MonsoonRain <MonsoonRain@users.noreply.translate.codeberg."
+"org>\n"
+"Language-Team: Bengali <https://translate.codeberg.org/projects/searxng/"
+"searxng/bn/>\n"
 "Language: bn\n"
-"Language-Team: Bengali "
-"<https://translate.codeberg.org/projects/searxng/searxng/bn/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -319,17 +320,17 @@ msgstr "লেখক"
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
 #: searx/engines/discourse.py:121 searx/searxng.msg
 msgid "open"
-msgstr ""
+msgstr "খুলো"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
 #: searx/engines/discourse.py:121 searx/searxng.msg
 msgid "closed"
-msgstr ""
+msgstr "বন্ধ"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
 #: searx/engines/discourse.py:132 searx/searxng.msg
 msgid "answered"
-msgstr ""
+msgstr "উত্তরকৃত"
 
 #: searx/webapp.py:330
 msgid "No item found"
@@ -525,7 +526,7 @@ msgstr "হোস্টনাম প্রতিস্থাপন"
 
 #: searx/plugins/hostnames.py:68
 msgid "Hostnames plugin"
-msgstr ""
+msgstr "হোস্টনেম প্লাগিন"
 
 #: searx/plugins/hostnames.py:69
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
@@ -554,6 +555,14 @@ msgid ""
 msgstr ""
 "ক্যোয়ারীটি \"ip\" হলে আপনার আইপি এবং যদি ক্যোয়ারীতে \"ব্যবহারকারী "
 "এজেন্ট\" থাকে তাহলে আপনার ব্যবহারকারী এজেন্ট প্রদর্শন করে।"
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr ""
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -1364,36 +1373,11 @@ msgstr "এই সাইট কোন বিবরণ প্রদান কর�
 msgid "Filesize"
 msgstr "ফাইলের আকার"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "বাইটস"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "কিবা"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "মিবা"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "গিবা"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "টেবা"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "তারিখ"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "ধরন"
@@ -1511,7 +1495,7 @@ msgstr "সিডার"
 msgid "Leecher"
 msgstr "লিচার"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "ফাইলের সংখ্যা"
 
@@ -1698,3 +1682,17 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ "হোস্টনামের উপর ভিত্তি করে ফলাফল মুছে "
 #~ "ফেলুন"
 
+#~ msgid "Bytes"
+#~ msgstr "বাইটস"
+
+#~ msgid "kiB"
+#~ msgstr "কিবা"
+
+#~ msgid "MiB"
+#~ msgstr "মিবা"
+
+#~ msgid "GiB"
+#~ msgstr "গিবা"
+
+#~ msgid "TiB"
+#~ msgstr "টেবা"
