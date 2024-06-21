@@ -33,19 +33,19 @@
 # chjtxwd <chjtxwd@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
 "PO-Revision-Date: 2024-06-14 07:08+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Chinese (Simplified) <https://translate.codeberg.org/projects/"
-"searxng/searxng/zh_Hans/>\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -562,6 +562,14 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr "当您搜索“ip”时，这将会显示您的 IP 地址；同理，在搜索“user agent”时，将会显示您的 User Agent。"
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
+msgstr ""
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -1345,36 +1353,11 @@ msgstr "此站点未提供任何描述。"
 msgid "Filesize"
 msgstr "文件大小"
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr "字节"
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr "kiB"
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr "MiB"
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr "GiB"
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr "TiB"
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr "日期"
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr "输入"
@@ -1492,7 +1475,7 @@ msgstr "做种用户"
 msgid "Leecher"
 msgstr "下载用户"
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr "文件数"
 
@@ -1889,3 +1872,19 @@ msgstr "隐藏视频"
 
 #~ msgid "Rewrite result hostnames or remove results based on the hostname"
 #~ msgstr "重写结果的主机名或基于主机名移除结果"
+
+#~ msgid "Bytes"
+#~ msgstr "字节"
+
+#~ msgid "kiB"
+#~ msgstr "kiB"
+
+#~ msgid "MiB"
+#~ msgstr "MiB"
+
+#~ msgid "GiB"
+#~ msgstr "GiB"
+
+#~ msgid "TiB"
+#~ msgstr "TiB"
+

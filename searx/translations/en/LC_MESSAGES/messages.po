@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-07 12:50+0000\n"
+"POT-Creation-Date: 2024-06-17 12:15+0000\n"
 "PO-Revision-Date: 2014-01-30 15:22+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -529,6 +529,14 @@ msgstr ""
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
+msgstr ""
+
+#: searx/plugins/self_info.py:28
+msgid "Your IP is: "
+msgstr ""
+
+#: searx/plugins/self_info.py:31
+msgid "Your user-agent is: "
 msgstr ""
 
 #: searx/plugins/tor_check.py:24
@@ -1311,36 +1319,11 @@ msgstr ""
 msgid "Filesize"
 msgstr ""
 
-#: searx/templates/simple/result_templates/files.html:39
-#: searx/templates/simple/result_templates/torrent.html:12
-msgid "Bytes"
-msgstr ""
-
 #: searx/templates/simple/result_templates/files.html:40
-#: searx/templates/simple/result_templates/torrent.html:13
-msgid "kiB"
-msgstr ""
-
-#: searx/templates/simple/result_templates/files.html:41
-#: searx/templates/simple/result_templates/torrent.html:14
-msgid "MiB"
-msgstr ""
-
-#: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/torrent.html:15
-msgid "GiB"
-msgstr ""
-
-#: searx/templates/simple/result_templates/files.html:43
-#: searx/templates/simple/result_templates/torrent.html:16
-msgid "TiB"
-msgstr ""
-
-#: searx/templates/simple/result_templates/files.html:47
 msgid "Date"
 msgstr ""
 
-#: searx/templates/simple/result_templates/files.html:49
+#: searx/templates/simple/result_templates/files.html:42
 #: searx/templates/simple/result_templates/paper.html:24
 msgid "Type"
 msgstr ""
@@ -1458,7 +1441,7 @@ msgstr ""
 msgid "Leecher"
 msgstr ""
 
-#: searx/templates/simple/result_templates/torrent.html:20
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Number of Files"
 msgstr ""
 
@@ -1856,5 +1839,20 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Rewrite result hostnames or remove results based on the hostname"
+#~ msgstr ""
+
+#~ msgid "Bytes"
+#~ msgstr ""
+
+#~ msgid "kiB"
+#~ msgstr ""
+
+#~ msgid "MiB"
+#~ msgstr ""
+
+#~ msgid "GiB"
+#~ msgstr ""
+
+#~ msgid "TiB"
 #~ msgstr ""
 
