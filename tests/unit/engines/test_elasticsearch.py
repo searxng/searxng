@@ -46,14 +46,16 @@ class TestElasticsearchEngine(SearxTestCase):  # pylint: disable=missing-class-d
 
     def test_basic_failures(self):
         queries = [
-            ['match', 'stuff'],
-            ['term', 'stuff'],
-            ['terms', 'stuff'],
+            ['match', 'stuff', 'query format must be "key:value'],
+            ['term', 'stuff', 'query format must be key:value'],
+            ['terms', 'stuff', 'query format must be key:value1,value2'],
         ]
 
         for query in queries:
             elasticsearch_engine.query_type = query[0]
-            self.assertRaises(ValueError, elasticsearch_engine.request, query[1], self.default_params)
+            with self.assertRaises(ValueError) as context:
+                elasticsearch_engine.request(query[1], self.default_params)
+            self.assertIn(query[2], str(context.exception))
 
     def test_custom_queries(self):
         queries = [
@@ -117,16 +119,18 @@ class TestElasticsearchEngine(SearxTestCase):  # pylint: disable=missing-class-d
 
     def test_custom_failures(self):
         queries = [
-            ['stuff', '{"query": {"match": {"{{KEY}}": {"query": "{{VALUE}}"}}}}'],
-            ['stuff', '{"query": {"terms": {"{{KEY}}": "{{VALUES}}"}}}'],
-            ['stuff', '{"query": {"simple_query_string": {"query": {{QUERY}}}}}'],
-            ['stuff', '"query": {"simple_query_string": {"query": "{{QUERY}}"}}}'],
+            ['stuff', '{"query": {"match": {"{{KEY}}": {"query": "{{VALUE}}"}}}}', 'query format must be "key:value"'],
+            ['stuff', '{"query": {"terms": {"{{KEY}}": "{{VALUES}}"}}}', 'query format must be "key:value"'],
+            ['stuff', '{"query": {"simple_query_string": {"query": {{QUERY}}}}}', 'invalid custom_query string'],
+            ['stuff', '"query": {"simple_query_string": {"query": "{{QUERY}}"}}}', 'invalid custom_query string'],
         ]
 
         elasticsearch_engine.query_type = 'custom'
         for query in queries:
             elasticsearch_engine.custom_query_json = query[1]
-            self.assertRaises(ValueError, elasticsearch_engine.request, query[0], self.default_params)
+            with self.assertRaises(ValueError) as context:
+                elasticsearch_engine.request(query[0], self.default_params)
+            self.assertIn(query[2], str(context.exception))
 
 
 # vi:sw=4
