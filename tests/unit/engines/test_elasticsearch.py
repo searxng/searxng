@@ -68,6 +68,21 @@ class TestElasticsearchEngine(SearxTestCase):  # pylint: disable=missing-class-d
                 '{"query": {"simple_query_string": {"query": "stuff"}}}',
             ],
             [
+                'space stuff',
+                '{"query": {"simple_query_string": {"query": "{{QUERY}}"}}}',
+                '{"query": {"simple_query_string": {"query": "space stuff"}}}',
+            ],
+            [
+                '"space stuff"',
+                '{"query": {"simple_query_string": {"query": "{{QUERY}}"}}}',
+                '{"query": {"simple_query_string": {"query": "\\\"space stuff\\\""}}}',
+            ],
+            [
+                "embedded'apostrophe",
+                '{"query": {"simple_query_string": {"query": "{{QUERY}}"}}}',
+                '{"query": {"simple_query_string": {"query": "embedded\'apostrophe"}}}',
+            ],
+            [
                 'more:stuff',
                 '{"query": {"simple_query_string": {"query": "{{QUERY}}"}}}',
                 '{"query": {"simple_query_string": {"query": "more:stuff"}}}',
