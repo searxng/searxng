@@ -56,6 +56,7 @@ sxng_locales = (
     ('fr-CA', 'Français', 'Canada', 'French', '\U0001f1e8\U0001f1e6'),
     ('fr-CH', 'Français', 'Suisse', 'French', '\U0001f1e8\U0001f1ed'),
     ('fr-FR', 'Français', 'France', 'French', '\U0001f1eb\U0001f1f7'),
+    ('gl', 'Galego', '', 'Galician', '\U0001f310'),
     ('he', 'עברית', '', 'Hebrew', '\U0001f1ee\U0001f1f1'),
     ('hi', 'हिन्दी', '', 'Hindi', '\U0001f310'),
     ('hr', 'Hrvatski', '', 'Croatian', '\U0001f310'),
