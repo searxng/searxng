@@ -7,7 +7,7 @@ on:
 jobs:
   updateData:
     name: Update data - ${{ matrix.fetch }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     if: ${{ github.repository_owner == 'searxng'}}
     strategy:
       fail-fast: false
@@ -29,9 +29,9 @@ jobs:
           sudo ./utils/searxng.sh install packages
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.12'
           architecture: 'x64'
 
       - name: Install Python dependencies
@@ -46,7 +46,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           commit-message: '[data] update searx.data - ${{ matrix.fetch }}'
           committer: searxng-bot <noreply@github.com>
