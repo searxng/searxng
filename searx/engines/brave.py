@@ -426,7 +426,7 @@ def fetch_traits(engine_traits: EngineTraits):
         print("ERROR: response from Brave is not OK.")
     dom = html.fromstring(resp.text)  # type: ignore
 
-    for option in dom.xpath('//div[@id="language-select"]//option'):
+    for option in dom.xpath('//section//option[@value="en-us"]/../option'):
 
         ui_lang = option.get('value')
         try:
