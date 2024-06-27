@@ -87,7 +87,7 @@ def request(query, params):
     elif yandex_category == 'images':
         params['url'] = f"{base_url_images}?{url_extension}{urlencode(query_params_images)}"
     elif yandex_category == 'videos':
-        params['url'] = f"{base_url_videos}?{url_extension}{urlencode(query_params_videos)}"
+        params['url'] = f"{base_url_videos}?{url_extension}&{urlencode(query_params_videos)}"
 
     return params
 
