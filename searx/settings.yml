@@ -100,8 +100,9 @@ server:
   image_proxy: false
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
-  # POST queries are more secure as they don't show up in history but may cause
-  # problems when using Firefox containers.
+  # POST queries are "more secure!" but are also the source of hard-to-locate
+  # annoyances, which is why GET may be better for end users and their browsers.
+  # see https://github.com/searxng/searxng/pull/3619
   # Is overwritten by ${SEARXNG_METHOD}
   method: "POST"
   default_http_headers:
