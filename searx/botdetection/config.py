@@ -162,6 +162,8 @@ class Config:
         """Get a :py:class:`pathlib.Path` object from a config string."""
 
         val = self.get(name, default)
+        # pylint reports false positive warning in py 3.8
+        # pylint: disable=unreachable
         if val is UNSET:
             if default is UNSET:
                 raise KeyError(name)
@@ -173,6 +175,8 @@ class Config:
         string."""
 
         fqn = self.get(name, default)
+        # pylint reports false positive warning in py 3.8
+        # pylint: disable=unreachable
         if fqn is UNSET:
             if default is UNSET:
                 raise KeyError(name)
