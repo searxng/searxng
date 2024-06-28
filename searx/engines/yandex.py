@@ -4,6 +4,7 @@
 
 import re
 import sys
+import json
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 from searx.utils import humanize_bytes
@@ -87,7 +88,7 @@ def request(query, params):
     elif yandex_category == 'images':
         params['url'] = f"{base_url_images}?{url_extension}{urlencode(query_params_images)}"
     elif yandex_category == 'videos':
-        params['url'] = f"{base_url_videos}?{url_extension}&{urlencode(query_params_videos)}"
+        params['url'] = f"{base_url_videos}?{url_extension}{urlencode(query_params_videos)}"
 
     return params
 
@@ -194,46 +195,51 @@ def response(resp):
             raise SearxEngineCaptchaException()
 
         html_data = html.fromstring(resp.text)
-        text = unescape(html.tostring(html_data, encoding='unicode'))
+        html_sample = unescape(html.tostring(html_data, encoding='unicode'))
 
-        video_urls = re.findall(r'ner" href="(.*?)"', text)
-        valid_urls = [url for url in video_urls if url.startswith('http')]
-        thumbnail_urls = re.findall(r'"image":"//(.*?)"', text)
-        https_thumbnail_urls = ['https://' + url for url in thumbnail_urls]
-        durations = re.findall(r'"durationText":"(.*?)"', text)
-        titles = re.findall(r'"clear_title":"(.*?)"', text)
-        descriptions = re.findall(r'"clear_description":"(.*?)"', text)
-        authors = re.findall(r'"clipChannel":{"name":"(.*?)",', text)
-        raw_dates = re.findall(r'"time":"(.*?)"', text)
+        start_tag = '{"pages":{"search":{"query":'
+        end_tag = '}}</noframes>'
 
-        embedded_urls = [get_youtube_iframe_src(url) for url in valid_urls]
+        start_index = html_sample.find(start_tag)
+        start_index = start_index if start_index != -1 else -1
+
+        end_index = html_sample.find(end_tag, start_index)
+        end_index = end_index + len(end_tag) if end_index != -1 else -1
+
+        content_between_tags = html_sample[start_index:end_index] if start_index != -1 and end_index != -1 else None
+
+        json_resp = r'''{}'''.format(content_between_tags.rsplit('</noframes>', 1)[0])
+
+#      # save to a file
+#        with open('/home/user/Desktop/json_resp.txt', 'w') as f:
+#         sys.stdout = f
+#         print(json_resp)
+
+        json_resp2 = json.loads(json_resp.encode("UTF-8"))
+
+#      # save to a file
+#        with open('/home/user/Desktop/json_resp2.txt', 'w') as f:
+#         sys.stdout = f
+#         print(json_resp2)
+
 
         results = []
-        for url, title, description, author, raw_date, duration, thumbnail, embedded_url in zip(
-            valid_urls,
-            titles[::2],
-            descriptions,
-            authors,
-            raw_dates[::2],
-            durations,
-            https_thumbnail_urls[::2],
-            embedded_urls,
-        ):
-            date_timestamp = datetime.strptime(raw_date.split("T")[0], "%Y-%m-%d")
-            date_utc = datetime.utcfromtimestamp(date_timestamp.timestamp())
 
-            results.append(
-                {
-                    "url": url,
-                    "title": title,
-                    "content": description,
-                    "author": author,
-                    "publishedDate": date_utc,
-                    "length": duration,
-                    "thumbnail": thumbnail,
-                    "iframe_src": embedded_url,
-                    "template": "videos.html",
-                }
-            )
+        for item in json_resp2['pages']['search']['viewerData']['organicSnippets']['0']:
+         if 'title' in item:
+             title = item['clear_title']
+             print(title)
+             url = item['url']
+             print(url)
+             description = item['clear_description']
+             thumbnail = item['thumb']['image']
 
-        return results
+             results.append({
+                "title": title,
+                "url": url,
+                "content": description,
+                "thumbnail": thumbnail,
+                "template": "videos.html",
+            })
+
+    return results
