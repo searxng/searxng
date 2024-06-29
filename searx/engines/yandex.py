@@ -215,6 +215,7 @@ def response(resp):
 #         sys.stdout = f
 #         print(json_resp)
 
+        #the json.loads below sometimes fails. because some keys in the json_resp (especialy the clear_description) may contain unescaped double quotes for example, in which case the json is not valid...
         json_resp2 = json.loads(json_resp.encode("UTF-8"))
 
 #      # save to a file
