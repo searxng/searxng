@@ -66,6 +66,14 @@ class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
 
     # multiple choice settings
 
+    def test_multiple_setting_default_value_invalid_commma_seperated(self):
+        with self.assertRaises(ValidationException):
+            MultipleChoiceSetting("duckduckgo,doesnotexist", choices=['duckduckgo', 'stract', 'qwant'])
+
+    def test_multiple_setting_default_value_valid_commma_seperated(self):
+        setting = MultipleChoiceSetting("duckduckgo,stract", choices=['duckduckgo', 'stract', 'qwant'])
+        self.assertEqual(setting.get_value(), ['duckduckgo', 'stract'])
+
     def test_multiple_setting_invalid_default_value(self):
         with self.assertRaises(ValidationException):
             MultipleChoiceSetting(['3', '4'], choices=['0', '1', '2'])

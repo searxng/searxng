@@ -11,6 +11,7 @@ import lxml
 from httpx import HTTPError
 
 from searx import settings
+from searx.utils import unique
 from searx.engines import (
     engines,
     google,
@@ -252,11 +253,31 @@ backends = {
 }
 
 
-def search_autocomplete(backend_name, query, sxng_locale):
-    backend = backends.get(backend_name)
-    if backend is None:
-        return []
+def search_autocomplete(backend_names, query, sxng_locale):
+
+    enabled_backends = list(unique(backend_names))
+
+    len_enabled_backends = len(enabled_backends)
+
     try:
-        return backend(query, sxng_locale)
+        results = []
+
+        for backend_name in enabled_backends:
+            backend = backends.get(backend_name)
+            if backend is None:
+                # if somehow 'searx.preferences.ValidationException' was not raised
+                continue
+
+            backend_results = backend(query, sxng_locale)
+            if (len_enabled_backends > 2) and (len(backend_results) > 3):
+                # if more than 2 autocompleters: only get the first 3 results from each
+
+                results.extend(backend_results[:3])
+
+            else:
+                results.extend(backend_results)
+
+        return list(unique(results))
+
     except (HTTPError, SearxEngineResponseException):
         return []

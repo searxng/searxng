@@ -329,6 +329,17 @@ def dict_subset(dictionary: MutableMapping, properties: Set[str]) -> Dict:
     return {k: dictionary[k] for k in properties if k in dictionary}
 
 
+def unique(iterable):
+    """Yield unique elements from 'iterable' while preserving order
+    https://github.com/mikf/gallery-dl/blob/e03b99ba0ecbf653b89e68d00245da78694071fb/gallery_dl/util.py#L64C1-L71C26"""
+    seen = set()
+    add = seen.add
+    for element in iterable:
+        if element not in seen:
+            add(element)
+            yield element
+
+
 def get_torrent_size(filesize: str, filesize_multiplier: str) -> Optional[int]:
     """
 

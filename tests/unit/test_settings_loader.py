@@ -121,3 +121,4 @@ class TestUserSettings(SearxTestCase):  # pylint: disable=missing-class-docstrin
             self.assertEqual(settings['server']['secret_key'], "user_settings_secret")
             engine_names = [engine['name'] for engine in settings['engines']]
             self.assertEqual(engine_names, ['wikidata', 'wikibooks', 'wikinews', 'wikiquote'])
+            self.assertIsInstance(settings['search']['autocomplete'], (list, str))

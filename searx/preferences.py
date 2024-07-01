@@ -96,6 +96,10 @@ class MultipleChoiceSetting(Setting):
     """Setting of values which can only come from the given choices"""
 
     def __init__(self, default_value: List[str], choices: Iterable[str], locked=False):
+        # backwards compat for autocomplete setting (was string, now is a list of strings)
+        if isinstance(default_value, str):
+            default_value = [str(val) for val in default_value.split(",")]
+
         super().__init__(default_value, locked)
         self.choices = choices
         self._validate_selections(self.value)
@@ -401,7 +405,7 @@ class Preferences:
                 locked=is_locked('locale'),
                 choices=list(LOCALE_NAMES.keys()) + ['']
             ),
-            'autocomplete': EnumStringSetting(
+            'autocomplete': MultipleChoiceSetting(
                 settings['search']['autocomplete'],
                 locked=is_locked('autocomplete'),
                 choices=list(autocomplete.backends.keys()) + ['']
