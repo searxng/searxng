@@ -29,10 +29,12 @@ brand:
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
-  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
-  # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
-  # by default.
-  autocomplete: ""
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google",
+  # "yandex", "mwmbl", "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia"
+  # Uncomment the section below and edit/add/remove each engine to turn them on by default.
+  # autocomplete:
+  #  - duckduckgo
+  #  - stract
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # Default search language - leave blank to detect from browser information or

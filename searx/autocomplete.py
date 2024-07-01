@@ -5,12 +5,13 @@
 # pylint: disable=use-dict-literal
 
 import json
+import random
 from urllib.parse import urlencode, quote_plus
 
 import lxml
 from httpx import HTTPError
 
-from searx import settings
+from searx import settings, logger
 from searx.engines import (
     engines,
     google,
@@ -252,11 +253,36 @@ backends = {
 }
 
 
-def search_autocomplete(backend_name, query, sxng_locale):
-    backend = backends.get(backend_name)
-    if backend is None:
-        return []
+def search_autocomplete(backend_names, query, sxng_locale):
+
+    enabled_backends = set()
+    for name in backend_names:
+        backend = backends.get(name)
+        if backend is None:
+            logger.error("%s is not valid! Must be one of %s", repr(backend), backend.keys())
+            continue
+        if backend not in enabled_backends:
+            enabled_backends.add(backend)
+
+    len_enabled_backends = len(enabled_backends)
+
     try:
-        return backend(query, sxng_locale)
+        results = []
+
+        for backend in enabled_backends:
+            backend_results = backend(query, sxng_locale)
+            if (len_enabled_backends > 1) and (len(backend_results) > 3):
+                # if more than 3 autocompleters: only get the first 3 results from each
+
+                results.extend(backend_results[:3:])
+
+            else:
+                results.extend(backend_results)
+
+        random.seed(1)
+        random.shuffle(results)
+
+        return results
+
     except (HTTPError, SearxEngineResponseException):
         return []
