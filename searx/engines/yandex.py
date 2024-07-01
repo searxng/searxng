@@ -5,6 +5,7 @@
 import re
 import sys
 import json
+import time
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 from searx.utils import humanize_bytes
@@ -93,23 +94,14 @@ def request(query, params):
     return params
 
 
-def get_youtube_iframe_src(url):
+# get embedded youtube links
+def _get_iframe_src(url):
     parsed_url = urlparse(url)
-
-    # Check for http://www.youtube.com/v/videoid format
-    if (
-        parsed_url.netloc.endswith('youtube.com')
-        and parsed_url.path.startswith('/v/')
-        and len(parsed_url.path.split('/')) == 3
-    ):
-        video_id = parsed_url.path.split('/')[-1]
-        return 'https://www.youtube-nocookie.com/embed/' + video_id
-
-    # Check for http://www.youtube.com/watch?v=videoid format
-    elif parsed_url.netloc.endswith('youtube.com') and parsed_url.path == '/watch' and parsed_url.query:
-        video_id = parse_qs(parsed_url.query).get('v', [])
+    if parsed_url.path == '/watch' and parsed_url.query:
+        video_id = parse_qs(parsed_url.query).get('v', [])  # type: ignore
         if video_id:
-            return 'https://www.youtube-nocookie.com/embed/' + video_id[0]
+            return 'https://www.youtube-nocookie.com/embed/' + video_id[0]  # type: ignore
+    return None
 
 def response(resp):
     if yandex_category == 'web':
@@ -215,10 +207,31 @@ def response(resp):
 #         sys.stdout = f
 #         print(json_resp)
 
-        #the json.loads below sometimes fails. because some keys in the json_resp (especialy the clear_description) may contain unescaped double quotes for example, in which case the json is not valid...
-        json_resp2 = json.loads(json_resp.encode("UTF-8"))
+        #sometimes json_resp is valid json, sometimes not.
+        #but we can (ussually) validate the json by removing the values in the clear_description and clear_title keys.
+        #we don't need them and they may contain unescaped characters that make the decoding fail. so for now...
 
-#      # save to a file
+        # Step 1: Remove everything between "clear_description":" and ","
+        pattern_desc = r'("clear_description":")(.*?)(",")'
+        json_resp = re.sub(pattern_desc, r'\1\3', json_resp)
+        # Step 2: Remove everything between "clear_title":" and ","
+        pattern_title = r'("clear_title":")(.*?)(",")'
+        json_resp = re.sub(pattern_title, r'\1\3', json_resp)
+
+        #to do: when the search query is butterfly, yandex videos page 2 is broken
+
+
+      # save to a file
+#        with open('/home/user/Desktop/json_resp.txt', 'w') as f:
+#         sys.stdout = f
+#         print(json_resp)
+
+
+        json_resp2 = json.loads(json_resp.encode("UTF-8"))
+#        json_resp2 = json.loads(json_resp)
+
+
+      # save to a file
 #        with open('/home/user/Desktop/json_resp2.txt', 'w') as f:
 #         sys.stdout = f
 #         print(json_resp2)
@@ -226,20 +239,28 @@ def response(resp):
 
         results = []
 
-        for item in json_resp2['pages']['search']['viewerData']['organicSnippets']['0']:
-         if 'title' in item:
-             title = item['clear_title']
-             print(title)
+        for snippet_key in json_resp2['pages']['search']['viewerData']['organicSnippets']:
+         for item in json_resp2['pages']['search']['viewerData']['organicSnippets'][snippet_key]:
+          if 'title' in item:
+             title = item['title']['text']
              url = item['url']
-             print(url)
-             description = item['clear_description']
+             description = item['description']
              thumbnail = item['thumb']['image']
+             length = item['thumb']['duration']
+             channel = item['channel']['name']
+             release_time = item['time']
+             release_date = datetime.strptime(release_time.split("T")[0], "%Y-%m-%d")
+             formatted_date = datetime.utcfromtimestamp(release_date.timestamp())
 
              results.append({
                 "title": title,
                 "url": url,
+                "author": channel,
+                "publishedDate": formatted_date,
+                "length": length,
                 "content": description,
                 "thumbnail": thumbnail,
+                "iframe_src": _get_iframe_src(url),
                 "template": "videos.html",
             })
 
