@@ -2125,21 +2125,25 @@ engines:
     disabled: true
 
   - name: yacy
+    # https://docs.searxng.org/dev/engines/online/yacy.html
     engine: yacy
     categories: general
     search_type: text
     base_url:
       - https://yacy.searchlab.eu
-      - https://search.lomig.me
-      - https://yacy.ecosys.eu
-      - https://search.webproject.link
+      # see https://github.com/searxng/searxng/pull/3631#issuecomment-2240903027
+      # - https://search.kyun.li
+      # - https://yacy.securecomcorp.eu
+      # - https://yacy.myserv.ca
+      # - https://yacy.nsupdate.info
+      # - https://yacy.electroncash.de
     shortcut: ya
     disabled: true
-    # required if you aren't using HTTPS for your local yacy instance
-    # https://docs.searxng.org/dev/engines/online/yacy.html
-    # enable_http: true
-    # timeout: 3.0
-    # search_mode: 'global'
+    # if you aren't using HTTPS for your local yacy instance disable https
+    # enable_http: false
+    search_mode: 'global'
+    # timeout can be reduced in 'local' search mode
+    timeout: 5.0
 
   - name: yacy images
     engine: yacy
