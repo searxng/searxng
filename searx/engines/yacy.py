@@ -118,6 +118,8 @@ def _base_url() -> str:
     url = engines['yacy'].base_url  # type: ignore
     if isinstance(url, list):
         url = random.choice(url)
+    if url.endswith("/"):
+        url = url[:-1]
     return url
 
 
