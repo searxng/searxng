@@ -797,9 +797,13 @@ engines:
     shortcut: gen
 
   - name: gentoo
-    engine: gentoo
+    engine: mediawiki
     shortcut: ge
-    timeout: 10.0
+    categories: ["it", "software wikis"]
+    base_url: "https://wiki.gentoo.org/"
+    api_path: "api.php"
+    search_type: text
+    timeout: 10
 
   - name: gitlab
     engine: json_engine
