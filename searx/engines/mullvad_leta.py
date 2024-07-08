@@ -128,7 +128,14 @@ def request(query: str, params: dict):
 
 
 def extract_result(dom_result: list[html.HtmlElement]):
-    [a_elem, h3_elem, p_elem] = dom_result
+    # Infoboxes sometimes appear in the beginning and will have a length of 0
+    if len(dom_result) == 3:
+        [a_elem, h3_elem, p_elem] = dom_result
+    elif len(dom_result) == 4:
+        [_, a_elem, h3_elem, p_elem] = dom_result
+    else:
+        return None
+
     return {
         'url': extract_text(a_elem.text),
         'title': extract_text(h3_elem),
@@ -139,9 +146,9 @@ def extract_result(dom_result: list[html.HtmlElement]):
 def extract_results(search_results: html.HtmlElement):
     for search_result in search_results:
         dom_result = eval_xpath_list(search_result, 'div/div/*')
-        # sometimes an info box pops up, will need to filter that out
-        if len(dom_result) == 3:
-            yield extract_result(dom_result)
+        result = extract_result(dom_result)
+        if result is not None:
+            yield result
 
 
 def response(resp: Response):
