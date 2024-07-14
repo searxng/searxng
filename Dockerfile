@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.20
 ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
 EXPOSE 8080
 VOLUME /etc/searxng
