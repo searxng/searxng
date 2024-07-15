@@ -35,7 +35,6 @@ RUN apk add --no-cache -t build-dependencies \
     git \
  && apk add --no-cache \
     ca-certificates \
-    su-exec \
     python3 \
     py3-pip \
     libxml2 \
