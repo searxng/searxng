@@ -33,6 +33,7 @@
 {%- macro result_sub_header(result) -%}
   {%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time>{% endif -%}
   {%- if result.length %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
+  {%- if result.views %}<div class="result_views">{{ _('Views') }}: {{ result.views }}</div>{% endif -%}
   {%- if result.author %}<div class="result_author">{{ _('Author') }}: {{ result.author }}</div>{% endif -%}
   {%- if result.metadata %}<div class="highlight">{{ result.metadata|safe }}</div>{% endif -%}
 {%- endmacro -%}
