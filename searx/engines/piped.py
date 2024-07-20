@@ -53,6 +53,8 @@ from urllib.parse import urlencode
 import datetime
 from dateutil import parser
 
+from searx.utils import humanize_number
+
 # about
 about = {
     "website": 'https://github.com/TeamPiped/Piped/',
@@ -138,6 +140,7 @@ def response(resp):
             "title": result.get("title", ""),
             "publishedDate": parser.parse(time.ctime(uploaded / 1000)) if uploaded != -1 else None,
             "iframe_src": _frontend_url() + '/embed' + result.get("url", ""),
+            "views": humanize_number(result["views"]),
         }
         length = result.get("duration")
         if length:

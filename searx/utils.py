@@ -344,6 +344,18 @@ def humanize_bytes(size, precision=2):
     return "%.*f %s" % (precision, size, s[p])
 
 
+def humanize_number(size, precision=0):
+    """Determine the *human readable* value of a decimal number."""
+    s = ['', 'K', 'M', 'B', 'T']
+
+    x = len(s)
+    p = 0
+    while size > 1000 and p < x:
+        p += 1
+        size = size / 1000.0
+    return "%.*f%s" % (precision, size, s[p])
+
+
 def convert_str_to_int(number_str: str) -> int:
     """Convert number_str to int or 0 if number_str is not a number."""
     if number_str.isdigit():
