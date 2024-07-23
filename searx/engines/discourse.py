@@ -10,6 +10,8 @@ engine offers some additional settings:
 - :py:obj:`api_order`
 - :py:obj:`search_endpoint`
 - :py:obj:`show_avatar`
+- :py:obj:`api_key`
+- :py:obj:`api_username`
 
 Example
 =======
@@ -26,6 +28,20 @@ for the ``paddling.com`` forum:
      api_order: views
      categories: ['social media', 'sports']
      show_avatar: true
+
+If the forum is private, you need to add an API key and username for the search:
+
+.. code:: yaml
+
+   - name: paddling
+     engine: discourse
+     shortcut: paddle
+     base_url: 'https://forums.paddling.com/'
+     api_order: views
+     categories: ['social media', 'sports']
+     show_avatar: true
+     api_key: '<KEY>'
+     api_username: 'system'
 
 
 Implementations
@@ -65,6 +81,12 @@ api_order = 'likes'
 show_avatar = False
 """Show avatar of the user who send the post."""
 
+api_key = ''
+"""API key of the Discourse forum."""
+
+api_username = ''
+"""API username of the Discourse forum."""
+
 paging = True
 time_range_support = True
 
@@ -97,6 +119,12 @@ def request(query, params):
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'X-Requested-With': 'XMLHttpRequest',
     }
+
+    if api_key != '':
+        params['headers']['Api-Key'] = api_key
+
+    if api_username != '':
+        params['headers']['Api-Username'] = api_username
 
     return params
 
