@@ -2162,10 +2162,13 @@ engines:
 
   - name: yacy images
     engine: yacy
+    network: yacy
     categories: images
     search_type: image
     shortcut: yai
     disabled: true
+    # timeout can be reduced in 'local' search mode
+    timeout: 5.0
 
   - name: rumble
     engine: rumble
