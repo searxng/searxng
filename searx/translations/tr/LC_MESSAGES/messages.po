@@ -23,19 +23,18 @@
 # ahmetax <ahmetax@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-07-27 09:53+0000\n"
 "PO-Revision-Date: 2024-06-25 11:18+0000\n"
 "Last-Translator: ahmetax <ahmetax@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Turkish <https://translate.codeberg.org/projects/searxng/"
-"searxng/tr/>\n"
 "Language: tr\n"
+"Language-Team: Turkish "
+"<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.5.5\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -324,17 +323,17 @@ msgid "author"
 msgstr "yazar"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "açık"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "kapalı"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr "yanıtlandı"
 
@@ -427,19 +426,19 @@ msgstr "{minutes} dakika önce"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} saat, {minutes} dakika önce"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "Rastgele değer üreteci"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "Farklı rastgele değerler üret"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "İstatistik fonksiyonları"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "Bağımsız değişkenlerin {functions} değerini hesapla"
 
@@ -472,7 +471,7 @@ msgid "clicks"
 msgstr "tıklamalar"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Dil"
 
@@ -506,11 +505,11 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Görsel indirilemedi."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "Kitap değerlendirmesi"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "Dosya kalitesi"
 
@@ -530,14 +529,13 @@ msgstr "özdeğer"
 msgid "Hostname replace"
 msgstr "Sunucu adını değiştir"
 
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:101
 msgid "Hostnames plugin"
 msgstr "Sunucu adı eklentisi"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:102
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr ""
-"Sunucu adını tekrar yaz, sonuçları sil veya sunucu adına göre öncelik ver"
+msgstr "Sunucu adını tekrar yaz, sonuçları sil veya sunucu adına göre öncelik ver"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -680,17 +678,21 @@ msgid "Length"
 msgstr "Uzunluk"
 
 #: searx/templates/simple/macros.html:36
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Hazırlayan"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "önbellek"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "proxylendi"
 
@@ -966,11 +968,12 @@ msgid "Search language"
 msgstr "Arama dili"
 
 #: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:5
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Varsayılan dil"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:9
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Özdevimli algılama"
@@ -1954,3 +1957,4 @@ msgstr "görüntüyü gizle"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+

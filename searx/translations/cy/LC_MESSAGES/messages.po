@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-07-27 09:53+0000\n"
 "PO-Revision-Date: 2024-06-08 13:18+0000\n"
 "Last-Translator: EifionLlwyd "
 "<EifionLlwyd@users.noreply.translate.codeberg.org>\n"
@@ -314,17 +314,17 @@ msgid "author"
 msgstr "awdur"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "ar agor"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "ar gau"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr "wedi'i ateb"
 
@@ -417,19 +417,19 @@ msgstr "{minutes} munud yn ôl"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} awr, {minutes} munud yn ôl"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "Cynhyrchydd hapwerthoedd"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "Cynhyrchu gwahanol werthoedd ar hap"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "Swyddogaethau ystadegau"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "Compute {functions} o'r dadleuon"
 
@@ -462,7 +462,7 @@ msgid "clicks"
 msgstr "cliciau"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Iaith"
 
@@ -497,11 +497,11 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Doedd dim modd islwytho'r ddelwedd."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "Gradd llyfr"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "ansawdd ffeil"
 
@@ -521,11 +521,11 @@ msgstr "Digon o hash"
 msgid "Hostname replace"
 msgstr "Disodli enwau gwesteiwyr"
 
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:101
 msgid "Hostnames plugin"
 msgstr "Ategyn enwau gwesteiwyr"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:102
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Newid, tynnu neu flaenoriaethu canlyniadau yn seiliedig ar yr enw "
@@ -674,17 +674,21 @@ msgid "Length"
 msgstr "Hyd"
 
 #: searx/templates/simple/macros.html:36
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Awdur"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "wedi'i storio"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "wedi'i ddirprwyo"
 
@@ -958,11 +962,12 @@ msgid "Search language"
 msgstr "Iaith chwilio"
 
 #: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:5
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Iaith ragosodedig"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:9
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Canfod yn awtomatig"

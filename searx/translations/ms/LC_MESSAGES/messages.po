@@ -15,18 +15,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-07-27 09:53+0000\n"
 "PO-Revision-Date: 2024-07-19 07:09+0000\n"
-"Last-Translator: wazhanudin <wazhanudin@users.noreply.translate.codeberg.org>"
-"\n"
-"Language-Team: Malay <https://translate.codeberg.org/projects/searxng/"
-"searxng/ms/>\n"
+"Last-Translator: wazhanudin "
+"<wazhanudin@users.noreply.translate.codeberg.org>\n"
 "Language: ms\n"
+"Language-Team: Malay "
+"<https://translate.codeberg.org/projects/searxng/searxng/ms/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -315,17 +314,17 @@ msgid "author"
 msgstr "penulis"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "buka"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "tutup"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr "dijawab"
 
@@ -418,19 +417,19 @@ msgstr "{minit} minit yang lalu"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{jam} jam, {minit} minit yang lalu"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "Penjana nombor rawak"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "Jana jumlah rawak yang berbeza"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "Fungsi statistik"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "Mengira {functions} dari hujah-hujah"
 
@@ -463,7 +462,7 @@ msgid "clicks"
 msgstr "klik"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Bahasa"
 
@@ -497,11 +496,11 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Imej tidak dapat dimuat turun."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "Penarafan buku"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "Kualiti fail"
 
@@ -521,11 +520,11 @@ msgstr "huraian hash"
 msgid "Hostname replace"
 msgstr "Gantikan nama hos"
 
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:101
 msgid "Hostnames plugin"
 msgstr "Plugin nama hos"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:102
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Menulis semula nama hos, buang keputusan atau memberi keutamaan kepada "
@@ -672,17 +671,21 @@ msgid "Length"
 msgstr "Panjang"
 
 #: searx/templates/simple/macros.html:36
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Penulis"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "dicache"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "diproksi"
 
@@ -697,7 +700,8 @@ msgstr "Sila semak untuk bug yang sedia ada tentang enjin ini di Github"
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Saya mengesahkan tiada pepijat yang sedia ada mengenai isu yang saya hadapi"
+"Saya mengesahkan tiada pepijat yang sedia ada mengenai isu yang saya "
+"hadapi"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -955,11 +959,12 @@ msgid "Search language"
 msgstr "Bahasa carian"
 
 #: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:5
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Bahasa lalai"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:9
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Kesan secara automatik"
@@ -1108,8 +1113,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Ini adalah senarai kuki dan nilai-nilainya yang disimpan oleh SearXNG pada "
-"komputer anda."
+"Ini adalah senarai kuki dan nilai-nilainya yang disimpan oleh SearXNG "
+"pada komputer anda."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1132,8 +1137,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Nota: menentukan tetapan khusus dalam URL carian boleh mengurangkan privasi "
-"dengan membocorkan data kepada laman hasil yang diklik."
+"Nota: menentukan tetapan khusus dalam URL carian boleh mengurangkan "
+"privasi dengan membocorkan data kepada laman hasil yang diklik."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1654,3 +1659,4 @@ msgstr "sembunyikkan video"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+
