@@ -623,6 +623,24 @@ engines:
     shortcut: dh
     categories: [it, packages]
 
+  - name: encyclosearch
+    engine: json_engine
+    shortcut: es
+    categories: general
+    paging: true
+    search_url: https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15
+    results_query: Results
+    url_query: SourceURL
+    title_query: Title
+    content_query: Description
+    disabled: true
+    about:
+      website: https://encyclosearch.org
+      official_api_documentation: https://encyclosearch.org/docs/#/rest-api
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
   - name: erowid
     engine: xpath
     paging: true
