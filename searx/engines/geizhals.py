@@ -86,12 +86,12 @@ def response(resp):
             'title': extract_text(eval_xpath(result, ".//h3[contains(@class, 'listview__name')]")),
             'content': ' | '.join(content),
             'thumbnail': extract_text(eval_xpath(result, ".//img[contains(@class, 'listview__image')]/@src")),
-            'price': "Bestes Angebot: "
-            + extract_text(eval_xpath(result, ".//a[contains(@class, 'listview__price-link')]")).split(" ")[1]
-            + "€",
             'metadata': ', '.join(item for item in metadata if item),
         }
 
+        best_price = extract_text(eval_xpath(result, ".//a[contains(@class, 'listview__price-link')]")).split(" ")
+        if len(best_price) > 1:
+            item["price"] = f"Bestes Angebot: {best_price[1]}€"
         results.append(item)
 
     return results
