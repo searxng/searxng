@@ -76,7 +76,6 @@ sxng_locales = (
     ('lv', 'Latviešu', '', 'Latvian', '\U0001f310'),
     ('ml', 'മലയാളം', '', 'Malayalam', '\U0001f310'),
     ('mr', 'मराठी', '', 'Marathi', '\U0001f310'),
-    ('ms', 'Melayu', '', 'Malay', '\U0001f310'),
     ('nb', 'Norsk Bokmål', '', 'Norwegian Bokmål', '\U0001f310'),
     ('nb-NO', 'Norsk Bokmål', 'Norge', 'Norwegian Bokmål', '\U0001f1f3\U0001f1f4'),
     ('nl', 'Nederlands', '', 'Dutch', '\U0001f310'),
