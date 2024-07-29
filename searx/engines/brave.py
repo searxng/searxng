@@ -430,10 +430,10 @@ def fetch_traits(engine_traits: EngineTraits):
 
         ui_lang = option.get('value')
         try:
-            if '-' in ui_lang:
+            if '-' in ui_lang and not ui_lang.startswith("zh-"):
                 sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep='-'))
             else:
-                sxng_tag = language_tag(babel.Locale.parse(ui_lang))
+                sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep='-'))
 
         except babel.UnknownLocaleError:
             print("ERROR: can't determine babel locale of Brave's (UI) language %s" % ui_lang)
