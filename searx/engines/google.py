@@ -334,6 +334,8 @@ def response(resp):
     # results --> answer
     answer_list = eval_xpath(dom, '//div[contains(@class, "LGOjhe")]')
     for item in answer_list:
+        for bubble in eval_xpath(item, './/div[@class="nnFGuf"]'):
+            bubble.drop_tree()
         results.append(
             {
                 'answer': item.xpath("normalize-space()"),
