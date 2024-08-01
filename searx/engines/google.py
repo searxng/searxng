@@ -338,7 +338,7 @@ def response(resp):
             bubble.drop_tree()
         results.append(
             {
-                'answer': item.xpath("normalize-space()"),
+                'answer': extract_text(item),
                 'url': (eval_xpath(item, '../..//a/@href') + [None])[0],
             }
         )
