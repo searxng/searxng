@@ -22,23 +22,24 @@
 # Right202209 <Right202209@users.noreply.translate.codeberg.org>, 2024.
 # morenewsavailable
 # <morenewsavailable@users.noreply.translate.codeberg.org>, 2024.
-# PeterDaveHello <PeterDaveHello@users.noreply.translate.codeberg.org>, 2024.
+# PeterDaveHello <PeterDaveHello@users.noreply.translate.codeberg.org>,
+# 2024.
 # pdwalker <pdwalker@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-07-27 09:53+0000\n"
 "PO-Revision-Date: 2024-07-26 07:09+0000\n"
-"Last-Translator: pdwalker <pdwalker@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Chinese (Traditional) <https://translate.codeberg.org/"
-"projects/searxng/searxng/zh_Hant/>\n"
+"Last-Translator: pdwalker <pdwalker@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: zh_Hant_TW\n"
+"Language-Team: Chinese (Traditional) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -327,17 +328,17 @@ msgid "author"
 msgstr "作者"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "開啟"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "已關閉"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr "已解答"
 
@@ -430,19 +431,19 @@ msgstr "{minutes} 分鐘前"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "隨機數值產生器"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "生成不同的隨機數值"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "統計功能"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "計算 {functions} 參數"
 
@@ -475,7 +476,7 @@ msgid "clicks"
 msgstr "點選"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "語系"
 
@@ -492,8 +493,7 @@ msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr "無法存取該影象網址。這可能是因為不支援的文件格式造成的。TinEye只支援JPEG、PNG"
-"、GIF、BMP、TIFF或WebP的影像。"
+msgstr "無法存取該影象網址。這可能是因為不支援的文件格式造成的。TinEye只支援JPEG、PNG、GIF、BMP、TIFF或WebP的影像。"
 
 #: searx/engines/tineye.py:45
 msgid ""
@@ -505,11 +505,11 @@ msgstr "圖片訊息量過少，無法找到相符的結果。TinEye需要一個
 msgid "The image could not be downloaded."
 msgstr "圖片無法下載。。"
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "書評級"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "文件品質"
 
@@ -529,11 +529,11 @@ msgstr "雜湊摘要值"
 msgid "Hostname replace"
 msgstr "主機名替換"
 
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:101
 msgid "Hostnames plugin"
 msgstr "主機名稱外掛"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:102
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 
@@ -555,8 +555,7 @@ msgstr "自身訊息"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
-msgstr "若搜尋字串為「ip」則顯示您的 IP，而若是「user "
-"agent」則顯示您的使用者代理字串。"
+msgstr "若搜尋字串為「ip」則顯示您的 IP，而若是「user agent」則顯示您的使用者代理字串。"
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -668,17 +667,21 @@ msgid "Length"
 msgstr "長度"
 
 #: searx/templates/simple/macros.html:36
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "作者"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "已快取"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "已代理"
 
@@ -950,11 +953,12 @@ msgid "Search language"
 msgstr "搜尋語言"
 
 #: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:5
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "預設語言"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:9
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "自動檢測"
@@ -1876,3 +1880,4 @@ msgstr "隱藏影片"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+

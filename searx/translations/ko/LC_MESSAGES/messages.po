@@ -14,18 +14,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-07-27 09:53+0000\n"
 "PO-Revision-Date: 2024-07-03 17:18+0000\n"
-"Last-Translator: seonghobae <seonghobae@users.noreply.translate.codeberg.org>"
-"\n"
-"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
-"searxng/ko/>\n"
+"Last-Translator: seonghobae "
+"<seonghobae@users.noreply.translate.codeberg.org>\n"
 "Language: ko\n"
+"Language-Team: Korean "
+"<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.1\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -314,17 +313,17 @@ msgid "author"
 msgstr "작성자"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "열기"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "닫힘"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr "응답"
 
@@ -417,19 +416,19 @@ msgstr "{minutes}분 전"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours}시간 {minutes}분 전"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "난수 생성기"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "다른 난수 생성"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "통계 기능"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "{functions} 매개변수 계산"
 
@@ -462,7 +461,7 @@ msgid "clicks"
 msgstr "클릭"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "언어"
 
@@ -495,11 +494,11 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "다운로드할 수 없는 이미지입니다."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "책 평점"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "파일 품질"
 
@@ -519,11 +518,11 @@ msgstr "해시 다이제스트"
 msgid "Hostname replace"
 msgstr "호스트 이름 변경"
 
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:101
 msgid "Hostnames plugin"
 msgstr "호스트 이름 플러그인"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:102
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr "검색 결과에서 이 호스트 이름을 기준으로 삭제 또는 우선순위에 따라 재작성하기"
 
@@ -659,17 +658,21 @@ msgid "Length"
 msgstr "길이"
 
 #: searx/templates/simple/macros.html:36
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:37
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "저자"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "cached"
 msgstr "캐시"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:45
 msgid "proxied"
 msgstr "프록시됨"
 
@@ -941,11 +944,12 @@ msgid "Search language"
 msgstr "검색 언어"
 
 #: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:5
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "기본 언어"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:9
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "자동 감지"
@@ -1758,3 +1762,4 @@ msgstr "비디오 숨기기"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+
