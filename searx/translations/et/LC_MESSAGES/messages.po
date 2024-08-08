@@ -14,20 +14,19 @@
 # Priit Jõerüüt <jrtcdbrg@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-07-27 09:53+0000\n"
+"POT-Creation-Date: 2024-08-08 10:01+0000\n"
 "PO-Revision-Date: 2024-08-05 15:59+0000\n"
-"Last-Translator: Priit Jõerüüt <jrtcdbrg@users.noreply.translate.codeberg."
-"org>\n"
-"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
-"searxng/et/>\n"
+"Last-Translator: Priit Jõerüüt "
+"<jrtcdbrg@users.noreply.translate.codeberg.org>\n"
 "Language: et\n"
+"Language-Team: Estonian "
+"<https://translate.codeberg.org/projects/searxng/searxng/et/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.15.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -482,9 +481,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Ei saanud lugeda selle pildi linki. Võib-olla pole failivorming toetatud. "
-"TinEye ainult lubab kasutada ainult järgmisi vorminguid: JPEG, PNG, GIF, "
-"BMP, TIFF või WebP."
+"Ei saanud lugeda selle pildi linki. Võib-olla pole failivorming toetatud."
+" TinEye ainult lubab kasutada ainult järgmisi vorminguid: JPEG, PNG, GIF,"
+" BMP, TIFF või WebP."
 
 #: searx/engines/tineye.py:45
 msgid ""
@@ -518,19 +517,15 @@ msgstr "Teisendab sõned erinevateks räsitud sõnumilühenditeks."
 msgid "hash digest"
 msgstr "räsitud sõnumilühend"
 
-#: searx/plugins/hostname_replace.py:7
-msgid "Hostname replace"
-msgstr "Hostnime asendamine"
-
-#: searx/plugins/hostnames.py:101
+#: searx/plugins/hostnames.py:91
 msgid "Hostnames plugin"
 msgstr "Hostide lisamoodul"
 
-#: searx/plugins/hostnames.py:102
+#: searx/plugins/hostnames.py:92
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Väärtusta hostide nimesid, eemalda tulemusi või muuda nende järjekorda hosti "
-"nime alusel"
+"Väärtusta hostide nimesid, eemalda tulemusi või muuda nende järjekorda "
+"hosti nime alusel"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -595,8 +590,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Sa ei kasuta Tor'i ja sinu arvutil on see väline IP-aadress: {ip_address}"
+msgstr "Sa ei kasuta Tor'i ja sinu arvutil on see väline IP-aadress: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -699,8 +693,8 @@ msgstr "Alusta uue vea või probleemi esitamist GitHubis"
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Eelnevalt palun uuri GitHubist olemasolevate selle otsingumootori sarnasete "
-"vigade kohta"
+"Eelnevalt palun uuri GitHubist olemasolevate selle otsingumootori "
+"sarnasete vigade kohta"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -963,13 +957,12 @@ msgstr "Soovitused"
 msgid "Search language"
 msgstr "Otsingukeel"
 
-#: searx/templates/simple/filters/languages.html:2
-#: searx/templates/simple/filters/languages.html:5
+#: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Vaikimisi keel"
 
-#: searx/templates/simple/filters/languages.html:9
+#: searx/templates/simple/filters/languages.html:8
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Tuvasta automaatselt"
@@ -1118,8 +1111,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"See on nimekiri küpsistest ja nende väärtustest, mida SearXNG sinu arvutisse "
-"salvestab."
+"See on nimekiri küpsistest ja nende väärtustest, mida SearXNG sinu "
+"arvutisse salvestab."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1250,8 +1243,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Otsingutulemustes navigeerimine kiirklahvide abil (vajalik JavaScript). Abi "
-"saamiseks vajuta põhi või tulemuslehel klahvi \"h\"."
+"Otsingutulemustes navigeerimine kiirklahvide abil (vajalik JavaScript). "
+"Abi saamiseks vajuta põhi või tulemuslehel klahvi \"h\"."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1275,8 +1268,7 @@ msgstr "Mis keelt sa otsinguks eelistad?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Rt SearXNG tuvastaks sinu päringu keele vali \"Automaatne tuvastamine\"."
+msgstr "Rt SearXNG tuvastaks sinu päringu keele vali \"Automaatne tuvastamine\"."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1319,8 +1311,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Teosta otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks "
-"keela see eelistus"
+"Teosta otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks"
+" keela see eelistus"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1934,3 +1926,7 @@ msgstr "peida video"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+
+#~ msgid "Hostname replace"
+#~ msgstr "Hostnime asendamine"
+
