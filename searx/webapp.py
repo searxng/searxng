@@ -749,14 +749,14 @@ def search():
     # suggestions: use RawTextQuery to get the suggestion URLs with the same bang
     suggestion_urls = list(
         map(
-            lambda suggestion: {'url': raw_text_query.changeQuery(suggestion).getFullQuery(), 'title': suggestion},
+            lambda suggestion: {'url': raw_text_query.getNewFullQuery(suggestion), 'title': suggestion},
             result_container.suggestions,
         )
     )
 
     correction_urls = list(
         map(
-            lambda correction: {'url': raw_text_query.changeQuery(correction).getFullQuery(), 'title': correction},
+            lambda correction: {'url': raw_text_query.getNewFullQuery(correction), 'title': correction},
             result_container.corrections,
         )
     )
@@ -840,10 +840,8 @@ def autocompleter():
         backend_name = request.preferences.get_value('autocomplete')
 
         for result in search_autocomplete(backend_name, sug_prefix, sxng_locale):
-            # attention: this loop will change raw_text_query object and this is
-            # the reason why the sug_prefix was stored before (see above)
             if result != sug_prefix:
-                results.append(raw_text_query.changeQuery(result).getFullQuery())
+                results.append(raw_text_query.getNewFullQuery(result))
 
     if len(raw_text_query.autocomplete_list) > 0:
         for autocomplete_text in raw_text_query.autocomplete_list:

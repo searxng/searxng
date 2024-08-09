@@ -50,12 +50,19 @@ class TestQuery(SearxTestCase):  # pylint:disable=missing-class-docstring
         r = repr(query)
         self.assertTrue(r.startswith(f"<RawTextQuery query='{query_text}' "))
 
-    def test_change_query(self):
+    def test_get_new_full_query(self):
         query_text = '<8 the query'
         query = RawTextQuery(query_text, [])
-        another_query = query.changeQuery('another text')
-        self.assertEqual(query, another_query)
-        self.assertEqual(query.getFullQuery(), '<8 another text')
+        full_query = query.getFullQuery()
+        new_full_query = query.getNewFullQuery('another text')
+        self.assertNotEqual(full_query, new_full_query)
+
+    def test_get_new_full_query_trim(self):
+        query_text = 'foo bar'
+        query = RawTextQuery(query_text, [])
+        new_query = 'bizz bazz'
+        new_full_query = query.getNewFullQuery(" " + new_query + " ")
+        self.assertEqual(new_query, new_full_query)
 
 
 class TestLanguageParser(SearxTestCase):  # pylint:disable=missing-class-docstring
