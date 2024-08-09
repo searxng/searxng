@@ -337,7 +337,7 @@ select {
   .ltr-margin-right(1rem);
   margin-bottom: 0;
   .ltr-margin-left(0);
-  padding: 0.2rem !important;
+  padding: 0.2rem;
   color: var(--color-search-font);
   font-size: 0.9rem;
   z-index: 2;
@@ -353,7 +353,8 @@ select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    border-width: 0 2rem 0 0;
+    border-width: 0;
+    padding-right: 2rem;
     border-color: transparent;
     background: data-uri('image/svg+xml;charset=UTF-8', @select-light-svg-path) no-repeat;
     background-position-x: calc(100% + 2rem);

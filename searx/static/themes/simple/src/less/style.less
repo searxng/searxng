@@ -138,13 +138,14 @@ a {
 
 article[data-vim-selected] {
   background: var(--color-result-vim-selected);
-  .ltr-border-left(0.2rem solid var(--color-result-vim-arrow));
+  box-shadow: -0.2rem 0 0 0 var(--color-result-vim-arrow);
   .ltr-rounded-right-corners(10px);
 }
 
 article.result-images[data-vim-selected] {
   background: var(--color-result-vim-arrow);
   border: none;
+  box-shadow: none;
   .rounded-corners;
 
   .image_thumbnail {
@@ -164,13 +165,14 @@ article[data-vim-selected].category-music,
 article[data-vim-selected].category-files,
 article[data-vim-selected].category-social {
   border: 1px solid var(--color-result-vim-arrow);
+  box-shadow: none;
   .rounded-corners;
 }
 
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
-  .ltr-border-left(0.2rem solid transparent);
+  .ltr-padding-left(@result-padding);
 
   h3 {
     font-size: 1.2rem;
@@ -1138,3 +1140,6 @@ summary.title {
 pre code {
   white-space: pre-wrap;
 }
+
+// high contrast
+@import "style-highcontrast.less";
