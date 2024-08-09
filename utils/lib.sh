@@ -663,8 +663,8 @@ pyenv.install() {
             pyenv
         fi
         for i in ${PYOBJECTS}; do
-    	    build_msg PYENV "[install] pip install -e '$i${PY_SETUP_EXTRAS}'"
-    	    "${PY_ENV_BIN}/python" -m pip install -e "$i${PY_SETUP_EXTRAS}"
+    	    build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e '$i${PY_SETUP_EXTRAS}'"
+    	    "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e "$i${PY_SETUP_EXTRAS}"
         done
     fi
     pyenv.install.OK

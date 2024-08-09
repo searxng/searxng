@@ -299,8 +299,8 @@ pyenv.install() {
 
     (   set -e
         pyenv
-        build_msg PYENV "[install] pip install -e 'searx${PY_SETUP_EXTRAS}'"
-        "${PY_ENV_BIN}/python" -m pip install -e ".${PY_SETUP_EXTRAS}"
+        build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e 'searx${PY_SETUP_EXTRAS}'"
+        "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e ".${PY_SETUP_EXTRAS}"
     )
     local exit_val=$?
     if [ ! $exit_val -eq 0 ]; then

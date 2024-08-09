@@ -505,7 +505,7 @@ pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
 cd ${SEARXNG_SRC}
-pip install -e .
+pip install --use-pep517 --no-build-isolation -e .
 EOF
 }
 
@@ -573,7 +573,7 @@ pip install -U pip
 pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
-pip install -U -e .
+pip install -U --use-pep517 --no-build-isolation -e .
 EOF
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
     DEFAULT_SELECT=2 \
