@@ -215,6 +215,12 @@ outgoing:
 #   - plugin2
 #   - ...
 
+# Plugins listed here will be loaded, but will not be registered into plugins chain.
+# The engine will not use them to process queries.
+#
+#blocked_plugins:
+#  - searx.plugins.self_info
+
 # Comment or un-comment plugin to activate / deactivate by default.
 #
 # enabled_plugins:
