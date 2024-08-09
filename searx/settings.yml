@@ -95,7 +95,7 @@ server:
   http_protocol_version: "1.0"
   # POST queries are more secure as they don't show up in history but may cause
   # problems when using Firefox containers
-  method: "POST"
+  method: "GET"
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen
@@ -142,11 +142,11 @@ ui:
 # Lock arbitrary settings on the preferences page.  To find the ID of the user
 # setting you want to lock, check the ID of the form on the page "preferences".
 #
-# preferences:
-#   lock:
+preferences:
+  lock:
+    - method
 #     - language
 #     - autocomplete
-#     - method
 #     - query_in_title
 
 # searx supports result proxification using an external service:
