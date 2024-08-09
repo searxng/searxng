@@ -56,6 +56,8 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 # Filter results. 0: None, 1: Moderate, 2: Strict
 filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 
+extra_args = ""
+
 # specific xpath variables
 # ------------------------
 
@@ -292,6 +294,8 @@ def request(query, params):
             }
         )
     )
+    if extra_args:
+        query_url += extra_args
 
     if params['time_range'] in time_range_dict:
         query_url += '&' + urlencode({'tbs': 'qdr:' + time_range_dict[params['time_range']]})
