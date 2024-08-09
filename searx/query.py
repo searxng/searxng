@@ -154,7 +154,7 @@ class ExternalBangParser(QueryPartParser):
         return raw_value.startswith('!!') and len(raw_value) > 2
 
     def __call__(self, raw_value):
-        value = raw_value[2:]
+        value = raw_value[2:].lower()
         found, bang_ac_list = self._parse(value) if len(value) > 0 else (False, [])
         if self.enable_autocomplete:
             self._autocomplete(bang_ac_list)
@@ -182,7 +182,7 @@ class BangParser(QueryPartParser):
         return raw_value[0] == '!' and (len(raw_value) < 2 or raw_value[1] != '!')
 
     def __call__(self, raw_value):
-        value = raw_value[1:].replace('-', ' ').replace('_', ' ')
+        value = raw_value[1:].replace('-', ' ').replace('_', ' ').lower()
         found = self._parse(value) if len(value) > 0 else False
         if found and raw_value[0] == '!':
             self.raw_text_query.specific = True
@@ -223,7 +223,7 @@ class BangParser(QueryPartParser):
 
         # check if query starts with category name
         for category in categories:
-            if category.startswith(value):
+            if category.lower().startswith(value):
                 self._add_autocomplete(first_char + category.replace(' ', '_'))
 
         # check if query starts with engine name
@@ -233,7 +233,7 @@ class BangParser(QueryPartParser):
 
         # check if query starts with engine shortcut
         for engine_shortcut in engine_shortcuts:
-            if engine_shortcut.startswith(value):
+            if engine_shortcut.lower().startswith(value):
                 self._add_autocomplete(first_char + engine_shortcut)
 
 
