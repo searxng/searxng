@@ -9,6 +9,7 @@
    search:
      safe_search: 0
      autocomplete: ""
+     favicon_resolver: ""
      default_lang: ""
      ban_time_on_fail: 5
      max_ban_time_on_fail: 120
@@ -40,6 +41,14 @@
   - ``swisscows``
   - ``qwant``
   - ``wikipedia``
+
+``favicon_resolver``:
+  Favicon resolver, leave blank to turn off the feature by default.
+
+  - ``allesedv``
+  - ``duckduckgo``
+  - ``google``
+  - ``yandex``
 
 ``default_lang``:
   Default search language - leave blank to detect from browser information or

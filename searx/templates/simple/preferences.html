@@ -173,6 +173,9 @@
     {%- if 'autocomplete' not in locked_preferences -%}
       {%- include 'simple/preferences/autocomplete.html' -%}
     {%- endif -%}
+    {%- if 'favicon' not in locked_preferences -%}
+      {%- include 'simple/preferences/favicon.html' -%}
+    {%- endif -%}
     {% if 'safesearch' not in locked_preferences %}
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
