@@ -679,6 +679,7 @@ engines:
   - name: wikidata
     engine: wikidata
     shortcut: wd
+    disabled: true
     timeout: 3.0
     weight: 2
     # add "list" to the array to get results in the results list
@@ -906,6 +907,7 @@ engines:
   - name: google videos
     engine: google_videos
     shortcut: gov
+    disabled: true
     # additional_tests:
     #   android: *test_android
 
