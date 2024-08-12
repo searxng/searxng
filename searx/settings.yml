@@ -1482,7 +1482,7 @@ engines:
     categories: [general, web]
     shortcut: ps
     timeout: 5.0
-    disabled: false
+    disabled: true
 
   - name: presearch images
     engine: presearch
@@ -1491,7 +1491,7 @@ engines:
     categories: [images, web]
     timeout: 4.0
     shortcut: psimg
-    disabled: false
+    disabled: true
 
   - name: presearch videos
     engine: presearch
@@ -1509,7 +1509,7 @@ engines:
     categories: [news, web]
     timeout: 4.0
     shortcut: psnews
-    disabled: false
+    disabled: true
 
   - name: pub.dev
     engine: xpath
@@ -1544,7 +1544,7 @@ engines:
     qwant_categ: web
     engine: qwant
     shortcut: qw
-    disabled: true    
+    disabled: true
     categories: [general, web]
     additional_tests:
      rosebud: *test_rosebud
@@ -2358,6 +2358,7 @@ engines:
   - name: brave
     engine: brave
     shortcut: br
+    disabled: true
     time_range_support: true
     paging: true
     categories: [general, web]
@@ -2367,6 +2368,7 @@ engines:
   - name: brave.images
     engine: brave
     network: brave
+    disabled: true
     shortcut: brimg
     categories: [images, web]
     brave_category: images
@@ -2375,6 +2377,7 @@ engines:
     engine: brave
     network: brave
     shortcut: brvid
+    disabled: true
     categories: [videos, web]
     brave_category: videos
 
@@ -2382,6 +2385,7 @@ engines:
     engine: brave
     network: brave
     shortcut: brnews
+    disabled: true
     categories: news
     brave_category: news
 
