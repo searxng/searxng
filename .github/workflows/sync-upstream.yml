@@ -1,0 +1,125 @@
+name: Sync Upstream
+
+on:
+  schedule: [ cron: '0 0 * * *' ]
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update the repo's code with changes from upstream
+    runs-on: ubuntu-20.04
+    permissions: { contents: write } # Granting permission to write to the contents of the repository
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0 } # Git will fail the merge without history
+
+      - name: Tell Git who we are
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream repo as a remote and fetch changes
+        run: |
+          git remote add upstream https://github.com/searxng/searxng
+          git fetch upstream
+
+      - name: Merge their changes with ours
+        run: git merge -X theirs upstream/master -m "Sync upstream"
+
+      - name: Setup caching for Python packages
+        uses: actions/cache/restore@v4
+        id: python-cache
+        with:
+          path: local
+          key: python-cache-ubuntu-20.04-${{ hashFiles('requirements*.txt', 'setup.py') }}
+
+      - name: Setup caching for Node packages
+        uses: actions/cache/restore@v4
+        id: node-cache
+        with:
+          path: |
+            local
+            .nvm
+          key: node-cache-ubuntu-20.04-${{ hashFiles('.nvmrc', 'package.json') }}
+
+      - name: Install Apt packages
+        run: sudo ./utils/searxng.sh install buildhost
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: { python-version: '3.9', architecture: 'x64' }
+
+      - name: Install Python dependencies
+        run: make V=1 install
+
+      - name: Install Node dependencies
+        run: make V=1 node.env
+
+      - name: Rebuild themes with our changes
+        run: make V=1 themes.all
+
+      - name: Seperate src from build products
+        run: make V=1 static.build.restore
+
+      - name: Commit our changes
+        run: make V=1 static.build.commit || true
+
+      - name: Push their changes combined with ours
+        run: |
+          git status
+          git push -u origin master
+
+      - name: Save Python packages cache
+        uses: actions/cache/save@v4
+        with:
+          path: local
+          key: ${{ steps.python-cache.outputs.cache-primary-key }}
+
+      - name: Save Node packages cache
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            local
+            .nvm
+          key: ${{ steps.node-cache.outputs.cache-primary-key }}
+
+  docker:
+    name: Update docker image
+    needs: [ update ]
+    permissions: { packages: write }
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Make sure "make docker.push" can get the git history
+          ref: master # Ensure we're working with the latest commit on master
+
+      - name: Setup caching for Python packages
+        uses: actions/cache/restore@v4
+        id: python-cache
+        with:
+          path: local
+          key: python-cache-ubuntu-20.04-${{ hashFiles('requirements*.txt', 'setup.py') }}
+
+      - name: Set up Python
+        if: steps.python-cache.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v5
+        with: { python-version: '3.9', architecture: 'x64' }
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        run: make -e GIT_URL=$(git remote get-url origin) docker.buildx
