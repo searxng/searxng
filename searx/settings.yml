@@ -689,6 +689,7 @@ engines:
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
+    disabled: true
 
   - name: duckduckgo images
     engine: duckduckgo_extra
@@ -880,6 +881,7 @@ engines:
   - name: google
     engine: google
     shortcut: go
+    timeout: 5.0
     # additional_tests:
     #   android: *test_android
 
@@ -1841,6 +1843,7 @@ engines:
     #
     # Or you can use the html non-stable engine, activated by default
     engine: youtube_noapi
+    disabled: true
 
   - name: dailymotion
     engine: dailymotion
@@ -2323,6 +2326,7 @@ engines:
     categories: [general, web]
     brave_category: search
     # brave_spellcheck: true
+    disabled: true
 
   - name: brave.images
     engine: brave
@@ -2330,6 +2334,7 @@ engines:
     shortcut: brimg
     categories: [images, web]
     brave_category: images
+    disabled: true
 
   - name: brave.videos
     engine: brave
@@ -2337,6 +2342,7 @@ engines:
     shortcut: brvid
     categories: [videos, web]
     brave_category: videos
+    disabled: true
 
   - name: brave.news
     engine: brave
@@ -2344,6 +2350,7 @@ engines:
     shortcut: brnews
     categories: news
     brave_category: news
+    disabled: true
 
   # - name: brave.goggles
   #   engine: brave
