@@ -70,6 +70,7 @@ search:
   # formats: [html, csv, json, rss]
   formats:
     - html
+    - json
 
 server:
   # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
@@ -90,7 +91,7 @@ server:
 
   secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
   # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
-  image_proxy: false
+  image_proxy: true
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
   # POST queries are more secure as they don't show up in history but may cause
@@ -222,11 +223,11 @@ outgoing:
 #   - 'Hash plugin'
 #   - 'Self Information'
 #   - 'Tracker URL remover'
+#   - 'Basic Calculator'
+#   - 'Open Access DOI rewrite'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
 #   - 'Hostnames plugin'  # see 'hostnames' configuration below
-#   - 'Basic Calculator'
-#   - 'Open Access DOI rewrite'
 #   - 'Tor check plugin'
 #   # Read the docs before activate: auto-detection of the language could be
 #   # detrimental to users expectations / users can activate the plugin in the
@@ -415,12 +416,12 @@ engines:
   - name: bilibili
     engine: bilibili
     shortcut: bil
-    disabled: true
+    disabled: false
 
   - name: bing
     engine: bing
     shortcut: bi
-    disabled: true
+    disabled: false
 
   - name: bing images
     engine: bing_images
@@ -521,14 +522,14 @@ engines:
     categories: general
     search_type: web
     timeout: 5
-    disabled: true
+    disabled: false
 
   - name: yep images
     engine: yep
     shortcut: yepi
     categories: images
     search_type: images
-    disabled: true
+    disabled: false
 
   - name: yep news
     engine: yep
