@@ -324,12 +324,12 @@ def _eval_answers(results, dom, xpath):
     answer_list = eval_xpath(dom, xpath)
     drop_elements = [
         './/div[@class="nnFGuf"]',
-        './/script',                        # Scripts like the calculator
-        './/table[@class="HOoTuc"]',        # The actual calculator controls
-        './/table[@class="ElumCf"]',        # The actual calculator buttons
-        './/div[@class="mDRaHd"]',          # Instructions with links
+        './/script',  # Scripts like the calculator
+        './/table[@class="HOoTuc"]',  # The actual calculator controls
+        './/table[@class="ElumCf"]',  # The actual calculator buttons
+        './/div[@class="mDRaHd"]',  # Instructions with links
         './/span[@class="W7GCoc CNbPnc"]',  # Feedback
-        './/*[@style="display:none"]',      # Hidden elements
+        './/*[@style="display:none"]',  # Hidden elements
     ]
     for item in answer_list:
         for element in eval_xpath(item, ' | '.join(drop_elements)):
@@ -340,20 +340,20 @@ def _eval_answers(results, dom, xpath):
         if table_elements:
             extracted_table = table_elements[0]
             extracted_table.attrib.clear()
-            for element in extracted_table.xpath(f'.//*'):
+            for element in extracted_table.xpath('.//*'):
                 element.attrib.clear()
             extracted_table.set('cellpadding', '2')
             extracted_table.set('cellspacing', '2')
             extracted_table.set('border', '0')
             extracted_table_html = html.tostring(extracted_table, pretty_print=True, encoding='unicode')
             is_safe = True
-        for element in eval_xpath(item, './/table'): # Drop all remaining tables
+        for element in eval_xpath(item, './/table'):  # Drop all remaining tables
             element.drop_tree()
         answer_content = extract_text(item)
         if extracted_table_html:
             answer_content += '<p>' + extracted_table_html
         url = (eval_xpath(item, '../..//a/@href') + [None])[0]
-        if url and url.startswith('/search?'): # If the answer is a Google search link, don't use it
+        if url and url.startswith('/search?'):  # If the answer is a Google search link, don't use it
             url = None
         results.append(
             {
@@ -376,21 +376,21 @@ def response(resp):
     dom = html.fromstring(resp.text)
     data_image_map = _parse_data_images(dom)
 
-    results = _eval_answers(results, dom, '//div[contains(@class, "card-section")]') # Look for cards first
+    results = _eval_answers(results, dom, '//div[contains(@class, "card-section")]')  # Look for cards first
     if not results:
-        results = _eval_answers(results, dom, '//div[contains(@class, "LGOjhe")]') # Look for rendered answers next
+        results = _eval_answers(results, dom, '//div[contains(@class, "LGOjhe")]')  # Look for rendered answers next
     # Look for JS DOM encoded string answers last
     if not results:
-        pattern = r"'\\x3c.*?\\x3e'" # These are DOM encoded strings that Google will push into the DOM
+        pattern = r"'\\x3c.*?\\x3e'"  # These are DOM encoded strings that Google will push into the DOM
         matches = re.findall(pattern, resp.text)
         for match in matches:
             decoded_html = match.encode().decode('unicode_escape')
             encoded_dom = html.fromstring(decoded_html)
             sub_doms = eval_xpath(encoded_dom, '//div[contains(@class, "LGOjhe")]')
             if sub_doms:
-                if '<span class="hgKElc"><b>' in decoded_html: # Main answers start with a bold
+                if '<span class="hgKElc"><b>' in decoded_html:  # Main answers start with a bold
                     results = _eval_answers(results, encoded_dom, '//div[contains(@class, "LGOjhe")]')
-                break # If it's a JS encoded answer, we only want the first one if it has bold above
+                break  # If it's a JS encoded answer, we only want the first one if it has bold above
 
     # parse results
 
