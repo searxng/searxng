@@ -267,7 +267,7 @@ def get_search_query_from_webapp(
     selected_locale = query_lang
 
     if query_lang == 'auto':
-        query_lang = detect_language(query, threshold=0.8, only_search_languages=True)
+        query_lang = detect_language(query, threshold=0.55, only_search_languages=True)
         query_lang = query_lang or preferences.client.locale_tag or 'all'
 
     if not is_locked('categories') and raw_text_query.specific:
