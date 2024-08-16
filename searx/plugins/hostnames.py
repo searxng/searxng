@@ -1,7 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-many-branches
-"""In addition to rewriting/replace reslut URLs, the *hoostnames* plugin offers
-other features.
+"""
+.. attention::
+
+    The **"Hostname replace"** plugin has been replace by **"Hostnames
+    plugin"**, see :pull:`3463` & :pull:`3552`.
+
+The **Hostnames plugin** can be enabled by adding it to the
+``enabled_plugins`` **list** in the ``setting.yml`` like so.
+
+  .. code:: yaml
+
+     enabled_plugins:
+       - 'Hostnames plugin'
+       ...
 
 - ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
   replaced by other hostnames.
