@@ -1,73 +1,63 @@
-# Sintaks pencarian
+# 搜索语法
 
-SearXNG mempunyai sintaks pencarian memungkinkan Anda untuk mengubah kategori,
-mesin pencari, bahasa dan lainnya.  Lihat {{link('preferensi', 'preferences')}}
-untuk daftar mesin pencari, kategori dan bahasa.
+LocalSearch 支持高级搜索语法，使用户能够自定义搜索的类别、引擎和语言等。以下是具体的使用说明和示例：
 
-## `!` pilih mesin pencari dan kategori
+### 使用 `!` 指定引擎和类别
 
-Untuk menetapkan nama kategori dan/atau mesin pencari gunakan awalan `!`.
-Sebagai contoh:
+通过 `!` 前缀来选择特定的搜索引擎或搜索类别。以下是一些示例：
 
-- cari di Wikipedia tentang **Jakarta**
+- 在维基百科搜索“巴黎”：
+  - `!wp 巴黎`
+  - `!wikipedia 巴黎`
 
-  - {{search('!wp Jakarta')}}
-  - {{search('!wikipedia Jakarta')}}
+- 在地图类别中搜索“巴黎”：
+  - `!map 巴黎`
 
-- cari dalam kategori **peta** untuk **Jakarta**
+- 进行图片搜索：
+  - `!images 瓦乌荷兰`
 
-  - {{search('!map Jakarta')}}
+引擎和类别的缩写同样有效。可以链接多个引擎/类别修饰符，它们是包容性的。例如，使用 `!map !ddg !wp 巴黎` 会在地图类别以及 DuckDuckGo 和维基百科中搜索“巴黎”。
 
-- pencarian gambar
+### 使用 `:` 选择语言
 
-  - {{search('!images kucing')}}
+使用 `:` 前缀来指定语言过滤。例如：
 
-Singkatan mesin pencari dan bahasa juga diterima.  Pengubah mesin/kategori dapat
-dirantai dan inklusif.  Misalnya dengan pencarian {{search('!map !ddg !wp
-Jakarta')}} dalam kategori peta dan DuckDuckGo dan Wikipedia tentang
-**Jakarta**.
+- 用特定语言搜索维基百科：
+  - `:fr !wp 瓦乌荷兰`
 
-## `:` pilih bahasa
+### 使用 `!!<bang>` 执行外部Bang搜索
 
-Untuk memilih saringan bahasa gunakan awalan `:`.  Sebagai contoh:
+LocalSearch 支持 DuckDuckGo 的外部 Bang 搜索。使用 `!!` 前缀可以直接跳转到外部搜索页面。例如：
 
-- cari Wikipedia dengan bahasa lain
+- 用特定语言搜索维基百科：
+  - `!!wfr 瓦乌荷兰`
 
-  - {{search(':en !wp Jakarta')}}
+请注意，使用此功能时，你的搜索请求将直接在外部搜索引擎中执行，LocalSearch 无法保护你的隐私。
 
-## `!!<bang>` mesin pencarian (*bangs*) eksternal
+### 使用 `!!` 自动重定向到第一个搜索结果
 
-SearXNG mendukung mesin pencarian eksternal (*bangs*) dari [DuckDuckGo].  Untuk
-langsung lompat ke sebuah laman pencarian eksternal gunakan awalan `!!`.
-Sebagai contoh:
+在搜索查询中包含 `!!`（通过空格分隔），你将自动被重定向到第一个搜索结果，类似于 DuckDuckGo 的“Feeling Lucky”功能。例如：
 
-- cari Wikipedia dengan bahasa yang lain
+- 搜索查询并直接访问第一个结果：
+  - `!! 瓦乌荷兰`
 
-  - {{search('!!wen cat')}}
+请谨慎使用此功能，因为它无法保证结果的可信度，也无法保护你的个人隐私。
 
-Diingat, pencarian Anda akan dilakukan secara langsung di mesin pencari
-eksternal, SearXNG tidak dapat melindungi privasi Anda di sana.
+### 特殊查询
 
-[DuckDuckGo]: https://duckduckgo.com/bang
+在设置页面，你可以找到用于执行特殊查询的关键词。以下是一些示例：
 
-## Kueri Khusus
+- 生成随机 UUID：
+  - `random uuid`
 
-Dalam laman {{link('preferensi', 'preferences')}} Anda akan menemukan kata kunci
-_kueri khusus_.  Sebagai contoh:
+- 计算数值平均值：
+  - `avg 123 548 2.04 24.2`
 
-- buat sebuah UUID acak
+- 显示浏览器的用户代理（需要激活此功能）：
+  - `user-agent`
 
-  - {{search('random uuid')}}
+- 将字符串转换为不同的哈希摘要（需要激活此功能）：
+  - `md5  lorem ipsum`
+  - `sha512  lorem ipsum`
 
-- temukan rata-rata
-
-  - {{search('avg 123 548 2.04 24.2')}}
-
-- tampilkan _user agent_ (agen pengguna) dari peramban Anda (harus diaktifkan)
-
-  - {{search('user-agent')}}
-
-- ubah _string_ (teks) ke intisari *hash* yang berbeda (harus diaktifkan)
-
-  - {{search('md5 kucing sphynx')}}
-  - {{search('sha512 kucing sphynx')}}
+请注意，上述搜索语法示例中的命令和关键词需要根据 LocalSearch 的实际实现和可用功能进行调整。如果 LocalSearch 有特定的语法变化或新增功能，应以最新的项目文档为准。
