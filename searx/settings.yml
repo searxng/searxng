@@ -441,7 +441,7 @@ engines:
     content_xpath: //article[@class="repo-summary"]/p
     categories: [it, repos]
     timeout: 4.0
-    disabled: true
+    disabled: false
     shortcut: bb
     about:
       website: https://bitbucket.org/
@@ -559,6 +559,7 @@ engines:
     engine: currency_convert
     categories: general
     shortcut: cc
+    disabled: true
 
   - name: bahnhof
     engine: json_engine
@@ -620,7 +621,7 @@ engines:
     engine: docker_hub
     shortcut: dh
     categories: [it, packages]
-    disabled: true
+    disabled: false
 
   - name: encyclosearch
     engine: json_engine
@@ -768,7 +769,7 @@ engines:
   - name: fdroid
     engine: fdroid
     shortcut: fd
-    disabled: true
+    disabled: false
 
   - name: findthatmeme
     engine: findthatmeme
@@ -846,7 +847,7 @@ engines:
     categories: [it, repos]
     shortcut: gl
     timeout: 10.0
-    disabled: true
+    disabled: false
     about:
       website: https://about.gitlab.com/
       wikidata_id: Q16639197
@@ -858,6 +859,7 @@ engines:
   - name: github
     engine: github
     shortcut: gh
+    timeout: 6.0
 
   - name: codeberg
     # https://docs.searxng.org/dev/engines/online/gitea.html
@@ -1648,12 +1650,14 @@ engines:
   - name: stackoverflow
     engine: stackexchange
     shortcut: st
+    disabled: true
     api_site: 'stackoverflow'
     categories: [it, q&a]
 
   - name: askubuntu
     engine: stackexchange
     shortcut: ubuntu
+    disabled: true
     api_site: 'askubuntu'
     categories: [it, q&a]
 
