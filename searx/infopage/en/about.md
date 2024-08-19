@@ -1,79 +1,33 @@
-# About SearXNG
+# 关于 LocalSearch
+LocalSearch 是一个基于开源项目 SearXNG 并针对中文用户优化的元搜索引擎。它不仅继承了 SearXNG 所有的优点，如保护用户隐私、不存储搜索数据等，还特别针对中文用户的需求进行了定制和优化。
 
-SearXNG is a [metasearch engine], aggregating the results of other
-{{link('search engines', 'preferences')}} while not storing information about
-its users.
+## LocalSearch 简介
 
-The SearXNG project is driven by an open community, come join us on Matrix if
-you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
+LocalSearch 是一个专为中文用户设计的元搜索引擎，它继承了 SearXNG 的所有优点，并且在以下方面进行了优化和改进：
 
-Make SearXNG better.
+### 特点和优势
 
-- You can improve SearXNG translations at [Weblate], or...
-- Track development, send contributions, and report issues at [SearXNG sources].
-- To get further information, visit SearXNG's project documentation at [SearXNG
-  docs].
+- **隐私保护**：LocalSearch 致力于保护用户的搜索隐私，不存储任何搜索数据，不生成用户画像，也不与第三方共享信息。
+- **代码同步**：定期从 SearXNG 项目同步代码，确保所有已知的 bug 被修复，安全漏洞得到修补，保持软件的最新状态。
+- **自由软件**：LocalSearch 的代码是完全开放的，任何人都可以自由地使用、学习和贡献代码。
 
-## Why use it?
+### 使用 LocalSearch
 
-- SearXNG may not offer you as personalized results as Google, but it doesn't
-  generate a profile about you.
-- SearXNG doesn't care about what you search for, never shares anything with a
-  third-party, and it can't be used to compromise you.
-- SearXNG is free software, the code is 100% open, and everyone is welcome to
-  make it better.
+如果你重视隐私保护，希望使用一个不会追踪你搜索历史的搜索引擎，LocalSearch 是一个理想的选择。你可以将其设置为默认搜索引擎，或在自己的服务器上部署运行。
 
-If you do care about privacy, want to be a conscious user, or otherwise believe
-in digital freedom, make SearXNG your default search engine or run it on your
-own server!
+### 如何设置为默认搜索引擎？
 
-## How do I set it as the default search engine?
+LocalSearch 支持 OpenSearch 标准，可以轻松添加到你的浏览器的搜索栏。不同浏览器的设置方法可以参照以下指南：
 
-SearXNG supports [OpenSearch].  For more information on changing your default
-search engine, see your browser's documentation:
+- [Firefox 中文指南](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
+- [Microsoft Edge 中文指南](https://support.microsoft.com/zh-cn/help/4028574/microsoft-edge-如何更改默认搜索引擎)
 
-- [Firefox]
-- [Microsoft Edge] - Behind the link, you will also find some useful instructions
-  for Chrome and Safari.
-- [Chromium]-based browsers only add websites that the user navigates to without
-  a path.
+### 工作原理
 
-When adding a search engine, there must be no duplicates with the same name.  If
-you encounter a problem where you cannot add the search engine, you can either:
+LocalSearch 作为一个元搜索引擎，通过聚合多个搜索引擎的结果提供服务，同时注重用户隐私保护。它可以被添加到浏览器的搜索栏，并设置为默认搜索引擎。
 
-- remove the duplicate (default name: SearXNG) or
-- contact the owner to give the instance a different name than the default.
+### 自定义和贡献
 
-## How does it work?
+如果你对 LocalSearch 感兴趣，想要自定义或者贡献代码，可以直接从 [LocalSearch 源代码](https://github.com/anunol/localsearch) 获取代码并运行。
 
-SearXNG is a fork from the well-known [searx] [metasearch engine] which was
-inspired by the [Seeks project].  It provides basic privacy by mixing your
-queries with searches on other platforms without storing search data.  SearXNG
-can be added to your browser's search bar; moreover, it can be set as the
-default search engine.
-
-The {{link('stats page', 'stats')}} contains some useful anonymous usage
-statistics about the engines used.
-
-## How can I make it my own?
-
-SearXNG appreciates your concern regarding logs, so take the code from the
-[SearXNG sources] and run it yourself!
-
-Add your instance to this [list of public
-instances]({{get_setting('brand.public_instances')}}) to help other people
-reclaim their privacy and make the internet freer.  The more decentralized the
-internet is, the more freedom we have!
-
-
-[SearXNG sources]: {{GIT_URL}}
-[#searxng:matrix.org]: https://matrix.to/#/#searxng:matrix.org
-[SearXNG docs]: {{get_setting('brand.docs_url')}}
-[searx]: https://github.com/searx/searx
-[metasearch engine]: https://en.wikipedia.org/wiki/Metasearch_engine
-[Weblate]: https://translate.codeberg.org/projects/searxng/
-[Seeks project]: https://beniz.github.io/seeks/
-[OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-[Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
-[Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine
-[Chromium]: https://www.chromium.org/tab-to-search
+通过不断同步 SearXNG 的更新，LocalSearch 确保用户能够获得一个安全、可靠且不断进步的搜索工具。
