@@ -1,84 +1,63 @@
-# Search syntax
+# 搜索语法
 
-SearXNG comes with a search syntax by with you can modify the categories,
-engines, languages and more.  See the {{link('preferences', 'preferences')}} for
-the list of engines, categories and languages.
+LocalSearch 支持高级搜索语法，使用户能够自定义搜索的类别、引擎和语言等。以下是具体的使用说明和示例：
 
-## `!` select engine and category
+### 使用 `!` 指定引擎和类别
 
-To set category and/or engine names use a `!` prefix.  To give a few examples:
+通过 `!` 前缀来选择特定的搜索引擎或搜索类别。以下是一些示例：
 
-- search in Wikipedia for **paris**
+- 在维基百科搜索“巴黎”：
+  - `!wp 巴黎`
+  - `!wikipedia 巴黎`
 
-  - {{search('!wp paris')}}
-  - {{search('!wikipedia paris')}}
+- 在地图类别中搜索“巴黎”：
+  - `!map 巴黎`
 
-- search in category **map** for **paris**
+- 进行图片搜索：
+  - `!images 瓦乌荷兰`
 
-  - {{search('!map paris')}}
+引擎和类别的缩写同样有效。可以链接多个引擎/类别修饰符，它们是包容性的。例如，使用 `!map !ddg !wp 巴黎` 会在地图类别以及 DuckDuckGo 和维基百科中搜索“巴黎”。
 
-- image search
+### 使用 `:` 选择语言
 
-  - {{search('!images Wau Holland')}}
+使用 `:` 前缀来指定语言过滤。例如：
 
-Abbreviations of the engines and languages are also accepted.  Engine/category
-modifiers are chain able and inclusive.  E.g. with {{search('!map !ddg !wp
-paris')}} search in map category and DuckDuckGo and Wikipedia for **paris**.
+- 用特定语言搜索维基百科：
+  - `:fr !wp 瓦乌荷兰`
 
-## `:` select language
+### 使用 `!!<bang>` 执行外部Bang搜索
 
-To select language filter use a `:` prefix.  To give an example:
+LocalSearch 支持 DuckDuckGo 的外部 Bang 搜索。使用 `!!` 前缀可以直接跳转到外部搜索页面。例如：
 
-- search Wikipedia by a custom language
+- 用特定语言搜索维基百科：
+  - `!!wfr 瓦乌荷兰`
 
-  - {{search(':fr !wp Wau Holland')}}
+请注意，使用此功能时，你的搜索请求将直接在外部搜索引擎中执行，LocalSearch 无法保护你的隐私。
 
-## `!!<bang>` external bangs
+### 使用 `!!` 自动重定向到第一个搜索结果
 
-SearXNG supports the external bangs from [DuckDuckGo].  To directly jump to a
-external search page use the `!!` prefix.  To give an example:
+在搜索查询中包含 `!!`（通过空格分隔），你将自动被重定向到第一个搜索结果，类似于 DuckDuckGo 的“Feeling Lucky”功能。例如：
 
-- search Wikipedia by a custom language
+- 搜索查询并直接访问第一个结果：
+  - `!! 瓦乌荷兰`
 
-  - {{search('!!wfr Wau Holland')}}
+请谨慎使用此功能，因为它无法保证结果的可信度，也无法保护你的个人隐私。
 
-Please note, your search will be performed directly in the external search
-engine, SearXNG cannot protect your privacy on this.
+### 特殊查询
 
-[DuckDuckGo]: https://duckduckgo.com/bang
+在设置页面，你可以找到用于执行特殊查询的关键词。以下是一些示例：
 
-## `!!` automatic redirect
+- 生成随机 UUID：
+  - `random uuid`
 
-When mentioning `!!` within the search query (separated by spaces), you will
-automatically be redirected to the first result.  This behavior is comparable to
-the "Feeling Lucky" feature from DuckDuckGo.  To give an example:
+- 计算数值平均值：
+  - `avg 123 548 2.04 24.2`
 
-- search for a query and get redirected to the first result
+- 显示浏览器的用户代理（需要激活此功能）：
+  - `user-agent`
 
-  - {{search('!! Wau Holland')}}
+- 将字符串转换为不同的哈希摘要（需要激活此功能）：
+  - `md5  lorem ipsum`
+  - `sha512  lorem ipsum`
 
-Please keep in mind that the result you are being redirected to can't become
-verified for being trustworthy, SearXNG cannot protect your personal privacy
-when using this feature.  Use it at your own risk.
-
-## Special Queries
-
-In the {{link('preferences', 'preferences')}} page you find keywords for
-_special queries_.  To give a few examples:
-
-- generate a random UUID
-
-  - {{search('random uuid')}}
-
-- find the average
-
-  - {{search('avg 123 548 2.04 24.2')}}
-
-- show _user agent_ of your browser (needs to be activated)
-
-  - {{search('user-agent')}}
-
-- convert strings to different hash digests (needs to be activated)
-
-  - {{search('md5 lorem ipsum')}}
-  - {{search('sha512 lorem ipsum')}}
+请注意，上述搜索语法示例中的命令和关键词需要根据 LocalSearch 的实际实现和可用功能进行调整。如果 LocalSearch 有特定的语法变化或新增功能，应以最新的项目文档为准。
