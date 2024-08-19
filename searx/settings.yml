@@ -166,7 +166,7 @@ ui:
 #
 outgoing:
   # default timeout in seconds, can be override by engine
-  request_timeout: 3.0
+  request_timeout: 10.0
   # the maximum timeout in seconds
   # max_request_timeout: 10.0
   # suffix of searx_useragent, could contain information like an email address
@@ -423,7 +423,7 @@ engines:
   - name: bing
     engine: bing
     shortcut: bi
-    disabled: false
+    disabled: true
 
   - name: bing images
     engine: bing_images
@@ -1132,7 +1132,7 @@ engines:
     engine: libretranslate
     # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
     base_url:
-      - https://translate.terraprint.co
+      - https://translate.disroot.org
       - https://trans.zillyhuhn.com
     # api_key: abc123
     shortcut: lt
@@ -1244,7 +1244,7 @@ engines:
     # mozhi_engine: google - see https://mozhi.aryak.me for supported engines
     timeout: 4.0
     shortcut: mz
-    disabled: false
+    disabled: true
 
   - name: mwmbl
     engine: mwmbl
