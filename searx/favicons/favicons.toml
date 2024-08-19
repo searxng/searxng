@@ -1,0 +1,25 @@
+[favicons]
+
+cfg_schema = 1   # config's schema version no.
+
+[favicons.proxy]
+
+# max_age = 5184000             # 60 days / default: 7 days (604800 sec)
+
+# [favicons.proxy.resolver_map]
+#
+# The available favicon resolvers are registered here.
+#
+# "duckduckgo" = "searx.favicons.resolvers.duckduckgo"
+# "allesedv" = "searx.favicons.resolvers.allesedv"
+# "google" = "searx.favicons.resolvers.google"
+# "yandex" = "searx.favicons.resolvers.yandex"
+
+[favicons.cache]
+
+# db_url = "/var/cache/searxng/faviconcache.db"  # default: "/tmp/faviconcache.db"
+# HOLD_TIME = 5184000                            # 60 days / default: 30 days
+# LIMIT_TOTAL_BYTES = 2147483648                 # 2 GB / default: 50 MB
+# BLOB_MAX_BYTES = 40960                         # 40 KB / default 20 KB
+# MAINTENANCE_MODE = "off"                       # default: "auto"
+# MAINTENANCE_PERIOD = 600                       # 10min / default: 1h

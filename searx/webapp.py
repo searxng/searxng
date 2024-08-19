@@ -123,7 +123,8 @@ from searx.locales import (
 
 # renaming names from searx imports ...
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
-from searx.favicon_resolver import search_favicon, backends as favicon_backends
+from searx import favicons
+
 from searx.redisdb import initialize as redis_initialize
 from searx.sxng_locales import sxng_locales
 from searx.search import SearchWithPlugins, initialize as search_initialize
@@ -298,24 +299,6 @@ def morty_proxify(url: str):
     return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
 
 
-def favicon_proxify(url: str):
-    # url is a FQDN (e.g. example.com, en.wikipedia.org)
-
-    resolver = request.preferences.get_value('favicon_resolver')
-
-    # if resolver is empty, just return nothing
-    if not resolver:
-        return ""
-
-    # check resolver is valid
-    if resolver not in favicon_backends:
-        return ""
-
-    h = new_hmac(settings['server']['secret_key'], url.encode())
-
-    return '{0}?{1}'.format(url_for('favicon_proxy'), urlencode(dict(q=url.encode(), h=h)))
-
-
 def image_proxify(url: str):
 
     if url.startswith('//'):
@@ -377,7 +360,6 @@ def get_client_settings():
     return {
         'autocomplete_provider': req_pref.get_value('autocomplete'),
         'autocomplete_min': get_setting('search.autocomplete_min'),
-        'favicon_resolver': req_pref.get_value('favicon_resolver'),
         'http_method': req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),
@@ -452,7 +434,7 @@ def render(template_name: str, **kwargs):
     # helpers to create links to other pages
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
-    kwargs['favicon_proxify'] = favicon_proxify
+    kwargs['favicon_url'] = favicons.favicon_url
     kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
     kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
     kwargs['cache_url'] = settings['ui']['cache_url']
@@ -895,42 +877,6 @@ def autocompleter():
     return Response(suggestions, mimetype=mimetype)
 
 
-@app.route('/favicon', methods=['GET'])
-def favicon_proxy():
-    """Return proxied favicon results"""
-    url = request.args.get('q')
-
-    # malformed request
-    if not url:
-        return '', 400
-
-    # malformed request / does not have authorisation
-    if not is_hmac_of(settings['server']['secret_key'], url.encode(), request.args.get('h', '')):
-        return '', 400
-
-    resolver = request.preferences.get_value('favicon_resolver')
-
-    # check if the favicon resolver is valid
-    if not resolver or resolver not in favicon_backends:
-        return '', 400
-
-    # parse query
-    raw_text_query = RawTextQuery(url, [])
-
-    resp = search_favicon(resolver, raw_text_query)
-
-    # return 404 if the favicon is not found
-    if not resp:
-        theme = request.preferences.get_value("theme")
-        # return favicon from /static/themes/simple/img/empty_favicon.svg
-        # we can't rely on an onerror event in the img tag to display a default favicon as this violates the CSP.
-        # using redirect to save network bandwidth (user will have this location cached).
-        return redirect(url_for('static', filename='themes/' + theme + '/img/empty_favicon.svg'))
-
-    # will always return a PNG image
-    return Response(resp, mimetype='image/png')
-
-
 @app.route('/preferences', methods=['GET', 'POST'])
 def preferences():
     """Render preferences page && save user preferences"""
@@ -1078,7 +1024,7 @@ def preferences():
         ],
         disabled_engines = disabled_engines,
         autocomplete_backends = autocomplete_backends,
-        favicon_backends = favicon_backends,
+        favicon_resolver_names = favicons.proxy.CFG.resolver_map.keys(),
         shortcuts = {y: x for x, y in engine_shortcuts.items()},
         themes = themes,
         plugins = plugins,
@@ -1090,6 +1036,9 @@ def preferences():
         preferences = True
         # fmt: on
     )
+
+
+app.add_url_rule('/favicon_proxy', methods=['GET'], endpoint="favicon_proxy", view_func=favicons.favicon_proxy)
 
 
 @app.route('/image_proxy', methods=['GET'])
@@ -1403,6 +1352,7 @@ if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
     limiter.initialize(app, settings)
+    favicons.init()
 
 
 def run():

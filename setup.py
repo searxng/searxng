@@ -61,6 +61,7 @@ setup(
             'data/*.json',
             'data/*.txt',
             'data/*.ftz',
+            'favicons/*.toml',
             'infopage/*/*',
             'static/themes/simple/css/*',
             'static/themes/simple/css/*/*',

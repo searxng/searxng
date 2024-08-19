@@ -43,7 +43,8 @@
   - ``wikipedia``
 
 ``favicon_resolver``:
-  Favicon resolver, leave blank to turn off the feature by default.
+  :ref:`Favicon resolver <favicons>`, leave blank to turn off the feature by
+  default.
 
   - ``allesedv``
   - ``duckduckgo``
