@@ -23,12 +23,7 @@
   {{- result_open_link(result.url, "url_wrapper") -}}
   {% if not rtl %}
     {%- if favicon_resolver != "" %}
-    <div class="favicon">
-      <img
-        alt="{{ result.parsed_url.netloc }}"
-        src="{{ favicon_proxify(result.parsed_url.netloc) }}"
-      >
-    </div>
+    <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
     {%- endif -%}
   {%- endif -%}
   {%- for part in get_pretty_url(result.parsed_url) -%}
@@ -36,12 +31,7 @@
   {%- endfor %}
   {% if rtl %}
     {%- if favicon_resolver != "" %}
-    <div class="favicon">
-      <img
-        alt="{{ result.parsed_url.netloc }}"
-        src="{{ favicon_proxify(result.parsed_url.netloc) }}"
-      >
-    </div>
+    <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
     {%- endif -%}
   {%- endif -%}
   {{- result_close_link() -}}

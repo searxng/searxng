@@ -13,7 +13,7 @@ from collections import OrderedDict
 import flask
 import babel
 
-from searx import settings, autocomplete, favicon_resolver
+from searx import settings, autocomplete, favicons
 from searx.enginelib import Engine
 from searx.plugins import Plugin
 from searx.locales import LOCALE_NAMES
@@ -409,7 +409,7 @@ class Preferences:
             'favicon_resolver': EnumStringSetting(
                 settings['search']['favicon_resolver'],
                 locked=is_locked('favicon_resolver'),
-                choices=list(favicon_resolver.backends.keys()) + ['']
+                choices=list(favicons.proxy.CFG.resolver_map.keys()) + ['']
             ),
             'image_proxy': BooleanSetting(
                 settings['server']['image_proxy'],

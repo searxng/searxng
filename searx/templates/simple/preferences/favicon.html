@@ -3,7 +3,7 @@
   <div class="value">{{- '' -}}
     <select name="favicon_resolver" aria-labelledby="pref_favicon_resolver">{{- '' -}}
       <option value=""> - </option>
-      {%- for backend in favicon_backends -%}
+      {%- for backend in favicon_resolver_names -%}
         <option value="{{ backend }}"
           {%- if backend == favicon_resolver %} selected="selected" {%- endif -%}>
           {{- backend -}}

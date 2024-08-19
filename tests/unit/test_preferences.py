@@ -2,6 +2,7 @@
 # pylint: disable=missing-module-docstring, invalid-name
 
 from tests import SearxTestCase
+from searx import favicons
 from searx.locales import locales_initialize
 from searx.preferences import (
     EnumStringSetting,
@@ -14,6 +15,7 @@ from searx.preferences import (
 from searx.plugins import Plugin
 
 locales_initialize()
+favicons.init()
 
 
 class PluginStub(Plugin):  # pylint: disable=missing-class-docstring, too-few-public-methods
