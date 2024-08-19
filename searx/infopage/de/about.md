@@ -1,88 +1,33 @@
-# Über SearXNG
+# 关于 LocalSearch
+LocalSearch 是一个基于开源项目 SearXNG 并针对中文用户优化的元搜索引擎。它不仅继承了 SearXNG 所有的优点，如保护用户隐私、不存储搜索数据等，还特别针对中文用户的需求进行了定制和优化。
 
-SearXNG ist eine [Metasuchmaschine], welche die Ergebnisse anderer
-{{link('Suchmaschinen', 'preferences')}} sammelt und aufbereitet ohne dabei
-Informationen über seine Benutzer zu sammeln oder an andere Suchmaschinen weiter
-zu geben.
+## LocalSearch 简介
 
-Das SearXNG Projekt wird von einer offenen Gemeinschaft entwickelt; wenn Sie
-Fragen haben oder einfach nur über SearXNG plaudern möchten, besuchen Sie uns
-auf Matrix unter: [#searxng:matrix.org]
+LocalSearch 是一个专为中文用户设计的元搜索引擎，它继承了 SearXNG 的所有优点，并且在以下方面进行了优化和改进：
 
-Werden Sie Teil des Projekts und unterstützen Sie SearXNG:
+### 特点和优势
 
-- Sie können die SearXNG Übersetzungen ergänzen oder korrigieren: [Weblate]
-- oder folgen Sie den Entwicklungen, senden Sie Beiträge und melden Sie Fehler:
-  [SearXNG Quellen]
-- Mehr Informationen sind in der [SearXNG Dokumentation] zu finden.
+- **隐私保护**：LocalSearch 致力于保护用户的搜索隐私，不存储任何搜索数据，不生成用户画像，也不与第三方共享信息。
+- **代码同步**：定期从 SearXNG 项目同步代码，确保所有已知的 bug 被修复，安全漏洞得到修补，保持软件的最新状态。
+- **自由软件**：LocalSearch 的代码是完全开放的，任何人都可以自由地使用、学习和贡献代码。
 
-## Warum sollte ich SearXNG benutzen?
+### 使用 LocalSearch
 
-- SearXNG bietet Ihnen vielleicht nicht so personalisierte Ergebnisse wie
-  Google, aber es erstellt auch kein Profil über Sie.
-- SearXNG kümmert sich nicht darum, wonach Sie suchen, gibt niemals etwas an
-  Dritte weiter und kann nicht dazu verwendet werden Sie zu kompromittieren.
-- SearXNG ist freie Software, der Code ist zu 100% offen und jeder ist
-  willkommen ihn zu verbessern.
+如果你重视隐私保护，希望使用一个不会追踪你搜索历史的搜索引擎，LocalSearch 是一个理想的选择。你可以将其设置为默认搜索引擎，或在自己的服务器上部署运行。
 
-Wenn Ihnen die Privatsphäre wichtig ist, Sie ein bewusster Nutzer sind und Sie
-an die digitale Freiheit glauben, sollten Sie SearXNG zu Ihrer
-Standardsuchmaschine machen oder eine SearXNG Instanz auf Ihrem eigenen Server
-betreiben.
+### 如何设置为默认搜索引擎？
 
-## Wie kann ich SearXNG als Standardsuchmaschine festlegen?
+LocalSearch 支持 OpenSearch 标准，可以轻松添加到你的浏览器的搜索栏。不同浏览器的设置方法可以参照以下指南：
 
-SearXNG unterstützt [OpenSearch].  Weitere Informationen zum Ändern Ihrer
-Standardsuchmaschine finden Sie in der Dokumentation zu Ihrem [WEB-Browser]:
+- [Firefox 中文指南](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
+- [Microsoft Edge 中文指南](https://support.microsoft.com/zh-cn/help/4028574/microsoft-edge-如何更改默认搜索引擎)
 
-- [Firefox]
-- [Microsoft Edge] - Hinter dem Link finden sich auch nützliche Hinweise zu
-  Chrome und Safari.
-- [Chromium]-basierte Browser fügen nur Websites hinzu, zu denen der Benutzer
-  ohne Pfadangabe navigiert.
+### 工作原理
 
-Wenn Sie eine Suchmaschine hinzufügen, darf es keine Duplikate mit demselben
-Namen geben.  Wenn Sie auf ein Problem stoßen, bei dem Sie die Suchmaschine
-nicht hinzufügen können, dann können Sie entweder:
+LocalSearch 作为一个元搜索引擎，通过聚合多个搜索引擎的结果提供服务，同时注重用户隐私保护。它可以被添加到浏览器的搜索栏，并设置为默认搜索引擎。
 
-- das Duplikat entfernen (Standardname: SearXNG) oder
-- den Eigentümer kontaktieren, damit dieser der Instance einen anderen Namen als
-  den Standardnamen gibt.
+### 自定义和贡献
 
-## Wie funktioniert SearXNG?
+如果你对 LocalSearch 感兴趣，想要自定义或者贡献代码，可以直接从 [LocalSearch 源代码](https://github.com/anunol/localsearch) 获取代码并运行。
 
-SearXNG ist ein Fork der bekannten [searx] [Metasuchmaschine], die durch das
-[Seeks-Projekt] inspiriert wurde (diese beide Projekte werden heute nicht mehr
-aktiv weiterentwickelt).  SearXNG bietet einen grundlegenden Schutz der
-Privatsphäre, indem es die Suchanfragen der Benutzer mit Suchen auf anderen
-Plattformen vermischt ohne dabei Suchdaten zu speichern.  SearXNG kann im
-[WEB-Browser] als weitere oder Standard-Suchmaschine hinzugefügt werden.
-
-Die {{link('Suchmaschinenstatistik', 'stats')}} enthält einige nützliche
-Statistiken über die verwendeten Suchmaschinen.
-
-## Wie kann ich einen eigenen SearXNG Server betreiben?
-
-Jeder der mit dem Betrieb von WEB-Servern vertraut ist kann sich eine eigene
-Instanz einrichten; die Software dazu kann über die [SearXNG Quellen] bezogen
-werden. Weitere Informationen zur Installation und zum Betrieb finden sich in
-der [SearXNG Dokumentation].
-
-Fügen Sie Ihre Instanz zu der [Liste der öffentlich zugänglichen
-Instanzen]({{get_setting('brand.public_instances')}}) hinzu um auch anderen
-Menschen zu helfen ihre Privatsphäre zurückzugewinnen und das Internet freier zu
-machen.  Je dezentraler das Internet ist, desto mehr Freiheit haben wir!
-
-
-[SearXNG Quellen]: {{GIT_URL}}
-[#searxng:matrix.org]: https://matrix.to/#/#searxng:matrix.org
-[SearXNG Dokumentation]: {{get_setting('brand.docs_url')}}
-[searx]: https://github.com/searx/searx
-[Metasuchmaschine]: https://de.wikipedia.org/wiki/Metasuchmaschine
-[Weblate]: https://translate.codeberg.org/projects/searxng/
-[Seeks-Projekt]: https://beniz.github.io/seeks/
-[OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-[Firefox]: https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox
-[Microsoft Edge]: https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine
-[Chromium]: https://www.chromium.org/tab-to-search
-[WEB-Browser]: https://de.wikipedia.org/wiki/Webbrowser
+通过不断同步 SearXNG 的更新，LocalSearch 确保用户能够获得一个安全、可靠且不断进步的搜索工具。
