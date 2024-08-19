@@ -423,14 +423,17 @@ engines:
   - name: bing images
     engine: bing_images
     shortcut: bii
-
+    disabled: true
+    
   - name: bing news
     engine: bing_news
     shortcut: bin
+    disabled: true
 
   - name: bing videos
     engine: bing_videos
     shortcut: biv
+    disabled: true
 
   - name: bitbucket
     engine: xpath
@@ -902,7 +905,7 @@ engines:
   - name: google news
     engine: google_news
     shortcut: gon
-    disabled: true
+    disabled: false
     # additional_tests:
     #   android: *test_android
 
@@ -916,7 +919,7 @@ engines:
   - name: google scholar
     engine: google_scholar
     shortcut: gos
-    disabled: true
+    disabled: false
 
   - name: google play apps
     engine: google_play
@@ -1536,6 +1539,7 @@ engines:
   - name: pypi
     shortcut: pypi
     engine: pypi
+    disabled: true
 
   - name: qwant
     qwant_categ: web
@@ -1641,6 +1645,7 @@ engines:
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
+    disabled: true
 
   - name: soundcloud
     engine: soundcloud
@@ -1670,6 +1675,7 @@ engines:
   - name: superuser
     engine: stackexchange
     shortcut: su
+    disabled: true
     api_site: 'superuser'
     categories: [it, q&a]
 
@@ -1861,7 +1867,7 @@ engines:
   - name: yahoo news
     engine: yahoo_news
     shortcut: yhn
-    disabled: true
+    disabled: false
 
   - name: youtube
     shortcut: yt
