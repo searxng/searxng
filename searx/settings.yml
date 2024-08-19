@@ -1925,7 +1925,7 @@ engines:
     categories: [general, wikimedia]
     base_url: "https://{language}.wikibooks.org/"
     search_type: text
-    disabled: false
+    disabled: true
     about:
       website: https://www.wikibooks.org/
       wikidata_id: Q367
@@ -1936,7 +1936,7 @@ engines:
     categories: [news, wikimedia]
     base_url: "https://{language}.wikinews.org/"
     search_type: text
-    disabled: false
+    disabled: true
     srsort: create_timestamp_desc
     about:
       website: https://www.wikinews.org/
@@ -1949,7 +1949,7 @@ engines:
     categories: [general, wikimedia]
     base_url: "https://{language}.wikiquote.org/"
     search_type: text
-    disabled: false
+    disabled: true
     additional_tests:
       rosebud: *test_rosebud
     about:
