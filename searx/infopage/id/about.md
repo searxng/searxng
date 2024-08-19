@@ -1,82 +1,33 @@
-# Tentang SearXNG
+# 关于 LocalSearch
+LocalSearch 是一个基于开源项目 SearXNG 并针对中文用户优化的元搜索引擎。它不仅继承了 SearXNG 所有的优点，如保护用户隐私、不存储搜索数据等，还特别针对中文用户的需求进行了定制和优化。
 
-SearXNG adalah sebuah [mesin pencari meta], yang mendapatkan hasil dari
-{{link('mesin pencari', 'preferences')}} lainnya sambil tidak melacak
-penggunanya.
+## LocalSearch 简介
 
-Proyek SearXNG diarahkan oleh sebuah komunitas terbuka, bergabung dengan kami di
-Matrix jika Anda memiliki pertanyaan atau ingin mengobrol tentang SearXNG di
-[#searxng:matrix.org]
+LocalSearch 是一个专为中文用户设计的元搜索引擎，它继承了 SearXNG 的所有优点，并且在以下方面进行了优化和改进：
 
-Buat SearXNG lebih baik.
+### 特点和优势
 
-- Anda dapat membuat terjemahan SearXNG lebih baik di [Weblate], atau...
-- Lacak pengembangan, kirim kontribusi, dan laporkan masalah di [sumber
-  SearXNG].
-- Untuk mendapatkan informasi lanjut, kunjungi dokumentasi proyek SearXNG di
-  [dokumentasi SearXNG].
+- **隐私保护**：LocalSearch 致力于保护用户的搜索隐私，不存储任何搜索数据，不生成用户画像，也不与第三方共享信息。
+- **代码同步**：定期从 SearXNG 项目同步代码，确保所有已知的 bug 被修复，安全漏洞得到修补，保持软件的最新状态。
+- **自由软件**：LocalSearch 的代码是完全开放的，任何人都可以自由地使用、学习和贡献代码。
 
-## Kenapa menggunakan SearXNG?
+### 使用 LocalSearch
 
-- SearXNG mungkin tidak menawarkan Anda hasil yang dipersonalisasikan seperti
-  Google, tetapi tidak membuat sebuah profil tentang Anda.
-- SearXNG tidak peduli apa yang Anda cari, tidak akan membagikan apa pun dengan
-  pihak ketiga, dan tidak dapat digunakan untuk mengkompromikan Anda.
-- SearXNG adalah perangkat lunak bebas, kodenya 100% terbuka, dan semuanya
-  dipersilakan untuk membuatnya lebih baik.
+如果你重视隐私保护，希望使用一个不会追踪你搜索历史的搜索引擎，LocalSearch 是一个理想的选择。你可以将其设置为默认搜索引擎，或在自己的服务器上部署运行。
 
-Jika Anda peduli dengan privasi, ingin menjadi pengguna yang sadar, ataupun
-percaya dalam kebebasan digital, buat SearXNG sebagai mesin pencari bawaan atau
-jalankan di server Anda sendiri!
+### 如何设置为默认搜索引擎？
 
-## Bagaimana saya dapat membuat SearXNG sebagai mesin pencari bawaan?
+LocalSearch 支持 OpenSearch 标准，可以轻松添加到你的浏览器的搜索栏。不同浏览器的设置方法可以参照以下指南：
 
-SearXNG mendukung [OpenSearch].  Untuk informasi lanjut tentang mengubah mesin
-pencari bawaan Anda, lihat dokumentasi peramban Anda:
+- [Firefox 中文指南](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
+- [Microsoft Edge 中文指南](https://support.microsoft.com/zh-cn/help/4028574/microsoft-edge-如何更改默认搜索引擎)
 
-- [Firefox]
-- [Microsoft Edge] - Dibalik tautan, Anda juga akan menemukan beberapa instruksi
-  berguna untuk Chrome dan Safari.
-- Peramban berbasis [Chromium] hanya menambahkan situs web yang dikunjungi oleh
-  pengguna tanpa sebuah jalur.
+### 工作原理
 
-Apabila menambahkan mesin pencari, tidak boleh ada duplikat dengan nama yang
-sama.  Jika Anda menemukan masalah di mana Anda tidak bisa menambahkan mesin
-pencari, Anda bisa:
+LocalSearch 作为一个元搜索引擎，通过聚合多个搜索引擎的结果提供服务，同时注重用户隐私保护。它可以被添加到浏览器的搜索栏，并设置为默认搜索引擎。
 
-- menghapus duplikat (nama default: SearXNG) atau
-- menghubungi pemilik untuk memberikan nama yang berbeda dari nama default.
+### 自定义和贡献
 
-## Bagaimana caranya SearXNG bekerja?
+如果你对 LocalSearch 感兴趣，想要自定义或者贡献代码，可以直接从 [LocalSearch 源代码](https://github.com/anunol/localsearch) 获取代码并运行。
 
-SearXNG adalah sebuah *fork* dari [mesin pencari meta] [searx] yang banyak
-dikenal yang diinspirasi oleh [proyek Seeks].  SearXNG menyediakan privasi dasar
-dengan mencampur kueri Anda dengan pencarian pada *platform* lainnya tanpa
-menyimpan data pencarian.  SearXNG dapat ditambahkan ke bilah pencarian peramban
-Anda; lain lagi, SearXNG dapat diatur sebagai mesin pencarian bawaan.
-
-{{link('Laman statistik', 'stats')}} berisi beberapa statistik penggunaan anonim
-berguna tentang mesin pencarian yang digunakan.
-
-## Bagaimana caranya untuk membuat SearXNG milik saya?
-
-SearXNG menghargai kekhawatiran Anda tentang pencatatan (*log*), jadi ambil
-kodenya dari [sumber SearXNG] dan jalankan sendiri!
-
-Tambahkan instansi Anda ke [daftar instansi
-publik]({{get_setting('brand.public_instances')}}) ini untuk membantu orang lain
-mendapatkan kembali privasi mereka dan membuat internet lebih bebas.  Lebih
-terdesentralisasinya internet, lebih banyak kebebasan yang kita punya!
-
-
-[sumber SearXNG]: {{GIT_URL}}
-[#searxng:matrix.org]: https://matrix.to/#/#searxng:matrix.org
-[dokumentasi SearXNG]: {{get_setting('brand.docs_url')}}
-[searx]: https://github.com/searx/searx
-[mesin pencari meta]: https://id.wikipedia.org/wiki/Mesin_pencari_web#Mesin_Pencari_dan_Mesin_Pencari-meta
-[Weblate]: https://translate.codeberg.org/projects/searxng/
-[proyek Seeks]: https://beniz.github.io/seeks/
-[OpenSearch]: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md
-[Firefox]: https://support.mozilla.org/id/kb/add-or-remove-search-engine-firefox
-[Microsoft Edge]: https://support.microsoft.com/id-id/microsoft-edge/ubah-mesin-pencarian-default-anda-f863c519-5994-a8ed-6859-00fbc123b782
-[Chromium]: https://www.chromium.org/tab-to-search
+通过不断同步 SearXNG 的更新，LocalSearch 确保用户能够获得一个安全、可靠且不断进步的搜索工具。
