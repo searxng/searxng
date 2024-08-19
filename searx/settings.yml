@@ -427,7 +427,6 @@ engines:
   - name: bing news
     engine: bing_news
     shortcut: bin
-    disabled: true
 
   - name: bing videos
     engine: bing_videos
@@ -903,7 +902,7 @@ engines:
   - name: google news
     engine: google_news
     shortcut: gon
-    disabled: false
+    disabled: true
     # additional_tests:
     #   android: *test_android
 
@@ -917,7 +916,7 @@ engines:
   - name: google scholar
     engine: google_scholar
     shortcut: gos
-    disabled: false
+    disabled: true
 
   - name: google play apps
     engine: google_play
@@ -1184,7 +1183,6 @@ engines:
 
   - name: mdn
     shortcut: mdn
-    disabled: true
     engine: json_engine
     categories: [it]
     paging: true
@@ -1201,7 +1199,7 @@ engines:
       use_official_api: false
       require_api_key: false
       results: JSON
-      
+
   - name: metacpan
     engine: metacpan
     shortcut: cpan
@@ -1538,7 +1536,6 @@ engines:
   - name: pypi
     shortcut: pypi
     engine: pypi
-    disabled: true
 
   - name: qwant
     qwant_categ: web
@@ -1644,7 +1641,6 @@ engines:
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
-    disabled: true
 
   - name: soundcloud
     engine: soundcloud
@@ -1674,7 +1670,6 @@ engines:
   - name: superuser
     engine: stackexchange
     shortcut: su
-    disabled: true
     api_site: 'superuser'
     categories: [it, q&a]
 
@@ -1704,12 +1699,13 @@ engines:
     shortcut: scc
     disabled: true
 
-  - name: searx
-    engine: searx_engine
-    shortcut: se
-    instance_urls :
-        - https://searx.org/
-    disabled: false
+  # - name: searx
+  #   engine: searx_engine
+  #   shortcut: se
+  #   instance_urls :
+  #       - http://127.0.0.1:8888/
+  #       - ...
+  #   disabled: true
 
   - name: semantic scholar
     engine: semantic_scholar
@@ -1865,7 +1861,7 @@ engines:
   - name: yahoo news
     engine: yahoo_news
     shortcut: yhn
-    disabled: false
+    disabled: true
 
   - name: youtube
     shortcut: yt
