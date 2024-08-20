@@ -233,7 +233,7 @@ gecko.driver() {
             build_msg INSTALL "geckodriver already installed"
             return
         fi
-        PLATFORM="$(python3 -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
+        PLATFORM="$(python -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
         case "$PLATFORM" in
             "linux 32bit" | "linux2 32bit") ARCH="linux32";;
             "linux 64bit" | "linux2 64bit") ARCH="linux64";;
