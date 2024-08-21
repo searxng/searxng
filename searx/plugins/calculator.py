@@ -4,9 +4,12 @@
 
 import ast
 import operator
+from multiprocessing import Process, Queue
 
 from flask_babel import gettext
 from searx import settings
+
+from searx.plugins import logger
 
 name = "Basic Calculator"
 description = gettext("Calculate mathematical expressions via the search bar")
@@ -14,6 +17,8 @@ default_on = False
 
 preference_section = 'general'
 plugin_id = 'calculator'
+
+logger = logger.getChild(plugin_id)
 
 operators = {
     ast.Add: operator.add,
@@ -51,6 +56,30 @@ def _eval(node):
     raise TypeError(node)
 
 
+def timeout_func(timeout, func, *args, **kwargs):
+
+    def handler(q: Queue, func, args, **kwargs):  # pylint:disable=invalid-name
+        try:
+            q.put(func(*args, **kwargs))
+        except:
+            q.put(None)
+            raise
+
+    que = Queue()
+    p = Process(target=handler, args=(que, func, args), kwargs=kwargs)
+    p.start()
+    p.join(timeout=timeout)
+    ret_val = None
+    if not p.is_alive():
+        ret_val = que.get()
+    else:
+        logger.debug("terminate function after timeout is exceeded")
+        p.terminate()
+    p.join()
+    p.close()
+    return ret_val
+
+
 def post_search(_request, search):
     # don't run on public instances due to possible attack surfaces
     if settings['server']['public_instance']:
@@ -74,13 +103,15 @@ def post_search(_request, search):
 
     # in python, powers are calculated via **
     query_py_formatted = query.replace("^", "**")
-    try:
-        result = str(_eval_expr(query_py_formatted))
-        if result != query:
-            search.result_container.answers['calculate'] = {'answer': f"{query} = {result}"}
-    except (TypeError, SyntaxError, ArithmeticError):
-        pass
 
+    # Prevent the runtime from being longer than 50 ms
+    result = timeout_func(0.05, _eval_expr, query_py_formatted)
+    if result is None:
+        return True
+    result = str(result)
+
+    if result != query:
+        search.result_container.answers['calculate'] = {'answer': f"{query} = {result}"}
     return True
 
 
