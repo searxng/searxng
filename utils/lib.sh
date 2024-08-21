@@ -1674,7 +1674,7 @@ EOF
 }
 
 # apt packages
-LXC_BASE_PACKAGES_debian="bash git build-essential python3 python3-venv"
+LXC_BASE_PACKAGES_debian="bash git build-essential python3 python3-venv python-is-python3"
 
 # pacman packages
 LXC_BASE_PACKAGES_arch="bash git base-devel python"

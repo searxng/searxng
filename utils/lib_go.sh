@@ -41,7 +41,7 @@ EOF
 }
 
 go.ls(){
-    python3 <<EOF
+    python <<EOF
 import sys, json, requests
 resp = requests.get("${GO_DL_URL}/?mode=json&include=all")
 for ver in json.loads(resp.text):
@@ -67,7 +67,7 @@ go.ver_info(){
     # os:    [darwin|freebsd|linux|windows]
     # arch:  [amd64|arm64|386|armv6l|ppc64le|s390x]
 
-    python3 - "$@" <<EOF
+    python - "$@" <<EOF
 import sys, json, requests
 resp = requests.get("${GO_DL_URL}/?mode=json&include=all")
 for ver in json.loads(resp.text):
