@@ -28,6 +28,13 @@ Here is how a minimal workflow looks like:
 2. *run* your code: :ref:`make run`
 3. *format & test* your code: :ref:`make format.python` and :ref:`make test`
 
+.. tip::
+
+   If you run `make install`, and you export the environment variable
+   `SEARXNG_PRECOMMIT="true"`, a git pre-commit hook will run which will auto format
+   all python files you check into git for you. If you find this would be
+   better to enable by default, let us know.
+
 If you think at some point something fails, go back to *start*.  Otherwise,
 choose a meaningful commit message and we are happy to receive your pull
 request. To not end in *wild west* we have some directives, please pay attention
