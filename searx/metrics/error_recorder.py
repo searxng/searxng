@@ -4,6 +4,7 @@
 import typing as t
 
 import inspect
+import logging
 from json import JSONDecodeError
 from urllib.parse import urlparse
 from httpx import HTTPError, HTTPStatusError
@@ -34,6 +35,7 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
         log_message: str,
         log_parameters: LogParametersType,
         secondary: bool,
+        log_level: int,
     ):
         self.filename: str = filename
         self.function: str = function
@@ -43,6 +45,7 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
         self.log_message: str = log_message
         self.log_parameters: LogParametersType = log_parameters
         self.secondary: bool = secondary
+        self.log_level: int = log_level
 
     def __eq__(self, o) -> bool:  # pylint: disable=invalid-name
         if not isinstance(o, ErrorContext):
@@ -56,6 +59,7 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
             and self.log_message == o.log_message
             and self.log_parameters == o.log_parameters
             and self.secondary == o.secondary
+            and self.log_level == o.log_level
         )
 
     def __hash__(self):
@@ -69,11 +73,12 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
                 self.log_message,
                 self.log_parameters,
                 self.secondary,
+                self.log_level,
             )
         )
 
     def __repr__(self):
-        return "ErrorContext({!r}, {!r}, {!r}, {!r}, {!r}, {!r}) {!r}".format(
+        return "ErrorContext({!r}, {!r}, {!r}, {!r}, {!r}, {!r}), {!r}, {!r}".format(
             self.filename,
             self.line_no,
             self.code,
@@ -81,13 +86,14 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
             self.log_message,
             self.log_parameters,
             self.secondary,
+            self.log_level,
         )
 
 
 def add_error_context(engine_name: str, error_context: ErrorContext) -> None:
     errors_for_engine = errors_per_engines.setdefault(engine_name, {})
     errors_for_engine[error_context] = errors_for_engine.get(error_context, 0) + 1
-    engines[engine_name].logger.warning('%s', str(error_context))
+    engines[engine_name].logger.log(error_context.log_level, '%s', str(error_context))
 
 
 def get_trace(traces):
@@ -158,7 +164,7 @@ def get_exception_classname(exc: BaseException) -> str:
 
 
 def get_error_context(
-    framerecords, exception_classname, log_message, log_parameters: LogParametersType, secondary: bool
+    framerecords, exception_classname, log_message, log_parameters: LogParametersType, secondary: bool, log_level: int
 ) -> ErrorContext:
     searx_frame = get_trace(framerecords)
     filename = searx_frame.filename
@@ -168,17 +174,19 @@ def get_error_context(
     line_no = searx_frame.lineno
     code = searx_frame.code_context[0].strip()
     del framerecords
-    return ErrorContext(filename, function, line_no, code, exception_classname, log_message, log_parameters, secondary)
+    return ErrorContext(
+        filename, function, line_no, code, exception_classname, log_message, log_parameters, secondary, log_level
+    )
 
 
-def count_exception(engine_name: str, exc: BaseException, secondary: bool = False) -> None:
+def count_exception(engine_name: str, exc: BaseException, secondary: bool = False, log_level=logging.WARN) -> None:
     if not settings['general']['enable_metrics']:
         return
     framerecords = inspect.trace()
     try:
         exception_classname = get_exception_classname(exc)
         log_parameters = get_messages(exc, framerecords[-1][1])
-        error_context = get_error_context(framerecords, exception_classname, None, log_parameters, secondary)
+        error_context = get_error_context(framerecords, exception_classname, None, log_parameters, secondary, log_level)
         add_error_context(engine_name, error_context)
     finally:
         del framerecords
@@ -189,12 +197,13 @@ def count_error(
     log_message: str,
     log_parameters: LogParametersType | None = None,
     secondary: bool = False,
+    log_level: int = logging.WARN,
 ) -> None:
     if not settings['general']['enable_metrics']:
         return
     framerecords = list(reversed(inspect.stack()[1:]))
     try:
-        error_context = get_error_context(framerecords, None, log_message, log_parameters or (), secondary)
+        error_context = get_error_context(framerecords, None, log_message, log_parameters or (), secondary, log_level)
         add_error_context(engine_name, error_context)
     finally:
         del framerecords
