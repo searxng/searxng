@@ -74,7 +74,7 @@ class SelfIPTest(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertFalse('ip' in search.result_container.answers)
 
         # User agent test
-        request = Mock(user_agent='Mock')
+        request = Mock(user_agent=Mock(string='Mock'))
 
         search = get_search_mock(query='user-agent', pageno=1)
         store.call(store.plugins, 'post_search', request, search)
