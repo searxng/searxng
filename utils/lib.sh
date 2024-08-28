@@ -663,8 +663,8 @@ pyenv.install() {
             pyenv
         fi
         for i in ${PYOBJECTS}; do
-    	    build_msg PYENV "[install] pip install -e '$i${PY_SETUP_EXTRAS}'"
-    	    "${PY_ENV_BIN}/python" -m pip install -e "$i${PY_SETUP_EXTRAS}"
+    	    build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e '$i${PY_SETUP_EXTRAS}'"
+    	    "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e "$i${PY_SETUP_EXTRAS}"
         done
     fi
     pyenv.install.OK
@@ -1674,7 +1674,7 @@ EOF
 }
 
 # apt packages
-LXC_BASE_PACKAGES_debian="bash git build-essential python3 python3-venv"
+LXC_BASE_PACKAGES_debian="bash git build-essential python3 python3-venv python-is-python3"
 
 # pacman packages
 LXC_BASE_PACKAGES_arch="bash git base-devel python"
