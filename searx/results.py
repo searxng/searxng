@@ -9,7 +9,6 @@ from typing import List, NamedTuple, Set
 from urllib.parse import urlparse, unquote
 
 from searx import logger
-from searx import utils
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
 
@@ -366,9 +365,9 @@ class ResultContainer:
             result['score'] = result_score(result, result.get('priority'))
             # removing html content and whitespace duplications
             if result.get('content'):
-                result['content'] = utils.html_to_text(result['content']).strip()
+                result['content'] = result['content'].strip()
             if result.get('title'):
-                result['title'] = ' '.join(utils.html_to_text(result['title']).strip().split())
+                result['title'] = ' '.join(result['title'].strip().split())
 
             for result_engine in result['engines']:
                 counter_add(result['score'], 'engine', result_engine, 'score')
