@@ -886,7 +886,8 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    timeout: 6.0    
+    timeout: 6.0
+    disabled: true
     # additional_tests:
     #   android: *test_android
 
@@ -1857,7 +1858,7 @@ engines:
     categories: general
     search_type: web
     shortcut: yd
-    disabled: true
+    disabled: false
     inactive: true
 
   - name: yandex images
@@ -1878,7 +1879,7 @@ engines:
   - name: yahoo
     engine: yahoo
     shortcut: yh
-    disabled: true
+    disabled: false
 
   - name: yahoo news
     engine: yahoo_news
