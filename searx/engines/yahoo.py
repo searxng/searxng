@@ -16,6 +16,7 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
+    html_to_text,
 )
 from searx.enginelib.traits import EngineTraits
 
@@ -133,12 +134,20 @@ def response(resp):
         url = parse_url(url)
 
         title = eval_xpath_getindex(result, './/h3//a/@aria-label', 0, default='')
-        title = extract_text(title)
+        title: str = extract_text(title)
         content = eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0, default='')
-        content = extract_text(content, allow_none=True)
+        content: str = extract_text(content, allow_none=True)
 
         # append result
-        results.append({'url': url, 'title': title, 'content': content})
+        results.append(
+            {
+                'url': url,
+                # title sometimes contains HTML tags / see
+                # https://github.com/searxng/searxng/issues/3790
+                'title': " ".join(html_to_text(title).strip().split()),
+                'content': " ".join(html_to_text(content).strip().split()),
+            }
+        )
 
     for suggestion in eval_xpath_list(dom, '//div[contains(@class, "AlsoTry")]//table//a'):
         # append suggestion
