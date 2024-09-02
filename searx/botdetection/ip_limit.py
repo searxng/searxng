@@ -76,11 +76,11 @@ LONG_MAX = 150
 LONG_MAX_SUSPICIOUS = 10
 """Maximum suspicious requests from one IP in the :py:obj:`LONG_WINDOW`"""
 
-API_WONDOW = 3600
+API_WINDOW = 3600
 """Time (sec) before sliding window for API requests (format != html) expires."""
 
 API_MAX = 4
-"""Maximum requests from one IP in the :py:obj:`API_WONDOW`"""
+"""Maximum requests from one IP in the :py:obj:`API_WINDOW`"""
 
 SUSPICIOUS_IP_WINDOW = 3600 * 24 * 30
 """Time (sec) before sliding window for one suspicious IP expires."""
@@ -103,7 +103,7 @@ def filter_request(
         return None
 
     if request.args.get('format', 'html') != 'html':
-        c = incr_sliding_window(redis_client, 'ip_limit.API_WONDOW:' + network.compressed, API_WONDOW)
+        c = incr_sliding_window(redis_client, 'ip_limit.API_WINDOW:' + network.compressed, API_WINDOW)
         if c > API_MAX:
             return too_many_requests(network, "too many request in API_WINDOW")
 
