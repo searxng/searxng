@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
 "PO-Revision-Date: 2024-07-28 14:18+0000\n"
 "Last-Translator: SomeTr <SomeTr@users.noreply.translate.codeberg.org>\n"
 "Language: uk\n"
@@ -28,7 +28,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -343,7 +343,7 @@ msgstr "Джерело"
 msgid "Error loading the next page"
 msgstr "Не вдалося завантажити наступну сторінку"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильні налаштування, будь ласка, зробіть зміни в налаштуваннях"
 
@@ -476,7 +476,7 @@ msgstr ""
 "{numCitations} цитувань з {firstCitationVelocityYear} по "
 "{lastCitationVelocityYear} рік"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -486,7 +486,7 @@ msgstr ""
 "цього зображення не підтримується. TinEye підтримує зображення у форматах"
 " JPEG, PNG, GIF, BMP, TIFF та WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -494,7 +494,7 @@ msgstr ""
 "Зображення занадто просте, щоб знайти збіги. TinEye вимагає базового "
 "рівня візуальної деталізації для успішного визначення збігів."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Зображення неможливо завантажити."
 
@@ -518,11 +518,11 @@ msgstr "Конвертує рядки в різні геш-послідовно�
 msgid "hash digest"
 msgstr "геш-послідовність"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr "Плагін Hostnames"
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Переписування імен хостів, видалення результатів або визначення їх "
@@ -712,7 +712,7 @@ msgstr ""
 msgid "No HTTPS"
 msgstr "Без HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -793,19 +793,19 @@ msgstr "Число результатів"
 msgid "Info"
 msgstr "Інфо"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Спробуйте шукати:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Доверху"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Попередня сторінка"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Наступна сторінка"
 
@@ -845,6 +845,7 @@ msgstr "Влучань"
 msgid "Result count"
 msgstr "Кількість результатів"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -920,17 +921,13 @@ msgstr "Коментар(і)"
 msgid "Download results"
 msgstr "Завантажити результати"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Повідомлення від пошукових систем"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Помилка!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Пошукові системи не можуть отримати результати"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1924,4 +1921,10 @@ msgstr "приховати відео"
 
 #~ msgid "Hostname replace"
 #~ msgstr "Зміна імені сайту"
+
+#~ msgid "Error!"
+#~ msgstr "Помилка!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Пошукові системи не можуть отримати результати"
 

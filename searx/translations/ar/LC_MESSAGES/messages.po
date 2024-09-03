@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
 "PO-Revision-Date: 2024-07-30 08:18+0000\n"
 "Last-Translator: nebras <nebras@users.noreply.translate.codeberg.org>\n"
 "Language: ar\n"
@@ -33,7 +33,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -348,7 +348,7 @@ msgstr "المصدر"
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
@@ -481,7 +481,7 @@ msgstr ""
 "{numCitation}استجلاب من العام {firstCitationVelocityYear} إلى "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -490,7 +490,7 @@ msgstr ""
 "تعذر قراءة عنوان url للصورة. قد يكون هذا بسبب تنسيق ملف غير مدعوم. تدعم "
 "TinEye فقط الصور بتنسيق JPEG أو PNG أو GIF أو BMP أو TIFF أو WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -498,7 +498,7 @@ msgstr ""
 "الصورة أبسط من أن تجد مطابقات. يتطلب TinEye مستوى أساسيًا من التفاصيل "
 "المرئية لتحديد التطابقات بنجاح."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "لا يمكن تنزيل الصورة."
 
@@ -522,11 +522,11 @@ msgstr "يحول السلسلة إلى ملخص التجزئة."
 msgid "hash digest"
 msgstr "ملخص التجزئة"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها "
@@ -714,7 +714,7 @@ msgstr "قم بتقديم مشكلة جديدة على GitHub بالمعلوما
 msgid "No HTTPS"
 msgstr "دون HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -795,19 +795,19 @@ msgstr "حصيلة نتائج البحث"
 msgid "Info"
 msgstr "معلومات"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "حاول البحث عن :"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "العودة للأعلى"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "الصفحة التالية"
 
@@ -847,6 +847,7 @@ msgstr "نتائج"
 msgid "Result count"
 msgstr "نتيجة العد"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -922,17 +923,13 @@ msgstr "تعليق/تعليقات"
 msgid "Download results"
 msgstr "حصيلة التنزيل"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "رسائل من محركات البحث"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "خطأ !"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "لم تتمكن محركات البحث من العثور على أية نتيجة"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1939,4 +1936,10 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "Hostname replace"
 #~ msgstr "استبدال اسم المضيف"
+
+#~ msgid "Error!"
+#~ msgstr "خطأ !"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "لم تتمكن محركات البحث من العثور على أية نتيجة"
 

@@ -11,20 +11,19 @@
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
 "PO-Revision-Date: 2024-09-03 15:52+0000\n"
 "Last-Translator: ghose <ghose@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
-"searxng/gl/>\n"
 "Language: gl\n"
+"Language-Team: Galician "
+"<https://translate.codeberg.org/projects/searxng/searxng/gl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -339,7 +338,7 @@ msgstr "Fonte"
 msgid "Error loading the next page"
 msgstr "Erro ao cargar a páxina seguinte"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "Axustes non válidos, por favor edita a configuración"
 
@@ -472,7 +471,7 @@ msgstr ""
 "{numCitations} citas desde o ano {firstCitationVelocityYear} ao "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -482,7 +481,7 @@ msgstr ""
 "ficheiro non soportado. TinEye só soporta imaxes tipo JPEG, PNG, GIF, "
 "BMP, TIFF ou WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -490,7 +489,7 @@ msgstr ""
 "A imaxe é demasiado simple para atopar coincidencias. TinEyes require un "
 "nivel de detalle básico para poder atopar coincidencias."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Non se puido descargar a imaxe."
 
@@ -514,11 +513,11 @@ msgstr "Converte o escrito usando diferentes funcións hash."
 msgid "hash digest"
 msgstr "función hash"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr "Complemento de nomes de servidor"
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Reescribe nomes de servidor, elimina resultados ou prioriza en función do"
@@ -705,7 +704,7 @@ msgstr "Enviar un issue a Github incluíndo a información superior"
 msgid "No HTTPS"
 msgstr "Sen HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -786,19 +785,19 @@ msgstr "Número de resultados"
 msgid "Info"
 msgstr "Info"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Intenta buscar:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Ir arriba"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Páxina anterior"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Páxina seguinte"
 
@@ -838,6 +837,7 @@ msgstr "Puntuacións"
 msgid "Result count"
 msgstr "Número de resultados"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -913,17 +913,13 @@ msgstr "Comentario(s)"
 msgid "Download results"
 msgstr "Descargar resultados"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Mensaxes desde os motores de busca"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Fallo!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Os buscadores non obtiveron resultados"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1954,3 +1950,10 @@ msgstr "agochar vídeo"
 
 #~ msgid "Hostname replace"
 #~ msgstr "Substituír servidor"
+
+#~ msgid "Error!"
+#~ msgstr "Fallo!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Os buscadores non obtiveron resultados"
+

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
 "PO-Revision-Date: 2024-05-06 07:18+0000\n"
 "Last-Translator: Vision <Vision@users.noreply.translate.codeberg.org>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -340,7 +340,7 @@ msgstr "Zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
@@ -473,7 +473,7 @@ msgstr ""
 "{numCitations} citácií od roku {firstCitationVelocityYear} do roku "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -483,7 +483,7 @@ msgstr ""
 "nepodporovaným formátom súboru. TinEye podporuje iba obrázky JPEG, PNG, "
 "GIF, BMP, TIFF alebo WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -491,7 +491,7 @@ msgstr ""
 "Obrázok je príliš nízkej kvality na to aby sa našla zhoda. TinEye "
 "vyžaduje vyššiu kvalitu detailov v obrázku na identifikáciu zhôd."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Obrázok nemohol byť stiahnutý."
 
@@ -515,11 +515,11 @@ msgstr "Skonvertuje text pomocou rôznych hash funkcií."
 msgid "hash digest"
 msgstr "hash hodnota"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr ""
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 
@@ -705,7 +705,7 @@ msgstr "Odošlite novú chybu na Github vrátane informácii nad"
 msgid "No HTTPS"
 msgstr "Žiadne HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -786,19 +786,19 @@ msgstr "Počet výsledkov"
 msgid "Info"
 msgstr "Informácie"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Skús hľadať:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Späť na začiatok"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Predošlá strana"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Ďalšia strana"
 
@@ -838,6 +838,7 @@ msgstr "Hodnotenia"
 msgid "Result count"
 msgstr "Počet výsledkov"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -913,17 +914,13 @@ msgstr "Komentár(e)"
 msgid "Download results"
 msgstr "Výsledky na stiahnutie"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Hlásenia z vyhľadávačov"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Chyba!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Vyhľadávače nemôžu získať výsledky"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1939,4 +1936,10 @@ msgstr "skryť video"
 
 #~ msgid "Hostname replace"
 #~ msgstr "Nahradenie názvu servera"
+
+#~ msgid "Error!"
+#~ msgstr "Chyba!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Vyhľadávače nemôžu získať výsledky"
 
