@@ -1548,6 +1548,24 @@ engines:
     page_size: 25
     disabled: true
 
+  - name: right dao
+    engine: xpath
+    paging: true
+    page_size: 12
+    search_url: https://rightdao.com/search?q={query}&start={pageno}
+    results_xpath: //div[@class="description"]
+    url_xpath: ../div[@class="title"]/a/@href
+    title_xpath: ../div[@class="title"]
+    content_xpath: .
+    categories: general
+    shortcut: rd
+    disabled: true
+    about:
+      website: https://rightdao.com/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: rottentomatoes
     engine: rottentomatoes
     shortcut: rt
