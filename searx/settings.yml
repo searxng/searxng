@@ -219,13 +219,13 @@ outgoing:
 #
 # enabled_plugins:
 #   # these plugins are enabled if nothing is configured ..
+#   - 'Basic Calculator'
 #   - 'Hash plugin'
 #   - 'Self Information'
 #   - 'Tracker URL remover'
 #   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
 #   # these plugins are disabled if nothing is configured ..
 #   - 'Hostnames plugin'  # see 'hostnames' configuration below
-#   - 'Basic Calculator'
 #   - 'Open Access DOI rewrite'
 #   - 'Tor check plugin'
 #   # Read the docs before activate: auto-detection of the language could be
@@ -561,33 +561,6 @@ engines:
     engine: currency_convert
     categories: general
     shortcut: cc
-
-  - name: bahnhof
-    engine: json_engine
-    search_url: https://www.bahnhof.de/api/stations/search/{query}
-    url_prefix: https://www.bahnhof.de/
-    url_query: slug
-    title_query: name
-    content_query: state
-    shortcut: bf
-    disabled: true
-    about:
-      website: https://www.bahn.de
-      wikidata_id: Q22811603
-      use_official_api: false
-      require_api_key: false
-      results: JSON
-      language: de
-    tests:
-      bahnhof:
-        matrix:
-          query: berlin
-          lang: en
-        result_container:
-          - not_empty
-          - ['one_title_contains', 'Berlin Hauptbahnhof']
-        test:
-          - unique_results
 
   - name: deezer
     engine: deezer

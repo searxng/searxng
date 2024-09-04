@@ -57,13 +57,11 @@
           {%- include 'simple/elements/suggestions.html' -%}
         {%- endif -%}
 
+        {%- include 'simple/elements/engines_msg.html' -%}
+
         {%- if method == 'POST' -%}
           {%- include 'simple/elements/search_url.html' -%}
         {%- endif -%}
-
-        {%- if unresponsive_engines -%}
-          {%- include 'simple/elements/engines_msg.html' -%}
-	{%- endif -%}
 
         {%- if search_formats -%}
           {%- include 'simple/elements/apis.html' -%}
