@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
 "PO-Revision-Date: 2024-08-05 15:59+0000\n"
 "Last-Translator: alexgabi <alexgabi@users.noreply.translate.codeberg.org>"
 "\n"
@@ -27,7 +27,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -342,7 +342,7 @@ msgstr "Iturria"
 msgid "Error loading the next page"
 msgstr "Errorea hurrengo orrialdea kargatzean"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ezarpen baliogabeak, editatu zure hobespenak"
 
@@ -475,7 +475,7 @@ msgstr ""
 "{numCitations} aipamen {firstCitationVelocityYear} urtetik "
 "{lastCitationVelocityYear} bitartekoak"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -485,7 +485,7 @@ msgstr ""
 "fitxategi-formatu baten ondorioz izatea. TinEye-k JPEG, PNG, GIF, BMP, "
 "TIFF edo WebP diren irudiak soilik onartzen ditu."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -493,7 +493,7 @@ msgstr ""
 "Irudia sinpleegia da antzekoak aurkitzeko. TinEye-k oinarrizko xehetasun "
 "bisual bat behar du antzekoak ongi identifikatzeko."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Ezin izan da deskargatu irudia."
 
@@ -517,11 +517,11 @@ msgstr "Kateak traola laburpen desberdinetara bihurtzen ditu."
 msgid "hash digest"
 msgstr "traola laburpena"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr "Hostnames plugina"
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Berridatzi ostalari-izenak, kendu emaitzak edo eman lehentasuna ostalari-"
@@ -710,7 +710,7 @@ msgstr "Bidali gai -issue- berri bat Github-en goiko informazioa barne"
 msgid "No HTTPS"
 msgstr "HTTPS-rik ez"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -791,19 +791,19 @@ msgstr "Emaitza kopurua"
 msgid "Info"
 msgstr "Informazioa"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Saiatu hau bilatzen:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Gora bueltatu"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Aurreko orria"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Hurrengo orria"
 
@@ -843,6 +843,7 @@ msgstr "Balorazioak"
 msgid "Result count"
 msgstr "Emaitzen zenbaketa"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -918,17 +919,13 @@ msgstr "Iruzkina(k)"
 msgid "Download results"
 msgstr "Deskargatu emaitzak"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Bilatzaileen mezuak"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Errorea!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Bilatzaileek ezin dute emaitzarik lortu"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1931,4 +1928,10 @@ msgstr "ezkutatu bideoa"
 
 #~ msgid "Hostname replace"
 #~ msgstr "Ostalariaren izena ordezkatu"
+
+#~ msgid "Error!"
+#~ msgstr "Errorea!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Bilatzaileek ezin dute emaitzarik lortu"
 

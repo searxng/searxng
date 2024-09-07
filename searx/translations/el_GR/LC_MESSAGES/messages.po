@@ -15,20 +15,20 @@
 # notlmutsaers <notlmutsaers@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-08 10:01+0000\n"
-"PO-Revision-Date: 2024-07-09 15:18+0000\n"
-"Last-Translator: notlmutsaers "
-"<notlmutsaers@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-09-03 15:52+0000\n"
+"PO-Revision-Date: 2024-09-05 06:18+0000\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Greek <https://translate.codeberg.org/projects/searxng/"
+"searxng/el/>\n"
 "Language: el_GR\n"
-"Language-Team: Greek "
-"<https://translate.codeberg.org/projects/searxng/searxng/el/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.7\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -343,7 +343,7 @@ msgstr "Πηγή"
 msgid "Error loading the next page"
 msgstr "Σφάλμα φόρτωσης της επόμενης σελίδας"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:491 searx/webapp.py:894
 msgid "Invalid settings, please edit your preferences"
 msgstr "Μη έγκυρες ρυθμίσεις, παρακαλούμε ελέγξτε τις προτιμήσεις σας"
 
@@ -476,7 +476,7 @@ msgstr ""
 "{numCitations} αναφορές απο τα έτη {firstCitationVelocityYear} εώς "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -486,7 +486,7 @@ msgstr ""
 " μη υποστηριζόμενη μορφή αρχείου. Το TinEye υποστηρίζει μόνο εικόνες που "
 "είναι JPEG, PNG, GIF, BMP, TIFF ή WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -495,7 +495,7 @@ msgstr ""
 "ένα στοιχειώδης επίπεδο λεπτομέρειας για τον επιτυχή εντοπισμό "
 "αντιστοιχιών."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Αποτυχία μεταφόρτωσης εικόνας."
 
@@ -519,11 +519,11 @@ msgstr "Μετατρέπει κείμενο σε διαφορετικές συν
 msgid "hash digest"
 msgstr "συνάρτηση κατατεμαχισμού"
 
-#: searx/plugins/hostnames.py:91
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr "Προσθήκη ονομάτων κεντρικού υπολογιστή"
 
-#: searx/plugins/hostnames.py:92
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Ξαναγράψτε ονόματα κεντρικών υπολογιστών, αφαιρέστε τα αποτελέσματα ή "
@@ -720,7 +720,7 @@ msgstr "Υποβολή νέου ζητήματος στο Github με τις π�
 msgid "No HTTPS"
 msgstr "Όχι HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -801,19 +801,19 @@ msgstr "Αριθμός αποτελεσμάτων"
 msgid "Info"
 msgstr "Πληροφορίες"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Δοκιμάστε αναζήτηση για:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Επιστροφή στην κορυφή"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Προηγούμενη σελίδα"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Επόμενη σελίδα"
 
@@ -853,6 +853,7 @@ msgstr "Βαθμολογίες"
 msgid "Result count"
 msgstr "Αριθμός αποτελεσμάτων"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -928,17 +929,13 @@ msgstr "Σχόλιο(α)"
 msgid "Download results"
 msgstr "Λήψη αποτελεσμάτων"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Μηνύματα από μηχανές αναζήτησης"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Λάθος!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr "s"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1962,3 +1959,8 @@ msgstr "απόκρυψη βίντεο"
 #~ msgid "Hostname replace"
 #~ msgstr "Αντικατάσταση hostname"
 
+#~ msgid "Error!"
+#~ msgstr "Λάθος!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Οι μηχανές δε μπορούν να φέρουν αποτελέσματα"
