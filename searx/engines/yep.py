@@ -67,6 +67,8 @@ def response(resp):
 
     for result in resp.json()[1]['results']:
         if search_type == "web":
+            if result['type'] != 'Organic':
+                continue
             results.append(_web_result(result))
         elif search_type == "images":
             results.append(_images_result(result))
