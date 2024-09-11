@@ -807,24 +807,21 @@ engines:
     timeout: 10
 
   - name: gitlab
-    engine: json_engine
-    paging: true
-    search_url: https://gitlab.com/api/v4/projects?search={query}&page={pageno}
-    url_query: web_url
-    title_query: name_with_namespace
-    content_query: description
-    page_size: 20
-    categories: [it, repos]
+    engine: gitlab
+    base_url: https://gitlab.com
     shortcut: gl
-    timeout: 10.0
     disabled: true
     about:
-      website: https://about.gitlab.com/
+      website: https://gitlab.com/
       wikidata_id: Q16639197
-      official_api_documentation: https://docs.gitlab.com/ee/api/
-      use_official_api: false
-      require_api_key: false
-      results: JSON
+
+  # - name: gnome
+  #   engine: gitlab
+  #   base_url: https://gitlab.gnome.org
+  #   shortcut: gn
+  #   about:
+  #     website: https://gitlab.gnome.org
+  #     wikidata_id: Q44316
 
   - name: github
     engine: github
