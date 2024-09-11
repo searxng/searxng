@@ -16,7 +16,7 @@
         {%- if not search_on_category_select or not display_tooltip -%}
             {%- for category in categories -%}
                 <div class="category category_checkbox">{{- '' -}}
-                    <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}/>
+                    <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
                     <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
                         {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe-outline') -}}
                         <div class="category_name">{{- _(category) -}}</div>

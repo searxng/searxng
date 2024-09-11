@@ -28,7 +28,7 @@ And in the HTML template from flask a stylesheet link is needed (the value of
 
    <link rel="stylesheet"
          href="{{ url_for('client_token', token=link_token) }}"
-         type="text/css" />
+         type="text/css" >
 
 .. _X-Forwarded-For:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
