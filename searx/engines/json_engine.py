@@ -146,7 +146,11 @@ def response(resp):
                 }
             )
     else:
-        for url, title, content in zip(query(json, url_query), query(json, title_query), query(json, content_query)):
+        for result in json:
+            url = query(result, url_query)[0]
+            title = query(result, title_query)[0]
+            content = query(result, content_query)[0]
+
             results.append(
                 {
                     'url': url_prefix + to_string(url),
