@@ -1553,9 +1553,9 @@ engines:
     paging: true
     page_size: 12
     search_url: https://rightdao.com/search?q={query}&start={pageno}
-    results_xpath: //div[@class="description"]
-    url_xpath: ../div[@class="title"]/a/@href
-    title_xpath: ../div[@class="title"]
+    results_xpath: //div[contains(@class, "description")]
+    url_xpath: ../div[contains(@class, "title")]/a/@href
+    title_xpath: ../div[contains(@class, "title")]
     content_xpath: .
     categories: general
     shortcut: rd
