@@ -7,6 +7,7 @@ DuckDuckGo Extra (images, videos, news)
 from datetime import datetime
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
+from searx.utils import get_embeded_stream_url
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import (
@@ -108,7 +109,7 @@ def _video_result(result):
         'title': result['title'],
         'content': result['description'],
         'thumbnail': result['images'].get('small') or result['images'].get('medium'),
-        'iframe_src': result['embed_url'],
+        'iframe_src': get_embeded_stream_url(result['content']),
         'source': result['provider'],
         'length': result['duration'],
         'metadata': result.get('uploader'),

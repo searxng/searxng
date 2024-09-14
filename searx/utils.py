@@ -17,7 +17,7 @@ from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
 from html import escape
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 from markdown_it import MarkdownIt
 
 from lxml import html
@@ -613,6 +613,52 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
         fasttext.FastText.eprint = lambda x: None
         _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
     return _FASTTEXT_MODEL
+
+
+def get_embeded_stream_url(url):
+    """
+    Converts a standard video URL into its embed format. Supported services include Youtube,
+    Facebook, Instagram, TikTok, and Dailymotion.
+    """
+    parsed_url = urlparse(url)
+    iframe_src = None
+
+    # YouTube
+    if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
+        video_id = parse_qs(parsed_url.query).get('v', [])
+        if video_id:
+            iframe_src = 'https://www.youtube-nocookie.com/embed/' + video_id[0]
+
+    # Facebook
+    elif parsed_url.netloc in ['www.facebook.com', 'facebook.com']:
+        encoded_href = urlencode({'href': url})
+        iframe_src = 'https://www.facebook.com/plugins/video.php?allowfullscreen=true&' + encoded_href
+
+    # Instagram
+    elif parsed_url.netloc in ['www.instagram.com', 'instagram.com'] and parsed_url.path.startswith('/p/'):
+        if parsed_url.path.endswith('/'):
+            iframe_src = url + 'embed'
+        else:
+            iframe_src = url + '/embed'
+
+    # TikTok
+    elif (
+        parsed_url.netloc in ['www.tiktok.com', 'tiktok.com']
+        and parsed_url.path.startswith('/@')
+        and '/video/' in parsed_url.path
+    ):
+        path_parts = parsed_url.path.split('/video/')
+        video_id = path_parts[1]
+        iframe_src = 'https://www.tiktok.com/embed/' + video_id
+
+    # Dailymotion
+    elif parsed_url.netloc in ['www.dailymotion.com', 'dailymotion.com'] and parsed_url.path.startswith('/video/'):
+        path_parts = parsed_url.path.split('/')
+        if len(path_parts) == 3:
+            video_id = path_parts[2]
+            iframe_src = 'https://www.dailymotion.com/embed/video/' + video_id
+
+    return iframe_src
 
 
 def detect_language(text: str, threshold: float = 0.3, only_search_languages: bool = False) -> Optional[str]:

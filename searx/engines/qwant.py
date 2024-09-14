@@ -61,6 +61,7 @@ from searx.utils import (
     eval_xpath,
     eval_xpath_list,
     extract_text,
+    get_embeded_stream_url,
 )
 
 traits: EngineTraits
@@ -303,6 +304,7 @@ def parse_web_api(resp):
                         'title': title,
                         'url': res_url,
                         'content': content,
+                        'iframe_src': get_embeded_stream_url(res_url),
                         'publishedDate': pub_date,
                         'thumbnail': thumbnail,
                         'template': 'videos.html',
