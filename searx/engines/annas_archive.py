@@ -184,3 +184,8 @@ def fetch_traits(engine_traits: EngineTraits):
 
     for x in eval_xpath_list(dom, "//form//select[@name='sort']//option"):
         engine_traits.custom['sort'].append(x.get("value"))
+
+    # for better diff; sort the persistence of these traits
+    engine_traits.custom['content'].sort()
+    engine_traits.custom['ext'].sort()
+    engine_traits.custom['sort'].sort()

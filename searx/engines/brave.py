@@ -430,7 +430,8 @@ def fetch_traits(engine_traits: EngineTraits):
 
         ui_lang = option.get('value')
         try:
-            if '-' in ui_lang and not ui_lang.startswith("zh-"):
+            l = babel.Locale.parse(ui_lang, sep='-')
+            if l.territory:
                 sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep='-'))
             else:
                 sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep='-'))
@@ -453,7 +454,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:  # type: ignore
         print("ERROR: response from Brave is not OK.")
 
-    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]
+    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]  # type: ignore
     country_js = country_js[: country_js.index("},k={default")]
     country_tags = js_variable_to_python(country_js)
 

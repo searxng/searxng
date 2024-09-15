@@ -152,7 +152,7 @@ def locales_initialize():
 def region_tag(locale: babel.Locale) -> str:
     """Returns SearXNG's region tag from the locale (e.g. zh-TW , en-US)."""
     if not locale.territory:
-        raise ValueError('%s missed a territory')
+        raise ValueError('babel.Locale %s: missed a territory' % locale)
     return locale.language + '-' + locale.territory
 
 

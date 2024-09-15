@@ -441,7 +441,7 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
         try:
             locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
         except babel.UnknownLocaleError:
-            print("ERROR: %s -> %s is unknown by babel" % (x.get("data-name"), eng_lang))
+            print("INFO:  google UI language %s (%s) is unknown by babel" % (eng_lang, x.text.split("(")[0].strip()))
             continue
         sxng_lang = language_tag(locale)
 
