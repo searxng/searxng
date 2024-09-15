@@ -1866,25 +1866,6 @@ engines:
     about:
       website: https://wiby.me/
 
-  - name: alexandria
-    engine: json_engine
-    shortcut: alx
-    categories: general
-    paging: true
-    search_url: https://api.alexandria.org/?a=1&q={query}&p={pageno}
-    results_query: results
-    title_query: title
-    url_query: url
-    content_query: snippet
-    timeout: 1.5
-    disabled: true
-    about:
-      website: https://alexandria.org/
-      official_api_documentation: https://github.com/alexandria-org/alexandria-api/raw/master/README.md
-      use_official_api: true
-      require_api_key: false
-      results: JSON
-
   - name: wikibooks
     engine: mediawiki
     weight: 0.5
