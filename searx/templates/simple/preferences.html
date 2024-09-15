@@ -27,11 +27,11 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{%- macro checkbox_onoff_reversed(name, checked) -%}
+{%- macro checkbox_onoff_reversed(name, checked, labelledby) -%}
   <input type="checkbox" {{- ' ' -}}
          name="{{ name }}" {{- ' ' -}}
          id="{{ name }}" {{- ' ' -}}
-         aria-labelledby="pref_{{ name }}"{{- ' ' -}}
+         {%- if labelledby -%} aria-labelledby="{{ labelledby }}"{{- ' ' -}}{%- endif -%}
          class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
          {%- if checked -%} checked{%- endif -%}>
 {%- endmacro -%}
@@ -42,9 +42,9 @@
 <fieldset>{{- '' -}}
     <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
     <div class="value">
-      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}
     </div>{{- '' -}}
-    <div class="description">
+    <div class="description" id="{{ 'plugin_labelledby' + plugin.id }}">
       {{- _(plugin.description) -}}
     </div>{{- '' -}}
 </fieldset>
