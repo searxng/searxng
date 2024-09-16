@@ -6,7 +6,7 @@
 {%- endmacro -%}
 
 {%- macro tab_header(name, id, label, checked) -%}
-<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %} />
+<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %}>
 <label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
 <section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
 {%- endmacro -%}
@@ -23,7 +23,7 @@
   {%- if checked == '?' -%}
     {{- icon_small('warning') -}}
   {%- else -%}
-    <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}/>
+    <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}>
   {%- endif -%}
 {%- endmacro -%}
 
@@ -33,7 +33,7 @@
          id="{{ name }}" {{- ' ' -}}
          aria-labelledby="pref_{{ name }}"{{- ' ' -}}
          class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
-         {%- if checked -%} checked{%- endif -%}/>
+         {%- if checked -%} checked{%- endif -%}>
 {%- endmacro -%}
 
 {%- macro plugin_preferences(section) -%}

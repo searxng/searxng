@@ -165,10 +165,12 @@ def fetch_traits(engine_traits: EngineTraits):
 
     countrycodes = set()
     for region in country_list:
-        if region['iso_3166_1'] not in babel_reg_list:
+        # country_list contains duplicates that differ only in upper/lower case
+        _reg = region['iso_3166_1'].upper()
+        if _reg not in babel_reg_list:
             print(f"ERROR: region tag {region['iso_3166_1']} is unknown by babel")
             continue
-        countrycodes.add(region['iso_3166_1'])
+        countrycodes.add(_reg)
 
     countrycodes = list(countrycodes)
     countrycodes.sort()
