@@ -143,6 +143,7 @@ SCHEMA = {
         'contact_url': SettingsValue((None, False, str), None),
         'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),
         'enable_metrics': SettingsValue(bool, True),
+        'open_metrics': SettingsValue(str, ''),
     },
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
