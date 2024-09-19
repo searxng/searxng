@@ -958,7 +958,6 @@ nginx_distro_setup() {
             ;;
     esac
 }
-nginx_distro_setup
 
 install_nginx(){
     info_msg "installing nginx ..."
@@ -1127,8 +1126,6 @@ apache_distro_setup() {
     esac
 }
 
-apache_distro_setup
-
 install_apache(){
     info_msg "installing apache ..."
     pkg_install "$APACHE_PACKAGES"
@@ -1290,8 +1287,6 @@ uWSGI_distro_setup() {
             ;;
 esac
 }
-
-uWSGI_distro_setup
 
 install_uwsgi(){
     info_msg "installing uwsgi ..."
@@ -1685,13 +1680,15 @@ LXC_BASE_PACKAGES_fedora="bash git @development-tools python"
 # yum packages
 LXC_BASE_PACKAGES_centos="bash git python3"
 
-case $DIST_ID in
-    ubuntu|debian) LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_debian}" ;;
-    arch)          LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_arch}" ;;
-    fedora)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_fedora}" ;;
-    centos)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_centos}" ;;
-    *) err_msg "$DIST_ID-$DIST_VERS: pkg_install LXC_BASE_PACKAGES not yet implemented" ;;
-esac
+lxc_distro_setup() {
+    case $DIST_ID in
+        ubuntu|debian) LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_debian}" ;;
+        arch)          LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_arch}" ;;
+        fedora)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_fedora}" ;;
+        centos)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_centos}" ;;
+        *) err_msg "$DIST_ID-$DIST_VERS: pkg_install LXC_BASE_PACKAGES not yet implemented" ;;
+    esac
+}
 
 lxc_install_base_packages() {
     info_msg "install LXC_BASE_PACKAGES in container $1"
