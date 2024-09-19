@@ -164,9 +164,16 @@ EOF
 }
 
 main() {
-    required_commands \
-        sudo systemctl install git wget curl \
-        || exit
+    case $1 in
+        install|remove|instance)
+            nginx_distro_setup
+            apache_distro_setup
+            uWSGI_distro_setup
+            required_commands \
+                sudo systemctl install git wget curl \
+                || exit
+            ;;
+    esac
 
     local _usage="unknown or missing $1 command $2"
 
@@ -898,6 +905,10 @@ _searxng.instance.inspect() {
 }
 
 searxng.doc.rst() {
+
+    local APACHE_SITES_AVAILABLE="/etc/apache2/sites-available"
+    local NGINX_APPS_AVAILABLE="/etc/nginx/default.apps-available"
+
     local debian="${SEARXNG_PACKAGES_debian}"
     local arch="${SEARXNG_PACKAGES_arch}"
     local fedora="${SEARXNG_PACKAGES_fedora}"

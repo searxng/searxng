@@ -135,6 +135,8 @@ main() {
     local exit_val
     local _usage="unknown or missing $1 command $2"
 
+    lxc_distro_setup
+
     # don't check prerequisite when in recursion
     if [[ ! $1 == __* ]] && [[ ! $1 == --help  ]]; then
         if ! in_container; then
