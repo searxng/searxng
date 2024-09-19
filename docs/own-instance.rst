@@ -56,8 +56,8 @@ instance.  This means that the user of the public instance does not know whether
 their requests are logged, aggregated, and sent or sold to a third party.
 
 Also, public instances without proper protection are more vulnerable to abuse of
-the search service which may cause the external service to enforce
-CAPTCHAs, or to ban the IP address of the instance.  Thus, search requests would return less
+the search service, which may cause the external service to enforce
+CAPTCHAs or to ban the IP address of the instance.  Thus, search requests would return less
 results.
 
 I see. What about private instances?
@@ -81,6 +81,6 @@ features of SearXNG are available to users no matter what kind of instance they
 use.
 
 For those on the go, or just wanting to try SearXNG for the first time, public
-instances are the best choice.  Additionally, public instance are making the
-world a better place by giving those who cannot, or do not, want to run an
+instances are the best choice.  Public instances are also making the
+world a better place by giving those who cannot, or do not want to, run an
 instance access to a privacy-respecting search service.
