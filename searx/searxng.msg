@@ -55,6 +55,7 @@ STYLE_NAMES = {
     'AUTO': 'auto',
     'LIGHT': 'light',
     'DARK': 'dark',
+    'BLACK': 'black',
 }
 
 BRAND_CUSTOM_LINKS = {
