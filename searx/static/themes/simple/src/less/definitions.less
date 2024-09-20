@@ -229,6 +229,14 @@
   --color-doc-code-background: #4d5a6f;
 }
 
+.black-themes() {
+  --color-base-background: #000;
+  --color-base-background-mobile: #000;
+  --color-header-background: #000;
+  --color-footer-background: #000;
+  --color-sidebar-background: #000;
+}
+
 /// Dark Theme (autoswitch based on device pref)
 @media (prefers-color-scheme: dark) {
   :root.theme-auto {
@@ -239,6 +247,11 @@
 // Dark Theme by preferences
 :root.theme-dark {
   .dark-themes();
+}
+
+:root.theme-black {
+  .dark-themes();
+  .black-themes();
 }
 
 /// General Size

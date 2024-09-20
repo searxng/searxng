@@ -441,7 +441,7 @@ class Preferences:
             'simple_style': EnumStringSetting(
                 settings['ui']['theme_args']['simple_style'],
                 locked=is_locked('simple_style'),
-                choices=['', 'auto', 'light', 'dark']
+                choices=['', 'auto', 'light', 'dark', 'black']
             ),
             'center_alignment': BooleanSetting(
                 settings['ui']['center_alignment'],
