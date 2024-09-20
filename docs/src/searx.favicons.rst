@@ -1,8 +1,8 @@
-.. _favicons:
+.. _favicons source:
 
-========
-Favicons
-========
+=================
+Favicons (source)
+=================
 
 .. contents::
    :depth: 2

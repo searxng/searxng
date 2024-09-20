@@ -27,7 +27,7 @@ def init():
     if not cfg_file.exists():
         if is_active():
             logger.error(f"missing favicon config: {cfg_file}")
-        cfg_file = config.DEFAULT_CFG_TOML
+        cfg_file = config.DEFAULT_CFG_TOML_PATH
 
     logger.debug(f"load favicon config: {cfg_file}")
     cfg = config.FaviconConfig.from_toml_file(cfg_file, use_cache=True)

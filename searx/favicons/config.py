@@ -13,10 +13,10 @@ from .proxy import FaviconProxyConfig
 CONFIG_SCHEMA: int = 1
 """Version of the configuration schema."""
 
-TOML_CACHE: dict[str, "FaviconConfig"] = {}
+TOML_CACHE_CFG: dict[str, "FaviconConfig"] = {}
 """Cache config objects by TOML's filename."""
 
-DEFAULT_CFG_TOML = pathlib.Path(__file__).parent / "favicons.toml"
+DEFAULT_CFG_TOML_PATH = pathlib.Path(__file__).parent / "favicons.toml"
 
 
 class FaviconConfig(BaseModel):
@@ -40,7 +40,7 @@ class FaviconConfig(BaseModel):
         specifies whether a cache should be used.
         """
 
-        cached = TOML_CACHE.get(str(cfg_file))
+        cached = TOML_CACHE_CFG.get(str(cfg_file))
         if use_cache and cached:
             return cached
 
@@ -57,6 +57,6 @@ class FaviconConfig(BaseModel):
 
             cfg = cls(**cfg)
             if use_cache and cached:
-                TOML_CACHE[str(cfg_file.resolve())] = cfg
+                TOML_CACHE_CFG[str(cfg_file.resolve())] = cfg
 
             return cfg
