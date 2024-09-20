@@ -1,0 +1,18 @@
+<fieldset>{{- '' -}}
+    <legend id="pref_spellcheck">{{- _('Spell Check') -}}</legend>{{- '' -}}
+    <div class="value">{{- '' -}}
+      <select name='spellcheck' aria-labelledby="pref_spellcheck">{{- '' -}}
+        <option value="1"
+                {%- if spellcheck == '1' %} selected="selected" {%- endif -%}>
+                {{- _('On') -}}
+        </option>{{- '' -}}
+        <option value="0"
+                {%- if spellcheck == '0' %} selected="selected" {%- endif -%}>
+                {{- _('Off') -}}
+        </option>{{- '' -}}
+      </select>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="description">
+      {{- _('Spell check search queries') -}}
+    </div>{{- '' -}}
+  </fieldset>{{- '' -}}
