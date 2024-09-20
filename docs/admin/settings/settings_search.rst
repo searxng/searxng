@@ -43,13 +43,9 @@
   - ``wikipedia``
 
 ``favicon_resolver``:
-  :ref:`Favicon resolver <favicons>`, leave blank to turn off the feature by
-  default.
-
-  - ``allesedv``
-  - ``duckduckgo``
-  - ``google``
-  - ``yandex``
+  To activate favicons in SearXNG's result list select a default
+  favicon-resolver, leave blank to turn off the feature.  Don't activate the
+  favicons before reading the :ref:`Favicons documentation <favicons>`.
 
 ``default_lang``:
   Default search language - leave blank to detect from browser information or
