@@ -8,7 +8,7 @@
 {%- macro tab_header(name, id, label, checked) -%}
 <input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %}>
 <label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
-<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
+<section id="tab-content-{{ id }}" role="tabpanel" aria-hidden="false">
 {%- endmacro -%}
 
 {%- macro tab_footer() -%}
@@ -27,11 +27,11 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{%- macro checkbox_onoff_reversed(name, checked) -%}
+{%- macro checkbox_onoff_reversed(name, checked, labelledby) -%}
   <input type="checkbox" {{- ' ' -}}
          name="{{ name }}" {{- ' ' -}}
          id="{{ name }}" {{- ' ' -}}
-         aria-labelledby="pref_{{ name }}"{{- ' ' -}}
+         {%- if labelledby -%} aria-labelledby="{{ labelledby }}"{{- ' ' -}}{%- endif -%}
          class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
          {%- if checked -%} checked{%- endif -%}>
 {%- endmacro -%}
@@ -42,9 +42,9 @@
 <fieldset>{{- '' -}}
     <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
     <div class="value">
-      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+      {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}
     </div>{{- '' -}}
-    <div class="description">
+    <div class="description" id="{{ 'plugin_labelledby' + plugin.id }}">
       {{- _(plugin.description) -}}
     </div>{{- '' -}}
 </fieldset>
@@ -90,7 +90,7 @@
   <td class="{{ label }}">{{- '' -}}
     {%- if stats[engine_name].time != None -%}
     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
-    <span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
+    <span class="stacked-bar-chart" aria-hidden="true">
         {%- if max_rate95 is not none and max_rate95 > 0 -%}
         <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- '' -}}
         <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- '' -}}
@@ -127,7 +127,7 @@
   {%- if checker_result or errors -%}
     <td class="{{ label }} column-reliability">{{- '' -}}
       <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
-        <span aria-labelledby="{{engine_name}}_reliability">
+        <span>
           {{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
         </span>{{- '' -}}
       </a>{{- '' -}}

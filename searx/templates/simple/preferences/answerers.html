@@ -33,10 +33,10 @@
     {%- for plugin in plugins -%}
       {%- if plugin.preference_section == 'query' -%}
         <tr>{{- '' -}}
-          <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>{{- '' -}}
+          <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}</td>{{- '' -}}
           <td>{{ plugin.query_keywords|join(', ') }}</td>{{- '' -}}
           <td>{{ _(plugin.name) }}</td>{{- '' -}}
-          <td>{{ _(plugin.description) }}</td>{{- '' -}}
+          <td id="{{ 'plugin_labelledby' + plugin.id }}">{{ _(plugin.description) }}</td>{{- '' -}}
           <td>{{ plugin.query_examples }}</td>{{- '' -}}
         </tr>
       {%- endif -%}

@@ -5,6 +5,7 @@
 from datetime import datetime
 from unittest.mock import Mock
 from requests import HTTPError
+from parameterized import parameterized
 from searx.engines import load_engines, tineye
 from tests import SearxTestCase
 
@@ -23,13 +24,13 @@ class TinEyeTests(SearxTestCase):  # pylint: disable=missing-class-docstring
         response.raise_for_status.side_effect = HTTPError()
         self.assertRaises(HTTPError, lambda: tineye.response(response))
 
-    def test_returns_empty_list_for_422(self):
+    @parameterized.expand([(400), (422)])
+    def test_returns_empty_list(self, status_code):
         response = Mock()
         response.json.return_value = {}
-        response.status_code = 422
+        response.status_code = status_code
         response.raise_for_status.side_effect = HTTPError()
-        with self.assertLogs(tineye.logger) as _dev_null:
-            results = tineye.response(response)
+        results = tineye.response(response)
         self.assertEqual(0, len(results))
 
     def test_logs_format_for_422(self):
@@ -61,15 +62,6 @@ class TinEyeTests(SearxTestCase):  # pylint: disable=missing-class-docstring
         with self.assertLogs(tineye.logger) as assert_logs_context:
             tineye.response(response)
             self.assertIn(tineye.DOWNLOAD_ERROR, ','.join(assert_logs_context.output))
-
-    def test_empty_list_for_400(self):
-        response = Mock()
-        response.json.return_value = {}
-        response.status_code = 400
-        response.raise_for_status.side_effect = HTTPError()
-        with self.assertLogs(tineye.logger) as _dev_null:
-            results = tineye.response(response)
-        self.assertEqual(0, len(results))
 
     def test_logs_description_for_400(self):
         description = 'There was a problem with that request. Error ID: ad5fc955-a934-43c1-8187-f9a61d301645'
