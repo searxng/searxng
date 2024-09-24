@@ -2,6 +2,8 @@
 # pylint: disable=missing-module-docstring
 """Test some code from module :py:obj:`searx.locales`"""
 
+from __future__ import annotations
+from parameterized import parameterized
 from searx import locales
 from searx.sxng_locales import sxng_locales
 from tests import SearxTestCase
@@ -13,98 +15,104 @@ class TestLocales(SearxTestCase):
     - :py:obj:`searx.locales.match_locale`
     """
 
-    def test_match_locale(self):
+    @classmethod
+    def setUpClass(cls):
+        cls.locale_tag_list = [x[0] for x in sxng_locales]
 
-        locale_tag_list = [x[0] for x in sxng_locales]
-
+    @parameterized.expand(
+        [
+            'de',
+            'fr',
+            'zh',
+        ]
+    )
+    def test_locale_languages(self, locale: str):
         # Test SearXNG search languages
+        self.assertEqual(locales.match_locale(locale, self.locale_tag_list), locale)
 
-        self.assertEqual(locales.match_locale('de', locale_tag_list), 'de')
-        self.assertEqual(locales.match_locale('fr', locale_tag_list), 'fr')
-        self.assertEqual(locales.match_locale('zh', locale_tag_list), 'zh')
-
+    @parameterized.expand(
+        [
+            ('ca-es', 'ca-ES'),
+            ('de-at', 'de-AT'),
+            ('de-de', 'de-DE'),
+            ('en-UK', 'en-GB'),
+            ('fr-be', 'fr-BE'),
+            ('fr-be', 'fr-BE'),
+            ('fr-ca', 'fr-CA'),
+            ('fr-ch', 'fr-CH'),
+            ('zh-cn', 'zh-CN'),
+            ('zh-tw', 'zh-TW'),
+            ('zh-hk', 'zh-HK'),
+        ]
+    )
+    def test_match_region(self, locale: str, expected_locale: str):
         # Test SearXNG search regions
+        self.assertEqual(locales.match_locale(locale, self.locale_tag_list), expected_locale)
 
-        self.assertEqual(locales.match_locale('ca-es', locale_tag_list), 'ca-ES')
-        self.assertEqual(locales.match_locale('de-at', locale_tag_list), 'de-AT')
-        self.assertEqual(locales.match_locale('de-de', locale_tag_list), 'de-DE')
-        self.assertEqual(locales.match_locale('en-UK', locale_tag_list), 'en-GB')
-        self.assertEqual(locales.match_locale('fr-be', locale_tag_list), 'fr-BE')
-        self.assertEqual(locales.match_locale('fr-be', locale_tag_list), 'fr-BE')
-        self.assertEqual(locales.match_locale('fr-ca', locale_tag_list), 'fr-CA')
-        self.assertEqual(locales.match_locale('fr-ch', locale_tag_list), 'fr-CH')
-        self.assertEqual(locales.match_locale('zh-cn', locale_tag_list), 'zh-CN')
-        self.assertEqual(locales.match_locale('zh-tw', locale_tag_list), 'zh-TW')
-        self.assertEqual(locales.match_locale('zh-hk', locale_tag_list), 'zh-HK')
-
+    @parameterized.expand(
+        [
+            ('zh-hans', 'zh-CN'),
+            ('zh-hans-cn', 'zh-CN'),
+            ('zh-hant', 'zh-TW'),
+            ('zh-hant-tw', 'zh-TW'),
+        ]
+    )
+    def test_match_lang_script_code(self, locale: str, expected_locale: str):
         # Test language script code
+        self.assertEqual(locales.match_locale(locale, self.locale_tag_list), expected_locale)
 
-        self.assertEqual(locales.match_locale('zh-hans', locale_tag_list), 'zh-CN')
-        self.assertEqual(locales.match_locale('zh-hans-cn', locale_tag_list), 'zh-CN')
-        self.assertEqual(locales.match_locale('zh-hant', locale_tag_list), 'zh-TW')
-        self.assertEqual(locales.match_locale('zh-hant-tw', locale_tag_list), 'zh-TW')
+    def test_locale_de(self):
+        self.assertEqual(locales.match_locale('de', ['de-CH', 'de-DE']), 'de-DE')
+        self.assertEqual(locales.match_locale('de', ['de-CH', 'de-DE']), 'de-DE')
 
-        # Test individual locale lists
-
+    def test_locale_es(self):
         self.assertEqual(locales.match_locale('es', [], fallback='fallback'), 'fallback')
-
-        self.assertEqual(locales.match_locale('de', ['de-CH', 'de-DE']), 'de-DE')
-        self.assertEqual(locales.match_locale('de', ['de-CH', 'de-DE']), 'de-DE')
         self.assertEqual(locales.match_locale('es', ['ES']), 'ES')
         self.assertEqual(locales.match_locale('es', ['es-AR', 'es-ES', 'es-MX']), 'es-ES')
         self.assertEqual(locales.match_locale('es-AR', ['es-AR', 'es-ES', 'es-MX']), 'es-AR')
         self.assertEqual(locales.match_locale('es-CO', ['es-AR', 'es-ES']), 'es-ES')
         self.assertEqual(locales.match_locale('es-CO', ['es-AR']), 'es-AR')
 
-        # Tests from the commit message of 9ae409a05a
+    @parameterized.expand(
+        [
+            ('zh-TW', ['zh-HK'], 'zh-HK'),  # A user selects region 'zh-TW' which should end in zh_HK.
+            # hint: CN is 'Hans' and HK ('Hant') fits better to TW ('Hant')
+            ('zh', ['zh-CN'], 'zh-CN'),  # A user selects only the language 'zh' which should end in CN
+            ('fr', ['fr-CA'], 'fr-CA'),  # A user selects only the language 'fr' which should end in fr_CA
+            ('nl', ['nl-BE'], 'nl-BE'),  # A user selects only the language 'fr' which should end in fr_CA
+            # Territory tests
+            ('en', ['en-GB'], 'en-GB'),  # A user selects only a language
+            (
+                'fr',
+                ['fr-FR', 'fr-CA'],
+                'fr-FR',
+            ),  # the engine supports fr_FR and fr_CA since no territory is given, fr_FR takes priority
+        ]
+    )
+    def test_locale_optimized_selected(self, locale: str, locale_list: list[str], expected_locale: str):
+        """
+        Tests from the commit message of 9ae409a05a
 
-        # Assumption:
-        #   A. When a user selects a language the results should be optimized according to
-        #      the selected language.
-        #
-        #   B. When user selects a language and a territory the results should be
-        #      optimized with first priority on territory and second on language.
+        Assumption:
+          A. When a user selects a language the results should be optimized according to
+             the selected language.
+        """
+        self.assertEqual(locales.match_locale(locale, locale_list), expected_locale)
 
-        # Assume we have an engine that supports the following locales:
-        locale_tag_list = ['zh-CN', 'zh-HK', 'nl-BE', 'fr-CA']
+    @parameterized.expand(
+        [
+            ('fr-BE', ['fr-FR', 'fr-CA', 'nl-BE'], 'nl-BE'),  # A user selects region 'fr-BE' which should end in nl-BE
+            ('fr', ['fr-BE', 'fr-CH'], 'fr-BE'),  # A user selects fr with 2 locales,
+            # the get_engine_locale selects the locale by looking at the "population
+            # percent" and this percentage has an higher amount in BE (68.%)
+            # compared to CH (21%)
+        ]
+    )
+    def test_locale_optimized_territory(self, locale: str, locale_list: list[str], expected_locale: str):
+        """
+        Tests from the commit message of 9ae409a05a
 
-        # Examples (Assumption A.)
-        # ------------------------
-
-        # A user selects region 'zh-TW' which should end in zh_HK.
-        # hint: CN is 'Hans' and HK ('Hant') fits better to TW ('Hant')
-        self.assertEqual(locales.match_locale('zh-TW', locale_tag_list), 'zh-HK')
-
-        # A user selects only the language 'zh' which should end in CN
-        self.assertEqual(locales.match_locale('zh', locale_tag_list), 'zh-CN')
-
-        # A user selects only the language 'fr' which should end in fr_CA
-        self.assertEqual(locales.match_locale('fr', locale_tag_list), 'fr-CA')
-
-        # The difference in priority on the territory is best shown with a
-        # engine that supports the following locales:
-        locale_tag_list = ['fr-FR', 'fr-CA', 'en-GB', 'nl-BE']
-
-        # A user selects only a language
-        self.assertEqual(locales.match_locale('en', locale_tag_list), 'en-GB')
-
-        # hint: the engine supports fr_FR and fr_CA since no territory is given,
-        # fr_FR takes priority ..
-        self.assertEqual(locales.match_locale('fr', locale_tag_list), 'fr-FR')
-
-        # Examples (Assumption B.)
-        # ------------------------
-
-        #  A user selects region 'fr-BE' which should end in nl-BE
-        self.assertEqual(locales.match_locale('fr-BE', locale_tag_list), 'nl-BE')
-
-        # If the user selects a language and there are two locales like the
-        # following:
-
-        locale_tag_list = ['fr-BE', 'fr-CH']
-
-        # The get_engine_locale selects the locale by looking at the "population
-        # percent" and this percentage has an higher amount in BE (68.%)
-        # compared to CH (21%)
-
-        self.assertEqual(locales.match_locale('fr', locale_tag_list), 'fr-BE')
+          B. When user selects a language and a territory the results should be
+             optimized with first priority on territory and second on language.
+        """
+        self.assertEqual(locales.match_locale(locale, locale_list), expected_locale)

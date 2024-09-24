@@ -6,6 +6,8 @@ from pathlib import Path
 import os
 from unittest.mock import patch
 
+from parameterized import parameterized
+
 from searx.exceptions import SearxSettingsException
 from searx import settings_loader
 from tests import SearxTestCase
@@ -31,13 +33,13 @@ class TestDefaultSettings(SearxTestCase):  # pylint: disable=missing-class-docst
         settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
         self.assertFalse(settings['general']['debug'])
-        self.assertTrue(isinstance(settings['general']['instance_name'], str))
+        self.assertIsInstance(settings['general']['instance_name'], str)
         self.assertEqual(settings['server']['secret_key'], "ultrasecretkey")
-        self.assertTrue(isinstance(settings['server']['port'], int))
-        self.assertTrue(isinstance(settings['server']['bind_address'], str))
-        self.assertTrue(isinstance(settings['engines'], list))
-        self.assertTrue(isinstance(settings['doi_resolvers'], dict))
-        self.assertTrue(isinstance(settings['default_doi_resolver'], str))
+        self.assertIsInstance(settings['server']['port'], int)
+        self.assertIsInstance(settings['server']['bind_address'], str)
+        self.assertIsInstance(settings['engines'], list)
+        self.assertIsInstance(settings['doi_resolvers'], dict)
+        self.assertIsInstance(settings['default_doi_resolver'], str)
 
 
 class TestUserSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
@@ -50,11 +52,14 @@ class TestUserSettings(SearxTestCase):  # pylint: disable=missing-class-docstrin
         with self.assertRaises(ValueError):
             self.assertFalse(settings_loader.is_use_default_settings({'use_default_settings': 0}))
 
-    def test_user_settings_not_found(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("not_exists.yml")}):
-            with self.assertRaises(EnvironmentError):
-                _s, _m = settings_loader.load_settings()
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': "/folder/not/exists"}):
+    @parameterized.expand(
+        [
+            _settings("not_exists.yml"),
+            "/folder/not/exists",
+        ]
+    )
+    def test_user_settings_not_found(self, path: str):
+        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': path}):
             with self.assertRaises(EnvironmentError):
                 _s, _m = settings_loader.load_settings()
 
