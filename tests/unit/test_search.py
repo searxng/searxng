@@ -110,7 +110,7 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
             search.search()
         self.assertEqual(search.actual_timeout, 10.0)
 
-    def test_external_bang(self):
+    def test_external_bang_valid(self):
         search_query = SearchQuery(
             'yes yes',
             [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
@@ -124,8 +124,9 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
         search = searx.search.Search(search_query)
         results = search.search()
         # For checking if the user redirected with the youtube external bang
-        self.assertTrue(results.redirect_url is not None)
+        self.assertIsNotNone(results.redirect_url)
 
+    def test_external_bang_none(self):
         search_query = SearchQuery(
             'youtube never gonna give you up',
             [EngineRef(PUBLIC_ENGINE_NAME, 'general')],
@@ -140,4 +141,4 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
         with self.app.test_request_context('/search'):
             results = search.search()
         # This should not redirect
-        self.assertTrue(results.redirect_url is None)
+        self.assertIsNone(results.redirect_url)
