@@ -10,17 +10,18 @@ about = {
 safesearch = True
 paging = True
 base_url = 'https://search.aol.com/aol/search'
+pz = 10
 
 
 def request(query, params):
-    page = ((params['pageno'] - 1) * 15) + 1
+    page = ((params['pageno'] - 1) * pz) + 1
 
     safesearch = 'i' if params['safesearch'] == '1' else 'r' if params['safesearch'] == '2' else 'p'
 
     query_params = {
         'q': query,
         'b': page,
-        'pz': 15
+        'pz': pz
     }
 
     params['url'] = f'{base_url}?{urlencode(query_params)}'
