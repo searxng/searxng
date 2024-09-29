@@ -7,6 +7,7 @@ from lxml import html
 
 from dateutil.relativedelta import relativedelta
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
+from searx.enginelib.traits import EngineTraits
 
 about = {
     'website': 'https://mojeek.com',
@@ -20,6 +21,8 @@ paging = True  # paging is only supported for general search
 safesearch = True
 time_range_support = True  # time range search is supported for general and news
 max_page = 10
+
+send_accept_language_header = True
 
 base_url = "https://www.mojeek.com"
 
@@ -42,6 +45,11 @@ news_url_xpath = './/h2/a/@href'
 news_title_xpath = './/h2/a'
 news_content_xpath = './/p[@class="s"]'
 
+language_param = 'lb'
+region_param = 'arc'
+
+traits: EngineTraits
+
 
 def init(_):
     if search_type not in ('', 'images', 'news'):
@@ -53,6 +61,8 @@ def request(query, params):
         'q': query,
         'safe': min(params['safesearch'], 1),
         'fmt': search_type,
+        language_param: traits.get_language(params['searxng_locale'], ''),
+        region_param: traits.get_region(params['searxng_locale'], ''),
     }
 
     if search_type == '':
@@ -130,3 +140,25 @@ def response(resp):
         return _news_results(dom)
 
     raise ValueError(f"Invalid search type {search_type}")
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    # pylint: disable=import-outside-toplevel
+    from searx import network
+    from searx.locales import get_official_locales, region_tag
+    from babel import Locale, UnknownLocaleError
+    import contextlib
+
+    resp = network.get(base_url + "/preferences")
+    dom = html.fromstring(resp.text)
+
+    for code in eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value'):
+        with contextlib.suppress(UnknownLocaleError):
+            Locale(code)
+            engine_traits.languages[code] = code
+
+    for code in eval_xpath_list(dom, f'//select[@name="{region_param}"]/option/@value'):
+        for locale in get_official_locales(code):
+            if locale.language in engine_traits.languages:
+                print('region:', code, locale.english_name)
+                engine_traits.regions[region_tag(locale)] = code
