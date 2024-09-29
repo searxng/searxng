@@ -30,6 +30,7 @@ run:  install
 PHONY += install uninstall
 install uninstall:
 	$(Q)./manage pyenv.$@
+	$(Q)./manage git.$@
 
 PHONY += clean
 clean: py.clean docs.clean node.clean nvm.clean test.clean

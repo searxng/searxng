@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$SEARXNG_PRECOMMIT" = "true" ]; then
+    # inspired from: https://prettier.io/docs/en/precommit.html#option-4-shell-script
+    staged_files=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+    python_files=$(echo "$staged_files" | grep '\.py$')
+    # Only attempt to run the formatter if Python files were changes
+    if [ -n "$python_files" ]; then
+        echo "$python_files" | xargs ./manage format.python
+        echo "$python_files" | xargs git add
+    fi
+fi

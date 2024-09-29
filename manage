@@ -94,6 +94,9 @@ pyenv.:
   OK        : test if virtualenv is OK
 format.:
   python    : format Python code source using black
+git.:
+  install   : Installs developer git utilities, such as hooks
+  uninstall : Removes developer git utilities previously installed
 pygments.:
   less      : build LESS files for pygments
 EOF
@@ -316,9 +319,27 @@ pyenv.uninstall() {
 }
 
 format.python() {
-    build_msg TEST "[format.python] black \$BLACK_TARGETS"
-    pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
-    dump_return $?
+    if [ -z "$1" ]; then
+        build_msg TEST "[format.python] black \$BLACK_OPTIONS \$BLACK_TARGETS"
+        pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    else
+        build_msg TEST "[format.python] black \$BLACK_OPTIONS $@"
+        pyenv.cmd black "${BLACK_OPTIONS[@]}" "$@"
+    fi
+}
+
+git.install() {
+    if [ -d ".git/hooks" ]; then
+        cp .githooks/pre-commit .git/hooks/pre-commit
+    else
+        build_msg INSTALL "Could not find '.git/hooks', hooks were not installed"
+    fi
+}
+
+git.uninstall() {
+    if [ -f ".git/hooks/pre-commit" ]; then
+        rm .git/hooks/pre-commit
+    fi
 }
 
 # shellcheck disable=SC2119
