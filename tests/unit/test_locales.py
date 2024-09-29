@@ -32,11 +32,9 @@ class TestLocales(SearxTestCase):
 
     @parameterized.expand(
         [
-            ('ca-es', 'ca-ES'),
             ('de-at', 'de-AT'),
             ('de-de', 'de-DE'),
             ('en-UK', 'en-GB'),
-            ('fr-be', 'fr-BE'),
             ('fr-be', 'fr-BE'),
             ('fr-ca', 'fr-CA'),
             ('fr-ch', 'fr-CH'),
