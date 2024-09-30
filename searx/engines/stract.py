@@ -7,6 +7,7 @@ ends.
 
 from json import dumps
 from searx.utils import searx_useragent
+from searx.enginelib.traits import EngineTraits
 
 about = {
     "website": "https://stract.com/",
@@ -18,7 +19,10 @@ about = {
 categories = ['general']
 paging = True
 
-search_url = "https://stract.com/beta/api/search"
+base_url = "https://stract.com/beta/api"
+search_url = base_url + "/search"
+
+traits: EngineTraits
 
 
 def request(query, params):
@@ -29,7 +33,14 @@ def request(query, params):
         'Content-Type': 'application/json',
         'User-Agent': searx_useragent(),
     }
-    params['data'] = dumps({'query': query, 'page': params['pageno'] - 1})
+    region = traits.get_region(params["searxng_locale"], default=traits.all_locale)
+    params['data'] = dumps(
+        {
+            'query': query,
+            'page': params['pageno'] - 1,
+            'selectedRegion': region,
+        }
+    )
 
     return params
 
@@ -47,3 +58,24 @@ def response(resp):
         )
 
     return results
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    # pylint: disable=import-outside-toplevel
+    from searx import network
+    from babel import Locale, languages
+    from searx.locales import region_tag
+
+    territories = Locale("en").territories
+
+    json = network.get(base_url + "/docs/openapi.json").json()
+    regions = json['components']['schemas']['Region']['enum']
+
+    engine_traits.all_locale = regions[0]
+
+    for region in regions[1:]:
+        for code, name in territories.items():
+            if region not in (code, name):
+                continue
+            for lang in languages.get_official_languages(code, de_facto=True):
+                engine_traits.regions[region_tag(Locale(lang, code))] = region
