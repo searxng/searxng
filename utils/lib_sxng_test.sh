@@ -93,13 +93,8 @@ test.robot() {
 test.rst() {
     build_msg TEST "[reST markup] ${RST_FILES[*]}"
 
-    local rst2html=rst2html
-    if [ "3.8" == "$(python -c 'import sys; print(".".join([str(x) for x in sys.version_info[:2]]))')" ]; then
-       rst2html=rst2html.py
-    fi
-
     for rst in "${RST_FILES[@]}"; do
-        pyenv.cmd "${rst2html}" --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
+        pyenv.cmd rst2html --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
     done
 }
 
