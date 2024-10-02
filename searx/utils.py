@@ -754,3 +754,17 @@ def js_variable_to_python(js_variable):
     s = s.replace(chr(1), ':')
     # load the JSON and return the result
     return json.loads(s)
+
+
+def take_n(input_list, limit):
+    """
+    Get the first n items of a list.
+
+    :param input_list: The list to select the first n items from.
+    :param limit: The maximum amount of items to return.
+
+    :returns The first n items of the list.
+    """
+    if len(input_list) > limit:
+        return input_list[:limit]
+    return input_list
