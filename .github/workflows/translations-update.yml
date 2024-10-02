@@ -16,9 +16,9 @@ jobs:
         fetch-depth: '0'
         token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.12'
         architecture: 'x64'
     - name: Cache Python dependencies
       id: cache-python
@@ -28,7 +28,7 @@ jobs:
           ./local
           ./.nvm
           ./node_modules
-        key: python-ubuntu-20.04-3.9-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+        key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
     - name: weblate & git setup
       env:
         WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}

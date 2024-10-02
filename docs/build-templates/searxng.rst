@@ -113,7 +113,7 @@ ${fedora_build}
 
        (${SERVICE_USER})$ command -v python && python --version
        $SEARXNG_PYENV/bin/python
-       Python 3.8.1
+       Python 3.11.10
 
        # update pip's boilerplate ..
        pip install -U pip
