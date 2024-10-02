@@ -20,20 +20,15 @@
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
 <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
-  {{- result_open_link(result.url, "url_wrapper") -}}
-  {% if not rtl %}
-    {%- if favicon_resolver != "" %}
-    <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
-    {%- endif -%}
+  {{- result_open_link(result.url, "url_header") -}}
+  {%- if favicon_resolver != "" %}
+  <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
   {%- endif -%}
-  {%- for part in get_pretty_url(result.parsed_url) -%}
-  <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
-  {%- endfor %}
-  {% if rtl %}
-    {%- if favicon_resolver != "" %}
-    <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
-    {%- endif -%}
-  {%- endif -%}
+  <div class="url_wrapper">
+    {%- for part in get_pretty_url(result.parsed_url) -%}
+    <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
+    {%- endfor %}
+  </div>
   {{- result_close_link() -}}
   {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
