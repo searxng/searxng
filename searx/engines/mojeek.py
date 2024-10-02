@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Mojeek (general, images, news)"""
 
+from typing import TYPE_CHECKING
+
 from datetime import datetime
 from urllib.parse import urlencode
 from lxml import html
@@ -48,6 +50,13 @@ news_content_xpath = './/p[@class="s"]'
 language_param = 'lb'
 region_param = 'arc'
 
+_delta_kwargs = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
+
+if TYPE_CHECKING:
+    import logging
+
+    logger = logging.getLogger()
+
 traits: EngineTraits
 
 
@@ -69,7 +78,8 @@ def request(query, params):
         args['s'] = 10 * (params['pageno'] - 1)
 
     if params['time_range'] and search_type != 'images':
-        args["since"] = (datetime.now() - relativedelta(**{f"{params['time_range']}s": 1})).strftime("%Y%m%d")
+        kwargs = {_delta_kwargs[params['time_range']]: 1}
+        args["since"] = (datetime.now() - relativedelta(**kwargs)).strftime("%Y%m%d")  # type: ignore
         logger.debug(args["since"])
 
     params['url'] = f"{base_url}/search?{urlencode(args)}"
@@ -104,7 +114,7 @@ def _image_results(dom):
                 'template': 'images.html',
                 'url': extract_text(eval_xpath(result, image_url_xpath)),
                 'title': extract_text(eval_xpath(result, image_title_xpath)),
-                'img_src': base_url + extract_text(eval_xpath(result, image_img_src_xpath)),
+                'img_src': base_url + extract_text(eval_xpath(result, image_img_src_xpath)),  # type: ignore
                 'content': '',
             }
         )
@@ -150,7 +160,7 @@ def fetch_traits(engine_traits: EngineTraits):
     import contextlib
 
     resp = network.get(base_url + "/preferences")
-    dom = html.fromstring(resp.text)
+    dom = html.fromstring(resp.text)  # type: ignore
 
     for code in eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value'):
         with contextlib.suppress(UnknownLocaleError):
@@ -158,7 +168,5 @@ def fetch_traits(engine_traits: EngineTraits):
             engine_traits.languages[code] = code
 
     for code in eval_xpath_list(dom, f'//select[@name="{region_param}"]/option/@value'):
-        for locale in get_official_locales(code):
-            if locale.language in engine_traits.languages:
-                print('region:', code, locale.english_name)
-                engine_traits.regions[region_tag(locale)] = code
+        for locale in get_official_locales(code, engine_traits.languages, de_facto=False):
+            engine_traits.regions[region_tag(locale)] = code

@@ -22,10 +22,10 @@ class TestLocales(SearxTestCase):
         self.assertEqual(locales.match_locale('de', locale_tag_list), 'de')
         self.assertEqual(locales.match_locale('fr', locale_tag_list), 'fr')
         self.assertEqual(locales.match_locale('zh', locale_tag_list), 'zh')
+        self.assertEqual(locales.match_locale('ca', locale_tag_list), 'ca')
 
         # Test SearXNG search regions
 
-        self.assertEqual(locales.match_locale('ca-es', locale_tag_list), 'ca-ES')
         self.assertEqual(locales.match_locale('de-at', locale_tag_list), 'de-AT')
         self.assertEqual(locales.match_locale('de-de', locale_tag_list), 'de-DE')
         self.assertEqual(locales.match_locale('en-UK', locale_tag_list), 'en-GB')
