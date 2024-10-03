@@ -34,12 +34,25 @@ except ImportError:
 
 engine_type = 'offline'
 auth_plugin = 'caching_sha2_password'
+
 host = "127.0.0.1"
+"""Hostname of the DB connector"""
+
 port = 3306
+"""Port of the DB connector"""
+
 database = ""
+"""Name of the database."""
+
 username = ""
+"""Username for the DB connection."""
+
 password = ""
+"""Password for the DB connection."""
+
 query_str = ""
+"""SQL query that returns the result items."""
+
 limit = 10
 paging = True
 result_template = 'key-value.html'
