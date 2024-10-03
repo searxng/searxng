@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Mojeek (general, images, news)"""
 
+from typing import TYPE_CHECKING
+
 from datetime import datetime
 from urllib.parse import urlencode
 from lxml import html
 
 from dateutil.relativedelta import relativedelta
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
+from searx.enginelib.traits import EngineTraits
 
 about = {
     'website': 'https://mojeek.com',
@@ -20,6 +23,8 @@ paging = True  # paging is only supported for general search
 safesearch = True
 time_range_support = True  # time range search is supported for general and news
 max_page = 10
+
+send_accept_language_header = True
 
 base_url = "https://www.mojeek.com"
 
@@ -42,6 +47,18 @@ news_url_xpath = './/h2/a/@href'
 news_title_xpath = './/h2/a'
 news_content_xpath = './/p[@class="s"]'
 
+language_param = 'lb'
+region_param = 'arc'
+
+_delta_kwargs = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
+
+if TYPE_CHECKING:
+    import logging
+
+    logger = logging.getLogger()
+
+traits: EngineTraits
+
 
 def init(_):
     if search_type not in ('', 'images', 'news'):
@@ -53,13 +70,16 @@ def request(query, params):
         'q': query,
         'safe': min(params['safesearch'], 1),
         'fmt': search_type,
+        language_param: traits.get_language(params['searxng_locale'], ''),
+        region_param: traits.get_region(params['searxng_locale'], ''),
     }
 
     if search_type == '':
         args['s'] = 10 * (params['pageno'] - 1)
 
     if params['time_range'] and search_type != 'images':
-        args["since"] = (datetime.now() - relativedelta(**{f"{params['time_range']}s": 1})).strftime("%Y%m%d")
+        kwargs = {_delta_kwargs[params['time_range']]: 1}
+        args["since"] = (datetime.now() - relativedelta(**kwargs)).strftime("%Y%m%d")  # type: ignore
         logger.debug(args["since"])
 
     params['url'] = f"{base_url}/search?{urlencode(args)}"
@@ -94,7 +114,7 @@ def _image_results(dom):
                 'template': 'images.html',
                 'url': extract_text(eval_xpath(result, image_url_xpath)),
                 'title': extract_text(eval_xpath(result, image_title_xpath)),
-                'img_src': base_url + extract_text(eval_xpath(result, image_img_src_xpath)),
+                'img_src': base_url + extract_text(eval_xpath(result, image_img_src_xpath)),  # type: ignore
                 'content': '',
             }
         )
@@ -130,3 +150,23 @@ def response(resp):
         return _news_results(dom)
 
     raise ValueError(f"Invalid search type {search_type}")
+
+
+def fetch_traits(engine_traits: EngineTraits):
+    # pylint: disable=import-outside-toplevel
+    from searx import network
+    from searx.locales import get_official_locales, region_tag
+    from babel import Locale, UnknownLocaleError
+    import contextlib
+
+    resp = network.get(base_url + "/preferences")
+    dom = html.fromstring(resp.text)  # type: ignore
+
+    for code in eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value'):
+        with contextlib.suppress(UnknownLocaleError):
+            Locale(code)
+            engine_traits.languages[code] = code
+
+    for code in eval_xpath_list(dom, f'//select[@name="{region_param}"]/option/@value'):
+        for locale in get_official_locales(code, engine_traits.languages, de_facto=False):
+            engine_traits.regions[region_tag(locale)] = code
