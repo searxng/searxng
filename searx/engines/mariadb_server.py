@@ -21,6 +21,9 @@ This is an example configuration for querying a MariaDB server:
      limit: 5
      query_str: 'SELECT * from my_table WHERE my_column=%(query)s'
 
+Implementations
+===============
+
 """
 
 from typing import TYPE_CHECKING
@@ -39,12 +42,25 @@ if TYPE_CHECKING:
 
 
 engine_type = 'offline'
+
 host = "127.0.0.1"
+"""Hostname of the DB connector"""
+
 port = 3306
+"""Port of the DB connector"""
+
 database = ""
+"""Name of the database."""
+
 username = ""
+"""Username for the DB connection."""
+
 password = ""
+"""Password for the DB connection."""
+
 query_str = ""
+"""SQL query that returns the result items."""
+
 limit = 10
 paging = True
 result_template = 'key-value.html'
