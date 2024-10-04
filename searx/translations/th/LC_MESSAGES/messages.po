@@ -7,22 +7,22 @@
 # yuttct <yuttct@yahoo.com>, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
 # abhabongse <abhabongse@users.noreply.translate.codeberg.org>, 2024.
+# tutakrab <tutakrab@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-03 15:52+0000\n"
-"PO-Revision-Date: 2024-09-24 19:18+0000\n"
-"Last-Translator: abhabongse <abhabongse@users.noreply.translate.codeberg.org>"
+"POT-Creation-Date: 2024-10-03 11:11+0000\n"
+"PO-Revision-Date: 2024-10-02 16:10+0000\n"
+"Last-Translator: tutakrab <tutakrab@users.noreply.translate.codeberg.org>"
 "\n"
-"Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
-"th/>\n"
 "Language: th\n"
+"Language-Team: Thai "
+"<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -160,10 +160,15 @@ msgstr "สว่าง"
 msgid "dark"
 msgstr "มืด"
 
+#. STYLE_NAMES['BLACK']
+#: searx/searxng.msg
+msgid "black"
+msgstr ""
+
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr ""
+msgstr "ช่วงเวลาทำงาน"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:50
@@ -171,21 +176,23 @@ msgid "About"
 msgstr "เกี่ยวกับ"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/searxng.msg
+#: searx/engines/wttr.py:32 searx/searxng.msg
 msgid "Average temp."
 msgstr "อุณหภูมิเฉลี่ย"
 
 #. WEATHER_TERMS['CLOUD COVER']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:91 searx/searxng.msg
 msgid "Cloud cover"
 msgstr "เมฆปกคลุม"
 
 #. WEATHER_TERMS['CONDITION']
+#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
 #: searx/searxng.msg
 msgid "Condition"
 msgstr "สภาพ"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
+#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
 #: searx/searxng.msg
 msgid "Current condition"
 msgstr "สภาพปัจจุบัน"
@@ -196,21 +203,25 @@ msgid "Evening"
 msgstr "เย็น"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/engines/open_meteo.py:81
+#: searx/engines/wttr.py:59 searx/searxng.msg
 msgid "Feels like"
 msgstr "รู้สึกเหมือน"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:64 searx/engines/open_meteo.py:93
+#: searx/engines/wttr.py:68 searx/searxng.msg
 msgid "Humidity"
 msgstr "ความชื้น"
 
 #. WEATHER_TERMS['MAX TEMP.']
+#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
 #: searx/searxng.msg
 msgid "Max temp."
 msgstr "อุณหภูมิสูงสุด"
 
 #. WEATHER_TERMS['MIN TEMP.']
+#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
 #: searx/searxng.msg
 msgid "Min temp."
 msgstr "อุณหภูมิต่ำสุด"
@@ -231,82 +242,89 @@ msgid "Noon"
 msgstr "เที่ยงวัน"
 
 #. WEATHER_TERMS['PRESSURE']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:95 searx/searxng.msg
 msgid "Pressure"
 msgstr "ความดัน"
 
 #. WEATHER_TERMS['SUNRISE']
+#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
 #: searx/searxng.msg
 msgid "Sunrise"
 msgstr "อาทิตย์ขึ้น"
 
 #. WEATHER_TERMS['SUNSET']
+#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
 #: searx/searxng.msg
 msgid "Sunset"
 msgstr "อาทิตย์ตก"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:48 searx/engines/open_meteo.py:76
+#: searx/engines/wttr.py:55 searx/searxng.msg
 msgid "Temperature"
 msgstr "อุณหภูมิ"
 
 #. WEATHER_TERMS['UV INDEX']
+#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
 #: searx/searxng.msg
 msgid "UV index"
 msgstr "ดัชนีรังสียูวี"
 
 #. WEATHER_TERMS['VISIBILITY']
+#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
 #: searx/searxng.msg
 msgid "Visibility"
-msgstr ""
+msgstr "ทัศนวิสัย"
 
 #. WEATHER_TERMS['WIND']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:58 searx/engines/open_meteo.py:86
+#: searx/engines/wttr.py:62 searx/searxng.msg
 msgid "Wind"
 msgstr "ลม"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:85 searx/searxng.msg
 msgid "subscribers"
-msgstr ""
+msgstr "ผู้ติดตาม"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:86 searx/searxng.msg
 msgid "posts"
 msgstr "โพสต์"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:87 searx/searxng.msg
 msgid "active users"
-msgstr ""
+msgstr "ผู้ใช้งานขณะนี้"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/searxng.msg
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "คอมเมนต์"
 
 #. SOCIAL_MEDIA_TERMS['USER']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:129 searx/engines/lemmy.py:164 searx/searxng.msg
 msgid "user"
 msgstr "ผู้ใช้งาน"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:131 searx/engines/lemmy.py:165 searx/searxng.msg
 msgid "community"
 msgstr "ประชาคม"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:78 searx/searxng.msg
 msgid "points"
 msgstr "คะแนน"
 
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr ""
+msgstr "ชื่อเรื่อง"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:81 searx/searxng.msg
 msgid "author"
 msgstr "ผู้เขียน"
 
@@ -329,7 +347,7 @@ msgstr "ตอบแล้ว"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:281
+#: searx/engines/qwant.py:288
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:332
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -430,6 +448,10 @@ msgstr "ฟังก์ชันเชิงสถิติ"
 msgid "Compute {functions} of the arguments"
 msgstr "คำนวณ {functions} จากอาร์กิวเมนต์"
 
+#: searx/engines/mozhi.py:57
+msgid "Synonyms"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:159
 msgid "Get directions"
 msgstr "ขอเส้นทาง"
@@ -442,7 +464,7 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:283
+#: searx/engines/qwant.py:290
 msgid "Channel"
 msgstr "ช่องทาง"
 
@@ -477,8 +499,8 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"ไม่สามารถอ่านภาพจากลิงก์ได้ เนื่องจากอาจเป็นไฟล์ประเภทที่ไม่รองรับ ระบบ TinEye "
-"รองรับเฉพาะไฟล์ประเภท JPEG, PNG, GIF, BMP, TIFF หรือ WebP เท่านั้น"
+"ไม่สามารถอ่านภาพจากลิงก์ได้ เนื่องจากอาจเป็นไฟล์ประเภทที่ไม่รองรับ ระบบ "
+"TinEye รองรับเฉพาะไฟล์ประเภท JPEG, PNG, GIF, BMP, TIFF หรือ WebP เท่านั้น"
 
 #: searx/engines/tineye.py:51
 #, fuzzy
@@ -486,8 +508,9 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้"
-"อย ถึงจะสามารถหาภาพที่คล้ายกันได้"
+"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye "
+"นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้อย "
+"ถึงจะสามารถหาภาพที่คล้ายกันได้"
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -502,7 +525,7 @@ msgstr "บันทึกการให้คะแนน"
 msgid "File quality"
 msgstr "คุณภาพไฟล์"
 
-#: searx/plugins/calculator.py:12
+#: searx/plugins/calculator.py:14
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "คำนวณนิพจน์คณิตศาสตร์ผ่านช่องค้นหา"
 
@@ -531,8 +554,7 @@ msgstr "เปิดการเข้าถึง DOI ที่เขียน�
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr ""
-"หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
+msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
 
 #: searx/plugins/self_info.py:9
 #, fuzzy
@@ -545,7 +567,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"แสดง IP ของคุณหากคิวรีเป็นไอพี และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
+"แสดง IP ของคุณหากคิวรีเป็นไอพี "
+"และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -567,7 +590,8 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "ปลั๊กอินนี้จะตรวจสอบว่าที่อยู่ของคำขอเป็นโหนดทางออกของ Tor หรือไม่ "
-"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก SearXNG"
+"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก "
+"SearXNG"
 
 #: searx/plugins/tor_check.py:61
 msgid ""
@@ -1666,3 +1690,4 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
+
