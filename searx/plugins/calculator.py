@@ -3,9 +3,12 @@
 """
 
 import ast
+import re
 import operator
 from multiprocessing import Process, Queue
+from typing import Callable
 
+import babel.numbers
 from flask_babel import gettext
 
 from searx.plugins import logger
@@ -19,7 +22,7 @@ plugin_id = 'calculator'
 
 logger = logger.getChild(plugin_id)
 
-operators = {
+operators: dict[type, Callable] = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
     ast.Mult: operator.mul,
@@ -39,11 +42,15 @@ def _eval_expr(expr):
     >>> _eval_expr('1 + 2*3**(4^5) / (6 + -7)')
     -5.0
     """
-    return _eval(ast.parse(expr, mode='eval').body)
+    try:
+        return _eval(ast.parse(expr, mode='eval').body)
+    except ZeroDivisionError:
+        # This is undefined
+        return ""
 
 
 def _eval(node):
-    if isinstance(node, ast.Constant) and isinstance(node.value, int):
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
         return node.value
 
     if isinstance(node, ast.BinOp):
@@ -93,6 +100,16 @@ def post_search(_request, search):
     # replace commonly used math operators with their proper Python operator
     query = query.replace("x", "*").replace(":", "/")
 
+    # parse the number system in a localized way
+    def _decimal(match: re.Match) -> str:
+        val = match.string[match.start() : match.end()]
+        val = babel.numbers.parse_decimal(val, search.search_query.locale, numbering_system="latn")
+        return str(val)
+
+    decimal = search.search_query.locale.number_symbols["latn"]["decimal"]
+    group = search.search_query.locale.number_symbols["latn"]["group"]
+    query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
+
     # only numbers and math operators are accepted
     if any(str.isalpha(c) for c in query):
         return True
@@ -102,10 +119,8 @@ def post_search(_request, search):
 
     # Prevent the runtime from being longer than 50 ms
     result = timeout_func(0.05, _eval_expr, query_py_formatted)
-    if result is None:
+    if result is None or result == "":
         return True
-    result = str(result)
-
-    if result != query:
-        search.result_container.answers['calculate'] = {'answer': f"{query} = {result}"}
+    result = babel.numbers.format_decimal(result, locale=search.search_query.locale)
+    search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
     return True
