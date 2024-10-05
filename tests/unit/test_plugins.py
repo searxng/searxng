@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+import babel
 from mock import Mock
 from searx import plugins
 from tests import SearxTestCase
 
 
 def get_search_mock(query, **kwargs):
+    lang = kwargs.get("lang", "en-US")
+    kwargs["locale"] = babel.Locale.parse(lang, sep="-")
     return Mock(search_query=Mock(query=query, **kwargs), result_container=Mock(answers={}))
 
 
