@@ -42,20 +42,35 @@ class PluginCalculator(SearxTestCase):  # pylint: disable=missing-class-docstrin
 
     @parameterized.expand(
         [
-            "1+1",
-            "1-1",
-            "1*1",
-            "1/1",
-            "1**1",
-            "1^1",
+            ("1+1", "2", "en-US"),
+            ("1-1", "0", "en-US"),
+            ("1*1", "1", "en-US"),
+            ("1/1", "1", "en-US"),
+            ("1**1", "1", "en-US"),
+            ("1^1", "1", "en-US"),
+            ("1,000.0+1,000.0", "2,000", "en-US"),
+            ("1.0+1.0", "2", "en-US"),
+            ("1.0-1.0", "0", "en-US"),
+            ("1.0*1.0", "1", "en-US"),
+            ("1.0/1.0", "1", "en-US"),
+            ("1.0**1.0", "1", "en-US"),
+            ("1.0^1.0", "1", "en-US"),
+            ("1.000,0+1.000,0", "2.000", "de-DE"),
+            ("1,0+1,0", "2", "de-DE"),
+            ("1,0-1,0", "0", "de-DE"),
+            ("1,0*1,0", "1", "de-DE"),
+            ("1,0/1,0", "1", "de-DE"),
+            ("1,0**1,0", "1", "de-DE"),
+            ("1,0^1,0", "1", "de-DE"),
         ]
     )
-    def test_int_operations(self, operation):
+    def test_localized_query(self, operation: str, contains_result: str, lang: str):
         request = Mock(remote_addr='127.0.0.1')
-        search = get_search_mock(query=operation, pageno=1)
+        search = get_search_mock(query=operation, lang=lang, pageno=1)
         result = self.store.call(self.store.plugins, 'post_search', request, search)
         self.assertTrue(result)
         self.assertIn('calculate', search.result_container.answers)
+        self.assertIn(contains_result, search.result_container.answers['calculate']['answer'])
 
     @parameterized.expand(
         [
