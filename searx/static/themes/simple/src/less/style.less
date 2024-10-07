@@ -170,6 +170,8 @@ article[data-vim-selected].category-social {
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
+  box-sizing: border-box;
+  width: 100%;
   .ltr-border-left(0.2rem solid transparent);
 
   h3 {
@@ -1096,7 +1098,8 @@ summary.title {
   .result {
     background: var(--color-result-background);
     border: 1px solid var(--color-result-background);
-    margin: 1rem 10px;
+    margin: 1rem 2%;
+    width: 96%;
     .rounded-corners;
   }
 
