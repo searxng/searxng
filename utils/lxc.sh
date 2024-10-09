@@ -556,7 +556,7 @@ EOF
 check_connectivity() {
     local ret_val=0
     info_msg "check internet connectivity ..."
-    if ! lxc exec "${1}" -- ping -c 1 8.8.8.8 &>/dev/null; then
+    if ! lxc exec "${1}" -- ping -c 1 9.9.9.9 &>/dev/null; then
         ret_val=1
         err_msg "no internet connectivity!"
         info_msg "Most often the connectivity is blocked by a docker installation:"
