@@ -93,7 +93,7 @@ Online Currency
 
    - :py:obj:`processors.online_currency <searx.search.processors.online_currency>`
 
-*no engine of this type is documented yet / comming soon*
+*no engine of this type is documented yet / coming soon*
 
 .. _online dictionary:
 
@@ -104,4 +104,4 @@ Online Dictionary
 
    - :py:obj:`processors.online_dictionary <searx.search.processors.online_dictionary>`
 
-*no engine of this type is documented yet / comming soon*
+*no engine of this type is documented yet / coming soon*

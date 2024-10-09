@@ -32,7 +32,7 @@ void_arch = 'x86_64'
 """Default architecture to search for.  For valid values see :py:obj:`ARCH_RE`"""
 
 ARCH_RE = re.compile('aarch64-musl|armv6l-musl|armv7l-musl|x86_64-musl|aarch64|armv6l|armv7l|i686|x86_64')
-"""Regular expresion that match a architecture in the query string."""
+"""Regular expression that match a architecture in the query string."""
 
 
 def request(query, params):

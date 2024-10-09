@@ -142,7 +142,7 @@ search_url = base_url + '/sp/search'
 
 # specific xpath variables
 # ads xpath //div[@id="results"]/div[@id="sponsored"]//div[@class="result"]
-# not ads: div[@class="result"] are the direct childs of div[@id="results"]
+# not ads: div[@class="result"] are the direct children of div[@id="results"]
 search_form_xpath = '//form[@id="search"]'
 """XPath of Startpage's origin search form
 

@@ -31,7 +31,7 @@ paging = True
 number_of_results = 10
 
 # shortcuts for advanced search
-shorcut_dict = {
+shortcut_dict = {
     # user-friendly keywords
     'format:': 'dcformat:',
     'author:': 'dccreator:',
@@ -55,7 +55,7 @@ shorcut_dict = {
 
 def request(query, params):
     # replace shortcuts with API advanced search keywords
-    for key, val in shorcut_dict.items():
+    for key, val in shortcut_dict.items():
         query = re.sub(key, val, query)
 
     # basic search

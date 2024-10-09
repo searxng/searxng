@@ -120,7 +120,7 @@ _TR_LOCALES: list[str] = []
 
 
 def get_translation_locales() -> list[str]:
-    """Returns the list of transaltion locales (*underscore*).  The list is
+    """Returns the list of translation locales (*underscore*).  The list is
     generated from the translation folders in :origin:`searx/translations`"""
 
     global _TR_LOCALES  # pylint:disable=global-statement

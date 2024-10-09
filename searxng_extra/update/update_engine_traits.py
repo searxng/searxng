@@ -85,7 +85,7 @@ def main():
 
 
 def fetch_traits_map():
-    """Fetchs supported languages for each engine and writes json file with those."""
+    """Fetches supported languages for each engine and writes json file with those."""
     network.set_timeout_for_thread(10.0)
 
     def log(msg):

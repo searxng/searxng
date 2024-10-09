@@ -325,7 +325,7 @@ class ClientPref:
     # hint: searx.webapp.get_client_settings should be moved into this class
 
     locale: babel.Locale
-    """Locale prefered by the client."""
+    """Locale preferred by the client."""
 
     def __init__(self, locale: Optional[babel.Locale] = None):
         self.locale = locale

@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 
 class FALSE:
-    """Class of ``False`` singelton"""
+    """Class of ``False`` singleton"""
 
     # pylint: disable=multiple-statements
     def __init__(self, msg):
@@ -81,7 +81,7 @@ class Config:
         return cfg
 
     def __init__(self, cfg_schema: typing.Dict, deprecated: typing.Dict[str, str]):
-        """Construtor of class Config.
+        """Constructor of class Config.
 
         :param cfg_schema: Schema of the configuration
         :param deprecated: dictionary that maps deprecated configuration names to a messages
@@ -159,7 +159,7 @@ class Config:
         return pathlib.Path(str(val))
 
     def pyobj(self, name, default=UNSET):
-        """Get python object refered by full qualiffied name (FQN) in the config
+        """Get python object referred by full qualiffied name (FQN) in the config
         string."""
 
         fqn = self.get(name, default)

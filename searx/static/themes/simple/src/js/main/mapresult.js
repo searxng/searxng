@@ -67,7 +67,7 @@
         } */
       });
 
-      // this event occour only once per element
+      // this event occur only once per element
       event.preventDefault();
     });
   });

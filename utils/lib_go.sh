@@ -56,7 +56,7 @@ EOF
 
 go.ver_info(){
 
-    # print informations about a golang distribution. To print filename
+    # print information about a golang distribution. To print filename
     # sha256 and size of the archive that fits to your OS and host:
     #
     #   go.ver_info "${GO_VERSION}" archive "$(go.os)" "$(go.arch)" filename sha256 size

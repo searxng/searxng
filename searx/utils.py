@@ -48,7 +48,7 @@ _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 
 _FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None  # type: ignore
-"""fasttext model to predict laguage of a search term"""
+"""fasttext model to predict language of a search term"""
 
 SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in sxng_locales])
 """Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`)."""
