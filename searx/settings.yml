@@ -1283,6 +1283,12 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: openlibrary
+    engine: openlibrary
+    shortcut: ol
+    timeout: 5
+    disabled: true
+
   - name: openmeteo
     engine: open_meteo
     shortcut: om
