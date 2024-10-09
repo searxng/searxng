@@ -159,7 +159,7 @@ main() {
             ;;
         copy)
             case $2 in
-                ''|images) lxc_copy_images_localy;;
+                ''|images) lxc_copy_images_locally;;
                 *) usage "$_usage"; exit 42;;
             esac
             ;;
@@ -167,7 +167,7 @@ main() {
             sudo_or_exit
             case $2 in
                 ''|--|containers) remove_containers ;;
-                images) lxc_delete_images_localy ;;
+                images) lxc_delete_images_locally ;;
                 ${LXC_HOST_PREFIX}-*)
                     ! lxc_exists "$2" && warn_msg "container not yet exists: $2" && exit 0
                     if ask_yn "Do you really want to delete container $2"; then
@@ -291,7 +291,7 @@ build_all_containers() {
     rst_title "Build all LXC containers of suite"
     echo
     usage_containers
-    lxc_copy_images_localy
+    lxc_copy_images_locally
     lxc_init_all_containers
     lxc_config_all_containers
     lxc_boilerplate_all_containers
@@ -361,7 +361,7 @@ remove_containers() {
 # images
 # ------
 
-lxc_copy_images_localy() {
+lxc_copy_images_locally() {
     rst_title "copy images" section
     for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
         lxc_image_copy "${LXC_SUITE[i]}" "${LXC_SUITE[i+1]}"
@@ -369,7 +369,7 @@ lxc_copy_images_localy() {
     # lxc image list local: && wait_key
 }
 
-lxc_delete_images_localy() {
+lxc_delete_images_locally() {
     rst_title "Delete LXC images"
     rst_para "local existing images"
     echo

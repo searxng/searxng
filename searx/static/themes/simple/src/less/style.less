@@ -297,7 +297,7 @@ article[data-vim-selected].category-social {
     padding-top: 0.6rem;
     .ltr-padding-right(1rem);
     width: 7rem;
-    height: unset; // remove heigth value that was needed for lazy loading
+    height: unset; // remove height value that was needed for lazy loading
   }
 
   .break {
@@ -399,7 +399,7 @@ article[data-vim-selected].category-social {
     padding-top: 0.6rem;
     .ltr-padding-right(1rem);
     width: 20rem;
-    height: unset; // remove heigth value that was needed for lazy loading
+    height: unset; // remove height value that was needed for lazy loading
   }
 }
 
@@ -639,12 +639,12 @@ summary.title {
   padding-top: 1em;
 }
 
-.sidebar-collapsable {
+.sidebar-collapsible {
   border-top: 1px solid var(--color-sidebar-border);
   padding-bottom: 0.5em;
 }
 
-#sidebar-end-collapsable {
+#sidebar-end-collapsible {
   border-bottom: 1px solid var(--color-sidebar-border);
   width: 100%;
 }
@@ -1007,10 +1007,10 @@ summary.title {
 }
 
 @media screen and (min-width: @phone) and (max-width: @tablet) {
-  // when .center-aligment-yes, see style-center.less
+  // when .center-alignment-yes, see style-center.less
   // the media query includes "min-width: @phone"
   // because the phone layout includes the tablet layout unconditionally.
-  .center-aligment-no {
+  .center-alignment-no {
     .results-tablet();
   }
 }

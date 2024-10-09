@@ -42,7 +42,7 @@ about = {
 }
 
 send_accept_language_header = True
-"""DuckDuckGo-Lite tries to guess user's prefered language from the HTTP
+"""DuckDuckGo-Lite tries to guess user's preferred language from the HTTP
 ``Accept-Language``.  Optional the user can select a region filter (but not a
 language).
 """
@@ -402,7 +402,7 @@ def fetch_traits(engine_traits: EngineTraits):
     """Fetch languages & regions from DuckDuckGo.
 
     SearXNG's ``all`` locale maps DuckDuckGo's "Alle regions" (``wt-wt``).
-    DuckDuckGo's language "Browsers prefered language" (``wt_WT``) makes no
+    DuckDuckGo's language "Browsers preferred language" (``wt_WT``) makes no
     sense in a SearXNG request since SearXNG's ``all`` will not add a
     ``Accept-Language`` HTTP header.  The value in ``engine_traits.all_locale``
     is ``wt-wt`` (the region).

@@ -36,7 +36,7 @@ nvm.is_installed() {
 }
 
 if [[ -z "${NVM_DIR}" ]]; then
-    # nvm is not pre-intalled in $HOME.  Prepare for using nvm from <repo-root>
+    # nvm is not pre-installed in $HOME.  Prepare for using nvm from <repo-root>
     NVM_DIR="$(git rev-parse --show-toplevel)/${NVM_LOCAL_FOLDER}"
 fi
 export NVM_DIR
@@ -93,7 +93,7 @@ nvm.help() {
 nvm.: use nvm (without dot) to execute nvm commands directly
   install   : install NVM locally at $(git rev-parse --show-toplevel)/${NVM_LOCAL_FOLDER}
   clean     : remove NVM installation
-  status    : prompt some status informations about nvm & node
+  status    : prompt some status information about nvm & node
   nodejs    : install Node.js latest LTS
   cmd ...   : run command ... in NVM environment
   bash      : start bash interpreter with NVM environment sourced
@@ -108,7 +108,7 @@ nvm.install() {
         pushd "${NVM_DIR}" &> /dev/null
         git fetch --all | prefix_stdout "  ${_Yellow}||${_creset} "
     else
-        # delete any leftovers from previos installations
+        # delete any leftovers from previous installations
         if nvm.is_local; then
             rm -rf "${NVM_DIR}"
         fi

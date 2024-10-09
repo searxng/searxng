@@ -772,7 +772,7 @@ docs.clean() {
 
 docs.prebuild() {
     # Dummy function to run some actions before sphinx-doc build gets started.
-    # This finction needs to be overwritten by the application script.
+    # This function needs to be overwritten by the application script.
     true
     dump_return $?
 }
@@ -1065,7 +1065,7 @@ nginx_remove_app() {
     # usage:  nginx_remove_app <myapp.conf>
 
     info_msg "remove nginx app: $1"
-    nginx_dissable_app "$1"
+    nginx_disable_app "$1"
     rm -f "${NGINX_APPS_AVAILABLE}/$1"
 }
 
@@ -1082,7 +1082,7 @@ nginx_enable_app() {
     nginx_reload
 }
 
-nginx_dissable_app() {
+nginx_disable_app() {
 
     # usage:  nginx_disable_app <myapp.conf>
 
@@ -1192,7 +1192,7 @@ apache_remove_site() {
     # usage:  apache_remove_site <mysite.conf>
 
     info_msg "remove apache site: $1"
-    apache_dissable_site "$1"
+    apache_disable_site "$1"
     rm -f "${APACHE_SITES_AVAILABLE}/$1"
 }
 
@@ -1222,7 +1222,7 @@ apache_enable_site() {
     apache_reload
 }
 
-apache_dissable_site() {
+apache_disable_site() {
 
     # usage:  apache_disable_site <mysite.conf>
 

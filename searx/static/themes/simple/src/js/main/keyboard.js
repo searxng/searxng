@@ -441,7 +441,7 @@ searxng.ready(function () {
       var body = document.getElementsByTagName('body')[0];
       body.appendChild(helpPanel);
     } else {
-      // togggle hidden
+      // toggle hidden
       helpPanel.classList.toggle('invisible');
       return;
     }

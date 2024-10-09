@@ -8,7 +8,7 @@ window.searxng = (function (w, d) {
 
   'use strict';
 
-  // not invented here tookit with bugs fixed elsewhere
+  // not invented here toolkit with bugs fixed elsewhere
   // purposes : be just good enough and as small as possible
 
   // from https://plainjs.com/javascript/events/live-binding-event-handlers-14/

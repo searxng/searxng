@@ -44,7 +44,7 @@
 
         {%- if infoboxes -%}
           <div id="infoboxes">
-            <details open class="sidebar-collapsable">
+            <details open class="sidebar-collapsible">
               <summary class="title">{{ _('Info') }}</summary>
               {%- for infobox in infoboxes -%}
                 {%- include 'simple/elements/infobox.html' -%}
@@ -67,7 +67,7 @@
           {%- include 'simple/elements/apis.html' -%}
         {%- endif -%}
 
-        <div id="sidebar-end-collapsable"></div>
+        <div id="sidebar-end-collapsible"></div>
     </div>
 
     {% if corrections %}

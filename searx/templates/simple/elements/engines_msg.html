@@ -1,9 +1,9 @@
 <div id="engines_msg">
   {% if (not results and not answers) or not max_response_time %}
-  <details class="sidebar-collapsable" open>
+  <details class="sidebar-collapsible" open>
     <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
   {% else %}
-  <details class="sidebar-collapsable">
+  <details class="sidebar-collapsible">
     <summary class="title" id="engines_msg-title">{{ _('Response time') }}: {{ max_response_time | round(1) }} {{ _('seconds') }}</summary>
   {% endif %}
     <table class="engine-stats" id="engines_msg-table">

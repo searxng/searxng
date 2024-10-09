@@ -208,7 +208,7 @@ def response(resp):
                 'title': backlink['image_name'],
                 'img_src': backlink['url'],
                 'format': tineye_match['image_format'],
-                'widht': tineye_match['width'],
+                'width': tineye_match['width'],
                 'height': tineye_match['height'],
                 'publishedDate': backlink['crawl_date'],
             }
