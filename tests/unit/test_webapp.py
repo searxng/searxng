@@ -4,6 +4,7 @@
 import logging
 import json
 from urllib.parse import ParseResult
+import babel
 from mock import Mock
 from searx.results import Timing
 
@@ -82,6 +83,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
                 redirect_url=None,
                 engine_data={},
             )
+            search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
 
         self.setattr4test(Search, 'search', search_mock)
 

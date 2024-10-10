@@ -1,14 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
+import random
+import string
 import lxml.etree
 from lxml import html
 from parameterized.parameterized import parameterized
 
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import utils
-
 from tests import SearxTestCase
+
+
+def random_string(length, choices=string.ascii_letters):
+    return ''.join(random.choice(choices) for _ in range(length))
 
 
 class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
@@ -234,4 +239,4 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertIsNone(l)
 
         with self.assertRaises(ValueError):
-            utils.detect_language(None)
+            utils.detect_language(None)  # type: ignore
