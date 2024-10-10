@@ -157,11 +157,15 @@ class EngineProcessor(ABC):
         if search_query.time_range and not self.engine.time_range_support:
             return None
 
+        if search_query.license and not self.engine.license_support:
+            return None
+
         params = {}
         params['category'] = engine_category
         params['pageno'] = search_query.pageno
         params['safesearch'] = search_query.safesearch
         params['time_range'] = search_query.time_range
+        params['license'] = search_query.license
         params['engine_data'] = search_query.engine_data.get(self.engine_name, {})
         params['searxng_locale'] = search_query.lang
 

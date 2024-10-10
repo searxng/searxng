@@ -32,6 +32,7 @@ ENGINE_DEFAULT_ARGS = {
     "paging": False,
     "time_range_support": False,
     "safesearch": False,
+    "license_support": False,
     # settings.yml
     "categories": ["general"],
     "enable_http": False,
