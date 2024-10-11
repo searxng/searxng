@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Engine to search in collaborative software platforms based on Gitea_.
+"""Engine to search in collaborative software platforms based on Gitea_ or Forgejo_.
 
 .. _Gitea: https://about.gitea.com/
+.. _Forgejo: https://forgejo.org/
 
 Configuration
 =============
@@ -22,6 +23,11 @@ Optional settings are:
     engine: gitea
     base_url: https://gitea.com
     shortcut: gitea
+
+  - name: forgejo.com
+    engine: gitea
+    base_url: https://code.forgejo.org
+    shortcut: forgejo
 
 If you would like to use additional instances, just configure new engines in the
 :ref:`settings <settings engine>` and set the ``base_url``.
@@ -95,13 +101,14 @@ def response(resp):
                 'url': item.get('html_url'),
                 'title': item.get('full_name'),
                 'content': ' / '.join(content),
-                'img_src': item.get('owner', {}).get('avatar_url'),
+                # Use Repository Avatar and fall back to Owner Avatar if not set.
+                'thumbnail': item.get('avatar_url') or item.get('owner', {}).get('avatar_url'),
                 'package_name': item.get('name'),
-                'maintainer': item.get('owner', {}).get('login'),
+                'maintainer': item.get('owner', {}).get('username'),
                 'publishedDate': parser.parse(item.get("updated_at") or item.get("created_at")),
                 'tags': item.get('topics', []),
-                'popularity': item.get('stargazers_count'),
-                'homepage': item.get('homepage'),
+                'popularity': item.get('stars_count'),
+                'homepage': item.get('website'),
                 'source_code_url': item.get('clone_url'),
             }
         )
