@@ -24,19 +24,20 @@
 # AndersNordh <AndersNordh@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-03 11:11+0000\n"
-"PO-Revision-Date: 2024-09-23 10:26+0000\n"
-"Last-Translator: AndersNordh "
-"<AndersNordh@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2024-10-05 06:24+0000\n"
+"PO-Revision-Date: 2024-10-08 13:41+0000\n"
+"Last-Translator: AndersNordh <AndersNordh@users.noreply.translate.codeberg."
+"org>\n"
+"Language-Team: Swedish <https://translate.codeberg.org/projects/searxng/"
+"searxng/sv/>\n"
 "Language: sv\n"
-"Language-Team: Swedish "
-"<https://translate.codeberg.org/projects/searxng/searxng/sv/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.7.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -177,12 +178,12 @@ msgstr "mörk"
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr ""
+msgstr "svart"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
-msgstr "Drifftid"
+msgstr "Upptid"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
 #: searx/searxng.msg searx/templates/simple/base.html:50
@@ -357,28 +358,28 @@ msgstr "stängd"
 msgid "answered"
 msgstr "svarad"
 
-#: searx/webapp.py:330
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Inga artiklar hittade"
 
 #: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:332
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Källa"
 
-#: searx/webapp.py:334
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Kunde inte ladda nästa sida"
 
-#: searx/webapp.py:491 searx/webapp.py:894
+#: searx/webapp.py:495 searx/webapp.py:898
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
-#: searx/webapp.py:507
+#: searx/webapp.py:511
 msgid "Invalid settings"
 msgstr "Ogiltiga inställningar"
 
-#: searx/webapp.py:584 searx/webapp.py:666
+#: searx/webapp.py:588 searx/webapp.py:670
 msgid "search error"
 msgstr "sökfel"
 
@@ -464,7 +465,7 @@ msgstr "Beräkna {functions} av argumenten"
 
 #: searx/engines/mozhi.py:57
 msgid "Synonyms"
-msgstr ""
+msgstr "Synonymer"
 
 #: searx/engines/openstreetmap.py:159
 msgid "Get directions"
@@ -696,26 +697,26 @@ msgstr "Kontakta instansens underhållare"
 msgid "Click on the magnifier to perform search"
 msgstr "Klicka på förstoringsglaset för att utföra sökning"
 
-#: searx/templates/simple/macros.html:35
+#: searx/templates/simple/macros.html:40
 msgid "Length"
 msgstr "Längd"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:41
 msgid "Views"
 msgstr "Visningar"
 
-#: searx/templates/simple/macros.html:37
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Upphovsman"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "cachad"
 
-#: searx/templates/simple/macros.html:45
+#: searx/templates/simple/macros.html:50
 msgid "proxied"
 msgstr "proxade"
 
@@ -790,27 +791,27 @@ msgstr "Allmänt"
 msgid "Default categories"
 msgstr "Standardkategorier"
 
-#: searx/templates/simple/preferences.html:187
+#: searx/templates/simple/preferences.html:190
 msgid "User interface"
 msgstr "Användargränssnitt"
 
-#: searx/templates/simple/preferences.html:208
+#: searx/templates/simple/preferences.html:211
 msgid "Privacy"
 msgstr "Sekretess"
 
-#: searx/templates/simple/preferences.html:221
+#: searx/templates/simple/preferences.html:224
 msgid "Engines"
 msgstr "Sökmotorer"
 
-#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:226
 msgid "Currently used search engines"
 msgstr "För närvarande använda sökmotorer"
 
-#: searx/templates/simple/preferences.html:231
+#: searx/templates/simple/preferences.html:234
 msgid "Special Queries"
 msgstr "Särskilda förfrågningar"
 
-#: searx/templates/simple/preferences.html:237
+#: searx/templates/simple/preferences.html:240
 msgid "Cookies"
 msgstr "Kakor"
 
@@ -1229,6 +1230,14 @@ msgstr "Vikt"
 #: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Max tid"
+
+#: searx/templates/simple/preferences/favicon.html:2
+msgid "Favicon Resolver"
+msgstr "Favicon resolver"
+
+#: searx/templates/simple/preferences/favicon.html:15
+msgid "Display favicons near search results"
+msgstr "Visa faviconer intill sökresultat"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
@@ -1979,4 +1988,3 @@ msgstr "göm video"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "Sökmotorerna kan inte hämta resultat"
-
