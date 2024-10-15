@@ -57,7 +57,11 @@ def request(query, params):
 
         if params['time_range']:
             search_type = 'search_by_date'
-            timestamp = (datetime.now() - relativedelta(**{f"{params['time_range']}s": 1})).timestamp()
+            timestamp = (
+                # pylint: disable=unexpected-keyword-arg
+                datetime.now()
+                - relativedelta(**{f"{params['time_range']}s": 1})  # type: ignore
+            ).timestamp()
             query_params["numericFilters"] = f"created_at_i>{timestamp}"
 
     params["url"] = f"{base_url}/{search_type}?{urlencode(query_params)}"
