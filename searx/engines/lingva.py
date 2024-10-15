@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Lingva (alternative Google Translate frontend)"""
 
-from json import loads
-
 about = {
     "website": 'https://lingva.ml',
     "wikidata_id": None,
@@ -29,7 +27,7 @@ def request(_query, params):
 def response(resp):
     results = []
 
-    result = loads(resp.text)
+    result = resp.json()
     info = result["info"]
     from_to_prefix = "%s-%s " % (resp.search_params['from_lang'][1], resp.search_params['to_lang'][1])
 
@@ -38,27 +36,40 @@ def response(resp):
 
     if 'definitions' in info:  # pylint: disable=too-many-nested-blocks
         for definition in info['definitions']:
-            if 'list' in definition:
-                for item in definition['list']:
-                    if 'synonyms' in item:
-                        for synonym in item['synonyms']:
-                            results.append({"suggestion": from_to_prefix + synonym})
+            for item in definition.get('list', []):
+                for synonym in item.get('synonyms', []):
+                    results.append({"suggestion": from_to_prefix + synonym})
 
-    infobox = ""
+    data = []
+
+    for definition in info['definitions']:
+        for translation in definition['list']:
+            data.append(
+                {
+                    'text': result['translation'],
+                    'definitions': [translation['definition']] if translation['definition'] else [],
+                    'examples': [translation['example']] if translation['example'] else [],
+                    'synonyms': translation['synonyms'],
+                }
+            )
 
     for translation in info["extraTranslations"]:
         for word in translation["list"]:
-            infobox += f"<dl><dt>{word['word']}</dt>"
+            data.append(
+                {
+                    'text': word['word'],
+                    'definitions': word['meanings'],
+                }
+            )
 
-            for meaning in word["meanings"]:
-                infobox += f"<dd>{meaning}</dd>"
-
-            infobox += "</dl>"
+    if not data and result['translation']:
+        data.append({'text': result['translation']})
 
     results.append(
         {
-            'infobox': result["translation"],
-            'content': infobox,
+            'answer': data[0]['text'],
+            'answer_type': 'translations',
+            'translations': data,
         }
     )
 
