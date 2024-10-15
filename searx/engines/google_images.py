@@ -48,10 +48,12 @@ categories = ['images', 'web']
 paging = True
 max_page = 50
 time_range_support = True
+license_filter_support = True
 safesearch = True
 send_accept_language_header = True
 
 filter_mapping = {0: 'images', 1: 'active', 2: 'active'}
+license_map = {'public': 'cl', 'freetouse': 'cl', 'commercial': 'ol'}
 
 
 def request(query, params):
@@ -70,8 +72,14 @@ def request(query, params):
         + f'&async=_fmt:json,p:1,ijn:{params["pageno"] - 1}'
     )
 
+    tbs_args = []
     if params['time_range'] in time_range_dict:
-        query_url += '&' + urlencode({'tbs': 'qdr:' + time_range_dict[params['time_range']]})
+        tbs_args.append('qdr:' + time_range_dict[params['time_range']])
+    if params['license_filter']:
+        tbs_args.append('sur:' + license_map[params['license_filter']])
+    if tbs_args:
+        query_url += '&' + urlencode({'tbs': ','.join(tbs_args)})
+
     if params['safesearch']:
         query_url += '&' + urlencode({'safe': filter_mapping[params['safesearch']]})
     params['url'] = query_url
