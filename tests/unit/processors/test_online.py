@@ -36,7 +36,9 @@ class TestOnlineProcessor(SearxTestCase):  # pylint: disable=missing-class-docst
     def test_get_params_default_params(self):
         engine = engines.engines[TEST_ENGINE_NAME]
         online_processor = online.OnlineProcessor(engine, TEST_ENGINE_NAME)
-        search_query = SearchQuery('test', [EngineRef(TEST_ENGINE_NAME, 'general')], 'all', 0, 1, None, None, None)
+        search_query = SearchQuery(
+            'test', [EngineRef(TEST_ENGINE_NAME, 'general')], 'all', 0, 1, None, None, None, None
+        )
         params = self._get_params(online_processor, search_query, 'general')
         self.assertIn('method', params)
         self.assertIn('headers', params)
@@ -48,6 +50,8 @@ class TestOnlineProcessor(SearxTestCase):  # pylint: disable=missing-class-docst
     def test_get_params_useragent(self):
         engine = engines.engines[TEST_ENGINE_NAME]
         online_processor = online.OnlineProcessor(engine, TEST_ENGINE_NAME)
-        search_query = SearchQuery('test', [EngineRef(TEST_ENGINE_NAME, 'general')], 'all', 0, 1, None, None, None)
+        search_query = SearchQuery(
+            'test', [EngineRef(TEST_ENGINE_NAME, 'general')], 'all', 0, 1, None, None, None, None
+        )
         params = self._get_params(online_processor, search_query, 'general')
         self.assertIn('User-Agent', params['headers'])

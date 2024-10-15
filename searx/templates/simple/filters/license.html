@@ -1,0 +1,14 @@
+<select name="license_filter" id="license_filter" class="license_filter" aria-label="{{ _('License') }}">{{- '' -}}
+    <option id="license-any" value="" {{ "selected" if license=="" or not license else ""}}>
+        {{- _('None') -}}
+    </option>{{- '' -}}
+    <option id="license-public" value="public" {{ "selected" if license=="public" else ""}}>
+        {{- _('Public domain') -}}
+    </option>{{- '' -}}
+    <option id="license-freetouse" value="freetouse" {{ "selected" if license=="freetouse" else ""}}>
+        {{- _('Free to use') -}}
+    </option>{{- '' -}}
+    <option id="license-commercial" value="commercial" {{ "selected" if license=="commercial" else ""}}>
+        {{- _('Commercial') -}}
+    </option>{{- '' -}}
+</select>

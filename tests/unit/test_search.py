@@ -29,7 +29,7 @@ class SearchQueryTestCase(SearxTestCase):  # pylint: disable=missing-class-docst
     def test_repr(self):
         s = SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g')
         self.assertEqual(
-            repr(s), "SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g', None)"
+            repr(s), "SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g', None, None)"
         )  # noqa
 
     def test_eq(self):
@@ -73,7 +73,7 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_timeout_query_above_default_nomax(self):
         settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery(
-            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 5.0
+            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, None, 5.0
         )
         search = searx.search.Search(search_query)
         with self.app.test_request_context('/search'):
@@ -83,7 +83,7 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_timeout_query_below_default_nomax(self):
         settings['outgoing']['max_request_timeout'] = None
         search_query = SearchQuery(
-            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 1.0
+            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, None, 1.0
         )
         search = searx.search.Search(search_query)
         with self.app.test_request_context('/search'):
@@ -93,7 +93,7 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_timeout_query_below_max(self):
         settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery(
-            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 5.0
+            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, None, 5.0
         )
         search = searx.search.Search(search_query)
         with self.app.test_request_context('/search'):
@@ -103,7 +103,7 @@ class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
     def test_timeout_query_above_max(self):
         settings['outgoing']['max_request_timeout'] = 10.0
         search_query = SearchQuery(
-            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 15.0
+            'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, None, 15.0
         )
         search = searx.search.Search(search_query)
         with self.app.test_request_context('/search'):

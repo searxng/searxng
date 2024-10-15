@@ -131,6 +131,7 @@ def _search_query_to_dict(search_query: SearchQuery) -> typing.Dict[str, typing.
         'pageno': search_query.pageno,
         'safesearch': search_query.safesearch,
         'time_range': search_query.time_range,
+        'license_filter': search_query.license_filter,
     }
 
 

@@ -17,7 +17,10 @@
   <div class="search_filters">
     {% include 'simple/filters/languages.html' %}
     {% include 'simple/filters/time_range.html' %}
-    {% include 'simple/filters/safesearch.html' %}
+    {% if 'images' in selected_categories %}
+      {% include 'simple/filters/safesearch.html' %}
+    {% endif %}
+    {% include 'simple/filters/license.html' %}
   </div>
   <input type="hidden" name="theme" value="{{ theme }}" >
   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
