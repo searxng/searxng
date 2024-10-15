@@ -24,7 +24,7 @@ def request(_query, params):
     request_url = random.choice(base_url) if isinstance(base_url, list) else base_url
     params['url'] = f"{request_url}/translate"
 
-    args = {'source': params['from_lang'][1], 'target': params['to_lang'][1], 'q': params['query']}
+    args = {'source': params['from_lang'][1], 'target': params['to_lang'][1], 'q': params['query'], 'alternatives': 3}
     if api_key:
         args['api_key'] = api_key
     params['data'] = dumps(args)
@@ -42,12 +42,11 @@ def response(resp):
     json_resp = resp.json()
     text = json_resp.get('translatedText')
 
-    from_lang = resp.search_params["from_lang"][1]
-    to_lang = resp.search_params["to_lang"][1]
-    query = resp.search_params["query"]
-    req_url = resp.search_params["req_url"]
+    if not text:
+        return results
 
-    if text:
-        results.append({"answer": text, "url": f"{req_url}/?source={from_lang}&target={to_lang}&q={query}"})
+    translations = [{'text': text}] + [{'text': alternative} for alternative in json_resp.get('alternatives', [])]
+
+    results.append({'answer': text, 'answer_type': 'translations', 'translations': translations})
 
     return results

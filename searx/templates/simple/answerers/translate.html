@@ -1,0 +1,38 @@
+<div class="answer-translations">
+{% for translation in translations %}
+  {% if loop.index > 1 %}
+  <hr />
+  {% endif %}
+  <h3>{{ translation.text }}</h3>
+  {% if translation.transliteration %}
+  <b>translation.transliteration</b>
+  {% endif %} {% if translation.definitions %}
+  <dl>
+    <dt>{{ _('Definitions') }}</dt>
+    <ul>
+    {% for definition in translation.definitions %}
+    <li>{{ definition }}</li>
+    {% endfor %}
+    <ul>
+  </dl>
+  {% endif %} {% if translation.examples %}
+  <dl>
+    <dt>{{ _('Examples') }}</dt>
+    <ul>
+    {% for example in translation.examples %}
+    <li>{{ example }}</li>
+    {% endfor %}
+    </ul>
+  </dl>
+  {% endif %} {% if translation.synonyms %}
+  <dl>
+    <dt>{{ _('Synonyms') }}</dt>
+    <ul>
+    {% for synonym in translation.synonyms %}
+    <li>{{ synonym }}</li>
+    {% endfor %}
+    </ul>
+  </dl>
+  {% endif %}
+{% endfor %}
+</div>
