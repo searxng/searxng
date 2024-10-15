@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Deepl translation engine"""
 
-from json import loads
-
 about = {
     "website": 'https://deepl.com',
     "wikidata_id": 'Q43968444',
@@ -41,16 +39,14 @@ def request(_query, params):
 
 def response(resp):
     results = []
-    result = loads(resp.text)
-    translations = result['translations']
 
-    infobox = "<dl>"
+    result = resp.json()
 
-    for translation in translations:
-        infobox += f"<dd>{translation['text']}</dd>"
+    if not result.get('translations'):
+        return results
 
-    infobox += "</dl>"
+    translations = [{'text': translation['text']} for translation in result['translations']]
 
-    results.append({'answer': infobox})
+    results.append({'answer': translations[0]['text'], 'answer_type': 'translations', 'translations': translations})
 
     return results

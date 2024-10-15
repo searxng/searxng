@@ -35,18 +35,16 @@ def request(query, params):  # pylint: disable=unused-argument
 
 
 def response(resp):
-    results = []
-    results.append(
-        {
-            'url': web_url.format(
-                from_lang=resp.search_params['from_lang'][2],
-                to_lang=resp.search_params['to_lang'][2],
-                query=resp.search_params['query'],
-            ),
-            'title': '[{0}-{1}] {2}'.format(
-                resp.search_params['from_lang'][1], resp.search_params['to_lang'][1], resp.search_params['query']
-            ),
-            'content': resp.json()['responseData']['translatedText'],
-        }
-    )
-    return results
+    json_resp = resp.json()
+    text = json_resp['responseData']['translatedText']
+
+    alternatives = [match['translation'] for match in json_resp['matches'] if match['translation'] != text]
+    translations = [{'text': translation} for translation in [text] + alternatives]
+
+    result = {
+        'answer': translations[0]['text'],
+        'answer_type': 'translations',
+        'translations': translations,
+    }
+
+    return [result]
