@@ -37,6 +37,7 @@ categories = ['images', 'web']
 paging = True
 safesearch = True
 time_range_support = True
+license_filter_support = True
 
 base_url = 'https://www.bing.com/images/async'
 """Bing (Images) search URL"""
@@ -47,6 +48,7 @@ time_map = {
     'month': 60 * 24 * 31,
     'year': 60 * 24 * 365,
 }
+license_map = {'public': 'L1', 'freetouse': 'L2_L3_L5_L6', 'commercial': ''}
 
 
 def request(query, params):
@@ -69,8 +71,12 @@ def request(query, params):
     # time range
     # - example: one year (525600 minutes) 'qft=+filterui:age-lt525600'
 
+    query_params['qft'] = ''
     if params['time_range']:
-        query_params['qft'] = 'filterui:age-lt%s' % time_map[params['time_range']]
+        query_params['qft'] += f"+filterui:age-lt{time_map[params['time_range']]}"
+
+    if params['license_filter']:
+        query_params['qft'] += f"+filterui:license-{license_map[params['license_filter']]}"
 
     params['url'] = base_url + '?' + urlencode(query_params)
 
