@@ -12,7 +12,7 @@ import urllib.parse
 
 import flask
 from httpx import HTTPError
-from pydantic import BaseModel
+import msgspec
 
 from searx import get_setting
 
@@ -41,7 +41,7 @@ def _initial_resolver_map():
     return d
 
 
-class FaviconProxyConfig(BaseModel):
+class FaviconProxyConfig(msgspec.Struct):
     """Configuration of the favicon proxy."""
 
     max_age: int = 60 * 60 * 24 * 7  # seven days
@@ -59,7 +59,7 @@ class FaviconProxyConfig(BaseModel):
     outgoing request of the resolver.  By default, the value from
     :ref:`outgoing.request_timeout <settings outgoing>` setting is used."""
 
-    resolver_map: dict[str, str] = _initial_resolver_map()
+    resolver_map: dict[str, str] = msgspec.field(default_factory=_initial_resolver_map)
     """The resolver_map is a key / value dictionary where the key is the name of
     the resolver and the value is the fully qualifying name (fqn) of resolver's
     function (the callable).  The resolvers from the python module
