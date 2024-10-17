@@ -12,7 +12,6 @@ from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
 
-
 CONTENT_LEN_IGNORED_CHARS_REGEX = re.compile(r'[,;:!?\./\\\\ ()-_]', re.M | re.U)
 WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 
@@ -133,7 +132,7 @@ def result_score(result, priority):
     weight = 1.0
 
     for result_engine in result['engines']:
-        if hasattr(engines[result_engine], 'weight'):
+        if hasattr(engines.get(result_engine), 'weight'):
             weight *= float(engines[result_engine].weight)
 
     weight *= len(result['positions'])
@@ -332,9 +331,13 @@ class ResultContainer:
         return None
 
     def __merge_duplicated_http_result(self, duplicated, result, position):
-        # using content with more text
+        # use content with more text
         if result_content_len(result.get('content', '')) > result_content_len(duplicated.get('content', '')):
             duplicated['content'] = result['content']
+
+        # use title with more text
+        if result_content_len(result.get('title', '')) > len(duplicated.get('title', '')):
+            duplicated['title'] = result['title']
 
         # merge all result's parameters not found in duplicate
         for key in result.keys():
@@ -347,7 +350,7 @@ class ResultContainer:
         # add engine to list of result-engines
         duplicated['engines'].add(result['engine'])
 
-        # using https if possible
+        # use https if possible
         if duplicated['parsed_url'].scheme != 'https' and result['parsed_url'].scheme == 'https':
             duplicated['url'] = result['parsed_url'].geturl()
             duplicated['parsed_url'] = result['parsed_url']
