@@ -87,10 +87,7 @@ from searx.webadapter import (
     get_selected_categories,
     parse_lang,
 )
-from searx.utils import (
-    gen_useragent,
-    dict_subset,
-)
+from searx.utils import gen_useragent, dict_subset
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
@@ -104,13 +101,7 @@ from searx.answerers import (
     answerers,
     ask,
 )
-from searx.metrics import (
-    get_engines_stats,
-    get_engine_errors,
-    get_reliabilities,
-    histogram,
-    counter,
-)
+from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
 from searx.flaskfix import patch_application
 
 from searx.locales import (
@@ -1216,6 +1207,30 @@ def stats_errors():
 def stats_checker():
     result = checker_get_result()
     return jsonify(result)
+
+
+@app.route('/metrics')
+def stats_open_metrics():
+    password = settings['general'].get("open_metrics")
+
+    if not (settings['general'].get("enable_metrics") and password):
+        return Response('open metrics is disabled', status=404, mimetype='text/plain')
+
+    if not request.authorization or request.authorization.password != password:
+        return Response('access forbidden', status=401, mimetype='text/plain')
+
+    filtered_engines = dict(filter(lambda kv: request.preferences.validate_token(kv[1]), engines.items()))
+
+    checker_results = checker_get_result()
+    checker_results = (
+        checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
+    )
+
+    engine_stats = get_engines_stats(filtered_engines)
+    engine_reliabilities = get_reliabilities(filtered_engines, checker_results)
+    metrics_text = openmetrics(engine_stats, engine_reliabilities)
+
+    return Response(metrics_text, mimetype='text/plain')
 
 
 @app.route('/robots.txt', methods=['GET'])
