@@ -30,7 +30,7 @@ import tempfile
 import time
 import typer
 
-from pydantic import BaseModel
+import msgspec
 
 from searx import sqlitedb
 from searx import logger
@@ -90,7 +90,7 @@ def init(cfg: "FaviconCacheConfig"):
         raise NotImplementedError(f"favicons db_type '{cfg.db_type}' is unknown")
 
 
-class FaviconCacheConfig(BaseModel):
+class FaviconCacheConfig(msgspec.Struct):  # pylint: disable=too-few-public-methods
     """Configuration of the favicon cache."""
 
     db_type: Literal["sqlite", "mem"] = "sqlite"
