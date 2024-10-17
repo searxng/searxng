@@ -44,8 +44,14 @@ RUN apk add --no-cache -t build-dependencies \
     uwsgi \
     uwsgi-python3 \
     brotli \
- && pip3 install --break-system-packages --no-cache -r requirements.txt \
- && apk del build-dependencies \
+# For 32bit arm architecture install pydantic from the alpine repos instead of requirements.txt
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "arm" ]; then \
+        apk add --no-cache py3-pydantic && pip install --no-cache --break-system-packages -r <(grep -v '^pydantic' requirements.txt); \
+    else \
+        pip install --no-cache --break-system-packages -r requirements.txt; \
+    fi
+ RUN apk del build-dependencies \
  && rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
