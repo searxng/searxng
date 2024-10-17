@@ -43,7 +43,8 @@ RUN apk add --no-cache -t build-dependencies \
     tini \
     uwsgi \
     uwsgi-python3 \
-    brotli \
+    brotli
+
 # For 32bit arm architecture install pydantic from the alpine repos instead of requirements.txt
 ARG TARGETARCH
 RUN if [ "$TARGETARCH" = "arm" ]; then \
