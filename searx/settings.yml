@@ -1,6 +1,8 @@
 general:
   # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
+  # Application log level - leave blank to use the default 'WARNING' level
+  log_level: "warning"
   # displayed name
   instance_name: "SearXNG"
   # For example: https://example.com/privacy
