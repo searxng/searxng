@@ -180,7 +180,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
     def test_search_rss(self):
         result = self.app.post('/search', data={'q': 'test', 'format': 'rss'})
 
-        self.assertIn(b'<description>Search results for "test" - searx</description>', result.data)
+        self.assertIn(b'<description>Search results for "test" - SearXNG</description>', result.data)
 
         self.assertIn(b'<opensearch:totalResults>3</opensearch:totalResults>', result.data)
 
