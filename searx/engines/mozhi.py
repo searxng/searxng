@@ -4,7 +4,6 @@
 import random
 import re
 from urllib.parse import urlencode
-from flask_babel import gettext
 
 about = {
     "website": 'https://codeberg.org/aryak/mozhi',
@@ -35,30 +34,27 @@ def request(_query, params):
 def response(resp):
     translation = resp.json()
 
-    infobox = ""
+    data = {'text': translation['translated-text'], 'definitions': [], 'examples': []}
 
     if translation['target_transliteration'] and not re.match(
         re_transliteration_unsupported, translation['target_transliteration']
     ):
-        infobox = f"<b>{translation['target_transliteration']}</b>"
+        data['transliteration'] = translation['target_transliteration']
 
     if translation['word_choices']:
         for word in translation['word_choices']:
-            infobox += f"<dl><dt>{word['word']}: {word['definition']}</dt>"
+            if word.get('definition'):
+                data['definitions'].append(word['definition'])
 
-            if word['examples_target']:
-                for example in word['examples_target']:
-                    infobox += f"<dd>{re.sub(r'<|>', '', example)}</dd>"
-                    infobox += f"<dd>{re.sub(r'<|>', '', example)}</dd>"
+            for example in word.get('examples_target', []):
+                data['examples'].append(re.sub(r"<|>", "", example).lstrip('- '))
 
-            infobox += "</dl>"
-
-    if translation['source_synonyms']:
-        infobox += f"<dl><dt>{gettext('Synonyms')}: {', '.join(translation['source_synonyms'])}</dt></dl>"
+    data['synonyms'] = translation.get('source_synonyms', [])
 
     result = {
-        'infobox': translation['translated-text'],
-        'content': infobox,
+        'answer': translation['translated-text'],
+        'answer_type': 'translations',
+        'translations': [data],
     }
 
     return [result]
