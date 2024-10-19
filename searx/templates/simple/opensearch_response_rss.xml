@@ -3,9 +3,9 @@
      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Searx search: {{ q|e }}</title>
+    <title>SearXNG search: {{ q|e }}</title>
     <link>{{ url_for('search', _external=True) }}?q={{ q|e }}</link>
-    <description>Search results for "{{ q|e }}" - searx</description>
+    <description>Search results for "{{ q|e }}" - SearXNG</description>
     <opensearch:totalResults>{{ number_of_results }}</opensearch:totalResults>
     <opensearch:startIndex>1</opensearch:startIndex>
     <opensearch:itemsPerPage>{{ number_of_results }}</opensearch:itemsPerPage>
