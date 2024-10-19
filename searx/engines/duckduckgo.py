@@ -25,6 +25,7 @@ from searx.network import get  # see https://github.com/searxng/searxng/issues/7
 from searx import redisdb
 from searx.enginelib.traits import EngineTraits
 from searx.utils import extr
+from searx.exceptions import SearxEngineCaptchaException
 
 if TYPE_CHECKING:
     import logging
@@ -292,6 +293,15 @@ def request(query, params):
     return params
 
 
+def detect_ddg_captcha(dom):
+    """In case of CAPTCHA ddg open its own *not a Robot* dialog and is
+    not redirected to CAPTCHA page.
+    """
+    if eval_xpath(dom, "//form[@id='challenge-form']"):
+        # set suspend time to zero is OK --> ddg does not block the IP
+        raise SearxEngineCaptchaException(suspended_time=0)
+
+
 def response(resp):
 
     if resp.status_code == 303:
@@ -299,6 +309,7 @@ def response(resp):
 
     results = []
     doc = lxml.html.fromstring(resp.text)
+    detect_ddg_captcha(doc)
 
     result_table = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table')
 

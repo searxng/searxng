@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Exception types raised by SearXNG modules.
 """
+from __future__ import annotations
 
 from typing import Optional, Union
 
@@ -61,7 +62,7 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """This settings contains the default suspended time (default 86400 sec / 1
     day)."""
 
-    def __init__(self, suspended_time: int = None, message: str = 'Access denied'):
+    def __init__(self, suspended_time: int | None = None, message: str = 'Access denied'):
         """Generic exception to raise when an engine denies access to the results.
 
         :param suspended_time: How long the engine is going to be suspended in
@@ -70,12 +71,13 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
         :param message: Internal message.  Defaults to ``Access denied``
         :type message: str
         """
-        suspended_time = suspended_time or self._get_default_suspended_time()
+        if suspended_time is None:
+            suspended_time = self._get_default_suspended_time()
         super().__init__(message + ', suspended_time=' + str(suspended_time))
         self.suspended_time = suspended_time
         self.message = message
 
-    def _get_default_suspended_time(self):
+    def _get_default_suspended_time(self) -> int:
         from searx import get_setting  # pylint: disable=C0415
 
         return get_setting(self.SUSPEND_TIME_SETTING)
@@ -88,7 +90,7 @@ class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
     """This settings contains the default suspended time (default 86400 sec / 1
     day)."""
 
-    def __init__(self, suspended_time=None, message='CAPTCHA'):
+    def __init__(self, suspended_time: int | None = None, message='CAPTCHA'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
@@ -102,7 +104,7 @@ class SearxEngineTooManyRequestsException(SearxEngineAccessDeniedException):
     """This settings contains the default suspended time (default 3660 sec / 1
     hour)."""
 
-    def __init__(self, suspended_time=None, message='Too many request'):
+    def __init__(self, suspended_time: int | None = None, message='Too many request'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
