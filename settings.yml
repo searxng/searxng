@@ -1,5 +1,7 @@
 search:
+  safe_search: 2
   default_engine: 'google'
+  autocomplete: 'google'
   engines:
     - google
     - bing
@@ -8,4 +10,11 @@ query_filters:
     site: "www.zoom.com.br OR www.buscape.com.br"
 server:
   secret_key: "iEd2t<ioq5"
-
+  limiter: true
+  image_proxy: true
+use_default_settings: true
+general:
+  debug: false
+  instance_name: "SearXNG"
+ui:
+  static_use_hash: true
