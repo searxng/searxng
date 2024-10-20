@@ -1,0 +1,7 @@
+services:
+- type: web
+  name: searxng
+  env: python
+  runtime:
+    version: '3.9.0'
+  startCommand: python searx/webapp.py
