@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  searxng:
+    container_name: searxng
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      SEARXNG_SETTINGS_PATH: "/etc/searxng/settings.yml"
+    volumes:
+      - ./settings.yml:/etc/searxng/settings.yml
+      - ./requirements.txt:/app/requirements.txt
+    command: ["sh", "-c", "source /usr/local/searxng/searx-pyenv/bin/activate && python searx/webapp.py"]
