@@ -22,8 +22,9 @@ def init():
     # pylint: disable=import-outside-toplevel
 
     from . import config, cache, proxy
+    from .. import settings_loader
 
-    cfg_file = pathlib.Path("/etc/searxng/favicons.toml")
+    cfg_file = (settings_loader.get_user_cfg_folder() or pathlib.Path("/etc/searxng")) / "favicons.toml"
     if not cfg_file.exists():
         if is_active():
             logger.error(f"missing favicon config: {cfg_file}")
@@ -34,4 +35,4 @@ def init():
     cache.init(cfg.cache)
     proxy.init(cfg.proxy)
 
-    del cache, config, proxy, cfg
+    del cache, config, proxy, cfg, settings_loader
