@@ -18,7 +18,6 @@ from searx import (
 )
 from searx.utils import (
     eval_xpath,
-    eval_xpath_getindex,
     extract_text,
 )
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
@@ -54,31 +53,33 @@ paging = True
 time_range_support = True
 safesearch = True  # user can't select but the results are filtered
 
-url = 'https://lite.duckduckgo.com/lite/'
-# url_ping = 'https://duckduckgo.com/t/sl_l'
+url = "https://html.duckduckgo.com/html"
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
+__CACHE = []
 
 
-def cache_vqd(query, value):
+def _cache_key(data: dict):
+    return 'SearXNG_ddg_web_vqd' + redislib.secret_hash(f"{data['q']}//{data['kl']}")
+
+
+def cache_vqd(data: dict, value):
     """Caches a ``vqd`` value from a query."""
     c = redisdb.client()
     if c:
         logger.debug("cache vqd value: %s", value)
-        key = 'SearXNG_ddg_web_vqd' + redislib.secret_hash(query)
-        c.set(key, value, ex=600)
+        c.set(_cache_key(data), value, ex=600)
+
+    else:
+        logger.debug("MEM cache vqd value: %s", value)
+        if len(__CACHE) > 100:  # cache vqd from last 100 queries
+            __CACHE.pop(0)
+        __CACHE.append((_cache_key(data), value))
 
 
-def get_vqd(query):
-    """Returns the ``vqd`` that fits to the *query*.  If there is no ``vqd`` cached
-    (:py:obj:`cache_vqd`) the query is sent to DDG to get a vqd value from the
-    response.
-
-    .. hint::
-
-       If an empty string is returned there are no results for the ``query`` and
-       therefore no ``vqd`` value.
+def get_vqd(data):
+    """Returns the ``vqd`` that fits to the *query* (``data`` from HTTP POST).
 
     DDG's bot detection is sensitive to the ``vqd`` value.  For some search terms
     (such as extremely long search terms that are often sent by bots), no ``vqd``
@@ -106,28 +107,23 @@ def get_vqd(query):
     - DuckDuckGo News: ``https://duckduckgo.com/news.js??q=...&vqd=...``
 
     """
+
+    key = _cache_key(data)
     value = None
     c = redisdb.client()
     if c:
-        key = 'SearXNG_ddg_web_vqd' + redislib.secret_hash(query)
         value = c.get(key)
         if value or value == b'':
             value = value.decode('utf-8')
-            logger.debug("re-use cached vqd value: %s", value)
+            logger.debug("re-use CACHED vqd value: %s", value)
             return value
 
-    query_url = 'https://duckduckgo.com/?' + urlencode({'q': query})
-    res = get(query_url)
-    doc = lxml.html.fromstring(res.text)
-    for script in doc.xpath("//script[@type='text/javascript']"):
-        script = script.text
-        if 'vqd="' in script:
-            value = extr(script, 'vqd="', '"')
-            break
-    logger.debug("new vqd value: '%s'", value)
-    if value is not None:
-        cache_vqd(query, value)
-    return value
+    else:
+        for k, value in __CACHE:
+            if k == key:
+                logger.debug("MEM re-use CACHED vqd value: %s", value)
+                return value
+    return None
 
 
 def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
@@ -155,9 +151,10 @@ def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
 
     .. hint::
 
-       `DDG-lite <https://lite.duckduckgo.com/lite>`__ does not offer a language
-       selection to the user, only a region can be selected by the user
-       (``eng_region`` from the example above).  DDG-lite stores the selected
+       `DDG-lite <https://lite.duckduckgo.com/lite>`__ and the *no Javascript*
+       page https://html.duckduckgo.com/html do not offer a language selection
+       to the user, only a region can be selected by the user (``eng_region``
+       from the example above).  DDG-lite and *no Javascript* store the selected
        region in a cookie::
 
          params['cookies']['kl'] = eng_region  # 'ar-es'
@@ -241,10 +238,25 @@ def request(query, params):
 
     query = quote_ddg_bangs(query)
 
-    # request needs a vqd argument
-    vqd = get_vqd(query)
+    if len(query) >= 500:
+        # DDG does not accept queries with more than 499 chars
+        params["url"] = None
+        return
 
+    # Advanced search syntax ends in CAPTCHA
+    # https://duckduckgo.com/duckduckgo-help-pages/results/syntax/
+    query = [
+        x.removeprefix("site:").removeprefix("intitle:").removeprefix("inurl:").removeprefix("filetype:")
+        for x in query.split()
+    ]
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
+    if eng_region == "wt-wt":
+        # https://html.duckduckgo.com/html sets an empty value for "all".
+        eng_region = ""
+
+    params['data']['kl'] = eng_region
+    params['cookies']['kl'] = eng_region
+
     # eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 
     params['url'] = url
@@ -252,54 +264,82 @@ def request(query, params):
     params['data']['q'] = query
 
     # The API is not documented, so we do some reverse engineering and emulate
-    # what https://lite.duckduckgo.com/lite/ does when you press "next Page"
-    # link again and again ..
+    # what https://html.duckduckgo.com/html does when you press "next Page" link
+    # again and again ..
 
     params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
-    params['data']['vqd'] = vqd
 
-    # initial page does not have an offset
+    params['headers']['Sec-Fetch-Dest'] = "document"
+    params['headers']['Sec-Fetch-Mode'] = "navigate"  # at least this one is used by ddg's bot detection
+    params['headers']['Sec-Fetch-Site'] = "same-origin"
+    params['headers']['Sec-Fetch-User'] = "?1"
+
+    # Form of the initial search page does have empty values in the form
+    if params['pageno'] == 1:
+
+        params['data']['b'] = ""
+
+    params['data']['df'] = ''
+    if params['time_range'] in time_range_dict:
+
+        params['data']['df'] = time_range_dict[params['time_range']]
+        params['cookies']['df'] = time_range_dict[params['time_range']]
+
     if params['pageno'] == 2:
+
         # second page does have an offset of 20
         offset = (params['pageno'] - 1) * 20
         params['data']['s'] = offset
         params['data']['dc'] = offset + 1
 
     elif params['pageno'] > 2:
+
         # third and following pages do have an offset of 20 + n*50
         offset = 20 + (params['pageno'] - 2) * 50
         params['data']['s'] = offset
         params['data']['dc'] = offset + 1
 
-    # initial page does not have additional data in the input form
     if params['pageno'] > 1:
 
+        # initial page does not have these additional data in the input form
         params['data']['o'] = form_data.get('o', 'json')
         params['data']['api'] = form_data.get('api', 'd.js')
         params['data']['nextParams'] = form_data.get('nextParams', '')
         params['data']['v'] = form_data.get('v', 'l')
-        params['headers']['Referer'] = 'https://lite.duckduckgo.com/'
+        params['headers']['Referer'] = url
 
-    params['data']['kl'] = eng_region
-    params['cookies']['kl'] = eng_region
+        # from here on no more params['data'] shuld be set, since this dict is
+        # needed to get a vqd value from the cache ..
 
-    params['data']['df'] = ''
-    if params['time_range'] in time_range_dict:
-        params['data']['df'] = time_range_dict[params['time_range']]
-        params['cookies']['df'] = time_range_dict[params['time_range']]
+        vqd = get_vqd(params['data'])
+
+        # Certain conditions must be met in order to call up one of the
+        # following pages ...
+
+        if vqd:
+            params['data']['vqd'] = vqd  # follow up pages / requests needs a vqd argument
+        else:
+            # Don't try to call follow up pages without a vqd value.  DDG
+            # recognizes this as a request from a bot.  This lowers the
+            # reputation of the SearXNG IP and DDG starts to activate CAPTCHAs.
+            params["url"] = None
+            return
+
+        if params['searxng_locale'].startswith("zh"):
+            # Some locales (at least China) do not have a "next page" button and ddg
+            # will return a HTTP/2 403 Forbidden for a request of such a page.
+            params["url"] = None
+            return
 
     logger.debug("param data: %s", params['data'])
     logger.debug("param cookies: %s", params['cookies'])
-    return params
 
 
-def detect_ddg_captcha(dom):
-    """In case of CAPTCHA ddg open its own *not a Robot* dialog and is
-    not redirected to CAPTCHA page.
-    """
-    if eval_xpath(dom, "//form[@id='challenge-form']"):
-        # set suspend time to zero is OK --> ddg does not block the IP
-        raise SearxEngineCaptchaException(suspended_time=0)
+def is_ddg_captcha(dom):
+    """In case of CAPTCHA ddg response its own *not a Robot* dialog and is not
+    redirected to a CAPTCHA page."""
+
+    return bool(eval_xpath(dom, "//form[@id='challenge-form']"))
 
 
 def response(resp):
@@ -309,37 +349,34 @@ def response(resp):
 
     results = []
     doc = lxml.html.fromstring(resp.text)
-    detect_ddg_captcha(doc)
 
-    result_table = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table')
+    if is_ddg_captcha(doc):
+        # set suspend time to zero is OK --> ddg does not block the IP
+        raise SearxEngineCaptchaException(suspended_time=0, message=f"CAPTCHA ({resp.search_params['data'].get('kl')})")
 
-    if len(result_table) == 2:
-        # some locales (at least China) does not have a "next page" button and
-        # the layout of the HTML tables is different.
-        result_table = result_table[1]
-    elif not len(result_table) >= 3:
-        # no more results
-        return []
-    else:
-        result_table = result_table[2]
-        # update form data from response
-        form = eval_xpath(doc, '//html/body/form/div[@class="filters"]/table//input/..')
-        if len(form):
+    form = eval_xpath(doc, '//input[@name="vqd"]/..')
+    if len(form):
+        # some locales (at least China) does not have a "next page" button
+        form = form[0]
+        form_vqd = eval_xpath(form, '//input[@name="vqd"]/@value')[0]
 
-            form = form[0]
-            form_data['v'] = eval_xpath(form, '//input[@name="v"]/@value')[0]
-            form_data['api'] = eval_xpath(form, '//input[@name="api"]/@value')[0]
-            form_data['o'] = eval_xpath(form, '//input[@name="o"]/@value')[0]
-            logger.debug('form_data: %s', form_data)
+        cache_vqd(resp.search_params["data"], form_vqd)
 
-    tr_rows = eval_xpath(result_table, './/tr')
-    # In the last <tr> is the form of the 'previous/next page' links
-    tr_rows = tr_rows[:-1]
+    # just select "web-result" and ignore results of class "result--ad result--ad--small"
+    for div_result in eval_xpath(doc, '//div[@id="links"]/div[contains(@class, "web-result")]'):
 
-    len_tr_rows = len(tr_rows)
-    offset = 0
+        item = {}
+        title = eval_xpath(div_result, './/h2/a')
+        if not title:
+            # this is the "No results." item in the result list
+            continue
+        item["title"] = extract_text(title)
+        item["url"] = eval_xpath(div_result, './/h2/a/@href')[0]
+        item["content"] = extract_text(eval_xpath(div_result, './/a[contains(@class, "result__snippet")]')[0])
 
-    zero_click_info_xpath = '//html/body/form/div/table[2]/tr[2]/td/text()'
+        results.append(item)
+
+    zero_click_info_xpath = '//div[@id="zero_click_abstract"]'
     zero_click = extract_text(eval_xpath(doc, zero_click_info_xpath)).strip()
 
     if zero_click and "Your IP address is" not in zero_click and "Your user agent:" not in zero_click:
@@ -349,33 +386,6 @@ def response(resp):
             {
                 'answer': zero_click,
                 'url': "https://duckduckgo.com/?" + urlencode({"q": current_query}),
-            }
-        )
-
-    while len_tr_rows >= offset + 4:
-
-        # assemble table rows we need to scrap
-        tr_title = tr_rows[offset]
-        tr_content = tr_rows[offset + 1]
-        offset += 4
-
-        # ignore sponsored Adds <tr class="result-sponsored">
-        if tr_content.get('class') == 'result-sponsored':
-            continue
-
-        a_tag = eval_xpath_getindex(tr_title, './/td//a[@class="result-link"]', 0, None)
-        if a_tag is None:
-            continue
-
-        td_content = eval_xpath_getindex(tr_content, './/td[@class="result-snippet"]', 0, None)
-        if td_content is None:
-            continue
-
-        results.append(
-            {
-                'title': a_tag.text_content(),
-                'content': extract_text(td_content),
-                'url': a_tag.get('href'),
             }
         )
 
