@@ -8,7 +8,7 @@ import operator
 from multiprocessing import Process, Queue
 from typing import Callable
 
-import babel.numbers
+import babel
 from flask_babel import gettext
 
 from searx.plugins import logger
@@ -93,6 +93,7 @@ def post_search(_request, search):
         return True
 
     query = search.search_query.query
+        
     # in order to avoid DoS attacks with long expressions, ignore long expressions
     if len(query) > 100:
         return True
@@ -100,14 +101,19 @@ def post_search(_request, search):
     # replace commonly used math operators with their proper Python operator
     query = query.replace("x", "*").replace(":", "/")
 
+    locale = search.search_query.locale
+    if not locale:
+        # use some default local in case it is not configured
+        locale = babel.Locale.parse("en-US", sep='-')
+    
     # parse the number system in a localized way
     def _decimal(match: re.Match) -> str:
         val = match.string[match.start() : match.end()]
-        val = babel.numbers.parse_decimal(val, search.search_query.locale, numbering_system="latn")
+        val = babel.numbers.parse_decimal(val, locale, numbering_system="latn")
         return str(val)
 
-    decimal = search.search_query.locale.number_symbols["latn"]["decimal"]
-    group = search.search_query.locale.number_symbols["latn"]["group"]
+    decimal = locale.number_symbols["latn"]["decimal"]
+    group = locale.number_symbols["latn"]["group"]
     query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
 
     # only numbers and math operators are accepted
@@ -121,6 +127,6 @@ def post_search(_request, search):
     result = timeout_func(0.05, _eval_expr, query_py_formatted)
     if result is None or result == "":
         return True
-    result = babel.numbers.format_decimal(result, locale=search.search_query.locale)
+    result = babel.numbers.format_decimal(result, locale=locale)
     search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
     return True
