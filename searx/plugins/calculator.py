@@ -93,7 +93,7 @@ def post_search(_request, search):
         return True
 
     query = search.search_query.query
-        
+ 
     # in order to avoid DoS attacks with long expressions, ignore long expressions
     if len(query) > 100:
         return True
@@ -105,7 +105,7 @@ def post_search(_request, search):
     if not locale:
         # use some default local in case it is not configured
         locale = babel.Locale.parse("en-US", sep='-')
-    
+
     # parse the number system in a localized way
     def _decimal(match: re.Match) -> str:
         val = match.string[match.start() : match.end()]
