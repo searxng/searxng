@@ -14,17 +14,7 @@ import typing
 import logging
 import pathlib
 
-try:
-    import tomllib
-
-    pytomlpp = None
-    USE_TOMLLIB = True
-except ImportError:
-    import pytomlpp
-
-    tomllib = None
-    USE_TOMLLIB = False
-
+from ..compat import tomllib
 
 __all__ = ['Config', 'UNSET', 'SchemaIssue']
 
@@ -183,19 +173,10 @@ class Config:
 
 
 def toml_load(file_name):
-    if USE_TOMLLIB:
-        # Python >= 3.11
-        try:
-            with open(file_name, "rb") as f:
-                return tomllib.load(f)
-        except tomllib.TOMLDecodeError as exc:
-            msg = str(exc).replace('\t', '').replace('\n', ' ')
-            log.error("%s: %s", file_name, msg)
-            raise
-    # fallback to pytomlpp for Python < 3.11
     try:
-        return pytomlpp.load(file_name)
-    except pytomlpp.DecodeError as exc:
+        with open(file_name, "rb") as f:
+            return tomllib.load(f)
+    except tomllib.TOMLDecodeError as exc:
         msg = str(exc).replace('\t', '').replace('\n', ' ')
         log.error("%s: %s", file_name, msg)
         raise
