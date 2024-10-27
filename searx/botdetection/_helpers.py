@@ -34,6 +34,9 @@ def dump_request(request: SXNG_Request):
         + " || Content-Length: %s" % request.headers.get('Content-Length')
         + " || Connection: %s" % request.headers.get('Connection')
         + " || User-Agent: %s" % request.headers.get('User-Agent')
+        + " || Sec-Fetch-Site: %s" % request.headers.get('Sec-Fetch-Site')
+        + " || Sec-Fetch-Mode: %s" % request.headers.get('Sec-Fetch-Mode')
+        + " || Sec-Fetch-Dest: %s" % request.headers.get('Sec-Fetch-Dest')
     )
 
 
