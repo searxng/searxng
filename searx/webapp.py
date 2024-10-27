@@ -517,7 +517,7 @@ def pre_request():
         preferences.parse_dict({"language": language})
         logger.debug('set language %s (from browser)', preferences.get_value("language"))
 
-    # locale is defined neither in settings nor in preferences
+    # UI locale is defined neither in settings nor in preferences
     # use browser headers
     if not preferences.get_value("locale"):
         locale = _get_browser_language(request, LOCALE_NAMES.keys())

@@ -8,7 +8,8 @@ import operator
 from multiprocessing import Process, Queue
 from typing import Callable
 
-import babel.numbers
+import flask
+import babel
 from flask_babel import gettext
 
 from searx.plugins import logger
@@ -100,14 +101,17 @@ def post_search(_request, search):
     # replace commonly used math operators with their proper Python operator
     query = query.replace("x", "*").replace(":", "/")
 
+    # use UI language
+    ui_locale = babel.Locale.parse(flask.request.preferences.get_value('locale'), sep='-')
+
     # parse the number system in a localized way
     def _decimal(match: re.Match) -> str:
         val = match.string[match.start() : match.end()]
-        val = babel.numbers.parse_decimal(val, search.search_query.locale, numbering_system="latn")
+        val = babel.numbers.parse_decimal(val, ui_locale, numbering_system="latn")
         return str(val)
 
-    decimal = search.search_query.locale.number_symbols["latn"]["decimal"]
-    group = search.search_query.locale.number_symbols["latn"]["group"]
+    decimal = ui_locale.number_symbols["latn"]["decimal"]
+    group = ui_locale.number_symbols["latn"]["group"]
     query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
 
     # only numbers and math operators are accepted
@@ -121,6 +125,6 @@ def post_search(_request, search):
     result = timeout_func(0.05, _eval_expr, query_py_formatted)
     if result is None or result == "":
         return True
-    result = babel.numbers.format_decimal(result, locale=search.search_query.locale)
+    result = babel.numbers.format_decimal(result, locale=ui_locale)
     search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
     return True
