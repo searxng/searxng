@@ -93,7 +93,7 @@ def post_search(_request, search):
         return True
 
     query = search.search_query.query
- 
+
     # in order to avoid DoS attacks with long expressions, ignore long expressions
     if len(query) > 100:
         return True
