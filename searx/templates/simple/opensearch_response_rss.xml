@@ -21,34 +21,11 @@
     {% for r in results %}
     <item>
       <title>{{ r.title }}</title>
+      <type>result</type>
       <link>{{ r.url }}</link>
       <description>{{ r.content }}</description>
       {% if r.pubdate %}<pubDate>{{ r.pubdate }}</pubDate>{% endif %}
     </item>
     {% endfor %}
-    {% if answers %}
-      {% for a in answers %}
-      <item>
-        <title>{{ a }}</title>
-        <type>answer</type>
-      </item>
-      {% endfor %}
-    {% endif %}
-    {% if corrections %}
-      {% for a in corrections %}
-      <item>
-        <title>{{ a }}</title>
-        <type>correction</type>
-      </item>
-      {% endfor %}
-    {% endif %}
-    {% if suggestions %}
-      {% for a in suggestions %}
-      <item>
-        <title>{{ a }}</title>
-        <type>suggestion</type>
-      </item>
-      {% endfor %}
-    {% endif %}
   </channel>
 </rss>

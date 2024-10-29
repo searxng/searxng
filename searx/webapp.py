@@ -731,9 +731,6 @@ def search():
         response_rss = render(
             'opensearch_response_rss.xml',
             results=results,
-            answers=result_container.answers,
-            corrections=result_container.corrections,
-            suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=result_container.number_of_results,
         )
