@@ -27,10 +27,10 @@ class FaviconConfig(msgspec.Struct):  # pylint: disable=too-few-public-methods
     By specifying a version, it is possible to ensure downward compatibility in
     the event of future changes to the configuration schema"""
 
-    cache: FaviconCacheConfig = FaviconCacheConfig
+    cache: FaviconCacheConfig = msgspec.field(default_factory=FaviconCacheConfig)
     """Setup of the :py:obj:`.cache.FaviconCacheConfig`."""
 
-    proxy: FaviconProxyConfig = FaviconCacheConfig
+    proxy: FaviconProxyConfig = msgspec.field(default_factory=FaviconProxyConfig)
     """Setup of the :py:obj:`.proxy.FaviconProxyConfig`."""
 
     @classmethod

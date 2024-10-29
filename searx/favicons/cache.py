@@ -20,11 +20,11 @@
 from __future__ import annotations
 from typing import Literal
 
+import os
 import abc
 import dataclasses
 import hashlib
 import logging
-import pathlib
 import sqlite3
 import tempfile
 import time
@@ -103,7 +103,7 @@ class FaviconCacheConfig(msgspec.Struct):  # pylint: disable=too-few-public-meth
       :py:obj:`.cache.FaviconCacheMEM` (not recommended)
     """
 
-    db_url: pathlib.Path = pathlib.Path(tempfile.gettempdir()) / "faviconcache.db"
+    db_url: str = tempfile.gettempdir() + os.sep + "faviconcache.db"
     """URL of the SQLite DB, the path to the database file."""
 
     HOLD_TIME: int = 60 * 60 * 24 * 30  # 30 days
