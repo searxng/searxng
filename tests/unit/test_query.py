@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 from parameterized.parameterized import parameterized
-from searx.engines import load_engines
+import searx.search
 from searx.query import RawTextQuery
 from tests import SearxTestCase
 
@@ -218,10 +218,10 @@ class TestBang(SearxTestCase):  # pylint:disable=missing-class-docstring
     THE_QUERY = 'the query'
 
     def setUp(self):
-        load_engines(TEST_ENGINES)
+        searx.search.initialize(TEST_ENGINES)
 
     def tearDown(self):
-        load_engines([])
+        searx.search.load_engines([])
 
     @parameterized.expand(SPECIFIC_BANGS)
     def test_bang(self, bang: str):

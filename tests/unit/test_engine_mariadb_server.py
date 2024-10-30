@@ -2,26 +2,11 @@
 # pylint: disable=missing-module-docstring
 
 from unittest.mock import MagicMock, Mock
-from searx.engines import load_engines, mariadb_server
+from searx.engines import mariadb_server
 from tests import SearxTestCase
 
 
 class MariadbServerTests(SearxTestCase):  # pylint: disable=missing-class-docstring
-    def setUp(self):
-        load_engines(
-            [
-                {
-                    'name': 'mariadb server',
-                    'engine': 'mariadb_server',
-                    'shortcut': 'mdb',
-                    'timeout': 9.0,
-                    'disabled': True,
-                }
-            ]
-        )
-
-    def tearDown(self):
-        load_engines([])
 
     def test_init_no_query_str_raises(self):
         self.assertRaises(ValueError, lambda: mariadb_server.init({}))
