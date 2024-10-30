@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 from searx.results import ResultContainer
-from searx.engines import load_engines
+import searx.search
 from tests import SearxTestCase
 
 
@@ -36,17 +36,16 @@ def fake_result(url='https://aa.bb/cc?dd=ee#ff', title='aaa', content='bbb', eng
 
 
 class ResultContainerTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
+
     def setUp(self) -> None:
         stract_engine = make_test_engine_dict(name="stract", engine="stract", shortcut="stra")
         duckduckgo_engine = make_test_engine_dict(name="duckduckgo", engine="duckduckgo", shortcut="ddg")
         mojeek_engine = make_test_engine_dict(name="mojeek", engine="mojeek", shortcut="mjk")
-
-        load_engines([stract_engine, duckduckgo_engine, mojeek_engine])
-
+        searx.search.initialize([stract_engine, duckduckgo_engine, mojeek_engine])
         self.container = ResultContainer()
 
     def tearDown(self):
-        load_engines([])
+        searx.search.load_engines([])
 
     def test_empty(self):
         self.assertEqual(self.container.get_ordered_results(), [])
