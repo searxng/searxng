@@ -62,7 +62,7 @@ filter_mapping = {0: 'off', 1: 'medium', 2: 'high'}
 results_xpath = './/div[contains(@jscontroller, "SC7lYd")]'
 title_xpath = './/a/h3[1]'
 href_xpath = './/a[h3]/@href'
-content_xpath = './/div[@data-sncf="1"]'
+content_xpath = './/div[contains(@data-sncf, "1")]'
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
