@@ -34,10 +34,10 @@ Implementations
 """
 
 from typing import List, Dict, Any, Optional
-from urllib.parse import quote
+from urllib.parse import urlencode
 from lxml import html
 
-from searx.utils import extract_text, eval_xpath, eval_xpath_list
+from searx.utils import extract_text, eval_xpath, eval_xpath_getindex, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
 from searx.data import ENGINE_TRAITS
 
@@ -53,7 +53,7 @@ about: Dict[str, Any] = {
 
 # engine dependent config
 categories: List[str] = ["files"]
-paging: bool = False
+paging: bool = True
 
 # search-url
 base_url: str = "https://annas-archive.org"
@@ -99,9 +99,18 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
 
 
 def request(query, params: Dict[str, Any]) -> Dict[str, Any]:
-    q = quote(query)
     lang = traits.get_language(params["language"], traits.all_locale)  # type: ignore
-    params["url"] = base_url + f"/search?lang={lang or ''}&content={aa_content}&ext={aa_ext}&sort={aa_sort}&q={q}"
+    args = {
+        'lang': lang,
+        'content': aa_content,
+        'ext': aa_ext,
+        'sort': aa_sort,
+        'q': query,
+        'page': params['pageno'],
+    }
+    # filter out None and empty values
+    filtered_args = dict((k, v) for k, v in args.items() if v)
+    params["url"] = f"{base_url}/search?{urlencode(filtered_args)}"
     return params
 
 
@@ -128,12 +137,12 @@ def response(resp) -> List[Dict[str, Optional[str]]]:
 def _get_result(item):
     return {
         'template': 'paper.html',
-        'url': base_url + item.xpath('./@href')[0],
+        'url': base_url + extract_text(eval_xpath_getindex(item, './@href', 0)),
         'title': extract_text(eval_xpath(item, './/h3/text()[1]')),
         'publisher': extract_text(eval_xpath(item, './/div[contains(@class, "text-sm")]')),
         'authors': [extract_text(eval_xpath(item, './/div[contains(@class, "italic")]'))],
         'content': extract_text(eval_xpath(item, './/div[contains(@class, "text-xs")]')),
-        'thumbnail': item.xpath('.//img/@src')[0],
+        'thumbnail': extract_text(eval_xpath_getindex(item, './/img/@src', 0, default=None), allow_none=True),
     }
 
 
