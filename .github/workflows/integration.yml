@@ -1,6 +1,6 @@
 name: Integration
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches: ["master"]
   pull_request:
@@ -16,62 +16,62 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        python-version:  ["3.9", "3.10", "3.11", "3.12",]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install Ubuntu packages
-      run: |
-        sudo ./utils/searxng.sh install packages
-        sudo apt install firefox
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        architecture: 'x64'
-    - name: Cache Python dependencies
-      id: cache-python
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./local
-          ./.nvm
-          ./node_modules
-        key: python-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
-    - name: Install Python dependencies
-      if: steps.cache-python.outputs.cache-hit != 'true'
-      run: |
-        make V=1 install
-        make V=1 gecko.driver
-    - name: Run tests
-      run: make V=1 ci.test
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Ubuntu packages
+        run: |
+          sudo ./utils/searxng.sh install packages
+          sudo apt install firefox
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
+      - name: Install Python dependencies
+        if: steps.cache-python.outputs.cache-hit != 'true'
+        run: |
+          make V=1 install
+          make V=1 gecko.driver
+      - name: Run tests
+        run: make V=1 ci.test
 
   themes:
     name: Themes
     runs-on: ubuntu-20.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install Ubuntu packages
-      run: sudo ./utils/searxng.sh install buildhost
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        architecture: 'x64'
-    - name: Cache Python dependencies
-      id: cache-python
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./local
-          ./.nvm
-          ./node_modules
-        key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-    - name: Install node dependencies
-      run: make V=1 node.env
-    - name: Build themes
-      run: make V=1 themes.all
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Ubuntu packages
+        run: sudo ./utils/searxng.sh install buildhost
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+      - name: Install node dependencies
+        run: make V=1 node.env
+      - name: Build themes
+        run: make V=1 themes.all
 
   documentation:
     name: Documentation
@@ -79,40 +79,40 @@ jobs:
     permissions:
       contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '0'
-        persist-credentials: false
-    - name: Install Ubuntu packages
-      run: sudo ./utils/searxng.sh install buildhost
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        architecture: 'x64'
-    - name: Cache Python dependencies
-      id: cache-python
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./local
-          ./.nvm
-          ./node_modules
-        key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-    - name: Build documentation
-      run: |
-        make V=1 docs.clean docs.html
-    - name: Deploy
-      if:  github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        GITHUB_TOKEN: ${{ github.token }}
-        BRANCH: gh-pages
-        FOLDER: dist/docs
-        CLEAN: true # Automatically remove deleted files from the deploy branch
-        SINGLE_COMMIT: True
-        COMMIT_MESSAGE: '[doc] build from commit ${{ github.sha }}'
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          persist-credentials: false
+      - name: Install Ubuntu packages
+        run: sudo ./utils/searxng.sh install buildhost
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+      - name: Build documentation
+        run: |
+          make V=1 docs.clean docs.html
+      - name: Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          BRANCH: gh-pages
+          FOLDER: dist/docs
+          CLEAN: true  # Automatically remove deleted files from the deploy branch
+          SINGLE_COMMIT: true
+          COMMIT_MESSAGE: '[doc] build from commit ${{ github.sha }}'
 
   babel:
     name: Update translations branch
@@ -125,37 +125,37 @@ jobs:
     permissions:
       contents: write  # for make V=1 weblate.push.translations
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '0'
-        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        architecture: 'x64'
-    - name: Cache Python dependencies
-      id: cache-python
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./local
-          ./.nvm
-          ./node_modules
-        key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-    - name: weblate & git setup
-      env:
-        WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
-      run: |
-        mkdir -p ~/.config
-        echo "${WEBLATE_CONFIG}" > ~/.config/weblate
-        git config --global user.email "searxng-bot@users.noreply.github.com"
-        git config --global user.name "searxng-bot"
-    - name: Update transations
-      id: update
-      run: |
-        make V=1 weblate.push.translations
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+      - name: weblate & git setup
+        env:
+          WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+        run: |
+          mkdir -p ~/.config
+          echo "${WEBLATE_CONFIG}" > ~/.config/weblate
+          git config --global user.email "searxng-bot@users.noreply.github.com"
+          git config --global user.name "searxng-bot"
+      - name: Update transations
+        id: update
+        run: |
+          make V=1 weblate.push.translations
 
   dockers:
     name: Docker

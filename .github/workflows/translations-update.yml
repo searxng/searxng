@@ -1,5 +1,5 @@
 name: "Update translations"
-on:
+on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: "05 07 * * 5"
   workflow_dispatch:
@@ -10,50 +10,50 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '0'
-        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        architecture: 'x64'
-    - name: Cache Python dependencies
-      id: cache-python
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./local
-          ./.nvm
-          ./node_modules
-        key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-    - name: weblate & git setup
-      env:
-        WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
-      run: |
-        mkdir -p ~/.config
-        echo "${WEBLATE_CONFIG}" > ~/.config/weblate
-        git config --global user.email "searxng-bot@users.noreply.github.com"
-        git config --global user.name "searxng-bot"
-    - name: Merge and push transation updates
-      run: |
-        make V=1 weblate.translations.commit
-    - name: Create Pull Request
-      id: cpr
-      uses: peter-evans/create-pull-request@v3
-      with:
-        token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
-        commit-message: '[l10n] update translations from Weblate'
-        committer: searxng-bot <searxng-bot@users.noreply.github.com>
-        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-        signoff: false
-        branch: translations_update
-        delete-branch: true
-        draft: false
-        title: '[l10n] update translations from Weblate'
-        body: |
-          update translations from Weblate
-        labels: |
-          translation
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Cache Python dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./local
+            ./.nvm
+            ./node_modules
+          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+      - name: weblate & git setup
+        env:
+          WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+        run: |
+          mkdir -p ~/.config
+          echo "${WEBLATE_CONFIG}" > ~/.config/weblate
+          git config --global user.email "searxng-bot@users.noreply.github.com"
+          git config --global user.name "searxng-bot"
+      - name: Merge and push transation updates
+        run: |
+          make V=1 weblate.translations.commit
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+          commit-message: '[l10n] update translations from Weblate'
+          committer: searxng-bot <searxng-bot@users.noreply.github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: translations_update
+          delete-branch: true
+          draft: false
+          title: '[l10n] update translations from Weblate'
+          body: |
+            update translations from Weblate
+          labels: |
+            translation
