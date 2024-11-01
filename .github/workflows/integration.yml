@@ -45,14 +45,6 @@ jobs:
         make V=1 gecko.driver
     - name: Run tests
       run: make V=1 ci.test
-    - name: Test coverage
-      run: make V=1 test.coverage
-    - name: Store coverage result
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-${{ matrix.python-version }}
-        path: coverage/
-        retention-days: 60
 
   themes:
     name: Themes
