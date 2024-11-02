@@ -92,6 +92,25 @@
     </div>
     {% endif %}
 
+    {% if has_misspelled_words %}
+    <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+      <input type="hidden" name="q" value="{{ spellcheck_query }}" >
+      {% for category in selected_categories %}
+      <input type="hidden" name="category_{{ category }}" value="1" >
+      {% endfor %}
+      <input type="hidden" name="pageno" value="{{ pageno+1 }}" >
+      <input type="hidden" name="language" value="{{ current_language }}" >
+      <input type="hidden" name="time_range" value="{{ time_range }}" >
+      <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+      <input type="hidden" name="theme" value="{{ theme }}" >
+      {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+      {{- engine_data_form(engine_data) -}}
+      <span style="color: #ff7769; font-size: 18px"> Did you mean:
+      <input style="background: none; border: none; color: #1a0dab; cursor: pointer; font-size: 20px" type="submit" role="link" value="{{ spellcheck_query }}">
+      </span>
+    </form>
+    {% endif %}
+
     <div id="urls" role="main">
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}

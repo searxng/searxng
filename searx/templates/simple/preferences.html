@@ -179,6 +179,9 @@
     {% if 'safesearch' not in locked_preferences %}
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
+    {% if 'spellcheck' not in locked_preferences %}
+      {%- include 'simple/preferences/spellcheck.html' -%}
+    {%- endif -%}
     {{- plugin_preferences('general') -}}
     {%- if 'doi_resolver' not in locked_preferences %}
       {%- include 'simple/preferences/doi_resolver.html' -%}
