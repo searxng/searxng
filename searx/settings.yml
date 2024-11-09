@@ -325,6 +325,13 @@ engines:
     shortcut: 9g
     disabled: true
 
+  - name: adobe stock
+    engine: adobe_stock
+    # available search orders: 'relevant', 'featured', 'creation', 'nb_downloads'
+    # adobe_order: relevance
+    shortcut: as
+    disabled: true
+
   - name: alpine linux packages
     engine: alpinelinux
     disabled: true
