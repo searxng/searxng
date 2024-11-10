@@ -20,7 +20,7 @@ if (next_call_ts == false or next_call_ts == nil) then
     -- 2/ the next call is a random time between start_after_from and start_after_to
     local initial_delay = math.random(start_after_from, start_after_to)
     redis.call('SET', redis_key, now + initial_delay)
-    return { false, delay }
+    return { false, initial_delay }
 end
 
 -- next_call_ts is defined
