@@ -135,6 +135,10 @@ update_conf() {
     fi
 }
 
+if [ -d "${SEARXNG_SETTINGS_PATH}" ]; then
+    $SEARXNG_SETTINGS_PATH="${SEARXNG_SETTINGS_PATH}/settings.yml"
+fi
+
 # searx compatibility: copy /etc/searx/* to /etc/searxng/*
 SEARX_CONF=0
 if [ -f "/etc/searx/settings.yml" ]; then
