@@ -6,7 +6,7 @@ DuckDuckGo Lite
 
 from typing import TYPE_CHECKING
 import re
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 import json
 import babel
 import lxml.html
@@ -245,10 +245,12 @@ def request(query, params):
 
     # Advanced search syntax ends in CAPTCHA
     # https://duckduckgo.com/duckduckgo-help-pages/results/syntax/
-    query = [
-        x.removeprefix("site:").removeprefix("intitle:").removeprefix("inurl:").removeprefix("filetype:")
-        for x in query.split()
-    ]
+    query = " ".join(
+        [
+            x.removeprefix("site:").removeprefix("intitle:").removeprefix("inurl:").removeprefix("filetype:")
+            for x in query.split()
+        ]
+    )
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     if eng_region == "wt-wt":
         # https://html.duckduckgo.com/html sets an empty value for "all".
@@ -261,7 +263,7 @@ def request(query, params):
 
     params['url'] = url
     params['method'] = 'POST'
-    params['data']['q'] = query
+    params['data']['q'] = quote_plus(query)
 
     # The API is not documented, so we do some reverse engineering and emulate
     # what https://html.duckduckgo.com/html does when you press "next Page" link
