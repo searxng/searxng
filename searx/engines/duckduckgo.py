@@ -6,7 +6,7 @@ DuckDuckGo Lite
 
 from typing import TYPE_CHECKING
 import re
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import urlencode
 import json
 import babel
 import lxml.html
@@ -263,7 +263,7 @@ def request(query, params):
 
     params['url'] = url
     params['method'] = 'POST'
-    params['data']['q'] = quote_plus(query)
+    params['data']['q'] = query
 
     # The API is not documented, so we do some reverse engineering and emulate
     # what https://html.duckduckgo.com/html does when you press "next Page" link
@@ -381,7 +381,11 @@ def response(resp):
     zero_click_info_xpath = '//div[@id="zero_click_abstract"]'
     zero_click = extract_text(eval_xpath(doc, zero_click_info_xpath)).strip()
 
-    if zero_click and "Your IP address is" not in zero_click and "Your user agent:" not in zero_click:
+    if zero_click and (
+        "Your IP address is" not in zero_click
+        and "Your user agent:" not in zero_click
+        and "URL Decoded:" not in zero_click
+    ):
         current_query = resp.search_params["data"].get("q")
 
         results.append(
