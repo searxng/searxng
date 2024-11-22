@@ -327,9 +327,32 @@ engines:
 
   - name: adobe stock
     engine: adobe_stock
-    # available search orders: 'relevant', 'featured', 'creation', 'nb_downloads'
-    # adobe_order: relevance
-    shortcut: as
+    shortcut: asi
+    categories: ["images"]
+    # https://docs.searxng.org/dev/engines/online/adobe_stock.html
+    adobe_order: relevance
+    adobe_content_types: ["photo", "illustration", "zip_vector", "template", "3d", "image"]
+    timeout: 6
+    disabled: true
+
+  - name: adobe stock video
+    engine: adobe_stock
+    shortcut: asv
+    network: adobe stock
+    categories: ["videos"]
+    adobe_order: relevance
+    adobe_content_types: ["video"]
+    timeout: 6
+    disabled: true
+
+  - name: adobe stock audio
+    engine: adobe_stock
+    shortcut: asa
+    network: adobe stock
+    categories: ["music"]
+    adobe_order: relevance
+    adobe_content_types: ["audio"]
+    timeout: 6
     disabled: true
 
   - name: alpine linux packages
