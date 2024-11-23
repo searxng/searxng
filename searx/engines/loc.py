@@ -27,7 +27,7 @@ categories = ['images']
 paging = True
 
 endpoint = 'photos'
-base_url = 'https://loc.gov'
+base_url = 'https://www.loc.gov'
 search_string = "/{endpoint}/?sp={page}&{query}&fo=json"
 
 
