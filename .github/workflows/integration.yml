@@ -31,7 +31,7 @@ jobs:
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./local
@@ -61,7 +61,7 @@ jobs:
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./local
@@ -93,7 +93,7 @@ jobs:
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./local
@@ -137,7 +137,7 @@ jobs:
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./local
@@ -181,7 +181,7 @@ jobs:
           architecture: 'x64'
       - name: Cache Python dependencies
         id: cache-python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./local
