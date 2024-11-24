@@ -614,6 +614,14 @@ def client_token(token=None):
     return Response('', mimetype='text/css')
 
 
+@app.route('/rss.xsl', methods=['GET', 'POST'])
+def rss_xsl():
+    return render_template(
+        f"{request.preferences.get_value('theme')}/rss.xsl",
+        url_for=custom_url_for,
+    )
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     """Search query in q and return results.
