@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
-DuckDuckGo Lite
-~~~~~~~~~~~~~~~
+DuckDuckGo WEB
+~~~~~~~~~~~~~~
 """
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 import re
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 import json
 import babel
 import lxml.html
@@ -18,12 +20,12 @@ from searx import (
 )
 from searx.utils import (
     eval_xpath,
+    extr,
     extract_text,
 )
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx import redisdb
 from searx.enginelib.traits import EngineTraits
-from searx.utils import extr
 from searx.exceptions import SearxEngineCaptchaException
 
 if TYPE_CHECKING:
@@ -60,42 +62,30 @@ form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
 __CACHE = []
 
 
-def _cache_key(data: dict):
-    return 'SearXNG_ddg_web_vqd' + redislib.secret_hash(f"{data['q']}//{data['kl']}")
+def _cache_key(query: str, region: str):
+    return 'SearXNG_ddg_web_vqd' + redislib.secret_hash(f"{query}//{region}")
 
 
-def cache_vqd(data: dict, value):
+def cache_vqd(query: str, region: str, value: str):
     """Caches a ``vqd`` value from a query."""
     c = redisdb.client()
     if c:
-        logger.debug("cache vqd value: %s", value)
-        c.set(_cache_key(data), value, ex=600)
+        logger.debug("VALKEY cache vqd value: %s (%s)", value, region)
+        c.set(_cache_key(query, region), value, ex=600)
 
     else:
-        logger.debug("MEM cache vqd value: %s", value)
+        logger.debug("MEM cache vqd value: %s (%s)", value, region)
         if len(__CACHE) > 100:  # cache vqd from last 100 queries
             __CACHE.pop(0)
-        __CACHE.append((_cache_key(data), value))
+        __CACHE.append((_cache_key(query, region), value))
 
 
-def get_vqd(data):
-    """Returns the ``vqd`` that fits to the *query* (``data`` from HTTP POST).
+def get_vqd(query: str, region: str, force_request: bool = False):
+    """Returns the ``vqd`` that fits to the *query*.
 
-    DDG's bot detection is sensitive to the ``vqd`` value.  For some search terms
-    (such as extremely long search terms that are often sent by bots), no ``vqd``
-    value can be determined.
-
-    If SearXNG cannot determine a ``vqd`` value, then no request should go out
-    to DDG:
-
-        A request with a wrong ``vqd`` value leads to DDG temporarily putting
-        SearXNG's IP on a block list.
-
-        Requests from IPs in this block list run into timeouts.
-
-    Not sure, but it seems the block list is a sliding window: to get my IP rid
-    from the bot list I had to cool down my IP for 1h (send no requests from
-    that IP to DDG).
+    :param query: The query term
+    :param region: DDG's region code
+    :param force_request: force a request to get a vqd value from DDG
 
     TL;DR; the ``vqd`` value is needed to pass DDG's bot protection and is used
     by all request to DDG:
@@ -106,23 +96,46 @@ def get_vqd(data):
     - DuckDuckGo Videos: ``https://duckduckgo.com/v.js??q=...&vqd=...``
     - DuckDuckGo News: ``https://duckduckgo.com/news.js??q=...&vqd=...``
 
-    """
+    DDG's bot detection is sensitive to the ``vqd`` value.  For some search terms
+    (such as extremely long search terms that are often sent by bots), no ``vqd``
+    value can be determined.
 
-    key = _cache_key(data)
-    value = None
+    If SearXNG cannot determine a ``vqd`` value, then no request should go out
+    to DDG.
+
+    .. attention::
+
+       A request with a wrong ``vqd`` value leads to DDG temporarily putting
+       SearXNG's IP on a block list.
+
+    Requests from IPs in this block list run into timeouts.  Not sure, but it
+    seems the block list is a sliding window: to get my IP rid from the bot list
+    I had to cool down my IP for 1h (send no requests from that IP to DDG).
+    """
+    key = _cache_key(query, region)
+
     c = redisdb.client()
     if c:
         value = c.get(key)
         if value or value == b'':
-            value = value.decode('utf-8')
+            value = value.decode('utf-8')  # type: ignore
             logger.debug("re-use CACHED vqd value: %s", value)
             return value
 
-    else:
-        for k, value in __CACHE:
-            if k == key:
-                logger.debug("MEM re-use CACHED vqd value: %s", value)
+    for k, value in __CACHE:
+        if k == key:
+            logger.debug("MEM re-use CACHED vqd value: %s", value)
+            return value
+
+    if force_request:
+        resp = get(f'https://duckduckgo.com/?q={quote_plus(query)}')
+        if resp.status_code == 200:  # type: ignore
+            value = extr(resp.text, 'vqd="', '"')  # type: ignore
+            if value:
+                logger.debug("vqd value from DDG request: %s", value)
+                cache_vqd(query, region, value)
                 return value
+
     return None
 
 
@@ -251,7 +264,7 @@ def request(query, params):
             for x in query.split()
         ]
     )
-    eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
+    eng_region: str = traits.get_region(params['searxng_locale'], traits.all_locale)  # type: ignore
     if eng_region == "wt-wt":
         # https://html.duckduckgo.com/html sets an empty value for "all".
         eng_region = ""
@@ -310,10 +323,7 @@ def request(query, params):
         params['data']['v'] = form_data.get('v', 'l')
         params['headers']['Referer'] = url
 
-        # from here on no more params['data'] shuld be set, since this dict is
-        # needed to get a vqd value from the cache ..
-
-        vqd = get_vqd(params['data'])
+        vqd = get_vqd(query, eng_region, force_request=False)
 
         # Certain conditions must be met in order to call up one of the
         # following pages ...
@@ -362,7 +372,7 @@ def response(resp):
         form = form[0]
         form_vqd = eval_xpath(form, '//input[@name="vqd"]/@value')[0]
 
-        cache_vqd(resp.search_params["data"], form_vqd)
+        cache_vqd(resp.search_params['data']['q'], resp.search_params['data']['kl'], form_vqd)
 
     # just select "web-result" and ignore results of class "result--ad result--ad--small"
     for div_result in eval_xpath(doc, '//div[@id="links"]/div[contains(@class, "web-result")]'):
@@ -379,7 +389,7 @@ def response(resp):
         results.append(item)
 
     zero_click_info_xpath = '//div[@id="zero_click_abstract"]'
-    zero_click = extract_text(eval_xpath(doc, zero_click_info_xpath)).strip()
+    zero_click = extract_text(eval_xpath(doc, zero_click_info_xpath)).strip()  # type: ignore
 
     if zero_click and (
         "Your IP address is" not in zero_click
@@ -432,7 +442,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:  # type: ignore
         print("ERROR: response from DuckDuckGo is not OK.")
 
-    js_code = extr(resp.text, 'regions:', ',snippetLengths')
+    js_code = extr(resp.text, 'regions:', ',snippetLengths')  # type: ignore
 
     regions = json.loads(js_code)
     for eng_tag, name in regions.items():
@@ -466,7 +476,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     engine_traits.custom['lang_region'] = {}
 
-    js_code = extr(resp.text, 'languages:', ',regions')
+    js_code = extr(resp.text, 'languages:', ',regions')  # type: ignore
 
     languages = js_variable_to_python(js_code)
     for eng_lang, name in languages.items():
