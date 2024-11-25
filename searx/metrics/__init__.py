@@ -258,35 +258,38 @@ def openmetrics(engine_stats, engine_reliabilities):
             type_hint="gauge",
             help_hint="The average total response time of the engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
-            data=[engine['total'] for engine in engine_stats['time']],
+            data=[engine['total'] or 0 for engine in engine_stats['time']],
         ),
         OpenMetricsFamily(
             key="searxng_engines_response_time_processing_seconds",
             type_hint="gauge",
             help_hint="The average processing response time of the engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
-            data=[engine['processing'] for engine in engine_stats['time']],
+            data=[engine['processing'] or 0 for engine in engine_stats['time']],
         ),
         OpenMetricsFamily(
             key="searxng_engines_response_time_http_seconds",
             type_hint="gauge",
             help_hint="The average HTTP response time of the engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
-            data=[engine['http'] for engine in engine_stats['time']],
+            data=[engine['http'] or 0 for engine in engine_stats['time']],
         ),
         OpenMetricsFamily(
             key="searxng_engines_result_count_total",
             type_hint="counter",
             help_hint="The total amount of results returned by the engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
-            data=[engine['result_count'] for engine in engine_stats['time']],
+            data=[engine['result_count'] or 0 for engine in engine_stats['time']],
         ),
         OpenMetricsFamily(
             key="searxng_engines_request_count_total",
             type_hint="counter",
             help_hint="The total amount of user requests made to this engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
-            data=[engine_reliabilities.get(engine['name'], {}).get('sent_count', 0) for engine in engine_stats['time']],
+            data=[
+                engine_reliabilities.get(engine['name'], {}).get('sent_count', 0) or 0
+                for engine in engine_stats['time']
+            ],
         ),
         OpenMetricsFamily(
             key="searxng_engines_reliability_total",
@@ -294,7 +297,8 @@ def openmetrics(engine_stats, engine_reliabilities):
             help_hint="The overall reliability of the engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
             data=[
-                engine_reliabilities.get(engine['name'], {}).get('reliability', 0) for engine in engine_stats['time']
+                engine_reliabilities.get(engine['name'], {}).get('reliability', 0) or 0
+                for engine in engine_stats['time']
             ],
         ),
     ]

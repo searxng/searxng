@@ -26,7 +26,7 @@ class OpenMetricsFamily:  # pylint: disable=too-few-public-methods
 """
 
         for i, data_info_dict in enumerate(self.data_info):
-            if not data_info_dict and data_info_dict != 0:
+            if not data_info_dict or not self.data[i]:
                 continue
 
             info_representation = ','.join([f"{key}=\"{value}\"" for (key, value) in data_info_dict.items()])
