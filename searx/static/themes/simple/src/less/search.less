@@ -77,16 +77,23 @@ button.category_button {
   }
 
   &.selected,
-  &:active,
-  &:focus-within {
+  &:active {
     color: var(--color-categories-item-selected-font);
     border-bottom: 2px solid var(--color-categories-item-border-selected);
   }
 }
 
-#categories_container:has(button.category_button:focus-within) button.category_button.selected {
-  color: var(--color-base-font);
-  border-bottom: none;
+// only used when JavaScript is disabled
+.no-js #categories_container:has(button.category_button:focus-within) button.category_button {
+  &.selected {
+    color: var(--color-base-font);
+    border-bottom: none;
+  }
+
+  &:focus-within {
+    color: var(--color-categories-item-selected-font);
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+  }
 }
 
 #search_logo {
