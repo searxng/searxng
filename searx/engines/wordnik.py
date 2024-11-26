@@ -20,13 +20,9 @@ about = {
 categories = ['general']
 paging = False
 
-URL = 'https://www.wordnik.com'
-SEARCH_URL = URL + '/words/{query}'
-
 
 def request(query, params):
-    params['url'] = SEARCH_URL.format(query=query)
-    logger.debug(f"query_url --> {params['url']}")
+    params['url'] = f"https://www.wordnik.com/words/{query}"
     return params
 
 

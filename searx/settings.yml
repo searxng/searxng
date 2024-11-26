@@ -443,7 +443,6 @@ engines:
     shortcut: wp
     # add "list" to the array to get results in the results list
     display_type: ["infobox"]
-    base_url: 'https://{language}.wikipedia.org/'
     categories: [general]
 
   - name: bilibili
@@ -2233,7 +2232,6 @@ engines:
   - name: wordnik
     engine: wordnik
     shortcut: def
-    base_url: https://www.wordnik.com/
     categories: [dictionaries]
     timeout: 5.0
 
@@ -2282,7 +2280,6 @@ engines:
   - name: sjp.pwn
     engine: sjp
     shortcut: sjp
-    base_url: https://sjp.pwn.pl/
     timeout: 5.0
     disabled: true
 
