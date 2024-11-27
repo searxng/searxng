@@ -205,6 +205,7 @@ SCHEMA = {
         'cache_url': SettingsValue(str, 'https://web.archive.org/web/'),
         'search_on_category_select': SettingsValue(bool, True),
         'hotkeys': SettingsValue(('default', 'vim'), 'default'),
+        'url_formatting': SettingsValue(('pretty', 'full', 'host'), 'pretty'),
     },
     'preferences': {
         'lock': SettingsValue(list, []),
