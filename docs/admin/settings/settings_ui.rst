@@ -21,6 +21,7 @@
        simple_style: auto
      search_on_category_select: true
      hotkeys: default
+     url_formatting: pretty
 
 .. _static_use_hash:
 
@@ -68,3 +69,6 @@
 
 ``hotkeys``:
   Hotkeys to use in the search interface: ``default``, ``vim`` (Vim-like).
+
+``url_formatting``:
+  Formatting type to use for result URLs: ``pretty``, ``full`` or ``host``.

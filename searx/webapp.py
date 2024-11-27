@@ -340,6 +340,14 @@ def get_enabled_categories(category_names: Iterable[str]):
 
 
 def get_pretty_url(parsed_url: urllib.parse.ParseResult):
+    url_formatting_pref = request.preferences.get_value('url_formatting')
+
+    if url_formatting_pref == 'full':
+        return [parsed_url.geturl()]
+
+    if url_formatting_pref == 'host':
+        return [parsed_url.netloc]
+
     path = parsed_url.path
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
     path = unquote(path.replace("/", " › "))
@@ -356,6 +364,7 @@ def get_client_settings():
         'translations': get_translations(),
         'search_on_category_select': req_pref.get_value('search_on_category_select'),
         'hotkeys': req_pref.get_value('hotkeys'),
+        'url_formatting': req_pref.get_value('url_formatting'),
         'theme_static_path': custom_url_for('static', filename='themes/simple'),
     }
 
@@ -385,6 +394,7 @@ def render(template_name: str, **kwargs):
     kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
     kwargs['search_on_category_select'] = request.preferences.get_value('search_on_category_select')
     kwargs['hotkeys'] = request.preferences.get_value('hotkeys')
+    kwargs['url_formatting'] = request.preferences.get_value('url_formatting')
     kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
     kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
     kwargs['query_in_title'] = request.preferences.get_value('query_in_title')

@@ -472,6 +472,10 @@ class Preferences:
                 settings['ui']['hotkeys'],
                 choices=['default', 'vim']
             ),
+            'url_formatting': EnumStringSetting(
+                settings['ui']['url_formatting'],
+                choices=['pretty', 'full', 'host']
+            ),
             # fmt: on
         }
 
