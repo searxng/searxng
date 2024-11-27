@@ -7,6 +7,8 @@ import datetime
 
 from urllib.parse import urlencode
 
+from searx.utils import html_to_text, humanize_bytes
+
 # about
 about = {
     "website": 'https://commons.wikimedia.org/',
@@ -74,7 +76,7 @@ def response(resp):
         result = {
             'url': imageinfo["descriptionurl"],
             'title': title,
-            'content': item["snippet"],
+            'content': html_to_text(item["snippet"]),
         }
 
         if search_type == "images":
@@ -93,7 +95,7 @@ def response(resp):
         elif search_type == "files":
             result['template'] = 'files.html'
             result['metadata'] = imageinfo['mime']
-            result['size'] = imageinfo['size']
+            result['size'] = humanize_bytes(imageinfo['size'])
         elif search_type == "audio":
             result['iframe_src'] = imageinfo['url']
 
