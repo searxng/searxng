@@ -16,23 +16,17 @@ from json import loads
 from urllib.parse import urlencode
 from searx.utils import to_string, html_to_text
 
-
+# parameters for generating a request
 search_url = None
-url_query = None
-url_prefix = ""
-content_query = None
-title_query = None
-content_html_to_text = False
-title_html_to_text = False
-paging = False
-suggestion_query = ''
-results_query = ''
+method = 'GET'
+request_body = ''
 
 cookies = {}
 headers = {}
 '''Some engines might offer different result based on cookies or headers.
 Possible use-case: To set safesearch cookie or header to moderate.'''
 
+paging = False
 # parameters for engines with paging support
 #
 # number of results on each page
@@ -40,6 +34,16 @@ Possible use-case: To set safesearch cookie or header to moderate.'''
 page_size = 1
 # number of the first page (usually 0 or 1)
 first_page_num = 1
+
+# parameters for parsing the response
+results_query = ''
+url_query = None
+url_prefix = ""
+title_query = None
+content_query = None
+suggestion_query = ''
+title_html_to_text = False
+content_html_to_text = False
 
 
 def iterate(iterable):
@@ -98,9 +102,8 @@ def query(data, query_string):
 
 
 def request(query, params):  # pylint: disable=redefined-outer-name
-    query = urlencode({'q': query})[2:]
+    fp = {'query': urlencode({'q': query})[2:]}  # pylint: disable=invalid-name
 
-    fp = {'query': query}  # pylint: disable=invalid-name
     if paging and search_url.find('{pageno}') >= 0:
         fp['pageno'] = (params['pageno'] - 1) * page_size + first_page_num
 
@@ -108,7 +111,12 @@ def request(query, params):  # pylint: disable=redefined-outer-name
     params['headers'].update(headers)
 
     params['url'] = search_url.format(**fp)
-    params['query'] = query
+    params['method'] = method
+
+    if request_body:
+        # don't url-encode the query if it's in the request body
+        fp['query'] = query
+        params['data'] = request_body.format(**fp)
 
     return params
 
