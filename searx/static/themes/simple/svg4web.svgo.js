@@ -14,6 +14,5 @@ module.exports = {
     'sortAttrs',
     // Optimize SVG for WEB usage
     'convertStyleToAttrs',
-    'removeXMLNS'
   ],
 };

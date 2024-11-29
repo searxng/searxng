@@ -7,13 +7,14 @@
   }
 
   searxng.ready(function () {
-    d.querySelectorAll('#urls img.image').forEach(
+    d.querySelectorAll('#urls img').forEach(
       img =>
         img.addEventListener(
           'error', () => {
-            img.style.display = 'none';
-            img.error = null;
-          }
+            // console.log("ERROR can't load: " + img.src);
+            img.src = window.searxng.settings.theme_static_path + "/img/img_load_error.svg";
+          },
+          {once: true}
         ));
 
     if (d.querySelector('#search_url button#copy_url')) {
