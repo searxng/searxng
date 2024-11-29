@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-05 06:24+0000\n"
-"PO-Revision-Date: 2024-10-05 08:07+0000\n"
+"POT-Creation-Date: 2024-11-24 11:51+0000\n"
+"PO-Revision-Date: 2024-11-24 19:15+0000\n"
 "Last-Translator: SomeTr <SomeTr@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
@@ -28,7 +28,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.1\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -304,7 +304,7 @@ msgid "active users"
 msgstr "активних користувачів"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "коментарів"
@@ -320,7 +320,7 @@ msgid "community"
 msgstr "спільнота"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:78 searx/searxng.msg
+#: searx/engines/hackernews.py:82 searx/searxng.msg
 msgid "points"
 msgstr "балів"
 
@@ -330,7 +330,7 @@ msgid "title"
 msgstr "назва"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:85 searx/searxng.msg
 msgid "author"
 msgstr "автор"
 
@@ -529,7 +529,7 @@ msgstr "Рейтинг книги"
 msgid "File quality"
 msgstr "Якість файлу"
 
-#: searx/plugins/calculator.py:14
+#: searx/plugins/calculator.py:18
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Обчислювати математичні вирази в рядку пошуку"
 
@@ -708,8 +708,8 @@ msgid "proxied"
 msgstr "проксовано"
 
 #: searx/templates/simple/new_issue.html:64
-msgid "Start submiting a new issue on GitHub"
-msgstr "Надсилайте нові проблеми на GitHub"
+msgid "Start submitting a new issue on GitHub"
+msgstr "Створення нового повідомлення про проблему на GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
@@ -728,8 +728,8 @@ msgstr "Якщо це публічний інстанс, укажіть URL-ад
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
-"Надіслати нове повідомлення про проблему на Github, включаючи вказану "
-"вище інформацію"
+"Надіслати нове повідомлення про проблему на GitHub, включаючи вказану вище "
+"інформацію"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1958,3 +1958,6 @@ msgstr "приховати відео"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "Пошукові системи не можуть отримати результати"
+
+#~ msgid "Start submiting a new issue on GitHub"
+#~ msgstr "Надсилайте нові проблеми на GitHub"
