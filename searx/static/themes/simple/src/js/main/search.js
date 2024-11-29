@@ -166,12 +166,6 @@
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);
     }
 
-    // remove CSS class that's only needed when the browser supports no JavaScript
-    const categoriesContainer = d.querySelector("#categories_container");
-    if (categoriesContainer) {
-      categoriesContainer.classList.remove("nojs");
-    }
-
     const categoryButtons = d.querySelectorAll("button.category_button");
     for (let button of categoryButtons) {
       searxng.on(button, 'click', (event) => {
