@@ -49,7 +49,11 @@ from flask_babel import gettext
 import babel
 import lxml
 
-from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
+from searx.exceptions import (
+    SearxEngineAPIException,
+    SearxEngineTooManyRequestsException,
+    SearxEngineCaptchaException,
+)
 from searx.network import raise_for_httperror
 from searx.enginelib.traits import EngineTraits
 
@@ -57,6 +61,7 @@ from searx.utils import (
     eval_xpath,
     eval_xpath_list,
     extract_text,
+    get_embeded_stream_url,
 )
 
 traits: EngineTraits
@@ -187,6 +192,8 @@ def parse_web_api(resp):
         error_code = data.get('error_code')
         if error_code == 24:
             raise SearxEngineTooManyRequestsException()
+        if search_results.get("data", {}).get("error_data", {}).get("captchaUrl") is not None:
+            raise SearxEngineCaptchaException()
         msg = ",".join(data.get('message', ['unknown']))
         raise SearxEngineAPIException(f"{msg} ({error_code})")
 
@@ -297,6 +304,7 @@ def parse_web_api(resp):
                         'title': title,
                         'url': res_url,
                         'content': content,
+                        'iframe_src': get_embeded_stream_url(res_url),
                         'publishedDate': pub_date,
                         'thumbnail': thumbnail,
                         'template': 'videos.html',

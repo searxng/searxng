@@ -27,7 +27,7 @@ categories = ['images']
 paging = True
 
 endpoint = 'photos'
-base_url = 'https://loc.gov'
+base_url = 'https://www.loc.gov'
 search_string = "/{endpoint}/?sp={page}&{query}&fo=json"
 
 
@@ -63,8 +63,8 @@ def response(resp):
         if not url:
             continue
 
-        img_src = result['item'].get('service_medium')
-        if not img_src or img_src == 'https://memory.loc.gov/pp/grp.gif':
+        img_list = result.get('image_url')
+        if not img_list:
             continue
 
         title = result['title']
@@ -88,8 +88,8 @@ def response(resp):
                 'url': url,
                 'title': title,
                 'content': ' / '.join([i for i in content_items if i]),
-                'img_src': img_src,
-                'thumbnail_src': result['item'].get('thumb_gallery'),
+                'img_src': img_list[-1],
+                'thumbnail_src': img_list[0],
                 'author': author,
             }
         )

@@ -1,13 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
+import random
+import string
 import lxml.etree
 from lxml import html
+from parameterized.parameterized import parameterized
 
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import utils
-
 from tests import SearxTestCase
+
+
+def random_string(length, choices=string.ascii_letters):
+    return ''.join(random.choice(choices) for _ in range(length))
 
 
 class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
@@ -66,9 +72,15 @@ class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(utils.extract_text(dom.xpath('boolean(//span)')), 'True')
         self.assertEqual(utils.extract_text(dom.xpath('//img/@src')), 'test.jpg')
         self.assertEqual(utils.extract_text(dom.xpath('//unexistingtag')), '')
+
+    def test_extract_text_allow_none(self):
         self.assertEqual(utils.extract_text(None, allow_none=True), None)
+
+    def test_extract_text_error_none(self):
         with self.assertRaises(ValueError):
             utils.extract_text(None)
+
+    def test_extract_text_error_empty(self):
         with self.assertRaises(ValueError):
             utils.extract_text({})
 
@@ -103,14 +115,16 @@ class TestHTMLTextExtractor(SearxTestCase):  # pylint: disable=missing-class-doc
     def test__init__(self):
         self.assertEqual(self.html_text_extractor.result, [])
 
-    def test_handle_charref(self):
-        self.html_text_extractor.handle_charref('xF')
-        self.assertIn('\x0f', self.html_text_extractor.result)
-        self.html_text_extractor.handle_charref('XF')
-        self.assertIn('\x0f', self.html_text_extractor.result)
-
-        self.html_text_extractor.handle_charref('97')
-        self.assertIn('a', self.html_text_extractor.result)
+    @parameterized.expand(
+        [
+            ('xF', '\x0f'),
+            ('XF', '\x0f'),
+            ('97', 'a'),
+        ]
+    )
+    def test_handle_charref(self, charref: str, expected: str):
+        self.html_text_extractor.handle_charref(charref)
+        self.assertIn(expected, self.html_text_extractor.result)
 
     def test_handle_entityref(self):
         entity = 'test'
@@ -191,7 +205,7 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(utils.eval_xpath_getindex(doc, '//i/text()', 1, default='something'), 'something')
 
         # default is None
-        self.assertEqual(utils.eval_xpath_getindex(doc, '//i/text()', 1, default=None), None)
+        self.assertIsNone(utils.eval_xpath_getindex(doc, '//i/text()', 1, default=None))
 
         # index not found
         with self.assertRaises(SearxEngineXPathException) as context:
@@ -225,4 +239,4 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertIsNone(l)
 
         with self.assertRaises(ValueError):
-            utils.detect_language(None)
+            utils.detect_language(None)  # type: ignore

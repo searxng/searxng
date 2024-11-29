@@ -84,9 +84,9 @@ HTML of the site.  URL of the SearXNG instance and values are customizable.
 .. code:: html
 
    <form method="post" action="https://example.org/">
-     <!-- search      --> <input type="text" name="q" />
-     <!-- categories  --> <input type="hidden" name="categories" value="general,social media" />
-     <!-- language    --> <input type="hidden" name="lang" value="all" />
-     <!-- locale      --> <input type="hidden" name="locale" value="en" />
-     <!-- date filter --> <input type="hidden" name="time_range" value="month" />
+     <!-- search      --> <input type="text" name="q">
+     <!-- categories  --> <input type="hidden" name="categories" value="general,social media">
+     <!-- language    --> <input type="hidden" name="lang" value="all">
+     <!-- locale      --> <input type="hidden" name="locale" value="en">
+     <!-- date filter --> <input type="hidden" name="time_range" value="month">
    </form>

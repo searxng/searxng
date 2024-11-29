@@ -13,8 +13,8 @@
   };
 
   // update the css
-  var hmtlElement = d.getElementsByTagName("html")[0];
-  hmtlElement.classList.remove('no-js');
-  hmtlElement.classList.add('js');
+  var htmlElement = d.getElementsByTagName("html")[0];
+  htmlElement.classList.remove('no-js');
+  htmlElement.classList.add('js');
 
 })(window, document);

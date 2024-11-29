@@ -8,6 +8,7 @@ from timeit import default_timer
 from operator import itemgetter
 
 from searx.engines import engines
+from searx.openmetrics import OpenMetricsFamily
 from .models import HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
 from .error_recorder import count_error, count_exception, errors_per_engines
 
@@ -149,7 +150,9 @@ def get_reliabilities(engline_name_list, checker_results):
         checker_result = checker_results.get(engine_name, {})
         checker_success = checker_result.get('success', True)
         errors = engine_errors.get(engine_name) or []
-        if counter('engine', engine_name, 'search', 'count', 'sent') == 0:
+        sent_count = counter('engine', engine_name, 'search', 'count', 'sent')
+
+        if sent_count == 0:
             # no request
             reliability = None
         elif checker_success and not errors:
@@ -164,8 +167,9 @@ def get_reliabilities(engline_name_list, checker_results):
 
         reliabilities[engine_name] = {
             'reliability': reliability,
+            'sent_count': sent_count,
             'errors': errors,
-            'checker': checker_results.get(engine_name, {}).get('errors', {}),
+            'checker': checker_result.get('errors', {}),
         }
     return reliabilities
 
@@ -245,3 +249,57 @@ def get_engines_stats(engine_name_list):
         'max_time': math.ceil(max_time_total or 0),
         'max_result_count': math.ceil(max_result_count or 0),
     }
+
+
+def openmetrics(engine_stats, engine_reliabilities):
+    metrics = [
+        OpenMetricsFamily(
+            key="searxng_engines_response_time_total_seconds",
+            type_hint="gauge",
+            help_hint="The average total response time of the engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[engine['total'] or 0 for engine in engine_stats['time']],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_response_time_processing_seconds",
+            type_hint="gauge",
+            help_hint="The average processing response time of the engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[engine['processing'] or 0 for engine in engine_stats['time']],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_response_time_http_seconds",
+            type_hint="gauge",
+            help_hint="The average HTTP response time of the engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[engine['http'] or 0 for engine in engine_stats['time']],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_result_count_total",
+            type_hint="counter",
+            help_hint="The total amount of results returned by the engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[engine['result_count'] or 0 for engine in engine_stats['time']],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_request_count_total",
+            type_hint="counter",
+            help_hint="The total amount of user requests made to this engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[
+                engine_reliabilities.get(engine['name'], {}).get('sent_count', 0) or 0
+                for engine in engine_stats['time']
+            ],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_reliability_total",
+            type_hint="counter",
+            help_hint="The overall reliability of the engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[
+                engine_reliabilities.get(engine['name'], {}).get('reliability', 0) or 0
+                for engine in engine_stats['time']
+            ],
+        ),
+    ]
+    return "".join([str(metric) for metric in metrics])

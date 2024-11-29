@@ -96,13 +96,8 @@ case $DIST_ID-$DIST_VERS in
         SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_debian}"
         APACHE_PACKAGES="$APACHE_PACKAGES libapache2-mod-proxy-uwsgi"
         ;;
-    ubuntu-20.04)
-        # https://wiki.ubuntu.com/FocalFossa/ReleaseNotes#Python3_by_default
-        SEARXNG_PACKAGES="${SEARXNG_PACKAGES_debian} python-is-python3"
-        SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_debian}"
-        ;;
     ubuntu-*|debian-*)
-        SEARXNG_PACKAGES="${SEARXNG_PACKAGES_debian}"
+        SEARXNG_PACKAGES="${SEARXNG_PACKAGES_debian} python-is-python3"
         SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_debian}"
         ;;
     arch-*)
@@ -169,9 +164,16 @@ EOF
 }
 
 main() {
-    required_commands \
-        sudo systemctl install git wget curl \
-        || exit
+    case $1 in
+        install|remove|instance)
+            nginx_distro_setup
+            apache_distro_setup
+            uWSGI_distro_setup
+            required_commands \
+                sudo systemctl install git wget curl \
+                || exit
+            ;;
+    esac
 
     local _usage="unknown or missing $1 command $2"
 
@@ -453,6 +455,7 @@ searxng.install.clone() {
 
     # clone repo and add a safe.directory entry to git's system config / see
     # https://github.com/searxng/searxng/issues/1251
+    git config --system --add safe.directory "${REPO_ROOT}/.git"
     git_clone "$REPO_ROOT" "${SEARXNG_SRC}" \
               "$GIT_BRANCH" "${SERVICE_USER}"
     git config --system --add safe.directory "${SEARXNG_SRC}"
@@ -489,7 +492,7 @@ searxng.install.pyenv() {
     info_msg "create pyenv in ${SEARXNG_PYENV}"
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 rm -rf "${SEARXNG_PYENV}"
-python3 -m venv "${SEARXNG_PYENV}"
+python -m venv "${SEARXNG_PYENV}"
 grep -qFs -- 'source ${SEARXNG_PYENV}/bin/activate' ~/.profile \
   || echo 'source ${SEARXNG_PYENV}/bin/activate' >> ~/.profile
 EOF
@@ -505,7 +508,7 @@ pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
 cd ${SEARXNG_SRC}
-pip install -e .
+pip install --use-pep517 --no-build-isolation -e .
 EOF
 }
 
@@ -573,7 +576,7 @@ pip install -U pip
 pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
-pip install -U -e .
+pip install -U --use-pep517 --no-build-isolation -e .
 EOF
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
     DEFAULT_SELECT=2 \
@@ -902,6 +905,10 @@ _searxng.instance.inspect() {
 }
 
 searxng.doc.rst() {
+
+    local APACHE_SITES_AVAILABLE="/etc/apache2/sites-available"
+    local NGINX_APPS_AVAILABLE="/etc/nginx/default.apps-available"
+
     local debian="${SEARXNG_PACKAGES_debian}"
     local arch="${SEARXNG_PACKAGES_arch}"
     local fedora="${SEARXNG_PACKAGES_fedora}"

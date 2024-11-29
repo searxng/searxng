@@ -3,8 +3,13 @@
 
 from collections import defaultdict
 import mock
+
 from searx.engines import xpath
+from searx import logger
+
 from tests import SearxTestCase
+
+logger = logger.getChild('engines')
 
 
 class TestXpathEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
@@ -22,6 +27,9 @@ class TestXpathEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
         </div>
     </div>
     """
+
+    def setUp(self):
+        xpath.logger = logger.getChild('test_xpath')
 
     def test_request(self):
         xpath.search_url = 'https://url.com/{query}'

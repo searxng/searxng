@@ -28,5 +28,5 @@ def post_search(request, search):
         search.result_container.answers['ip'] = {'answer': gettext('Your IP is: ') + ip}
     elif ua_regex.match(search.search_query.query):
         ua = request.user_agent
-        search.result_container.answers['user-agent'] = {'answer': gettext('Your user-agent is: ') + ua}
+        search.result_container.answers['user-agent'] = {'answer': gettext('Your user-agent is: ') + ua.string}
     return True

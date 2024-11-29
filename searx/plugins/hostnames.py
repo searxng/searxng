@@ -1,17 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-many-branches
-"""In addition to rewriting/replace reslut URLs, the *hoostnames* plugin offers
-other features.
-
+"""
 .. attention::
 
-   The 'Hostnames plugin' from `PR-3463
-   <https://github.com/searxng/searxng/pull/3463>`_ is a rewrite of the
-   'Hostname replace' plugin.  Backwards compatibility is guaranteed for a
-   transitional period, but this will end soon.
+    The **"Hostname replace"** plugin has been replace by **"Hostnames
+    plugin"**, see :pull:`3463` & :pull:`3552`.
 
-   **To maintainers of SearXNG instances, please modify your old plugin config
-   to the new.**
+The **Hostnames plugin** can be enabled by adding it to the
+``enabled_plugins`` **list** in the ``setting.yml`` like so.
+
+  .. code:: yaml
+
+     enabled_plugins:
+       - 'Hostnames plugin'
+       ...
 
 - ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
   replaced by other hostnames.
@@ -96,7 +98,7 @@ from flask_babel import gettext
 
 from searx import settings
 from searx.plugins import logger
-from searx.settings_loader import get_yaml_file
+from searx.settings_loader import get_yaml_cfg
 
 name = gettext('Hostnames plugin')
 description = gettext('Rewrite hostnames, remove results or prioritize them based on the hostname')
@@ -118,7 +120,7 @@ def _load_regular_expressions(settings_key):
 
     # load external file with configuration
     if isinstance(setting_value, str):
-        setting_value = get_yaml_file(setting_value)
+        setting_value = get_yaml_cfg(setting_value)
 
     if isinstance(setting_value, list):
         return {re.compile(r) for r in setting_value}
@@ -129,29 +131,8 @@ def _load_regular_expressions(settings_key):
     return {}
 
 
-# compatibility fallback for old hostname replace plugin
-# TODO: remove in the future once most/all instance maintainers finished migrating # pylint: disable=fixme
-def _load_regular_expressions_with_fallback(settings_key):
-    expressions = _load_regular_expressions(settings_key)
-    if expressions:
-        return expressions
-
-    # fallback to the old `hostname_replace` settings format
-    # pylint: disable=import-outside-toplevel, cyclic-import
-    hostname_replace_config = settings.get('hostname_replace', {})
-    if hostname_replace_config:
-        from searx.plugins.hostname_replace import deprecated_msg
-
-        deprecated_msg()
-
-    if settings_key == 'replace':
-        return {re.compile(p): r for (p, r) in hostname_replace_config.items() if r}
-
-    return {re.compile(p) for (p, r) in hostname_replace_config.items() if not r}
-
-
-replacements = _load_regular_expressions_with_fallback('replace')
-removables = _load_regular_expressions_with_fallback('remove')
+replacements = _load_regular_expressions('replace')
+removables = _load_regular_expressions('remove')
 high_priority = _load_regular_expressions('high_priority')
 low_priority = _load_regular_expressions('low_priority')
 
@@ -163,10 +144,10 @@ def _matches_parsed_url(result, pattern):
 def on_result(_request, _search, result):
     for pattern, replacement in replacements.items():
         if _matches_parsed_url(result, pattern):
-            logger.debug(result['url'])
+            # logger.debug(result['url'])
             result[parsed] = result[parsed]._replace(netloc=pattern.sub(replacement, result[parsed].netloc))
             result['url'] = urlunparse(result[parsed])
-            logger.debug(result['url'])
+            # logger.debug(result['url'])
 
         for url_field in _url_fields:
             if not result.get(url_field):

@@ -18,12 +18,12 @@
                 <span itemprop="streetAddress">
                     {%- if result.address.house_number -%}{{- result.address.house_number -}}, {% endif %}
                     {{- result.address.road -}}
-                </span><br/>
+                </span><br>
             {%- endif %}
             {%- if result.address.locality -%}
                 <span itemprop="addressLocality">{{- result.address.locality -}}</span>
                 {%- if result.address.postcode -%}, <span itemprop="postalCode">{{- result.address.postcode -}}</span>{% endif %}
-                <br/>
+                <br>
             {%- endif -%}
             {%- if result.address.country -%}
                 <span itemprop="addressCountry">{{- result.address.country -}}</span>

@@ -20,6 +20,8 @@ Otherwise, follow instructions provided by Mullvad for enabling the VPN on Linux
    update of SearXNG!
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 from httpx import Response
 from lxml import html
@@ -36,6 +38,8 @@ if TYPE_CHECKING:
 traits: EngineTraits
 
 use_cache: bool = True  # non-cache use only has 100 searches per day!
+
+leta_engine: str = 'google'
 
 search_url = "https://leta.mullvad.net"
 
@@ -61,6 +65,11 @@ time_range_dict = {
     "year": "y1",
 }
 
+available_leta_engines = [
+    'google',  # first will be default if provided engine is invalid
+    'brave',
+]
+
 
 def is_vpn_connected(dom: html.HtmlElement) -> bool:
     """Returns true if the VPN is connected, False otherwise"""
@@ -80,11 +89,22 @@ def assign_headers(headers: dict) -> dict:
 def request(query: str, params: dict):
     country = traits.get_region(params.get('searxng_locale', 'all'), traits.all_locale)  # type: ignore
 
+    result_engine = leta_engine
+    if leta_engine not in available_leta_engines:
+        result_engine = available_leta_engines[0]
+        logger.warning(
+            'Configured engine "%s" not one of the available engines %s, defaulting to "%s"',
+            leta_engine,
+            available_leta_engines,
+            result_engine,
+        )
+
     params['url'] = search_url
     params['method'] = 'POST'
     params['data'] = {
         "q": query,
         "gl": country if country is str else '',
+        'engine': result_engine,
     }
     # pylint: disable=undefined-variable
     if use_cache:
@@ -107,13 +127,28 @@ def request(query: str, params: dict):
     return params
 
 
-def extract_result(dom_result: html.HtmlElement):
-    [a_elem, h3_elem, p_elem] = eval_xpath_list(dom_result, 'div/div/*')
+def extract_result(dom_result: list[html.HtmlElement]):
+    # Infoboxes sometimes appear in the beginning and will have a length of 0
+    if len(dom_result) == 3:
+        [a_elem, h3_elem, p_elem] = dom_result
+    elif len(dom_result) == 4:
+        [_, a_elem, h3_elem, p_elem] = dom_result
+    else:
+        return None
+
     return {
         'url': extract_text(a_elem.text),
         'title': extract_text(h3_elem),
         'content': extract_text(p_elem),
     }
+
+
+def extract_results(search_results: html.HtmlElement):
+    for search_result in search_results:
+        dom_result = eval_xpath_list(search_result, 'div/div/*')
+        result = extract_result(dom_result)
+        if result is not None:
+            yield result
 
 
 def response(resp: Response):
@@ -124,7 +159,7 @@ def response(resp: Response):
     if not is_vpn_connected(dom):
         raise SearxEngineResponseException('Not connected to Mullvad VPN')
     search_results = eval_xpath(dom.body, '//main/div[2]/div')
-    return [extract_result(sr) for sr in search_results]
+    return list(extract_results(search_results))
 
 
 def fetch_traits(engine_traits: EngineTraits):

@@ -170,6 +170,8 @@ article[data-vim-selected].category-social {
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
+  box-sizing: border-box;
+  width: 100%;
   .ltr-border-left(0.2rem solid transparent);
 
   h3 {
@@ -232,8 +234,14 @@ article[data-vim-selected].category-social {
     }
   }
 
+  .url_header {
+    display: flex;
+    gap: 0.5rem;
+  }
+
   .url_wrapper {
     display: flex;
+    align-items: center;
     font-size: 1rem;
     color: var(--color-result-url-font);
     flex-wrap: nowrap;
@@ -245,6 +253,7 @@ article[data-vim-selected].category-social {
     .url_o1 {
       white-space: nowrap;
       flex-shrink: 1;
+      padding-bottom: 1px;
     }
 
     .url_o1::after {
@@ -260,6 +269,7 @@ article[data-vim-selected].category-social {
       flex-grow: 0;
       flex-shrink: 1;
       text-align: right;
+      padding-bottom: 1px;
 
       .url_i2 {
         float: right;
@@ -269,6 +279,7 @@ article[data-vim-selected].category-social {
 
   .published_date,
   .result_length,
+  .result_views,
   .result_author,
   .result_shipping,
   .result_source_country {
@@ -286,7 +297,7 @@ article[data-vim-selected].category-social {
     padding-top: 0.6rem;
     .ltr-padding-right(1rem);
     width: 7rem;
-    height: unset; // remove heigth value that was needed for lazy loading
+    height: unset; // remove height value that was needed for lazy loading
   }
 
   .break {
@@ -388,7 +399,7 @@ article[data-vim-selected].category-social {
     padding-top: 0.6rem;
     .ltr-padding-right(1rem);
     width: 20rem;
-    height: unset; // remove heigth value that was needed for lazy loading
+    height: unset; // remove height value that was needed for lazy loading
   }
 }
 
@@ -445,6 +456,7 @@ article[data-vim-selected].category-social {
   margin: 0.25rem;
   border: none !important;
   height: @results-image-row-height;
+  width: unset;
 
   & > a {
     position: relative;
@@ -466,10 +478,10 @@ article[data-vim-selected].category-social {
     position: absolute;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 50%);
+    background: var(--color-image-resolution-background);
     padding: 0.3rem 0.5rem;
     font-size: 0.9rem;
-    color: #fff;
+    color: var(--color-image-resolution-font);
     border-top-left-radius: 0.3rem;
   }
 
@@ -627,12 +639,12 @@ summary.title {
   padding-top: 1em;
 }
 
-.sidebar-collapsable {
+.sidebar-collapsible {
   border-top: 1px solid var(--color-sidebar-border);
   padding-bottom: 0.5em;
 }
 
-#sidebar-end-collapsable {
+#sidebar-end-collapsible {
   border-bottom: 1px solid var(--color-sidebar-border);
   width: 100%;
 }
@@ -742,6 +754,20 @@ summary.title {
     font-size: 0.9em;
     margin: 0 10px 0 0;
     .show-content-button;
+  }
+}
+
+#engines_msg {
+  .engine-name {
+    width: 10rem;
+  }
+
+  .response-error {
+    color: var(--color-error);
+  }
+
+  .bar-chart-value {
+    width: auto;
   }
 }
 
@@ -981,10 +1007,10 @@ summary.title {
 }
 
 @media screen and (min-width: @phone) and (max-width: @tablet) {
-  // when .center-aligment-yes, see style-center.less
+  // when .center-alignment-yes, see style-center.less
   // the media query includes "min-width: @phone"
   // because the phone layout includes the tablet layout unconditionally.
-  .center-aligment-no {
+  .center-alignment-no {
     .results-tablet();
   }
 }
@@ -1073,7 +1099,8 @@ summary.title {
   .result {
     background: var(--color-result-background);
     border: 1px solid var(--color-result-background);
-    margin: 1rem 10px;
+    margin: 1rem 2%;
+    width: 96%;
     .rounded-corners;
   }
 
@@ -1081,6 +1108,7 @@ summary.title {
     margin: 0;
     height: @results-image-row-height-phone;
     background: var(--color-base-background-mobile);
+    width: unset;
   }
 
   .infobox {

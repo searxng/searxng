@@ -1,8 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
+import flask
+from mock import Mock
+from tests import SearxTestCase
+from searx import favicons
 from searx.locales import locales_initialize
 from searx.preferences import (
+    Setting,
     EnumStringSetting,
     MapSetting,
     SearchLanguageSetting,
@@ -10,12 +15,14 @@ from searx.preferences import (
     PluginsSetting,
     ValidationException,
 )
-from tests import SearxTestCase
+from searx.plugins import Plugin
+from searx.preferences import Preferences
 
 locales_initialize()
+favicons.init()
 
 
-class PluginStub:  # pylint: disable=missing-class-docstring, too-few-public-methods
+class PluginStub(Plugin):  # pylint: disable=missing-class-docstring, too-few-public-methods
     def __init__(self, plugin_id, default_on):
         self.id = plugin_id
         self.default_on = default_on
@@ -47,22 +54,22 @@ class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
 
     def test_enum_setting_invalid_default_value(self):
         with self.assertRaises(ValidationException):
-            EnumStringSetting(3, choices=[0, 1, 2])
+            EnumStringSetting('3', choices=['0', '1', '2'])
 
     def test_enum_setting_invalid_choice(self):
-        setting = EnumStringSetting(0, choices=[0, 1, 2])
+        setting = EnumStringSetting('0', choices=['0', '1', '2'])
         with self.assertRaises(ValidationException):
-            setting.parse(3)
+            setting.parse('3')
 
     def test_enum_setting_valid_default(self):
-        setting = EnumStringSetting(3, choices=[1, 2, 3])
-        self.assertEqual(setting.get_value(), 3)
+        setting = EnumStringSetting('3', choices=['1', '2', '3'])
+        self.assertEqual(setting.get_value(), '3')
 
     def test_enum_setting_valid_choice(self):
-        setting = EnumStringSetting(3, choices=[1, 2, 3])
-        self.assertEqual(setting.get_value(), 3)
-        setting.parse(2)
-        self.assertEqual(setting.get_value(), 2)
+        setting = EnumStringSetting('3', choices=['1', '2', '3'])
+        self.assertEqual(setting.get_value(), '3')
+        setting.parse('2')
+        self.assertEqual(setting.get_value(), '2')
 
     # multiple choice settings
 
@@ -122,10 +129,10 @@ class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
 
 
 class TestPreferences(SearxTestCase):  # pylint: disable=missing-class-docstring
-    def test_encode(self):
-        from searx.preferences import Preferences  # pylint: disable=import-outside-toplevel
+    def setUp(self):
+        self.preferences = Preferences(['simple'], ['general'], {}, [])
 
-        pref = Preferences(['simple'], ['general'], {}, [])
+    def test_encode(self):
         url_params = (
             'eJx1Vk1z4zYM_TXxRZNMd7eddg8-pe21nWnvGoiEJEQkofDDtvzrC1qSRdnbQxQTBA'
             'Hw8eGRCiJ27AnDsUOHHszBgOsSdHjU-Pr7HwfDCkweHCBFVmxHgxGPB7LiU4-eL9Px'
@@ -152,8 +159,48 @@ class TestPreferences(SearxTestCase):  # pylint: disable=missing-class-docstring
             'd-DZy7PtaVp2WgvPBpzCXUL_J1OGex48RVmOXzBU8_N3kqekkefRDzxNK2_Klp9mBJ'
             'wsUnXyRqq1mScHuYalUY7_AZTCR4s=&q='
         )
-        pref.parse_encoded_data(url_params)
+        self.preferences.parse_encoded_data(url_params)
         self.assertEqual(
-            vars(pref.key_value_settings['categories']),
+            vars(self.preferences.key_value_settings['categories']),
             {'value': ['general'], 'locked': False, 'choices': ['general', 'none']},
         )
+
+    def test_save_key_value_setting(self):
+        setting_key = 'foo'
+        setting_value = 'bar'
+
+        cookie_callback = {}
+
+        def set_cookie_callback(name, value, max_age):  # pylint: disable=unused-argument
+            cookie_callback[name] = value
+
+        response_mock = Mock(flask.Response)
+        response_mock.set_cookie = set_cookie_callback
+        self.preferences.key_value_settings = {
+            setting_key: Setting(
+                setting_value,
+                locked=False,
+            ),
+        }
+        self.preferences.save(response_mock)
+        self.assertIn(setting_key, cookie_callback)
+        self.assertEqual(cookie_callback[setting_key], setting_value)
+
+    def test_false_key_value_setting(self):
+        setting_key = 'foo'
+
+        cookie_callback = {}
+
+        def set_cookie_callback(name, value, max_age):  # pylint: disable=unused-argument
+            cookie_callback[name] = value
+
+        response_mock = Mock(flask.Response)
+        response_mock.set_cookie = set_cookie_callback
+        self.preferences.key_value_settings = {
+            setting_key: Setting(
+                '',
+                locked=True,
+            ),
+        }
+        self.preferences.save(response_mock)
+        self.assertNotIn(setting_key, cookie_callback)

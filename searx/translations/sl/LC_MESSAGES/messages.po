@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
+"POT-Creation-Date: 2024-10-05 06:24+0000\n"
 "PO-Revision-Date: 2024-05-23 21:19+0000\n"
 "Last-Translator: cynedex <cynedex@users.noreply.translate.codeberg.org>\n"
 "Language: sl\n"
@@ -27,7 +27,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -164,6 +164,11 @@ msgstr "svetlo"
 msgid "dark"
 msgstr "temno"
 
+#. STYLE_NAMES['BLACK']
+#: searx/searxng.msg
+msgid "black"
+msgstr ""
+
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
@@ -175,21 +180,23 @@ msgid "About"
 msgstr "O nas"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/searxng.msg
+#: searx/engines/wttr.py:32 searx/searxng.msg
 msgid "Average temp."
 msgstr "Povprečna temp."
 
 #. WEATHER_TERMS['CLOUD COVER']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:91 searx/searxng.msg
 msgid "Cloud cover"
 msgstr "Oblačnost"
 
 #. WEATHER_TERMS['CONDITION']
+#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
 #: searx/searxng.msg
 msgid "Condition"
 msgstr "Pogoji"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
+#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
 #: searx/searxng.msg
 msgid "Current condition"
 msgstr "Trenutno stanje"
@@ -200,21 +207,25 @@ msgid "Evening"
 msgstr "Večer"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/engines/open_meteo.py:81
+#: searx/engines/wttr.py:59 searx/searxng.msg
 msgid "Feels like"
 msgstr "Občuti se kot"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:64 searx/engines/open_meteo.py:93
+#: searx/engines/wttr.py:68 searx/searxng.msg
 msgid "Humidity"
 msgstr "Vlaga"
 
 #. WEATHER_TERMS['MAX TEMP.']
+#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
 #: searx/searxng.msg
 msgid "Max temp."
 msgstr "Najvišja temp."
 
 #. WEATHER_TERMS['MIN TEMP.']
+#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
 #: searx/searxng.msg
 msgid "Min temp."
 msgstr "Najnižja temp."
@@ -235,72 +246,79 @@ msgid "Noon"
 msgstr "Opoldne"
 
 #. WEATHER_TERMS['PRESSURE']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:95 searx/searxng.msg
 msgid "Pressure"
 msgstr "Tlak"
 
 #. WEATHER_TERMS['SUNRISE']
+#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
 #: searx/searxng.msg
 msgid "Sunrise"
 msgstr "Sončni vzhod"
 
 #. WEATHER_TERMS['SUNSET']
+#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
 #: searx/searxng.msg
 msgid "Sunset"
 msgstr "Sončni zahod"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:48 searx/engines/open_meteo.py:76
+#: searx/engines/wttr.py:55 searx/searxng.msg
 msgid "Temperature"
 msgstr "Temperatura"
 
 #. WEATHER_TERMS['UV INDEX']
+#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
 #: searx/searxng.msg
 msgid "UV index"
 msgstr "UV indeks"
 
 #. WEATHER_TERMS['VISIBILITY']
+#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
 #: searx/searxng.msg
 msgid "Visibility"
 msgstr "Vidnost"
 
 #. WEATHER_TERMS['WIND']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:58 searx/engines/open_meteo.py:86
+#: searx/engines/wttr.py:62 searx/searxng.msg
 msgid "Wind"
 msgstr "Veter"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:85 searx/searxng.msg
 msgid "subscribers"
 msgstr "naročniki"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:86 searx/searxng.msg
 msgid "posts"
 msgstr "objave"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:87 searx/searxng.msg
 msgid "active users"
 msgstr "aktivni uporabnik"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/searxng.msg
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "komentarji"
 
 #. SOCIAL_MEDIA_TERMS['USER']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:129 searx/engines/lemmy.py:164 searx/searxng.msg
 msgid "user"
 msgstr "uporabnik"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:131 searx/engines/lemmy.py:165 searx/searxng.msg
 msgid "community"
 msgstr "skupnost"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:78 searx/searxng.msg
 msgid "points"
 msgstr "točke"
 
@@ -310,47 +328,47 @@ msgid "title"
 msgstr "glavni naslov"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:81 searx/searxng.msg
 msgid "author"
 msgstr "avtor"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr ""
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr ""
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
 msgstr ""
 
-#: searx/webapp.py:330
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Ni zadetkov"
 
-#: searx/engines/qwant.py:281
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:332
+#: searx/engines/qwant.py:288
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Vir"
 
-#: searx/webapp.py:334
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Napaka pri nalaganju naslednje strani"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:495 searx/webapp.py:898
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neveljavne nastavitve. Prosimo, preverite vašo konfiguracijo"
 
-#: searx/webapp.py:507
+#: searx/webapp.py:511
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: searx/webapp.py:584 searx/webapp.py:666
+#: searx/webapp.py:588 searx/webapp.py:670
 msgid "search error"
 msgstr "napaka pri iskanju"
 
@@ -418,21 +436,25 @@ msgstr "{minutes} minut nazaj"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "pred {hours} urami in {minutes} minut"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "Generator naključnih števil"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "Generiraj različne naključne vrednosti"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "Statistične funkcije"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "Izračunaj {functions} argumentov"
+
+#: searx/engines/mozhi.py:57
+msgid "Synonyms"
+msgstr ""
 
 #: searx/engines/openstreetmap.py:159
 msgid "Get directions"
@@ -446,7 +468,7 @@ msgstr "{title} (neveljaven)"
 msgid "This entry has been superseded by"
 msgstr "Ta vnos je bil nadomeščen z"
 
-#: searx/engines/qwant.py:283
+#: searx/engines/qwant.py:290
 msgid "Channel"
 msgstr "Kanal"
 
@@ -463,7 +485,7 @@ msgid "clicks"
 msgstr "klikov"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Jezik"
 
@@ -475,7 +497,7 @@ msgstr ""
 "{numCitations} navedb od leta {firstCitationVelocityYear} do "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -485,7 +507,7 @@ msgstr ""
 " formata datoteke. TinEye podpira samo slikovne formate JPEG, PNG, GIF, "
 "BMP, TIFF ali WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -493,19 +515,19 @@ msgstr ""
 "Slika je preveč preprosta, da bi lahko našel zadetke. TinEye potrebuje "
 "osnovni nivo vizualnih detajlov za identifikacijo zadetkov."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Slike ni bilo mogoče prevesti."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "Ocena knjige"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "Kakovost datoteke"
 
-#: searx/plugins/calculator.py:12
+#: searx/plugins/calculator.py:14
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Izačunajte matematične izraze preko iskalne vrstice"
 
@@ -517,15 +539,11 @@ msgstr "Pretvori besede v drugo hash vrednost."
 msgid "hash digest"
 msgstr "Hash vrednost"
 
-#: searx/plugins/hostname_replace.py:7
-msgid "Hostname replace"
-msgstr "Preimenuj strežniško ime"
-
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
 msgstr ""
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 
@@ -663,22 +681,26 @@ msgstr "Kontaktiraj vzdrževalca instance"
 msgid "Click on the magnifier to perform search"
 msgstr "Kiknite na lupo za iskanje"
 
-#: searx/templates/simple/macros.html:35
+#: searx/templates/simple/macros.html:40
 msgid "Length"
 msgstr "Dolžina"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:41
+msgid "Views"
+msgstr ""
+
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Avtor"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "predpomnjeno"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:50
 msgid "proxied"
 msgstr "preko posredniškega strežnika"
 
@@ -706,7 +728,7 @@ msgstr "Predloži novo težavo na Githubu, vključno z zgornjimi informacijami"
 msgid "No HTTPS"
 msgstr "Brez HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -751,27 +773,27 @@ msgstr "Splošno"
 msgid "Default categories"
 msgstr "Privzete kategorije"
 
-#: searx/templates/simple/preferences.html:187
+#: searx/templates/simple/preferences.html:190
 msgid "User interface"
 msgstr "Uporabniški vmesnik"
 
-#: searx/templates/simple/preferences.html:208
+#: searx/templates/simple/preferences.html:211
 msgid "Privacy"
 msgstr "Zasebnost"
 
-#: searx/templates/simple/preferences.html:221
+#: searx/templates/simple/preferences.html:224
 msgid "Engines"
 msgstr "Iskalniki"
 
-#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:226
 msgid "Currently used search engines"
 msgstr "Trenutno uporabljeni iskalniki"
 
-#: searx/templates/simple/preferences.html:231
+#: searx/templates/simple/preferences.html:234
 msgid "Special Queries"
 msgstr "Posebne poizvedbe"
 
-#: searx/templates/simple/preferences.html:237
+#: searx/templates/simple/preferences.html:240
 msgid "Cookies"
 msgstr "Piškotki"
 
@@ -787,19 +809,19 @@ msgstr "Število zadetkov"
 msgid "Info"
 msgstr "Informacije"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Poskusite iskati:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Nazaj na vrh"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Prejšnja stran"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Naslednja stran"
 
@@ -839,6 +861,7 @@ msgstr "Točke"
 msgid "Result count"
 msgstr "Število rezultatov"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -914,17 +937,13 @@ msgstr "Komentar(ji)"
 msgid "Download results"
 msgstr "Prenesi zadetke"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Sporočila iskalnikov"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Napaka!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Iskalniki ne morejo pridobiti rezultatov"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr ""
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -949,12 +968,12 @@ msgstr "Predlogi"
 msgid "Search language"
 msgstr "Jezik iskanja"
 
-#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Privzeti jezik"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:8
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Samodejno zaznaj"
@@ -1193,6 +1212,14 @@ msgstr "Teža"
 #: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Največji čas"
+
+#: searx/templates/simple/preferences/favicon.html:2
+msgid "Favicon Resolver"
+msgstr ""
+
+#: searx/templates/simple/preferences/favicon.html:15
+msgid "Display favicons near search results"
+msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
@@ -1934,4 +1961,13 @@ msgstr "skrij video"
 
 #~ msgid "TiB"
 #~ msgstr "TiB"
+
+#~ msgid "Hostname replace"
+#~ msgstr "Preimenuj strežniško ime"
+
+#~ msgid "Error!"
+#~ msgstr "Napaka!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Iskalniki ne morejo pridobiti rezultatov"
 

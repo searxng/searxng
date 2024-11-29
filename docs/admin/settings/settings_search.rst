@@ -9,6 +9,7 @@
    search:
      safe_search: 0
      autocomplete: ""
+     favicon_resolver: ""
      default_lang: ""
      ban_time_on_fail: 5
      max_ban_time_on_fail: 120
@@ -40,6 +41,11 @@
   - ``swisscows``
   - ``qwant``
   - ``wikipedia``
+
+``favicon_resolver``:
+  To activate favicons in SearXNG's result list select a default
+  favicon-resolver, leave blank to turn off the feature.  Don't activate the
+  favicons before reading the :ref:`Favicons documentation <favicons>`.
 
 ``default_lang``:
   Default search language - leave blank to detect from browser information or

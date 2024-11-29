@@ -96,7 +96,7 @@ static.build.commit() {
         return 1
     fi
 
-    # drop existing commit from previos build
+    # drop existing commit from previous build
     static.build.drop &>/dev/null
 
     (   set -e

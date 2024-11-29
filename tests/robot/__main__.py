@@ -65,7 +65,7 @@ def main():
         test_layer.setUp()
         run_robot_tests([getattr(test_webapp, x) for x in dir(test_webapp) if x.startswith('test_')])
     except Exception:  # pylint: disable=broad-except
-        print('Error occured: {0}'.format(traceback.format_exc()))
+        print('Error occurred: {0}'.format(traceback.format_exc()))
         sys.exit(1)
     finally:
         test_layer.tearDown()

@@ -137,9 +137,6 @@ class OnlineProcessor(EngineProcessor):
         self.engine.request(query, params)
 
         # ignoring empty urls
-        if params['url'] is None:
-            return None
-
         if not params['url']:
             return None
 

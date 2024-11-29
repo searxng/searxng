@@ -25,7 +25,7 @@ Relational Database Management System (RDBMS) are supported:
 
 - :ref:`engine sqlite`
 - :ref:`engine postgresql`
-- :ref:`engine mysql_server`
+- :ref:`engine mysql_server` & :ref:`engine mariadb_server`
 
 All of the engines above are just commented out in the :origin:`settings.yml
 <searx/settings.yml>`, as you have to set the required attributes for the
@@ -119,3 +119,16 @@ MySQL
 .. automodule:: searx.engines.mysql_server
   :members:
 
+.. _engine mariadb_server:
+
+MariaDB
+--------
+
+.. sidebar:: info
+
+   - :origin:`mariadb_server.py <searx/engines/mariadb_server.py>`
+   - ``pip install`` :pypi:`mariadb <mariadb>`
+
+
+.. automodule:: searx.engines.mariadb_server
+  :members:

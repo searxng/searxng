@@ -120,7 +120,7 @@ _TR_LOCALES: list[str] = []
 
 
 def get_translation_locales() -> list[str]:
-    """Returns the list of transaltion locales (*underscore*).  The list is
+    """Returns the list of translation locales (*underscore*).  The list is
     generated from the translation folders in :origin:`searx/translations`"""
 
     global _TR_LOCALES  # pylint:disable=global-statement
@@ -152,7 +152,7 @@ def locales_initialize():
 def region_tag(locale: babel.Locale) -> str:
     """Returns SearXNG's region tag from the locale (e.g. zh-TW , en-US)."""
     if not locale.territory:
-        raise ValueError('%s missed a territory')
+        raise ValueError('babel.Locale %s: missed a territory' % locale)
     return locale.language + '-' + locale.territory
 
 

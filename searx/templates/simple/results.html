@@ -3,7 +3,7 @@
 {% macro engine_data_form(engine_data) -%}
     {% for engine_name, kv_data in engine_data.items() %}
         {% for k, v in kv_data.items() %}
-            <input type="hidden" name="engine_data-{{ engine_name }}-{{ k|e }}" value="{{ v|e }}" />
+            <input type="hidden" name="engine_data-{{ engine_name }}-{{ k|e }}" value="{{ v|e }}">
         {% endfor %}
     {% endfor %}
 {%- endmacro %}
@@ -44,7 +44,7 @@
 
         {%- if infoboxes -%}
           <div id="infoboxes">
-            <details open class="sidebar-collapsable">
+            <details open class="sidebar-collapsible">
               <summary class="title">{{ _('Info') }}</summary>
               {%- for infobox in infoboxes -%}
                 {%- include 'simple/elements/infobox.html' -%}
@@ -57,19 +57,17 @@
           {%- include 'simple/elements/suggestions.html' -%}
         {%- endif -%}
 
+        {%- include 'simple/elements/engines_msg.html' -%}
+
         {%- if method == 'POST' -%}
           {%- include 'simple/elements/search_url.html' -%}
         {%- endif -%}
-
-        {%- if unresponsive_engines -%}
-          {%- include 'simple/elements/engines_msg.html' -%}
-	{%- endif -%}
 
         {%- if search_formats -%}
           {%- include 'simple/elements/apis.html' -%}
         {%- endif -%}
 
-        <div id="sidebar-end-collapsable"></div>
+        <div id="sidebar-end-collapsible"></div>
     </div>
 
     {% if corrections %}

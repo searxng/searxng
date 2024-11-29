@@ -99,7 +99,7 @@ def response(resp):
                 'url': metadata['purl'],
                 'thumbnail_src': metadata['turl'],
                 'img_src': metadata['murl'],
-                'content': metadata['desc'],
+                'content': metadata.get('desc'),
                 'title': title,
                 'source': source,
                 'resolution': img_format[0],

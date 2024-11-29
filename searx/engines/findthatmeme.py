@@ -35,8 +35,8 @@ def response(resp):
     results = []
 
     for item in search_res:
-        img = 'https://findthatmeme.us-southeast-1.linodeobjects.com/' + item['image_path']
-        thumb = 'https://findthatmeme.us-southeast-1.linodeobjects.com/thumb/' + item.get('thumbnail', '')
+        img = 'https://s3.thehackerblog.com/findthatmeme/' + item['image_path']
+        thumb = 'https://s3.thehackerblog.com/findthatmeme/thumb/' + item.get('thumbnail', '')
         date = datetime.strptime(item["updated_at"].split("T")[0], "%Y-%m-%d")
         formatted_date = datetime.utcfromtimestamp(date.timestamp())
 

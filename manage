@@ -41,7 +41,7 @@ PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
 
 PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
-GECKODRIVER_VERSION="v0.34.0"
+GECKODRIVER_VERSION="v0.35.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
@@ -54,8 +54,10 @@ fi
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
-   YAMLLINT_FILES+=("$line")
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml')"
+    if [ "$line" != "tests/unit/settings/syntaxerror_settings.yml" ]; then
+        YAMLLINT_FILES+=("$line")
+    fi
+done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml' '.github/*.yml' '.github/*/*.yml')"
 
 RST_FILES=(
     'README.rst'
@@ -231,7 +233,7 @@ gecko.driver() {
             build_msg INSTALL "geckodriver already installed"
             return
         fi
-        PLATFORM="$(python3 -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
+        PLATFORM="$(python -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
         case "$PLATFORM" in
             "linux 32bit" | "linux2 32bit") ARCH="linux32";;
             "linux 64bit" | "linux2 64bit") ARCH="linux64";;
@@ -297,8 +299,8 @@ pyenv.install() {
 
     (   set -e
         pyenv
-        build_msg PYENV "[install] pip install -e 'searx${PY_SETUP_EXTRAS}'"
-        "${PY_ENV_BIN}/python" -m pip install -e ".${PY_SETUP_EXTRAS}"
+        build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e 'searx${PY_SETUP_EXTRAS}'"
+        "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e ".${PY_SETUP_EXTRAS}"
     )
     local exit_val=$?
     if [ ! $exit_val -eq 0 ]; then

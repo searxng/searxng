@@ -14,7 +14,7 @@ import babel
 
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.locales import language_tag
-from searx.utils import html_to_text
+from searx.utils import html_to_text, humanize_number
 from searx.enginelib.traits import EngineTraits
 
 traits: EngineTraits
@@ -124,6 +124,7 @@ def video_response(resp):
                 'content': html_to_text(result.get('description') or ''),
                 'author': result.get('account', {}).get('displayName'),
                 'length': minute_to_hm(result.get('duration')),
+                'views': humanize_number(result['views']),
                 'template': 'videos.html',
                 'publishedDate': parse(result['publishedAt']),
                 'iframe_src': result.get('embedUrl'),

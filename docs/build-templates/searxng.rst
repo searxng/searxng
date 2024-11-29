@@ -113,7 +113,7 @@ ${fedora_build}
 
        (${SERVICE_USER})$ command -v python && python --version
        $SEARXNG_PYENV/bin/python
-       Python 3.8.1
+       Python 3.11.10
 
        # update pip's boilerplate ..
        pip install -U pip
@@ -123,7 +123,7 @@ ${fedora_build}
 
        # jump to SearXNG's working tree and install SearXNG into virtualenv
        (${SERVICE_USER})$ cd \"$SEARXNG_SRC\"
-       (${SERVICE_USER})$ pip install -e .
+       (${SERVICE_USER})$ pip install --use-pep517 --no-build-isolation -e .
 
 
 .. END manage.sh update_packages

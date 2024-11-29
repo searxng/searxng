@@ -234,7 +234,7 @@ def _parse_text_and_convert(search, from_query, to_query):
         value = target_from_si(float(value))
 
     if measured.group('E'):
-        # when incomming notation is scientific, outgoing notation is scientific
+        # when incoming notation is scientific, outgoing notation is scientific
         result = babel.numbers.format_scientific(value, locale=_locale)
     else:
         result = babel.numbers.format_decimal(value, locale=_locale, format='#,##0.##########;-#')

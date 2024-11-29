@@ -4,26 +4,31 @@ Welcome to SearXNG
 
   *Search without being tracked.*
 
-SearXNG is a free internet metasearch engine which aggregates results from more
-than 70 search services.  Users are neither tracked nor profiled.  Additionally,
-SearXNG can be used over Tor for online anonymity.
+.. jinja:: searx
+
+   SearXNG is a free internet metasearch engine which aggregates results from up
+   to {{engines | length}} :ref:`search services <configured engines>`.  Users
+   are neither tracked nor profiled.  Additionally, SearXNG can be used over Tor
+   for online anonymity.
 
 Get started with SearXNG by using one of the instances listed at searx.space_.
 If you don't trust anyone, you can set up your own, see :ref:`installation`.
 
-.. sidebar::  features
+.. jinja:: searx
 
-   - :ref:`self hosted <installation>`
-   - :ref:`no user tracking / no profiling <SearXNG protect privacy>`
-   - script & cookies are optional
-   - secure, encrypted connections
-   - :ref:`about 200 search engines <configured engines>`
-   - `about 60 translations <https://translate.codeberg.org/projects/searxng/searxng/>`_
-   - about 100 `well maintained <https://uptime.searxng.org/>`__ instances on searx.space_
-   - :ref:`easy integration of search engines <demo online engine>`
-   - professional development: `CI <https://github.com/searxng/searxng/actions>`_,
-     `quality assurance <https://dev.searxng.org/>`_ &
-     `automated tested UI <https://dev.searxng.org/screenshots.html>`_
+   .. sidebar::  features
+
+      - :ref:`self hosted <installation>`
+      - :ref:`no user tracking / no profiling <SearXNG protect privacy>`
+      - script & cookies are optional
+      - secure, encrypted connections
+      - :ref:`{{engines | length}} search engines <configured engines>`
+      - `58 translations <https://translate.codeberg.org/projects/searxng/searxng/>`_
+      - about 70 `well maintained <https://uptime.searxng.org/>`__ instances on searx.space_
+      - :ref:`easy integration of search engines <demo online engine>`
+      - professional development: `CI <https://github.com/searxng/searxng/actions>`_,
+	`quality assurance <https://dev.searxng.org/>`_ &
+	`automated tested UI <https://dev.searxng.org/screenshots.html>`_
 
 .. sidebar:: be a part
 

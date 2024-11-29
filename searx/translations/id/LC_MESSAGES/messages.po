@@ -9,27 +9,30 @@
 # SilentWord <SilentWord@users.noreply.translate.codeberg.org>, 2024.
 # Linerly <Linerly@users.noreply.translate.codeberg.org>, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# eddywidjaja <eddywidjaja@users.noreply.translate.codeberg.org>, 2024.
+# LIGMATV <LIGMATV@users.noreply.translate.codeberg.org>, 2024.
+# drat <drat@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-17 12:15+0000\n"
-"PO-Revision-Date: 2024-06-08 13:18+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
-"\n"
+"POT-Creation-Date: 2024-10-05 06:24+0000\n"
+"PO-Revision-Date: 2024-10-08 13:41+0000\n"
+"Last-Translator: Linerly <Linerly@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
+"searxng/id/>\n"
 "Language: id\n"
-"Language-Team: Indonesian "
-"<https://translate.codeberg.org/projects/searxng/searxng/id/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.7.2\n"
+"Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr "tanpa subkelompok lebih lanjut"
+msgstr "tanpa pengsubkelompokkan khusus"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -39,7 +42,7 @@ msgstr "lainnya"
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
 msgid "files"
-msgstr "berkas"
+msgstr "File"
 
 #. CATEGORY_NAMES['GENERAL']
 #: searx/searxng.msg
@@ -79,7 +82,7 @@ msgstr "tv"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "teknologi"
+msgstr "TI"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -94,7 +97,7 @@ msgstr "peta"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "onion"
+msgstr "onions"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -161,6 +164,11 @@ msgstr "cerah"
 msgid "dark"
 msgstr "gelap"
 
+#. STYLE_NAMES['BLACK']
+#: searx/searxng.msg
+msgid "black"
+msgstr "hitam"
+
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
 msgid "Uptime"
@@ -172,21 +180,23 @@ msgid "About"
 msgstr "Tentang"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/searxng.msg
+#: searx/engines/wttr.py:32 searx/searxng.msg
 msgid "Average temp."
 msgstr "suhu rata‐rata."
 
 #. WEATHER_TERMS['CLOUD COVER']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:91 searx/searxng.msg
 msgid "Cloud cover"
 msgstr "Tutupan awan"
 
 #. WEATHER_TERMS['CONDITION']
+#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
 #: searx/searxng.msg
 msgid "Condition"
 msgstr "kondisi"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
+#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
 #: searx/searxng.msg
 msgid "Current condition"
 msgstr "kondisi saat ini"
@@ -197,21 +207,25 @@ msgid "Evening"
 msgstr "Sore"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/engines/open_meteo.py:81
+#: searx/engines/wttr.py:59 searx/searxng.msg
 msgid "Feels like"
 msgstr "terasa seperti"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:64 searx/engines/open_meteo.py:93
+#: searx/engines/wttr.py:68 searx/searxng.msg
 msgid "Humidity"
 msgstr "kelembaban"
 
 #. WEATHER_TERMS['MAX TEMP.']
+#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
 #: searx/searxng.msg
 msgid "Max temp."
 msgstr "suhu maksimum."
 
 #. WEATHER_TERMS['MIN TEMP.']
+#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
 #: searx/searxng.msg
 msgid "Min temp."
 msgstr "suhu minimum."
@@ -232,72 +246,79 @@ msgid "Noon"
 msgstr "Siang"
 
 #. WEATHER_TERMS['PRESSURE']
-#: searx/searxng.msg
+#: searx/engines/open_meteo.py:95 searx/searxng.msg
 msgid "Pressure"
 msgstr "tekanan"
 
 #. WEATHER_TERMS['SUNRISE']
+#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
 #: searx/searxng.msg
 msgid "Sunrise"
 msgstr "matahari terbit"
 
 #. WEATHER_TERMS['SUNSET']
+#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
 #: searx/searxng.msg
 msgid "Sunset"
 msgstr "matahari terbenam"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:48 searx/engines/open_meteo.py:76
+#: searx/engines/wttr.py:55 searx/searxng.msg
 msgid "Temperature"
 msgstr "suhu"
 
 #. WEATHER_TERMS['UV INDEX']
+#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
 #: searx/searxng.msg
 msgid "UV index"
 msgstr "indeks UV"
 
 #. WEATHER_TERMS['VISIBILITY']
+#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
 #: searx/searxng.msg
 msgid "Visibility"
 msgstr "jarak pandang"
 
 #. WEATHER_TERMS['WIND']
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:58 searx/engines/open_meteo.py:86
+#: searx/engines/wttr.py:62 searx/searxng.msg
 msgid "Wind"
 msgstr "angin"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:85 searx/searxng.msg
 msgid "subscribers"
 msgstr "pelanggan"
 
 #. SOCIAL_MEDIA_TERMS['POSTS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:86 searx/searxng.msg
 msgid "posts"
 msgstr "postingan"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:87 searx/searxng.msg
 msgid "active users"
 msgstr "pengguna aktif"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/searxng.msg
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "komentar"
 
 #. SOCIAL_MEDIA_TERMS['USER']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:129 searx/engines/lemmy.py:164 searx/searxng.msg
 msgid "user"
 msgstr "pengguna"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
-#: searx/searxng.msg
+#: searx/engines/lemmy.py:131 searx/engines/lemmy.py:165 searx/searxng.msg
 msgid "community"
 msgstr "komunitas"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:78 searx/searxng.msg
 msgid "points"
 msgstr "poin-poin"
 
@@ -307,47 +328,47 @@ msgid "title"
 msgstr "judul"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/searxng.msg
+#: searx/engines/hackernews.py:81 searx/searxng.msg
 msgid "author"
 msgstr "penulis"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
 msgstr "Buka"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
-#: searx/engines/discourse.py:121 searx/searxng.msg
+#: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
 msgstr "Tertutup"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
-#: searx/engines/discourse.py:132 searx/searxng.msg
+#: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
-msgstr ""
+msgstr "dijawab"
 
-#: searx/webapp.py:330
+#: searx/webapp.py:332
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:281
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:332
+#: searx/engines/qwant.py:288
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
 msgid "Source"
 msgstr "Sumber"
 
-#: searx/webapp.py:334
+#: searx/webapp.py:336
 msgid "Error loading the next page"
 msgstr "Gagal memuat halaman berikutnya"
 
-#: searx/webapp.py:491 searx/webapp.py:887
+#: searx/webapp.py:495 searx/webapp.py:898
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan tidak valid, mohon ubah preferensi Anda"
 
-#: searx/webapp.py:507
+#: searx/webapp.py:511
 msgid "Invalid settings"
 msgstr "Pengaturan tidak valid"
 
-#: searx/webapp.py:584 searx/webapp.py:666
+#: searx/webapp.py:588 searx/webapp.py:670
 msgid "search error"
 msgstr "kesalahan pencarian"
 
@@ -415,21 +436,25 @@ msgstr "{minutes} menit yang lalu"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} jam, {minutes} menit yang lalu"
 
-#: searx/answerers/random/answerer.py:75
+#: searx/answerers/random/answerer.py:76
 msgid "Random value generator"
 msgstr "Penghasil nilai acak"
 
-#: searx/answerers/random/answerer.py:76
+#: searx/answerers/random/answerer.py:77
 msgid "Generate different random values"
 msgstr "Menghasilkan nilai-nilai acak yang berbeda"
 
-#: searx/answerers/statistics/answerer.py:48
+#: searx/answerers/statistics/answerer.py:50
 msgid "Statistics functions"
 msgstr "Fungsi statistik"
 
-#: searx/answerers/statistics/answerer.py:49
+#: searx/answerers/statistics/answerer.py:51
 msgid "Compute {functions} of the arguments"
 msgstr "Menghitung {functions} dari argumen"
+
+#: searx/engines/mozhi.py:57
+msgid "Synonyms"
+msgstr "Sinonim"
 
 #: searx/engines/openstreetmap.py:159
 msgid "Get directions"
@@ -443,7 +468,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Masukan ini telah digantikan oleh"
 
-#: searx/engines/qwant.py:283
+#: searx/engines/qwant.py:290
 msgid "Channel"
 msgstr "Saluran"
 
@@ -460,7 +485,7 @@ msgid "clicks"
 msgstr "klik"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:128
+#: searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Bahasa"
 
@@ -472,7 +497,7 @@ msgstr ""
 "{numCitations} kutipan dari tahun {firstCitationVelocityYear} sampai "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:39
+#: searx/engines/tineye.py:45
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -482,7 +507,7 @@ msgstr ""
 "yang tidak didukung. TinEye hanya mendukung gambar JPEG, PNG, GIF, BMP, "
 "TIFF, atau WebP."
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -491,19 +516,19 @@ msgstr ""
 "membutuhkan sebuah detail yang dasar untuk mengenal kecocokan dengan "
 "berhasil."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "Gambar ini tidak dapat diunduh."
 
-#: searx/engines/zlibrary.py:129
+#: searx/engines/zlibrary.py:138
 msgid "Book rating"
 msgstr "Peringkat buku"
 
-#: searx/engines/zlibrary.py:130
+#: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "Kualitas berkas"
 
-#: searx/plugins/calculator.py:12
+#: searx/plugins/calculator.py:14
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Hitung ekspresi matematika melalui bilah pencarian"
 
@@ -515,17 +540,13 @@ msgstr "Mengubah string menjadi hash digest yang berbeda."
 msgid "hash digest"
 msgstr "intisari hash"
 
-#: searx/plugins/hostname_replace.py:7
-msgid "Hostname replace"
-msgstr "Pengubah nama host"
-
-#: searx/plugins/hostnames.py:68
+#: searx/plugins/hostnames.py:103
 msgid "Hostnames plugin"
-msgstr ""
+msgstr "Plugin nama hos"
 
-#: searx/plugins/hostnames.py:69
+#: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr ""
+msgstr "Tulis ulang nama hos, hapus atau prioritas kan hasil berdasarkan nama hos"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -553,11 +574,11 @@ msgstr ""
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
-msgstr ""
+msgstr "IP Anda adalah : "
 
 #: searx/plugins/self_info.py:31
 msgid "Your user-agent is: "
-msgstr ""
+msgstr "Agen pengguna Anda adalah: "
 
 #: searx/plugins/tor_check.py:24
 msgid "Tor check plugin"
@@ -665,22 +686,26 @@ msgstr "Hubungi pengelola instansi"
 msgid "Click on the magnifier to perform search"
 msgstr "Tekan pada kaca pembesar untuk melakukan pencarian"
 
-#: searx/templates/simple/macros.html:35
+#: searx/templates/simple/macros.html:40
 msgid "Length"
 msgstr "Durasi"
 
-#: searx/templates/simple/macros.html:36
+#: searx/templates/simple/macros.html:41
+msgid "Views"
+msgstr "Tampilan"
+
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
 msgstr "Penulis"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "tembolok"
 
-#: searx/templates/simple/macros.html:44
+#: searx/templates/simple/macros.html:50
 msgid "proxied"
 msgstr "proksi"
 
@@ -710,7 +735,7 @@ msgstr "Kirim sebuah masalah baru di Github yang mengandung informasi di atas"
 msgid "No HTTPS"
 msgstr "Tanpa HTTPS"
 
-#: searx/templates/simple/elements/engines_msg.html:18
+#: searx/templates/simple/elements/engines_msg.html:14
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
@@ -755,27 +780,27 @@ msgstr "Umum"
 msgid "Default categories"
 msgstr "Kategori bawaan"
 
-#: searx/templates/simple/preferences.html:187
+#: searx/templates/simple/preferences.html:190
 msgid "User interface"
 msgstr "Antarmuka pengguna"
 
-#: searx/templates/simple/preferences.html:208
+#: searx/templates/simple/preferences.html:211
 msgid "Privacy"
 msgstr "Privasi"
 
-#: searx/templates/simple/preferences.html:221
+#: searx/templates/simple/preferences.html:224
 msgid "Engines"
 msgstr "Mesin"
 
-#: searx/templates/simple/preferences.html:223
+#: searx/templates/simple/preferences.html:226
 msgid "Currently used search engines"
 msgstr "Mesin pencari yang saat ini digunakan"
 
-#: searx/templates/simple/preferences.html:231
+#: searx/templates/simple/preferences.html:234
 msgid "Special Queries"
 msgstr "Pencarian Khusus"
 
-#: searx/templates/simple/preferences.html:237
+#: searx/templates/simple/preferences.html:240
 msgid "Cookies"
 msgstr "Kuki"
 
@@ -791,19 +816,19 @@ msgstr "Jumlah hasil"
 msgid "Info"
 msgstr "Informasi"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:75
 msgid "Try searching for:"
 msgstr "Coba cari:"
 
-#: searx/templates/simple/results.html:109
+#: searx/templates/simple/results.html:107
 msgid "Back to top"
 msgstr "Kembali ke atas"
 
-#: searx/templates/simple/results.html:127
+#: searx/templates/simple/results.html:125
 msgid "Previous page"
 msgstr "Halaman sebelumnya"
 
-#: searx/templates/simple/results.html:145
+#: searx/templates/simple/results.html:143
 msgid "Next page"
 msgstr "Halaman berikutnya"
 
@@ -843,6 +868,7 @@ msgstr "Skor"
 msgid "Result count"
 msgstr "Jumlah hasil"
 
+#: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
@@ -918,17 +944,13 @@ msgstr "Komentar"
 msgid "Download results"
 msgstr "Unduh hasil"
 
-#: searx/templates/simple/elements/engines_msg.html:7
+#: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
 msgstr "Pesan dari mesin pencarian"
 
-#: searx/templates/simple/elements/engines_msg.html:12
-msgid "Error!"
-msgstr "Terjadi kesalahan!"
-
-#: searx/templates/simple/elements/engines_msg.html:13
-msgid "Engines cannot retrieve results"
-msgstr "Mesin-mesin tidak dapat mendapatkan hasil"
+#: searx/templates/simple/elements/engines_msg.html:7
+msgid "seconds"
+msgstr "detik"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -953,12 +975,12 @@ msgstr "Saran"
 msgid "Search language"
 msgstr "Bahasa pencarian"
 
-#: searx/templates/simple/filters/languages.html:2
+#: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
 msgstr "Bahasa bawaan"
 
-#: searx/templates/simple/filters/languages.html:4
+#: searx/templates/simple/filters/languages.html:8
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
 msgstr "Deteksi otomatis"
@@ -1198,6 +1220,14 @@ msgstr "Berat"
 #: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
 msgstr "Waktu maksimum"
+
+#: searx/templates/simple/preferences/favicon.html:2
+msgid "Favicon Resolver"
+msgstr "Penyelesai Favikon"
+
+#: searx/templates/simple/preferences/favicon.html:15
+msgid "Display favicons near search results"
+msgstr "Tampilkan favikon"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
@@ -1489,7 +1519,7 @@ msgstr "berkas torrent"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Seeder"
-msgstr "Seeder"
+msgstr "Pengumpan"
 
 #: searx/templates/simple/result_templates/torrent.html:9
 msgid "Leecher"
@@ -1830,3 +1860,11 @@ msgstr "sembunyikan video"
 #~ msgid "TiB"
 #~ msgstr "TiB"
 
+#~ msgid "Hostname replace"
+#~ msgstr "Pengubah nama host"
+
+#~ msgid "Error!"
+#~ msgstr "Terjadi kesalahan!"
+
+#~ msgid "Engines cannot retrieve results"
+#~ msgstr "Mesin-mesin tidak dapat mendapatkan hasil"

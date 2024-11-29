@@ -25,7 +25,7 @@ from searx.locales import (
 )
 
 LOCALE_DATA_FILE = Path(searx_dir) / 'data' / 'locales.json'
-TRANSLATOINS_FOLDER = Path(searx_dir) / 'translations'
+TRANSLATIONS_FOLDER = Path(searx_dir) / 'translations'
 
 
 def main():

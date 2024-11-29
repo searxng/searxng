@@ -61,7 +61,7 @@ from searx.botdetection import link_token
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.results import Timing
 from searx.settings_defaults import OUTPUT_FORMATS
-from searx.settings_loader import get_default_settings_path
+from searx.settings_loader import DEFAULT_SETTINGS_FILE
 from searx.exceptions import SearxParameterException
 from searx.engines import (
     DEFAULT_CATEGORY,
@@ -87,10 +87,7 @@ from searx.webadapter import (
     get_selected_categories,
     parse_lang,
 )
-from searx.utils import (
-    gen_useragent,
-    dict_subset,
-)
+from searx.utils import gen_useragent, dict_subset
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
@@ -104,13 +101,7 @@ from searx.answerers import (
     answerers,
     ask,
 )
-from searx.metrics import (
-    get_engines_stats,
-    get_engine_errors,
-    get_reliabilities,
-    histogram,
-    counter,
-)
+from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
 from searx.flaskfix import patch_application
 
 from searx.locales import (
@@ -123,6 +114,8 @@ from searx.locales import (
 
 # renaming names from searx imports ...
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
+from searx import favicons
+
 from searx.redisdb import initialize as redis_initialize
 from searx.sxng_locales import sxng_locales
 from searx.search import SearchWithPlugins, initialize as search_initialize
@@ -388,6 +381,7 @@ def render(template_name: str, **kwargs):
     # values from the preferences
     kwargs['preferences'] = request.preferences
     kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
+    kwargs['favicon_resolver'] = request.preferences.get_value('favicon_resolver')
     kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
     kwargs['search_on_category_select'] = request.preferences.get_value('search_on_category_select')
     kwargs['hotkeys'] = request.preferences.get_value('hotkeys')
@@ -431,6 +425,7 @@ def render(template_name: str, **kwargs):
     # helpers to create links to other pages
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
+    kwargs['favicon_url'] = favicons.favicon_url
     kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
     kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
     kwargs['cache_url'] = settings['ui']['cache_url']
@@ -513,7 +508,7 @@ def pre_request():
         preferences.parse_dict({"language": language})
         logger.debug('set language %s (from browser)', preferences.get_value("language"))
 
-    # locale is defined neither in settings nor in preferences
+    # UI locale is defined neither in settings nor in preferences
     # use browser headers
     if not preferences.get_value("locale"):
         locale = _get_browser_language(request, LOCALE_NAMES.keys())
@@ -617,6 +612,14 @@ def health():
 def client_token(token=None):
     link_token.ping(request, token)
     return Response('', mimetype='text/css')
+
+
+@app.route('/rss.xsl', methods=['GET', 'POST'])
+def rss_xsl():
+    return render_template(
+        f"{request.preferences.get_value('theme')}/rss.xsl",
+        url_for=custom_url_for,
+    )
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -736,9 +739,6 @@ def search():
         response_rss = render(
             'opensearch_response_rss.xml',
             results=results,
-            answers=result_container.answers,
-            corrections=result_container.corrections,
-            suggestions=result_container.suggestions,
             q=request.form['q'],
             number_of_results=result_container.number_of_results,
         )
@@ -760,6 +760,11 @@ def search():
             result_container.corrections,
         )
     )
+
+    # engine_timings: get engine response times sorted from slowest to fastest
+    engine_timings = sorted(result_container.get_timings(), reverse=True, key=lambda e: e.total)
+    max_response_time = engine_timings[0].total if engine_timings else None
+    engine_timings_pairs = [(timing.engine, timing.total) for timing in engine_timings]
 
     # search_query.lang contains the user choice (all, auto, en, ...)
     # when the user choice is "auto", search.search_query.lang contains the detected language
@@ -789,7 +794,9 @@ def search():
             settings['search']['languages'],
             fallback=request.preferences.get_value("language")
         ),
-        timeout_limit = request.form.get('timeout_limit', None)
+        timeout_limit = request.form.get('timeout_limit', None),
+        timings = engine_timings_pairs,
+        max_response_time = max_response_time
         # fmt: on
     )
 
@@ -1013,6 +1020,7 @@ def preferences():
         ],
         disabled_engines = disabled_engines,
         autocomplete_backends = autocomplete_backends,
+        favicon_resolver_names = favicons.proxy.CFG.resolver_map.keys(),
         shortcuts = {y: x for x, y in engine_shortcuts.items()},
         themes = themes,
         plugins = plugins,
@@ -1024,6 +1032,9 @@ def preferences():
         preferences = True
         # fmt: on
     )
+
+
+app.add_url_rule('/favicon_proxy', methods=['GET'], endpoint="favicon_proxy", view_func=favicons.favicon_proxy)
 
 
 @app.route('/image_proxy', methods=['GET'])
@@ -1203,6 +1214,30 @@ def stats_checker():
     return jsonify(result)
 
 
+@app.route('/metrics')
+def stats_open_metrics():
+    password = settings['general'].get("open_metrics")
+
+    if not (settings['general'].get("enable_metrics") and password):
+        return Response('open metrics is disabled', status=404, mimetype='text/plain')
+
+    if not request.authorization or request.authorization.password != password:
+        return Response('access forbidden', status=401, mimetype='text/plain')
+
+    filtered_engines = dict(filter(lambda kv: request.preferences.validate_token(kv[1]), engines.items()))
+
+    checker_results = checker_get_result()
+    checker_results = (
+        checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
+    )
+
+    engine_stats = get_engines_stats(filtered_engines)
+    engine_reliabilities = get_reliabilities(filtered_engines, checker_results)
+    metrics_text = openmetrics(engine_stats, engine_reliabilities)
+
+    return Response(metrics_text, mimetype='text/plain')
+
+
 @app.route('/robots.txt', methods=['GET'])
 def robots():
     return Response(
@@ -1337,6 +1372,7 @@ if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_
     plugin_initialize(app)
     search_initialize(enable_checker=True, check_network=True, enable_metrics=settings['general']['enable_metrics'])
     limiter.initialize(app, settings)
+    favicons.init()
 
 
 def run():
@@ -1347,7 +1383,7 @@ def run():
         port=settings['server']['port'],
         host=settings['server']['bind_address'],
         threaded=True,
-        extra_files=[get_default_settings_path()],
+        extra_files=[DEFAULT_SETTINGS_FILE],
     )
 
 

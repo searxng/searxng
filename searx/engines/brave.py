@@ -123,7 +123,6 @@ from typing import Any, TYPE_CHECKING
 from urllib.parse import (
     urlencode,
     urlparse,
-    parse_qs,
 )
 
 from dateutil import parser
@@ -137,6 +136,7 @@ from searx.utils import (
     eval_xpath_list,
     eval_xpath_getindex,
     js_variable_to_python,
+    get_embeded_stream_url,
 )
 from searx.enginelib.traits import EngineTraits
 
@@ -311,7 +311,7 @@ def _parse_search(resp):
             # In my tests a video tag in the WEB search was most often not a
             # video, except the ones from youtube ..
 
-            iframe_src = _get_iframe_src(url)
+            iframe_src = get_embeded_stream_url(url)
             if iframe_src:
                 item['iframe_src'] = iframe_src
                 item['template'] = 'videos.html'
@@ -326,15 +326,6 @@ def _parse_search(resp):
         result_list.append(item)
 
     return result_list
-
-
-def _get_iframe_src(url):
-    parsed_url = urlparse(url)
-    if parsed_url.path == '/watch' and parsed_url.query:
-        video_id = parse_qs(parsed_url.query).get('v', [])  # type: ignore
-        if video_id:
-            return 'https://www.youtube-nocookie.com/embed/' + video_id[0]  # type: ignore
-    return None
 
 
 def _parse_news(json_resp):
@@ -392,7 +383,7 @@ def _parse_videos(json_resp):
         if result['thumbnail'] is not None:
             item['thumbnail'] = result['thumbnail']['src']
 
-        iframe_src = _get_iframe_src(url)
+        iframe_src = get_embeded_stream_url(url)
         if iframe_src:
             item['iframe_src'] = iframe_src
 
@@ -426,14 +417,15 @@ def fetch_traits(engine_traits: EngineTraits):
         print("ERROR: response from Brave is not OK.")
     dom = html.fromstring(resp.text)  # type: ignore
 
-    for option in dom.xpath('//div[@id="language-select"]//option'):
+    for option in dom.xpath('//section//option[@value="en-us"]/../option'):
 
         ui_lang = option.get('value')
         try:
-            if '-' in ui_lang:
+            l = babel.Locale.parse(ui_lang, sep='-')
+            if l.territory:
                 sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep='-'))
             else:
-                sxng_tag = language_tag(babel.Locale.parse(ui_lang))
+                sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep='-'))
 
         except babel.UnknownLocaleError:
             print("ERROR: can't determine babel locale of Brave's (UI) language %s" % ui_lang)
@@ -453,7 +445,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:  # type: ignore
         print("ERROR: response from Brave is not OK.")
 
-    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]
+    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]  # type: ignore
     country_js = country_js[: country_js.index("},k={default")]
     country_tags = js_variable_to_python(country_js)
 

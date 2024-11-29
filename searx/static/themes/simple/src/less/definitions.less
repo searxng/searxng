@@ -115,6 +115,17 @@
   --color-toolkit-loader-borderleft: rgba(255, 255, 255, 0);
   --color-doc-code: #003;
   --color-doc-code-background: #ddeaff;
+  /// Other misc colors
+  --color-bar-chart-primary: #5bc0de;
+  --color-bar-chart-secondary: #deb15b;
+  --color-image-resolution-background: rgba(0, 0, 0, 50%);
+  --color-image-resolution-font: #fff;
+  --color-loading-indicator: rgba(255, 255, 255, 0.2);
+  --color-loading-indicator-gap: #fff;
+  --color-line-number: #64708d;
+  // Favicons Colors
+  --color-favicon-background-color: #ddd;
+  --color-favicon-border-color: #ccc;
 }
 
 .dark-themes() {
@@ -227,6 +238,17 @@
   --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
   --color-doc-code: #ddd;
   --color-doc-code-background: #4d5a6f;
+  // Favicons Colors
+  --color-favicon-background-color: #ddd;
+  --color-favicon-border-color: #ccc;
+}
+
+.black-themes() {
+  --color-base-background: #000;
+  --color-base-background-mobile: #000;
+  --color-header-background: #000;
+  --color-footer-background: #000;
+  --color-sidebar-background: #000;
 }
 
 /// Dark Theme (autoswitch based on device pref)
@@ -241,6 +263,11 @@
   .dark-themes();
 }
 
+:root.theme-black {
+  .dark-themes();
+  .black-themes();
+}
+
 /// General Size
 @results-width: 45rem;
 @results-sidebar-width: 25rem;
@@ -250,7 +277,7 @@
 @results-margin: 0.125rem;
 @result-padding: 1rem;
 @results-image-row-height: 12rem;
-@results-image-row-height-phone: 6rem;
+@results-image-row-height-phone: 10rem;
 @search-width: 44rem;
 // heigh of #search, see detail.less
 @search-height: 7.6rem;

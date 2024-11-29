@@ -128,9 +128,6 @@ _INSTALLED = False
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
-LIMITER_CFG = Path('/etc/searxng/limiter.toml')
-"""Local Limiter configuration."""
-
 CFG_DEPRECATED = {
     # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
 }
@@ -138,8 +135,12 @@ CFG_DEPRECATED = {
 
 def get_cfg() -> config.Config:
     global CFG  # pylint: disable=global-statement
+
     if CFG is None:
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, LIMITER_CFG, CFG_DEPRECATED)
+        from . import settings_loader  # pylint: disable=import-outside-toplevel
+
+        cfg_file = (settings_loader.get_user_cfg_folder() or Path("/etc/searxng")) / "limiter.toml"
+        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, CFG_DEPRECATED)
     return CFG
 
 

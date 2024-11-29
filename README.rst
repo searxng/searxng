@@ -66,7 +66,7 @@ A user_, admin_ and developer_ handbook is available on the homepage_.
 Contact
 =======
 
-Ask questions or just chat about SearXNG on
+Ask questions or chat with the SearXNG community (this not a chatbot) on
 
 IRC
   `#searxng on libera.chat <https://web.libera.chat/?channel=#searxng>`_

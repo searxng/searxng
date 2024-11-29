@@ -17,7 +17,7 @@ from os.path import splitext, join
 from random import choice
 from html.parser import HTMLParser
 from html import escape
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 from markdown_it import MarkdownIt
 
 from lxml import html
@@ -44,21 +44,11 @@ _JS_QUOTE_KEYS_RE = re.compile(r'([\{\s,])(\w+)(:)')
 _JS_VOID_RE = re.compile(r'void\s+[0-9]+|void\s*\([0-9]+\)')
 _JS_DECIMAL_RE = re.compile(r":\s*\.")
 
-_STORAGE_UNIT_VALUE: Dict[str, int] = {
-    'TB': 1024 * 1024 * 1024 * 1024,
-    'GB': 1024 * 1024 * 1024,
-    'MB': 1024 * 1024,
-    'TiB': 1000 * 1000 * 1000 * 1000,
-    'GiB': 1000 * 1000 * 1000,
-    'MiB': 1000 * 1000,
-    'KiB': 1000,
-}
-
 _XPATH_CACHE: Dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: Dict[str, Dict[str, str]] = {}
 
 _FASTTEXT_MODEL: Optional["fasttext.FastText._FastText"] = None  # type: ignore
-"""fasttext model to predict laguage of a search term"""
+"""fasttext model to predict language of a search term"""
 
 SEARCH_LANGUAGE_CODES = frozenset([searxng_locale[0].split('-')[0] for searxng_locale in sxng_locales])
 """Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`)."""
@@ -344,6 +334,18 @@ def humanize_bytes(size, precision=2):
     return "%.*f %s" % (precision, size, s[p])
 
 
+def humanize_number(size, precision=0):
+    """Determine the *human readable* value of a decimal number."""
+    s = ['', 'K', 'M', 'B', 'T']
+
+    x = len(s)
+    p = 0
+    while size > 1000 and p < x:
+        p += 1
+        size = size / 1000.0
+    return "%.*f%s" % (precision, size, s[p])
+
+
 def convert_str_to_int(number_str: str) -> int:
     """Convert number_str to int or 0 if number_str is not a number."""
     if number_str.isdigit():
@@ -611,6 +613,52 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
         fasttext.FastText.eprint = lambda x: None
         _FASTTEXT_MODEL = fasttext.load_model(str(data_dir / 'lid.176.ftz'))
     return _FASTTEXT_MODEL
+
+
+def get_embeded_stream_url(url):
+    """
+    Converts a standard video URL into its embed format. Supported services include Youtube,
+    Facebook, Instagram, TikTok, and Dailymotion.
+    """
+    parsed_url = urlparse(url)
+    iframe_src = None
+
+    # YouTube
+    if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
+        video_id = parse_qs(parsed_url.query).get('v', [])
+        if video_id:
+            iframe_src = 'https://www.youtube-nocookie.com/embed/' + video_id[0]
+
+    # Facebook
+    elif parsed_url.netloc in ['www.facebook.com', 'facebook.com']:
+        encoded_href = urlencode({'href': url})
+        iframe_src = 'https://www.facebook.com/plugins/video.php?allowfullscreen=true&' + encoded_href
+
+    # Instagram
+    elif parsed_url.netloc in ['www.instagram.com', 'instagram.com'] and parsed_url.path.startswith('/p/'):
+        if parsed_url.path.endswith('/'):
+            iframe_src = url + 'embed'
+        else:
+            iframe_src = url + '/embed'
+
+    # TikTok
+    elif (
+        parsed_url.netloc in ['www.tiktok.com', 'tiktok.com']
+        and parsed_url.path.startswith('/@')
+        and '/video/' in parsed_url.path
+    ):
+        path_parts = parsed_url.path.split('/video/')
+        video_id = path_parts[1]
+        iframe_src = 'https://www.tiktok.com/embed/' + video_id
+
+    # Dailymotion
+    elif parsed_url.netloc in ['www.dailymotion.com', 'dailymotion.com'] and parsed_url.path.startswith('/video/'):
+        path_parts = parsed_url.path.split('/')
+        if len(path_parts) == 3:
+            video_id = path_parts[2]
+            iframe_src = 'https://www.dailymotion.com/embed/video/' + video_id
+
+    return iframe_src
 
 
 def detect_language(text: str, threshold: float = 0.3, only_search_languages: bool = False) -> Optional[str]:

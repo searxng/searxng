@@ -34,6 +34,7 @@ from searx.engines.google import (
     detect_google_sorry,
 )
 from searx.enginelib.traits import EngineTraits
+from searx.utils import get_embeded_stream_url
 
 if TYPE_CHECKING:
     import logging
@@ -125,6 +126,7 @@ def response(resp):
                 'content': content,
                 'author': pub_info,
                 'thumbnail': thumbnail,
+                'iframe_src': get_embeded_stream_url(url),
                 'template': 'videos.html',
             }
         )

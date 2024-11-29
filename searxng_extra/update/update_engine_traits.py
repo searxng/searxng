@@ -85,7 +85,7 @@ def main():
 
 
 def fetch_traits_map():
-    """Fetchs supported languages for each engine and writes json file with those."""
+    """Fetches supported languages for each engine and writes json file with those."""
     network.set_timeout_for_thread(10.0)
 
     def log(msg):
@@ -101,7 +101,7 @@ def fetch_traits_map():
 def filter_locales(traits_map: EngineTraitsMap):
     """Filter language & region tags by a threshold."""
 
-    min_eng_per_region = 15
+    min_eng_per_region = 18
     min_eng_per_lang = 20
 
     _ = {}

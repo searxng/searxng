@@ -13,7 +13,7 @@ from collections import OrderedDict
 import flask
 import babel
 
-from searx import settings, autocomplete
+from searx import settings, autocomplete, favicons
 from searx.enginelib import Engine
 from searx.plugins import Plugin
 from searx.locales import LOCALE_NAMES
@@ -325,7 +325,7 @@ class ClientPref:
     # hint: searx.webapp.get_client_settings should be moved into this class
 
     locale: babel.Locale
-    """Locale prefered by the client."""
+    """Locale preferred by the client."""
 
     def __init__(self, locale: Optional[babel.Locale] = None):
         self.locale = locale
@@ -406,6 +406,11 @@ class Preferences:
                 locked=is_locked('autocomplete'),
                 choices=list(autocomplete.backends.keys()) + ['']
             ),
+            'favicon_resolver': EnumStringSetting(
+                settings['search']['favicon_resolver'],
+                locked=is_locked('favicon_resolver'),
+                choices=list(favicons.proxy.CFG.resolver_map.keys()) + ['']
+            ),
             'image_proxy': BooleanSetting(
                 settings['server']['image_proxy'],
                 locked=is_locked('image_proxy')
@@ -441,7 +446,7 @@ class Preferences:
             'simple_style': EnumStringSetting(
                 settings['ui']['theme_args']['simple_style'],
                 locked=is_locked('simple_style'),
-                choices=['', 'auto', 'light', 'dark']
+                choices=['', 'auto', 'light', 'dark', 'black']
             ),
             'center_alignment': BooleanSetting(
                 settings['ui']['center_alignment'],
@@ -474,7 +479,6 @@ class Preferences:
         self.plugins = PluginsSetting('plugins', plugins=plugins)
         self.tokens = SetSetting('tokens')
         self.client = client or ClientPref()
-        self.unknown_params: Dict[str, str] = {}
 
     def get_as_url_params(self):
         """Return preferences as URL parameters"""
@@ -518,10 +522,6 @@ class Preferences:
                 self.plugins.parse_cookie(input_data.get('disabled_plugins', ''), input_data.get('enabled_plugins', ''))
             elif user_setting_name == 'tokens':
                 self.tokens.parse(user_setting)
-            elif not any(
-                user_setting_name.startswith(x) for x in ['enabled_', 'disabled_', 'engine_', 'category_', 'plugin_']
-            ):
-                self.unknown_params[user_setting_name] = user_setting
 
     def parse_form(self, input_data: Dict[str, str]):
         """Parse formular (``<input>``) data from a ``flask.request.form``"""
@@ -546,8 +546,7 @@ class Preferences:
                 disabled_plugins.append(user_setting_name)
             elif user_setting_name == 'tokens':
                 self.tokens.parse_form(user_setting)
-            else:
-                self.unknown_params[user_setting_name] = user_setting
+
         self.key_value_settings['categories'].parse_form(enabled_categories)
         self.engines.parse_form(disabled_engines)
         self.plugins.parse_form(disabled_plugins)
@@ -558,8 +557,6 @@ class Preferences:
         ret_val = None
         if user_setting_name in self.key_value_settings:
             ret_val = self.key_value_settings[user_setting_name].get_value()
-        if user_setting_name in self.unknown_params:
-            ret_val = self.unknown_params[user_setting_name]
         return ret_val
 
     def save(self, resp: flask.Response):
@@ -572,8 +569,6 @@ class Preferences:
         self.engines.save(resp)
         self.plugins.save(resp)
         self.tokens.save('tokens', resp)
-        for k, v in self.unknown_params.items():
-            resp.set_cookie(k, v, max_age=COOKIE_MAX_AGE)
         return resp
 
     def validate_token(self, engine):

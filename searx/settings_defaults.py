@@ -18,7 +18,7 @@ searx_dir = abspath(dirname(__file__))
 logger = logging.getLogger('searx')
 OUTPUT_FORMATS = ['html', 'csv', 'json', 'rss']
 SXNG_LOCALE_TAGS = ['all', 'auto'] + list(l[0] for l in sxng_locales)
-SIMPLE_STYLE = ('auto', 'light', 'dark')
+SIMPLE_STYLE = ('auto', 'light', 'dark', 'black')
 CATEGORIES_AS_TABS = {
     'general': {},
     'images': {},
@@ -143,6 +143,7 @@ SCHEMA = {
         'contact_url': SettingsValue((None, False, str), None),
         'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),
         'enable_metrics': SettingsValue(bool, True),
+        'open_metrics': SettingsValue(str, ''),
     },
     'brand': {
         'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
@@ -156,6 +157,7 @@ SCHEMA = {
         'safe_search': SettingsValue((0, 1, 2), 0),
         'autocomplete': SettingsValue(str, ''),
         'autocomplete_min': SettingsValue(int, 4),
+        'favicon_resolver': SettingsValue(str, ''),
         'default_lang': SettingsValue(tuple(SXNG_LOCALE_TAGS + ['']), ''),
         'languages': SettingSublistValue(SXNG_LOCALE_TAGS, SXNG_LOCALE_TAGS),
         'ban_time_on_fail': SettingsValue(numbers.Real, 5),

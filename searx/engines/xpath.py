@@ -12,6 +12,8 @@ Request:
 - :py:obj:`search_url`
 - :py:obj:`lang_all`
 - :py:obj:`soft_max_redirects`
+- :py:obj:`method`
+- :py:obj:`request_body`
 - :py:obj:`cookies`
 - :py:obj:`headers`
 
@@ -151,6 +153,16 @@ headers = {}
 '''Some engines might offer different result based headers.  Possible use-case:
 To set header to moderate.'''
 
+method = 'GET'
+'''Some engines might require to do POST requests for search.'''
+
+request_body = ''
+'''The body of the request.  This can only be used if different :py:obj:`method`
+is set, e.g. ``POST``.  For formatting see the documentation of :py:obj:`search_url`::
+
+    search={query}&page={pageno}{time_range}{safe_search}
+'''
+
 paging = False
 '''Engine supports paging [True or False].'''
 
@@ -236,8 +248,14 @@ def request(query, params):
     params['headers'].update(headers)
 
     params['url'] = search_url.format(**fargs)
-    params['soft_max_redirects'] = soft_max_redirects
+    params['method'] = method
 
+    if request_body:
+        # don't url-encode the query if it's in the request body
+        fargs['query'] = query
+        params['data'] = request_body.format(**fargs)
+
+    params['soft_max_redirects'] = soft_max_redirects
     params['raise_for_httperror'] = False
 
     return params

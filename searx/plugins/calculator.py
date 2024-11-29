@@ -3,19 +3,27 @@
 """
 
 import ast
+import re
 import operator
+from multiprocessing import Process, Queue
+from typing import Callable
 
+import flask
+import babel
 from flask_babel import gettext
-from searx import settings
+
+from searx.plugins import logger
 
 name = "Basic Calculator"
 description = gettext("Calculate mathematical expressions via the search bar")
-default_on = False
+default_on = True
 
 preference_section = 'general'
 plugin_id = 'calculator'
 
-operators = {
+logger = logger.getChild(plugin_id)
+
+operators: dict[type, Callable] = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
     ast.Mult: operator.mul,
@@ -35,11 +43,15 @@ def _eval_expr(expr):
     >>> _eval_expr('1 + 2*3**(4^5) / (6 + -7)')
     -5.0
     """
-    return _eval(ast.parse(expr, mode='eval').body)
+    try:
+        return _eval(ast.parse(expr, mode='eval').body)
+    except ZeroDivisionError:
+        # This is undefined
+        return ""
 
 
 def _eval(node):
-    if isinstance(node, ast.Constant) and isinstance(node.value, int):
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
         return node.value
 
     if isinstance(node, ast.BinOp):
@@ -51,10 +63,31 @@ def _eval(node):
     raise TypeError(node)
 
 
+def timeout_func(timeout, func, *args, **kwargs):
+
+    def handler(q: Queue, func, args, **kwargs):  # pylint:disable=invalid-name
+        try:
+            q.put(func(*args, **kwargs))
+        except:
+            q.put(None)
+            raise
+
+    que = Queue()
+    p = Process(target=handler, args=(que, func, args), kwargs=kwargs)
+    p.start()
+    p.join(timeout=timeout)
+    ret_val = None
+    if not p.is_alive():
+        ret_val = que.get()
+    else:
+        logger.debug("terminate function after timeout is exceeded")
+        p.terminate()
+    p.join()
+    p.close()
+    return ret_val
+
+
 def post_search(_request, search):
-    # don't run on public instances due to possible attack surfaces
-    if settings['server']['public_instance']:
-        return True
 
     # only show the result of the expression on the first page
     if search.search_query.pageno > 1:
@@ -68,21 +101,30 @@ def post_search(_request, search):
     # replace commonly used math operators with their proper Python operator
     query = query.replace("x", "*").replace(":", "/")
 
+    # use UI language
+    ui_locale = babel.Locale.parse(flask.request.preferences.get_value('locale'), sep='-')
+
+    # parse the number system in a localized way
+    def _decimal(match: re.Match) -> str:
+        val = match.string[match.start() : match.end()]
+        val = babel.numbers.parse_decimal(val, ui_locale, numbering_system="latn")
+        return str(val)
+
+    decimal = ui_locale.number_symbols["latn"]["decimal"]
+    group = ui_locale.number_symbols["latn"]["group"]
+    query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
+
     # only numbers and math operators are accepted
     if any(str.isalpha(c) for c in query):
         return True
 
     # in python, powers are calculated via **
     query_py_formatted = query.replace("^", "**")
-    try:
-        result = str(_eval_expr(query_py_formatted))
-        if result != query:
-            search.result_container.answers['calculate'] = {'answer': f"{query} = {result}"}
-    except (TypeError, SyntaxError, ArithmeticError):
-        pass
 
+    # Prevent the runtime from being longer than 50 ms
+    result = timeout_func(0.05, _eval_expr, query_py_formatted)
+    if result is None or result == "":
+        return True
+    result = babel.numbers.format_decimal(result, locale=ui_locale)
+    search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
     return True
-
-
-def is_allowed():
-    return not settings['server']['public_instance']

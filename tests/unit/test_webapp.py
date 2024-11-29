@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+import logging
 import json
 from urllib.parse import ParseResult
+import babel
 from mock import Mock
 from searx.results import Timing
 
@@ -20,7 +22,12 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
 
         self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
 
+        log = logging.getLogger("searx")
+        log_lev = log.level
+        log.setLevel(logging.ERROR)
         from searx import webapp  # pylint: disable=import-outside-toplevel
+
+        log.setLevel(log_lev)
 
         webapp.app.config['TESTING'] = True  # to get better error messages
         self.app = webapp.app.test_client()
@@ -76,6 +83,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
                 redirect_url=None,
                 engine_data={},
             )
+            search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
 
         self.setattr4test(Search, 'search', search_mock)
 
@@ -172,7 +180,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
     def test_search_rss(self):
         result = self.app.post('/search', data={'q': 'test', 'format': 'rss'})
 
-        self.assertIn(b'<description>Search results for "test" - searx</description>', result.data)
+        self.assertIn(b'<description>Search results for "test" - SearXNG</description>', result.data)
 
         self.assertIn(b'<opensearch:totalResults>3</opensearch:totalResults>', result.data)
 

@@ -14,17 +14,7 @@ import typing
 import logging
 import pathlib
 
-try:
-    import tomllib
-
-    pytomlpp = None
-    USE_TOMLLIB = True
-except ImportError:
-    import pytomlpp
-
-    tomllib = None
-    USE_TOMLLIB = False
-
+from ..compat import tomllib
 
 __all__ = ['Config', 'UNSET', 'SchemaIssue']
 
@@ -32,7 +22,7 @@ log = logging.getLogger(__name__)
 
 
 class FALSE:
-    """Class of ``False`` singelton"""
+    """Class of ``False`` singleton"""
 
     # pylint: disable=multiple-statements
     def __init__(self, msg):
@@ -91,7 +81,7 @@ class Config:
         return cfg
 
     def __init__(self, cfg_schema: typing.Dict, deprecated: typing.Dict[str, str]):
-        """Construtor of class Config.
+        """Constructor of class Config.
 
         :param cfg_schema: Schema of the configuration
         :param deprecated: dictionary that maps deprecated configuration names to a messages
@@ -169,7 +159,7 @@ class Config:
         return pathlib.Path(str(val))
 
     def pyobj(self, name, default=UNSET):
-        """Get python object refered by full qualiffied name (FQN) in the config
+        """Get python object referred by full qualiffied name (FQN) in the config
         string."""
 
         fqn = self.get(name, default)
@@ -183,19 +173,10 @@ class Config:
 
 
 def toml_load(file_name):
-    if USE_TOMLLIB:
-        # Python >= 3.11
-        try:
-            with open(file_name, "rb") as f:
-                return tomllib.load(f)
-        except tomllib.TOMLDecodeError as exc:
-            msg = str(exc).replace('\t', '').replace('\n', ' ')
-            log.error("%s: %s", file_name, msg)
-            raise
-    # fallback to pytomlpp for Python < 3.11
     try:
-        return pytomlpp.load(file_name)
-    except pytomlpp.DecodeError as exc:
+        with open(file_name, "rb") as f:
+            return tomllib.load(f)
+    except tomllib.TOMLDecodeError as exc:
         msg = str(exc).replace('\t', '').replace('\n', ' ')
         log.error("%s: %s", file_name, msg)
         raise
