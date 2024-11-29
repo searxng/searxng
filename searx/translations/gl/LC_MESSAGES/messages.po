@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-05 06:24+0000\n"
-"PO-Revision-Date: 2024-10-08 13:41+0000\n"
+"POT-Creation-Date: 2024-11-24 11:51+0000\n"
+"PO-Revision-Date: 2024-11-26 13:07+0000\n"
 "Last-Translator: ghose <ghose@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
 "searxng/gl/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.1\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -299,7 +299,7 @@ msgid "active users"
 msgstr "usuarias activas"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "comentarios"
@@ -315,7 +315,7 @@ msgid "community"
 msgstr "comunidade"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:78 searx/searxng.msg
+#: searx/engines/hackernews.py:82 searx/searxng.msg
 msgid "points"
 msgstr "puntos"
 
@@ -325,7 +325,7 @@ msgid "title"
 msgstr "título"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:85 searx/searxng.msg
 msgid "author"
 msgstr "autoría"
 
@@ -524,7 +524,7 @@ msgstr "Valoración do libro"
 msgid "File quality"
 msgstr "Calidade do ficheiro"
 
-#: searx/plugins/calculator.py:14
+#: searx/plugins/calculator.py:18
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Calcular expresións matemáticas usando a barra de busca"
 
@@ -658,7 +658,7 @@ msgstr "Código fonte"
 
 #: searx/templates/simple/base.html:70
 msgid "Issue tracker"
-msgstr "Seguimento de problemas"
+msgstr "Seguimento de incidencias"
 
 #: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
 msgid "Engine stats"
@@ -704,8 +704,8 @@ msgid "proxied"
 msgstr "a través de proxy"
 
 #: searx/templates/simple/new_issue.html:64
-msgid "Start submiting a new issue on GitHub"
-msgstr "Crea un novo informe en GitHub"
+msgid "Start submitting a new issue on GitHub"
+msgstr "Abre unha incidencia en GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
@@ -721,7 +721,7 @@ msgstr "Se esta é unha instancia pública, indica o URL no informe do problema"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
-msgstr "Enviar un issue a Github incluíndo a información superior"
+msgstr "Abre unha incidencia en Github incluíndo a información superior"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1987,3 +1987,6 @@ msgstr "agochar vídeo"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "Os buscadores non obtiveron resultados"
+
+#~ msgid "Start submiting a new issue on GitHub"
+#~ msgstr "Crea un novo informe en GitHub"

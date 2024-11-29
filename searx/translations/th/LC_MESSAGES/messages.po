@@ -9,14 +9,14 @@
 # abhabongse <abhabongse@users.noreply.translate.codeberg.org>, 2024.
 # tutakrab <tutakrab@users.noreply.translate.codeberg.org>, 2024.
 # sahussawud <sahussawud@users.noreply.translate.codeberg.org>, 2024.
+# saledai <saledai@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-05 06:24+0000\n"
-"PO-Revision-Date: 2024-11-06 07:26+0000\n"
-"Last-Translator: sahussawud <sahussawud@users.noreply.translate.codeberg.org>"
-"\n"
+"POT-Creation-Date: 2024-11-24 11:51+0000\n"
+"PO-Revision-Date: 2024-11-26 13:07+0000\n"
+"Last-Translator: saledai <saledai@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
 "th/>\n"
 "Language: th\n"
@@ -300,7 +300,7 @@ msgid "active users"
 msgstr "ผู้ใช้งานขณะนี้"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "คอมเมนต์"
@@ -316,7 +316,7 @@ msgid "community"
 msgstr "ประชาคม"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:78 searx/searxng.msg
+#: searx/engines/hackernews.py:82 searx/searxng.msg
 msgid "points"
 msgstr "คะแนน"
 
@@ -326,7 +326,7 @@ msgid "title"
 msgstr "ชื่อเรื่อง"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:85 searx/searxng.msg
 msgid "author"
 msgstr "ผู้เขียน"
 
@@ -338,7 +338,7 @@ msgstr "สร้าง"
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
 #: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
-msgstr "ลบ"
+msgstr "ลบแล้ว"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
 #: searx/engines/discourse.py:160 searx/searxng.msg
@@ -380,15 +380,15 @@ msgstr "ข้อผิดพลาดระหว่างแจงโครง
 
 #: searx/webutils.py:38
 msgid "HTTP protocol error"
-msgstr "ข้อผิดพลาดของโปรโตคอล HTTP"
+msgstr "โปรโตคอล HTTP เกิดข้อผิดพลาดของ"
 
 #: searx/webutils.py:39
 msgid "network error"
-msgstr "ข้อผิดพลาดของเครือข่าย"
+msgstr "ข้อผิดพลาดทางเครือข่าย"
 
 #: searx/webutils.py:40
 msgid "SSL error: certificate validation has failed"
-msgstr "ข้อผิดพลาด SSL: การตรวจสอบใบรับรองล้มเหลว"
+msgstr "ข้อผิดพลาดทาง SSL: การตรวจสอบใบรับรองล้มเหลว"
 
 #: searx/webutils.py:42
 msgid "unexpected crash"
@@ -505,21 +505,18 @@ msgstr ""
 "TinEye รองรับเฉพาะไฟล์ประเภท JPEG, PNG, GIF, BMP, TIFF หรือ WebP เท่านั้น"
 
 #: searx/engines/tineye.py:51
-#, fuzzy
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye "
-"นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้อย "
-"ถึงจะสามารถหาภาพที่คล้ายกันได้"
+"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้"
+"อย ถึงจะสามารถหาภาพที่คล้ายกันได้"
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
 msgstr "ไม่สามารถดาวน์โหลดภาพนี้ได้"
 
 #: searx/engines/zlibrary.py:138
-#, fuzzy
 msgid "Book rating"
 msgstr "บันทึกการให้คะแนน"
 
@@ -527,7 +524,7 @@ msgstr "บันทึกการให้คะแนน"
 msgid "File quality"
 msgstr "คุณภาพไฟล์"
 
-#: searx/plugins/calculator.py:14
+#: searx/plugins/calculator.py:18
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "คำนวณนิพจน์คณิตศาสตร์ผ่านช่องค้นหา"
 
@@ -540,38 +537,34 @@ msgid "hash digest"
 msgstr "แฮชย่อย"
 
 #: searx/plugins/hostnames.py:103
-#, fuzzy
 msgid "Hostnames plugin"
 msgstr "ชื่อโฮส ปลั๊กอิน"
 
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr ""
+msgstr "ขียนชื่อโฮสต์ใหม่ ลบผลลัพธ์ หรือจัดลำดับความสำคัญตามชื่อโฮสต์"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
 msgstr "เปิดการเข้าถึง DOI ที่เขียนใหม่"
 
 #: searx/plugins/oa_doi_rewrite.py:13
-#, fuzzy
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
+msgstr ""
+"หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
 
 #: searx/plugins/self_info.py:9
-#, fuzzy
 msgid "Self Information"
 msgstr "ข้อมูลตนเอง"
 
 #: searx/plugins/self_info.py:10
-#, fuzzy
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"แสดง IP ของคุณหากคิวรีเป็นไอพี "
-"และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
+"แสดง IP ของคุณหากคิวรีเป็นไอพี และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -582,19 +575,16 @@ msgid "Your user-agent is: "
 msgstr "user-agent ของคุณคือ "
 
 #: searx/plugins/tor_check.py:24
-#, fuzzy
 msgid "Tor check plugin"
 msgstr "ทอร์ตรวจสอบปลั๊กอิน"
 
 #: searx/plugins/tor_check.py:27
-#, fuzzy
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "ปลั๊กอินนี้จะตรวจสอบว่าที่อยู่ของคำขอเป็นโหนดทางออกของ Tor หรือไม่ "
-"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก "
-"SearXNG"
+"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก SearXNG"
 
 #: searx/plugins/tor_check.py:61
 msgid ""
@@ -605,19 +595,16 @@ msgstr ""
 "/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
-#, fuzzy
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr "คุณกำลังใช้ Tor และดูเหมือนว่าคุณมีที่อยู่ IP ภายนอกนี้: {ip_address}"
 
 #: searx/plugins/tor_check.py:85
-#, fuzzy
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr "คุณไม่ได้ใช้ Tor และคุณมีที่อยู่ IP ภายนอกนี้: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
-#, fuzzy
 msgid "Tracker URL remover"
 msgstr "ลบตัวติดตาม URL"
 
@@ -694,7 +681,7 @@ msgstr "ความยาว"
 
 #: searx/templates/simple/macros.html:41
 msgid "Views"
-msgstr ""
+msgstr "มุมมอง"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
@@ -712,7 +699,7 @@ msgid "proxied"
 msgstr "พร็อกซี่"
 
 #: searx/templates/simple/new_issue.html:64
-msgid "Start submiting a new issue on GitHub"
+msgid "Start submitting a new issue on GitHub"
 msgstr "เริ่มส่งฉบับใหม่บน GitHub"
 
 #: searx/templates/simple/new_issue.html:66
@@ -1220,11 +1207,11 @@ msgstr "เวลาสูงสุด"
 
 #: searx/templates/simple/preferences/favicon.html:2
 msgid "Favicon Resolver"
-msgstr ""
+msgstr "แก้ไข Favicon"
 
 #: searx/templates/simple/preferences/favicon.html:15
 msgid "Display favicons near search results"
-msgstr ""
+msgstr "แสดงไอคอน Fav ใกล้ผลการค้นหา"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
@@ -1260,7 +1247,7 @@ msgstr "ปุ่มลัด"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
 msgid "Vim-like"
-msgstr "Vim-like"
+msgstr "คล้าย Vim"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
@@ -1701,3 +1688,6 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "เครื่องมือไม่สามารถดึงผลลัพธ์ได้"
+
+#~ msgid "Start submiting a new issue on GitHub"
+#~ msgstr "เริ่มส่งฉบับใหม่บน GitHub"
