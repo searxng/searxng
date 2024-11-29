@@ -269,6 +269,10 @@ def response(resp):  # pylint: disable=too-many-branches
     raise_for_httperror(resp)
 
     results = []
+
+    if not resp.text:
+        return results
+
     dom = html.fromstring(resp.text)
     is_onion = 'onions' in categories
 
