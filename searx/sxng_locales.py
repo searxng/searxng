@@ -98,6 +98,7 @@ sxng_locales = (
     ('sv', 'Svenska', '', 'Swedish', '\U0001f310'),
     ('sv-SE', 'Svenska', 'Sverige', 'Swedish', '\U0001f1f8\U0001f1ea'),
     ('ta', 'தமிழ்', '', 'Tamil', '\U0001f310'),
+    ('te', 'తెలుగు', '', 'Telugu', '\U0001f310'),
     ('th', 'ไทย', '', 'Thai', '\U0001f310'),
     ('th-TH', 'ไทย', 'ไทย', 'Thai', '\U0001f1f9\U0001f1ed'),
     ('tr', 'Türkçe', '', 'Turkish', '\U0001f310'),
