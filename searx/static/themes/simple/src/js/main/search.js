@@ -43,11 +43,11 @@
       createClearButton(qinput);
 
       // autocompleter
-      if (searxng.settings.autocomplete_provider) {
+      if (searxng.settings.autocomplete) {
         searxng.autocomplete = AutoComplete.call(w, {
           Url: "./autocompleter",
           EmptyMessage: searxng.settings.translations.no_item_found,
-          HttpMethod: searxng.settings.http_method,
+          HttpMethod: searxng.settings.method,
           HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded",
             "X-Requested-With": "XMLHttpRequest"
