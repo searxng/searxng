@@ -357,29 +357,40 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
 def get_client_settings():
     req_pref = request.preferences
     return {
-        'autocomplete_provider': req_pref.get_value('autocomplete'),
+        'autocomplete': req_pref.get_value('autocomplete'),
         'autocomplete_min': get_setting('search.autocomplete_min'),
-        'http_method': req_pref.get_value('method'),
+        'method': req_pref.get_value('method'),
         'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),
         'search_on_category_select': req_pref.get_value('search_on_category_select'),
         'hotkeys': req_pref.get_value('hotkeys'),
         'url_formatting': req_pref.get_value('url_formatting'),
         'theme_static_path': custom_url_for('static', filename='themes/simple'),
+        'results_on_new_tab': req_pref.get_value('results_on_new_tab'),
+        'favicon_resolver': req_pref.get_value('favicon_resolver'),
+        'advanced_search': req_pref.get_value('advanced_search'),
+        'query_in_title': req_pref.get_value('query_in_title'),
+        'safesearch': str(req_pref.get_value('safesearch')),
+        'theme': req_pref.get_value('theme'),
+        'doi_resolver': get_doi_resolver(req_pref),
     }
 
 
 def render(template_name: str, **kwargs):
+    # values from the preferences
     # pylint: disable=too-many-statements
+    client_settings = get_client_settings()
     kwargs['client_settings'] = str(
         base64.b64encode(
             bytes(
-                json.dumps(get_client_settings()),
+                json.dumps(client_settings),
                 encoding='utf-8',
             )
         ),
         encoding='utf-8',
     )
+    kwargs['preferences'] = request.preferences
+    kwargs.update(client_settings)
 
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else request.endpoint
@@ -387,20 +398,6 @@ def render(template_name: str, **kwargs):
     kwargs['errors'] = request.errors
     kwargs['link_token'] = link_token.get_token()
 
-    # values from the preferences
-    kwargs['preferences'] = request.preferences
-    kwargs['autocomplete'] = request.preferences.get_value('autocomplete')
-    kwargs['favicon_resolver'] = request.preferences.get_value('favicon_resolver')
-    kwargs['infinite_scroll'] = request.preferences.get_value('infinite_scroll')
-    kwargs['search_on_category_select'] = request.preferences.get_value('search_on_category_select')
-    kwargs['hotkeys'] = request.preferences.get_value('hotkeys')
-    kwargs['url_formatting'] = request.preferences.get_value('url_formatting')
-    kwargs['results_on_new_tab'] = request.preferences.get_value('results_on_new_tab')
-    kwargs['advanced_search'] = request.preferences.get_value('advanced_search')
-    kwargs['query_in_title'] = request.preferences.get_value('query_in_title')
-    kwargs['safesearch'] = str(request.preferences.get_value('safesearch'))
-    kwargs['theme'] = request.preferences.get_value('theme')
-    kwargs['method'] = request.preferences.get_value('method')
     kwargs['categories_as_tabs'] = list(settings['categories_as_tabs'].keys())
     kwargs['categories'] = get_enabled_categories(settings['categories_as_tabs'].keys())
     kwargs['DEFAULT_CATEGORY'] = DEFAULT_CATEGORY
@@ -440,7 +437,6 @@ def render(template_name: str, **kwargs):
     kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
     kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
-    kwargs['doi_resolver'] = get_doi_resolver(request.preferences)
     kwargs['opensearch_url'] = (
         url_for('opensearch')
         + '?'
