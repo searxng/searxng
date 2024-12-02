@@ -14,6 +14,7 @@
        limiter: false
        public_instance: false
        image_proxy: false
+       method: "GET"
        default_http_headers:
          X-Content-Type-Options : nosniff
          X-Download-Options : noopen
@@ -50,8 +51,14 @@
 ``image_proxy`` : ``$SEARXNG_IMAGE_PROXY``
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
 
+``method`` : ``GET`` | ``POST``
+  HTTP method.  By defaults ``GET`` is used / The ``POST`` method has the
+  advantage with some WEB browsers that the history is not easy to read, but
+  there are also various disadvantages that sometimes severely restrict the ease
+  of use for the user (e.g. back button to jump back to the previous search
+  page and drag & drop of search term to new tabs do not work as expected).
+
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
 ``default_http_headers`` :
   Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
-
