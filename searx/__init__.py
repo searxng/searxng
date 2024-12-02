@@ -4,6 +4,7 @@
 import sys
 import os
 from os.path import dirname, abspath
+from enum import Enum
 
 import logging
 
@@ -11,20 +12,37 @@ import searx.unixthreadname
 import searx.settings_loader
 from searx.settings_defaults import settings_set_defaults
 
-
-# Debug
-LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
-
-# Production
-LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
-LOG_LEVEL_PROD = logging.WARNING
-
 searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
 settings, settings_load_message = searx.settings_loader.load_settings()
 
 if settings is not None:
     settings = settings_set_defaults(settings)
+
+
+class ValidLogLevels(str, Enum):
+    """Log levels for the application, levels should match ones from the logging
+    module.
+
+    """
+
+    INFO = logging.INFO
+    WARN = logging.WARN
+    WARNING = logging.WARNING
+    ERROR = logging.ERROR
+
+
+# Debug
+LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
+
+# Production
+LOG_FORMAT_PROD = '%(asctime)-15s %(levelname)s:%(name)s: %(message)s'
+
+searx_loglevel = settings['general']['log_level']
+if searx_loglevel.upper() in list(ValidLogLevels.__members__):
+    LOG_LEVEL_PROD = ValidLogLevels[searx_loglevel.upper()].name
+else:
+    LOG_LEVEL_PROD = logging.WARNING
 
 _unset = object()
 
@@ -95,6 +113,7 @@ else:
     logging.root.setLevel(level=LOG_LEVEL_PROD)
     logging.getLogger('werkzeug').setLevel(level=LOG_LEVEL_PROD)
 logger = logging.getLogger('searx')
+logger.setLevel(level=LOG_LEVEL_PROD)
 logger.info(settings_load_message)
 
 # log max_request_timeout

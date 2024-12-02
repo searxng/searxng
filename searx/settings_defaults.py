@@ -138,6 +138,7 @@ def apply_schema(settings, schema, path_list):
 SCHEMA = {
     'general': {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
+        'log_level': SettingsValue(str, 'warning'),
         'instance_name': SettingsValue(str, 'SearXNG'),
         'privacypolicy_url': SettingsValue((None, False, str), None),
         'contact_url': SettingsValue((None, False, str), None),
