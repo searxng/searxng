@@ -14,17 +14,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-24 11:51+0000\n"
+"POT-Creation-Date: 2024-12-01 12:14+0000\n"
 "PO-Revision-Date: 2024-11-26 13:07+0000\n"
 "Last-Translator: saledai <saledai@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
-"th/>\n"
 "Language: th\n"
+"Language-Team: Thai "
+"<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.1\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -345,28 +344,28 @@ msgstr "ลบแล้ว"
 msgid "answered"
 msgstr "ตอบแล้ว"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:323
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
 #: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:325
 msgid "Source"
 msgstr "แหล่งที่มา"
 
-#: searx/webapp.py:336
+#: searx/webapp.py:327
 msgid "Error loading the next page"
 msgstr "เกิดข้อผิดพลาดขณะโหลดหน้าถัดไป"
 
-#: searx/webapp.py:495 searx/webapp.py:898
+#: searx/webapp.py:496 searx/webapp.py:904
 msgid "Invalid settings, please edit your preferences"
 msgstr "การตั้งค่าไม่ถูกต้อง โปรดแก้ไขการตั้งค่าของคุณ"
 
-#: searx/webapp.py:511
+#: searx/webapp.py:512
 msgid "Invalid settings"
 msgstr "การตั้งค่าไม่ถูกต้อง"
 
-#: searx/webapp.py:588 searx/webapp.py:670
+#: searx/webapp.py:589 searx/webapp.py:679
 msgid "search error"
 msgstr "ข้อผิดพลาดจากการค้นหา"
 
@@ -509,8 +508,9 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้"
-"อย ถึงจะสามารถหาภาพที่คล้ายกันได้"
+"รูปภาพนี้มีจุดสังเกตที่น้อยเกินไป ระบบของ TinEye "
+"นั้นต้องใช้ภาพที่มีลายละเอียดจุดเด่นที่ชัดเจนเล็กน้อย "
+"ถึงจะสามารถหาภาพที่คล้ายกันได้"
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -552,8 +552,7 @@ msgstr "เปิดการเข้าถึง DOI ที่เขียน�
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
-msgstr ""
-"หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
+msgstr "หลีกเลี่ยงข้อจำกัดการชำระเงินโดยเปลี่ยนเส้นทางไปรุ่นเอกสารที่เปิดให้ใช้งาน"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -564,7 +563,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"แสดง IP ของคุณหากคิวรีเป็นไอพี และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
+"แสดง IP ของคุณหากคิวรีเป็นไอพี "
+"และตัวแทนจากผู้ใช้ของคุณหากคิวรีเป็นตัวแทนผู้ใช้"
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -584,7 +584,8 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "ปลั๊กอินนี้จะตรวจสอบว่าที่อยู่ของคำขอเป็นโหนดทางออกของ Tor หรือไม่ "
-"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก SearXNG"
+"และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก "
+"SearXNG"
 
 #: searx/plugins/tor_check.py:61
 msgid ""
@@ -771,23 +772,23 @@ msgstr "หมวดหมู่เริ่มต้น"
 msgid "User interface"
 msgstr "ส่วนต่อประสานกับผู้ใช้"
 
-#: searx/templates/simple/preferences.html:211
+#: searx/templates/simple/preferences.html:212
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:225
 msgid "Engines"
 msgstr "เครื่องมือ"
 
-#: searx/templates/simple/preferences.html:226
+#: searx/templates/simple/preferences.html:227
 msgid "Currently used search engines"
 msgstr "เครื่องมือค้นหาที่ใช้อยู่ในปัจจุบัน"
 
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:235
 msgid "Special Queries"
 msgstr "การคิวรีพิเศษ"
 
-#: searx/templates/simple/preferences.html:240
+#: searx/templates/simple/preferences.html:241
 msgid "Cookies"
 msgstr "คุกกี้"
 
@@ -1355,6 +1356,26 @@ msgstr "ภาษาส่วนต่อประสาน"
 msgid "Change the language of the layout"
 msgstr "เปลี่ยนภาษาของเค้าโครง"
 
+#: searx/templates/simple/preferences/urlformatting.html:2
+msgid "URL formatting"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:8
+msgid "Pretty"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:13
+msgid "Full"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:18
+msgid "Host"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:23
+msgid "Change result URL formatting"
+msgstr ""
+
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
 msgstr "พื้นที่เก็บข้อมูล"
@@ -1691,3 +1712,4 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Start submiting a new issue on GitHub"
 #~ msgstr "เริ่มส่งฉบับใหม่บน GitHub"
+
