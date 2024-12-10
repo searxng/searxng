@@ -37,6 +37,7 @@ from flask import (
     make_response,
     redirect,
     send_from_directory,
+    send_file,
 )
 from flask.wrappers import Response
 from flask.json import jsonify
@@ -74,6 +75,7 @@ from searx import webutils
 from searx.webutils import (
     highlight_content,
     get_static_files,
+    get_custom_files,
     get_result_templates,
     get_themes,
     exception_classname_to_text,
@@ -132,6 +134,7 @@ if not searx_debug and settings['server']['secret_key'] == 'ultrasecretkey':
 # about static
 logger.debug('static directory is %s', settings['ui']['static_path'])
 static_files = get_static_files(settings['ui']['static_path'])
+custom_files = get_custom_files()
 
 # about templates
 logger.debug('templates directory is %s', settings['ui']['templates_path'])
@@ -256,6 +259,15 @@ def get_result_template(theme_name: str, template_name: str):
 
 def custom_url_for(endpoint: str, **values):
     suffix = ""
+    if endpoint == 'custom' and values.get('custom_file'):
+        if values['custom_file'] in custom_files:
+            values.pop('filename')
+            if get_setting('ui.static_use_hash'):
+                suffix = "?" + custom_files[values['custom_file']]['hash']
+        else:
+            # if there's no custom file defined in settings.yml, then use the default file
+            values.pop('custom_file')
+            endpoint = 'static'
     if endpoint == 'static' and values.get('filename'):
         file_hash = static_files.get(values['filename'])
         if not file_hash:
@@ -1279,8 +1291,25 @@ def opensearch():
     return resp
 
 
+@app.route('/custom/<path:custom_file>')
+def custom(custom_file):
+    if custom_file in custom_files:
+        filepath = custom_files[custom_file]['path']
+        if os.path.isfile(filepath):
+            if 'mimetype' in custom_files[custom_file]:
+                return send_file(filepath, mimetype=custom_files[custom_file]['mimetype'])
+            return send_file(filepath)
+        logger.warning('%s does not exist or is not a file', filepath)
+    return flask.abort(404)
+
+
 @app.route('/favicon.ico')
 def favicon():
+    if 'favicon_png' in custom_files:
+        filepath = custom_files['favicon_png']['path']
+        if os.path.isfile(filepath):
+            return send_file(filepath, mimetype='image/png')
+        logger.warning('%s does not exist or is not a file', filepath)
     theme = request.preferences.get_value("theme")
     return send_from_directory(
         os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # pyright: ignore

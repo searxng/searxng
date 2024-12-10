@@ -204,6 +204,28 @@ def get_static_files(static_path: str) -> Dict[str, str]:
     return static_files
 
 
+def get_custom_files() -> Dict[str, dict]:
+    custom_files: Dict[str, dict] = {}
+
+    for option in settings['brand']['custom_files']:
+        filepath = settings['brand']['custom_files'][option]
+        if os.path.isfile(filepath):
+            custom_files.setdefault(option, {})
+            custom_files[option]['path'] = filepath
+            custom_files[option]['hash'] = get_hash_for_file(pathlib.Path(filepath))
+            if option == 'favicon_png':
+                custom_files[option]['mimetype'] = 'image/png'
+            if option == 'favicon_svg':
+                custom_files[option]['mimetype'] = 'image/svg+xml'
+        else:
+            logger.warning('%s does not exist or is not a file', filepath)
+
+    if 'favicon_svg' in custom_files and 'favicon_png' not in custom_files:
+        logger.warning('Some browsers only support PNG favicons, but you have only set an SVG favicon')
+
+    return custom_files
+
+
 def get_result_templates(templates_path):
     result_templates = set()
     templates_path_length = len(templates_path) + 1

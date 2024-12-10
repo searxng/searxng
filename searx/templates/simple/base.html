@@ -27,9 +27,11 @@
   {% block head %}
   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
   {% endblock %}
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+  <link rel="icon" href="{{ url_for('custom', custom_file='favicon_png', filename='img/favicon.png') }}" sizes="any">
+  <link rel="apple-touch-icon" href="{{ url_for('custom', custom_file='favicon_png', filename='img/favicon.png') }}">
+  {% if not get_setting('brand.custom_files.favicon_png', false) or get_setting('brand.custom_files.favicon_svg', false) %}
+  <link rel="icon" href="{{ url_for('custom', custom_file='favicon_svg', filename='img/favicon.svg') }}" type="image/svg+xml">
+  {% endif %}
 </head>
 <body class="{{ endpoint }}_endpoint" >
   <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
