@@ -4,7 +4,7 @@
   <LongName>SearXNG metasearch</LongName>
   <Description>SearXNG is a metasearch engine that respects your privacy.</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image type="image/png">{{ url_for('static', filename='img/favicon.png', _external=True) }}</Image>
+  <Image type="image/png">{{ url_for('custom', custom_file='favicon_png', filename='img/favicon.png', _external=True) }}</Image>
   {% if opensearch_method == 'GET' %}
   <Url rel="results" type="text/html" method="{{ opensearch_method }}" template="{{ url_for('search', _external=True) }}?q={searchTerms}"/>
   {% else %}

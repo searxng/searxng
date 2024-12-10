@@ -6,7 +6,11 @@
   text-align: center;
 
   .title {
-    background: url('../img/searxng.png') no-repeat;
+    &.custom_logo {
+      background-image: url('../../../../custom/logo');
+    }
+    background-image: url('../img/searxng.png');
+    background-repeat: no-repeat;
     min-height: 4rem;
     margin: 4rem auto;
     background-position: center;
