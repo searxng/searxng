@@ -19,7 +19,7 @@
 
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
-<article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e|replace(' ', '') }}{% endfor %}">
+<article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} engine-{{ e|replace(' ', '-') }}{% endfor %}">
   {{- result_open_link(result.url, "url_header") -}}
   {%- if favicon_resolver != "" %}
   <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
