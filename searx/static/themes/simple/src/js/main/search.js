@@ -186,20 +186,22 @@
 
     // override form submit action to update the actually selected categories
     const form = d.querySelector("#search");
-    searxng.on(form, 'submit', (event) => {
-      event.preventDefault();
-      const categoryValuesInput = d.querySelector("#selected-categories");
-      if (categoryValuesInput) {
-        let categoryValues = [];
-        for (let categoryButton of categoryButtons) {
-          if (categoryButton.classList.contains("selected")) {
-            categoryValues.push(categoryButton.name.replace("category_", ""));
+    if (form != null) {
+      searxng.on(form, 'submit', (event) => {
+        event.preventDefault();
+        const categoryValuesInput = d.querySelector("#selected-categories");
+        if (categoryValuesInput) {
+          let categoryValues = [];
+          for (let categoryButton of categoryButtons) {
+            if (categoryButton.classList.contains("selected")) {
+              categoryValues.push(categoryButton.name.replace("category_", ""));
+            }
           }
+          categoryValuesInput.value = categoryValues.join(",");
         }
-        categoryValuesInput.value = categoryValues.join(",");
-      }
-      form.submit();
-    });
+        form.submit();
+      });
+    }
   });
 
 })(window, document, window.searxng);
