@@ -1,3 +1,7 @@
+<div class="pref-group">{{- _('Digital Object Identifier (DOI)') -}}</div>
+
+{{- plugin_preferences('general/doi_resolver') -}}
+
 <fieldset>{{- '' -}}
   <legend id="pref_doi_resolver">{{- _('Open Access DOI resolver') -}}</legend>{{- '' -}}
   <div class="value">{{- '' -}}
@@ -5,7 +9,7 @@
       {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
         <option value="{{ doi_resolver_name }}"
                 {%- if doi_resolver_url == current_doi_resolver %} selected="selected" {%- endif -%}>
-                {{- doi_resolver_name }} - {{ doi_resolver_url -}}
+          {{- doi_resolver_name }} - {{ doi_resolver_url -}}
         </option>
       {%- endfor -%}
     </select>{{- '' -}}

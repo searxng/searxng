@@ -21,6 +21,7 @@ from lxml import html
 from searx.data import WIKIDATA_UNITS
 from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
+from searx.result_types import Answer
 
 if TYPE_CHECKING:
     import logging
@@ -99,9 +100,10 @@ def response(resp):
     # add answer if there is one
     answer = search_res.get('Answer', '')
     if answer:
-        logger.debug('AnswerType="%s" Answer="%s"', search_res.get('AnswerType'), answer)
-        if search_res.get('AnswerType') not in ['calc', 'ip']:
-            results.append({'answer': html_to_text(answer), 'url': search_res.get('AbstractURL', '')})
+        answer_type = search_res.get('AnswerType')
+        logger.debug('AnswerType="%s" Answer="%s"', answer_type, answer)
+        if isinstance(answer, str) and answer_type not in ['calc', 'ip']:
+            Answer(results=results, answer=html_to_text(answer), url=search_res.get('AbstractURL', ''))
 
     # add infobox
     if 'Definition' in search_res:

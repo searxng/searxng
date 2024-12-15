@@ -13,6 +13,7 @@ from contextlib import contextmanager
 import httpx
 import anyio
 
+from searx.extended_types import SXNG_Response
 from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
 from .client import get_loop
 from .raise_for_httperror import raise_for_httperror
@@ -85,7 +86,7 @@ def _get_timeout(start_time, kwargs):
     return timeout
 
 
-def request(method, url, **kwargs):
+def request(method, url, **kwargs) -> SXNG_Response:
     """same as requests/requests/api.py request(...)"""
     with _record_http_time() as start_time:
         network = get_context_network()
@@ -159,34 +160,34 @@ class Request(NamedTuple):
         return Request('DELETE', url, kwargs)
 
 
-def get(url, **kwargs):
+def get(url, **kwargs) -> SXNG_Response:
     kwargs.setdefault('allow_redirects', True)
     return request('get', url, **kwargs)
 
 
-def options(url, **kwargs):
+def options(url, **kwargs) -> SXNG_Response:
     kwargs.setdefault('allow_redirects', True)
     return request('options', url, **kwargs)
 
 
-def head(url, **kwargs):
+def head(url, **kwargs) -> SXNG_Response:
     kwargs.setdefault('allow_redirects', False)
     return request('head', url, **kwargs)
 
 
-def post(url, data=None, **kwargs):
+def post(url, data=None, **kwargs) -> SXNG_Response:
     return request('post', url, data=data, **kwargs)
 
 
-def put(url, data=None, **kwargs):
+def put(url, data=None, **kwargs) -> SXNG_Response:
     return request('put', url, data=data, **kwargs)
 
 
-def patch(url, data=None, **kwargs):
+def patch(url, data=None, **kwargs) -> SXNG_Response:
     return request('patch', url, data=data, **kwargs)
 
 
-def delete(url, **kwargs):
+def delete(url, **kwargs) -> SXNG_Response:
     return request('delete', url, **kwargs)
 
 

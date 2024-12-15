@@ -91,14 +91,16 @@ something like this:
 
 """
 
+from __future__ import annotations
+
 import re
 from urllib.parse import urlunparse, urlparse
 
 from flask_babel import gettext
 
 from searx import settings
-from searx.plugins import logger
 from searx.settings_loader import get_yaml_cfg
+
 
 name = gettext('Hostnames plugin')
 description = gettext('Rewrite hostnames, remove results or prioritize them based on the hostname')
@@ -107,16 +109,15 @@ preference_section = 'general'
 
 plugin_id = 'hostnames'
 
-logger = logger.getChild(plugin_id)
 parsed = 'parsed_url'
 _url_fields = ['iframe_src', 'audio_src']
 
 
-def _load_regular_expressions(settings_key):
+def _load_regular_expressions(settings_key) -> dict | set | None:
     setting_value = settings.get(plugin_id, {}).get(settings_key)
 
     if not setting_value:
-        return {}
+        return None
 
     # load external file with configuration
     if isinstance(setting_value, str):
@@ -128,20 +129,20 @@ def _load_regular_expressions(settings_key):
     if isinstance(setting_value, dict):
         return {re.compile(p): r for (p, r) in setting_value.items()}
 
-    return {}
+    return None
 
 
-replacements = _load_regular_expressions('replace')
-removables = _load_regular_expressions('remove')
-high_priority = _load_regular_expressions('high_priority')
-low_priority = _load_regular_expressions('low_priority')
+replacements: dict = _load_regular_expressions('replace') or {}  # type: ignore
+removables: set = _load_regular_expressions('remove') or set()  # type: ignore
+high_priority: set = _load_regular_expressions('high_priority') or set()  # type: ignore
+low_priority: set = _load_regular_expressions('low_priority') or set()  # type: ignore
 
 
 def _matches_parsed_url(result, pattern):
     return parsed in result and pattern.search(result[parsed].netloc)
 
 
-def on_result(_request, _search, result):
+def on_result(_request, _search, result) -> bool:
     for pattern, replacement in replacements.items():
         if _matches_parsed_url(result, pattern):
             # logger.debug(result['url'])

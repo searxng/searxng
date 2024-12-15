@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import mock
 from parameterized.parameterized import parameterized
@@ -7,7 +7,7 @@ from searx import webutils
 from tests import SearxTestCase
 
 
-class TestWebUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestWebUtils(SearxTestCase):
 
     @parameterized.expand(
         [
@@ -78,8 +78,10 @@ class TestWebUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(webutils.highlight_content(content, query), expected)
 
 
-class TestUnicodeWriter(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestUnicodeWriter(SearxTestCase):
+
     def setUp(self):
+        super().setUp()
         self.unicode_writer = webutils.CSVWriter(mock.MagicMock())
 
     def test_write_row(self):
@@ -93,7 +95,8 @@ class TestUnicodeWriter(SearxTestCase):  # pylint: disable=missing-class-docstri
         self.assertEqual(self.unicode_writer.writerow.call_count, len(rows))
 
 
-class TestNewHmac(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestNewHmac(SearxTestCase):
+
     @parameterized.expand(
         [
             b'secret',

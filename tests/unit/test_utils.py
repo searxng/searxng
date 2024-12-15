@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, invalid-name
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import random
 import string
@@ -16,7 +16,8 @@ def random_string(length, choices=string.ascii_letters):
     return ''.join(random.choice(choices) for _ in range(length))
 
 
-class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestUtils(SearxTestCase):
+
     def test_gen_useragent(self):
         self.assertIsInstance(utils.gen_useragent(), str)
         self.assertIsNotNone(utils.gen_useragent())
@@ -109,7 +110,10 @@ class TestUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
 
 
 class TestHTMLTextExtractor(SearxTestCase):  # pylint: disable=missing-class-docstring
+
     def setUp(self):
+        super().setUp()
+
         self.html_text_extractor = utils._HTMLTextExtractor()  # pylint: disable=protected-access
 
     def test__init__(self):

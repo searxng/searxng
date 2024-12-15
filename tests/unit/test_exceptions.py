@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from parameterized import parameterized
 from tests import SearxTestCase
@@ -7,7 +7,8 @@ import searx.exceptions
 from searx import get_setting
 
 
-class TestExceptions(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestExceptions(SearxTestCase):
+
     @parameterized.expand(
         [
             searx.exceptions.SearxEngineAccessDeniedException,

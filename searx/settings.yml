@@ -148,14 +148,24 @@ ui:
   # URL formatting: pretty, full or host
   url_formatting: pretty
 
-# Lock arbitrary settings on the preferences page.  To find the ID of the user
-# setting you want to lock, check the ID of the form on the page "preferences".
+# Lock arbitrary settings on the preferences page.
 #
 # preferences:
 #   lock:
+#     - categories
 #     - language
 #     - autocomplete
+#     - favicon
+#     - safesearch
 #     - method
+#     - doi_resolver
+#     - locale
+#     - theme
+#     - results_on_new_tab
+#     - infinite_scroll
+#     - search_on_category_select
+#     - method
+#     - image_proxy
 #     - query_in_title
 
 # searx supports result proxification using an external service:
@@ -217,14 +227,15 @@ outgoing:
   #    - fe80::/126
 
 # External plugin configuration, for more details see
-#   https://docs.searxng.org/dev/plugins.html
+#   https://docs.searxng.org/admin/settings/settings_plugins.html
 #
 # plugins:
-#   - plugin1
-#   - plugin2
+#   - mypackage.mymodule.MyPlugin
+#   - mypackage.mymodule.MyOtherPlugin
 #   - ...
 
 # Comment or un-comment plugin to activate / deactivate by default.
+#   https://docs.searxng.org/admin/settings/settings_plugins.html
 #
 # enabled_plugins:
 #   # these plugins are enabled if nothing is configured ..
@@ -1159,8 +1170,7 @@ engines:
     engine: libretranslate
     # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
     base_url:
-      - https://translate.terraprint.co
-      - https://trans.zillyhuhn.com
+      - https://libretranslate.com/translate
     # api_key: abc123
     shortcut: lt
     disabled: true

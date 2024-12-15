@@ -1,31 +1,16 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from searx.search import SearchQuery, EngineRef
 from searx.search.processors import online
-import searx.search
 from searx import engines
 
 from tests import SearxTestCase
 
-TEST_ENGINE_NAME = 'dummy engine'
-TEST_ENGINE = {
-    'name': TEST_ENGINE_NAME,
-    'engine': 'dummy',
-    'categories': 'general',
-    'shortcut': 'du',
-    'timeout': 3.0,
-    'tokens': [],
-}
+TEST_ENGINE_NAME = "dummy engine"  # from the ./settings/test_settings.yml
 
 
-class TestOnlineProcessor(SearxTestCase):  # pylint: disable=missing-class-docstring
-
-    def setUp(self):
-        searx.search.initialize([TEST_ENGINE])
-
-    def tearDown(self):
-        searx.search.load_engines([])
+class TestOnlineProcessor(SearxTestCase):
 
     def _get_params(self, online_processor, search_query, engine_category):
         params = online_processor.get_params(search_query, engine_category)

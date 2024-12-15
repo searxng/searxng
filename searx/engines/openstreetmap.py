@@ -4,16 +4,16 @@
 """
 
 import re
-from json import loads
-from urllib.parse import urlencode
+import urllib.parse
+
 from functools import partial
 
 from flask_babel import gettext
 
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
-from searx.utils import searx_useragent
 from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
+from searx.result_types import Answer
 
 # about
 about = {
@@ -37,8 +37,7 @@ search_string = 'search?{query}&polygon_geojson=1&format=jsonv2&addressdetails=1
 result_id_url = 'https://openstreetmap.org/{osm_type}/{osm_id}'
 result_lat_lon_url = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M'
 
-route_url = 'https://graphhopper.com/maps/?point={}&point={}&locale=en-US&vehicle=car&weighting=fastest&turn_costs=true&use_miles=false&layer=Omniscale'  # pylint: disable=line-too-long
-route_re = re.compile('(?:from )?(.+) to (.+)')
+route_url = 'https://graphhopper.com/maps'
 
 wikidata_image_sparql = """
 select ?item ?itemLabel ?image ?sign ?symbol ?website ?wikipediaName
@@ -138,27 +137,25 @@ KEY_RANKS = {k: i for i, k in enumerate(KEY_ORDER)}
 
 
 def request(query, params):
-    """do search-request"""
-    params['url'] = base_url + search_string.format(query=urlencode({'q': query}))
-    params['route'] = route_re.match(query)
-    params['headers']['User-Agent'] = searx_useragent()
-    if 'Accept-Language' not in params['headers']:
-        params['headers']['Accept-Language'] = 'en'
+    params['url'] = base_url + search_string.format(query=urllib.parse.urlencode({'q': query}))
     return params
 
 
 def response(resp):
-    """get response from search-request"""
     results = []
-    nominatim_json = loads(resp.text)
+
+    nominatim_json = resp.json()
     user_language = resp.search_params['language']
 
-    if resp.search_params['route']:
-        results.append(
-            {
-                'answer': gettext('Get directions'),
-                'url': route_url.format(*resp.search_params['route'].groups()),
-            }
+    l = re.findall(r"from\s+(.*)\s+to\s+(.+)", resp.search_params["query"])
+    if not l:
+        l = re.findall(r"\s*(.*)\s+to\s+(.+)", resp.search_params["query"])
+    if l:
+        point1, point2 = [urllib.parse.quote_plus(p) for p in l[0]]
+        Answer(
+            results=results,
+            answer=gettext('Show route in map ..'),
+            url=f"{route_url}/?point={point1}&point={point2}",
         )
 
     # simplify the code below: make sure extratags is a dictionary

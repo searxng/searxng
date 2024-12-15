@@ -9,8 +9,7 @@ import logging
 
 import searx.unixthreadname
 import searx.settings_loader
-from searx.settings_defaults import settings_set_defaults
-
+from searx.settings_defaults import SCHEMA, apply_schema
 
 # Debug
 LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
@@ -21,12 +20,50 @@ LOG_LEVEL_PROD = logging.WARNING
 
 searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
-settings, settings_load_message = searx.settings_loader.load_settings()
 
-if settings is not None:
-    settings = settings_set_defaults(settings)
+settings = {}
+searx_debug = False
+logger = logging.getLogger('searx')
 
 _unset = object()
+
+
+def init_settings():
+    """Initialize global ``settings`` and ``searx_debug`` variables and
+    ``logger`` from ``SEARXNG_SETTINGS_PATH``.
+    """
+
+    global settings, searx_debug  # pylint: disable=global-variable-not-assigned
+
+    cfg, msg = searx.settings_loader.load_settings(load_user_settings=True)
+    cfg = cfg or {}
+    apply_schema(cfg, SCHEMA, [])
+
+    settings.clear()
+    settings.update(cfg)
+
+    searx_debug = settings['general']['debug']
+    if searx_debug:
+        _logging_config_debug()
+    else:
+        logging.basicConfig(level=LOG_LEVEL_PROD, format=LOG_FORMAT_PROD)
+        logging.root.setLevel(level=LOG_LEVEL_PROD)
+        logging.getLogger('werkzeug').setLevel(level=LOG_LEVEL_PROD)
+        logger.info(msg)
+
+    # log max_request_timeout
+    max_request_timeout = settings['outgoing']['max_request_timeout']
+    if max_request_timeout is None:
+        logger.info('max_request_timeout=%s', repr(max_request_timeout))
+    else:
+        logger.info('max_request_timeout=%i second(s)', max_request_timeout)
+
+    if settings['server']['public_instance']:
+        logger.warning(
+            "Be aware you have activated features intended only for public instances. "
+            "This force the usage of the limiter and link_token / "
+            "see https://docs.searxng.org/admin/searx.limiter.html"
+        )
 
 
 def get_setting(name, default=_unset):
@@ -50,20 +87,20 @@ def get_setting(name, default=_unset):
     return value
 
 
-def is_color_terminal():
+def _is_color_terminal():
     if os.getenv('TERM') in ('dumb', 'unknown'):
         return False
     return sys.stdout.isatty()
 
 
-def logging_config_debug():
+def _logging_config_debug():
     try:
         import coloredlogs  # pylint: disable=import-outside-toplevel
     except ImportError:
         coloredlogs = None
 
     log_level = os.environ.get('SEARXNG_DEBUG_LOG_LEVEL', 'DEBUG')
-    if coloredlogs and is_color_terminal():
+    if coloredlogs and _is_color_terminal():
         level_styles = {
             'spam': {'color': 'green', 'faint': True},
             'debug': {},
@@ -87,26 +124,4 @@ def logging_config_debug():
         logging.basicConfig(level=logging.getLevelName(log_level), format=LOG_FORMAT_DEBUG)
 
 
-searx_debug = settings['general']['debug']
-if searx_debug:
-    logging_config_debug()
-else:
-    logging.basicConfig(level=LOG_LEVEL_PROD, format=LOG_FORMAT_PROD)
-    logging.root.setLevel(level=LOG_LEVEL_PROD)
-    logging.getLogger('werkzeug').setLevel(level=LOG_LEVEL_PROD)
-logger = logging.getLogger('searx')
-logger.info(settings_load_message)
-
-# log max_request_timeout
-max_request_timeout = settings['outgoing']['max_request_timeout']
-if max_request_timeout is None:
-    logger.info('max_request_timeout=%s', repr(max_request_timeout))
-else:
-    logger.info('max_request_timeout=%i second(s)', max_request_timeout)
-
-if settings['server']['public_instance']:
-    logger.warning(
-        "Be aware you have activated features intended only for public instances. "
-        "This force the usage of the limiter and link_token / "
-        "see https://docs.searxng.org/admin/searx.limiter.html"
-    )
+init_settings()

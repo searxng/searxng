@@ -1,0 +1,8 @@
+    <div id="answers" role="complementary" aria-labelledby="answers-title">
+      <h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
+      {%- for answer in answers -%}
+        <div class="answer">
+          {%- include ("simple/" + (answer.template or "answer/legacy.html")) -%}
+        </div>
+      {%- endfor -%}
+    </div>

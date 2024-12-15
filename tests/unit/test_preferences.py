@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, invalid-name
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import flask
 from mock import Mock
-from tests import SearxTestCase
+
 from searx import favicons
 from searx.locales import locales_initialize
 from searx.preferences import (
@@ -15,20 +15,19 @@ from searx.preferences import (
     PluginsSetting,
     ValidationException,
 )
-from searx.plugins import Plugin
+import searx.plugins
 from searx.preferences import Preferences
+
+from tests import SearxTestCase
+from .test_plugins import PluginMock
+
 
 locales_initialize()
 favicons.init()
 
 
-class PluginStub(Plugin):  # pylint: disable=missing-class-docstring, too-few-public-methods
-    def __init__(self, plugin_id, default_on):
-        self.id = plugin_id
-        self.default_on = default_on
+class TestSettings(SearxTestCase):
 
-
-class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
     # map settings
 
     def test_map_setting_invalid_default_value(self):
@@ -93,6 +92,7 @@ class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(setting.get_value(), ['2'])
 
     # search language settings
+
     def test_lang_setting_valid_choice(self):
         setting = SearchLanguageSetting('all', choices=['all', 'de', 'en'])
         setting.parse('de')
@@ -114,23 +114,30 @@ class TestSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(setting.get_value(), 'es-ES')
 
     # plugins settings
+
     def test_plugins_setting_all_default_enabled(self):
-        plugin1 = PluginStub('plugin1', True)
-        plugin2 = PluginStub('plugin2', True)
-        setting = PluginsSetting(['3'], plugins=[plugin1, plugin2])
-        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin2']))
+        storage = searx.plugins.PluginStorage()
+        storage.register(PluginMock("plg001", "first plugin", True))
+        storage.register(PluginMock("plg002", "second plugin", True))
+        plgs_settings = PluginsSetting(False, storage)
+        self.assertEqual(set(plgs_settings.get_enabled()), {"plg001", "plg002"})
 
     def test_plugins_setting_few_default_enabled(self):
-        plugin1 = PluginStub('plugin1', True)
-        plugin2 = PluginStub('plugin2', False)
-        plugin3 = PluginStub('plugin3', True)
-        setting = PluginsSetting('name', plugins=[plugin1, plugin2, plugin3])
-        self.assertEqual(set(setting.get_enabled()), set(['plugin1', 'plugin3']))
+        storage = searx.plugins.PluginStorage()
+        storage.register(PluginMock("plg001", "first plugin", True))
+        storage.register(PluginMock("plg002", "second plugin", False))
+        storage.register(PluginMock("plg003", "third plugin", True))
+        plgs_settings = PluginsSetting(False, storage)
+        self.assertEqual(set(plgs_settings.get_enabled()), set(['plg001', 'plg003']))
 
 
-class TestPreferences(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestPreferences(SearxTestCase):
+
     def setUp(self):
-        self.preferences = Preferences(['simple'], ['general'], {}, [])
+        super().setUp()
+
+        storage = searx.plugins.PluginStorage()
+        self.preferences = Preferences(['simple'], ['general'], {}, storage)
 
     def test_encode(self):
         url_params = (

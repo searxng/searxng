@@ -1,18 +1,21 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+from __future__ import annotations
 import re
 from urllib.parse import urlparse, parse_qsl
 
 from flask_babel import gettext
+
 from searx import settings
+
 
 regex = re.compile(r'10\.\d{4,9}/[^\s]+')
 
 name = gettext('Open Access DOI rewrite')
 description = gettext('Avoid paywalls by redirecting to open-access versions of publications when available')
 default_on = False
-preference_section = 'general'
+preference_section = 'general/doi_resolver'
 
 
 def extract_doi(url):
@@ -34,8 +37,9 @@ def get_doi_resolver(preferences):
     return doi_resolvers[selected_resolver]
 
 
-def on_result(request, _search, result):
-    if 'parsed_url' not in result:
+def on_result(request, _search, result) -> bool:
+
+    if not result.parsed_url:
         return True
 
     doi = extract_doi(result['parsed_url'])

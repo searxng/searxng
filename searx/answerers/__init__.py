@@ -1,51 +1,49 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+"""The *answerers* give instant answers related to the search query, they
+usually provide answers of type :py:obj:`Answer <searx.result_types.Answer>`.
 
-import sys
-from os import listdir
-from os.path import realpath, dirname, join, isdir
-from collections import defaultdict
+Here is an example of a very simple answerer that adds a "Hello" into the answer
+area:
 
-from searx.utils import load_module
+.. code::
 
-answerers_dir = dirname(realpath(__file__))
+   from flask_babel import gettext as _
+   from searx.answerers import Answerer
+   from searx.result_types import Answer
 
+   class MyAnswerer(Answerer):
 
-def load_answerers():
-    answerers = []  # pylint: disable=redefined-outer-name
+       keywords = [ "hello", "hello world" ]
 
-    for filename in listdir(answerers_dir):
-        if not isdir(join(answerers_dir, filename)) or filename.startswith('_'):
-            continue
-        module = load_module('answerer.py', join(answerers_dir, filename))
-        if not hasattr(module, 'keywords') or not isinstance(module.keywords, tuple) or not module.keywords:
-            sys.exit(2)
-        answerers.append(module)
-    return answerers
+       def info(self):
+           return AnswererInfo(name=_("Hello"), description=_("lorem .."), keywords=self.keywords)
 
+       def answer(self, request, search):
+           return [ Answer(answer="Hello") ]
 
-def get_answerers_by_keywords(answerers):  # pylint:disable=redefined-outer-name
-    by_keyword = defaultdict(list)
-    for answerer in answerers:
-        for keyword in answerer.keywords:
-            for keyword in answerer.keywords:
-                by_keyword[keyword].append(answerer.answer)
-    return by_keyword
+----
 
+.. autoclass:: Answerer
+   :members:
 
-def ask(query):
-    results = []
-    query_parts = list(filter(None, query.query.split()))
+.. autoclass:: AnswererInfo
+   :members:
 
-    if not query_parts or query_parts[0] not in answerers_by_keywords:
-        return results
+.. autoclass:: AnswerStorage
+   :members:
 
-    for answerer in answerers_by_keywords[query_parts[0]]:
-        result = answerer(query)
-        if result:
-            results.append(result)
-    return results
+.. autoclass:: searx.answerers._core.ModuleAnswerer
+   :members:
+   :show-inheritance:
+
+"""
+
+from __future__ import annotations
+
+__all__ = ["AnswererInfo", "Answerer", "AnswerStorage"]
 
 
-answerers = load_answerers()
-answerers_by_keywords = get_answerers_by_keywords(answerers)
+from ._core import AnswererInfo, Answerer, AnswerStorage
+
+STORAGE: AnswerStorage = AnswerStorage()
+STORAGE.load_builtins()

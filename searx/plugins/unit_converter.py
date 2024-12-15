@@ -18,11 +18,14 @@ Enable in ``settings.yml``:
 
 """
 
+from __future__ import annotations
 import re
 import babel.numbers
+
 from flask_babel import gettext, get_locale
 
 from searx import data
+from searx.result_types import Answer
 
 
 name = "Unit converter plugin"
@@ -171,16 +174,16 @@ def symbol_to_si():
     return SYMBOL_TO_SI
 
 
-def _parse_text_and_convert(search, from_query, to_query):
+def _parse_text_and_convert(from_query, to_query) -> str | None:
 
     # pylint: disable=too-many-branches, too-many-locals
 
     if not (from_query and to_query):
-        return
+        return None
 
     measured = re.match(RE_MEASURE, from_query, re.VERBOSE)
     if not (measured and measured.group('number'), measured.group('unit')):
-        return
+        return None
 
     # Symbols are not unique, if there are several hits for the from-unit, then
     # the correct one must be determined by comparing it with the to-unit
@@ -198,7 +201,7 @@ def _parse_text_and_convert(search, from_query, to_query):
             target_list.append((si_name, from_si, orig_symbol))
 
     if not (source_list and target_list):
-        return
+        return None
 
     source_to_si = target_from_si = target_symbol = None
 
@@ -212,7 +215,7 @@ def _parse_text_and_convert(search, from_query, to_query):
                 target_symbol = target[2]
 
     if not (source_to_si and target_from_si):
-        return
+        return None
 
     _locale = get_locale() or 'en_US'
 
@@ -239,25 +242,28 @@ def _parse_text_and_convert(search, from_query, to_query):
     else:
         result = babel.numbers.format_decimal(value, locale=_locale, format='#,##0.##########;-#')
 
-    search.result_container.answers['conversion'] = {'answer': f'{result} {target_symbol}'}
+    return f'{result} {target_symbol}'
 
 
-def post_search(_request, search):
+def post_search(_request, search) -> list[Answer]:
+    results = []
+
     # only convert between units on the first page
     if search.search_query.pageno > 1:
-        return True
+        return results
 
     query = search.search_query.query
     query_parts = query.split(" ")
 
     if len(query_parts) < 3:
-        return True
+        return results
 
     for query_part in query_parts:
         for keyword in CONVERT_KEYWORDS:
             if query_part == keyword:
                 from_query, to_query = query.split(keyword, 1)
-                _parse_text_and_convert(search, from_query.strip(), to_query.strip())
-                return True
+                target_val = _parse_text_and_convert(from_query.strip(), to_query.strip())
+                if target_val:
+                    Answer(results=results, answer=target_val)
 
-    return True
+    return results

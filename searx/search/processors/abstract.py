@@ -158,6 +158,7 @@ class EngineProcessor(ABC):
             return None
 
         params = {}
+        params["query"] = search_query.query
         params['category'] = engine_category
         params['pageno'] = search_query.pageno
         params['safesearch'] = search_query.safesearch

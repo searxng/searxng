@@ -1,9 +1,8 @@
 .. _hostnames plugin:
 
-================
-Hostnames plugin
-================
+=========
+Hostnames
+=========
 
 .. automodule:: searx.plugins.hostnames
-  :members:
-
+   :members:

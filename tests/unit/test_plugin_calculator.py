@@ -1,57 +1,57 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-import flask
 from parameterized.parameterized import parameterized
-from searx import plugins
-from searx import preferences
+
+import searx.plugins
+import searx.preferences
+
+from searx.extended_types import sxng_request
+from searx.plugins._core import _default, ModulePlugin
+from searx.result_types import Answer
+from searx.utils import load_module
+
 from tests import SearxTestCase
 from .test_utils import random_string
+from .test_plugins import do_post_search
 
-from .test_plugins import get_search_mock
 
-
-class PluginCalculator(SearxTestCase):  # pylint: disable=missing-class-docstring
+class PluginCalculator(SearxTestCase):
 
     def setUp(self):
-        from searx import webapp  # pylint: disable=import-outside-toplevel
+        super().setUp()
 
-        self.webapp = webapp
-        self.store = plugins.PluginStore()
-        plugin = plugins.load_and_initialize_plugin('searx.plugins.calculator', False, (None, {}))
-        self.store.register(plugin)
-        self.preferences = preferences.Preferences(["simple"], ["general"], {}, self.store)
-        self.preferences.parse_dict({"locale": "en"})
+        f = _default / "calculator.py"
+        mod = load_module(f.name, str(f.parent))
+        engines = {}
+
+        self.storage = searx.plugins.PluginStorage()
+        self.storage.register(ModulePlugin(mod))
+        self.storage.init(self.app)
+        self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
+        self.pref.parse_dict({"locale": "en"})
 
     def test_plugin_store_init(self):
-        self.assertEqual(1, len(self.store.plugins))
+        self.assertEqual(1, len(self.storage))
 
-    def test_single_page_number_true(self):
-        with self.webapp.app.test_request_context():
-            flask.request.preferences = self.preferences
-            search = get_search_mock(query=random_string(10), pageno=2)
-            result = self.store.call(self.store.plugins, 'post_search', flask.request, search)
+    def test_pageno_1_2(self):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            query = "1+1"
+            answer = Answer(results=[], answer=f"{query} = {eval(query)}")  # pylint: disable=eval-used
 
-        self.assertTrue(result)
-        self.assertNotIn('calculate', search.result_container.answers)
+            search = do_post_search(query, self.storage, pageno=1)
+            self.assertIn(answer, search.result_container.answers)
 
-    def test_long_query_true(self):
-        with self.webapp.app.test_request_context():
-            flask.request.preferences = self.preferences
-            search = get_search_mock(query=random_string(101), pageno=1)
-            result = self.store.call(self.store.plugins, 'post_search', flask.request, search)
+            search = do_post_search(query, self.storage, pageno=2)
+            self.assertEqual(list(search.result_container.answers), [])
 
-        self.assertTrue(result)
-        self.assertNotIn('calculate', search.result_container.answers)
-
-    def test_alpha_true(self):
-        with self.webapp.app.test_request_context():
-            flask.request.preferences = self.preferences
-            search = get_search_mock(query=random_string(10), pageno=1)
-            result = self.store.call(self.store.plugins, 'post_search', flask.request, search)
-
-        self.assertTrue(result)
-        self.assertNotIn('calculate', search.result_container.answers)
+    def test_long_query_ignored(self):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            query = f"1+1 {random_string(101)}"
+            search = do_post_search(query, self.storage)
+            self.assertEqual(list(search.result_container.answers), [])
 
     @parameterized.expand(
         [
@@ -77,27 +77,22 @@ class PluginCalculator(SearxTestCase):  # pylint: disable=missing-class-docstrin
             ("1,0^1,0", "1", "de"),
         ]
     )
-    def test_localized_query(self, operation: str, contains_result: str, lang: str):
-        with self.webapp.app.test_request_context():
-            self.preferences.parse_dict({"locale": lang})
-            flask.request.preferences = self.preferences
-            search = get_search_mock(query=operation, lang=lang, pageno=1)
-            result = self.store.call(self.store.plugins, 'post_search', flask.request, search)
+    def test_localized_query(self, query: str, res: str, lang: str):
+        with self.app.test_request_context():
+            self.pref.parse_dict({"locale": lang})
+            sxng_request.preferences = self.pref
+            answer = Answer(results=[], answer=f"{query} = {res}")
 
-        self.assertTrue(result)
-        self.assertIn('calculate', search.result_container.answers)
-        self.assertIn(contains_result, search.result_container.answers['calculate']['answer'])
+            search = do_post_search(query, self.storage)
+            self.assertIn(answer, search.result_container.answers)
 
     @parameterized.expand(
         [
             "1/0",
         ]
     )
-    def test_invalid_operations(self, operation):
-        with self.webapp.app.test_request_context():
-            flask.request.preferences = self.preferences
-            search = get_search_mock(query=operation, pageno=1)
-            result = self.store.call(self.store.plugins, 'post_search', flask.request, search)
-
-        self.assertTrue(result)
-        self.assertNotIn('calculate', search.result_container.answers)
+    def test_invalid_operations(self, query):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            search = do_post_search(query, self.storage)
+            self.assertEqual(list(search.result_container.answers), [])

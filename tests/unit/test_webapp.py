@@ -1,41 +1,33 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-import logging
 import json
 from urllib.parse import ParseResult
 import babel
 from mock import Mock
-from searx.results import Timing
 
+import searx.webapp
+import searx.search
 import searx.search.processors
-from searx.search import Search
+
+from searx.results import Timing
 from searx.preferences import Preferences
 from tests import SearxTestCase
 
 
-class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, too-many-public-methods
+class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
+
     def setUp(self):
+        super().setUp()
+
         # skip init function (no external HTTP request)
         def dummy(*args, **kwargs):  # pylint: disable=unused-argument
             pass
 
         self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
-
-        log = logging.getLogger("searx")
-        log_lev = log.level
-        log.setLevel(logging.ERROR)
-        from searx import webapp  # pylint: disable=import-outside-toplevel
-
-        log.setLevel(log_lev)
-
-        webapp.app.config['TESTING'] = True  # to get better error messages
-        self.app = webapp.app.test_client()
-
-        # remove sha for the static file
-        # so the tests don't have to care about the changing URLs
-        for k in webapp.static_files:
-            webapp.static_files[k] = None
+        # remove sha for the static file so the tests don't have to care about
+        # the changing URLs
+        self.setattr4test(searx.webapp, 'static_files', {})
 
         # set some defaults
         test_results = [
@@ -85,7 +77,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
             )
             search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
 
-        self.setattr4test(Search, 'search', search_mock)
+        self.setattr4test(searx.search.Search, 'search', search_mock)
 
         original_preferences_get_value = Preferences.get_value
 
@@ -100,7 +92,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         self.maxDiff = None  # pylint: disable=invalid-name
 
     def test_index_empty(self):
-        result = self.app.post('/')
+        result = self.client.post('/')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
             b'<div class="title"><h1>SearXNG</h1></div>',
@@ -108,34 +100,34 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         )
 
     def test_index_html_post(self):
-        result = self.app.post('/', data={'q': 'test'})
+        result = self.client.post('/', data={'q': 'test'})
         self.assertEqual(result.status_code, 308)
         self.assertEqual(result.location, '/search')
 
     def test_index_html_get(self):
-        result = self.app.post('/?q=test')
+        result = self.client.post('/?q=test')
         self.assertEqual(result.status_code, 308)
         self.assertEqual(result.location, '/search?q=test')
 
     def test_search_empty_html(self):
-        result = self.app.post('/search', data={'q': ''})
+        result = self.client.post('/search', data={'q': ''})
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<div class="title"><h1>SearXNG</h1></div>', result.data)
 
     def test_search_empty_json(self):
-        result = self.app.post('/search', data={'q': '', 'format': 'json'})
+        result = self.client.post('/search', data={'q': '', 'format': 'json'})
         self.assertEqual(result.status_code, 400)
 
     def test_search_empty_csv(self):
-        result = self.app.post('/search', data={'q': '', 'format': 'csv'})
+        result = self.client.post('/search', data={'q': '', 'format': 'csv'})
         self.assertEqual(result.status_code, 400)
 
     def test_search_empty_rss(self):
-        result = self.app.post('/search', data={'q': '', 'format': 'rss'})
+        result = self.client.post('/search', data={'q': '', 'format': 'rss'})
         self.assertEqual(result.status_code, 400)
 
     def test_search_html(self):
-        result = self.app.post('/search', data={'q': 'test'})
+        result = self.client.post('/search', data={'q': 'test'})
 
         self.assertIn(
             b'<span class="url_o1"><span class="url_i1">http://second.test.xyz</span></span>',
@@ -147,11 +139,11 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         )
 
     def test_index_json(self):
-        result = self.app.post('/', data={'q': 'test', 'format': 'json'})
+        result = self.client.post('/', data={'q': 'test', 'format': 'json'})
         self.assertEqual(result.status_code, 308)
 
     def test_search_json(self):
-        result = self.app.post('/search', data={'q': 'test', 'format': 'json'})
+        result = self.client.post('/search', data={'q': 'test', 'format': 'json'})
         result_dict = json.loads(result.data.decode())
 
         self.assertEqual('test', result_dict['query'])
@@ -160,11 +152,11 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         self.assertEqual(result_dict['results'][0]['url'], 'http://first.test.xyz')
 
     def test_index_csv(self):
-        result = self.app.post('/', data={'q': 'test', 'format': 'csv'})
+        result = self.client.post('/', data={'q': 'test', 'format': 'csv'})
         self.assertEqual(result.status_code, 308)
 
     def test_search_csv(self):
-        result = self.app.post('/search', data={'q': 'test', 'format': 'csv'})
+        result = self.client.post('/search', data={'q': 'test', 'format': 'csv'})
 
         self.assertEqual(
             b'title,url,content,host,engine,score,type\r\n'
@@ -174,11 +166,11 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         )
 
     def test_index_rss(self):
-        result = self.app.post('/', data={'q': 'test', 'format': 'rss'})
+        result = self.client.post('/', data={'q': 'test', 'format': 'rss'})
         self.assertEqual(result.status_code, 308)
 
     def test_search_rss(self):
-        result = self.app.post('/search', data={'q': 'test', 'format': 'rss'})
+        result = self.client.post('/search', data={'q': 'test', 'format': 'rss'})
 
         self.assertIn(b'<description>Search results for "test" - SearXNG</description>', result.data)
 
@@ -191,28 +183,28 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         self.assertIn(b'<description>first test content</description>', result.data)
 
     def test_redirect_about(self):
-        result = self.app.get('/about')
+        result = self.client.get('/about')
         self.assertEqual(result.status_code, 302)
 
     def test_info_page(self):
-        result = self.app.get('/info/en/search-syntax')
+        result = self.client.get('/info/en/search-syntax')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<h1>Search syntax</h1>', result.data)
 
     def test_health(self):
-        result = self.app.get('/healthz')
+        result = self.client.get('/healthz')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'OK', result.data)
 
     def test_preferences(self):
-        result = self.app.get('/preferences')
+        result = self.client.get('/preferences')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<form id="search_form" method="post" action="/preferences"', result.data)
         self.assertIn(b'<div id="categories_container">', result.data)
         self.assertIn(b'<legend id="pref_ui_locale">Interface language</legend>', result.data)
 
     def test_browser_locale(self):
-        result = self.app.get('/preferences', headers={'Accept-Language': 'zh-tw;q=0.8'})
+        result = self.client.get('/preferences', headers={'Accept-Language': 'zh-tw;q=0.8'})
         self.assertEqual(result.status_code, 200)
         self.assertIn(
             b'<option value="zh-Hant-TW" selected="selected">',
@@ -226,42 +218,43 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring, 
         )
 
     def test_browser_empty_locale(self):
-        result = self.app.get('/preferences', headers={'Accept-Language': ''})
+        result = self.client.get('/preferences', headers={'Accept-Language': ''})
         self.assertEqual(result.status_code, 200)
         self.assertIn(
             b'<option value="en" selected="selected">', result.data, 'Interface locale ignored browser preference.'
         )
 
     def test_locale_occitan(self):
-        result = self.app.get('/preferences?locale=oc')
+        result = self.client.get('/preferences?locale=oc')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
             b'<option value="oc" selected="selected">', result.data, 'Interface locale ignored browser preference.'
         )
 
     def test_stats(self):
-        result = self.app.get('/stats')
+        result = self.client.get('/stats')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<h1>Engine stats</h1>', result.data)
 
     def test_robots_txt(self):
-        result = self.app.get('/robots.txt')
+        result = self.client.get('/robots.txt')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'Allow: /', result.data)
 
     def test_opensearch_xml(self):
-        result = self.app.get('/opensearch.xml')
+        result = self.client.get('/opensearch.xml')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
             b'<Description>SearXNG is a metasearch engine that respects your privacy.</Description>', result.data
         )
 
     def test_favicon(self):
-        result = self.app.get('/favicon.ico')
+        result = self.client.get('/favicon.ico')
+        result.close()
         self.assertEqual(result.status_code, 200)
 
     def test_config(self):
-        result = self.app.get('/config')
+        result = self.client.get('/config')
         self.assertEqual(result.status_code, 200)
         json_result = result.get_json()
         self.assertTrue(json_result)

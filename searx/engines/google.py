@@ -25,6 +25,7 @@ from searx.locales import language_tag, region_tag, get_official_locales
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.exceptions import SearxEngineCaptchaException
 from searx.enginelib.traits import EngineTraits
+from searx.result_types import Answer
 
 if TYPE_CHECKING:
     import logging
@@ -331,12 +332,7 @@ def response(resp):
     for item in answer_list:
         for bubble in eval_xpath(item, './/div[@class="nnFGuf"]'):
             bubble.drop_tree()
-        results.append(
-            {
-                'answer': extract_text(item),
-                'url': (eval_xpath(item, '../..//a/@href') + [None])[0],
-            }
-        )
+        Answer(results=results, answer=extract_text(item), url=(eval_xpath(item, '../..//a/@href') + [None])[0])
 
     # parse results
 

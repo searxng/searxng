@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from searx.external_bang import (
     get_node,
@@ -34,7 +34,7 @@ TEST_DB = {
 }
 
 
-class TestGetNode(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestGetNode(SearxTestCase):
 
     DB = {  # pylint:disable=invalid-name
         'trie': {
@@ -65,7 +65,8 @@ class TestGetNode(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(after, 's')
 
 
-class TestResolveBangDefinition(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestResolveBangDefinition(SearxTestCase):
+
     def test_https(self):
         url, rank = resolve_bang_definition('//example.com/' + chr(2) + chr(1) + '42', 'query')
         self.assertEqual(url, 'https://example.com/query')
@@ -77,7 +78,8 @@ class TestResolveBangDefinition(SearxTestCase):  # pylint:disable=missing-class-
         self.assertEqual(rank, 0)
 
 
-class TestGetBangDefinitionAndAutocomplete(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
+
     def test_found(self):
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('exam', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['exam'][LEAF_KEY])
@@ -109,7 +111,8 @@ class TestGetBangDefinitionAndAutocomplete(SearxTestCase):  # pylint:disable=mis
         self.assertEqual(new_autocomplete, [])
 
 
-class TestExternalBangJson(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestExternalBangJson(SearxTestCase):
+
     def test_no_external_bang_query(self):
         result = get_bang_url(SearchQuery('test', engineref_list=[EngineRef('wikipedia', 'general')]))
         self.assertIsNone(result)
