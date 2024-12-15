@@ -11,7 +11,6 @@ the User-Agent_ header is unset or matches the regular expression
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
 
 """
-# pylint: disable=unused-argument
 
 from __future__ import annotations
 import re
@@ -20,8 +19,9 @@ from ipaddress import (
     IPv6Network,
 )
 
-import flask
 import werkzeug
+
+from searx.extended_types import SXNG_Request
 
 from . import config
 from ._helpers import too_many_requests
@@ -56,8 +56,8 @@ def regexp_user_agent():
 
 def filter_request(
     network: IPv4Network | IPv6Network,
-    request: flask.Request,
-    cfg: config.Config,
+    request: SXNG_Request,
+    cfg: config.Config,  # pylint: disable=unused-argument
 ) -> werkzeug.Response | None:
 
     user_agent = request.headers.get('User-Agent', 'unknown')

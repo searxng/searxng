@@ -1,16 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from searx import settings, engines
 from tests import SearxTestCase
 
 
-class TestEnginesInit(SearxTestCase):  # pylint: disable=missing-class-docstring
-    @classmethod
-    def tearDownClass(cls):
-        settings['outgoing']['using_tor_proxy'] = False
-        settings['outgoing']['extra_proxy_timeout'] = 0
-        engines.load_engines([])
+class TestEnginesInit(SearxTestCase):
 
     def test_initialize_engines_default(self):
         engine_list = [
@@ -23,7 +18,7 @@ class TestEnginesInit(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertIn('engine1', engines.engines)
         self.assertIn('engine2', engines.engines)
 
-    def test_initialize_engines_exclude_onions(self):  # pylint: disable=invalid-name
+    def test_initialize_engines_exclude_onions(self):
         settings['outgoing']['using_tor_proxy'] = False
         engine_list = [
             {'engine': 'dummy', 'name': 'engine1', 'shortcut': 'e1', 'categories': 'general'},
@@ -35,7 +30,7 @@ class TestEnginesInit(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertIn('engine1', engines.engines)
         self.assertNotIn('onions', engines.categories)
 
-    def test_initialize_engines_include_onions(self):  # pylint: disable=invalid-name
+    def test_initialize_engines_include_onions(self):
         settings['outgoing']['using_tor_proxy'] = True
         settings['outgoing']['extra_proxy_timeout'] = 100.0
         engine_list = [

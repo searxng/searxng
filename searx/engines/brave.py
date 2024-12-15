@@ -139,6 +139,7 @@ from searx.utils import (
     get_embeded_stream_url,
 )
 from searx.enginelib.traits import EngineTraits
+from searx.result_types import Answer
 
 if TYPE_CHECKING:
     import logging
@@ -274,10 +275,14 @@ def _parse_search(resp):
     result_list = []
     dom = html.fromstring(resp.text)
 
+    # I doubt that Brave is still providing the "answer" class / I haven't seen
+    # answers in brave for a long time.
     answer_tag = eval_xpath_getindex(dom, '//div[@class="answer"]', 0, default=None)
     if answer_tag:
         url = eval_xpath_getindex(dom, '//div[@id="featured_snippet"]/a[@class="result-header"]/@href', 0, default=None)
-        result_list.append({'answer': extract_text(answer_tag), 'url': url})
+        answer = extract_text(answer_tag)
+        if answer is not None:
+            Answer(results=result_list, answer=answer, url=url)
 
     # xpath_results = '//div[contains(@class, "snippet fdb") and @data-type="web"]'
     xpath_results = '//div[contains(@class, "snippet ")]'

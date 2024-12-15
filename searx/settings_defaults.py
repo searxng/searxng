@@ -245,8 +245,3 @@ SCHEMA = {
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},
 }
-
-
-def settings_set_defaults(settings):
-    apply_schema(settings, SCHEMA, [])
-    return settings

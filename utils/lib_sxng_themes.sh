@@ -20,7 +20,7 @@ EOF
 
 themes.all() {
     (   set -e
-	node.env
+        node.env
         themes.simple
     )
     dump_return $?
@@ -28,7 +28,7 @@ themes.all() {
 
 themes.fix() {
     (   set -e
-	node.env
+        node.env
         themes.simple.fix
     )
     dump_return $?
@@ -36,7 +36,7 @@ themes.fix() {
 
 themes.test() {
     (   set -e
-	node.env
+        node.env
         themes.simple.test
     )
     dump_return $?
@@ -68,10 +68,10 @@ themes.live() {
 
 themes.simple() {
     (   set -e
-	themes.simple.pygments
-	build_msg SIMPLE "theme: run build"
-	# "run build" includes tests from eslint and stylelint
-	npm --prefix searx/static/themes/simple run build
+        themes.simple.pygments
+        build_msg SIMPLE "theme: run build"
+        # "run build" includes tests from eslint and stylelint
+        npm --prefix searx/static/themes/simple run build
     )
     dump_return $?
 }
@@ -79,7 +79,7 @@ themes.simple() {
 themes.simple.pygments() {
     build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
     pyenv.cmd python searxng_extra/update/update_pygments.py \
-	| prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+        | prefix_stdout "${_Blue}PYGMENTS ${_creset} "
     if [ "${PIPESTATUS[0]}" -ne "0" ]; then
         build_msg PYGMENTS "building LESS files for pygments failed"
         return 1

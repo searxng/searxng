@@ -156,6 +156,7 @@ def parse_tineye_match(match_json):
 
 def response(resp):
     """Parse HTTP response from TinEye."""
+    results = []
 
     # handle the 422 client side errors, and the possible 400 status code error
     if resp.status_code in (400, 422):
@@ -182,14 +183,14 @@ def response(resp):
                 message = ','.join(description)
 
         # see https://github.com/searxng/searxng/pull/1456#issuecomment-1193105023
-        # results.append({'answer': message})
-        logger.error(message)
-        return []
+        # from searx.result_types import Answer
+        # Answer(results=results, answer=message)
+        logger.info(message)
+        return results
 
     # Raise for all other responses
     resp.raise_for_status()
 
-    results = []
     json_data = resp.json()
 
     for match_json in json_data['matches']:

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from pathlib import Path
 
@@ -17,7 +17,8 @@ def _settings(f_name):
     return str(Path(__file__).parent.absolute() / "settings" / f_name)
 
 
-class TestLoad(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestLoad(SearxTestCase):
+
     def test_load_zero(self):
         with self.assertRaises(SearxSettingsException):
             settings_loader.load_yaml('/dev/zero')
@@ -28,7 +29,8 @@ class TestLoad(SearxTestCase):  # pylint: disable=missing-class-docstring
         self.assertEqual(settings_loader.load_yaml(_settings("empty_settings.yml")), {})
 
 
-class TestDefaultSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestDefaultSettings(SearxTestCase):
+
     def test_load(self):
         settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
@@ -42,7 +44,8 @@ class TestDefaultSettings(SearxTestCase):  # pylint: disable=missing-class-docst
         self.assertIsInstance(settings['default_doi_resolver'], str)
 
 
-class TestUserSettings(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestUserSettings(SearxTestCase):
+
     def test_is_use_default_settings(self):
         self.assertFalse(settings_loader.is_use_default_settings({}))
         self.assertTrue(settings_loader.is_use_default_settings({'use_default_settings': True}))

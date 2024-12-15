@@ -105,6 +105,7 @@ from searx import (
     redisdb,
 )
 from searx import botdetection
+from searx.extended_types import SXNG_Request, sxng_request
 from searx.botdetection import (
     config,
     http_accept,
@@ -144,7 +145,7 @@ def get_cfg() -> config.Config:
     return CFG
 
 
-def filter_request(request: flask.Request) -> werkzeug.Response | None:
+def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
     cfg = get_cfg()
@@ -201,13 +202,13 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
             val = func.filter_request(network, request, cfg)
             if val is not None:
                 return val
-    logger.debug(f"OK {network}: %s", dump_request(flask.request))
+    logger.debug(f"OK {network}: %s", dump_request(sxng_request))
     return None
 
 
 def pre_request():
     """See :py:obj:`flask.Flask.before_request`"""
-    return filter_request(flask.request)
+    return filter_request(sxng_request)
 
 
 def is_installed():

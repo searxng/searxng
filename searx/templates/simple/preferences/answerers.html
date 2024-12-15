@@ -2,7 +2,7 @@
   <table class="striped">{{- '' -}}
     <tr>{{- '' -}}
       <th>{{ _('Allow') }}</th>{{- '' -}}
-      <th>{{ _('Keywords') }}</th>{{- '' -}}
+      <th>{{ _('Keywords (first word in query)') }}</th>{{- '' -}}
       <th>{{ _('Name') }}</th>{{- '' -}}
       <th>{{ _('Description') }}</th>{{- '' -}}
       <th>{{ _('Examples') }}</th>{{- '' -}}
@@ -14,13 +14,13 @@
       </th>{{- '' -}}
     </tr>
 
-    {%- for answerer in answerers -%}
+    {%- for info in answer_storage -%}
       <tr>{{- '' -}}
         <td class="checkbox-col"></td>{{- '' -}}
-        <td>{{ answerer.keywords|join(', ') }}</td>{{- '' -}}
-        <td>{{ answerer.info.name }}</td>{{- '' -}}
-        <td>{{ answerer.info.description }}</td>{{- '' -}}
-        <td>{{ answerer.info.examples|join(', ') }}</td>{{- '' -}}
+        <td>{{ info.keywords|join(', ') }}</td>{{- '' -}}
+        <td>{{ info.name }}</td>{{- '' -}}
+        <td>{{ info.description }}</td>{{- '' -}}
+        <td>{{ info.examples|join(', ') }}</td>{{- '' -}}
       </tr>
     {%- endfor -%}
 
@@ -30,14 +30,14 @@
       </th>{{- '' -}}
     </th>
 
-    {%- for plugin in plugins -%}
+    {%- for plugin in plugins_storage -%}
       {%- if plugin.preference_section == 'query' -%}
         <tr>{{- '' -}}
           <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}</td>{{- '' -}}
-          <td>{{ plugin.query_keywords|join(', ') }}</td>{{- '' -}}
+          <td>{{ plugin.keywords|join(', ') }}</td>{{- '' -}}
           <td>{{ _(plugin.name) }}</td>{{- '' -}}
           <td id="{{ 'plugin_labelledby' + plugin.id }}">{{ _(plugin.description) }}</td>{{- '' -}}
-          <td>{{ plugin.query_examples }}</td>{{- '' -}}
+          <td>{{ plugin.examples|join(', ') }}</td>{{- '' -}}
         </tr>
       {%- endif -%}
     {%- endfor -%}

@@ -3,7 +3,9 @@
 
 import random
 import re
-from urllib.parse import urlencode
+import urllib.parse
+
+from searx.result_types import Translations
 
 about = {
     "website": 'https://codeberg.org/aryak/mozhi',
@@ -27,34 +29,33 @@ def request(_query, params):
     request_url = random.choice(base_url) if isinstance(base_url, list) else base_url
 
     args = {'from': params['from_lang'][1], 'to': params['to_lang'][1], 'text': params['query'], 'engine': mozhi_engine}
-    params['url'] = f"{request_url}/api/translate?{urlencode(args)}"
+    params['url'] = f"{request_url}/api/translate?{urllib.parse.urlencode(args)}"
     return params
 
 
 def response(resp):
+    results = []
     translation = resp.json()
 
-    data = {'text': translation['translated-text'], 'definitions': [], 'examples': []}
+    item = Translations.Item(text=translation['translated-text'])
 
     if translation['target_transliteration'] and not re.match(
         re_transliteration_unsupported, translation['target_transliteration']
     ):
-        data['transliteration'] = translation['target_transliteration']
+        item.transliteration = translation['target_transliteration']
 
     if translation['word_choices']:
         for word in translation['word_choices']:
             if word.get('definition'):
-                data['definitions'].append(word['definition'])
+                item.definitions.append(word['definition'])
 
             for example in word.get('examples_target', []):
-                data['examples'].append(re.sub(r"<|>", "", example).lstrip('- '))
+                item.examples.append(re.sub(r"<|>", "", example).lstrip('- '))
 
-    data['synonyms'] = translation.get('source_synonyms', [])
+    item.synonyms = translation.get('source_synonyms', [])
 
-    result = {
-        'answer': translation['translated-text'],
-        'answer_type': 'translations',
-        'translations': [data],
-    }
-
-    return [result]
+    url = urllib.parse.urlparse(resp.search_params["url"])
+    # remove the api path
+    url = url._replace(path="", fragment="").geturl()
+    Translations(results=results, translations=[item], url=url)
+    return results

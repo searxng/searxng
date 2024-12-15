@@ -1,0 +1,16 @@
+# This SearXNG setup is used in unit tests
+
+use_default_settings:
+
+  engines:
+    # remove all engines
+    keep_only: []
+
+engines:
+
+  - name: tineye
+    engine: tineye
+    categories: ["general"]
+    shortcut: "tin"
+    timeout: 9.0
+    disabled: true

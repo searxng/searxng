@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
+from __future__ import annotations
 
+import warnings
 import re
 from collections import defaultdict
 from operator import itemgetter
@@ -12,8 +14,10 @@ from searx import logger
 from searx.engines import engines
 from searx.metrics import histogram_observe, counter_add, count_error
 
+from searx.result_types import Result, LegacyResult
+from searx.result_types.answer import AnswerSet, BaseAnswer
+
 CONTENT_LEN_IGNORED_CHARS_REGEX = re.compile(r'[,;:!?\./\\\\ ()-_]', re.M | re.U)
-WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 
 
 # return the meaningful length of the content for a result
@@ -183,56 +187,76 @@ class ResultContainer:
 
     def __init__(self):
         super().__init__()
-        self._merged_results = []
-        self.infoboxes = []
-        self.suggestions = set()
-        self.answers = {}
+        self._merged_results: list[LegacyResult] = []
+        self.infoboxes: list[dict] = []
+        self.suggestions: set[str] = set()
+        self.answers = AnswerSet()
         self.corrections = set()
-        self._number_of_results = []
-        self.engine_data = defaultdict(dict)
-        self._closed = False
-        self.paging = False
+        self._number_of_results: list[int] = []
+        self.engine_data: dict[str, str | dict] = defaultdict(dict)
+        self._closed: bool = False
+        self.paging: bool = False
         self.unresponsive_engines: Set[UnresponsiveEngine] = set()
         self.timings: List[Timing] = []
         self.redirect_url = None
         self.on_result = lambda _: True
         self._lock = RLock()
 
-    def extend(self, engine_name, results):  # pylint: disable=too-many-branches
+    def extend(self, engine_name: str | None, results):  # pylint: disable=too-many-branches
         if self._closed:
             return
 
         standard_result_count = 0
         error_msgs = set()
+
         for result in list(results):
-            result['engine'] = engine_name
-            if 'suggestion' in result and self.on_result(result):
-                self.suggestions.add(result['suggestion'])
-            elif 'answer' in result and self.on_result(result):
-                self.answers[result['answer']] = result
-            elif 'correction' in result and self.on_result(result):
-                self.corrections.add(result['correction'])
-            elif 'infobox' in result and self.on_result(result):
-                self._merge_infobox(result)
-            elif 'number_of_results' in result and self.on_result(result):
-                self._number_of_results.append(result['number_of_results'])
-            elif 'engine_data' in result and self.on_result(result):
-                self.engine_data[engine_name][result['key']] = result['engine_data']
-            elif 'url' in result:
-                # standard result (url, title, content)
-                if not self._is_valid_url_result(result, error_msgs):
-                    continue
-                # normalize the result
-                self._normalize_url_result(result)
-                # call on_result call searx.search.SearchWithPlugins._on_result
-                # which calls the plugins
-                if not self.on_result(result):
-                    continue
-                self.__merge_url_result(result, standard_result_count + 1)
-                standard_result_count += 1
-            elif self.on_result(result):
-                self.__merge_result_no_url(result, standard_result_count + 1)
-                standard_result_count += 1
+
+            if isinstance(result, Result):
+                result.engine = result.engine or engine_name
+                result.normalize_result_fields()
+
+                if isinstance(result, BaseAnswer) and self.on_result(result):
+                    self.answers.add(result)
+                else:
+                    # more types need to be implemented in the future ..
+                    raise NotImplementedError(f"no handler implemented to process the result of type {result}")
+
+            else:
+                result['engine'] = result.get('engine') or engine_name or ""
+                result = LegacyResult(result)  # for backward compatibility, will be romeved one day
+
+                if 'suggestion' in result and self.on_result(result):
+                    self.suggestions.add(result['suggestion'])
+                elif 'answer' in result and self.on_result(result):
+                    warnings.warn(
+                        f"answer results from engine {result.engine}"
+                        " are without typification / migrate to Answer class.",
+                        DeprecationWarning,
+                    )
+                    self.answers.add(result)
+                elif 'correction' in result and self.on_result(result):
+                    self.corrections.add(result['correction'])
+                elif 'infobox' in result and self.on_result(result):
+                    self._merge_infobox(result)
+                elif 'number_of_results' in result and self.on_result(result):
+                    self._number_of_results.append(result['number_of_results'])
+                elif 'engine_data' in result and self.on_result(result):
+                    self.engine_data[result.engine][result['key']] = result['engine_data']
+                elif result.url:
+                    # standard result (url, title, content)
+                    if not self._is_valid_url_result(result, error_msgs):
+                        continue
+                    # normalize the result
+                    result.normalize_result_fields()
+                    # call on_result call searx.search.SearchWithPlugins._on_result
+                    # which calls the plugins
+                    if not self.on_result(result):
+                        continue
+                    self.__merge_url_result(result, standard_result_count + 1)
+                    standard_result_count += 1
+                elif self.on_result(result):
+                    self.__merge_result_no_url(result, standard_result_count + 1)
+                    standard_result_count += 1
 
         if len(error_msgs) > 0:
             for msg in error_msgs:
@@ -278,27 +302,6 @@ class ResultContainer:
                 return False
 
         return True
-
-    def _normalize_url_result(self, result):
-        """Return True if the result is valid"""
-        result['parsed_url'] = urlparse(result['url'])
-
-        # if the result has no scheme, use http as default
-        if not result['parsed_url'].scheme:
-            result['parsed_url'] = result['parsed_url']._replace(scheme="http")
-            result['url'] = result['parsed_url'].geturl()
-
-        # avoid duplicate content between the content and title fields
-        if result.get('content') == result.get('title'):
-            del result['content']
-
-        # make sure there is a template
-        if 'template' not in result:
-            result['template'] = 'default.html'
-
-        # strip multiple spaces and carriage returns from content
-        if result.get('content'):
-            result['content'] = WHITESPACE_REGEX.sub(' ', result['content'])
 
     def __merge_url_result(self, result, position):
         result['engines'] = set([result['engine']])

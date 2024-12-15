@@ -6,13 +6,14 @@ Usage in a Flask app route:
 .. code:: python
 
   from searx import infopage
+  from searx.extended_types import sxng_request
 
   _INFO_PAGES = infopage.InfoPageSet(infopage.MistletoePage)
 
   @app.route('/info/<pagename>', methods=['GET'])
   def info(pagename):
 
-      locale = request.preferences.get_value('locale')
+      locale = sxng_request.preferences.get_value('locale')
       page = _INFO_PAGES.get_page(pagename, locale)
 
 """

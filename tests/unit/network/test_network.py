@@ -1,17 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, protected-access
-
-from mock import patch
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import httpx
+from mock import patch
 
-from searx.network.network import Network, NETWORKS, initialize
+from searx.network.network import Network, NETWORKS
 from tests import SearxTestCase
 
 
-class TestNetwork(SearxTestCase):  # pylint: disable=missing-class-docstring
-    def setUp(self):
-        initialize()
+class TestNetwork(SearxTestCase):
+    # pylint: disable=protected-access
 
     def test_simple(self):
         network = Network()
@@ -122,9 +120,12 @@ class TestNetwork(SearxTestCase):  # pylint: disable=missing-class-docstring
             await network.aclose()
 
 
-class TestNetworkRequestRetries(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestNetworkRequestRetries(SearxTestCase):
 
     TEXT = 'Lorem Ipsum'
+
+    def setUp(self):
+        self.init_test_settings()
 
     @classmethod
     def get_response_404_then_200(cls):
@@ -195,9 +196,12 @@ class TestNetworkRequestRetries(SearxTestCase):  # pylint: disable=missing-class
             await network.aclose()
 
 
-class TestNetworkStreamRetries(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestNetworkStreamRetries(SearxTestCase):
 
     TEXT = 'Lorem Ipsum'
+
+    def setUp(self):
+        self.init_test_settings()
 
     @classmethod
     def get_response_exception_then_200(cls):

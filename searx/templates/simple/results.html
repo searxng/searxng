@@ -19,28 +19,10 @@
 {% endif %}
 
 <div id="results" class="{{ only_template }}">
-    {% if answers -%}
-    <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
-        {%- for answer in answers.values() -%}
-        <div class="answer">
-          {%- if answer.answer_type == 'translations' -%}
-            {% with translations=answer.translations %}
-              {% include 'simple/answerers/translate.html' %}
-            {% endwith %}
-          {%- else -%}
-            <span>{{ answer.answer }}</span>
-            {%- if answer.url -%}
-              <a href="{{ answer.url }}" class="answer-url"
-                 {%- if results_on_new_tab %} target="_blank" rel="noopener noreferrer"
-                 {%- else -%} rel="noreferrer"
-                 {%- endif -%}
-                 >{{ urlparse(answer.url).hostname }}</a>
-            {% endif -%}
-          {%- endif -%}
-        </div>
-        {%- endfor -%}
-    </div>
-    {%- endif %}
+
+  {%- if answers -%}
+    {%- include 'simple/elements/answers.html' -%}
+  {%- endif %}
 
     <div id="sidebar">
 
@@ -76,27 +58,9 @@
         <div id="sidebar-end-collapsible"></div>
     </div>
 
-    {% if corrections %}
-    <div id="corrections" role="complementary" aria-labelledby="corrections-title">
-      <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
-      {% for correction in corrections %}
-      <div class="left">
-	      <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
-          {% for category in selected_categories %}
-          <input type="hidden" name="category_{{ category }}" value="1">
-          {% endfor %}
-          <input type="hidden" name="q" value="{{ correction.url }}">
-          <input type="hidden" name="language" value="{{ current_language }}">
-          <input type="hidden" name="time_range" value="{{ time_range }}">
-          <input type="hidden" name="safesearch" value="{{ safesearch }}">
-          <input type="hidden" name="theme" value="{{ theme }}">
-          {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit }}" >{% endif %}
-          <input type="submit" role="link" value="{{ correction.title }}">
-	      </form>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
+    {%- if corrections -%}
+      {%- include 'simple/elements/corrections' -%}
+    {%- endif -%}
 
     <div id="urls" role="main">
     {% for result in results %}

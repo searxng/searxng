@@ -1,27 +1,26 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Calculate mathematical expressions using ack#eval
+"""Calculate mathematical expressions using :py:obj`ast.parse` (mode="eval").
 """
+
+from __future__ import annotations
+from typing import Callable
 
 import ast
 import re
 import operator
-from multiprocessing import Process, Queue
-from typing import Callable
+import multiprocessing
 
-import flask
 import babel
+import babel.numbers
 from flask_babel import gettext
 
-from searx.plugins import logger
+from searx.result_types import Answer
 
 name = "Basic Calculator"
 description = gettext("Calculate mathematical expressions via the search bar")
 default_on = True
-
 preference_section = 'general'
 plugin_id = 'calculator'
-
-logger = logger.getChild(plugin_id)
 
 operators: dict[type, Callable] = {
     ast.Add: operator.add,
@@ -33,11 +32,17 @@ operators: dict[type, Callable] = {
     ast.USub: operator.neg,
 }
 
+# with multiprocessing.get_context("fork") we are ready for Py3.14 (by emulating
+# the old behavior "fork") but it will not solve the core problem of fork, nor
+# will it remove the deprecation warnings in py3.12 & py3.13.  Issue is
+# ddiscussed here: https://github.com/searxng/searxng/issues/4159
+mp_fork = multiprocessing.get_context("fork")
+
 
 def _eval_expr(expr):
     """
     >>> _eval_expr('2^6')
-    4
+    64
     >>> _eval_expr('2**6')
     64
     >>> _eval_expr('1 + 2*3**(4^5) / (6 + -7)')
@@ -63,46 +68,49 @@ def _eval(node):
     raise TypeError(node)
 
 
+def handler(q: multiprocessing.Queue, func, args, **kwargs):  # pylint:disable=invalid-name
+    try:
+        q.put(func(*args, **kwargs))
+    except:
+        q.put(None)
+        raise
+
+
 def timeout_func(timeout, func, *args, **kwargs):
 
-    def handler(q: Queue, func, args, **kwargs):  # pylint:disable=invalid-name
-        try:
-            q.put(func(*args, **kwargs))
-        except:
-            q.put(None)
-            raise
-
-    que = Queue()
-    p = Process(target=handler, args=(que, func, args), kwargs=kwargs)
+    que = mp_fork.Queue()
+    p = mp_fork.Process(target=handler, args=(que, func, args), kwargs=kwargs)
     p.start()
     p.join(timeout=timeout)
     ret_val = None
+    # pylint: disable=used-before-assignment,undefined-variable
     if not p.is_alive():
         ret_val = que.get()
     else:
-        logger.debug("terminate function after timeout is exceeded")
+        logger.debug("terminate function after timeout is exceeded")  # type: ignore
         p.terminate()
     p.join()
     p.close()
     return ret_val
 
 
-def post_search(_request, search):
+def post_search(request, search) -> list[Answer]:
+    results = []
 
     # only show the result of the expression on the first page
     if search.search_query.pageno > 1:
-        return True
+        return results
 
     query = search.search_query.query
     # in order to avoid DoS attacks with long expressions, ignore long expressions
     if len(query) > 100:
-        return True
+        return results
 
     # replace commonly used math operators with their proper Python operator
     query = query.replace("x", "*").replace(":", "/")
 
     # use UI language
-    ui_locale = babel.Locale.parse(flask.request.preferences.get_value('locale'), sep='-')
+    ui_locale = babel.Locale.parse(request.preferences.get_value('locale'), sep='-')
 
     # parse the number system in a localized way
     def _decimal(match: re.Match) -> str:
@@ -116,15 +124,17 @@ def post_search(_request, search):
 
     # only numbers and math operators are accepted
     if any(str.isalpha(c) for c in query):
-        return True
+        return results
 
     # in python, powers are calculated via **
     query_py_formatted = query.replace("^", "**")
 
     # Prevent the runtime from being longer than 50 ms
-    result = timeout_func(0.05, _eval_expr, query_py_formatted)
-    if result is None or result == "":
-        return True
-    result = babel.numbers.format_decimal(result, locale=ui_locale)
-    search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
-    return True
+    res = timeout_func(0.05, _eval_expr, query_py_formatted)
+    if res is None or res == "":
+        return results
+
+    res = babel.numbers.format_decimal(res, locale=ui_locale)
+    Answer(results=results, answer=f"{search.search_query.query} = {res}")
+
+    return results

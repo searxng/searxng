@@ -262,7 +262,7 @@ def request(query, params):
 
 
 def response(resp):  # pylint: disable=too-many-branches
-    '''Scrap *results* from the response (see :ref:`engine results`).'''
+    '''Scrap *results* from the response (see :ref:`result types`).'''
     if no_result_for_http_status and resp.status_code in no_result_for_http_status:
         return []
 

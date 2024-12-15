@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from collections import defaultdict
 import mock
@@ -12,7 +12,7 @@ from tests import SearxTestCase
 logger = logger.getChild('engines')
 
 
-class TestXpathEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
+class TestXpathEngine(SearxTestCase):
     html = """
     <div>
         <div class="search_result">
@@ -29,6 +29,7 @@ class TestXpathEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
     """
 
     def setUp(self):
+        super().setUp()
         xpath.logger = logger.getChild('test_xpath')
 
     def test_request(self):

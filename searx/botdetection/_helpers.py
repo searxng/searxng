@@ -13,12 +13,14 @@ import flask
 import werkzeug
 
 from searx import logger
+from searx.extended_types import SXNG_Request
+
 from . import config
 
 logger = logger.getChild('botdetection')
 
 
-def dump_request(request: flask.Request):
+def dump_request(request: SXNG_Request):
     return (
         request.path
         + " || X-Forwarded-For: %s" % request.headers.get('X-Forwarded-For')
@@ -66,7 +68,7 @@ def _log_error_only_once(err_msg):
         _logged_errors.append(err_msg)
 
 
-def get_real_ip(request: flask.Request) -> str:
+def get_real_ip(request: SXNG_Request) -> str:
     """Returns real IP of the request.  Since not all proxies set all the HTTP
     headers and incoming headers can be faked it may happen that the IP cannot
     be determined correctly.

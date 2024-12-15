@@ -43,11 +43,11 @@ from ipaddress import (
 
 import string
 import random
-import flask
 
 from searx import logger
 from searx import redisdb
 from searx.redislib import secret_hash
+from searx.extended_types import SXNG_Request
 
 from ._helpers import (
     get_network,
@@ -69,7 +69,7 @@ TOKEN_KEY = 'SearXNG_limiter.token'
 logger = logger.getChild('botdetection.link_token')
 
 
-def is_suspicious(network: IPv4Network | IPv6Network, request: flask.Request, renew: bool = False):
+def is_suspicious(network: IPv4Network | IPv6Network, request: SXNG_Request, renew: bool = False):
     """Checks whether a valid ping is exists for this (client) network, if not
     this request is rated as *suspicious*.  If a valid ping exists and argument
     ``renew`` is ``True`` the expire time of this ping is reset to
@@ -92,7 +92,7 @@ def is_suspicious(network: IPv4Network | IPv6Network, request: flask.Request, re
     return False
 
 
-def ping(request: flask.Request, token: str):
+def ping(request: SXNG_Request, token: str):
     """This function is called by a request to URL ``/client<token>.css``.  If
     ``token`` is valid a :py:obj:`PING_KEY` for the client is stored in the DB.
     The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.
@@ -113,7 +113,7 @@ def ping(request: flask.Request, token: str):
     redis_client.set(ping_key, 1, ex=PING_LIVE_TIME)
 
 
-def get_ping_key(network: IPv4Network | IPv6Network, request: flask.Request) -> str:
+def get_ping_key(network: IPv4Network | IPv6Network, request: SXNG_Request) -> str:
     """Generates a hashed key that fits (more or less) to a *WEB-browser
     session* in a network."""
     return (

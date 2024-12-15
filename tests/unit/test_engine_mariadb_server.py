@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from unittest.mock import MagicMock, Mock
+
 from searx.engines import mariadb_server
 from tests import SearxTestCase
 
 
-class MariadbServerTests(SearxTestCase):  # pylint: disable=missing-class-docstring
+class MariadbServerTests(SearxTestCase):
 
     def test_init_no_query_str_raises(self):
         self.assertRaises(ValueError, lambda: mariadb_server.init({}))

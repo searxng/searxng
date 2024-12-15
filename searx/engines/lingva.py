@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Lingva (alternative Google Translate frontend)"""
 
+from searx.result_types import Translations
+
 about = {
     "website": 'https://lingva.ml',
     "wikidata_id": None,
@@ -14,13 +16,10 @@ engine_type = 'online_dictionary'
 categories = ['general', 'translate']
 
 url = "https://lingva.thedaviddelta.com"
-search_url = "{url}/api/v1/{from_lang}/{to_lang}/{query}"
 
 
 def request(_query, params):
-    params['url'] = search_url.format(
-        url=url, from_lang=params['from_lang'][1], to_lang=params['to_lang'][1], query=params['query']
-    )
+    params['url'] = f"{url}/api/v1/{params['from_lang'][1]}/{params['to_lang'][1]}/{params['query']}"
     return params
 
 
@@ -45,32 +44,30 @@ def response(resp):
     for definition in info['definitions']:
         for translation in definition['list']:
             data.append(
-                {
-                    'text': result['translation'],
-                    'definitions': [translation['definition']] if translation['definition'] else [],
-                    'examples': [translation['example']] if translation['example'] else [],
-                    'synonyms': translation['synonyms'],
-                }
+                Translations.Item(
+                    text=result['translation'],
+                    definitions=[translation['definition']] if translation['definition'] else [],
+                    examples=[translation['example']] if translation['example'] else [],
+                    synonyms=translation['synonyms'],
+                )
             )
 
     for translation in info["extraTranslations"]:
         for word in translation["list"]:
             data.append(
-                {
-                    'text': word['word'],
-                    'definitions': word['meanings'],
-                }
+                Translations.Item(
+                    text=word['word'],
+                    definitions=word['meanings'],
+                )
             )
 
     if not data and result['translation']:
-        data.append({'text': result['translation']})
+        data.append(Translations.Item(text=result['translation']))
 
-    results.append(
-        {
-            'answer': data[0]['text'],
-            'answer_type': 'translations',
-            'translations': data,
-        }
+    params = resp.search_params
+    Translations(
+        results=results,
+        translations=data,
+        url=f"{url}/{params['from_lang'][1]}/{params['to_lang'][1]}/{params['query']}",
     )
-
     return results

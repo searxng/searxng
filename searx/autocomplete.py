@@ -8,9 +8,11 @@ import json
 import html
 from urllib.parse import urlencode, quote_plus
 
-import lxml
+import lxml.etree
+import lxml.html
 from httpx import HTTPError
 
+from searx.extended_types import SXNG_Response
 from searx import settings
 from searx.engines import (
     engines,
@@ -26,12 +28,12 @@ def update_kwargs(**kwargs):
     kwargs['raise_for_httperror'] = True
 
 
-def get(*args, **kwargs):
+def get(*args, **kwargs) -> SXNG_Response:
     update_kwargs(**kwargs)
     return http_get(*args, **kwargs)
 
 
-def post(*args, **kwargs):
+def post(*args, **kwargs) -> SXNG_Response:
     update_kwargs(**kwargs)
     return http_post(*args, **kwargs)
 
@@ -126,7 +128,7 @@ def google_complete(query, sxng_locale):
     )
     results = []
     resp = get(url.format(subdomain=google_info['subdomain'], args=args))
-    if resp.ok:
+    if resp and resp.ok:
         json_txt = resp.text[resp.text.find('[') : resp.text.find(']', -3) + 1]
         data = json.loads(json_txt)
         for item in data[0]:
@@ -220,7 +222,7 @@ def wikipedia(query, sxng_locale):
     results = []
     eng_traits = engines['wikipedia'].traits
     wiki_lang = eng_traits.get_language(sxng_locale, 'en')
-    wiki_netloc = eng_traits.custom['wiki_netloc'].get(wiki_lang, 'en.wikipedia.org')
+    wiki_netloc = eng_traits.custom['wiki_netloc'].get(wiki_lang, 'en.wikipedia.org')  # type: ignore
 
     url = 'https://{wiki_netloc}/w/api.php?{args}'
     args = urlencode(

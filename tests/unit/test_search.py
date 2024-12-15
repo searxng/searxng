@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring, invalid-name
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from copy import copy
-import logging
 
 import searx.search
 from searx.search import SearchQuery, EngineRef
@@ -12,20 +11,11 @@ from tests import SearxTestCase
 
 SAFESEARCH = 0
 PAGENO = 1
-PUBLIC_ENGINE_NAME = 'general dummy'
-TEST_ENGINES = [
-    {
-        'name': PUBLIC_ENGINE_NAME,
-        'engine': 'dummy',
-        'categories': 'general',
-        'shortcut': 'gd',
-        'timeout': 3.0,
-        'tokens': [],
-    },
-]
+PUBLIC_ENGINE_NAME = "dummy engine"  # from the ./settings/test_settings.yml
 
 
-class SearchQueryTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
+class SearchQueryTestCase(SearxTestCase):
+
     def test_repr(self):
         s = SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g')
         self.assertEqual(
@@ -44,21 +34,7 @@ class SearchQueryTestCase(SearxTestCase):  # pylint: disable=missing-class-docst
         self.assertEqual(s, t)
 
 
-class SearchTestCase(SearxTestCase):  # pylint: disable=missing-class-docstring
-    def setUp(self):
-
-        log = logging.getLogger("searx")
-        log_lev = log.level
-        log.setLevel(logging.ERROR)
-        from searx import webapp  # pylint: disable=import-outside-toplevel
-
-        log.setLevel(log_lev)
-
-        self.app = webapp.app
-
-    @classmethod
-    def setUpClass(cls):
-        searx.search.initialize(TEST_ENGINES)
+class SearchTestCase(SearxTestCase):
 
     def test_timeout_simple(self):
         settings['outgoing']['max_request_timeout'] = None

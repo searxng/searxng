@@ -1,25 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from parameterized.parameterized import parameterized
-import searx.search
 from searx.query import RawTextQuery
 from tests import SearxTestCase
 
 
-TEST_ENGINES = [
-    {
-        'name': 'dummy engine',
-        'engine': 'dummy',
-        'categories': 'general',
-        'shortcut': 'du',
-        'timeout': 3.0,
-        'tokens': [],
-    },
-]
+class TestQuery(SearxTestCase):
 
-
-class TestQuery(SearxTestCase):  # pylint:disable=missing-class-docstring
     def test_simple_query(self):
         query_text = 'the query'
         query = RawTextQuery(query_text, [])
@@ -59,7 +47,8 @@ class TestQuery(SearxTestCase):  # pylint:disable=missing-class-docstring
         self.assertEqual(query.getFullQuery(), '<8 another text')
 
 
-class TestLanguageParser(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestLanguageParser(SearxTestCase):
+
     def test_language_code(self):
         language = 'es-ES'
         query_text = 'the query'
@@ -143,7 +132,8 @@ class TestLanguageParser(SearxTestCase):  # pylint:disable=missing-class-docstri
         self.assertEqual(query.autocomplete_list, autocomplete_list)
 
 
-class TestTimeoutParser(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestTimeoutParser(SearxTestCase):
+
     @parameterized.expand(
         [
             ('<3 the query', 3),
@@ -182,7 +172,8 @@ class TestTimeoutParser(SearxTestCase):  # pylint:disable=missing-class-docstrin
         self.assertEqual(query.autocomplete_list, ['<3', '<850'])
 
 
-class TestExternalBangParser(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestExternalBangParser(SearxTestCase):
+
     def test_external_bang(self):
         query_text = '!!ddg the query'
         query = RawTextQuery(query_text, [])
@@ -212,16 +203,10 @@ class TestExternalBangParser(SearxTestCase):  # pylint:disable=missing-class-doc
         self.assertEqual(query.get_autocomplete_full_query(a), a + ' the query')
 
 
-class TestBang(SearxTestCase):  # pylint:disable=missing-class-docstring
+class TestBang(SearxTestCase):
 
-    SPECIFIC_BANGS = ['!dummy_engine', '!du', '!general']
+    SPECIFIC_BANGS = ['!dummy_engine', '!gd', '!general']
     THE_QUERY = 'the query'
-
-    def setUp(self):
-        searx.search.initialize(TEST_ENGINES)
-
-    def tearDown(self):
-        searx.search.load_engines([])
 
     @parameterized.expand(SPECIFIC_BANGS)
     def test_bang(self, bang: str):
@@ -246,7 +231,7 @@ class TestBang(SearxTestCase):  # pylint:disable=missing-class-docstring
 
     def test_bang_autocomplete(self):
         query = RawTextQuery('the query !dum', [])
-        self.assertEqual(query.autocomplete_list, ['!dummy_engine'])
+        self.assertEqual(query.autocomplete_list, ['!dummy_engine', '!dummy_private_engine'])
 
         query = RawTextQuery('!dum the query', [])
         self.assertEqual(query.autocomplete_list, [])

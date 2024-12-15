@@ -18,6 +18,7 @@ from searx import get_setting
 
 from searx.webutils import new_hmac, is_hmac_of
 from searx.exceptions import SearxEngineResponseException
+from searx.extended_types import sxng_request
 
 from .resolvers import DEFAULT_RESOLVER_MAP
 from . import cache
@@ -124,7 +125,7 @@ def favicon_proxy():
       server>` setting.
 
     """
-    authority = flask.request.args.get('authority')
+    authority = sxng_request.args.get('authority')
 
     # malformed request or RFC 3986 authority
     if not authority or "/" in authority:
@@ -134,11 +135,11 @@ def favicon_proxy():
     if not is_hmac_of(
         CFG.secret_key,
         authority.encode(),
-        flask.request.args.get('h', ''),
+        sxng_request.args.get('h', ''),
     ):
         return '', 400
 
-    resolver = flask.request.preferences.get_value('favicon_resolver')  # type: ignore
+    resolver = sxng_request.preferences.get_value('favicon_resolver')  # type: ignore
     # if resolver is empty or not valid, just return HTTP 400.
     if not resolver or resolver not in CFG.resolver_map.keys():
         return "", 400
@@ -151,7 +152,7 @@ def favicon_proxy():
         return resp
 
     # return default favicon from static path
-    theme = flask.request.preferences.get_value("theme")  # type: ignore
+    theme = sxng_request.preferences.get_value("theme")  # type: ignore
     fav, mimetype = CFG.favicon(theme=theme)
     return flask.send_from_directory(fav.parent, fav.name, mimetype=mimetype)
 
@@ -215,7 +216,7 @@ def favicon_url(authority: str) -> str:
 
     """
 
-    resolver = flask.request.preferences.get_value('favicon_resolver')  # type: ignore
+    resolver = sxng_request.preferences.get_value('favicon_resolver')  # type: ignore
     # if resolver is empty or not valid, just return nothing.
     if not resolver or resolver not in CFG.resolver_map.keys():
         return ""
@@ -224,7 +225,7 @@ def favicon_url(authority: str) -> str:
 
     if data_mime == (None, None):
         # we have already checked, the resolver does not have a favicon
-        theme = flask.request.preferences.get_value("theme")  # type: ignore
+        theme = sxng_request.preferences.get_value("theme")  # type: ignore
         return CFG.favicon_data_url(theme=theme)
 
     if data_mime is not None:

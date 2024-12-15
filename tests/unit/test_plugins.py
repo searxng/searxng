@@ -1,50 +1,106 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import babel
 from mock import Mock
-from searx import plugins
+
+import searx.plugins
+import searx.preferences
+import searx.results
+
+from searx.result_types import Result
+from searx.extended_types import sxng_request
+
 from tests import SearxTestCase
+
+plg_store = searx.plugins.PluginStorage()
+plg_store.load_builtins()
 
 
 def get_search_mock(query, **kwargs):
+
     lang = kwargs.get("lang", "en-US")
+    kwargs["pageno"] = kwargs.get("pageno", 1)
     kwargs["locale"] = babel.Locale.parse(lang, sep="-")
-    return Mock(search_query=Mock(query=query, **kwargs), result_container=Mock(answers={}))
+    user_plugins = kwargs.pop("user_plugins", [x.id for x in plg_store])
+
+    return Mock(
+        search_query=Mock(query=query, **kwargs),
+        user_plugins=user_plugins,
+        result_container=searx.results.ResultContainer(),
+    )
 
 
-class PluginMock:  # pylint: disable=missing-class-docstring, too-few-public-methods
-    default_on = False
-    name = 'Default plugin'
-    description = 'Default plugin description'
+def do_pre_search(query, storage, **kwargs) -> bool:
+
+    search = get_search_mock(query, **kwargs)
+    ret = storage.pre_search(sxng_request, search)
+    return ret
 
 
-class PluginStoreTest(SearxTestCase):  # pylint: disable=missing-class-docstring
+def do_post_search(query, storage, **kwargs) -> Mock:
+
+    search = get_search_mock(query, **kwargs)
+    storage.post_search(sxng_request, search)
+    return search
+
+
+class PluginMock(searx.plugins.Plugin):
+
+    def __init__(self, _id: str, name: str, default_on: bool):
+        self.id = _id
+        self.default_on = default_on
+        self._name = name
+        super().__init__()
+
+    # pylint: disable= unused-argument
+    def pre_search(self, request, search) -> bool:
+        return True
+
+    def post_search(self, request, search) -> None:
+        return None
+
+    def on_result(self, request, search, result) -> bool:
+        return False
+
+    def info(self):
+        return searx.plugins.PluginInfo(
+            id=self.id,
+            name=self._name,
+            description=f"Dummy plugin: {self.id}",
+            preference_section="general",
+        )
+
+
+class PluginStorage(SearxTestCase):
+
     def setUp(self):
-        self.store = plugins.PluginStore()
+        super().setUp()
+        engines = {}
+
+        self.storage = searx.plugins.PluginStorage()
+        self.storage.register(PluginMock("plg001", "first plugin", True))
+        self.storage.register(PluginMock("plg002", "second plugin", True))
+        self.storage.init(self.app)
+        self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
+        self.pref.parse_dict({"locale": "en"})
 
     def test_init(self):
-        self.assertEqual(0, len(self.store.plugins))
-        self.assertIsInstance(self.store.plugins, list)
 
-    def test_register(self):
-        testplugin = PluginMock()
-        self.store.register(testplugin)
-        self.assertEqual(1, len(self.store.plugins))
+        self.assertEqual(2, len(self.storage))
 
-    def test_call_empty(self):
-        testplugin = PluginMock()
-        self.store.register(testplugin)
-        setattr(testplugin, 'asdf', Mock())
-        request = Mock()
-        self.store.call([], 'asdf', request, Mock())
-        self.assertFalse(getattr(testplugin, 'asdf').called)  # pylint: disable=E1101
+    def test_hooks(self):
 
-    def test_call_with_plugin(self):
-        store = plugins.PluginStore()
-        testplugin = PluginMock()
-        store.register(testplugin)
-        setattr(testplugin, 'asdf', Mock())
-        request = Mock()
-        store.call([testplugin], 'asdf', request, Mock())
-        self.assertTrue(getattr(testplugin, 'asdf').called)  # pylint: disable=E1101
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            query = ""
+
+            ret = do_pre_search(query, self.storage, pageno=1)
+            self.assertTrue(ret is True)
+
+            ret = self.storage.on_result(
+                sxng_request,
+                get_search_mock("lorem ipsum", user_plugins=["plg001", "plg002"]),
+                Result(results=[]),
+            )
+            self.assertFalse(ret)

@@ -3,8 +3,12 @@
  Dictzone
 """
 
+import urllib.parse
 from lxml import html
-from searx.utils import eval_xpath
+
+from searx.utils import eval_xpath, extract_text
+from searx.result_types import Translations
+from searx.network import get as http_get  # https://github.com/searxng/searxng/issues/762
 
 # about
 about = {
@@ -18,46 +22,83 @@ about = {
 
 engine_type = 'online_dictionary'
 categories = ['general', 'translate']
-url = 'https://dictzone.com/{from_lang}-{to_lang}-dictionary/{query}'
+base_url = "https://dictzone.com"
 weight = 100
-
-results_xpath = './/table[@id="r"]/tr'
 https_support = True
 
 
 def request(query, params):  # pylint: disable=unused-argument
-    params['url'] = url.format(from_lang=params['from_lang'][2], to_lang=params['to_lang'][2], query=params['query'])
 
+    from_lang = params["from_lang"][2]  # "english"
+    to_lang = params["to_lang"][2]  # "german"
+    query = params["query"]
+
+    params["url"] = f"{base_url}/{from_lang}-{to_lang}-dictionary/{urllib.parse.quote_plus(query)}"
     return params
 
 
+def _clean_up_node(node):
+    for x in ["./i", "./span", "./button"]:
+        for n in node.xpath(x):
+            n.getparent().remove(n)
+
+
 def response(resp):
+
+    results = []
+    item_list = []
+
+    if not resp.ok:
+        return results
+
     dom = html.fromstring(resp.text)
 
-    translations = []
-    for result in eval_xpath(dom, results_xpath)[1:]:
-        try:
-            from_result, to_results_raw = eval_xpath(result, './td')
-        except:  # pylint: disable=bare-except
+    for result in eval_xpath(dom, ".//table[@id='r']//tr"):
+
+        # each row is an Translations.Item
+
+        td_list = result.xpath("./td")
+        if len(td_list) != 2:
+            # ignore header columns "tr/th"
             continue
 
-        to_results = []
-        for to_result in eval_xpath(to_results_raw, './p/a'):
-            t = to_result.text_content()
-            if t.strip():
-                to_results.append(to_result.text_content())
+        col_from, col_to = td_list
+        _clean_up_node(col_from)
 
-        translations.append(
-            {
-                'text': f"{from_result.text_content()} - {'; '.join(to_results)}",
-            }
-        )
+        text = f"{extract_text(col_from)}"
 
-    if translations:
-        result = {
-            'answer': translations[0]['text'],
-            'translations': translations,
-            'answer_type': 'translations',
-        }
+        synonyms = []
+        p_list = col_to.xpath(".//p")
 
-    return [result]
+        for i, p_item in enumerate(p_list):
+
+            smpl: str = extract_text(p_list[i].xpath("./i[@class='smpl']"))  # type: ignore
+            _clean_up_node(p_item)
+            p_text: str = extract_text(p_item)  # type: ignore
+
+            if smpl:
+                p_text += " // " + smpl
+
+            if i == 0:
+                text += f" : {p_text}"
+                continue
+
+            synonyms.append(p_text)
+
+        item = Translations.Item(text=text, synonyms=synonyms)
+        item_list.append(item)
+
+    # the "autotranslate" of dictzone is loaded by the JS from URL:
+    #  https://dictzone.com/trans/hello%20world/en_de
+
+    from_lang = resp.search_params["from_lang"][1]  # "en"
+    to_lang = resp.search_params["to_lang"][1]  # "de"
+    query = resp.search_params["query"]
+
+    # works only sometimes?
+    autotranslate = http_get(f"{base_url}/trans/{query}/{from_lang}_{to_lang}", timeout=1.0)
+    if autotranslate.ok and autotranslate.text:
+        item_list.insert(0, Translations.Item(text=autotranslate.text))
+
+    Translations(results=results, translations=item_list, url=resp.search_params["url"])
+    return results
