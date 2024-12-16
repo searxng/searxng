@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.sqlitedb &#8212; SearXNG Documentation (2024.12.16+65c970bdf)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <script src="../../_static/documentation_options.js?v=adf98cb9"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2024.12.16+65c970bdf" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2024.12.16+65c970bdf)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.sqlitedb</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.sqlitedb</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations to make access to SQLite databases a little more convenient.</span>
+
+<span class="sd">:py:obj:`SQLiteAppl`</span>
+<span class="sd">  Abstract class with which DB applications can be implemented.</span>
+
+<span class="sd">:py:obj:`SQLiteProperties`:</span>
+<span class="sd">  Class to manage properties stored in a database.</span>
+
+<span class="sd">----</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+
+<span class="kn">from</span> <span class="nn">searx</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;sqlitedb&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SQLiteAppl">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteAppl">[docs]</a>
+<span class="k">class</span> <span class="nc">SQLiteAppl</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for implementing convenient DB access in SQLite</span>
+<span class="sd">    applications.  In the constructor, a :py:obj:`SQLiteProperties` instance is</span>
+<span class="sd">    already aggregated under ``self.properties``.&quot;&quot;&quot;</span>
+
+    <span class="n">DDL_CREATE_TABLES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">DB_SCHEMA</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;As soon as changes are made to the DB schema, the version number must be</span>
+<span class="sd">    increased.  Changes to the version number require the DB to be recreated (or</span>
+<span class="sd">    migrated / if an migration path exists and is implemented).&quot;&quot;&quot;</span>
+
+    <span class="n">SQLITE_THREADING_MODE</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;single-thread&quot;</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;multi-thread&quot;</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;serialized&quot;</span><span class="p">}[</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">threadsafety</span><span class="p">]</span>  <span class="c1"># fmt:skip</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Threading mode of the SQLite library.  Depends on the options used at</span>
+<span class="sd">    compile time and is different for different distributions and architectures.</span>
+
+<span class="sd">    Possible values are 0:``single-thread``, 1:``multi-thread``,</span>
+<span class="sd">    3:``serialized`` (see :py:obj:`sqlite3.threadsafety`).  Pre- Python 3.11</span>
+<span class="sd">    this value was hard coded to 1.</span>
+
+<span class="sd">    Depending on this value, optimizations are made, e.g. in “serialized” mode</span>
+<span class="sd">    it is not necessary to create a separate DB connector for each thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SQLITE_JOURNAL_MODE</span> <span class="o">=</span> <span class="s2">&quot;WAL&quot;</span>
+    <span class="n">SQLITE_CONNECT_ARGS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># &quot;timeout&quot;: 5.0,</span>
+        <span class="c1"># &quot;detect_types&quot;: 0,</span>
+        <span class="s2">&quot;check_same_thread&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">SQLITE_THREADING_MODE</span> <span class="o">!=</span> <span class="s2">&quot;serialized&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;cached_statements&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># https://github.com/python/cpython/issues/118172</span>
+        <span class="c1"># &quot;uri&quot;: False,</span>
+        <span class="s2">&quot;autocommit&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">}</span>  <span class="c1"># fmt:skip</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Connection arguments (:py:obj:`sqlite3.connect`)</span>
+
+<span class="sd">    ``check_same_thread``:</span>
+<span class="sd">      Is disabled by default when :py:obj:`SQLITE_THREADING_MODE` is</span>
+<span class="sd">      ``serialized``.  The check is more of a hindrance in this case because it</span>
+<span class="sd">      would prevent a DB connector from being used in multiple threads.</span>
+
+<span class="sd">    ``autocommit``:</span>
+<span class="sd">      Is disabled by default.  Note: autocommit option has been added in Python</span>
+<span class="sd">      3.12.</span>
+
+<span class="sd">    ``cached_statements``:</span>
+<span class="sd">      Is set to ``0`` by default.  Note: Python 3.12+ fetch result are not</span>
+<span class="sd">      consistent in multi-threading application and causing an API misuse error.</span>
+
+<span class="sd">      The multithreading use in SQLiteAppl is intended and supported if</span>
+<span class="sd">      threadsafety is set to 3 (aka &quot;serialized&quot;). CPython supports “serialized”</span>
+<span class="sd">      from version 3.12 on, but unfortunately only with errors:</span>
+
+<span class="sd">      - https://github.com/python/cpython/issues/118172</span>
+<span class="sd">      - https://github.com/python/cpython/issues/123873</span>
+
+<span class="sd">      The workaround for SQLite3 multithreading cache inconsistency ist to set</span>
+<span class="sd">      option ``cached_statements`` to ``0`` by default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_url</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span> <span class="o">=</span> <span class="n">db_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">SQLiteProperties</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compatibility</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_compatibility</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_THREADING_MODE</span> <span class="o">==</span> <span class="s2">&quot;serialized&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_DB</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SQLite library is compiled with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_THREADING_MODE</span><span class="si">}</span><span class="s2"> mode,&quot;</span>
+                <span class="s2">&quot; read https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">threading</span><span class="o">.</span><span class="n">active_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version_info</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">35</span><span class="p">):</span>
+            <span class="c1"># See &quot;Generalize UPSERT:&quot; in https://sqlite.org/releaselog/3_35_0.html</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+                <span class="s2">&quot;SQLite runtime library version </span><span class="si">%s</span><span class="s2"> is not supported (require &gt;= 3.35)&quot;</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="SQLiteAppl.connect">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteAppl.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new DB connection (:py:obj:`SQLITE_CONNECT_ARGS`).  If not</span>
+<span class="sd">        already done, the DB schema is set up</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">):</span>
+            <span class="c1"># Prior Python 3.12 there is no &quot;autocommit&quot; option</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_CONNECT_ARGS</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;autocommit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: connect to DB: </span><span class="si">%s</span><span class="s2"> // </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_CONNECT_ARGS</span><span class="p">)</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_CONNECT_ARGS</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PRAGMA journal_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">SQLITE_JOURNAL_MODE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_functions</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">conn</span></div>
+
+
+<div class="viewcode-block" id="SQLiteAppl.register_functions">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteAppl.register_functions">[docs]</a>
+    <span class="k">def</span> <span class="nf">register_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create user-defined_ SQL functions.</span>
+
+<span class="sd">        ``REGEXP(&lt;pattern&gt;, &lt;field&gt;)`` : 0 | 1</span>
+<span class="sd">           `re.search`_ returns (int) 1 for a match and 0 for none match of</span>
+<span class="sd">           ``&lt;pattern&gt;`` in ``&lt;field&gt;``.</span>
+
+<span class="sd">           .. code:: sql</span>
+
+<span class="sd">              SELECT &#39;12&#39; AS field WHERE REGEXP(&#39;^[0-9][0-9]$&#39;, field)</span>
+<span class="sd">              -- 12</span>
+
+<span class="sd">              SELECT REGEXP(&#39;[0-9][0-9]&#39;, &#39;X12Y&#39;)</span>
+<span class="sd">              -- 1</span>
+<span class="sd">              SELECT REGEXP(&#39;[0-9][0-9]&#39;, &#39;X1Y&#39;)</span>
+<span class="sd">              -- 0</span>
+
+<span class="sd">        .. _user-defined: https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.create_function</span>
+<span class="sd">        .. _deterministic: https://sqlite.org/deterministic.html</span>
+<span class="sd">        .. _re.search: https://docs.python.org/3/library/re.html#re.search</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">conn</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s1">&#39;regexp&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">DB</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides a DB connection.  The connection is a *singleton* and</span>
+<span class="sd">        therefore well suited for read access.  If</span>
+<span class="sd">        :py:obj:`SQLITE_THREADING_MODE` is ``serialized`` only one DB connection</span>
+<span class="sd">        is created for all threads.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           For dedicated `transaction control`_, it is recommended to create a</span>
+<span class="sd">           new connection (:py:obj:`SQLiteAppl.connect`).</span>
+
+<span class="sd">        .. _transaction control:</span>
+<span class="sd">            https://docs.python.org/3/library/sqlite3.html#sqlite3-controlling-transactions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span><span class="p">,</span> <span class="s1">&#39;DB&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span><span class="o">.</span><span class="n">DB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+        <span class="c1"># Theoretically it is possible to reuse the DB cursor across threads as</span>
+        <span class="c1"># of Python 3.12, in practice the threading of the cursor seems to me to</span>
+        <span class="c1"># be so faulty that I prefer to establish one connection per thread</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span><span class="o">.</span><span class="n">DB</span>
+
+        <span class="c1"># In &quot;serialized&quot; mode, SQLite can be safely used by multiple threads</span>
+        <span class="c1"># with no restriction.</span>
+        <span class="c1">#</span>
+        <span class="c1"># if self.SQLITE_THREADING_MODE != &quot;serialized&quot;:</span>
+        <span class="c1">#     if getattr(self.thread_local, &#39;DB&#39;, None) is None:</span>
+        <span class="c1">#         self.thread_local.DB = self.connect()</span>
+        <span class="c1">#     return self.thread_local.DB</span>
+        <span class="c1">#</span>
+        <span class="c1"># if self._DB is None:</span>
+        <span class="c1">#     self._DB = self.connect()  # pylint: disable=attribute-defined-outside-init</span>
+        <span class="c1"># return self._DB</span>
+
+<div class="viewcode-block" id="SQLiteAppl.init">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteAppl.init">[docs]</a>
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the DB schema and properties, is only executed once even</span>
+<span class="sd">        if called several times.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;init DB: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">ver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="s2">&quot;DB_SCHEMA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">DB</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_schema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">DB</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ver</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ver</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ver</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB_SCHEMA</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">DatabaseError</span><span class="p">(</span><span class="s2">&quot;Expected DB schema v</span><span class="si">%s</span><span class="s2">, DB schema is v</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DB_SCHEMA</span><span class="p">,</span> <span class="n">ver</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;DB_SCHEMA = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ver</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">create_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;create schema ..&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">sql</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DDL_CREATE_TABLES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Table </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> created&quot;</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;DB_SCHEMA&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB_SCHEMA</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;LAST_MAINTENANCE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SQLiteProperties">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteProperties">[docs]</a>
+<span class="k">class</span> <span class="nc">SQLiteProperties</span><span class="p">(</span><span class="n">SQLiteAppl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple class to manage properties of a DB application in the DB.  The</span>
+<span class="sd">    object has its own DB connection and transaction area.</span>
+
+<span class="sd">    .. code:: sql</span>
+
+<span class="sd">       CREATE TABLE IF NOT EXISTS properties (</span>
+<span class="sd">         name       TEXT,</span>
+<span class="sd">         value      TEXT,</span>
+<span class="sd">         m_time     INTEGER DEFAULT (strftime(&#39;%s&#39;, &#39;now&#39;)),</span>
+<span class="sd">         PRIMARY KEY (name))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SQLITE_JOURNAL_MODE</span> <span class="o">=</span> <span class="s2">&quot;WAL&quot;</span>
+
+    <span class="n">DDL_PROPERTIES</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">CREATE TABLE IF NOT EXISTS properties (</span>
+<span class="s2">  name       TEXT,</span>
+<span class="s2">  value      TEXT,</span>
+<span class="s2">  m_time     INTEGER DEFAULT (strftime(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;now&#39;)),  -- last modified (unix epoch) time in sec.</span>
+<span class="s2">  PRIMARY KEY (name))&quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Table to store properties of the DB application&quot;&quot;&quot;</span>
+
+    <span class="n">SQL_GET</span> <span class="o">=</span> <span class="s2">&quot;SELECT value FROM properties WHERE name = ?&quot;</span>
+    <span class="n">SQL_M_TIME</span> <span class="o">=</span> <span class="s2">&quot;SELECT m_time FROM properties WHERE name = ?&quot;</span>
+    <span class="n">SQL_SET</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO properties (name, value) VALUES (?, ?)&quot;</span>
+        <span class="s2">&quot;    ON CONFLICT(name) DO UPDATE&quot;</span>
+        <span class="s2">&quot;   SET value=excluded.value, m_time=strftime(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;now&#39;)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SQL_TABLE_EXISTS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SELECT name FROM sqlite_master&quot;</span>
+        <span class="s2">&quot; WHERE type=&#39;table&#39; AND name=&#39;properties&#39;&quot;</span>
+    <span class="p">)</span>  <span class="c1"># fmt:skip</span>
+    <span class="n">SQLITE_CONNECT_ARGS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">SQLiteAppl</span><span class="o">.</span><span class="n">SQLITE_CONNECT_ARGS</span><span class="p">)</span>
+    <span class="n">SQLITE_CONNECT_ARGS</span><span class="p">[</span><span class="s2">&quot;autocommit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># This option has no effect before Python 3.12</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span> <span class="o">=</span> <span class="n">db_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread_local</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compatibility</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SQLiteProperties.init">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteProperties.init">[docs]</a>
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes DB schema of the properties in the DB.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_done</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;init properties of DB: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_TABLE_EXISTS</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># DB schema needs to be be created</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_schema</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value of the property ``name`` or ``default`` if property</span>
+<span class="sd">        not exists in DB.&quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_GET</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SQLiteProperties.set">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteProperties.set">[docs]</a>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set ``value`` of property ``name`` in DB.  If property already</span>
+<span class="sd">        exists, update the ``m_time`` (and the value).&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_SET</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">):</span>
+            <span class="c1"># Prior Python 3.12 there is no &quot;autocommit&quot; option / lets commit</span>
+            <span class="c1"># explicitely.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SQLiteProperties.row">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteProperties.row">[docs]</a>
+    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the DB row of property ``name`` or ``default`` if property</span>
+<span class="sd">        not exists in DB.&quot;&quot;&quot;</span>
+
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM properties WHERE name = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">col_names</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SQLiteProperties.m_time">
+<a class="viewcode-back" href="../../src/searx.sqlitedb.html#searx.sqlitedb.SQLiteProperties.m_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">m_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Last modification time of this property.&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_M_TIME</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="k">def</span> <span class="nf">create_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DDL_PROPERTIES</span><span class="p">)</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
