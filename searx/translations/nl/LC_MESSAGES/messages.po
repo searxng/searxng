@@ -27,19 +27,18 @@
 # artens <artens@users.noreply.translate.codeberg.org>, 2024.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-01 12:14+0000\n"
+"POT-Creation-Date: 2024-12-16 07:46+0000\n"
 "PO-Revision-Date: 2024-12-14 18:53+0000\n"
 "Last-Translator: artens <artens@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
-"searxng/nl/>\n"
 "Language: nl\n"
+"Language-Team: Dutch "
+"<https://translate.codeberg.org/projects/searxng/searxng/nl/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -116,6 +115,11 @@ msgstr "onions"
 #: searx/searxng.msg
 msgid "science"
 msgstr "wetenschap"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -516,18 +520,18 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Kan die afbeeldings-URL niet lezen. Dit kan komen door een niet ondersteunde "
-"bestandsindeling. TinEye ondersteunt alleen afbeeldingtypes JPEG, PNG, GIF, "
-"BMP, TIFF of WebP."
+"Kan die afbeeldings-URL niet lezen. Dit kan komen door een niet "
+"ondersteunde bestandsindeling. TinEye ondersteunt alleen afbeeldingtypes "
+"JPEG, PNG, GIF, BMP, TIFF of WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"De afbeelding bevat te weinig details om overeenkomsten te vinden. TinEye "
-"vereist een basisniveau van visuele details om overeenkomsten succesvol te "
-"identificeren."
+"De afbeelding bevat te weinig details om overeenkomsten te vinden. TinEye"
+" vereist een basisniveau van visuele details om overeenkomsten succesvol "
+"te identificeren."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -547,8 +551,7 @@ msgstr "Bereken wiskundige formules via de zoekbalk"
 
 #: searx/plugins/hash_plugin.py:10
 msgid "Converts strings to different hash digests."
-msgstr ""
-"Zet tekstwaarden om naar verschillende soorten validatiewaarden (hashes)."
+msgstr "Zet tekstwaarden om naar verschillende soorten validatiewaarden (hashes)."
 
 #: searx/plugins/hash_plugin.py:38
 msgid "hash digest"
@@ -561,8 +564,8 @@ msgstr "Hostnamen plug-in"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Hernoem hostnamen, verwijder resultaten of geef prioriteit aan op basis van "
-"de hostnaam"
+"Hernoem hostnamen, verwijder resultaten of geef prioriteit aan op basis "
+"van de hostnaam"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -605,8 +608,8 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Deze plug-in controleert of het adres van de verzochte URL een Tor exit-node "
-"is en informeert de gebruiker als dit zo is; net als bij "
+"Deze plug-in controleert of het adres van de verzochte URL een Tor exit-"
+"node is en informeert de gebruiker als dit zo is; net als bij "
 "check.torproject.org, maar dan van SearXNG."
 
 #: searx/plugins/tor_check.py:61
@@ -2031,3 +2034,4 @@ msgstr "verberg video"
 
 #~ msgid "Start submiting a new issue on GitHub"
 #~ msgstr "Maak een nieuwe issue op Github"
+
