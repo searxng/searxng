@@ -3,7 +3,6 @@
  Dictzone
 """
 
-from urllib.parse import urljoin
 from lxml import html
 from searx.utils import eval_xpath
 
@@ -33,11 +32,10 @@ def request(query, params):  # pylint: disable=unused-argument
 
 
 def response(resp):
-    results = []
-
     dom = html.fromstring(resp.text)
 
-    for k, result in enumerate(eval_xpath(dom, results_xpath)[1:]):
+    translations = []
+    for result in eval_xpath(dom, results_xpath)[1:]:
         try:
             from_result, to_results_raw = eval_xpath(result, './td')
         except:  # pylint: disable=bare-except
@@ -49,12 +47,17 @@ def response(resp):
             if t.strip():
                 to_results.append(to_result.text_content())
 
-        results.append(
+        translations.append(
             {
-                'url': urljoin(str(resp.url), '?%d' % k),
-                'title': from_result.text_content(),
-                'content': '; '.join(to_results),
+                'text': f"{from_result.text_content()} - {'; '.join(to_results)}",
             }
         )
 
-    return results
+    if translations:
+        result = {
+            'answer': translations[0]['text'],
+            'translations': translations,
+            'answer_type': 'translations',
+        }
+
+    return [result]
