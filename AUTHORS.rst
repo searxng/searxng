@@ -168,6 +168,7 @@ features or generally made searx better:
 - Milad Laly @Milad-Laly
 - @llmII
 - @blob42 `<https://blob42.xyz>`_
+- Daniel Mowitz `<https://daniel.mowitz.rocks>`
 - Paolo Basso `<https://github.com/paolobasso99>`
 - Bernie Huang `<https://github.com/BernieHuang2008>`
 - Austin Olacsi `<https://github.com/Austin-Olacsi>`
