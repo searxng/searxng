@@ -83,6 +83,7 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 from typing import TYPE_CHECKING
 from collections import OrderedDict
 import re
+from urllib.parse import urlencode
 from unicodedata import normalize, combining
 from time import time
 from datetime import datetime, timedelta
@@ -161,7 +162,7 @@ search_form_xpath = '//form[@id="search"]'
 # timestamp of the last fetch of 'sc' code
 sc_code_ts = 0
 sc_code = ''
-sc_code_cache_sec = 30
+sc_code_cache_sec = 3600
 """Time in seconds the sc-code is cached in memory :py:obj:`get_sc_code`."""
 
 
@@ -275,42 +276,46 @@ def _request_cat_web(query, params):
         args['language'] = engine_language
         args['lui'] = engine_language
 
-    args['abp'] = '1'
+    # args['abp'] = '1'
     if params['pageno'] > 1:
         args['page'] = params['pageno']
 
     # build cookie
     lang_homepage = 'en'
     cookie = OrderedDict()
+    cookie['connect_to_server'] = 'us'
     cookie['date_time'] = 'world'
     cookie['disable_family_filter'] = safesearch_dict[params['safesearch']]
     cookie['disable_open_in_new_window'] = '0'
-    cookie['enable_post_method'] = '1'  # hint: POST
+    cookie['enable_post_method'] = '0'  # hint: GET
     cookie['enable_proxy_safety_suggest'] = '1'
     cookie['enable_stay_control'] = '1'
     cookie['instant_answers'] = '1'
-    cookie['lang_homepage'] = 's/device/%s/' % lang_homepage
-    cookie['num_of_results'] = '10'
-    cookie['suggestions'] = '1'
-    cookie['wt_unit'] = 'celsius'
-
+    cookie['lang_homepage'] = 's/device/%s' % lang_homepage
     if engine_language:
         cookie['language'] = engine_language
         cookie['language_ui'] = engine_language
-
+    cookie['num_of_results'] = '10'
     if engine_region:
         cookie['search_results_region'] = engine_region
+    cookie['suggestions'] = '1'
+    cookie['wt_unit'] = 'celsius'
 
     params['cookies']['preferences'] = 'N1N'.join(["%sEEE%s" % x for x in cookie.items()])
     logger.debug('cookie preferences: %s', params['cookies']['preferences'])
 
+    # GET request
+    params['method'] = 'GET'
+    # https://www.startpage.com/do/search?sc=CmEL6wNu8t5j20&query=foo&cat=web&qloc=eyJsYXQiOiBudWxsLCAibG5nIjogbnVsbCwgInR5cGUiOiAibm9uZSJ9
+    params['url'] = search_url + '?' + urlencode(args)
+
     # POST request
-    logger.debug("data: %s", args)
-    params['data'] = args
-    params['method'] = 'POST'
-    params['url'] = search_url
-    params['headers']['Origin'] = base_url
-    params['headers']['Referer'] = base_url + '/'
+    # logger.debug("data: %s", args)
+    # params['data'] = args
+    # params['method'] = 'GET'
+    # params['url'] = search_url
+    # params['headers']['Origin'] = base_url
+    # params['headers']['Referer'] = base_url + '/'
     # is the Accept header needed?
     # params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
