@@ -115,9 +115,9 @@ def response(resp):
         title = extract_text(eval_xpath_getindex(result, './/a/h3[1]', 0))
         url = eval_xpath_getindex(result, './/a/h3[1]/../@href', 0)
 
-        c_node = eval_xpath_getindex(result, './/div[@class="ITZIwc"]', 0)
+        c_node = eval_xpath_getindex(result, './/div[contains(@class, "ITZIwc")]', 0)
         content = extract_text(c_node)
-        pub_info = extract_text(eval_xpath(result, './/div[@class="gqF9jc"]'))
+        pub_info = extract_text(eval_xpath(result, './/div[contains(@class, "gqF9jc")]'))
 
         results.append(
             {
