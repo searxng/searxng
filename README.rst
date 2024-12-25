@@ -24,6 +24,7 @@ A user_, admin_ and developer_ handbook is available on the homepage_.
 |commits|
 |weblate|
 |SearXNG logo|
+|Gurubase|
 
 ----
 
@@ -60,6 +61,9 @@ A user_, admin_ and developer_ handbook is available on the homepage_.
    :target: https://github.com/searxng/searxng/commits/master
 
 .. |weblate| image:: https://translate.codeberg.org/widgets/searxng/-/searxng/svg-badge.svg
+
+.. |Gurubase| image:: https://img.shields.io/badge/Gurubase-Ask%20SearXNG%20Guru-006BFF
+   :target: https://gurubase.io/g/searxng
    :target: https://translate.codeberg.org/projects/searxng/
 
 
