@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-12-16 08:30+0000\n"
-"PO-Revision-Date: 2024-12-17 17:42+0000\n"
+"PO-Revision-Date: 2024-12-21 02:41+0000\n"
 "Last-Translator: Amirkhandrend-Nicest-XII <Amirkhandrend-Nicest-XII@users."
 "noreply.translate.codeberg.org>\n"
 "Language-Team: Tatar <https://translate.codeberg.org/projects/searxng/"
@@ -370,7 +370,7 @@ msgstr "вакыт бетте"
 
 #: searx/webutils.py:37
 msgid "parsing error"
-msgstr ""
+msgstr "тану хатасы"
 
 #: searx/webutils.py:38
 msgid "HTTP protocol error"
@@ -401,8 +401,9 @@ msgid "proxy error"
 msgstr "прокси хатасы"
 
 #: searx/webutils.py:57
+#, fuzzy
 msgid "CAPTCHA"
-msgstr ""
+msgstr "КАПЧА"
 
 #: searx/webutils.py:58
 msgid "too many requests"
@@ -474,7 +475,7 @@ msgstr "тавыш"
 
 #: searx/engines/radio_browser.py:107
 msgid "clicks"
-msgstr ""
+msgstr "басу саны"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
 #: searx/engines/zlibrary.py:137
@@ -502,7 +503,7 @@ msgstr ""
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
-msgstr ""
+msgstr "Сурәтне йөкләнеп булмады."
 
 #: searx/engines/zlibrary.py:138
 msgid "Book rating"
@@ -551,6 +552,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
+"Әгәр «ip» соравы булса, сезнең IP адресын күрсәтә. Әгәр «user agent» соравы "
+"булса, сезнең браузер турында мәгълүматны күрсәтә."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -614,7 +617,7 @@ msgstr "эзләү сылтамасы"
 
 #: searx/templates/simple/base.html:54
 msgid "Donate"
-msgstr ""
+msgstr "Иганә итү"
 
 #: searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:156
@@ -660,7 +663,7 @@ msgstr ""
 
 #: searx/templates/simple/macros.html:40
 msgid "Length"
-msgstr ""
+msgstr "Озынлык"
 
 #: searx/templates/simple/macros.html:41
 msgid "Views"
@@ -751,7 +754,7 @@ msgstr "Гомуми"
 
 #: searx/templates/simple/preferences.html:165
 msgid "Default categories"
-msgstr ""
+msgstr "Беренчел категорияләр"
 
 #: searx/templates/simple/preferences.html:190
 msgid "User interface"
@@ -845,7 +848,7 @@ msgstr "Нәтиҗә саны"
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr ""
+msgstr "Җавап вакыты"
 
 #: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
@@ -951,12 +954,12 @@ msgstr "Эзләү теле"
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"
-msgstr ""
+msgstr "Беренчел тел"
 
 #: searx/templates/simple/filters/languages.html:8
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr ""
+msgstr "Авто-билгеләү"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -1033,11 +1036,11 @@ msgstr ""
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
+msgstr "Башка сорау кулланып эзләгез яки башка категорияне (өстә) сайлагыз."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
-msgstr ""
+msgstr "Көйләүләрдә сайланган эзләгечне үзгәртегез:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
@@ -1045,7 +1048,7 @@ msgstr ""
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "Башка сорау кулланып эзләгез яки башка категорияне сайлагыз."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
@@ -1083,7 +1086,7 @@ msgstr "Бу — кушылма исемлеге."
 
 #: searx/templates/simple/preferences/autocomplete.html:2
 msgid "Autocomplete"
-msgstr ""
+msgstr "Автотәмамлану"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Find stuff as you type"
@@ -1211,7 +1214,7 @@ msgstr "Саклау"
 
 #: searx/templates/simple/preferences/footer.html:9
 msgid "Reset defaults"
-msgstr ""
+msgstr "Әүвәлге"
 
 #: searx/templates/simple/preferences/footer.html:13
 msgid "Back"
@@ -1305,7 +1308,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
-msgstr ""
+msgstr "Тема стиле"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
