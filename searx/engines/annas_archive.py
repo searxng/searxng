@@ -169,7 +169,7 @@ def fetch_traits(engine_traits: EngineTraits):
     lang_map = {}
     for x in eval_xpath_list(dom, "//form//input[@name='lang']"):
         eng_lang = x.get("value")
-        if eng_lang in ('', '_empty', 'nl-BE', 'und'):
+        if eng_lang in ('', '_empty', 'nl-BE', 'und') or eng_lang.startswith('anti__'):
             continue
         try:
             locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep='-')
@@ -186,10 +186,12 @@ def fetch_traits(engine_traits: EngineTraits):
         engine_traits.languages[sxng_lang] = eng_lang
 
     for x in eval_xpath_list(dom, "//form//input[@name='content']"):
-        engine_traits.custom['content'].append(x.get("value"))
+        if not x.get("value").startswith("anti__"):
+            engine_traits.custom['content'].append(x.get("value"))
 
     for x in eval_xpath_list(dom, "//form//input[@name='ext']"):
-        engine_traits.custom['ext'].append(x.get("value"))
+        if not x.get("value").startswith("anti__"):
+            engine_traits.custom['ext'].append(x.get("value"))
 
     for x in eval_xpath_list(dom, "//form//select[@name='sort']//option"):
         engine_traits.custom['sort'].append(x.get("value"))

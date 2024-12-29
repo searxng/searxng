@@ -183,17 +183,27 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
     from searx.locales import language_tag
 
-    resp = get(base_url, verify=False)
+    def _use_old_values():
+        # don't change anything, re-use the existing values
+        engine_traits.all_locale = ENGINE_TRAITS["z-library"]["all_locale"]
+        engine_traits.custom = ENGINE_TRAITS["z-library"]["custom"]
+        engine_traits.languages = ENGINE_TRAITS["z-library"]["languages"]
+
+    try:
+        resp = get(base_url, verify=False)
+    except SearxException as exc:
+        print(f"ERROR: zlibrary domain '{base_url}' is seized?")
+        print(f"  --> {exc}")
+        _use_old_values()
+        return
+
     if not resp.ok:  # type: ignore
         raise RuntimeError("Response from zlibrary's search page is not OK.")
     dom = html.fromstring(resp.text)  # type: ignore
 
     if domain_is_seized(dom):
         print(f"ERROR: zlibrary domain is seized: {base_url}")
-        # don't change anything, re-use the existing values
-        engine_traits.all_locale = ENGINE_TRAITS["z-library"]["all_locale"]
-        engine_traits.custom = ENGINE_TRAITS["z-library"]["custom"]
-        engine_traits.languages = ENGINE_TRAITS["z-library"]["languages"]
+        _use_old_values()
         return
 
     engine_traits.all_locale = ""
