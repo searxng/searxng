@@ -53,6 +53,9 @@ Probe HTTP headers
 .. automodule:: searx.botdetection.http_user_agent
   :members:
 
+.. automodule:: searx.botdetection.sec_fetch
+  :members:
+
 .. _botdetection config:
 
 Config
