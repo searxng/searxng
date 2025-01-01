@@ -2,6 +2,6 @@
 {%- extends "simple/base.html" -%}
 {%- block header -%}
   <a href="{{ url_for('index') }}">{{- '' -}}
-    <img class="logo" src="{{ url_for('static', filename='img/searxng.png') }}" alt="SearXNG">{{- '' -}}
+    <img class="logo" src="{{ url_for('custom', custom_file='logo', filename='img/searxng.png') }}" alt="SearXNG">{{- '' -}}
   </a>{{- '' -}}
 {%- endblock -%}
