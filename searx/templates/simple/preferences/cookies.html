@@ -10,10 +10,12 @@
       <th>{{ _('Value') }}</th>{{- '' -}}
     </tr>
     {%- for cookie in cookies -%}
-      <tr>{{- '' -}}
-        <td>{{ cookie }}</td>{{- '' -}}
-        <td>{{ cookies[cookie] }}</td>{{- '' -}}
-      </tr>
+      {% if cookie in preferences.key_value_settings %}
+        <tr>{{- '' -}}
+          <td>{{ cookie }}</td>{{- '' -}}
+          <td>{{ cookies[cookie] }}</td>{{- '' -}}
+        </tr>
+      {% endif %}
     {%- endfor -%}
   </table>
 {%- else -%}

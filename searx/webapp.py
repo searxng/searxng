@@ -1289,7 +1289,8 @@ def favicon():
 def clear_cookies():
     resp = make_response(redirect(url_for('index', _external=True)))
     for cookie_name in request.cookies:
-        resp.delete_cookie(cookie_name)
+        if cookie_name in request.preferences.key_value_settings:
+            resp.delete_cookie(cookie_name)
     return resp
 
 
