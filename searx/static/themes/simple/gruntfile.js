@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     },
     eslint: {
       options: {
-        overrideConfigFile: '.eslintrc.json',
+        overrideConfigFile: 'eslint.config.mjs',
         failOnError: true,
         fix: grunt.option('fix')
       },
