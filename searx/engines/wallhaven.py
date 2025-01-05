@@ -57,7 +57,7 @@ def request(query, params):
     }
 
     if api_key:
-        params['api_key'] = api_key
+        params['headers']['X-API-Key'] = api_key
 
     params['url'] = f"{base_url}/api/v1/search?{urlencode(args)}"
     return params
