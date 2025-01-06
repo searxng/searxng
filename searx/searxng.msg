@@ -36,7 +36,6 @@ CATEGORY_NAMES = {
     'MAP': 'map',
     'ONIONS': 'onions',
     'SCIENCE': 'science',
-    'DUMMY': 'dummy',  # https://github.com/searxng/searxng/issues/4117
 }
 
 CATEGORY_GROUPS = {
