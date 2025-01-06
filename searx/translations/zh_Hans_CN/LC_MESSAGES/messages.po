@@ -28,7 +28,8 @@
 # <err_connection_closed@users.noreply.translate.codeberg.org>, 2023, 2025.
 # Integral <integral@member.fsf.org>, 2024.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024, 2025.
-# jianhanquwan <jianhanquwan@users.noreply.translate.codeberg.org>, 2024, 2025.
+# jianhanquwan <jianhanquwan@users.noreply.translate.codeberg.org>, 2024,
+# 2025.
 # lcaopcn <lcaopcn@users.noreply.translate.codeberg.org>, 2024, 2025.
 # chjtxwd <chjtxwd@users.noreply.translate.codeberg.org>, 2024, 2025.
 # Jeex <Jeex@users.noreply.translate.codeberg.org>, 2024.
@@ -40,7 +41,8 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # clsty <clsty@users.noreply.translate.codeberg.org>, 2025.
 # kirisameSoup <kirisamesoup@users.noreply.translate.codeberg.org>, 2025.
-# BernieHuang2008 <berniehuang2008@users.noreply.translate.codeberg.org>, 2025.
+# BernieHuang2008 <berniehuang2008@users.noreply.translate.codeberg.org>,
+# 2025.
 # Outbreak2096 <outbreak2096@users.noreply.translate.codeberg.org>, 2025.
 # JonesBBQ <jonesbbq@users.noreply.translate.codeberg.org>, 2025.
 # Integral <integral@users.noreply.translate.codeberg.org>, 2025.
@@ -49,19 +51,18 @@
 # BBTranslate <bbtranslate@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
 "Last-Translator: bobolau <bobolau@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Chinese (Simplified Han script) <https://"
-"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -138,6 +139,11 @@ msgstr "洋葱网络"
 #: searx/searxng.msg
 msgid "science"
 msgstr "科学"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -537,15 +543,13 @@ msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr "无法读取该图片网址。这可能是由于文件格式不受支持。TinEye 仅支持 "
-"JPEG、PNG、GIF、BMP、TIFF 或 WebP 格式的图像。"
+msgstr "无法读取该图片网址。这可能是由于文件格式不受支持。TinEye 仅支持 JPEG、PNG、GIF、BMP、TIFF 或 WebP 格式的图像。"
 
 #: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "图像过于简单，无法找到匹配项。TinEye "
-"需要基本级别的视觉细节才能成功识别匹配项。"
+msgstr "图像过于简单，无法找到匹配项。TinEye 需要基本级别的视觉细节才能成功识别匹配项。"
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -597,8 +601,7 @@ msgstr "自身信息"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
-msgstr "当您搜索“ip”时，这将会显示您的 IP 地址；同理，在搜索“user agent”时，"
-"将会显示您的 User Agent。"
+msgstr "当您搜索“ip”时，这将会显示您的 IP 地址；同理，在搜索“user agent”时，将会显示您的 User Agent。"
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -616,16 +619,13 @@ msgstr "Tor 网络检测插件"
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr ""
-"此插件检查请求地址是否为 Tor 出口节点，若是则告知用户。这是由 SearXNG "
-"提供的类似 check.torproject.org 的服务。"
+msgstr "此插件检查请求地址是否为 Tor 出口节点，若是则告知用户。这是由 SearXNG 提供的类似 check.torproject.org 的服务。"
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
-msgstr "未能从此地址下载 Tor 出口节点的列表： https://check.torproject.org/exit-"
-"addresses"
+msgstr "未能从此地址下载 Tor 出口节点的列表： https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -1171,11 +1171,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"注意：当您从 SearXNG 搜索结果页点击进入一个网站时，SearXNG 搜索结果页的 URL "
-"将会在请求头的 Referer 字段中发送给目标网站服务器。如果您的设置了自定义搜索，"
-"URL "
-"中将会包含您的个性化设置参数（如语言等），它们会被目标网站得知，这不利于您的"
-"隐私。"
+"注意：当您从 SearXNG 搜索结果页点击进入一个网站时，SearXNG 搜索结果页的 URL 将会在请求头的 Referer "
+"字段中发送给目标网站服务器。如果您的设置了自定义搜索，URL 中将会包含您的个性化设置参数（如语言等），它们会被目标网站得知，这不利于您的隐私。"
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1249,8 +1246,7 @@ msgstr "在搜索结果附近显示网站图标"
 msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
-msgstr "这些设置被存储在您的 Cookie "
-"中，这种保存设置的方式使我们不必保存您的设置数据。"
+msgstr "这些设置被存储在您的 Cookie 中，这种保存设置的方式使我们不必保存您的设置数据。"
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
@@ -1975,3 +1971,4 @@ msgstr "隐藏视频"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

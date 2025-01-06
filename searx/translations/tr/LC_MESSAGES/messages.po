@@ -27,19 +27,19 @@
 # plawlost <plawlost@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: plawlost <plawlost@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Turkish <https://translate.codeberg.org/projects/searxng/"
-"searxng/tr/>\n"
+"Last-Translator: plawlost <plawlost@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: tr\n"
+"Language-Team: Turkish "
+"<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -116,6 +116,11 @@ msgstr "onion lar"
 #: searx/searxng.msg
 msgid "science"
 msgstr "bilim"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -507,8 +512,8 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{firstCitationVelocityYear} yılından {lastCitationVelocityYear} yılına kadar "
-"{numCitations} alıntı(lar)"
+"{firstCitationVelocityYear} yılından {lastCitationVelocityYear} yılına "
+"kadar {numCitations} alıntı(lar)"
 
 #: searx/engines/tineye.py:45
 msgid ""
@@ -516,9 +521,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Görsel bağlantısı okunamadı. Bu desteklenmeyen bir dosya uzantısı yüzünden "
-"olabilir. TinEye sadece JPEG, PNG, GIF, BMP, TIFF veya WebP uzantılı "
-"görselleri destekliyor."
+"Görsel bağlantısı okunamadı. Bu desteklenmeyen bir dosya uzantısı "
+"yüzünden olabilir. TinEye sadece JPEG, PNG, GIF, BMP, TIFF veya WebP "
+"uzantılı görselleri destekliyor."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -558,8 +563,7 @@ msgstr "Sunucu adı eklentisi"
 
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr ""
-"Sunucu adını tekrar yaz, sonuçları sil veya sunucu adına göre öncelik ver"
+msgstr "Sunucu adını tekrar yaz, sonuçları sil veya sunucu adına göre öncelik ver"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -570,8 +574,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Mevcut olduğunda yayınların açık erişim sürümlerine yeniden yönlendirerek "
-"ödeme ekranlarını önle"
+"Mevcut olduğunda yayınların açık erişim sürümlerine yeniden yönlendirerek"
+" ödeme ekranlarını önle"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -602,25 +606,25 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Bu eklenti, isteğin adresinin bir Tor çıkış düğümü olup olmadığını kontrol "
-"eder ve varsa kullanıcıyı bilgilendirir; check.torproject.org gibi, ancak "
-"SearXNG'den."
+"Bu eklenti, isteğin adresinin bir Tor çıkış düğümü olup olmadığını "
+"kontrol eder ve varsa kullanıcıyı bilgilendirir; check.torproject.org "
+"gibi, ancak SearXNG'den."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Tor çıkış düğümlerinin listesi şu adresten indirilemedi: https://"
-"check.torproject.org/exit-addresses"
+"Tor çıkış düğümlerinin listesi şu adresten indirilemedi: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Tor kullanıyorsunuz ve şu harici IP adresine sahip olduğunuz anlaşılıyor: "
-"{ip_address}"
+"Tor kullanıyorsunuz ve şu harici IP adresine sahip olduğunuz anlaşılıyor:"
+" {ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -727,19 +731,18 @@ msgstr "GitHub'a Yeni bir hata göndeymeye başlayin"
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Lütfen Github üzerinden bu tarayıcı hakkında devam eden sorunları kontrol "
-"ediniz"
+"Lütfen Github üzerinden bu tarayıcı hakkında devam eden sorunları kontrol"
+" ediniz"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
-"Karşılaştığım hata ile ilgili süregelen bir hata bulunmadığını onaylıyorum"
+msgstr "Karşılaştığım hata ile ilgili süregelen bir hata bulunmadığını onaylıyorum"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Eğer bu bir bulut üzerinde bir bilgisayar ise lütfen URL'yi hata raporunda "
-"belirtin"
+"Eğer bu bir bulut üzerinde bir bilgisayar ise lütfen URL'yi hata "
+"raporunda belirtin"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1167,8 +1170,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Not: Arama URL'sinde özel ayarların belirtilmesi, tıklanan sonuç sitelerine "
-"veri sızdırarak gizliliği azaltabilir."
+"Not: Arama URL'sinde özel ayarların belirtilmesi, tıklanan sonuç "
+"sitelerine veri sızdırarak gizliliği azaltabilir."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1179,8 +1182,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Tercihler URL'sinde özel ayarları belirtmek, cihazlar arasında senkronize "
-"etmek için kullanılabilir."
+"Tercihler URL'sinde özel ayarları belirtmek, cihazlar arasında senkronize"
+" etmek için kullanılabilir."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1247,16 +1250,16 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Bu ayarlar tanımlama bilgilerinde saklanır, bu sizin hakkınızda bu verileri "
-"saklamamamıza izin verir."
+"Bu ayarlar tanımlama bilgilerinde saklanır, bu sizin hakkınızda bu "
+"verileri saklamamamıza izin verir."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Bu tanımlama bilgileri size kolaylık sağlar, sizi izlemek için bu çerezleri "
-"kullanmayız."
+"Bu tanımlama bilgileri size kolaylık sağlar, sizi izlemek için bu "
+"çerezleri kullanmayız."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1283,8 +1286,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Kısayollar ile arama sonuçlarını hareket ettirin (JavaScript gerektirir). "
-"Ana sayfada veya sonuç sayfasında yardım almak için \"h\" tuşuna basın."
+"Kısayollar ile arama sonuçlarını hareket ettirin (JavaScript gerektirir)."
+" Ana sayfada veya sonuç sayfasında yardım almak için \"h\" tuşuna basın."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1301,8 +1304,8 @@ msgstr "Sonsuz kaydırma"
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Şu anki sayfanın en altına kaydırıldığında sonraki sayfayı otomatik olarak "
-"yükle"
+"Şu anki sayfanın en altına kaydırıldığında sonraki sayfayı otomatik "
+"olarak yükle"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1331,8 +1334,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Bu etkinleştirildiği zaman sonuç sayfasının başlığı arama sonuçlarınızı da "
-"içerir. Tarayıcınız bu başlığı kaydedebilir"
+"Bu etkinleştirildiği zaman sonuç sayfasının başlığı arama sonuçlarınızı "
+"da içerir. Tarayıcınız bu başlığı kaydedebilir"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1355,8 +1358,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Kategori seçildikten sonra aramayı hemen uygulayın. Birden fazla kategori "
-"seçmek için devre dışı bırakın"
+"Kategori seçildikten sonra aramayı hemen uygulayın. Birden fazla kategori"
+" seçmek için devre dışı bırakın"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2021,3 +2024,4 @@ msgstr "görüntüyü gizle"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

@@ -16,20 +16,19 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:52+0000\n"
-"Last-Translator: stoychevww <stoychevww@users.noreply.translate.codeberg.org>"
-"\n"
-"Language-Team: Bulgarian <https://translate.codeberg.org/projects/searxng/"
-"searxng/bg/>\n"
+"Last-Translator: stoychevww "
+"<stoychevww@users.noreply.translate.codeberg.org>\n"
 "Language: bg\n"
+"Language-Team: Bulgarian "
+"<https://translate.codeberg.org/projects/searxng/searxng/bg/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,6 +105,11 @@ msgstr "onions"
 #: searx/searxng.msg
 msgid "science"
 msgstr "наука"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -506,9 +510,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"URL адресът на изображението не можа да бъде прочетен. Това може да се дължи "
-"на неподдържан файлов формат. TinEye поддържа само изображения, които са "
-"JPEG, PNG, GIF, BMP, TIFF или WebP."
+"URL адресът на изображението не можа да бъде прочетен. Това може да се "
+"дължи на неподдържан файлов формат. TinEye поддържа само изображения, "
+"които са JPEG, PNG, GIF, BMP, TIFF или WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -516,7 +520,8 @@ msgid ""
 " visual detail to successfully identify matches."
 msgstr ""
 "Изображението е твърде просто за намиране на съвпадения. TinEye изисква "
-"основно ниво на визуална детайлност за успешно идентифициране на съвпадения."
+"основно ниво на визуална детайлност за успешно идентифициране на "
+"съвпадения."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -597,8 +602,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Не можe да се изтегли списъка с mаршрутизатори/рутери на Tor от: https://"
-"check.torproject.org/exit-addresses"
+"Не можe да се изтегли списъка с mаршрутизатори/рутери на Tor от: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -719,7 +724,8 @@ msgstr "Потвърждавам, че няма съществуващи бъо�
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Ако това е публична инстанция, моля предоставете URL адресът в отзива за бъга"
+"Ако това е публична инстанция, моля предоставете URL адресът в отзива за "
+"бъга"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1073,8 +1079,8 @@ msgstr "Потърсете друга заявка или изберете др�
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
-"Върнете се към предишната страница, като използвате бутона "
-"\"Предишна страница\"."
+"Върнете се към предишната страница, като използвате бутона \"Предишна "
+"страница\"."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1151,9 +1157,9 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Бележка: специфичните персонализирани настройки в URL-то за търсене може да "
-"намалят поверителността Ви като издадат данни към кликнатите сайтове при "
-"търсене."
+"Бележка: специфичните персонализирани настройки в URL-то за търсене може "
+"да намалят поверителността Ви като издадат данни към кликнатите сайтове "
+"при търсене."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1164,8 +1170,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Специфицирането на персонализирани настройки в URL-то за предпочитания може "
-"да позволи синхронизация между различни устройства."
+"Специфицирането на персонализирани настройки в URL-то за предпочитания "
+"може да позволи синхронизация между различни устройства."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1173,8 +1179,7 @@ msgstr "Копиране на хеш на предпочитанията"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
-"Вмъкнете копирания хеш на предпочитанията (без URL), за да ги възстановите"
+msgstr "Вмъкнете копирания хеш на предпочитанията (без URL), за да ги възстановите"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
@@ -1195,8 +1200,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Този раздел несъществува в потребителския интерфейс, но може да търсиш със "
-"следните търсачки по !bangs."
+"Този раздел несъществува в потребителския интерфейс, но може да търсиш "
+"със следните търсачки по !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1235,8 +1240,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Тези настройки се съхраняват във вашите бисквитки. Това ни позволява да не "
-"съхраняваме тази информация за вас."
+"Тези настройки се съхраняват във вашите бисквитки. Това ни позволява да "
+"не съхраняваме тази информация за вас."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
@@ -1271,8 +1276,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Навигирай резултати чрез клавишни комбинации (необходим е JavaScript). За "
-"помощ натисни клавиша \"h\" на главната страница или на страницата с "
+"Навигирай резултати чрез клавишни комбинации (необходим е JavaScript). За"
+" помощ натисни клавиша \"h\" на главната страница или на страницата с "
 "резултатите."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
@@ -1298,8 +1303,8 @@ msgstr "Кой език предпочитате за търсене?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Избери автоматично разпознаване, за да може SearXNG да разпознае езика на "
-"който пишеш."
+"Избери автоматично разпознаване, за да може SearXNG да разпознае езика на"
+" който пишеш."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1342,8 +1347,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Извършване на търсене веднага, ако е избрана категория. Деактивирайте, за да "
-"изберете няколко категории"
+"Извършване на търсене веднага, ако е избрана категория. Деактивирайте, за"
+" да изберете няколко категории"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1359,8 +1364,7 @@ msgstr "Тематичен стил"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr ""
-"Изберете автоматични настойки, за да следвате настройките на браузъра си"
+msgstr "Изберете автоматични настойки, за да следвате настройките на браузъра си"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -2005,3 +2009,4 @@ msgstr "скрий видеото"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

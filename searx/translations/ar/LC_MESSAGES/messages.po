@@ -25,21 +25,20 @@
 # Yahya-Lando <yahya-lando@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:52+0000\n"
 "Last-Translator: Yahya-Lando <yahya-"
 "lando@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -116,6 +115,11 @@ msgstr "برمجيات البصلة"
 #: searx/searxng.msg
 msgid "science"
 msgstr "عِلم"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -524,8 +528,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"الصورة أبسط من أن تجد مطابقات. يتطلب TinEye مستوى أساسيًا من التفاصيل المرئية "
-"لتحديد التطابقات بنجاح."
+"الصورة أبسط من أن تجد مطابقات. يتطلب TinEye مستوى أساسيًا من التفاصيل "
+"المرئية لتحديد التطابقات بنجاح."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -558,8 +562,8 @@ msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها بناءً "
-"على اسم المضيف (hostname)"
+"أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها "
+"بناءً على اسم المضيف (hostname)"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -582,8 +586,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان الاستعلام "
-"يحتوي على\"user agent\"."
+"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان "
+"الاستعلام يحتوي على\"user agent\"."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -602,16 +606,16 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"يتحقق هذا المكون الإضافي مما إذا كان عنوان الطلب هو عقدة خروج TOR ، ويبلغ "
-"المستخدم إذا كان كذلك ، مثل check.torproject.org ولكن من SearXNG."
+"يتحقق هذا المكون الإضافي مما إذا كان عنوان الطلب هو عقدة خروج TOR ، ويبلغ"
+" المستخدم إذا كان كذلك ، مثل check.torproject.org ولكن من SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"لم يمكن تنزيل قائمة Tor exit-nodes من عناوين: https://check.torproject.org/"
-"exit-addresses"
+"لم يمكن تنزيل قائمة Tor exit-nodes من عناوين: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -630,8 +634,8 @@ msgstr "مزيل روابط التعقّب"
 #: searx/plugins/tracker_url_remover.py:17
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
-"إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من محدد "
-"موقع الموارد الموحد الذي تم إرجاعه"
+"إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
+"محدد موقع الموارد الموحد الذي تم إرجاعه"
 
 #: searx/plugins/unit_converter.py:29
 msgid "Convert between units"
@@ -1137,8 +1141,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"هذه قائمة ملفات تعريف الارتباط وقيمها التي يخزنها SearXNG على جهاز الكمبيوتر "
-"الخاص بك."
+"هذه قائمة ملفات تعريف الارتباط وقيمها التي يخزنها SearXNG على جهاز "
+"الكمبيوتر الخاص بك."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1173,8 +1177,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"يمكن استخدام تحديد الإعدادات المخصصة في تفضيلات URL لمزامنة التفضيلات عبر "
-"الأجهزة."
+"يمكن استخدام تحديد الإعدادات المخصصة في تفضيلات URL لمزامنة التفضيلات عبر"
+" الأجهزة."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1241,8 +1245,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"يتم تخزين هذه الإعدادات في ملفات تعريف الارتباط الخاصة بك ، وهذا يسمح لنا "
-"بعدم تخزين هذه البيانات عنك."
+"يتم تخزين هذه الإعدادات في ملفات تعريف الارتباط الخاصة بك ، وهذا يسمح لنا"
+" بعدم تخزين هذه البيانات عنك."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
@@ -1277,8 +1281,9 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"تنقل في نتائج البحث باستخدام مفاتيح التشغيل السريع (يتطلب JavaScript). اضغط "
-"على المفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج للحصول على المساعدة."
+"تنقل في نتائج البحث باستخدام مفاتيح التشغيل السريع (يتطلب JavaScript). "
+"اضغط على المفتاح \"h\" في الصفحة الرئيسية أو صفحة النتائج للحصول على "
+"المساعدة."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1321,8 +1326,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"عند التمكين ، يحتوي عنوان صفحة النتائج على كلمات البحث الرئيسية الخاصة بك. "
-"يمكن لمتصفحك تسجيل هذا العنوان"
+"عند التمكين ، يحتوي عنوان صفحة النتائج على كلمات البحث الرئيسية الخاصة "
+"بك. يمكن لمتصفحك تسجيل هذا العنوان"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1344,8 +1349,7 @@ msgstr "البحث في الفئة المحددة"
 msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
-msgstr ""
-"قم بإجراء البحث على الفور إذا تم تحديد فئة. قم بتعطيل لتحديد فئات متعددة"
+msgstr "قم بإجراء البحث على الفور إذا تم تحديد فئة. قم بتعطيل لتحديد فئات متعددة"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2005,3 +2009,4 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

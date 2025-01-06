@@ -19,26 +19,28 @@
 # gvlx <gvlx@users.noreply.translate.codeberg.org>, 2024, 2025.
 # ds451 <ds451@users.noreply.translate.codeberg.org>, 2024, 2025.
 # Pedro_Tresp <Pedro_Tresp@users.noreply.translate.codeberg.org>, 2024.
-# saltsnorter <saltsnorter@users.noreply.translate.codeberg.org>, 2024, 2025.
+# saltsnorter <saltsnorter@users.noreply.translate.codeberg.org>, 2024,
+# 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
-# Coccocoas_Helper <coccocoas_helper@users.noreply.translate.codeberg.org>, 2025.
-# fabiosantoscode <fabiosantoscode@users.noreply.translate.codeberg.org>, 2025.
+# Coccocoas_Helper <coccocoas_helper@users.noreply.translate.codeberg.org>,
+# 2025.
+# fabiosantoscode <fabiosantoscode@users.noreply.translate.codeberg.org>,
+# 2025.
 # Pedro_Tresp <pedro_tresp@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
 "Last-Translator: ds451 <ds451@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
-"searxng/pt/>\n"
 "Language: pt\n"
+"Language-Team: Portuguese "
+"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -115,6 +117,11 @@ msgstr "onion"
 #: searx/searxng.msg
 msgid "science"
 msgstr "ciência"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -557,8 +564,7 @@ msgstr "Plugin hostnames"
 
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr ""
-"Reescreve hostname, apaga resultados ou prioriza-os com base no hostname"
+msgstr "Reescreve hostname, apaga resultados ou prioriza-os com base no hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -569,7 +575,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Evite acessos pagos acedendo a versões de livre acesso sempre que disponível"
+"Evite acessos pagos acedendo a versões de livre acesso sempre que "
+"disponível"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -580,8 +587,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Mostrar IP se a pesquisar por \"IP\" e mostrar o user agent se pesquisar por "
-"\"user agent\"."
+"Mostrar IP se a pesquisar por \"IP\" e mostrar o user agent se pesquisar "
+"por \"user agent\"."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -600,28 +607,29 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Este plug-in verifica se o endereço da solicitação é um nó de saída do Tor e "
-"informa ao usuário se for; como check.torproject.org, mas de SearXNG."
+"Este plug-in verifica se o endereço da solicitação é um nó de saída do "
+"Tor e informa ao usuário se for; como check.torproject.org, mas de "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Não foi possível obter a lista de nós de saída Tor de: https://"
-"check.torproject.org/exit-addresses"
+"Não foi possível obter a lista de nós de saída Tor de: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
-msgstr ""
-"Você está a usar Tor e parece ter este endereço IP externo: {ip_address}"
+msgstr "Você está a usar Tor e parece ter este endereço IP externo: {ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
-"Você não está a usar Tor e parece ter este endereço IP externo: {ip_address}"
+"Você não está a usar Tor e parece ter este endereço IP externo: "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -731,8 +739,7 @@ msgstr "Confirmo que não há bug existente sobre o problema que encontro"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Se esta for uma instância pública, especifique a URL no relatório do bug"
+msgstr "Se esta for uma instância pública, especifique a URL no relatório do bug"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1067,8 +1074,7 @@ msgstr "Atualize a página."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr ""
-"Pesquisar por outras palavras chaves ou escolher outra categoria (abaixo)."
+msgstr "Pesquisar por outras palavras chaves ou escolher outra categoria (abaixo)."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
@@ -1081,7 +1087,8 @@ msgstr "Troque de instância:"
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
 msgstr ""
-"Pesquisar por outras palavras-chave ou selecionar outra categoria (abaixo)."
+"Pesquisar por outras palavras-chave ou selecionar outra categoria "
+"(abaixo)."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
@@ -1138,8 +1145,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Essa é a lista dos cookies e seus valores que a SearXNG está armazenando no "
-"seu computador."
+"Essa é a lista dos cookies e seus valores que a SearXNG está armazenando "
+"no seu computador."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1175,8 +1182,8 @@ msgid ""
 "Specifying custom settings in the preferences URL can be used to sync "
 "preferences across devices."
 msgstr ""
-"Especificar configurações customizadas na URL de preferências pode ser usado "
-"para sincronizar preferências entre dispositivos."
+"Especificar configurações customizadas na URL de preferências pode ser "
+"usado para sincronizar preferências entre dispositivos."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1243,16 +1250,16 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Estas definições são guardadas nos seus cookies, isto permite-nos que não "
-"guardemos informação sobre si."
+"Estas definições são guardadas nos seus cookies, isto permite-nos que não"
+" guardemos informação sobre si."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Estes cookies servem somente para sua conveniência, não os utilizamos para o "
-"rastrear."
+"Estes cookies servem somente para sua conveniência, não os utilizamos "
+"para o rastrear."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1280,8 +1287,8 @@ msgid ""
 "key on main or result page to get help."
 msgstr ""
 "Navegue os resultados de pesquisa com teclas de atalhos de (JavaScript "
-"necessário). Pressione a tecla \"h\" na página principal ou de resultados "
-"para conseguir ajuda."
+"necessário). Pressione a tecla \"h\" na página principal ou de resultados"
+" para conseguir ajuda."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1298,8 +1305,8 @@ msgstr "Deslocação Infinita"
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Carregar automaticamente a próxima página assim que se desloque para o fim "
-"da página atual"
+"Carregar automaticamente a próxima página assim que se desloque para o "
+"fim da página atual"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1307,8 +1314,7 @@ msgstr "Que idioma de pesquisa prefere?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Escolha Auto-detetar para deixar SearXNG detetar a língua da sua pesquisa."
+msgstr "Escolha Auto-detetar para deixar SearXNG detetar a língua da sua pesquisa."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1351,8 +1357,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Pesquisar imediatamente se uma categoria estiver selecionada. Desative para "
-"selecionar múltiplas categorias"
+"Pesquisar imediatamente se uma categoria estiver selecionada. Desative "
+"para selecionar múltiplas categorias"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2030,3 +2036,4 @@ msgstr "esconder vídeo"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

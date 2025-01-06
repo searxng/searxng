@@ -17,19 +17,18 @@
 # pxrb <pxrb@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
 "Last-Translator: pxrb <pxrb@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
-"searxng/et/>\n"
 "Language: et\n"
+"Language-Team: Estonian "
+"<https://translate.codeberg.org/projects/searxng/searxng/et/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,6 +105,11 @@ msgstr "onion-võrgu lingid"
 #: searx/searxng.msg
 msgid "science"
 msgstr "teadus"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -506,9 +510,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Ei saanud lugeda selle pildi linki. Võib-olla pole failivorming toetatud. "
-"TinEye ainult lubab kasutada ainult järgmisi vorminguid: JPEG, PNG, GIF, "
-"BMP, TIFF või WebP."
+"Ei saanud lugeda selle pildi linki. Võib-olla pole failivorming toetatud."
+" TinEye ainult lubab kasutada ainult järgmisi vorminguid: JPEG, PNG, GIF,"
+" BMP, TIFF või WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -549,8 +553,8 @@ msgstr "Hostide lisamoodul"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Väärtusta hostide nimesid, eemalda tulemusi või muuda nende järjekorda hosti "
-"nime alusel"
+"Väärtusta hostide nimesid, eemalda tulemusi või muuda nende järjekorda "
+"hosti nime alusel"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -593,16 +597,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"See plugin kontrollib, kas päringu aadress on Tor'i väljumissõlm ja teavitab "
-"kasutajat, kui see on nii: nagu check.torproject.org, aga alates SearXNG."
+"See plugin kontrollib, kas päringu aadress on Tor'i väljumissõlm ja "
+"teavitab kasutajat, kui see on nii: nagu check.torproject.org, aga alates"
+" SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Ei saanud alla laadida Tori väljumissõlmede nimekirja aadressilt: https://"
-"check.torproject.org/exit-addresses"
+"Ei saanud alla laadida Tori väljumissõlmede nimekirja aadressilt: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -614,8 +619,7 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Sa ei kasuta Tor'i ja sinu arvutil on see väline IP-aadress: {ip_address}"
+msgstr "Sa ei kasuta Tor'i ja sinu arvutil on see väline IP-aadress: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -718,14 +722,14 @@ msgstr "Alusta veateate või ettepaneku koostamist GitHubis"
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Eelnevalt palun uuri GitHubist olemasolevate selle otsingumootori sarnasete "
-"vigade kohta"
+"Eelnevalt palun uuri GitHubist olemasolevate selle otsingumootori "
+"sarnasete vigade kohta"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Ma kinnitan et mul ei ole olemasolevat viga probleemi kohta millega ma kokku "
-"puutun"
+"Ma kinnitan et mul ei ole olemasolevat viga probleemi kohta millega ma "
+"kokku puutun"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
@@ -1133,8 +1137,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"See on nimekiri küpsistest ja nende väärtustest, mida SearXNG sinu arvutisse "
-"salvestab."
+"See on nimekiri küpsistest ja nende väärtustest, mida SearXNG sinu "
+"arvutisse salvestab."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1245,7 +1249,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Need küpsised on vaid mugavuse tarbeks, me ei kasuta neid sinu jälitamiseks."
+"Need küpsised on vaid mugavuse tarbeks, me ei kasuta neid sinu "
+"jälitamiseks."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1272,8 +1277,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Otsingutulemustes navigeerimine kiirklahvide abil (vajalik JavaScript). Abi "
-"saamiseks vajuta põhi või tulemuslehel klahvi \"h\"."
+"Otsingutulemustes navigeerimine kiirklahvide abil (vajalik JavaScript). "
+"Abi saamiseks vajuta põhi või tulemuslehel klahvi \"h\"."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1297,8 +1302,7 @@ msgstr "Mis keelt sa otsinguks eelistad?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Rt SearXNG tuvastaks sinu päringu keele vali \"Automaatne tuvastamine\"."
+msgstr "Rt SearXNG tuvastaks sinu päringu keele vali \"Automaatne tuvastamine\"."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1341,8 +1345,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Teosta otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks "
-"keela see eelistus"
+"Teosta otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks"
+" keela see eelistus"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1991,3 +1995,4 @@ msgstr "peida video"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

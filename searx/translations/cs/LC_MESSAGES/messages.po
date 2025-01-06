@@ -19,20 +19,19 @@
 # zenobit <zenobit@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:52+0000\n"
 "Last-Translator: zenobit <zenobit@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
-"searxng/cs/>\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -109,6 +108,11 @@ msgstr "cibule"
 #: searx/searxng.msg
 msgid "science"
 msgstr "věda"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -510,8 +514,8 @@ msgid ""
 " WebP."
 msgstr ""
 "Nelze načíst url adresu obrázku. Příčinou může být nepodporovaný formát "
-"souboru. TinEye podporuje pouze obrázky ve formátu JPEG, PNG, GIF, BMP, TIFF "
-"nebo WebP."
+"souboru. TinEye podporuje pouze obrázky ve formátu JPEG, PNG, GIF, BMP, "
+"TIFF nebo WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -564,8 +568,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Automaticky přesměrovat na volně přístupné verze publikací místo placených, "
-"pokud je to možné"
+"Automaticky přesměrovat na volně přístupné verze publikací místo "
+"placených, pokud je to možné"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -576,8 +580,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Umožňuje hledat informace o sobě: \"ip\" zobrazí vaši IP adresu a "
-"\"user agent\" zobrazí identifikátor prohlížeče."
+"Umožňuje hledat informace o sobě: \"ip\" zobrazí vaši IP adresu a \"user "
+"agent\" zobrazí identifikátor prohlížeče."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -597,16 +601,16 @@ msgid ""
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 "Tento plugin kontroluje, zda je adresa požadavku výstupním uzlem Tor, a "
-"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od "
-"SearXNG."
+"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od"
+" SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Nelze stáhnout seznam výstupních uzlů Tor z: https://check.torproject.org/"
-"exit-addresses"
+"Nelze stáhnout seznam výstupních uzlů Tor z: https://check.torproject.org"
+"/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -728,8 +732,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
+msgstr "Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1133,8 +1136,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Toto je seznam cookies a jejich hodnoty, které si SearXNG ukládá na vašem "
-"počítači."
+"Toto je seznam cookies a jejich hodnoty, které si SearXNG ukládá na vašem"
+" počítači."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1157,8 +1160,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Poznámka: zadaní vlastních nastavení v URL může snížit soukromí prozrazením "
-"dat při kliknutí na výsledky hledání."
+"Poznámka: zadaní vlastních nastavení v URL může snížit soukromí "
+"prozrazením dat při kliknutí na výsledky hledání."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1237,15 +1240,16 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Tato nastavení jsou uložena ve vašich cookies, což nám umožňuje tyto data "
-"neuchovávat nikde jinde."
+"Tato nastavení jsou uložena ve vašich cookies, což nám umožňuje tyto data"
+" neuchovávat nikde jinde."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Tyto cookies existují výhradně pro vaše pohodlí, nepoužíváme je ke sledování."
+"Tyto cookies existují výhradně pro vaše pohodlí, nepoužíváme je ke "
+"sledování."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1272,9 +1276,9 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Procházejte výsledky vyhledávání klávesovými zkratkami (vyžadován JavaScript)"
-". Pro nápovědu stiskněte na hlavní stránce nebo stránce s výsledky klávesu "
-"„H“."
+"Procházejte výsledky vyhledávání klávesovými zkratkami (vyžadován "
+"JavaScript). Pro nápovědu stiskněte na hlavní stránce nebo stránce s "
+"výsledky klávesu „H“."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1298,8 +1302,7 @@ msgstr "Jaký jazyk vyhledávání upřednostňujete?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Zvolte Automaticky detekovat, aby SearXNG detekoval jazyk vašeho dotazu."
+msgstr "Zvolte Automaticky detekovat, aby SearXNG detekoval jazyk vašeho dotazu."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1318,8 +1321,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Titulek stránky s výsledky bude obsahovat váš vyhledávací dotaz, pokud toto "
-"zapnete. Váš prohlížeč může tento titulek zaznamenat"
+"Titulek stránky s výsledky bude obsahovat váš vyhledávací dotaz, pokud "
+"toto zapnete. Váš prohlížeč může tento titulek zaznamenat"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1342,8 +1345,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Pokud je vybrána kategorie, ihned provést vyhledávání. Zakažte pro vybrání "
-"několika kategorií"
+"Pokud je vybrána kategorie, ihned provést vyhledávání. Zakažte pro "
+"vybrání několika kategorií"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2011,3 +2014,4 @@ msgstr "skrýt video"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

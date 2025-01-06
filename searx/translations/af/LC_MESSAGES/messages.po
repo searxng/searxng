@@ -10,7 +10,8 @@
 # APoniatowski <adam@poniatowski.dev>, 2023.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024, 2025.
 # louispires <louispires@users.noreply.translate.codeberg.org>, 2024, 2025.
-# notlmutsaers <notlmutsaers@users.noreply.translate.codeberg.org>, 2024, 2025.
+# notlmutsaers <notlmutsaers@users.noreply.translate.codeberg.org>, 2024,
+# 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # jestie <jestie@users.noreply.translate.codeberg.org>, 2025.
 # APoniatowski <aponiatowski@users.noreply.translate.codeberg.org>, 2025.
@@ -18,18 +19,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:52+0000\n"
 "Last-Translator: APoniatowski "
 "<aponiatowski@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
-"searxng/af/>\n"
 "Language: af\n"
+"Language-Team: Afrikaans "
+"<https://translate.codeberg.org/projects/searxng/searxng/af/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,6 +106,11 @@ msgstr "uie"
 #: searx/searxng.msg
 msgid "science"
 msgstr "wetenskap"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -506,9 +511,9 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Kon nie daardie prent url lees nie. Dit mag weens 'n lêer formaat wees wat "
-"nie ondersteun is nie. TinEye ondersteun slegs prente wat JPEG, PNG, GIF, "
-"BMP, TIFF of WebP is."
+"Kon nie daardie prent url lees nie. Dit mag weens 'n lêer formaat wees "
+"wat nie ondersteun is nie. TinEye ondersteun slegs prente wat JPEG, PNG, "
+"GIF, BMP, TIFF of WebP is."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -516,7 +521,8 @@ msgid ""
 " visual detail to successfully identify matches."
 msgstr ""
 "Hierdie prent is te eenvoudig om ooreenkomste te vind. TinEye benodig 'n "
-"basiese vlak van visuele detail om suksesvol ooreenkomste te identifiseer."
+"basiese vlak van visuele detail om suksesvol ooreenkomste te "
+"identifiseer."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -549,8 +555,8 @@ msgstr "Gasheername-inprop"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Herskryf gasheername, verwyder resultate of prioritiseer dit op grond van "
-"die gasheernaam"
+"Herskryf gasheername, verwyder resultate of prioritiseer dit op grond van"
+" die gasheernaam"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -573,8 +579,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Vertoon jou IP indien die navraag \"ip\" is en jou gebruiker agent indien "
-"die navraag \"user agent\" bevat."
+"Vertoon jou IP indien die navraag \"ip\" is en jou gebruiker agent indien"
+" die navraag \"user agent\" bevat."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -602,22 +608,22 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Kon nie die lys van Tor-uitgangsnodes aflaai vanaf: https://"
-"check.torproject.org/exit-addresses"
+"Kon nie die lys van Tor-uitgangsnodes aflaai vanaf: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het "
-":{ip_address}"
+"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het"
+" :{ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
-"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het "
-":{ip_address}"
+"Jy maak gebruik van Tor en dit lys as of jy hierdie eksterne IP-adres het"
+" :{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -728,7 +734,8 @@ msgstr "Ek bevestig daar is geen bestaande gogga oor die probleem wat ek teekom"
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"As dit 'n publieke geval is, spesifiseer asseblief die URL in die foutverslag"
+"As dit 'n publieke geval is, spesifiseer asseblief die URL in die "
+"foutverslag"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1079,8 +1086,7 @@ msgstr "Soek vir 'n ander navraag of kies 'n ander kategorie."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
-"Gaan terug na die vorige bladsy deur die vorige bladsy-knoppie te gebruik."
+msgstr "Gaan terug na die vorige bladsy deur die vorige bladsy-knoppie te gebruik."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1133,7 +1139,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dit is die lys van koekies en hul waardes wat SearXNG op jou rekenaar stoor."
+"Dit is die lys van koekies en hul waardes wat SearXNG op jou rekenaar "
+"stoor."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1196,8 +1203,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Hierdie oortjie bestaan nie in die gebruikerskoppelvlak nie, maar jy kan in "
-"hierdie enjins soek volgens sy !bangs."
+"Hierdie oortjie bestaan nie in die gebruikerskoppelvlak nie, maar jy kan "
+"in hierdie enjins soek volgens sy !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1244,8 +1251,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Hierdie koekies dien jou enigste gerief, ons gebruik nie hierdie koekies om "
-"jou op te spoor nie."
+"Hierdie koekies dien jou enigste gerief, ons gebruik nie hierdie koekies "
+"om jou op te spoor nie."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1272,8 +1279,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Navigeer soekresultate met sneltoetse (JavaScript vereis). Druk \"h\"-"
-"sleutel op hoof- of resultaatbladsy om hulp te kry."
+"Navigeer soekresultate met sneltoetse (JavaScript vereis). Druk "
+"\"h\"-sleutel op hoof- of resultaatbladsy om hulp te kry."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1290,8 +1297,8 @@ msgstr "Oneindige blaai"
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Laai die volgende bladsy outomaties wanneer blaai na die onderkant van die "
-"huidige bladsy"
+"Laai die volgende bladsy outomaties wanneer blaai na die onderkant van "
+"die huidige bladsy"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1318,8 +1325,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Wanneer geaktiveer sal die resultaat se bladsy titel jou navraag bevat. Jou "
-"blaaier kan hierdie titel opneem"
+"Wanneer geaktiveer sal die resultaat se bladsy titel jou navraag bevat. "
+"Jou blaaier kan hierdie titel opneem"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1747,3 +1754,4 @@ msgstr "versteek video"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

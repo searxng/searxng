@@ -40,20 +40,19 @@
 # OpenCode <opencode@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: tiziodcaio <tiziodcaio@users.noreply.translate.codeberg.org>"
-"\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
-"searxng/it/>\n"
+"Last-Translator: tiziodcaio "
+"<tiziodcaio@users.noreply.translate.codeberg.org>\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -130,6 +129,11 @@ msgstr "cipolle"
 #: searx/searxng.msg
 msgid "science"
 msgstr "scienza"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -531,17 +535,17 @@ msgid ""
 " WebP."
 msgstr ""
 "Impossibile leggere l'URL dell'immagine. Ciò potrebbe essere dovuto a un "
-"formato del file non supportato. TinEye supporta solo immagini JPEG, PNG, "
-"GIF, BMP, TIFF o Web."
+"formato del file non supportato. TinEye supporta solo immagini JPEG, PNG,"
+" GIF, BMP, TIFF o Web."
 
 #: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"L'immagine è troppo semplice per trovare corrispondenze. TinEye richiede un "
-"maggiore livello di dettagli visivi per identificare corrispondenze con "
-"successo."
+"L'immagine è troppo semplice per trovare corrispondenze. TinEye richiede "
+"un maggiore livello di dettagli visivi per identificare corrispondenze "
+"con successo."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -586,8 +590,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Se possibile, evita il paywall di una pubblicazione reindirizzando ad una "
-"versione ad accesso libero"
+"Se possibile, evita il paywall di una pubblicazione reindirizzando ad una"
+" versione ad accesso libero"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -598,8 +602,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Mostra il tuo IP se hai cercato \"ip\" ed il tuo user agent se hai cercato "
-"\"user agent\"."
+"Mostra il tuo IP se hai cercato \"ip\" ed il tuo user agent se hai "
+"cercato \"user agent\"."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -618,8 +622,8 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Questo plugin controlla se l'indirizzo richiesto è un nodo di uscita di Tor "
-"e informa l'utente se lo è; come check.torproject.org, ma da SearXNG."
+"Questo plugin controlla se l'indirizzo richiesto è un nodo di uscita di "
+"Tor e informa l'utente se lo è; come check.torproject.org, ma da SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
@@ -634,7 +638,8 @@ msgid ""
 "You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
 msgstr ""
-"Stai usando Tor e sembra che tu abbia il seguente indirizzo IP: {ip_address}"
+"Stai usando Tor e sembra che tu abbia il seguente indirizzo IP: "
+"{ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
@@ -757,7 +762,8 @@ msgstr ""
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
-"Segnala un nuovo problema su Github, includendo le informazioni sopra citate"
+"Segnala un nuovo problema su Github, includendo le informazioni sopra "
+"citate"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1105,7 +1111,8 @@ msgstr "Prova con un’altra ricerca o seleziona un’altra categoria."
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
-"Torna alla pagina precedente utilizzando il pulsante della pagina precedente."
+"Torna alla pagina precedente utilizzando il pulsante della pagina "
+"precedente."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1158,8 +1165,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Questa è la lista di cookies e i loro valori che SearXNG sta salvando sul "
-"tuo computer."
+"Questa è la lista di cookies e i loro valori che SearXNG sta salvando sul"
+" tuo computer."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1182,8 +1189,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Nota: specificando le impostazioni personalizzate nell'URL di ricerca si può "
-"ridurre la privacy facendo trapelare dati ai siti cliccati."
+"Nota: specificando le impostazioni personalizzate nell'URL di ricerca si "
+"può ridurre la privacy facendo trapelare dati ai siti cliccati."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1270,8 +1277,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Questi cookie servono solo ad offrirti un servizio migliore. Non li usiamo "
-"per tracciarti."
+"Questi cookie servono solo ad offrirti un servizio migliore. Non li "
+"usiamo per tracciarti."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1299,8 +1306,8 @@ msgid ""
 "key on main or result page to get help."
 msgstr ""
 "Naviga tra i risultati della ricerca con i tasti di scelta rapida (è "
-"necessario JavaScript). Premi il tasto \"h\" nella pagina principale o in "
-"quella dei risultati per ottenere aiuto."
+"necessario JavaScript). Premi il tasto \"h\" nella pagina principale o in"
+" quella dei risultati per ottenere aiuto."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1317,8 +1324,8 @@ msgstr "Scorrimento infinito"
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Carica automaticamente la pagina successiva quando si scorre sino alla fine "
-"della pagina attuale"
+"Carica automaticamente la pagina successiva quando si scorre sino alla "
+"fine della pagina attuale"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1327,8 +1334,8 @@ msgstr "Che lingua preferisci per eseguire la ricerca?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Scegli la funzione di Auto-rilevamento per far scegliere a SearXNG la lingua "
-"da usare nella tua ricerca."
+"Scegli la funzione di Auto-rilevamento per far scegliere a SearXNG la "
+"lingua da usare nella tua ricerca."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -2046,3 +2053,4 @@ msgstr "nascondi video"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

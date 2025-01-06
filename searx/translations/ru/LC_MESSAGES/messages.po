@@ -28,21 +28,21 @@
 # AHOHNMYC <ahohnmyc@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: AHOHNMYC <ahohnmyc@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
+"Last-Translator: AHOHNMYC <ahohnmyc@users.noreply.translate.codeberg.org>"
+"\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -119,6 +119,11 @@ msgstr ".onion"
 #: searx/searxng.msg
 msgid "science"
 msgstr "наука"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -528,8 +533,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Изображение слишком простое для нахождения похожих. TinEye требует базовый "
-"уровень визуальных деталей для успешного определения совпадений."
+"Изображение слишком простое для нахождения похожих. TinEye требует "
+"базовый уровень визуальных деталей для успешного определения совпадений."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -574,8 +579,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Пробовать избегать платного доступа путём перенаправления на открытые версии "
-"публикаций"
+"Пробовать избегать платного доступа путём перенаправления на открытые "
+"версии публикаций"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -586,8 +591,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Показывать ваш IP-адрес по запросу \"ip\" и информацию о браузере по запросу "
-"\"user agent\"."
+"Показывать ваш IP-адрес по запросу \"ip\" и информацию о браузере по "
+"запросу \"user agent\"."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -615,8 +620,8 @@ msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Не удалось загрузить список выходных узлов Tor с адреса https://"
-"check.torproject.org/exit-addresses"
+"Не удалось загрузить список выходных узлов Tor с адреса "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -626,8 +631,7 @@ msgstr "Вы не используете Tor. Ваш публичный IP-ад�
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr ""
-"Вы не используете Tor, и у вас следующий публичный IP-адрес: {ip_address}"
+msgstr "Вы не используете Tor, и у вас следующий публичный IP-адрес: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -1167,8 +1171,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Внимание: использование URL с параметрами может привести к утечке данных на "
-"сайты, открытые из результатов поиска."
+"Внимание: использование URL с параметрами может привести к утечке данных "
+"на сайты, открытые из результатов поиска."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1188,8 +1192,7 @@ msgstr "Скопировать хэш настроек"
 
 #: searx/templates/simple/preferences/cookies.html:57
 msgid "Insert copied preferences hash (without URL) to restore"
-msgstr ""
-"Вставить скопированный хэш настроек (без URL-адреса) для их восстановления"
+msgstr "Вставить скопированный хэш настроек (без URL-адреса) для их восстановления"
 
 #: searx/templates/simple/preferences/cookies.html:59
 msgid "Preferences hash"
@@ -1210,8 +1213,8 @@ msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Эта вкладка не существует в пользовательском интерфейсе, но вы можете искать "
-"в этих системах по ее !bangs."
+"Эта вкладка не существует в пользовательском интерфейсе, но вы можете "
+"искать в этих системах по ее !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1258,8 +1261,8 @@ msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Cookie нужны исключительно для вашего удобства, мы не используем cookie для "
-"слежки."
+"Cookie нужны исключительно для вашего удобства, мы не используем cookie "
+"для слежки."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1304,8 +1307,7 @@ msgstr "Бесконечная прокрутка"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr ""
-"Автоматически загружать следующую страницу при прокрутке до конца страницы"
+msgstr "Автоматически загружать следующую страницу при прокрутке до конца страницы"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1314,7 +1316,8 @@ msgstr "Какой язык предпочтителен для поиска?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Выберите Авто-определение, чтобы SearXNG сам определял язык вашего запроса."
+"Выберите Авто-определение, чтобы SearXNG сам определял язык вашего "
+"запроса."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1333,8 +1336,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Добавить поисковый запрос в заголовок страницы с результатами. Браузер может "
-"сохранять этот заголовок"
+"Добавить поисковый запрос в заголовок страницы с результатами. Браузер "
+"может сохранять этот заголовок"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -2028,3 +2031,4 @@ msgstr "скрыть видео"
 
 #~ msgid "dummy"
 #~ msgstr ""
+

@@ -16,21 +16,20 @@
 # RhysJones <rhysjones@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 15:28+0000\n"
+"POT-Creation-Date: 2025-01-06 16:04+0000\n"
 "PO-Revision-Date: 2025-01-06 15:52+0000\n"
-"Last-Translator: lloydsmart <lloydsmart@users.noreply.translate.codeberg.org>"
-"\n"
-"Language-Team: Welsh <https://translate.codeberg.org/projects/searxng/"
-"searxng/cy/>\n"
+"Last-Translator: lloydsmart "
+"<lloydsmart@users.noreply.translate.codeberg.org>\n"
 "Language: cy\n"
+"Language-Team: Welsh "
+"<https://translate.codeberg.org/projects/searxng/searxng/cy/>\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n "
+"!= 11) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
-"11) ? 2 : 3;\n"
-"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -107,6 +106,11 @@ msgstr "winwns"
 #: searx/searxng.msg
 msgid "science"
 msgstr "gwyddoniaeth"
+
+#. CATEGORY_NAMES['DUMMY']
+#: searx/searxng.msg
+msgid "dummy"
+msgstr ""
 
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
@@ -507,17 +511,18 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Methu darllen url y ddelwedd honno. Gall hyn fod oherwydd fformat nad yw'n "
-"cael ei gefnogi. Mae TinEye ond yn cefnogi delweddau JPEG, PNG, GIF, BMP, "
-"TIFF neu WebP."
+"Methu darllen url y ddelwedd honno. Gall hyn fod oherwydd fformat nad "
+"yw'n cael ei gefnogi. Mae TinEye ond yn cefnogi delweddau JPEG, PNG, GIF,"
+" BMP, TIFF neu WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Mae'r ddelwedd yn rhy syml i ganfod canlyniadau. Mae angen lefel sylfaenol o "
-"fanylion gweledol i TinEye allu canfod canlyniadau yn llwyddiannus."
+"Mae'r ddelwedd yn rhy syml i ganfod canlyniadau. Mae angen lefel "
+"sylfaenol o fanylion gweledol i TinEye allu canfod canlyniadau yn "
+"llwyddiannus."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -550,7 +555,8 @@ msgstr "Ategyn enwau gwesteiwyr"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Newid, tynnu neu flaenoriaethu canlyniadau yn seiliedig ar yr enw gwesteiwr"
+"Newid, tynnu neu flaenoriaethu canlyniadau yn seiliedig ar yr enw "
+"gwesteiwr"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -561,8 +567,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Osgoi wal dâl drwy arallgyfeirio i fersiynau mynediad agored o gyhoeddiadau "
-"os ydynt ar gael"
+"Osgoi wal dâl drwy arallgyfeirio i fersiynau mynediad agored o "
+"gyhoeddiadau os ydynt ar gael"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -593,17 +599,17 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Mae'r ategyn hwn yn gwirio a ydy cyfeiriad y cais yn nod ymadael Tor, ac yn "
-"rhoi gwybod i'r defnyddiwr os felly. Mae'n debyg i check.torproject.org, ond "
-"gan SearXNG."
+"Mae'r ategyn hwn yn gwirio a ydy cyfeiriad y cais yn nod ymadael Tor, ac "
+"yn rhoi gwybod i'r defnyddiwr os felly. Mae'n debyg i "
+"check.torproject.org, ond gan SearXNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
 "Could not download the list of Tor exit-nodes from: "
 "https://check.torproject.org/exit-addresses"
 msgstr ""
-"Wedi methu islwytho'r rhestr o nodau ymadael Tor o: https://"
-"check.torproject.org/exit-addresses"
+"Wedi methu islwytho'r rhestr o nodau ymadael Tor o: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
@@ -616,8 +622,8 @@ msgstr ""
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
 msgstr ""
-"Dydych chi ddim yn defnyddio Tor ac mae gennych chi'r cyfeiriad IP allanol "
-"canlynol: {ip_address}"
+"Dydych chi ddim yn defnyddio Tor ac mae gennych chi'r cyfeiriad IP "
+"allanol canlynol: {ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -1080,8 +1086,7 @@ msgstr "Chwilio am rywbeth arall neu ddewis categori arall."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr ""
-"Mynd yn ôl i'r dudalen flaenorol gan ddefnyddio'r botwm tudalen flaenorol."
+msgstr "Mynd yn ôl i'r dudalen flaenorol gan ddefnyddio'r botwm tudalen flaenorol."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1134,8 +1139,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Dyma'r rhestr o friwsion a'u gwerthoedd y mae SearXNG yn eu storio ar eich "
-"cyfrifiadur."
+"Dyma'r rhestr o friwsion a'u gwerthoedd y mae SearXNG yn eu storio ar "
+"eich cyfrifiadur."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1158,9 +1163,9 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Noder: gall rhoi gosodiadau addasedig o fewn URL eich chwiliadau wanhau eich "
-"preifatrwydd drwy ddatgelu data i wefannau yr ymwelir â nhw o'r dudalen "
-"ganlyniadau."
+"Noder: gall rhoi gosodiadau addasedig o fewn URL eich chwiliadau wanhau "
+"eich preifatrwydd drwy ddatgelu data i wefannau yr ymwelir â nhw o'r "
+"dudalen ganlyniadau."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1237,16 +1242,16 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Cedwir y gosodiadau hyn yn eich briwsion. Golyga hyn nad oes rhaid i ninnau "
-"gadw'r data hyn amdanoch."
+"Cedwir y gosodiadau hyn yn eich briwsion. Golyga hyn nad oes rhaid i "
+"ninnau gadw'r data hyn amdanoch."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Er hwylustod i chi yn unig y defnyddir y briwsion hyn. Nid ydym eu defnyddio "
-"i'ch tracio."
+"Er hwylustod i chi yn unig y defnyddir y briwsion hyn. Nid ydym eu "
+"defnyddio i'ch tracio."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1298,8 +1303,7 @@ msgstr "Ym mha iaith ydych chi'n ffafrio chwilio?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr ""
-"Dewiswch canfod yn awtomatig i adael i SearXNG ganfod iaith eich chwiliad."
+msgstr "Dewiswch canfod yn awtomatig i adael i SearXNG ganfod iaith eich chwiliad."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1976,3 +1980,4 @@ msgstr "cuddio'r fideo"
 
 #~ msgid "dummy"
 #~ msgstr ""
+
