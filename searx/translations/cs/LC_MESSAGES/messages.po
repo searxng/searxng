@@ -15,21 +15,23 @@
 # Fjuro <ifjuro@proton.me>, 2023, 2024.
 # Fjuro <fjuro@alius.cz>, 2024, 2025.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2024.
+# Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-06 15:28+0000\n"
-"PO-Revision-Date: 2025-01-06 14:52+0000\n"
-"Last-Translator: Fjuro <fjuro@alius.cz>\n"
+"PO-Revision-Date: 2025-01-06 15:52+0000\n"
+"Last-Translator: Anonymous <anonymous@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
+"searxng/cs/>\n"
 "Language: cs\n"
-"Language-Team: Czech "
-"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
-"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -507,8 +509,8 @@ msgid ""
 " WebP."
 msgstr ""
 "Nelze načíst url adresu obrázku. Příčinou může být nepodporovaný formát "
-"souboru. TinEye podporuje pouze obrázky ve formátu JPEG, PNG, GIF, BMP, "
-"TIFF nebo WebP."
+"souboru. TinEye podporuje pouze obrázky ve formátu JPEG, PNG, GIF, BMP, TIFF "
+"nebo WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
@@ -561,8 +563,8 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Automaticky přesměrovat na volně přístupné verze publikací místo "
-"placených, pokud je to možné"
+"Automaticky přesměrovat na volně přístupné verze publikací místo placených, "
+"pokud je to možné"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -573,8 +575,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "contains \"user agent\"."
 msgstr ""
-"Umožňuje hledat informace o sobě: \"ip\" zobrazí vaši IP adresu a \"user "
-"agent\" zobrazí identifikátor prohlížeče."
+"Umožňuje hledat informace o sobě: \"ip\" zobrazí vaši IP adresu a "
+"\"user agent\" zobrazí identifikátor prohlížeče."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -725,7 +727,8 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
+msgstr ""
+"Pokud je tohle veřejná instance, prosím specifikujte URL v náhlášení chyby"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1129,8 +1132,8 @@ msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
 msgstr ""
-"Toto je seznam cookies a jejich hodnoty, které si SearXNG ukládá na vašem"
-" počítači."
+"Toto je seznam cookies a jejich hodnoty, které si SearXNG ukládá na vašem "
+"počítači."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1153,8 +1156,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Poznámka: zadaní vlastních nastavení v URL může snížit soukromí "
-"prozrazením dat při kliknutí na výsledky hledání."
+"Poznámka: zadaní vlastních nastavení v URL může snížit soukromí prozrazením "
+"dat při kliknutí na výsledky hledání."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1233,16 +1236,15 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Tato nastavení jsou uložena ve vašich cookies, což nám umožňuje tyto data"
-" neuchovávat nikde jinde."
+"Tato nastavení jsou uložena ve vašich cookies, což nám umožňuje tyto data "
+"neuchovávat nikde jinde."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
 "These cookies serve your sole convenience, we don't use these cookies to "
 "track you."
 msgstr ""
-"Tyto cookies existují výhradně pro vaše pohodlí, nepoužíváme je ke "
-"sledování."
+"Tyto cookies existují výhradně pro vaše pohodlí, nepoužíváme je ke sledování."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1314,8 +1316,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Titulek stránky s výsledky bude obsahovat váš vyhledávací dotaz, pokud "
-"toto zapnete. Váš prohlížeč může tento titulek zaznamenat"
+"Titulek stránky s výsledky bude obsahovat váš vyhledávací dotaz, pokud toto "
+"zapnete. Váš prohlížeč může tento titulek zaznamenat"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -2007,4 +2009,3 @@ msgstr "skrýt video"
 
 #~ msgid "dummy"
 #~ msgstr ""
-
