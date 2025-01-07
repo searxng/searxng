@@ -217,8 +217,7 @@ div.selectable_url {
 
 //
 .scrollx {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: auto hidden;
   display: block;
   padding: 0;
   margin: 0;
@@ -505,7 +504,7 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   }
 
   // if not checked and possible to checked then display a "light" check mark on hover
-  input.checkbox[type=checkbox]:not(:checked):not([disabled]):not(.checkbox-onoff):hover::after {
+  input.checkbox[type=checkbox]:not(:checked, [disabled], .checkbox-onoff):hover::after {
     opacity: 0.5;
   }
 }
@@ -593,8 +592,7 @@ td:hover .engine-tooltip,
   width: -moz-available;
   width: -webkit-fill-available;
   width: fill;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   align-items: center;
   display: inline-flex;
 }
