@@ -244,9 +244,8 @@ article[data-vim-selected].category-social {
     align-items: center;
     font-size: 1rem;
     color: var(--color-result-url-font);
-    flex-wrap: nowrap;
+    flex-flow: row nowrap;
     overflow: hidden;
-    flex-direction: row;
     margin: 0;
     padding: 0;
 
@@ -269,9 +268,7 @@ article[data-vim-selected].category-social {
     .url_o2 {
       overflow: hidden;
       white-space: nowrap;
-      flex-basis: content;
-      flex-grow: 0;
-      flex-shrink: 1;
+      flex: 0 1 content;
       text-align: right;
       padding-bottom: 1px;
 
@@ -546,14 +543,8 @@ article[data-vim-selected].category-social {
   margin-bottom: 0;
   .ltr-margin-left(@results-offset);
   display: grid;
-  grid-template-columns: @results-width @results-sidebar-width;
-  grid-template-rows: min-content min-content 1fr min-content;
+  grid-template: "corrections sidebar" min-content "answers sidebar" min-content "urls sidebar" 1fr "pagination sidebar" min-content / @results-width @results-sidebar-width;
   gap: 0 @results-gap;
-  grid-template-areas:
-    "corrections sidebar"
-    "answers sidebar"
-    "urls sidebar"
-    "pagination sidebar";
 }
 
 #results #sidebar *:first-child {
@@ -676,10 +667,7 @@ summary.title {
   }
 
   .answer-url {
-    margin-left: auto;
-    margin-top: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin: 5px 10px 10px auto;
   }
 }
 
@@ -979,19 +967,12 @@ summary.title {
     margin: 0 auto;
     justify-content: center;
     display: grid;
-    grid-template-columns: @results-width;
-    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
+    grid-template: "corrections" min-content "answers" min-content "sidebar" min-content "urls" 1fr "pagination" min-content min-content / @results-width;
     gap: 0;
-    grid-template-areas:
-      "corrections"
-      "answers"
-      "sidebar"
-      "urls"
-      "pagination";
   }
 }
 
-@media screen and (max-width: calc(@tablet - 0.5px)) {
+@media screen and (width <= calc(@tablet - 0.5px)) {
   #links_on_top {
     span {
       display: none;
@@ -999,7 +980,7 @@ summary.title {
   }
 }
 
-@media screen and (max-width: 52rem) {
+@media screen and (width <= 52rem) {
   body.results_endpoint {
     #links_on_top {
       .link_on_top_about,
@@ -1024,15 +1005,8 @@ summary.title {
 #main_results div#results.only_template_images {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: min-content min-content min-content 1fr min-content;
+  grid-template: "corrections" min-content "answers" min-content "sidebar" min-content "urls" 1fr "pagination" min-content / 100%;
   gap: 0;
-  grid-template-areas:
-    "corrections"
-    "answers"
-    "sidebar"
-    "urls"
-    "pagination";
 
   #sidebar {
     display: none;
