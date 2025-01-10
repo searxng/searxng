@@ -2,21 +2,23 @@
 # Copyright (C) 2024 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
-#
+# return42 <return42@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-16 08:30+0000\n"
-"PO-Revision-Date: 2025-01-06 16:02+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2025-01-06 16:16+0000\n"
+"PO-Revision-Date: 2025-01-07 17:08+0000\n"
+"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Irish <https://translate.codeberg.org/projects/searxng/"
+"searxng/ga/>\n"
 "Language: ga\n"
-"Language-Team: ga <LL@li.org>\n"
-"Plural-Forms: nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n>=3 && n<=6 ? 2 "
-": n>=7 && n<=10 ? 3 : 4);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : (n>2 && n<7) ? 2 :("
+"n>6 && n<11) ? 3 : 4;\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -180,7 +182,8 @@ msgid "Cloud cover"
 msgstr "Clúdach scamall"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
+#: searx/searxng.msg
 msgid "Condition"
 msgstr "Coinníoll"
 
@@ -208,12 +211,14 @@ msgid "Humidity"
 msgstr "Bogthaise"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
+#: searx/searxng.msg
 msgid "Max temp."
 msgstr "Teocht uasta."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
+#: searx/searxng.msg
 msgid "Min temp."
 msgstr "Teocht íosta."
 
@@ -238,12 +243,14 @@ msgid "Pressure"
 msgstr "Brú"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
+#: searx/searxng.msg
 msgid "Sunrise"
 msgstr "Éirí na gréine"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
+#: searx/searxng.msg
 msgid "Sunset"
 msgstr "Luí na gréine"
 
@@ -254,12 +261,14 @@ msgid "Temperature"
 msgstr "Teocht"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
+#: searx/searxng.msg
 msgid "UV index"
 msgstr "Innéacs UV"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
+#: searx/searxng.msg
 msgid "Visibility"
 msgstr "Infheictheacht"
 
@@ -334,8 +343,8 @@ msgstr "freagraí"
 msgid "No item found"
 msgstr "Níor aimsíodh aon rud"
 
-#: searx/engines/qwant.py:288 searx/templates/simple/result_templates/images.html:23
-#: searx/webapp.py:325
+#: searx/engines/qwant.py:288
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:325
 msgid "Source"
 msgstr "Foinse"
 
@@ -343,15 +352,15 @@ msgstr "Foinse"
 msgid "Error loading the next page"
 msgstr "Earráid ag luchtú an chéad leathanach eile"
 
-#: searx/webapp.py:496 searx/webapp.py:904
+#: searx/webapp.py:492 searx/webapp.py:900
 msgid "Invalid settings, please edit your preferences"
 msgstr "Socruithe neamhbhailí, cuir do chuid roghanna in"
 
-#: searx/webapp.py:512
+#: searx/webapp.py:508
 msgid "Invalid settings"
 msgstr "Socruithe neamhbhaintí"
 
-#: searx/webapp.py:589 searx/webapp.py:679
+#: searx/webapp.py:585 searx/webapp.py:675
 msgid "search error"
 msgstr "earráid cuardaigh"
 
@@ -482,20 +491,21 @@ msgstr ""
 
 #: searx/engines/tineye.py:45
 msgid ""
-"Could not read that image url. This may be due to an unsupported file format. "
-"TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or WebP."
+"Could not read that image url. This may be due to an unsupported file "
+"format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
+" WebP."
 msgstr ""
-"Ní fhéadfaí an url íomhá sin a léamh. D'fhéadfadh sé seo a bheith mar gheall ar "
-"fhormáid comhaid gan tacaíocht. Ní thacaíonn TinEye ach le híomhánna atá JPEG, "
-"PNG, GIF, BMP, TIFF nó WebP."
+"Ní fhéadfaí an url íomhá sin a léamh. D'fhéadfadh sé seo a bheith mar "
+"gheall ar fhormáid comhaid gan tacaíocht. Ní thacaíonn TinEye ach le "
+"híomhánna atá JPEG, PNG, GIF, BMP, TIFF nó WebP."
 
 #: searx/engines/tineye.py:51
 msgid ""
-"The image is too simple to find matches. TinEye requires a basic level of visual "
-"detail to successfully identify matches."
+"The image is too simple to find matches. TinEye requires a basic level of"
+" visual detail to successfully identify matches."
 msgstr ""
-"Tá an íomhá ró-simplí chun cluichí a aimsiú. Éilíonn TinEye leibhéal bunúsach "
-"sonraí amhairc chun cluichí a aithint go rathúil."
+"Tá an íomhá ró-simplí chun cluichí a aimsiú. Éilíonn TinEye leibhéal "
+"bunúsach sonraí amhairc chun cluichí a aithint go rathúil."
 
 #: searx/engines/tineye.py:57
 msgid "The image could not be downloaded."
@@ -528,8 +538,8 @@ msgstr "Breiseán Óstainmneacha"
 #: searx/plugins/hostnames.py:104
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
-"Athscríobh óstainmneacha, bain torthaí nó tosaíocht a thabhairt dóibh bunaithe ar "
-"an óstainm"
+"Athscríobh óstainmneacha, bain torthaí nó tosaíocht a thabhairt dóibh "
+"bunaithe ar an óstainm"
 
 #: searx/plugins/oa_doi_rewrite.py:12
 msgid "Open Access DOI rewrite"
@@ -537,10 +547,11 @@ msgstr "Athscríobh DOI Rochtana Oscailte"
 
 #: searx/plugins/oa_doi_rewrite.py:13
 msgid ""
-"Avoid paywalls by redirecting to open-access versions of publications when "
-"available"
+"Avoid paywalls by redirecting to open-access versions of publications "
+"when available"
 msgstr ""
-"Seachain ballaí pá trí athreorú chuig leaganacha rochtana oscailte de fhoilseacháin"
+"Seachain ballaí pá trí athreorú chuig leaganacha rochtana oscailte de "
+"fhoilseacháin"
 
 #: searx/plugins/self_info.py:9
 msgid "Self Information"
@@ -548,11 +559,11 @@ msgstr "Féin-fhaisnéis"
 
 #: searx/plugins/self_info.py:10
 msgid ""
-"Displays your IP if the query is \"ip\" and your user agent if the query contains "
-"\"user agent\"."
+"Displays your IP if the query is \"ip\" and your user agent if the query "
+"contains \"user agent\"."
 msgstr ""
-"Taispeánann sé do IP más “ip” an cheist agus do ghníomhaire úsáideora má tá "
-"“gníomhaire úsáideora” sa cheist."
+"Taispeánann sé do IP más “ip” an cheist agus do ghníomhaire úsáideora má "
+"tá “gníomhaire úsáideora” sa cheist."
 
 #: searx/plugins/self_info.py:28
 msgid "Your IP is: "
@@ -568,30 +579,34 @@ msgstr "Breiseán seiceála Tor"
 
 #: searx/plugins/tor_check.py:27
 msgid ""
-"This plugin checks if the address of the request is a Tor exit-node, and informs "
-"the user if it is; like check.torproject.org, but from SearXNG."
+"This plugin checks if the address of the request is a Tor exit-node, and "
+"informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Seiceálann an breiseán seo an nód amach Tor é seoladh an iarratais, agus cuireann "
-"sé in iúl don úsáideoir más é; cosúil le check.torproject.org, ach ó SearxNG."
+"Seiceálann an breiseán seo an nód amach Tor é seoladh an iarratais, agus "
+"cuireann sé in iúl don úsáideoir más é; cosúil le check.torproject.org, "
+"ach ó SearxNG."
 
 #: searx/plugins/tor_check.py:61
 msgid ""
-"Could not download the list of Tor exit-nodes from: https://check.torproject.org/"
-"exit-addresses"
+"Could not download the list of Tor exit-nodes from: "
+"https://check.torproject.org/exit-addresses"
 msgstr ""
-"Ní fhéadfaí liosta na nóid imeachta Tor a íoslódáil ó: https://check.torproject."
-"org/exit-addresses"
+"Ní fhéadfaí liosta na nóid imeachta Tor a íoslódáil ó: "
+"https://check.torproject.org/exit-addresses"
 
 #: searx/plugins/tor_check.py:77
 msgid ""
-"You are using Tor and it looks like you have this external IP address: {ip_address}"
-msgstr ""
-"Tá Tor á úsáid agat agus is cosúil go bhfuil an seoladh IP seachtrach seo agat: "
+"You are using Tor and it looks like you have this external IP address: "
 "{ip_address}"
+msgstr ""
+"Tá Tor á úsáid agat agus is cosúil go bhfuil an seoladh IP seachtrach seo"
+" agat: {ip_address}"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "Níl Tor á úsáid agat agus tá an seoladh IP seachtrach seo agat: {ip_address}"
+msgstr ""
+"Níl Tor á úsáid agat agus tá an seoladh IP seachtrach seo agat: "
+"{ip_address}"
 
 #: searx/plugins/tracker_url_remover.py:16
 msgid "Tracker URL remover"
@@ -622,7 +637,8 @@ msgstr "leathanach cuardaigh"
 msgid "Donate"
 msgstr "Deontas"
 
-#: searx/templates/simple/base.html:58 searx/templates/simple/preferences.html:156
+#: searx/templates/simple/base.html:58
+#: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Roghanna"
 
@@ -693,8 +709,8 @@ msgstr "Tosaigh eisiúint nua a chur isteach ar GitHub"
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Seiceáil le do thoil le haghaidh fabhtanna atá ann cheana faoin inneall seo ar "
-"GitHub"
+"Seiceáil le do thoil le haghaidh fabhtanna atá ann cheana faoin inneall "
+"seo ar GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -726,15 +742,18 @@ msgstr "!bang don inneall seo"
 msgid "!bang for its categories"
 msgstr "!bang dá chatagóirí"
 
-#: searx/templates/simple/preferences.html:102 searx/templates/simple/stats.html:64
+#: searx/templates/simple/preferences.html:102
+#: searx/templates/simple/stats.html:64
 msgid "Median"
 msgstr "Meánmhéid"
 
-#: searx/templates/simple/preferences.html:103 searx/templates/simple/stats.html:70
+#: searx/templates/simple/preferences.html:103
+#: searx/templates/simple/stats.html:70
 msgid "P80"
 msgstr "P80"
 
-#: searx/templates/simple/preferences.html:104 searx/templates/simple/stats.html:76
+#: searx/templates/simple/preferences.html:104
+#: searx/templates/simple/stats.html:76
 msgid "P95"
 msgstr "P95"
 
@@ -810,15 +829,18 @@ msgstr "An chéad leathanach eile"
 msgid "Display the front page"
 msgstr "Taispeáin an leathanach tosaigh"
 
-#: searx/templates/simple/search.html:9 searx/templates/simple/simple_search.html:5
+#: searx/templates/simple/search.html:9
+#: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
 msgstr "Cuardaigh do..."
 
-#: searx/templates/simple/search.html:10 searx/templates/simple/simple_search.html:6
+#: searx/templates/simple/search.html:10
+#: searx/templates/simple/simple_search.html:6
 msgid "clear"
 msgstr "soiléir"
 
-#: searx/templates/simple/search.html:11 searx/templates/simple/simple_search.html:7
+#: searx/templates/simple/search.html:11
+#: searx/templates/simple/simple_search.html:7
 msgid "search"
 msgstr "cuardaigh"
 
@@ -1048,8 +1070,8 @@ msgstr "Cuardaigh ceist eile nó roghnaigh catagóir eile."
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
 msgstr ""
-"Téigh ar ais go dtí an leathanach roimhe seo ag baint úsáide as an gcnaipe "
-"leathanach roimhe seo."
+"Téigh ar ais go dtí an leathanach roimhe seo ag baint úsáide as an "
+"gcnaipe leathanach roimhe seo."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1099,9 +1121,11 @@ msgstr "Taispeánann torthaí i lár an leathanaigh (leagan amach Oscar)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
-"This is the list of cookies and their values SearXNG is storing on your computer."
+"This is the list of cookies and their values SearXNG is storing on your "
+"computer."
 msgstr ""
-"Seo an liosta fianáin agus a luachanna atá ag stóráil SearxNG ar do ríomhaire."
+"Seo an liosta fianáin agus a luachanna atá ag stóráil SearxNG ar do "
+"ríomhaire."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
@@ -1121,12 +1145,12 @@ msgstr "Cuardaigh URL na roghanna atá sábháilte faoi láthair"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
-"Note: specifying custom settings in the search URL can reduce privacy by leaking "
-"data to the clicked result sites."
+"Note: specifying custom settings in the search URL can reduce privacy by "
+"leaking data to the clicked result sites."
 msgstr ""
-"Tabhair faoi deara: má shonraítear socruithe saincheaptha sa URL cuardaigh is "
-"féidir an phríobháideachas a laghdú trí shonraí a sceitheadh ​​chuig na suíomhanna "
-"toraidh a chliceáiltear."
+"Tabhair faoi deara: má shonraítear socruithe saincheaptha sa URL cuardaigh "
+"is féidir an phríobháideachas a laghdú trí shonraí a sceitheadh chuig na "
+"suíomhanna toraidh a chliceáiltear."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1134,11 +1158,11 @@ msgstr "URL chun do roghanna a athbhunú i mbrabhsálaí eile"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync preferences "
-"across devices."
+"Specifying custom settings in the preferences URL can be used to sync "
+"preferences across devices."
 msgstr ""
-"Is féidir socruithe saincheaptha a shonrú sna roghanna URL a úsáid chun roghanna a "
-"shioncronú ar fud feistí."
+"Is féidir socruithe saincheaptha a shonrú sna roghanna URL a úsáid chun "
+"roghanna a shioncronú ar fud feistí."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1162,11 +1186,11 @@ msgstr "Roghnaigh seirbhís a úsáideann DOI athscríobh"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in these "
-"engines by its !bangs."
+"This tab does not exists in the user interface, but you can search in "
+"these engines by its !bangs."
 msgstr ""
-"Níl an cluaisín seo ann sa chomhéadan úsáideora, ach is féidir leat cuardach a "
-"dhéanamh sna hinnill seo de réir a! bangs."
+"Níl an cluaisín seo ann sa chomhéadan úsáideora, ach is féidir leat "
+"cuardach a dhéanamh sna hinnill seo de réir a! bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1202,18 +1226,19 @@ msgstr "Taispeáin favicons in aice le torthaí cuardaigh"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store this data "
-"about you."
+"These settings are stored in your cookies, this allows us not to store "
+"this data about you."
 msgstr ""
-"Stóráiltear na socruithe seo i do chuid fianáin, tugann sé seo deis dúinn gan na "
-"sonraí seo a stóráil fút."
+"Stóráiltear na socruithe seo i do chuid fianáin, tugann sé seo deis dúinn"
+" gan na sonraí seo a stóráil fút."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to track you."
+"These cookies serve your sole convenience, we don't use these cookies to "
+"track you."
 msgstr ""
-"Freastalaíonn na fianáin seo ar d'aon áisiúlacht, ní úsáidimid na fianáin seo chun "
-"tú a rianú."
+"Freastalaíonn na fianáin seo ar d'aon áisiúlacht, ní úsáidimid na fianáin"
+" seo chun tú a rianú."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1237,12 +1262,12 @@ msgstr "VIM-cosúil"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
-"Navigate search results with hotkeys (JavaScript required). Press \"h\" key on "
-"main or result page to get help."
+"Navigate search results with hotkeys (JavaScript required). Press \"h\" "
+"key on main or result page to get help."
 msgstr ""
-"Nascleanúint a dhéanamh ar thorthaí cuardaigh le hotkeys (JavaScript ag teastáil). "
-"Brúigh eochair “h” ar an bpríomh-leathanach nó ar leathanach torthaí chun cabhair "
-"a fháil."
+"Nascleanúint a dhéanamh ar thorthaí cuardaigh le hotkeys (JavaScript ag "
+"teastáil). Brúigh eochair “h” ar an bpríomh-leathanach nó ar leathanach "
+"torthaí chun cabhair a fháil."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1259,7 +1284,8 @@ msgstr "Scroll gan teorainn"
 #: searx/templates/simple/preferences/infinite_scroll.html:14
 msgid "Automatically load next page when scrolling to bottom of current page"
 msgstr ""
-"Déan an chéad leathanach eile a luchtú go huathoibríoch agus tú ag scrollú go bun"
+"Déan an chéad leathanach eile a luchtú go huathoibríoch agus tú ag "
+"scrollú go bun"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1267,7 +1293,9 @@ msgstr "Cén teanga is fearr leat le haghaidh cuardaigh?"
 
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
-msgstr "Roghnaigh Auto-bhrath chun ligean do SearXNG teanga d'fhiosrúcháin a bhrath."
+msgstr ""
+"Roghnaigh Auto-bhrath chun ligean do SearXNG teanga d'fhiosrúcháin a "
+"bhrath."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1283,11 +1311,11 @@ msgstr "Fiosrú i dteideal an leathanaigh"
 
 #: searx/templates/simple/preferences/query_in_title.html:14
 msgid ""
-"When enabled, the result page's title contains your query. Your browser can record "
-"this title"
+"When enabled, the result page's title contains your query. Your browser "
+"can record this title"
 msgstr ""
-"Nuair a bheidh sé cumasaithe, beidh do cheist i dteideal leathanach an toraidh. Is "
-"féidir le do bhrabhsálaí an teideal seo a thaifeadadh"
+"Nuair a bheidh sé cumasaithe, beidh do cheist i dteideal leathanach an "
+"toraidh. Is féidir le do bhrabhsálaí an teideal seo a thaifeadadh"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1307,11 +1335,11 @@ msgstr "Cuardaigh ar roghnaigh catagóir"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select multiple "
-"categories"
+"Perform search immediately if a category selected. Disable to select "
+"multiple categories"
 msgstr ""
-"Déan cuardach láithreach má roghnaíodh catagóir. Díchumasaigh chun catagóirí "
-"iolracha"
+"Déan cuardach láithreach má roghnaíodh catagóir. Díchumasaigh chun "
+"catagóirí iolracha"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1524,3 +1552,6 @@ msgstr "taispeáin físeán"
 #: searx/templates/simple/result_templates/videos.html:6
 msgid "hide video"
 msgstr "físeán a cheilt"
+
+#~ msgid "dummy"
+#~ msgstr ""
