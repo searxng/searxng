@@ -10,7 +10,7 @@ Done!
 (pkgs.buildFHSEnv {
   name = "searxng";
   multiPkgs = pkgs: (with pkgs; [
-    bash
+    bashInteractive
     wget
     gnumake
     git
