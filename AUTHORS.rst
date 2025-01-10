@@ -174,3 +174,4 @@ features or generally made searx better:
 - @micsthepick
 - Daniel Kukula `<https://github.com/dkuku>`
 - Patrick Evans `https://github.com/holysoles`
+- shreven `<https://shreven.org>`_ B8B56F6FC0EADCA5B6177BC5F599020F48EE6F97
