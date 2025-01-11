@@ -2,11 +2,10 @@
 """Calculate mathematical expressions using ack#eval
 """
 
-import ast
 import re
-import operator
-from multiprocessing import Process, Queue
-from typing import Callable
+import sys
+import subprocess
+from pathlib import Path
 
 import flask
 import babel
@@ -23,68 +22,46 @@ plugin_id = 'calculator'
 
 logger = logger.getChild(plugin_id)
 
-operators: dict[type, Callable] = {
-    ast.Add: operator.add,
-    ast.Sub: operator.sub,
-    ast.Mult: operator.mul,
-    ast.Div: operator.truediv,
-    ast.Pow: operator.pow,
-    ast.BitXor: operator.xor,
-    ast.USub: operator.neg,
-}
 
-
-def _eval_expr(expr):
-    """
-    >>> _eval_expr('2^6')
-    4
-    >>> _eval_expr('2**6')
-    64
-    >>> _eval_expr('1 + 2*3**(4^5) / (6 + -7)')
-    -5.0
-    """
+def call_calculator(query_py_formatted, timeout):
+    calculator_process_py_path = Path(__file__).parent.absolute() / "calculator_process.py"
+    # see https://docs.python.org/3/using/cmdline.html
+    # -S Disable the import of the module site and the site-dependent manipulations
+    #    of sys.path that it entails. Also disable these manipulations if site is
+    #    explicitly imported later (call site.main() if you want them to be triggered).
+    # -I Run Python in isolated mode. This also implies -E, -P and -s options.
+    # -E Ignore all PYTHON* environment variables, e.g. PYTHONPATH and PYTHONHOME, that might be set.
+    # -P Don’t prepend a potentially unsafe path to sys.path
+    # -s Don’t add the user site-packages directory to sys.path.
+    process = subprocess.Popen(  # pylint: disable=R1732
+        [sys.executable, "-S", "-I", calculator_process_py_path, query_py_formatted],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
     try:
-        return _eval(ast.parse(expr, mode='eval').body)
-    except ZeroDivisionError:
-        # This is undefined
-        return ""
-
-
-def _eval(node):
-    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
-        return node.value
-
-    if isinstance(node, ast.BinOp):
-        return operators[type(node.op)](_eval(node.left), _eval(node.right))
-
-    if isinstance(node, ast.UnaryOp):
-        return operators[type(node.op)](_eval(node.operand))
-
-    raise TypeError(node)
-
-
-def timeout_func(timeout, func, *args, **kwargs):
-
-    def handler(q: Queue, func, args, **kwargs):  # pylint:disable=invalid-name
+        stdout, stderr = process.communicate(timeout=timeout)
+        if process.returncode == 0 and not stderr:
+            return stdout
+        logger.debug("calculator exited with stderr %s", stderr)
+        return None
+    except subprocess.TimeoutExpired:
+        process.terminate()
         try:
-            q.put(func(*args, **kwargs))
-        except:
-            q.put(None)
-            raise
-
-    que = Queue()
-    p = Process(target=handler, args=(que, func, args), kwargs=kwargs)
-    p.start()
-    p.join(timeout=timeout)
-    ret_val = None
-    if not p.is_alive():
-        ret_val = que.get()
-    else:
-        logger.debug("terminate function after timeout is exceeded")
-        p.terminate()
-    p.join()
-    p.close()
-    return ret_val
+            # Give the process a grace period to terminate
+            process.communicate(timeout=2)
+        except subprocess.TimeoutExpired:
+            # Forcefully kill the process
+            process.kill()
+            process.communicate()
+        logger.debug("calculator terminated after timeout")
+        # Capture any remaining output
+        return None
+    finally:
+        # Ensure the process is fully cleaned up
+        if process.poll() is None:  # If still running
+            process.kill()
+            process.communicate()
 
 
 def post_search(_request, search):
@@ -122,7 +99,7 @@ def post_search(_request, search):
     query_py_formatted = query.replace("^", "**")
 
     # Prevent the runtime from being longer than 50 ms
-    result = timeout_func(0.05, _eval_expr, query_py_formatted)
+    result = call_calculator(query_py_formatted, 0.05)
     if result is None or result == "":
         return True
     result = babel.numbers.format_decimal(result, locale=ui_locale)
