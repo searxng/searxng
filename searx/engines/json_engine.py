@@ -352,6 +352,37 @@ def identity(arg):
     return arg
 
 
+def extract_response_info(result):
+    title_filter = html_to_text if title_html_to_text else identity
+    content_filter = html_to_text if content_html_to_text else identity
+
+    tmp_result = {}
+
+    try:
+        url = query(result, url_query)[0]
+        tmp_result['url'] = url_prefix + to_string(url)
+
+        title = query(result, title_query)[0]
+        tmp_result['title'] = title_filter(to_string(title))
+    except:  # pylint: disable=bare-except
+        return None
+
+    try:
+        content = query(result, content_query)[0]
+        tmp_result['content'] = content_filter(to_string(content))
+    except:  # pylint: disable=bare-except
+        tmp_result['content'] = ""
+
+    try:
+        if thumbnail_query:
+            thumbnail_query_result = query(result, thumbnail_query)[0]
+            tmp_result['thumbnail'] = thumbnail_prefix + to_string(thumbnail_query_result)
+    except:  # pylint: disable=bare-except
+        pass
+
+    return tmp_result
+
+
 def response(resp):
     '''Scrap *results* from the response (see :ref:`engine results`).'''
     results = []
@@ -367,55 +398,23 @@ def response(resp):
     json = loads(resp.text)
     is_onion = 'onions' in categories
 
-    title_filter = html_to_text if title_html_to_text else identity
-    content_filter = html_to_text if content_html_to_text else identity
-
     if results_query:
         rs = query(json, results_query)  # pylint: disable=invalid-name
         if not rs:
             return results
-        for result in rs[0]:
-            try:
-                url = query(result, url_query)[0]
-                title = query(result, title_query)[0]
-            except:  # pylint: disable=bare-except
-                continue
-            try:
-                content = query(result, content_query)[0]
-            except:  # pylint: disable=bare-except
-                content = ""
-
-            tmp_result = {
-                'url': url_prefix + to_string(url),
-                'title': title_filter(to_string(title)),
-                'content': content_filter(to_string(content)),
-            }
-
-            if thumbnail_query:
-                try:
-                    thumbnail_query_result = query(result, thumbnail_query)[0]
-                    tmp_result['thumbnail'] = thumbnail_prefix + to_string(thumbnail_query_result)
-                except:  # pylint: disable=bare-except
-                    continue
-
-            if is_onion:
-                tmp_result['is_onion'] = True
-
-            results.append(tmp_result)
+        rs = rs[0]  # pylint: disable=invalid-name
     else:
-        for result in json:
-            url = query(result, url_query)[0]
-            title = query(result, title_query)[0]
-            content = query(result, content_query)[0]
+        rs = json  # pylint: disable=invalid-name
 
-            results.append(
-                {
-                    'url': url_prefix + to_string(url),
-                    'title': title_filter(to_string(title)),
-                    'content': content_filter(to_string(content)),
-                    'is_onion': is_onion,
-                }
-            )
+    for result in rs:
+        tmp_result = extract_response_info(result)
+        if not tmp_result:
+            continue
+
+        if is_onion:
+            tmp_result['is_onion'] = True
+
+        results.append(tmp_result)
 
     if not suggestion_query:
         return results
