@@ -2,12 +2,58 @@
 """The JSON engine is a *generic* engine with which it is possible to configure
 engines in the settings.
 
-.. todo::
+Configuration
+=============
 
-   - The JSON engine needs documentation!!
+Request:
 
-   - The parameters of the JSON engine should be adapted to those of the XPath
-     engine.
+- :py:obj:`search_url`
+- :py:obj:`method`
+- :py:obj:`request_body`
+- :py:obj:`cookies`
+- :py:obj:`headers`
+
+Paging:
+
+- :py:obj:`paging`
+- :py:obj:`page_size`
+- :py:obj:`first_page_num`
+
+Response:
+
+- :py:obj:`title_html_to_text`
+- :py:obj:`content_html_to_text`
+
+JSON query:
+
+- :py:obj:`results_query`
+- :py:obj:`url_query`
+- :py:obj:`url_prefix`
+- :py:obj:`title_query`
+- :py:obj:`content_query`
+- :py:obj:`suggestion_query`
+
+
+Example
+=======
+
+Here is a simple example of a JSON engine configure in the :ref:`settings
+engine` section, further read :ref:`engines-dev`.
+
+.. code:: yaml
+
+  - name : mdn
+    engine : json_engine
+    paging : True
+    search_url : https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}
+    results_query : documents
+    url_query : mdn_url
+    url_prefix : https://developer.mozilla.org
+    title_query : title
+    content_query : summary
+
+Implementations
+===============
 
 """
 
@@ -16,34 +62,92 @@ from json import loads
 from urllib.parse import urlencode
 from searx.utils import to_string, html_to_text
 
-# parameters for generating a request
 search_url = None
+"""
+Search URL of the engine.  Example::
+
+    https://example.org/?search={query}&page={pageno}
+
+Replacements are:
+
+``{query}``:
+  Search terms from user.
+
+``{pageno}``:
+  Page number if engine supports paging :py:obj:`paging`
+
+"""
+
 method = 'GET'
+'''Some engines might require to do POST requests for search.'''
+
 request_body = ''
+'''The body of the request.  This can only be used if different :py:obj:`method`
+is set, e.g. ``POST``. For formatting see the documentation of :py:obj:`search_url`.
+
+Note: Curly brackets which aren't encapsulating a replacement placeholder
+must be escaped by doubling each ``{`` and ``}``.
+
+.. code:: yaml
+
+    request_body: >-
+      {{
+        "search": "{query}",
+        "page": {pageno},
+        "extra": {{
+          "time_range": {time_range},
+          "rating": "{safe_search}"
+        }}
+      }}
+'''
 
 cookies = {}
+'''Some engines might offer different result based on cookies.
+Possible use-case: To set safesearch cookie.'''
+
 headers = {}
 '''Some engines might offer different result based on cookies or headers.
 Possible use-case: To set safesearch cookie or header to moderate.'''
 
 paging = False
-# parameters for engines with paging support
-#
-# number of results on each page
-# (only needed if the site requires not a page number, but an offset)
-page_size = 1
-# number of the first page (usually 0 or 1)
-first_page_num = 1
+'''Engine supports paging [True or False].'''
 
-# parameters for parsing the response
+page_size = 1
+'''Number of results on each page.  Only needed if the site requires not a page
+number, but an offset.'''
+
+first_page_num = 1
+'''Number of the first page (usually 0 or 1).'''
+
 results_query = ''
+'''JSON query for the list of result items.
+
+The query string is a slash `/` separated path of JSON key names.
+Array entries can be specified using the index or can be omitted entirely,
+in which case each entry is considered -
+most implementations will default to the first entry in this case.
+'''
+
 url_query = None
+'''JSON query of result's ``url``. For the query string documentation see :py:obj:`results_query`'''
+
 url_prefix = ""
+'''String to prepend to the result's ``url``.'''
+
 title_query = None
+'''JSON query of result's ``title``. For the query string documentation see :py:obj:`results_query`'''
+
 content_query = None
+'''JSON query of result's ``content``. For the query string documentation see :py:obj:`results_query`'''
+
 suggestion_query = ''
+'''JSON query of result's ``suggestion``. For the query string documentation see :py:obj:`results_query`'''
+
 title_html_to_text = False
+'''Extract text from a HTML title string'''
+
 content_html_to_text = False
+'''Extract text from a HTML content string'''
 
 
 def iterate(iterable):
@@ -102,6 +206,7 @@ def query(data, query_string):
 
 
 def request(query, params):  # pylint: disable=redefined-outer-name
+    '''Build request parameters (see :ref:`engine request`).'''
     fp = {'query': urlencode({'q': query})[2:]}  # pylint: disable=invalid-name
 
     if paging and search_url.find('{pageno}') >= 0:
@@ -126,7 +231,12 @@ def identity(arg):
 
 
 def response(resp):
+    '''Scrap *results* from the response (see :ref:`engine results`).'''
     results = []
+
+    if not resp.text:
+        return results
+
     json = loads(resp.text)
 
     title_filter = html_to_text if title_html_to_text else identity

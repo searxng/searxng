@@ -45,6 +45,7 @@ Online Engines
    demo/demo_online
    xpath
    mediawiki
+   json_engine
 
 .. toctree::
    :maxdepth: 1
