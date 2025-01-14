@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+declare _Blue
+declare _creset
+
 export NODE_MINIMUM_VERSION="16.13.0"
 
 node.help(){
@@ -22,7 +25,7 @@ nodejs.ensure() {
 node.env() {
     nodejs.ensure
     (   set -e
-        build_msg INSTALL "./searx/static/themes/simple/package.json"
+        build_msg INSTALL "[npm] ./searx/static/themes/simple/package.json"
         npm --prefix searx/static/themes/simple install
     )
     dump_return $?
@@ -30,7 +33,7 @@ node.env() {
 
 node.env.dev() {
     nodejs.ensure
-    build_msg INSTALL "./package.json: developer and CI tools"
+    build_msg INSTALL "[npm] ./package.json: developer and CI tools"
     npm install
 }
 
@@ -41,11 +44,19 @@ node.clean() {
     fi
     build_msg CLEAN "themes -- locally installed npm dependencies"
     (   set -e
-        npm --prefix searx/static/themes/simple run clean
+        npm --prefix searx/static/themes/simple run clean \
+	    | prefix_stdout "${_Blue}CLEAN    ${_creset} "
+	if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+            return 1
+	fi
     )
     build_msg CLEAN "locally installed developer and CI tools"
     (   set -e
-        npm --prefix . run clean
+        npm --prefix . run clean \
+	    | prefix_stdout "${_Blue}CLEAN    ${_creset} "
+	if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+            return 1
+	fi
     )
     dump_return $?
 }
