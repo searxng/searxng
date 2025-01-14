@@ -39,10 +39,8 @@ to our ":ref:`how to contribute`" guideline.
    - :ref:`make themes`
 
 If you implement themes, you will need to setup a :ref:`Node.js environment
-<make node.env>`: ``make node.env``
-
-Before you call *make run* (2.), you need to compile the modified styles and
-JavaScript: ``make themes.all``
+<make node.env>`.  Before you call *make run* (2.), you need to compile the
+modified styles and JavaScript: ``make node.clean themes.all``
 
 Alternatively you can also compile selective the theme you have modified,
 e.g. the *simple* theme.

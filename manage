@@ -94,8 +94,6 @@ pyenv.:
   OK        : test if virtualenv is OK
 format.:
   python    : format Python code source using black
-pygments.:
-  less      : build LESS files for pygments
 EOF
     go.help
     node.help
@@ -251,15 +249,6 @@ gecko.driver() {
         chmod 755 -- "${PY_ENV_BIN}/geckodriver"
     )
     dump_return $?
-}
-
-pygments.less() {
-    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
-    if ! pyenv.cmd python searxng_extra/update/update_pygments.py; then
-        build_msg PYGMENTS "building LESS files for pygments failed"
-        return 1
-    fi
-    return 0
 }
 
 py.build() {

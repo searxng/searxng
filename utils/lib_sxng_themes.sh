@@ -9,16 +9,14 @@ themes.help(){
 themes.:
   all       : build all themes
   live      : to get live builds of CSS & JS use 'LIVE_THEME=simple make run'
-  simple.:
-    build   : build simple theme
+  simple.:    build simple theme
     test    : test simple theme
+    pygments: build pygment's LESS files for simple theme
 EOF
 }
 
 themes.all() {
     (   set -e
-        pygments.less
-        node.env
         themes.simple
     )
     dump_return $?
@@ -50,15 +48,29 @@ themes.live() {
 
 themes.simple() {
     (   set -e
-        build_msg GRUNT "theme: simple"
-        npm --prefix searx/static/themes/simple run build
+	node.env
+	themes.simple.pygments
     )
+    build_msg GRUNT "theme: simple"
+    npm --prefix searx/static/themes/simple run build
     dump_return $?
 }
 
+themes.simple.pygments() {
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    pyenv.cmd python searxng_extra/update/update_pygments.py \
+	| prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+    if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
+}
+
+
 themes.simple.test() {
     build_msg TEST "theme: simple"
-    nodejs.ensure
+    node.env
     npm --prefix searx/static/themes/simple install
     npm --prefix searx/static/themes/simple run test
     dump_return $?
