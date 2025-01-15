@@ -100,7 +100,8 @@ static.build.commit() {
     static.build.drop &>/dev/null
 
     (   set -e
-        # build the themes
+        # fix & build the themes
+	themes.fix
         themes.all
 
         # add build files

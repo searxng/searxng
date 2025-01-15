@@ -29,12 +29,13 @@
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
-    "test": "grunt test",
+    "clean": "rm -Rf node_modules",
     "eslint": "grunt eslint",
     "eslint-fix": "grunt eslint --fix",
-    "watch": "grunt watch",
-    "clean": "rm -Rf node_modules",
+    "fix": "grunt test --fix",
     "stylelint": "grunt stylelint",
-    "stylelint-fix": "grunt stylelint --fix"
+    "stylelint-fix": "grunt stylelint --fix",
+    "test": "grunt test",
+    "watch": "grunt watch --fix"
   }
 }

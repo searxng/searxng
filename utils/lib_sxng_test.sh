@@ -89,13 +89,18 @@ test.robot() {
     dump_return $?
 }
 
-
 test.rst() {
     build_msg TEST "[reST markup] ${RST_FILES[*]}"
 
     for rst in "${RST_FILES[@]}"; do
         pyenv.cmd rst2html --halt error "$rst" > /dev/null || die 42 "fix issue in $rst"
     done
+}
+
+test.themes() {
+    build_msg TEST 'SearXNG themes'
+    themes.test
+    dump_return $?
 }
 
 test.pybabel() {
