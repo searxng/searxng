@@ -60,6 +60,8 @@ WIKIDATA_PROPERTIES = {
     'P2002': 'Twitter',
     'P2013': 'Facebook',
     'P2003': 'Instagram',
+    'P4033': 'Mastodon',
+    'P12622': 'PeerTube',
 }
 
 # SERVICE wikibase:mwapi : https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual/MWAPI
@@ -475,6 +477,8 @@ def get_attributes(language):
     add_url('P2002', url_id='twitter_profile')
     add_url('P2013', url_id='facebook_profile')
     add_url('P2003', url_id='instagram_profile')
+    add_url('P4033', url_id='mastodon_profile')
+    add_url('P12622', url_id='peertube_profile')
 
     # Map
     attributes.append(WDGeoAttribute('P625'))
