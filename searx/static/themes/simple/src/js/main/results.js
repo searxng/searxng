@@ -52,6 +52,7 @@
       this.innerText = this.dataset.copiedText;
     });
 
+    const isMobile = screen.orientation.type.startsWith('portrait');
     searxng.selectImage = function (resultElement) {
       /* eslint no-unused-vars: 0 */
       if (resultElement) {
@@ -82,24 +83,34 @@
         }
       }
       d.getElementById('results').classList.add('image-detail-open');
+
+      // add a hash to the browser history so that pressing back doesn't return to the previous page
+      // this allows us to dismiss the image details on pressing the back button on mobile devices
+      window.location.hash = '#image-viewer';
+
       searxng.scrollPageToSelected();
-    }
+    };
 
     searxng.closeDetail = function (e) {
       d.getElementById('results').classList.remove('image-detail-open');
       searxng.scrollPageToSelected();
-    }
+    };
     searxng.on('.result-detail-close', 'click', e => {
       e.preventDefault();
       searxng.closeDetail();
     });
     searxng.on('.result-detail-previous', 'click', e => {
       e.preventDefault();
-      searxng.selectPrevious(false)
+      searxng.selectPrevious(false);
     });
     searxng.on('.result-detail-next', 'click', e => {
       e.preventDefault();
       searxng.selectNext(false);
+    });
+
+    // listen for the back button to be pressed and dismiss the image details when called
+    window.addEventListener('hashchange', () => {
+      if (!window.location.hash) searxng.closeDetail();
     });
 
     w.addEventListener('scroll', function () {
