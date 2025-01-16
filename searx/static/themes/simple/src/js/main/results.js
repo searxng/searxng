@@ -113,6 +113,17 @@
       if (!window.location.hash) searxng.closeDetail();
     });
 
+    d.querySelectorAll('.swipe-horizontal').forEach(
+      obj => {
+        obj.addEventListener('swiped-left', function (e) {
+          searxng.selectNext(false);
+        });
+        obj.addEventListener('swiped-right', function (e) {
+          searxng.selectPrevious(false);
+        });
+      }
+    );
+
     w.addEventListener('scroll', function () {
       var e = d.getElementById('backToTop'),
         scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
