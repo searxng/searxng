@@ -798,6 +798,12 @@ summary.title {
   font-size: 1em;
   color: var(--color-search-font);
 
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+  }
+
   a {
     display: flex;
     align-items: center;
@@ -816,6 +822,12 @@ summary.title {
   a:active * {
     color: var(--color-search-font);
   }
+}
+
+body.index_endpoint #instance_name {
+  position: fixed;
+  .ltr-left(1rem);
+  font-size: 2em;
 }
 
 #pagination {
