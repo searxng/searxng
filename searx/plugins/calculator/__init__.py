@@ -2,6 +2,7 @@
 """Calculate mathematical expressions using ack#eval
 """
 
+import decimal
 import re
 import sys
 import subprocess
@@ -24,7 +25,6 @@ logger = logger.getChild(plugin_id)
 
 
 def call_calculator(query_py_formatted, timeout):
-    calculator_process_py_path = Path(__file__).parent.absolute() / "calculator_process.py"
     # see https://docs.python.org/3/using/cmdline.html
     # -S Disable the import of the module site and the site-dependent manipulations
     #    of sys.path that it entails. Also disable these manipulations if site is
@@ -33,35 +33,32 @@ def call_calculator(query_py_formatted, timeout):
     # -E Ignore all PYTHON* environment variables, e.g. PYTHONPATH and PYTHONHOME, that might be set.
     # -P Don’t prepend a potentially unsafe path to sys.path
     # -s Don’t add the user site-packages directory to sys.path.
-    process = subprocess.Popen(  # pylint: disable=R1732
-        [sys.executable, "-S", "-I", calculator_process_py_path, query_py_formatted],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
+    calculator_process_py_path = Path(__file__).parent.absolute() / "calculator_process.py"
+    cmd = [sys.executable, "-S", "-I", str(calculator_process_py_path), query_py_formatted]
+
     try:
-        stdout, stderr = process.communicate(timeout=timeout)
-        if process.returncode == 0 and not stderr:
-            return stdout
-        logger.debug("calculator exited with stderr %s", stderr)
+        result = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=timeout, check=False
+        )
+
+        if result.returncode == 0 and not result.stderr:
+            return result.stdout
+
+        logger.debug("calculator exited with stderr: %s", result.stderr)
         return None
-    except subprocess.TimeoutExpired:
-        process.terminate()
-        try:
-            # Give the process a grace period to terminate
-            process.communicate(timeout=2)
-        except subprocess.TimeoutExpired:
-            # Forcefully kill the process
-            process.kill()
-            process.communicate()
-        logger.debug("calculator terminated after timeout")
-        # Capture any remaining output
+
+    except subprocess.TimeoutExpired as e:
+        logger.debug("calculator did not exit in time")
+        # subprocess.run automatically attempts to terminate the process on timeout.
+        # Additional killing is generally not necessary, but we can ensure it if needed.
+
+        # Check if stdout or stderr are captured and log them if available
+        if e.stdout:
+            logger.debug("Partial stdout before timeout: %s", e.stdout)
+        if e.stderr:
+            logger.debug("Partial stderr before timeout: %s", e.stderr)
+
         return None
-    finally:
-        # Ensure the process is fully cleaned up
-        if process.poll() is None:  # If still running
-            process.kill()
-            process.communicate()
 
 
 def post_search(_request, search):
@@ -87,9 +84,10 @@ def post_search(_request, search):
         val = babel.numbers.parse_decimal(val, ui_locale, numbering_system="latn")
         return str(val)
 
-    decimal = ui_locale.number_symbols["latn"]["decimal"]
-    group = ui_locale.number_symbols["latn"]["group"]
-    query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
+    loc_decimal = ui_locale.number_symbols["latn"]["decimal"]
+    loc_group = ui_locale.number_symbols["latn"]["group"]
+
+    query = re.sub(f"[0-9]+[{loc_decimal}|{loc_group}][0-9]+[{loc_decimal}|{loc_group}]?[0-9]?", _decimal, query)
 
     # only numbers and math operators are accepted
     if any(str.isalpha(c) for c in query):
@@ -102,6 +100,10 @@ def post_search(_request, search):
     result = call_calculator(query_py_formatted, 0.05)
     if result is None or result == "":
         return True
-    result = babel.numbers.format_decimal(result, locale=ui_locale)
+    if len(result) < 15:  # arbitrary number, TODO : check the actual limit
+        try:
+            result = babel.numbers.format_decimal(result, locale=ui_locale)
+        except decimal.InvalidOperation:
+            pass
     search.result_container.answers['calculate'] = {'answer': f"{search.search_query.query} = {result}"}
     return True
