@@ -61,6 +61,7 @@ WIKIDATA_PROPERTIES = {
     'P2013': 'Facebook',
     'P2003': 'Instagram',
     'P4033': 'Mastodon',
+    'P11947': 'Lemmy',
     'P12622': 'PeerTube',
 }
 
@@ -478,6 +479,7 @@ def get_attributes(language):
     add_url('P2013', url_id='facebook_profile')
     add_url('P2003', url_id='instagram_profile')
     add_url('P4033', url_id='mastodon_profile')
+    add_url('P11947', url_id='lemmy_profile')
     add_url('P12622', url_id='peertube_profile')
 
     # Map
