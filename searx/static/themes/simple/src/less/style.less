@@ -543,7 +543,13 @@ article[data-vim-selected].category-social {
   margin-bottom: 0;
   .ltr-margin-left(@results-offset);
   display: grid;
-  grid-template: "corrections sidebar" min-content "answers sidebar" min-content "urls sidebar" 1fr "pagination sidebar" min-content / @results-width @results-sidebar-width;
+  grid-template:
+      "corrections sidebar" min-content
+      "answers sidebar" min-content
+      "urls sidebar" 1fr
+      "pagination sidebar" min-content
+      / @results-width @results-sidebar-width
+  ;
   gap: 0 @results-gap;
 }
 
@@ -967,7 +973,14 @@ summary.title {
     margin: 0 auto;
     justify-content: center;
     display: grid;
-    grid-template: "corrections" min-content "answers" min-content "sidebar" min-content "urls" 1fr "pagination" min-content min-content / @results-width;
+    grid-template:
+      "corrections" min-content
+      "answers" min-content
+      "sidebar" min-content
+      "urls" 1fr
+      "pagination" min-content
+      / @results-width
+    ;
     gap: 0;
   }
 }
@@ -1005,7 +1018,13 @@ summary.title {
 #main_results div#results.only_template_images {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
-  grid-template: "corrections" min-content "answers" min-content "sidebar" min-content "urls" 1fr "pagination" min-content / 100%;
+  grid-template:
+    "corrections" min-content
+    "answers" min-content
+    "sidebar" min-content
+    "urls" 1fr
+    "pagination" min-content
+    / 100%;
   gap: 0;
 
   #sidebar {

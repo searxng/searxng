@@ -174,3 +174,4 @@ features or generally made searx better:
 - @micsthepick
 - Daniel Kukula `<https://github.com/dkuku>`
 - Patrick Evans `https://github.com/holysoles`
+- Daniel Mowitz `<https://daniel.mowitz.rocks>`

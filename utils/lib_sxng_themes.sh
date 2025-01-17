@@ -7,17 +7,37 @@ declare _creset
 themes.help(){
     cat <<EOF
 themes.:
-  all       : build all themes
-  live      : to get live builds of CSS & JS use 'LIVE_THEME=simple make run'
-  simple.:    build simple theme
-    test    : test simple theme
+  all       : test & build all themes
+  test      : test all themes
+  fix       : fix JS & CSS (LESS)
+  live      : to get live builds of CSS & JS use: LIVE_THEME=simple make run
+  simple.:    test & build simple theme ..
     pygments: build pygment's LESS files for simple theme
+    test    : test simple theme
+    fix     : fix JS & CSS (LESS) of the simple theme
 EOF
 }
 
 themes.all() {
     (   set -e
+	node.env
         themes.simple
+    )
+    dump_return $?
+}
+
+themes.fix() {
+    (   set -e
+	node.env
+        themes.simple.fix
+    )
+    dump_return $?
+}
+
+themes.test() {
+    (   set -e
+	node.env
+        themes.simple.test
     )
     dump_return $?
 }
@@ -29,30 +49,30 @@ themes.live() {
             theme="searx/static/themes/${LIVE_THEME}"
             ;;
         '')
-            die_caller 42 "missing theme argument"
+            die 42 "missing theme argument"
             ;;
         *)
-            die_caller 42 "unknown theme '${LIVE_THEME}' // [simple]'"
+            die 42 "unknown theme '${LIVE_THEME}' // [simple]'"
             ;;
     esac
-    build_msg GRUNT "theme: $1 (live build)"
-    nodejs.ensure
+    build_msg SIMPLE "theme: $1 (live build)"
+    node.env
+    themes.simple.pygments
     cd "${theme}"
     {
-        npm install
         npm run watch
-    } 2>&1 \
-        | prefix_stdout "${_Blue}THEME ${1} ${_creset}  " \
-        | grep -E --ignore-case --color 'error[s]?[:]? |warning[s]?[:]? |'
+    } # 2>&1 \
+      #       | prefix_stdout "${_Blue}THEME ${1} ${_creset}  " \
+      #       | grep -E --ignore-case --color 'error[s]?[:]? |warning[s]?[:]? |'
 }
 
 themes.simple() {
     (   set -e
-	node.env
 	themes.simple.pygments
+	build_msg SIMPLE "theme: run build"
+	# "run build" includes tests from eslint and stylelint
+	npm --prefix searx/static/themes/simple run build
     )
-    build_msg GRUNT "theme: simple"
-    npm --prefix searx/static/themes/simple run build
     dump_return $?
 }
 
@@ -67,11 +87,14 @@ themes.simple.pygments() {
     return 0
 }
 
+themes.simple.fix() {
+    build_msg SIMPLE "theme: fix"
+    npm --prefix searx/static/themes/simple run fix
+    dump_return $?
+}
 
 themes.simple.test() {
-    build_msg TEST "theme: simple"
-    node.env
-    npm --prefix searx/static/themes/simple install
+    build_msg SIMPLE "theme: run test"
     npm --prefix searx/static/themes/simple run test
     dump_return $?
 }
