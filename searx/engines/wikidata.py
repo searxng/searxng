@@ -60,6 +60,9 @@ WIKIDATA_PROPERTIES = {
     'P2002': 'Twitter',
     'P2013': 'Facebook',
     'P2003': 'Instagram',
+    'P4033': 'Mastodon',
+    'P11947': 'Lemmy',
+    'P12622': 'PeerTube',
 }
 
 # SERVICE wikibase:mwapi : https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual/MWAPI
@@ -363,8 +366,8 @@ def get_attributes(language):
     def add_label(name):
         attributes.append(WDLabelAttribute(name))
 
-    def add_url(name, url_id=None, **kwargs):
-        attributes.append(WDURLAttribute(name, url_id, kwargs))
+    def add_url(name, url_id=None, url_path_prefix=None, **kwargs):
+        attributes.append(WDURLAttribute(name, url_id, url_path_prefix, kwargs))
 
     def add_image(name, url_id=None, priority=1):
         attributes.append(WDImageAttribute(name, url_id, priority))
@@ -475,6 +478,11 @@ def get_attributes(language):
     add_url('P2002', url_id='twitter_profile')
     add_url('P2013', url_id='facebook_profile')
     add_url('P2003', url_id='instagram_profile')
+
+    # Fediverse
+    add_url('P4033', url_path_prefix='/@')  # Mastodon user
+    add_url('P11947', url_path_prefix='/c/')  # Lemmy community
+    add_url('P12622', url_path_prefix='/c/')  # PeerTube channel
 
     # Map
     attributes.append(WDGeoAttribute('P625'))
@@ -592,22 +600,50 @@ class WDURLAttribute(WDAttribute):
 
     HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
-    __slots__ = 'url_id', 'kwargs'
+    __slots__ = 'url_id', 'url_path_prefix', 'kwargs'
 
-    def __init__(self, name, url_id=None, kwargs=None):
+    def __init__(self, name, url_id=None, url_path_prefix=None, kwargs=None):
+        """
+        :param url_id: ID matching one key in ``external_urls.json`` for
+            converting IDs to full URLs.
+
+        :param url_path_prefix: Path prefix if the values are of format
+            ``account@domain``.  If provided, value are rewritten to
+            ``https://<domain><url_path_prefix><account>``.  For example::
+
+              WDURLAttribute('P4033', url_path_prefix='/@')
+
+            Adds Property `P4033 <https://www.wikidata.org/wiki/Property:P4033>`_
+            to the wikidata query.  This field might return for example
+            ``libreoffice@fosstodon.org`` and the URL built from this is then:
+
+            - account: ``libreoffice``
+            - domain: ``fosstodon.org``
+            - result url: https://fosstodon.org/@libreoffice
+        """
+
         super().__init__(name)
         self.url_id = url_id
+        self.url_path_prefix = url_path_prefix
         self.kwargs = kwargs
 
     def get_str(self, result, language):
         value = result.get(self.name + 's')
-        if self.url_id and value is not None and value != '':
-            value = value.split(',')[0]
+        if not value:
+            return None
+
+        value = value.split(',')[0]
+        if self.url_id:
             url_id = self.url_id
             if value.startswith(WDURLAttribute.HTTP_WIKIMEDIA_IMAGE):
                 value = value[len(WDURLAttribute.HTTP_WIKIMEDIA_IMAGE) :]
                 url_id = 'wikimedia_image'
             return get_external_url(url_id, value)
+
+        if self.url_path_prefix:
+            [account, domain] = value.split('@')
+            return f"https://{domain}{self.url_path_prefix}{account}"
+
         return value
 
 
