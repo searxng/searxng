@@ -1,15 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Public domain image archive, based on the unsplash engine
-
-Meow meow
-
-"""
+"""Public domain image archive"""
 
 from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 from json import dumps
 
-algolia_api_key = "153d2a10ce67a0be5484de130a132050"
-"""Algolia API key. See engine documentation """
+from searx.network import get
+from searx.utils import extr
+from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineException
 
 THUMBNAIL_SUFFIX = "?fit=max&h=360&w=360"
 """
@@ -42,23 +39,58 @@ about = {
     "results": 'JSON',
 }
 
-base_url = 'https://oqi2j6v4iz-dsn.algolia.net/'
-search_url = base_url + f'1/indexes/*/queries?x-algolia-api-key={algolia_api_key}&x-algolia-application-id=OQI2J6V4IZ'
+base_url = 'https://oqi2j6v4iz-dsn.algolia.net'
+pdia_config_url = 'https://pdimagearchive.org/_astro/config.BiNvrvzG.js'
 categories = ['images']
 page_size = 20
 paging = True
 
 
-def clean_url(url):
+__CACHED_API_KEY = None
+
+
+def _clean_url(url):
     parsed = urlparse(url)
     query = [(k, v) for (k, v) in parse_qsl(parsed.query) if k not in ['ixid', 's']]
 
     return urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, urlencode(query), parsed.fragment))
 
 
+def _get_algolia_api_key():
+    global __CACHED_API_KEY  # pylint:disable=global-statement
+
+    if __CACHED_API_KEY:
+        return __CACHED_API_KEY
+
+    resp = get(pdia_config_url)
+    if resp.status_code != 200:
+        raise LookupError("Failed to obtain Algolia API key for PDImageArchive")
+
+    api_key = extr(resp.text, 'r="', '"', default=None)
+
+    if api_key is None:
+        raise LookupError("Couldn't obtain Algolia API key for PDImageArchive")
+
+    __CACHED_API_KEY = api_key
+    return api_key
+
+
+def _clear_cached_api_key():
+    global __CACHED_API_KEY  # pylint:disable=global-statement
+
+    __CACHED_API_KEY = None
+
+
 def request(query, params):
-    params['url'] = search_url
+    api_key = _get_algolia_api_key()
+
+    args = {
+        'x-algolia-api-key': api_key,
+        'x-algolia-application-id': 'OQI2J6V4IZ',
+    }
+    params['url'] = f"{base_url}/1/indexes/*/queries?{urlencode(args)}"
     params["method"] = "POST"
+
     request_params = {
         "page": params["pageno"] - 1,
         "query": query,
@@ -71,13 +103,22 @@ def request(query, params):
         ]
     }
     params["data"] = dumps(data)
-    logger.debug("query_url --> %s", params['url'])
+
+    # http errors are handled manually to be able to reset the api key
+    params['raise_for_httperror'] = False
     return params
 
 
 def response(resp):
     results = []
     json_data = resp.json()
+
+    if resp.status_code == 403:
+        _clear_cached_api_key()
+        raise SearxEngineAccessDeniedException()
+
+    if resp.status_code != 200:
+        raise SearxEngineException()
 
     if 'results' not in json_data:
         return []
@@ -97,9 +138,9 @@ def response(resp):
         results.append(
             {
                 'template': 'images.html',
-                'url': clean_url(f"{about['website']}/images/{result['objectID']}"),
-                'img_src': clean_url(base_image_url),
-                'thumbnail_src': clean_url(base_image_url + THUMBNAIL_SUFFIX),
+                'url': _clean_url(f"{about['website']}/images/{result['objectID']}"),
+                'img_src': _clean_url(base_image_url),
+                'thumbnail_src': _clean_url(base_image_url + THUMBNAIL_SUFFIX),
                 'title': f"{result['title'].strip()} by {result['artist']} {result.get('displayYear', '')}",
                 'content': content,
             }
