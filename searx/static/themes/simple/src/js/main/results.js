@@ -52,35 +52,43 @@
       this.innerText = this.dataset.copiedText;
     });
 
-    const isMobile = screen.orientation.type.startsWith('portrait');
+    // progress spinner that is being attached while an image is loading
+    const imgLoaderSpinner = d.createElement('div');
+    imgLoaderSpinner.classList.add('loader');
+    const imgLoader = new Image();
+
+    const loadImage = (imgSrc, onSuccess) => {
+      imgLoader.onload = () => {
+        onSuccess();
+        imgLoaderSpinner.remove();
+      };
+      imgLoader.onerror = () => {
+        imgLoaderSpinner.remove();
+      };
+      imgLoader.src = imgSrc;
+    }
     searxng.selectImage = function (resultElement) {
       /* eslint no-unused-vars: 0 */
       if (resultElement) {
         // load full size image in background
-        const imgElement = resultElement.querySelector('.result-images-source img');
         const thumbnailElement = resultElement.querySelector('.image_thumbnail');
         const detailElement = resultElement.querySelector('.detail');
-        if (imgElement) {
-          const imgSrc = imgElement.getAttribute('data-src');
-          if (imgSrc) {
-            const loader = d.createElement('div');
-            const imgLoader = new Image();
+        const imgElement = resultElement.querySelector('.result-images-source img');
+        if (!imgElement) return;
 
-            loader.classList.add('loader');
-            detailElement.appendChild(loader);
+        const imgSrc = imgElement.getAttribute('data-src');
+        // already loaded high-res image or no high-res image available
+        if (!imgSrc) return;
 
-            imgLoader.onload = e => {
-              imgElement.src = imgSrc;
-              loader.remove();
-            };
-            imgLoader.onerror = e => {
-              loader.remove();
-            };
-            imgLoader.src = imgSrc;
-            imgElement.src = thumbnailElement.src;
-            imgElement.removeAttribute('data-src');
-          }
-        }
+        // show a progress spinner and start loading the full high-res image
+        detailElement.appendChild(imgLoaderSpinner);
+        loadImage(imgSrc, () => {
+          imgElement.src = imgSrc;
+          imgElement.removeAttribute('data-src');
+        })
+
+        // use the image thumbnail until the image is fully loaded
+        imgElement.src = thumbnailElement.src;
       }
       d.getElementById('results').classList.add('image-detail-open');
 
