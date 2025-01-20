@@ -119,9 +119,6 @@ module.exports = function (grunt) {
       production: {
         options: {
           paths: ["less"],
-          plugins: [
-            new (require('less-plugin-clean-css'))()
-          ],
           sourceMap: true,
           sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map'; },
           outputSourceFiles: true,
