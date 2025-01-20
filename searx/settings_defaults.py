@@ -151,6 +151,7 @@ SCHEMA = {
         'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
         'public_instances': SettingsValue((False, str), 'https://searx.space'),
         'wiki_url': SettingsValue(str, 'https://github.com/searxng/searxng/wiki'),
+        'display_instance_name': SettingsValue(bool, False),
         'custom': SettingsValue(dict, {'links': {}}),
     },
     'search': {
