@@ -91,8 +91,10 @@
       searxng.scrollPageToSelected();
     };
 
-    searxng.closeDetail = function (e) {
+    searxng.closeDetail = function () {
       d.getElementById('results').classList.remove('image-detail-open');
+      // remove #image-viewer hash from url by navigating back
+      if (window.location.hash == '#image-viewer') window.history.back();
       searxng.scrollPageToSelected();
     };
     searxng.on('.result-detail-close', 'click', e => {
@@ -110,7 +112,7 @@
 
     // listen for the back button to be pressed and dismiss the image details when called
     window.addEventListener('hashchange', () => {
-      if (!window.location.hash) searxng.closeDetail();
+      if (window.location.hash != '#image-viewer') searxng.closeDetail();
     });
 
     d.querySelectorAll('.swipe-horizontal').forEach(
