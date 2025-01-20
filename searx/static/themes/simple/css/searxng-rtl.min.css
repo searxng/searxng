@@ -4544,6 +4544,11 @@ summary.title {
   font-size: 1em;
   color: var(--color-search-font);
 }
+#links_on_top h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em;
+}
 #links_on_top a {
   display: flex;
   align-items: center;
@@ -4559,6 +4564,11 @@ summary.title {
 #links_on_top a:visited *,
 #links_on_top a:active * {
   color: var(--color-search-font);
+}
+body.index_endpoint #instance_name {
+  position: fixed;
+  right: 1rem;
+  font-size: 2em;
 }
 #pagination {
   grid-area: pagination;
