@@ -291,15 +291,21 @@ def _parse_search(resp):
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
-        content_tag = eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
+        content: str = extract_text(
+            eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
+        )  # type: ignore
         pub_date_raw = eval_xpath(result, 'substring-before(.//div[contains(@class, "snippet-description")], "-")')
+        pub_date = _extract_published_date(pub_date_raw)
+        if pub_date and content.startswith(pub_date_raw):
+            content = content.lstrip(pub_date_raw).strip("- \n\t")
+
         thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
 
         item = {
             'url': url,
             'title': extract_text(title_tag),
-            'content': extract_text(content_tag),
-            'publishedDate': _extract_published_date(pub_date_raw),
+            'content': content,
+            'publishedDate': pub_date,
             'thumbnail': thumbnail,
         }
 
