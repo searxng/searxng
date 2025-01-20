@@ -44,6 +44,7 @@ safesearch_cookies = {0: '-2', 1: None, 2: '1'}
 safesearch_args = {0: '1', 1: None, 2: '1'}
 
 search_path_map = {'images': 'i', 'videos': 'v', 'news': 'news'}
+license_map = {'public': 'Public', 'freetouse': 'Modify', 'commercial': ''}
 
 
 def request(query, params):
@@ -59,12 +60,16 @@ def request(query, params):
 
     eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 
+    f_arg = ''
+    if ddg_category == 'images' and params['license_filter']:
+        f_arg = 'license:' + license_map[params['license_filter']]
+
     args = {
         'q': query,
         'o': 'json',
         # 'u': 'bing',
         'l': eng_region,
-        'f': ',,,,,',
+        'f': ',,,,,' + f_arg,
         'vqd': vqd,
     }
 

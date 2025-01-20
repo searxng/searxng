@@ -67,6 +67,7 @@ def get_search_query(
         "pageno": str(args.pageno),
         "language": args.lang,
         "time_range": args.timerange,
+        'license_filter': args.license_filter,
     }
     preferences = searx.preferences.Preferences(['simple'], engine_categories, searx.engines.engines, [])
     preferences.key_value_settings['safesearch'].parse(args.safesearch)
@@ -106,7 +107,8 @@ def to_dict(search_query: searx.search.SearchQuery) -> Dict[str, Any]:
             "pageno": search_query.pageno,
             "lang": search_query.lang,
             "safesearch": search_query.safesearch,
-            "timerange": search_query.time_range,
+            "time_range": search_query.time_range,
+            "license": search_query.license,
         },
         "results": no_parsed_url(result_container.get_ordered_results()),
         "infoboxes": result_container.infoboxes,
@@ -159,6 +161,13 @@ def parse_argument(
     )
     parser.add_argument(
         '--timerange', type=str, nargs='?', choices=['day', 'week', 'month', 'year'], help='Filter by time range'
+    )
+    parser.add_argument(
+        '--license_filter',
+        type=str,
+        nargs='?',
+        choices=['any', 'public', 'freetouse', 'commercial'],
+        help='Filter by license',
     )
     return parser.parse_args(args)
 

@@ -50,6 +50,7 @@ Engine File
    categories              list        categories, in which the engine is working
    paging                  boolean     support multiple pages
    time_range_support      boolean     support search time range
+   license_filter_support  boolean     support search with content license filter
    engine_type             str         - ``online`` :ref:`[ref] <online engines>` by
                                          default, other possibles values are:
                                        - ``offline`` :ref:`[ref] <offline engines>`
@@ -152,6 +153,7 @@ parameters with default value can be redefined for special purposes.
    category               str            current category, like ``'general'``
    safesearch             int            ``0``, between ``0`` and ``2`` (normal, moderate, strict)
    time_range             Optional[str]  ``None``, can be ``day``, ``week``, ``month``, ``year``
+   license_filter         Optional[str]  ``None``, can be ``public`` (copyleft content), ``freetouse`` (Free to share, modify and use), ``commercial`` (not allowed to use without further permission by the creator)
    pageno                 int            current pagenumber
    searxng_locale         str            SearXNG's locale selected by user.  Specific language code like
                                          ``'en'``, ``'en-US'``, or ``'all'`` if unspecified.

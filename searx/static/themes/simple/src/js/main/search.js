@@ -164,6 +164,7 @@
       searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
       searxng.on(d.getElementById('language'), 'change', submitIfQuery);
+      searxng.on(d.getElementById('license_filter'), 'change', submitIfQuery);
     }
 
     const categoryButtons = d.querySelectorAll("button.category_button");

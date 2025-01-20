@@ -102,6 +102,15 @@ def parse_time_range(form: Dict[str, str]) -> Optional[str]:
     return query_time_range
 
 
+def parse_license_filter(form: Dict[str, str]) -> Optional[str]:
+    license_filter = form.get('license_filter')
+
+    if license_filter in ('public', 'freetouse', 'commercial'):
+        return license_filter
+
+    return None
+
+
 def parse_timeout(form: Dict[str, str], raw_text_query: RawTextQuery) -> Optional[float]:
     timeout_limit = raw_text_query.timeout_limit
     if timeout_limit is None:
@@ -258,6 +267,7 @@ def get_search_query_from_webapp(
     query_pageno = parse_pageno(form)
     query_safesearch = parse_safesearch(preferences, form)
     query_time_range = parse_time_range(form)
+    query_license = parse_license_filter(form)
     query_timeout = parse_timeout(form, raw_text_query)
     external_bang = raw_text_query.external_bang
     redirect_to_first_result = raw_text_query.redirect_to_first_result
@@ -292,6 +302,7 @@ def get_search_query_from_webapp(
             query_safesearch,
             query_pageno,
             query_time_range,
+            query_license,
             query_timeout,
             external_bang=external_bang,
             engine_data=engine_data,

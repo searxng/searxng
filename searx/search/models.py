@@ -35,6 +35,7 @@ class SearchQuery:
         'safesearch',
         'pageno',
         'time_range',
+        'license_filter',
         'timeout_limit',
         'external_bang',
         'engine_data',
@@ -49,6 +50,7 @@ class SearchQuery:
         safesearch: int = 0,
         pageno: int = 1,
         time_range: typing.Optional[str] = None,
+        license_filter: typing.Optional[str] = None,
         timeout_limit: typing.Optional[float] = None,
         external_bang: typing.Optional[str] = None,
         engine_data: typing.Optional[typing.Dict[str, str]] = None,
@@ -60,6 +62,7 @@ class SearchQuery:
         self.safesearch = safesearch
         self.pageno = pageno
         self.time_range = time_range
+        self.license_filter = license_filter
         self.timeout_limit = timeout_limit
         self.external_bang = external_bang
         self.engine_data = engine_data or {}
@@ -77,13 +80,14 @@ class SearchQuery:
         return list(set(map(lambda engineref: engineref.category, self.engineref_list)))
 
     def __repr__(self):
-        return "SearchQuery({!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r})".format(
+        return "SearchQuery({!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r}, {!r})".format(
             self.query,
             self.engineref_list,
             self.lang,
             self.safesearch,
             self.pageno,
             self.time_range,
+            self.license_filter,
             self.timeout_limit,
             self.external_bang,
             self.redirect_to_first_result,
@@ -97,6 +101,7 @@ class SearchQuery:
             and self.safesearch == other.safesearch
             and self.pageno == other.pageno
             and self.time_range == other.time_range
+            and self.license_filter == other.license_filter
             and self.timeout_limit == other.timeout_limit
             and self.external_bang == other.external_bang
             and self.redirect_to_first_result == other.redirect_to_first_result
@@ -111,6 +116,7 @@ class SearchQuery:
                 self.safesearch,
                 self.pageno,
                 self.time_range,
+                self.license_filter,
                 self.timeout_limit,
                 self.external_bang,
                 self.redirect_to_first_result,
@@ -125,6 +131,7 @@ class SearchQuery:
             self.safesearch,
             self.pageno,
             self.time_range,
+            self.license_filter,
             self.timeout_limit,
             self.external_bang,
             self.engine_data,

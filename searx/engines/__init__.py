@@ -31,6 +31,7 @@ ENGINE_DEFAULT_ARGS = {
     "engine_type": "online",
     "paging": False,
     "time_range_support": False,
+    "license_filter_support": False,
     "safesearch": False,
     # settings.yml
     "categories": ["general"],
