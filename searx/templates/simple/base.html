@@ -45,6 +45,9 @@
     {% endif %}
 
     <nav id="links_on_top">
+      {% if get_setting('brand.display_instance_name') %}
+        <h1 id="instance_name">{{ instance_name }}</h1>
+      {% endif %}
       {%- from 'simple/icons.html' import icon_big -%}
       {%- block linkto_about -%}
         <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
