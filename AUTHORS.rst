@@ -175,3 +175,4 @@ features or generally made searx better:
 - Daniel Kukula `<https://github.com/dkuku>`
 - Patrick Evans `https://github.com/holysoles`
 - Daniel Mowitz `<https://daniel.mowitz.rocks>`
+- SentientTapeDrive `<https://github.com/SentientTapeDrive>`_ `<https://thefubar.company>`_
