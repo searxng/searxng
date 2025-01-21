@@ -52,12 +52,30 @@
       this.innerText = this.dataset.copiedText;
     });
 
-    // progress spinner that is being attached while an image is loading
+    // searxng.selectImage (gallery)
+    // -----------------------------
+
+    // setTimeout() ID, needed to cancel *last* loadImage
+    let imgTimeoutID;
+
+    // progress spinner, while an image is loading
     const imgLoaderSpinner = d.createElement('div');
     imgLoaderSpinner.classList.add('loader');
+
+    // singleton image object, which is used for all loading processes of a
+    // detailed image
     const imgLoader = new Image();
 
     const loadImage = (imgSrc, onSuccess) => {
+      // if defered image load exists, stop defered task.
+      if (imgTimeoutID) clearTimeout(imgTimeoutID);
+
+      // defer load of the detail image for 1 sec
+      imgTimeoutID = setTimeout(() => {
+        imgLoader.src = imgSrc;
+      }, 1000);
+
+      // set handlers in the on-properties
       imgLoader.onload = () => {
         onSuccess();
         imgLoaderSpinner.remove();
@@ -65,38 +83,49 @@
       imgLoader.onerror = () => {
         imgLoaderSpinner.remove();
       };
-      imgLoader.src = imgSrc;
-    }
-    searxng.selectImage = function (resultElement) {
-      /* eslint no-unused-vars: 0 */
-      if (resultElement) {
-        // load full size image in background
-        const thumbnailElement = resultElement.querySelector('.image_thumbnail');
-        const detailElement = resultElement.querySelector('.detail');
-        const imgElement = resultElement.querySelector('.result-images-source img');
-        if (!imgElement) return;
+    };
 
-        const imgSrc = imgElement.getAttribute('data-src');
-        // already loaded high-res image or no high-res image available
-        if (!imgSrc) return;
+    searxng.selectImage = (resultElement) => {
 
-        // show a progress spinner and start loading the full high-res image
-        detailElement.appendChild(imgLoaderSpinner);
-        loadImage(imgSrc, () => {
-          imgElement.src = imgSrc;
-          imgElement.removeAttribute('data-src');
-        })
-
-        // use the image thumbnail until the image is fully loaded
-        imgElement.src = thumbnailElement.src;
-      }
+      // add a class that can be evaluated in the CSS and indicates that the
+      // detail view is open
       d.getElementById('results').classList.add('image-detail-open');
 
-      // add a hash to the browser history so that pressing back doesn't return to the previous page
-      // this allows us to dismiss the image details on pressing the back button on mobile devices
+      // add a hash to the browser history so that pressing back doesn't return
+      // to the previous page this allows us to dismiss the image details on
+      // pressing the back button on mobile devices
       window.location.hash = '#image-viewer';
 
       searxng.scrollPageToSelected();
+
+      // if there is none element given by the caller, stop here
+      if (!resultElement) return;
+
+      // find <img> object in the element, if there is none, stop here.
+      const img = resultElement.querySelector('.result-images-source img');
+      if (!img) return;
+
+      // <img src="" data-src="http://example.org/image.jpg">
+      const src = img.getAttribute('data-src');
+
+      // already loaded high-res image or no high-res image available
+      if (!src) return;
+
+      // use the image thumbnail until the image is fully loaded
+      const thumbnail = resultElement.querySelector('.image_thumbnail');
+      img.src = thumbnail.src;
+
+      // show a progress spinner
+      const detailElement = resultElement.querySelector('.detail');
+      detailElement.appendChild(imgLoaderSpinner);
+
+      // load full size image in background
+      loadImage(src, () => {
+        // after the singelton loadImage has loaded the detail image into the
+        // cache, it can be used in the origin <img> as src property.
+        img.src = src;
+        img.removeAttribute('data-src');
+      });
     };
 
     searxng.closeDetail = function () {
@@ -125,10 +154,10 @@
 
     d.querySelectorAll('.swipe-horizontal').forEach(
       obj => {
-        obj.addEventListener('swiped-left', function (e) {
+        obj.addEventListener('swiped-left', function () {
           searxng.selectNext(false);
         });
-        obj.addEventListener('swiped-right', function (e) {
+        obj.addEventListener('swiped-right', function () {
           searxng.selectPrevious(false);
         });
       }
