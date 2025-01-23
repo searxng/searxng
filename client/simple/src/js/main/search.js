@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
-/* global AutoComplete */
+/* exported AutoComplete */
+
+import AutoComplete from  "../../../node_modules/autocomplete-js/dist/autocomplete.js";
+
 (function (w, d, searxng) {
   'use strict';
 
