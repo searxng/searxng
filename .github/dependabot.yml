@@ -12,11 +12,11 @@ updates:
       prefix: "[upd] pypi:"
 
   - package-ecosystem: "npm"
-    directory: "/searx/static/themes/simple"
+    directory: "/client/simple"
     schedule:
       interval: "weekly"
       day: "friday"
     open-pull-requests-limit: 5
     target-branch: "master"
     commit-message:
-      prefix: "[upd] npm:"
+      prefix: "[upd] web-client (simple):"
