@@ -39,12 +39,7 @@ def post(*args, **kwargs):
 def baidu(query, _lang):
     # baidu search autocompleter
     base_url = "https://www.baidu.com/sugrec?"
-    response = get(base_url + urlencode({
-        'ie': 'utf-8',
-        'json': 1,
-        'prod': 'pc',
-        'wd': query
-    }))
+    response = get(base_url + urlencode({'ie': 'utf-8', 'json': 1, 'prod': 'pc', 'wd': query}))
 
     results = []
 
