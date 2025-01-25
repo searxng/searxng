@@ -36,6 +36,21 @@ def post(*args, **kwargs):
     return http_post(*args, **kwargs)
 
 
+def baidu(query, _lang):
+    # baidu search autocompleter
+    base_url = "https://www.baidu.com/sugrec?"
+    response = get(base_url + urlencode({'ie': 'utf-8', 'json': 1, 'prod': 'pc', 'wd': query}))
+
+    results = []
+
+    if response.ok:
+        data = response.json()
+        if 'g' in data:
+            for item in data['g']:
+                results.append(item['q'])
+    return results
+
+
 def brave(query, _lang):
     # brave search autocompleter
     url = 'https://search.brave.com/api/suggest?'
@@ -238,6 +253,7 @@ def yandex(query, _lang):
 
 
 backends = {
+    'baidu': baidu,
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
     'google': google_complete,
