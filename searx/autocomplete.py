@@ -254,17 +254,17 @@ def yandex(query, _lang):
 
 backends = {
     'baidu': baidu,
+    'brave': brave,
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
     'google': google_complete,
     'mwmbl': mwmbl,
+    'qwant': qwant,
     'seznam': seznam,
     'startpage': startpage,
     'stract': stract,
     'swisscows': swisscows,
-    'qwant': qwant,
     'wikipedia': wikipedia,
-    'brave': brave,
     'yandex': yandex,
 }
 
