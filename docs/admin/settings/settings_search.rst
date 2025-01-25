@@ -33,14 +33,19 @@
 ``autocomplete``:
   Existing autocomplete backends, leave blank to turn it off.
 
-  - ``dbpedia``
-  - ``duckduckgo``
-  - ``google``
-  - ``mwmbl``
-  - ``startpage``
-  - ``swisscows``
-  - ``qwant``
-  - ``wikipedia``
+  - ``baidu```
+  - ``brave```
+  - ``dbpedia```
+  - ``duckduckgo```
+  - ``google```
+  - ``mwmbl```
+  - ``qwant```
+  - ``seznam```
+  - ``startpage```
+  - ``stract```
+  - ``swisscows```
+  - ``wikipedia```
+  - ``yandex```
 
 ``favicon_resolver``:
   To activate favicons in SearXNG's result list select a default
