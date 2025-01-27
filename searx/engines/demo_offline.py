@@ -13,6 +13,7 @@ close to the implementation, its just a simple example.  To get in use of this
 """
 
 import json
+from searx.result_types import EngineResults
 
 engine_type = 'offline'
 categories = ['general']
@@ -48,14 +49,14 @@ def init(engine_settings=None):
     )
 
 
-def search(query, request_params):
+def search(query, request_params) -> EngineResults:
     """Query (offline) engine and return results.  Assemble the list of results from
     your local engine.  In this demo engine we ignore the 'query' term, usual
     you would pass the 'query' term to your local engine to filter out the
     results.
 
     """
-    ret_val = []
+    res = EngineResults()
 
     result_list = json.loads(_my_offline_engine)
 
@@ -67,6 +68,6 @@ def search(query, request_params):
             # choose a result template or comment out to use the *default*
             'template': 'key-value.html',
         }
-        ret_val.append(entry)
+        res.append(entry)
 
-    return ret_val
+    return res

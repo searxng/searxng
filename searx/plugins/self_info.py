@@ -7,7 +7,7 @@ import re
 from flask_babel import gettext
 
 from searx.botdetection._helpers import get_real_ip
-from searx.result_types import Answer
+from searx.result_types import EngineResults
 
 from . import Plugin, PluginInfo
 
@@ -41,17 +41,17 @@ class SXNGPlugin(Plugin):
             preference_section="query",
         )
 
-    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> list[Answer]:
+    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> EngineResults:
         """Returns a result list only for the first page."""
-        results = []
+        results = EngineResults()
 
         if search.search_query.pageno > 1:
             return results
 
         if self.ip_regex.search(search.search_query.query):
-            Answer(results=results, answer=gettext("Your IP is: ") + get_real_ip(request))
+            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request)))
 
         if self.ua_regex.match(search.search_query.query):
-            Answer(results=results, answer=gettext("Your user-agent is: ") + str(request.user_agent))
+            results.add(results.types.Answer(answer=gettext("Your user-agent is: ") + str(request.user_agent)))
 
         return results

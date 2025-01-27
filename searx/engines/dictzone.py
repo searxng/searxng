@@ -7,7 +7,7 @@ import urllib.parse
 from lxml import html
 
 from searx.utils import eval_xpath, extract_text
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 from searx.network import get as http_get  # https://github.com/searxng/searxng/issues/762
 
 # about
@@ -43,9 +43,9 @@ def _clean_up_node(node):
             n.getparent().remove(n)
 
 
-def response(resp):
+def response(resp) -> EngineResults:
+    results = EngineResults()
 
-    results = []
     item_list = []
 
     if not resp.ok:
@@ -85,7 +85,7 @@ def response(resp):
 
             synonyms.append(p_text)
 
-        item = Translations.Item(text=text, synonyms=synonyms)
+        item = results.types.Translations.Item(text=text, synonyms=synonyms)
         item_list.append(item)
 
     # the "autotranslate" of dictzone is loaded by the JS from URL:
@@ -98,7 +98,7 @@ def response(resp):
     # works only sometimes?
     autotranslate = http_get(f"{base_url}/trans/{query}/{from_lang}_{to_lang}", timeout=1.0)
     if autotranslate.ok and autotranslate.text:
-        item_list.insert(0, Translations.Item(text=autotranslate.text))
+        item_list.insert(0, results.types.Translations.Item(text=autotranslate.text))
 
-    Translations(results=results, translations=item_list, url=resp.search_params["url"])
+    results.add(results.types.Translations(translations=item_list, url=resp.search_params["url"]))
     return results

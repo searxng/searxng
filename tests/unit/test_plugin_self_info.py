@@ -39,7 +39,7 @@ class PluginIPSelfInfo(SearxTestCase):
             sxng_request.preferences = self.pref
             sxng_request.remote_addr = "127.0.0.1"
             sxng_request.headers = {"X-Forwarded-For": "1.2.3.4, 127.0.0.1", "X-Real-IP": "127.0.0.1"}  # type: ignore
-            answer = Answer(results=[], answer=gettext("Your IP is: ") + "127.0.0.1")
+            answer = Answer(answer=gettext("Your IP is: ") + "127.0.0.1")
 
             search = do_post_search("ip", self.storage, pageno=1)
             self.assertIn(answer, search.result_container.answers)
@@ -60,7 +60,7 @@ class PluginIPSelfInfo(SearxTestCase):
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
             sxng_request.user_agent = "Dummy agent"  # type: ignore
-            answer = Answer(results=[], answer=gettext("Your user-agent is: ") + "Dummy agent")
+            answer = Answer(answer=gettext("Your user-agent is: ") + "Dummy agent")
 
             search = do_post_search(query, self.storage, pageno=1)
             self.assertIn(answer, search.result_container.answers)

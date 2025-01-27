@@ -101,6 +101,6 @@ class PluginStorage(SearxTestCase):
             ret = self.storage.on_result(
                 sxng_request,
                 get_search_mock("lorem ipsum", user_plugins=["plg001", "plg002"]),
-                Result(results=[]),
+                Result(),
             )
             self.assertFalse(ret)

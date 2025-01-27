@@ -5,7 +5,7 @@ import random
 import re
 import urllib.parse
 
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 
 about = {
     "website": 'https://codeberg.org/aryak/mozhi',
@@ -33,11 +33,11 @@ def request(_query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
+    res = EngineResults()
     translation = resp.json()
 
-    item = Translations.Item(text=translation['translated-text'])
+    item = res.types.Translations.Item(text=translation['translated-text'])
 
     if translation['target_transliteration'] and not re.match(
         re_transliteration_unsupported, translation['target_transliteration']
@@ -57,5 +57,5 @@ def response(resp):
     url = urllib.parse.urlparse(resp.search_params["url"])
     # remove the api path
     url = url._replace(path="", fragment="").geturl()
-    Translations(results=results, translations=[item], url=url)
-    return results
+    res.add(res.types.Translations(translations=[item], url=url))
+    return res

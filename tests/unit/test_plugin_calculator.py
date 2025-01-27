@@ -38,7 +38,7 @@ class PluginCalculator(SearxTestCase):
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
             query = "1+1"
-            answer = Answer(results=[], answer=f"{query} = {eval(query)}")  # pylint: disable=eval-used
+            answer = Answer(answer=f"{query} = {eval(query)}")  # pylint: disable=eval-used
 
             search = do_post_search(query, self.storage, pageno=1)
             self.assertIn(answer, search.result_container.answers)
@@ -81,7 +81,7 @@ class PluginCalculator(SearxTestCase):
         with self.app.test_request_context():
             self.pref.parse_dict({"locale": lang})
             sxng_request.preferences = self.pref
-            answer = Answer(results=[], answer=f"{query} = {res}")
+            answer = Answer(answer=f"{query} = {res}")
 
             search = do_post_search(query, self.storage)
             self.assertIn(answer, search.result_container.answers)

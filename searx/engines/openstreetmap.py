@@ -13,7 +13,7 @@ from flask_babel import gettext
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
 from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
-from searx.result_types import Answer
+from searx.result_types import EngineResults
 
 # about
 about = {
@@ -141,8 +141,8 @@ def request(query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
+    results = EngineResults()
 
     nominatim_json = resp.json()
     user_language = resp.search_params['language']
@@ -152,10 +152,12 @@ def response(resp):
         l = re.findall(r"\s*(.*)\s+to\s+(.+)", resp.search_params["query"])
     if l:
         point1, point2 = [urllib.parse.quote_plus(p) for p in l[0]]
-        Answer(
-            results=results,
-            answer=gettext('Show route in map ..'),
-            url=f"{route_url}/?point={point1}&point={point2}",
+
+        results.add(
+            results.types.Answer(
+                answer=gettext('Show route in map ..'),
+                url=f"{route_url}/?point={point1}&point={point2}",
+            )
         )
 
     # simplify the code below: make sure extratags is a dictionary

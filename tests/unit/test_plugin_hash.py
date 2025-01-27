@@ -51,7 +51,7 @@ class PluginHashTest(SearxTestCase):
     def test_hash_digest_new(self, query: str, res: str):
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
-            answer = Answer(results=[], answer=res)
+            answer = Answer(answer=res)
 
             search = do_post_search(query, self.storage)
             self.assertIn(answer, search.result_container.answers)
@@ -60,7 +60,7 @@ class PluginHashTest(SearxTestCase):
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
             query, res = query_res[0]
-            answer = Answer(results=[], answer=res)
+            answer = Answer(answer=res)
 
             search = do_post_search(query, self.storage, pageno=1)
             self.assertIn(answer, search.result_container.answers)

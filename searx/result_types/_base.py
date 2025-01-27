@@ -53,27 +53,6 @@ class Result(msgspec.Struct, kw_only=True):
     The field is optional and is initialized from the context if necessary.
     """
 
-    results: list = []  # https://jcristharif.com/msgspec/structs.html#default-values
-    """Result list of an :origin:`engine <searx/engines>` response or a
-    :origin:`answerer <searx/answerers>` to which the answer should be added.
-
-    This field is only present for the sake of simplicity.  Typically, the
-    response function of an engine has a result list that is returned at the
-    end. By specifying the result list in the constructor of the result, this
-    result is then immediately added to the list (this parameter does not have
-    another function).
-
-    .. code:: python
-
-       def response(resp):
-           results = []
-           ...
-           Answer(results=results, answer=answer, url=url)
-           ...
-           return results
-
-    """
-
     def normalize_result_fields(self):
         """Normalize a result ..
 
@@ -92,9 +71,7 @@ class Result(msgspec.Struct, kw_only=True):
                 self.url = self.parsed_url.geturl()
 
     def __post_init__(self):
-        """Add *this* result to the result list."""
-
-        self.results.append(self)
+        pass
 
     def __hash__(self) -> int:
         """Generates a hash value that uniquely identifies the content of *this*
