@@ -70,7 +70,7 @@ class TestXpathEngine(SearxTestCase):
 
         response = mock.Mock(text=self.html, status_code=200)
         results = xpath.response(response)
-        self.assertEqual(type(results), list)
+        self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]['title'], 'Result 1')
         self.assertEqual(results[0]['url'], 'https://result1.com/')
@@ -82,7 +82,7 @@ class TestXpathEngine(SearxTestCase):
         # with cached urls, without results_xpath
         xpath.cached_xpath = '//div[@class="search_result"]//a[@class="cached"]/@href'
         results = xpath.response(response)
-        self.assertEqual(type(results), list)
+        self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]['cached_url'], 'https://cachedresult1.com')
         self.assertEqual(results[1]['cached_url'], 'https://cachedresult2.com')
@@ -112,7 +112,7 @@ class TestXpathEngine(SearxTestCase):
 
         response = mock.Mock(text=self.html, status_code=200)
         results = xpath.response(response)
-        self.assertEqual(type(results), list)
+        self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]['title'], 'Result 1')
         self.assertEqual(results[0]['url'], 'https://result1.com/')
@@ -124,7 +124,7 @@ class TestXpathEngine(SearxTestCase):
         # with cached urls, with results_xpath
         xpath.cached_xpath = './/a[@class="cached"]/@href'
         results = xpath.response(response)
-        self.assertEqual(type(results), list)
+        self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]['cached_url'], 'https://cachedresult1.com')
         self.assertEqual(results[1]['cached_url'], 'https://cachedresult2.com')

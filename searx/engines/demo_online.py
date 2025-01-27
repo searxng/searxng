@@ -17,6 +17,7 @@ list in ``settings.yml``:
 
 from json import loads
 from urllib.parse import urlencode
+from searx.result_types import EngineResults
 
 engine_type = 'online'
 send_accept_language_header = True
@@ -70,21 +71,28 @@ def request(query, params):
     return params
 
 
-def response(resp):
+def response(resp) -> EngineResults:
     """Parse out the result items from the response.  In this example we parse the
     response from `api.artic.edu <https://artic.edu>`__ and filter out all
     images.
 
     """
-    results = []
+    res = EngineResults()
     json_data = loads(resp.text)
+
+    res.add(
+        res.types.Answer(
+            answer="this is a dummy answer ..",
+            url="https://example.org",
+        )
+    )
 
     for result in json_data['data']:
 
         if not result['image_id']:
             continue
 
-        results.append(
+        res.append(
             {
                 'url': 'https://artic.edu/artworks/%(id)s' % result,
                 'title': result['title'] + " (%(date_display)s) // %(artist_display)s" % result,
@@ -95,4 +103,4 @@ def response(resp):
             }
         )
 
-    return results
+    return res

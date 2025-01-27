@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Lingva (alternative Google Translate frontend)"""
 
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 
 about = {
     "website": 'https://lingva.ml',
@@ -23,8 +23,8 @@ def request(_query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
+    results = EngineResults()
 
     result = resp.json()
     info = result["info"]
@@ -44,7 +44,7 @@ def response(resp):
     for definition in info['definitions']:
         for translation in definition['list']:
             data.append(
-                Translations.Item(
+                results.types.Translations.Item(
                     text=result['translation'],
                     definitions=[translation['definition']] if translation['definition'] else [],
                     examples=[translation['example']] if translation['example'] else [],
@@ -55,19 +55,20 @@ def response(resp):
     for translation in info["extraTranslations"]:
         for word in translation["list"]:
             data.append(
-                Translations.Item(
+                results.types.Translations.Item(
                     text=word['word'],
                     definitions=word['meanings'],
                 )
             )
 
     if not data and result['translation']:
-        data.append(Translations.Item(text=result['translation']))
+        data.append(results.types.Translations.Item(text=result['translation']))
 
     params = resp.search_params
-    Translations(
-        results=results,
-        translations=data,
-        url=f"{url}/{params['from_lang'][1]}/{params['to_lang'][1]}/{params['query']}",
+    results.add(
+        results.types.Translations(
+            translations=data,
+            url=f"{url}/{params['from_lang'][1]}/{params['to_lang'][1]}/{params['query']}",
+        )
     )
     return results

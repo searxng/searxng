@@ -9,10 +9,50 @@
    gradually.  For more, please read :ref:`result types`.
 
 """
+# pylint: disable=too-few-public-methods
 
 from __future__ import annotations
 
-__all__ = ["Result", "AnswerSet", "Answer", "Translations"]
+__all__ = ["Result", "EngineResults", "AnswerSet", "Answer", "Translations"]
+
+import abc
+
+from searx import enginelib
 
 from ._base import Result, LegacyResult
 from .answer import AnswerSet, Answer, Translations
+
+
+class ResultList(list, abc.ABC):
+    """Base class of all result lists (abstract)."""
+
+    class types:  # pylint: disable=invalid-name
+        """The collection of result types (which have already been implemented)."""
+
+        Answer = Answer
+        Translations = Translations
+
+    def __init__(self):
+        # pylint: disable=useless-parent-delegation
+        super().__init__()
+
+    def add(self, result: Result):
+        """Add a :py:`Result` item to the result list."""
+        self.append(result)
+
+
+class EngineResults(ResultList):
+    """Result list that should be used by engine developers.  For convenience,
+    engine developers don't need to import types / see :py:obj:`ResultList.types`.
+
+    .. code:: python
+
+       from searx.result_types import EngineResults
+       ...
+       def response(resp) -> EngineResults:
+           res = EngineResults()
+           ...
+           res.add( res.types.Answer(answer="lorem ipsum ..", url="https://example.org") )
+           ...
+           return res
+    """

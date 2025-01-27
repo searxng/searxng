@@ -3,7 +3,7 @@
 
 import random
 import json
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 
 about = {
     "website": 'https://libretranslate.com',
@@ -45,15 +45,15 @@ def request(_query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
+    results = EngineResults()
 
     json_resp = resp.json()
     text = json_resp.get('translatedText')
     if not text:
         return results
 
-    item = Translations.Item(text=text, examples=json_resp.get('alternatives', []))
-    Translations(results=results, translations=[item])
+    item = results.types.Translations.Item(text=text, examples=json_resp.get('alternatives', []))
+    results.add(results.types.Translations(translations=[item]))
 
     return results

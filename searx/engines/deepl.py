@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Deepl translation engine"""
 
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 
 about = {
     "website": 'https://deepl.com',
@@ -39,15 +39,14 @@ def request(_query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
 
-    result = resp.json()
+    res = EngineResults()
+    data = resp.json()
+    if not data.get('translations'):
+        return res
 
-    if not result.get('translations'):
-        return results
+    translations = [res.types.Translations.Item(text=t['text']) for t in data['translations']]
+    res.add(res.types.Translations(translations=translations))
 
-    translations = [Translations.Item(text=t['text']) for t in result['translations']]
-    Translations(results=results, translations=translations)
-
-    return results
+    return res

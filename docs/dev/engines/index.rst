@@ -19,6 +19,14 @@ Engine Implementations
    engine_overview
 
 
+ResultList and engines
+======================
+
+.. autoclass:: searx.result_types.ResultList
+
+.. autoclass:: searx.result_types.EngineResults
+
+
 Engine Types
 ============
 

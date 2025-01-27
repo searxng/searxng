@@ -5,7 +5,7 @@
 
 import urllib.parse
 
-from searx.result_types import Translations
+from searx.result_types import EngineResults
 
 # about
 about = {
@@ -37,8 +37,8 @@ def request(query, params):  # pylint: disable=unused-argument
     return params
 
 
-def response(resp):
-    results = []
+def response(resp) -> EngineResults:
+    results = EngineResults()
     data = resp.json()
 
     args = {
@@ -53,7 +53,7 @@ def response(resp):
 
     examples = [f"{m['segment']} : {m['translation']}" for m in data['matches'] if m['translation'] != text]
 
-    item = Translations.Item(text=text, examples=examples)
-    Translations(results=results, translations=[item], url=link)
+    item = results.types.Translations.Item(text=text, examples=examples)
+    results.add(results.types.Translations(translations=[item], url=link))
 
     return results

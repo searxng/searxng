@@ -9,7 +9,7 @@ import hashlib
 from flask_babel import gettext
 
 from searx.plugins import Plugin, PluginInfo
-from searx.result_types import Answer
+from searx.result_types import EngineResults
 
 if typing.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
@@ -37,9 +37,9 @@ class SXNGPlugin(Plugin):
             preference_section="query",
         )
 
-    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> list[Answer]:
+    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> EngineResults:
         """Returns a result list only for the first page."""
-        results = []
+        results = EngineResults()
 
         if search.search_query.pageno > 1:
             return results
@@ -61,6 +61,6 @@ class SXNGPlugin(Plugin):
         f.update(string.encode("utf-8").strip())
         answer = function + " " + gettext("hash digest") + ": " + f.hexdigest()
 
-        Answer(results=results, answer=answer)
+        results.add(results.types.Answer(answer=answer))
 
         return results

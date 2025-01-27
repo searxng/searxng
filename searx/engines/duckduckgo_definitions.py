@@ -21,7 +21,7 @@ from lxml import html
 from searx.data import WIKIDATA_UNITS
 from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
-from searx.result_types import Answer
+from searx.result_types import EngineResults
 
 if TYPE_CHECKING:
     import logging
@@ -76,9 +76,9 @@ def request(query, params):
     return params
 
 
-def response(resp):
+def response(resp) -> EngineResults:
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
-    results = []
+    results = EngineResults()
 
     search_res = resp.json()
 
@@ -103,7 +103,12 @@ def response(resp):
         answer_type = search_res.get('AnswerType')
         logger.debug('AnswerType="%s" Answer="%s"', answer_type, answer)
         if isinstance(answer, str) and answer_type not in ['calc', 'ip']:
-            Answer(results=results, answer=html_to_text(answer), url=search_res.get('AbstractURL', ''))
+            results.add(
+                results.types.Answer(
+                    answer=html_to_text(answer),
+                    url=search_res.get('AbstractURL', ''),
+                )
+            )
 
     # add infobox
     if 'Definition' in search_res:
