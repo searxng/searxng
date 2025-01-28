@@ -100,5 +100,6 @@ def response(resp) -> EngineResults:
     if autotranslate.ok and autotranslate.text:
         item_list.insert(0, results.types.Translations.Item(text=autotranslate.text))
 
-    results.add(results.types.Translations(translations=item_list, url=resp.search_params["url"]))
+    if item_list:
+        results.add(results.types.Translations(translations=item_list, url=resp.search_params["url"]))
     return results

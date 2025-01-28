@@ -19,7 +19,7 @@ ahmia_blacklist: list = []
 
 
 def on_result(_request, _search, result) -> bool:
-    if not result.get('is_onion') or not result.get('parsed_url'):
+    if not getattr(result, 'is_onion', None) or not getattr(result, 'parsed_url', None):
         return True
     result_hash = md5(result['parsed_url'].hostname.encode()).hexdigest()
     return result_hash not in ahmia_blacklist
