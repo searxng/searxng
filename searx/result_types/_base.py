@@ -110,6 +110,9 @@ class Result(msgspec.Struct, kw_only=True):
 
         return iter(self.__struct_fields__)
 
+    def as_dict(self):
+        return {f: getattr(self, f) for f in self.__struct_fields__}
+
 
 class LegacyResult(dict):
     """A wrapper around a legacy result item.  The SearXNG core uses this class
@@ -130,10 +133,12 @@ class LegacyResult(dict):
     UNSET = object()
     WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 
+    def as_dict(self):
+        return self
+
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
-        self.__dict__ = self
 
         # Init fields with defaults / compare with defaults of the fields in class Result
         self.engine = self.get("engine", "")
