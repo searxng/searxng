@@ -123,17 +123,18 @@ def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:  # pylint: 
 
     """
 
-    results = rc.get_ordered_results()
     keys = ('title', 'url', 'content', 'host', 'engine', 'score', 'type')
     csv.writerow(keys)
 
-    for row in results:
+    for res in rc.get_ordered_results():
+        row = res.as_dict()
         row['host'] = row['parsed_url'].netloc
         row['type'] = 'result'
         csv.writerow([row.get(key, '') for key in keys])
 
     for a in rc.answers:
-        row = {'title': a, 'type': 'answer'}
+        row = a.as_dict()
+        row['host'] = row['parsed_url'].netloc
         csv.writerow([row.get(key, '') for key in keys])
 
     for a in rc.suggestions:
@@ -158,18 +159,17 @@ class JSONEncoder(json.JSONEncoder):  # pylint: disable=missing-class-docstring
 
 def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
-    results = rc.number_of_results
-    x = {
+    data = {
         'query': sq.query,
-        'number_of_results': results,
-        'results': rc.get_ordered_results(),
-        'answers': list(rc.answers),
+        'number_of_results': rc.number_of_results,
+        'results': [_.as_dict() for _ in rc.get_ordered_results()],
+        'answers': [_.as_dict() for _ in rc.answers],
         'corrections': list(rc.corrections),
         'infoboxes': rc.infoboxes,
         'suggestions': list(rc.suggestions),
         'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
     }
-    response = json.dumps(x, cls=JSONEncoder)
+    response = json.dumps(data, cls=JSONEncoder)
     return response
 
 
