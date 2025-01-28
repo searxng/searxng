@@ -139,7 +139,7 @@ low_priority: set = _load_regular_expressions('low_priority') or set()  # type: 
 
 
 def _matches_parsed_url(result, pattern):
-    return parsed in result and pattern.search(result[parsed].netloc)
+    return result[parsed] and (parsed in result and pattern.search(result[parsed].netloc))
 
 
 def on_result(_request, _search, result) -> bool:
@@ -151,7 +151,7 @@ def on_result(_request, _search, result) -> bool:
             # logger.debug(result['url'])
 
         for url_field in _url_fields:
-            if not result.get(url_field):
+            if not getattr(result, url_field, None):
                 continue
 
             url_src = urlparse(result[url_field])
@@ -164,7 +164,7 @@ def on_result(_request, _search, result) -> bool:
             return False
 
         for url_field in _url_fields:
-            if not result.get(url_field):
+            if not getattr(result, url_field, None):
                 continue
 
             url_src = urlparse(result[url_field])

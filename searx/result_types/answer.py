@@ -116,6 +116,10 @@ class Translations(BaseAnswer, kw_only=True):
     translations: list[Translations.Item]
     """List of translations."""
 
+    def __post_init__(self):
+        if not self.translations:
+            raise ValueError("Translation does not have an item in the list translations")
+
     class Item(msgspec.Struct, kw_only=True):
         """A single element of the translations / a translation.  A translation
         consists of at least a mandatory ``text`` property (the translation) ,
