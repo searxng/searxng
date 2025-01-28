@@ -2,13 +2,13 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import json
-from urllib.parse import ParseResult
 import babel
 from mock import Mock
 
 import searx.webapp
 import searx.search
 import searx.search.processors
+from searx.result_types._base import MainResult
 
 from searx.results import Timing
 from searx.preferences import Preferences
@@ -31,30 +31,21 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
 
         # set some defaults
         test_results = [
-            {
-                'content': 'first test content',
-                'title': 'First Test',
-                'url': 'http://first.test.xyz',
-                'engines': ['youtube', 'startpage'],
-                'engine': 'startpage',
-                'parsed_url': ParseResult(
-                    scheme='http', netloc='first.test.xyz', path='/', params='', query='', fragment=''
-                ),
-                'template': 'default.html',
-            },
-            {
-                'content': 'second test content',
-                'title': 'Second Test',
-                'url': 'http://second.test.xyz',
-                'engines': ['youtube', 'startpage'],
-                'engine': 'youtube',
-                'parsed_url': ParseResult(
-                    scheme='http', netloc='second.test.xyz', path='/', params='', query='', fragment=''
-                ),
-                'template': 'default.html',
-            },
+            MainResult(
+                title="First Test",
+                url="http://first.test.xyz",
+                content="first test content",
+                engine="startpage",
+            ),
+            MainResult(
+                title="Second Test",
+                url="http://second.test.xyz",
+                content="second test content",
+                engine="youtube",
+            ),
         ]
-
+        for r in test_results:
+            r.normalize_result_fields()
         timings = [
             Timing(engine='startpage', total=0.8, load=0.7),
             Timing(engine='youtube', total=0.9, load=0.6),
