@@ -694,9 +694,7 @@ def search():
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
 
-        if 'url' in result:
-            result['pretty_url'] = webutils.prettify_url(result['url'])
-        if result.get('publishedDate'):  # do not try to get a date from an empty string or a None type
+        if getattr(result, 'publishedDate', None):  # do not try to get a date from an empty string or a None type
             try:  # test if publishedDate >= 1900 (datetime module bug)
                 result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
             except ValueError:
@@ -706,15 +704,15 @@ def search():
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
-        if current_template != result.get('template'):
-            result['open_group'] = True
+        if current_template != result.template:
+            result.open_group = True
             if previous_result:
-                previous_result['close_group'] = True  # pylint: disable=unsupported-assignment-operation
-        current_template = result.get('template')
+                previous_result.close_group = True  # pylint: disable=unsupported-assignment-operation
+        current_template = result.template
         previous_result = result
 
     if previous_result:
-        previous_result['close_group'] = True
+        previous_result.close_group = True
 
     # 4.a RSS
 
