@@ -20,22 +20,23 @@
 # Shpubly <Shpubly@users.noreply.translate.codeberg.org>, 2024.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # shoko <shoko@users.noreply.translate.codeberg.org>, 2025.
+# RoyBarina <roybarina@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: sacred-serpent <sacred-"
-"serpent@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2025-01-30 05:21+0000\n"
+"Last-Translator: RoyBarina <roybarina@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Hebrew <https://translate.codeberg.org/projects/searxng/"
+"searxng/he/>\n"
 "Language: he\n"
-"Language-Team: Hebrew "
-"<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
-"&& n % 10 == 0) ? 2 : 3));\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,7 +107,7 @@ msgstr "מפות"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "onion"
+msgstr "שכבות בצל"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -176,7 +177,7 @@ msgstr "כהה"
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr ""
+msgstr "שחור"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
@@ -451,11 +452,11 @@ msgstr "מייצרת ערכים אקראיים שונים"
 
 #: searx/answerers/statistics.py:36
 msgid "Compute {func} of the arguments"
-msgstr ""
+msgstr "חשב {func} של הארגומנטים"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
-msgstr ""
+msgstr "הצג מסלול במפה .."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -530,7 +531,7 @@ msgstr "חשב ביטויים מתמטיים באמצעות שורת החיפו�
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr ""
+msgstr "תוסף גיבוב"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -569,6 +570,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
+"מציג את ה-IP שלך אם השאילתא היא \"ip\" ואת סוכן המשתמש שלך אם השאילתא היא "
+"\"user-agent\"."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -592,15 +595,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:69
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "לא ניתן להוריד את רשימת נקודות היציאה של Tor מ-"
 
 #: searx/plugins/tor_check.py:81
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "הינך משתמש ב-Tor ונראה שברשותך כתובת ה-IP החיצונית"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "אינך משתמש ב-Tor וברשותך כתובת ה-IP החיצונית"
 
 #: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
@@ -924,11 +927,11 @@ msgstr "דוגמאות"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "הגדרות"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
-msgstr ""
+msgstr "מילים נפרדות"
 
 #: searx/templates/simple/elements/answers.html:2
 msgid "Answers"
@@ -948,7 +951,7 @@ msgstr "הודעות ממנועי החיפוש"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr ""
+msgstr "שניות"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1054,7 +1057,7 @@ msgstr "אין תוצאות נוספות. שווה לנסות את הדבר הב
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr "טעינת הדף מחדש"
+msgstr "טעינת הדף מחדש."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
@@ -1083,7 +1086,7 @@ msgstr "הפעל"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "מילות מפתח (מילה ראשונה בשאילתה)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1174,7 +1177,7 @@ msgstr "Hash העדפות"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "מזהה אוביקט דיגיטלי (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -1218,11 +1221,11 @@ msgstr "זמן מירבי"
 
 #: searx/templates/simple/preferences/favicon.html:2
 msgid "Favicon Resolver"
-msgstr ""
+msgstr "מפענח Favicon"
 
 #: searx/templates/simple/preferences/favicon.html:15
 msgid "Display favicons near search results"
-msgstr ""
+msgstr "הצג Favicons קרוב לתוצאות החיפוש"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
@@ -1366,23 +1369,23 @@ msgstr "שנה את שפת הממשק"
 
 #: searx/templates/simple/preferences/urlformatting.html:2
 msgid "URL formatting"
-msgstr ""
+msgstr "עיצוב כתובת אתר"
 
 #: searx/templates/simple/preferences/urlformatting.html:8
 msgid "Pretty"
-msgstr ""
+msgstr "יפה"
 
 #: searx/templates/simple/preferences/urlformatting.html:13
 msgid "Full"
-msgstr ""
+msgstr "מלא"
 
 #: searx/templates/simple/preferences/urlformatting.html:18
 msgid "Host"
-msgstr ""
+msgstr "מארח"
 
 #: searx/templates/simple/preferences/urlformatting.html:23
 msgid "Change result URL formatting"
-msgstr ""
+msgstr "שנה עיצוב כתובת תוצאות"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
@@ -2028,4 +2031,3 @@ msgstr "הסתר וידאו"
 
 #~ msgid "/"
 #~ msgstr ""
-
