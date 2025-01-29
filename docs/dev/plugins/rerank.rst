@@ -1,7 +1,7 @@
 .. _rerank plugin:
 
 ================
-Rerank plugin
+Rerank
 ================
 
 .. automodule:: searx.plugins.rerank
