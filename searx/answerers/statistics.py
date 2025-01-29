@@ -33,7 +33,7 @@ class SXNGAnswerer(Answerer):
 
         return AnswererInfo(
             name=gettext(self.__doc__),
-            description=gettext(f"Compute {'/'.join(self.keywords)} of the arguments"),
+            description=gettext("Compute {func} of the arguments".format(func='/'.join(self.keywords))),
             keywords=self.keywords,
             examples=["avg 123 548 2.04 24.2"],
         )
