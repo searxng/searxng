@@ -20,10 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 16:16+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: BalkanMadman "
-"<balkanmadman@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"PO-Revision-Date: 2025-01-29 05:08+0000\n"
+"Last-Translator: SomeTr <sometr@users.noreply.translate.codeberg.org>\n"
 "Language: uk\n"
 "Language-Team: Ukrainian "
 "<https://translate.codeberg.org/projects/searxng/searxng/uk/>\n"
@@ -182,7 +181,7 @@ msgid "Uptime"
 msgstr "Час роботи"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:50
+#: searx/searxng.msg searx/templates/simple/base.html:49
 msgid "About"
 msgstr "Про"
 
@@ -354,28 +353,28 @@ msgstr "закрито"
 msgid "answered"
 msgstr "є відповідь"
 
-#: searx/webapp.py:323
+#: searx/webapp.py:312
 msgid "No item found"
 msgstr "Нічого не знайдено"
 
 #: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:325
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "Джерело"
 
-#: searx/webapp.py:327
+#: searx/webapp.py:316
 msgid "Error loading the next page"
 msgstr "Не вдалося завантажити наступну сторінку"
 
-#: searx/webapp.py:492 searx/webapp.py:900
+#: searx/webapp.py:469 searx/webapp.py:875
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильні налаштування, будь ласка, зробіть зміни в налаштуваннях"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:485
 msgid "Invalid settings"
 msgstr "Неправильні налаштування"
 
-#: searx/webapp.py:585 searx/webapp.py:675
+#: searx/webapp.py:562 searx/webapp.py:652
 msgid "search error"
 msgstr "помилка пошуку"
 
@@ -443,29 +442,17 @@ msgstr "{minutes} хвилин тому"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} годин, {minutes} хвилин тому"
 
-#: searx/answerers/random/answerer.py:76
-msgid "Random value generator"
-msgstr "Генератор випадкових значень"
-
-#: searx/answerers/random/answerer.py:77
+#: searx/answerers/random.py:69
 msgid "Generate different random values"
 msgstr "Створити різні випадкові значення"
 
-#: searx/answerers/statistics/answerer.py:50
-msgid "Statistics functions"
-msgstr "Функції статистики"
+#: searx/answerers/statistics.py:36
+msgid "Compute {func} of the arguments"
+msgstr ""
 
-#: searx/answerers/statistics/answerer.py:51
-msgid "Compute {functions} of the arguments"
-msgstr "Розрахувати {functions} аргументів"
-
-#: searx/engines/mozhi.py:57
-msgid "Synonyms"
-msgstr "Синоніми"
-
-#: searx/engines/openstreetmap.py:159
-msgid "Get directions"
-msgstr "Отримати директорії"
+#: searx/engines/openstreetmap.py:158
+msgid "Show route in map .."
+msgstr "Показати маршрут на карті ..."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -504,7 +491,7 @@ msgstr ""
 "{numCitations} цитувань з {firstCitationVelocityYear} по "
 "{lastCitationVelocityYear} рік"
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:47
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -514,7 +501,7 @@ msgstr ""
 "цього зображення не підтримується. TinEye підтримує зображення у форматах"
 " JPEG, PNG, GIF, BMP, TIFF та WebP."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:53
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -522,7 +509,7 @@ msgstr ""
 "Зображення занадто просте, щоб знайти збіги. TinEye вимагає базового "
 "рівня візуальної деталізації для успішного визначення збігів."
 
-#: searx/engines/tineye.py:57
+#: searx/engines/tineye.py:59
 msgid "The image could not be downloaded."
 msgstr "Зображення неможливо завантажити."
 
@@ -534,33 +521,37 @@ msgstr "Рейтинг книги"
 msgid "File quality"
 msgstr "Якість файлу"
 
-#: searx/plugins/calculator.py:18
+#: searx/plugins/calculator.py:20
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Обчислювати математичні вирази в рядку пошуку"
 
-#: searx/plugins/hash_plugin.py:10
+#: searx/plugins/hash_plugin.py:34
+msgid "Hash plugin"
+msgstr "Плагін Hash"
+
+#: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
 msgstr "Конвертує рядки в різні геш-послідовності."
 
-#: searx/plugins/hash_plugin.py:38
+#: searx/plugins/hash_plugin.py:62
 msgid "hash digest"
 msgstr "геш-послідовність"
 
-#: searx/plugins/hostnames.py:103
+#: searx/plugins/hostnames.py:105
 msgid "Hostnames plugin"
 msgstr "Плагін Hostnames"
 
-#: searx/plugins/hostnames.py:104
+#: searx/plugins/hostnames.py:106
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Переписування імен хостів, видалення результатів або визначення їх "
 "пріоритетності на основі імені хоста"
 
-#: searx/plugins/oa_doi_rewrite.py:12
+#: searx/plugins/oa_doi_rewrite.py:15
 msgid "Open Access DOI rewrite"
 msgstr "Переадресація на Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:13
+#: searx/plugins/oa_doi_rewrite.py:16
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -568,31 +559,31 @@ msgstr ""
 "Уникайте платіжних каналів шляхом переадресації на версії публікацій з "
 "відкритим доступом, коли це можливо"
 
-#: searx/plugins/self_info.py:9
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "Інформація про себе"
 
-#: searx/plugins/self_info.py:10
+#: searx/plugins/self_info.py:38
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
-"contains \"user agent\"."
+"is \"user-agent\"."
 msgstr ""
-"Відображає IP-адресу при запиті \"ip\" та ваш user-agent при запиті "
-"\"user agent\"."
+"Показує вашу IP-адресу, якщо запит «ip», і ваш User-Agent, якщо запит "
+"«user-agent»."
 
-#: searx/plugins/self_info.py:28
+#: searx/plugins/self_info.py:52
 msgid "Your IP is: "
 msgstr "Ваша IP-адреса: "
 
-#: searx/plugins/self_info.py:31
+#: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
 msgstr "Ваш User-Agent: "
 
-#: searx/plugins/tor_check.py:24
+#: searx/plugins/tor_check.py:29
 msgid "Tor check plugin"
 msgstr "Плагін перевірки Tor"
 
-#: searx/plugins/tor_check.py:27
+#: searx/plugins/tor_check.py:32
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -600,33 +591,27 @@ msgstr ""
 "Цей плагін перевіряє, чи належить адреса запиту вихідному вузлу Tor і, "
 "якщо так, інформує користувача; як check.torproject.org, але від SearXNG."
 
-#: searx/plugins/tor_check.py:61
-msgid ""
-"Could not download the list of Tor exit-nodes from: "
-"https://check.torproject.org/exit-addresses"
-msgstr ""
-"Не вдалося завантажити список вихідних вузлів Tor з: "
-"https://check.torproject.org/exit-addresses"
+#: searx/plugins/tor_check.py:69
+msgid "Could not download the list of Tor exit-nodes from"
+msgstr "Не вдалося завантажити список вихідних вузлів Tor із"
 
-#: searx/plugins/tor_check.py:77
-msgid ""
-"You are using Tor and it looks like you have this external IP address: "
-"{ip_address}"
-msgstr "Ви використовуєте Tor і, здається, Ваша IP-адреса така: {ip_address}"
+#: searx/plugins/tor_check.py:81
+msgid "You are using Tor and it looks like you have the external IP address"
+msgstr ""
 
 #: searx/plugins/tor_check.py:85
-msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "Ви не використовуєте Tor та маєте зовнішню IP-адресу: {ip_address}"
+msgid "You are not using Tor and you have the external IP address"
+msgstr ""
 
-#: searx/plugins/tracker_url_remover.py:16
+#: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
 msgstr "Видалення URL-адреси трекера"
 
-#: searx/plugins/tracker_url_remover.py:17
+#: searx/plugins/tracker_url_remover.py:19
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Вилучіть аргументи трекера з поверненої URL-адреси"
 
-#: searx/plugins/unit_converter.py:29
+#: searx/plugins/unit_converter.py:32
 msgid "Convert between units"
 msgstr "Конвертувати одиниці"
 
@@ -643,45 +628,45 @@ msgstr "Перейти до %(search_page)s."
 msgid "search page"
 msgstr "сторінки пошуку"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "Пожертви"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Опції"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Використовується"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "відкрита пошукова система, що поважає конфіденційність"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Вихідний код"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "Трекер помилок"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Статистика пошукової системи"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "Публічні інстанси"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "Політика приватності"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "Зв'язатися з власником інстансу"
 
@@ -777,63 +762,55 @@ msgstr "Невдалі тести: "
 msgid "Errors:"
 msgstr "Помилки:"
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:163
 msgid "General"
 msgstr "Загальні"
 
-#: searx/templates/simple/preferences.html:165
+#: searx/templates/simple/preferences.html:166
 msgid "Default categories"
 msgstr "Типові категорії"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:194
 msgid "User interface"
 msgstr "Інтерфейс користувача"
 
-#: searx/templates/simple/preferences.html:212
+#: searx/templates/simple/preferences.html:217
 msgid "Privacy"
 msgstr "Конфіденційність"
 
-#: searx/templates/simple/preferences.html:225
+#: searx/templates/simple/preferences.html:232
 msgid "Engines"
 msgstr "Пошукові системи"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:234
 msgid "Currently used search engines"
 msgstr "Пошукові системи, які використовуються"
 
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:243
 msgid "Special Queries"
 msgstr "Особливі запити"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:251
 msgid "Cookies"
 msgstr "Cookie-файли"
 
-#: searx/templates/simple/results.html:23
-msgid "Answers"
-msgstr "Відповіді"
-
-#: searx/templates/simple/results.html:42
+#: searx/templates/simple/results.html:30
 msgid "Number of results"
 msgstr "Число результатів"
 
-#: searx/templates/simple/results.html:48
+#: searx/templates/simple/results.html:36
 msgid "Info"
 msgstr "Інфо"
 
-#: searx/templates/simple/results.html:75
-msgid "Try searching for:"
-msgstr "Спробуйте шукати:"
-
-#: searx/templates/simple/results.html:107
+#: searx/templates/simple/results.html:77
 msgid "Back to top"
 msgstr "Доверху"
 
-#: searx/templates/simple/results.html:125
+#: searx/templates/simple/results.html:95
 msgid "Previous page"
 msgstr "Попередня сторінка"
 
-#: searx/templates/simple/results.html:143
+#: searx/templates/simple/results.html:113
 msgid "Next page"
 msgstr "Наступна сторінка"
 
@@ -945,9 +922,30 @@ msgstr "Провалений тест"
 msgid "Comment(s)"
 msgstr "Коментар(і)"
 
+#: searx/templates/simple/answer/translations.html:12
+#: searx/templates/simple/preferences/answerers.html:8
+msgid "Examples"
+msgstr "Приклади"
+
+#: searx/templates/simple/answer/translations.html:21
+msgid "Definitions"
+msgstr "Визначення"
+
+#: searx/templates/simple/answer/translations.html:30
+msgid "Synonyms"
+msgstr "Синоніми"
+
+#: searx/templates/simple/elements/answers.html:2
+msgid "Answers"
+msgstr "Відповіді"
+
 #: searx/templates/simple/elements/apis.html:3
 msgid "Download results"
 msgstr "Завантажити результати"
+
+#: searx/templates/simple/elements/corrections.html:2
+msgid "Try searching for:"
+msgstr "Спробуйте шукати:"
 
 #: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
@@ -1089,8 +1087,8 @@ msgid "Allow"
 msgstr "Дозволити"
 
 #: searx/templates/simple/preferences/answerers.html:5
-msgid "Keywords"
-msgstr "Ключові слова"
+msgid "Keywords (first word in query)"
+msgstr "Ключові слова (перше слово в запиті)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1100,10 +1098,6 @@ msgstr "Назва"
 #: searx/templates/simple/preferences/answerers.html:7
 msgid "Description"
 msgstr "Опис"
-
-#: searx/templates/simple/preferences/answerers.html:8
-msgid "Examples"
-msgstr "Приклади"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
@@ -1185,11 +1179,15 @@ msgstr "Вставте скопійований хеш налаштувань (�
 msgid "Preferences hash"
 msgstr "Хеш налаштувань"
 
-#: searx/templates/simple/preferences/doi_resolver.html:2
+#: searx/templates/simple/preferences/doi_resolver.html:1
+msgid "Digital Object Identifier (DOI)"
+msgstr "Цифровий ідентифікатор об'єкта (DOI)"
+
+#: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
 msgstr "Джерело Open Access DOI"
 
-#: searx/templates/simple/preferences/doi_resolver.html:14
+#: searx/templates/simple/preferences/doi_resolver.html:18
 msgid "Select service used by DOI rewrite"
 msgstr "Виберіть послугу, яку використовує DOI rewrite"
 
@@ -1989,4 +1987,52 @@ msgstr "приховати відео"
 
 #~ msgid "dummy"
 #~ msgstr ""
+
+#~ msgid "Random value generator"
+#~ msgstr "Генератор випадкових значень"
+
+#~ msgid "Statistics functions"
+#~ msgstr "Функції статистики"
+
+#~ msgid "Compute {functions} of the arguments"
+#~ msgstr "Розрахувати {functions} аргументів"
+
+#~ msgid "Get directions"
+#~ msgstr "Отримати директорії"
+
+#~ msgid ""
+#~ "Displays your IP if the query is"
+#~ " \"ip\" and your user agent if "
+#~ "the query contains \"user agent\"."
+#~ msgstr ""
+#~ "Відображає IP-адресу при запиті \"ip\" "
+#~ "та ваш user-agent при запиті "
+#~ "\"user agent\"."
+
+#~ msgid ""
+#~ "Could not download the list of Tor"
+#~ " exit-nodes from: https://check.torproject.org"
+#~ "/exit-addresses"
+#~ msgstr ""
+#~ "Не вдалося завантажити список вихідних "
+#~ "вузлів Tor з: https://check.torproject.org/exit-"
+#~ "addresses"
+
+#~ msgid ""
+#~ "You are using Tor and it looks "
+#~ "like you have this external IP "
+#~ "address: {ip_address}"
+#~ msgstr "Ви використовуєте Tor і, здається, Ваша IP-адреса така: {ip_address}"
+
+#~ msgid ""
+#~ "You are not using Tor and you "
+#~ "have this external IP address: "
+#~ "{ip_address}"
+#~ msgstr "Ви не використовуєте Tor та маєте зовнішню IP-адресу: {ip_address}"
+
+#~ msgid "Keywords"
+#~ msgstr "Ключові слова"
+
+#~ msgid "/"
+#~ msgstr "/"
 

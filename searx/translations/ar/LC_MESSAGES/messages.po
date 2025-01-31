@@ -27,9 +27,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 16:16+0000\n"
-"PO-Revision-Date: 2025-01-15 06:48+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"PO-Revision-Date: 2025-01-30 12:05+0000\n"
+"Last-Translator: nebras <nebras@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
 "searxng/ar/>\n"
 "Language: ar\n"
@@ -187,7 +187,7 @@ msgid "Uptime"
 msgstr "فترة التشغيل"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:50
+#: searx/searxng.msg searx/templates/simple/base.html:49
 msgid "About"
 msgstr "حَول"
 
@@ -359,28 +359,28 @@ msgstr "مغلق"
 msgid "answered"
 msgstr "أُجيبت"
 
-#: searx/webapp.py:323
+#: searx/webapp.py:312
 msgid "No item found"
 msgstr "تعذر العثور على عناصر"
 
 #: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:325
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "المصدر"
 
-#: searx/webapp.py:327
+#: searx/webapp.py:316
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:492 searx/webapp.py:900
+#: searx/webapp.py:469 searx/webapp.py:875
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:485
 msgid "Invalid settings"
 msgstr "إعدادات غير صالحة"
 
-#: searx/webapp.py:585 searx/webapp.py:675
+#: searx/webapp.py:562 searx/webapp.py:652
 msgid "search error"
 msgstr "خطأ في البحث"
 
@@ -448,29 +448,17 @@ msgstr "قبل دقائق"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "قبل {hours} ساعات، {minutes} دقائق"
 
-#: searx/answerers/random/answerer.py:76
-msgid "Random value generator"
-msgstr "مولّد قيمة عشوائية"
-
-#: searx/answerers/random/answerer.py:77
+#: searx/answerers/random.py:69
 msgid "Generate different random values"
 msgstr "توليد قِيم عشوائية مختلفة"
 
-#: searx/answerers/statistics/answerer.py:50
-msgid "Statistics functions"
-msgstr "الدالات الإحصائية"
+#: searx/answerers/statistics.py:36
+msgid "Compute {func} of the arguments"
+msgstr "حساب {func} من الحجج"
 
-#: searx/answerers/statistics/answerer.py:51
-msgid "Compute {functions} of the arguments"
-msgstr "حوسبة معطيات ال{functions}"
-
-#: searx/engines/mozhi.py:57
-msgid "Synonyms"
-msgstr "مرادفات"
-
-#: searx/engines/openstreetmap.py:159
-msgid "Get directions"
-msgstr "احصل على الاتجاهات"
+#: searx/engines/openstreetmap.py:158
+msgid "Show route in map .."
+msgstr "أظهِر الطريق على الخريطة .."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -509,7 +497,7 @@ msgstr ""
 "{numCitation}استجلاب من العام {firstCitationVelocityYear} إلى "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:47
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -518,7 +506,7 @@ msgstr ""
 "تعذر قراءة عنوان url للصورة. قد يكون هذا بسبب تنسيق ملف غير مدعوم. تدعم "
 "TinEye فقط الصور بتنسيق JPEG أو PNG أو GIF أو BMP أو TIFF أو WebP."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:53
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -526,7 +514,7 @@ msgstr ""
 "الصورة أبسط من أن تجد مطابقات. يتطلب TinEye مستوى أساسيًا من التفاصيل "
 "المرئية لتحديد التطابقات بنجاح."
 
-#: searx/engines/tineye.py:57
+#: searx/engines/tineye.py:59
 msgid "The image could not be downloaded."
 msgstr "لا يمكن تنزيل الصورة."
 
@@ -538,33 +526,37 @@ msgstr "تقييم الكتاب"
 msgid "File quality"
 msgstr "جودة الملف"
 
-#: searx/plugins/calculator.py:18
+#: searx/plugins/calculator.py:20
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "حساب التعبيرات الرياضية عبر شريط البحث"
 
-#: searx/plugins/hash_plugin.py:10
+#: searx/plugins/hash_plugin.py:34
+msgid "Hash plugin"
+msgstr ""
+
+#: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
 msgstr "يحول السلسلة إلى ملخص التجزئة."
 
-#: searx/plugins/hash_plugin.py:38
+#: searx/plugins/hash_plugin.py:62
 msgid "hash digest"
 msgstr "ملخص التجزئة"
 
-#: searx/plugins/hostnames.py:103
+#: searx/plugins/hostnames.py:105
 msgid "Hostnames plugin"
 msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 
-#: searx/plugins/hostnames.py:104
+#: searx/plugins/hostnames.py:106
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها "
 "بناءً على اسم المضيف (hostname)"
 
-#: searx/plugins/oa_doi_rewrite.py:12
+#: searx/plugins/oa_doi_rewrite.py:15
 msgid "Open Access DOI rewrite"
 msgstr "فتح الوصول معرف الكائن الرقمي إعادة كتابة"
 
-#: searx/plugins/oa_doi_rewrite.py:13
+#: searx/plugins/oa_doi_rewrite.py:16
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -572,31 +564,29 @@ msgstr ""
 "تجنب جدران الدفع عن طريق إعادة التوجيه إلى إصدارات الوصول المفتوح من "
 "المنشورات عند توفرها"
 
-#: searx/plugins/self_info.py:9
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "نشرة المعلومات"
 
-#: searx/plugins/self_info.py:10
+#: searx/plugins/self_info.py:38
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
-"contains \"user agent\"."
+"is \"user-agent\"."
 msgstr ""
-"يعرض IP إذا كان الاستعلام \"ip\" و وكيل المستخدم الخاص بك إذا كان "
-"الاستعلام يحتوي على\"user agent\"."
 
-#: searx/plugins/self_info.py:28
+#: searx/plugins/self_info.py:52
 msgid "Your IP is: "
 msgstr "عنوانك هو (Ip) "
 
-#: searx/plugins/self_info.py:31
+#: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
 msgstr "وكيل المستخدم الخاص بك هو "
 
-#: searx/plugins/tor_check.py:24
+#: searx/plugins/tor_check.py:29
 msgid "Tor check plugin"
 msgstr "فحص المكون الإضافي ل Tor"
 
-#: searx/plugins/tor_check.py:27
+#: searx/plugins/tor_check.py:32
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -604,35 +594,29 @@ msgstr ""
 "يتحقق هذا المكون الإضافي مما إذا كان عنوان الطلب هو عقدة خروج TOR ، ويبلغ"
 " المستخدم إذا كان كذلك ، مثل check.torproject.org ولكن من SearXNG."
 
-#: searx/plugins/tor_check.py:61
-msgid ""
-"Could not download the list of Tor exit-nodes from: "
-"https://check.torproject.org/exit-addresses"
+#: searx/plugins/tor_check.py:69
+msgid "Could not download the list of Tor exit-nodes from"
 msgstr ""
-"لم يمكن تنزيل قائمة Tor exit-nodes من عناوين: "
-"https://check.torproject.org/exit-addresses"
 
-#: searx/plugins/tor_check.py:77
-msgid ""
-"You are using Tor and it looks like you have this external IP address: "
-"{ip_address}"
-msgstr "انت تستعمل Tor ويبدو انه لديك هذا الIP: {ip_address}"
+#: searx/plugins/tor_check.py:81
+msgid "You are using Tor and it looks like you have the external IP address"
+msgstr ""
 
 #: searx/plugins/tor_check.py:85
-msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "أنت لا تستعمل Tor حالياً وهذا هو عنوان الـIP الخاص بك: {ip_address}"
+msgid "You are not using Tor and you have the external IP address"
+msgstr ""
 
-#: searx/plugins/tracker_url_remover.py:16
+#: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
 msgstr "مزيل روابط التعقّب"
 
-#: searx/plugins/tracker_url_remover.py:17
+#: searx/plugins/tracker_url_remover.py:19
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
 "محدد موقع الموارد الموحد الذي تم إرجاعه"
 
-#: searx/plugins/unit_converter.py:29
+#: searx/plugins/unit_converter.py:32
 msgid "Convert between units"
 msgstr "التحويل بين الوحدات"
 
@@ -649,45 +633,45 @@ msgstr "إذهب إلى %(search_page)s."
 msgid "search page"
 msgstr "صفحة البحث"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "تبرُّع"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "التفضيلات"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "مدعوم بواسطة"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "الخصوصية ذو الاعتبار, محرك البحث عميق عُموميا"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "شيفرة مصدرية"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "تعقب القضايا"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "إحصائيات المحرك"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "نماذج الخوادم العمومية"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "سياسة الخصوصية"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "اتصال بالمشرف المخدم النموذجي"
 
@@ -779,63 +763,55 @@ msgstr "فشل اختبار المدقق: "
 msgid "Errors:"
 msgstr "الأخطاء:"
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:163
 msgid "General"
 msgstr "الرئيسية"
 
-#: searx/templates/simple/preferences.html:165
+#: searx/templates/simple/preferences.html:166
 msgid "Default categories"
 msgstr "القوائم الإفتراضية"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:194
 msgid "User interface"
 msgstr "واجهة المستخدم"
 
-#: searx/templates/simple/preferences.html:212
+#: searx/templates/simple/preferences.html:217
 msgid "Privacy"
 msgstr "الخصوصية"
 
-#: searx/templates/simple/preferences.html:225
+#: searx/templates/simple/preferences.html:232
 msgid "Engines"
 msgstr "المحركات"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:234
 msgid "Currently used search engines"
 msgstr "محركات البحث المُستخدَمة حاليًا"
 
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:243
 msgid "Special Queries"
 msgstr "استفسارات خاصة"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:251
 msgid "Cookies"
 msgstr "كعكات الكوكيز"
 
-#: searx/templates/simple/results.html:23
-msgid "Answers"
-msgstr "الإجابات"
-
-#: searx/templates/simple/results.html:42
+#: searx/templates/simple/results.html:30
 msgid "Number of results"
 msgstr "حصيلة نتائج البحث"
 
-#: searx/templates/simple/results.html:48
+#: searx/templates/simple/results.html:36
 msgid "Info"
 msgstr "معلومات"
 
-#: searx/templates/simple/results.html:75
-msgid "Try searching for:"
-msgstr "حاول البحث عن :"
-
-#: searx/templates/simple/results.html:107
+#: searx/templates/simple/results.html:77
 msgid "Back to top"
 msgstr "العودة للأعلى"
 
-#: searx/templates/simple/results.html:125
+#: searx/templates/simple/results.html:95
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: searx/templates/simple/results.html:143
+#: searx/templates/simple/results.html:113
 msgid "Next page"
 msgstr "الصفحة التالية"
 
@@ -947,9 +923,30 @@ msgstr "اختبار فاشل"
 msgid "Comment(s)"
 msgstr "تعليق/تعليقات"
 
+#: searx/templates/simple/answer/translations.html:12
+#: searx/templates/simple/preferences/answerers.html:8
+msgid "Examples"
+msgstr "أمثلة"
+
+#: searx/templates/simple/answer/translations.html:21
+msgid "Definitions"
+msgstr ""
+
+#: searx/templates/simple/answer/translations.html:30
+msgid "Synonyms"
+msgstr "مرادفات"
+
+#: searx/templates/simple/elements/answers.html:2
+msgid "Answers"
+msgstr "الإجابات"
+
 #: searx/templates/simple/elements/apis.html:3
 msgid "Download results"
 msgstr "حصيلة التنزيل"
+
+#: searx/templates/simple/elements/corrections.html:2
+msgid "Try searching for:"
+msgstr "حاول البحث عن :"
 
 #: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
@@ -1091,8 +1088,8 @@ msgid "Allow"
 msgstr "تمكين"
 
 #: searx/templates/simple/preferences/answerers.html:5
-msgid "Keywords"
-msgstr "الكلمات الرمزية"
+msgid "Keywords (first word in query)"
+msgstr ""
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1102,10 +1099,6 @@ msgstr "التسمية"
 #: searx/templates/simple/preferences/answerers.html:7
 msgid "Description"
 msgstr "الوصف"
-
-#: searx/templates/simple/preferences/answerers.html:8
-msgid "Examples"
-msgstr "أمثلة"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
@@ -1187,11 +1180,15 @@ msgstr "أدخل تجزئة التفضيلات المنسوخة (بدون عنو
 msgid "Preferences hash"
 msgstr "تجزئة التفضيلات"
 
-#: searx/templates/simple/preferences/doi_resolver.html:2
+#: searx/templates/simple/preferences/doi_resolver.html:1
+msgid "Digital Object Identifier (DOI)"
+msgstr ""
+
+#: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
 msgstr "فتح الوصول إلى محلل DOI"
 
-#: searx/templates/simple/preferences/doi_resolver.html:14
+#: searx/templates/simple/preferences/doi_resolver.html:18
 msgid "Select service used by DOI rewrite"
 msgstr "حدد الخدمة التي يستخدمه المعرف الرقمي. (DOI)"
 
@@ -2003,4 +2000,52 @@ msgstr "إخفاء الفيديو"
 #~ msgstr "ابدأ بتقديم قضية جديدة على GitHub"
 
 #~ msgid "dummy"
+#~ msgstr ""
+
+#~ msgid "Random value generator"
+#~ msgstr "مولّد قيمة عشوائية"
+
+#~ msgid "Statistics functions"
+#~ msgstr "الدالات الإحصائية"
+
+#~ msgid "Compute {functions} of the arguments"
+#~ msgstr "حوسبة معطيات ال{functions}"
+
+#~ msgid "Get directions"
+#~ msgstr "احصل على الاتجاهات"
+
+#~ msgid ""
+#~ "Displays your IP if the query is"
+#~ " \"ip\" and your user agent if "
+#~ "the query contains \"user agent\"."
+#~ msgstr ""
+#~ "يعرض IP إذا كان الاستعلام \"ip\" و"
+#~ " وكيل المستخدم الخاص بك إذا كان "
+#~ "الاستعلام يحتوي على\"user agent\"."
+
+#~ msgid ""
+#~ "Could not download the list of Tor"
+#~ " exit-nodes from: https://check.torproject.org"
+#~ "/exit-addresses"
+#~ msgstr ""
+#~ "لم يمكن تنزيل قائمة Tor exit-nodes"
+#~ " من عناوين: https://check.torproject.org/exit-"
+#~ "addresses"
+
+#~ msgid ""
+#~ "You are using Tor and it looks "
+#~ "like you have this external IP "
+#~ "address: {ip_address}"
+#~ msgstr "انت تستعمل Tor ويبدو انه لديك هذا الIP: {ip_address}"
+
+#~ msgid ""
+#~ "You are not using Tor and you "
+#~ "have this external IP address: "
+#~ "{ip_address}"
+#~ msgstr "أنت لا تستعمل Tor حالياً وهذا هو عنوان الـIP الخاص بك: {ip_address}"
+
+#~ msgid "Keywords"
+#~ msgstr "الكلمات الرمزية"
+
+#~ msgid "/"
 #~ msgstr ""
