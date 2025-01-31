@@ -34,27 +34,28 @@
 # kirisameSoup <kirisamesoup@users.noreply.translate.codeberg.org>, 2025.
 # Right202209 <right202209@users.noreply.translate.codeberg.org>, 2025.
 # nonepork <nonepork@users.noreply.translate.codeberg.org>, 2025.
+# Shihfu Juan <xlion@xlion.tw>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-06 16:16+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: pdwalker <pdwalker@users.noreply.translate.codeberg.org>"
-"\n"
+"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"PO-Revision-Date: 2025-01-31 04:26+0000\n"
+"Last-Translator: Shihfu Juan <xlion@xlion.tw>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
 "Language: zh_Hant_TW\n"
-"Language-Team: Chinese (Traditional Han script) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr "無有進一步分組"
+msgstr "沒有進一步分組"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -197,7 +198,7 @@ msgid "Uptime"
 msgstr "上線時間"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:50
+#: searx/searxng.msg searx/templates/simple/base.html:49
 msgid "About"
 msgstr "關於"
 
@@ -215,13 +216,13 @@ msgstr "雲量"
 #: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
 #: searx/searxng.msg
 msgid "Condition"
-msgstr "條件"
+msgstr "狀況"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
 #: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
 #: searx/searxng.msg
 msgid "Current condition"
-msgstr "目前條件"
+msgstr "目前狀況"
 
 #. WEATHER_TERMS['EVENING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -232,7 +233,7 @@ msgstr "傍晚"
 #: searx/engines/duckduckgo_weather.py:53 searx/engines/open_meteo.py:81
 #: searx/engines/wttr.py:59 searx/searxng.msg
 msgid "Feels like"
-msgstr "體感氣溫"
+msgstr "體感溫度"
 
 #. WEATHER_TERMS['HUMIDITY']
 #: searx/engines/duckduckgo_weather.py:64 searx/engines/open_meteo.py:93
@@ -250,7 +251,7 @@ msgstr "最高溫度"
 #: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr "最低溫"
+msgstr "最低溫度"
 
 #. WEATHER_TERMS['MORNING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -316,7 +317,7 @@ msgstr "訂閱數"
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/engines/lemmy.py:86 searx/searxng.msg
 msgid "posts"
-msgstr "帖文"
+msgstr "貼文"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/engines/lemmy.py:87 searx/searxng.msg
@@ -369,28 +370,28 @@ msgstr "已關閉"
 msgid "answered"
 msgstr "已解答"
 
-#: searx/webapp.py:323
+#: searx/webapp.py:312
 msgid "No item found"
 msgstr "找不到項目"
 
 #: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:325
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:327
+#: searx/webapp.py:316
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:492 searx/webapp.py:900
+#: searx/webapp.py:469 searx/webapp.py:875
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:508
+#: searx/webapp.py:485
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:585 searx/webapp.py:675
+#: searx/webapp.py:562 searx/webapp.py:652
 msgid "search error"
 msgstr "搜尋錯誤"
 
@@ -412,7 +413,7 @@ msgstr "網路錯誤"
 
 #: searx/webutils.py:40
 msgid "SSL error: certificate validation has failed"
-msgstr "SSL錯誤：証書驗證失敗"
+msgstr "SSL錯誤：憑證驗證失敗"
 
 #: searx/webutils.py:42
 msgid "unexpected crash"
@@ -436,7 +437,7 @@ msgstr "驗證碼"
 
 #: searx/webutils.py:58
 msgid "too many requests"
-msgstr "頻繁請求"
+msgstr "請求過於頻繁"
 
 #: searx/webutils.py:59
 msgid "access denied"
@@ -458,37 +459,25 @@ msgstr "{minutes} 分鐘前"
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小時 {minutes} 分鐘前"
 
-#: searx/answerers/random/answerer.py:76
-msgid "Random value generator"
-msgstr "隨機數值產生器"
-
-#: searx/answerers/random/answerer.py:77
+#: searx/answerers/random.py:69
 msgid "Generate different random values"
-msgstr "生成不同的隨機數值"
+msgstr "產生不同的隨機數值"
 
-#: searx/answerers/statistics/answerer.py:50
-msgid "Statistics functions"
-msgstr "統計功能"
+#: searx/answerers/statistics.py:36
+msgid "Compute {func} of the arguments"
+msgstr "計算參數的 {func}"
 
-#: searx/answerers/statistics/answerer.py:51
-msgid "Compute {functions} of the arguments"
-msgstr "計算 {functions} 參數"
-
-#: searx/engines/mozhi.py:57
-msgid "Synonyms"
-msgstr "同義詞"
-
-#: searx/engines/openstreetmap.py:159
-msgid "Get directions"
-msgstr "取得路線"
+#: searx/engines/openstreetmap.py:158
+msgid "Show route in map .."
+msgstr "在地圖上顯示路線 .."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
-msgstr "{title} (已過時)"
+msgstr "{title}（已過時）"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
-msgstr "此條目已被取代"
+msgstr "此條目已被以下內容取代"
 
 #: searx/engines/qwant.py:290
 msgid "Channel"
@@ -500,16 +489,16 @@ msgstr "位元速率"
 
 #: searx/engines/radio_browser.py:106
 msgid "votes"
-msgstr "投票"
+msgstr "投票數"
 
 #: searx/engines/radio_browser.py:107
 msgid "clicks"
-msgstr "點選"
+msgstr "點擊數"
 
 #: searx/engines/seekr.py:193 searx/engines/yummly.py:71
 #: searx/engines/zlibrary.py:137
 msgid "Language"
-msgstr "語系"
+msgstr "語言"
 
 #: searx/engines/semantic_scholar.py:78
 msgid ""
@@ -519,114 +508,119 @@ msgstr ""
 "{firstCitationVelocityYear} 至 {lastCitationVelocityYear} 間被引用 "
 "{numCitations} 次"
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:47
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
-msgstr "無法存取該影象網址。這可能是因為不支援的文件格式造成的。TinEye只支援JPEG、PNG、GIF、BMP、TIFF或WebP的影像。"
+msgstr ""
+"無法存取該影像網址。這可能是因為不支援的文件格式造成的。TinEye 只支援 "
+"JPEG、PNG、GIF、BMP、TIFF 或 WebP 的影像。"
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:53
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "圖片訊息量過少，無法找到相符的結果。TinEye需要一個更基礎的圖片細節以成功辨識相符的結果。"
+msgstr "影像過於簡單以致無法找到相符的結果。TinEye "
+"需要具備基本的視覺細節才能成功識別匹配項。"
 
-#: searx/engines/tineye.py:57
+#: searx/engines/tineye.py:59
 msgid "The image could not be downloaded."
-msgstr "圖片無法下載。。"
+msgstr "圖片無法下載。"
 
 #: searx/engines/zlibrary.py:138
 msgid "Book rating"
-msgstr "書評級"
+msgstr "書籍評分"
 
 #: searx/engines/zlibrary.py:139
 msgid "File quality"
 msgstr "文件品質"
 
-#: searx/plugins/calculator.py:18
+#: searx/plugins/calculator.py:20
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "藉由搜尋欄計算數學式"
 
-#: searx/plugins/hash_plugin.py:10
-msgid "Converts strings to different hash digests."
-msgstr "將字串裝換為不同的雜湊摘要值。"
+#: searx/plugins/hash_plugin.py:34
+msgid "Hash plugin"
+msgstr "雜湊 (Hash) 外掛"
 
-#: searx/plugins/hash_plugin.py:38
+#: searx/plugins/hash_plugin.py:35
+msgid "Converts strings to different hash digests."
+msgstr "將字串轉換為不同的雜湊摘要值。"
+
+#: searx/plugins/hash_plugin.py:62
 msgid "hash digest"
 msgstr "雜湊摘要值"
 
-#: searx/plugins/hostnames.py:103
+#: searx/plugins/hostnames.py:105
 msgid "Hostnames plugin"
 msgstr "主機名稱外掛"
 
-#: searx/plugins/hostnames.py:104
+#: searx/plugins/hostnames.py:106
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "重寫主機名稱、移除結果或根據主機名稱確定其優先級別"
+msgstr "重寫主機名稱、移除結果或根據主機名稱決定其優先級別"
 
-#: searx/plugins/oa_doi_rewrite.py:12
+#: searx/plugins/oa_doi_rewrite.py:15
 msgid "Open Access DOI rewrite"
 msgstr "開放存取 DOI 重寫"
 
-#: searx/plugins/oa_doi_rewrite.py:13
+#: searx/plugins/oa_doi_rewrite.py:16
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr "盡可能重新導向至出版品的開放存取版本，以避免收費牆"
 
-#: searx/plugins/self_info.py:9
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "自身訊息"
 
-#: searx/plugins/self_info.py:10
+#: searx/plugins/self_info.py:38
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
-"contains \"user agent\"."
-msgstr "若搜尋字串為「ip」則顯示您的 IP，而若是「user agent」則顯示您的使用者代理字串。"
+"is \"user-agent\"."
+msgstr "如果查詢的是 \"ip\"，則顯示您的 IP； 如果查詢的是 \"user-agent\""
+"，則顯示您的使用者代理。"
 
-#: searx/plugins/self_info.py:28
+#: searx/plugins/self_info.py:52
 msgid "Your IP is: "
 msgstr "您的 IP 是： "
 
-#: searx/plugins/self_info.py:31
+#: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr "你的用戶代理是： "
+msgstr "你的使用者代理是： "
 
-#: searx/plugins/tor_check.py:24
+#: searx/plugins/tor_check.py:29
 msgid "Tor check plugin"
-msgstr "Tor 網路檢測"
+msgstr "Tor 網路檢測外掛"
 
-#: searx/plugins/tor_check.py:27
+#: searx/plugins/tor_check.py:32
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
-msgstr "該外掛程式檢查請求的位址是否是 Tor 出口節點，並通知使用者是否是；類似 check.torproject.org，但來自 SearXNG。"
+msgstr "此外掛程式檢查請求的位址是否為 Tor 退出節點，並通知使用者；類似於 "
+"check.torproject.org，但來自 SearXNG。"
 
-#: searx/plugins/tor_check.py:61
-msgid ""
-"Could not download the list of Tor exit-nodes from: "
-"https://check.torproject.org/exit-addresses"
-msgstr "無法從如下地址下載 Tor 出口節點的名單: https://check.torproject.org/exit-addresses"
+#: searx/plugins/tor_check.py:69
+msgid "Could not download the list of Tor exit-nodes from"
+msgstr "無法從以下位置下載 Tor 出口節點列表"
 
-#: searx/plugins/tor_check.py:77
-msgid ""
-"You are using Tor and it looks like you have this external IP address: "
-"{ip_address}"
-msgstr "您似乎在使用 Tor，您的外部 IP 地址為: {ip_address}"
+#: searx/plugins/tor_check.py:81
+msgid "You are using Tor and it looks like you have the external IP address"
+msgstr "您正在使用 Tor，並且您似乎有外部 IP 地址"
 
 #: searx/plugins/tor_check.py:85
-msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "您並未使用 Tor，您的外部 IP 地址為: {ip_address}"
+msgid "You are not using Tor and you have the external IP address"
+msgstr "您未使用 Tor，並且您有外部 IP 地址"
 
-#: searx/plugins/tracker_url_remover.py:16
+#: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
 msgstr "追蹤器 URL 移除器"
 
-#: searx/plugins/tracker_url_remover.py:17
+#: searx/plugins/tracker_url_remover.py:19
 msgid "Remove trackers arguments from the returned URL"
 msgstr "從傳回的 URL 中移除追蹤器參數"
 
-#: searx/plugins/unit_converter.py:29
+#: searx/plugins/unit_converter.py:32
 msgid "Convert between units"
 msgstr "在單位之間轉換"
 
@@ -643,45 +637,45 @@ msgstr "存取 %(search_page)s。"
 msgid "search page"
 msgstr "搜尋頁面"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "捐獻"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "偏好設定"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "技術支援"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
-msgstr "尊重隱私的開源搜尋引擎"
+msgstr "尊重隱私的開源元搜尋引擎"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "原始碼"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "問題追蹤"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "引擎統計"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "公開站臺"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
-msgstr "私隱權條款"
+msgstr "隱私權條款"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "聯絡站點維護人員"
 
@@ -706,7 +700,7 @@ msgstr "作者"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "已快取"
+msgstr "快照"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"
@@ -718,7 +712,7 @@ msgstr "在 GitHub 上提交問題"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "請在 GitHub 上檢視目前 SearXNG 引擎的問題"
+msgstr "請在 GitHub 上檢查是否已有關於此引擎的已知錯誤"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -726,7 +720,7 @@ msgstr "我確認提交的問題不在目前問題列表"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "如果你的站點是公開存取， 請在問題報告中附上你的 URL"
+msgstr "如果這是公開站臺， 請在問題報告中附上 URL"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -773,63 +767,55 @@ msgstr "檢查程式測試失敗： "
 msgid "Errors:"
 msgstr "錯誤："
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:163
 msgid "General"
 msgstr "一般"
 
-#: searx/templates/simple/preferences.html:165
+#: searx/templates/simple/preferences.html:166
 msgid "Default categories"
 msgstr "預設分類"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:194
 msgid "User interface"
 msgstr "使用者介面"
 
-#: searx/templates/simple/preferences.html:212
+#: searx/templates/simple/preferences.html:217
 msgid "Privacy"
 msgstr "隱私"
 
-#: searx/templates/simple/preferences.html:225
+#: searx/templates/simple/preferences.html:232
 msgid "Engines"
 msgstr "搜尋引擎"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:234
 msgid "Currently used search engines"
 msgstr "目前使用的搜尋引擎"
 
-#: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/preferences.html:243
 msgid "Special Queries"
 msgstr "特殊查詢"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:251
 msgid "Cookies"
 msgstr "Cookies"
 
-#: searx/templates/simple/results.html:23
-msgid "Answers"
-msgstr "答案"
-
-#: searx/templates/simple/results.html:42
+#: searx/templates/simple/results.html:30
 msgid "Number of results"
 msgstr "結果筆數"
 
-#: searx/templates/simple/results.html:48
+#: searx/templates/simple/results.html:36
 msgid "Info"
 msgstr "資訊"
 
-#: searx/templates/simple/results.html:75
-msgid "Try searching for:"
-msgstr "嘗試搜尋："
-
-#: searx/templates/simple/results.html:107
+#: searx/templates/simple/results.html:77
 msgid "Back to top"
 msgstr "返回頂端"
 
-#: searx/templates/simple/results.html:125
+#: searx/templates/simple/results.html:95
 msgid "Previous page"
 msgstr "上一頁"
 
-#: searx/templates/simple/results.html:143
+#: searx/templates/simple/results.html:113
 msgid "Next page"
 msgstr "下一頁"
 
@@ -840,7 +826,7 @@ msgstr "顯示前端頁面"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "搜尋……"
+msgstr "搜尋..."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6
@@ -873,7 +859,7 @@ msgstr "結果數量"
 #: searx/templates/simple/preferences/engines.html:31
 #: searx/templates/simple/stats.html:28
 msgid "Response time"
-msgstr "響應時間"
+msgstr "反映時間"
 
 #: searx/templates/simple/preferences/engines.html:35
 #: searx/templates/simple/stats.html:29
@@ -941,9 +927,30 @@ msgstr "測試未透過"
 msgid "Comment(s)"
 msgstr "注釋"
 
+#: searx/templates/simple/answer/translations.html:12
+#: searx/templates/simple/preferences/answerers.html:8
+msgid "Examples"
+msgstr "範例"
+
+#: searx/templates/simple/answer/translations.html:21
+msgid "Definitions"
+msgstr "定義"
+
+#: searx/templates/simple/answer/translations.html:30
+msgid "Synonyms"
+msgstr "同義詞"
+
+#: searx/templates/simple/elements/answers.html:2
+msgid "Answers"
+msgstr "答案"
+
 #: searx/templates/simple/elements/apis.html:3
 msgid "Download results"
 msgstr "下載結果"
+
+#: searx/templates/simple/elements/corrections.html:2
+msgid "Try searching for:"
+msgstr "嘗試搜尋："
 
 #: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
@@ -1085,8 +1092,8 @@ msgid "Allow"
 msgstr "允許"
 
 #: searx/templates/simple/preferences/answerers.html:5
-msgid "Keywords"
-msgstr "關鍵字"
+msgid "Keywords (first word in query)"
+msgstr "關鍵字（查詢中的第一個詞）"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1096,10 +1103,6 @@ msgstr "名稱"
 #: searx/templates/simple/preferences/answerers.html:7
 msgid "Description"
 msgstr "描述"
-
-#: searx/templates/simple/preferences/answerers.html:8
-msgid "Examples"
-msgstr "範例"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
@@ -1175,11 +1178,15 @@ msgstr "插入複製的（不帶URL）偏好設定雜湊來恢復"
 msgid "Preferences hash"
 msgstr "偏好設定雜湊"
 
-#: searx/templates/simple/preferences/doi_resolver.html:2
+#: searx/templates/simple/preferences/doi_resolver.html:1
+msgid "Digital Object Identifier (DOI)"
+msgstr "數位物件識別符（DOI）"
+
+#: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
 msgstr "開放存取 DOI 解析器"
 
-#: searx/templates/simple/preferences/doi_resolver.html:14
+#: searx/templates/simple/preferences/doi_resolver.html:18
 msgid "Select service used by DOI rewrite"
 msgstr "選擇 DOI 重寫所使用的服務"
 
@@ -1357,15 +1364,15 @@ msgstr "變更版面配置的語言"
 
 #: searx/templates/simple/preferences/urlformatting.html:2
 msgid "URL formatting"
-msgstr ""
+msgstr "URL 格式"
 
 #: searx/templates/simple/preferences/urlformatting.html:8
 msgid "Pretty"
-msgstr ""
+msgstr "美觀"
 
 #: searx/templates/simple/preferences/urlformatting.html:13
 msgid "Full"
-msgstr ""
+msgstr "完整"
 
 #: searx/templates/simple/preferences/urlformatting.html:18
 msgid "Host"
@@ -1373,7 +1380,7 @@ msgstr "主機"
 
 #: searx/templates/simple/preferences/urlformatting.html:23
 msgid "Change result URL formatting"
-msgstr ""
+msgstr "更改結果的 URL 格式"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
@@ -1947,3 +1954,44 @@ msgstr "隱藏影片"
 #~ msgid "dummy"
 #~ msgstr ""
 
+#~ msgid "Random value generator"
+#~ msgstr "隨機數值產生器"
+
+#~ msgid "Statistics functions"
+#~ msgstr "統計功能"
+
+#~ msgid "Compute {functions} of the arguments"
+#~ msgstr "計算 {functions} 參數"
+
+#~ msgid "Get directions"
+#~ msgstr "取得路線"
+
+#~ msgid ""
+#~ "Displays your IP if the query is"
+#~ " \"ip\" and your user agent if "
+#~ "the query contains \"user agent\"."
+#~ msgstr "若搜尋字串為「ip」則顯示您的 IP，而若是「user agent」則顯示您的使用者代理字串。"
+
+#~ msgid ""
+#~ "Could not download the list of Tor"
+#~ " exit-nodes from: https://check.torproject.org"
+#~ "/exit-addresses"
+#~ msgstr "無法從如下地址下載 Tor 出口節點的名單: https://check.torproject.org/exit-addresses"
+
+#~ msgid ""
+#~ "You are using Tor and it looks "
+#~ "like you have this external IP "
+#~ "address: {ip_address}"
+#~ msgstr "您似乎在使用 Tor，您的外部 IP 地址為: {ip_address}"
+
+#~ msgid ""
+#~ "You are not using Tor and you "
+#~ "have this external IP address: "
+#~ "{ip_address}"
+#~ msgstr "您並未使用 Tor，您的外部 IP 地址為: {ip_address}"
+
+#~ msgid "Keywords"
+#~ msgstr "關鍵字"
+
+#~ msgid "/"
+#~ msgstr ""
