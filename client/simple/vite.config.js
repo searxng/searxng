@@ -6,6 +6,8 @@ import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import stylelint from "vite-plugin-stylelint";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import { plg_svg2png } from "./tools/plg.js";
+import { plg_svg2svg } from "./tools/plg.js";
 
 
 const ROOT = "../..";  // root of the git reposetory
@@ -23,7 +25,19 @@ const PATH = {
   templates: resolve(ROOT, "searx/templates/simple"),
 };
 
+const svg2svg_opts = {
+  plugins: [
+    { name: "preset-default" },
+    "sortAttrs",
+    "convertStyleToAttrs",
+  ]
+};
 
+const svg2svg_favicon_opts = {
+  plugins: [
+    { name: "preset-default" },
+    "sortAttrs",
+  ]
 };
 
 
@@ -121,8 +135,40 @@ export default defineConfig({
         { src: PATH.leaflet + "/*.{css,css.map}", dest: PATH.dist + "/css" },
         { src: PATH.static + "/**/*", dest: PATH.dist },
       ]
-    })
-  ],
+    }),
+
+    // SearXNG brand (static)
+
+    plg_svg2png(
+      [
+        { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.png" },
+        { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.png" },
+      ],
+    ),
+
+    // -- svg
+    plg_svg2svg(
+      [
+        { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.svg" },
+        { src: PATH.brand + "/img_load_error.svg", dest: PATH.dist + "/img/img_load_error.svg" },
+      ],
+      svg2svg_opts,
+    ),
+
+    // -- favicon
+    plg_svg2svg(
+      [ { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.svg" } ],
+      svg2svg_favicon_opts,
+    ),
+
+    // -- simple templates
+    plg_svg2svg(
+      [
+        { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.templates + "/searxng-wordmark.min.svg" },
+      ],
+      svg2svg_opts
+    ),
+
   ] // end: plugins
 
 });
