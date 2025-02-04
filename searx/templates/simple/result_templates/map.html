@@ -40,7 +40,7 @@
 </table>
 
 {%- if (result.latitude and result.longitude) or result.boundingbox -%}
-    <small> <a class="btn-collapse collapsed searxng_init_map hide_if_nojs" data-target="#result-map-{{ index }}" data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %}>{{ icon_small( 'globe-outline') }} {{ _('show map') }}</a></small>
+    <small> <a class="btn-collapse collapsed searxng_init_map hide_if_nojs" data-target="#result-map-{{ index }}" data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %}>{{ icon_small( 'globe') }} {{ _('show map') }}</a></small>
 {%- endif -%}
 
 {{- result_sub_footer(result, proxify) -}}

@@ -36,6 +36,7 @@ vite.simple.build() {
         pushd "${VITE_SIMPLE_THEME}"
         npm install
         npm run fix
+        npm run icons.html
         npm run build
 
     )
