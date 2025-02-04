@@ -7,7 +7,7 @@
     {% if selected_engine_name %}
         {{ column_name }}
     {% elif column_order==sort_order %}
-        {{ column_name }} {{ icon_big('arrow-dropdown') }}
+        {{ icon_big('navigate-down') }} {{ column_name }}
     {% else %}
         <a href="{{ url_for('stats', sort=column_order) }}">{{ column_name }}</a>
     {% endif %}

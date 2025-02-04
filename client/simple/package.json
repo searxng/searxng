@@ -4,15 +4,18 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "fix": "eslint --fix && stylelint --fix strict 'src/**/*.{css,scss,sass,less,styl,vue,svelte}'"
+    "fix": "eslint --fix && stylelint --fix strict 'src/**/*.{css,scss,sass,less,styl,vue,svelte}'",
+    "icons.html": "node theme_icons.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
+    "edge.js": "^6.2.1",
     "eslint": "^9.19.0",
     "filemanager-webpack-plugin": "^8.0.0",
     "globals": "^15.14.0",
+    "ionicons": "^7.4.0",
     "leaflet": "^1.9.4",
     "less": "^4.2.2",
     "less-loader": "^12.2.0",

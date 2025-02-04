@@ -21,7 +21,7 @@
 
 {%- macro checkbox(name, checked, disabled) -%}
   {%- if checked == '?' -%}
-    {{- icon_small('warning') -}}
+    {{- icon_small('alert') -}}
   {%- else -%}
     <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}>
   {%- endif -%}
@@ -128,7 +128,7 @@
     <td class="{{ label }} column-reliability">{{- '' -}}
       <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
         <span>
-          {{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
+          {{- icon_big('alert', 'The engine is not reliabled') }} {{ r -}}
         </span>{{- '' -}}
       </a>{{- '' -}}
       <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
