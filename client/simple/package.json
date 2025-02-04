@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "fix": "eslint --fix"
+    "fix": "eslint --fix && stylelint --fix strict 'src/**/*.{css,scss,sass,less,styl,vue,svelte}'"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
@@ -18,8 +18,13 @@
     "less-loader": "^12.2.0",
     "normalize.css": "^8.0.1",
     "style-loader": "^4.0.0",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-less": "^3.0.1",
+    "stylelint-prettier": "^5.0.3",
     "vite": "^6.0.7",
     "vite-plugin-static-copy": "^2.2.0",
+    "vite-plugin-stylelint": "^6.0.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
   },

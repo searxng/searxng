@@ -4,6 +4,7 @@
 
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
+import stylelint from "vite-plugin-stylelint";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 
@@ -104,6 +105,12 @@ export default defineConfig({
   },  // end: build
 
   plugins: [
+
+    stylelint({
+      build: true,
+      emitWarningAsError: true,
+      fix: true,
+    }),
 
     // Leaflet
 
