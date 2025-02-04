@@ -74,7 +74,7 @@
     {% endif %}
     </div>
     <div id="backToTop">
-      <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('chevron-up-outline') }}</a>
+      <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('navigate-up') }}</a>
     </div>
     {% if paging %}
     <nav id="pagination" role="navigation">
@@ -92,7 +92,7 @@
                   <input type="hidden" name="theme" value="{{ theme }}" >
                   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                   {{- engine_data_form(engine_data) -}}
-                  <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
+                  <button role="link" type="submit">{{ icon_small('navigate-left') }} {{ _('Previous page') }}</button>
                 </div>
             </form>
         {% endif %}
@@ -110,7 +110,7 @@
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                 {{- engine_data_form(engine_data) -}}
-                <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
+                <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('navigate-right') }}</button>
               </div>
           </form>
         {%- endif -%}
