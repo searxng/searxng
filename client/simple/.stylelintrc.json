@@ -1,6 +1,9 @@
 {
-  "extends": "stylelint-config-standard-less",
+  "formatter": "unix",
+  "plugins": [ "stylelint-prettier" ],
+  "extends": [ "stylelint-config-standard-less" ],
   "rules": {
+    "prettier/prettier": true,
     "declaration-empty-line-before": null,
     "no-invalid-position-at-import-rule": null,
     "property-no-vendor-prefix": null,
