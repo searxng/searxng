@@ -14,7 +14,8 @@ Enable in ``settings.yml``:
 
   enabled_plugins:
     ..
-    - 'Unit converter plugin'
+    - name: 'Unit converter plugin'
+      default_on: true
 
 """
 
@@ -30,7 +31,6 @@ from searx.result_types import Answer
 
 name = "Unit converter plugin"
 description = gettext("Convert between units")
-default_on = True
 
 plugin_id = "unit_converter"
 preference_section = "general"

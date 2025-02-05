@@ -8,9 +8,10 @@ Enable in ``settings.yml``:
 
 .. code:: yaml
 
-  enabled_plugins:
+  plugins:
     ..
-    - 'Tor check plugin'
+    - id: 'tor_check'
+      default_on: true
 
 """
 
@@ -23,8 +24,6 @@ from httpx import HTTPError
 from searx.network import get
 from searx.result_types import Answer
 
-
-default_on = False
 
 name = gettext("Tor check plugin")
 '''Translated name of the plugin'''

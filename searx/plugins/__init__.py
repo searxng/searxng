@@ -18,7 +18,6 @@ area:
    class MyPlugin(Plugin):
 
        id = "self_info"
-       default_on = True
 
        def __init__(self):
            super().__init__()

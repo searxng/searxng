@@ -226,29 +226,42 @@ outgoing:
   #    - 1.1.1.2
   #    - fe80::/126
 
+# Comment plugins out to completely disable them.
+# Set 'default_on' to false in order to disable them by default,
+# but allow users to manually enable them in the settings.
+# see https://docs.searxng.org/admin/settings/settings_plugins.html
+#
+# You can set 'inactive' to 'true' in order to force disable a plugin
+# that's enabled by default.
+plugins:
+  - id: 'calculator'
+    default_on: true
+  - id: 'hash_plugin'
+    default_on: true
+  - id: 'self_info'
+    default_on: true
+  - id: 'tracker_url_remover'
+    default_on: true
+  - id: 'unit_converter'
+    default_on: true
+  - id: 'ahmia_filter'  # activation depends on outgoing.using_tor_proxy
+    default_on: true
+#
+# These plugins are completely disabled if nothing is configured ..
+#   - id: 'hostnames'  # see 'hostnames' configuration below
+#     default_on: false
+#   - id: 'oa_doi_rewrite'
+#     default_on: false
+#   - id: 'tor_check'
+#     default_on: false
+#
 # External plugin configuration, for more details see
 #   https://docs.searxng.org/admin/settings/settings_plugins.html
-#
-# plugins:
-#   - mypackage.mymodule.MyPlugin
-#   - mypackage.mymodule.MyOtherPlugin
+#   - fqn: mypackage.mymodule.MyPlugin
+#     default_on: true
+#   - fqn: mypackage.mymodule.MyOtherPlugin
+#     default_on: false
 #   - ...
-
-# Comment or un-comment plugin to activate / deactivate by default.
-#   https://docs.searxng.org/admin/settings/settings_plugins.html
-#
-# enabled_plugins:
-#   # these plugins are enabled if nothing is configured ..
-#   - 'Basic Calculator'
-#   - 'Hash plugin'
-#   - 'Self Information'
-#   - 'Tracker URL remover'
-#   - 'Unit converter plugin'
-#   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
-#   # these plugins are disabled if nothing is configured ..
-#   - 'Hostnames plugin'  # see 'hostnames' configuration below
-#   - 'Open Access DOI rewrite'
-#   - 'Tor check plugin'
 
 # Configuration of the "Hostnames plugin":
 #

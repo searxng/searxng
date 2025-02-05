@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Implementation of the default settings.
-
-"""
+"""Implementation of the default settings."""
 
 import typing
 import numbers
@@ -236,7 +234,7 @@ SCHEMA = {
         'proxify_results': SettingsValue(bool, False),
     },
     'plugins': SettingsValue(list, []),
-    'enabled_plugins': SettingsValue((None, list), None),
+    'enabled_plugins': SettingsValue((None, list), None),  # legacy - TODO: remove
     'checker': {
         'off_when_debug': SettingsValue(bool, True, None),
         'scheduling': SettingsValue((None, dict), None, None),

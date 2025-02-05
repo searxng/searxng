@@ -23,7 +23,6 @@ class SXNGPlugin(Plugin):
     """
 
     id = "self_info"
-    default_on = True
     keywords = ["ip", "user-agent"]
 
     def __init__(self):

@@ -1292,7 +1292,7 @@ def config():
 
     _plugins = []
     for _ in searx.plugins.STORAGE:
-        _plugins.append({'name': _.id, 'enabled': _.default_on})
+        _plugins.append({'name': _.id})
 
     _limiter_cfg = limiter.get_cfg()
 

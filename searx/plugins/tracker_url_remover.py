@@ -17,7 +17,6 @@ regexes = {
 
 name = gettext('Tracker URL remover')
 description = gettext('Remove trackers arguments from the returned URL')
-default_on = True
 preference_section = 'privacy'
 
 

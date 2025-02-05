@@ -12,7 +12,6 @@ from searx import get_setting
 
 name = "Ahmia blacklist"
 description = "Filter out onion results that appear in Ahmia's blacklist. (See https://ahmia.fi/blacklist)"
-default_on = True
 preference_section = 'onions'
 
 ahmia_blacklist: list = []

@@ -30,7 +30,6 @@ Configuration defaults (at built time):
       {% for plg in plugins %}
 
       * - {{plg.info.name}}
-        - {{(plg.default_on and "y") or ""}}
         - {{plg.info.description}}
 
       {% endfor %}
