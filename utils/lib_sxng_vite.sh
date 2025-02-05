@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+declare _Blue
+declare _creset
 
 vite.help(){
     cat <<EOF
@@ -12,25 +14,24 @@ EOF
 }
 
 VITE_SIMPLE_THEME="${REPO_ROOT}/client/simple"
-VITE_SIMPLE_DIST="${REPO_ROOT}/searx/static/themes/simple"
 
-vite.simple.dev() {
-
-    (   set -e
-        build_msg SIMPLE "start server for FE development of: ${VITE_SIMPLE_THEME}"
-        pushd "${VITE_SIMPLE_THEME}"
-        npm install
-        npm exec -- vite
-        popd &> /dev/null
-    )
-
-}
+# ToDo: vite server is not implemented yet / will be done in a follow up PR
+#
+# vite.simple.dev() {
+#     (   set -e
+#         build_msg SIMPLE "start server for FE development of: ${VITE_SIMPLE_THEME}"
+#         pushd "${VITE_SIMPLE_THEME}"
+#         npm install
+#         npm exec -- vite
+#         popd &> /dev/null
+#     )
+# }
 
 vite.simple.build() {
-
-    # build static files of the simple theme
-
     (   set -e
+        templates.simple.pygments
+
+        node.env
         build_msg SIMPLE "run build of theme from: ${VITE_SIMPLE_THEME}"
 
         pushd "${VITE_SIMPLE_THEME}"
@@ -38,6 +39,24 @@ vite.simple.build() {
         npm run fix
         npm run icons.html
         npm run build
-
+        popd &> /dev/null
     )
+}
+
+vite.simple.fix() {
+    (   set -e
+        node.env
+        npm --prefix client/simple run fix
+    )
+}
+
+templates.simple.pygments() {
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    pyenv.cmd python searxng_extra/update/update_pygments.py \
+        | prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+    if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
 }

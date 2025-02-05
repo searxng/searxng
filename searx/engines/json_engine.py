@@ -384,7 +384,7 @@ def extract_response_info(result):
 
 
 def response(resp):
-    '''Scrap *results* from the response (see :ref:`engine results`).'''
+    '''Scrap *results* from the response (see :ref:`result types`).'''
     results = []
 
     if no_result_for_http_status and resp.status_code in no_result_for_http_status:

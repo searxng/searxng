@@ -59,15 +59,3 @@ data.locales() {
     )
     dump_return $?
 }
-
-docs.prebuild() {
-    build_msg DOCS "build ${DOCS_BUILD}/includes"
-    (
-        set -e
-        [ "$VERBOSE" = "1" ] && set -x
-        mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
-        pyenv.cmd searxng_extra/docs_prebuild
-    )
-    dump_return $?
-}

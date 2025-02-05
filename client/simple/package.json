@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "clean": "rm -Rf node_modules",
+    "build": "node theme_icons.js && vite build",
     "fix": "eslint --fix && stylelint --fix strict 'src/**/*.{css,scss,sass,less,styl,vue,svelte}'",
     "icons.html": "node theme_icons.js"
   },
