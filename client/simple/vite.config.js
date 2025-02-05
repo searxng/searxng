@@ -137,6 +137,17 @@ export default defineConfig({
       ]
     }),
 
+    // -- svg images
+
+    plg_svg2svg(
+      [
+        { src: PATH.src + "/svg/empty_favicon.svg", dest: PATH.dist + "/img/empty_favicon.svg" },
+        { src: PATH.src + "/svg/select-dark.svg", dest: PATH.dist + "/img/select-dark.svg" },
+        { src: PATH.src + "/svg/select-light.svg", dest: PATH.dist + "/img/select-light.svg" },
+      ],
+      svg2svg_opts,
+    ),
+
     // SearXNG brand (static)
 
     plg_svg2png(
