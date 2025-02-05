@@ -112,7 +112,7 @@ def response(resp):
 
         table_content = generate_condition_table(hourly_data)
 
-        infobox += f"<h3>{datetime.utcfromtimestamp(time).strftime('%Y-%m-%d %H:%M')}</h3>"
+        infobox += f"<h3>{datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')}</h3>"
         infobox += f"<table><tbody>{table_content}</tbody></table>"
 
     return [{'infobox': 'Open Meteo', 'content': infobox}]

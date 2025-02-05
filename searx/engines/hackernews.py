@@ -87,7 +87,7 @@ def response(resp):
                 "content": hit.get("url") or hit.get("comment_text") or hit.get("story_text") or "",
                 "metadata": metadata,
                 "author": hit["author"],
-                "publishedDate": datetime.utcfromtimestamp(hit["created_at_i"]),
+                "publishedDate": datetime.fromtimestamp(hit["created_at_i"]),
             }
         )
 

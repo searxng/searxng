@@ -82,7 +82,7 @@ def response(resp):
         video_id = item["aid"]
         unix_date = item["pubdate"]
 
-        formatted_date = datetime.utcfromtimestamp(unix_date)
+        formatted_date = datetime.fromtimestamp(unix_date)
         formatted_duration = format_duration(item["duration"])
         iframe_url = f"https://player.bilibili.com/player.html?aid={video_id}&high_quality=1&autoplay=false&danmaku=0"
 
