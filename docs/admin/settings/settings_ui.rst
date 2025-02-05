@@ -44,7 +44,7 @@
 ``center_alignment`` : default ``false``
   When enabled, the results are centered instead of being in the left (or RTL)
   side of the screen.  This setting only affects the *desktop layout*
-  (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
+  (:origin:`min-width: @tablet <client/simple/src/less/definitions.less>`)
 
 .. cache_url:
 
