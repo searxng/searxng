@@ -128,7 +128,7 @@ def _news_result(result):
         'title': result['title'],
         'content': result['excerpt'],
         'source': result['source'],
-        'publishedDate': datetime.utcfromtimestamp(result['date']),
+        'publishedDate': datetime.fromtimestamp(result['date']),
     }
 
 

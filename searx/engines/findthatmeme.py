@@ -38,7 +38,7 @@ def response(resp):
         img = 'https://s3.thehackerblog.com/findthatmeme/' + item['image_path']
         thumb = 'https://s3.thehackerblog.com/findthatmeme/thumb/' + item.get('thumbnail', '')
         date = datetime.strptime(item["updated_at"].split("T")[0], "%Y-%m-%d")
-        formatted_date = datetime.utcfromtimestamp(date.timestamp())
+        formatted_date = datetime.fromtimestamp(date.timestamp())
 
         results.append(
             {

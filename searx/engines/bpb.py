@@ -51,7 +51,7 @@ def response(resp):
 
         publishedDate = None
         if result['extension'].get('publishingDate'):
-            publishedDate = datetime.utcfromtimestamp(result['extension']['publishingDate'])
+            publishedDate = datetime.fromtimestamp(result['extension']['publishingDate'])
 
         results.append(
             {
