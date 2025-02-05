@@ -249,7 +249,7 @@ ul.tabs {
     order: 2;
   }
 
-  & > input[type=radio] {
+  & > input[type="radio"] {
     display: none;
   }
 
@@ -347,14 +347,21 @@ select {
   }
 }
 
-@supports ((background-position-x: 100%) and ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none))) {
+@supports (
+  (background-position-x: 100%) and
+    (
+      (appearance: none) or (-webkit-appearance: none) or
+        (-moz-appearance: none)
+    )
+) {
   select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     border-width: 0 2rem 0 0;
     border-color: transparent;
-    background: data-uri('image/svg+xml;charset=UTF-8', @select-light-svg-path) no-repeat;
+    background: data-uri("image/svg+xml;charset=UTF-8", @select-light-svg-path)
+      no-repeat;
     background-position-x: calc(100% + 2rem);
     background-size: 2rem;
     background-origin: content-box;
@@ -376,12 +383,18 @@ select {
   @media (prefers-color-scheme: dark) {
     html.theme-auto select,
     html.theme-dark select {
-      background-image: data-uri('image/svg+xml;charset=UTF-8', @select-dark-svg-path);
+      background-image: data-uri(
+        "image/svg+xml;charset=UTF-8",
+        @select-dark-svg-path
+      );
     }
   }
 
   html.theme-dark select {
-    background-image: data-uri('image/svg+xml;charset=UTF-8', @select-dark-svg-path);
+    background-image: data-uri(
+      "image/svg+xml;charset=UTF-8",
+      @select-dark-svg-path
+    );
   }
 }
 
@@ -461,7 +474,7 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
 
 /* -- checkbox -- */
 @supports (transform: rotate(-45deg)) {
-  input[type=checkbox]:not(.checkbox-onoff) {
+  input[type="checkbox"]:not(.checkbox-onoff) {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -476,7 +489,7 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
     .rounded-corners(0.3em);
 
     &::after {
-      content: '';
+      content: "";
       width: 9px;
       height: 5px;
       position: absolute;
@@ -497,14 +510,18 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   }
 
   // disabled : can't be focused, show only the check mark
-  input[type=checkbox][disabled]:not(.checkbox-onoff) {
+  input[type="checkbox"][disabled]:not(.checkbox-onoff) {
     border: inherit;
     background-color: transparent !important;
     cursor: inherit;
   }
 
   // if not checked and possible to checked then display a "light" check mark on hover
-  input.checkbox[type=checkbox]:not(:checked, [disabled], .checkbox-onoff):hover::after {
+  input.checkbox[type="checkbox"]:not(
+      :checked,
+      [disabled],
+      .checkbox-onoff
+    ):hover::after {
     opacity: 0.5;
   }
 }

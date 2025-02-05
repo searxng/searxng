@@ -83,7 +83,9 @@ button.category_button {
 }
 
 // only used when JavaScript is disabled
-.no-js #categories_container:has(button.category_button:focus-within) button.category_button {
+.no-js
+  #categories_container:has(button.category_button:focus-within)
+  button.category_button {
   &.selected {
     color: var(--color-base-font);
     border-bottom: none;
