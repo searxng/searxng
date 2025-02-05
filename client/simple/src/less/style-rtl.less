@@ -109,7 +109,11 @@
 }
 
 // Image detail
-#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p {
+#results.image-detail-open
+  article.result-images[data-vim-selected]
+  .detail
+  .result-images-labels
+  p {
   direction: rtl;
 
   &.result-url {
@@ -125,7 +129,13 @@
 }
 
 // select HTML element
-@supports ((background-position-x: 100%) and ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none))) {
+@supports (
+  (background-position-x: 100%) and
+    (
+      (appearance: none) or (-webkit-appearance: none) or
+        (-moz-appearance: none)
+    )
+) {
   select {
     border-width: 0 0 0 2rem;
     background-position-x: -2rem;

@@ -63,9 +63,11 @@ on the /search URL and when the "center alignment" preference is enabled.
     }
 
     #search_header {
-      grid-template-columns: calc(50% - 4.5rem - var(--center-page-width) / 2) 3rem var(--center-page-width);
+      grid-template-columns:
+        calc(50% - 4.5rem - var(--center-page-width) / 2)
+        3rem var(--center-page-width);
       grid-template-areas: "na logo search" "na spacer categories";
-      column-gap: 1.2rem;  // from search.less
+      column-gap: 1.2rem; // from search.less
       width: 100%;
       padding-left: 0;
       padding-right: 0;
@@ -94,7 +96,9 @@ on the /search URL and when the "center alignment" preference is enabled.
       &:not(.only_template_images, .image-detail-open) {
         // the gap is set in style.less
         .ltr-margin-left(1.5rem);
-        grid-template-columns: calc(var(--center-page-width) - @results-gap - @results-sidebar-width) @results-sidebar-width;
+        grid-template-columns:
+          calc(var(--center-page-width) - @results-gap - @results-sidebar-width)
+          @results-sidebar-width;
 
         #backToTop {
           .ltr-left(calc(50% - @results-sidebar-width - @results-gap + 1rem + var(--center-page-width) / 2));
