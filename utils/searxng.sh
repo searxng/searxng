@@ -62,7 +62,7 @@ uwsgi uwsgi-plugin-python3
 git build-essential libxslt-dev zlib1g-dev libffi-dev libssl-dev"
 
 SEARXNG_BUILD_PACKAGES_debian="\
-firefox graphviz imagemagick texlive-xetex librsvg2-bin
+graphviz imagemagick texlive-xetex librsvg2-bin
 texlive-latex-recommended texlive-extra-utils fonts-dejavu
 latexmk shellcheck"
 
@@ -74,7 +74,7 @@ uwsgi uwsgi-plugin-python
 git base-devel libxml2"
 
 SEARXNG_BUILD_PACKAGES_arch="\
-firefox graphviz imagemagick texlive-bin extra/librsvg
+graphviz imagemagick texlive-bin extra/librsvg
 texlive-core texlive-latexextra ttf-dejavu shellcheck"
 
 # dnf packages
@@ -85,7 +85,7 @@ uwsgi uwsgi-plugin-python3
 git @development-tools libxml2 openssl"
 
 SEARXNG_BUILD_PACKAGES_fedora="\
-firefox graphviz graphviz-gd ImageMagick librsvg2-tools
+graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
 dejavu-sans-mono-fonts ShellCheck"
