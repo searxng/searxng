@@ -12,21 +12,23 @@
 # seonghobae <seonghobae@users.noreply.translate.codeberg.org>, 2024, 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # mystery-z <mystery-z@users.noreply.translate.codeberg.org>, 2025.
+# curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: seonghobae "
-"<seonghobae@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2025-02-06 15:54+0000\n"
+"Last-Translator: curtwheeler "
+"<curtwheeler@users.noreply.translate.codeberg.org>\n"
+"Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
+"searxng/ko/>\n"
 "Language: ko\n"
-"Language-Team: Korean "
-"<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -167,7 +169,7 @@ msgstr "다크"
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr ""
+msgstr "블랙"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
@@ -442,11 +444,11 @@ msgstr "다른 난수 생성"
 
 #: searx/answerers/statistics.py:36
 msgid "Compute {func} of the arguments"
-msgstr ""
+msgstr "인수들의 {func}를 계산하세요"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
-msgstr ""
+msgstr "지도에서 경로 표시 .."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -520,7 +522,7 @@ msgstr "검색바를 통해 수학연산 계산하기"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr ""
+msgstr "해시 플러그인"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -556,7 +558,8 @@ msgstr "본인 정보"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
-msgstr ""
+msgstr "쿼리가 'ip'이면 사용자의 IP를 표시하고, 'user-agent'이면 사용자 에이전트를 "
+"표시합니다."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -580,15 +583,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:69
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Tor 출구 노드 목록을 다운로드할 수 없습니다"
 
 #: searx/plugins/tor_check.py:81
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "Tor를 사용 중이며 외부 IP 주소를 가진 것으로 보입니다"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "Tor를 사용하고 있지 않으며 외부 IP 주소를 가지고 있습니다"
 
 #: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
@@ -667,7 +670,7 @@ msgstr "길이"
 
 #: searx/templates/simple/macros.html:41
 msgid "Views"
-msgstr ""
+msgstr "조회수"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
@@ -912,11 +915,11 @@ msgstr "예시"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "정의"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
-msgstr ""
+msgstr "동의어"
 
 #: searx/templates/simple/elements/answers.html:2
 msgid "Answers"
@@ -936,7 +939,7 @@ msgstr "검색 엔진에서 발생한 메시지"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr ""
+msgstr "초단위"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1071,7 +1074,7 @@ msgstr "허용"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "키워드 (쿼리의 첫 번째 단어)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1158,7 +1161,7 @@ msgstr "설정 해시"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "디지털 객체 식별자 (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -1869,4 +1872,3 @@ msgstr "비디오 숨기기"
 
 #~ msgid "/"
 #~ msgstr ""
-
