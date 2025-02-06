@@ -12,10 +12,10 @@ permissions:
 jobs:
   python:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-24.04]
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Checkout
@@ -48,7 +48,7 @@ jobs:
 
   themes:
     name: Themes
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +67,7 @@ jobs:
             ./local
             ./.nvm
             ./node_modules
-          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+          key: python-ubuntu-24.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
       - name: Install node dependencies
         run: make V=1 node.env
       - name: Build themes
@@ -75,7 +75,7 @@ jobs:
 
   documentation:
     name: Documentation
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     steps:
@@ -99,7 +99,7 @@ jobs:
             ./local
             ./.nvm
             ./node_modules
-          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+          key: python-ubuntu-24.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
       - name: Build documentation
         run: |
           make V=1 docs.clean docs.html
@@ -116,7 +116,7 @@ jobs:
 
   babel:
     name: Update translations branch
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
     needs:
       - python
@@ -166,7 +166,7 @@ jobs:
       - documentation
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         if: env.DOCKERHUB_USERNAME != null
