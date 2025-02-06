@@ -23,26 +23,11 @@ jobs:
       - name: Install Ubuntu packages
         run: |
           sudo ./utils/searxng.sh install packages
-          sudo apt install firefox
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
-      - name: Cache Python dependencies
-        id: cache-python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./local
-            ./.nvm
-            ./node_modules
-          key: python-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt', 'setup.py') }}
-      - name: Install Python dependencies
-        if: steps.cache-python.outputs.cache-hit != 'true'
-        run: |
-          make V=1 install
-          make V=1 gecko.driver
       - name: Run tests
         run: make V=1 ci.test
 
