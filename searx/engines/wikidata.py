@@ -641,7 +641,7 @@ class WDURLAttribute(WDAttribute):
             return get_external_url(url_id, value)
 
         if self.url_path_prefix:
-            [account, domain] = value.split('@', 1)
+            [account, domain] = [x.strip("@ ") for x in value.rsplit('@', 1)]
             return f"https://{domain}{self.url_path_prefix}{account}"
 
         return value
