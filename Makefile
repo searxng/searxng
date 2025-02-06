@@ -50,7 +50,7 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel test.themes
+ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel
 test:    test.yamllint test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
 test.shell:
 	$(Q)shellcheck -x -s dash \

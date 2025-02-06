@@ -44,19 +44,8 @@ jobs:
         with:
           python-version: '3.12'
           architecture: 'x64'
-      - name: Cache Python dependencies
-        id: cache-python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./local
-            ./.nvm
-            ./node_modules
-          key: python-ubuntu-24.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-      - name: Install node dependencies
-        run: make V=1 node.env
       - name: Build themes
-        run: make V=1 themes.all
+        run: make themes.all
 
   documentation:
     name: Documentation
