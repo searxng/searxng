@@ -122,8 +122,7 @@ def filter_request(
             redis_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + network.compressed, SUSPICIOUS_IP_WINDOW
         )
         if c > SUSPICIOUS_IP_MAX:
-            logger.error("BLOCK: too many request from %s in SUSPICIOUS_IP_WINDOW (redirect to /)", network)
-            return flask.redirect(flask.url_for('index'), code=302)
+            return too_many_requests(network, "too many request in SUSPICIOUS_IP_WINDOW (SUSPICIOUS_IP_MAX)")
 
         c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
         if c > BURST_MAX_SUSPICIOUS:
