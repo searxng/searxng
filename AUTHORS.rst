@@ -175,3 +175,4 @@ features or generally made searx better:
 - Daniel Kukula `<https://github.com/dkuku>`
 - Patrick Evans `https://github.com/holysoles`
 - Daniel Mowitz `<https://daniel.mowitz.rocks>`
+- `Bearz314 <https://github.com/bearz314>`_
