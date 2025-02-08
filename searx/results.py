@@ -318,8 +318,9 @@ class ResultContainer:
     def __find_duplicated_http_result(self, result):
         result_template = result.get('template')
         for merged_result in self._merged_results:
-            if 'parsed_url' not in merged_result:
+            if not merged_result.get('parsed_url'):
                 continue
+
             if compare_urls(result['parsed_url'], merged_result['parsed_url']) and result_template == merged_result.get(
                 'template'
             ):
@@ -385,6 +386,9 @@ class ResultContainer:
         categoryPositions = {}
 
         for res in results:
+            if not res.get('url'):
+                continue
+
             # do we need to handle more than one category per engine?
             engine = engines[res['engine']]
             res['category'] = engine.categories[0] if len(engine.categories) > 0 else ''
