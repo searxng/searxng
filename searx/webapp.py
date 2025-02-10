@@ -594,7 +594,7 @@ def health():
 @app.route('/client<token>.css', methods=['GET', 'POST'])
 def client_token(token=None):
     link_token.ping(sxng_request, token)
-    return Response('', mimetype='text/css')
+    return Response('', mimetype='text/css', headers={"Cache-Control": "no-store, max-age=0"})
 
 
 @app.route('/rss.xsl', methods=['GET', 'POST'])
