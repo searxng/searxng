@@ -182,7 +182,7 @@ def parse_video_item(item):
         "content": content,
         # https://en.wikipedia.org/wiki/ISO_8601#Durations
         "length": isodate.parse_duration(item["time_duration"]),
-        "publishedDate": datetime.strptime(item["creation_date"], "%Y-%m-%d"),
+        "publishedDate": datetime.fromisoformat(item["creation_date"]),
         "thumbnail": item["thumbnail_url"],
         "iframe_src": item["video_small_preview_url"],
         "metadata": item["asset_type"],
