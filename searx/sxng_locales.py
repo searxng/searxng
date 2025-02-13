@@ -48,6 +48,7 @@ sxng_locales = (
     ('es-PE', 'Español', 'Perú', 'Spanish', '\U0001f1f5\U0001f1ea'),
     ('et', 'Eesti', '', 'Estonian', '\U0001f310'),
     ('et-EE', 'Eesti', 'Eesti', 'Estonian', '\U0001f1ea\U0001f1ea'),
+    ('eu', 'Euskara', '', 'Basque', '\U0001f310'),
     ('fa', 'فارسی', '', 'Persian', '\U0001f310'),
     ('fi', 'Suomi', '', 'Finnish', '\U0001f310'),
     ('fi-FI', 'Suomi', 'Suomi', 'Finnish', '\U0001f1eb\U0001f1ee'),
