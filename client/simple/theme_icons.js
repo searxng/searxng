@@ -11,9 +11,9 @@ const dest = resolve(HERE, "../../searx/templates/simple/icons.html");
 
 /** @type import("./tools/jinja_svg_catalog.js").JinjaMacro[] */
 const searxng_jinja_macros = [
-  { name: "icon",       class: "ion-icon" },
-  { name: "icon_small", class: "ion-icon-small" },
-  { name: "icon_big",   class: "ion-icon-big" },
+  { name: "icon",       class: "sxng-icon-set" },
+  { name: "icon_small", class: "sxng-icon-set-small" },
+  { name: "icon_big",   class: "sxng-icon-set-big" },
 ];
 
 
