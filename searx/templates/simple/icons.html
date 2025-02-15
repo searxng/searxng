@@ -43,13 +43,13 @@ set catalog = {
 
 
 {% macro icon(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "ion-icon") | safe }}
+  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set") | safe }}
 {%- endmacro %}
 
 {% macro icon_small(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "ion-icon-small") | safe }}
+  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-small") | safe }}
 {%- endmacro %}
 
 {% macro icon_big(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "ion-icon-big") | safe }}
+  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-big") | safe }}
 {%- endmacro %}
