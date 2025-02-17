@@ -1,15 +1,19 @@
 {% from 'simple/icons.html' import icon_big %}
 {%- set category_icons = {
-    'general': 'search-outline',
-    'images': 'image-outline',
-    'videos': 'play-outline',
-    'news': 'newspaper-outline',
-    'map': 'location-outline',
-    'music': 'musical-notes-outline',
-    'it': 'layers-outline',
-    'science': 'school-outline',
-    'files': 'file-tray-full-outline',
-    'social media': 'people-outline',
+    'apps': 'appstore',
+    'dictionaries': 'book',
+    'files': 'file-tray-full',
+    'general': 'search',
+    'images': 'image',
+    'it': 'layers',
+    'map': 'location',
+    'music': 'musical-notes',
+    'news': 'newspaper',
+    'radio': 'radio',
+    'science': 'school',
+    'social media': 'people',
+    'TV': 'tv',
+    'videos': 'play',
 }  -%}
 <div id="categories" class="search_categories">{{- '' -}}
     <div id="categories_container">
@@ -18,7 +22,7 @@
                 <div class="category category_checkbox">{{- '' -}}
                     <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
                     <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
-                        {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe-outline') -}}
+                        {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe') -}}
                         <div class="category_name">{{- _(category) -}}</div>
                     </label>
                 </div>
@@ -27,7 +31,7 @@
         {%- else -%}
             {%- for category in categories -%}{{- '\n' -}}
                 <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
-                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe') -}}
                     <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
                 </button>{{- '' -}}
             {%- endfor -%}

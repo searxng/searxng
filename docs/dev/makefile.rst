@@ -180,10 +180,13 @@ sources of the theme need to be rebuild.  You can do that by running::
 
   $ make themes.all
 
-Alternatively to ``themes.all`` you can run *live builds* of the theme you are
-modify (:ref:`make themes`)::
+..
+   ToDo: vite server is not implemented yet / will be done in a follow up PR
 
-  $ LIVE_THEME=simple make run
+   Alternatively to ``themes.all`` you can run *live builds* of the theme you are
+   modify (:ref:`make themes`)::
+
+    $ LIVE_THEME=simple make run
 
 .. _make format.python:
 

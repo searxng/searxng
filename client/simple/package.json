@@ -1,0 +1,40 @@
+{
+  "name": "simple",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -Rf node_modules",
+    "build": "node theme_icons.js && vite build",
+    "fix": "eslint --fix && stylelint --fix strict 'src/**/*.{css,scss,sass,less,styl,vue,svelte}'",
+    "icons.html": "node theme_icons.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "edge.js": "^6.2.1",
+    "eslint": "^9.20.1",
+    "filemanager-webpack-plugin": "^8.0.0",
+    "globals": "^15.14.0",
+    "ionicons": "^7.4.0",
+    "leaflet": "^1.9.4",
+    "less": "^4.2.2",
+    "less-loader": "^12.2.0",
+    "normalize.css": "^8.0.1",
+    "sharp": "^0.33.5",
+    "style-loader": "^4.0.0",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-less": "^3.0.1",
+    "stylelint-prettier": "^5.0.3",
+    "svgo": "^3.3.2",
+    "vite": "^6.0.7",
+    "vite-plugin-static-copy": "^2.2.0",
+    "vite-plugin-stylelint": "^6.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "autocomplete-js": "^2.7.1"
+  }
+}

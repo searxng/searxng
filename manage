@@ -35,6 +35,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 # shellcheck source=utils/lib_redis.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_redis.sh"
 
+# shellcheck source=utils/lib_sxng_vite.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_vite.sh"
+
 PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
 
 # config
@@ -102,6 +105,7 @@ EOF
     test.help
     themes.help
     static.help
+    vite.help
     cat <<EOF
 environment ...
   SEARXNG_REDIS_URL : ${SEARXNG_REDIS_URL}
@@ -307,6 +311,18 @@ pyenv.uninstall() {
 format.python() {
     build_msg TEST "[format.python] black \$BLACK_TARGETS"
     pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    dump_return $?
+}
+
+docs.prebuild() {
+    build_msg DOCS "build ${DOCS_BUILD}/includes"
+    (
+        set -e
+        [ "$VERBOSE" = "1" ] && set -x
+        mkdir -p "${DOCS_BUILD}/includes"
+        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
+        pyenv.cmd searxng_extra/docs_prebuild
+    )
     dump_return $?
 }
 

@@ -13,7 +13,7 @@ from pygments.formatters.html import HtmlFormatter
 
 from searx import searx_dir
 
-LESS_FILE = Path(searx_dir) / 'static/themes/simple/src/generated/pygments.less'
+LESS_FILE = Path(searx_dir).parent / 'client/simple/generated/pygments.less'
 
 HEADER = f"""\
 /*
