@@ -12,7 +12,8 @@ The **Hostnames plugin** can be enabled by adding it to the
   .. code:: yaml
 
      enabled_plugins:
-       - 'Hostnames plugin'
+       - name: 'Hostnames plugin'
+         default_on: true
        ...
 
 - ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
@@ -104,7 +105,6 @@ from searx.settings_loader import get_yaml_cfg
 
 name = gettext('Hostnames plugin')
 description = gettext('Rewrite hostnames, remove results or prioritize them based on the hostname')
-default_on = False
 preference_section = 'general'
 
 plugin_id = 'hostnames'
