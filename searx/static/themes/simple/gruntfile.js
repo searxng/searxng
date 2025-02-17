@@ -109,7 +109,6 @@ module.exports = function (grunt) {
           'js/searxng.head.min.js': ['src/js/head/*.js'],
           'js/searxng.min.js': [
             'src/js/main/*.js',
-            './node_modules/autocomplete-js/dist/autocomplete.js',
             './node_modules/swiped-events/src/swiped-events.js'
           ]
         }
