@@ -123,7 +123,9 @@ def filter_request(
         )
         if c > SUSPICIOUS_IP_MAX:
             logger.error("BLOCK: too many request from %s in SUSPICIOUS_IP_WINDOW (redirect to /)", network)
-            return flask.redirect(flask.url_for('index'), code=302)
+            response = flask.redirect(flask.url_for('index'), code=302)
+            response.headers["Cache-Control"] = "no-store, max-age=0"
+            return response
 
         c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
         if c > BURST_MAX_SUSPICIOUS:
