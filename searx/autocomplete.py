@@ -183,15 +183,6 @@ def stract(query, _lang):
     return [html.unescape(suggestion['raw']) for suggestion in resp.json()]
 
 
-def startpage(query, sxng_locale):
-    """Autocomplete from Startpage. Supports Startpage's languages"""
-    lui = engines['startpage'].traits.get_language(sxng_locale, 'english')
-    url = 'https://startpage.com/suggestions?{query}'
-    resp = get(url.format(query=urlencode({'q': query, 'segment': 'startpage.udog', 'lui': lui})))
-    data = resp.json()
-    return [e['text'] for e in data.get('suggestions', []) if 'text' in e]
-
-
 def swisscows(query, _lang):
     # swisscows autocompleter
     url = 'https://swisscows.ch/api/suggest?{query}&itemsCount=5'
@@ -263,7 +254,6 @@ backends = {
     'mwmbl': mwmbl,
     'qwant': qwant,
     'seznam': seznam,
-    'startpage': startpage,
     'stract': stract,
     'swisscows': swisscows,
     'wikipedia': wikipedia,
