@@ -14,7 +14,7 @@ on the /search URL and when the "center alignment" preference is enabled.
   }
 }
 
-@media screen and (width >= 62rem) {
+@media screen and (min-width: 62rem) {
   .center-alignment-yes #main_results {
     --center-page-width: 60rem;
   }
@@ -91,7 +91,7 @@ on the /search URL and when the "center alignment" preference is enabled.
         align-self: flex-start;
       }
 
-      &:not(.only_template_images, .image-detail-open) {
+      &:not(.only_template_images):not(.image-detail-open) {
         // the gap is set in style.less
         .ltr-margin-left(1.5rem);
         grid-template-columns: calc(var(--center-page-width) - @results-gap - @results-sidebar-width) @results-sidebar-width;

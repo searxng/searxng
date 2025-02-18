@@ -2,8 +2,8 @@
 <html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-alignment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
-  <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+  <meta name="description" content="MeerkApp Search — a privacy-respecting, open metasearch engine">
+  <meta name="keywords" content="MeerkApp Search, SearXNG, search, search engine, metasearch, meta search">
   <meta name="generator" content="searxng/{{ searx_version }}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noarchive">
@@ -20,6 +20,7 @@
   {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
   <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
   {% endif %}
+  {% block styles %}{% endblock %}
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>
   <!--<![endif]-->
@@ -63,22 +64,22 @@
     {% endblock %}
   </main>
   <footer>
+    <div>{% include 'simple/svg/meerk.svg' without context %}</div>
     <p>
-    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br>
         <a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
-        | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
-        {% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
+        <span class="links_divider"></span><a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
+        {% if enable_metrics %}<span class="links_divider"></span><a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
         {% if get_setting('brand.public_instances') %}
-        | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
+        <span class="links_divider"></span><a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
         {% endif %}
         {% if get_setting('general.privacypolicy_url') %}
-        | <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
+        <span class="links_divider"></span><a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
         {% endif %}
         {% if get_setting('general.contact_url') %}
-        | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
+        <span class="links_divider"></span><a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
         {% endif %}
         {% for title, link in get_setting('brand.custom.links').items() %}
-        | <a href="{{ link }}">{{ _(title) }}</a>
+        <span class="links_divider"></span><a href="{{ link }}">{{ _(title) }}</a>
         {% endfor %}
     </p>
   </footer>

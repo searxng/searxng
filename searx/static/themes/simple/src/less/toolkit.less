@@ -203,7 +203,7 @@ div.selectable_url {
   left: 50%;
   margin: 0 auto;
   transform: translate(-50%, -50%);
-  z-index: 5000;
+  z-index: 10000000;
 
   h3 {
     margin-top: 0;
@@ -217,7 +217,8 @@ div.selectable_url {
 
 //
 .scrollx {
-  overflow: auto hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   display: block;
   padding: 0;
   margin: 0;
@@ -339,7 +340,7 @@ select {
   padding: 0.2rem !important;
   color: var(--color-search-font);
   font-size: 0.9rem;
-  z-index: 100;
+  z-index: 2;
 
   &:hover,
   &:focus {
@@ -413,7 +414,7 @@ input.checkbox-onoff[type="checkbox"] {
     border: 1px solid var(--color-btn-background);
     border-radius: 12px;
     box-shadow: var(--color-btn-background) 0 0 3px;
-    z-index: 1200;
+    z-index: 10000;
     top: -0.55em;
     left: -0.6em;
   }
@@ -504,7 +505,7 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   }
 
   // if not checked and possible to checked then display a "light" check mark on hover
-  input.checkbox[type=checkbox]:not(:checked, [disabled], .checkbox-onoff):hover::after {
+  input.checkbox[type=checkbox]:not(:checked):not([disabled]):not(.checkbox-onoff):hover::after {
     opacity: 0.5;
   }
 }
@@ -573,7 +574,7 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   background: var(--color-toolkit-engine-tooltip-background);
   font-size: 14px;
   font-weight: normal;
-  z-index: 5000;
+  z-index: 1000000;
   text-align: left;
   .rounded-corners;
 }
@@ -592,7 +593,8 @@ td:hover .engine-tooltip,
   width: -moz-available;
   width: -webkit-fill-available;
   width: fill;
-  flex-flow: row nowrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   display: inline-flex;
 }

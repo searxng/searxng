@@ -47,7 +47,6 @@
 {%- macro result_sub_footer(result, proxify) -%}
 <div class="engines">
   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
-  {{ icon_small('ellipsis-vertical-outline') + result_link(cache_url + result.url, _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), _('proxied'), "proxyfied_link") }} {% endif %}
 </div>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}

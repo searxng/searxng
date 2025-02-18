@@ -8,7 +8,7 @@
     {% endfor %}
 {%- endmacro %}
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
-{% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
+{% block meta %}<link rel="alternate" type="application/rss+xml" title="MeerkApp Search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
 {% include 'simple/search.html' %}
 
@@ -19,30 +19,17 @@
 {% endif %}
 
 <div id="results" class="{{ only_template }}">
-
-  {%- if answers -%}
-    {%- include 'simple/elements/answers.html' -%}
-  {%- endif %}
+    {% if answers and not infoboxes or q == 'ip' -%}
+        {%- include 'simple/elements/answers.html' -%}
+    {%- endif %}
 
     <div id="sidebar">
-
-        {%- if number_of_results != '0' -%}
-        <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
-        {%- endif -%}
-
         {%- if infoboxes -%}
           <div id="infoboxes">
-            <details open class="sidebar-collapsible">
-              <summary class="title">{{ _('Info') }}</summary>
               {%- for infobox in infoboxes -%}
                 {%- include 'simple/elements/infobox.html' -%}
               {%- endfor -%}
-            </details>
           </div>
-        {%- endif -%}
-
-        {%- if suggestions -%}
-          {%- include 'simple/elements/suggestions.html' -%}
         {%- endif -%}
 
         {%- include 'simple/elements/engines_msg.html' -%}
@@ -59,7 +46,7 @@
     </div>
 
     {%- if corrections -%}
-      {%- include 'simple/elements/corrections.html' -%}
+      {%- include 'simple/elements/corrections' -%}
     {%- endif -%}
 
     <div id="urls" role="main">
@@ -76,6 +63,9 @@
     <div id="backToTop">
       <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('chevron-up-outline') }}</a>
     </div>
+    {%- if suggestions -%}
+        {%- include 'simple/elements/suggestions.html' -%}
+    {%- endif -%}
     {% if paging %}
     <nav id="pagination" role="navigation">
         {% if pageno > 1 %}
@@ -95,6 +85,11 @@
                   <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
                 </div>
             </form>
+        {% endif %}
+        {% if pageno > 1 %}
+        <div class="page_count">
+            Page {{ pageno }}
+        </div>
         {% endif %}
         {%- if results | count > 0 -%}
           <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
@@ -120,29 +115,6 @@
             {% set pstart = pageno - 4 %}
             {% set pend = pageno + 6 %}
         {% endif %}
-
-        <div class="numbered_pagination">
-        {% for x in range(pstart, pend) %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="page_number">
-                <input type="hidden" name="q" value="{{ q|e }}" >
-                {% for category in selected_categories %}
-                <input type="hidden" name="category_{{ category }}" value="1" >
-                {% endfor %}
-                <input type="hidden" name="pageno" value="{{ x }}" >
-                <input type="hidden" name="language" value="{{ current_language }}" >
-                <input type="hidden" name="time_range" value="{{ time_range }}" >
-                <input type="hidden" name="safesearch" value="{{ safesearch }}" >
-                <input type="hidden" name="theme" value="{{ theme }}" >
-                {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-                {{- engine_data_form(engine_data) -}}
-                {% if pageno == x %}
-                <input role="link" class="page_number_current" type="button" value="{{ x }}">
-                {% else %}
-                <input role="link" class="page_number" type="submit" value="{{ x }}">
-                {% endif %}
-            </form>
-        {% endfor %}
-        </div>
     </nav>
     {% endif %}
 </div>

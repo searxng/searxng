@@ -1,8 +1,8 @@
 <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
   <div id="search_header">
     <a id="search_logo" href="{{ url_for('index') }}" tabindex="0" title="{{ _('Display the front page') }}">
-      <span hidden>SearXNG</span>
-      {% include 'simple/searxng-wordmark.min.svg' without context %}
+      <span hidden>MeerkApp Search</span>
+      {% include 'simple/logo.min.svg' without context %}
     </a>
     <div id="search_view">
       <div class="search_box">
@@ -14,11 +14,11 @@
     {% set display_tooltip = true %}
     {% include 'simple/categories.html' %}
   </div>
+  <input type="hidden" name="theme" value="{{ theme }}" >
+  {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
   <div class="search_filters">
     {% include 'simple/filters/languages.html' %}
     {% include 'simple/filters/time_range.html' %}
     {% include 'simple/filters/safesearch.html' %}
   </div>
-  <input type="hidden" name="theme" value="{{ theme }}" >
-  {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
 </form>

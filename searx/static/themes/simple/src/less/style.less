@@ -78,6 +78,10 @@ body {
   flex-direction: column;
   height: 100vh;
   margin: 0;
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 1.5;
 }
 
 main {
@@ -94,24 +98,57 @@ main {
 footer {
   clear: both;
   min-height: 4rem;
-  padding: 1rem 0;
   width: 100%;
-  text-align: center;
-  background-color: var(--color-footer-background);
   border-top: 1px solid var(--color-footer-border);
   overflow: hidden;
+  background-color: var(--md-sys-color-surface-bright);
+  display: flex;
+  overflow-x: auto;
+  overflow-y: clip;
 
   p {
+    padding: 0 2rem;
     font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    width: max-content;
+
+    a {
+      color: var(--md-sys-color-on-surface) !important;
+      width: max-content;
+    }
   }
+
+  svg {
+    font-size: 38px;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.index_endpoint footer svg {
+  display: none;
 }
 
 .page_with_header .logo {
   height: 40px;
 }
 
+#pagination button[type="submit"] {
+  padding-left: 15px;
+  padding-right: 15px;
+//   font-size: 16px;
+  height: 40px;
+  font-weight: 500;
+  display: inline-block;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  .rounded-corners(24px);
+  border: 1px solid var(--md-sys-color-outline);
+  cursor: pointer;
+}
+
 input[type="submit"],
-#results button[type="submit"],
 .button {
   padding: 0.7rem;
   display: inline-block;
@@ -134,12 +171,6 @@ a {
       color: var(--color-url-visited-font);
     }
   }
-}
-
-article[data-vim-selected] {
-  background: var(--color-result-vim-selected);
-  .ltr-border-left(0.2rem solid var(--color-result-vim-arrow));
-  .ltr-rounded-right-corners(10px);
 }
 
 article.result-images[data-vim-selected] {
@@ -179,11 +210,12 @@ article[data-vim-selected].category-social {
     word-wrap: break-word;
     margin: 0.4rem 0 0.4rem 0;
     padding: 0;
+    line-height: 1.5;
 
     a {
       color: var(--color-result-link-font);
       font-weight: normal;
-      font-size: 1.1em;
+      font-size: 1.15em;
 
       &:visited {
         color: var(--color-result-link-visited-font);
@@ -206,12 +238,12 @@ article[data-vim-selected].category-social {
 
   .content,
   .stat {
-    font-size: 0.9em;
+    font-size: 14px;
     margin: 0;
     padding: 0;
     max-width: 54em;
     word-wrap: break-word;
-    line-height: 1.24;
+    line-height: 1.5;
 
     .highlight {
       color: var(--color-result-description-highlight-font);
@@ -242,10 +274,11 @@ article[data-vim-selected].category-social {
   .url_wrapper {
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: 12px;
     color: var(--color-result-url-font);
-    flex-flow: row nowrap;
+    flex-wrap: nowrap;
     overflow: hidden;
+    flex-direction: row;
     margin: 0;
     padding: 0;
 
@@ -268,7 +301,9 @@ article[data-vim-selected].category-social {
     .url_o2 {
       overflow: hidden;
       white-space: nowrap;
-      flex: 0 1 content;
+      flex-basis: content;
+      flex-grow: 0;
+      flex-shrink: 1;
       text-align: right;
       padding-bottom: 1px;
 
@@ -295,8 +330,9 @@ article[data-vim-selected].category-social {
 
   img.thumbnail {
     .ltr-float-left();
-    padding-top: 0.6rem;
-    .ltr-padding-right(1rem);
+    margin-top: 0.6rem;
+    margin-right: 1rem;
+    border-radius: 4px;
     width: 7rem;
     height: unset; // remove height value that was needed for lazy loading
   }
@@ -384,6 +420,14 @@ article[data-vim-selected].category-social {
   padding: 0 5px 25px 0 !important;
 }
 
+.links_divider {
+  display: inline-block;
+  height: 14px;
+  margin: auto 8px;
+  background-color: var(--md-sys-color-outline-variant);
+  padding-right: 1px;
+}
+
 .audio-control audio {
   width: 100%;
   padding: 10px 0 0 0;
@@ -428,13 +472,20 @@ article[data-vim-selected].category-social {
   flex-wrap: wrap;
   justify-content: flex-end;
   color: var(--color-result-engines-font);
+  background-color: var(--md-sys-color-surface-container-low);
+  margin-top: 0.6rem;
+  padding: 5px 1rem !important;
+  border-radius: 6px;
 
   span {
     font-size: smaller;
     margin-top: 0;
     margin-bottom: 0;
-    .ltr-margin-right(0.5rem);
     .ltr-margin-left(0);
+  }
+
+  span:not(:last-child) {
+    .ltr-margin-right(0.5rem);
   }
 }
 
@@ -473,6 +524,7 @@ article[data-vim-selected].category-social {
     object-fit: cover;
     vertical-align: bottom;
     background: var(--color-result-image-background);
+    border-radius: 4px;
   }
 
   .image_resolution {
@@ -538,19 +590,19 @@ article[data-vim-selected].category-social {
 }
 
 #results {
-  margin-top: 1rem;
   .ltr-margin-right(2rem);
   margin-bottom: 0;
   .ltr-margin-left(@results-offset);
   display: grid;
-  grid-template:
-      "corrections sidebar" min-content
-      "answers sidebar" min-content
-      "urls sidebar" 1fr
-      "pagination sidebar" min-content
-      / @results-width @results-sidebar-width
-  ;
+  grid-template-columns: @results-width @results-sidebar-width;
+  grid-template-rows: min-content min-content 1fr min-content;
   gap: 0 @results-gap;
+  grid-template-areas:
+    "corrections sidebar"
+    "answers sidebar"
+    "urls sidebar"
+    "suggestions sidebar"
+    "pagination sidebar";
 }
 
 #results #sidebar *:first-child {
@@ -567,19 +619,45 @@ article[data-vim-selected].category-social {
 }
 
 #suggestions {
-  .wrapper {
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-end;
+  grid-area: suggestions;
+  padding: 0 1rem;
 
-    form {
-      display: inline-block;
-      flex: 1 1 50%;
+  h3 {
+    margin-top: 0;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 12px;
+    column-gap: 16px;
+  }
+
+  button[type="submit"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    min-height: 48px;
+    text-align: start;
+    background-color: transparent;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 24px;
+    padding: 12px;
+    color: var(--color-result-link-font);
+
+    svg {
+        color: var(--md-sys-color-on-surface);
     }
+  }
+
+  button[type="submit"]:hover {
+    text-decoration: underline;
+    background-color: var(--md-sys-color-surface-container-high);
   }
 }
 
-#suggestions,
 #infoboxes {
   input {
     padding: 0;
@@ -654,10 +732,9 @@ summary.title {
   grid-area: answers;
   background: var(--color-answer-background);
   padding: @result-padding;
-  margin: 1rem 0;
-  margin-top: 0;
+  margin: 1rem;
   color: var(--color-answer-font);
-  .rounded-corners;
+  .rounded-corners(12px);
 
   h4 {
     display: none;
@@ -673,7 +750,10 @@ summary.title {
   }
 
   .answer-url {
-    margin: 5px 10px 10px auto;
+    margin-left: auto;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 }
 
@@ -690,21 +770,25 @@ summary.title {
 
   .infobox {
     margin: 10px 0 10px;
-    border: 1px solid var(--color-sidebar-border);
-    padding: 1rem;
-    font-size: 0.9em;
-    .rounded-corners;
+    border: none;
+    background-color: var(--color-sidebar-background);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    padding: 1.5rem;
+    font-size: 1em;
+    .rounded-corners(12px);
 
     h2 {
       margin: 0 0 0.5em 0;
     }
 
     img {
-      max-width: 100%;
-      max-height: 12em;
+      width: 100%;
+      height: 12em;
+      object-fit: contain;
       display: block;
-      margin: 0 auto;
       padding: 0;
+      .rounded-corners(16px);
+      margin: 18px 0;
     }
 
     dt {
@@ -743,6 +827,43 @@ summary.title {
     .attributes,
     .urls {
       clear: both;
+    }
+
+    .urls {
+      margin-top: 18px;
+      overflow: auto;
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 12px;
+        width: max-content;
+
+        .url {
+          border: 1px solid var(--md-sys-color-outline-variant);
+          height: 40px;
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          border-radius: 9999px;
+          padding: 0 10px;
+
+          svg {
+            font-size: 20px;
+            padding-right: 8px;
+          }
+
+          a {
+            font-size: 14px;
+          }
+        }
+
+        .url:hover {
+          background-color: var(--md-sys-color-surface-container-high);
+        }
+      }
     }
   }
 }
@@ -820,6 +941,12 @@ summary.title {
 
 #pagination {
   grid-area: pagination;
+  display: flex;
+  margin: 3rem 0 0 0;
+
+  justify-content: center;
+  gap: 3rem;
+  align-items: center;
 
   br {
     clear: both;
@@ -851,6 +978,7 @@ summary.title {
   margin: 0;
   padding: 0;
   font-size: 1em;
+  line-height: 1;
   background: var(--color-backtotop-background);
   position: fixed;
   bottom: 8rem;
@@ -973,19 +1101,20 @@ summary.title {
     margin: 0 auto;
     justify-content: center;
     display: grid;
-    grid-template:
-      "corrections" min-content
-      "answers" min-content
-      "sidebar" min-content
-      "urls" 1fr
-      "pagination" min-content
-      / @results-width
-    ;
+    grid-template-columns: @results-width;
+    grid-template-rows: min-content min-content min-content 1fr min-content min-content;
     gap: 0;
+    grid-template-areas:
+      "corrections"
+      "sidebar"
+      "answers"
+      "urls"
+      "suggestions"
+      "pagination";
   }
 }
 
-@media screen and (width <= calc(@tablet - 0.5px)) {
+@media screen and (max-width: calc(@tablet - 0.5px)) {
   #links_on_top {
     span {
       display: none;
@@ -993,7 +1122,7 @@ summary.title {
   }
 }
 
-@media screen and (width <= 52rem) {
+@media screen and (max-width: 52rem) {
   body.results_endpoint {
     #links_on_top {
       .link_on_top_about,
@@ -1018,14 +1147,16 @@ summary.title {
 #main_results div#results.only_template_images {
   margin: 1rem @results-tablet-offset 0 @results-tablet-offset;
   display: grid;
-  grid-template:
-    "corrections" min-content
-    "answers" min-content
-    "sidebar" min-content
-    "urls" 1fr
-    "pagination" min-content
-    / 100%;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content min-content min-content 1fr min-content;
   gap: 0;
+  grid-template-areas:
+    "corrections"
+    "answers"
+    "sidebar"
+    "urls"
+    "suggestions"
+    "pagination";
 
   #sidebar {
     display: none;
@@ -1096,9 +1227,7 @@ summary.title {
   .result {
     background: var(--color-result-background);
     border: 1px solid var(--color-result-background);
-    margin: 1rem 2%;
-    width: 96%;
-    .rounded-corners;
+    margin: 8px 0;
   }
 
   .result-images {
@@ -1106,11 +1235,6 @@ summary.title {
     height: @results-image-row-height-phone;
     background: var(--color-base-background-mobile);
     width: unset;
-  }
-
-  .infobox {
-    border: none !important;
-    background-color: var(--color-sidebar-background);
   }
 
   .numbered_pagination {
@@ -1137,6 +1261,41 @@ summary.title {
           .ltr-margin-left(0.5rem);
         }
       }
+    }
+  }
+
+  .engines {
+    background-color: var(--md-sys-color-surface-container);
+  }
+
+  #answers {
+    margin: 0 0.5rem 0.125rem 0.5rem;
+  }
+
+  #suggestions {
+    background: var(--color-result-background);
+    padding-bottom: 12px;
+
+    h3 {
+      margin-top: 1.3rem;
+    }
+
+    .wrapper {
+      grid-template-columns: 1fr;
+      row-gap: 8px;
+    }
+
+    button[type="submit"] {
+      border: none;
+      border-radius: 0;
+    }
+
+    button[type="submit"]:hover {
+      background-color: transparent;
+    }
+
+    form:not(:last-child) {
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
     }
   }
 }

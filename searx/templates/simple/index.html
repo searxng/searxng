@@ -2,7 +2,10 @@
 {% from 'simple/icons.html' import icon_big %}
 {% block content %}
 <div class="index">
-    <div class="title"><h1>SearXNG</h1></div>
+    <div class="title">
+        {% include 'simple/logo.min.svg' without context %}
+        <h1>MeerkApp Search</h1>
+    </div>
     {% include 'simple/simple_search.html' %}
 </div>
 {% endblock %}

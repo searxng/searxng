@@ -161,13 +161,13 @@
     {# tab: general #}
 
     {{- tab_header('maintab', 'general', _('General'), True) -}}
-    {%- if 'categories' not in locked_preferences -%}
+    <!-- {%- if 'categories' not in locked_preferences -%}
       <fieldset>
         <legend>{{- _('Default categories') -}}</legend>
         {% set display_tooltip = false %}
         {% include 'simple/categories.html' %}
       </fieldset>
-    {%- endif -%}
+    {%- endif -%} -->
     {%- if 'language' not in locked_preferences -%}
       {%- include 'simple/preferences/language.html' -%}
     {% endif %}

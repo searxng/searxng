@@ -4,194 +4,99 @@
  * To change the colors of the site, simple edit this variables
  */
 
+/* inter-regular - cyrillic_latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/inter-v18-cyrillic_latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* inter-500 - cyrillic_latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/inter-v18-cyrillic_latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* inter-600 - cyrillic_latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/inter-v18-cyrillic_latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+
 /// Light Theme
 :root {
   /// Base Colors
-  --color-base-font: #444;
-  --color-base-font-rgb: 68, 68, 68;
-  --color-base-background: #fff;
-  --color-base-background-mobile: #f2f5f8;
-  --color-url-font: #334999;
-  --color-url-visited-font: #9822c3;
+  --color-base-font: var(--md-sys-color-on-surface);
+  --color-base-font-rgb: 29, 27, 32;
+  --color-base-background: var(--md-sys-color-surface-container-low);
+  --color-base-background-mobile: var(--md-sys-color-surface);
+  --color-url-font: var(--md-extended-color-custom-blue-color);
+  --color-url-visited-font: var(--md-extended-color-custom-violet-color);
   /// Header Colors
-  --color-header-background: #fdfbff;
-  --color-header-border: #ddd;
+  --color-header-background: var(--md-sys-color-surface-container-low);
+  --color-header-border: transparent;
   /// Footer Colors
-  --color-footer-background: #fdfbff;
-  --color-footer-border: #ddd;
+  --color-footer-background: var(--md-sys-color-surface-container-low);
+  --color-footer-border: transparent;
   /// Sidebar Colors
-  --color-sidebar-border: #ddd;
-  --color-sidebar-font: #000;
-  --color-sidebar-background: #fff;
+  --color-sidebar-border: transparent;
+  --color-sidebar-font: var(--md-sys-color-on-surface);
+  --color-sidebar-background: var(--md-sys-color-surface-container-low);
   /// BackToTop Colors
-  --color-backtotop-font: #444;
-  --color-backtotop-border: #ddd;
-  --color-backtotop-background: #fff;
+  --color-backtotop-font: var(--md-sys-color-on-tertiary);
+  --color-backtotop-border: transparent;
+  --color-backtotop-background: var(--md-sys-color-tertiary);
   /// Button Colors
-  --color-btn-background: #3050ff;
-  --color-btn-font: #fff;
-  --color-show-btn-background: #bbb;
-  --color-show-btn-font: #000;
-  /// Search Input Colors
-  --color-search-border: #bbb;
-  --color-search-shadow: 0 2px 8px rgb(34 38 46 / 25%);
-  --color-search-background: #fff;
-  --color-search-font: #222;
-  --color-search-background-hover: #3050ff;
-  /// Modal Colors
-  --color-error: #db3434;
-  --color-error-background: lighten(#db3434, 40%);
-  --color-warning: #dbba34;
-  --color-warning-background: lighten(#dbba34, 40%);
-  --color-success: #42db34;
-  --color-success-background: lighten(#42db34, 40%);
-  /// Categories Colors
-  --color-categories-item-selected-font: #3050ff;
-  --color-categories-item-border-selected: #3050ff;
-  /// Autocomplete Colors
-  --color-autocomplete-font: #000;
-  --color-autocomplete-border: #bbb;
-  --color-autocomplete-shadow: 0 2px 8px rgb(34 38 46 / 25%);
-  --color-autocomplete-background: #fff;
-  --color-autocomplete-background-hover: #e3e3e3;
-  /// Answer Colors
-  --color-answer-font: #444;  // same as --color-base-font
-  --color-answer-background: #fff;
-  /// Results Colors
-  --color-result-background: #fff;
-  --color-result-border: #ddd;
-  --color-result-url-font: #000;
-  --color-result-vim-selected: #f7f7f7;
-  --color-result-vim-arrow: #000bbb;
-  --color-result-description-highlight-font: #000;
-  --color-result-link-font: #000bbb;
-  --color-result-link-font-highlight: #000bbb;
-  --color-result-link-visited-font: #9822c3;
-  --color-result-publishdate-font: #777;
-  --color-result-engines-font: #545454;
-  --color-result-search-url-border: #ddd;
-  --color-result-search-url-font: #000;
-  // Images Colors
-  --color-result-image-span-font: #444;
-  --color-result-image-span-font-selected: #fff;
-  --color-result-image-background: #fff;
-  /// Settings Colors
-  --color-settings-tr-hover: #ebebeb;
-  --color-settings-engine-description-font: #545454;
-  --color-settings-table-group-background: #0001;
-  /// Detail modal
-  --color-result-detail-font: #fff;
-  --color-result-detail-label-font: lightgray;
-  --color-result-detail-background: #242424;
-  --color-result-detail-hr: #555;
-  --color-result-detail-link: #8af;
-  --color-result-detail-loader-border: rgb(255 255 255 / 20%);
-  --color-result-detail-loader-borderleft: rgb(0 0 0 / 0%);
-  /// Toolkit Colors
-  --color-toolkit-badge-font: #fff;
-  --color-toolkit-badge-background: #545454;
-  --color-toolkit-kbd-font: #fff;
-  --color-toolkit-kbd-background: #000;
-  --color-toolkit-dialog-border: #ddd;
-  --color-toolkit-dialog-background: #fff;
-  --color-toolkit-tabs-label-border: #fff;
-  --color-toolkit-tabs-section-border: #ddd;
-  --color-toolkit-select-background: #e1e1e1;
-  --color-toolkit-select-border: #ddd;
-  --color-toolkit-select-background-hover: #bbb;
-  --color-toolkit-input-text-font: #222;
-  --color-toolkit-checkbox-onoff-off-background: #ddd;
-  --color-toolkit-checkbox-onoff-on-background: #ddd;
-  --color-toolkit-checkbox-onoff-on-mark-background: #3050ff;
-  --color-toolkit-checkbox-onoff-on-mark-color: #fff;
-  --color-toolkit-checkbox-onoff-off-mark-background: #aaa;
-  --color-toolkit-checkbox-onoff-off-mark-color: #fff;
-  --color-toolkit-checkbox-label-background: #ddd;
-  --color-toolkit-checkbox-label-border: #ddd;
-  --color-toolkit-checkbox-input-border: #3050ff;
-  --color-toolkit-engine-tooltip-border: #ddd;
-  --color-toolkit-engine-tooltip-background: #fff;
-  --color-toolkit-loader-border: rgb(0 0 0 / 20%);
-  --color-toolkit-loader-borderleft: rgb(255 255 255 / 0%);
-  --color-doc-code: #003;
-  --color-doc-code-background: #ddeaff;
-  /// Other misc colors
-  --color-bar-chart-primary: #5bc0de;
-  --color-bar-chart-secondary: #deb15b;
-  --color-image-resolution-background: rgb(0 0 0 / 50%);
-  --color-image-resolution-font: #fff;
-  --color-loading-indicator: rgb(255 255 255 / 20%);
-  --color-loading-indicator-gap: #fff;
-  --color-line-number: #64708d;
-  // Favicons Colors
-  --color-favicon-background-color: #ddd;
-  --color-favicon-border-color: #ccc;
-}
-
-.dark-themes() {
-  /// Base Colors
-  --color-base-font: #bbb;
-  --color-base-font-rgb: 187, 187, 187;
-  --color-base-background: #222428;
-  --color-base-background-mobile: #222428;
-  --color-url-font: #8af;
-  --color-url-visited-font: #c09cd9;
-  /// Header Colors
-  --color-header-background: #1e1e22;
-  --color-header-border: #333;
-  /// Footer Colors
-  --color-footer-background: #1e1e22;
-  --color-footer-border: #333;
-  /// Sidebar Colors
-  --color-sidebar-border: #555;
-  --color-sidebar-font: #fff;
-  --color-sidebar-background: #292c34;
-  /// BackToTop Colors
-  --color-backtotop-font: #bbb;
-  --color-backtotop-border: #333;
-  --color-backtotop-background: #2b2e36;
-  /// Button Colors
-  --color-btn-background: #58f;
-  --color-btn-font: #222;
+  --color-btn-background: var(--md-sys-color-primary);
+  --color-btn-font: var(--md-sys-color-on-primary);
   --color-show-btn-background: #555;
   --color-show-btn-font: #fff;
   /// Search Input Colors
-  --color-search-border: #555;
-  --color-search-shadow: 0 2px 8px rgb(34 38 46 / 25%);
-  --color-search-background: #2b2e36;
-  --color-search-font: #fff;
-  --color-search-background-hover: #58f;
+  --color-search-border: var(--md-sys-color-outline);
+  --color-search-shadow: none;
+  --color-search-background: var(--md-sys-color-surface-container-high);
+  --color-search-font: var(--md-sys-color-on-surface);
+  --color-search-background-hover: var(--md-sys-color-primary);
   /// Modal Colors
-  --color-error: #f55b5b;
-  --color-error-background: darken(#db3434, 40%);
+  --color-error: var(--md-sys-color-on-error-container);
+  --color-error-background: var(--md-sys-color-error-container);
   --color-warning: #f1d561;
   --color-warning-background: darken(#dbba34, 40%);
   --color-success: #79f56e;
   --color-success-background: darken(#42db34, 40%);
   /// Categories Colors
-  --color-categories-item-selected-font: #58f;
-  --color-categories-item-border-selected: #58f;
+  --color-categories-item-selected-font: var(--md-sys-color-primary);
+  --color-categories-item-border-selected: var(--md-sys-color-primary);
   /// Autocomplete Colors
-  --color-autocomplete-font: #fff;
-  --color-autocomplete-border: #555;
-  --color-autocomplete-shadow: 0 2px 8px rgb(34 38 46 / 25%);
-  --color-autocomplete-background: #2b2e36;
-  --color-autocomplete-background-hover: #1e1e22;
+  --color-autocomplete-font: var(--md-sys-color-on-surface);
+  --color-autocomplete-border: var(--md-sys-color-outline);
+  --color-autocomplete-shadow: 0 2px 8px var(--md-sys-color-shadow);
+  --color-autocomplete-background: var(--md-sys-color-surface-container-high);
+  --color-autocomplete-background-hover: var(--md-sys-color-surface-container-highest);
   /// Answer Colors
-  --color-answer-font: #bbb; // same as --color-base-font
-  --color-answer-background: #26292f;
+  --color-answer-font: var(--md-sys-color-on-tertiary-container); // same as --color-base-font
+  --color-answer-background: var(--md-sys-color-tertiary-container);
   /// Results Colors
-  --color-result-background: #26292f;
-  --color-result-border: #333;
-  --color-result-url-font: #fff;
-  --color-result-vim-selected: #1f1f23cc;
-  --color-result-vim-arrow: #8af;
+  --color-result-background: var(--md-sys-color-surface-container-low);
+  --color-result-border: var(--md-sys-color-outline);
+  --color-result-url-font: var(--md-sys-color-on-surface);
+  --color-result-vim-selected: var(--md-sys-color-surface-container-lowest);
+  --color-result-vim-arrow: transparent;
   --color-result-description-highlight-font: #fff;
-  --color-result-link-font: #8af;
-  --color-result-link-font-highlight: #8af;
-  --color-result-link-visited-font: #c09cd9;
+  --color-result-link-font: var(--md-extended-color-custom-blue-color);
+  --color-result-link-font-highlight: var(--md-extended-color-custom-blue-color);
+  --color-result-link-visited-font: var(--md-extended-color-custom-violet-color);
   --color-result-publishdate-font: #888;
-  --color-result-engines-font: #a4a4a4;
+  --color-result-engines-font: var(--md-sys-color-on-surface-variant);
   --color-result-search-url-border: #555;
   --color-result-search-url-font: #fff;
   /// Detail modal : same as the light version
@@ -200,8 +105,8 @@
   --color-result-detail-background: #1a1a1c;
   --color-result-detail-hr: #555;
   --color-result-detail-link: #8af;
-  --color-result-detail-loader-border: rgb(255 255 255 / 20%);
-  --color-result-detail-loader-borderleft: rgb(0 0 0 / 0%);
+  --color-result-detail-loader-border: rgba(255, 255, 255, 0.2);
+  --color-result-detail-loader-borderleft: rgba(0, 0, 0, 0);
   // Images Colors
   --color-result-image-span-font: #bbb;
   --color-result-image-span-font-selected: #222;
@@ -234,13 +139,243 @@
   --color-toolkit-checkbox-input-border: #58f;
   --color-toolkit-engine-tooltip-border: #333;
   --color-toolkit-engine-tooltip-background: #222;
-  --color-toolkit-loader-border: rgb(255 255 255 / 20%);
-  --color-toolkit-loader-borderleft: rgb(0 0 0 / 0%);
+  --color-toolkit-loader-border: rgba(255, 255, 255, 0.2);
+  --color-toolkit-loader-borderleft: rgba(0, 0, 0, 0);
   --color-doc-code: #ddd;
   --color-doc-code-background: #4d5a6f;
   // Favicons Colors
-  --color-favicon-background-color: #ddd;
-  --color-favicon-border-color: #ccc;
+  --color-favicon-background-color: var(--md-sys-color-surface-container-low);
+  --color-favicon-border-color: transparent;
+  // Images Colors
+  --color-image-resolution-background: var(--md-sys-color-surface-container);
+  --color-image-resolution-font: var(--md-sys-color-on-surface);
+  // Material Colors
+  --md-sys-color-primary: rgb(109 94 15);
+  --md-sys-color-surface-tint: rgb(109 94 15);
+  --md-sys-color-on-primary: rgb(255 255 255);
+  --md-sys-color-primary-container: rgb(248 226 135);
+  --md-sys-color-on-primary-container: rgb(34 27 0);
+  --md-sys-color-secondary: rgb(102 94 64);
+  --md-sys-color-on-secondary: rgb(255 255 255);
+  --md-sys-color-secondary-container: rgb(238 226 188);
+  --md-sys-color-on-secondary-container: rgb(33 27 4);
+  --md-sys-color-tertiary: rgb(67 102 78);
+  --md-sys-color-on-tertiary: rgb(255 255 255);
+  --md-sys-color-tertiary-container: rgb(197 236 206);
+  --md-sys-color-on-tertiary-container: rgb(0 33 15);
+  --md-sys-color-error: rgb(186 26 26);
+  --md-sys-color-on-error: rgb(255 255 255);
+  --md-sys-color-error-container: rgb(255 218 214);
+  --md-sys-color-on-error-container: rgb(65 0 2);
+  --md-sys-color-background: rgb(255 249 238);
+  --md-sys-color-on-background: rgb(30 27 19);
+  --md-sys-color-surface: rgb(255 249 238);
+  --md-sys-color-on-surface: rgb(30 27 19);
+  --md-sys-color-surface-variant: rgb(234 226 208);
+  --md-sys-color-on-surface-variant: rgb(75 71 57);
+  --md-sys-color-outline: rgb(124 119 103);
+  --md-sys-color-outline-variant: rgb(205 198 180);
+  --md-sys-color-shadow: rgb(0 0 0);
+  --md-sys-color-scrim: rgb(0 0 0);
+  --md-sys-color-inverse-surface: rgb(51 48 39);
+  --md-sys-color-inverse-on-surface: rgb(247 240 226);
+  --md-sys-color-inverse-primary: rgb(219 198 110);
+  --md-sys-color-primary-fixed: rgb(248 226 135);
+  --md-sys-color-on-primary-fixed: rgb(34 27 0);
+  --md-sys-color-primary-fixed-dim: rgb(219 198 110);
+  --md-sys-color-on-primary-fixed-variant: rgb(83 70 0);
+  --md-sys-color-secondary-fixed: rgb(238 226 188);
+  --md-sys-color-on-secondary-fixed: rgb(33 27 4);
+  --md-sys-color-secondary-fixed-dim: rgb(209 198 161);
+  --md-sys-color-on-secondary-fixed-variant: rgb(78 71 42);
+  --md-sys-color-tertiary-fixed: rgb(197 236 206);
+  --md-sys-color-on-tertiary-fixed: rgb(0 33 15);
+  --md-sys-color-tertiary-fixed-dim: rgb(169 208 179);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(44 78 56);
+  --md-sys-color-surface-dim: rgb(224 217 204);
+  --md-sys-color-surface-bright: rgb(255 249 238);
+  --md-sys-color-surface-container-lowest: rgb(255 255 255);
+  --md-sys-color-surface-container-low: rgb(250 243 229);
+  --md-sys-color-surface-container: rgb(244 237 223);
+  --md-sys-color-surface-container-high: rgb(238 232 218);
+  --md-sys-color-surface-container-highest: rgb(232 226 212);
+//   --md-sys-color-primary: rgb(103 85 142);
+//   --md-sys-color-surface-tint: rgb(103 85 142);
+//   --md-sys-color-on-primary: rgb(255 255 255);
+//   --md-sys-color-primary-container: rgb(234 221 255);
+//   --md-sys-color-on-primary-container: rgb(34 15 70);
+//   --md-sys-color-secondary: rgb(98 91 112);
+//   --md-sys-color-on-secondary: rgb(255 255 255);
+//   --md-sys-color-secondary-container: rgb(233 222 248);
+//   --md-sys-color-on-secondary-container: rgb(30 25 43);
+//   --md-sys-color-tertiary: rgb(109 94 15);
+//   --md-sys-color-on-tertiary: rgb(255 255 255);
+//   --md-sys-color-tertiary-container: rgb(248 226 135);
+//   --md-sys-color-on-tertiary-container: rgb(34 27 0);
+//   --md-sys-color-error: rgb(186 26 26);
+//   --md-sys-color-on-error: rgb(255 255 255);
+//   --md-sys-color-error-container: rgb(255 218 214);
+//   --md-sys-color-on-error-container: rgb(65 0 2);
+//   --md-sys-color-background: rgb(254 247 255);
+//   --md-sys-color-on-background: rgb(29 27 32);
+//   --md-sys-color-surface: rgb(254 247 255);
+//   --md-sys-color-on-surface: rgb(29 27 32);
+//   --md-sys-color-surface-variant: rgb(231 224 235);
+//   --md-sys-color-on-surface-variant: rgb(73 69 78);
+//   --md-sys-color-outline: rgb(122 117 127);
+//   --md-sys-color-outline-variant: rgb(203 196 207);
+//   --md-sys-color-shadow: rgb(0 0 0);
+//   --md-sys-color-scrim: rgb(0 0 0);
+//   --md-sys-color-inverse-surface: rgb(50 47 53);
+//   --md-sys-color-inverse-on-surface: rgb(245 239 247);
+//   --md-sys-color-inverse-primary: rgb(209 188 253);
+//   --md-sys-color-primary-fixed: rgb(234 221 255);
+//   --md-sys-color-on-primary-fixed: rgb(34 15 70);
+//   --md-sys-color-primary-fixed-dim: rgb(209 188 253);
+//   --md-sys-color-on-primary-fixed-variant: rgb(78 61 117);
+//   --md-sys-color-secondary-fixed: rgb(233 222 248);
+//   --md-sys-color-on-secondary-fixed: rgb(30 25 43);
+//   --md-sys-color-secondary-fixed-dim: rgb(204 194 219);
+//   --md-sys-color-on-secondary-fixed-variant: rgb(74 67 88);
+//   --md-sys-color-tertiary-fixed: rgb(248 226 135);
+//   --md-sys-color-on-tertiary-fixed: rgb(34 27 0);
+//   --md-sys-color-tertiary-fixed-dim: rgb(219 198 111);
+//   --md-sys-color-on-tertiary-fixed-variant: rgb(83 70 0);
+//   --md-sys-color-surface-dim: rgb(222 216 224);
+//   --md-sys-color-surface-bright: rgb(254 247 255);
+//   --md-sys-color-surface-container-lowest: rgb(255 255 255);
+//   --md-sys-color-surface-container-low: rgb(248 241 250);
+//   --md-sys-color-surface-container: rgb(242 236 244);
+//   --md-sys-color-surface-container-high: rgb(236 230 238);
+//   --md-sys-color-surface-container-highest: rgb(231 224 232);
+  --md-extended-color-custom-blue-color: rgb(69 94 145);
+  --md-extended-color-custom-blue-on-color: rgb(255 255 255);
+  --md-extended-color-custom-blue-color-container: rgb(216 226 255);
+  --md-extended-color-custom-blue-on-color-container: rgb(0 26 66);
+  --md-extended-color-custom-violet-color: rgb(103 85 142);
+  --md-extended-color-custom-violet-on-color: rgb(255 255 255);
+  --md-extended-color-custom-violet-color-container: rgb(234 221 255);
+  --md-extended-color-custom-violet-on-color-container: rgb(34 15 70);
+}
+
+.dark-themes() {
+  // Base Colors
+  --color-base-font-rgb: 231, 224, 232;
+  // Favicons Colors
+  --color-favicon-background-color: #fff;
+  --color-favicon-border-color: transparent;
+  // Material Colors
+
+//   --md-sys-color-primary: rgb(209 188 253);
+//   --md-sys-color-surface-tint: rgb(209 188 253);
+//   --md-sys-color-on-primary: rgb(55 38 92);
+//   --md-sys-color-primary-container: rgb(78 61 117);
+//   --md-sys-color-on-primary-container: rgb(234 221 255);
+//   --md-sys-color-secondary: rgb(204 194 219);
+//   --md-sys-color-on-secondary: rgb(52 45 65);
+//   --md-sys-color-secondary-container: rgb(74 67 88);
+//   --md-sys-color-on-secondary-container: rgb(233 222 248);
+//   --md-sys-color-tertiary: rgb(219 198 111);
+//   --md-sys-color-on-tertiary: rgb(57 48 0);
+//   --md-sys-color-tertiary-container: rgb(83 70 0);
+//   --md-sys-color-on-tertiary-container: rgb(248 226 135);
+//   --md-sys-color-error: rgb(255 180 171);
+//   --md-sys-color-on-error: rgb(105 0 5);
+//   --md-sys-color-error-container: rgb(147 0 10);
+//   --md-sys-color-on-error-container: rgb(255 218 214);
+  --md-sys-color-background: rgb(20 18 24);
+  --md-sys-color-on-background: rgb(231 224 232);
+  --md-sys-color-surface: rgb(20 18 24);
+  --md-sys-color-on-surface: rgb(231 224 232);
+  --md-sys-color-surface-variant: rgb(73 69 78);
+  --md-sys-color-on-surface-variant: rgb(203 196 207);
+  --md-sys-color-outline: rgb(148 143 153);
+  --md-sys-color-outline-variant: rgb(73 69 78);
+//   --md-sys-color-shadow: rgb(0 0 0);
+//   --md-sys-color-scrim: rgb(0 0 0);
+//   --md-sys-color-inverse-surface: rgb(231 224 232);
+//   --md-sys-color-inverse-on-surface: rgb(50 47 53);
+//   --md-sys-color-inverse-primary: rgb(103 85 142);
+//   --md-sys-color-primary-fixed: rgb(234 221 255);
+//   --md-sys-color-on-primary-fixed: rgb(34 15 70);
+//   --md-sys-color-primary-fixed-dim: rgb(209 188 253);
+//   --md-sys-color-on-primary-fixed-variant: rgb(78 61 117);
+//   --md-sys-color-secondary-fixed: rgb(233 222 248);
+//   --md-sys-color-on-secondary-fixed: rgb(30 25 43);
+//   --md-sys-color-secondary-fixed-dim: rgb(204 194 219);
+//   --md-sys-color-on-secondary-fixed-variant: rgb(74 67 88);
+//   --md-sys-color-tertiary-fixed: rgb(248 226 135);
+//   --md-sys-color-on-tertiary-fixed: rgb(34 27 0);
+//   --md-sys-color-tertiary-fixed-dim: rgb(219 198 111);
+//   --md-sys-color-on-tertiary-fixed-variant: rgb(83 70 0);
+  --md-sys-color-surface-dim: rgb(20 18 24);
+  --md-sys-color-surface-bright: rgb(59 56 62);
+  --md-sys-color-surface-container-lowest: rgb(15 13 19);
+  --md-sys-color-surface-container-low: rgb(29 27 32);
+  --md-sys-color-surface-container: rgb(33 31 36);
+  --md-sys-color-surface-container-high: rgb(43 41 47);
+  --md-sys-color-surface-container-highest: rgb(54 52 58);
+
+
+  --md-sys-color-primary: rgb(219 198 110);
+  --md-sys-color-surface-tint: rgb(219 198 110);
+  --md-sys-color-on-primary: rgb(58 48 0);
+  --md-sys-color-primary-container: rgb(83 70 0);
+  --md-sys-color-on-primary-container: rgb(248 226 135);
+  --md-sys-color-secondary: rgb(209 198 161);
+  --md-sys-color-on-secondary: rgb(54 48 22);
+  --md-sys-color-secondary-container: rgb(78 71 42);
+  --md-sys-color-on-secondary-container: rgb(238 226 188);
+  --md-sys-color-tertiary: rgb(169 208 179);
+  --md-sys-color-on-tertiary: rgb(20 55 35);
+  --md-sys-color-tertiary-container: rgb(44 78 56);
+  --md-sys-color-on-tertiary-container: rgb(197 236 206);
+  --md-sys-color-error: rgb(255 180 171);
+  --md-sys-color-on-error: rgb(105 0 5);
+  --md-sys-color-error-container: rgb(147 0 10);
+  --md-sys-color-on-error-container: rgb(255 218 214);
+  // --md-sys-color-background: rgb(21 19 11);
+  // --md-sys-color-on-background: rgb(232 226 212);
+  // --md-sys-color-surface: rgb(21 19 11);
+  // --md-sys-color-on-surface: rgb(232 226 212);
+  // --md-sys-color-surface-variant: rgb(75 71 57);
+  // --md-sys-color-on-surface-variant: rgb(205 198 180);
+  // --md-sys-color-outline: rgb(150 144 128);
+  // --md-sys-color-outline-variant: rgb(75 71 57);
+  --md-sys-color-shadow: rgb(0 0 0);
+  --md-sys-color-scrim: rgb(0 0 0);
+  --md-sys-color-inverse-surface: rgb(232 226 212);
+  --md-sys-color-inverse-on-surface: rgb(51 48 39);
+  --md-sys-color-inverse-primary: rgb(109 94 15);
+  --md-sys-color-primary-fixed: rgb(248 226 135);
+  --md-sys-color-on-primary-fixed: rgb(34 27 0);
+  --md-sys-color-primary-fixed-dim: rgb(219 198 110);
+  --md-sys-color-on-primary-fixed-variant: rgb(83 70 0);
+  --md-sys-color-secondary-fixed: rgb(238 226 188);
+  --md-sys-color-on-secondary-fixed: rgb(33 27 4);
+  --md-sys-color-secondary-fixed-dim: rgb(209 198 161);
+  --md-sys-color-on-secondary-fixed-variant: rgb(78 71 42);
+  --md-sys-color-tertiary-fixed: rgb(197 236 206);
+  --md-sys-color-on-tertiary-fixed: rgb(0 33 15);
+  --md-sys-color-tertiary-fixed-dim: rgb(169 208 179);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(44 78 56);
+  // --md-sys-color-surface-dim: rgb(21 19 11);
+  // --md-sys-color-surface-bright: rgb(60 57 48);
+  // --md-sys-color-surface-container-lowest: rgb(16 14 7);
+  // --md-sys-color-surface-container-low: rgb(30 27 19);
+  // --md-sys-color-surface-container: rgb(34 32 23);
+  // --md-sys-color-surface-container-high: rgb(45 42 33);
+  // --md-sys-color-surface-container-highest: rgb(56 53 43);
+  --md-extended-color-custom-blue-color: #7eaaff;
+//   --md-extended-color-custom-blue-color: rgb(174 198 255);
+  --md-extended-color-custom-blue-on-color: rgb(18 47 96);
+  --md-extended-color-custom-blue-color-container: rgb(44 70 120);
+  --md-extended-color-custom-blue-on-color-container: rgb(216 226 255);
+  --md-extended-color-custom-violet-color: #d19efa;
+//   --md-extended-color-custom-violet-color: rgb(209 188 253);
+  --md-extended-color-custom-violet-on-color: rgb(55 38 92);
+  --md-extended-color-custom-violet-color-container: rgb(78 61 117);
+  --md-extended-color-custom-violet-on-color-container: rgb(234 221 255);
 }
 
 .black-themes() {
@@ -271,16 +406,16 @@
 /// General Size
 @results-width: 45rem;
 @results-sidebar-width: 25rem;
-@results-offset: 10rem;
+@results-offset: 13rem;
 @results-tablet-offset: 0.5rem;
 @results-gap: 5rem;
 @results-margin: 0.125rem;
 @result-padding: 1rem;
-@results-image-row-height: 12rem;
-@results-image-row-height-phone: 10rem;
+@results-image-row-height: 15rem;
+@results-image-row-height-phone: 12rem;
 @search-width: 44rem;
 // heigh of #search, see detail.less
-@search-height: 13rem;
+@search-height: 7.6rem;
 
 /// Device Size
 /// @desktop > @tablet

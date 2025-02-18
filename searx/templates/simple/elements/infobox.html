@@ -2,7 +2,7 @@
   <h2 class="title"><bdi>{{ infobox.infobox }}</bdi></h2>
   {%- if infobox.img_src -%}<img src="{{ image_proxify(infobox.img_src) }}" title="{{ infobox.infobox|striptags }}" alt="{{ infobox.infobox|striptags }}">{%- endif -%}
   <p><bdi>{{ infobox.content | safe }}</bdi></p>
-  {%- if infobox.attributes -%}
+  <!-- {%- if infobox.attributes -%}
     <div class="attributes">
       {%- for attribute in infobox.attributes -%}
         <dl>
@@ -15,12 +15,21 @@
         </dl>
       {%- endfor -%}
     </div>
-  {%- endif -%}
+  {%- endif -%} -->
   {%- if infobox.urls -%}
     <div class="urls">
       <ul>
         {%- for url in infobox.urls -%}
-          <li class="url"><bdi><a href="{{ url.url }}" {%- if results_on_new_tab -%}target="_blank" rel="noopener noreferrer"{%- else -%}rel="noreferrer"{%- endif -%}>{{ url.title }}</a></bdi></li>
+            {%- if 'Wikipedia' == url.title or not 'Wiki' in url.title -%}
+                <li class="url">
+                    {%- if 'Wikipedia' in url.title -%}
+                        {% include 'simple/svg/wikipedia.svg' without context %}
+                    {%- else -%}
+                        {% include 'simple/svg/web.svg' without context %}
+                    {%- endif -%}
+                    <a href="{{ url.url }}" {%- if results_on_new_tab -%}target="_blank" rel="noopener noreferrer"{%- else -%}rel="noreferrer"{%- endif -%}>{{ url.title }}</a>
+                </li>
+            {%- endif -%}
         {%- endfor -%}
       </ul>
     </div>

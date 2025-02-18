@@ -11,7 +11,7 @@
     'files': 'file-tray-full-outline',
     'social media': 'people-outline',
 }  -%}
-<div id="categories" class="search_categories">{{- '' -}}
+<div id="categories" class="search_categories" style="max-width: 44rem; display: flex; justify-content: space-between; align-items: center;">{{- '' -}}
     <div id="categories_container">
         {%- if not search_on_category_select or not display_tooltip -%}
             {%- for category in categories -%}
@@ -27,10 +27,15 @@
         {%- else -%}
             {%- for category in categories -%}{{- '\n' -}}
                 <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
-                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
                     <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
                 </button>{{- '' -}}
             {%- endfor -%}
+            <span class="links_divider"></span>
+            <a href="{{ url_for('preferences') }}">
+                <button type="button" class="category category_button">
+                    <div class="category_name">{{- _('Preferences') -}}</div>{{- '' -}}
+                </button>
+            </a>
             <input name="categories" id="selected-categories" type="hidden" />
             {{- '\n' -}}
         {%- endif -%}

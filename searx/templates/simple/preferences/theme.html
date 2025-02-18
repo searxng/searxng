@@ -1,4 +1,4 @@
-<fieldset>{{- '' -}}
+<!-- <fieldset>{{- '' -}}
   <legend id="pref_theme">{{- _('Theme') -}}</legend>{{- '' -}}
   <div class="value">{{- '' -}}
     <select name="theme" aria-labelledby="pref_theme">{{- '' -}}
@@ -13,13 +13,13 @@
   <div class="description">
     {{- _('Change SearXNG layout') -}}
   </div>{{- '' -}}
-</fieldset>{{- '' -}}
+</fieldset>{{- '' -}} -->
 
 <fieldset>{{- '' -}}
   <legend id="pref_simple_style">{{- _('Theme style') -}}</legend>{{- '' -}}
   <div class="value">{{- '' -}}
     <select name="simple_style" aria-labelledby="pref_simple_style">
-      {%- for name in ['auto', 'light', 'dark', 'black'] -%}
+      {%- for name in ['auto', 'light', 'dark'] -%}
         <option value="{{ name }}"
                 {%- if name == preferences.get_value('simple_style') %} selected="selected" {%- endif -%}>
                 {{- _(name) | capitalize -}}

@@ -21,10 +21,9 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['gruntfile.js', 'eslint.config.mjs', '.stylelintrc.json', 'src/**'],
+        files: ['gruntfile.js', 'src/**'],
         tasks: [
           'eslint',
-          'stylelint',
           'copy',
           'uglify',
           'less',
@@ -36,7 +35,7 @@ module.exports = function (grunt) {
     },
     eslint: {
       options: {
-        overrideConfigFile: 'eslint.config.mjs',
+        overrideConfigFile: '.eslintrc.json',
         failOnError: true,
         fix: grunt.option('fix')
       },
@@ -50,7 +49,6 @@ module.exports = function (grunt) {
     stylelint: {
       options: {
         formatter: 'unix',
-        fix: grunt.option('fix')
       },
       src: [
         'src/less/**/*.less',
@@ -109,8 +107,7 @@ module.exports = function (grunt) {
           'js/searxng.head.min.js': ['src/js/head/*.js'],
           'js/searxng.min.js': [
             'src/js/main/*.js',
-            './node_modules/autocomplete-js/dist/autocomplete.js',
-            './node_modules/swiped-events/src/swiped-events.js'
+            './node_modules/autocomplete-js/dist/autocomplete.js'
           ]
         }
       }
@@ -119,6 +116,9 @@ module.exports = function (grunt) {
       production: {
         options: {
           paths: ["less"],
+          plugins: [
+            new (require('less-plugin-clean-css'))()
+          ],
           sourceMap: true,
           sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map'; },
           outputSourceFiles: true,
@@ -145,34 +145,34 @@ module.exports = function (grunt) {
         ],
       },
     },
-    image: {
-      svg4web: {
-        options: {
-          svgo: ['--config', 'svg4web.svgo.js']
-        },
-        files: {
-          '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.svg': '<%= _brand %>/searxng.svg',
-          'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
-        }
-      },
-      favicon: {
-        options: {
-          svgo: ['--config', 'svg4favicon.svgo.js']
-        },
-        files: {
-          'img/favicon.svg': '<%= _brand %>/searxng-wordmark.svg'
-        }
-      },
-    },
-    svg2png: {
-      favicon: {
-        files: {
-          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.png': '<%= _brand %>/searxng.svg',
-        }
-      }
-    },
+    // image: {
+    //   svg4web: {
+    //     options: {
+    //       svgo: ['--config', 'svg4web.svgo.js']
+    //     },
+    //     files: {
+    //       '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
+    //       'img/searxng.svg': '<%= _brand %>/searxng.svg',
+    //       'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
+    //     }
+    //   },
+    //   favicon: {
+    //     options: {
+    //       svgo: ['--config', 'svg4favicon.svgo.js']
+    //     },
+    //     files: {
+    //       'img/favicon.svg': '<%= _brand %>/searxng-wordmark.svg'
+    //     }
+    //   },
+    // },
+    // svg2png: {
+    //   favicon: {
+    //     files: {
+    //       'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
+    //       'img/searxng.png': '<%= _brand %>/searxng.svg',
+    //     }
+    //   }
+    // },
     svg2jinja: {
       all: {
         src: {
@@ -298,7 +298,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-stylelint');
   grunt.loadNpmTasks('grunt-eslint');
 
-  grunt.registerTask('test', ['eslint', 'stylelint']);
+  grunt.registerTask('test', ['eslint']);
 
   grunt.registerTask('default', [
     'eslint',

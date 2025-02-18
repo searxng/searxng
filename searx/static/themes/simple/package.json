@@ -1,41 +1,39 @@
 {
   "devDependencies": {
-    "ejs": "^3.1.10",
-    "eslint": "^9.18.0",
-    "grunt": "^1.6.1",
+    "eslint": "^9.0.0",
+    "grunt": "~1.6.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^5.0.0",
-    "grunt-contrib-less": "^3.0.0",
-    "grunt-contrib-uglify": "^5.2.2",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-eslint": "^25.0.0",
+    "grunt-contrib-less": "~3.0.0",
+    "grunt-contrib-uglify": "~5.2.1",
+    "grunt-xmlmin": "~0.1.8",
+    "grunt-contrib-watch": "~1.1.0",
+    "grunt-eslint": "^24.0.0",
+    "grunt-stylelint": "^0.16.0",
     "grunt-image": "^6.4.0",
-    "grunt-stylelint": "^0.20.1",
-    "grunt-xmlmin": "^0.1.8",
-    "ionicons": "^7.4.0",
-    "less": "^4.2.2",
-    "sharp": "^0.33.5",
-    "stylelint": "^16.12.0",
-    "stylelint-config-standard": "^37.0.0",
-    "stylelint-config-standard-less": "^3.0.1",
-    "svgo": "^3.3.2"
+    "ionicons": "^7.1.0",
+    "less": "^4.1.3",
+    "less-plugin-clean-css": "^1.5.1",
+    "sharp": "^0.33.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "ejs": "^3.1.8",
+    "svgo": "^3.0.0"
   },
   "dependencies": {
-    "autocomplete-js": "^2.7.1",
-    "leaflet": "^1.9.4",
-    "normalize.css": "^8.0.1",
-    "swiped-events": "^1.2.0"
+    "autocomplete-js": "2.7.1",
+    "leaflet": "^1.8.0",
+    "normalize.css": "^8.0.1"
   },
   "scripts": {
     "all": "npm install && grunt",
     "build": "grunt",
-    "clean": "rm -Rf node_modules",
+    "test": "grunt test",
     "eslint": "grunt eslint",
     "eslint-fix": "grunt eslint --fix",
-    "fix": "grunt test --fix",
+    "watch": "grunt watch",
+    "clean": "rm -Rf node_modules package-lock.json",
     "stylelint": "grunt stylelint",
-    "stylelint-fix": "grunt stylelint --fix",
-    "test": "grunt test",
-    "watch": "grunt watch --fix"
+    "stylelint-fix": "grunt stylelint --fix"
   }
 }

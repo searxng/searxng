@@ -1,6 +1,6 @@
-<div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
-  <details class="sidebar-collapsible">
-    <summary class="title" id="suggestions-title">{{ _('Suggestions') }}</summary>
+{% from 'simple/icons.html' import icon_big %}
+<div id="suggestions">
+    <h3>{{ _('Suggestions') }}</h3>
     <div class="wrapper">
       {%- for suggestion in suggestions -%}
         <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
@@ -15,9 +15,11 @@
           {%- if timeout_limit -%}
             <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
           {%- endif -%}
-          <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
+          <button type="submit" role="link">
+            <span>{{ suggestion.title }}</span>
+            {{ icon_big('search-outline') }}
+          </button>
         </form>
       {%- endfor -%}
     </div>
-  </details>
 </div>
