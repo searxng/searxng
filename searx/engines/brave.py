@@ -254,13 +254,13 @@ def response(resp) -> EngineResults:
     if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
 
+    if brave_category in ('news'):
+        return _parse_news(resp)
+
     datastr = extr(resp.text, "const data = ", ";\n").strip()
 
     json_data = js_variable_to_python(datastr)
     json_resp = json_data[1]['data']['body']['response']
-
-    if brave_category == 'news':
-        return _parse_news(json_resp['news'])
 
     if brave_category == 'images':
         return _parse_images(json_resp)
@@ -339,18 +339,31 @@ def _parse_search(resp) -> EngineResults:
     return result_list
 
 
-def _parse_news(json_resp) -> EngineResults:
-    result_list = EngineResults()
+def _parse_news(resp) -> EngineResults:
 
-    for result in json_resp["results"]:
+    result_list = EngineResults()
+    dom = html.fromstring(resp.text)
+
+    for result in eval_xpath_list(dom, '//div[contains(@class, "results")]//div[@data-type="news"]'):
+
+        # import pdb
+        # pdb.set_trace()
+
+        url = eval_xpath_getindex(result, './/a[contains(@class, "result-header")]/@href', 0, default=None)
+        if url is None:
+            continue
+
+        title = extract_text(eval_xpath_list(result, './/span[contains(@class, "snippet-title")]'))
+        content = extract_text(eval_xpath_list(result, './/p[contains(@class, "desc")]'))
+        thumbnail = eval_xpath_getindex(result, './/div[contains(@class, "image-wrapper")]//img/@src', 0, default='')
+
         item = {
-            'url': result['url'],
-            'title': result['title'],
-            'content': result['description'],
-            'publishedDate': _extract_published_date(result['age']),
+            "url": url,
+            "title": title,
+            "content": content,
+            "thumbnail": thumbnail,
         }
-        if result['thumbnail'] is not None:
-            item['thumbnail'] = result['thumbnail']['src']
+
         result_list.append(item)
 
     return result_list
