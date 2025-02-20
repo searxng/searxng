@@ -1855,6 +1855,29 @@ engines:
     shortcut: tm
     disabled: true
 
+  # Tavily requires an API key as well as other configurations. Before you
+  # activate these engines you should read the documentation.
+  # --> https://docs.searxng.org/dev/engines/online/tavily.html
+  #
+  # - name: tavily
+  #   engine: tavily
+  #   shortcut: tav
+  #   categories: [general, ai]
+  #   api_key: unset
+  #   topic: general
+  #   include_images: true
+  #   timeout: 15
+  #   disabled: true
+  #
+  # - name: tavily news
+  #   engine: tavily
+  #   shortcut: tavnews
+  #   categories: [news, ai]
+  #   api_key: unset
+  #   topic: news
+  #   timeout: 15
+  #   disabled: true
+
   # Requires Tor
   - name: torch
     engine: xpath

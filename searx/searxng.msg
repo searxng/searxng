@@ -7,72 +7,77 @@ from searx import webutils
 from searx import engines
 
 __all__ = [
-    'CONSTANT_NAMES',
-    'CATEGORY_NAMES',
-    'CATEGORY_GROUPS',
-    'STYLE_NAMES',
     'BRAND_CUSTOM_LINKS',
-    'WEATHER_TERMS',
+    'CATEGORY_GROUPS',
+    'CATEGORY_NAMES',
+    'CONSTANT_NAMES',
     'SOCIAL_MEDIA_TERMS',
+    'STYLE_NAMES',
+    'WEATHER_TERMS',
 ]
 
 CONSTANT_NAMES = {
     # Constants defined in other modules
-    'NO_SUBGROUPING': webutils.NO_SUBGROUPING,
     'DEFAULT_CATEGORY': engines.DEFAULT_CATEGORY,
+    'NO_SUBGROUPING': webutils.NO_SUBGROUPING,
 }
 
 CATEGORY_NAMES = {
     'FILES': 'files',
     'GENERAL': 'general',
-    'MUSIC': 'music',
-    'SOCIAL_MEDIA': 'social media',
     'IMAGES': 'images',
-    'VIDEOS': 'videos',
-    'RADIO': 'radio',
-    'TV': 'tv',
     'IT': 'it',
-    'NEWS': 'news',
     'MAP': 'map',
+    'MUSIC': 'music',
+    'NEWS': 'news',
     'ONIONS': 'onions',
+    'RADIO': 'radio',
     'SCIENCE': 'science',
+    'SOCIAL_MEDIA': 'social media',
+    'TV': 'tv',
+    'VIDEOS': 'videos',
 }
 
 CATEGORY_GROUPS = {
     # non-tab categories
+    'AI': 'ai',
     'APPS': 'apps',
     'DICTIONARIES': 'dictionaries',
     'LYRICS': 'lyrics',
+    'MOVIES': 'movies',
     'PACKAGES': 'packages',
     'Q_A': 'q&a',
     'REPOS': 'repos',
+    'SCIENTIFIC_PUBLICATIONS': 'scientific publications',
     'SOFTWARE_WIKIS': 'software wikis',
+    'TRANSLATE': 'translate',
+    'WEATHER': 'weather',
     'WEB': 'web',
-    'SCIENTIFIC PUBLICATIONS': 'scientific publications',
+    'WIKIMEDIA': 'wikimedia',
 }
 
 STYLE_NAMES = {
     'AUTO': 'auto',
-    'LIGHT': 'light',
-    'DARK': 'dark',
     'BLACK': 'black',
+    'DARK': 'dark',
+    'LIGHT': 'light',
 }
 
 BRAND_CUSTOM_LINKS = {
-    'UPTIME': 'Uptime',
     'ABOUT': 'About',
+    'UPTIME': 'Uptime',
 }
 
 WEATHER_TERMS = {
-    'AVERAGE TEMP.': 'Average temp.',
-    'CLOUD COVER': 'Cloud cover',
+    'AVERAGE_TEMP.': 'Average temp.',
+    'CLOUD_COVER': 'Cloud cover',
     'CONDITION': 'Condition',
-    'CURRENT CONDITION': 'Current condition',
+    'CURRENT_CONDITION': 'Current condition',
     'EVENING': 'Evening',
-    'FEELS LIKE': 'Feels like',
+    'FEELS_LIKE': 'Feels like',
     'HUMIDITY': 'Humidity',
-    'MAX TEMP.': 'Max temp.',
-    'MIN TEMP.': 'Min temp.',
+    'MAX_TEMP.': 'Max temp.',
+    'MIN_TEMP.': 'Min temp.',
     'MORNING': 'Morning',
     'NIGHT': 'Night',
     'NOON': 'Noon',
@@ -80,22 +85,22 @@ WEATHER_TERMS = {
     'SUNRISE': 'Sunrise',
     'SUNSET': 'Sunset',
     'TEMPERATURE': 'Temperature',
-    'UV INDEX': 'UV index',
+    'UV_INDEX': 'UV index',
     'VISIBILITY': 'Visibility',
     'WIND': 'Wind',
 }
 
 SOCIAL_MEDIA_TERMS = {
-    'SUBSCRIBERS': 'subscribers',
-    'POSTS': 'posts',
-    'ACTIVE USERS': 'active users',
+    'ACTIVE_USERS': 'active users',
+    'AUTHOR': 'author',
     'COMMENTS': 'comments',
-    'USER': 'user',
     'COMMUNITY': 'community',
     'POINTS': 'points',
+    'POSTS': 'posts',
+    'SUBSCRIBERS': 'subscribers',
+    'THREAD_ANSWERED': 'answered',
+    'THREAD_CLOSED': 'closed',
+    'THREAD_OPEN': 'open',
     'TITLE': 'title',
-    'AUTHOR': 'author',
-    'THREAD OPEN': 'open',
-    'THREAD CLOSED': 'closed',
-    'THREAD ANSWERED': 'answered',
+    'USER': 'user',
 }
