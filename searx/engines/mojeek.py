@@ -67,10 +67,12 @@ def request(query, params):
     args = {
         'q': query,
         'safe': min(params['safesearch'], 1),
-        'fmt': search_type,
         language_param: traits.get_language(params['searxng_locale'], traits.custom['language_all']),
         region_param: traits.get_region(params['searxng_locale'], traits.custom['region_all']),
     }
+
+    if search_type:
+        args['fmt'] = search_type
 
     if search_type == '':
         args['s'] = 10 * (params['pageno'] - 1)
