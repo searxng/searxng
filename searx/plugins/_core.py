@@ -68,6 +68,9 @@ class PluginInfo:
     keywords: list[str] = field(default_factory=list)
     """See :py:obj:`Plugin.keywords`"""
 
+    is_allowed: bool = True
+    """Switch to disable plugin completely, without the user preference."""
+
 
 class Plugin(abc.ABC):
     """Abstract base class of all Plugins."""
