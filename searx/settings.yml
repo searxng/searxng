@@ -1787,24 +1787,22 @@ engines:
   - name: startpage
     engine: startpage
     shortcut: sp
-    timeout: 6.0
-    disabled: true
+    startpage_categ: web
+    categories: [general, web]
     additional_tests:
       rosebud: *test_rosebud
 
   - name: startpage news
     engine: startpage
     startpage_categ: news
+    categories: [news, web]
     shortcut: spn
-    timeout: 6.0
-    disabled: true
 
   - name: startpage images
     engine: startpage
     startpage_categ: images
+    categories: [images, web]
     shortcut: spi
-    timeout: 6.0
-    disabled: true
 
   - name: tokyotoshokan
     engine: tokyotoshokan
