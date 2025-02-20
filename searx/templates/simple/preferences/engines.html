@@ -57,7 +57,7 @@
               </td>{{- '' -}}
               <th class="name" data-engine-name="{{ search_engine.name }}">
                 {%- if search_engine.enable_http -%}
-                  {{- icon_big('warning', 'No HTTPS') -}}
+                  {{- icon_big('alert', 'No HTTPS') -}}
                 {%- endif -%}
                 <label for="{{ engine_id }}">
                   {{- ' ' -}}{{- search_engine.name -}}
