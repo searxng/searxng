@@ -25,7 +25,7 @@ paging = True
 
 def clean_url(url):
     parsed = urlparse(url)
-    query = [(k, v) for (k, v) in parse_qsl(parsed.query) if k not in ['ixid', 's']]
+    query = [(k, v) for (k, v) in parse_qsl(parsed.query) if k != 'ixid']
 
     return urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, urlencode(query), parsed.fragment))
 
@@ -47,7 +47,7 @@ def response(resp):
                     'template': 'images.html',
                     'url': clean_url(result['links']['html']),
                     'thumbnail_src': clean_url(result['urls']['thumb']),
-                    'img_src': clean_url(result['urls']['raw']),
+                    'img_src': clean_url(result['urls']['regular']),
                     'title': result.get('alt_description') or 'unknown',
                     'content': result.get('description') or '',
                 }
