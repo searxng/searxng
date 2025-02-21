@@ -75,9 +75,6 @@ class Plugin(abc.ABC):
     id: typing.ClassVar[str]
     """The ID (suffix) in the HTML form."""
 
-    default_on: typing.ClassVar[bool]
-    """Plugin is enabled/disabled by default."""
-
     keywords: list[str] = []
     """Keywords in the search query that activate the plugin.  The *keyword* is
     the first word in a search query.  If a plugin should be executed regardless
@@ -94,9 +91,8 @@ class Plugin(abc.ABC):
     def __init__(self) -> None:
         super().__init__()
 
-        for attr in ["id", "default_on"]:
-            if getattr(self, attr, None) is None:
-                raise NotImplementedError(f"plugin {self} is missing attribute {attr}")
+        if getattr(self, "id", None) is None:
+            raise NotImplementedError(f"plugin {self} is missing attribute id")
 
         if not self.id:
             self.id = f"{self.__class__.__module__}.{self.__class__.__name__}"
@@ -116,6 +112,26 @@ class Plugin(abc.ABC):
         objects are equal."""
 
         return hash(self) == hash(other)
+
+    def is_enabled_by_default(self) -> bool:
+        """
+        Check whether a plugin is enabled by default based on the instance's configuration
+
+        This method may not be overriden in any plugin implementation!
+        """
+        enabled_plugins = searx.get_setting('enabled_plugins', [])
+        if not enabled_plugins:
+            return False
+
+        for enabled_plugin in enabled_plugins:
+            if isinstance(enabled_plugin, dict):
+                # for legacy reasons, it's still allowed to reference plugins by their
+                # name instead of their ID in the settings
+                if enabled_plugin.get('name') in (self.info.name, self.id):
+                    return enabled_plugin.get('default_on', True)
+
+        # legacy way of enabling plugins (list of strings) - TODO: remove in the future
+        return self.info.name in enabled_plugins
 
     def init(self, app: flask.Flask) -> bool:  # pylint: disable=unused-argument
         """Initialization of the plugin, the return value decides whether this
@@ -176,7 +192,7 @@ class ModulePlugin(Plugin):
     - `module.logger` --> :py:obj:`Plugin.log`
     """
 
-    _required_attrs = (("name", str), ("description", str), ("default_on", bool))
+    _required_attrs = (("name", str), ("description", str))
 
     def __init__(self, mod: types.ModuleType):
         """In case of missing attributes in the module or wrong types are given,
@@ -197,7 +213,6 @@ class ModulePlugin(Plugin):
                 self.log.critical(msg)
                 raise TypeError(msg)
 
-        self.default_on = mod.default_on
         self.info = PluginInfo(
             id=self.id,
             name=self.module.name,
@@ -291,6 +306,8 @@ class PluginStorage:
         """Register a :py:obj:`Plugin`.  In case of name collision (if two
         plugins have same ID) a :py:obj:`KeyError` exception is raised.
         """
+        if not self.plugin_enabled(plugin):
+            return
 
         if plugin in self.plugin_list:
             msg = f"name collision '{plugin.id}'"
@@ -328,6 +345,28 @@ class PluginStorage:
             return
 
         self.register(code_obj())
+
+    def plugin_enabled(self, plugin: searx.plugins.Plugin) -> bool:
+        """
+        Check whether a plugin is enabled based on the instance's configuration
+        """
+        enabled_plugins = searx.get_setting('enabled_plugins', [])
+        if not enabled_plugins:
+            return False
+
+        for enabled_plugin in enabled_plugins:
+            if isinstance(enabled_plugin, dict):
+                # for legacy reasons, it's still allowed to reference plugins by their
+                # name instead of their ID in the settings
+                if enabled_plugin.get('name') in (plugin.info.name, plugin.id):
+                    return True
+
+            # legacy way of enabling plugins - TODO: remove in the future
+            elif isinstance(enabled_plugin, str):
+                if enabled_plugin == plugin.info.name:
+                    return True
+
+        return False
 
     def init(self, app: flask.Flask) -> None:
         """Calls the method :py:obj:`Plugin.init` of each plugin in this

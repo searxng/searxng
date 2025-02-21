@@ -234,21 +234,30 @@ outgoing:
 #   - mypackage.mymodule.MyOtherPlugin
 #   - ...
 
-# Comment or un-comment plugin to activate / deactivate by default.
-#   https://docs.searxng.org/admin/settings/settings_plugins.html
-#
-# enabled_plugins:
-#   # these plugins are enabled if nothing is configured ..
-#   - 'Basic Calculator'
-#   - 'Hash plugin'
-#   - 'Self Information'
-#   - 'Tracker URL remover'
-#   - 'Unit converter plugin'
-#   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
-#   # these plugins are disabled if nothing is configured ..
-#   - 'Hostnames plugin'  # see 'hostnames' configuration below
-#   - 'Open Access DOI rewrite'
-#   - 'Tor check plugin'
+# Comment plugins out to completely disable them.
+# Set 'default_on' to false in order to disable them by default,
+# but allow users to manually enable them in the settings.
+# see https://docs.searxng.org/admin/settings/settings_plugins.html
+enabled_plugins:
+  - name: 'Basic Calculator'
+    default_on: true
+  - name: 'Hash plugin'
+    default_on: true
+  - name: 'Self Information'
+    default_on: true
+  - name: 'Tracker URL remover'
+    default_on: true
+  - name: 'Unit converter plugin'
+    default_on: true
+  - name: 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
+    default_on: true
+# these plugins are completely disabled if nothing is configured ..
+#   - name: 'Hostnames plugin'  # see 'hostnames' configuration below
+#     default_on: false
+#   - name: 'Open Access DOI rewrite'
+#     default_on: false
+#   - name: 'Tor check plugin'
+#     default_on: false
 
 # Configuration of the "Hostnames plugin":
 #

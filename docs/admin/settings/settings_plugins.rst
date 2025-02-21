@@ -27,13 +27,21 @@ configuration looks like:
 .. code:: yaml
 
    enabled_plugins:
-     - 'Basic Calculator'
-     - 'Hash plugin'
-     - 'Self Information'
-     - 'Tracker URL remover'
-     - 'Unit converter plugin'
-     - 'Ahmia blacklist'
+     - name: 'Basic Calculator'
+       default_on: true
+     - name: 'Hash plugin'
+       default_on: true
+     - name: 'Self Information'
+       default_on: true
+     - name: 'Tracker URL remover'
+       default_on: true
+     - name: 'Unit converter plugin'
+       default_on: true
+     - name: 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
+       default_on: true
 
+In order to disable a plugin by default, but still allow users to use it by enabling
+it in their user settings, set ``default_on`` to ``false``.
 
 .. _settings external_plugins:
 
