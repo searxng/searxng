@@ -62,6 +62,8 @@ RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
     -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
 
+HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
+
 # Keep these arguments at the end to prevent redundant layer rebuilds
 ARG LABEL_DATE=
 ARG GIT_URL=unknown
