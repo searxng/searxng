@@ -17,7 +17,7 @@ The engine has the following additional settings:
 - :py:obj:`qwant_categ`
 
 This implementation is used by different qwant engines in the :ref:`settings.yml
-<settings engine>`:
+<settings engines>`:
 
 .. code:: yaml
 

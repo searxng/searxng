@@ -14,7 +14,7 @@ Engine Overview
 .. sidebar:: Further reading ..
 
    - :ref:`configured engines`
-   - :ref:`settings engine`
+   - :ref:`settings engines`
 
 SearXNG is a metasearch-engine_, so it uses different search engines to provide
 better results.
@@ -63,7 +63,7 @@ Engine File
 Engine ``settings.yml``
 -----------------------
 
-For a more  detailed description, see :ref:`settings engine` in the :ref:`settings.yml`.
+For a more  detailed description, see :ref:`settings engines` in the :ref:`settings.yml`.
 
 .. table:: Common options in the engine setup (``settings.yml``)
    :width: 100%

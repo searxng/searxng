@@ -13,7 +13,7 @@ Settings
    :maxdepth: 2
 
    settings
-   settings_engine
+   settings_engines
    settings_brand
    settings_general
    settings_search

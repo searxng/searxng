@@ -1,13 +1,29 @@
-.. _settings engine:
+.. _settings engines:
 
-===========
-``engine:``
-===========
+============
+``engines:``
+============
 
 .. sidebar:: Further reading ..
 
    - :ref:`configured engines`
    - :ref:`engines-dev`
+
+
+In the section ``engines:`` is a list of the engines that are to be made
+available in the instance.  Each list entry is in turn a key/value mapping.
+
+.. code:: yaml
+
+   engines:
+
+     - name: dummy.online
+       engine: dummy
+       ..
+     - name: dummy.offline
+       engine: dummy-offline
+       ..
+     ..
 
 In the code example below a *full fledged* example of a YAML setup from a dummy
 engine is shown.  Most of the options have a default value or even are optional.
@@ -19,7 +35,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 
 .. code:: yaml
 
-   - name: example engine
+   - name: example
      engine: example
      shortcut: demo
      base_url: 'https://{language}.example.com/'
