@@ -8,7 +8,7 @@ Configured Engines
 
    - :ref:`settings categories_as_tabs`
    - :ref:`engines-dev`
-   - :ref:`settings engine`
+   - :ref:`settings engines`
    - :ref:`general engine configuration`
 
 .. jinja:: searx

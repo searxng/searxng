@@ -54,7 +54,7 @@ Example
 =======
 
 Here is a simple example of a JSON engine configure in the :ref:`settings
-engine` section, further read :ref:`engines-dev`.
+engines` section, further read :ref:`engines-dev`.
 
 .. code:: yaml
 
@@ -384,7 +384,7 @@ def extract_response_info(result):
 
 
 def response(resp):
-    '''Scrap *results* from the response (see :ref:`engine results`).'''
+    '''Scrap *results* from the response (see :ref:`result types`).'''
     results = []
 
     if no_result_for_http_status and resp.status_code in no_result_for_http_status:

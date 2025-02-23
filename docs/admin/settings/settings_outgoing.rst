@@ -43,7 +43,7 @@ Communication with search engines.
   Global timeout of the requests made to others engines in seconds.  A bigger
   timeout will allow to wait for answers from slow engines, but in consequence
   will slow SearXNG reactivity (the result page may take the time specified in the
-  timeout to load).  Can be override by ``timeout`` in the :ref:`settings engine`.
+  timeout to load).  Can be override by ``timeout`` in the :ref:`settings engines`.
 
 ``useragent_suffix`` :
   Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
@@ -105,6 +105,6 @@ Communication with search engines.
 
 ``using_tor_proxy`` :
   Using tor proxy (``true``) or not (``false``) for all engines.  The default is
-  ``false`` and can be overwritten in the :ref:`settings engine`
+  ``false`` and can be overwritten in the :ref:`settings engines`
 
 

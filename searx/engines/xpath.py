@@ -52,7 +52,7 @@ Example
 =======
 
 Here is a simple example of a XPath engine configured in the :ref:`settings
-engine` section, further read :ref:`engines-dev`.
+engines` section, further read :ref:`engines-dev`.
 
 .. code:: yaml
 

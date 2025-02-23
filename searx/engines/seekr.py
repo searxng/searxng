@@ -13,7 +13,7 @@ The engine has the following additional settings:
 - :py:obj:`api_key`
 
 This implementation is used by seekr engines in the :ref:`settings.yml
-<settings engine>`:
+<settings engines>`:
 
 .. code:: yaml
 

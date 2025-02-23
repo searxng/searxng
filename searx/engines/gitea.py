@@ -30,7 +30,7 @@ Optional settings are:
     shortcut: forgejo
 
 If you would like to use additional instances, just configure new engines in the
-:ref:`settings <settings engine>` and set the ``base_url``.
+:ref:`settings <settings engines>` and set the ``base_url``.
 
 
 Implementation

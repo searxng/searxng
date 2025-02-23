@@ -16,7 +16,7 @@ The engine has the following additional settings:
 - :py:obj:`lemmy_type`
 
 This implementation is used by different lemmy engines in the :ref:`settings.yml
-<settings engine>`:
+<settings engines>`:
 
 .. code:: yaml
 

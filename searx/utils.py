@@ -473,7 +473,7 @@ def ecma_unescape(string: str) -> str:
 def remove_pua_from_str(string):
     """Removes unicode's "PRIVATE USE CHARACTER"s (PUA_) from a string.
 
-    _PUA: https://en.wikipedia.org/wiki/Private_Use_Areas
+    .. _PUA: https://en.wikipedia.org/wiki/Private_Use_Areas
     """
     pua_ranges = ((0xE000, 0xF8FF), (0xF0000, 0xFFFFD), (0x100000, 0x10FFFD))
     s = []
