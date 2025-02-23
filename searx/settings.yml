@@ -34,7 +34,7 @@ search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
   # Existing autocomplete backends: "360search", "baidu", "brave", "dbpedia", "duckduckgo", "google", "yandex",
-  # "mwmbl", "seznam", "stract", "swisscows", "qwant", "wikipedia" -
+  # "mwmbl", "seznam", "sogou", "stract", "swisscows", "qwant", "wikipedia" -
   # leave blank to turn it off by default.
   autocomplete: ""
   # minimun characters to type before autocompleter starts
@@ -1710,6 +1710,21 @@ engines:
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
+
+  - name: sogou
+    engine: sogou
+    shortcut: sogou
+    disabled: true
+
+  - name: sogou images
+    engine: sogou_images
+    shortcut: sogoui
+    disabled: true
+
+  - name: sogou videos
+    engine: sogou_videos
+    shortcut: sogouv
+    disabled: true
 
   - name: soundcloud
     engine: soundcloud

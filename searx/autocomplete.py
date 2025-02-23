@@ -20,6 +20,7 @@ from searx.engines import (
 )
 from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
+from searx.utils import extr
 
 
 def update_kwargs(**kwargs):
@@ -186,6 +187,23 @@ def seznam(query, _lang):
     ]
 
 
+def sogou(query, _lang):
+    # Sogou search autocompleter
+    base_url = "https://sor.html5.qq.com/api/getsug?"
+    response = get(base_url + urlencode({'m': 'searxng', 'key': query}))
+
+    if response.ok:
+        raw_json = extr(response.text, "[", "]", default="")
+
+        try:
+            data = json.loads(f"[{raw_json}]]")
+            return data[1]
+        except json.JSONDecodeError:
+            return []
+
+    return []
+
+
 def stract(query, _lang):
     # stract autocompleter (beta)
     url = f"https://stract.com/beta/api/autosuggest?q={quote_plus(query)}"
@@ -270,6 +288,7 @@ backends = {
     'mwmbl': mwmbl,
     'qwant': qwant,
     'seznam': seznam,
+    'sogou': sogou,
     'stract': stract,
     'swisscows': swisscows,
     'wikipedia': wikipedia,
