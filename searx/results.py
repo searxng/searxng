@@ -386,9 +386,6 @@ class ResultContainer:
         categoryPositions = {}
 
         for res in results:
-            if not res.get('url'):
-                continue
-
             # do we need to handle more than one category per engine?
             engine = engines[res['engine']]
             res['category'] = engine.categories[0] if len(engine.categories) > 0 else ''
