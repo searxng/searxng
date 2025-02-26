@@ -171,6 +171,27 @@ def seznam(query, _lang):
     ]
 
 
+def sogou(query, _lang):
+    # Sogou search autocompleter
+    base_url = "https://sor.html5.qq.com/api/getsug?"
+    response = get(base_url + urlencode({'m': 'searxng', 'key': query}))
+
+    if response.ok:
+        data = response.text
+
+        start_idx = data.find("[")
+        end_idx = data.rfind("]")
+
+        if start_idx != -1 and end_idx != -1:
+            try:
+                data_list = json.loads(data[start_idx : end_idx + 1])
+                return data_list[1] if isinstance(data_list, list) else []
+            except json.JSONDecodeError:
+                return []
+
+    return []
+
+
 def stract(query, _lang):
     # stract autocompleter (beta)
     url = f"https://stract.com/beta/api/autosuggest?q={quote_plus(query)}"
@@ -254,6 +275,7 @@ backends = {
     'mwmbl': mwmbl,
     'qwant': qwant,
     'seznam': seznam,
+    'sogou': sogou,
     'stract': stract,
     'swisscows': swisscows,
     'wikipedia': wikipedia,
