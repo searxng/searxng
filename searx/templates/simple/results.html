@@ -9,22 +9,24 @@
 {%- endmacro %}
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
 {% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
-{% block content %}
+{% block skip_link_id %}results{% endblock %}
+{% block header %}
 {% include 'simple/search.html' %}
-
+{% endblock %}
+{% block content %}
 {% if results and results|map(attribute='template')|unique|list|count == 1 %}
   {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
 {% else %}
   {% set only_template = '' %}
 {% endif %}
 
-<div id="results" class="{{ only_template }}">
+<main id="results" class="{{ only_template }}">
 
   {%- if answers -%}
     {%- include 'simple/elements/answers.html' -%}
   {%- endif %}
 
-    <div id="sidebar">
+    <aside id="sidebar">
 
         {%- if number_of_results != '0' -%}
         <p id="result_count"><small>{{ _('Number of results') }}: {{ number_of_results }}</small></p>
@@ -56,7 +58,7 @@
         {%- endif -%}
 
         <div id="sidebar-end-collapsible"></div>
-    </div>
+    </aside>
 
     {%- if corrections -%}
       {%- include 'simple/elements/corrections.html' -%}
@@ -145,5 +147,5 @@
         </div>
     </nav>
     {% endif %}
-</div>
+</main>
 {% endblock %}
