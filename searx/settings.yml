@@ -789,17 +789,18 @@ engines:
       results: HTML
 
   # - name: elasticsearch
-  #   shortcut: es
+  #   shortcut: els
   #   engine: elasticsearch
   #   base_url: http://localhost:9200
   #   username: elastic
   #   password: changeme
   #   index: my-index
+  #   enable_http: true
   #   # available options: match, simple_query_string, term, terms, custom
   #   query_type: match
   #   # if query_type is set to custom, provide your query here
-  #   #custom_query_json: {"query":{"match_all": {}}}
-  #   #show_metadata: false
+  #   # custom_query_json: {"query":{"match_all": {}}}
+  #   # show_metadata: false
   #   disabled: true
 
   - name: wikidata
