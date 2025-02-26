@@ -3343,6 +3343,13 @@ table tr.pref-group th {
 #main_preferences input[type="text"]:focus {
   background-color: var(--color-toolkit-select-background-hover);
 }
+#main_preferences div.pref-group {
+  width: 100%;
+  font-weight: normal;
+  padding: 1rem 0.5rem;
+  text-align: right;
+  background: var(--color-settings-table-group-background);
+}
 #main_preferences .value {
   margin: 0;
   padding: 0;
@@ -4724,6 +4731,9 @@ summary.title {
 }
 #main_results div#results.only_template_images #pagination {
   margin-left: 4rem;
+}
+#main_results .key-value-table td {
+  padding: 0.3rem 0.5rem;
 }
 /*
   phone layout
