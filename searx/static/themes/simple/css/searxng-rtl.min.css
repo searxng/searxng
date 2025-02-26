@@ -3343,6 +3343,13 @@ table tr.pref-group th {
 #main_preferences input[type="text"]:focus {
   background-color: var(--color-toolkit-select-background-hover);
 }
+#main_preferences div.pref-group {
+  width: 100%;
+  font-weight: normal;
+  padding: 1rem 0.5rem;
+  text-align: right;
+  background: var(--color-settings-table-group-background);
+}
 #main_preferences .value {
   margin: 0;
   padding: 0;
@@ -4880,6 +4887,31 @@ summary.title {
 }
 pre code {
   white-space: pre-wrap;
+}
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  z-index: 6000;
+  padding: 0.7rem;
+  background: var(--color-btn-background);
+  color: var(--color-btn-font);
+}
+.skip-link:link,
+.skip-link:visited,
+.skip-link:hover,
+.skip-link:active {
+  color: white;
+  /* Normalise the color */
 }
 #q,
 #sidebar .infobox dt bdi {

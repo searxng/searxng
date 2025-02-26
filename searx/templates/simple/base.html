@@ -31,7 +31,9 @@
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
 <body class="{{ endpoint }}_endpoint" >
-  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
+  <a class="sr-only skip-link" href="#{% block skip_link_id %}main{% endblock %}">Skip to main content</a>
+  <div id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
+    <header>
     {% if errors %}
         <div class="dialog-error" role="alert">
             <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -59,9 +61,10 @@
     </nav>
     {% block header %}
     {% endblock %}
+    </header>
     {% block content %}
     {% endblock %}
-  </main>
+  </div>
   <footer>
     <p>
     {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br>

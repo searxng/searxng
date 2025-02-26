@@ -152,7 +152,7 @@
 {%- block linkto_preferences -%}{%- endblock -%}
 
 {%- block content -%}
-
+  <main id="main">
   <h1>{{ _('Preferences') }}</h1>
 
   <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
@@ -258,4 +258,5 @@
     {%- include 'simple/preferences/footer.html' -%}
 
   </form>{{- '' -}}
+  </main>
 {%- endblock -%}

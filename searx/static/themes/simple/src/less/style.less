@@ -1160,3 +1160,31 @@ summary.title {
 pre code {
   white-space: pre-wrap;
 }
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link {
+  &:focus {
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+
+    z-index: 6000;
+
+    padding: 0.7rem;
+    background: var(--color-btn-background);
+    color: var(--color-btn-font);
+  }
+
+  &:link, &:visited, &:hover, &:active {
+    color: white;  /* Normalise the color */
+  }
+}
