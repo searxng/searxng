@@ -1,0 +1,151 @@
+@import url("pocoo.css");
+
+a, a.reference, a.footnote-reference {
+  color: #004b6b;
+  border-color: #004b6b;
+}
+
+a:hover {
+  color: #6d4100;
+  border-color: #6d4100;
+}
+
+p.version-warning {
+  background-color: #004b6b;
+}
+
+aside.sidebar {
+  background-color: whitesmoke;
+  border-color: lightsteelblue;
+  border-radius: 3pt;
+}
+
+div.sphinxsidebar p.caption {
+  display: none;
+}
+
+p.sidebar-title, .sidebar p {
+  margin: 6pt;
+}
+
+.sidebar li,
+.hlist li {
+  list-style-type: disclosure-closed;
+}
+
+.sphinxsidebar .current > a {
+  font-weight: bold;
+}
+
+/* admonitions
+*/
+
+div.admonition, div.topic, nav.contents, div.toctree-wrapper {
+  background-color: #fafafa;
+  margin: 8px 0px;
+  padding: 1em;
+  border-radius: 3pt 0 0 3pt;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border-left: 5pt solid #ccc;
+  list-style-type: disclosure-closed;
+}
+
+div.toctree-wrapper p.caption {
+  font-weight: normal;
+  font-size: 24px;
+  margin: 0 0 10px 0;
+  padding: 0;
+  line-height: 1;
+  display: inline;
+}
+
+p.admonition-title:after {
+  content: none;
+}
+
+.admonition.hint      { border-color: #416dc0b0; }
+.admonition.note      { border-color: #6c856cb0; }
+.admonition.tip       { border-color: #85c5c2b0; }
+.admonition.attention { border-color: #ecec97b0; }
+.admonition.caution   { border-color: #a6c677b0; }
+.admonition.danger    { border-color: #d46262b0; }
+.admonition.important { border-color: #dfa3a3b0; }
+.admonition.error     { border-color: red; }
+.admonition.warning   { border-color: darkred; }
+
+.admonition.admonition-generic-admonition-title {
+    border-color: #416dc0b0;
+}
+
+
+/* admonitions with (rendered) reST markup examples (:class: rst-example)
+ *
+ * .. admonition:: title of the example
+ *     :class: rst-example
+ *     ....
+*/
+
+div.rst-example {
+  background-color: inherit;
+  margin: 0;
+  border-top: none;
+  border-right: 1px solid #ccc;
+  border-bottom: none;
+  border-left: none;
+  border-radius: none;
+  padding: 0;
+}
+
+div.rst-example > p.admonition-title {
+  font-family: Sans Serif;
+  font-style: italic;
+  font-size: 0.8em;
+  display: block;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em 1em;
+  text-align: right;
+}
+
+/* code block in figures
+ */
+
+div.highlight pre {
+    text-align: left;
+}
+
+/* Table theme
+*/
+
+thead, tfoot {
+  background-color: #fff;
+}
+
+th:hover, td:hover {
+  background-color: #ffc;
+}
+
+thead th, tfoot th, tfoot td, tbody th {
+  background-color: #fffaef;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+caption {
+  font-family: Sans Serif;
+  padding: 0.5em;
+  margin: 0.5em 0 0.5em 0;
+  caption-side: top;
+  text-align: left;
+}
+
+div.sphinx-tabs {
+    clear: both;
+}
