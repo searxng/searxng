@@ -761,6 +761,14 @@ template {
   --color-sidebar-background: #000;
 }
 /*
+.focus-outline (@within, @color) when (@within = true) {
+  &:focus-within {
+    outline: 2px solid @color;
+    outline-offset: 2px;
+  }
+}
+  */
+/*
    this file is generated automatically by searxng_extra/update/update_pygments.py
    using pygments version 2.19.1
 */
@@ -2263,7 +2271,6 @@ select:focus {
     background-size: 2rem;
     background-origin: content-box;
     background-color: var(--color-toolkit-select-background);
-    outline: medium none;
     text-overflow: ellipsis;
     border-radius: 5px;
   }
@@ -2297,11 +2304,6 @@ input.checkbox-onoff[type="checkbox"] {
   margin: 0 16px;
   border-radius: 10px;
   position: relative;
-  /* focus & hover */
-}
-input.checkbox-onoff[type="checkbox"]:focus,
-input.checkbox-onoff[type="checkbox"]:hover {
-  outline: none;
 }
 input.checkbox-onoff[type="checkbox"]:focus::after {
   content: "";
@@ -3343,6 +3345,13 @@ table tr.pref-group th {
 #main_preferences input[type="text"]:focus {
   background-color: var(--color-toolkit-select-background-hover);
 }
+#main_preferences div.pref-group {
+  width: 100%;
+  font-weight: normal;
+  padding: 1rem 0.5rem;
+  text-align: right;
+  background: var(--color-settings-table-group-background);
+}
 #main_preferences .value {
   margin: 0;
   padding: 0;
@@ -3362,7 +3371,6 @@ table tr.pref-group th {
 }
 #main_preferences .value select:focus,
 #main_preferences .value input:focus {
-  outline: none;
   box-shadow: 0 0 1px 1px var(--color-btn-background);
 }
 #main_preferences .description {
@@ -3450,6 +3458,7 @@ table tr.pref-group th {
   padding: 0.7em;
 }
 #main_preferences .preferences_back a {
+  display: inline-block;
   color: var(--color-settings-return-font);
 }
 #main_preferences .preferences_back a::first-letter {
@@ -3611,15 +3620,19 @@ body.results_endpoint #search_view {
   padding: 0.8rem 0.2rem;
   background: none repeat scroll 0 0 var(--color-search-background);
   border: none;
-  outline: none;
   color: var(--color-search-font);
   font-size: 1.1rem;
   z-index: 1000;
 }
+#clear_search:focus {
+  outline: 1.5px solid var(--color-base-font);
+  outline-offset: 3px;
+  z-index: 5000;
+}
 #clear_search:hover {
   color: var(--color-search-background-hover);
 }
-#clear_search.empty * {
+#clear_search.empty {
   display: none;
 }
 html.no-js #clear_search.hide_if_nojs {
@@ -3632,10 +3645,15 @@ html.no-js #clear_search.hide_if_nojs {
   padding: 0.8rem;
   background: none repeat scroll 0 0 var(--color-search-background);
   border: none;
-  outline: none;
   color: var(--color-search-font);
   font-size: 1.1rem;
   z-index: 100;
+}
+#q:focus,
+#send_search:focus {
+  outline: 1.5px solid var(--color-base-font);
+  outline-offset: 3px;
+  z-index: 5000;
 }
 #q {
   width: 100%;
@@ -3978,6 +3996,13 @@ input[type="submit"],
   border: 0;
   cursor: pointer;
 }
+input[type="submit"]:focus,
+#results button[type="submit"]:focus,
+.button:focus {
+  outline: 1.5px solid var(--color-base-font);
+  outline-offset: 3px;
+  z-index: 5000;
+}
 a {
   text-decoration: none;
   color: var(--color-url-font);
@@ -4014,6 +4039,14 @@ article[data-vim-selected].category-social {
   border: 1px solid var(--color-result-vim-arrow);
   border-radius: 10px;
 }
+a:focus,
+button:focus,
+input:focus,
+select:focus {
+  outline: 1.5px solid var(--color-base-font);
+  outline-offset: 3px;
+  z-index: 5000;
+}
 .result {
   margin: 0.125rem 0;
   padding: 1rem;
@@ -4039,7 +4072,6 @@ article[data-vim-selected].category-social {
 .result h3 a:hover {
   text-decoration: underline;
   border: none;
-  outline: none;
 }
 .result .cache_link,
 .result .proxyfied_link {
@@ -4269,7 +4301,6 @@ article[data-vim-selected].category-social {
 }
 .result-images > a {
   position: relative;
-  outline: none;
 }
 .result-images img {
   margin: 0;
