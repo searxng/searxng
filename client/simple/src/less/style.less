@@ -173,6 +173,13 @@ article[data-vim-selected].category-social {
   .rounded-corners;
 }
 
+a,
+button,
+input,
+select {
+  .focus-outline;
+}
+
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
@@ -199,7 +206,6 @@ article[data-vim-selected].category-social {
       &:hover {
         text-decoration: underline;
         border: none;
-        outline: none;
       }
     }
   }
@@ -467,7 +473,6 @@ article[data-vim-selected].category-social {
 
   & > a {
     position: relative;
-    outline: none;
   }
 
   img {
