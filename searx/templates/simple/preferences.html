@@ -5,9 +5,11 @@
 <div class="tabs" role="tablist">
 {%- endmacro -%}
 
+{% set tab_index = 2 %}
 {%- macro tab_header(name, id, label, checked) -%}
+{% set tab_index =  tab_index + 1 %}
 <input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %}>
-<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
+<label tabindex="{{tab_index}}" id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
 <section id="tab-content-{{ id }}" role="tabpanel" aria-hidden="false">
 {%- endmacro -%}
 

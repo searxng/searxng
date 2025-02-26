@@ -23,6 +23,20 @@
       }
     }
 
+    function handleEnter (el, callback) {
+      searxng.on(el, 'keyup', (e) => {
+        if (e.code == "Enter") {
+          callback();
+        }
+      });
+    }
+
+    for (const el of d.querySelectorAll('[role="tab"],input[type=checkbox][class~=checkbox-onoff],.category_label')) {
+      handleEnter(el, () => {
+        el.click();
+      });
+    }
+
     for (const el of d.querySelectorAll('[data-engine-name]')) {
       searxng.on(el, 'mouseenter', load_engine_descriptions);
     }
