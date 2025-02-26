@@ -7,8 +7,8 @@
         </a>{{- "" -}}
         <div class="detail swipe-horizontal">{{- "" -}}
                 <a class="result-detail-close" href="#">{{ icon('close') }}</a>{{- "" -}}
-                <a class="result-detail-previous" href="#">{{ icon('chevron-left') }}</a>{{- "" -}}
-                <a class="result-detail-next" href="#">{{ icon('chevron-right') }}</a>{{- "" -}}
+                <a class="result-detail-previous" href="#">{{ icon('navigate-left') }}</a>{{- "" -}}
+                <a class="result-detail-next" href="#">{{ icon('navigate-right') }}</a>{{- "" -}}
                 <a class="result-images-source" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">
                         <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">{{- "" -}}
                 </a>{{- "" -}}
