@@ -2522,7 +2522,6 @@ td:hover .engine-tooltip,
   padding: 0.4rem 0;
   width: 1px;
 }
-/*! Autocomplete.js v2.6.3 | license MIT | (c) 2017, Baptiste Donaux | http://autocomplete-js.com */
 .autocomplete {
   position: absolute;
   width: 44rem;
@@ -3342,6 +3341,13 @@ table tr.pref-group th {
 #main_preferences input[type="text"]:hover,
 #main_preferences input[type="text"]:focus {
   background-color: var(--color-toolkit-select-background-hover);
+}
+#main_preferences div.pref-group {
+  width: 100%;
+  font-weight: normal;
+  padding: 1rem 0.5rem;
+  text-align: left;
+  background: var(--color-settings-table-group-background);
 }
 #main_preferences .value {
   margin: 0;
