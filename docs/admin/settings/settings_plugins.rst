@@ -12,13 +12,13 @@ Plugins
 
 
 The built-in plugins can be activated or deactivated via the settings
-(:ref:`settings enabled_plugins`) and external plugins can be integrated into
+(:ref:`settings plugins`) and external plugins can be integrated into
 SearXNG (:ref:`settings external_plugins`).
 
 
-.. _settings enabled_plugins:
+.. _settings plugins:
 
-``enabled_plugins:`` (internal)
+``plugins:`` (internal)
 ===============================
 
 In :ref:`plugins admin` you find a complete list of all plugins, the default
@@ -26,14 +26,23 @@ configuration looks like:
 
 .. code:: yaml
 
-   enabled_plugins:
-     - 'Basic Calculator'
-     - 'Hash plugin'
-     - 'Self Information'
-     - 'Tracker URL remover'
-     - 'Unit converter plugin'
-     - 'Ahmia blacklist'
+  plugins:
+    - id: 'calculator'
+      default_on: true
+    - id: 'hash_plugin'
+      default_on: true
+    - id: 'self_info'
+      default_on: true
+    - id: 'tracker_url_remover'
+      default_on: true
+    - id: 'unit_converter'
+      default_on: true
+    - id: 'ahmia_filter'  # activation depends on outgoing.using_tor_proxy
+      default_on: true
 
+In order to disable a plugin by default, but still allow users to use it by enabling
+it in their user settings, set ``default_on`` to ``false``. To completely disable a
+plugin, you can set `inactive` to `true`.
 
 .. _settings external_plugins:
 
@@ -56,9 +65,11 @@ In the :ref:`settings.yml` activate the ``plugins:`` section and add module
 .. code:: yaml
 
    plugins:
-     - only_show_green_results
-     # - mypackage.mymodule.MyPlugin
-     # - mypackage.mymodule.MyOtherPlugin
+     - id: only_show_green_results
+       default_on: true
+     # - fqn: mypackage.mymodule.MyPlugin
+     # - fqn: mypackage.mymodule.MyOtherPlugin
+     #   default_on: false
 
 .. hint::
 

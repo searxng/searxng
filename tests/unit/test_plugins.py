@@ -47,10 +47,16 @@ def do_post_search(query, storage, **kwargs) -> Mock:
 
 class PluginMock(searx.plugins.Plugin):
 
-    def __init__(self, _id: str, name: str, default_on: bool):
+    def __init__(self, _id: str, name: str, default_enabled: bool = False):
         self.id = _id
-        self.default_on = default_on
         self._name = name
+        self.default_enabled = default_enabled
+        self.info = searx.plugins.PluginInfo(
+            id=id,
+            name=name,
+            description=f"Dummy plugin: {id}",
+            preference_section="general",
+        )
         super().__init__()
 
     # pylint: disable= unused-argument
@@ -63,14 +69,6 @@ class PluginMock(searx.plugins.Plugin):
     def on_result(self, request, search, result) -> bool:
         return False
 
-    def info(self):
-        return searx.plugins.PluginInfo(
-            id=self.id,
-            name=self._name,
-            description=f"Dummy plugin: {self.id}",
-            preference_section="general",
-        )
-
 
 class PluginStorage(SearxTestCase):
 
@@ -78,9 +76,13 @@ class PluginStorage(SearxTestCase):
         super().setUp()
         engines = {}
 
+        searx.settings['plugins'] = [
+            {'id': 'plg001', 'default_on': True},
+            {'id': 'plg002', 'default_on': False},
+        ]
         self.storage = searx.plugins.PluginStorage()
-        self.storage.register(PluginMock("plg001", "first plugin", True))
-        self.storage.register(PluginMock("plg002", "second plugin", True))
+        self.storage.register(PluginMock("plg001", "first plugin"))
+        self.storage.register(PluginMock("plg002", "second plugin"))
         self.storage.init(self.app)
         self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
         self.pref.parse_dict({"locale": "en"})

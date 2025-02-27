@@ -75,9 +75,6 @@ class Plugin(abc.ABC):
     id: typing.ClassVar[str]
     """The ID (suffix) in the HTML form."""
 
-    default_on: typing.ClassVar[bool]
-    """Plugin is enabled/disabled by default."""
-
     keywords: list[str] = []
     """Keywords in the search query that activate the plugin.  The *keyword* is
     the first word in a search query.  If a plugin should be executed regardless
@@ -94,9 +91,8 @@ class Plugin(abc.ABC):
     def __init__(self) -> None:
         super().__init__()
 
-        for attr in ["id", "default_on"]:
-            if getattr(self, attr, None) is None:
-                raise NotImplementedError(f"plugin {self} is missing attribute {attr}")
+        if getattr(self, "id", None) is None:
+            raise NotImplementedError(f"plugin {self} is missing attribute id")
 
         if not self.id:
             self.id = f"{self.__class__.__module__}.{self.__class__.__name__}"
@@ -116,6 +112,25 @@ class Plugin(abc.ABC):
         objects are equal."""
 
         return hash(self) == hash(other)
+
+    def is_enabled_by_default(self) -> bool:
+        """
+        Check whether a plugin is enabled by default based on the instance's configuration
+
+        This method may not be overriden in any plugin implementation!
+        """
+        plugins = searx.get_setting('plugins', [])
+
+        for plugin in plugins:
+            if isinstance(plugin, dict):
+                if plugin.get('id') == self.id:
+                    return plugin.get('default_on', True)
+
+        # legacy way of enabling plugins (list of strings) - TODO: remove in the future
+        legacy_enabled_plugins = searx.get_setting('enabled_plugins', [])
+        if not legacy_enabled_plugins:
+            return False
+        return self.info.name in legacy_enabled_plugins
 
     def init(self, app: flask.Flask) -> bool:  # pylint: disable=unused-argument
         """Initialization of the plugin, the return value decides whether this
@@ -176,7 +191,7 @@ class ModulePlugin(Plugin):
     - `module.logger` --> :py:obj:`Plugin.log`
     """
 
-    _required_attrs = (("name", str), ("description", str), ("default_on", bool))
+    _required_attrs = (("name", str), ("description", str))
 
     def __init__(self, mod: types.ModuleType):
         """In case of missing attributes in the module or wrong types are given,
@@ -197,7 +212,6 @@ class ModulePlugin(Plugin):
                 self.log.critical(msg)
                 raise TypeError(msg)
 
-        self.default_on = mod.default_on
         self.info = PluginInfo(
             id=self.id,
             name=self.module.name,
@@ -271,21 +285,40 @@ class PluginStorage:
         - the external plugins from :ref:`settings plugins`.
         """
 
-        for f in _default.iterdir():
+        plugins = searx.get_setting('plugins', [])
 
-            if f.name.startswith("_"):
-                continue
+        # only there for backwards compatibility - TODO: remove
+        if not plugins and searx.get_setting('enabled_plugins', []):
+            for f in _default.iterdir():
+                if f.name.startswith("_"):
+                    continue
 
-            if f.stem not in self.legacy_plugins:
-                self.register_by_fqn(f"searx.plugins.{f.stem}.SXNGPlugin")
-                continue
+                self.load_by_id(f.stem)
 
-            # for backward compatibility
-            mod = load_module(f.name, str(f.parent))
-            self.register(ModulePlugin(mod))
+        for plugin in plugins:
+            if isinstance(plugin, dict):
+                if plugin.get('inactive', False):
+                    continue
 
-        for fqn in searx.get_setting("plugins"):  # type: ignore
-            self.register_by_fqn(fqn)
+                if 'fqn' in plugin:
+                    self.register_by_fqn(plugin['fqn'])
+                elif 'id' in plugin:
+                    self.load_by_id(plugin['id'])
+                else:
+                    log.debug('Invalid plugin configuration: %s', plugin)
+
+            # legacy way of enabling plugins - TODO: remove in the future
+            elif isinstance(plugin, str):
+                self.register_by_fqn(plugin)
+
+    def load_by_id(self, plugin_id):
+        if plugin_id not in self.legacy_plugins:
+            self.register_by_fqn(f"searx.plugins.{plugin_id}.SXNGPlugin")
+            return
+
+        # for backward compatibility
+        mod = load_module(f"{plugin_id}.py", _default)
+        self.register(ModulePlugin(mod))
 
     def register(self, plugin: Plugin):
         """Register a :py:obj:`Plugin`.  In case of name collision (if two
