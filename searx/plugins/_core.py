@@ -72,10 +72,10 @@ class PluginInfo:
 class Plugin(abc.ABC):
     """Abstract base class of all Plugins."""
 
-    id: typing.ClassVar[str]
+    id: str = ""
     """The ID (suffix) in the HTML form."""
 
-    default_on: typing.ClassVar[bool]
+    default_on: bool = False
     """Plugin is enabled/disabled by default."""
 
     keywords: list[str] = []
@@ -91,8 +91,12 @@ class Plugin(abc.ABC):
     info: PluginInfo
     """Informations about the *plugin*, see :py:obj:`PluginInfo`."""
 
+    fqn: str = ""
+
     def __init__(self) -> None:
         super().__init__()
+        if not self.fqn:
+            self.fqn = self.__class__.__mro__[0].__module__
 
         for attr in ["id", "default_on"]:
             if getattr(self, attr, None) is None:
@@ -178,10 +182,11 @@ class ModulePlugin(Plugin):
 
     _required_attrs = (("name", str), ("description", str), ("default_on", bool))
 
-    def __init__(self, mod: types.ModuleType):
+    def __init__(self, mod: types.ModuleType, fqn: str):
         """In case of missing attributes in the module or wrong types are given,
         a :py:obj:`TypeError` exception is raised."""
 
+        self.fqn = fqn
         self.module = mod
         self.id = getattr(self.module, "plugin_id", self.module.__name__)
         self.log = logging.getLogger(self.module.__name__)
@@ -282,7 +287,7 @@ class PluginStorage:
 
             # for backward compatibility
             mod = load_module(f.name, str(f.parent))
-            self.register(ModulePlugin(mod))
+            self.register(ModulePlugin(mod, f"searx.plugins.{f.stem}"))
 
         for fqn in searx.get_setting("plugins"):  # type: ignore
             self.register_by_fqn(fqn)
@@ -297,8 +302,35 @@ class PluginStorage:
             plugin.log.critical(msg)
             raise KeyError(msg)
 
+        if not plugin.fqn.startswith("searx.plugins."):
+            self.plugin_list.add(plugin)
+            plugin.log.debug("plugin has been registered")
+            return
+
+        # backward compatibility for the enabled_plugins setting
+        # https://docs.searxng.org/admin/settings/settings_plugins.html#enabled-plugins-internal
+        en_plgs: list[str] | None = searx.get_setting("enabled_plugins")  # type:ignore
+
+        if en_plgs is None:
+            # enabled_plugins not listed in the /etc/searxng/settings.yml:
+            # check default_on before register ..
+            if plugin.default_on:
+                self.plugin_list.add(plugin)
+                plugin.log.debug("builtin plugin has been registered by SearXNG's defaults")
+                return
+            plugin.log.debug("builtin plugin is not registered by SearXNG's defaults")
+            return
+
+        if plugin.info.name not in en_plgs:
+            # enabled_plugins listed in the /etc/searxng/settings.yml,
+            # but this plugin is not listed in:
+            plugin.log.debug("builtin plugin is not registered by maintainer's settings")
+            return
+
+        # if the plugin is in enabled_plugins, then it is on by default.
+        plugin.default_on = True
         self.plugin_list.add(plugin)
-        plugin.log.debug("plugin has been loaded")
+        plugin.log.debug("builtin plugin is registered by maintainer's settings")
 
     def register_by_fqn(self, fqn: str):
         """Register a :py:obj:`Plugin` via its fully qualified class name (FQN).
@@ -324,7 +356,8 @@ class PluginStorage:
             warnings.warn(
                 f"plugin {fqn} is implemented in a legacy module / migrate to searx.plugins.Plugin", DeprecationWarning
             )
-            self.register(ModulePlugin(code_obj))
+
+            self.register(ModulePlugin(code_obj, fqn))
             return
 
         self.register(code_obj())
