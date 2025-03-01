@@ -18,7 +18,6 @@ from searx.result_types import EngineResults
 
 name = "Basic Calculator"
 description = gettext("Calculate mathematical expressions via the search bar")
-default_on = True
 preference_section = 'general'
 plugin_id = 'calculator'
 

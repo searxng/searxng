@@ -31,16 +31,20 @@ ui:
 #     - autocomplete
 #     - method
 
-enabled_plugins:
-  - 'Hash plugin'
-  - 'Self Information'
-  - 'Tracker URL remover'
-  - 'Ahmia blacklist'
-  # - 'Hostnames plugin'  # see 'hostnames' configuration below
-  # - 'Open Access DOI rewrite'
-
-# plugins:
-#   - only_show_green_results
+plugins:
+  - id: 'calculator'
+    default_on: true
+  - id: 'hash_plugin'
+    default_on: true
+  - id: 'self_info'
+    default_on: true
+  - id: 'tracker_url_remover'
+    default_on: true
+  - id: 'unit_converter'
+    default_on: true
+#   - id: 'ahmia_filter'  # activation depends on outgoing.using_tor_proxy
+#   - fqn: only_show_green_results
+#     default_on: true
 
 # hostnames:
 #   replace:

@@ -14,7 +14,6 @@ regex = re.compile(r'10\.\d{4,9}/[^\s]+')
 
 name = gettext('Open Access DOI rewrite')
 description = gettext('Avoid paywalls by redirecting to open-access versions of publications when available')
-default_on = False
 preference_section = 'general/doi_resolver'
 
 

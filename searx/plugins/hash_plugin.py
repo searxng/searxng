@@ -22,7 +22,6 @@ class SXNGPlugin(Plugin):
     """
 
     id = "hash_plugin"
-    default_on = True
     keywords = ["md5", "sha1", "sha224", "sha256", "sha384", "sha512"]
 
     def __init__(self):
