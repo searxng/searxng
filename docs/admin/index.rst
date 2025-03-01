@@ -20,4 +20,5 @@ Administrator documentation
    api
    architecture
    plugins
+   customization
    buildhosts
