@@ -8,6 +8,7 @@ data.:
   traits    : update searx/data/engine_traits.json & searx/sxng_locales.py
   useragents: update searx/data/useragents.json with the most recent versions of Firefox
   locales   : update searx/data/locales.json from babel
+  currencies: update searx/data/currencies.json from wikidata
 EOF
 }
 
@@ -56,6 +57,15 @@ data.locales() {
         pyenv.activate
         build_msg DATA "update searx/data/locales.json"
         python searxng_extra/update/update_locales.py
+    )
+    dump_return $?
+}
+
+data.currencies(){
+    (   set -e
+        pyenv.activate
+        build_msg DATA "update searx/data/currencies.json"
+        python searxng_extra/update/update_currencies.py
     )
     dump_return $?
 }

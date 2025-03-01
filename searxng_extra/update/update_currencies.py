@@ -92,8 +92,7 @@ def add_currency_label(db, label, iso4217, language):
 
 
 def wikidata_request_result_iterator(request):
-    wikidata.timeout = 30  # github CI has longer timeouts
-    result = wikidata.send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL))
+    result = wikidata.send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL), timeout=20)
     if result is not None:
         yield from result['results']['bindings']
 
