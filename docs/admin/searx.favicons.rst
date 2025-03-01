@@ -93,21 +93,23 @@ TOML_ configuration is created in the file ``/etc/searxng/favicons.toml``.
 :py:obj:`cache.db_url <.FaviconCacheConfig.db_url>`:
   The path to the (SQLite_) database file.  The default path is in the `/tmp`_
   folder, which is deleted on every reboot and is therefore unsuitable for a
-  production environment.  The FHS_ provides the folder  for the
-  application cache
+  production environment.  The FHS_ provides the folder `/var/cache`_ for the
+  cache of applications, so a suitable storage location of SearXNG's caches is
+  folder ``/var/cache/searxng``.
 
-  The FHS_ provides the folder `/var/cache`_ for the cache of applications, so a
-  suitable storage location of SearXNG's caches is folder ``/var/cache/searxng``.
-  In container systems, a volume should be mounted for this folder and in a
-  standard installation (compare :ref:`create searxng user`), the folder must be
-  created and the user under which the SearXNG process is running must be given
-  write permission to this folder.
+  In a standard installation (compare :ref:`create searxng user`), the folder
+  must be created and the user under which the SearXNG process is running must
+  be given write permission to this folder.
 
   .. code:: bash
 
      $ sudo mkdir /var/cache/searxng
      $ sudo chown root:searxng /var/cache/searxng/
      $ sudo chmod g+w /var/cache/searxng/
+
+  In container systems, a volume should be mounted for this folder.  Check
+  whether the process in the container has read/write access to the mounted
+  folder.
 
 :py:obj:`cache.LIMIT_TOTAL_BYTES <.FaviconCacheConfig.LIMIT_TOTAL_BYTES>`:
   Maximum of bytes stored in the cache of all blobs.  The limit is only reached
