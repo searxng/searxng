@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unit Converter &#8212; SearXNG Documentation (2025.3.1+80f5fad16)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=5f055188"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2025.3.1+80f5fad16" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Answerers" href="../answerers/index.html" />
+    <link rel="prev" title="Tor check" href="tor_check.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../answerers/index.html" title="Answerers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tor_check.html" title="Tor check"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2025.3.1+80f5fad16)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Plugins</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="builtins.html" accesskey="U">Built-in Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Unit Converter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.plugins.unit_converter">
+<span id="unit-converter"></span><span id="unit-converter-plugin"></span><h1>Unit Converter<a class="headerlink" href="#module-searx.plugins.unit_converter" title="Link to this heading">¶</a></h1>
+<p>A plugin for converting measured values from one unit to another unit (a
+unit converter).</p>
+<p>The plugin looks up the symbols (given in the query term) in a list of
+converters, each converter is one item in the list (compare
+<a class="reference internal" href="#searx.plugins.unit_converter.ADDITIONAL_UNITS" title="searx.plugins.unit_converter.ADDITIONAL_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADDITIONAL_UNITS</span></code></a>).  If the symbols are ambiguous, the matching units
+of measurement are evaluated.  The weighting in the evaluation results from the
+sorting of the <a class="reference internal" href="#searx.plugins.unit_converter.symbol_to_si" title="searx.plugins.unit_converter.symbol_to_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">unit</span> <span class="pre">converters</span></code></a>.</p>
+<p>Enable in <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enabled_plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">..</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- &#39;Unit converter plugin&#39;</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.plugins.unit_converter.ADDITIONAL_UNITS">
+<span class="sig-prename descclassname"><span class="pre">searx.plugins.unit_converter.</span></span><span class="sig-name descname"><span class="pre">ADDITIONAL_UNITS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[{'from_si':</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">'si_name':</span> <span class="pre">'Q11579',</span> <span class="pre">'symbol':</span> <span class="pre">'°C',</span> <span class="pre">'to_si':</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;},</span> <span class="pre">{'from_si':</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">'si_name':</span> <span class="pre">'Q11579',</span> <span class="pre">'symbol':</span> <span class="pre">'°F',</span> <span class="pre">'to_si':</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;}]</span></em><a class="headerlink" href="#searx.plugins.unit_converter.ADDITIONAL_UNITS" title="Link to this definition">¶</a></dt>
+<dd><p>Additional items to convert from a measure unit to a SI unit (vice versa).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;si_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Q11579&quot;</span><span class="p">,</span>                 <span class="c1"># Wikidata item ID of the SI unit (Kelvin)</span>
+    <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="s2">&quot;°C&quot;</span><span class="p">,</span>                      <span class="c1"># symbol of the measure unit</span>
+    <span class="s2">&quot;to_si&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">,</span>   <span class="c1"># convert measure value (val) to SI unit</span>
+    <span class="s2">&quot;from_si&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="c1"># convert SI value (val) measure unit</span>
+<span class="p">},</span>
+<span class="p">{</span>
+    <span class="s2">&quot;si_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Q11573&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="s2">&quot;mi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_si&quot;</span><span class="p">:</span> <span class="mf">1609.344</span><span class="p">,</span>                   <span class="c1"># convert measure value (val) to SI unit</span>
+    <span class="s2">&quot;from_si&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">1609.344</span>              <span class="c1"># convert SI value (val) measure unit</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>The values of <code class="docutils literal notranslate"><span class="pre">to_si</span></code> and <code class="docutils literal notranslate"><span class="pre">from_si</span></code> can be of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> (a multiplier)
+or a <a class="reference external" href="https://docs.python.org/3/glossary.html#term-callable">callable</a> (val in / converted value returned).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.plugins.unit_converter.ALIAS_SYMBOLS">
+<span class="sig-prename descclassname"><span class="pre">searx.plugins.unit_converter.</span></span><span class="sig-name descname"><span class="pre">ALIAS_SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'mi':</span> <span class="pre">('L',),</span> <span class="pre">'°C':</span> <span class="pre">('C',),</span> <span class="pre">'°F':</span> <span class="pre">('F',)}</span></em><a class="headerlink" href="#searx.plugins.unit_converter.ALIAS_SYMBOLS" title="Link to this definition">¶</a></dt>
+<dd><p>Alias symbols for known unit of measure symbols / by example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;°C&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>  <span class="c1"># list of alias symbols for °C (Q69362731)</span>
+<span class="s1">&#39;°F&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>  <span class="c1"># list of alias symbols for °F (Q99490479)</span>
+<span class="s1">&#39;mi&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,),</span>      <span class="c1"># list of alias symbols for mi (Q253276)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.plugins.unit_converter.symbol_to_si">
+<span class="sig-prename descclassname"><span class="pre">searx.plugins.unit_converter.</span></span><span class="sig-name descname"><span class="pre">symbol_to_si</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/unit_converter.html#symbol_to_si"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.unit_converter.symbol_to_si" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a list of tuples, each tuple is a measure unit and the fields
+in the tuple are:</p>
+<ol class="arabic simple" start="0">
+<li><p>Symbol of the measure unit (e.g. ‘mi’ for measure unit ‘miles’ Q253276)</p></li>
+<li><p>SI name of the measure unit (e.g. Q11573 for SI unit ‘metre’)</p></li>
+<li><p>Factor to get SI value from measure unit (e.g. 1mi is equal to SI 1m
+multiplied by 1609.344)</p></li>
+<li><p>Factor to get measure value from from SI value (e.g. SI 100m is equal to
+100mi divided by 1609.344)</p></li>
+</ol>
+<p>The returned list is sorted, the first items are created from
+<code class="docutils literal notranslate"><span class="pre">WIKIDATA_UNITS</span></code>, the second group of items is build from
+<a class="reference internal" href="#searx.plugins.unit_converter.ADDITIONAL_UNITS" title="searx.plugins.unit_converter.ADDITIONAL_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADDITIONAL_UNITS</span></code></a> and items created from <a class="reference internal" href="#searx.plugins.unit_converter.ALIAS_SYMBOLS" title="searx.plugins.unit_converter.ALIAS_SYMBOLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALIAS_SYMBOLS</span></code></a>.</p>
+<p>If you search this list for a symbol, then a match with a symbol from
+Wikidata has the highest weighting (first hit in the list), followed by the
+symbols from the <a class="reference internal" href="#searx.plugins.unit_converter.ADDITIONAL_UNITS" title="searx.plugins.unit_converter.ADDITIONAL_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADDITIONAL_UNITS</span></code></a> and the lowest weighting is
+given to the symbols resulting from the aliases <a class="reference internal" href="#searx.plugins.unit_converter.ALIAS_SYMBOLS" title="searx.plugins.unit_converter.ALIAS_SYMBOLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALIAS_SYMBOLS</span></code></a>.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rtm_asdf.html">Runtime Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="development.html">Plugin Development</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="builtins.html">Built-in Plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tor_check.html">Tor check</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Unit Converter</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.unit_converter.ADDITIONAL_UNITS"><code class="docutils literal notranslate"><span class="pre">ADDITIONAL_UNITS</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.unit_converter.ALIAS_SYMBOLS"><code class="docutils literal notranslate"><span class="pre">ALIAS_SYMBOLS</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.unit_converter.symbol_to_si"><code class="docutils literal notranslate"><span class="pre">symbol_to_si()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Plugins</a>
+        <ul>
+      <li><a href="builtins.html">Built-in Plugins</a>
+        <ul>
+          <li>Previous: <a href="tor_check.html" title="previous chapter">Tor check</a>
+          <li>Next: <a href="../answerers/index.html" title="next chapter">Answerers</a></ul>
+      </li></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/plugins/unit_converter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
