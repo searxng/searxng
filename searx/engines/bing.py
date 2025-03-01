@@ -223,7 +223,7 @@ def fetch_traits(engine_traits: EngineTraits):
         'da': 'dk',  # da --> da-dk
     }
 
-    for href in eval_xpath(dom, '//div[@id="language-section"]//li/a/@href'):
+    for href in eval_xpath(dom, '//div[@id="language-section-content"]//div[@class="languageItem"]/a/@href'):
         eng_lang = parse_qs(urlparse(href).query)['setlang'][0]
         babel_lang = map_lang.get(eng_lang, eng_lang)
         try:
@@ -253,7 +253,7 @@ def fetch_traits(engine_traits: EngineTraits):
     map_market_codes = {
         'zh-hk': 'en-hk',  # not sure why, but at M$ this is the market code for Hongkong
     }
-    for href in eval_xpath(dom, '//div[@id="region-section"]//li/a/@href'):
+    for href in eval_xpath(dom, '//div[@id="region-section-content"]//div[@class="regionItem"]/a/@href'):
         cc_tag = parse_qs(urlparse(href).query)['cc'][0]
         if cc_tag == 'clear':
             engine_traits.all_locale = cc_tag
