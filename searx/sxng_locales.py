@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-'''List of SearXNG's locale codes.
+'''List of SearXNG's locale codes used for the search language/region.
 
 .. hint::
 
