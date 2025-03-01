@@ -158,13 +158,13 @@ def get_label_for_entity(entity_id, language):
     return name
 
 
-def send_wikidata_query(query, method='GET'):
+def send_wikidata_query(query, method='GET', **kwargs):
     if method == 'GET':
         # query will be cached by wikidata
-        http_response = get(SPARQL_ENDPOINT_URL + '?' + urlencode({'query': query}), headers=get_headers())
+        http_response = get(SPARQL_ENDPOINT_URL + '?' + urlencode({'query': query}), headers=get_headers(), **kwargs)
     else:
         # query won't be cached by wikidata
-        http_response = post(SPARQL_ENDPOINT_URL, data={'query': query}, headers=get_headers())
+        http_response = post(SPARQL_ENDPOINT_URL, data={'query': query}, headers=get_headers(), **kwargs)
     if http_response.status_code != 200:
         logger.debug('SPARQL endpoint error %s', http_response.content.decode())
     logger.debug('request time %s', str(http_response.elapsed))
@@ -808,7 +808,7 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
             if attribute.name not in WIKIDATA_PROPERTIES:
                 wikidata_property_names.append("wd:" + attribute.name)
     query = QUERY_PROPERTY_NAMES.replace('%ATTRIBUTES%', " ".join(wikidata_property_names))
-    jsonresponse = send_wikidata_query(query)
+    jsonresponse = send_wikidata_query(query, timeout=20)
     for result in jsonresponse.get('results', {}).get('bindings', {}):
         name = result['name']['value']
         lang = result['name']['xml:lang']
