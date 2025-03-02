@@ -30,7 +30,6 @@ Configured ``brave`` engines:
     brave_category: news
 
   - name: brave.goggles
-    brave_category: goggles
     time_range_support: true
     paging: true
     ...
@@ -207,6 +206,7 @@ def request(query, params):
 
     args = {
         'q': query,
+        'source': 'web',
     }
     if brave_spellcheck:
         args['spellcheck'] = '1'
@@ -236,6 +236,11 @@ def request(query, params):
     params['cookies']['ui_lang'] = ui_lang
 
     logger.debug("cookies %s", params['cookies'])
+
+    params['headers']['Sec-Fetch-Dest'] = "document"
+    params['headers']['Sec-Fetch-Mode'] = "navigate"
+    params['headers']['Sec-Fetch-Site'] = "same-origin"
+    params['headers']['Sec-Fetch-User'] = "?1"
 
 
 def _extract_published_date(published_date_raw):
