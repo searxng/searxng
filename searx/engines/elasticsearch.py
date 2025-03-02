@@ -29,7 +29,7 @@ authentication configured to read from ``my-index`` index.
 .. code:: yaml
 
   - name: elasticsearch
-    shortcut: es
+    shortcut: els
     engine: elasticsearch
     base_url: http://localhost:9200
     username: elastic
@@ -44,16 +44,26 @@ authentication configured to read from ``my-index`` index.
 from json import loads, dumps
 from searx.exceptions import SearxEngineAPIException
 
+categories = ['general']
+paging = True
+
+about = {
+    'website': 'https://www.elastic.co',
+    'wikidata_id': 'Q3050461',
+    'official_api_documentation': 'https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html',
+    'use_official_api': True,
+    'require_api_key': False,
+    'format': 'JSON',
+}
 
 base_url = 'http://localhost:9200'
 username = ''
 password = ''
 index = ''
-search_url = '{base_url}/{index}/_search'
 query_type = 'match'
 custom_query_json = {}
 show_metadata = False
-categories = ['general']
+page_size = 10
 
 
 def init(engine_settings):
@@ -71,9 +81,16 @@ def request(query, params):
     if username and password:
         params['auth'] = (username, password)
 
-    params['url'] = search_url.format(base_url=base_url, index=index)
+    args = {
+        'from': (params['pageno'] - 1) * page_size,
+        'size': page_size,
+    }
+    data = _available_query_types[query_type](query)
+    data.update(args)
+
+    params['url'] = f"{base_url}/{index}/_search"
     params['method'] = 'GET'
-    params['data'] = dumps(_available_query_types[query_type](query))
+    params['data'] = dumps(data)
     params['headers']['Content-Type'] = 'application/json'
 
     return params
