@@ -18,7 +18,6 @@ about = {
 # Engine Configuration
 categories = ["general"]
 paging = True
-max_page = 10
 time_range_support = True
 
 time_range_dict = {'day': 'inttime_day', 'week': 'inttime_week', 'month': 'inttime_month', 'year': 'inttime_year'}
