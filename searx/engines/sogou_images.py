@@ -3,7 +3,7 @@
 
 import json
 import re
-from urllib.parse import quote_plus
+from urllib.parse import urlencode
 
 # about
 about = {
@@ -16,12 +16,18 @@ about = {
 
 # engine dependent config
 categories = ["images"]
+paging = True
 
 base_url = "https://pic.sogou.com"
 
 
 def request(query, params):
-    params["url"] = f"{base_url}/pics?query={quote_plus(query)}"
+    query_params = {
+        "query": query,
+        "start": (params["pageno"] - 1) * 48,
+    }
+
+    params["url"] = f"{base_url}/pics?{urlencode(query_params)}"
     return params
 
 
