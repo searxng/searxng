@@ -2,7 +2,7 @@
 """Sogou-Videos: A search engine for retrieving videos from Sogou."""
 
 from urllib.parse import urlencode
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from searx.exceptions import SearxEngineAPIException
 
@@ -53,16 +53,24 @@ def response(resp):
         published_date = None
         if entry.get("date") and entry.get("duration"):
             try:
-                date_time_str = f"{entry['date']} {entry['duration']}"
-                published_date = datetime.strptime(date_time_str, "%Y-%m-%d %H:%M")
+                published_date = datetime.strptime(entry['date'], "%Y-%m-%d")
             except (ValueError, TypeError):
                 published_date = None
+
+        length = None
+        if entry.get("date") and entry.get("duration"):
+            try:
+                timediff = datetime.strptime(entry['duration'], "%M:%S")
+                length = timedelta(minutes=timediff.minute, seconds=timediff.second)
+            except (ValueError, TypeError):
+                length = None
 
         results.append(
             {
                 'url': video_url,
                 'title': entry["titleEsc"],
-                'content': f"{entry['site']} | {entry['duration']}",
+                'content': entry['site'],
+                'length': length,
                 'template': 'videos.html',
                 'publishedDate': published_date,
                 'thumbnail': entry["picurl"],
