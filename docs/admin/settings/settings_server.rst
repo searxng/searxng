@@ -19,6 +19,9 @@
          X-Download-Options : noopen
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
+       enable_tls: false
+       certificate_path: "certs/searxng.crt"
+       certificate_key_path: "certs/searxng.key"
 
 ``base_url`` : ``$SEARXNG_URL``
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
@@ -55,3 +58,15 @@
 ``default_http_headers`` :
   Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
 
+``enable_tls`` :
+  Enables TLS for the SearXNG flask application. Used to encrypt traffic between 
+  the reverse proxy and uWSGI server that hosts the SearXNG flask application.
+
+``certificate_path`` :
+  This is the path (relative to /etc/searxng) to the SearXNG certificate. It is used 
+  by the SearXNG flask application if enable_tls is set to true.
+
+``certificate_key_path`` :
+  This is the path (relative to /etc/searxng) to the key used to create the 
+  SearXNG certificate. It is used by the SearXNG flask application if enable_tls is 
+  set to true.
