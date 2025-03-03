@@ -54,7 +54,26 @@ get_searxng_version(){
        2>/dev/null
 }
 
+# For TLS support
+get_searxng_tls_status(){
+    su searxng -c \
+       "python3 -c \"import six; from searx import settings; six.print_(settings['server']['enable_tls'])\"" \
+       2>/dev/null
+}
+
+get_searxng_tls_cert(){
+    su searxng -c \
+       "python3 -c \"import six; from searx import settings; from os.path import join; six.print_(join('/etc/searxng/', settings['server']['certificate_path']))\"" 
+}
+
+get_searxng_tls_key(){
+    su searxng -c \
+       "python3 -c \"import six; from searx import settings; from os.path import join; six.print_(join('/etc/searxng/', settings['server']['certificate_key_path']))\"" \
+       2>/dev/null
+}
+
 SEARXNG_VERSION="$(get_searxng_version)"
+SEARXNG_TLS_STATUS="$(get_searxng_tls_status)"
 export SEARXNG_VERSION
 echo "SearXNG version ${SEARXNG_VERSION}"
 
@@ -175,4 +194,11 @@ unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec uwsgi --master --uid searxng --gid searxng --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+# If server.enable_tls is True, enable TLS on searxng
+if [ "${SEARXNG_TLS_STATUS}" = "True" ]; then
+    SEARXNG_TLS_CERT="$(get_searxng_tls_cert)"
+    SEARXNG_TLS_KEY="$(get_searxng_tls_key)"
+    exec uwsgi --master --uid searxng --gid searxng --https-socket "${BIND_ADDRESS}","${SEARXNG_TLS_CERT}","${SEARXNG_TLS_KEY}" "${UWSGI_SETTINGS_PATH}"
+else
+    exec uwsgi --master --uid searxng --gid searxng --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+fi

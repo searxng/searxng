@@ -108,6 +108,12 @@ server:
     X-Download-Options: noopen
     X-Robots-Tag: noindex, nofollow
     Referrer-Policy: no-referrer
+  # Used to enable TLS on the searxng server itself
+  # If enable_tls is set to true, then you must specify certificate_path and certificate_key_path
+  enable_tls: false
+  # These are the paths to the searxng certificate and its private key relative to /etc/searxng/.
+  certificate_path: "certs/searxng.crt"
+  certificate_key_path: "certs/searxng.key"
 
 redis:
   # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.

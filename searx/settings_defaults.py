@@ -184,6 +184,9 @@ SCHEMA = {
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
+        'enable_tls': SettingsValue(bool, False, 'SEARXNG_ENABLE_TLS'),
+        'certificate_path': SettingsValue(str, 'certs/searxng.crt', environ_name='SEARXNG_CERT_PATH'),
+        'certificate_key_path': SettingsValue(str, 'certs/searxng.key', environ_name='SEARXNG_CERT_KEY_PATH'),
     },
     'redis': {
         'url': SettingsValue((None, False, str), False, 'SEARXNG_REDIS_URL'),

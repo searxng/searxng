@@ -1359,14 +1359,30 @@ if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_
 
 def run():
     logger.debug('starting webserver on %s:%s', settings['server']['bind_address'], settings['server']['port'])
-    app.run(
-        debug=searx_debug,
-        use_debugger=searx_debug,
-        port=settings['server']['port'],
-        host=settings['server']['bind_address'],
-        threaded=True,
-        extra_files=[DEFAULT_SETTINGS_FILE],
-    )
+
+    # If TLS support is enabled, use TLS
+    if settings['server']['enable_tls']:
+        app.run(
+            debug=searx_debug,
+            use_debugger=searx_debug,
+            port=settings['server']['port'],
+            host=settings['server']['bind_address'],
+            threaded=True,
+            extra_files=[DEFAULT_SETTINGS_FILE],
+            ssl_context=(
+                os.path.join('/etc/searxng/', settings['server']['certificate_path']),
+                os.path.join('/etc/searxng/', settings['server']['certificate_key_path']),
+            ),
+        )
+    else:
+        app.run(
+            debug=searx_debug,
+            use_debugger=searx_debug,
+            port=settings['server']['port'],
+            host=settings['server']['bind_address'],
+            threaded=True,
+            extra_files=[DEFAULT_SETTINGS_FILE],
+        )
 
 
 application = app
