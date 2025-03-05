@@ -25,6 +25,8 @@ Implementations
 
 """
 
+from searx.result_types import EngineResults
+
 try:
     import mysql.connector  # type: ignore
 except ImportError:
@@ -55,7 +57,6 @@ query_str = ""
 
 limit = 10
 paging = True
-result_template = 'key-value.html'
 _connection = None
 
 
@@ -78,21 +79,15 @@ def init(engine_settings):
     )
 
 
-def search(query, params):
+def search(query, params) -> EngineResults:
+    res = EngineResults()
     query_params = {'query': query}
     query_to_run = query_str + ' LIMIT {0} OFFSET {1}'.format(limit, (params['pageno'] - 1) * limit)
 
     with _connection.cursor() as cur:
         cur.execute(query_to_run, query_params)
+        for row in cur:
+            kvmap = dict(zip(cur.column_names, map(str, row)))
+            res.add(res.types.KeyValue(kvmap=kvmap))
 
-        return _fetch_results(cur)
-
-
-def _fetch_results(cur):
-    results = []
-    for res in cur:
-        result = dict(zip(cur.column_names, map(str, res)))
-        result['template'] = result_template
-        results.append(result)
-
-    return results
+    return res
