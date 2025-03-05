@@ -18,22 +18,32 @@ The **sources** can be:
 The sources provide the results, which are displayed in different **areas**
 depending on the type of result. The areas are:
 
-main results:
+.. _area main results:
+
+:ref:`area main results <main search results>`
   It is the main area in which -- as is typical for search engines -- the
   results that a search engine has found for the search term are displayed.
 
-answers:
+.. _area answer results:
+
+:ref:`area answers <result_types.answer>`
   This area displays short answers that could be found for the search term.
 
-info box:
+.. _area info box:
+
+:ref:`area info box <result_types.infobox>`
   An area in which additional information can be displayed, e.g. excerpts from
   wikipedia or other sources such as maps.
 
-suggestions:
+.. _area suggestions results:
+
+:ref:`area suggestions <result_types.suggestion>`
   Suggestions for alternative search terms can be found in this area.  These can
   be clicked on and a search is carried out with these search terms.
 
-corrections:
+.. _area corrections results:
+
+:ref:`area corrections <result_types.corrections>`
   Results in this area are like the suggestion of alternative search terms,
   which usually result from spelling corrections
 
