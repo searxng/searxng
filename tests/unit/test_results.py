@@ -23,8 +23,11 @@ class ResultContainerTestCase(SearxTestCase):
         container.extend("google", [result])
         container.close()
 
-        self.assertEqual(container.results_length(), 1)
-        self.assertIn(LegacyResult(result), container.get_ordered_results())
+        self.assertEqual(len(container.get_ordered_results()), 1)
+
+        res = LegacyResult(result)
+        res.normalize_result_fields()
+        self.assertIn(res, container.get_ordered_results())
 
     def test_one_suggestion(self):
         result = dict(suggestion="lorem ipsum ..")
@@ -33,7 +36,7 @@ class ResultContainerTestCase(SearxTestCase):
         container.extend("duckduckgo", [result])
         container.close()
 
-        self.assertEqual(container.results_length(), 0)
+        self.assertEqual(len(container.get_ordered_results()), 0)
         self.assertEqual(len(container.suggestions), 1)
         self.assertIn(result["suggestion"], container.suggestions)
 
@@ -42,6 +45,7 @@ class ResultContainerTestCase(SearxTestCase):
         result = LegacyResult(
             url="https://example.org", title="very long title, lorem ipsum", content="Lorem ipsum dolor sit amet .."
         )
+        result.normalize_result_fields()
         eng1 = dict(url=result.url, title="short title", content=result.content, engine="google")
         eng2 = dict(url="http://example.org", title=result.title, content="lorem ipsum", engine="duckduckgo")
 
@@ -50,7 +54,7 @@ class ResultContainerTestCase(SearxTestCase):
         container.close()
 
         result_list = container.get_ordered_results()
-        self.assertEqual(container.results_length(), 1)
+        self.assertEqual(len(container.get_ordered_results()), 1)
         self.assertIn(result, result_list)
         self.assertEqual(result_list[0].title, result.title)
         self.assertEqual(result_list[0].content, result.content)

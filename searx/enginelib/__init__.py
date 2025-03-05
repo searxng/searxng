@@ -142,3 +142,6 @@ class Engine:  # pylint: disable=too-few-public-methods
     tokens: List[str]
     """A list of secret tokens to make this engine *private*, more details see
     :ref:`private engines`."""
+
+    weight: int
+    """Weighting of the results of this engine (:ref:`weight <settings engines>`)."""
