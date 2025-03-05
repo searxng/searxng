@@ -9,7 +9,7 @@ Correction Results
    There is still no typing for these result items. The templates can be used as
    orientation until the final typing is complete.
 
-The corrections area shows the user alternative search terms.
+The :ref:`area corrections results` shows the user alternative search terms.
 
 A result of this type is a very simple dictionary with only one key/value pair
 
