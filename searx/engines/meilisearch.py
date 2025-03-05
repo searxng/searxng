@@ -33,15 +33,15 @@ Here is a simple example to query a Meilisearch instance:
 
 # pylint: disable=global-statement
 
-from json import loads, dumps
-
+from json import dumps
+from searx.result_types import EngineResults
+from searx.extended_types import SXNG_Response
 
 base_url = 'http://localhost:7700'
 index = ''
 auth_key = ''
 facet_filters = []
 _search_url = ''
-result_template = 'key-value.html'
 categories = ['general']
 paging = True
 
@@ -75,13 +75,12 @@ def request(query, params):
     return params
 
 
-def response(resp):
-    results = []
+def response(resp: SXNG_Response) -> EngineResults:
+    res = EngineResults()
 
-    resp_json = loads(resp.text)
-    for result in resp_json['hits']:
-        r = {key: str(value) for key, value in result.items()}
-        r['template'] = result_template
-        results.append(r)
+    resp_json = resp.json()
+    for row in resp_json['hits']:
+        kvmap = {key: str(value) for key, value in row.items()}
+        res.add(res.types.KeyValue(kvmap=kvmap))
 
-    return results
+    return res
