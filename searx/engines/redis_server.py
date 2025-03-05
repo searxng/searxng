@@ -36,6 +36,8 @@ Implementations
 
 import redis  # pylint: disable=import-error
 
+from searx.result_types import EngineResults
+
 engine_type = 'offline'
 
 # redis connection variables
@@ -46,7 +48,6 @@ db = 0
 
 # engine specific variables
 paging = False
-result_template = 'key-value.html'
 exact_match_only = True
 
 _redis_client = None
@@ -63,30 +64,25 @@ def init(_engine_settings):
     )
 
 
-def search(query, _params):
+def search(query, _params) -> EngineResults:
+    res = EngineResults()
+
     if not exact_match_only:
-        return search_keys(query)
+        for kvmap in search_keys(query):
+            res.add(res.types.KeyValue(kvmap=kvmap))
+        return res
 
-    ret = _redis_client.hgetall(query)
-    if ret:
-        ret['template'] = result_template
-        return [ret]
-
-    if ' ' in query:
-        qset, rest = query.split(' ', 1)
-        ret = []
-        for res in _redis_client.hscan_iter(qset, match='*{}*'.format(rest)):
-            ret.append(
-                {
-                    res[0]: res[1],
-                    'template': result_template,
-                }
-            )
-        return ret
-    return []
+    kvmap: dict[str, str] = _redis_client.hgetall(query)
+    if kvmap:
+        res.add(res.types.KeyValue(kvmap=kvmap))
+    elif " " in query:
+        qset, rest = query.split(" ", 1)
+        for row in _redis_client.hscan_iter(qset, match='*{}*'.format(rest)):
+            res.add(res.types.KeyValue(kvmap={row[0]: row[1]}))
+    return res
 
 
-def search_keys(query):
+def search_keys(query) -> list[dict]:
     ret = []
     for key in _redis_client.scan_iter(match='*{}*'.format(query)):
         key_type = _redis_client.type(key)
@@ -98,7 +94,6 @@ def search_keys(query):
             res = dict(enumerate(_redis_client.lrange(key, 0, -1)))
 
         if res:
-            res['template'] = result_template
             res['redis_key'] = key
             ret.append(res)
     return ret
