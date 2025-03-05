@@ -35,6 +35,8 @@ except ImportError:
     # the engine
     pass
 
+from searx.result_types import EngineResults
+
 if TYPE_CHECKING:
     import logging
 
@@ -63,7 +65,6 @@ query_str = ""
 
 limit = 10
 paging = True
-result_template = 'key-value.html'
 _connection = None
 
 
@@ -79,17 +80,16 @@ def init(engine_settings):
     _connection = mariadb.connect(database=database, user=username, password=password, host=host, port=port)
 
 
-def search(query, params):
+def search(query, params) -> EngineResults:
     query_params = {'query': query}
     query_to_run = query_str + ' LIMIT {0} OFFSET {1}'.format(limit, (params['pageno'] - 1) * limit)
     logger.debug("SQL Query: %s", query_to_run)
+    res = EngineResults()
 
     with _connection.cursor() as cur:
         cur.execute(query_to_run, query_params)
-        results = []
         col_names = [i[0] for i in cur.description]
-        for res in cur:
-            result = dict(zip(col_names, map(str, res)))
-            result['template'] = result_template
-            results.append(result)
-        return results
+        for row in cur:
+            kvmap = dict(zip(col_names, map(str, row)))
+            res.add(res.types.KeyValue(kvmap=kvmap))
+    return res
