@@ -14,6 +14,7 @@ following types have been implemented so far ..
    :maxdepth: 2
 
    main/mainresult
+   main/keyvalue
 
 The :ref:`LegacyResult <LegacyResult>` is used internally for the results that
 have not yet been typed.  The templates can be used as orientation until the
