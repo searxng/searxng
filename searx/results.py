@@ -1,143 +1,25 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring, missing-class-docstring
 from __future__ import annotations
 
 import warnings
-import re
 from collections import defaultdict
-from operator import itemgetter
 from threading import RLock
 from typing import List, NamedTuple, Set
-from urllib.parse import urlparse, unquote
 
-from searx import logger
-from searx.engines import engines
-from searx.metrics import histogram_observe, counter_add, count_error
-
-from searx.result_types import Result, LegacyResult
+from searx import logger as log
+import searx.engines
+from searx.metrics import histogram_observe, counter_add
+from searx.result_types import Result, LegacyResult, MainResult
 from searx.result_types.answer import AnswerSet, BaseAnswer
 
-CONTENT_LEN_IGNORED_CHARS_REGEX = re.compile(r'[,;:!?\./\\\\ ()-_]', re.M | re.U)
 
-
-# return the meaningful length of the content for a result
-def result_content_len(content):
-    if isinstance(content, str):
-        return len(CONTENT_LEN_IGNORED_CHARS_REGEX.sub('', content))
-    return 0
-
-
-def compare_urls(url_a, url_b):
-    """Lazy compare between two URL.
-    "www.example.com" and "example.com" are equals.
-    "www.example.com/path/" and "www.example.com/path" are equals.
-    "https://www.example.com/" and "http://www.example.com/" are equals.
-
-    Args:
-        url_a (ParseResult): first URL
-        url_b (ParseResult): second URL
-
-    Returns:
-        bool: True if url_a and url_b are equals
-    """
-    # ignore www. in comparison
-    if url_a.netloc.startswith('www.'):
-        host_a = url_a.netloc.replace('www.', '', 1)
-    else:
-        host_a = url_a.netloc
-    if url_b.netloc.startswith('www.'):
-        host_b = url_b.netloc.replace('www.', '', 1)
-    else:
-        host_b = url_b.netloc
-
-    if host_a != host_b or url_a.query != url_b.query or url_a.fragment != url_b.fragment:
-        return False
-
-    # remove / from the end of the url if required
-    path_a = url_a.path[:-1] if url_a.path.endswith('/') else url_a.path
-    path_b = url_b.path[:-1] if url_b.path.endswith('/') else url_b.path
-
-    return unquote(path_a) == unquote(path_b)
-
-
-def merge_two_infoboxes(infobox1, infobox2):  # pylint: disable=too-many-branches, too-many-statements
-    # get engines weights
-    if hasattr(engines[infobox1['engine']], 'weight'):
-        weight1 = engines[infobox1['engine']].weight
-    else:
-        weight1 = 1
-    if hasattr(engines[infobox2['engine']], 'weight'):
-        weight2 = engines[infobox2['engine']].weight
-    else:
-        weight2 = 1
-
-    if weight2 > weight1:
-        infobox1['engine'] = infobox2['engine']
-
-    infobox1['engines'] |= infobox2['engines']
-
-    if 'urls' in infobox2:
-        urls1 = infobox1.get('urls', None)
-        if urls1 is None:
-            urls1 = []
-
-        for url2 in infobox2.get('urls', []):
-            unique_url = True
-            parsed_url2 = urlparse(url2.get('url', ''))
-            entity_url2 = url2.get('entity')
-            for url1 in urls1:
-                if (entity_url2 is not None and url1.get('entity') == entity_url2) or compare_urls(
-                    urlparse(url1.get('url', '')), parsed_url2
-                ):
-                    unique_url = False
-                    break
-            if unique_url:
-                urls1.append(url2)
-
-        infobox1['urls'] = urls1
-
-    if 'img_src' in infobox2:
-        img1 = infobox1.get('img_src', None)
-        img2 = infobox2.get('img_src')
-        if img1 is None:
-            infobox1['img_src'] = img2
-        elif weight2 > weight1:
-            infobox1['img_src'] = img2
-
-    if 'attributes' in infobox2:
-        attributes1 = infobox1.get('attributes')
-        if attributes1 is None:
-            infobox1['attributes'] = attributes1 = []
-
-        attributeSet = set()
-        for attribute in attributes1:
-            label = attribute.get('label')
-            if label not in attributeSet:
-                attributeSet.add(label)
-            entity = attribute.get('entity')
-            if entity not in attributeSet:
-                attributeSet.add(entity)
-
-        for attribute in infobox2.get('attributes', []):
-            if attribute.get('label') not in attributeSet and attribute.get('entity') not in attributeSet:
-                attributes1.append(attribute)
-
-    if 'content' in infobox2:
-        content1 = infobox1.get('content', None)
-        content2 = infobox2.get('content', '')
-        if content1 is not None:
-            if result_content_len(content2) > result_content_len(content1):
-                infobox1['content'] = content2
-        else:
-            infobox1['content'] = content2
-
-
-def result_score(result, priority):
+def calculate_score(result, priority) -> float:
     weight = 1.0
 
     for result_engine in result['engines']:
-        if hasattr(engines.get(result_engine), 'weight'):
-            weight *= float(engines[result_engine].weight)
+        if hasattr(searx.engines.engines.get(result_engine), 'weight'):
+            weight *= float(searx.engines.engines[result_engine].weight)
 
     weight *= len(result['positions'])
     score = 0
@@ -153,61 +35,53 @@ def result_score(result, priority):
     return score
 
 
-class Timing(NamedTuple):  # pylint: disable=missing-class-docstring
+class Timing(NamedTuple):
     engine: str
     total: float
     load: float
 
 
-class UnresponsiveEngine(NamedTuple):  # pylint: disable=missing-class-docstring
+class UnresponsiveEngine(NamedTuple):
     engine: str
     error_type: str
     suspended: bool
 
 
 class ResultContainer:
-    """docstring for ResultContainer"""
+    """In the result container, the results are collected, sorted and duplicates
+    will be merged."""
 
-    __slots__ = (
-        '_merged_results',
-        'infoboxes',
-        'suggestions',
-        'answers',
-        'corrections',
-        '_number_of_results',
-        '_closed',
-        'paging',
-        'unresponsive_engines',
-        'timings',
-        'redirect_url',
-        'engine_data',
-        'on_result',
-        '_lock',
-    )
+    # pylint: disable=too-many-statements
+
+    main_results_map: dict[int, MainResult | LegacyResult]
+    infoboxes: list[LegacyResult]
+    suggestions: set[str]
+    answers: AnswerSet
+    corrections: set[str]
 
     def __init__(self):
-        super().__init__()
-        self._merged_results: list[LegacyResult] = []
-        self.infoboxes: list[dict] = []
-        self.suggestions: set[str] = set()
+        self.main_results_map = {}
+        self.infoboxes = []
+        self.suggestions = set()
         self.answers = AnswerSet()
         self.corrections = set()
+
         self._number_of_results: list[int] = []
-        self.engine_data: dict[str, str | dict] = defaultdict(dict)
+        self.engine_data: dict[str, dict[str, str]] = defaultdict(dict)
         self._closed: bool = False
         self.paging: bool = False
         self.unresponsive_engines: Set[UnresponsiveEngine] = set()
         self.timings: List[Timing] = []
-        self.redirect_url = None
+        self.redirect_url: str | None = None
         self.on_result = lambda _: True
         self._lock = RLock()
+        self._main_results_sorted: list[MainResult | LegacyResult] = None  # type: ignore
 
     def extend(self, engine_name: str | None, results):  # pylint: disable=too-many-branches
         if self._closed:
+            log.debug("container is closed, ignoring results: %s", results)
             return
-
-        standard_result_count = 0
-        error_msgs = set()
+        main_count = 0
 
         for result in list(results):
 
@@ -217,267 +91,284 @@ class ResultContainer:
 
                 if isinstance(result, BaseAnswer) and self.on_result(result):
                     self.answers.add(result)
+                elif isinstance(result, MainResult) and self.on_result(result):
+                    main_count += 1
+                    self._merge_main_result(result, main_count)
                 else:
                     # more types need to be implemented in the future ..
                     raise NotImplementedError(f"no handler implemented to process the result of type {result}")
 
             else:
-                result['engine'] = result.get('engine') or engine_name or ""
+                result["engine"] = result.get("engine") or engine_name or ""
                 result = LegacyResult(result)  # for backward compatibility, will be romeved one day
+                result.normalize_result_fields()
 
-                if 'suggestion' in result and self.on_result(result):
-                    self.suggestions.add(result['suggestion'])
-                elif 'answer' in result and self.on_result(result):
-                    warnings.warn(
-                        f"answer results from engine {result.engine}"
-                        " are without typification / migrate to Answer class.",
-                        DeprecationWarning,
-                    )
-                    self.answers.add(result)
-                elif 'correction' in result and self.on_result(result):
-                    self.corrections.add(result['correction'])
-                elif 'infobox' in result and self.on_result(result):
-                    self._merge_infobox(result)
-                elif 'number_of_results' in result and self.on_result(result):
-                    self._number_of_results.append(result['number_of_results'])
-                elif 'engine_data' in result and self.on_result(result):
-                    self.engine_data[result.engine][result['key']] = result['engine_data']
-                elif result.url:
-                    # standard result (url, title, content)
-                    if not self._is_valid_url_result(result, error_msgs):
-                        continue
-                    # normalize the result
-                    result.normalize_result_fields()
-                    # call on_result call searx.search.SearchWithPlugins._on_result
-                    # which calls the plugins
-                    if not self.on_result(result):
-                        continue
-                    self.__merge_url_result(result, standard_result_count + 1)
-                    standard_result_count += 1
-                elif self.on_result(result):
-                    self.__merge_result_no_url(result, standard_result_count + 1)
-                    standard_result_count += 1
+                if "suggestion" in result:
+                    if self.on_result(result):
+                        self.suggestions.add(result["suggestion"])
+                    continue
 
-        if len(error_msgs) > 0:
-            for msg in error_msgs:
-                count_error(engine_name, 'some results are invalids: ' + msg, secondary=True)
+                if "answer" in result:
+                    if self.on_result(result):
+                        warnings.warn(
+                            f"answer results from engine {result.engine}"
+                            " are without typification / migrate to Answer class.",
+                            DeprecationWarning,
+                        )
+                        self.answers.add(result)  # type: ignore
+                    continue
 
-        if engine_name in engines:
-            histogram_observe(standard_result_count, 'engine', engine_name, 'result', 'count')
+                if "correction" in result:
+                    if self.on_result(result):
+                        self.corrections.add(result["correction"])
+                    continue
 
-        if not self.paging and engine_name in engines and engines[engine_name].paging:
-            self.paging = True
+                if "infobox" in result:
+                    if self.on_result(result):
+                        self._merge_infobox(result)
+                    continue
 
-    def _merge_infobox(self, infobox):
+                if "number_of_results" in result:
+                    if self.on_result(result):
+                        self._number_of_results.append(result["number_of_results"])
+                    continue
+
+                if "engine_data" in result:
+                    if self.on_result(result):
+                        if result.engine:
+                            self.engine_data[result.engine][result["key"]] = result["engine_data"]
+                    continue
+
+                if self.on_result(result):
+                    main_count += 1
+                    self._merge_main_result(result, main_count)
+                    continue
+
+        if engine_name in searx.engines.engines:
+            eng = searx.engines.engines[engine_name]
+            histogram_observe(main_count, "engine", eng.name, "result", "count")
+            if not self.paging and eng.paging:
+                self.paging = True
+
+    def _merge_infobox(self, new_infobox: LegacyResult):
         add_infobox = True
-        infobox_id = infobox.get('id', None)
-        infobox['engines'] = set([infobox['engine']])
-        if infobox_id is not None:
-            parsed_url_infobox_id = urlparse(infobox_id)
+
+        new_id = getattr(new_infobox, "id", None)
+        if new_id is not None:
             with self._lock:
-                for existingIndex in self.infoboxes:
-                    if compare_urls(urlparse(existingIndex.get('id', '')), parsed_url_infobox_id):
-                        merge_two_infoboxes(existingIndex, infobox)
+                for existing_infobox in self.infoboxes:
+                    if new_id == getattr(existing_infobox, "id", None):
+                        merge_two_infoboxes(existing_infobox, new_infobox)
                         add_infobox = False
-
         if add_infobox:
-            self.infoboxes.append(infobox)
+            self.infoboxes.append(new_infobox)
 
-    def _is_valid_url_result(self, result, error_msgs):
-        if 'url' in result:
-            if not isinstance(result['url'], str):
-                logger.debug('result: invalid URL: %s', str(result))
-                error_msgs.add('invalid URL')
-                return False
+    def _merge_main_result(self, result: MainResult | LegacyResult, position):
+        result_hash = hash(result)
 
-        if 'title' in result and not isinstance(result['title'], str):
-            logger.debug('result: invalid title: %s', str(result))
-            error_msgs.add('invalid title')
-            return False
-
-        if 'content' in result:
-            if not isinstance(result['content'], str):
-                logger.debug('result: invalid content: %s', str(result))
-                error_msgs.add('invalid content')
-                return False
-
-        return True
-
-    def __merge_url_result(self, result, position):
-        result['engines'] = set([result['engine']])
         with self._lock:
-            duplicated = self.__find_duplicated_http_result(result)
-            if duplicated:
-                self.__merge_duplicated_http_result(duplicated, result, position)
+
+            merged = self.main_results_map.get(result_hash)
+            if not merged:
+                # if there is no duplicate in the merged results, append result
+                result.positions = [position]
+                self.main_results_map[result_hash] = result
                 return
 
-            # if there is no duplicate found, append result
-            result['positions'] = [position]
-            self._merged_results.append(result)
-
-    def __find_duplicated_http_result(self, result):
-        result_template = result.get('template')
-        for merged_result in self._merged_results:
-            if not merged_result.get('parsed_url'):
-                continue
-
-            if compare_urls(result['parsed_url'], merged_result['parsed_url']) and result_template == merged_result.get(
-                'template'
-            ):
-                if result_template != 'images.html':
-                    # not an image, same template, same url : it's a duplicate
-                    return merged_result
-
-                # it's an image
-                # it's a duplicate if the parsed_url, template and img_src are different
-                if result.get('img_src', '') == merged_result.get('img_src', ''):
-                    return merged_result
-        return None
-
-    def __merge_duplicated_http_result(self, duplicated, result, position):
-        # use content with more text
-        if result_content_len(result.get('content', '')) > result_content_len(duplicated.get('content', '')):
-            duplicated['content'] = result['content']
-
-        # use title with more text
-        if result_content_len(result.get('title', '')) > len(duplicated.get('title', '')):
-            duplicated['title'] = result['title']
-
-        # merge all result's parameters not found in duplicate
-        for key in result.keys():
-            if not duplicated.get(key):
-                duplicated[key] = result.get(key)
-
-        # add the new position
-        duplicated['positions'].append(position)
-
-        # add engine to list of result-engines
-        duplicated['engines'].add(result['engine'])
-
-        # use https if possible
-        if duplicated['parsed_url'].scheme != 'https' and result['parsed_url'].scheme == 'https':
-            duplicated['url'] = result['parsed_url'].geturl()
-            duplicated['parsed_url'] = result['parsed_url']
-
-    def __merge_result_no_url(self, result, position):
-        result['engines'] = set([result['engine']])
-        result['positions'] = [position]
-        with self._lock:
-            self._merged_results.append(result)
+            merge_two_main_results(merged, result)
+            # add the new position
+            merged.positions.append(position)
 
     def close(self):
         self._closed = True
 
-        for result in self._merged_results:
-            result['score'] = result_score(result, result.get('priority'))
-            # removing html content and whitespace duplications
-            if result.get('content'):
-                result['content'] = result['content'].strip()
-            if result.get('title'):
-                result['title'] = ' '.join(result['title'].strip().split())
+        for result in self.main_results_map.values():
+            result.score = calculate_score(result, result.priority)
+            for eng_name in result.engines:
+                counter_add(result.score, 'engine', eng_name, 'score')
 
-            for result_engine in result['engines']:
-                counter_add(result['score'], 'engine', result_engine, 'score')
+    def get_ordered_results(self) -> list[MainResult | LegacyResult]:
+        """Returns a sorted list of results to be displayed in the main result
+        area (:ref:`result types`)."""
 
-        results = sorted(self._merged_results, key=itemgetter('score'), reverse=True)
+        if not self._closed:
+            self.close()
+
+        if self._main_results_sorted:
+            return self._main_results_sorted
+
+        # first pass, sort results by "score" (descanding)
+        results = sorted(self.main_results_map.values(), key=lambda x: x.score, reverse=True)
 
         # pass 2 : group results by category and template
         gresults = []
         categoryPositions = {}
+        max_count = 8
+        max_distance = 20
 
         for res in results:
-            if not res.get('url'):
-                continue
+            # do we need to handle more than one category per engine?
+            engine = searx.engines.engines.get(res.engine or "")
+            if engine:
+                res.category = engine.categories[0] if len(engine.categories) > 0 else ""
 
             # do we need to handle more than one category per engine?
-            engine = engines[res['engine']]
-            res['category'] = engine.categories[0] if len(engine.categories) > 0 else ''
+            category = f"{res.category}:{res.template}:{'img_src' if (res.thumbnail or res.img_src) else ''}"
+            grp = categoryPositions.get(category)
 
-            # do we need to handle more than one category per engine?
-            category = (
-                res['category']
-                + ':'
-                + res.get('template', '')
-                + ':'
-                + ('img_src' if 'img_src' in res or 'thumbnail' in res else '')
-            )
+            # group with previous results using the same category, if the group
+            # can accept more result and is not too far from the current
+            # position
 
-            current = None if category not in categoryPositions else categoryPositions[category]
-
-            # group with previous results using the same category
-            # if the group can accept more result and is not too far
-            # from the current position
-            if current is not None and (current['count'] > 0) and (len(gresults) - current['index'] < 20):
-                # group with the previous results using
-                # the same category with this one
-                index = current['index']
+            if (grp is not None) and (grp["count"] > 0) and (len(gresults) - grp["index"] < max_distance):
+                # group with the previous results using the same category with
+                # this one
+                index = grp["index"]
                 gresults.insert(index, res)
 
-                # update every index after the current one
-                # (including the current one)
-                for k in categoryPositions:  # pylint: disable=consider-using-dict-items
-                    v = categoryPositions[k]['index']
+                # update every index after the current one (including the
+                # current one)
+                for item in categoryPositions.values():
+                    v = item["index"]
                     if v >= index:
-                        categoryPositions[k]['index'] = v + 1
+                        item["index"] = v + 1
 
                 # update this category
-                current['count'] -= 1
+                grp["count"] -= 1
 
             else:
-                # same category
                 gresults.append(res)
-
                 # update categoryIndex
-                categoryPositions[category] = {'index': len(gresults), 'count': 8}
+                categoryPositions[category] = {"index": len(gresults), "count": max_count}
+                continue
 
-        # update _merged_results
-        self._merged_results = gresults
-
-    def get_ordered_results(self):
-        if not self._closed:
-            self.close()
-        return self._merged_results
-
-    def results_length(self):
-        return len(self._merged_results)
+        self._main_results_sorted = gresults
+        return self._main_results_sorted
 
     @property
     def number_of_results(self) -> int:
         """Returns the average of results number, returns zero if the average
         result number is smaller than the actual result count."""
 
-        with self._lock:
-            if not self._closed:
-                logger.error("call to ResultContainer.number_of_results before ResultContainer.close")
-                return 0
+        if not self._closed:
+            log.error("call to ResultContainer.number_of_results before ResultContainer.close")
+            return 0
 
+        with self._lock:
             resultnum_sum = sum(self._number_of_results)
             if not resultnum_sum or not self._number_of_results:
                 return 0
 
             average = int(resultnum_sum / len(self._number_of_results))
-            if average < self.results_length():
+            if average < len(self.get_ordered_results()):
                 average = 0
             return average
 
     def add_unresponsive_engine(self, engine_name: str, error_type: str, suspended: bool = False):
         with self._lock:
             if self._closed:
-                logger.error("call to ResultContainer.add_unresponsive_engine after ResultContainer.close")
+                log.error("call to ResultContainer.add_unresponsive_engine after ResultContainer.close")
                 return
-            if engines[engine_name].display_error_messages:
+            if searx.engines.engines[engine_name].display_error_messages:
                 self.unresponsive_engines.add(UnresponsiveEngine(engine_name, error_type, suspended))
 
     def add_timing(self, engine_name: str, engine_time: float, page_load_time: float):
         with self._lock:
             if self._closed:
-                logger.error("call to ResultContainer.add_timing after ResultContainer.close")
+                log.error("call to ResultContainer.add_timing after ResultContainer.close")
                 return
             self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
     def get_timings(self):
         with self._lock:
             if not self._closed:
-                logger.error("call to ResultContainer.get_timings before ResultContainer.close")
+                log.error("call to ResultContainer.get_timings before ResultContainer.close")
                 return []
             return self.timings
+
+
+def merge_two_infoboxes(origin: LegacyResult, other: LegacyResult):
+    """Merges the values from ``other`` into ``origin``."""
+    # pylint: disable=too-many-branches
+    weight1 = getattr(searx.engines.engines[origin.engine], "weight", 1)
+    weight2 = getattr(searx.engines.engines[other.engine], "weight", 1)
+
+    if weight2 > weight1:
+        origin.engine = other.engine
+
+    origin.engines |= other.engines
+
+    if other.urls:
+        url_items = origin.get("urls", [])
+
+        for url2 in other.urls:
+            unique_url = True
+            entity_url2 = url2.get("entity")
+
+            for url1 in origin.get("urls", []):
+                if (entity_url2 is not None and entity_url2 == url1.get("entity")) or (
+                    url1.get("url") == url2.get("url")
+                ):
+                    unique_url = False
+                    break
+            if unique_url:
+                url_items.append(url2)
+
+        origin.urls = url_items
+
+    if other.img_src:
+        if not origin.img_src:
+            origin.img_src = other.img_src
+        elif weight2 > weight1:
+            origin.img_src = other.img_src
+
+    if other.attributes:
+        if not origin.attributes:
+            origin.attributes = other.attributes
+        else:
+            attr_names_1 = set()
+            for attr in origin.attributes:
+                label = attr.get("label")
+                if label:
+                    attr_names_1.add(label)
+
+                entity = attr.get("entity")
+                if entity:
+                    attr_names_1.add(entity)
+
+            for attr in other.attributes:
+                if attr.get("label") not in attr_names_1 and attr.get('entity') not in attr_names_1:
+                    origin.attributes.append(attr)
+
+    if other.content:
+        if not origin.content:
+            origin.content = other.content
+        elif len(other.content) > len(origin.content):
+            origin.content = other.content
+
+
+def merge_two_main_results(origin: MainResult | LegacyResult, other: MainResult | LegacyResult):
+    """Merges the values from ``other`` into ``origin``."""
+
+    if len(other.content) > len(origin.content):
+        # use content with more text
+        origin.content = other.content
+
+    # use title with more text
+    if len(other.title) > len(origin.title):
+        origin.title = other.title
+
+    # merge all result's parameters not found in origin
+    if isinstance(other, MainResult) and isinstance(origin, MainResult):
+        origin.defaults_from(other)
+    elif isinstance(other, LegacyResult) and isinstance(origin, LegacyResult):
+        origin.defaults_from(other)
+
+    # add engine to list of result-engines
+    origin.engines.add(other.engine or "")
+
+    # use https, ftps, .. if possible
+    if origin.parsed_url and not origin.parsed_url.scheme.endswith("s"):
+        if other.parsed_url and other.parsed_url.scheme.endswith("s"):
+            origin.parsed_url = origin.parsed_url._replace(scheme=other.parsed_url.scheme)
+            origin.url = origin.parsed_url.geturl()

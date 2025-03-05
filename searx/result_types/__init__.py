@@ -13,13 +13,13 @@
 
 from __future__ import annotations
 
-__all__ = ["Result", "EngineResults", "AnswerSet", "Answer", "Translations"]
+__all__ = ["Result", "MainResult", "EngineResults", "AnswerSet", "Answer", "Translations"]
 
 import abc
 
 from searx import enginelib
 
-from ._base import Result, LegacyResult
+from ._base import Result, MainResult, LegacyResult
 from .answer import AnswerSet, Answer, Translations
 
 
@@ -30,13 +30,18 @@ class ResultList(list, abc.ABC):
         """The collection of result types (which have already been implemented)."""
 
         Answer = Answer
+        MainResult = MainResult
+        Result = Result
         Translations = Translations
+
+        # for backward compatibility
+        LegacyResult = LegacyResult
 
     def __init__(self):
         # pylint: disable=useless-parent-delegation
         super().__init__()
 
-    def add(self, result: Result):
+    def add(self, result: Result | LegacyResult):
         """Add a :py:`Result` item to the result list."""
         self.append(result)
 

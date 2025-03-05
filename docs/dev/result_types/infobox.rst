@@ -9,7 +9,7 @@ Infobox Results
    There is still no typing for these result items. The templates can be used as
    orientation until the final typing is complete.
 
-The infobox is an area where addtional infos shown to the user.
+The :ref:`area info box` is an area where addtional infos shown to the user.
 
 Fields used in the :origin:`infobox.html
 <searx/templates/simple/elements/infobox.html>`:
@@ -57,4 +57,3 @@ relatedTopics: :py:class:`List <list>`\ [\ :py:class:`dict`\ ]
     key/value pair:
 
     - suggestion: :py:class:`str`: suggested search term (mandatory)
-
