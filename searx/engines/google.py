@@ -27,6 +27,9 @@ from searx.exceptions import SearxEngineCaptchaException
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
 
+import random
+import string
+
 if TYPE_CHECKING:
     import logging
 
@@ -67,7 +70,16 @@ suggestion_xpath = '//div[contains(@class, "EIaa9b")]//a'
 # UI_ASYNC = 'use_ac:true,_fmt:html' # returns a HTTP 500 when user search for
 #                                    # celebrities like '!google natasha allegri'
 #                                    # or '!google chris evans'
-UI_ASYNC = 'use_ac:true,_fmt:prog'
+def _generate_arc_id():
+    """Generate arc_id for Google search request"""
+    random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=23))
+    return f'srp_{random_str}_100'
+
+
+def _get_ui_async():
+    return f'arc_id:{_generate_arc_id()},use_ac:true,_fmt:prog'
+
+UI_ASYNC = _get_ui_async()
 """Format of the response from UI's async request."""
 
 
@@ -497,3 +509,4 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
             if region == 'HK':
                 # There is no google.cn, we use .com.hk for zh-CN
                 engine_traits.custom['supported_domains']['CN'] = 'www' + domain  # type: ignore
+
