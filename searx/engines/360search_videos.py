@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 from datetime import datetime
 
 from searx.exceptions import SearxEngineAPIException
-from searx.utils import html_to_text
+from searx.utils import html_to_text, get_embeded_stream_url
 
 about = {
     "website": "https://tv.360kan.com/",
@@ -58,6 +58,7 @@ def response(resp):
                 'template': 'videos.html',
                 'publishedDate': published_date,
                 'thumbnail': entry["cover_img"],
+                "iframe_src": get_embeded_stream_url(entry["play_url"]),
             }
         )
 
