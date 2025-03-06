@@ -12,6 +12,7 @@
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 
 """
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
@@ -32,6 +33,8 @@ from searx.engines.google import (
     filter_mapping,
     suggestion_xpath,
     detect_google_sorry,
+    ui_async,
+    parse_data_images,
 )
 from searx.enginelib.traits import EngineTraits
 from searx.utils import get_embeded_stream_url
@@ -67,6 +70,7 @@ def request(query, params):
     """Google-Video search request"""
 
     google_info = get_google_info(params, traits)
+    start = (params['pageno'] - 1) * 10
 
     query_url = (
         'https://'
@@ -80,7 +84,7 @@ def request(query, params):
                 'start': 10 * params['pageno'],
                 **google_info['params'],
                 'asearch': 'arc',
-                'async': 'use_ac:true,_fmt:html',
+                'async': ui_async(start),
             }
         )
     )
@@ -101,6 +105,7 @@ def response(resp):
     results = []
 
     detect_google_sorry(resp)
+    data_image_map = parse_data_images(resp.text)
 
     # convert the text to dom
     dom = html.fromstring(resp.text)
@@ -109,8 +114,13 @@ def response(resp):
     for result in eval_xpath_list(dom, '//div[contains(@class, "g ")]'):
 
         thumbnail = eval_xpath_getindex(result, './/img/@src', 0, None)
-        if thumbnail is None:
-            continue
+        if thumbnail:
+            if thumbnail.startswith('data:image'):
+                img_id = eval_xpath_getindex(result, './/img/@id', 0, None)
+                if img_id:
+                    thumbnail = data_image_map.get(img_id)
+        else:
+            thumbnail = None
 
         title = extract_text(eval_xpath_getindex(result, './/a/h3[1]', 0))
         url = eval_xpath_getindex(result, './/a/h3[1]/../@href', 0)
