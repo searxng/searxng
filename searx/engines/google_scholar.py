@@ -51,6 +51,10 @@ about = {
 categories = ['science', 'scientific publications']
 paging = True
 max_page = 50
+"""`Google: max 50 pages`_
+
+.. _Google: max 50 pages: https://github.com/searxng/searxng/issues/2982
+"""
 language_support = True
 time_range_support = True
 safesearch = False
