@@ -633,7 +633,7 @@ def _get_fasttext_model() -> "fasttext.FastText._FastText":  # type: ignore
 def get_embeded_stream_url(url):
     """
     Converts a standard video URL into its embed format. Supported services include Youtube,
-    Facebook, Instagram, TikTok, and Dailymotion.
+    Facebook, Instagram, TikTok, Dailymotion, and Bilibili.
     """
     parsed_url = urlparse(url)
     iframe_src = None
@@ -672,6 +672,22 @@ def get_embeded_stream_url(url):
         if len(path_parts) == 3:
             video_id = path_parts[2]
             iframe_src = 'https://www.dailymotion.com/embed/video/' + video_id
+
+    # Bilibili
+    elif parsed_url.netloc in ['www.bilibili.com', 'bilibili.com'] and parsed_url.path.startswith('/video/'):
+        path_parts = parsed_url.path.split('/')
+
+        video_id = path_parts[2]
+        param_key = None
+        if video_id.startswith('av'):
+            video_id = video_id[2:]
+            param_key = 'aid'
+        elif video_id.startswith('BV'):
+            param_key = 'bvid'
+
+        iframe_src = (
+            f'https://player.bilibili.com/player.html?{param_key}={video_id}&high_quality=1&autoplay=false&danmaku=0'
+        )
 
     return iframe_src
 
