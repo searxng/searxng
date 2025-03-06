@@ -20,6 +20,7 @@ about = {
 categories = ['general']
 paging = True
 max_page = 5
+"""Ask.com has at max 5 pages."""
 
 # Base URL
 base_url = "https://www.ask.com/web"

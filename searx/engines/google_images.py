@@ -47,6 +47,11 @@ about = {
 categories = ['images', 'web']
 paging = True
 max_page = 50
+"""`Google: max 50 pages`_
+
+.. _Google: max 50 pages: https://github.com/searxng/searxng/issues/2982
+"""
+
 time_range_support = True
 safesearch = True
 send_accept_language_header = True
