@@ -67,7 +67,9 @@ suggestion_xpath = '//div[contains(@class, "EIaa9b")]//a'
 # UI_ASYNC = 'use_ac:true,_fmt:html' # returns a HTTP 500 when user search for
 #                                    # celebrities like '!google natasha allegri'
 #                                    # or '!google chris evans'
-UI_ASYNC = 'use_ac:true,_fmt:prog'
+#
+# for interim solution a static arc_id:srp_zF_JZ_ehGr-L7M8Po-jhgQE_120 is added:
+UI_ASYNC = 'arc_id:srp_zF_JZ_ehGr-L7M8Po-jhgQE_120,use_ac:true,_fmt:prog'
 """Format of the response from UI's async request."""
 
 
