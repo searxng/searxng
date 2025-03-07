@@ -21,7 +21,8 @@ from flask_babel import gettext
 from httpx import HTTPError
 
 from searx.network import get
-from searx.result_types import Answer
+from searx.result_types import EngineResults
+from searx.botdetection import get_real_ip
 
 
 default_on = False
@@ -51,8 +52,8 @@ url_exit_list = "https://check.torproject.org/exit-addresses"
 """URL to load Tor exit list from."""
 
 
-def post_search(request, search) -> list[Answer]:
-    results = []
+def post_search(request, search) -> EngineResults:
+    results = EngineResults()
 
     if search.search_query.pageno > 1:
         return results
@@ -67,22 +68,17 @@ def post_search(request, search) -> list[Answer]:
         except HTTPError:
             # No answer, return error
             msg = gettext("Could not download the list of Tor exit-nodes from")
-            Answer(results=results, answer=f"{msg} {url_exit_list}")
+            results.add(results.types.Answer(answer=f"{msg} {url_exit_list}"))
             return results
 
-        x_forwarded_for = request.headers.getlist("X-Forwarded-For")
+        real_ip = get_real_ip(request)
 
-        if x_forwarded_for:
-            ip_address = x_forwarded_for[0]
-        else:
-            ip_address = request.remote_addr
-
-        if ip_address in node_list:
+        if real_ip in node_list:
             msg = gettext("You are using Tor and it looks like you have the external IP address")
-            Answer(results=results, answer=f"{msg} {ip_address}")
+            results.add(results.types.Answer(answer=f"{msg} {real_ip}"))
 
         else:
             msg = gettext("You are not using Tor and you have the external IP address")
-            Answer(results=results, answer=f"{msg} {ip_address}")
+            results.add(results.types.Answer(answer=f"{msg} {real_ip}"))
 
     return results
