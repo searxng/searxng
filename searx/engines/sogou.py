@@ -13,6 +13,7 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
+    "language": "zh",
 }
 
 # Engine Configuration
