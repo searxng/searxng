@@ -161,7 +161,7 @@ def parse_search_query(json_results):
     for item in json_results.get('specialSections', {}).get('topStoriesCompact', {}).get('data', []):
         result = {
             'url': item['link'],
-            'title': item['title'],
+            'title': html_to_text(item['title']),
             'thumbnail': item['image'],
             'content': '',
             'metadata': item.get('source'),
@@ -171,7 +171,7 @@ def parse_search_query(json_results):
     for item in json_results.get('standardResults', []):
         result = {
             'url': item['link'],
-            'title': item['title'],
+            'title': html_to_text(item['title']),
             'content': html_to_text(item['description']),
         }
         results.append(result)
