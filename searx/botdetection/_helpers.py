@@ -8,6 +8,7 @@ from ipaddress import (
     IPv4Address,
     IPv6Address,
     ip_network,
+    ip_address,
 )
 import flask
 import werkzeug
@@ -125,6 +126,9 @@ def get_real_ip(request: SXNG_Request) -> str:
     if real_ip and remote_addr and real_ip != remote_addr:
         logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
 
-    request_ip = forwarded_for or real_ip or remote_addr or '0.0.0.0'
+    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
+    if request_ip.version == 6 and request_ip.ipv4_mapped:
+        request_ip = request_ip.ipv4_mapped
+
     # logger.debug("get_real_ip() -> %s", request_ip)
-    return request_ip
+    return str(request_ip)
