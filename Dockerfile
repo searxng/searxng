@@ -1,5 +1,4 @@
-FROM alpine:3.20
-ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
+FROM python:3.13-alpine
 EXPOSE 8080
 VOLUME /etc/searxng
 
@@ -21,32 +20,13 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
+RUN apk add brotli tini openssl && rm -rf /root/.cache
+
 COPY requirements.txt ./requirements.txt
 
-RUN apk add --no-cache -t build-dependencies \
-    build-base \
-    py3-setuptools \
-    python3-dev \
-    libffi-dev \
-    libxslt-dev \
-    libxml2-dev \
-    openssl-dev \
-    tar \
-    git \
- && apk add --no-cache \
-    ca-certificates \
-    python3 \
-    py3-pip \
-    libxml2 \
-    libxslt \
-    openssl \
-    tini \
-    uwsgi \
-    uwsgi-python3 \
-    brotli \
- && pip3 install --break-system-packages --no-cache -r requirements.txt \
- && apk del build-dependencies \
- && rm -rf /root/.cache
+RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers && pip install --no-cache -r requirements.txt \
+&& apk del build-dependencies \
+&& rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
 COPY --chown=searxng:searxng searx ./searx
@@ -87,3 +67,5 @@ LABEL maintainer="searxng <${GIT_URL}>" \
       org.opencontainers.image.source=${LABEL_VCS_URL} \
       org.opencontainers.image.created="${LABEL_DATE}" \
       org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker"
+      
+ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
