@@ -178,30 +178,45 @@ def get_themes(templates_path):
     return os.listdir(templates_path)
 
 
-def get_hash_for_file(file: pathlib.Path) -> str:
-    m = hashlib.sha1()
-    with file.open('rb') as f:
-        m.update(f.read())
-    return m.hexdigest()
+def get_static_files_legacy(static_path: str, path: pathlib.Path):
+    result: list[str] = []
+    for file in path.iterdir():
+        if file.name.startswith('.'):
+            # ignore hidden file
+            continue
+        if file.is_file():
+            result.append(str(file.relative_to(static_path)))
+        if file.is_dir() and file.name not in ('node_modules', 'src'):
+            # ignore "src" and "node_modules" directories
+            result.extend(get_static_files_legacy(static_path, file))
+    return result
 
 
 def get_static_files(static_path: str) -> Dict[str, str]:
-    static_files: Dict[str, str] = {}
-    static_path_path = pathlib.Path(static_path)
+    results = {}
+    themes_dir = pathlib.Path(static_path) / "themes"
+    for theme_dir in themes_dir.iterdir():
+        if not theme_dir.is_dir():
+            continue
+        assets_file = theme_dir / "assets.json"
+        if assets_file.is_file():
+            # assets.json exist
+            with assets_file.open("r", encoding="utf-8") as f:
+                assets = json.load(f)
+                for rel_logical_filename, rel_actual_filename in assets.items():
+                    logical_filename = f"themes/{theme_dir.name}/{rel_logical_filename}"
+                    actual_filename = f"themes/{theme_dir.name}/{rel_actual_filename}"
+                    results[logical_filename] = actual_filename
+        else:
+            # assets.json does not exist
+            results.update(
+                {
+                    logical_filename: logical_filename
+                    for logical_filename in get_static_files_legacy(static_path, theme_dir)
+                }
+            )
 
-    def walk(path: pathlib.Path):
-        for file in path.iterdir():
-            if file.name.startswith('.'):
-                # ignore hidden file
-                continue
-            if file.is_file():
-                static_files[str(file.relative_to(static_path_path))] = get_hash_for_file(file)
-            if file.is_dir() and file.name not in ('node_modules', 'src'):
-                # ignore "src" and "node_modules" directories
-                walk(file)
-
-    walk(static_path_path)
-    return static_files
+    return results
 
 
 def get_result_templates(templates_path):

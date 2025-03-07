@@ -16,8 +16,8 @@
       var map_boundingbox = JSON.parse(this.dataset.mapBoundingbox);
       var map_geojson = JSON.parse(this.dataset.mapGeojson);
 
-      searxng.loadStyle('css/leaflet.css');
-      searxng.loadScript('js/leaflet.js', function () {
+      searxng.loadStyle('css/leaflet.SEARXNG_HASH.css');
+      searxng.loadScript('js/leaflet.SEARXNG_HASH.js', function () {
         var map_bounds = null;
         if (map_boundingbox) {
           var southWest = L.latLng(map_boundingbox[0], map_boundingbox[2]);
