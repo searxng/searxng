@@ -18,21 +18,22 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # KhietVo <khietvo@users.noreply.translate.codeberg.org>, 2025.
 # nam000 <nam000@users.noreply.translate.codeberg.org>, 2025.
+# buiducnhat <buiducnhat@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: tvminh19 <tvminh19@users.noreply.translate.codeberg.org>"
-"\n"
+"PO-Revision-Date: 2025-03-05 02:17+0000\n"
+"Last-Translator: buiducnhat <buiducnhat@noreply.codeberg.org>\n"
+"Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
+"searxng/vi/>\n"
 "Language: vi\n"
-"Language-Team: Vietnamese "
-"<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -449,11 +450,11 @@ msgstr "Tạo các giá trị ngẫu nhiên khác nhau"
 
 #: searx/answerers/statistics.py:36
 msgid "Compute {func} of the arguments"
-msgstr ""
+msgstr "Tính toán {func} của các tham số"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
-msgstr ""
+msgstr "Hiển thị đường đi trên bản đồ .."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -529,7 +530,7 @@ msgstr "Tính toán bằng thanh tìm kiếm"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr ""
+msgstr "Plugin băm"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -568,6 +569,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
+"Hiển thị IP của bạn nếu truy vấn là \"ip\" và user agent của bạn nếu truy "
+"vấn là \"user-agent\"."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -592,15 +595,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:69
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Không thể tải xuống danh sách các đoạn trích xuất từ TOR từ"
 
 #: searx/plugins/tor_check.py:81
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "Bạn đang sử dụng Tor và có vẻ bạn có địa chỉ IP bên ngoài"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "Bạn đang không sử dụng Tor và bạn có địa chỉ IP bên ngoài"
 
 #: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
@@ -928,7 +931,7 @@ msgstr "Các ví dụ"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "Định nghĩa"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
@@ -1079,9 +1082,8 @@ msgid "Search for another query or select another category."
 msgstr "Tìm kiếm bằng truy vấn khác hoặc chọn mục khác."
 
 #: searx/templates/simple/messages/no_results.html:25
-#, fuzzy
 msgid "Go back to the previous page using the previous page button."
-msgstr "Nhấn nút trang trước để quay lại trang trước"
+msgstr "Quay lại trang t rước bằng nút bấm trang trước"
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1090,7 +1092,7 @@ msgstr "Cho phép"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "Từ khoá (từ đầu tiên trong truy vấn)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1187,7 +1189,7 @@ msgstr "Mã băm được ưu tiên"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "Định danh đối tượng kỹ thuật số (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -1272,9 +1274,8 @@ msgid "Hotkeys"
 msgstr "Phím tắt"
 
 #: searx/templates/simple/preferences/hotkeys.html:13
-#, fuzzy
 msgid "Vim-like"
-msgstr "Kiểu giống Vim"
+msgstr "Vim-like"
 
 #: searx/templates/simple/preferences/hotkeys.html:18
 msgid ""
@@ -1386,23 +1387,23 @@ msgstr "Thay đổi ngôn ngữ giao diện"
 
 #: searx/templates/simple/preferences/urlformatting.html:2
 msgid "URL formatting"
-msgstr ""
+msgstr "Định dạng URL"
 
 #: searx/templates/simple/preferences/urlformatting.html:8
 msgid "Pretty"
-msgstr ""
+msgstr "Đẹp"
 
 #: searx/templates/simple/preferences/urlformatting.html:13
 msgid "Full"
-msgstr ""
+msgstr "Đầy đủ"
 
 #: searx/templates/simple/preferences/urlformatting.html:18
 msgid "Host"
-msgstr ""
+msgstr "Máy chủ"
 
 #: searx/templates/simple/preferences/urlformatting.html:23
 msgid "Change result URL formatting"
-msgstr ""
+msgstr "Thay đổi kết quả định dạng URL"
 
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
@@ -1421,9 +1422,8 @@ msgstr "ẩn nội dung"
 
 #: searx/templates/simple/result_templates/default.html:14
 #: searx/templates/simple/result_templates/videos.html:14
-#, fuzzy
 msgid "This site did not provide any description."
-msgstr "Trang không có diễn giải."
+msgstr "Trang web này không cung cấp bất kỳ mô tả."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
@@ -2068,4 +2068,3 @@ msgstr "ẩn phim"
 
 #~ msgid "/"
 #~ msgstr ""
-
