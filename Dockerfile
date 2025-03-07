@@ -20,7 +20,7 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
-RUN apk add brotli tini openssl && rm -rf /root/.cache
+RUN apk add brotli tini openssl mailcap && rm -rf /root/.cache
 
 COPY requirements.txt ./requirements.txt
 
