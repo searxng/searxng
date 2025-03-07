@@ -135,6 +135,7 @@ def request(query, params):
         args['locale'] = q_locale
         args['safesearch'] = params['safesearch']
         args['count'] = 50
+        args['tgp'] = 3
         args['offset'] = (params['pageno'] - 1) * args['count']
 
     else:  # web, news, videos
@@ -142,6 +143,8 @@ def request(query, params):
         args['locale'] = q_locale
         args['safesearch'] = params['safesearch']
         args['count'] = 10
+        args['llm'] = 'false'
+        args['tgp'] = 3
         args['offset'] = (params['pageno'] - 1) * args['count']
 
     params['url'] = url + urlencode(args)
