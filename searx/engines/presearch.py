@@ -64,7 +64,7 @@ Implementations
 
 """
 
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 from searx import locales
 from searx.network import get
 from searx.utils import gen_useragent, html_to_text
@@ -155,13 +155,34 @@ def _strip_leading_strings(text):
     return text.strip()
 
 
+def _fix_title(title, url):
+    """
+    Titles from Presearch shows domain + title without spacing, and HTML
+    This function removes these 2 issues.
+    Transforming "translate.google.co.in<em>Google</em> Translate" into "Google Translate"
+    """
+    parsed_url = urlparse(url)
+    domain = parsed_url.netloc
+    title = html_to_text(title)
+    # Fixes issue where domain would show up in the title
+    # translate.google.co.inGoogle Translate -> Google Translate
+    if (
+        title.startswith(domain)
+        and len(title) > len(domain)
+        and not title.startswith(domain + "/")
+        and not title.startswith(domain + " ")
+    ):
+        title = title.removeprefix(domain)
+    return title
+
+
 def parse_search_query(json_results):
     results = []
 
     for item in json_results.get('specialSections', {}).get('topStoriesCompact', {}).get('data', []):
         result = {
             'url': item['link'],
-            'title': html_to_text(item['title']),
+            'title': _fix_title(item['title'], item['link']),
             'thumbnail': item['image'],
             'content': '',
             'metadata': item.get('source'),
@@ -171,7 +192,7 @@ def parse_search_query(json_results):
     for item in json_results.get('standardResults', []):
         result = {
             'url': item['link'],
-            'title': html_to_text(item['title']),
+            'title': _fix_title(item['title'], item['link']),
             'content': html_to_text(item['description']),
         }
         results.append(result)
