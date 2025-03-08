@@ -20,13 +20,17 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
-RUN apk add --no-cache brotli tini openssl mailcap && rm -rf /root/.cache
+# install necessary runtime packages
+RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt && rm -rf /root/.cache
 
-COPY requirements.txt ./requirements.txt
-
-RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers && pip install --no-cache -r requirements.txt \
+# build and install uwsgi
+RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers && pip install --no-cache "uwsgi~=2.0.0" \
 && apk del build-dependencies \
 && rm -rf /root/.cache
+
+# install necessary python packages
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache -r requirements.txt
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
 COPY --chown=searxng:searxng searx ./searx
