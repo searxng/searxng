@@ -1,7 +1,7 @@
 use_default_settings: true
 server:
   secret_key: "user_secret_key"
-  bind_address: "0.0.0.0"
+  bind_address: "[::]"
   default_http_headers:
     Custom-Header: Custom-Value
 result_proxy:
