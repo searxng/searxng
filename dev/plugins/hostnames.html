@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hostnames &#8212; SearXNG Documentation (2025.3.8+a88b4d703)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=09acf36a"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2025.3.8+a88b4d703" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Self-Info" href="self_info.html" />
+    <link rel="prev" title="Hash Values" href="hash_plugin.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="self_info.html" title="Self-Info"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="hash_plugin.html" title="Hash Values"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2025.3.8+a88b4d703)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Plugins</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="builtins.html" accesskey="U">Built-in Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hostnames</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.plugins.hostnames">
+<span id="hostnames"></span><span id="hostnames-plugin"></span><h1>Hostnames<a class="headerlink" href="#module-searx.plugins.hostnames" title="Link to this heading">¶</a></h1>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The <strong>“Hostname replace”</strong> plugin has been replace by <strong>“Hostnames
+plugin”</strong>, see <a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/3463">PR 3463</a> &amp; <a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/3552">PR 3552</a>.</p>
+</div>
+<p>The <strong>Hostnames plugin</strong> can be enabled by adding it to the
+<code class="docutils literal notranslate"><span class="pre">enabled_plugins</span></code> <strong>list</strong> in the <code class="docutils literal notranslate"><span class="pre">setting.yml</span></code> like so.</p>
+<blockquote>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enabled_plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Hostnames</span><span class="nv"> </span><span class="s">plugin&#39;</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.replace</span></code>: A <strong>mapping</strong> of regular expressions to hostnames to be
+replaced by other hostnames.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replace</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&#39;(.*\.)?youtube\.com$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="w">    </span><span class="s">&#39;(.*\.)?youtu\.be$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.remove</span></code>: A <strong>list</strong> of regular expressions of the hostnames whose
+results should be taken from the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">remove</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?facebook.com$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.high_priority</span></code>: A <strong>list</strong> of regular expressions for hostnames
+whose result should be given higher priority. The results from these hosts are
+arranged higher in the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">high_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?wikipedia.org$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.lower_priority</span></code>: A <strong>list</strong> of regular expressions for hostnames
+whose result should be given lower priority. The results from these hosts are
+arranged lower in the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">low_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?google(\..*)?$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If the URL matches the pattern of <code class="docutils literal notranslate"><span class="pre">high_priority</span></code> AND <code class="docutils literal notranslate"><span class="pre">low_priority</span></code>, the
+higher priority wins over the lower priority.</p>
+<p>Alternatively, you can also specify a file name for the <strong>mappings</strong> or
+<strong>lists</strong> to load these from an external file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;rewrite-hosts.yml&#39;</span>
+<span class="w">  </span><span class="nt">remove</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?facebook.com$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">low_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?google(\..*)?$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">high_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?wikipedia.org$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rewrite-hosts.yml</span></code> from the example above must be in the folder in which
+the <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code> file is already located (<code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code>). The file then
+only contains the lists or the mapping tables without further information on the
+namespaces.  In the example above, this would be a mapping table that looks
+something like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&#39;(.*\.)?youtube\.com$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="s">&#39;(.*\.)?youtu\.be$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rtm_asdf.html">Runtime Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="development.html">Plugin Development</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="builtins.html">Built-in Plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="unit_converter.html">Unit Converter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Plugins</a>
+        <ul>
+      <li><a href="builtins.html">Built-in Plugins</a>
+        <ul>
+          <li>Previous: <a href="hash_plugin.html" title="previous chapter">Hash Values</a>
+          <li>Next: <a href="self_info.html" title="next chapter">Self-Info</a></ul>
+      </li></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/plugins/hostnames.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
