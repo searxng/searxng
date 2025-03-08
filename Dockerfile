@@ -21,10 +21,10 @@ ENV INSTANCE_NAME=searxng \
 WORKDIR /usr/local/searxng
 
 # install necessary runtime packages
-RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt && rm -rf /root/.cache
+RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt pcre && rm -rf /root/.cache
 
 # build and install uwsgi
-RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers && pip install --no-cache "uwsgi~=2.0.0" \
+RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers pcre-dev && pip install --no-cache "uwsgi~=2.0.0" \
 && apk del build-dependencies \
 && rm -rf /root/.cache
 
