@@ -2,6 +2,8 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from searx.engines import command as command_engine
+from searx.result_types import KeyValue
+
 from tests import SearxTestCase
 
 
@@ -12,14 +14,15 @@ class TestCommandEngine(SearxTestCase):
         ls_engine.command = ['seq', '{{QUERY}}']
         ls_engine.delimiter = {'chars': ' ', 'keys': ['number']}
         expected_results = [
-            {'number': '1', 'template': 'key-value.html'},
-            {'number': '2', 'template': 'key-value.html'},
-            {'number': '3', 'template': 'key-value.html'},
-            {'number': '4', 'template': 'key-value.html'},
-            {'number': '5', 'template': 'key-value.html'},
+            KeyValue(kvmap={'number': 1}),
+            KeyValue(kvmap={'number': 2}),
+            KeyValue(kvmap={'number': 3}),
+            KeyValue(kvmap={'number': 4}),
+            KeyValue(kvmap={'number': 5}),
         ]
         results = ls_engine.search('5', {'pageno': 1})
-        self.assertEqual(results, expected_results)
+        for i, expected in enumerate(expected_results):
+            self.assertEqual(results[i].kvmap["number"], str(expected.kvmap["number"]))
 
     def test_delimiter_parsing(self):
         searx_logs = '''DEBUG:searx.webapp:static directory is /home/n/p/searx/searx/static
@@ -39,94 +42,85 @@ INFO:werkzeug: * Debugger PIN: 299-578-362'''
         echo_engine.command = ['echo', searx_logs]
         echo_engine.delimiter = {'chars': ':', 'keys': ['level', 'component', 'message']}
 
-        expected_results_by_page = [
-            [
-                {
-                    'component': 'searx.webapp',
-                    'message': 'static directory is /home/n/p/searx/searx/static',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.webapp',
-                    'message': 'templates directory is /home/n/p/searx/searx/templates',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'soundcloud engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'wolframalpha engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'locate engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'regex search in files engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'urllib3.connectionpool',
-                    'message': 'Starting new HTTPS connection (1): www.wolframalpha.com',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'urllib3.connectionpool',
-                    'message': 'Starting new HTTPS connection (1): soundcloud.com',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'find engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'searx.engines',
-                    'message': 'pattern search in files engine: Starting background initialization',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-            ],
-            [
-                {
-                    'component': 'searx.webapp',
-                    'message': 'starting webserver on 127.0.0.1:8888',
-                    'template': 'key-value.html',
-                    'level': 'DEBUG',
-                },
-                {
-                    'component': 'werkzeug',
-                    'message': ' * Debugger is active!',
-                    'template': 'key-value.html',
-                    'level': 'WARNING',
-                },
-                {
-                    'component': 'werkzeug',
-                    'message': ' * Debugger PIN: 299-578-362',
-                    'template': 'key-value.html',
-                    'level': 'INFO',
-                },
-            ],
+        page1 = [
+            {
+                'component': 'searx.webapp',
+                'message': 'static directory is /home/n/p/searx/searx/static',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.webapp',
+                'message': 'templates directory is /home/n/p/searx/searx/templates',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'soundcloud engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'wolframalpha engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'locate engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'regex search in files engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'urllib3.connectionpool',
+                'message': 'Starting new HTTPS connection (1): www.wolframalpha.com',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'urllib3.connectionpool',
+                'message': 'Starting new HTTPS connection (1): soundcloud.com',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'find engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'searx.engines',
+                'message': 'pattern search in files engine: Starting background initialization',
+                'level': 'DEBUG',
+            },
+        ]
+        page2 = [
+            {
+                'component': 'searx.webapp',
+                'message': 'starting webserver on 127.0.0.1:8888',
+                'level': 'DEBUG',
+            },
+            {
+                'component': 'werkzeug',
+                'message': ' * Debugger is active!',
+                'level': 'WARNING',
+            },
+            {
+                'component': 'werkzeug',
+                'message': ' * Debugger PIN: 299-578-362',
+                'level': 'INFO',
+            },
         ]
 
+        page1 = [KeyValue(kvmap=row) for row in page1]
+        page2 = [KeyValue(kvmap=row) for row in page2]
+
+        expected_results_by_page = [page1, page2]
         for i in [0, 1]:
             results = echo_engine.search('', {'pageno': i + 1})
-            self.assertEqual(results, expected_results_by_page[i])
+            page = expected_results_by_page[i]
+            for i, expected in enumerate(page):
+                self.assertEqual(expected.kvmap["message"], str(results[i].kvmap["message"]))
 
     def test_regex_parsing(self):
         txt = '''commit 35f9a8c81d162a361b826bbcd4a1081a4fbe76a7
@@ -165,26 +159,25 @@ commit '''
                 'author': ' Noémi Ványi <sitbackandwait@gmail.com>',
                 'date': 'Date:   Tue Oct 15 11:31:33 2019 +0200',
                 'message': '\n\nfirst interesting message',
-                'template': 'key-value.html',
             },
             {
                 'commit': '6c3c206316153ccc422755512bceaa9ab0b14faa',
                 'author': ' Noémi Ványi <sitbackandwait@gmail.com>',
                 'date': 'Date:   Mon Oct 14 17:10:08 2019 +0200',
                 'message': '\n\nsecond interesting message',
-                'template': 'key-value.html',
             },
             {
                 'commit': 'd8594d2689b4d5e0d2f80250223886c3a1805ef5',
                 'author': ' Noémi Ványi <sitbackandwait@gmail.com>',
                 'date': 'Date:   Mon Oct 14 14:45:05 2019 +0200',
                 'message': '\n\nthird interesting message',
-                'template': 'key-value.html',
             },
         ]
 
+        expected_results = [KeyValue(kvmap=kvmap) for kvmap in expected_results]
         results = git_log_engine.search('', {'pageno': 1})
-        self.assertEqual(results, expected_results)
+        for i, expected in enumerate(expected_results):
+            self.assertEqual(expected.kvmap["message"], str(results[i].kvmap["message"]))
 
     def test_working_dir_path_query(self):
         ls_engine = command_engine

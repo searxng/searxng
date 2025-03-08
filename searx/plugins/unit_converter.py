@@ -25,7 +25,7 @@ import babel.numbers
 from flask_babel import gettext, get_locale
 
 from searx import data
-from searx.result_types import Answer
+from searx.result_types import EngineResults
 
 
 name = "Unit converter plugin"
@@ -245,8 +245,8 @@ def _parse_text_and_convert(from_query, to_query) -> str | None:
     return f'{result} {target_symbol}'
 
 
-def post_search(_request, search) -> list[Answer]:
-    results = []
+def post_search(_request, search) -> EngineResults:
+    results = EngineResults()
 
     # only convert between units on the first page
     if search.search_query.pageno > 1:
@@ -264,6 +264,6 @@ def post_search(_request, search) -> list[Answer]:
                 from_query, to_query = query.split(keyword, 1)
                 target_val = _parse_text_and_convert(from_query.strip(), to_query.strip())
                 if target_val:
-                    Answer(results=results, answer=target_val)
+                    results.add(results.types.Answer(answer=target_val))
 
     return results

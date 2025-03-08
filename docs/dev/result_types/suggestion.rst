@@ -9,7 +9,7 @@ Suggestion Results
    There is still no typing for these result items. The templates can be used as
    orientation until the final typing is complete.
 
-The suggestions area shows the user alternative search terms.
+The :ref:`area suggestions results` shows the user alternative search terms.
 
 A result of this type is a very simple dictionary with only one key/value pair
 

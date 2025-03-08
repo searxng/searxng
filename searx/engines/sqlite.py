@@ -2,6 +2,14 @@
 """SQLite is a small, fast and reliable SQL database engine.  It does not require
 any extra dependency.
 
+Configuration
+=============
+
+The engine has the following (additional) settings:
+
+- :py:obj:`result_type`
+
+
 Example
 =======
 
@@ -18,29 +26,32 @@ Query to test: ``!mediathekview concert``
 
 .. code:: yaml
 
-   - name: mediathekview
-     engine: sqlite
-     disabled: False
-     categories: general
-     result_template: default.html
-     database: searx/data/filmliste-v2.db
-     query_str:  >-
-       SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
-              COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
-              description AS content
-         FROM film
-        WHERE title LIKE :wildcard OR description LIKE :wildcard
-        ORDER BY duration DESC
+  - name: mediathekview
+    engine: sqlite
+    shortcut: mediathekview
+    categories: [general, videos]
+    result_type: MainResult
+    database: searx/data/filmliste-v2.db
+    query_str: >-
+      SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
+             COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
+             description AS content
+        FROM film
+       WHERE title LIKE :wildcard OR description LIKE :wildcard
+       ORDER BY duration DESC
 
 Implementations
 ===============
 
 """
-
+import typing
 import sqlite3
 import contextlib
 
-engine_type = 'offline'
+from searx.result_types import EngineResults
+from searx.result_types import MainResult, KeyValue
+
+engine_type = "offline"
 
 database = ""
 """Filename of the SQLite DB."""
@@ -48,9 +59,11 @@ database = ""
 query_str = ""
 """SQL query that returns the result items."""
 
+result_type: typing.Literal["MainResult", "KeyValue"] = "KeyValue"
+"""The result type can be :py:obj:`MainResult` or :py:obj:`KeyValue`."""
+
 limit = 10
 paging = True
-result_template = 'key-value.html'
 
 
 def init(engine_settings):
@@ -80,9 +93,8 @@ def sqlite_cursor():
             yield cursor
 
 
-def search(query, params):
-    results = []
-
+def search(query, params) -> EngineResults:
+    res = EngineResults()
     query_params = {
         'query': query,
         'wildcard': r'%' + query.replace(' ', r'%') + r'%',
@@ -97,9 +109,11 @@ def search(query, params):
         col_names = [cn[0] for cn in cur.description]
 
         for row in cur.fetchall():
-            item = dict(zip(col_names, map(str, row)))
-            item['template'] = result_template
-            logger.debug("append result --> %s", item)
-            results.append(item)
+            kvmap = dict(zip(col_names, map(str, row)))
+            if result_type == "MainResult":
+                item = MainResult(**kvmap)  # type: ignore
+            else:
+                item = KeyValue(kvmap=kvmap)
+            res.add(item)
 
-    return results
+    return res
