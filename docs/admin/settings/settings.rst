@@ -59,7 +59,7 @@ and can relied on the default configuration :origin:`searx/settings.yml` using:
     use_default_settings: true
     server:
         secret_key: "ultrasecretkey"   # change this!
-        bind_address: "0.0.0.0"
+        bind_address: "[::]"
 
 ``engines:``
   With ``use_default_settings: true``, each settings can be override in a
