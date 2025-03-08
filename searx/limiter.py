@@ -112,6 +112,7 @@ from searx.botdetection import (
     http_accept_encoding,
     http_accept_language,
     http_user_agent,
+    http_sec_fetch,
     ip_limit,
     ip_lists,
     get_network,
@@ -179,16 +180,17 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
         logger.error("BLOCK %s: matched BLOCKLIST - %s", network.compressed, msg)
         return flask.make_response(('IP is on BLOCKLIST - %s' % msg, 429))
 
-    # methods applied on /
+    # methods applied on all requests
 
     for func in [
         http_user_agent,
     ]:
         val = func.filter_request(network, request, cfg)
         if val is not None:
+            logger.debug(f"NOT OK ({func.__name__}): {network}: %s", dump_request(sxng_request))
             return val
 
-    # methods applied on /search
+    # methods applied on /search requests
 
     if request.path == '/search':
 
@@ -197,11 +199,14 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
             http_accept_encoding,
             http_accept_language,
             http_user_agent,
+            http_sec_fetch,
             ip_limit,
         ]:
             val = func.filter_request(network, request, cfg)
             if val is not None:
+                logger.debug(f"NOT OK ({func.__name__}): {network}: %s", dump_request(sxng_request))
                 return val
+
     logger.debug(f"OK {network}: %s", dump_request(sxng_request))
     return None
 
