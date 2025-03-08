@@ -244,24 +244,23 @@ def get_result_template(theme_name: str, template_name: str):
 
 
 def custom_url_for(endpoint: str, **values):
-    suffix = ""
     if endpoint == 'static' and values.get('filename'):
-        file_hash = static_files.get(values['filename'])
-        if not file_hash:
+        actual_filename = static_files.get(values['filename'])
+        if not actual_filename:
             # try file in the current theme
             theme_name = sxng_request.preferences.get_value('theme')
-            filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
-            file_hash = static_files.get(filename_with_theme)
-            if file_hash:
-                values['filename'] = filename_with_theme
-        if get_setting('ui.static_use_hash') and file_hash:
-            suffix = "?" + file_hash
+            logical_filename = "themes/{}/{}".format(theme_name, values['filename'])
+            actual_filename = static_files.get(logical_filename)
+            if actual_filename:
+                values['filename'] = actual_filename
+        if actual_filename:
+            values['filename'] = actual_filename
     if endpoint == 'info' and 'locale' not in values:
         locale = sxng_request.preferences.get_value('locale')
         if infopage.INFO_PAGES.get_page(values['pagename'], locale) is None:
             locale = infopage.INFO_PAGES.locale_default
         values['locale'] = locale
-    return url_for(endpoint, **values) + suffix
+    return url_for(endpoint, **values)
 
 
 def morty_proxify(url: str):
@@ -1250,9 +1249,11 @@ def opensearch():
 @app.route('/favicon.ico')
 def favicon():
     theme = sxng_request.preferences.get_value("theme")
+    logical_file_name = 'themes/' + theme + '/img/favicon.png'
+    actual_file_name = static_files.get(logical_file_name, logical_file_name)
     return send_from_directory(
-        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img'),  # type: ignore
-        'favicon.png',
+        os.path.join(app.root_path, settings['ui']['static_path']),  # type: ignore
+        actual_file_name,
         mimetype='image/vnd.microsoft.icon',
     )
 
