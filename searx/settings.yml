@@ -502,8 +502,24 @@ engines:
     categories: music
 
   - name: baidu
+    baidu_categories: general
+    categories: [general]
     engine: baidu
-    shortcut: baidu
+    shortcut: bd
+    disabled: true
+
+  - name: baidu images
+    baidu_categories: images
+    categories: [images]
+    engine: baidu
+    shortcut: bdi
+    disabled: true
+
+  - name: baidu kaifa
+    baidu_categories: it
+    categories: [it]
+    engine: baidu
+    shortcut: bdk
     disabled: true
 
   - name: wikipedia
