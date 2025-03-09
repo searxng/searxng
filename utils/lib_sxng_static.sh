@@ -122,4 +122,5 @@ static.build.restore() {
     build_msg STATIC "git-restore of the built files (/static)"
     git restore --staged "${STATIC_BUILT_PATHS[@]}"
     git restore --worktree "${STATIC_BUILT_PATHS[@]}"
+    git clean --force -d "${STATIC_BUILT_PATHS[@]}"
 }

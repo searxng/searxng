@@ -2,12 +2,16 @@
  * CONFIG: https://vite.dev/config/
  */
 
-import { resolve } from "node:path";
+import { resolve, relative } from "node:path";
+import { Buffer } from 'buffer';
+import path from 'path';
 import { defineConfig } from "vite";
 import stylelint from "vite-plugin-stylelint";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { plg_svg2png } from "./tools/plg.js";
 import { plg_svg2svg } from "./tools/plg.js";
+import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
 
 
 const ROOT = "../..";  // root of the git reposetory
@@ -40,6 +44,155 @@ const svg2svg_favicon_opts = {
   ]
 };
 
+function AddSearxNGHashes(options = {}) {
+  const {
+    fileName = "hashes.json",
+    exclude = [],
+    include_without_hashes = []
+  } = options;
+  let outDir = null;
+
+  // Helper: recursively get all files (not directories) within `dir`.
+  async function getAllFiles(dir) {
+    let entries = await fs.readdir(dir, { withFileTypes: true });
+    let files = [];
+    for (const entry of entries) {
+      const fullPath = resolve(dir, entry.name);
+      if (entry.isDirectory()) {
+        files = files.concat(await getAllFiles(fullPath));
+      } else {
+        files.push(fullPath);
+      }
+    }
+
+    // Separate out `.map` files so they end up last
+    const mapFiles = files.filter((file) => file.endsWith(".map"));
+    const otherFiles = files.filter((file) => !file.endsWith(".map"));
+  
+    return [...otherFiles, ...mapFiles];
+  }
+
+  function replacePathsInBuffer(body, mapping) {
+    // Convert the Buffer to a string (assuming UTF-8)
+    let content = body.toString("utf-8");
+  
+    // Perform replacements
+    for (const logicalPath of Object.keys(mapping)) {
+      const hashedPath = mapping[logicalPath];
+      content = content.replaceAll(logicalPath, hashedPath);
+    }
+  
+    // Convert the modified string back to a Buffer
+    return Buffer.from(content, "utf-8");
+  }
+
+  return {
+    name: "recursive-hash-manifest-plugin",
+    apply: "build",
+
+    // Capture the final "outDir" from the resolved Vite config
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+
+    // "closeBundle" is called after everything (including other async tasks) is done writing
+    async closeBundle() {
+      // Check if the outDir is set (from configResolved)
+      if (outDir === null) {
+        return
+      }
+
+      // Get a list of every file in the output directory
+      let allFiles = await getAllFiles(outDir);
+
+      // Optionally exclude certain files
+      const exclusionSet = new Set([...exclude, fileName]);
+      allFiles = allFiles.filter((filePath) => {
+        const relPath = relative(outDir, filePath);
+        return !exclusionSet.has(relPath);
+      });
+
+      // Compute a hash for each file
+      const assets = {};
+      const var_mapping = {}
+      const hash_override = {}
+      for (const filePath of allFiles) {
+        const relPath = relative(outDir, filePath);
+
+        // Get the shortHash
+        let shortHash;
+
+        if (include_without_hashes.includes(relative(outDir, filePath))) {
+          shortHash = "";
+        } else if (Object.prototype.hasOwnProperty.call(hash_override, filePath)) {
+          shortHash = hash_override[filePath];
+        } else {
+          const fileBuf = await fs.readFile(filePath);
+          const hashSum = crypto.createHash("sha256").update(fileBuf).digest("hex");
+          shortHash = "." + hashSum.slice(0, 8);
+          hash_override[filePath + ".map"] = shortHash;  
+        }
+
+        // Prepare to build a new file path
+        const dirName = path.dirname(filePath);
+        let newFilePath;
+        let varPath = null;
+
+        // Special handling for *.js.map
+        if (filePath.endsWith(".js.map")) {
+          const baseName = path.basename(filePath, ".js.map"); 
+          newFilePath = path.join(dirName, `${baseName}${shortHash}.js.map`);
+        }
+        // Special handling for *.css.map
+        else if (filePath.endsWith(".css.map")) {
+          const baseName = path.basename(filePath, ".css.map");
+          newFilePath = path.join(dirName, `${baseName}${shortHash}.css.map`);
+        } 
+        // Otherwise, rename as usual
+        else {
+          const extName = path.extname(filePath);
+          const baseName = path.basename(filePath, extName);
+          newFilePath = path.join(dirName, `${baseName}${shortHash}${extName}`);
+
+          //
+          varPath = `${baseName}.SEARXNG_HASH${extName}`;
+          var_mapping[varPath] = `${baseName}${shortHash}${extName}`;
+          if (filePath.endsWith(".js")) {
+            var_mapping[`//# sourceMappingURL=${baseName}${extName}.map`] = `//# sourceMappingURL=${baseName}${shortHash}${extName}.map`;
+          }
+        }
+
+        // New relative path
+        const newRelPath = relative(outDir, newFilePath);
+        assets[relPath] = newRelPath;
+      }
+
+      // Step 2: Once the manifest is all set, read back files that might reference others
+      //         and replace placeholders with hashed paths.
+      for (const filePath of allFiles) {
+        const extName = path.extname(filePath);
+        if (![".css", ".js", ".html"].includes(extName)) {
+          continue;
+        }
+        const originalBuf = await fs.readFile(filePath);
+        const replacedBuf = replacePathsInBuffer(originalBuf, var_mapping);
+        await fs.writeFile(filePath, replacedBuf);
+      }
+
+      // Step 3: rename the original files to their hashed filenames
+      for (const filePath of allFiles) {
+        const relPath = path.relative(outDir, filePath);
+        const newRelPath = assets[relPath];
+        const newFilePath = path.join(outDir, newRelPath);
+        await fs.rename(filePath, newFilePath);
+      }
+
+      // Write out `assets.json`
+      const assetsPath = resolve(outDir, fileName);
+      await fs.writeFile(assetsPath, JSON.stringify(assets, null, 2), "utf-8");
+    },
+  };
+}
 
 export default defineConfig({
 
@@ -179,6 +332,22 @@ export default defineConfig({
       ],
       svg2svg_opts
     ),
+
+    // -- create assets.json and add hashes to files
+    AddSearxNGHashes({
+      fileName: "assets.json",
+      exclude: [
+        ".gitattributes",
+        "manifest.json"
+      ],
+      include_without_hashes: [
+        "css/images/layers-2x.png",
+        "css/images/layers.png",
+        "css/images/marker-icon-2x.png",
+        "css/images/marker-icon.png",
+        "css/images/marker-shadow.png",
+      ]
+    }),
 
   ] // end: plugins
 
