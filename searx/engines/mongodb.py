@@ -37,6 +37,7 @@ Implementations
 ===============
 
 """
+from __future__ import annotations
 
 import re
 
@@ -46,6 +47,8 @@ except ImportError:
     # import error is ignored because the admin has to install pymongo manually
     # to use the engine
     pass
+
+from searx.result_types import EngineResults
 
 
 engine_type = 'offline'
@@ -63,7 +66,6 @@ key = None
 paging = True
 results_per_page = 20
 exact_match_only = False
-result_template = 'key-value.html'
 
 _client = None
 
@@ -74,7 +76,7 @@ def init(_):
 
 def connect():
     global _client  # pylint: disable=global-statement
-    kwargs = {'port': port}
+    kwargs: dict[str, str | int] = {'port': port}
     if username:
         kwargs['username'] = username
     if password:
@@ -82,8 +84,8 @@ def connect():
     _client = MongoClient(host, **kwargs)[database][collection]
 
 
-def search(query, params):
-    results = []
+def search(query, params) -> EngineResults:
+    res = EngineResults()
     if exact_match_only:
         q = {'$eq': query}
     else:
@@ -92,11 +94,10 @@ def search(query, params):
 
     query = _client.find({key: q}).skip((params['pageno'] - 1) * results_per_page).limit(results_per_page)
 
-    results.append({'number_of_results': query.count()})
-    for r in query:
-        del r['_id']
-        r = {str(k): str(v) for k, v in r.items()}
-        r['template'] = result_template
-        results.append(r)
+    res.add(res.types.LegacyResult(number_of_results=query.count()))
+    for row in query:
+        del row['_id']
+        kvmap = {str(k): str(v) for k, v in row.items()}
+        res.add(res.types.KeyValue(kvmap=kvmap))
 
-    return results
+    return res

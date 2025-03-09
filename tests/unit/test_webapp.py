@@ -148,11 +148,10 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
 
     def test_search_csv(self):
         result = self.client.post('/search', data={'q': 'test', 'format': 'csv'})
-
         self.assertEqual(
             b'title,url,content,host,engine,score,type\r\n'
-            b'First Test,http://first.test.xyz,first test content,first.test.xyz,startpage,,result\r\n'  # noqa
-            b'Second Test,http://second.test.xyz,second test content,second.test.xyz,youtube,,result\r\n',  # noqa
+            + b'First Test,http://first.test.xyz,first test content,first.test.xyz,startpage,0,result\r\n'
+            + b'Second Test,http://second.test.xyz,second test content,second.test.xyz,youtube,0,result\r\n',
             result.data,
         )
 
