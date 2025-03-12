@@ -24,7 +24,8 @@ RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt pcre && rm -r
 COPY requirements.txt ./requirements.txt
 
 # build and install uwsgi and necessary python packages
-RUN apk add --no-cache -t build-dependencies build-base pcre-dev && pip install --no-cache "uwsgi~=2.0.0" \
+RUN apk add --no-cache -t build-dependencies build-base libffi-dev libxml2-dev libxslt-dev pcre-dev \
+&& pip install --no-cache "uwsgi~=2.0.0" \
 && pip install --no-cache -r requirements.txt \
 && apk del build-dependencies \
 && rm -rf /root/.cache
