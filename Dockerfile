@@ -11,8 +11,6 @@ RUN addgroup -g ${SEARXNG_GID} searxng && \
 ENV INSTANCE_NAME=searxng \
     AUTOCOMPLETE= \
     BASE_URL= \
-    MORTY_KEY= \
-    MORTY_URL= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
     UWSGI_WORKERS=%k \
@@ -23,14 +21,13 @@ WORKDIR /usr/local/searxng
 # install necessary runtime packages
 RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt pcre && rm -rf /root/.cache
 
-# build and install uwsgi
-RUN apk add --no-cache -t build-dependencies gcc libc-dev linux-headers pcre-dev && pip install --no-cache "uwsgi~=2.0.0" \
+COPY requirements.txt ./requirements.txt
+
+# build and install uwsgi and necessary python packages
+RUN apk add --no-cache -t build-dependencies build-base pcre-dev && pip install --no-cache "uwsgi~=2.0.0" \
+&& pip install --no-cache -r requirements.txt \
 && apk del build-dependencies \
 && rm -rf /root/.cache
-
-# install necessary python packages
-COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache -r requirements.txt
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
 COPY --chown=searxng:searxng searx ./searx
