@@ -41,10 +41,9 @@ RUN apk add --no-cache -t build-dependencies \
     libxslt \
     openssl \
     tini \
-    uwsgi \
-    uwsgi-python3 \
     brotli \
  && pip3 install --break-system-packages --no-cache -r requirements.txt \
+ && pip3 install --break-system-packages --no-cache granian \
  && apk del build-dependencies \
  && rm -rf /root/.cache
 
