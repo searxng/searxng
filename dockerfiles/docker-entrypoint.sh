@@ -175,4 +175,5 @@ unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec uwsgi --master --uid searxng --gid searxng --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+#exec uwsgi --master --uid searxng --gid searxng --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+exec granian --interface wsgi searx.webapp:app  --workers 3 --host 0.0.0.0 --port 8080
