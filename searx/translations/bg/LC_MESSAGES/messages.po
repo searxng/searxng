@@ -15,13 +15,14 @@
 # stoychevww <stoychevww@users.noreply.translate.codeberg.org>, 2024, 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # thenack0 <thenack0@users.noreply.translate.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-02-15 15:34+0000\n"
-"Last-Translator: thenack0 <thenack0@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2025-03-14 07:09+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language-Team: Bulgarian <https://translate.codeberg.org/projects/searxng/"
 "searxng/bg/>\n"
 "Language: bg\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -60,7 +61,7 @@ msgstr "музика"
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
 msgid "social media"
-msgstr "социална медия"
+msgstr "социална мрежа"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -448,9 +449,8 @@ msgid "Compute {func} of the arguments"
 msgstr ""
 
 #: searx/engines/openstreetmap.py:158
-#, fuzzy
 msgid "Show route in map .."
-msgstr "Покажи маршрута в картата..."
+msgstr "Покажи маршрута в картата.."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -563,13 +563,12 @@ msgid "Self Information"
 msgstr "Лична информация"
 
 #: searx/plugins/self_info.py:38
-#, fuzzy
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
 "Показва твоят IP адрес и твоят потребителски агент, ако заявката е "
-"\"потребителски агент\""
+"\"потребителски агент\"."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -577,7 +576,7 @@ msgstr "Твоето IP е: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr ""
+msgstr "Вашият потребителски агент е: "
 
 #: searx/plugins/tor_check.py:29
 msgid "Tor check plugin"
@@ -593,15 +592,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:69
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Не може да се изтегли списъкът с изходни възли на Tor от"
 
 #: searx/plugins/tor_check.py:81
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "Използвате Tor и изглежда, че имате външен IP адрес"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "Не използвате Tor и имате външен IP адрес"
 
 #: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
@@ -680,7 +679,7 @@ msgstr "Дължина"
 
 #: searx/templates/simple/macros.html:41
 msgid "Views"
-msgstr ""
+msgstr "Изгледи"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
@@ -929,7 +928,7 @@ msgstr "Примери"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "Дефиниции"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
@@ -953,7 +952,7 @@ msgstr "Съобщения от търсачките"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr ""
+msgstr "секунди"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1090,7 +1089,7 @@ msgstr "Позволи"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "Ключови думи (първата дума в заявката)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1184,7 +1183,7 @@ msgstr "Хеш на предпочитанията"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "Идентификатор на цифров обект (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
