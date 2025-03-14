@@ -110,7 +110,7 @@ def get_google_info(params, eng_traits):
     :param dict param: Request parameters of the engine.  At least
         a ``searxng_locale`` key should be in the dictionary.
 
-    :param eng_traits: Engine's traits fetched from google preferences
+    :param eng_traits: Engine\'s traits fetched from google preferences
         (:py:obj:`searx.enginelib.traits.EngineTraits`)
 
     :rtype: dict
