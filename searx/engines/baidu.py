@@ -11,6 +11,7 @@ from urllib.parse import urlencode
 from datetime import datetime
 import time
 import json
+import re
 
 from searx.exceptions import SearxEngineAPIException
 from searx.utils import html_to_text
@@ -92,11 +93,12 @@ def request(query, params):
 
 
 def response(resp):
-    try:
-        data = json.loads(resp.text, strict=False)
-    except Exception as e:
-        raise SearxEngineAPIException(f"Invalid response: {e}") from e
 
+    text = resp.text
+    if baidu_category == 'images':
+        # baidu's JSON encoder wrongly quotes / and ' characters by \\ and \'
+        text = text.replace(r"\/", "/").replace(r"\'", "'")
+    data = json.loads(text, strict=False)
     parsers = {'general': parse_general, 'images': parse_images, 'it': parse_it}
 
     return parsers[baidu_category](data)
@@ -133,19 +135,28 @@ def parse_images(data):
     results = []
     if "data" in data:
         for item in data["data"]:
+            if not item:
+                # the last item in the JSON list is empty, the JSON string ends with "}, {}]"
+                continue
             replace_url = item.get("replaceUrl", [{}])[0]
-            from_url = replace_url.get("FromURL", "").replace("\\/", "/")
-            img_src = replace_url.get("ObjURL", "").replace("\\/", "/")
-
+            width = item.get("width")
+            height = item.get("height")
+            img_date = item.get("bdImgnewsDate")
+            publishedDate = None
+            if img_date:
+                publishedDate = datetime.strptime(img_date, "%Y-%m-%d %H:%M")
             results.append(
                 {
                     "template": "images.html",
-                    "url": from_url,
-                    "thumbnail_src": item.get("thumbURL", ""),
-                    "img_src": img_src,
-                    "content": html_to_text(item.get("fromPageTitleEnc", "")),
-                    "title": html_to_text(item.get("fromPageTitle", "")),
-                    "source": item.get("fromURLHost", ""),
+                    "url": replace_url.get("FromURL"),
+                    "thumbnail_src": item.get("thumbURL"),
+                    "img_src": replace_url.get("ObjURL"),
+                    "title": html_to_text(item.get("fromPageTitle")),
+                    "source": item.get("fromURLHost"),
+                    "resolution": f"{width} x {height}",
+                    "img_format": item.get("type"),
+                    "filesize": item.get("filesize"),
+                    "publishedDate": publishedDate,
                 }
             )
     return results
