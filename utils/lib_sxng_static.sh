@@ -5,6 +5,7 @@
 STATIC_BUILD_COMMIT="[build] /static"
 STATIC_BUILT_PATHS=(
     'searx/static/themes/simple'
+    'client/simple/package-lock.json'
 )
 
 static.help(){
