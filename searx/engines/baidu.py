@@ -11,7 +11,6 @@ from urllib.parse import urlencode
 from datetime import datetime
 import time
 import json
-import re
 
 from searx.exceptions import SearxEngineAPIException
 from searx.utils import html_to_text
