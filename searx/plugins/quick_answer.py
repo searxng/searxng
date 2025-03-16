@@ -106,8 +106,3 @@ class SXNGPlugin(Plugin):
             """,
             }
         )
-
-    name = gettext("Quick Answer")
-    description = gettext("Use search results to obtain cited answers from LLMs by appending '?' to queries")
-    default_on = False
-    preference_section = "general"
