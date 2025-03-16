@@ -29,7 +29,7 @@ Implementations
 from typing import TYPE_CHECKING
 
 try:
-    import mariadb
+    import mariadb  # pyright: ignore [reportMissingImports]
 except ImportError:
     # import error is ignored because the admin has to install mysql manually to use
     # the engine
