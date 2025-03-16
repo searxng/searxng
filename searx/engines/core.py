@@ -1,7 +1,33 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""CORE (science)
+"""CORE_ (COnnecting REpositories) provides a comprehensive bibliographic
+database of the world’s scholarly literature, collecting and indexing
+research from repositories and journals.
+
+.. _CORE: https://core.ac.uk/about
+
+.. _core engine config:
+
+Configuration
+=============
+
+The engine has the following additional settings:
+
+- :py:obj:`api_key`
+
+.. code:: yaml
+
+  - name: core.ac.uk
+    engine: core
+    categories: science
+    shortcut: cor
+    api_key: "..."
+    timeout: 5
+
+Implementations
+===============
 
 """
+# pylint: disable=too-many-branches
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -11,34 +37,36 @@ from searx.exceptions import SearxEngineAPIException
 about = {
     "website": 'https://core.ac.uk',
     "wikidata_id": 'Q22661180',
-    "official_api_documentation": 'https://core.ac.uk/documentation/api/',
+    "official_api_documentation": 'https://api.core.ac.uk/docs/v3',
     "use_official_api": True,
     "require_api_key": True,
     "results": 'JSON',
 }
 
+api_key = 'unset'
+"""For an API key register at https://core.ac.uk/services/api and insert
+the API key in the engine :ref:`core engine config`."""
+
 categories = ['science', 'scientific publications']
 paging = True
 nb_per_page = 10
-
-api_key = 'unset'
-
-base_url = 'https://core.ac.uk:443/api-v2/search/'
-search_string = '{query}?page={page}&pageSize={nb_per_page}&apiKey={apikey}'
+base_url = 'https://api.core.ac.uk/v3/search/works/'
 
 
 def request(query, params):
-
     if api_key == 'unset':
         raise SearxEngineAPIException('missing CORE API key')
 
-    search_path = search_string.format(
-        query=urlencode({'q': query}),
-        nb_per_page=nb_per_page,
-        page=params['pageno'],
-        apikey=api_key,
-    )
-    params['url'] = base_url + search_path
+    # API v3 uses different parameters
+    search_params = {
+        'q': query,
+        'offset': (params['pageno'] - 1) * nb_per_page,
+        'limit': nb_per_page,
+        'sort': 'relevance',
+    }
+
+    params['url'] = base_url + '?' + urlencode(search_params)
+    params['headers'] = {'Authorization': f'Bearer {api_key}'}
 
     return params
 
@@ -47,68 +75,76 @@ def response(resp):
     results = []
     json_data = resp.json()
 
-    for result in json_data['data']:
-        source = result['_source']
-        url = None
-        if source.get('urls'):
-            url = source['urls'][0].replace('http://', 'https://', 1)
-
-        if url is None and source.get('doi'):
-            # use the DOI reference
-            url = 'https://doi.org/' + source['doi']
-
-        if url is None and source.get('downloadUrl'):
-            # use the downloadUrl
-            url = source['downloadUrl']
-
-        if url is None and source.get('identifiers'):
-            # try to find an ark id, see
-            # https://www.wikidata.org/wiki/Property:P8091
-            # and https://en.wikipedia.org/wiki/Archival_Resource_Key
-            arkids = [
-                identifier[5:]  # 5 is the length of "ark:/"
-                for identifier in source.get('identifiers')
-                if isinstance(identifier, str) and identifier.startswith('ark:/')
-            ]
-            if len(arkids) > 0:
-                url = 'https://n2t.net/' + arkids[0]
-
-        if url is None:
+    for result in json_data.get('results', []):
+        # Get title
+        if not result.get('title'):
             continue
 
-        publishedDate = None
-        time = source['publishedDate'] or source['depositedDate']
-        if time:
-            publishedDate = datetime.fromtimestamp(time / 1000)
+        # Get URL - try different options
+        url = None
 
-        # sometimes the 'title' is None / filter None values
-        journals = [j['title'] for j in (source.get('journals') or []) if j['title']]
+        # Try DOI first
+        doi = result.get('doi')
+        if doi:
+            url = f'https://doi.org/{doi}'
 
-        publisher = source['publisher']
+        if url is None and result.get('doi'):
+            # use the DOI reference
+            url = 'https://doi.org/' + str(result['doi'])
+        elif result.get('id'):
+            url = 'https://core.ac.uk/works/' + str(result['id'])
+        elif result.get('downloadUrl'):
+            url = result['downloadUrl']
+        elif result.get('sourceFulltextUrls'):
+            url = result['sourceFulltextUrls']
+        else:
+            continue
+
+        # Published date
+        published_date = None
+
+        raw_date = result.get('publishedDate') or result.get('depositedDate')
+        if raw_date:
+            try:
+                published_date = datetime.fromisoformat(result['publishedDate'].replace('Z', '+00:00'))
+            except (ValueError, AttributeError):
+                pass
+
+        # Handle journals
+        journals = []
+        if result.get('journals'):
+            journals = [j.get('title') for j in result['journals'] if j.get('title')]
+
+        # Handle publisher
+        publisher = result.get('publisher', '').strip("'")
         if publisher:
-            publisher = source['publisher'].strip("'")
+            publisher = publisher.strip("'")
+
+        # Handle authors
+        authors = set()
+        for i in result.get('authors', []):
+            name = i.get("name")
+            if name:
+                authors.add(name)
 
         results.append(
             {
                 'template': 'paper.html',
-                'title': source['title'],
+                'title': result.get('title'),
                 'url': url,
-                'content': source['description'] or '',
+                'content': result.get('fullText', '') or '',
                 # 'comments': '',
-                'tags': source['topics'],
-                'publishedDate': publishedDate,
-                'type': (source['types'] or [None])[0],
-                'authors': source['authors'],
-                'editor': ', '.join(source['contributors'] or []),
+                'tags': result.get('fieldOfStudy', []),
+                'publishedDate': published_date,
+                'type': result.get('documentType', '') or '',
+                'authors': authors,
+                'editor': ', '.join(result.get('contributors', [])),
                 'publisher': publisher,
                 'journal': ', '.join(journals),
-                # 'volume': '',
-                # 'pages' : '',
-                # 'number': '',
-                'doi': source['doi'],
-                'issn': [x for x in [source.get('issn')] if x],
-                'isbn': [x for x in [source.get('isbn')] if x],  # exists in the rawRecordXml
-                'pdf_url': source.get('repositoryDocument', {}).get('pdfOrigin'),
+                'doi': result.get('doi'),
+                # 'issn' : ''
+                # 'isbn' : ''
+                'pdf_url': result.get('downloadUrl', {}) or result.get("sourceFulltextUrls", {}),
             }
         )
 
