@@ -1,0 +1,83 @@
+#sidebar .infobox .markdown-content code {
+  background-color: var(--color-quick-answer-code-background);
+  border-radius: 3px;
+  font-family:
+    SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 85%;
+  margin: 0;
+  padding: 0.2em 0.4em;
+}
+
+#sidebar .infobox .markdown-content pre {
+  background-color: var(--color-quick-answer-pre-background);
+  border-radius: 3px;
+  font-size: 85%;
+  overflow: auto;
+  padding: 16px;
+}
+
+#sidebar .infobox .markdown-content pre > code {
+  background-color: transparent;
+  border: 0;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  word-break: normal;
+}
+
+#sidebar .infobox .markdown-content blockquote {
+  border-left: 0.25em solid var(--color-quick-answer-blockquote-border);
+  color: var(--color-quick-answer-blockquote-font);
+  margin: 0;
+  padding: 0 1em;
+}
+
+#sidebar .infobox .markdown-content a.inline-reference {
+  color: var(--color-result-link-font);
+  line-height: 1.4;
+  position: relative;
+  top: -0.2em;
+  vertical-align: top;
+  font-size: smaller;
+}
+
+#sidebar .infobox .markdown-content table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+}
+
+#sidebar .infobox .markdown-content table th,
+#sidebar .infobox .markdown-content table td {
+  border: 1px solid var(--color-quick-answer-table-border);
+  padding: 6px 13px;
+}
+
+#sidebar .infobox .markdown-content table tr:nth-child(2n) {
+  background-color: var(--color-quick-answer-table-tr-background);
+}
+
+#sidebar .infobox .markdown-content h1,
+#sidebar .infobox .markdown-content h2,
+#sidebar .infobox .markdown-content h3,
+#sidebar .infobox .markdown-content h4 {
+  font-size: 1em;
+}
+
+#sidebar .infobox .references a {
+  text-decoration: underline;
+}
+
+#sidebar .infobox .references ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+#sidebar .infobox .references ol li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

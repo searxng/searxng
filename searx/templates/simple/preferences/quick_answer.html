@@ -1,0 +1,39 @@
+<div class="pref-group">{{- _('Quick Answer') -}}</div>
+
+{{- plugin_preferences('general/quick_answer') -}}
+
+<fieldset>{{- '' -}}
+  <legend id="quick_answer_token">{{- _('Quick Answer token') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="quick_answer_token" aria-labelledby="quick_answer_token" type="text"
+           autocomplete="off" spellcheck="false" autocorrect="off"
+           value='{{ preferences.get_value("quick_answer_token") }}'>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('OpenRouter access token used to authenticate Quick Answer API requests') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+<fieldset>{{- '' -}}
+  <legend id="quick_answer_model">{{- _('Quick Answer model') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="quick_answer_model" aria-labelledby="quick_answer_model" type="text"
+           autocomplete="off" spellcheck="false" autocorrect="off"
+           value='{{ preferences.get_value("quick_answer_model") }}'>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('OpenRouter LLM used to provide Quick Answers (e.g. meta-llama/llama-3.3-70b-instruct)') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+<fieldset>{{- '' -}}
+  <legend id="quick_answer_providers">{{- _('Quick Answer providers') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="quick_answer_providers" aria-labelledby="quick_answer_providers" type="text"
+           autocomplete="off" spellcheck="false" autocorrect="off"
+           value='{{ preferences.get_value("quick_answer_providers") }}'>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('List of OpenRouter providers used to supply Quick Answers (e.g. Fireworks,DeepInfra)') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
