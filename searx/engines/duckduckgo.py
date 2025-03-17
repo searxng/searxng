@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 import re
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import quote_plus
 import json
 import babel
 import lxml.html
@@ -397,14 +397,10 @@ def response(resp) -> EngineResults:
         and "Your user agent:" not in zero_click
         and "URL Decoded:" not in zero_click
     ):
-        current_query = resp.search_params["data"].get("q")
         results.add(
             results.types.Answer(
                 answer=zero_click,
-                url="https://duckduckgo.com/?"
-                + urlencode(
-                    {"q": current_query},
-                ),
+                url=extract_text(eval_xpath(doc, '//div[@id="zero_click_abstract"]/a/@href')),
             )
         )
 
