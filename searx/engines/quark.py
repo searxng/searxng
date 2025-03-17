@@ -307,12 +307,24 @@ def parse_ss_doc(data):
         thumbnail = None
 
     return {
-        "title": html_to_text(data.get('titleProps', {}).get('content') or data.get('title')),
-        "url": data.get('sourceProps', {}).get('dest_url') or data.get('url') or data.get('normal_url'),
+        "title": html_to_text(
+            data.get('titleProps', {}).get('content')
+            # ss_kv variant 1 & 2
+            or data.get('title')
+        ),
+        "url": data.get('sourceProps', {}).get('dest_url')
+        # ss_kv variant 1
+        or data.get('normal_url')
+        # ss_kv variant 2
+        or data.get('url'),
         "content": html_to_text(
             data.get('summaryProps', {}).get('content')
+            # ss_doc variant 1
             or data.get('message', {}).get('replyContent')
+            # ss_kv variant 1
             or data.get('show_body')
+            # ss_kv variant 2
+            or data.get('desc')
         ),
         "publishedDate": published_date,
         "thumbnail": thumbnail,
