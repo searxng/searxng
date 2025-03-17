@@ -3,6 +3,7 @@
 .autocomplete {
   position: absolute;
   width: @search-width;
+  max-width: calc(100% - 2 * @search-padding-horizontal);
   max-height: 0;
   overflow-y: hidden;
   .ltr-text-align-left();
@@ -65,8 +66,6 @@
 
 @media screen and (max-width: @phone) {
   .autocomplete {
-    width: 100%;
-
     > ul > li {
       padding: 1rem;
     }
