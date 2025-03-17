@@ -1703,6 +1703,13 @@ engines:
     page_size: 25
     disabled: true
 
+  - name: reuters
+    engine: reuters
+    shortcut: reu
+    # page_size: 20
+    # sort_order = 'relevance'  # other options: display_date:desc, display_data:asc
+    disabled: true
+
   - name: right dao
     engine: xpath
     paging: true
