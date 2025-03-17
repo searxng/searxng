@@ -1741,6 +1741,12 @@ engines:
     page_size: 25
     disabled: true
 
+  - name: reuters
+    engine: reuters
+    shortcut: reu
+    # https://docs.searxng.org/dev/engines/online/reuters.html
+    # sort_order = "relevance"
+
   - name: right dao
     engine: xpath
     paging: true

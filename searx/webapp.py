@@ -694,14 +694,6 @@ def search():
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
 
-        if getattr(result, 'publishedDate', None):  # do not try to get a date from an empty string or a None type
-            try:  # test if publishedDate >= 1900 (datetime module bug)
-                result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
-            except ValueError:
-                result['publishedDate'] = None
-            else:
-                result['publishedDate'] = webutils.searxng_l10n_timespan(result['publishedDate'])
-
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
         if current_template != result.template:

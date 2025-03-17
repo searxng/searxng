@@ -25,6 +25,8 @@ import re
 import urllib.parse
 import warnings
 import typing
+import time
+import datetime
 
 from collections.abc import Callable
 
@@ -212,6 +214,15 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
     result.normalize_result_fields()
 
 
+def _normalize_date_fields(result: MainResult | LegacyResult):
+
+    if result.publishedDate:  # do not try to get a date from an empty string or a None type
+        try:  # test if publishedDate >= 1900 (datetime module bug)
+            result.pubdate = result.publishedDate.strftime('%Y-%m-%d %H:%M:%S%z')
+        except ValueError:
+            result.publishedDate = None
+
+
 class Result(msgspec.Struct, kw_only=True):
     """Base class of all result types :ref:`result types`."""
 
@@ -347,6 +358,24 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     thumbnail: str = ""
     """URL of a thumbnail that is displayed in the result item."""
 
+    publishedDate: datetime.datetime | None = None
+    """The date on which the object was published."""
+
+    pubdate: str = ""
+    """String representation of :py:obj:`MainResult.publishedDate`"""
+
+    length: time.struct_time | None = None
+    """Playing duration in seconds."""
+
+    views: str = ""
+    """View count in humanized number format."""
+
+    author: str = ""
+    """Author of the title."""
+
+    metadata: str = ""
+    """Miscellaneous metadata."""
+
     priority: typing.Literal["", "high", "low"] = ""
     """The priority can be set via :ref:`hostnames plugin`, for example."""
 
@@ -379,8 +408,8 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
 
     def normalize_result_fields(self):
         super().normalize_result_fields()
-
         _normalize_text_fields(self)
+        _normalize_date_fields(self)
         if self.engine:
             self.engines.add(self.engine)
 
@@ -419,6 +448,8 @@ class LegacyResult(dict):
     positions: list[int]
     score: float
     category: str
+    publishedDate: datetime.datetime | None = None
+    pubdate: str = ""
 
     # infobox result
     urls: list[dict[str, str]]
@@ -514,6 +545,7 @@ class LegacyResult(dict):
         return f"LegacyResult: {super().__repr__()}"
 
     def normalize_result_fields(self):
+        _normalize_date_fields(self)
         _normalize_url_fields(self)
         _normalize_text_fields(self)
         if self.engine:
