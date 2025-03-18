@@ -15,7 +15,6 @@ import lxml.html
 
 from searx import (
     locales,
-    redislib,
     external_bang,
 )
 from searx.utils import (
@@ -24,7 +23,7 @@ from searx.utils import (
     extract_text,
 )
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-from searx import redisdb
+from searx.engine_cache import get_or_create_cache, EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineCaptchaException
 from searx.result_types import EngineResults
@@ -60,25 +59,23 @@ url = "https://html.duckduckgo.com/html"
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
-__CACHE = []
+
+__CACHE: EngineCache = get_or_create_cache('SearXNG_ddg_web_vqd')
 
 
-def _cache_key(query: str, region: str):
-    return 'SearXNG_ddg_web_vqd' + redislib.secret_hash(f"{query}//{region}")
+def init(_):
+    global __CACHE  # pylint: disable=global-statement
+    __CACHE = get_or_create_cache('SearXNG_ddg_web_vqd')
+    # TODO: why is the __CACHE always None if initialized as None,
+    # even though it should be changed here and this method is
+    # confirmed to be called? ...
 
 
 def cache_vqd(query: str, region: str, value: str):
     """Caches a ``vqd`` value from a query."""
-    c = redisdb.client()
-    if c:
-        logger.debug("VALKEY cache vqd value: %s (%s)", value, region)
-        c.set(_cache_key(query, region), value, ex=600)
 
-    else:
-        logger.debug("MEM cache vqd value: %s (%s)", value, region)
-        if len(__CACHE) > 100:  # cache vqd from last 100 queries
-            __CACHE.pop(0)
-        __CACHE.append((_cache_key(query, region), value))
+    __CACHE.store(f"{query}//{region}", value)
+    logger.debug("cached vqd value: %s (%s)", value, region)
 
 
 def get_vqd(query: str, region: str, force_request: bool = False):
@@ -113,20 +110,10 @@ def get_vqd(query: str, region: str, force_request: bool = False):
     seems the block list is a sliding window: to get my IP rid from the bot list
     I had to cool down my IP for 1h (send no requests from that IP to DDG).
     """
-    key = _cache_key(query, region)
-
-    c = redisdb.client()
-    if c:
-        value = c.get(key)
-        if value or value == b'':
-            value = value.decode('utf-8')  # type: ignore
-            logger.debug("re-use CACHED vqd value: %s", value)
-            return value
-
-    for k, value in __CACHE:
-        if k == key:
-            logger.debug("MEM re-use CACHED vqd value: %s", value)
-            return value
+    value = __CACHE.get(f"{query}//{region}")
+    if value is not None:
+        logger.debug("re-use CACHED vqd value: %s", value)
+        return value
 
     if force_request:
         resp = get(f'https://duckduckgo.com/?q={quote_plus(query)}')
