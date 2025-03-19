@@ -19,7 +19,7 @@ ENV INSTANCE_NAME=searxng \
 WORKDIR /usr/local/searxng
 
 # install necessary runtime packages
-RUN apk add --no-cache brotli tini openssl mailcap libxml2 libxslt pcre && rm -rf /root/.cache
+RUN apk add --no-cache brotli openssl mailcap libxml2 libxslt pcre && rm -rf /root/.cache
 
 COPY requirements.txt ./requirements.txt
 
@@ -70,4 +70,4 @@ LABEL maintainer="searxng <${GIT_URL}>" \
       org.opencontainers.image.created="${LABEL_DATE}" \
       org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker"
       
-ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
