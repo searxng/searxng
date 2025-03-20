@@ -6,7 +6,7 @@
 
 import re
 from urllib.parse import urlencode
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
@@ -48,12 +48,6 @@ time_range_table = {
 
 safesearch = True
 safesearch_table = {0: 'both', 1: 'false', 2: 'false'}
-
-
-def minute_to_hm(minute):
-    if isinstance(minute, int):
-        return "%d:%02d" % (divmod(minute, 60))
-    return None
 
 
 def request(query, params):
@@ -117,13 +111,17 @@ def video_response(resp):
             if x
         ]
 
+        duration = result.get('duration')
+        if duration:
+            duration = timedelta(seconds=duration)
+
         results.append(
             {
                 'url': result['url'],
                 'title': result['name'],
                 'content': html_to_text(result.get('description') or ''),
                 'author': result.get('account', {}).get('displayName'),
-                'length': minute_to_hm(result.get('duration')),
+                'length': duration,
                 'views': humanize_number(result['views']),
                 'template': 'videos.html',
                 'publishedDate': parse(result['publishedAt']),

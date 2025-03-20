@@ -2,9 +2,10 @@
 """iQiyi: A search engine for retrieving videos from iQiyi."""
 
 from urllib.parse import urlencode
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from searx.exceptions import SearxEngineAPIException
+from searx.utils import parse_duration_string
 
 about = {
     "website": "https://www.iqiyi.com/",
@@ -55,20 +56,7 @@ def response(resp):
             except (ValueError, TypeError):
                 pass
 
-        length = None
-        subscript_content = album_info.get("subscriptContent")
-        if subscript_content:
-            try:
-                time_parts = subscript_content.split(":")
-                if len(time_parts) == 2:
-                    minutes, seconds = map(int, time_parts)
-                    length = timedelta(minutes=minutes, seconds=seconds)
-                elif len(time_parts) == 3:
-                    hours, minutes, seconds = map(int, time_parts)
-                    length = timedelta(hours=hours, minutes=minutes, seconds=seconds)
-            except (ValueError, TypeError):
-                pass
-
+        length = parse_duration_string(album_info.get("subscriptionContent"))
         results.append(
             {
                 'url': album_info.get("pageUrl", "").replace("http://", "https://"),

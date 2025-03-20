@@ -56,18 +56,6 @@ def request(query, params):
     return params
 
 
-# Format the video duration
-def format_duration(duration):
-    if not ":" in duration:
-        return None
-    minutes, seconds = map(int, duration.split(":"))
-    total_seconds = minutes * 60 + seconds
-
-    formatted_duration = str(timedelta(seconds=total_seconds))[2:] if 0 <= total_seconds < 3600 else ""
-
-    return formatted_duration
-
-
 def response(resp):
     search_res = resp.json()
 
@@ -83,7 +71,12 @@ def response(resp):
         unix_date = item["pubdate"]
 
         formatted_date = datetime.fromtimestamp(unix_date)
-        formatted_duration = format_duration(item["duration"])
+
+        # the duration only seems to be valid if the video is less than 60 mins
+        duration = utils.parse_duration_string(item["duration"])
+        if duration and duration > timedelta(minutes=60):
+            duration = None
+
         iframe_url = f"https://player.bilibili.com/player.html?aid={video_id}&high_quality=1&autoplay=false&danmaku=0"
 
         results.append(
@@ -93,7 +86,7 @@ def response(resp):
                 "content": description,
                 "author": author,
                 "publishedDate": formatted_date,
-                "length": formatted_duration,
+                "length": duration,
                 "thumbnail": thumbnail,
                 "iframe_src": iframe_url,
                 "template": "videos.html",
