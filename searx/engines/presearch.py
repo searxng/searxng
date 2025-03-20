@@ -58,6 +58,12 @@ have to set these values in both requests we send to Presearch; in the first
 request to get the request-ID from Presearch and in the final request to get the
 result list (see ``send_accept_language_header``).
 
+The time format returned by Presearch varies depending on the language set.
+Multiple different formats can be supported by using ``dateutil`` parser, but
+it doesn't support formats such as "N time ago", "vor N time" (German),
+"Hace N time" (Spanish). Because of this, the dates are simply joined together
+with the rest of other metadata.
+
 
 Implementations
 ===============
@@ -246,7 +252,7 @@ def response(resp):
             results.append(
                 {
                     'template': 'images.html',
-                    'title': item['title'],
+                    'title': html_to_text(item['title']),
                     'url': item.get('link'),
                     'img_src': item.get('image'),
                     'thumbnail_src': item.get('thumbnail'),
@@ -261,7 +267,7 @@ def response(resp):
             metadata = [x for x in [item.get('description'), item.get('duration')] if x]
             results.append(
                 {
-                    'title': item['title'],
+                    'title': html_to_text(item['title']),
                     'url': item.get('link'),
                     'content': '',
                     'metadata': ' / '.join(metadata),
@@ -271,12 +277,18 @@ def response(resp):
 
     elif search_type == 'news':
         for item in json_resp.get('news', []):
-            metadata = [x for x in [item.get('source'), item.get('time')] if x]
+            source = item.get('source')
+            # Bug on their end, time sometimes returns "</a>"
+            time = html_to_text(item.get('time')).strip()
+            metadata = [source]
+            if time != "":
+                metadata.append(time)
+
             results.append(
                 {
-                    'title': item['title'],
+                    'title': html_to_text(item['title']),
                     'url': item.get('link'),
-                    'content': item.get('description', ''),
+                    'content': html_to_text(item.get('description', '')),
                     'metadata': ' / '.join(metadata),
                     'thumbnail': item.get('image'),
                 }
