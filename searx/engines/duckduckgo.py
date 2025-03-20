@@ -20,6 +20,7 @@ from searx import (
 )
 from searx.utils import (
     eval_xpath,
+    eval_xpath_getindex,
     extr,
     extract_text,
 )
@@ -400,7 +401,7 @@ def response(resp) -> EngineResults:
         results.add(
             results.types.Answer(
                 answer=zero_click,
-                url=extract_text(eval_xpath(doc, '//div[@id="zero_click_abstract"]/a/@href')),
+                url=eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0),
             )
         )
 
