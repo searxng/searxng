@@ -4,15 +4,10 @@
 List of plugins
 ===============
 
-.. sidebar:: Further reading ..
+Further reading ..
 
-   - :ref:`SearXNG settings <settings plugins>`
-   - :ref:`dev plugin`
-   - :ref:`builtin plugins`
-
-Configuration defaults (at built time):
-
-:DO: Default on
+- :ref:`SearXNG settings <settings plugins>`
+- :ref:`dev plugin`
 
 .. _configured plugins:
 
@@ -24,13 +19,13 @@ Configuration defaults (at built time):
       :widths: 3 1 9
 
       * - Name
-        - DO
+        - Active
         - Description
 
       {% for plg in plugins %}
 
       * - {{plg.info.name}}
-        - {{(plg.default_on and "y") or ""}}
+        - {{(plg.active and "yes") or "no"}}
         - {{plg.info.description}}
 
       {% endfor %}

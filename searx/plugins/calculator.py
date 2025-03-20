@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Calculate mathematical expressions using :py:obj`ast.parse` (mode="eval").
+"""Calculate mathematical expressions using :py:obj:`ast.parse` (mode="eval").
 """
 
 from __future__ import annotations
-from typing import Callable
+import typing
 
 import ast
 import re
@@ -15,14 +15,78 @@ import babel.numbers
 from flask_babel import gettext
 
 from searx.result_types import EngineResults
+from searx.plugins import Plugin, PluginInfo
 
-name = "Basic Calculator"
-description = gettext("Calculate mathematical expressions via the search bar")
-default_on = True
-preference_section = 'general'
-plugin_id = 'calculator'
+if typing.TYPE_CHECKING:
+    from searx.search import SearchWithPlugins
+    from searx.extended_types import SXNG_Request
+    from searx.plugins import PluginCfg
 
-operators: dict[type, Callable] = {
+
+class SXNGPlugin(Plugin):
+    """Plugin converts strings to different hash digests.  The results are
+    displayed in area for the "answers".
+    """
+
+    id = "calculator"
+
+    def __init__(self, plg_cfg: "PluginCfg") -> None:
+        super().__init__(plg_cfg)
+
+        self.info = PluginInfo(
+            id=self.id,
+            name=gettext("Basic Calculator"),
+            description=gettext("Calculate mathematical expressions via the search bar"),
+            preference_section="general",
+        )
+
+    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> EngineResults:
+        results = EngineResults()
+
+        # only show the result of the expression on the first page
+        if search.search_query.pageno > 1:
+            return results
+
+        query = search.search_query.query
+        # in order to avoid DoS attacks with long expressions, ignore long expressions
+        if len(query) > 100:
+            return results
+
+        # replace commonly used math operators with their proper Python operator
+        query = query.replace("x", "*").replace(":", "/")
+
+        # use UI language
+        ui_locale = babel.Locale.parse(request.preferences.get_value("locale"), sep="-")
+
+        # parse the number system in a localized way
+        def _decimal(match: re.Match) -> str:
+            val = match.string[match.start() : match.end()]
+            val = babel.numbers.parse_decimal(val, ui_locale, numbering_system="latn")
+            return str(val)
+
+        decimal = ui_locale.number_symbols["latn"]["decimal"]
+        group = ui_locale.number_symbols["latn"]["group"]
+        query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
+
+        # only numbers and math operators are accepted
+        if any(str.isalpha(c) for c in query):
+            return results
+
+        # in python, powers are calculated via **
+        query_py_formatted = query.replace("^", "**")
+
+        # Prevent the runtime from being longer than 50 ms
+        res = timeout_func(0.05, _eval_expr, query_py_formatted)
+        if res is None or res == "":
+            return results
+
+        res = babel.numbers.format_decimal(res, locale=ui_locale)
+        results.add(results.types.Answer(answer=f"{search.search_query.query} = {res}"))
+
+        return results
+
+
+operators: dict[type, typing.Callable] = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
     ast.Mult: operator.mul,
@@ -92,49 +156,3 @@ def timeout_func(timeout, func, *args, **kwargs):
     p.join()
     p.close()
     return ret_val
-
-
-def post_search(request, search) -> EngineResults:
-    results = EngineResults()
-
-    # only show the result of the expression on the first page
-    if search.search_query.pageno > 1:
-        return results
-
-    query = search.search_query.query
-    # in order to avoid DoS attacks with long expressions, ignore long expressions
-    if len(query) > 100:
-        return results
-
-    # replace commonly used math operators with their proper Python operator
-    query = query.replace("x", "*").replace(":", "/")
-
-    # use UI language
-    ui_locale = babel.Locale.parse(request.preferences.get_value('locale'), sep='-')
-
-    # parse the number system in a localized way
-    def _decimal(match: re.Match) -> str:
-        val = match.string[match.start() : match.end()]
-        val = babel.numbers.parse_decimal(val, ui_locale, numbering_system="latn")
-        return str(val)
-
-    decimal = ui_locale.number_symbols["latn"]["decimal"]
-    group = ui_locale.number_symbols["latn"]["group"]
-    query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
-
-    # only numbers and math operators are accepted
-    if any(str.isalpha(c) for c in query):
-        return results
-
-    # in python, powers are calculated via **
-    query_py_formatted = query.replace("^", "**")
-
-    # Prevent the runtime from being longer than 50 ms
-    res = timeout_func(0.05, _eval_expr, query_py_formatted)
-    if res is None or res == "":
-        return results
-
-    res = babel.numbers.format_decimal(res, locale=ui_locale)
-    results.add(results.types.Answer(answer=f"{search.search_query.query} = {res}"))
-
-    return results

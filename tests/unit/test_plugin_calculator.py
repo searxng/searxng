@@ -7,9 +7,7 @@ import searx.plugins
 import searx.preferences
 
 from searx.extended_types import sxng_request
-from searx.plugins._core import _default, ModulePlugin
 from searx.result_types import Answer
-from searx.utils import load_module
 
 from tests import SearxTestCase
 from .test_utils import random_string
@@ -20,13 +18,10 @@ class PluginCalculator(SearxTestCase):
 
     def setUp(self):
         super().setUp()
-
-        f = _default / "calculator.py"
-        mod = load_module(f.name, str(f.parent))
         engines = {}
 
         self.storage = searx.plugins.PluginStorage()
-        self.storage.register(ModulePlugin(mod, "searx.plugins.calculator"))
+        self.storage.load_settings({"searx.plugins.calculator.SXNGPlugin": {"active": True}})
         self.storage.init(self.app)
         self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
         self.pref.parse_dict({"locale": "en"})

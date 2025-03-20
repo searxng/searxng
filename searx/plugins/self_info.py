@@ -14,6 +14,7 @@ from . import Plugin, PluginInfo
 if typing.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
+    from . import PluginCfg
 
 
 class SXNGPlugin(Plugin):
@@ -23,11 +24,10 @@ class SXNGPlugin(Plugin):
     """
 
     id = "self_info"
-    default_on = True
     keywords = ["ip", "user-agent"]
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, plg_cfg: "PluginCfg"):
+        super().__init__(plg_cfg)
 
         self.ip_regex = re.compile(r"^ip", re.IGNORECASE)
         self.ua_regex = re.compile(r"^user-agent", re.IGNORECASE)

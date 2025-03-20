@@ -235,8 +235,7 @@ SCHEMA = {
         'key': SettingsBytesValue((None, bytes), None),
         'proxify_results': SettingsValue(bool, False),
     },
-    'plugins': SettingsValue(list, []),
-    'enabled_plugins': SettingsValue((None, list), None),
+    'plugins': SettingsValue(dict, {}),
     'checker': {
         'off_when_debug': SettingsValue(bool, True, None),
         'scheduling': SettingsValue((None, dict), None, None),
