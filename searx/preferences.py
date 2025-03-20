@@ -316,7 +316,7 @@ class PluginsSetting(BooleanChoices):
     """Plugin settings"""
 
     def __init__(self, default_value, plugins: Iterable[searx.plugins.Plugin]):
-        super().__init__(default_value, {plugin.id: plugin.default_on for plugin in plugins})
+        super().__init__(default_value, {plugin.id: plugin.active for plugin in plugins})
 
     def transform_form_items(self, items):
         return [item[len('plugin_') :] for item in items]

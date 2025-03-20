@@ -32,6 +32,36 @@ ui:
   theme_args:
     simple_style: auto
 
+plugins:
+
+  searx.plugins.calculator.SXNGPlugin:
+    active: true
+
+  searx.plugins.hash_plugin.SXNGPlugin:
+    active: true
+
+  searx.plugins.self_info.SXNGPlugin:
+    active: true
+
+  searx.plugins.tracker_url_remover.SXNGPlugin:
+    active: true
+
+  searx.plugins.unit_converter.SXNGPlugin:
+    active: true
+
+  searx.plugins.ahmia_filter.SXNGPlugin:
+    active: true
+
+  searx.plugins.hostnames.SXNGPlugin:
+    active: true
+
+  searx.plugins.oa_doi_rewrite.SXNGPlugin:
+    active: false
+
+  searx.plugins.tor_check.SXNGPlugin:
+    active: false
+
+
 engines:
   - name: wikidata
     engine: wikidata

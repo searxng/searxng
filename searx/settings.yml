@@ -226,29 +226,38 @@ outgoing:
   #    - 1.1.1.2
   #    - fe80::/126
 
-# External plugin configuration, for more details see
+# Plugin configuration, for more details see
 #   https://docs.searxng.org/admin/settings/settings_plugins.html
 #
-# plugins:
-#   - mypackage.mymodule.MyPlugin
-#   - mypackage.mymodule.MyOtherPlugin
-#   - ...
+plugins:
 
-# Comment or un-comment plugin to activate / deactivate by default.
-#   https://docs.searxng.org/admin/settings/settings_plugins.html
-#
-# enabled_plugins:
-#   # these plugins are enabled if nothing is configured ..
-#   - 'Basic Calculator'
-#   - 'Hash plugin'
-#   - 'Self Information'
-#   - 'Tracker URL remover'
-#   - 'Unit converter plugin'
-#   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
-#   # these plugins are disabled if nothing is configured ..
-#   - 'Hostnames plugin'  # see 'hostnames' configuration below
-#   - 'Open Access DOI rewrite'
-#   - 'Tor check plugin'
+  searx.plugins.calculator.SXNGPlugin:
+    active: true
+
+  searx.plugins.hash_plugin.SXNGPlugin:
+    active: true
+
+  searx.plugins.self_info.SXNGPlugin:
+    active: true
+
+  searx.plugins.unit_converter.SXNGPlugin:
+    active: true
+
+  searx.plugins.ahmia_filter.SXNGPlugin:
+    active: true
+
+  searx.plugins.hostnames.SXNGPlugin:
+    active: true
+
+  searx.plugins.oa_doi_rewrite.SXNGPlugin:
+    active: false
+
+  searx.plugins.tor_check.SXNGPlugin:
+    active: false
+
+  searx.plugins.tracker_url_remover.SXNGPlugin:
+    active: false
+
 
 # Configuration of the "Hostnames plugin":
 #

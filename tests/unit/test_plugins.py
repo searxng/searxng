@@ -4,6 +4,7 @@
 import babel
 from mock import Mock
 
+import searx
 import searx.plugins
 import searx.preferences
 import searx.results
@@ -14,7 +15,7 @@ from searx.extended_types import sxng_request
 from tests import SearxTestCase
 
 plg_store = searx.plugins.PluginStorage()
-plg_store.load_builtins()
+plg_store.load_settings(searx.get_setting("plugins"))
 
 
 def get_search_mock(query, **kwargs):
@@ -47,11 +48,11 @@ def do_post_search(query, storage, **kwargs) -> Mock:
 
 class PluginMock(searx.plugins.Plugin):
 
-    def __init__(self, _id: str, name: str, default_on: bool):
+    def __init__(self, _id: str, name: str, active: bool):
+        plg_cfg = searx.plugins.PluginCfg(active=active)
         self.id = _id
-        self.default_on = default_on
         self._name = name
-        super().__init__()
+        super().__init__(plg_cfg)
 
     # pylint: disable= unused-argument
     def pre_search(self, request, search) -> bool:

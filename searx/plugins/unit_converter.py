@@ -7,35 +7,73 @@ converters, each converter is one item in the list (compare
 :py:obj:`ADDITIONAL_UNITS`).  If the symbols are ambiguous, the matching units
 of measurement are evaluated.  The weighting in the evaluation results from the
 sorting of the :py:obj:`list of unit converters<symbol_to_si>`.
-
-Enable in ``settings.yml``:
-
-.. code:: yaml
-
-  enabled_plugins:
-    ..
-    - 'Unit converter plugin'
-
 """
-
 from __future__ import annotations
+import typing
 import re
 import babel.numbers
 
 from flask_babel import gettext, get_locale
 
 from searx import data
+from searx.plugins import Plugin, PluginInfo
 from searx.result_types import EngineResults
 
+if typing.TYPE_CHECKING:
+    from searx.search import SearchWithPlugins
+    from searx.extended_types import SXNG_Request
+    from searx.plugins import PluginCfg
 
-name = "Unit converter plugin"
-description = gettext("Convert between units")
-default_on = True
 
-plugin_id = "unit_converter"
-preference_section = "general"
+name = ""
+description = gettext("")
+
+plugin_id = ""
+preference_section = ""
 
 CONVERT_KEYWORDS = ["in", "to", "as"]
+
+
+class SXNGPlugin(Plugin):
+    """Convert between units.  The result is displayed in area for the
+    "answers".
+    """
+
+    id = "unit_converter"
+
+    def __init__(self, plg_cfg: "PluginCfg") -> None:
+        super().__init__(plg_cfg)
+
+        self.info = PluginInfo(
+            id=self.id,
+            name=gettext("Unit converter plugin"),
+            description=gettext("Convert between units"),
+            preference_section="general",
+        )
+
+    def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> EngineResults:
+        results = EngineResults()
+
+        # only convert between units on the first page
+        if search.search_query.pageno > 1:
+            return results
+
+        query = search.search_query.query
+        query_parts = query.split(" ")
+
+        if len(query_parts) < 3:
+            return results
+
+        for query_part in query_parts:
+            for keyword in CONVERT_KEYWORDS:
+                if query_part == keyword:
+                    from_query, to_query = query.split(keyword, 1)
+                    target_val = _parse_text_and_convert(from_query.strip(), to_query.strip())
+                    if target_val:
+                        results.add(results.types.Answer(answer=target_val))
+
+        return results
+
 
 # inspired from https://stackoverflow.com/a/42475086
 RE_MEASURE = r'''
@@ -243,27 +281,3 @@ def _parse_text_and_convert(from_query, to_query) -> str | None:
         result = babel.numbers.format_decimal(value, locale=_locale, format='#,##0.##########;-#')
 
     return f'{result} {target_symbol}'
-
-
-def post_search(_request, search) -> EngineResults:
-    results = EngineResults()
-
-    # only convert between units on the first page
-    if search.search_query.pageno > 1:
-        return results
-
-    query = search.search_query.query
-    query_parts = query.split(" ")
-
-    if len(query_parts) < 3:
-        return results
-
-    for query_part in query_parts:
-        for keyword in CONVERT_KEYWORDS:
-            if query_part == keyword:
-                from_query, to_query = query.split(keyword, 1)
-                target_val = _parse_text_and_convert(from_query.strip(), to_query.strip())
-                if target_val:
-                    results.add(results.types.Answer(answer=target_val))
-
-    return results
