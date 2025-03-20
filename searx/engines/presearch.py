@@ -73,7 +73,7 @@ Implementations
 from urllib.parse import urlencode, urlparse
 from searx import locales
 from searx.network import get
-from searx.utils import gen_useragent, html_to_text
+from searx.utils import gen_useragent, html_to_text, parse_duration_string
 
 about = {
     "website": "https://presearch.io",
@@ -270,7 +270,7 @@ def response(resp):
                     'url': item.get('link'),
                     'content': item.get('description', ''),
                     'thumbnail': item.get('image'),
-                    'length': item.get('duration'),
+                    'length': parse_duration_string(item.get('duration')),
                 }
             )
 
