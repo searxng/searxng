@@ -10,6 +10,8 @@ used.
 """
 
 from __future__ import annotations
+
+import os
 import json
 import dataclasses
 import types
@@ -219,8 +221,20 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
 
         for engine_name in names:
             engine = engines.engines[engine_name]
+            traits = None
 
-            traits = EngineTraits.fetch_traits(engine)
+            # pylint: disable=broad-exception-caught
+            try:
+                traits = EngineTraits.fetch_traits(engine)
+            except Exception as exc:
+                log("FATAL: while fetch_traits %s: %s" % (engine_name, exc))
+                if os.environ.get('FORCE', '').lower() not in ['on', 'true', '1']:
+                    raise
+                v = ENGINE_TRAITS.get(engine_name)
+                if v:
+                    log("FORCE: re-use old values from fetch_traits - ENGINE_TRAITS[%s]" % engine_name)
+                    traits = EngineTraits(**v)
+
             if traits is not None:
                 log("%-20s: SearXNG languages --> %s " % (engine_name, len(traits.languages)))
                 log("%-20s: SearXNG regions   --> %s" % (engine_name, len(traits.regions)))
