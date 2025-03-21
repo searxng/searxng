@@ -51,7 +51,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             # if the result has no scheme, use http as default
             scheme=result.parsed_url.scheme or "http",
             # normalize ``www.example.com`` to ``example.com``
-            netloc=result.parsed_url.netloc.replace("www.", ""),
+            # netloc=result.parsed_url.netloc.replace("www.", ""),
             # normalize ``example.com/path/`` to ``example.com/path``
             path=result.parsed_url.path.rstrip("/"),
         )
@@ -69,7 +69,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             _url = urllib.parse.urlparse(_url)
             item["url"] = _url._replace(
                 scheme=_url.scheme or "http",
-                netloc=_url.netloc.replace("www.", ""),
+                # netloc=_url.netloc.replace("www.", ""),
                 path=_url.path.rstrip("/"),
             ).geturl()
 
@@ -78,7 +78,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             _url = urllib.parse.urlparse(infobox_id)
             result.id = _url._replace(
                 scheme=_url.scheme or "http",
-                netloc=_url.netloc.replace("www.", ""),
+                # netloc=_url.netloc.replace("www.", ""),
                 path=_url.path.rstrip("/"),
             ).geturl()
 
