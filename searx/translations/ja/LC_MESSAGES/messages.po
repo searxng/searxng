@@ -25,21 +25,22 @@
 # EOWNERDEAD <eownerdead@disroot.org>, 2025.
 # nogb <nogb@users.noreply.translate.codeberg.org>, 2025.
 # syobon <syobon@users.noreply.translate.codeberg.org>, 2025.
+# cc5efd7b0 <cc5efd7b0@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-01-17 07:09+0000\n"
-"Last-Translator: tentsbet <tentsbet@users.noreply.translate.codeberg.org>"
-"\n"
+"PO-Revision-Date: 2025-03-15 14:07+0000\n"
+"Last-Translator: cc5efd7b0 <cc5efd7b0@noreply.codeberg.org>\n"
+"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
+"searxng/ja/>\n"
 "Language: ja\n"
-"Language-Team: Japanese "
-"<https://translate.codeberg.org/projects/searxng/searxng/ja/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -455,11 +456,11 @@ msgstr "異なるランダムな値を生成する"
 
 #: searx/answerers/statistics.py:36
 msgid "Compute {func} of the arguments"
-msgstr ""
+msgstr "引数の {func} を計算する"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
-msgstr ""
+msgstr "地図にルートを表示.."
 
 #: searx/engines/pdbe.py:96
 msgid "{title} (OBSOLETE)"
@@ -529,7 +530,7 @@ msgstr "検索バーで数式を計算"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr ""
+msgstr "ハッシュプラグイン"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -565,7 +566,8 @@ msgstr "自分の情報"
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
-msgstr ""
+msgstr "クエリが\"ip\"の場合はあなたのIPを表示し、クエリが\"user-"
+"agent\"の場合はあなたのユーザーエージェントを表示します。"
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -587,15 +589,15 @@ msgstr "このプラグインではcheck.torprogject.orgのようにTor 出口�
 
 #: searx/plugins/tor_check.py:69
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Tor出口ノードのリストをダウンロードできませんでした"
 
 #: searx/plugins/tor_check.py:81
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "あなたはTorを使用しており、外部IPアドレスが確認されたようです"
 
 #: searx/plugins/tor_check.py:85
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "あなたはTorを使用しておらず、外部IPアドレスが確認されました"
 
 #: searx/plugins/tracker_url_remover.py:18
 msgid "Tracker URL remover"
@@ -919,7 +921,7 @@ msgstr "例"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "定義"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
@@ -1078,7 +1080,7 @@ msgstr "許可する"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "キーワード(クエリの最初の単語)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1165,7 +1167,7 @@ msgstr "設定ハッシュ"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "デジタルオブジェクト識別子(DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -1207,7 +1209,7 @@ msgstr "最大時間"
 
 #: searx/templates/simple/preferences/favicon.html:2
 msgid "Favicon Resolver"
-msgstr "Favicon Resolver"
+msgstr "ファビコンリゾルバー"
 
 #: searx/templates/simple/preferences/favicon.html:15
 msgid "Display favicons near search results"
@@ -1992,4 +1994,3 @@ msgstr "動画を隠す"
 
 #~ msgid "/"
 #~ msgstr ""
-
