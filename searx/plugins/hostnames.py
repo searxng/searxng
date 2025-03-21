@@ -110,7 +110,8 @@ preference_section = 'general'
 plugin_id = 'hostnames'
 
 parsed = 'parsed_url'
-_url_fields = ['iframe_src', 'audio_src']
+_url_fields = ['iframe_src', 'audio_src', 'img_src', 'thumbnail_src', 'thumbnail']
+_url_list_fields = ['urls']
 
 
 def _load_regular_expressions(settings_key) -> dict | set | None:
@@ -142,23 +143,20 @@ def _matches_parsed_url(result, pattern):
     return result[parsed] and (parsed in result and pattern.search(result[parsed].netloc))
 
 
+def _replace_if_match(url_src, pattern, replacement):
+    if not url_src:
+        return url_src
+
+    if isinstance(url_src, str):
+        url_src = urlparse(url_src)
+
+    if not pattern.search(url_src.netloc):
+        return url_src
+
+    return url_src._replace(netloc=pattern.sub(replacement, url_src.netloc))
+
+
 def on_result(_request, _search, result) -> bool:
-    for pattern, replacement in replacements.items():
-        if _matches_parsed_url(result, pattern):
-            # logger.debug(result['url'])
-            result[parsed] = result[parsed]._replace(netloc=pattern.sub(replacement, result[parsed].netloc))
-            result['url'] = urlunparse(result[parsed])
-            # logger.debug(result['url'])
-
-        for url_field in _url_fields:
-            if not getattr(result, url_field, None):
-                continue
-
-            url_src = urlparse(result[url_field])
-            if pattern.search(url_src.netloc):
-                url_src = url_src._replace(netloc=pattern.sub(replacement, url_src.netloc))
-                result[url_field] = urlunparse(url_src)
-
     for pattern in removables:
         if _matches_parsed_url(result, pattern):
             return False
@@ -170,6 +168,33 @@ def on_result(_request, _search, result) -> bool:
             url_src = urlparse(result[url_field])
             if pattern.search(url_src.netloc):
                 del result[url_field]
+
+        for url_list_field in _url_list_fields:
+            for item in getattr(result, url_list_field, []):
+                if 'url' in item:
+                    url_src = urlparse(item['url'])
+                    if pattern.search(url_src.netloc):
+                        result[url_list_field].remove(item)
+
+    for pattern, replacement in replacements.items():
+        # urls of normal results, e.g. from the general template
+        if result[parsed]:
+            result[parsed] = _replace_if_match(result[parsed], pattern, replacement)
+            result['url'] = urlunparse(result[parsed])
+
+        for url_field in _url_fields:
+            if not getattr(result, url_field, None):
+                continue
+
+            url_src = _replace_if_match(result[url_field], pattern, replacement)
+            result[url_field] = urlunparse(url_src)
+
+        # used for links in the infobox for example
+        for url_list_field in _url_list_fields:
+            for item in getattr(result, url_list_field, []):
+                if 'url' in item:
+                    url_src = _replace_if_match(item['url'], pattern, replacement)
+                    item['url'] = urlunparse(url_src)
 
     for pattern in low_priority:
         if _matches_parsed_url(result, pattern):
