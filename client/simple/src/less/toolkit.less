@@ -366,7 +366,6 @@ select {
     background-size: 2rem;
     background-origin: content-box;
     background-color: var(--color-toolkit-select-background);
-    outline: medium none;
     text-overflow: ellipsis;
     .rounded-corners-tiny;
 
@@ -411,12 +410,6 @@ input.checkbox-onoff[type="checkbox"] {
   margin: 0 16px;
   border-radius: 10px;
   position: relative;
-
-  /* focus & hover */
-  &:focus,
-  &:hover {
-    outline: none;
-  }
 
   &:focus::after {
     content: "";

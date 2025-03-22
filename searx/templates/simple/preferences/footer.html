@@ -5,10 +5,10 @@
 
 <input type="submit" value="{{ _('Save') }}">{{- '' -}}
 
-<div class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
-  <a href="{{ url_for('clear_cookies') }}">{{ _('Reset defaults') }}</a>{{- '' -}}
-</div>{{- '' -}}
+<button aria-label="{{ _('Reset defaults') }}" class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
+  <a tabindex="-1" aria-hidden="true" href="{{ url_for('clear_cookies') }}">{{ _('Reset defaults') }}</a>{{- '' -}}
+</button>{{- '' -}}
 
-<div class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
-  <a href="{{ url_for('index') }}">{{ _('Back') }}</a>{{- '' -}}
-</div>
+<button aria-label="{{ _('Back') }}" class="{% if rtl %}left{% else %}right{% endif %} preferences_back">{{- '' -}}
+  <a tabindex="-1" aria-hidden="true" href="{{ url_for('index') }}">{{ _('Back') }}</a>{{- '' -}}
+</button>
