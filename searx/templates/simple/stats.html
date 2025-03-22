@@ -27,6 +27,7 @@
         <th scope="col" class="result-count">{{ th_sort('result_count', _('Result count')) }}</th>
         <th scope="col" class="response-time">{{ th_sort('time', _('Response time')) }}</th>
         <th scope="col" class="engine-reliability">{{ th_sort('reliability', _('Reliability')) }}</th>
+        <th scope="col" class="engine-request-count">{{ th_sort('request', _('Request count')) }}</th>
     </tr>
     {% for engine_stat in engine_stats.get('time', []) %}
     <tr>
@@ -83,6 +84,7 @@
             {%- endif -%}
         </td>
         <td class="engine-reliability"> {{ engine_reliabilities.get(engine_stat.name, {}).get('reliability') }}</td>
+        <td class="engine-request-count"> {{ engine_stat.request_count }}</td>
     </tr>
     {% endfor %}
 </table>
