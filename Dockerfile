@@ -1,5 +1,4 @@
-FROM alpine:3.20
-ENTRYPOINT ["/sbin/tini","--","/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
+FROM python:3.13-alpine
 EXPOSE 8080
 VOLUME /etc/searxng
 
@@ -12,8 +11,6 @@ RUN addgroup -g ${SEARXNG_GID} searxng && \
 ENV INSTANCE_NAME=searxng \
     AUTOCOMPLETE= \
     BASE_URL= \
-    MORTY_KEY= \
-    MORTY_URL= \
     SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
     UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
     UWSGI_WORKERS=%k \
@@ -21,32 +18,17 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
+# install necessary runtime packages
+RUN apk add --no-cache brotli openssl mailcap libxml2 libxslt pcre && rm -rf /root/.cache
+
 COPY requirements.txt ./requirements.txt
 
-RUN apk add --no-cache -t build-dependencies \
-    build-base \
-    py3-setuptools \
-    python3-dev \
-    libffi-dev \
-    libxslt-dev \
-    libxml2-dev \
-    openssl-dev \
-    tar \
-    git \
- && apk add --no-cache \
-    ca-certificates \
-    python3 \
-    py3-pip \
-    libxml2 \
-    libxslt \
-    openssl \
-    tini \
-    uwsgi \
-    uwsgi-python3 \
-    brotli \
- && pip3 install --break-system-packages --no-cache -r requirements.txt \
- && apk del build-dependencies \
- && rm -rf /root/.cache
+# build and install uwsgi and necessary python packages
+RUN apk add --no-cache -t build-dependencies build-base libffi-dev libxml2-dev libxslt-dev pcre-dev \
+&& pip install --no-cache "uwsgi~=2.0.0" \
+&& pip install --no-cache -r requirements.txt \
+&& apk del build-dependencies \
+&& rm -rf /root/.cache
 
 COPY --chown=searxng:searxng dockerfiles ./dockerfiles
 COPY --chown=searxng:searxng searx ./searx
@@ -55,7 +37,7 @@ ARG TIMESTAMP_SETTINGS=0
 ARG TIMESTAMP_UWSGI=0
 ARG VERSION_GITCOMMIT=unknown
 
-RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
+RUN su searxng -c "/usr/local/bin/python3 -m compileall -q searx" \
  && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
  && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
  && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
@@ -89,3 +71,5 @@ LABEL maintainer="searxng <${GIT_URL}>" \
       org.opencontainers.image.source=${LABEL_VCS_URL} \
       org.opencontainers.image.created="${LABEL_DATE}" \
       org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker"
+      
+ENTRYPOINT ["/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
