@@ -180,8 +180,9 @@
     {% if 'safesearch' not in locked_preferences %}
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
-    {%- include 'simple/preferences/tokens.html' -%}
     {{- plugin_preferences('general') -}}
+    {%- include 'simple/preferences/tokens.html' -%}
+    {%- include 'simple/preferences/quick_answer.html' -%}
 
 
     {%- if 'doi_resolver' not in locked_preferences %}

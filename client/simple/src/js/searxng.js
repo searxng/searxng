@@ -5,3 +5,4 @@ import "./main/mapresult.js";
 import "./main/preferences.js";
 import "./main/results.js";
 import "./main/search.js";
+import "./main/quick-answer.js";

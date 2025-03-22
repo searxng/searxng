@@ -72,3 +72,6 @@
 
 ``url_formatting``:
   Formatting type to use for result URLs: ``pretty``, ``full`` or ``host``.
+
+``quick_answer_api``:
+  Quick Answer OpenAI-compatible API endpoint to query for search-supported LLM responses.

@@ -22,6 +22,8 @@ const PATH = {
   brand: "src/brand",
   static: resolve(ROOT, "client/simple/static"),
   leaflet: resolve(ROOT, "client/simple/node_modules/leaflet/dist"),
+  katex: resolve(ROOT, "client/simple/node_modules/katex"),
+  marked: resolve(ROOT, "client/simple/node_modules/marked"),
   templates: resolve(ROOT, "searx/templates/simple"),
 };
 
@@ -133,6 +135,18 @@ export default defineConfig({
         { src: PATH.leaflet + "/leaflet.{js,js.map}", dest: PATH.dist + "/js" },
         { src: PATH.leaflet + "/images/*.png", dest: PATH.dist + "/css/images/" },
         { src: PATH.leaflet + "/*.{css,css.map}", dest: PATH.dist + "/css" },
+      ]
+    }),
+
+    // Quick Answer (KaTeX + Marked)
+
+    viteStaticCopy({
+      targets: [
+        { src: PATH.katex + "/dist/katex.js", dest: PATH.dist + "/js" },
+        { src: PATH.katex + "/contrib/auto-render/auto-render.js", dest: PATH.dist + "/js" },
+        { src: PATH.katex + "/dist/katex.css", dest: PATH.dist + "/css" },
+        { src: PATH.katex + "/dist/fonts/*.{ttf,woff,woff2}", dest: PATH.dist + "/css/fonts/" },
+        { src: PATH.marked + "/lib/marked.esm.js", dest: PATH.dist + "/js" },
         { src: PATH.static + "/**/*", dest: PATH.dist },
       ]
     }),

@@ -13,6 +13,7 @@ import os
 import sys
 import base64
 
+from datetime import timedelta, datetime
 from timeit import default_timer
 from html import escape
 from io import StringIO
@@ -1325,6 +1326,107 @@ def config():
             'public_instance': settings['server']['public_instance'],
         }
     )
+
+
+# User-scoped cache for quick answer responses
+quick_answer_cache = {}
+quick_answer_cache_max_keys = 1000
+quick_answer_cache_expiry = timedelta(minutes=60)
+
+
+@app.route("/quick_answer", methods=["POST"])
+def quick_answer():
+    """Endpoint to handle LLM requests."""
+    data = sxng_request.get_json()
+    if not data:
+        return "Invalid JSON data", 400
+
+    user = data.get("user")
+    system = data.get("system")
+    token = data.get("token")
+    if not all([user, system, token]):
+        return "Missing required fields", 400
+
+    # These can be unproblematically empty; account defaults are OK
+    model = data.get("model")
+    providers = data.get("providers")
+
+    now = datetime.now()
+    expired_keys = [
+        key for key, value in quick_answer_cache.items() if now - value["timestamp"] >= quick_answer_cache_expiry
+    ]
+    for key in expired_keys:
+        del quick_answer_cache[key]
+
+    if len(quick_answer_cache) >= quick_answer_cache_max_keys:
+        sorted_keys = sorted(quick_answer_cache.keys(), key=lambda k: quick_answer_cache[k]["timestamp"])
+        for key in sorted_keys[: len(quick_answer_cache) - quick_answer_cache_max_keys + 1]:
+            del quick_answer_cache[key]
+
+    # Prevent re-generation of LLM responses when navigating to/from results pages
+    query_hash = hashlib.sha256((token + model + user + system).encode("utf-8")).hexdigest()
+    cached_response = quick_answer_cache.get(query_hash)
+    if cached_response and datetime.now() - cached_response["timestamp"] < quick_answer_cache_expiry:
+        return Response(cached_response["content"], mimetype="text/html")
+
+    def stream_response():
+        try:
+            with httpx.stream(
+                method="POST",
+                url=settings["quick_answer_api"],
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model,
+                    "provider": {"order": providers},
+                    "stream": True,
+                    "messages": [
+                        {"role": "system", "content": system},
+                        {
+                            "role": "user",
+                            "content": user,
+                        },
+                    ],
+                },
+            ) as resp:
+                resp.raise_for_status()
+
+                content_buffer = []
+
+                for line in resp.iter_lines():
+                    try:
+                        if line.startswith("data: "):
+                            json_str = line[6:]  # Remove 'data: ' prefix
+                            if json_str.strip() == "[DONE]":
+                                break
+
+                            json_data = json.loads(json_str)
+                            if "choices" in json_data:
+                                content = json_data["choices"][0].get("delta", {}).get("content", "")
+                                if content:
+                                    content_buffer.append(content)
+                                    yield content
+
+                    except json.JSONDecodeError:
+                        continue
+                    except Exception as e:  # pylint: disable=broad-except
+                        yield f"Error processing chunk: {str(e)}"
+                        break
+
+                if not any(
+                    error in "".join(content_buffer) for error in ["API request failed", "Error processing chunk"]
+                ):
+                    quick_answer_cache[query_hash] = {
+                        "content": "".join(content_buffer),
+                        "timestamp": datetime.now(),
+                    }
+
+        except Exception as e:  # pylint: disable=broad-except
+            yield f"API request failed: {str(e)}"
+
+    return Response(stream_response(), mimetype="text/html")
 
 
 @app.errorhandler(404)
