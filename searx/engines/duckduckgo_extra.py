@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
-from searx.utils import get_embeded_stream_url
+from searx.utils import get_embeded_stream_url, html_to_text
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang, get_vqd
@@ -126,7 +126,7 @@ def _news_result(result):
     return {
         'url': result['url'],
         'title': result['title'],
-        'content': result['excerpt'],
+        'content': html_to_text(result['excerpt']),
         'source': result['source'],
         'publishedDate': datetime.fromtimestamp(result['date']),
     }
