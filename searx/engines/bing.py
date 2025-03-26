@@ -123,6 +123,7 @@ def response(resp):
     # pylint: disable=too-many-locals
 
     results = []
+    result_len = 0
 
     dom = html.fromstring(resp.text)
 
@@ -161,29 +162,31 @@ def response(resp):
         results.append({'url': url, 'title': title, 'content': content})
 
     # get number_of_results
-    result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
+    if results:
+        result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
+        if "-" in result_len_container:
+            start_str, result_len_container = re.split(r'-\d+', result_len_container)
+            start = int(start_str)
+        else:
+            start = 1
 
-    if "-" in result_len_container:
-        start_str, result_len_container = re.split(r'-\d+', result_len_container)
-        start = int(start_str)
-    else:
-        start = 1
+        result_len = int(re.sub('[^0-9]', '', result_len_container))
 
-    result_len = int(re.sub('[^0-9]', '', result_len_container))
+        expected_start = _page_offset(resp.search_params.get("pageno", 1))
 
-    expected_start = _page_offset(resp.search_params.get("pageno", 1))
+        if expected_start != start:
+            if expected_start > result_len:
+                # Avoid reading more results than available.
+                # For example, if there is 100 results from some search and we try to get results from 120 to 130,
+                # Bing will send back the results from 0 to 10 and no error.
+                # If we compare results count with the first parameter of the request we can avoid this "invalid"
+                # results.
+                return []
 
-    if expected_start != start:
-        if expected_start > result_len:
-            # Avoid reading more results than available.
-            # For example, if there is 100 results from some search and we try to get results from 120 to 130,
-            # Bing will send back the results from 0 to 10 and no error.
-            # If we compare results count with the first parameter of the request we can avoid this "invalid" results.
-            return []
-
-        # Sometimes Bing will send back the first result page instead of the requested page as a rate limiting measure.
-        msg = f"Expected results to start at {expected_start}, but got results starting at {start}"
-        raise SearxEngineAPIException(msg)
+            # Sometimes Bing will send back the first result page instead of the requested page as a rate limiting
+            # measure.
+            msg = f"Expected results to start at {expected_start}, but got results starting at {start}"
+            raise SearxEngineAPIException(msg)
 
     results.append({'number_of_results': result_len})
     return results
