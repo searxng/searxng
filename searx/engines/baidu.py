@@ -9,6 +9,7 @@
 
 from urllib.parse import urlencode
 from datetime import datetime
+from html import unescape
 import time
 import json
 
@@ -119,11 +120,15 @@ def parse_general(data):
             except (ValueError, TypeError):
                 published_date = None
 
+        # title and content sometimes containing characters such as &amp; &#39; &quot; etc...
+        title = unescape(entry["title"])
+        content = unescape(entry.get("abs", ""))
+
         results.append(
             {
-                "title": entry["title"],
+                "title": title,
                 "url": entry["url"],
-                "content": entry.get("abs", ""),
+                "content": content,
                 "publishedDate": published_date,
             }
         )
