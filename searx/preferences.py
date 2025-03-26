@@ -76,6 +76,26 @@ class Setting:
 class StringSetting(Setting):
     """Setting of plain string values"""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.value = ""
+
+    def get_value(self):
+        return self.value
+
+    def parse(self, data: str):
+        self.value = data
+
+    def parse_form(self, data: str):
+        if self.locked:
+            return
+
+        self.value = data
+
+    def save(self, name: str, resp: flask.Response):
+        """Save cookie ``name`` in the HTTP response object"""
+        resp.set_cookie(name, self.value, max_age=COOKIE_MAX_AGE)
+
 
 class EnumStringSetting(Setting):
     """Setting of a value which can only come from the given choices"""
@@ -130,6 +150,35 @@ class MultipleChoiceSetting(Setting):
     def save(self, name: str, resp: flask.Response):
         """Save cookie ``name`` in the HTTP response object"""
         resp.set_cookie(name, ','.join(self.value), max_age=COOKIE_MAX_AGE)
+
+
+class ListSetting(Setting):
+    """Setting of values of type ``list`` (ordered comma separated string)"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.values = []
+
+    def get_value(self):
+        return ",".join(self.values)
+
+    def parse(self, data: str):
+        """Parse and validate ``data`` and store the result at ``self.value``"""
+        if data == "":
+            self.values = []
+            return
+
+        self.values = data.split(",")
+
+    def parse_form(self, data: str):
+        if self.locked:
+            return
+
+        self.values = data.split(",")
+
+    def save(self, name: str, resp: flask.Response):
+        """Save cookie ``name`` in the HTTP response object"""
+        resp.set_cookie(name, ",".join(self.values), max_age=COOKIE_MAX_AGE)
 
 
 class SetSetting(Setting):
@@ -479,6 +528,9 @@ class Preferences:
                 settings['ui']['url_formatting'],
                 choices=['pretty', 'full', 'host']
             ),
+            "quick_answer_token": StringSetting("quick_answer_token"),
+            "quick_answer_model": StringSetting("quick_answer_model"),
+            "quick_answer_providers": ListSetting("quick_answer_providers"),
             # fmt: on
         }
 
