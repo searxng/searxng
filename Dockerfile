@@ -20,7 +20,6 @@ WORKDIR /usr/local/searxng
 # install necessary runtime packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     brotli \
-    openssl \
     mailcap \
     libxml2 \
     libxslt1.1 \
