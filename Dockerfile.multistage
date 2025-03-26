@@ -1,5 +1,34 @@
+FROM python:3.13-slim AS builder
+
+RUN mkdir /usr/local/searxng
+WORKDIR /usr/local/searxng
+
+RUN python3 -m venv /venv
+ENV PATH=/venv/bin:$PATH
+
+COPY requirements.txt ./requirements.txt
+
+# Install build dependencies and Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpcre3-dev libxml2-dev libxslt1-dev  zlib1g-dev 
+RUN --mount=type=cache,target=/root/.cache/pip  pip install "uwsgi~=2.0.0"
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -r requirements.txt 
+
+COPY dockerfiles ./dockerfiles
+COPY searx ./searx
+
+ARG TIMESTAMP_SETTINGS=0
+ARG TIMESTAMP_UWSGI=0
+ARG VERSION_GITCOMMIT=unknown
+
+RUN python3 -m compileall -q searx \
+  && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
+  && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini
+
+# Final image stage
 FROM python:3.13-slim
+
 EXPOSE 8080
+VOLUME /etc/searxng
 
 ARG SEARXNG_GID=977
 ARG SEARXNG_UID=977
@@ -17,48 +46,27 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
-# install necessary runtime packages
+# Install necessary runtime packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    brotli \
-    openssl \
-    mailcap \
-    libxml2 \
-    libxslt1.1 \
-    libpcre3 
-
-COPY requirements.txt ./requirements.txt
-
-# build and install uwsgi and necessary python packages
-RUN --mount=type=cache,target=/root/.cache/pip apt-get update && apt-get install -y --no-install-recommends \
-  build-essential \
-  zlib1g-dev \
-  libffi-dev \
-  libxml2-dev \
-  libxslt-dev \
-  libpcre3-dev && \
-  pip install "uwsgi~=2.0.0" && \
-  pip install -r requirements.txt && \
-  apt-get purge -y build-essential libffi-dev libxml2-dev libxslt1-dev libpcre3-dev && \
-  apt-get autoremove -y && \
+  brotli \
+#    openssl \
+  mailcap \
+  libxml2 \
+  libxslt1.1 \
+  libpcre3 && \
   rm -rf /var/lib/apt/lists/*
 
-COPY --chown=searxng:searxng dockerfiles ./dockerfiles
-COPY --chown=searxng:searxng searx ./searx
+# Copy only the necessary files from the builder stage
+COPY --from=builder --chown=searxng:searxng /usr/local/searxng /usr/local/searxng
+COPY --from=builder --chown=searxng:searxng /venv /venv
 
-RUN mkdir /etc/searxng && chown searxng:searxng /etc/searxng
+ENV PATH=/venv/bin:$PATH
 
-ARG TIMESTAMP_SETTINGS=0
-ARG TIMESTAMP_UWSGI=0
-ARG VERSION_GITCOMMIT=unknown
+USER searxng
 
-USER searxng 
-
-RUN python3 -m compileall -q searx \
-&& touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
-&& touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
-&& find /usr/local/searxng/searx/static  \( -name '*.html' -o -name '*.css' -o -name '*.js' \
+RUN find /usr/local/searxng/searx/static \( -name '*.html' -o -name '*.css' -o -name '*.js' \
   -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
-  -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
+  -type f -exec gzip -9 -k {} + -exec brotli --best {} +
 
 # Keep these arguments at the end to prevent redundant layer rebuilds
 ARG LABEL_DATE=
@@ -85,5 +93,5 @@ LABEL maintainer="searxng <${GIT_URL}>" \
     org.opencontainers.image.source=${LABEL_VCS_URL} \
     org.opencontainers.image.created="${LABEL_DATE}" \
     org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker"
-   
+    
 ENTRYPOINT ["/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
