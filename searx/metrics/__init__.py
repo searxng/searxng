@@ -92,6 +92,9 @@ def initialize(engine_names=None, enabled=True):
     histogram_width = 0.1
     histogram_size = int(1.5 * max_timeout / histogram_width)
 
+    # global
+    counter_storage.configure('search', 'count', 'sent')
+
     # engines
     for engine_name in engine_names or engines:
         # search count
@@ -209,6 +212,7 @@ def get_engines_stats(engine_name_list):
             'score': 0,
             'score_per_result': 0,
             'result_count': result_count,
+            'request_count': sent_count,
         }
 
         if successful_count and result_count_sum:
@@ -243,6 +247,11 @@ def get_engines_stats(engine_name_list):
             stats['processing_p95'] = round(time_total_p95 - time_http_p95, 1)
 
         list_time.append(stats)
+
+    # request_count (per engine) is a percentage of the total number of requests
+    total_request_count = counter('search', 'count', 'sent')
+    for stats in list_time:
+        stats['request_count'] = int(round(stats['request_count'] * 100 / total_request_count, 0))
 
     return {
         'time': list_time,
