@@ -38,3 +38,11 @@
     color: var(--color-btn-font);
   }
 }
+
+.focus-outline (@zIndex: 5000, @color: var(--color-base-font)) {
+  &:focus {
+    outline: 1.5px solid @color;
+    outline-offset: 3px;
+    z-index: @zIndex;
+  }
+}
