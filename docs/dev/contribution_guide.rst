@@ -40,9 +40,9 @@ protection of searx, users must be informed about the effect of choosing to
 enable it.  Features that protect privacy but differ from the expectations of
 the user should also be explained.
 
-Also, if you think that something works weird with searx, it's might be because
-of the tool you use is designed in a way to interfere with the privacy respect.
-Submitting a bugreport to the vendor of the tool that misbehaves might be a good
+Also, if you think that something works weird with searx, it might be because
+the tool you use is designed in a way to interfere with the privacy respect.
+Submitting a bug report to the vendor of the tool that misbehaves might be a good
 feedback to reconsider the disrespect to its customers (e.g. ``GET`` vs ``POST``
 requests in various browsers).
 
