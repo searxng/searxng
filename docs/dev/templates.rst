@@ -6,7 +6,7 @@ Simple Theme Templates
 
 The simple template is complex, it consists of many different elements and also
 uses macros and include statements.  The following is a rough overview that we
-would like to give the developerat hand, details must still be taken from the
+would like to give the developer at hand, details must still be taken from the
 :origin:`sources <searx/templates/simple/>`.
 
 A :ref:`result item <result types>` can be of different media types.  The media
