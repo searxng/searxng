@@ -27,23 +27,24 @@ Privacy-by-design
 -----------------
 
 SearXNG was born out of the need for a **privacy-respecting** search tool which
-can be extended easily to maximize both, its search and its privacy protecting
+can be extended easily to maximize both its search and its privacy protecting
 capabilities.
 
-A few widely used features work differently or turned off by default or not
-implemented at all **as a consequence of privacy-by-design**.
+Many widely used search engine features may work differently, 
+may be turned off by default, or may not be implemented at all in SearXNG 
+**as a consequence of a privacy-by-design approach**.
 
-If a feature reduces the privacy preserving aspects of searx, it should be
-switched off by default or should not implemented at all.  There are plenty of
-search engines already providing such features.  If a feature reduces the
-protection of searx, users must be informed about the effect of choosing to
-enable it.  Features that protect privacy but differ from the expectations of
-the user should also be explained.
+Following this approach, features reducing the privacy preserving aspects of SearXNG should be
+switched off by default or should not be implemented at all.  There are plenty of
+search engines already providing such features.  If a feature reduces
+SearXNG's efficacy in protecting a users' privacy, users must be informed about 
+the effect of choosing to enable it.  Features that protect privacy but differ from the 
+expectations of the user should also be carefully explained to the user.
 
-Also, if you think that something works weird with searx, it might be because
-the tool you use is designed in a way to interfere with the privacy respect.
+Also, if you think that something works weird with SearXNG, it might be because
+the tool you are using is designed in a way that interferes with SearXNG's privacy aspects.
 Submitting a bug report to the vendor of the tool that misbehaves might be a good
-feedback to reconsider the disrespect to its customers (e.g. ``GET`` vs ``POST``
+feedback for them to reconsider the disrespect to their customers (e.g., ``GET`` vs ``POST``
 requests in various browsers).
 
 Remember the other prime directive of SearXNG is to be hackable, so if the above
@@ -134,7 +135,7 @@ Here is an example which makes a complete rebuild:
 
 .. _make docs.live:
 
-live build
+Live build
 ----------
 
 .. _sphinx-autobuild:
@@ -145,8 +146,8 @@ live build
    It is recommended to assert a complete rebuild before deploying (use
    ``docs.clean``).
 
-Live build is like WYSIWYG.  If you want to edit the documentation, its
-recommended to use.  The Makefile target ``docs.live`` builds the docs, opens
+Live build is like WYSIWYG.  It's the recommended way to go if you want to edit the documentation.
+The Makefile target ``docs.live`` builds the docs, opens
 URL in your favorite browser and rebuilds every time a reST file has been
 changed (:ref:`make docs.clean`).
 
@@ -159,9 +160,9 @@ changed (:ref:`make docs.clean`).
    ... Start watching changes
 
 Live builds are implemented by sphinx-autobuild_.  Use environment
-``$(SPHINXOPTS)`` to pass arguments to the sphinx-autobuild_ command.  Except
-option ``--host`` (which is always set to ``0.0.0.0``) you can pass any
-argument.  E.g to find and use a free port, use:
+``$(SPHINXOPTS)`` to pass arguments to the sphinx-autobuild_ command.  You can
+pass any argument except for the ``--host`` option (which is always set to ``0.0.0.0``).  
+E.g., to find and use a free port, use:
 
 .. code:: sh
 
