@@ -16,14 +16,14 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Bananhylsa <bananhylsa@users.noreply.translate.codeberg.org>, 2025.
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
+# Haraldher <haraldher@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-02-07 07:09+0000\n"
-"Last-Translator: curtwheeler "
-"<curtwheeler@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2025-03-25 23:21+0000\n"
+"Last-Translator: Haraldher <haraldher@noreply.codeberg.org>\n"
 "Language-Team: Norwegian Bokmål <https://translate.codeberg.org/projects/"
 "searxng/searxng/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.16.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -42,7 +42,7 @@ msgstr "uten ytterligere undergruppering"
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "andre"
+msgstr "annet"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -62,7 +62,7 @@ msgstr "musikk"
 #. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
 msgid "social media"
-msgstr "sosiale media"
+msgstr "sosiale medier"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -112,7 +112,7 @@ msgstr "vitenskap"
 #. CATEGORY_GROUPS['APPS']
 #: searx/searxng.msg
 msgid "apps"
-msgstr "programmer"
+msgstr "apper"
 
 #. CATEGORY_GROUPS['DICTIONARIES']
 #: searx/searxng.msg
@@ -147,12 +147,12 @@ msgstr "programvare-wikier"
 #. CATEGORY_GROUPS['WEB']
 #: searx/searxng.msg
 msgid "web"
-msgstr "vev"
+msgstr "web"
 
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr "Vitenskaplige publikasjoner"
+msgstr "vitenskaplige publikasjoner"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -198,13 +198,13 @@ msgstr "Skydekke"
 #: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
 #: searx/searxng.msg
 msgid "Condition"
-msgstr "Betingelse"
+msgstr "Værforhold"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
 #: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
 #: searx/searxng.msg
 msgid "Current condition"
-msgstr "Nåværende betingelse"
+msgstr "Nåværende værforhold"
 
 #. WEATHER_TERMS['EVENING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -233,7 +233,7 @@ msgstr "Maks temp."
 #: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr "Min temp."
+msgstr "Laveste temp."
 
 #. WEATHER_TERMS['MORNING']
 #: searx/engines/wttr.py:100 searx/searxng.msg
@@ -248,7 +248,7 @@ msgstr "Natt"
 #. WEATHER_TERMS['NOON']
 #: searx/engines/wttr.py:100 searx/searxng.msg
 msgid "Noon"
-msgstr "Formiddag"
+msgstr "Middag"
 
 #. WEATHER_TERMS['PRESSURE']
 #: searx/engines/open_meteo.py:95 searx/searxng.msg
@@ -335,7 +335,7 @@ msgstr "tittel"
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/engines/hackernews.py:85 searx/searxng.msg
 msgid "author"
-msgstr "opphavsmann"
+msgstr "forfatter"
 
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
 #: searx/engines/discourse.py:149 searx/searxng.msg
@@ -350,7 +350,7 @@ msgstr "lukket"
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
 #: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
-msgstr "svart på"
+msgstr "besvart"
 
 #: searx/webapp.py:312
 msgid "No item found"
@@ -363,7 +363,7 @@ msgstr "Kilde"
 
 #: searx/webapp.py:316
 msgid "Error loading the next page"
-msgstr "Det var et problem med lasting av neste side"
+msgstr "Feil ved lasting av neste side"
 
 #: searx/webapp.py:469 searx/webapp.py:875
 msgid "Invalid settings, please edit your preferences"
@@ -431,15 +431,15 @@ msgstr "server API feil"
 
 #: searx/webutils.py:79
 msgid "Suspended"
-msgstr "I hvilemodus"
+msgstr "Suspendert"
 
 #: searx/webutils.py:314
 msgid "{minutes} minute(s) ago"
-msgstr "for {minutes} minuter siden"
+msgstr "{minutes} minutt(er) siden"
 
 #: searx/webutils.py:315
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "for {hours} time(r), {minutes} minutt(er) siden"
+msgstr "{hours} time(r), {minutes} minutt(er) siden"
 
 #: searx/answerers/random.py:69
 msgid "Generate different random values"
@@ -505,8 +505,8 @@ msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Bildet har for få særskilte detaljer for at TinEye kan finne like eller "
-"lignende bilder."
+"Bildet er for enkelt til å finne treff. TinEye krever et visst nivå av "
+"visuell detalj for å identifisere like eller lignende bilder."
 
 #: searx/engines/tineye.py:59
 msgid "The image could not be downloaded."
@@ -530,11 +530,11 @@ msgstr "Hash-plugin"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
-msgstr "Konverterer strenger til andre sjekksumsføljetonger."
+msgstr "Konverterer strenger til andre sjekksum-verdier."
 
 #: searx/plugins/hash_plugin.py:62
 msgid "hash digest"
-msgstr "sjekksumsføljetong"
+msgstr "sjekksumverdi"
 
 #: searx/plugins/hostnames.py:105
 msgid "Hostnames plugin"
@@ -554,24 +554,24 @@ msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr ""
-"Tillat betalingsmurer ved å videresende til åpen-tilgang -versjoner av "
-"publikasjoner når de forefinnes"
+"Unngå betalingsmurer ved å omdirigere til versjoner med åpen tilgang når "
+"tilgjengelig"
 
 #: searx/plugins/self_info.py:37
 msgid "Self Information"
-msgstr "Selv informasjon"
+msgstr "Egen informasjon"
 
 #: searx/plugins/self_info.py:38
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"Viser din IP hvis spørringen er \"ip\" og brukeragenten din hvis spørringen "
-"er \"user-agent\"."
+"Viser din IP hvis spørringen er «ip» og brukeragenten din hvis spørringen er "
+"«user-agent»."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
-msgstr "Din IP er "
+msgstr "Din IP er: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
@@ -608,11 +608,11 @@ msgstr "Sporings-nettadressefjerner"
 
 #: searx/plugins/tracker_url_remover.py:19
 msgid "Remove trackers arguments from the returned URL"
-msgstr "Fjern sporer-argumenter fra returnert nettadresse"
+msgstr "Fjern sporingsargumenter fra den returnerte nettadressen"
 
 #: searx/plugins/unit_converter.py:32
 msgid "Convert between units"
-msgstr "Konverter mellom forskjellige enheter"
+msgstr "Konverter mellom enheter"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -686,7 +686,7 @@ msgstr "Visninger"
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:6
 msgid "Author"
-msgstr "Opphavsmann"
+msgstr "Forfatter"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
@@ -706,12 +706,14 @@ msgstr "Vennligst sjekk for eksisterende feil for denne motoren på GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Jeg bekrefter at det ikke eksisterer noen feil for saken jeg opplever"
+msgstr ""
+"Jeg bekrefter at det ikke finnes noen registrerte feil knyttet til problemet "
+"jeg opplever"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Hvis dette er en offentlig forekomst, vennligst spesifiser URL-en i "
+"Hvis dette er en offentlig instans, vennligst spesifiser URL-en i "
 "feilrapporten"
 
 #: searx/templates/simple/new_issue.html:72
@@ -781,7 +783,7 @@ msgstr "Søkemotorer"
 
 #: searx/templates/simple/preferences.html:234
 msgid "Currently used search engines"
-msgstr "Brukte søkemotorer"
+msgstr "Søkemotorer i bruk"
 
 #: searx/templates/simple/preferences.html:243
 msgid "Special Queries"
@@ -876,7 +878,7 @@ msgstr "Advarsler"
 
 #: searx/templates/simple/stats.html:99
 msgid "Errors and exceptions"
-msgstr "Feil og unntag"
+msgstr "Feil og unntak"
 
 #: searx/templates/simple/stats.html:105
 msgid "Exception"
@@ -888,7 +890,7 @@ msgstr "Melding"
 
 #: searx/templates/simple/stats.html:109
 msgid "Percentage"
-msgstr "Prosentsats"
+msgstr "Prosentandel"
 
 #: searx/templates/simple/stats.html:111
 msgid "Parameter"
@@ -964,7 +966,7 @@ msgstr "kopiert"
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
 msgid "Copy"
-msgstr "kopi"
+msgstr "Kopier"
 
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
@@ -983,7 +985,7 @@ msgstr "Forvalgt språk"
 #: searx/templates/simple/filters/languages.html:8
 #: searx/templates/simple/preferences/language.html:11
 msgid "Auto-detect"
-msgstr "Auto-oppdag"
+msgstr "Oppdag automatisk"
 
 #: searx/templates/simple/filters/safesearch.html:1
 #: searx/templates/simple/filters/safesearch.html:2
@@ -1056,15 +1058,15 @@ msgstr "Det er ingen flere resultater. Du kan prøve å:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
-msgstr "oppfrisk siden."
+msgstr "Oppdater siden."
 
 #: searx/templates/simple/messages/no_results.html:20
 msgid "Search for another query or select another category (above)."
-msgstr "Oppgi et annet søkeord eller velg en annen kategori (over)."
+msgstr "Bruk et annet søkeord eller velg en annen kategori (over)."
 
 #: searx/templates/simple/messages/no_results.html:21
 msgid "Change the search engine used in the preferences:"
-msgstr "Endre søkemotoren brukt i instillinger:"
+msgstr "Endre søkemotoren brukt i innstillingene:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
@@ -1076,7 +1078,7 @@ msgstr "Oppgi et annet søkeord eller velg en annen kategori."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr "Gå tilbake til forrige side med tilbake knappen."
+msgstr "Gå til den forrige siden med tilbake-knappen."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1118,7 +1120,7 @@ msgstr "Senterjustering"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Viser resultatet midt på siden (Oscar layout)."
+msgstr "Viser resultater midt på siden (Oscar layout)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1130,7 +1132,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With that list, you can assess SearXNG transparency."
-msgstr "Med denne listen kan du gjennomse SearXNG."
+msgstr "Med denne listen kan du vurdere SearXNGs åpenhet."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1142,19 +1144,19 @@ msgstr "Verdi"
 
 #: searx/templates/simple/preferences/cookies.html:23
 msgid "Search URL of the currently saved preferences"
-msgstr "Søk nettadresse med nåværende lagrede innstillinger"
+msgstr "Nettadresse for søk med de nåværende lagrede innstillingene"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"Merk: Å angi egendefinerte innstillinger i søkenettadressen kan redusere "
-"personvernet ved å lekke data til sidene det klikkes på i resultatet."
+"Merk: å angi egendefinerte innstillinger i søkenettadressen kan redusere "
+"personvernet ved at data lekker til de sidene du klikker på."
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
-msgstr "Nettadresse for å gjenopprette dine preferanser i en annen nettleser"
+msgstr "Nettadresse for å gjenopprette innstillingene dine i en annen nettleser"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
@@ -1178,7 +1180,7 @@ msgstr "Innstillinger-hash"
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr "Digital objektidentifierer (DOI)"
+msgstr "Digital objektidentifikator (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -1186,15 +1188,15 @@ msgstr "Open Access DOI-utleder"
 
 #: searx/templates/simple/preferences/doi_resolver.html:18
 msgid "Select service used by DOI rewrite"
-msgstr "Velg tjeneste brukt av DOI-omskrivning"
+msgstr "Velg tjenesten som brukes ved DOI-omskrivning"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exists in the user interface, but you can search in "
 "these engines by its !bangs."
 msgstr ""
-"Denne fanen eksisterer ikke i brukergrensesnittet, men du kan søke i "
-"disse motorene ved hjelp av dens !bangs."
+"Denne fanen eksisterer ikke i brukergrensesnittet, men du kan søke i disse "
+"motorene ved hjelp av deres !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1218,7 +1220,7 @@ msgstr "Vekt"
 
 #: searx/templates/simple/preferences/engines.html:33
 msgid "Max time"
-msgstr "Mak. tid"
+msgstr "Maks tid"
 
 #: searx/templates/simple/preferences/favicon.html:2
 msgid "Favicon Resolver"
@@ -1233,8 +1235,8 @@ msgid ""
 "These settings are stored in your cookies, this allows us not to store "
 "this data about you."
 msgstr ""
-"Disse innstillingene lagres i informasjonskapslene dine, noe som tillater"
-" oss å ikke lagre denne dataen om deg."
+"Disse innstillingene lagres i informasjonskapslene dine, noe som gjør at vi "
+"slipper å lagre disse dataene om deg."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid ""
@@ -1269,8 +1271,8 @@ msgid ""
 "Navigate search results with hotkeys (JavaScript required). Press \"h\" "
 "key on main or result page to get help."
 msgstr ""
-"Naviger søkeresultatene med hurtigtastene (krever JavaScript). Trykk "
-"\"h\" tasten på hoved eller søkesiden for hjelp."
+"Naviger søkeresultatene med hurtigtastene (krever JavaScript). Trykk «h»-"
+"tasten på hoved- eller resultatsiden for hjelp."
 
 #: searx/templates/simple/preferences/image_proxy.html:2
 msgid "Image proxy"
@@ -1502,7 +1504,7 @@ msgstr "Redaktør"
 
 #: searx/templates/simple/result_templates/paper.html:23
 msgid "Publisher"
-msgstr "Forlegger"
+msgstr "Utgiver"
 
 #: searx/templates/simple/result_templates/paper.html:26
 msgid "DOI"
