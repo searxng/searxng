@@ -264,13 +264,17 @@ def response(resp):
         # a video and not to a video stream --> SearXNG can't use the video template.
 
         for item in json_resp.get('videos', []):
+            duration = item.get('duration')
+            if duration:
+                duration = parse_duration_string(duration)
+
             results.append(
                 {
                     'title': html_to_text(item['title']),
                     'url': item.get('link'),
                     'content': item.get('description', ''),
                     'thumbnail': item.get('image'),
-                    'length': parse_duration_string(item.get('duration')),
+                    'length': duration,
                 }
             )
 
