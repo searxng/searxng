@@ -37,9 +37,9 @@ may be turned off by default, or may not be implemented at all in SearXNG
 Following this approach, features reducing the privacy preserving aspects of SearXNG should be
 switched off by default or should not be implemented at all.  There are plenty of
 search engines already providing such features.  If a feature reduces
-SearXNG's efficacy in protecting a users' privacy, users must be informed about 
+SearXNG's efficacy in protecting a user's privacy, the user must be informed about 
 the effect of choosing to enable it.  Features that protect privacy but differ from the 
-expectations of the user should also be carefully explained to the user.
+expectations of the user should also be carefully explained to them.
 
 Also, if you think that something works weird with SearXNG, it might be because
 the tool you are using is designed in a way that interferes with SearXNG's privacy aspects.
