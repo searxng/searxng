@@ -1134,6 +1134,22 @@ engines:
   - name: il post
     engine: il_post
     shortcut: pst
+
+  - name: huggingface
+    engine: huggingface
+    shortcut: hf
+    disabled: true
+
+  - name: huggingface datasets
+    huggingface_endpoint: datasets
+    engine: huggingface
+    shortcut: hfd
+    disabled: true
+
+  - name: huggingface spaces
+    huggingface_endpoint: spaces
+    engine: huggingface
+    shortcut: hfs
     disabled: true
 
   - name: imdb
