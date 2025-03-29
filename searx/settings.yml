@@ -1121,6 +1121,23 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: huggingface
+    engine: huggingface
+    shortcut: hf
+    disabled: true
+
+  - name: huggingface datasets
+    huggingface_endpoint: datasets
+    engine: huggingface
+    shortcut: hfd
+    disabled: true
+
+  - name: huggingface spaces
+    huggingface_endpoint: spaces
+    engine: huggingface
+    shortcut: hfs
+    disabled: true
+
   - name: imdb
     engine: imdb
     shortcut: imdb
