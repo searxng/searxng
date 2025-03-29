@@ -28,20 +28,19 @@
 # cc5efd7b0 <cc5efd7b0@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
 "PO-Revision-Date: 2025-03-15 14:07+0000\n"
 "Last-Translator: cc5efd7b0 <cc5efd7b0@noreply.codeberg.org>\n"
-"Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
-"searxng/ja/>\n"
 "Language: ja\n"
+"Language-Team: Japanese "
+"<https://translate.codeberg.org/projects/searxng/searxng/ja/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -365,7 +364,7 @@ msgstr "回答"
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "ソース"
@@ -443,10 +442,12 @@ msgid "Suspended"
 msgstr "一時停止"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分前"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 時間と{minutes} 分前"
 
@@ -455,6 +456,7 @@ msgid "Generate different random values"
 msgstr "異なるランダムな値を生成する"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "引数の {func} を計算する"
 
@@ -463,6 +465,7 @@ msgid "Show route in map .."
 msgstr "地図にルートを表示.."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (廃止)"
 
@@ -470,7 +473,7 @@ msgstr "{title} (廃止)"
 msgid "This entry has been superseded by"
 msgstr "このエントリは、置き換えられました:"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "チャンネル"
 
@@ -491,7 +494,8 @@ msgstr "クリック"
 msgid "Language"
 msgstr "言語"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -499,14 +503,14 @@ msgstr ""
 "{firstCitationVelocityYear} 年から "
 "{lastCitationVelocityYear}年まで{numCitations} が引用文献として"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr "この画像URLは読み取ることができません。サポートされていないフォーマットだと考えられます。TinEyeはJPEG、PNG、GIF、BMP、TIFF、WebPの画像のみサポートしています。"
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -524,7 +528,19 @@ msgstr "書籍評価点数"
 msgid "File quality"
 msgstr "ファイル品質"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr ""
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr ""
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr ""
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "検索バーで数式を計算"
 
@@ -540,19 +556,19 @@ msgstr "文字列を異なるハッシュダイジェストに変換。"
 msgid "hash digest"
 msgstr "ハッシュダイジェスト"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "ホスト名プラグイン"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr "検索結果からこのホスト名を基に削除もしくは優先的に書き換えを行う"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "オープンアクセス DOI の書き換え"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -562,12 +578,11 @@ msgstr "可能ならば オープンアクセス版の出版物へリダイレ�
 msgid "Self Information"
 msgstr "自分の情報"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
-msgstr "クエリが\"ip\"の場合はあなたのIPを表示し、クエリが\"user-"
-"agent\"の場合はあなたのユーザーエージェントを表示します。"
+msgstr "クエリが\"ip\"の場合はあなたのIPを表示し、クエリが\"user-agent\"の場合はあなたのユーザーエージェントを表示します。"
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -577,37 +592,41 @@ msgstr "あなたのIPは: "
 msgid "Your user-agent is: "
 msgstr "あなたのユーザーエージェントは: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor 確認プラグイン"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr "このプラグインではcheck.torprogject.orgのようにTor 出口ノードのIPアドレスをSearXNGからチェックする。"
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Tor出口ノードのリストをダウンロードできませんでした"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "あなたはTorを使用しており、外部IPアドレスが確認されたようです"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "あなたはTorを使用しておらず、外部IPアドレスが確認されました"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "トラッカー URL リムーバー"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "返された URL からトラッカー引数を消去する"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr ""
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "単位を変換"
 
@@ -666,7 +685,7 @@ msgstr "プライバシーポリシー"
 msgid "Contact instance maintainer"
 msgstr "インスタンスメンテナと連絡を取る"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "虫めがねをクリックして検索します"
 
@@ -1149,9 +1168,9 @@ msgstr "このURLで違うブラウザに設定を復活"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
-msgstr "初期設定URLを使うことで、特別な設定をデバイスをまたいで同期できる。"
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1391,7 +1410,7 @@ msgstr "このサイトは説明を提供しませんでした。"
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "ファイルサイズ"
 
@@ -1501,23 +1520,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "マグネットリンク"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "トレントファイル"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "シーダー"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "リーチャー"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "ファイル数"
 
@@ -1994,3 +2013,10 @@ msgstr "動画を隠す"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr "初期設定URLを使うことで、特別な設定をデバイスをまたいで同期できる。"
+
