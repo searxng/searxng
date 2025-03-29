@@ -68,8 +68,8 @@ def response(resp) -> EngineResults:
             {
                 'url': result['link'],
                 'title': result['title'],
-                'content': result['summary'] or None,
-                'thumbnail': result['image'] or None,
+                'content': result.get('summary', ''),
+                'thumbnail': result.get('image'),
             }
         )
 
