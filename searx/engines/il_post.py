@@ -13,7 +13,6 @@ list in ``settings.yml``:
 
 """
 
-from json import loads
 from urllib.parse import urlencode
 from searx.result_types import EngineResults
 
