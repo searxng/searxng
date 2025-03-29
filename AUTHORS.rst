@@ -176,3 +176,4 @@ features or generally made searx better:
 - Patrick Evans `https://github.com/holysoles`
 - Daniel Mowitz `<https://daniel.mowitz.rocks>`
 - `Bearz314 <https://github.com/bearz314>`_
+- Tommaso Colella `<https://github.com/gioleppe>`
