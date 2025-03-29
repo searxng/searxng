@@ -24,10 +24,7 @@ paging = True
 page_size = 10
 
 time_range_support = True
-time_range_args = {
-    'month': 'pub_date:ultimi_30_giorni',
-    'year': 'pub_date:ultimo_anno'
-}
+time_range_args = {'month': 'pub_date:ultimi_30_giorni', 'year': 'pub_date:ultimo_anno'}
 
 search_api = 'https://api.ilpost.org/search/api/site_search/?'
 
@@ -38,8 +35,9 @@ about = {
     'use_official_api': True,
     'require_api_key': False,
     'results': 'JSON',
-    'language': 'it'
+    'language': 'it',
 }
+
 
 def request(query, params):
     query_params = {
@@ -52,10 +50,9 @@ def request(query, params):
     if params['time_range']:
         if params['time_range'] not in time_range_args:
             return None
-        query_params['filters'] +=  f";{time_range_args.get(params['time_range'], 'pub_date:da_sempre')}"
+        query_params['filters'] += f";{time_range_args.get(params['time_range'], 'pub_date:da_sempre')}"
 
     encoded_querystring = urlencode(query_params)
-
 
     params['url'] = search_api + encoded_querystring
     return params
