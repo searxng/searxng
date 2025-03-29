@@ -32,12 +32,13 @@ time_range_args = {
 search_api = 'https://api.ilpost.org/search/api/site_search/?'
 
 about = {
-    "website": 'https://www.ilpost.it',
-    "wikidata_id": 'Q3792882',
-    "official_api_documentation": None,
-    "use_official_api": True,
-    "require_api_key": False,
-    "results": 'JSON',
+    'website': 'https://www.ilpost.it',
+    'wikidata_id': 'Q3792882',
+    'official_api_documentation': None,
+    'use_official_api': True,
+    'require_api_key': False,
+    'results': 'JSON',
+    'language': 'it'
 }
 
 def request(query, params):
@@ -49,6 +50,8 @@ def request(query, params):
     }
 
     if params['time_range']:
+        if params['time_range'] not in time_range_args:
+            return None
         query_params['filters'] +=  f";{time_range_args.get(params['time_range'], 'pub_date:da_sempre')}"
 
     encoded_querystring = urlencode(query_params)
@@ -60,7 +63,7 @@ def request(query, params):
 
 def response(resp) -> EngineResults:
     res = EngineResults()
-    json_data = loads(resp.text)
+    json_data = resp.json()
 
     for result in json_data['docs']:
 
