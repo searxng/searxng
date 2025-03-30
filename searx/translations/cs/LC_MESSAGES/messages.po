@@ -19,21 +19,23 @@
 # zenobit <zenobit@users.noreply.translate.codeberg.org>, 2025.
 # Fjuro <fjuro@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
+# Fjuro <fjuro@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-03-27 13:44+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-03-30 16:28+0000\n"
+"Last-Translator: Fjuro <fjuro@noreply.codeberg.org>\n"
+"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
+"searxng/cs/>\n"
 "Language: cs\n"
-"Language-Team: Czech "
-"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
-"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -529,15 +531,15 @@ msgstr "Množství souborů"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Seznam blokování Ahmia"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
-msgstr ""
+msgstr "Filtrovat výsledky onion, které se objeví na seznamu zakázaných Ahmia."
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Základní kalkulačka"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -545,7 +547,7 @@ msgstr "Vypočítejte matematické výrazy pomocí vyhledávací lišty"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr "Plugin hashe"
+msgstr "Doplněk hashe"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -599,16 +601,16 @@ msgstr "Váš uživatelský agent: "
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
-msgstr "Plugin kontroly TORu"
+msgstr "Doplněk kontroly TORu"
 
 #: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Tento plugin kontroluje, zda je adresa požadavku výstupním uzlem Tor, a "
-"informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od"
-" SearXNG."
+"Tento doplněk kontroluje, zda je adresa požadavku výstupním uzlem sítě Tor, "
+"a informuje uživatele, pokud tomu tak je; jako check.torproject.org, ale od "
+"SearXNG."
 
 #: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
@@ -632,7 +634,7 @@ msgstr "Odstranit sledovací parametry z načtených URL"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Doplněk převodu jednotek"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
@@ -1185,6 +1187,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
+"Adresa URL obsahující vaše předvolby. Tuto adresu lze použít k obnovení "
+"vašich nastavení na jiném zařízení."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -2085,4 +2089,3 @@ msgstr "skrýt video"
 #~ "Zadání vlastních nastavení v URL "
 #~ "předvoleb lze použít k synchronizaci "
 #~ "předvoleb mezi zařízeními."
-
