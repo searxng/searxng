@@ -14,17 +14,12 @@ Environment variables:
   BASE_URL      settings.yml : server.base_url
   MORTY_URL     settings.yml : result_proxy.url
   MORTY_KEY     settings.yml : result_proxy.key
-  BIND_ADDRESS  uwsgi bind to the specified TCP socket using HTTP protocol.
-                Default value: ${DEFAULT_BIND_ADDRESS}
 Volume:
   /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
                 this directory (see the -f command line option)"
 
 EOF
 }
-
-export DEFAULT_BIND_ADDRESS="[::]:8080"
-export BIND_ADDRESS="${BIND_ADDRESS:-${DEFAULT_BIND_ADDRESS}}"
 
 # Parse command line
 FORCE_CONF_UPDATE=0
@@ -175,4 +170,4 @@ unset MORTY_KEY
 
 # Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
-exec uwsgi --master --uid searxng --gid searxng --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+exec uwsgi "${UWSGI_SETTINGS_PATH}"
