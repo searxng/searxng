@@ -41,6 +41,7 @@
   - ``duckduckgo``
   - ``google``
   - ``mwmbl``
+  - ``quark``
   - ``qwant``
   - ``seznam``
   - ``sogou``
