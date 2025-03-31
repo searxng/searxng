@@ -168,6 +168,8 @@ fi
 
 unset MORTY_KEY
 
-# Start uwsgi
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
+
+# Start uwsgi
+# TODO: "--http-socket" will be removed in the future (see uwsgi.ini.new config file): https://github.com/searxng/searxng/pull/4578
 exec uwsgi --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
