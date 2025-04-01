@@ -103,8 +103,10 @@ def _normalize_text_fields(result: MainResult | LegacyResult):
         result.content = str(result)
 
     # normalize title and content
-    result.title = WHITESPACE_REGEX.sub(" ", result.title).strip()
-    result.content = WHITESPACE_REGEX.sub(" ", result.content).strip()
+    if result.title:
+        result.title = WHITESPACE_REGEX.sub(" ", result.title).strip()
+    if result.content:
+        result.content = WHITESPACE_REGEX.sub(" ", result.content).strip()
     if result.content == result.title:
         # avoid duplicate content between the content and title fields
         result.content = ""
