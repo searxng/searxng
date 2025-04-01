@@ -265,6 +265,9 @@ def custom_url_for(endpoint: str, **values):
 
 
 def morty_proxify(url: str):
+    if not url:
+        return url
+
     if url.startswith('//'):
         url = 'https:' + url
 
@@ -280,6 +283,8 @@ def morty_proxify(url: str):
 
 
 def image_proxify(url: str):
+    if not url:
+        return url
 
     if url.startswith('//'):
         url = 'https:' + url

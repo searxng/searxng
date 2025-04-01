@@ -154,6 +154,8 @@ def html_to_text(html_str: str) -> str:
         >>> html_to_text(r'regexp: (?<![a-zA-Z]')
         'regexp: (?<![a-zA-Z]'
     """
+    if not html_str:
+        return ""
     html_str = html_str.replace('\n', ' ').replace('\r', ' ')
     html_str = ' '.join(html_str.split())
     s = _HTMLTextExtractor()

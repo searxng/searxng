@@ -184,6 +184,8 @@ def _fix_title(title, url):
 
 def parse_search_query(json_results):
     results = []
+    if not json_results:
+        return results
 
     for item in json_results.get('specialSections', {}).get('topStoriesCompact', {}).get('data', []):
         result = {
@@ -245,7 +247,7 @@ def response(resp):
     json_resp = resp.json()
 
     if search_type == 'search':
-        results = parse_search_query(json_resp.get('results'))
+        results = parse_search_query(json_resp.get('results', {}))
 
     elif search_type == 'images':
         for item in json_resp.get('images', []):
