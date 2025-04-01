@@ -39,9 +39,7 @@ def request(query, params):
 
     if params['language'] == 'all':
         params['language'] = 'en-us'
-    
-# &facet=category&facet=products&facet=tags&expandScope=true&includeQuestion=false&applyOperator=false&partnerId=LearnSite
-# https://learn.microsoft.com/api/search?search=storage%20account&locale=en-us&scoringprofile=semantic-answers&facet=category&facet=products&facet=tags&%24top=10&expandScope=true&includeQuestion=false&applyOperator=false&partnerId=LearnSite
+
     query_params = [
         ("search", query),
         ("locale", params["language"]),
@@ -66,12 +64,6 @@ def response(resp) -> EngineResults:
     json_data = resp.json()
 
     for result in json_data["results"]:
-        res.add(
-            res.types.MainResult(
-                url=result["url"],
-                title=result["title"],
-                content=result.get("description", "")
-            )
-        )
+        res.add(res.types.MainResult(url=result["url"], title=result["title"], content=result.get("description", "")))
 
     return res
