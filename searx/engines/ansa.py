@@ -56,9 +56,7 @@ def request(query, params):
     if params['time_range']:
         query_params['periodo'] = time_range_args.get(params['time_range'])
 
-    encoded_querystring = urlencode(query_params)
-
-    params['url'] = search_api + encoded_querystring
+    params['url'] = search_api + urlencode(query_params)
     return params
 
 
