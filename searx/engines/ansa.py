@@ -1,15 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Engine for Ansa, Italy's oldest news agency.
 
-To use this engine add the following entry to your engines
-list in ``settings.yml``:
-
-.. code:: yaml
-
-  - name: ansa
-    engine: ansa
-    shortcut: ans
-    disabled: false
+To use this engine enable it from your settings.
 
 """
 
