@@ -67,9 +67,16 @@ def response(resp) -> EngineResults:
     for result in eval_xpath_list(doc, "//div[@class='article']"):
 
         res_obj = {
-            'url': base_url + extract_text(eval_xpath(result, "./div[contains(@class, 'content')]/h2[contains(@class, 'title')]/a/@href")),
-            'title': extract_text(eval_xpath(result, "./div[contains(@class, 'content')]/h2[contains(@class, 'title')]/a")),
-            'content': extract_text(eval_xpath(result, "./div[contains(@class, 'content')]/div[contains(@class, 'text')]")),
+            'url': base_url
+            + extract_text(
+                eval_xpath(result, "./div[contains(@class, 'content')]/h2[contains(@class, 'title')]/a/@href")
+            ),
+            'title': extract_text(
+                eval_xpath(result, "./div[contains(@class, 'content')]/h2[contains(@class, 'title')]/a")
+            ),
+            'content': extract_text(
+                eval_xpath(result, "./div[contains(@class, 'content')]/div[contains(@class, 'text')]")
+            ),
         }
 
         thumbnail = extract_text(eval_xpath(result, "./div[@class='image']/a/img/@src"))
