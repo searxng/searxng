@@ -830,6 +830,11 @@ def js_variable_to_python(js_variable):
     s = _JS_DECIMAL_RE.sub(":0.", s)
     # replace the surogate character by colon
     s = s.replace(chr(1), ':')
+    # replace single-quote followed by comma with double-quote and comma
+    # {"a": "\"12\"',"b": "13"}
+    # becomes
+    # {"a": "\"12\"","b": "13"}
+    s = s.replace("',", "\",")
     # load the JSON and return the result
     return json.loads(s)
 
