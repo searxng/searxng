@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
 "PO-Revision-Date: 2025-01-06 15:53+0000\n"
 "Last-Translator: sahussawud "
 "<sahussawud@users.noreply.translate.codeberg.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -351,7 +351,7 @@ msgstr "ตอบแล้ว"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -429,10 +429,12 @@ msgid "Suspended"
 msgstr "ถูกระงับ"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} นาทีที่แล้ว"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ชั่วโมง {minutes} นาทีที่แล้ว"
 
@@ -441,6 +443,7 @@ msgid "Generate different random values"
 msgstr "ทำการสุ่มค่าที่แตกต่างกัน"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr ""
 
@@ -449,6 +452,7 @@ msgid "Show route in map .."
 msgstr ""
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (ล้าสมัย)"
 
@@ -456,7 +460,7 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "ช่องทาง"
 
@@ -477,7 +481,8 @@ msgstr "คลิก"
 msgid "Language"
 msgstr "ภาษา"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -485,7 +490,7 @@ msgstr ""
 "การอ้างอิง {numCitations} รายการตั้งแต่ปี {firstCitationVelocityYear} ถึง"
 " {lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -494,7 +499,7 @@ msgstr ""
 "ไม่สามารถอ่านภาพจากลิงก์ได้ เนื่องจากอาจเป็นไฟล์ประเภทที่ไม่รองรับ ระบบ "
 "TinEye รองรับเฉพาะไฟล์ประเภท JPEG, PNG, GIF, BMP, TIFF หรือ WebP เท่านั้น"
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -515,7 +520,19 @@ msgstr "บันทึกการให้คะแนน"
 msgid "File quality"
 msgstr "คุณภาพไฟล์"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr ""
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr ""
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr ""
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "คำนวณนิพจน์คณิตศาสตร์ผ่านช่องค้นหา"
 
@@ -531,19 +548,19 @@ msgstr "แปลงสตริงเป็นแฮชย่อยที่ต
 msgid "hash digest"
 msgstr "แฮชย่อย"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "ชื่อโฮส ปลั๊กอิน"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr "ขียนชื่อโฮสต์ใหม่ ลบผลลัพธ์ หรือจัดลำดับความสำคัญตามชื่อโฮสต์"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "เปิดการเข้าถึง DOI ที่เขียนใหม่"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -553,7 +570,7 @@ msgstr "หลีกเลี่ยงข้อจำกัดการชำร
 msgid "Self Information"
 msgstr "ข้อมูลตนเอง"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -567,11 +584,11 @@ msgstr "ไอพีของคุณคือ "
 msgid "Your user-agent is: "
 msgstr "user-agent ของคุณคือ "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "ทอร์ตรวจสอบปลั๊กอิน"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -580,27 +597,31 @@ msgstr ""
 "และแจ้งให้ผู้ใช้ทราบว่าเป็นหรือไม่ เช่น check.torproject.org แต่มาจาก "
 "SearXNG"
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr ""
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "ลบตัวติดตาม URL"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ลบอาร์กิวเมนต์ตัวติดตามออกจากการส่งค่าคืนของ URL"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr ""
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "แปลงหน่วย"
 
@@ -659,7 +680,7 @@ msgstr "นโยบายความเป็นส่วนตัว"
 msgid "Contact instance maintainer"
 msgstr "ติดต่อผู้ดูแลอินสแตนซ์"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "คลิกที่แว่นขยายเพื่อทำการค้นหา"
 
@@ -1144,11 +1165,9 @@ msgstr "URL เพื่อกู้คืนการตั้งค่าข�
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"การระบุการตั้งค่าแบบกำหนดเองใน URL "
-"ค่ากำหนดสามารถใช้เพื่อซิงค์กับค่ากำหนดในอุปกรณ์ต่างๆได้"
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1398,7 +1417,7 @@ msgstr "ไซต์นี้ไม่ได้ให้คำอธิบาย
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "ขนาดไฟล์"
 
@@ -1508,23 +1527,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "ลิงก์แม่เหล็ก"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "ไฟล์ทอร์เรนต์"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "ผู้ที่แบ่งปันไฟล์"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "ผู้ที่ดาวน์โหลดไฟล์"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "จำนวนไฟล์"
 
@@ -1761,4 +1780,12 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "การระบุการตั้งค่าแบบกำหนดเองใน URL "
+#~ "ค่ากำหนดสามารถใช้เพื่อซิงค์กับค่ากำหนดในอุปกรณ์ต่างๆได้"
 
